@@ -1,0 +1,6 @@
+{
+  "httpFilesChecked": 102,
+  "httpStatus": 200,
+  "javascriptSyntax": "node --check /private/tmp/fx-review-check.mjs: exit 0",
+  "browserRuntime": "not tested: sandbox launch denied; in-app browser host unavailable"
+}

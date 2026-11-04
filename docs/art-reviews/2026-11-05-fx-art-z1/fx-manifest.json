@@ -1,0 +1,1631 @@
+{
+  "schemaVersion": 1,
+  "coordinateSpace": [
+    2500,
+    1759
+  ],
+  "sourceReferenceSize": [
+    2500,
+    1758
+  ],
+  "note": "bottom extra pixel is empty; placements are suggestions, masks derived from visible colors, not final occlusion geometry",
+  "assets": [
+    {
+      "id": "spirit-river",
+      "sheet": "sheets/spirit-river.webp",
+      "frameW": 384,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 10,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "x",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 0,
+          "y": 970,
+          "w": 2500,
+          "h": 620,
+          "zone": "river"
+        }
+      ],
+      "nativeCropPx": [
+        444,
+        444
+      ],
+      "source": "sources/river.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": null,
+      "frameStrip": "strips/spirit-river-frame-strip.jpg",
+      "preview": "preview/spirit-river.gif",
+      "parallax": 1,
+      "mask": "river-mask.png",
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "river-foam",
+      "sheet": "sheets/river-foam.webp",
+      "frameW": 320,
+      "frameH": 128,
+      "frames": 8,
+      "fps": 8,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 150,
+          "y": 1170,
+          "w": 360,
+          "h": 90,
+          "zone": "river"
+        },
+        {
+          "x": 1660,
+          "y": 1180,
+          "w": 380,
+          "h": 95,
+          "zone": "river"
+        },
+        {
+          "x": 2100,
+          "y": 1340,
+          "w": 320,
+          "h": 80,
+          "zone": "river"
+        }
+      ],
+      "nativeCropPx": [
+        438,
+        160
+      ],
+      "source": "sources/river-foam.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": [
+        3,
+        135,
+        441,
+        295
+      ],
+      "frameStrip": "strips/river-foam-frame-strip.jpg",
+      "preview": "preview/river-foam.gif",
+      "parallax": 1,
+      "mask": "river-mask.png",
+      "suggestedOpacity": 0.5
+    },
+    {
+      "id": "lava-surface",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "x",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 0,
+          "y": 350,
+          "w": 640,
+          "h": 800,
+          "zone": "lava"
+        }
+      ],
+      "nativeCropPx": [
+        444,
+        444
+      ],
+      "source": "sources/lava.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": null,
+      "frameStrip": "strips/lava-surface-frame-strip.jpg",
+      "preview": "preview/lava-surface.gif",
+      "parallax": 1,
+      "mask": "lava-mask.png",
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "lava-bubble",
+      "sheet": "sheets/lava-bubble.webp",
+      "frameW": 144,
+      "frameH": 144,
+      "frames": 8,
+      "fps": 9,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 76,
+          "y": 680,
+          "w": 65,
+          "h": 65,
+          "zone": "lava"
+        },
+        {
+          "x": 180,
+          "y": 825,
+          "w": 55,
+          "h": 55,
+          "zone": "lava"
+        },
+        {
+          "x": 300,
+          "y": 1050,
+          "w": 80,
+          "h": 80,
+          "zone": "lava"
+        }
+      ],
+      "nativeCropPx": [
+        353,
+        242
+      ],
+      "source": "sources/lava-bubble.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": [
+        43,
+        119,
+        396,
+        361
+      ],
+      "frameStrip": "strips/lava-bubble-frame-strip.jpg",
+      "preview": "preview/lava-bubble.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "lava-fall-left",
+      "sheet": "sheets/lava-fall-left.webp",
+      "frameW": 144,
+      "frameH": 224,
+      "frames": 8,
+      "fps": 10,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 414,
+          "y": 1032,
+          "w": 115,
+          "h": 118,
+          "zone": "lava-fall"
+        }
+      ],
+      "nativeCropPx": [
+        303,
+        400
+      ],
+      "source": "sources/lava-fall.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": [
+        67,
+        24,
+        370,
+        424
+      ],
+      "frameStrip": "strips/lava-fall-left-frame-strip.jpg",
+      "preview": "preview/lava-fall-left.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "river-mist",
+      "sheet": "sheets/river-mist.webp",
+      "frameW": 256,
+      "frameH": 120,
+      "frames": 6,
+      "fps": 4,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 140,
+          "y": 1130,
+          "w": 610,
+          "h": 170,
+          "zone": "river"
+        },
+        {
+          "x": 1680,
+          "y": 1170,
+          "w": 620,
+          "h": 180,
+          "zone": "river"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        189
+      ],
+      "source": "sources/mist.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "commonCrop": [
+        0,
+        102,
+        256,
+        291
+      ],
+      "frameStrip": "strips/river-mist-frame-strip.jpg",
+      "preview": "preview/river-mist.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.42
+    },
+    {
+      "id": "lava-steam",
+      "sheet": "sheets/lava-steam.webp",
+      "frameW": 256,
+      "frameH": 120,
+      "frames": 6,
+      "fps": 4,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 25,
+          "y": 710,
+          "w": 300,
+          "h": 120,
+          "zone": "lava"
+        },
+        {
+          "x": 130,
+          "y": 920,
+          "w": 380,
+          "h": 150,
+          "zone": "lava"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        236
+      ],
+      "source": "sources/mist.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "commonCrop": [
+        0,
+        29,
+        256,
+        265
+      ],
+      "frameStrip": "strips/lava-steam-frame-strip.jpg",
+      "preview": "preview/lava-steam.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.42
+    },
+    {
+      "id": "ice-mist",
+      "sheet": "sheets/ice-mist.webp",
+      "frameW": 256,
+      "frameH": 120,
+      "frames": 6,
+      "fps": 4,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 2050,
+          "y": 650,
+          "w": 400,
+          "h": 130,
+          "zone": "ice"
+        },
+        {
+          "x": 1880,
+          "y": 870,
+          "w": 420,
+          "h": 140,
+          "zone": "ice"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        191
+      ],
+      "source": "sources/mist.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "commonCrop": [
+        0,
+        63,
+        256,
+        254
+      ],
+      "frameStrip": "strips/ice-mist-frame-strip.jpg",
+      "preview": "preview/ice-mist.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.42
+    },
+    {
+      "id": "leaf-maple",
+      "sheet": "sheets/leaf-maple.webp",
+      "frameW": 80,
+      "frameH": 80,
+      "frames": 6,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 560,
+          "y": 1250,
+          "w": 24,
+          "h": 24,
+          "zone": "trees"
+        },
+        {
+          "x": 770,
+          "y": 1430,
+          "w": 22,
+          "h": 22,
+          "zone": "trees"
+        },
+        {
+          "x": 1250,
+          "y": 1350,
+          "w": 24,
+          "h": 24,
+          "zone": "trees"
+        },
+        {
+          "x": 130,
+          "y": 510,
+          "w": 20,
+          "h": 20,
+          "zone": "trees"
+        }
+      ],
+      "nativeCropPx": [
+        250,
+        216
+      ],
+      "source": "sources/leaves.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "commonCrop": [
+        6,
+        23,
+        256,
+        239
+      ],
+      "frameStrip": "strips/leaf-maple-frame-strip.jpg",
+      "preview": "preview/leaf-maple.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "leaf-gold",
+      "sheet": "sheets/leaf-gold.webp",
+      "frameW": 80,
+      "frameH": 80,
+      "frames": 6,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1640,
+          "y": 540,
+          "w": 19,
+          "h": 24,
+          "zone": "trees"
+        },
+        {
+          "x": 1480,
+          "y": 460,
+          "w": 18,
+          "h": 23,
+          "zone": "trees"
+        },
+        {
+          "x": 1690,
+          "y": 640,
+          "w": 20,
+          "h": 24,
+          "zone": "trees"
+        }
+      ],
+      "nativeCropPx": [
+        201,
+        228
+      ],
+      "source": "sources/leaves.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "commonCrop": [
+        30,
+        13,
+        231,
+        241
+      ],
+      "frameStrip": "strips/leaf-gold-frame-strip.jpg",
+      "preview": "preview/leaf-gold.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "leaf-green",
+      "sheet": "sheets/leaf-green.webp",
+      "frameW": 80,
+      "frameH": 80,
+      "frames": 6,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1840,
+          "y": 1490,
+          "w": 20,
+          "h": 26,
+          "zone": "trees"
+        },
+        {
+          "x": 1990,
+          "y": 1560,
+          "w": 20,
+          "h": 24,
+          "zone": "trees"
+        },
+        {
+          "x": 1170,
+          "y": 830,
+          "w": 20,
+          "h": 24,
+          "zone": "trees"
+        }
+      ],
+      "nativeCropPx": [
+        199,
+        233
+      ],
+      "source": "sources/leaves.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "commonCrop": [
+        28,
+        17,
+        227,
+        250
+      ],
+      "frameStrip": "strips/leaf-green-frame-strip.jpg",
+      "preview": "preview/leaf-green.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "snowflake",
+      "sheet": "sheets/snowflake.webp",
+      "frameW": 80,
+      "frameH": 80,
+      "frames": 6,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 2180,
+          "y": 550,
+          "w": 14,
+          "h": 14,
+          "zone": "ice"
+        },
+        {
+          "x": 2300,
+          "y": 730,
+          "w": 12,
+          "h": 12,
+          "zone": "ice"
+        },
+        {
+          "x": 2100,
+          "y": 850,
+          "w": 14,
+          "h": 14,
+          "zone": "ice"
+        },
+        {
+          "x": 2390,
+          "y": 940,
+          "w": 13,
+          "h": 13,
+          "zone": "ice"
+        }
+      ],
+      "nativeCropPx": [
+        252,
+        247
+      ],
+      "source": "sources/leaves.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "commonCrop": [
+        2,
+        0,
+        254,
+        247
+      ],
+      "frameStrip": "strips/snowflake-frame-strip.jpg",
+      "preview": "preview/snowflake.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-01",
+      "sheet": "sheets/cloud-01.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 35,
+          "y": 35,
+          "w": 730,
+          "h": 190,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        290,
+        118
+      ],
+      "source": "sources/clouds-near.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "commonCrop": [
+        4,
+        95,
+        294,
+        213
+      ],
+      "frameStrip": "strips/cloud-01-frame-strip.jpg",
+      "preview": "preview/cloud-01.gif",
+      "parallax": 0.35,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-02",
+      "sheet": "sheets/cloud-02.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1420,
+          "y": 30,
+          "w": 820,
+          "h": 240,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        293,
+        149
+      ],
+      "source": "sources/clouds-near.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "commonCrop": [
+        1,
+        68,
+        294,
+        217
+      ],
+      "frameStrip": "strips/cloud-02-frame-strip.jpg",
+      "preview": "preview/cloud-02.gif",
+      "parallax": 0.35,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-03",
+      "sheet": "sheets/cloud-03.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 680,
+          "y": 150,
+          "w": 580,
+          "h": 140,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        292,
+        102
+      ],
+      "source": "sources/clouds-near.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "commonCrop": [
+        2,
+        98,
+        294,
+        200
+      ],
+      "frameStrip": "strips/cloud-03-frame-strip.jpg",
+      "preview": "preview/cloud-03.gif",
+      "parallax": 0.35,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-04",
+      "sheet": "sheets/cloud-04.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "pingpong",
+      "playbackOrder": [
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1600,
+          "y": 200,
+          "w": 650,
+          "h": 190,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        292,
+        117
+      ],
+      "source": "sources/clouds-far.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "commonCrop": [
+        3,
+        111,
+        295,
+        228
+      ],
+      "frameStrip": "strips/cloud-04-frame-strip.jpg",
+      "preview": "preview/cloud-04.gif",
+      "parallax": 0.35,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-far-01",
+      "sheet": "sheets/cloud-far-01.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 250,
+          "y": 260,
+          "w": 520,
+          "h": 100,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        289,
+        61
+      ],
+      "source": "sources/clouds-far.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "commonCrop": [
+        4,
+        116,
+        293,
+        177
+      ],
+      "frameStrip": "strips/cloud-far-01-frame-strip.jpg",
+      "preview": "preview/cloud-far-01.gif",
+      "parallax": 0.18,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "cloud-far-02",
+      "sheet": "sheets/cloud-far-02.webp",
+      "frameW": 296,
+      "frameH": 160,
+      "frames": 6,
+      "fps": 3,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1000,
+          "y": 285,
+          "w": 650,
+          "h": 100,
+          "zone": "sky"
+        }
+      ],
+      "nativeCropPx": [
+        285,
+        78
+      ],
+      "source": "sources/clouds-far.webp",
+      "sourceGrid": [
+        6,
+        3
+      ],
+      "sourceCells": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "commonCrop": [
+        5,
+        106,
+        290,
+        184
+      ],
+      "frameStrip": "strips/cloud-far-02-frame-strip.jpg",
+      "preview": "preview/cloud-far-02.gif",
+      "parallax": 0.18,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "torch-flame",
+      "sheet": "sheets/torch-flame.webp",
+      "frameW": 128,
+      "frameH": 160,
+      "frames": 8,
+      "fps": 11,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 1312,
+          "y": 966,
+          "w": 22,
+          "h": 32,
+          "zone": "lamps"
+        },
+        {
+          "x": 1511,
+          "y": 968,
+          "w": 22,
+          "h": 32,
+          "zone": "lamps"
+        },
+        {
+          "x": 2120,
+          "y": 916,
+          "w": 20,
+          "h": 30,
+          "zone": "lamps"
+        },
+        {
+          "x": 320,
+          "y": 708,
+          "w": 26,
+          "h": 38,
+          "zone": "lamps"
+        }
+      ],
+      "nativeCropPx": [
+        248,
+        250
+      ],
+      "source": "sources/fire.webp",
+      "sourceGrid": [
+        4,
+        4
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": [
+        34,
+        3,
+        282,
+        253
+      ],
+      "frameStrip": "strips/torch-flame-frame-strip.jpg",
+      "preview": "preview/torch-flame.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "embers-ash",
+      "sheet": "sheets/embers-ash.webp",
+      "frameW": 128,
+      "frameH": 160,
+      "frames": 8,
+      "fps": 7,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "normal",
+      "suggestedPlacement": [
+        {
+          "x": 100,
+          "y": 560,
+          "w": 120,
+          "h": 180,
+          "zone": "lava"
+        },
+        {
+          "x": 290,
+          "y": 880,
+          "w": 130,
+          "h": 190,
+          "zone": "lava"
+        }
+      ],
+      "nativeCropPx": [
+        212,
+        243
+      ],
+      "source": "sources/fire.webp",
+      "sourceGrid": [
+        4,
+        4
+      ],
+      "sourceCells": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "commonCrop": [
+        54,
+        15,
+        266,
+        258
+      ],
+      "frameStrip": "strips/embers-ash-frame-strip.jpg",
+      "preview": "preview/embers-ash.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 1
+    },
+    {
+      "id": "god-ray-01",
+      "sheet": "sheets/god-ray-01.webp",
+      "frameW": 192,
+      "frameH": 224,
+      "frames": 6,
+      "fps": 3,
+      "loop": "pingpong",
+      "playbackOrder": [
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tileable": "",
+      "blend": "screen",
+      "suggestedPlacement": [
+        {
+          "x": 750,
+          "y": 270,
+          "w": 310,
+          "h": 430,
+          "zone": "air"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        235
+      ],
+      "source": "sources/rays-dust.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "commonCrop": [
+        0,
+        18,
+        256,
+        253
+      ],
+      "frameStrip": "strips/god-ray-01-frame-strip.jpg",
+      "preview": "preview/god-ray-01.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.25
+    },
+    {
+      "id": "god-ray-02",
+      "sheet": "sheets/god-ray-02.webp",
+      "frameW": 192,
+      "frameH": 224,
+      "frames": 6,
+      "fps": 3,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "screen",
+      "suggestedPlacement": [
+        {
+          "x": 1440,
+          "y": 510,
+          "w": 290,
+          "h": 400,
+          "zone": "air"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        249
+      ],
+      "source": "sources/rays-dust.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "commonCrop": [
+        0,
+        5,
+        256,
+        254
+      ],
+      "frameStrip": "strips/god-ray-02-frame-strip.jpg",
+      "preview": "preview/god-ray-02.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.25
+    },
+    {
+      "id": "god-ray-03",
+      "sheet": "sheets/god-ray-03.webp",
+      "frameW": 192,
+      "frameH": 224,
+      "frames": 6,
+      "fps": 3,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tileable": "",
+      "blend": "screen",
+      "suggestedPlacement": [
+        {
+          "x": 2060,
+          "y": 410,
+          "w": 330,
+          "h": 420,
+          "zone": "air"
+        }
+      ],
+      "nativeCropPx": [
+        256,
+        252
+      ],
+      "source": "sources/rays-dust.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "commonCrop": [
+        0,
+        2,
+        256,
+        254
+      ],
+      "frameStrip": "strips/god-ray-03-frame-strip.jpg",
+      "preview": "preview/god-ray-03.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.25
+    },
+    {
+      "id": "air-dust",
+      "sheet": "sheets/air-dust.webp",
+      "frameW": 96,
+      "frameH": 96,
+      "frames": 6,
+      "fps": 5,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "tileable": "",
+      "blend": "screen",
+      "suggestedPlacement": [
+        {
+          "x": 850,
+          "y": 550,
+          "w": 180,
+          "h": 200,
+          "zone": "air"
+        },
+        {
+          "x": 1500,
+          "y": 800,
+          "w": 160,
+          "h": 190,
+          "zone": "air"
+        }
+      ],
+      "nativeCropPx": [
+        252,
+        247
+      ],
+      "source": "sources/rays-dust.webp",
+      "sourceGrid": [
+        6,
+        4
+      ],
+      "sourceCells": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "commonCrop": [
+        2,
+        4,
+        254,
+        251
+      ],
+      "frameStrip": "strips/air-dust-frame-strip.jpg",
+      "preview": "preview/air-dust.gif",
+      "parallax": 1,
+      "mask": null,
+      "suggestedOpacity": 0.65
+    },
+    {
+      "id": "water-sparkle",
+      "sheet": "sheets/water-sparkle.webp",
+      "frameW": 160,
+      "frameH": 80,
+      "frames": 8,
+      "fps": 8,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileable": "",
+      "blend": "screen",
+      "suggestedPlacement": [
+        {
+          "x": 540,
+          "y": 1260,
+          "w": 90,
+          "h": 45,
+          "zone": "river"
+        },
+        {
+          "x": 1770,
+          "y": 1270,
+          "w": 100,
+          "h": 50,
+          "zone": "river"
+        },
+        {
+          "x": 2180,
+          "y": 1400,
+          "w": 90,
+          "h": 45,
+          "zone": "river"
+        },
+        {
+          "x": 80,
+          "y": 1360,
+          "w": 100,
+          "h": 50,
+          "zone": "river"
+        }
+      ],
+      "nativeCropPx": [
+        326,
+        137
+      ],
+      "source": "sources/water-sparkle.webp",
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "commonCrop": [
+        58,
+        161,
+        384,
+        298
+      ],
+      "frameStrip": "strips/water-sparkle-frame-strip.jpg",
+      "preview": "preview/water-sparkle.gif",
+      "parallax": 1,
+      "mask": "river-mask.png",
+      "suggestedOpacity": 1
+    }
+  ]
+}

@@ -1,0 +1,1210 @@
+{
+  "metric": "mean absolute difference of premultiplied sRGB+alpha over union of alpha > 0.015, range 0..1; checked from final exported lossless sheets by verify.py",
+  "note": "pingpong reverses drawn frames, no interpolated or shifted frames. Numerical continuity does not prove motion quality.",
+  "assets": [
+    {
+      "id": "spirit-river",
+      "rawAdjacentMAE": [
+        0.02203911729156971,
+        0.02602444589138031,
+        0.026733040809631348,
+        0.02353595569729805,
+        0.022722354158759117,
+        0.035708241164684296,
+        0.01546967402100563
+      ],
+      "rawMeanAdjacentMAE": 0.024604689862046922,
+      "rawLastToFirstMAE": 0.01606268435716629,
+      "rawRatio": 0.6528301899851705,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.01606268435716629,
+      "effectiveMeanAdjacentMAE": 0.024604689862046922,
+      "effectiveRatio": 0.6528301899851705,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "4514fa8c998bc9fc6a351bcbb0d8e0e4eab4571e670c65e75a2251ff7e187d6a",
+        "bb08a7a7fd73da05cdda592576be49324a52703e1ba24bbdc6a374443a053398",
+        "86c0f55c60cf56f9448258cb29eb1816ba41709cdbdce1b2550a198d3f0bb274",
+        "f5b851c32d60bd9d40fb14a8ee01d35688d40bcc23163cf38fdd3ca36fe43ab7",
+        "28c036073d171a126bd1a49d2ca2c2afc0a16082f40892cb517a0cbfb228f5bd",
+        "feb1b72e62d894013d333282c6eda1861b338b9085ba8e50b482c61f51cadd28",
+        "6ec8dbe0184ae9630e91753428ca8191c9a7d27a0e1321e6eefef3c435b7472c",
+        "3e4de32a1c1732ae3b3788e6a8a982b1104314a667a2dd523b583cc2cede1b36"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "fractionPartialAlpha": 0.0,
+      "rawTileEdgeMAE": [
+        0.012734885327517986,
+        0.02340686321258545,
+        0.022554125636816025,
+        0.022523488849401474,
+        0.02237030304968357,
+        0.02459660917520523,
+        0.017948323860764503,
+        0.01970486156642437
+      ],
+      "finalTileEdgeMAE": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "spatialProcessing": "20px symmetric edge-color repair per drawing; no temporal synthesis"
+    },
+    {
+      "id": "river-foam",
+      "rawAdjacentMAE": [
+        0.1596396565437317,
+        0.18532021343708038,
+        0.18122979998588562,
+        0.17316286265850067,
+        0.24418774247169495,
+        0.2016213834285736,
+        0.09070990979671478
+      ],
+      "rawMeanAdjacentMAE": 0.1765530811888831,
+      "rawLastToFirstMAE": 0.08529440313577652,
+      "rawRatio": 0.4831091168809757,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.08529440313577652,
+      "effectiveMeanAdjacentMAE": 0.1765530811888831,
+      "effectiveRatio": 0.4831091168809757,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "30fd56aacdda6dfe108081b23b8d7c8b92ce9667631a41cd79183fc7c1bebfda",
+        "965224110d17887a78497af071977428443752828e81d20af47ad34d9eb43ae7",
+        "1bfa2889d304515eb1b6ff79ba94d1c8cd3266c081b1c6f7c66e4770083a1c4b",
+        "403d62d6fba26413c83f3d30f9729eddbb5c6eec6d103e69b614dc72645ad22f",
+        "28b550922eddca55f8840f367c394a239bea1e4dd1d566cf2953c7e0fecf40b9",
+        "655e18266d8ba3572374d18140370fb39b933c5a0d4651d8e92c6505c00fde57",
+        "6bd451de05c75b2ff244511897a9b118204738a0da7f170571089d2da0c527b1",
+        "74f97dce7570d5aae577cedca97b406c47d08a37dd9b977881ae1d9a584e811a"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.4573699951171875,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "lava-surface",
+      "rawAdjacentMAE": [
+        0.02173619158565998,
+        0.026182232424616814,
+        0.02581525221467018,
+        0.02489597536623478,
+        0.03050738200545311,
+        0.023471105843782425,
+        0.015787027776241302
+      ],
+      "rawMeanAdjacentMAE": 0.024056452459522655,
+      "rawLastToFirstMAE": 0.014632624574005604,
+      "rawRatio": 0.6082619454645872,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.014632624574005604,
+      "effectiveMeanAdjacentMAE": 0.024056452459522655,
+      "effectiveRatio": 0.6082619454645872,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "0f3c33a84d306774dc5d2c9aa6150791aa51eaa3855da037d116cb946390d95f",
+        "2007151314be0ab9e255e8e10f041b0009ce68be313d3485b2f882768644da79",
+        "beebd7ff00033a9d0e046811c7d3e9c489cc539ebdafb015a093ddf253dba403",
+        "ecba409ddafe28316d461095827987f56aeeec90566f044a0325487b01d701f0",
+        "c13324b44cc316bb1b6ac3e52c06e7a2843b1eacd3db499ac8d67e1d125df8fa",
+        "8a5ca37639383f8e6911f8b943876eb215b729832a5a59aa1fe116ed030e21be",
+        "e84b6ff9fc17dc7396d389b10b073a40bf0361c5988805c6f5b6020a6dfb04c1",
+        "b11b9499a21ba0a5cdb974d1103782cdf7b85424c406b1430b19d0656f8b8d7a"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "fractionPartialAlpha": 0.0,
+      "rawTileEdgeMAE": [
+        0.02653186209499836,
+        0.03533496707677841,
+        0.037826795130968094,
+        0.028462009504437447,
+        0.025566788390278816,
+        0.035084761679172516,
+        0.032766543328762054,
+        0.028043299913406372
+      ],
+      "finalTileEdgeMAE": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "spatialProcessing": "20px symmetric edge-color repair per drawing; no temporal synthesis"
+    },
+    {
+      "id": "lava-bubble",
+      "rawAdjacentMAE": [
+        0.27403584122657776,
+        0.28646767139434814,
+        0.14344336092472076,
+        0.20424389839172363,
+        0.27560970187187195,
+        0.19577763974666595,
+        0.15921048820018768
+      ],
+      "rawMeanAdjacentMAE": 0.2198269431080137,
+      "rawLastToFirstMAE": 0.13719837367534637,
+      "rawRatio": 0.6241199178570793,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.13719837367534637,
+      "effectiveMeanAdjacentMAE": 0.2198269431080137,
+      "effectiveRatio": 0.6241199178570793,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "7c32917ab763cc47c9639aa1b34fe8af370482936b95b8347bf4244a426fa9c4",
+        "f36857a439cda38be1eed258b028028b27e1e4e7100f1d2f4bd515facdb1d795",
+        "48c2e77911b1d38847b58eef2af67ebea949e6ad8befed7042695212210bd0a9",
+        "492c26c70e50190754f98ffb2536bb4c2de7ef92d664e159ffd938bfb610ed8a",
+        "7636862e3b8fb4d3a81e54b6d14e07dec23f3854129823f0c5bd62ddc3b09931",
+        "582ed9566af6eee047ebb6d3bb051d640423de6797727a410667c657770fa0a2",
+        "ccab4b3af59b6fc95aec61e9c4c159fb8ddd5839f6387f7d214465d41aa6b2a0",
+        "0898af424b4956d3a39a64819a76267057dd1e9a69cc434385d80e01e431f699"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.3632149402006173,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "lava-fall-left",
+      "rawAdjacentMAE": [
+        0.08700449764728546,
+        0.08921030908823013,
+        0.09314607083797455,
+        0.08351550251245499,
+        0.0927366390824318,
+        0.10656818002462387,
+        0.05314349755644798
+      ],
+      "rawMeanAdjacentMAE": 0.08647495667849268,
+      "rawLastToFirstMAE": 0.043284106999635696,
+      "rawRatio": 0.5005392157704422,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.043284106999635696,
+      "effectiveMeanAdjacentMAE": 0.08647495667849268,
+      "effectiveRatio": 0.5005392157704422,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "3e9f77e9edcd2b4a2e1727774e97687b9cd3c244723d5d635d0c34ed3b9c5516",
+        "0345418ee2c8eb8e77ef5b8bc1c297c869a70fe40f6155428bb09acbc61efa4f",
+        "f936866bcc301521e5df0dc0079a7a53b0e44551dd30ff7039ad0a2e6e5e2b8c",
+        "009d772a6207869b293546078419dcbb81f7f0c5bdb97052c9f075a7f9623cfe",
+        "40759f9e712eca53cff314ab999ccb0ac8279fe3aa0339bc805618b0c4896ef0",
+        "e19e451078013433f4ff952f6fa0097e2c99410046f953b731291fd9d32189b3",
+        "446d5b8c53c2c0af8a6f68e9c1d357b02a2ff6773466b557d2253e3a9b78a754",
+        "896267ce8a6106db970578cd9f4828f1f1777328b565a8cedf20a7728e557c94"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.5354120163690477,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "river-mist",
+      "rawAdjacentMAE": [
+        0.056943364441394806,
+        0.04554083198308945,
+        0.07032521069049835,
+        0.07038189470767975,
+        0.07577724009752274
+      ],
+      "rawMeanAdjacentMAE": 0.06379370838403702,
+      "rawLastToFirstMAE": 0.0490121953189373,
+      "rawRatio": 0.768291992431052,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.0490121953189373,
+      "effectiveMeanAdjacentMAE": 0.06379370838403702,
+      "effectiveRatio": 0.768291992431052,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "3b739ab3394799f344e13c51c9b39bec1f947e1c2dd68d3ff9d6f2977e0792ef",
+        "a987ecf6fc93ca4cd4d5e76fb602fae117851fe1f58444aba24dc91a7f06f6f0",
+        "b79aedf6a60fc332aa7ed1eb3f76d2f8acd34ebac83164333a200a41e7f74ce9",
+        "cf45bc97421b494aebbaaa4289cf88860fac0038619199f3b2bbfbdc10d87167",
+        "c57318fa9c893e4b271af37f51de158c0d59670d6e0044df6883115cb3d88f5b",
+        "6c4901715a8f1e6e2dd948d86a144d8b923d4260d49d109f01e1ea5bd179ceb0"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        250
+      ],
+      "fractionPartialAlpha": 0.6257975260416667,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "lava-steam",
+      "rawAdjacentMAE": [
+        0.07816004753112793,
+        0.05626589432358742,
+        0.07989047467708588,
+        0.07888907939195633,
+        0.10312561690807343
+      ],
+      "rawMeanAdjacentMAE": 0.0792662225663662,
+      "rawLastToFirstMAE": 0.05671706050634384,
+      "rawRatio": 0.7155262187353142,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.05671706050634384,
+      "effectiveMeanAdjacentMAE": 0.0792662225663662,
+      "effectiveRatio": 0.7155262187353142,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "b58b00815327d7fed23b1f9c31e73fbc0caf7dbd0a6151041c4cf4a774474b3d",
+        "6aea898217decbf7dc93d6ab8c3950e31b51a4c56fab0c671c53a6df37b4c269",
+        "84064d1ea994b71911690f8dc614ca03e34745e61dbdecef2e408b4bd8f5f567",
+        "f1c7d95c91bca33c666314d99884e222a444c5a1146d221b3de11bacabac2c45",
+        "15ba395ff8f6aad3921f2ed4c38613f9ea69ab1b3d45477da2009652d79b1118",
+        "1c45a8bf691dde48e9d8a1adc059fd682eb2a8f597fdb6423a47a1beab11c159"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        249
+      ],
+      "fractionPartialAlpha": 0.49859483506944446,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "ice-mist",
+      "rawAdjacentMAE": [
+        0.06409702450037003,
+        0.06353385746479034,
+        0.06497997790575027,
+        0.08186215162277222,
+        0.09558439254760742
+      ],
+      "rawMeanAdjacentMAE": 0.07401148080825806,
+      "rawLastToFirstMAE": 0.0645187720656395,
+      "rawRatio": 0.8717400511521803,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.0645187720656395,
+      "effectiveMeanAdjacentMAE": 0.07401148080825806,
+      "effectiveRatio": 0.8717400511521803,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "b5f44c54d57306d17838f87fb7f440875175921973bd4d2b312a993b085d59a9",
+        "b0bd8e62ce4c5c9b5821845e390cd2b8c82b723551a9655d5aad44d9dba686d9",
+        "4a7b66492e3a15821111eb6795198aafb3debd72b8814da69c415b1537dbdc34",
+        "e73c59ccd419c5f3e6fa9b8e1352f56ce87c2b8a2503f8fe42feffd9e1ee57a1",
+        "4431532a746ecb327785b0749411cc5f570d0ecf5acdb0cd105cf429ff76095e",
+        "01de683c51c680acdb2f47a4a678cb8cde1aef358056df39c1b9ec69900a105d"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        251
+      ],
+      "fractionPartialAlpha": 0.6183430989583333,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "leaf-maple",
+      "rawAdjacentMAE": [
+        0.2393733263015747,
+        0.34134775400161743,
+        0.3590293526649475,
+        0.2131684124469757,
+        0.25208526849746704
+      ],
+      "rawMeanAdjacentMAE": 0.2810008227825165,
+      "rawLastToFirstMAE": 0.2835301458835602,
+      "rawRatio": 1.0090011234700238,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.2835301458835602,
+      "effectiveMeanAdjacentMAE": 0.2810008227825165,
+      "effectiveRatio": 1.0090011234700238,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "93f9e70dac5fb3997bcb34e17f736e19191e8991597c214230db56da7c9f76be",
+        "a87ea664ac35e40398fce6afb670547d3d83dbf0953fef8e05b85a6fd7f2693f",
+        "35d0a7f3ef852f56ef7331500f6fbd20cf42473238f9b43790e62f2e3dd57871",
+        "8726d1e9c0a7e4328195a3d80bfa4ac4884821e5e3bea1cf1ae8cdf6e089e44f",
+        "0e424f57e09b6a055e2a26598b39e56a1f5648edcacf961528aa71c2a70067a1",
+        "c471b5515b8cdbe1e4a378f68a103d725e5623c316172db40f05118ad0db5cd2"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.7141666666666666,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "leaf-gold",
+      "rawAdjacentMAE": [
+        0.2222147434949875,
+        0.3300587236881256,
+        0.3640253245830536,
+        0.21248048543930054,
+        0.21609537303447723
+      ],
+      "rawMeanAdjacentMAE": 0.2689749300479889,
+      "rawLastToFirstMAE": 0.2521445155143738,
+      "rawRatio": 0.9374275716676929,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.2521445155143738,
+      "effectiveMeanAdjacentMAE": 0.2689749300479889,
+      "effectiveRatio": 0.9374275716676929,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "9ef3e9fdea366b20c61ba09d04a3eea206a258f7ba657c331383c5a13be9e460",
+        "b7f06b118b2a1ea346f3be6ecc7aba4381cedd53cd8bc3489fb23a17a4c3453b",
+        "6c36aa171a9677bfaa97546405bacd9bb51dcbddd3c74f725dbe83e56db667f1",
+        "03cd63a8af6fe87263fbf2134676a282369667393986044c7e438d9faa04e3c9",
+        "0bba21b2513ffe7a6ddbec205252e24df243d337207e646fb634f12a290832b3",
+        "40c4a0492663f5bab08b10326f994e9bf13b2e47e4244756b3613c0aafd6c150"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.8246354166666666,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "leaf-green",
+      "rawAdjacentMAE": [
+        0.22689755260944366,
+        0.2385113686323166,
+        0.25240594148635864,
+        0.20963504910469055,
+        0.2407286912202835
+      ],
+      "rawMeanAdjacentMAE": 0.2336357206106186,
+      "rawLastToFirstMAE": 0.28002411127090454,
+      "rawRatio": 1.1985500784685132,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.28002411127090454,
+      "effectiveMeanAdjacentMAE": 0.2336357206106186,
+      "effectiveRatio": 1.1985500784685132,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "7f16f36158101a5d9da5556527b123559597437e39ca9f17a599e652cf60951d",
+        "ca8019e927bb7706e8607f4879b9a6ea831136773493cd0d435f0db8812e41bb",
+        "e8a4921d09aab70c42a5404c721f60a48612cbed3e980df7e102cf5711d75939",
+        "a3c53cca7d213a031048137562c7e061bccf557b223b69a96464ecefc6c7281f",
+        "9c74b2a19316a8ef5af5a50f4ae9fac10db1e61d1c86d28c517456be9690ea38",
+        "25025723d9279bb2a85346efcdf0a7d54532cafb3b58ac5103d2c83604072ed9"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.8238020833333334,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "snowflake",
+      "rawAdjacentMAE": [
+        0.1892673671245575,
+        0.24594146013259888,
+        0.2529846727848053,
+        0.16028645634651184,
+        0.18751773238182068
+      ],
+      "rawMeanAdjacentMAE": 0.20719953775405883,
+      "rawLastToFirstMAE": 0.2641211748123169,
+      "rawRatio": 1.2747189384458124,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.2641211748123169,
+      "effectiveMeanAdjacentMAE": 0.20719953775405883,
+      "effectiveRatio": 1.2747189384458124,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "f5a1de43b8c7e74cda4f5c3516b0d28790948b14c91032b3b7cbd48aca5f9f48",
+        "39783244db4b30d2dd9ee42bf3ba194a07b7e0669ed554595eb376443afdd194",
+        "db374d84d0507708f68bb47dc3505e07df5d6a05542bae37948bf475f0cb117e",
+        "46ac5808e9a56041a25cf15ba8f41582a08f55bba42a21252ce90aad3fd16efc",
+        "a850f4dcdf842cd60740e6a0af64cc9b834db6b658dbbd2aec76efa4002bfcd5",
+        "398ea6486e1a8b194847cd0fd6e797860e41613f4f59c2f170b8b4b881c82250"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.9419791666666667,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-01",
+      "rawAdjacentMAE": [
+        0.0976281687617302,
+        0.07964401692152023,
+        0.05742211267352104,
+        0.08009373396635056,
+        0.10237257182598114
+      ],
+      "rawMeanAdjacentMAE": 0.08343212082982063,
+      "rawLastToFirstMAE": 0.14619383215904236,
+      "rawRatio": 1.752248782662962,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "effectiveLastToFirstMAE": 0.0976281687617302,
+      "effectiveMeanAdjacentMAE": 0.08185478217071956,
+      "effectiveRatio": 1.1926996343123,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "a683edab85ffd4c8f99066c06ae77ac623c265cbd4d7bc15f427558320f43831",
+        "981d05e05beacae1377ca722c4f4a9eb09f9df4e7afd08cc31711fd0fee5de5a",
+        "2108c73b76e7a40a53706d1bc32beee916b8b37bb4550da3ee3a5ec7e9eb7a7a",
+        "a8b1b7275080653f0768fc040757cb99606f50f2dcfe27da6cce63fa69a5e5b7",
+        "93235acc99a06194c4729f5b840e94f93fc88df9b60c6f7fbcb06fb81bf56b26",
+        "8cc46400f7da5dcc87cfb72a9c336c1cfe974e9b8c37791040a34b052f8ebe20"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.6611169763513514,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-02",
+      "rawAdjacentMAE": [
+        0.09111650288105011,
+        0.08244986832141876,
+        0.06320182979106903,
+        0.1001213788986206,
+        0.11217181384563446
+      ],
+      "rawMeanAdjacentMAE": 0.0898122787475586,
+      "rawLastToFirstMAE": 0.11828876286745071,
+      "rawRatio": 1.3170667142288293,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.11828876286745071,
+      "effectiveMeanAdjacentMAE": 0.0898122787475586,
+      "effectiveRatio": 1.3170667142288293,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "fbb4dde105dd06c57cfa0fb12dac0696d4a25a8d31d61477aa76edbcafeb9e61",
+        "a793988f1075df838f756c97f8e480aa387b69000e8729680e023ca2e257c700",
+        "52f3dbd2f30dc26520a079b26c23f5a485bf1a6cd9ac52c8f5fa073000b50e43",
+        "ce84d719e1d4216edf38fb8a379b3606587a65039292ddc61360f3357b3bcb50",
+        "8272fe2256509bc5ea0a2be0e8b473f729e4801d4fadb790e565d95e3d2b5dbd",
+        "9fd3612436da036bb75006275640462897dc90826d2e7b04d5d9dd5655e08e9f"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.8720896677927928,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-03",
+      "rawAdjacentMAE": [
+        0.10852032154798508,
+        0.09980136156082153,
+        0.11112567037343979,
+        0.11645112931728363,
+        0.14785999059677124
+      ],
+      "rawMeanAdjacentMAE": 0.11675169467926025,
+      "rawLastToFirstMAE": 0.12085937708616257,
+      "rawRatio": 1.0351830645215636,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.12085937708616257,
+      "effectiveMeanAdjacentMAE": 0.11675169467926025,
+      "effectiveRatio": 1.0351830645215636,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "7dc3ddd3bf8ec18d15c90c370309e6b129d79c7517928bfe306aee5f9282dc4d",
+        "0afbebddd470607705d7c8a39fba6562e2419e9350901fe032cf14fbb9152336",
+        "382c240c3448c78502e489a1ad45ebb384f2003c58facb8f203bc56d8a68b114",
+        "79d5f3fe6909f47e7c1bc5cb8071a15bf43b52698413c40b0e913b816f698d88",
+        "86b57e204cfbebf4a498bf03fe93b8d9a1def1d39372724198f48636cb024c40",
+        "20957cc2499e9d10c562c2f7c052f14460cc5b05ec0d778d8eb2ba60cf49a70b"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.5756756756756757,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-04",
+      "rawAdjacentMAE": [
+        0.11331051588058472,
+        0.051665619015693665,
+        0.046438347548246384,
+        0.09112200140953064,
+        0.07109267264604568
+      ],
+      "rawMeanAdjacentMAE": 0.07472583130002022,
+      "rawLastToFirstMAE": 0.11822963505983353,
+      "rawRatio": 1.5821789199660805,
+      "loop": "pingpong",
+      "playbackOrder": [
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "effectiveLastToFirstMAE": 0.07109267264604568,
+      "effectiveMeanAdjacentMAE": 0.07512951559490627,
+      "effectiveRatio": 0.9462682154024925,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "235ee03737420c01a67a96897db56910fa321c0d64a0d5c32b4ab6dcb989c4bd",
+        "026323628921883074f4057da70ed7d5d3d3cc79b266e0807628b60cbda90c1e",
+        "4f00fe4c0902a4a27bf4e5700d268326ea9e76d485ca1cf3e8d49335ac4a36c3",
+        "c1e53a43196d923b839e4bff0bfb474194a236a46549e866ab3abf464988f401",
+        "f23f4836d3c41a042a72e435573ef088414fd573683cf49963e668245e27bf98",
+        "f0d8ff939846817d0d04320e661c55441f6958c19e81df8d2a6d96861d34506b"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.4832911036036036,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-far-01",
+      "rawAdjacentMAE": [
+        0.11523274332284927,
+        0.08186449110507965,
+        0.10186880826950073,
+        0.08862266689538956,
+        0.14488692581653595
+      ],
+      "rawMeanAdjacentMAE": 0.10649512708187103,
+      "rawLastToFirstMAE": 0.12305133789777756,
+      "rawRatio": 1.1554644918464532,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.12305133789777756,
+      "effectiveMeanAdjacentMAE": 0.10649512708187103,
+      "effectiveRatio": 1.1554644918464532,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "bd94181daac72d72377e1e3fc7fd7fe5b6f01450e0bc799a23d5155000accb50",
+        "16aa779fc4c3081b6460aadb4ca3496a6ed5ce90676f4586c9641969e3e1d471",
+        "da29f4fe1fd52ae596f14b01812fe274d211d6f28821735bcc4b633bb5bb3f0f",
+        "8781f601360647a276fb632aa2e07eec59683dea101865c2dbc2985b764d7fbe",
+        "f5993aae996f7dc5f32840810377faaabcdd9a1e76527a110713fb033b6b9f95",
+        "aa0baf3d272c0250b2e845db0accef44dbc354aae0a73ad481df9861e3d32988"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.28106348536036035,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "cloud-far-02",
+      "rawAdjacentMAE": [
+        0.14935611188411713,
+        0.09418270736932755,
+        0.07731619477272034,
+        0.1097121611237526,
+        0.15873269736766815
+      ],
+      "rawMeanAdjacentMAE": 0.11785997450351715,
+      "rawLastToFirstMAE": 0.19108377397060394,
+      "rawRatio": 1.621277917083731,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "effectiveLastToFirstMAE": 0.14935611188411713,
+      "effectiveMeanAdjacentMAE": 0.11436040368345049,
+      "effectiveRatio": 1.306012457751852,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "5fbe48c83b1d650668920e948156bcd4888eadee73ff324b90475ca799234f38",
+        "a6c9bd11d6c12307578d051c9b4913b3b79549319e259c39750f9fe40db3706a",
+        "01b9c49fdcfae22d4be20a6745aec0455e5d30acd5ae8a6a42a88171e91c2072",
+        "bf0a264c9d039a8db25c26241c2c0a3a0dc88e56cd7ee3c2ec20c1336f1e6fcc",
+        "5f00a12d06aa5dabb99b7f0e86a7f0194545dd3a5e9d31aadaf2763f058c097e",
+        "950760df2372e3a7641ed310f574016010d54c2411d17a164920dbd244e7bc3a"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "fractionPartialAlpha": 0.3054757882882883,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "torch-flame",
+      "rawAdjacentMAE": [
+        0.20525440573692322,
+        0.22247137129306793,
+        0.17302845418453217,
+        0.2405477911233902,
+        0.1817464828491211,
+        0.16761690378189087,
+        0.14120115339756012
+      ],
+      "rawMeanAdjacentMAE": 0.1902666517666408,
+      "rawLastToFirstMAE": 0.1238979920744896,
+      "rawRatio": 0.6511808082188183,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.1238979920744896,
+      "effectiveMeanAdjacentMAE": 0.1902666517666408,
+      "effectiveRatio": 0.6511808082188183,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "8980e14c18afd3829ce1b0a749a1aac9bca29fbe8d84638ad07ac049ed7b81ac",
+        "5612252a71be5036c1143695216e5a6ff9e18ddad5890054bc6a71ebfe725106",
+        "fdf7b82e72c09bebe9e185cd97b544458886d7a514af3e92ae02304c91e8bfe4",
+        "f86a3ab91889b1ecf87c46d7d24a710a95cf920e0236a66cb3a0877dd8346e84",
+        "313823bb5cc79ed343571263398591a4601aedb02aa21682d53276cf97448b82",
+        "a69cbc6fd203b823e2b7ace0de2cc2bdac089a720c587eab2de7565457a4bf20",
+        "c4f8d579a40624e775a64f40f9f19f41e103d96ceef0e77aac8fd3b9a1e37c31",
+        "dde71f08e6219d76f51b97a1bf45fbd64c270f84d2c5fd82181e8f0bd75a6e07"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.762152099609375,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "embers-ash",
+      "rawAdjacentMAE": [
+        0.15016412734985352,
+        0.15750551223754883,
+        0.1471489816904068,
+        0.15568865835666656,
+        0.1203700453042984,
+        0.13737449049949646,
+        0.13785892724990845
+      ],
+      "rawMeanAdjacentMAE": 0.1437301060983113,
+      "rawLastToFirstMAE": 0.1409311294555664,
+      "rawRatio": 0.9805261631071893,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.1409311294555664,
+      "effectiveMeanAdjacentMAE": 0.1437301060983113,
+      "effectiveRatio": 0.9805261631071893,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "15288e7241e24f77a16628f638b12d9d49d1e0f33612ec9e3c9b649b64e17de0",
+        "fd74a2aad259365e311ec485c3ee577e1ec10e0d7ce229c17504c885893d47c5",
+        "421ec90726dc3a9b2cf374306f9cf8f74d824c70e5d9ca762f40a2307109ddd4",
+        "e217f7e8a2cae9890e388056098e712396dc08842826f3eced2e127c62b06c38",
+        "0656ac0fdb136ea2fa5fd922ea044c419d4c571cd1264427a017a5b819780955",
+        "d239a3cb5a4443758917b93e0a02cfb732724e6e1f616c4681ff37ccd4fa4adc",
+        "2865fab361cf3e61dcd1f2d1251fc1ff4e5e82b18b78a9f131a12d0631ec30a7",
+        "bfcf60d08a02349a03b8e4946073e5dbaffe2a611479e69cab5e639f22662871"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "fractionPartialAlpha": 0.874273681640625,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "god-ray-01",
+      "rawAdjacentMAE": [
+        0.019311290234327316,
+        0.015242676250636578,
+        0.018148047849535942,
+        0.016479846090078354,
+        0.016550006344914436
+      ],
+      "rawMeanAdjacentMAE": 0.017146373353898525,
+      "rawLastToFirstMAE": 0.02950246073305607,
+      "rawRatio": 1.7206239549396125,
+      "loop": "pingpong",
+      "playbackOrder": [
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "effectiveLastToFirstMAE": 0.016550006344914436,
+      "effectiveMeanAdjacentMAE": 0.017212636354896758,
+      "effectiveRatio": 0.9615032818726916,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "e3558dcf60de56188b308ead97db491e81ba590d741841279756464aa1dda2d8",
+        "5c4956474ee22b75303ea058df6ed55cc65136d1bea7f3bfec1b69c327f417bb",
+        "ebf4f1428a5c39e716ca25e5c29136af8dc0c85ef53ff74c80e59f2db2c2b654",
+        "6da90e4ee1c3dc35b64d1f853d707061edbae7ee1bb07e83f9cb1962f2841dfc",
+        "c699991d12974da7ac00e2e2d6d9e60de291cefebdc2272601c9964baf3e162a",
+        "cda68c713ef2724066dceb05edeef718c6dd49c9f1cb104baa1a26e45c3a075a"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        252
+      ],
+      "fractionPartialAlpha": 0.7723679315476191,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "god-ray-02",
+      "rawAdjacentMAE": [
+        0.01766134612262249,
+        0.017973586916923523,
+        0.016782406717538834,
+        0.01377988699823618,
+        0.018833057954907417
+      ],
+      "rawMeanAdjacentMAE": 0.01700605694204569,
+      "rawLastToFirstMAE": 0.018924204632639885,
+      "rawRatio": 1.1127920303413648,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.018924204632639885,
+      "effectiveMeanAdjacentMAE": 0.01700605694204569,
+      "effectiveRatio": 1.1127920303413648,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "5db1d2332a3f7a643d1f0a5c2729f8a543bfb3edb326fa4c68ec0cd999aa242b",
+        "bb154aaaddb72544b1067563b50e2cf39094b0272f88f6f8e0b5922eb9d79602",
+        "90539e803ab78a6c7c8d5cc0b06ff925b8ad1008a72b8f076ddac13a18d0bfe4",
+        "090b2eebb598e3f9a90e72131616f129c3d72b3f877dd10bf942e9d3a26570e1",
+        "b6962d698515a1cacf0bfe2ae68ea9bc35b676a2f4ee312bb438af76b379ff41",
+        "016b1937b798b378e051bf32e08ea5ed932f480c1c0d689fe436226514c0bdfe"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        250
+      ],
+      "fractionPartialAlpha": 0.8151312934027778,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "god-ray-03",
+      "rawAdjacentMAE": [
+        0.017284497618675232,
+        0.015836244449019432,
+        0.01837601698935032,
+        0.01632874272763729,
+        0.020157476887106895
+      ],
+      "rawMeanAdjacentMAE": 0.017596595734357835,
+      "rawLastToFirstMAE": 0.02451462671160698,
+      "rawRatio": 1.3931459858307422,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "effectiveLastToFirstMAE": 0.02451462671160698,
+      "effectiveMeanAdjacentMAE": 0.017596595734357835,
+      "effectiveRatio": 1.3931459858307422,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "c4a93668c19ff4f24824f52ae39b43f9e500c924fc727d35846b2f8e668822b4",
+        "5188bd6d340821f05e107bf0ab8c8edb9e856573450d540afef97cb54689a774",
+        "48cfd673b358ca704e4c1db2ef7c960bcc608f638d6fb5086ae293393bfcaf96",
+        "33ba026ed1062e7a8d62eef8a1007cfa1881454878775f8580a203188c376e10",
+        "6350f4e154c556d4cda01d67f72736a04f47ebece268189ea16d129cd41ea23b",
+        "1ac41aad746301fe9c407188358acf3037ec1f99333c08927d9449543e902106"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        252
+      ],
+      "fractionPartialAlpha": 0.8244667658730159,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "air-dust",
+      "rawAdjacentMAE": [
+        0.02570057101547718,
+        0.02925868332386017,
+        0.021336108446121216,
+        0.02496040239930153,
+        0.02924906462430954
+      ],
+      "rawMeanAdjacentMAE": 0.026100965961813927,
+      "rawLastToFirstMAE": 0.039685122668743134,
+      "rawRatio": 1.5204465124701902,
+      "loop": "pingpong",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "effectiveLastToFirstMAE": 0.02570057101547718,
+      "effectiveMeanAdjacentMAE": 0.026145454289184675,
+      "effectiveRatio": 0.9829842974313311,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "0837a37662dc07f37c635d9c6150cd8f0613b1474da894f45a320b840820d4ce",
+        "0a3ea52f0aee439efafa6d13fd99b32b93559a3cc04aad742a610c980f5ad185",
+        "3e6e2a0e2e99aa931d9b2ff65d84f3f4a61f4bee3c047f07c625b2e47f645f28",
+        "bef10d9183eeb4e28f26054b3f0b563d918f9321aa30efc35e459ef6df71d914",
+        "c4ba1cc8f027cca29124908a213478dca25228d49dca5a01eb5c1cc6a381f1ab",
+        "12aa454ddd39cd47deb4e7b44bb2ba04f1c85eeb3d9d721b80b72aeefa26b1e0"
+      ],
+      "uniqueFrames": 6,
+      "alphaRange": [
+        0,
+        230
+      ],
+      "fractionPartialAlpha": 0.9721860532407407,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    },
+    {
+      "id": "water-sparkle",
+      "rawAdjacentMAE": [
+        0.22442439198493958,
+        0.1269674003124237,
+        0.13433268666267395,
+        0.14557486772537231,
+        0.10624079406261444,
+        0.1468871384859085,
+        0.1473594605922699
+      ],
+      "rawMeanAdjacentMAE": 0.1473981056894575,
+      "rawLastToFirstMAE": 0.06108361855149269,
+      "rawRatio": 0.4144125073098659,
+      "loop": "loop",
+      "playbackOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "effectiveLastToFirstMAE": 0.06108361855149269,
+      "effectiveMeanAdjacentMAE": 0.1473981056894575,
+      "effectiveRatio": 0.4144125073098659,
+      "loopThreshold": 1.5,
+      "loopCriterionMet": true,
+      "frameHashes": [
+        "e42396eef4ac465e1114841338bf8ff189b6e2e23bc461fb8817305b067a5214",
+        "8c710dea2b20398d60024a0bc7ddb72e04768b43080679853b6cb967d370ea01",
+        "e93390a325a6494d9bf17b68a0bf733124aae7f879b1eb2cd01c4246bd2a9148",
+        "144e8b9bf50e1758cd55226eb85cf2f15c3cf94bc9c3a670ec51b00ab0db142e",
+        "e2ddcc5239732540ce2af23635fc2a4ad4a71bdff0b0dc44483fb4a31fef7d20",
+        "9e1758f0116221e641f5d9fa1ecd807ebf6cd4067a350150fe4a79412b49b49f",
+        "5b2c926cd74f13290a8928092e59ee0e281fb55c09cc6215d8536c60ed2f3f0e",
+        "49c006f368c8e004faba60bfc848733d9c874ae003846daa80071e08780d5686"
+      ],
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        251
+      ],
+      "fractionPartialAlpha": 0.385283203125,
+      "rawTileEdgeMAE": [],
+      "finalTileEdgeMAE": [],
+      "spatialProcessing": "12px cell-edge alpha feather, common crop, fit without upscaling, transparent padding"
+    }
+  ]
+}

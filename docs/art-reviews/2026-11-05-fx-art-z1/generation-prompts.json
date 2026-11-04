@@ -1,0 +1,114 @@
+{
+  "calls": 12,
+  "limit": 12,
+  "prompts": [
+    {
+      "id": "river",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: purple spirit river surface. Exactly 4 columns x 2 rows = 8 consecutive frames, row major, 2048x1024 preferred, each cell a fully filled rectangular water tile, no margins. Deep plum water, lavender curling ripples, sparse pale peach reflected sunset. Wave crests bend, split, reconnect and move rightward through 8 phases; cycle back to first. Seamlessly tile LEFT-RIGHT within EVERY cell: left edge must match right edge in pattern/color, no vignette, no tile border. No shore, rocks, mist, banks or flat monochrome. Fine detailed liquid texture with broad readable swirls. Every frame identical mean color and fixed horizonless overhead water view.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/river.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-b18689a3-0614-4fb5-a9be-252b156a83f1.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "river-foam",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: river bank foam, eight frames in EXACT 4 columns by 2 rows, each equal cell. Wide low curling lavender-white foam ribbon suspended on transparent background, no water base. Same fixed horizontal band across center of each cell with generous transparent margins; shape foamy eddies, small violet pearl sparkles and fine gold highlights change continuously through 8 phases as foam rolls RIGHT. Tiny bubbles inflate and pop in sequence, interlaced curling filaments, no separate scenery. Each frame end matches beginning of cycle. Warm sunset on top, cool purple underneath. Soft true alpha, no checkerboard. Landscape sheet.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/river-foam.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-f61e90ba-e513-40c3-b698-73dda7c632d7.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "lava",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: slow boiling lava SURFACE tile. EXACT 4 columns x 2 rows eight phase frames, landscape image. Each equal cell fully filled with a flat horizonless molten surface, no borders or transparent margins. Glowing yellow-orange branching rivulets among deep crimson cooling crust rafts, not stone rocks. Small molten blisters swell and subside and split through consecutive frames; crust boundaries deform slowly rightward. All frames same scale and exposure. Match dark sunset red lava at LEFT of reference; brightest gold limited to thin cracks, no overexposed white. LEFT edge seamlessly matches RIGHT edge in every individual cell. No banks, solid terrain, bridges, plants, labels. Genuine redrawn fluid deformation loop, phase 8 returns to phase 1.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/lava.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-f8434dfe-135d-4d22-9811-115e243098ff.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "lava-bubble",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: a SMALL orange lava bubble popping, 8 chronological animation frames EXACT 4 columns x 2 rows. Transparent background. Same fixed circular footprint at bottom center of each equal cell; leave 20 percent empty margin. Phase1 low molten blister with small ring, 2 swelling hemisphere, 3 larger glowing thin shell, 4 splitting shell, 5 crown splash, 6 droplets curving outward, 7 droplets settle into low ripple, 8 quiet low ripple similar to first. Three-quarter overhead view. Real molten fluid, warm gold-orange core and burgundy-red shaded shell, painterly fine rim, subtle glow only. NO black circular pool, no rocks, no scenery, no text, no numbers. Transparent background with isolated liquid and droplets only.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/lava-bubble.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-55c83952-68e9-4e4d-bebc-04ace3342715.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "lava-fall",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: vertical orange LAVA CASCADE beneath left bridge in reference. 8 frames EXACT 4 columns x 2 rows, transparent background. Each equal cell contains same narrow vertical stream with fixed width and height, entire subject fits with 15% margin. Top lip constant, lava falls downwards in multiple glowing ribbed ribbons, dark red cracks change shape, sheets stretch and tear, small golden droplets splash at base. NO cliff, bridge, rocks or pool terrain. Same stationary silhouette bounds and base center in every cell, true redrawn turbulent flowing internal folds through 8 animation phases that loop. Three-quarter overhead game-map perspective, rich burnt orange and gold, thin warm glow alpha edges, not flat vector, not fire flame.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/lava-fall.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-d95ce284-6a36-4cf3-91bf-bd6198647f7e.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "mist",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: THREE mist animation variants on ONE organized transparent atlas. EXACT 6 columns and 3 rows, 18 equal rectangular cells, landscape 3:2 canvas. Every row is SIX consecutive phases of one same fixed low elongated wisp, generous empty margins in each cell. Row1 lavender river mist with pale peach upper rim. Row2 subtle warm gray peach lava steam, NOT dense smoke, rising wisps and gentle curls. Row3 pale ice blue cold ground mist with lavender shadows. All are low horizontal translucent veil wisps seen three-quarter from above, same anchored position for all phases in each row. Fine internal tendrils roll, curl and unfold through each six-frame cycle returning to initial shape. VERY soft low-opacity edges and transparent holes, true RGBA semitransparency, not white opaque objects. No scenery, background, sparkles or labels. Match atmosphere of hand-painted fantasy map, low mist draped between trees, not puffy cumulus clouds.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/mist.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-aa8f2033-542a-4294-b815-9165398a9093.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "leaves",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: falling leaf/snow turn-cycle atlas, true transparent background, EXACT 6 columns x 4 rows =24 equal cells. One small isolated subject centered in each cell with ample empty margin. Each ROW is same single object rotating through SIX phases at fixed center with changing 3D silhouette: front face, oblique, narrow edge, back face, other oblique, near initial front face. ROW1 one crimson red five-lobed maple leaf with slim brown stem; ROW2 one golden ochre oval leaf with stem; ROW3 one small deep green pine-needle sprig (three needles); ROW4 one delicate blue-white six-armed snowflake. Every row same object scale and center through phases; do NOT make a pile or multiple leaves per cell. Painterly small fantasy map particles, bright golden sunset edges, purple shaded undersides, detailed veins. No white/black matte, no shadows on background, no grid or text.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/leaves.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-6828f93b-6781-4895-bb47-d670183d5cbf.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "clouds-near",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: LARGE parallax sunset cloud animation atlas. Please render high resolution 3840x2160 if possible. EXACT 6 columns x 3 rows, eighteen equal WIDE rectangular cells (each aspect ~1.2). Each row is SIX phases of SAME cloud, all centered with 10 percent empty transparent margin and same fixed width and center; internal lobes and wisps gently change shape while anchored. ROW1 broad flattened cumulus cloud with three large upper lobes; ROW2 taller asymmetric cloud with peak on left; ROW3 long wispy broken cloud with low golden crest. All original painterly clouds like sky in reference: warm pale cream and peach upper-left sunlit rim, blue-violet shaded underbelly, soft wisps. NO sky, sun or background. True alpha. Important SIX phases left-to-right not six different clouds, no faded/translated copies; sculpt lobes in each phase subtly and loop. Each cloud silhouette stays fully inside own cell. No text.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/clouds-near.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-4b6e2934-90ba-4be5-ae2e-5cad7f293025.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "clouds-far",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: parallax cloud animation atlas, EXACT SIX columns x THREE rows, 18 wide equal cells. One centered isolated cloud per cell, true transparent background with margins. Row1 SAME broad sculpted sunset cumulus with a pair of high lobes, through six subtle redrawn looping breathing phases. This is the FOURTH large-cloud shape. Row2 SAME very thin long distant streak of peach/lavender cirrus, six flowing redrawn phases. Row3 a SECOND distant cloud, fragmented thin pale mauve cirrus with two small gold crests, six gently changing phases. All fixed center, fixed exposure, not faded or translated. Peach/gold upper rim, cool lavender underside, match reference's hand painted orange-pink sunset sky. No actual sky, background, grid or text, no bright white opaque matte.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/clouds-far.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-1a5333ef-e573-45f8-9214-547b6781b9aa.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "fire",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: torch flame and embers animation atlas. EXACT FOUR columns x FOUR rows =16 equal cells, transparent background, ample margin. TOP TWO ROWS read row-major are EIGHT consecutive frames of SAME small anchored torch/brazier flame: golden core, orange split tongues, violet-red base fixed at same point; tongues stretch, curl and separate through an eight-frame seamless flicker cycle. No actual torch, lamp or pot hardware. BOTTOM TWO ROWS read row-major are EIGHT frames of SAME sparse little swarm of orange embers and gray ash rising and curling, each ember changes shape, small hooked streaks, not stars, no flame or smoke in these cells. Original painterly fine detail warm sunset fantasy map. True transparent alpha, soft tiny glow, no black matte, no labels/grid.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/fire.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-4b57f1cc-40fb-4a65-aa80-99e2826363c9.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "rays-dust",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: god rays and airborne dust atlas. EXACT SIX columns x FOUR rows=24 equal cells on transparent background. Every ROW is SAME effect through SIX consecutive redrawn gentle shimmering phases, fixed footprint. Row1 a single warm peach sunbeam diagonally descending upper left to lower right, translucent feathered broad wedge, tiny internal luminous wisps. Row2 two narrow parallel golden sunbeams feathered at ends. Row3 wider faint lavender-peach fan of light, three subtle beams. Row4 tiny sparse glowing pale gold airborne dust motes, about 10 small irregular points, bending soft streaklets and tiny rounded specks, anchored swarm slowly swirling, NOT large stars. All light effects truly semitransparent low-opacity RGBA, NOT opaque solid triangles, no scenery, no background, no hard rectangular cell edge, each fits own cell with margin. The changes are redrawn internal light filaments and contours, not whole-sprite opacity fade or position shift. Match soft warm AVEGEE sunset. No text/grid.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/rays-dust.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-d8145d33-faba-4ec5-8075-99d837eedd86.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    },
+    {
+      "id": "water-sparkle",
+      "prompt": "Use case: stylized-concept. Original AVEGEE game FX art. Match reference Image 1 only in painterly detail, three-quarter overhead perspective and golden peach sunset light, violet shadows; no copied objects. This is a production animation spritesheet, not a collage of scenes. Each cell is the SAME subject redrawn at consecutive animation phases, fixed camera, fixed exposure, fixed scale and registration. Actual changing shapes and internal details, never translated/faded copies. No text, numbers, borders, grids, ground, scenery or objects. Exact equal cell layout fills image. Asset: small water-surface sparkle animation, EIGHT phases EXACT FOUR columns x TWO rows. Same fixed low horizontal cluster of tiny peach-gold and pale lavender reflected glints, centered in each cell with lots of transparent space. Phase1 tiny dim thin broken highlight strokes, phase2 more elongated strokes, phase3 small four-point delicate glint above ripple, phase4 brightest thin glint with little surrounding water ripples, phase5 splitting glint, phase6 smaller glints, phase7 short broken strokes, phase8 close to phase1. Actual hand-drawn shape changes, same anchor and mean exposure. Three-quarter overhead water reflection, NOT a magic blast or UI icon, painterly delicate fine glitter. No water plane, no blue pool, no scenery, no text. True alpha, modest glow, sunset palette on violet spirit river.",
+      "tool": "built-in image_gen.imagegen",
+      "source": "sources/water-sparkle.webp",
+      "original": "/Users/agapae/.codex/generated_images/01a1a7fb-ce6e-7a80-8623-89debef6ee87/exec-9205afdf-a34c-4f8d-a7c3-e138aecec6ec.png",
+      "referenceRole": "style only",
+      "review": "inspected thumbnail after generation"
+    }
+  ]
+}

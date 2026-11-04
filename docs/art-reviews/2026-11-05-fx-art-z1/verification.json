@@ -1,0 +1,162 @@
+{
+  "scope": "exported art package and standalone review page only; not game QA",
+  "bytes": 22759425,
+  "assets": [
+    {
+      "id": "spirit-river",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.6528301899851705,
+      "tileXExact": true
+    },
+    {
+      "id": "river-foam",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.4831091168809757,
+      "tileXExact": false
+    },
+    {
+      "id": "lava-surface",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.6082619454645872,
+      "tileXExact": true
+    },
+    {
+      "id": "lava-bubble",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.6241199178570793,
+      "tileXExact": false
+    },
+    {
+      "id": "lava-fall-left",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.5005392157704422,
+      "tileXExact": false
+    },
+    {
+      "id": "river-mist",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.768291992431052,
+      "tileXExact": false
+    },
+    {
+      "id": "lava-steam",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.7155262187353142,
+      "tileXExact": false
+    },
+    {
+      "id": "ice-mist",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.8717400511521803,
+      "tileXExact": false
+    },
+    {
+      "id": "leaf-maple",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.0090011234700238,
+      "tileXExact": false
+    },
+    {
+      "id": "leaf-gold",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.9374275716676929,
+      "tileXExact": false
+    },
+    {
+      "id": "leaf-green",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.1985500784685132,
+      "tileXExact": false
+    },
+    {
+      "id": "snowflake",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.2747189384458124,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-01",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.1926996343123,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-02",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.3170667142288293,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-03",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.0351830645215636,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-04",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.9462682154024925,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-far-01",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.1554644918464532,
+      "tileXExact": false
+    },
+    {
+      "id": "cloud-far-02",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.306012457751852,
+      "tileXExact": false
+    },
+    {
+      "id": "torch-flame",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.6511808082188183,
+      "tileXExact": false
+    },
+    {
+      "id": "embers-ash",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.9805261631071893,
+      "tileXExact": false
+    },
+    {
+      "id": "god-ray-01",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.9615032818726916,
+      "tileXExact": false
+    },
+    {
+      "id": "god-ray-02",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.1127920303413648,
+      "tileXExact": false
+    },
+    {
+      "id": "god-ray-03",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 1.3931459858307422,
+      "tileXExact": false
+    },
+    {
+      "id": "air-dust",
+      "uniqueDrawings": 6,
+      "recomputedLoopRatio": 0.9829842974313311,
+      "tileXExact": false
+    },
+    {
+      "id": "water-sparkle",
+      "uniqueDrawings": 8,
+      "recomputedLoopRatio": 0.4144125073098659,
+      "tileXExact": false
+    }
+  ],
+  "browser": [
+    {
+      "status": "not run",
+      "reason": "--art-only requested; Chromium launch previously denied by sandbox MachPortRendezvous Permission denied (1100); in-app browser host unavailable"
+    }
+  ]
+}

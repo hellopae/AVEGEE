@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVEGEE · Zone 1 · FX art review</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#19171e;color:#eee8dd;font:15px/1.6 system-ui,sans-serif}header,main{max-width:1320px;margin:auto;padding:16px}h1{font-size:23px;margin:0}p{margin:6px 0}button,select,a{font:inherit}button,select{background:#38303f;color:#fff;border:1px solid #75637c;border-radius:6px;padding:6px 12px;cursor:pointer}a{color:#f3c775}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}.viewport{height:70vh;min-height:300px;overflow:auto;border:1px solid #665464;position:relative;background:#302638}.world{position:relative;width:1250px;height:879.5px}canvas{display:block;width:100%;height:100%}.legend{color:#c1b3c6;font-size:13px}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:22px}.card{background:#2c2633;padding:12px;border-radius:8px;overflow:hidden}.card h2{font-size:15px;margin:0}.card img{width:100%;height:145px;object-fit:contain;background:#372d40}.card a{font-size:13px;margin-right:10px}.status{color:#f4cc9a}label{white-space:nowrap}@media(max-width:600px){header,main{padding:10px}.viewport{height:60vh}.gallery{grid-template-columns:1fr}}
+</style>
+<header><h1>AVEGEE · Zone 1 · ภาพวาด FX</h1><p>25 ชิ้น · ImageGen 12 ครั้ง · หน้า review ภาพประกอบตามตำแหน่งเสนอ · ยังไม่ประกอบในเกม</p><p class="legend">พิกัด 2500 × 1759 · ขนาดอ้างอิงจริงสูง 1758 · เมฆต้นทางต่อเฟรมประมาณ 296 px: ตรวจความนุ่มเมื่อขยาย · การเคลื่อนตำแหน่งใบไม้/เมฆในหน้านี้ใช้ประกอบการดูเฟรมวาด</p></header>
+<main><div class="controls"><button id="play">หยุด</button><button id="zoom">ซูม 2×</button><label><input id="fx" type="checkbox" checked> ซ้อน FX</label><label><input id="drift" type="checkbox" checked> parallax / ใบไม้ตก</label><label>ชิ้น <select id="filter"><option value="all">ทั้งหมด</option></select></label><span id="loaded" class="status">กำลังโหลด manifest</span></div>
+<div class="viewport" id="viewport"><div class="world" id="world"><canvas id="map" width="2500" height="1759" aria-label="ภาพประกอบโซน 1 พร้อมเฟรม FX"></canvas></div></div>
+<p class="legend">ขอบแม่น้ำ/ลาวาใช้ mask สีจาก proof-composite เพื่อดูงานเท่านั้น ต้องให้ผู้ประกอบเกมทำ occlusion/depth จริง · กลับกล้องหรือปิดแท็บจะหยุดวาด · โหลด sheet เฉพาะตำแหน่งที่เข้ากล้อง</p>
+<p><a href="fx-manifest.json">manifest</a> · <a href="loop-review.json">ผล loop</a> · <a href="style-compare.jpg">เทียบสไตล์</a> · <a href="frame-strip.jpg">สารบัญภาพ</a> · <a href="README.md">สถานะงาน</a></p>
+<div class="gallery" id="gallery"></div></main>
+<script type="module">
+const $=id=>document.getElementById(id),canvas=$('map'),ctx=canvas.getContext('2d'),vp=$('viewport'),world=$('world');
+const manifest=await fetch('fx-manifest.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()});
+const assets=manifest.assets,images=new Map(),pending=new Map();let playing=true,zoom=1,t=0,last=performance.now();
+function load(src){if(images.has(src))return Promise.resolve(images.get(src));if(pending.has(src))return pending.get(src);const p=new Promise((resolve,reject)=>{const i=new Image;i.onload=()=>{images.set(src,i);pending.delete(src);resolve(i)};i.onerror=()=>{pending.delete(src);reject(Error(src))};i.src=src});pending.set(src,p);return p}
+const proof=await load('proof-composite.jpg');await Promise.all(['river-mask.png','lava-mask.png'].map(load));
+const scratch=document.createElement('canvas');scratch.width=2500;scratch.height=1759;const sx=scratch.getContext('2d');
+for(const a of assets){const o=document.createElement('option');o.value=a.id;o.textContent=a.id;$('filter').append(o);
+ const card=document.createElement('article');card.className='card';card.innerHTML=`<h2>${a.id}</h2><img data-src="${a.preview}" alt="${a.id} เฟรมวาด"><p>${a.frames} เฟรม · ${a.fps} fps · ${a.loop} · ${a.frameW}×${a.frameH}</p><a href="${a.sheet}">WebP</a><a href="${a.frameStrip}">เฟรมเรียง</a>`;$('gallery').append(card)}
+const observer=new IntersectionObserver(entries=>{for(const e of entries){const im=e.target;if(e.isIntersecting){if(!im.src)im.src=im.dataset.src}else if(im.hasAttribute('src'))im.removeAttribute('src')}},{rootMargin:'100px'});document.querySelectorAll('[data-src]').forEach(im=>observer.observe(im));
+$('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'หยุด':'เล่น'};
+$('zoom').onclick=()=>{zoom=zoom===1?2:1;world.style.width=1250*zoom+'px';world.style.height=879.5*zoom+'px';$('zoom').textContent=zoom===1?'ซูม 2×':'ซูม 1×'};
+function visible(p){const scale=world.clientWidth/2500;const left=vp.scrollLeft/scale,top=vp.scrollTop/scale;return p.x+p.w>left&&p.x<left+vp.clientWidth/scale&&p.y+p.h>top&&p.y<top+vp.clientHeight/scale}
+function position(a,p,index){p={...p};if(!$('drift').checked)return p;
+ if(a.id.startsWith('cloud'))p.x+=Math.sin(t*.018+index)*55*a.parallax;
+ if(a.id.startsWith('leaf')||a.id==='snowflake'){p.y+=(t*15+index*31)%100;p.x+=Math.sin(t*.8+index)*18}return p}
+function render(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(document.hidden){requestAnimationFrame(render);return}if(playing)t+=dt;
+ ctx.globalCompositeOperation='source-over';ctx.drawImage(proof,0,0,2500,1759);
+ if($('fx').checked)for(const a of assets){if($('filter').value!=='all'&&$('filter').value!==a.id)continue;const ps=a.suggestedPlacement.map((p,i)=>position(a,p,i)).filter(visible);if(!ps.length)continue;
+ const im=images.get(a.sheet);if(!im){load(a.sheet).catch(console.error);continue}const order=a.playbackOrder;const f=order[Math.floor(t*a.fps)%order.length];
+ const c=a.mask?sx:ctx;if(a.mask)sx.clearRect(0,0,2500,1759);c.globalAlpha=a.suggestedOpacity??1;c.globalCompositeOperation=a.mask?'source-over':a.blend==='screen'?'screen':a.blend==='add'?'lighter':'source-over';
+ for(const p of ps){if(a.tileable){c.save();c.beginPath();c.rect(p.x,p.y,p.w,p.h);c.clip();for(let y=p.y;y<p.y+p.h;y+=a.frameH)for(let x=p.x;x<p.x+p.w;x+=a.frameW)c.drawImage(im,f*a.frameW,0,a.frameW,a.frameH,x,y,a.frameW,a.frameH);c.restore()}
+ else c.drawImage(im,f*a.frameW,0,a.frameW,a.frameH,p.x,p.y,p.w,p.h)}
+ c.globalAlpha=1;if(a.mask){sx.globalCompositeOperation='destination-in';sx.drawImage(images.get(a.mask),0,0,2500,1759);sx.globalCompositeOperation='source-over'}
+ ctx.globalCompositeOperation=a.blend==='screen'?'screen':a.blend==='add'?'lighter':'source-over';if(a.mask)ctx.drawImage(scratch,0,0);ctx.globalCompositeOperation='source-over';
+ }
+ $('loaded').textContent=`โหลด ${assets.filter(a=>images.has(a.sheet)).length}/${assets.length} sheets`;requestAnimationFrame(render)}
+window.fxReview={manifest,images,get time(){return t},get playing(){return playing}};requestAnimationFrame(render);
+</script></html>
