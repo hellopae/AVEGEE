@@ -152,6 +152,11 @@ const TH = {
   'settings.saved': 'บันทึกแล้ว',
   'settings.audioHint': 'ปรับระดับเสียงเพลงและเอฟเฟกต์แยกกัน หรือปิดเสียงทั้งหมดได้',
   'settings.weather': 'สภาพอากาศ เงาเมฆ ควัน และผิวน้ำเคลื่อนไหว',
+  'settings.fxQuality': 'คุณภาพเอฟเฟกต์ฉากแผนที่',
+  'settings.fxLow': 'ต่ำ',
+  'settings.fxMedium': 'กลาง',
+  'settings.fxHigh': 'สูง',
+  'settings.fxFlicker': 'แสงไฟกระพริบบนพื้น',
   'settings.camera': 'เอฟเฟกต์กล้อง',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'ซูมเข้า-ออกตัวละคร สั่นจอ และหรี่ฉากหลังตอนโจมตี ปิดได้ถ้าเวียนหัว',
 
@@ -801,6 +806,11 @@ const EN = {
   'settings.saved': 'Saved',
   'settings.audioHint': 'Adjust music and sound effects separately, or mute all audio.',
   'settings.weather': 'Weather, cloud shadows, smoke and moving water',
+  'settings.fxQuality': 'Map scene effects quality',
+  'settings.fxLow': 'Low',
+  'settings.fxMedium': 'Medium',
+  'settings.fxHigh': 'High',
+  'settings.fxFlicker': 'Flickering firelight on the ground',
   'settings.camera': 'CAMERA EFFECTS',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'Zoom, screen shake and background dimming during attacks. Turn off if it feels dizzy.',
 

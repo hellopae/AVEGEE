@@ -12,6 +12,7 @@ import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
+import {FX_LEVELS,fxQuality,setFxQuality,fxFlicker,setFxFlicker} from './town-v6-fx.js';
 import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
@@ -6858,6 +6859,14 @@ function openSettings() {
       <span data-t="settings.weather"></span>
       <input type="checkbox" id="s-weather" ${weatherEnabled() ? 'checked' : ''}>
     </label>
+    <label class="settings-row cam-row" for="s-fxq">
+      <span data-t="settings.fxQuality"></span>
+      <select id="s-fxq">${FX_LEVELS.map(l=>`<option value="${l}" ${fxQuality()===l?'selected':''} data-t="settings.fx${l[0].toUpperCase()+l.slice(1)}"></option>`).join('')}</select>
+    </label>
+    <label class="settings-row cam-row" for="s-fxflick">
+      <span data-t="settings.fxFlicker"></span>
+      <input type="checkbox" id="s-fxflick" ${fxFlicker() ? 'checked' : ''}>
+    </label>
 
     <div class="settings-lang">
       <label data-t="settings.language"></label>
@@ -6898,6 +6907,8 @@ function openSettings() {
         };
       };
       d.querySelector('#s-weather').onchange=e=>setWeatherEnabled(e.currentTarget.checked);
+      d.querySelector('#s-fxq').onchange=e=>setFxQuality(e.currentTarget.value);
+      d.querySelector('#s-fxflick').onchange=e=>setFxFlicker(e.currentTarget.checked);
       d.querySelector('#s-cam').onchange = e => { camera.setEnabled(e.currentTarget.checked); sfx('stamp'); };   // M1: battle / interrogation camera effects
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
       bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
