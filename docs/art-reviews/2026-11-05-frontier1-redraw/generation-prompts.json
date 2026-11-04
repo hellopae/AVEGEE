@@ -1,0 +1,14 @@
+{
+  "tool": "built-in ImageGen",
+  "count": 1,
+  "generations": [
+    {
+      "prompt": "Use case: stylized-concept. Create a game terrain atlas base using the first reference image as strict composition and geometry and the second as painterly rendering, 3/4 camera and sunset light reference. Retain the exact placement and silhouette of all rocky cliffs, large lower plaza, small lower side stairs, central wide stairs, upper plaza and approach at top. Remove both Thai gates entirely, replacing their footprints with continuous stone paving; no buildings, trees, bushes, lamps, railings or objects. Keep purple spirit river surrounding the terrain, no rocks in the water. No text. Portrait framing matching first reference.",
+      "references": [
+        "frontier1-owner-layout.jpg",
+        "New-Map-Zone1-ok.jpg"
+      ],
+      "output": "terrain-concept-draft.png"
+    }
+  ]
+}
