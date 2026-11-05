@@ -72,6 +72,7 @@ export function fluidSpotState(piece, spot, sec) {
 export function fluidDrawPlan(layout) {
   const plan = [];
   for (const p of layout.pieces) {
+    if (p.off) continue;      // FX4: a piece switched off in fx-layout.json (no real painted fluid under it) is never loaded or drawn
     const last = plan[plan.length - 1], rect = fluidPieceRect(p, layout);
     if (p.kind === 'puff' && last && last.puffs && last.mask === p.mask && last.opacity === p.opacity && last.blend === p.blend) last.puffs.push(p);
     else if (p.kind === 'puff') plan.push({ puffs: [p], mask: p.mask, opacity: p.opacity, blend: p.blend, rect });

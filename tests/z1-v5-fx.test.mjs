@@ -93,7 +93,7 @@ test('geometry helpers: piece rectangles in world units, drifting puffs wrap ins
   const plan = fx.fluidDrawPlan(layout);
   assert.equal(plan.filter(p => p.puffs).length, 1, 'the four drifting clouds are composed together in one layer');
   assert.equal(plan.find(p => p.puffs).puffs.length, 4);
-  assert.equal(plan.length, layout.pieces.length - 3);
+  assert.equal(plan.length, layout.pieces.filter(p => !p.off).length - 3, '4 puffs share one entry; pieces switched off by FX4 are not planned');
 });
 
 test('wiring: zone 1 owns the layer, the old flow and old cloud banks step aside, the old water/lava layer is not used on top of it', () => {
