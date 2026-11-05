@@ -1,0 +1,1590 @@
+{
+  "automatedChecks": [
+    {
+      "check": "master exactly reconstructs decoded original 20 tiles",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x lava",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x lavafall",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x spirit-river",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x ice-stream",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x waterfall",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "mask sizes and exact 2x fog",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions spirit-river",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions lava-surface",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions ice-stream",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames ice-stream",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-summit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-summit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-summit",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-upper-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-upper-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-upper-right",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-plaza-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-plaza-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-plaza-right",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-center-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-center-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-center-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-center-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-center-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-center-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-lower-1",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-lower-1",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-lower-1",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-lower-2",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-lower-2",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-lower-2",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-lower-3",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-lower-3",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-lower-3",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions waterfall-ice-east-cliff",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames waterfall-ice-east-cliff",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha waterfall-ice-east-cliff",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-volcano",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-volcano",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-volcano",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-upper-left",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-upper-left",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-upper-left",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-upper-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-upper-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-upper-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-west",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-west",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-west",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-middle",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-middle",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-middle",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-lower-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-lower-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-lower-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions lavafall-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames lavafall-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preclipped sheet alpha lavafall-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "sheet dimensions fog-bank-valleys",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames fog-bank-valleys",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions bank-foam-spirit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames bank-foam-spirit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "sheet dimensions bank-foam-ice",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "8 distinct painted frames bank-foam-ice",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment spirit-river--river-main",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement spirit-river--river-main",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment spirit-river--river-east",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement spirit-river--river-east",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-upper",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-upper",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-left",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-left",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-middle",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-middle",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-lower",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-lower",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-left-bottom",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-left-bottom",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment lava-surface--lava-southwest",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lava-surface--lava-southwest",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "region containment ice-stream--ice-upper",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement ice-stream--ice-upper",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 ice-stream--ice-upper",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment ice-stream--ice-central",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement ice-stream--ice-central",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 ice-stream--ice-central",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment ice-stream--ice-lower",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement ice-stream--ice-lower",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 ice-stream--ice-lower",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment ice-stream--ice-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement ice-stream--ice-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 ice-stream--ice-mouth",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment ice-stream--ice-east",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement ice-stream--ice-east",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 ice-stream--ice-east",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-summit--waterfall-ice-summit",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-summit--waterfall-ice-summit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-summit--waterfall-ice-summit",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.574779101068712,
+          2.5601562186282227
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-upper-bridge--waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-upper-bridge--waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-upper-bridge--waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5749541289238875,
+          2.560156154009297
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-upper-right--waterfall-ice-upper-right",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-upper-right--waterfall-ice-upper-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-upper-right--waterfall-ice-upper-right",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5742772464955315,
+          2.5601563058307466
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-plaza-right--waterfall-ice-plaza-right",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-plaza-right--waterfall-ice-plaza-right",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-plaza-right--waterfall-ice-plaza-right",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.576737082884369,
+          2.560156121218562
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-center-step--waterfall-ice-center-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-center-step--waterfall-ice-center-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-center-step--waterfall-ice-center-step",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.571638328543119,
+          2.5601563058307466
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-center-bridge--waterfall-ice-center-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-center-bridge--waterfall-ice-center-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-center-bridge--waterfall-ice-center-bridge",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.57092980158932,
+          2.560156169526341
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-lower-1--waterfall-ice-lower-1",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-lower-1--waterfall-ice-lower-1",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-lower-1--waterfall-ice-lower-1",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5741175185620895,
+          2.5601561394050196
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-lower-2--waterfall-ice-lower-2",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-lower-2--waterfall-ice-lower-2",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-lower-2--waterfall-ice-lower-2",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5776728378524676,
+          2.5601562367668693
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-lower-3--waterfall-ice-lower-3",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-lower-3--waterfall-ice-lower-3",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-lower-3--waterfall-ice-lower-3",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.572322653265073,
+          2.56015615616819
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-mouth--waterfall-ice-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-mouth--waterfall-ice-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-mouth--waterfall-ice-mouth",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.571638328543119,
+          2.560156359720987
+        ]
+      }
+    },
+    {
+      "check": "region containment waterfall-ice-east-cliff--waterfall-ice-east-cliff",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement waterfall-ice-east-cliff--waterfall-ice-east-cliff",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 waterfall-ice-east-cliff--waterfall-ice-east-cliff",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.573228688699993,
+          2.560156256951644
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-volcano--lavafall-volcano",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-volcano--lavafall-volcano",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-volcano--lavafall-volcano",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5726952810112818,
+          2.560156302972931
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-upper-left--lavafall-upper-left",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-upper-left--lavafall-upper-left",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-upper-left--lavafall-upper-left",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5812281568900337,
+          2.5601562367668693
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-upper-step--lavafall-upper-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-upper-step--lavafall-upper-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-upper-step--lavafall-upper-step",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5722029047185893,
+          2.560156302972931
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-west--lavafall-west",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-west--lavafall-west",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-west--lavafall-west",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.571123565279368,
+          2.5601562876946087
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-bridge--lavafall-bridge",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-bridge--lavafall-bridge",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-bridge--lavafall-bridge",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.571123565279368,
+          2.5601562876946087
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-middle--lavafall-middle",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-middle--lavafall-middle",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-middle--lavafall-middle",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5703019199426915,
+          2.5601563018570985
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-lower-step--lavafall-lower-step",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-lower-step--lavafall-lower-step",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-lower-step--lavafall-lower-step",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.5693769706457688,
+          2.56015622427516
+        ]
+      }
+    },
+    {
+      "check": "region containment lavafall-mouth--lavafall-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement lavafall-mouth--lavafall-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 lavafall-mouth--lavafall-mouth",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.574779101068712,
+          2.5601563358651163
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-west-upper",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-west-upper",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-west-upper",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-west-middle",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-west-middle",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-west-middle",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-west-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-west-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-west-mouth",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-gold-upper",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-gold-upper",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-gold-upper",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-gold-lower",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-gold-lower",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-gold-lower",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-east-valley",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-east-valley",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-east-valley",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment fog-bank-valleys--fog-bank-south-center",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement fog-bank-valleys--fog-bank-south-center",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 fog-bank-valleys--fog-bank-south-center",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-spirit--river-main",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-spirit--river-main",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-spirit--river-main",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-spirit--river-east",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-spirit--river-east",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-spirit--river-east",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-ice--ice-upper",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-ice--ice-upper",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-ice--ice-upper",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-ice--ice-central",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-ice--ice-central",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-ice--ice-central",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-ice--ice-lower",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-ice--ice-lower",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-ice--ice-lower",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-ice--ice-mouth",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-ice--ice-mouth",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-ice--ice-mouth",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "region containment bank-foam-ice--ice-east",
+      "ok": true,
+      "details": {
+        "leakedPixels": 0
+      }
+    },
+    {
+      "check": "no animated placement bank-foam-ice--ice-east",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "new frame output density >=2.56 bank-foam-ice--ice-east",
+      "ok": true,
+      "details": {
+        "pxPerWorldUnit": [
+          2.56,
+          2.56
+        ]
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior spirit-river",
+      "ok": true,
+      "details": {
+        "ratio": 0.6484600557686562
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lava-surface",
+      "ok": true,
+      "details": {
+        "ratio": 0.5493747421165189
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior ice-stream",
+      "ok": true,
+      "details": {
+        "ratio": 0.44588858042279833
+      }
+    },
+    {
+      "check": "spatial edges exact ice-stream",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-summit",
+      "ok": true,
+      "details": {
+        "ratio": 0.38697219155335505
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-upper-bridge",
+      "ok": true,
+      "details": {
+        "ratio": 0.41845005885864667
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-upper-right",
+      "ok": true,
+      "details": {
+        "ratio": 0.3864592638461662
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-plaza-right",
+      "ok": true,
+      "details": {
+        "ratio": 0.41480849739798165
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-center-step",
+      "ok": true,
+      "details": {
+        "ratio": 0.36767637027400973
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-center-bridge",
+      "ok": true,
+      "details": {
+        "ratio": 0.4517103649857596
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-lower-1",
+      "ok": true,
+      "details": {
+        "ratio": 0.4041092731560039
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-lower-2",
+      "ok": true,
+      "details": {
+        "ratio": 0.3794261571645684
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-lower-3",
+      "ok": true,
+      "details": {
+        "ratio": 0.3781936150370431
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-mouth",
+      "ok": true,
+      "details": {
+        "ratio": 0.36862932626974954
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior waterfall-ice-east-cliff",
+      "ok": true,
+      "details": {
+        "ratio": 0.3681202919859893
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-volcano",
+      "ok": true,
+      "details": {
+        "ratio": 0.5978702576102486
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-upper-left",
+      "ok": true,
+      "details": {
+        "ratio": 0.676882918375916
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-upper-step",
+      "ok": true,
+      "details": {
+        "ratio": 0.6642122945793397
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-west",
+      "ok": true,
+      "details": {
+        "ratio": 0.6039502459331704
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-bridge",
+      "ok": true,
+      "details": {
+        "ratio": 0.6849877751938365
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-middle",
+      "ok": true,
+      "details": {
+        "ratio": 0.6377041569027266
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-lower-step",
+      "ok": true,
+      "details": {
+        "ratio": 0.6663415474171391
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior lavafall-mouth",
+      "ok": true,
+      "details": {
+        "ratio": 0.7023411181009904
+      }
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior fog-bank-valleys",
+      "ok": true,
+      "details": {
+        "ratio": 0.8043626332656991
+      }
+    },
+    {
+      "check": "spatial edges exact fog-bank-valleys",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior bank-foam-spirit",
+      "ok": true,
+      "details": {
+        "ratio": 0.5696151797708104
+      }
+    },
+    {
+      "check": "spatial edges exact bank-foam-spirit",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "wrap discontinuity <=1.5x interior bank-foam-ice",
+      "ok": true,
+      "details": {
+        "ratio": 0.5766648662112102
+      }
+    },
+    {
+      "check": "spatial edges exact bank-foam-ice",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "preview JavaScript syntax",
+      "ok": true,
+      "details": ""
+    },
+    {
+      "check": "reference renderer unchanged outside all masks",
+      "ok": true,
+      "details": {
+        "renderer": "offline reference compositor",
+        "time": 0.375,
+        "nativeSize": [
+          4915,
+          3277
+        ],
+        "changedPixels": 1526164,
+        "changedPixelsOutsideMaskUnion": 0
+      }
+    },
+    {
+      "check": "video 12 seconds and three angles",
+      "ok": true,
+      "details": null
+    },
+    {
+      "check": "global saturation and contrast not reduced",
+      "ok": true,
+      "details": {
+        "minimumContrastRatio": 1.0051634670259453,
+        "minimumSaturationRatio": 1.0058443913305861
+      }
+    },
+    {
+      "check": "output <=80 MB decimal",
+      "ok": true,
+      "details": {
+        "bytes": 56807675
+      }
+    }
+  ],
+  "satisfied": 238,
+  "total": 238,
+  "allExecutedAutomatedChecksSatisfied": true,
+  "blockedTests": [
+    "Browser runtime and layer-toggle/zoom/pan interaction checks: sandbox denies Chromium launch; browser pane unavailable"
+  ],
+  "outputBytesAtCheck": 56807675,
+  "limitations": [
+    "Structural/raster checks do not prove artist-approved masks or convincing directional flow.",
+    "Global metrics do not prove no local haze.",
+    "No in-game integration or artistic QA approval in this run."
+  ]
+}

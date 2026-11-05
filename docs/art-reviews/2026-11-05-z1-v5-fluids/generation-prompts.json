@@ -1,0 +1,95 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 6,
+  "maximumAuthorized": 12,
+  "reference": "master-review.jpg assembled from original v5 tiles",
+  "shadoUsed": false,
+  "temporalSynthesis": false,
+  "prompts": [
+    {
+      "id": "ice-stream",
+      "prompt": "Use case: stylized-concept. Production game animation sprite sheet for AVEGEE, painterly detailed 3/4 overhead fantasy world map. Reference image is the v5 map: match ONLY its clear cyan/turquoise ice melt water, no copying terrain. Create exactly EIGHT individually DRAWN consecutive looping animation frames, arranged strict 4 columns x 2 rows, equal 512x512 cells, total 2048x1024 pixels. Each cell completely filled by a seamless top-down/oblique clear blue flowing water SURFACE TILE. Stable saturated deep cyan base, fine irregular cyan-white glints and curved current ripples, transparent-looking depth painted in teal; NO stones, no snow, no plants, no bank, no sky, no text, no borders, no gap. Currents deform and reconnect across time, not just translated same image. Frame 8 progresses seamlessly into frame 1. Every tile has matching left/right and top/bottom edge colors and wave locations, with no bright straight tile border. Keep edge band uniform deep cyan and animate organic fine highlights in the interior to make spatial tiling seamless. No glow halo, no bloom, no fog, no grading. Actual painted animation, no motion blur. Use 2048x1024 landscape.",
+      "savedSource": "sources/ice-stream.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "1a38c00572a5616c82cce0cab1cfddeef5cc44cb7fa4e55c7201a8ff252c6ba8"
+    },
+    {
+      "id": "waterfall-ice",
+      "prompt": "Use case: stylized-concept. Asset type: hand-painted game VFX animation sprite sheet. Match the cyan waterfall colors and fine painterly style of the supplied AVEGEE v5 world map reference. Exactly 8 consecutive individually redrawn frames, strict 4 columns x 2 rows equal square cells, no labels, total landscape 2048x1024. In each cell the SAME locked narrow vertical cyan-blue waterfall silhouette: width about 36 percent of cell, height 88 percent. Top lip at y=6%, falling ribbon narrowing slightly at midpoint, small elliptical splash pool at base y=90%, fine spray contained tightly at its foot. No rocks, no terrain, no sky, no ice chunks, no separate floating fog cloud. Actual transparent background outside water and splash. Saturated turquoise shadow, fine white falling threads, no bloom or ambient haze. Frame by frame water threads elongate, split and merge downward; splash curls deform and collapse; frame 8 wraps to 1. Fixed lip and footprint across ALL frames. Detailed crisp painterly game art, not photorealism, no blur, no checkerboard painted in background. Each frame differs through real redrawn water details, never simple image translation or opacity fading. Straight waterfall reference shape; clipping to each map-specific river gorge will happen downstream.",
+      "savedSource": "sources/waterfall-ice.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "dfe1ed58fcee18679ecf5bbc9cc35dbb90513999db36e270fde94388e61c4b60"
+    },
+    {
+      "id": "lavafall",
+      "prompt": "Use case: stylized-concept. AVEGEE painterly fantasy map VFX sprite sheet, match left orange lava waterfalls in attached map reference. Exactly EIGHT consecutive individually painted animation frames, strict 4 columns by 2 rows equal cells, landscape 2048x1024. One locked vertical lava curtain per cell, centered fixed silhouette from y=7% to y=92%, width 36% of cell, small attached shallow molten splash at foot. Bright yellow fine molten threads inside rich orange red lava, dark-red fissures, slow viscous rolling folds descending, bubbles at foot deform and burst over the 8 frames, seamless 8-to-1 loop. Keep silhouette anchored and same size in every cell. Real transparent background around lava; no rock, plants, ground, black rectangle, smoke, fog, sparks above curtain, text or labels. No bloom or glow haze around it; crisp detailed hand-painted edges. Not eight static copies: redraw internal flow lines and folding shapes from frame to frame; do not translate/fade one image. This will be cropped and masked to individual waterfall shapes traced from original v5 map.",
+      "savedSource": "sources/lavafall.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "997dc2c367a8eeed8e0964a73b857f41d36fa2e37018621b0ef93c1fdbc52850"
+    },
+    {
+      "id": "fog-bank",
+      "prompt": "Use case: stylized-concept. Hand-painted GAME ANIMATION sprite sheet for the AVEGEE v5 fantasy map reference, specifically thick white softly tufted valley fog tucked between cliff faces, warm ivory tops lavender grey shaded undersides. Exactly EIGHT consecutive DRAWN frames in strict 4 columns x 2 rows equal square cells, landscape 2048x1024, no labels or gutters. Each frame a softly billowing dense bank of fog filling almost the whole square, not an isolated round floating cloud: soft overlapping horizontally curled wisps and cauliflower lobes, grey-lilac shadows showing depth, muted warm white crests, restrained contrast. Actual transparent background at the outer soft boundary. Lock the overall cloud bank envelope and all positions. Animate by REDRAWING tiny local curls, expanding/collapsing lobes in place across 8 frames, very slow rolling loop frame 8 into frame 1; absolutely no drift, no scrolling, no large shape changes, no fading. No terrain, rocks, trees, symbols, buildings, snowflakes, labels, sky, glow, bloom or full-screen haze. This artwork will be masked strictly to existing valley recesses, never placed on land. Fine crisp painterly details match reference. Keep the edges quiet so multiple cells can tile within irregular masks without obvious clumps.",
+      "savedSource": "sources/fog-bank.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "9dacbfd5555ce6e03659c4a287d778a3923fb5503fed2bf0fc18c2a14865f574"
+    },
+    {
+      "id": "bank-foam-spirit",
+      "prompt": "Use case: stylized-concept. Game VFX sprite sheet, EXACTLY EIGHT individually painted animation frames in strict 4 columns by 2 rows equal square cells, 2048x1024 landscape. Primary subject: long THIN white-lilac shoreline FOAM THREADS flowing left to right along the banks of a magical purple river, matching AVEGEE painterly map reference. Each square frame is a texture filled with several PARALLEL HORIZONTAL very long slender winding ribbons of foam, reaching left and right cell borders, with many tiny white beads and fine curling wavelets merging and splitting, no round clouds, no big blobs. Transparent background between fine ribbons. White and pale violet foam only, no underlying opaque water or dark background, no terrain, rocks, text, labels, grids, no bloom. Successive frames redraw the little foam crests and broken filaments advancing organically rightward and dissolving/reforming locally; fixed overall ribbon lanes, loop frame 8 back to 1. Do NOT simply translate same artwork or fade it. Quiet matched left/right edges for repeating along banks. Fine painterly hand drawn detail. This will be compressed to a very narrow bank strip and clipped to a 2-to-7-pixel INNER shoreline mask, never spread over land or middle of water.",
+      "savedSource": "sources/bank-foam-spirit.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "d088819dfe7d29e24d8ba249c2b8dceadef17ad967f2f99f07eaf8c5547ec032"
+    },
+    {
+      "id": "bank-foam-ice",
+      "prompt": "Use case: stylized-concept. AVEGEE game VFX sprite sheet: 8 individually redrawn animation frames, strict 4 columns x 2 rows equal square cells, landscape 2048x1024. Each cell contains 9 parallel HORIZONTAL extremely thin WHITE FOAM FILAMENTS, gently curved with tiny cyan tips and bead-like white bubbles, running completely from left edge to right edge. Widely separated lanes with REAL TRANSPARENCY BETWEEN THEM: at least 75 percent of every cell is fully transparent empty space. Absolutely NO water underpaint, NO pale colored fill, NO white sheet, NO fog mass. Just fine string-like shoreline foam. Color pure ivory-white with tiny saturated icy cyan edges, matching the cyan streams on supplied map. Sequential frames redraw curls tightening and opening and tiny crests breaking/reforming flowing rightward, smooth cycle 8 into 1, anchored lanes. Fine painterly style, crisp small details, thin ribbon proportions, not round blobs, not photorealistic, no black background, no checkerboard baked into art, no text or border. The artwork will be compressed into a narrow ribbon and clipped strictly to real riverbanks. Do not move/fade copies of a static frame; each frame drawn anew.",
+      "savedSource": "sources/bank-foam-ice.webp",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "sourceSHA256": "643271acc6c8ae83cd50eacdb83197bc60a77da52ee5d3a35e297ddbdab33601"
+    }
+  ],
+  "postprocess": "Slice source cells, resize, fixed map masks; join opposing spatial tile borders only. No generated in-between frames, no translated static-frame animation, no opacity ramp."
+}

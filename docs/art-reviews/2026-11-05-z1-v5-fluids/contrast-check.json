@@ -1,0 +1,152 @@
+{
+  "renderer": "offline reference compositor, not browser screenshot",
+  "baseline": {
+    "meanLuminance": 0.3682444989681244,
+    "luminanceStd": 0.23462805151939392,
+    "meanHSV_Saturation": 0.5959657430648804,
+    "meanChroma": 0.3472892642021179
+  },
+  "samples": [
+    {
+      "meanLuminance": 0.3648267984390259,
+      "luminanceStd": 0.23590070009231567,
+      "meanHSV_Saturation": 0.5994810461997986,
+      "meanChroma": 0.34639427065849304,
+      "time": 0,
+      "contrastRatio": 1.0054241109052409,
+      "saturationRatio": 1.005898498656718
+    },
+    {
+      "meanLuminance": 0.3648819923400879,
+      "luminanceStd": 0.23589248955249786,
+      "meanHSV_Saturation": 0.5994671583175659,
+      "meanChroma": 0.34646010398864746,
+      "time": 0.125,
+      "contrastRatio": 1.0053891170510763,
+      "saturationRatio": 1.0058751955014709
+    },
+    {
+      "meanLuminance": 0.36489683389663696,
+      "luminanceStd": 0.2358884960412979,
+      "meanHSV_Saturation": 0.5994828939437866,
+      "meanChroma": 0.3465154469013214,
+      "time": 0.25,
+      "contrastRatio": 1.0053720964468726,
+      "saturationRatio": 1.005901599076515
+    },
+    {
+      "meanLuminance": 0.3649294078350067,
+      "luminanceStd": 0.23585635423660278,
+      "meanHSV_Saturation": 0.5994774103164673,
+      "meanChroma": 0.34656843543052673,
+      "time": 0.375,
+      "contrastRatio": 1.0052351059869213,
+      "saturationRatio": 1.0058923978306662
+    },
+    {
+      "meanLuminance": 0.36492469906806946,
+      "luminanceStd": 0.23587201535701752,
+      "meanHSV_Saturation": 0.5994664430618286,
+      "meanChroma": 0.3465270698070526,
+      "time": 0.5,
+      "contrastRatio": 1.0053018546996746,
+      "saturationRatio": 1.0058739953389688
+    },
+    {
+      "meanLuminance": 0.36490702629089355,
+      "luminanceStd": 0.2358688861131668,
+      "meanHSV_Saturation": 0.5994605422019958,
+      "meanChroma": 0.34649184346199036,
+      "time": 0.625,
+      "contrastRatio": 1.0052885176590673,
+      "saturationRatio": 1.0058640939983274
+    },
+    {
+      "meanLuminance": 0.36487868428230286,
+      "luminanceStd": 0.23584923148155212,
+      "meanHSV_Saturation": 0.5994814038276672,
+      "meanChroma": 0.346495658159256,
+      "time": 0.75,
+      "contrastRatio": 1.0052047483421105,
+      "saturationRatio": 1.005899098737969
+    },
+    {
+      "meanLuminance": 0.3648928105831146,
+      "luminanceStd": 0.23583954572677612,
+      "meanHSV_Saturation": 0.599449634552002,
+      "meanChroma": 0.3464663624763489,
+      "time": 0.875,
+      "contrastRatio": 1.0051634670259453,
+      "saturationRatio": 1.0058457915201717
+    },
+    {
+      "meanLuminance": 0.3648909628391266,
+      "luminanceStd": 0.23588086664676666,
+      "meanHSV_Saturation": 0.5994883179664612,
+      "meanChroma": 0.3465211093425751,
+      "time": 1.25,
+      "contrastRatio": 1.005339579471678,
+      "saturationRatio": 1.005910700308822
+    },
+    {
+      "meanLuminance": 0.36491698026657104,
+      "luminanceStd": 0.2358703315258026,
+      "meanHSV_Saturation": 0.5994651317596436,
+      "meanChroma": 0.346523255109787,
+      "time": 2.5,
+      "contrastRatio": 1.0052946781016336,
+      "saturationRatio": 1.0058717950410485
+    },
+    {
+      "meanLuminance": 0.36483269929885864,
+      "luminanceStd": 0.23590223491191864,
+      "meanHSV_Saturation": 0.5994815826416016,
+      "meanChroma": 0.34639498591423035,
+      "time": 4,
+      "contrastRatio": 1.00543065240611,
+      "saturationRatio": 1.0058993987785947
+    },
+    {
+      "meanLuminance": 0.3648253381252289,
+      "luminanceStd": 0.23589792847633362,
+      "meanHSV_Saturation": 0.5994840264320374,
+      "meanChroma": 0.3463956415653229,
+      "time": 6,
+      "contrastRatio": 1.005412298097846,
+      "saturationRatio": 1.0059034993338098
+    },
+    {
+      "meanLuminance": 0.3648267984390259,
+      "luminanceStd": 0.23590070009231567,
+      "meanHSV_Saturation": 0.5994810461997986,
+      "meanChroma": 0.34639427065849304,
+      "time": 8,
+      "contrastRatio": 1.0054241109052409,
+      "saturationRatio": 1.005898498656718
+    },
+    {
+      "meanLuminance": 0.3648260533809662,
+      "luminanceStd": 0.23590010404586792,
+      "meanHSV_Saturation": 0.5994826555252075,
+      "meanChroma": 0.346395343542099,
+      "time": 10,
+      "contrastRatio": 1.0054215705165537,
+      "saturationRatio": 1.0059011990223476
+    },
+    {
+      "meanLuminance": 0.36490190029144287,
+      "luminanceStd": 0.23584353923797607,
+      "meanHSV_Saturation": 0.5994488000869751,
+      "meanChroma": 0.34646642208099365,
+      "time": 11.875,
+      "contrastRatio": 1.0051804876301489,
+      "saturationRatio": 1.0058443913305861
+    }
+  ],
+  "measurement": "1600x1067 full map, Rec.709 luminance std and HSV saturation, fixed opacity per layer, no grading",
+  "minimumContrastRatio": 1.0051634670259453,
+  "minimumSaturationRatio": 1.0058443913305861,
+  "criterion": "both ratios >=1.0",
+  "meetsNumericalCriterion": true,
+  "limitations": "global metrics cannot prove no local haze; browser parity not measured"
+}

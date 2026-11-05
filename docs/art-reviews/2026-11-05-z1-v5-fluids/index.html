@@ -1,0 +1,69 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Z1 v5 — painted fluids review</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#14131c;color:#ece8fa;font:14px system-ui}header{padding:12px 18px;background:#242230;display:flex;gap:12px;align-items:center;flex-wrap:wrap}button{background:#39334c;color:white;border:1px solid #6e6387;border-radius:5px;padding:7px 12px;cursor:pointer}label{white-space:nowrap}#view{display:block;width:100%;height:calc(100vh - 120px);touch-action:none;cursor:grab}footer{padding:8px 18px;color:#bbb4ca}#state{color:#cbdcaa}a{color:#c8beff}</style>
+<header><b>Z1 v5 · เฟรมวาดของเหลว</b><button id="play">หยุด</button><button data-view="full">ทั้งแผนที่</button><button data-view="lava">ลาวาซ้าย</button><button data-view="river">สะพาน / แม่น้ำม่วง</button><button data-view="ice">น้ำตกฟ้า</button><span id="layers"></span><span id="state">กำลังโหลด…</span></header>
+<canvas id="view"></canvas><footer>ลากเพื่อเลื่อน · หมุนล้อเพื่อซูม · ไม่มี parallax / DOF / bloom · <a href="masks-overlay.jpg">mask overlay</a> · <a href="preview-clip.mp4">คลิป 12 วินาที</a> · <a href="README.md">ข้อจำกัด / ผลตรวจ</a></footer>
+<script>
+const canvas=document.querySelector('#view'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+const image=src=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(Error('Cannot load '+src));im.src=src});
+const cameras={full:[0,0,4915,3277],lava:[0,450,1750,984.375],river:[1500,1950,2100,1181.25],ice:[2960,790,1830,1029.375]};
+let camera=cameras.full.slice(),running=true,time=0,last=0,ready=false,enabled={},model,master,regions,images={},buffers=new Map();
+function make(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+function frameNumber(p,t){return Math.floor(t*p.fps)%p.frames}
+function patch(p,t){
+ const frame=frameNumber(p,t);let b=buffers.get(p.id);
+ if(b?.frame===frame)return b.canvas;
+ const [x,y,w,h]=p.maskRectPx,c=b?.canvas||make(w,h),g=c.getContext('2d');g.clearRect(0,0,w,h);g.globalCompositeOperation='source-over';
+ const sheet=images[p.sheet];
+ if(p.tileInRegion){
+  const tw=p.tileWorld[0]*4915/3840,th=p.tileWorld[1]*3277/2560;
+  // Fixed world-anchored spatial repeats. Time only selects a painted frame.
+  for(let ty=-(y%th);ty<h;ty+=th)for(let tx=-(x%tw);tx<w;tx+=tw)g.drawImage(sheet,frame*p.frameW,0,p.frameW,p.frameH,tx,ty,tw,th);
+ }else g.drawImage(sheet,frame*p.frameW,0,p.frameW,p.frameH,0,0,w,h);
+ g.globalCompositeOperation='destination-in';g.drawImage(images[p.mask],0,0,w,h);
+ if(p.clipMask)g.drawImage(images[p.clipMask],0,0,w,h);
+ g.globalCompositeOperation='source-over';buffers.set(p.id,{frame,canvas:c});return c;
+}
+window.renderAt=function(t,cam=camera,target=canvas,baseOnly=false){
+ if(!ready)return;
+ const g=target.getContext('2d'),[cx,cy,cw,ch]=cam;
+ g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,target.width,target.height);
+ g.setTransform(target.width/cw,0,0,target.height/ch,-cx*target.width/cw,-cy*target.height/ch);
+ g.globalCompositeOperation='source-over';g.globalAlpha=1;g.drawImage(master,0,0);
+ if(!baseOnly)for(const p of model.pieces){
+  const kind=regions[p.regionId].kind;if(enabled[kind]===false)continue;
+  const [x,y,w,h]=p.maskRectPx;if(x+w<cx||x>cx+cw||y+h<cy||y>cy+ch)continue;
+  g.globalCompositeOperation=p.blend;g.globalAlpha=p.opacity;g.drawImage(patch(p,t),x,y);
+ }
+ g.globalAlpha=1;g.globalCompositeOperation='source-over';g.setTransform(1,0,0,1,0,0);
+};
+window.capture=function(t,view='full',w=1280,h=720,baseOnly=false){canvas.width=w;canvas.height=h;window.renderAt(t,cameras[view],canvas,baseOnly);return canvas.toDataURL('image/png')};
+window.reviewState=()=>({ready,pieces:model?.pieces.length,enabled,camera,running});
+function resize(){canvas.width=innerWidth;canvas.height=Math.max(300,innerHeight-120)}
+resize();addEventListener('resize',resize);
+document.querySelector('#play').onclick=()=>{running=!running;document.querySelector('#play').textContent=running?'หยุด':'เล่น'};
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{camera=cameras[b.dataset.view].slice()});
+let drag=null;canvas.onpointerdown=e=>{drag=[e.clientX,e.clientY,...camera];canvas.setPointerCapture(e.pointerId)};
+canvas.onpointerup=()=>drag=null;canvas.onpointermove=e=>{if(drag){camera[0]=drag[2]-(e.clientX-drag[0])*camera[2]/canvas.width;camera[1]=drag[3]-(e.clientY-drag[1])*camera[3]/canvas.height}};
+canvas.onwheel=e=>{e.preventDefault();const f=e.deltaY>0?1.12:1/1.12,x=e.offsetX/canvas.width,y=e.offsetY/canvas.height;camera=[camera[0]+camera[2]*x*(1-f),camera[1]+camera[3]*y*(1-f),camera[2]*f,camera[3]*f]};
+window.reviewReady=(async()=>{
+ [model,regions]=await Promise.all([fetch('fx-layout.json').then(r=>r.json()),fetch('regions.json').then(r=>r.json())]);
+ regions=Object.fromEntries(regions.regions.map(r=>[r.id,r]));master=await image('master-v5.webp');
+ const paths=[...new Set(model.pieces.flatMap(p=>[p.sheet,p.mask,p.clipMask].filter(Boolean)))];
+ for(const path of paths){
+  const im=await image(path);
+  if(path.startsWith('masks/')){
+   // PNG masks store coverage in grayscale, not alpha. Convert explicitly;
+   // destination-in with an opaque black pixel would otherwise retain paint.
+   const mask=make(im.width,im.height),mg=mask.getContext('2d');mg.drawImage(im,0,0);
+   const pixels=mg.getImageData(0,0,im.width,im.height);
+   for(let i=0;i<pixels.data.length;i+=4){pixels.data[i+3]=pixels.data[i];pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=255}
+   mg.putImageData(pixels,0,0);images[path]=mask;
+  }else images[path]=im;
+ }
+ for(const kind of [...new Set(Object.values(regions).map(r=>r.kind))]){
+  enabled[kind]=true;const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=true;input.onchange=()=>enabled[kind]=input.checked;label.append(input,kind);document.querySelector('#layers').append(label);
+ }
+ ready=true;document.querySelector('#state').textContent=model.pieces.length+' ชิ้น · mask บังคับทุกชั้น';
+ function tick(now){if(running)time+=(now-last)/1000;last=now;renderAt(time);requestAnimationFrame(tick)}last=performance.now();requestAnimationFrame(tick);
+})();
+</script></html>

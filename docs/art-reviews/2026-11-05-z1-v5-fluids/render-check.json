@@ -1,0 +1,67 @@
+{
+  "renderer": "offline reference compositor; same sheets, masks, frame indexes, cameras, fixed opacity, overlay blend formula as index.html",
+  "browser": {
+    "attempted": true,
+    "status": "blocked",
+    "playwrightReason": "macOS sandbox: bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer Permission denied (1100)",
+    "browserPaneReason": "browser access host is unavailable",
+    "runtimeAndInteractionTests": "not run"
+  },
+  "browserErrors": null,
+  "containmentRender": {
+    "renderer": "offline reference compositor",
+    "time": 0.375,
+    "nativeSize": [
+      4915,
+      3277
+    ],
+    "changedPixels": 1526164,
+    "changedPixelsOutsideMaskUnion": 0
+  },
+  "interactions": {},
+  "video": {
+    "exitCode": 0,
+    "durationSeconds": 12,
+    "fps": 12,
+    "frames": 144,
+    "views": [
+      {
+        "id": "lava",
+        "seconds": [
+          0,
+          4
+        ]
+      },
+      {
+        "id": "river",
+        "seconds": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "ice",
+        "seconds": [
+          8,
+          12
+        ]
+      }
+    ],
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "12/1",
+          "nb_frames": "144"
+        }
+      ],
+      "format": {
+        "duration": "12.000000"
+      }
+    }
+  },
+  "claim": "automated raster evidence only; not browser validation or artistic QA approval"
+}
