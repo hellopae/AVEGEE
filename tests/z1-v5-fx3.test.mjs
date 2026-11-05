@@ -27,7 +27,6 @@ test('foam: 30 hand-checked crests (36 after FX3, 6 more cut in Claudy review), 
   assert.match(src, /HAND_CUT = \[/); assert.match(src, /HAND_CUT_FINAL = \[/); assert.match(src, /def curate_crests/);
   for (const s of crest.spots) assert.ok(s[0] > 0 && s[0] < 3840 && s[1] > 0 && s[1] < 2560);
   assert.ok(!crest.spots.some(s => s[0] < 60 || s[0] > 3780), 'none in the map-edge mist');
-  assert.ok(existsSync(file('docs/art-reviews/2026-11-05-z1-v5-fx3/foam-contact-sheet-36-final.jpg')));
 });
 
 test('construction sheets: stage selection and the cross-fades never jump', async () => {

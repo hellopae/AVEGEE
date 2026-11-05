@@ -40,3 +40,5 @@ python3 scripts/build-canteen-th.py    <canteen #4 png>
 python3 scripts/serve-nocache.py 8795   # หรือเซิร์ฟเวอร์แบบ threaded ใด ๆ
 BASE=http://127.0.0.1:8795/index.html CH=chromium python3 scripts/z1-v5-fx-evidence.py clips|fps|seam ...
 ```
+
+> 5 พ.ย. 2569: คุณเป้อนุญาตให้ลบภาพ/คลิปหลักฐาน (mp4/png/jpg) ก่อน merge — เหลือ README + json · ภาพเดิมอยู่ใน git history ของ branch นี้ (ก่อน commit นี้)

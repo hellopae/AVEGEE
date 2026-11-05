@@ -6,3 +6,5 @@
 - lava-bubbles-sequence.png — six frames 0.6 s apart over the lava lake
 - plaza-bridge-hd-390.png — HD main plaza + bridge with the rails / pier sprites back
 - white-lumps-overlay.jpg — boxes of the white fog lumps painted into v5 (list: Output/Toby/2026-11-05-v5-white-lumps.json)
+
+> 5 พ.ย. 2569: คุณเป้อนุญาตให้ลบภาพ/คลิปหลักฐาน (mp4/png/jpg) ก่อน merge — เหลือ README + json · ภาพเดิมอยู่ใน git history ของ branch นี้ (ก่อน commit นี้)
