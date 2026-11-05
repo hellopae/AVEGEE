@@ -1,4 +1,5 @@
 """Z1-V5-FX evidence: drives the real game in Chromium (Playwright) at 390x844 and records
+  clips2  <outdir>            FX2: four 12 s clips (shore foam, lava fall effects, HD plaza, canteen built in game)
   clips   <outdir>            four 12 s clips: lava fall, bridge + purple river, ice waterfall, heaven gate (cloud-sea, puffs, cloud shadows)
   fps     <desktop|mobile>    rAF frame rate of every camera with the painted fluid layer on / off (weather setting)
   seam    <outdir>            frame-to-frame change of the rendered lava over 3 loops: no spike at the frame changes / batch seams
@@ -19,6 +20,14 @@ VIEWS = {   # name: (start x, start y, pan dx, pan dy) in world units
     '03-ice-waterfall': (2380, 960, 140, 80),
     '04-heaven-gate': (2480, 470, 160, 50),
 }
+VIEWS2 = {   # FX2 clips: placed foam on the shore, lava fall + bubbles / steam / embers, the HD main plaza, the new canteen built in game
+    '05-bridge-river-foam': (1700, 1760, 300, 0),
+    '06-lava-fall-fx': (230, 700, 90, 40),
+    '07-main-plaza-hd': (1900, 1250, 220, 60),
+    '08-canteen': (1572, 930, 0, -170),
+}
+CANTEEN_JS = """async()=>{const d=await import('./src/data.js');const def=d.STATIONS.find(s=>s.k==='canteen');
+  if(!G.stations.some(s=>s.def.k==='canteen'))G.stations.push({def,slots:[],crewK:null,intensity:3,build:0,buildWait:false,repair:0,repairWait:false,arrivalElapsed:0,fire:0,speedLv:0,capLv:0,fuelLv:0,mgCd:0});}"""
 SETW = "async(on)=>{const m=await import('./src/map-ambient.js?v=mapfx-k1d');m.setWeatherEnabled(on)}"
 STATS = "async()=>{const m=await import('./src/town-fluid-fx.js?v=v5fx');return m.townFluidFxStats()}"
 FPS_JS = """async(ms)=>new Promise(res=>{const ts=[];function f(t){ts.push(t);if(t-ts[0]<ms)requestAnimationFrame(f);else{const d=[];for(let i=1;i<ts.length;i++)d.push(ts[i]-ts[i-1]);d.sort((a,b)=>a-b);res({fps:(ts.length-1)/((ts[ts.length-1]-ts[0])/1000),p95:d[Math.floor(d.length*.95)],max:d[d.length-1],n:ts.length})}}requestAnimationFrame(f)})"""
@@ -31,10 +40,18 @@ def boot(p, w=390, h=844, dpr=1, mobile=False, video=None, vsize=None):
         kw.update(record_video_dir=str(video), record_video_size=vsize or {'width': w, 'height': h})
     ctx = browser.new_context(**kw)
     pg = ctx.new_page(); errs = []; t0 = time.time()
+    if os.environ.get('GROUND'):    # A/B: serve zone-skin.js with another ground set (v5 | v7-partial) without touching the file
+        def swap(route):
+            r = route.fetch(); body = r.text()
+            route.fulfill(response=r, body=body.replace("ZONE1_GROUND_SET = 'v7-partial'", f"ZONE1_GROUND_SET = '{os.environ['GROUND']}'"))
+        ctx.route('**/src/zone-skin.js*', swap)
     pg.on('pageerror', lambda e: errs.append('pageerror: ' + str(e)))
     pg.on('console', lambda m: errs.append('console.error: ' + m.text) if m.type == 'error' else None)
     pg.on('requestfailed', lambda r: errs.append('requestfailed: ' + r.url))
     pg.goto(BASE); pg.wait_for_timeout(3000)
+    try: pg.click('#enter-gate button', timeout=1500)     # shown once the first assets are ready (audio unlock tap)
+    except Exception: pass
+    pg.wait_for_timeout(500)
     pg.click('#splash-skip'); pg.wait_for_timeout(2000)
     pg.click('#t-start'); pg.wait_for_timeout(1500)
     pg.click('text=SLOT 1'); pg.wait_for_timeout(2500)
@@ -53,12 +70,14 @@ def look(pg, x, y):
     pg.wait_for_timeout(1200)
 
 
-def clips(out):
+def clips(out, views=None):
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
-    for name, (x, y, dx, dy) in VIEWS.items():
+    for name, (x, y, dx, dy) in (views or VIEWS).items():
         tmp = out / ('_' + name); tmp.mkdir(exist_ok=True)
         with sync_playwright() as p:
             browser, ctx, pg, errs, t0 = boot(p, 390, 844, 1, False, tmp, {'width': 390, 'height': 844})   # Playwright records CSS pixels: 390x844
+            if name.endswith('canteen'):
+                pg.evaluate(CANTEEN_JS)
             look(pg, x, y); pg.wait_for_timeout(2500)
             start = time.time() - t0
             steps = 120   # 12 s, one nudge every 100 ms
@@ -133,6 +152,8 @@ if __name__ == '__main__':
     cmd = sys.argv[1]
     if cmd == 'clips':
         clips(sys.argv[2])
+    elif cmd == 'clips2':
+        clips(sys.argv[2], VIEWS2)
     elif cmd == 'fps':
         fps(sys.argv[2])
     elif cmd == 'seam':

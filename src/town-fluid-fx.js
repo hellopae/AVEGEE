@@ -52,6 +52,22 @@ export function fluidMipFor(sourcePx, destPx) {
   while (k < MIP_LEVELS - 1 && sourcePx / 2 ** (k + 1) >= destPx * .92) k++;
   return k;
 }
+/** FX2 placed sprites. spot = [x, y, w, h, rot, phase, period, dx, dy]; returns the state of one sprite at `sec`, or null while it rests.
+ *  swell = a wave crest that rises, drifts (dx,dy) toward the shore and fades, every period, each spot on its own phase;
+ *  once  = plays the drawn frames once per period during the first `win` of it, then rests; rise = loops the drawn frames while drifting (dx,dy) and fading in/out. */
+export function fluidSpotState(piece, spot, sec) {
+  const period = spot[6] || 4, f = mod(sec / period + spot[5], 1), n = piece.frames, fps = piece.fps || 8;
+  if (piece.mode === 'once') {
+    const win = piece.win || .5;
+    if (f >= win) return null;
+    const g = f / win, pos = Math.min(n - 1, g * (n - 1)), i = Math.floor(pos), j = Math.min(n - 1, i + 1);
+    const alpha = piece.group === 'sparkle' ? Math.sin(Math.PI * g) : Math.min(1, g * 6, (1 - g) * 6);   // glints swell and fade; a bubble only needs soft ends
+    return { alpha, i, j, mix: pos - i, ox: 0, oy: 0 };
+  }
+  const fr = fluidFrame(n, fps, (sec + spot[5] * period) * 1000);
+  if (piece.mode === 'rise') return { alpha: Math.sin(Math.PI * f) ** 1.2, ...fr, ox: spot[7] * f, oy: spot[8] * f };
+  return { alpha: Math.sin(Math.PI * f) ** 1.5, ...fr, ox: spot[7] * (f - .5), oy: spot[8] * (f - .5) };   // swell
+}
 /** Per piece: same-mask puffs are drawn together in one layer so the 4 drifting clouds cost one composite. */
 export function fluidDrawPlan(layout) {
   const plan = [];
@@ -233,6 +249,29 @@ function drawPiece(st, p, geo, rect, sec) {
   clipToMask(g, st, p, rect);
   return layer;
 }
+function drawSpots(st, p, geo, rect, vis, sec) {
+  const layer = layerOf(st, p.id, geo.lw, geo.lh, st.frameNo), g = layer.ctx;
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1; g.clearRect(0, 0, geo.lw, geo.lh);
+  const sheet = st.sheets.get(p.sheet), m0 = sheet.mips[0];
+  for (const sp of p.spots) {
+    const r = Math.max(sp[2], sp[3]) * .75 + Math.hypot(sp[7], sp[8]);
+    if (sp[0] + r < vis[0] || sp[0] - r > vis[0] + vis[2] || sp[1] + r < vis[1] || sp[1] - r > vis[1] + vis[3]) continue;
+    const s = fluidSpotState(p, sp, sec);
+    if (!s || s.alpha < .01) continue;
+    const mip = sheet.mips[Math.min(fluidMipFor(m0.w, sp[2] * geo.sx), fluidMipFor(m0.h, sp[3] * geo.sy))];
+    g.setTransform(geo.sx, 0, 0, geo.sy, -geo.wx0 * geo.sx, -geo.wy0 * geo.sy);
+    g.translate(sp[0] + s.ox, sp[1] + s.oy); g.rotate(sp[4]);
+    g.globalCompositeOperation = 'lighter';
+    if (s.mix < .004 || s.i === s.j) { g.globalAlpha = s.alpha; g.drawImage(mip.frames[s.i], -sp[2] / 2, -sp[3] / 2, sp[2], sp[3]); }
+    else {
+      g.globalAlpha = s.alpha * (1 - s.mix); g.drawImage(mip.frames[s.i], -sp[2] / 2, -sp[3] / 2, sp[2], sp[3]);
+      g.globalAlpha = s.alpha * s.mix; g.drawImage(mip.frames[s.j], -sp[2] / 2, -sp[3] / 2, sp[2], sp[3]);
+    }
+  }
+  g.setTransform(geo.sx, 0, 0, geo.sy, -geo.wx0 * geo.sx, -geo.wy0 * geo.sy); g.globalAlpha = 1;
+  clipToMask(g, st, p, rect);
+  return layer;
+}
 function drawPuffs(st, group, geo, vis, sec) {
   const layer = layerOf(st, group.puffs[0].id, geo.lw, geo.lh, st.frameNo), g = layer.ctx;
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1; g.clearRect(0, 0, geo.lw, geo.lh);
@@ -294,7 +333,7 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
     if (!ready || !vis) continue;
     const geo = layerGeometry(m, vis, cv.width, cv.height);
     if (!geo) continue;
-    const layer = item.piece ? drawPiece(st, p, geo, rect, sec) : drawPuffs(st, item, geo, vis, sec);
+    const layer = !item.piece ? drawPuffs(st, item, geo, vis, sec) : p.kind === 'spots' ? drawSpots(st, p, geo, rect, vis, sec) : drawPiece(st, p, geo, rect, sec);
     composite(ctx, st, layer, geo, p.blend, p.opacity);
     drawn++;
   }
