@@ -293,14 +293,14 @@ export function ambientParticles(zone, time, W, H, limit = null) {
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
  *  Snow (zone 3) is laid out over the VISIBLE part of the area in CSS pixels, so its density and flake size are the
  *  same at any zoom; the embers and dust of zones 1-2 keep their original world-space layout. */
-export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null) {
+export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null, { quiet = false } = {}) {
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
   const viewZone=zone==='west'||zone==='cyberhell',view=viewZone?viewMetrics(ctx,aw,ah):null;
   if(viewZone){
     if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H,maxParticles);
-    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles);
+    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles,quiet);
   }else{
     const count=biomeBudget(ctx,W,H,MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
     for(const p of ambientParticles(zone,time,aw,ah,count)){
@@ -335,7 +335,7 @@ function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null){
 }
 
 /** Zone 4: heavy slanted rain over the visible area, plus lightning: a jagged bolt and a faint whole-screen flash. */
-function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
+function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null,quiet=false){
   const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,R.max)));
   const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
   ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;
@@ -349,7 +349,7 @@ function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
     ctx.stroke();
   }
   ctx.globalAlpha=1;
-  const strike=stormStrike(time),flash=stormFlash(time);
+  const strike=quiet?null:stormStrike(time),flash=quiet?0:stormFlash(time);   // quiet = paused scene: the rain holds, but a flash never freezes on screen
   if(flash){ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(view.x,view.y,view.w,view.h);}
   if(strike&&strike.age<MAP_FX.storm.boltMs){
     const bx=view.x+view.w*strike.x,bottom=view.y+view.h*(.5+.25*seed(strike.n+3.1));
@@ -522,7 +522,7 @@ export function weatherLabelBounds(rects){
   }return out;
 }
 export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
-  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled()}={}) {
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true}={}) {
   if(!enabled||!(W>0&&H>0))return;
   const art=weatherArt();if(!art)return;
   let clock=weatherClocks.get(ctx);
@@ -543,7 +543,7 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   const thaiOnly=halves.every(r=>r.zone==='th'),real=thaiOnly?townShadowSprites():false;
   const cloud=real?{...base,...base.th}:base;
   let cloudLayer=null;
-  if(view&&real!==null){
+  if(view&&real!==null&&clouds){
     // Wind speed keeps the old lattice so the drift is the same for every zone.
     const off=driftOffset(ctx,'cloud',time,[base.drift[0]*view.w*base.cell[0],base.drift[1]*view.h*base.cell[1]],!reduced&&!paused);
     const bankAt=cx=>real||blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
