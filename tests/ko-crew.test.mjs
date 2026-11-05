@@ -51,11 +51,12 @@ test('KO-CREW: when the battle is over (win, lose or flee) the fallen go to the 
   }
 });
 
-test('KO-CREW: the Guard lies down too but keeps 1 map HP and does not go to the tea house (old rule); a non-participant keeps the old immediate rest', () => {
+test('KO-CREW: the Guard is a teammate like the rest: lies down at 0 HP, rests at the tea house when the battle is over, then returns to his post; a non-participant rests at once', () => {
   const g = game(['taan'], true); const b = fight(g); const guard = g.guard;
   assert.equal(knock(g, guard), true);
-  assert.equal(guard.morale, 1); assert.deepEqual(g.battleFallen().map(a => a.id), [guard.id]); assert.ok(!g.guardActive());
-  g.endBattle(); g.updateActorRecovery(); assert.equal(guard.recoverUntil, 0); assert.ok(!guard.teaRest, 'Guard: old rule, no tea house'); assert.equal(guard.morale, 1);
+  assert.equal(guard.morale, 0); assert.deepEqual(g.battleFallen().map(a => a.id), [guard.id]); assert.ok(!g.guardActive()); assert.equal(guard.recoverUntil, 0, 'no clock while the battle is open');
+  g.endBattle(); assert.ok(guard.recoverUntil > Date.now() + RECOVERY_MS - 2000 && guard.teaRest?.recovery, 'Guard: same tea-house rest, same RECOVERY_MS'); assert.ok(!g.guardActive(), 'off the gate while he rests');
+  g.updateActorRecovery(guard.recoverUntil + 1); assert.equal(guard.morale, 50); assert.ok(g.guardActive(), 'back on duty'); assert.ok(!guard.teaRest);
   const h = game(['taan', 'plerng']); h.party.members = ['taan']; fight(h); const out = h.crew[1];
   assert.equal(knock(h, out), true); assert.ok(out.recoverUntil > 0 && out.teaRest, 'not on the field: rests at once as before'); assert.ok(!h.battle.fallen?.length);
 });
@@ -75,6 +76,6 @@ test('KO-CREW: the scene draws the fallen lying in their old slot, greyed card, 
   assert.match(ui, /g\.battleFallen\(\)\) if \(!squadMembers\.some/); assert.match(ui, /b\.squadOrder/); assert.match(ui, /is-fallen/); assert.match(ui, /\.\.\.g\.battleActors\(\), \.\.\.g\.battleFallen\(\)/);
   assert.match(css, /\.battle-squad \.is-fallen[^{]*\{pointer-events:none/); assert.match(css, /\.battle-portrait\.is-fallen\{opacity:\.55/);
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const k of Object.keys(map).filter(k => /\.\/src\/(game|ui)\.js/.test(k))) assert.match(map[k], /\?v=20261106-kocrew-home-slots$/, k);
+  for (const k of Object.keys(map).filter(k => /\.\/src\/(game|ui)\.js/.test(k))) assert.match(map[k], /\?v=20261106-kocrew(-guard)?-home-slots$/, k);
   assert.match(html, /src\/ui\.js\?v=20261106-kocrew-home-slots/); assert.match(html, /battle-turns\.css\?v=20261106-kocrew-home-slots/);
 });

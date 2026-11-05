@@ -622,27 +622,30 @@ const API = {
     const b = this.battle; if (!b?.fallen?.length) return [];
     return b.fallen.map(id => id === this.guard?.id ? this.guard : this.roster[id]).filter(Boolean);
   },
+  /** Recovery rest at the tea house (same startRecoveryTeaRest + RECOVERY_MS for everyone). The Guard walks back to his gate post when it is over. */
+  startActorRecoveryRest(actor, now) {
+    actor.recoveryVersion = 2;
+    const rest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+    if (actor.k === 'guard') rest.returnAt = [...(nearestWalk(GUARD_POST[0], GUARD_POST[1]) || GUARD_POST)];
+    return actor.teaRest = rest;
+  },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
     // KO-CREW: a teammate who falls DURING a battle stays in the scene lying down. The tea-house rest (same RECOVERY_MS, same startRecoveryTeaRest)
     // starts when the battle is over: updateActorRecovery meets morale 0 with no battle open and comes back through here.
+    // The Guard is a teammate like the others (owner 6 Nov): 0 HP, lies down, rests at the tea house afterwards, then returns to his post.
     if (this.battle && this.battleParticipant(actor)) {
       if ((this.battle.fallen ||= []).includes(actor.id)) return false;
-      actor.morale = actor.k === 'guard' ? 1 : 0;       // the Guard keeps 1 map HP as before; he is only out of this battle
+      actor.morale = 0;
       this.battle.fallen.push(actor.id);
       if (!(this.battle.absentActors ||= []).includes(actor.id)) this.battle.absentActors.push(actor.id);
       this.releaseActorFromWork(actor);
       return true;
     }
-    // Guard retains 1 map HP; absentActors keeps it knocked out for the rest of this battle.
-    const fallenGuard = actor.k === 'guard' && this.battle;
-    actor.morale = fallenGuard ? 1 : 0; actor.recoverUntil = fallenGuard ? 0 : now + RECOVERY_MS;
-    if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
+    actor.morale = 0; actor.recoverUntil = now + RECOVERY_MS;
+    if (this.battle && !(this.battle.absentActors ||= []).includes(actor.id)) this.battle.absentActors.push(actor.id);
     this.releaseActorFromWork(actor);
-    if (!fallenGuard && actor.k !== 'guard') {
-      actor.recoveryVersion = 2;
-      actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
-    }
+    this.startActorRecoveryRest(actor, now);
     return true;
   },
   /** ปล่อยตัวละครออกจากงานที่ทำอยู่ (สถานี/พาวิญญาณ/ก่อสร้าง) — ใช้ทั้งตอนล้มและตอนไปพักศาลา */
@@ -690,15 +693,15 @@ const API = {
     syncRoster(this);
     let changed = false;
     for (const actor of Object.values(this.roster)) {
-      if (actor.recoverUntil && actor.k !== 'guard' && !actor.teaRest) {
-        actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+      if (actor.recoverUntil && !actor.teaRest) {
+        this.startActorRecoveryRest(actor, now);
         changed = true;
       }
       if (actor.teaRest) {
         if (actor.teaRest.recovery && this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
         changed = this.updateGuardRest(actor, now) || changed; continue;
       }
-      if (this.battle?.fallen?.includes(actor.id) && actor.k !== 'guard' && actor.morale > 0) {      // revived in the middle of the battle: back on its feet and in the fight
+      if (this.battle?.fallen?.includes(actor.id) && actor.morale > 0) {      // revived in the middle of the battle: back on its feet and in the fight
         this.battle.fallen = this.battle.fallen.filter(id => id !== actor.id); this.battle.absentActors = (this.battle.absentActors || []).filter(id => id !== actor.id); changed = true;
       }
       if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;

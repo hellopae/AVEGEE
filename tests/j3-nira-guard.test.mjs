@@ -20,14 +20,15 @@ test('J3 bag rejects other recipients; Nira food restores hunger only and medici
  }
  g.hp=1;g.inventory.health=1;assert.ok(g.useBag('health'));assert.ok(g.hp>1);
 });
-test('J3 fallen guard stays out of current battle, returns to map/reload at HP 1 without auto healing',()=>{
+test('J3 fallen guard (owner 6 Nov: like every teammate) lies down out of the current battle, rests at the tea house 120 s after it, then returns on duty',()=>{
  const g=game();g.startBattle({id:99,who:'test',deserved:4,resist:true});g.guard.morale=1;
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});
  const random=Math.random;Math.random=()=>.99;
  try { assert.ok(g.battleAct('atk')); } finally {Math.random=random;}
- assert.equal(g.guard.morale,1);assert.equal(g.enemyGuard(),null);assert.equal(g.guardActive(),false);assert.equal(g.battleAct('guard'),false);
- g.battle.over='win';g.endBattle();assert.equal(g.guard.morale,1);assert.ok(g.guardActive());
- const copy=reload(g);copy.updateActorRecovery(Date.now()+300000);assert.equal(copy.guard.morale,1);assert.ok(copy.guardActive());
+ assert.equal(g.guard.morale,0);assert.equal(g.enemyGuard(),null);assert.equal(g.guardActive(),false);assert.equal(g.battleAct('guard'),false);assert.ok(g.battle.fallen.includes(g.guard.id));
+ g.battle.over='win';g.endBattle();assert.ok(g.guard.teaRest?.recovery);assert.equal(g.guardActive(),false,'off the gate while he rests');
+ const until=g.guard.recoverUntil;assert.ok(until>Date.now()+110000);
+ const copy=reload(g);copy.updateActorRecovery(until-1);assert.equal(copy.guardActive(),false);copy.updateActorRecovery(until+1);assert.equal(copy.guard.morale,50);assert.ok(copy.guardActive());
 });
 test('J3 guard travels on map, rests exactly 120 s across saves, resumes original post and automatic combat slot',()=>{
  const g=game();tea(g);g.guard.morale=99;g.guard.at='patrol';g.guard.path=[[1,2]];g.guard.target=[1,2];
