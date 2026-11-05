@@ -89,12 +89,24 @@ const terrain = (folder, name) => ({
   fullPx:{ w:4915, h:3277 }, chunk:1024, repairs:false,
 });
 
+// Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only (v7 = Codex 2x redraw of v5, same 5x4 grid of 2048 px chunks;
+// the repairs of v5 are painted for v5 pixels, so v7 turns them off).  Everything else (chunk grid, preview, minimap, fluid masks) reads this.
+const V7_DIR = 'img/map-zone1/v7/';
+export const ZONE1_GROUND = Object.freeze({
+  v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
+                      fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
+  v7: Object.freeze({ dir:V7_DIR, preview:V7_DIR + 'zone1-terrain-v7-preview.webp',   // built from parts: the folder arrives with Codex's 2x redraw, until then no literal URL may point at it
+                      fullPx:Object.freeze({ w:9830, h:6554 }), chunk:2048, repairs:false }),
+});
+export const ZONE1_GROUND_SET = 'v5';
+
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {
   th: {
     enabled: true,
-    terrain: { dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
-               fullPx:{ w:4915, h:3277 }, chunk:1024, repairs:true },
+    terrain: ZONE1_GROUND[ZONE1_GROUND_SET],
+    // Z1-V5-FX: painted fluid / cloud frames (layout is in world units, so it does not care which ground set is on).
+    fluidFx: { dir:'img/map-zone1/v5-fx/' },
     flowUrl: 'img/map-zone1/v4/flow-v4.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
     art: { ...ZONE1_ART },

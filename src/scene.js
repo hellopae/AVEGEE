@@ -14,6 +14,7 @@ import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
+import { drawTownFluidFx } from './town-fluid-fx.js?v=v5fx';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
@@ -272,7 +273,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
-  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
+  if(town&&townTerrainImage())drawTownFluidFx(ctx,t,{reduced,paused:!!g.paused});   // Z1-V5-FX: painted lava / river / fall / cloud-sea frames
+  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground (off while the painted frames own them)
   drawTownGround(ctx, g, t);
   if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
   if (isTownZone(g.zone)) {

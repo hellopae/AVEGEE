@@ -2,6 +2,7 @@
 import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES} from './town-layout.js?v=k1d';
 import {activeTownZone} from './zone-skin.js';
 import {drawLocalLight} from './scene-style.js';
+import {townFluidOwnsClouds} from './town-fluid-fx.js?v=v5fx';
 const windows=[...TOWN_HOUSE_SITES,...Object.values(TOWN_STATION_SITES)];
 const frac=n=>n-Math.floor(n),seed=n=>frac(Math.sin(n*127.1+311.7)*43758.5453),mod=(n,d)=>((n%d)+d)%d;
 function view(ctx){const m=ctx.getTransform?.()||{a:1,d:1,e:0,f:0};return{x:-m.e/m.a,y:-m.f/m.d,w:ctx.canvas.width/m.a,h:ctx.canvas.height/m.d};}
@@ -20,6 +21,7 @@ function cloudSprite(){
 // Thin cloud banks move above the painted cloud biome.  This is a ground pass so they never wash
 // over characters, dialogue or buildings in the shared depth queue.
 export function drawTownClouds(ctx,time,reduced=false){
+ if(townFluidOwnsClouds(reduced))return;   // Z1-V5-FX: the painted cloud-sea replaces these gradient banks
  const art=cloudSprite();if(!art)return;const v=view(ctx),t=reduced?0:time/1000;
  const banks=[[1650,150,340,.10],[2080,310,420,.075],[2620,470,380,.09],[3040,255,300,.065]];
  ctx.save();ctx.globalCompositeOperation='screen';
