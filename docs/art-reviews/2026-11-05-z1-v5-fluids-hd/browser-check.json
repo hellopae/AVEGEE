@@ -1,0 +1,9 @@
+{
+  "attempted": true,
+  "tool": "Python Playwright chromium.launch(headless=True)",
+  "result": "TargetClosedError: BrowserType.launch: Target page, context or browser has been closed",
+  "browserPlayback": "not validated",
+  "interactionTests": "not run",
+  "clipRenderer": "offline reference raster compositor",
+  "claim": "No browser or artistic approval is claimed."
+}

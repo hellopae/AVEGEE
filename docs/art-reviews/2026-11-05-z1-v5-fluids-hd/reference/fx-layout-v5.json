@@ -1,0 +1,2161 @@
+{
+  "schemaVersion": 1,
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "maskPolicy": "destination-in region mask after drawing every layer; optional clipMask further narrows bank foam",
+  "animationPolicy": "painted frame replacement only; fixed placement; scrollDir metadata only, scrollSpeed=0",
+  "assets": [
+    {
+      "id": "spirit-river",
+      "sheet": "sheets/spirit-river.webp",
+      "frameW": 384,
+      "frameH": 192,
+      "frames": 8,
+      "new": false,
+      "sourceRun": "FX-ART-Z1"
+    },
+    {
+      "id": "lava-surface",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "new": false,
+      "sourceRun": "FX-ART-Z1"
+    },
+    {
+      "id": "ice-stream",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "source": "sources/ice-stream.webp",
+      "frameStrip": "strips/ice-stream-frame-strip.jpg",
+      "new": true
+    },
+    {
+      "id": "waterfall-ice-summit",
+      "sheet": "sheets/waterfall-ice-summit.webp",
+      "frameW": 173,
+      "frameH": 438,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-summit-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.574779101068712,
+        2.5601562186282227
+      ]
+    },
+    {
+      "id": "waterfall-ice-upper-bridge",
+      "sheet": "sheets/waterfall-ice-upper-bridge.webp",
+      "frameW": 171,
+      "frameH": 264,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-upper-bridge-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5749541289238875,
+        2.560156154009297
+      ]
+    },
+    {
+      "id": "waterfall-ice-upper-right",
+      "sheet": "sheets/waterfall-ice-upper-right.webp",
+      "frameW": 179,
+      "frameH": 278,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-upper-right-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5742772464955315,
+        2.5601563058307466
+      ]
+    },
+    {
+      "id": "waterfall-ice-plaza-right",
+      "sheet": "sheets/waterfall-ice-plaza-right.webp",
+      "frameW": 153,
+      "frameH": 212,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-plaza-right-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.576737082884369,
+        2.560156121218562
+      ]
+    },
+    {
+      "id": "waterfall-ice-center-step",
+      "sheet": "sheets/waterfall-ice-center-step.webp",
+      "frameW": 219,
+      "frameH": 278,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-center-step-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.571638328543119,
+        2.5601563058307466
+      ]
+    },
+    {
+      "id": "waterfall-ice-center-bridge",
+      "sheet": "sheets/waterfall-ice-center-bridge.webp",
+      "frameW": 233,
+      "frameH": 256,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-center-bridge-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.57092980158932,
+        2.560156169526341
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-1",
+      "sheet": "sheets/waterfall-ice-lower-1.webp",
+      "frameW": 181,
+      "frameH": 238,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-lower-1-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5741175185620895,
+        2.5601561394050196
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-2",
+      "sheet": "sheets/waterfall-ice-lower-2.webp",
+      "frameW": 145,
+      "frameH": 198,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-lower-2-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5776728378524676,
+        2.5601562367668693
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-3",
+      "sheet": "sheets/waterfall-ice-lower-3.webp",
+      "frameW": 207,
+      "frameH": 230,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-lower-3-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.572322653265073,
+        2.56015615616819
+      ]
+    },
+    {
+      "id": "waterfall-ice-mouth",
+      "sheet": "sheets/waterfall-ice-mouth.webp",
+      "frameW": 219,
+      "frameH": 210,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-mouth-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.571638328543119,
+        2.560156359720987
+      ]
+    },
+    {
+      "id": "waterfall-ice-east-cliff",
+      "sheet": "sheets/waterfall-ice-east-cliff.webp",
+      "frameW": 193,
+      "frameH": 328,
+      "frames": 8,
+      "source": "sources/waterfall-ice.webp; common crop (124, 0, 320, 444); map-specific fixed mask",
+      "frameStrip": "strips/waterfall-ice-east-cliff-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.573228688699993,
+        2.560156256951644
+      ]
+    },
+    {
+      "id": "lavafall-volcano",
+      "sheet": "sheets/lavafall-volcano.webp",
+      "frameW": 201,
+      "frameH": 330,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-volcano-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5726952810112818,
+        2.560156302972931
+      ]
+    },
+    {
+      "id": "lavafall-upper-left",
+      "sheet": "sheets/lavafall-upper-left.webp",
+      "frameW": 121,
+      "frameH": 198,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-upper-left-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5812281568900337,
+        2.5601562367668693
+      ]
+    },
+    {
+      "id": "lavafall-upper-step",
+      "sheet": "sheets/lavafall-upper-step.webp",
+      "frameW": 209,
+      "frameH": 330,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-upper-step-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5722029047185893,
+        2.560156302972931
+      ]
+    },
+    {
+      "id": "lavafall-west",
+      "sheet": "sheets/lavafall-west.webp",
+      "frameW": 229,
+      "frameH": 338,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-west-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.571123565279368,
+        2.5601562876946087
+      ]
+    },
+    {
+      "id": "lavafall-bridge",
+      "sheet": "sheets/lavafall-bridge.webp",
+      "frameW": 229,
+      "frameH": 312,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-bridge-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.571123565279368,
+        2.5601562876946087
+      ]
+    },
+    {
+      "id": "lavafall-middle",
+      "sheet": "sheets/lavafall-middle.webp",
+      "frameW": 247,
+      "frameH": 356,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-middle-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5703019199426915,
+        2.5601563018570985
+      ]
+    },
+    {
+      "id": "lavafall-lower-step",
+      "sheet": "sheets/lavafall-lower-step.webp",
+      "frameW": 271,
+      "frameH": 318,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-lower-step-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.5693769706457688,
+        2.56015622427516
+      ]
+    },
+    {
+      "id": "lavafall-mouth",
+      "sheet": "sheets/lavafall-mouth.webp",
+      "frameW": 173,
+      "frameH": 314,
+      "frames": 8,
+      "source": "sources/lavafall.webp; common crop (99, 0, 347, 444); map-specific fixed mask",
+      "frameStrip": "strips/lavafall-mouth-frame-strip.jpg",
+      "new": true,
+      "outputPixelsPerWorldUnit": [
+        2.574779101068712,
+        2.5601563358651163
+      ]
+    },
+    {
+      "id": "fog-bank-valleys",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "source": "sources/fog-bank.webp",
+      "frameStrip": "strips/fog-bank-valleys-frame-strip.jpg",
+      "new": true
+    },
+    {
+      "id": "bank-foam-spirit",
+      "sheet": "sheets/bank-foam-spirit.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "source": "sources/bank-foam-spirit.webp",
+      "frameStrip": "strips/bank-foam-spirit-frame-strip.jpg",
+      "new": true
+    },
+    {
+      "id": "bank-foam-ice",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "source": "sources/bank-foam-ice.webp",
+      "frameStrip": "strips/bank-foam-ice-frame-strip.jpg",
+      "new": true
+    }
+  ],
+  "pieces": [
+    {
+      "id": "spirit-river--river-main",
+      "sheet": "sheets/spirit-river.webp",
+      "frameW": 384,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "regionId": "river-main",
+      "scrollDir": [
+        1,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/river-main.png",
+      "maskRectPx": [
+        0,
+        2127,
+        2363,
+        395
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150.0,
+        75.0
+      ]
+    },
+    {
+      "id": "spirit-river--river-east",
+      "sheet": "sheets/spirit-river.webp",
+      "frameW": 384,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "regionId": "river-east",
+      "scrollDir": [
+        1,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/river-east.png",
+      "maskRectPx": [
+        2565,
+        2168,
+        2350,
+        376
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-upper",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-upper",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-upper.png",
+      "maskRectPx": [
+        316,
+        165,
+        1077,
+        610
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-left",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-left",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-left.png",
+      "maskRectPx": [
+        40,
+        619,
+        464,
+        405
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-middle",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-middle",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-middle.png",
+      "maskRectPx": [
+        1064,
+        845,
+        409,
+        364
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-lower",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-lower",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-lower.png",
+      "maskRectPx": [
+        1061,
+        1269,
+        637,
+        938
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-left-bottom",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-left-bottom",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-left-bottom.png",
+      "maskRectPx": [
+        238,
+        1155,
+        205,
+        181
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "lava-surface--lava-southwest",
+      "sheet": "sheets/lava-surface.webp",
+      "frameW": 320,
+      "frameH": 192,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.48,
+      "regionId": "lava-southwest",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lava-southwest.png",
+      "maskRectPx": [
+        321,
+        1738,
+        257,
+        262
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        125.0,
+        75.0
+      ]
+    },
+    {
+      "id": "ice-stream--ice-upper",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.4,
+      "regionId": "ice-upper",
+      "scrollDir": [
+        0.4,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-upper.png",
+      "maskRectPx": [
+        3673,
+        577,
+        586,
+        342
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "ice-stream--ice-central",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.4,
+      "regionId": "ice-central",
+      "scrollDir": [
+        -0.55,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-central.png",
+      "maskRectPx": [
+        3146,
+        928,
+        356,
+        339
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "ice-stream--ice-lower",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.4,
+      "regionId": "ice-lower",
+      "scrollDir": [
+        0.6,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-lower.png",
+      "maskRectPx": [
+        3074,
+        1337,
+        1003,
+        672
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "ice-stream--ice-mouth",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.4,
+      "regionId": "ice-mouth",
+      "scrollDir": [
+        0.4,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-mouth.png",
+      "maskRectPx": [
+        4069,
+        2050,
+        197,
+        131
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "ice-stream--ice-east",
+      "sheet": "sheets/ice-stream.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.4,
+      "regionId": "ice-east",
+      "scrollDir": [
+        0.3,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-east.png",
+      "maskRectPx": [
+        4650,
+        1056,
+        265,
+        256
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "waterfall-ice-summit--waterfall-ice-summit",
+      "sheet": "sheets/waterfall-ice-summit.webp",
+      "frameW": 173,
+      "frameH": 438,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-summit",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-summit.png",
+      "maskRectPx": [
+        4420,
+        272,
+        86,
+        219
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3453.26551,
+        212.48703,
+        67.19023,
+        171.08331
+      ]
+    },
+    {
+      "id": "waterfall-ice-upper-bridge--waterfall-ice-upper-bridge",
+      "sheet": "sheets/waterfall-ice-upper-bridge.webp",
+      "frameW": 171,
+      "frameH": 264,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-upper-bridge",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-upper-bridge.png",
+      "maskRectPx": [
+        3769,
+        580,
+        85,
+        132
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        2944.65107,
+        453.09735,
+        66.40895,
+        103.11871
+      ]
+    },
+    {
+      "id": "waterfall-ice-upper-right--waterfall-ice-upper-right",
+      "sheet": "sheets/waterfall-ice-upper-right.webp",
+      "frameW": 179,
+      "frameH": 278,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-upper-right",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-upper-right.png",
+      "maskRectPx": [
+        3955,
+        688,
+        89,
+        139
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3089.96948,
+        537.4672,
+        69.53408,
+        108.58712
+      ]
+    },
+    {
+      "id": "waterfall-ice-plaza-right--waterfall-ice-plaza-right",
+      "sheet": "sheets/waterfall-ice-plaza-right.webp",
+      "frameW": 153,
+      "frameH": 212,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-plaza-right",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-plaza-right.png",
+      "maskRectPx": [
+        4198,
+        803,
+        76,
+        106
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3279.82096,
+        627.30546,
+        59.37742,
+        82.80745
+      ]
+    },
+    {
+      "id": "waterfall-ice-center-step--waterfall-ice-center-step",
+      "sheet": "sheets/waterfall-ice-center-step.webp",
+      "frameW": 219,
+      "frameH": 278,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-center-step",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-center-step.png",
+      "maskRectPx": [
+        3332,
+        999,
+        109,
+        139
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        2603.23093,
+        780.42112,
+        85.15972,
+        108.58712
+      ]
+    },
+    {
+      "id": "waterfall-ice-center-bridge--waterfall-ice-center-bridge",
+      "sheet": "sheets/waterfall-ice-center-bridge.webp",
+      "frameW": 233,
+      "frameH": 256,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-center-bridge",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-center-bridge.png",
+      "maskRectPx": [
+        3096,
+        1344,
+        116,
+        128
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        2418.84842,
+        1049.93592,
+        90.62869,
+        99.9939
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-1--waterfall-ice-lower-1",
+      "sheet": "sheets/waterfall-ice-lower-1.webp",
+      "frameW": 181,
+      "frameH": 238,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-lower-1",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-lower-1.png",
+      "maskRectPx": [
+        3840,
+        1589,
+        90,
+        119
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3000.12208,
+        1241.33049,
+        70.31536,
+        92.96308
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-2--waterfall-ice-lower-2",
+      "sheet": "sheets/waterfall-ice-lower-2.webp",
+      "frameW": 145,
+      "frameH": 198,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-lower-2",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-lower-2.png",
+      "maskRectPx": [
+        3888,
+        1737,
+        72,
+        99
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3037.6236,
+        1356.94843,
+        56.25229,
+        77.33903
+      ]
+    },
+    {
+      "id": "waterfall-ice-lower-3--waterfall-ice-lower-3",
+      "sheet": "sheets/waterfall-ice-lower-3.webp",
+      "frameW": 207,
+      "frameH": 230,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-lower-3",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-lower-3.png",
+      "maskRectPx": [
+        3896,
+        1842,
+        103,
+        115
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3043.87386,
+        1438.97467,
+        80.47202,
+        89.83827
+      ]
+    },
+    {
+      "id": "waterfall-ice-mouth--waterfall-ice-mouth",
+      "sheet": "sheets/waterfall-ice-mouth.webp",
+      "frameW": 219,
+      "frameH": 210,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-mouth",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-mouth.png",
+      "maskRectPx": [
+        4106,
+        2058,
+        109,
+        105
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3207.94303,
+        1607.71437,
+        85.15972,
+        82.02624
+      ]
+    },
+    {
+      "id": "waterfall-ice-east-cliff--waterfall-ice-east-cliff",
+      "sheet": "sheets/waterfall-ice-east-cliff.webp",
+      "frameW": 193,
+      "frameH": 328,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.46,
+      "regionId": "waterfall-ice-east-cliff",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/waterfall-ice-east-cliff.png",
+      "maskRectPx": [
+        4689,
+        1065,
+        96,
+        164
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        3663.43032,
+        831.98047,
+        75.00305,
+        128.11718
+      ]
+    },
+    {
+      "id": "lavafall-volcano--lavafall-volcano",
+      "sheet": "sheets/lavafall-volcano.webp",
+      "frameW": 201,
+      "frameH": 330,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-volcano",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-volcano.png",
+      "maskRectPx": [
+        723,
+        73,
+        100,
+        165
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        564.86673,
+        57.02777,
+        78.12818,
+        128.89838
+      ]
+    },
+    {
+      "id": "lavafall-upper-left--lavafall-upper-left",
+      "sheet": "sheets/lavafall-upper-left.webp",
+      "frameW": 121,
+      "frameH": 198,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-upper-left",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-upper-left.png",
+      "maskRectPx": [
+        455,
+        246,
+        60,
+        99
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        355.48321,
+        192.17577,
+        46.87691,
+        77.33903
+      ]
+    },
+    {
+      "id": "lavafall-upper-step--lavafall-upper-step",
+      "sheet": "sheets/lavafall-upper-step.webp",
+      "frameW": 209,
+      "frameH": 330,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-upper-step",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-upper-step.png",
+      "maskRectPx": [
+        1121,
+        423,
+        104,
+        165
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        875.81689,
+        330.44858,
+        81.25331,
+        128.89838
+      ]
+    },
+    {
+      "id": "lavafall-west--lavafall-west",
+      "sheet": "sheets/lavafall-west.webp",
+      "frameW": 229,
+      "frameH": 338,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-west",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-west.png",
+      "maskRectPx": [
+        188,
+        734,
+        114,
+        169
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        146.88098,
+        573.4025,
+        89.06612,
+        132.02319
+      ]
+    },
+    {
+      "id": "lavafall-bridge--lavafall-bridge",
+      "sheet": "sheets/lavafall-bridge.webp",
+      "frameW": 229,
+      "frameH": 312,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-bridge",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-bridge.png",
+      "maskRectPx": [
+        1117,
+        865,
+        114,
+        156
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        872.69176,
+        675.74001,
+        89.06612,
+        121.86756
+      ]
+    },
+    {
+      "id": "lavafall-middle--lavafall-middle",
+      "sheet": "sheets/lavafall-middle.webp",
+      "frameW": 247,
+      "frameH": 356,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-middle",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-middle.png",
+      "maskRectPx": [
+        1100,
+        1282,
+        123,
+        178
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        859.40997,
+        1001.50137,
+        96.09766,
+        139.05401
+      ]
+    },
+    {
+      "id": "lavafall-lower-step--lavafall-lower-step",
+      "sheet": "sheets/lavafall-lower-step.webp",
+      "frameW": 271,
+      "frameH": 318,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-lower-step",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-lower-step.png",
+      "maskRectPx": [
+        1346,
+        1681,
+        135,
+        159
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        1051.60529,
+        1313.2011,
+        105.47304,
+        124.21117
+      ]
+    },
+    {
+      "id": "lavafall-mouth--lavafall-mouth",
+      "sheet": "sheets/lavafall-mouth.webp",
+      "frameW": 173,
+      "frameH": 314,
+      "frames": 8,
+      "fps": 7,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.5,
+      "regionId": "lavafall-mouth",
+      "scrollDir": [
+        0,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/lavafall-mouth.png",
+      "maskRectPx": [
+        1203,
+        2033,
+        86,
+        157
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "rectWorld": [
+        939.88199,
+        1588.18431,
+        67.19023,
+        122.64876
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-west-upper",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-west-upper",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-west-upper.png",
+      "maskRectPx": [
+        1363,
+        217,
+        247,
+        240
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-west-middle",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-west-middle",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-west-middle.png",
+      "maskRectPx": [
+        0,
+        1422,
+        300,
+        226
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-west-mouth",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-west-mouth",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-west-mouth.png",
+      "maskRectPx": [
+        28,
+        2035,
+        336,
+        182
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-gold-upper",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-gold-upper",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-gold-upper.png",
+      "maskRectPx": [
+        2640,
+        482,
+        362,
+        357
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-gold-lower",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-gold-lower",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-gold-lower.png",
+      "maskRectPx": [
+        3140,
+        847,
+        174,
+        174
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-east-valley",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-east-valley",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-east-valley.png",
+      "maskRectPx": [
+        4444,
+        1360,
+        179,
+        156
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "fog-bank-valleys--fog-bank-south-center",
+      "sheet": "sheets/fog-bank-valleys.webp",
+      "frameW": 384,
+      "frameH": 384,
+      "frames": 8,
+      "fps": 3,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.16,
+      "regionId": "fog-bank-south-center",
+      "scrollDir": [
+        0,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/fog-bank-south-center.png",
+      "maskRectPx": [
+        3202,
+        1990,
+        213,
+        144
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        150
+      ]
+    },
+    {
+      "id": "bank-foam-spirit--river-main",
+      "sheet": "sheets/bank-foam-spirit.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "river-main",
+      "scrollDir": [
+        1,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/river-main.png",
+      "maskRectPx": [
+        0,
+        2127,
+        2363,
+        395
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/river-main-bank.png"
+    },
+    {
+      "id": "bank-foam-spirit--river-east",
+      "sheet": "sheets/bank-foam-spirit.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "river-east",
+      "scrollDir": [
+        1,
+        0
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/river-east.png",
+      "maskRectPx": [
+        2565,
+        2168,
+        2350,
+        376
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/river-east-bank.png"
+    },
+    {
+      "id": "bank-foam-ice--ice-upper",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "ice-upper",
+      "scrollDir": [
+        0.4,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-upper.png",
+      "maskRectPx": [
+        3673,
+        577,
+        586,
+        342
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/ice-upper-bank.png"
+    },
+    {
+      "id": "bank-foam-ice--ice-central",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "ice-central",
+      "scrollDir": [
+        -0.55,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-central.png",
+      "maskRectPx": [
+        3146,
+        928,
+        356,
+        339
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/ice-central-bank.png"
+    },
+    {
+      "id": "bank-foam-ice--ice-lower",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "ice-lower",
+      "scrollDir": [
+        0.6,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-lower.png",
+      "maskRectPx": [
+        3074,
+        1337,
+        1003,
+        672
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/ice-lower-bank.png"
+    },
+    {
+      "id": "bank-foam-ice--ice-mouth",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "ice-mouth",
+      "scrollDir": [
+        0.4,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-mouth.png",
+      "maskRectPx": [
+        4069,
+        2050,
+        197,
+        131
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/ice-mouth-bank.png"
+    },
+    {
+      "id": "bank-foam-ice--ice-east",
+      "sheet": "sheets/bank-foam-ice.webp",
+      "frameW": 384,
+      "frameH": 96,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "blend": "overlay",
+      "opacity": 0.28,
+      "regionId": "ice-east",
+      "scrollDir": [
+        0.3,
+        1
+      ],
+      "scrollSpeed": 0,
+      "mask": "masks/regions/ice-east.png",
+      "maskRectPx": [
+        4650,
+        1056,
+        265,
+        256
+      ],
+      "frameOrder": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tileInRegion": true,
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "clipMask": "masks/regions/ice-east-bank.png"
+    }
+  ]
+}

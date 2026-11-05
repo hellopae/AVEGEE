@@ -1,0 +1,158 @@
+{
+  "renderer": "offline reference raster compositor, not browser capture",
+  "clips": [
+    {
+      "view": "lava",
+      "file": "preview-lava.mp4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "12/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "12.000000"
+        }
+      }
+    },
+    {
+      "view": "ice",
+      "file": "preview-ice.mp4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "12/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "12.000000"
+        }
+      }
+    },
+    {
+      "view": "heaven",
+      "file": "preview-heaven.mp4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "12/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "12.000000"
+        }
+      }
+    }
+  ],
+  "containment": [
+    {
+      "time": 0,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41255
+    },
+    {
+      "time": 0.125,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41254
+    },
+    {
+      "time": 0.5,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41217
+    },
+    {
+      "time": 1,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41228
+    },
+    {
+      "time": 3,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41210
+    },
+    {
+      "time": 6,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41210
+    },
+    {
+      "time": 11.9,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41190
+    },
+    {
+      "time": 80,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41033
+    },
+    {
+      "time": 300,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41017
+    },
+    {
+      "time": 900,
+      "changedOutsideCloudMask": 0,
+      "changedInside": 41167
+    }
+  ],
+  "cloudMotionChangedPixels0to6": 34218,
+  "puffMotion": [
+    {
+      "id": "cloud-puff-1",
+      "visiblePixelsAt0": 1300,
+      "visiblePixelsAt6": 1196,
+      "changedPixels0to6": 1842,
+      "driftWorld": [
+        3,
+        -0.35
+      ]
+    },
+    {
+      "id": "cloud-puff-2",
+      "visiblePixelsAt0": 1516,
+      "visiblePixelsAt6": 1224,
+      "changedPixels0to6": 1678,
+      "driftWorld": [
+        -2.4,
+        0.25
+      ]
+    },
+    {
+      "id": "cloud-puff-3",
+      "visiblePixelsAt0": 1684,
+      "visiblePixelsAt6": 1678,
+      "changedPixels0to6": 2207,
+      "driftWorld": [
+        2,
+        0.3
+      ]
+    },
+    {
+      "id": "cloud-puff-4",
+      "visiblePixelsAt0": 1002,
+      "visiblePixelsAt6": 752,
+      "changedPixels0to6": 1061,
+      "driftWorld": [
+        -2.6,
+        -0.2
+      ]
+    }
+  ],
+  "claim": "Numerical raster evidence only; browser playback and artistic approval are separate."
+}

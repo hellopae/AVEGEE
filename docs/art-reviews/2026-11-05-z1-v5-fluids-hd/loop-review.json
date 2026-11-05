@@ -1,0 +1,136 @@
+{
+  "method": "128px premultiplied RGBA MAE, source order row-major A1..A4 B1..B4; no temporal blending, warping, fades or duplicate endpoints",
+  "assets": [
+    {
+      "id": "lava-surface",
+      "nativeCellSize": [
+        627,
+        627
+      ],
+      "distinctHashes": 8,
+      "adjacentPremultipliedMAE": [
+        0.01474465762867647,
+        0.014744298598345588,
+        0.01605996524586397,
+        0.023568187040441176,
+        0.010950245576746325,
+        0.012904806698069853,
+        0.012874468635110294,
+        0.027425190046721813
+      ],
+      "medianWithinBatch": 0.01382455264820772,
+      "batchBoundaryRatios": [
+        1.7048064874270392,
+        1.9838030744725286
+      ],
+      "boundaryCriterion": 1.5,
+      "meetsBoundaryCriterion": false,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "lavafall",
+      "nativeCellSize": [
+        314,
+        534
+      ],
+      "distinctHashes": 8,
+      "adjacentPremultipliedMAE": [
+        0.029633166743259803,
+        0.029412040666450402,
+        0.03181332117041823,
+        0.027499307047995365,
+        0.02091222543800762,
+        0.021179534783046183,
+        0.02346727511278715,
+        0.05094015752842957
+      ],
+      "medianWithinBatch": 0.026439657889618776,
+      "batchBoundaryRatios": [
+        1.0400780207822828,
+        1.9266572109630296
+      ],
+      "boundaryCriterion": 1.5,
+      "meetsBoundaryCriterion": false,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "ice-stream",
+      "nativeCellSize": [
+        627,
+        627
+      ],
+      "distinctHashes": 8,
+      "adjacentPremultipliedMAE": [
+        0.006227381089154412,
+        0.007128607058057598,
+        0.00919333065257353,
+        0.013681987687653187,
+        0.006254846909466912,
+        0.006812600528492647,
+        0.007958326152726717,
+        0.021361466950061275
+      ],
+      "medianWithinBatch": 0.006970603793275122,
+      "batchBoundaryRatios": [
+        1.9628124181800235,
+        3.064507406183337
+      ],
+      "boundaryCriterion": 1.5,
+      "meetsBoundaryCriterion": false,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "waterfall-ice",
+      "nativeCellSize": [
+        242,
+        541
+      ],
+      "distinctHashes": 8,
+      "adjacentPremultipliedMAE": [
+        0.08674905591449203,
+        0.09307935527726716,
+        0.09617255621898729,
+        0.05894374356092008,
+        0.02997948270722198,
+        0.030227857308862575,
+        0.03763256549651876,
+        0.11235533260006669
+      ],
+      "medianWithinBatch": 0.062190810705505396,
+      "batchBoundaryRatios": [
+        0.9477886345627285,
+        1.806622736148389
+      ],
+      "boundaryCriterion": 1.5,
+      "meetsBoundaryCriterion": false,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "cloud-sea",
+      "nativeCellSize": [
+        627,
+        627
+      ],
+      "distinctHashes": 8,
+      "adjacentPremultipliedMAE": [
+        0.012000528971354167,
+        0.009793689204197303,
+        0.011870679668351716,
+        0.037144141103707104,
+        0.007777793734681373,
+        0.007785871917126225,
+        0.008317775352328432,
+        0.040280151367187496
+      ],
+      "medianWithinBatch": 0.009055732278262868,
+      "batchBoundaryRatios": [
+        4.101726946242314,
+        4.448028069897215
+      ],
+      "boundaryCriterion": 1.5,
+      "meetsBoundaryCriterion": false,
+      "temporalSynthesis": false
+    }
+  ],
+  "visualApproval": "pending artist review; numerical continuity does not establish artistic quality"
+}

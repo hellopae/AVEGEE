@@ -1,0 +1,66 @@
+{
+  "method": "Rec.601 grayscale Laplacian CV_64F variance inside eroded authoritative kind mask. Exact same frame index0, camera, output scale 2.56px/world for both runs; densest window selected using old mask only. Actual runtime blend/opacity; opacity increased for visibility so this measures delivered composite, not resolution alone. No sharpening filter.",
+  "samples": [
+    {
+      "kind": "lava",
+      "masterCrop": [
+        1363,
+        1906,
+        320,
+        180
+      ],
+      "pixelsPerWorldUnit": 2.56,
+      "time": 0,
+      "validInteriorPixels": 49128,
+      "oldLaplacianVariance": 141.43080886597778,
+      "newLaplacianVariance": 455.6675160856468,
+      "ratio": 3.2218405575085485
+    },
+    {
+      "kind": "lavafall",
+      "masterCrop": [
+        1161,
+        1660,
+        320,
+        180
+      ],
+      "pixelsPerWorldUnit": 2.56,
+      "time": 0,
+      "validInteriorPixels": 28410,
+      "oldLaplacianVariance": 87.75544581461106,
+      "newLaplacianVariance": 140.0400943555304,
+      "ratio": 1.5957994749565056
+    },
+    {
+      "kind": "ice-stream",
+      "masterCrop": [
+        4595,
+        1112,
+        320,
+        180
+      ],
+      "pixelsPerWorldUnit": 2.56,
+      "time": 0,
+      "validInteriorPixels": 44865,
+      "oldLaplacianVariance": 91.82367192169274,
+      "newLaplacianVariance": 183.71297588743047,
+      "ratio": 2.0007147617022
+    },
+    {
+      "kind": "waterfall",
+      "masterCrop": [
+        4186,
+        274,
+        320,
+        180
+      ],
+      "pixelsPerWorldUnit": 2.56,
+      "time": 0,
+      "validInteriorPixels": 44661,
+      "oldLaplacianVariance": 59.88367968936741,
+      "newLaplacianVariance": 126.94745977516817,
+      "ratio": 2.1199007882227416
+    }
+  ],
+  "limitations": "Laplacian is a local contrast/detail proxy, not perceptual approval. Sources delivered 627px/cell, below requested ~800."
+}
