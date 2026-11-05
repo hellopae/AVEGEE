@@ -1,0 +1,737 @@
+{
+ "img/map-zone1/battle-volcano-v1.webp": {
+  "id": "battle-volcano",
+  "size": [
+   1672,
+   941
+  ],
+  "outdoor": true,
+  "pieces": [
+   {
+    "id": "lavafall-a",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 1451,
+    "box": [
+     398,
+     140,
+     452,
+     300
+    ],
+    "rect": [
+     398,
+     153,
+     54,
+     147
+    ],
+    "kept": true
+   },
+   {
+    "id": "lavafall-b",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 2712,
+    "box": [
+     628,
+     190,
+     690,
+     305
+    ],
+    "rect": [
+     628,
+     197,
+     62,
+     108
+    ],
+    "kept": true
+   },
+   {
+    "id": "lavafall-c",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 1183,
+    "box": [
+     858,
+     245,
+     912,
+     330
+    ],
+    "rect": [
+     863,
+     250,
+     49,
+     80
+    ],
+    "kept": true
+   },
+   {
+    "id": "lava-river-right",
+    "kind": "tile",
+    "pred": "hotLow",
+    "area": 5865,
+    "box": [
+     1090,
+     262,
+     1440,
+     348
+    ],
+    "rect": [
+     1095,
+     262,
+     307,
+     86
+    ],
+    "kept": true,
+    "embers": 5
+   },
+   {
+    "id": "lava-pool-left",
+    "kind": "tile",
+    "pred": "hotLow",
+    "area": 4581,
+    "box": [
+     285,
+     285,
+     572,
+     352
+    ],
+    "rect": [
+     285,
+     285,
+     283,
+     67
+    ],
+    "kept": true,
+    "embers": 3
+   },
+   {
+    "id": "volcano-streams",
+    "kind": "tile",
+    "pred": "hot",
+    "area": 4782,
+    "box": [
+     1120,
+     55,
+     1250,
+     235
+    ],
+    "rect": [
+     1120,
+     55,
+     130,
+     178
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-left",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 653,
+    "box": [
+     8,
+     222,
+     48,
+     290
+    ],
+    "rect": [
+     7,
+     221,
+     42,
+     64
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-right",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 609,
+    "box": [
+     1598,
+     255,
+     1665,
+     335
+    ],
+    "rect": [
+     1612,
+     256,
+     52,
+     74
+    ],
+    "kept": true
+   }
+  ]
+ },
+ "img/map-zone1/battle-ice-v1.webp": {
+  "id": "battle-ice",
+  "size": [
+   1672,
+   940
+  ],
+  "outdoor": true,
+  "pieces": [
+   {
+    "id": "fall-big-right",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 55122,
+    "box": [
+     1150,
+     100,
+     1445,
+     345
+    ],
+    "rect": [
+     1150,
+     100,
+     295,
+     245
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-center",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 17831,
+    "box": [
+     850,
+     262,
+     1075,
+     362
+    ],
+    "rect": [
+     850,
+     262,
+     225,
+     100
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-left",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 6250,
+    "box": [
+     676,
+     200,
+     735,
+     342
+    ],
+    "rect": [
+     676,
+     200,
+     59,
+     142
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-small",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 3547,
+    "box": [
+     1028,
+     145,
+     1078,
+     250
+    ],
+    "rect": [
+     1028,
+     145,
+     50,
+     105
+    ],
+    "kept": true
+   }
+  ]
+ },
+ "img/map-zone1/battle-forest-v1.webp": {
+  "id": "battle-forest",
+  "size": [
+   1672,
+   940
+  ],
+  "outdoor": true,
+  "pieces": [
+   {
+    "id": "fall-a",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 6037,
+    "box": [
+     438,
+     148,
+     508,
+     262
+    ],
+    "rect": [
+     438,
+     148,
+     70,
+     114
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-b",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 4348,
+    "box": [
+     362,
+     272,
+     462,
+     362
+    ],
+    "rect": [
+     365,
+     272,
+     97,
+     90
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-c",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 949,
+    "box": [
+     628,
+     165,
+     695,
+     255
+    ],
+    "rect": [
+     633,
+     165,
+     57,
+     90
+    ],
+    "kept": true
+   },
+   {
+    "id": "pond",
+    "kind": "tile",
+    "pred": "pond",
+    "area": 2247,
+    "box": [
+     358,
+     336,
+     862,
+     402
+    ],
+    "off": "only 2247 px of the painted fluid / flame found (need 3000)"
+   },
+   {
+    "id": "torch-1",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 126,
+    "box": [
+     940,
+     300,
+     985,
+     350
+    ],
+    "rect": [
+     953,
+     316,
+     23,
+     23
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-2",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 385,
+    "box": [
+     1245,
+     310,
+     1290,
+     350
+    ],
+    "rect": [
+     1257,
+     313,
+     34,
+     29
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-3",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 217,
+    "box": [
+     1085,
+     220,
+     1135,
+     262
+    ],
+    "rect": [
+     1097,
+     219,
+     39,
+     30
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-4",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 44,
+    "box": [
+     1595,
+     215,
+     1655,
+     262
+    ],
+    "off": "only 44 px of the painted fluid / flame found (need 120)"
+   }
+  ]
+ },
+ "img/frontier-route/battle-border-v1.webp": {
+  "id": "battle-border",
+  "size": [
+   1672,
+   941
+  ],
+  "outdoor": true,
+  "pieces": [
+   {
+    "id": "lavafall-a",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 2914,
+    "box": [
+     378,
+     160,
+     436,
+     292
+    ],
+    "rect": [
+     378,
+     160,
+     55,
+     132
+    ],
+    "kept": true
+   },
+   {
+    "id": "lava-glow-left",
+    "kind": "tile",
+    "pred": "hot",
+    "area": 1610,
+    "box": [
+     230,
+     100,
+     420,
+     175
+    ],
+    "rect": [
+     271,
+     100,
+     144,
+     75
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-a",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 3547,
+    "box": [
+     1118,
+     200,
+     1172,
+     372
+    ],
+    "rect": [
+     1118,
+     202,
+     51,
+     170
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-b",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 797,
+    "box": [
+     772,
+     190,
+     812,
+     275
+    ],
+    "rect": [
+     780,
+     200,
+     28,
+     65
+    ],
+    "kept": true
+   }
+  ]
+ },
+ "img/frontier-route/battle-cave-v1.webp": {
+  "id": "battle-cave",
+  "size": [
+   1672,
+   941
+  ],
+  "outdoor": false,
+  "pieces": [
+   {
+    "id": "lavafall-a",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 3900,
+    "box": [
+     68,
+     100,
+     132,
+     250
+    ],
+    "rect": [
+     73,
+     100,
+     59,
+     142
+    ],
+    "kept": true
+   },
+   {
+    "id": "lavafall-b",
+    "kind": "rect",
+    "pred": "hotY",
+    "area": 787,
+    "box": [
+     218,
+     160,
+     276,
+     285
+    ],
+    "rect": [
+     218,
+     166,
+     58,
+     101
+    ],
+    "kept": true
+   },
+   {
+    "id": "lava-cascade",
+    "kind": "tile",
+    "pred": "hot",
+    "area": 8267,
+    "box": [
+     0,
+     285,
+     200,
+     480
+    ],
+    "rect": [
+     0,
+     285,
+     187,
+     195
+    ],
+    "kept": true,
+    "embers": 3
+   },
+   {
+    "id": "fall-far",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 3906,
+    "box": [
+     1296,
+     128,
+     1330,
+     292
+    ],
+    "rect": [
+     1296,
+     128,
+     34,
+     164
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-1",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 264,
+    "box": [
+     318,
+     185,
+     352,
+     225
+    ],
+    "rect": [
+     325,
+     188,
+     24,
+     33
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-2",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 153,
+    "box": [
+     690,
+     262,
+     722,
+     300
+    ],
+    "rect": [
+     699,
+     267,
+     21,
+     24
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-3",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 189,
+    "box": [
+     1370,
+     320,
+     1400,
+     360
+    ],
+    "rect": [
+     1373,
+     323,
+     19,
+     38
+    ],
+    "kept": true
+   },
+   {
+    "id": "torch-4",
+    "kind": "pulse",
+    "pred": "flame",
+    "area": 357,
+    "box": [
+     1612,
+     350,
+     1652,
+     395
+    ],
+    "rect": [
+     1614,
+     360,
+     34,
+     36
+    ],
+    "kept": true
+   }
+  ]
+ },
+ "img/map-zone1/arena-v1.webp": {
+  "id": "arena-th",
+  "size": [
+   1672,
+   941
+  ],
+  "outdoor": true,
+  "pieces": [
+   {
+    "id": "lava-streams",
+    "kind": "tile",
+    "pred": "hot",
+    "area": 10712,
+    "box": [
+     400,
+     80,
+     640,
+     260
+    ],
+    "rect": [
+     400,
+     80,
+     240,
+     180
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-a",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 2334,
+    "box": [
+     1455,
+     150,
+     1500,
+     215
+    ],
+    "rect": [
+     1455,
+     150,
+     45,
+     65
+    ],
+    "kept": true
+   },
+   {
+    "id": "fall-b",
+    "kind": "rect",
+    "pred": "fall",
+    "area": 1454,
+    "box": [
+     1530,
+     265,
+     1572,
+     320
+    ],
+    "rect": [
+     1530,
+     273,
+     42,
+     47
+    ],
+    "kept": true
+   },
+   {
+    "id": "river",
+    "kind": "tile",
+    "pred": "pond",
+    "area": 14011,
+    "box": [
+     1300,
+     330,
+     1560,
+     440
+    ],
+    "rect": [
+     1300,
+     330,
+     260,
+     110
+    ],
+    "kept": true
+   }
+  ]
+ }
+}
