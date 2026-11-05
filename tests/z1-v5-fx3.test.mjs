@@ -19,10 +19,10 @@ test('canteen: mirrored like the old one and drawn lower (visual only), station 
   assert.match(data, /bx:foodSite\.x,by:foodSite\.y,bw:foodSite\.w,x:foodSite\.x,y:foodSite\.y\+38/, 'the station def (position, worker spot) is not moved');
 });
 
-test('foam: 36 hand-checked crests, each cut / snap documented, anchors on the shore band', () => {
+test('foam: 30 hand-checked crests (36 after FX3, 6 more cut in Claudy review), each cut / snap documented, anchors on the shore band', () => {
   const layout = JSON.parse(readFileSync(file('img/map-zone1/v5-fx/fx-layout.json'), 'utf8'));
   const crest = layout.pieces.find(p => p.id === 'river-foam--shore');
-  assert.equal(crest.spots.length, 36);
+  assert.equal(crest.spots.length, 30);
   const src = readFileSync(file('scripts/build-v5-fx2-assets.py'), 'utf8');
   assert.match(src, /HAND_CUT = \[/); assert.match(src, /HAND_CUT_FINAL = \[/); assert.match(src, /def curate_crests/);
   for (const s of crest.spots) assert.ok(s[0] > 0 && s[0] < 3840 && s[1] > 0 && s[1] < 2560);

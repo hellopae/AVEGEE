@@ -304,7 +304,9 @@ def curate_crests(spots):
 #  * second pass, after the baseline snap, by FINAL coordinates: crests on peak slopes / leaf crowns of the south bank, on the lava fall edge (lava is
 #    not the river), and the one on the map-edge mist
 HAND_CUT_FINAL = [(3227.3, 1725.5), (2925.0, 1992.0), (3525.7, 2006.0), (3677.4, 1950.0), (1037.8, 1711.5), (907.7, 1676.6), (35.9, 1761.9),
-                  (554.0, 1962.0), (906.5, 1959.0), (981.1, 1920.6), (1073.4, 1954.0), (1237.1, 1974.0)]
+                  (554.0, 1962.0), (906.5, 1959.0), (981.1, 1920.6), (1073.4, 1954.0), (1237.1, 1974.0),
+                  # Claudy review 5 Nov: south-bank crests still on rocks/leaves + one on the lava junction
+                  (2565.7, 1974.0), (2816.7, 1974.0), (3391.6, 1992.0), (1350.2, 1658.7), (668.8, 1968.0), (1007.1, 1955.0)]
 crests = [c for c in curate_crests(crests_raw) if not any(abs(c[0] - a) < 1.5 and abs(c[1] - b) < 1.5 for a, b in HAND_CUT_FINAL)]
 print('foam crests', len(crests_raw), '->', len(crests))
 new.append(mkpiece('river-foam--shore', 'foam', 'river-foam.webp', (8, 8, 320, 128), 'swell', 'foam-spirit-edge', crests, 'normal', 0.82))

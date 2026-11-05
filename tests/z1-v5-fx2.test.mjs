@@ -54,7 +54,7 @@ print(json.dumps(out))`, file(FX + 'masks/foam-spirit-edge.webp'), JSON.stringif
   for (const [n, [any, solid]] of Object.entries(cov)) assert.ok(any < .35 && solid < .3, `${n} covers ${(any * 100).toFixed(0)}% of its rectangle: a band, not the water`);
   // crest orientation: up-vector of the sprite (sin r, -cos r) points into the water; drift moves toward the shore
   for (const s of crest.spots) { assert.ok(s[2] >= 50 && s[2] <= 90); const up = [Math.sin(s[4]), -Math.cos(s[4])]; assert.ok(s[7] * up[0] + s[8] * up[1] < 0, 'swell drifts toward the shore'); }
-  assert.equal(new Set(crest.spots.map(s => s[6])).size > 30, true, 'each crest has its own period');
+  assert.ok(new Set(crest.spots.map(s => s[6])).size >= crest.spots.length * .9, 'crests break up into their own periods (no shared rhythm)');
   assert.ok(new Set(crest.spots.map(s => Math.round(s[5] * 20))).size > 10, 'and its own phase (waves are not in step)');
 });
 
