@@ -273,7 +273,40 @@ for s, d in copy_from.items():
     shutil.copyfile(d / s, FX / 'sheets' / s)
 
 # foam crests on the purple river shore (river-foam 320x128 x 8)
-crests = crest_spots('spirit')
+crests_raw = crest_spots('spirit')
+# FX3 audit (owner 14:10: "some crests are not on the river"): every candidate was looked at on a contact sheet.  Findings:
+#  * on the SOUTH bank the water is BEHIND the rock peaks / leaf crowns, so the true waterline is the baseline where the water meets the foot of the
+#    foreground; the colour contour also follows the peak silhouettes, which puts crests on top of rocks.  Rule: for a bank whose water lies above
+#    (normal points up) keep a crest only if it is within SOUTH_TOL of the baseline of its neighbourhood, and put it ON that baseline.
+#  * hand-cut (coordinates, not indices): the foot of the ice/lava falls (painted white splash already there), the map-edge mist, and the two crests that
+#    hugged the central-bridge rails (a bridge deck is not a bank).
+HAND_CUT = [(3324.6, 1724.6), (3087.4, 1732.3), (2010.0, 1801.9), (3829.3, 1760.6), (1840.5, 1834.8)]
+SOUTH_TOL = 12
+def curate_crests(spots):
+    w = water['spirit']; H, Wd = w.shape
+    out = []
+    for sp in spots:
+        if any(abs(sp[0] - a) < 1.5 and abs(sp[1] - b) < 1.5 for a, b in HAND_CUT):
+            continue
+        nx, ny = math.sin(sp[4]), -math.cos(sp[4])          # sprite 'up' = into the water
+        if ny < -0.3:                                        # water above the anchor = south bank
+            x = int(sp[0]); best = None
+            for xx in range(max(0, x - 45), min(Wd, x + 46)):
+                col = np.nonzero(w[int(sp[1]) - 80:int(sp[1]) + 40, xx])[0]
+                if col.size:
+                    yb = int(sp[1]) - 80 + col.max()
+                    best = yb if best is None else max(best, yb)
+            if best is None or sp[1] < best - SOUTH_TOL:
+                continue
+            sp = list(sp); sp[1] = round(float(best) - 3, 1)
+        out.append(sp)
+    return out
+#  * second pass, after the baseline snap, by FINAL coordinates: crests on peak slopes / leaf crowns of the south bank, on the lava fall edge (lava is
+#    not the river), and the one on the map-edge mist
+HAND_CUT_FINAL = [(3227.3, 1725.5), (2925.0, 1992.0), (3525.7, 2006.0), (3677.4, 1950.0), (1037.8, 1711.5), (907.7, 1676.6), (35.9, 1761.9),
+                  (554.0, 1962.0), (906.5, 1959.0), (981.1, 1920.6), (1073.4, 1954.0), (1237.1, 1974.0)]
+crests = [c for c in curate_crests(crests_raw) if not any(abs(c[0] - a) < 1.5 and abs(c[1] - b) < 1.5 for a, b in HAND_CUT_FINAL)]
+print('foam crests', len(crests_raw), '->', len(crests))
 new.append(mkpiece('river-foam--shore', 'foam', 'river-foam.webp', (8, 8, 320, 128), 'swell', 'foam-spirit-edge', crests, 'normal', 0.82))
 # glints on the purple river (water-sparkle 160x80 x 8): once per cycle, 55% of the period
 spk = scatter('spirit', 70, .55, 9, (30, 52), aspect=.5, maxn=420, period=(2.2, 4.5))
