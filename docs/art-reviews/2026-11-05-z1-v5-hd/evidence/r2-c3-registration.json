@@ -1,0 +1,37 @@
+{
+  "chunk": "r2-c3",
+  "nativeSize": [
+    1254,
+    1254
+  ],
+  "contextSize": [
+    1280,
+    1280
+  ],
+  "requestedSize": [
+    2560,
+    2560
+  ],
+  "nativePxPerWorldUnit": 1.253948974609375,
+  "affine": [
+    [
+      0.9997681433118634,
+      -0.00010684819018918428,
+      0.5334063309171226
+    ],
+    [
+      0.00010684819018918428,
+      0.9997681433118634,
+      -0.3548647861678875
+    ]
+  ],
+  "siftMatches": 117,
+  "siftInliers": 61,
+  "denseFlowMagnitudePx": {
+    "median": 1.995266079902649,
+    "p95": 27.183931350708008
+  },
+  "denseFlowApplied": false,
+  "denseFlowRejectedReason": "object removal invalidates local correspondence; avoid melted stone and cliff edges",
+  "semanticStructureVerified": false
+}

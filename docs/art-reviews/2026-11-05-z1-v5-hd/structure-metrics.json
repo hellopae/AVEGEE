@@ -1,0 +1,229 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Manual contour polylines; source points within 3px of Canny edge; nearest new Canny edge distance, 6px sample spacing",
+  "limitation": "Stone texture also produces edges; this is a diagnostic, NOT proof of semantic boundary correspondence or whole walkmask compatibility. No QA pass claimed.",
+  "probes": [
+    {
+      "id": "plaza-south",
+      "samples": 99,
+      "maxNearestEdgePx": 2.196899890899658,
+      "p95NearestEdgePx": 2.0
+    },
+    {
+      "id": "middle-stair-left",
+      "samples": 16,
+      "maxNearestEdgePx": 3.0,
+      "p95NearestEdgePx": 2.25
+    },
+    {
+      "id": "middle-stair-right",
+      "samples": 10,
+      "maxNearestEdgePx": 3.59689998626709,
+      "p95NearestEdgePx": 3.2382949709892266
+    },
+    {
+      "id": "north-bank",
+      "samples": 73,
+      "maxNearestEdgePx": 2.799999952316284,
+      "p95NearestEdgePx": 2.0
+    },
+    {
+      "id": "east-north-bank",
+      "samples": 26,
+      "maxNearestEdgePx": 5.0,
+      "p95NearestEdgePx": 2.6492249369621277
+    },
+    {
+      "id": "south-bank",
+      "samples": 37,
+      "maxNearestEdgePx": 3.59689998626709,
+      "p95NearestEdgePx": 3.0
+    },
+    {
+      "id": "bridge-west-deck",
+      "samples": 59,
+      "maxNearestEdgePx": 2.0,
+      "p95NearestEdgePx": 2.0
+    },
+    {
+      "id": "bridge-east-deck",
+      "samples": 57,
+      "maxNearestEdgePx": 3.59689998626709,
+      "p95NearestEdgePx": 3.0
+    },
+    {
+      "id": "bridge-south-steps",
+      "samples": 52,
+      "maxNearestEdgePx": 4.0,
+      "p95NearestEdgePx": 1.6699999868869755
+    },
+    {
+      "id": "pier-edge",
+      "samples": 38,
+      "maxNearestEdgePx": 2.0,
+      "p95NearestEdgePx": 2.0
+    },
+    {
+      "id": "south-plaza",
+      "samples": 160,
+      "maxNearestEdgePx": 3.0,
+      "p95NearestEdgePx": 2.0098449945449794
+    }
+  ],
+  "registration": [
+    {
+      "chunk": "r2-c2",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "contextSize": [
+        1280,
+        1280
+      ],
+      "requestedSize": [
+        2560,
+        2560
+      ],
+      "nativePxPerWorldUnit": 1.253948974609375,
+      "affine": [
+        [
+          1.0000260360057256,
+          -0.0001784597774040322,
+          -0.032658658818947445
+        ],
+        [
+          0.0001784597774040322,
+          1.0000260360057256,
+          -0.3623461153965465
+        ]
+      ],
+      "siftMatches": 339,
+      "siftInliers": 313,
+      "denseFlowMagnitudePx": {
+        "median": 0.8834651708602905,
+        "p95": 8.264769554138184
+      },
+      "denseFlowApplied": false,
+      "denseFlowRejectedReason": "object removal invalidates local correspondence; avoid melted stone and cliff edges",
+      "semanticStructureVerified": false
+    },
+    {
+      "chunk": "r2-c3",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "contextSize": [
+        1280,
+        1280
+      ],
+      "requestedSize": [
+        2560,
+        2560
+      ],
+      "nativePxPerWorldUnit": 1.253948974609375,
+      "affine": [
+        [
+          0.9997681433118634,
+          -0.00010684819018918428,
+          0.5334063309171226
+        ],
+        [
+          0.00010684819018918428,
+          0.9997681433118634,
+          -0.3548647861678875
+        ]
+      ],
+      "siftMatches": 117,
+      "siftInliers": 61,
+      "denseFlowMagnitudePx": {
+        "median": 1.995266079902649,
+        "p95": 27.183931350708008
+      },
+      "denseFlowApplied": false,
+      "denseFlowRejectedReason": "object removal invalidates local correspondence; avoid melted stone and cliff edges",
+      "semanticStructureVerified": false
+    },
+    {
+      "chunk": "r3-c2",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "contextSize": [
+        1280,
+        1280
+      ],
+      "requestedSize": [
+        2560,
+        2560
+      ],
+      "nativePxPerWorldUnit": 1.253948974609375,
+      "affine": [
+        [
+          0.9998140048451558,
+          9.542337605218668e-05,
+          0.29624161333099314
+        ],
+        [
+          -9.542337605218668e-05,
+          0.9998140048451558,
+          0.4453268837865524
+        ]
+      ],
+      "siftMatches": 328,
+      "siftInliers": 316,
+      "denseFlowMagnitudePx": {
+        "median": 1.00308096408844,
+        "p95": 19.399608612060547
+      },
+      "denseFlowApplied": false,
+      "denseFlowRejectedReason": "object removal invalidates local correspondence; avoid melted stone and cliff edges",
+      "semanticStructureVerified": false
+    },
+    {
+      "chunk": "r3-c3",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "contextSize": [
+        1280,
+        1280
+      ],
+      "requestedSize": [
+        2560,
+        2560
+      ],
+      "nativePxPerWorldUnit": 1.253948974609375,
+      "affine": [
+        [
+          0.9999424754108203,
+          0.0001435215246656142,
+          -0.0075960488125515705
+        ],
+        [
+          -0.0001435215246656142,
+          0.9999424754108203,
+          -0.42538350891528715
+        ]
+      ],
+      "siftMatches": 377,
+      "siftInliers": 313,
+      "denseFlowMagnitudePx": {
+        "median": 0.9901500940322876,
+        "p95": 15.745840072631836
+      },
+      "denseFlowApplied": false,
+      "denseFlowRejectedReason": "object removal invalidates local correspondence; avoid melted stone and cliff edges",
+      "semanticStructureVerified": false
+    }
+  ],
+  "semanticStructureVerified": false,
+  "nativeResolutionMeetsMinimum1_5x": false,
+  "exportSize": [
+    2048,
+    2048
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "browserAttempt": "Playwright 1.56.1 with system Chrome, isolated profile",
+  "result": "could not launch",
+  "error": "Browser process SIGABRT under workspace sandbox; no browser interaction assertions executed",
+  "scope": "Browser checks unverified, not an art acceptance result"
+}

@@ -1,0 +1,96 @@
+{
+  "plannedMaximum": 12,
+  "totalCalls": 10,
+  "calls": [
+    {
+      "call": 1,
+      "asset": "r2-c2",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Use case: precise-object-edit. Asset: production painted terrain tile r2-c2 with 128 source-pixel neighbor margin. Edit the FIRST image, a 1280x1280 crop of the existing game map. Return a 2560x2560 image (exact 2x). Preserve EVERY plaza, staircase tread, cliff edge, lava bank, path and bridge deck in precisely its original pixel location and shape, simply doubled. This is a faithful high-definition redraw, NEVER design a new layout. Repaint crisp fine stone texture, detailed warm painterly brushwork matching the owner's red/gold Thai fantasy buildings in the SECOND reference contact sheet; use the contact sheet ONLY for style. Remove freestanding foreground trees and tall shrubs growing next to paths, loose rocks on paths, and BOTH rails/posts of the small lava bridge at upper left, keep bridge deck and all stairs. Fill their footprints with seamless surrounding stone/earth/low grass. Keep distant cliff forest, cliffs, water/lava and static mist. Remove rectangular repair artifacts and continue natural organic paving. NO depth of field, NO parallax, NO blur, NO buildings, NO added objects. Edge geometry and camera are immutable. Keep colors close to original. No labels or grid.",
+      "transparent_background": false,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-b4336021-e2a8-4a83-b467-14e31d2ab2ce.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 2,
+      "asset": "r2-c3",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Edit this existing 1280x1280 painterly game-map terrain crop r2-c3. Deliver 2560x2560 pixels at full 2x resolution. It must be the IDENTICAL image geometry, every stone stair, plaza circle, path, cliff and shore at the SAME normalized coordinates. Do not shift, zoom, crop, change perspective or layout. Enrich stone grain and pavement details with sharp painted fine detail in warm Thai fantasy painterly style. Remove ALL trees and tall shrubs that stand on or overhang the pavement, all center stair pillars, the bridge side rails/posts at bottom center and the rails of the little bridge at right. Keep every stair tread, every bridge walking deck, cliff walls and original static lava/blue water/mist; preserve far forest on cliffs. Replace tree/shrub footprints with seamless stone or earth texture appropriate to surroundings. Eliminate the large rectangular repair patches across the lower paved plaza: flowing continuous organic stone texture, no rectangular blocks. Preserve original circle diameter and boundaries EXACTLY; NO DOF, blur, parallax or buildings, no new props. No text. This is precision restoration, not a reimagined composition.",
+      "transparent_background": false,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-c34b667d-5c36-4963-8875-8d4be6d93cdd.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 3,
+      "asset": "r3-c2",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Precision restoration edit of this single existing 1280x1280 game terrain crop r3-c2. Make a 2560x2560 high-definition version, every feature EXACTLY in its original normalized position: purple river and lava confluence at top, same river banks, same rock cliffs, same lower open field and partial circular plaza at right. Preserve walking ground silhouette and all elevations. Sharpen painterly stone grain and earth with original warm sunset palette. Remove individual freestanding red/yellow trees and tall shrub clumps and loose rocks on the open lower ground or overhanging its paths. Keep distant jagged cliffs and plants growing far off the walkable ground, static river/lava and mist. Fill removed tree and rock areas with natural continuous warm earth/low grass or paving, no rectangular patches. No layout change, no added paths or buildings. No DOF or parallax. Texture quality matching finely hand-painted Thai fantasy building art. Keep identical crop framing and no text.",
+      "transparent_background": false,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-219a01b3-464b-46f0-a863-46d5fef2686e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 4,
+      "asset": "r3-c3",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Precision restoration of this existing 1280x1280 game terrain crop r3-c3. Return high definition 2560x2560. Maintain EVERY terrain contour EXACTLY: bridge deck at x~440..650, north steps at top, south steps at y~500..610, round plaza at x~30..1030 y~630..1030, pier at x~855..1040 y~245..420. All these approximate positions are in the input image's pixels, output doubles. Same camera, no zoom/crop, no changed proportions. Remove ALL freestanding trees, tall shrub beds, standalone rocks near the lower plaza and paths. Remove BOTH gold rail/post assemblies on the main bridge, gold side posts on the pier and upright stair posts. Keep every horizontal walking deck, every step, the pier stone front-face, ALL cliff and river-bank shapes. Replace removed vegetation with organic continuous low grass/earth/paving, no rectangular patch blocks. Preserve original purple river and reflections as static base. Crisp detailed warm painterly stonework in the style of Thai fantasy red-and-gold buildings. No added structures, no DOF, blur or parallax. No text. The original walkmask must fit without changing a single ground boundary.",
+      "transparent_background": false,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-affcce78-38bf-426d-b885-8a9c4c99c48e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 5,
+      "asset": "lava-lower-back",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Use case background-extraction / precision redraw. From this existing lava bridge crop, redraw ONLY the UPPER/BACK black stone and bronze railing, including its small upright posts and the two tall stone endpoint posts. One single back rail assembly, same curved side silhouette and same 3/4 view, warm finely hand-painted fantasy style. Remove the entire bridge walking deck, lower/front railing, cliffs, trees, river, lava and all surroundings. Actual transparent RGBA background, no floor, no drop shadow, no text. Isolated long horizontal rail sprite in a wide canvas, rail occupies almost all width; at least 1200px across the object, crisp painterly material. Keep camera and curvature from reference. ONLY THE BACK RAIL, no bridge floor, no front rail. Feet of endpoint posts have clean bottom contact edges.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-9975d828-8d81-47e1-a147-6cfdd7db546e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 6,
+      "asset": "lava-lower-front",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Redraw/extract ONLY the LOWER/FRONT railing assembly of this little lava bridge, on a genuinely transparent RGBA background. Preserve the original game camera and slightly convex curved horizontal silhouette: dark stone endpoint posts, small dark bronze uprights, dark rail with warm gold edge highlights. One isolated front-side rail, NOT the rear rail. No walking deck, no bridge arch or underside, no stone floor, lava, water, vegetation or cast shadow. Wide horizontal canvas 2048x682, object fills width and has crisp finely painted texture matching the reference. Transparent holes between bars. Bottom endpoint foot contact points clean. Do not draw a whole bridge or additional objects. No text.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-f7293640-260c-4c55-8bcf-22c07c572647.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 7,
+      "asset": "river-back",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Precision game sprite extraction/redraw. From the reference bridge, isolate ONLY the entire LEFT/WEST side railing and its connected posts, which will be BACK layer. Keep the same near-vertical perspective along the bridge: dark basalt square posts with warm gold bands, gold-tipped finials, gold rail connecting them. Include the posts beside the north flight at top, middle posts beside the deck, and south endpoint posts at bottom, as ONE long thin assembly. Preserve the reference's exact outline and spacing, hand-painted sharp detailed fantasy materials. Everything else truly transparent RGBA: NO bridge deck, NO steps, NO right-side rail, NO water, rocks, ground, foliage, floor, shadows or text. Tall canvas 512x2048, railing fills most height, plenty transparent space around it. Do not turn the bridge horizontal or show a whole bridge.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-0474f810-9532-46ff-b398-fac17a65d93e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 8,
+      "asset": "river-front",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Precision extraction/redraw of the RIGHT/EAST railing of this bridge ONLY, as a long thin transparent RGBA sprite. This is the FRONT occlusion layer. Follow the reference exactly: almost vertical line in the image, black basalt posts with gold bands and finials at north stair top, at deck junctions and south foot, connected by thin glowing warm gold handrail. Hand-painted sharp fantasy materials. Same camera, post count, gaps, spacing and depth perspective. NO left railing, no bridge deck or stairs, no water, cliffs, plants, ground, cast shadow or labels. Actual alpha transparency including between posts; not a solid black rectangle. Tall 512x2048 canvas, object fills height. Feet/endpoints clean; do not invent a whole bridge, extra tall pagoda or gate.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-ed8d4fd8-acf0-41e0-8f29-2acebc9ee34b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 9,
+      "asset": "pier-post (back/front instances)",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Precision transparent sprite redraw. Extract/redraw ONE gold-and-dark-stone pier side pillar assembly from the LEFT side of this reference pier: tall cylindrical black basalt post with gold rounded cap and long gold inset vertical panel, small neck/ring at deck level, lower cylindrical stone support down to the waterline. Preserve the same 3/4 angle and exact proportions. Sharp finely hand-painted warm gold highlights and basalt texture. ONE isolated upright pillar on genuine transparent RGBA; no pier walking surface, steps, floor, water, other pillar, plants, glow halo, shadow or text. Tall canvas, object fills most of the height. Clean bottom-center foot suitable for sorting in a game. This single drawing will be mirrored for the other side.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-964adeb5-3f16-4c1e-aa48-ab384c86779f.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    },
+    {
+      "call": 10,
+      "asset": "south-stair-post (west/east instances)",
+      "tool": "built-in image_gen.imagegen",
+      "prompt": "Redraw and extract ONLY ONE left endpoint upright post beside these south-plaza stairs, for a game sprite. Match reference's black basalt square stone pedestal, pale gray rounded ball cap, and thin warm gold vertical detail; same 3/4 camera. No stair treads, bridge railing, pavement, ground, foliage, other post, shadow or text. Genuine transparent RGBA around the single isolated pillar. Crisp finely hand-painted Thai fantasy painterly style, not photorealistic. Tall canvas with the one post filling height, clean bottom foot. Exact original proportion, do not add a flame, pagoda roof, gate, lantern or extra decoration. The one post is mirrored for right side after export.",
+      "transparent_background": true,
+      "resultHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b as /Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-041704d1-6360-44c3-bf54-cb93c3320d7a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "status": "returned"
+    }
+  ]
+}

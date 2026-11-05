@@ -1,0 +1,1874 @@
+[
+  {
+    "id": "west-tree-17",
+    "src": "sprites/west-tree-17.webp",
+    "rectWorld": [
+      694.6898,
+      2019.3867,
+      108.0,
+      127.5598
+    ],
+    "footWorld": [
+      750.0,
+      2144.326
+    ],
+    "footPx": [
+      141.86,
+      320.282
+    ],
+    "layer": "sort",
+    "size": [
+      277,
+      327
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-08",
+    "src": "sprites/city-tree-08.webp",
+    "rectWorld": [
+      2376.1384,
+      775.2078,
+      103.2,
+      69.2509
+    ],
+    "footWorld": [
+      2418.0,
+      843.85
+    ],
+    "footPx": [
+      107.493,
+      176.436
+    ],
+    "layer": "sort",
+    "size": [
+      265,
+      178
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-09",
+    "src": "sprites/city-tree-09.webp",
+    "rectWorld": [
+      1377.2855,
+      1141.8195,
+      98.4,
+      66.0299
+    ],
+    "footWorld": [
+      1417.2,
+      1207.269
+    ],
+    "footPx": [
+      102.22,
+      168.506
+    ],
+    "layer": "sort",
+    "size": [
+      252,
+      170
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-10",
+    "src": "sprites/city-tree-10.webp",
+    "rectWorld": [
+      1472.2443,
+      1217.1935,
+      112.8,
+      75.6928
+    ],
+    "footWorld": [
+      1518.0,
+      1292.221
+    ],
+    "footPx": [
+      117.229,
+      192.295
+    ],
+    "layer": "sort",
+    "size": [
+      289,
+      194
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-11",
+    "src": "sprites/city-tree-11.webp",
+    "rectWorld": [
+      1610.3119,
+      1274.9931,
+      100.8,
+      67.6404
+    ],
+    "footWorld": [
+      1651.2,
+      1342.039
+    ],
+    "footPx": [
+      105.06,
+      172.471
+    ],
+    "layer": "sort",
+    "size": [
+      259,
+      174
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-12",
+    "src": "sprites/city-tree-12.webp",
+    "rectWorld": [
+      1816.7119,
+      1209.3361,
+      100.8,
+      67.6404
+    ],
+    "footWorld": [
+      1857.6,
+      1276.382
+    ],
+    "footPx": [
+      105.06,
+      172.471
+    ],
+    "layer": "sort",
+    "size": [
+      259,
+      174
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-13",
+    "src": "sprites/city-tree-13.webp",
+    "rectWorld": [
+      2071.5649,
+      1162.5645,
+      105.6,
+      70.8613
+    ],
+    "footWorld": [
+      2114.4,
+      1232.803
+    ],
+    "footPx": [
+      109.927,
+      180.4
+    ],
+    "layer": "sort",
+    "size": [
+      271,
+      182
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-14",
+    "src": "sprites/city-tree-14.webp",
+    "rectWorld": [
+      2181.7384,
+      1235.5768,
+      103.2,
+      69.2509
+    ],
+    "footWorld": [
+      2223.6,
+      1304.219
+    ],
+    "footPx": [
+      107.493,
+      176.436
+    ],
+    "layer": "sort",
+    "size": [
+      265,
+      178
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-tree-15",
+    "src": "sprites/city-tree-15.webp",
+    "rectWorld": [
+      2368.7119,
+      1231.1261,
+      100.8,
+      67.6404
+    ],
+    "footWorld": [
+      2409.6,
+      1298.172
+    ],
+    "footPx": [
+      105.06,
+      172.471
+    ],
+    "layer": "sort",
+    "size": [
+      259,
+      174
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-00",
+    "src": "sprites/city-bed-00.webp",
+    "rectWorld": [
+      1451.1746,
+      820.1419,
+      108.0,
+      51.767
+    ],
+    "footWorld": [
+      1496.4,
+      869.959
+    ],
+    "footPx": [
+      115.995,
+      127.99
+    ],
+    "layer": "sort",
+    "size": [
+      277,
+      133
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-01",
+    "src": "sprites/city-bed-01.webp",
+    "rectWorld": [
+      1626.9596,
+      806.4547,
+      115.2,
+      55.2182
+    ],
+    "footWorld": [
+      1675.2,
+      859.593
+    ],
+    "footPx": [
+      123.532,
+      136.651
+    ],
+    "layer": "sort",
+    "size": [
+      295,
+      142
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-02",
+    "src": "sprites/city-bed-02.webp",
+    "rectWorld": [
+      1935.3896,
+      801.098,
+      100.8,
+      48.3159
+    ],
+    "footWorld": [
+      1977.6,
+      847.594
+    ],
+    "footPx": [
+      108.457,
+      119.329
+    ],
+    "layer": "sort",
+    "size": [
+      259,
+      124
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-03",
+    "src": "sprites/city-bed-03.webp",
+    "rectWorld": [
+      2029.5746,
+      846.3479,
+      108.0,
+      51.767
+    ],
+    "footWorld": [
+      2074.8,
+      896.165
+    ],
+    "footPx": [
+      115.995,
+      127.99
+    ],
+    "layer": "sort",
+    "size": [
+      277,
+      133
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-04",
+    "src": "sprites/city-bed-04.webp",
+    "rectWorld": [
+      1659.9746,
+      1263.5209,
+      108.0,
+      51.767
+    ],
+    "footWorld": [
+      1705.2,
+      1313.338
+    ],
+    "footPx": [
+      115.995,
+      127.99
+    ],
+    "layer": "sort",
+    "size": [
+      277,
+      133
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-05",
+    "src": "sprites/city-bed-05.webp",
+    "rectWorld": [
+      1777.7696,
+      1334.9828,
+      110.4,
+      52.9174
+    ],
+    "footWorld": [
+      1824.0,
+      1385.907
+    ],
+    "footPx": [
+      118.507,
+      130.877
+    ],
+    "layer": "sort",
+    "size": [
+      283,
+      136
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-06",
+    "src": "sprites/city-bed-06.webp",
+    "rectWorld": [
+      2040.5395,
+      1332.3725,
+      124.8,
+      59.8197
+    ],
+    "footWorld": [
+      2092.8,
+      1389.939
+    ],
+    "footPx": [
+      134.001,
+      148.199
+    ],
+    "layer": "sort",
+    "size": [
+      320,
+      154
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "city-bed-07",
+    "src": "sprites/city-bed-07.webp",
+    "rectWorld": [
+      2143.3496,
+      1488.3626,
+      120.0,
+      57.5189
+    ],
+    "footWorld": [
+      2193.6,
+      1543.715
+    ],
+    "footPx": [
+      128.976,
+      142.425
+    ],
+    "layer": "sort",
+    "size": [
+      308,
+      148
+    ],
+    "nativeSourceSize": [
+      1774,
+      887
+    ],
+    "sourceCrop": [
+      37,
+      45,
+      1754,
+      868
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-00",
+    "src": "sprites/pilot-red-tree-00.webp",
+    "rectWorld": [
+      1299.548,
+      682.8035,
+      103.2,
+      121.8905
+    ],
+    "footWorld": [
+      1352.4,
+      802.19
+    ],
+    "footPx": [
+      135.715,
+      306.57
+    ],
+    "layer": "sort",
+    "size": [
+      265,
+      313
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-01",
+    "src": "sprites/pilot-red-tree-01.webp",
+    "rectWorld": [
+      1323.5771,
+      878.8089,
+      100.8,
+      119.0558
+    ],
+    "footWorld": [
+      1375.2,
+      995.419
+    ],
+    "footPx": [
+      132.642,
+      298.734
+    ],
+    "layer": "sort",
+    "size": [
+      259,
+      305
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-02",
+    "src": "sprites/pilot-red-tree-02.webp",
+    "rectWorld": [
+      1314.0062,
+      1428.1534,
+      98.4,
+      116.2211
+    ],
+    "footWorld": [
+      1364.4,
+      1541.987
+    ],
+    "footPx": [
+      129.057,
+      291.878
+    ],
+    "layer": "sort",
+    "size": [
+      252,
+      298
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-03",
+    "src": "sprites/pilot-red-tree-03.webp",
+    "rectWorld": [
+      1436.4645,
+      1575.6762,
+      93.6,
+      110.5518
+    ],
+    "footWorld": [
+      1484.4,
+      1683.957
+    ],
+    "footPx": [
+      122.912,
+      278.166
+    ],
+    "layer": "sort",
+    "size": [
+      240,
+      284
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-04",
+    "src": "sprites/pilot-red-tree-04.webp",
+    "rectWorld": [
+      1122.2101,
+      1936.6584,
+      81.6,
+      96.3785
+    ],
+    "footWorld": [
+      1164.0,
+      2031.057
+    ],
+    "footPx": [
+      107.036,
+      241.926
+    ],
+    "layer": "sort",
+    "size": [
+      209,
+      247
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-05",
+    "src": "sprites/pilot-red-tree-05.webp",
+    "rectWorld": [
+      1218.2101,
+      2022.6664,
+      81.6,
+      96.3785
+    ],
+    "footWorld": [
+      1260.0,
+      2117.065
+    ],
+    "footPx": [
+      107.036,
+      241.926
+    ],
+    "layer": "sort",
+    "size": [
+      209,
+      247
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-06",
+    "src": "sprites/pilot-red-tree-06.webp",
+    "rectWorld": [
+      1547.0101,
+      2038.6964,
+      81.6,
+      96.3785
+    ],
+    "footWorld": [
+      1588.8,
+      2133.095
+    ],
+    "footPx": [
+      107.036,
+      241.926
+    ],
+    "layer": "sort",
+    "size": [
+      209,
+      247
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-07",
+    "src": "sprites/pilot-red-tree-07.webp",
+    "rectWorld": [
+      1647.6936,
+      2135.1957,
+      91.2,
+      107.7172
+    ],
+    "footWorld": [
+      1694.4,
+      2240.7
+    ],
+    "footPx": [
+      119.839,
+      270.33
+    ],
+    "layer": "sort",
+    "size": [
+      234,
+      276
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-08",
+    "src": "sprites/pilot-red-tree-08.webp",
+    "rectWorld": [
+      1520.5809,
+      2373.326,
+      84.0,
+      99.2132
+    ],
+    "footWorld": [
+      1563.6,
+      2470.501
+    ],
+    "footPx": [
+      110.62,
+      248.782
+    ],
+    "layer": "sort",
+    "size": [
+      216,
+      254
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-red-tree-11",
+    "src": "sprites/pilot-red-tree-11.webp",
+    "rectWorld": [
+      2298.0645,
+      2262.1982,
+      93.6,
+      110.5518
+    ],
+    "footWorld": [
+      2346.0,
+      2370.479
+    ],
+    "footPx": [
+      122.912,
+      278.166
+    ],
+    "layer": "sort",
+    "size": [
+      240,
+      284
+    ],
+    "nativeSourceSize": [
+      1154,
+      1363
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1154,
+      1363
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-gold-tree-00",
+    "src": "sprites/pilot-gold-tree-00.webp",
+    "rectWorld": [
+      1648.1678,
+      1584.7724,
+      69.6,
+      46.7041
+    ],
+    "footWorld": [
+      1676.4,
+      1631.066
+    ],
+    "footPx": [
+      72.609,
+      118.945
+    ],
+    "layer": "sort",
+    "size": [
+      179,
+      120
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-gold-tree-01",
+    "src": "sprites/pilot-gold-tree-01.webp",
+    "rectWorld": [
+      1690.5531,
+      2243.6101,
+      86.4,
+      57.9775
+    ],
+    "footWorld": [
+      1725.6,
+      2301.078
+    ],
+    "footPx": [
+      90.051,
+      147.69
+    ],
+    "layer": "sort",
+    "size": [
+      222,
+      149
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-gold-tree-02",
+    "src": "sprites/pilot-gold-tree-02.webp",
+    "rectWorld": [
+      2170.3266,
+      2245.2064,
+      84.0,
+      56.367
+    ],
+    "footWorld": [
+      2204.4,
+      2301.078
+    ],
+    "footPx": [
+      87.617,
+      143.726
+    ],
+    "layer": "sort",
+    "size": [
+      216,
+      145
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "pilot-gold-tree-03",
+    "src": "sprites/pilot-gold-tree-03.webp",
+    "rectWorld": [
+      1642.1001,
+      2431.5838,
+      81.6,
+      54.7565
+    ],
+    "footWorld": [
+      1675.2,
+      2485.859
+    ],
+    "footPx": [
+      84.778,
+      139.761
+    ],
+    "layer": "sort",
+    "size": [
+      209,
+      141
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      1526,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-00",
+    "src": "sprites/south-bed-00.webp",
+    "rectWorld": [
+      1189.4259,
+      1959.0403,
+      126.1051,
+      86.391
+    ],
+    "footWorld": [
+      1260.0,
+      2032.881
+    ],
+    "footPx": [
+      180.766,
+      189.749
+    ],
+    "layer": "sort",
+    "size": [
+      323,
+      222
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-01",
+    "src": "sprites/south-bed-01.webp",
+    "rectWorld": [
+      1270.5865,
+      2119.6677,
+      122.6018,
+      83.991
+    ],
+    "footWorld": [
+      1339.2,
+      2191.457
+    ],
+    "footPx": [
+      175.729,
+      184.621
+    ],
+    "layer": "sort",
+    "size": [
+      314,
+      216
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-02",
+    "src": "sprites/south-bed-02.webp",
+    "rectWorld": [
+      1409.1288,
+      2073.4148,
+      115.2,
+      78.9202
+    ],
+    "footWorld": [
+      1473.6,
+      2140.87
+    ],
+    "footPx": [
+      165.095,
+      173.509
+    ],
+    "layer": "sort",
+    "size": [
+      295,
+      203
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-03",
+    "src": "sprites/south-bed-03.webp",
+    "rectWorld": [
+      1502.7288,
+      2136.1928,
+      115.2,
+      78.9202
+    ],
+    "footWorld": [
+      1567.2,
+      2203.648
+    ],
+    "footPx": [
+      165.095,
+      173.509
+    ],
+    "layer": "sort",
+    "size": [
+      295,
+      203
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-04",
+    "src": "sprites/south-bed-04.webp",
+    "rectWorld": [
+      1541.272,
+      2233.2041,
+      112.8,
+      77.2761
+    ],
+    "footWorld": [
+      1604.4,
+      2299.254
+    ],
+    "footPx": [
+      161.738,
+      169.236
+    ],
+    "layer": "sort",
+    "size": [
+      289,
+      198
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-05",
+    "src": "sprites/south-bed-05.webp",
+    "rectWorld": [
+      1656.9865,
+      2366.8427,
+      122.6018,
+      83.991
+    ],
+    "footWorld": [
+      1725.6,
+      2438.632
+    ],
+    "footPx": [
+      175.729,
+      184.621
+    ],
+    "layer": "sort",
+    "size": [
+      314,
+      216
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-06",
+    "src": "sprites/south-bed-06.webp",
+    "rectWorld": [
+      2105.1288,
+      2342.3798,
+      115.2,
+      78.9202
+    ],
+    "footWorld": [
+      2169.6,
+      2409.835
+    ],
+    "footPx": [
+      165.095,
+      173.509
+    ],
+    "layer": "sort",
+    "size": [
+      295,
+      203
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-bed-14",
+    "src": "sprites/south-bed-14.webp",
+    "rectWorld": [
+      950.0674,
+      2210.3879,
+      112.0934,
+      76.792
+    ],
+    "footWorld": [
+      1012.8,
+      2276.024
+    ],
+    "footPx": [
+      160.618,
+      168.381
+    ],
+    "layer": "sort",
+    "size": [
+      287,
+      197
+    ],
+    "nativeSourceSize": [
+      1536,
+      1024
+    ],
+    "sourceCrop": [
+      25,
+      19,
+      1492,
+      1024
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-rock-00",
+    "src": "sprites/south-rock-00.webp",
+    "rectWorld": [
+      819.6603,
+      2181.4879,
+      117.6,
+      87.6251
+    ],
+    "footWorld": [
+      891.6,
+      2261.722
+    ],
+    "footPx": [
+      184.743,
+      206.022
+    ],
+    "layer": "sort",
+    "size": [
+      302,
+      225
+    ],
+    "nativeSourceSize": [
+      1448,
+      1086
+    ],
+    "sourceCrop": [
+      0,
+      19,
+      1432,
+      1086
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-rock-01",
+    "src": "sprites/south-rock-01.webp",
+    "rectWorld": [
+      986.333,
+      2311.7686,
+      108.0,
+      80.4721
+    ],
+    "footWorld": [
+      1052.4,
+      2385.453
+    ],
+    "footPx": [
+      169.45,
+      189.54
+    ],
+    "layer": "sort",
+    "size": [
+      277,
+      207
+    ],
+    "nativeSourceSize": [
+      1448,
+      1086
+    ],
+    "sourceCrop": [
+      0,
+      19,
+      1432,
+      1086
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-rock-02",
+    "src": "sprites/south-rock-02.webp",
+    "rectWorld": [
+      1334.0514,
+      2167.2473,
+      132.0,
+      98.3547
+    ],
+    "footWorld": [
+      1414.8,
+      2257.306
+    ],
+    "footPx": [
+      206.765,
+      230.744
+    ],
+    "layer": "sort",
+    "size": [
+      338,
+      252
+    ],
+    "nativeSourceSize": [
+      1448,
+      1086
+    ],
+    "sourceCrop": [
+      0,
+      19,
+      1432,
+      1086
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-rock-03",
+    "src": "sprites/south-rock-03.webp",
+    "rectWorld": [
+      1412.7419,
+      2035.9262,
+      93.6,
+      69.7425
+    ],
+    "footWorld": [
+      1470.0,
+      2099.786
+    ],
+    "footPx": [
+      146.816,
+      163.902
+    ],
+    "layer": "sort",
+    "size": [
+      240,
+      179
+    ],
+    "nativeSourceSize": [
+      1448,
+      1086
+    ],
+    "sourceCrop": [
+      0,
+      19,
+      1432,
+      1086
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "south-rock-05",
+    "src": "sprites/south-rock-05.webp",
+    "rectWorld": [
+      2377.5419,
+      2100.5282,
+      93.6,
+      69.7425
+    ],
+    "footWorld": [
+      2434.8,
+      2164.388
+    ],
+    "footPx": [
+      146.816,
+      163.902
+    ],
+    "layer": "sort",
+    "size": [
+      240,
+      179
+    ],
+    "nativeSourceSize": [
+      1448,
+      1086
+    ],
+    "sourceCrop": [
+      0,
+      19,
+      1432,
+      1086
+    ],
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+    "origin": "owner-full-resolution-original",
+    "placementVerified": false
+  },
+  {
+    "id": "lava-lower-back",
+    "src": "sprites/lava-lower-back.webp",
+    "rectWorld": [
+      690.3502,
+      909.5477,
+      254.4,
+      67.193
+    ],
+    "footWorld": [
+      924.0,
+      974.301
+    ],
+    "footPx": [
+      598.819,
+      166.719
+    ],
+    "layer": "back",
+    "size": [
+      652,
+      173
+    ],
+    "nativeSourceSize": [
+      2172,
+      724
+    ],
+    "sourceCrop": [
+      33,
+      21,
+      2154,
+      682
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-9975d828-8d81-47e1-a147-6cfdd7db546e.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "lava-lower-front",
+    "src": "sprites/lava-lower-front.webp",
+    "rectWorld": [
+      676.6526,
+      975.1917,
+      264.0,
+      91.191
+    ],
+    "footWorld": [
+      928.8,
+      1048.693
+    ],
+    "footPx": [
+      645.65,
+      188.608
+    ],
+    "layer": "front",
+    "size": [
+      676,
+      234
+    ],
+    "nativeSourceSize": [
+      2172,
+      724
+    ],
+    "sourceCrop": [
+      27,
+      9,
+      2143,
+      674
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-f7293640-260c-4c55-8bcf-22c07c572647.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "river-back",
+    "src": "sprites/river-back.webp",
+    "rectWorld": [
+      1844.5534,
+      1479.9658,
+      50.4,
+      513.548
+    ],
+    "footWorld": [
+      1858.8,
+      1967.8
+    ],
+    "footPx": [
+      36.747,
+      1249.157
+    ],
+    "layer": "back",
+    "size": [
+      130,
+      1315
+    ],
+    "nativeSourceSize": [
+      724,
+      2172
+    ],
+    "sourceCrop": [
+      0,
+      31,
+      704,
+      2148
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-0474f810-9532-46ff-b398-fac17a65d93e.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "river-front",
+    "src": "sprites/river-front.webp",
+    "rectWorld": [
+      1955.8227,
+      1456.1872,
+      48.0,
+      513.548
+    ],
+    "footWorld": [
+      1984.8,
+      1967.8
+    ],
+    "footPx": [
+      74.254,
+      1310.045
+    ],
+    "layer": "front",
+    "size": [
+      123,
+      1315
+    ],
+    "nativeSourceSize": [
+      724,
+      2172
+    ],
+    "sourceCrop": [
+      0,
+      25,
+      704,
+      2148
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-ed8d4fd8-acf0-41e0-8f29-2acebc9ee34b.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "pier-back",
+    "src": "sprites/pier-back.webp",
+    "rectWorld": [
+      2171.7161,
+      1662.2481,
+      33.6,
+      155.984
+    ],
+    "footWorld": [
+      2188.8,
+      1816.135
+    ],
+    "footPx": [
+      44.235,
+      394.622
+    ],
+    "layer": "back",
+    "size": [
+      87,
+      400
+    ],
+    "nativeSourceSize": [
+      724,
+      2172
+    ],
+    "sourceCrop": [
+      0,
+      15,
+      710,
+      2172
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-964adeb5-3f16-4c1e-aa48-ab384c86779f.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "pier-front",
+    "src": "sprites/pier-front.webp",
+    "rectWorld": [
+      2282.8023,
+      1659.2102,
+      40.8,
+      165.583
+    ],
+    "footWorld": [
+      2302.8,
+      1822.567
+    ],
+    "footPx": [
+      51.465,
+      418.299
+    ],
+    "layer": "front",
+    "size": [
+      105,
+      424
+    ],
+    "nativeSourceSize": [
+      724,
+      2172
+    ],
+    "sourceCrop": [
+      0,
+      15,
+      710,
+      2172
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-964adeb5-3f16-4c1e-aa48-ab384c86779f.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "south-stair-west",
+    "src": "sprites/south-stair-west.webp",
+    "rectWorld": [
+      1838.1225,
+      2295.4491,
+      36.0,
+      91.191
+    ],
+    "footWorld": [
+      1856.4,
+      2385.261
+    ],
+    "footPx": [
+      47.217,
+      230.461
+    ],
+    "layer": "sort",
+    "size": [
+      93,
+      234
+    ],
+    "nativeSourceSize": [
+      991,
+      1587
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      973,
+      1587
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-041704d1-6360-44c3-bf54-cb93c3320d7a.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  },
+  {
+    "id": "south-stair-east",
+    "src": "sprites/south-stair-east.webp",
+    "rectWorld": [
+      1965.9145,
+      2295.4491,
+      36.0,
+      91.191
+    ],
+    "footWorld": [
+      1983.6,
+      2385.261
+    ],
+    "footPx": [
+      45.688,
+      230.461
+    ],
+    "layer": "sort",
+    "size": [
+      93,
+      234
+    ],
+    "nativeSourceSize": [
+      991,
+      1587
+    ],
+    "sourceCrop": [
+      0,
+      0,
+      973,
+      1587
+    ],
+    "source": "/Users/agapae/.codex/generated_images/01a1a974-2b85-7b52-9cae-c812e418af8b/exec-041704d1-6360-44c3-bf54-cb93c3320d7a.png",
+    "origin": "built-in-imagegen",
+    "placementVerified": false
+  }
+]
