@@ -1,3 +1,4 @@
+import './helpers/zone1-ground-v5.mjs';   // this file tests the v5 ground set (see the helper)
 import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // M3's shipped configuration is tested before the M2 dev-hook tests mutate their own process.
 import test from 'node:test';

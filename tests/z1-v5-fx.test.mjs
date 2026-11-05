@@ -33,10 +33,10 @@ const tick = () => new Promise(r => setTimeout(r, 0));
 const fx = await import('../src/town-fluid-fx.js?v=v5fx');
 const skin = await import('../src/zone-skin.js');
 
-test('layout: 44 pieces, painted sheets and alpha masks exist, sizes agree with the layout, fog-bank is not shipped', () => {
-  const by = {}; for (const p of layout.pieces) by[p.group] = (by[p.group] || 0) + 1;
-  assert.deepEqual(by, { river: 2, lava: 6, ice: 5, waterfall: 11, lavafall: 8, foam: 7, cloud: 5 });
-  assert.equal(layout.pieces.length, 44);
+test('layout: 39 Codex pieces (+ FX2 placements), painted sheets and alpha masks exist, sizes agree with the layout, fog-bank is not shipped', () => {
+  const by = {}; for (const p of layout.pieces.filter(p => !p.fx2)) by[p.group] = (by[p.group] || 0) + 1;
+  assert.deepEqual(by, { river: 2, lava: 6, ice: 5, waterfall: 11, lavafall: 8, foam: 2, cloud: 5 }, 'the 7 old bank-foam pieces became 2 streak pieces clipped to the shore band');
+  assert.equal(layout.pieces.filter(p => !p.fx2).length, 39);
   assert.deepEqual(layout.worldSize, [3840, 2560]); assert.deepEqual(layout.masterSize, [4915, 3277]);
   assert.ok(!layout.pieces.some(p => /fog/.test(p.id) || /fog/.test(p.sheet)), 'white fog lumps (owner 5 Nov) are not in the layout');
   assert.ok(!existsSync(file(FX + 'sheets/fog-bank-valleys.webp')));
@@ -49,7 +49,7 @@ test('layout: 44 pieces, painted sheets and alpha masks exist, sizes agree with 
     assert.deepEqual(sheetSize[p.sheet], [p.frameW * p.frames, p.frameH], p.id + ' sheet = frames x frame size');
     assert.deepEqual(maskInfo[p.mask].slice(0, 2), p.maskRectPx.slice(2), p.id + ' mask is the piece rectangle');
     if (p.clipMask) assert.deepEqual(maskInfo[p.clipMask].slice(0, 2), p.maskRectPx.slice(2));
-    assert.ok(['overlay', 'normal'].includes(p.blend) && p.opacity > 0 && p.opacity <= 1, p.id);
+    assert.ok(['overlay', 'normal', 'screen'].includes(p.blend) && p.opacity > 0 && p.opacity <= 1, p.id);
     const [x, y, w, h] = p.maskRectPx; assert.ok(x >= 0 && y >= 0 && x + w <= 4915 && y + h <= 3277, p.id + ' inside the master');
   }
   for (const m of masks) { const [, , mean, max] = maskInfo[m]; assert.ok(max === 255 && mean > 0, m + ' carries coverage in alpha'); }
@@ -129,10 +129,10 @@ test('draw: only visible pieces, clipped by their alpha mask, blended with the l
     assert.ok(names.includes('drawImage'));
     assert.ok(!names.some(n => ['fillRect', 'fill', 'stroke', 'arc', 'putImageData', 'createPattern'].includes(n)), 'nothing is painted straight onto the ground');
     const blends = main.calls.filter(c => c[0] === 'set' && c[1] === 'globalCompositeOperation').map(c => c[2]);
-    assert.ok(blends.every(b => ['overlay', 'source-over'].includes(b)));
+    assert.ok(blends.every(b => ['overlay', 'source-over', 'screen'].includes(b)));
     assert.ok(blends.includes('overlay'));
     const alphas = main.calls.filter(c => c[0] === 'set' && c[1] === 'globalAlpha').map(c => c[2]);
-    assert.ok(alphas.every(a => a > 0 && a <= .72), 'layout opacities only (max .72, lava fall)');
+    assert.ok(alphas.every(a => a > 0 && a <= .95), 'layout opacities only (max .72 for the Codex pieces, .95 for the placed bubbles / embers)');
     // inside the scratch layer: every composed layer is cut by a destination-in draw of the piece mask
     const scratch = made.find(c => c.rec.calls.some(x => x[0] === 'set' && x[2] === 'destination-in'));
     assert.ok(scratch, 'a composing layer clipped by a mask exists');
@@ -238,8 +238,8 @@ test('canteen: the new picture is cleaned, cropped, and the foundation is the bo
 });
 
 test('ground swap: v7 (2x redraw of v5) is one switch in zone-skin.js and the loader copes with 2048 px chunks', async () => {
-  assert.equal(skin.ZONE1_GROUND_SET, 'v5', 'v5 stays the real ground in this round');
-  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND.v5);
+  assert.equal(skin.ZONE1_GROUND_SET, 'v7-partial', 'this branch plays the partial 2x ground (5 HD chunks + 15 enlarged v5)');
+  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND['v7-partial']);
   assert.deepEqual({ ...skin.ZONE1_GROUND.v7, fullPx: { ...skin.ZONE1_GROUND.v7.fullPx } },
     { dir: 'img/map-zone1/v7/', preview: 'img/map-zone1/v7/zone1-terrain-v7-preview.webp', fullPx: { w: 9830, h: 6554 }, chunk: 2048, repairs: false });
   const t = await import('../src/town-terrain.js?v=k1d');

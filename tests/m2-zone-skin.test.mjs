@@ -1,3 +1,4 @@
+import './helpers/zone1-ground-v5.mjs';   // this file tests the v5 ground set (see the helper)
 import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // M2 round 0: zone skin table, per-zone town layout, light emitters. Zone 1 must be byte-for-byte what it was.
 import test from 'node:test';
