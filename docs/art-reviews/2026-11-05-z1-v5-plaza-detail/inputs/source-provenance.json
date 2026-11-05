@@ -1,0 +1,89 @@
+{
+  "baseCommit": "812152d2",
+  "chunkRectMapPx1x": [
+    2048,
+    1024,
+    1024,
+    1024
+  ],
+  "v5Composition": "Pilot master-lossless.webp is v5 assembled with separable 42px repair masks from src/town-terrain-repair.js, border80/fade48 for r2-c3. Original source and reconstruction script hashes below.",
+  "generationPilotReference": "Crops from pilot-base-1x.jpg pasted over repaired master; cleared-vegetation geometry.",
+  "comparisonPilotReference": "Exact chunks-2x/r2-c3.webp copied byte for byte to inputs/pilot.webp; use 2x scale when measuring.",
+  "archivedGenerationInputs": "Lossless WebP conversions of the original PNG crops; generation-prompts.json retains invocation paths and archivedReferenceImages.",
+  "sources": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/img/map-zone1/v5/r2-c3.webp",
+      "bytes": 392752,
+      "sha256": "cc1341bc2abede40b96834875d355ee09f0f77779897b7d4e785a57744e70d01",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/img/map-zone1/repairs/r2-c3-v1.webp",
+      "bytes": 581194,
+      "sha256": "15fe46a968e8efa84a2c6624b663bd2be6023e1df92bce3b0455b5c7dc98887d",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/src/town-terrain-repair.js",
+      "bytes": 3899,
+      "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+      "bytes": 23457314,
+      "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773",
+      "size": [
+        4915,
+        3277
+      ]
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/evidence/pilot-base-1x.jpg",
+      "bytes": 2325435,
+      "sha256": "cade29ced18b3a08d371f5e065941189554f9f70fdeb99d79ce78e34e88180bc",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/chunks-2x/r2-c3.webp",
+      "bytes": 1511104,
+      "sha256": "b1935e8ddedaa91a9748bccd3a829f50b55391f5511144f71e34edc230c91805",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/scripts/prepare.py",
+      "bytes": 3907,
+      "sha256": "660713254521bcb3ec9e21f945d5359d01ac1f551061b969eed1890c30d58e35"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/scripts/register.py",
+      "bytes": 3336,
+      "sha256": "d2fea434c020612fbc6df7fe64e2d874cbab24c313d7e0b1117adddad59effa3"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/sprites.json",
+      "bytes": 35600,
+      "sha256": "5adaf263a28753e7c64f9f9cddfdcb2c7bed8d8c02748ff4310b34ce6eefe30c"
+    },
+    {
+      "path": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+      "bytes": 2625036,
+      "sha256": "cfb4061db65a5845a36cecf9f2eb2199c899d59502c55f2455baf584049fb276",
+      "size": [
+        1312,
+        1199
+      ]
+    }
+  ]
+}

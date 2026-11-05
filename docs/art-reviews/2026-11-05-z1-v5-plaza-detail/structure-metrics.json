@@ -1,0 +1,575 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Independent fixed 49x49 landmark templates; difference of Gaussian sigma 1.5/6 grayscale, normalized correlation search +/-12 map px on the assembled output, not SIFT inlier residual.",
+  "limitation": "Patch translation is a local correspondence diagnostic. Does not certify every contour, shape, stair count or occluded boundary. Repeated stair treads can produce ambiguous matches; low-correlation probes excluded from aggregate but retained below.",
+  "reliableProbes": 26,
+  "totalProbes": 31,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "p95ReliableDisplacementPx1x": 1.0,
+  "allReliableProbesWithin4px": true,
+  "semanticStructureVerified": false,
+  "probes": [
+    {
+      "id": "plaza-center",
+      "sourcePx1x": [
+        274,
+        220
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7741054892539978,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-star-top",
+      "sourcePx1x": [
+        268,
+        113
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8229524493217468,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-star-bottom",
+      "sourcePx1x": [
+        273,
+        333
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.4416859745979309,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "plaza-star-left",
+      "sourcePx1x": [
+        104,
+        230
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7902781367301941,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-star-right",
+      "sourcePx1x": [
+        456,
+        221
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7879945039749146,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-1",
+      "sourcePx1x": [
+        92,
+        394
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8894084692001343,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-2",
+      "sourcePx1x": [
+        166,
+        417
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9128013253211975,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-3",
+      "sourcePx1x": [
+        235,
+        425
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.836670458316803,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-4",
+      "sourcePx1x": [
+        432,
+        423
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.903461217880249,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-5",
+      "sourcePx1x": [
+        488,
+        408
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8703492879867554,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east",
+      "sourcePx1x": [
+        623,
+        315
+      ],
+      "displacementPx1x": [
+        2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.4472208023071289,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-top-left",
+      "sourcePx1x": [
+        273,
+        430
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.923470675945282,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-top-right",
+      "sourcePx1x": [
+        389,
+        430
+      ],
+      "displacementPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.9275285601615906,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-bottom-left",
+      "sourcePx1x": [
+        275,
+        539
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.912507951259613,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-bottom-right",
+      "sourcePx1x": [
+        389,
+        539
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8031140565872192,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-mid-left",
+      "sourcePx1x": [
+        273,
+        482
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9622176289558411,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "main-stair-mid-right",
+      "sourcePx1x": [
+        389,
+        482
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9668379426002502,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-left",
+      "sourcePx1x": [
+        277,
+        45
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8055633306503296,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-right",
+      "sourcePx1x": [
+        387,
+        45
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7266557812690735,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-stair-top-left",
+      "sourcePx1x": [
+        682,
+        416
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8230202198028564,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-stair-top-right",
+      "sourcePx1x": [
+        782,
+        403
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7132319808006287,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-stair-bottom-left",
+      "sourcePx1x": [
+        682,
+        521
+      ],
+      "displacementPx1x": [
+        -2,
+        -1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.5050747394561768,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "east-stair-bottom-right",
+      "sourcePx1x": [
+        784,
+        514
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.5505039095878601,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "south-west-stair-left",
+      "sourcePx1x": [
+        40,
+        838
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7953627705574036,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-west-stair-right",
+      "sourcePx1x": [
+        145,
+        838
+      ],
+      "displacementPx1x": [
+        10,
+        -9
+      ],
+      "distancePx1x": 13.45362404707371,
+      "normalizedCorrelation": 0.21596001088619232,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "south-central-stair-left",
+      "sourcePx1x": [
+        323,
+        918
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9323354959487915,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-central-stair-right",
+      "sourcePx1x": [
+        493,
+        918
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9601244330406189,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-east-stair-left",
+      "sourcePx1x": [
+        737,
+        858
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8531492948532104,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-east-stair-right",
+      "sourcePx1x": [
+        828,
+        858
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.956866979598999,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-post-left",
+      "sourcePx1x": [
+        328,
+        896
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.878807783126831,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-post-right",
+      "sourcePx1x": [
+        494,
+        896
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9592012763023376,
+      "reliable": true,
+      "within4px": true
+    }
+  ],
+  "sample3x3": {
+    "probes": [
+      {
+        "id": "plaza-front-1",
+        "sourcePx1x": [
+          92,
+          394
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.855985164642334,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "plaza-front-2",
+        "sourcePx1x": [
+          166,
+          417
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9279460310935974,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "plaza-front-3",
+        "sourcePx1x": [
+          235,
+          425
+        ],
+        "displacementPx1x": [
+          -1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.7969930768013,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "main-stair-top-left",
+        "sourcePx1x": [
+          273,
+          430
+        ],
+        "displacementPx1x": [
+          1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.8879075050354004,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "main-stair-bottom-left",
+        "sourcePx1x": [
+          275,
+          539
+        ],
+        "displacementPx1x": [
+          0,
+          1
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.8808810114860535,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "main-stair-mid-left",
+        "sourcePx1x": [
+          273,
+          482
+        ],
+        "displacementPx1x": [
+          1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.9404705166816711,
+        "reliable": true,
+        "within4px": true
+      }
+    ],
+    "reliableProbes": 6,
+    "maxReliableDisplacementPx1x": 1.0,
+    "allReliableProbesWithin4px": true
+  }
+}
