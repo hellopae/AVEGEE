@@ -1,4 +1,4 @@
-import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y,CANTEEN_ART_FLIP,CANTEEN_ART_SCALE_BY_ZONE} from './canteen-art-layout.js';
+import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y,CANTEEN_ART_FLIP,CANTEEN_ART_SCALE_BY_ZONE,CANTEEN_ART_DY} from './canteen-art-layout.js';
 import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
@@ -210,13 +210,14 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
  *  รักษาขนาดเนื้อภาพและสัดส่วนเดิม ยึดกึ่งกลางเนื้อภาพกับขอบล่างที่ (bx,by)
  *  ภาพโซนอื่นกว้างไม่เกินโซน 1 และสูงไม่เกิน 1.5 เท่า เพื่อไม่ทับทางเดิน */
 const TALLER = 1.5;
-export function stationBox(def) {
+/** physical = the footprint used for walk blocking / depth (footOf, bodyBoxOf, blockRectsOf): it ignores the purely visual canteen offset CANTEEN_ART_DY. */
+export function stationBox(def, physical = false) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
   if(def.k==='canteen'){
     const zone=zoneOf(),w=def.bw*(CANTEEN_ART_SCALE_BY_ZONE[zone]??CANTEEN_ART_SCALE),h=w*im.naturalHeight/im.naturalWidth;
-    return {im,x:def.bx-w/2,y:def.by-h*(CANTEEN_ART_FOOT_Y[zone]??1),w,h,flip:CANTEEN_ART_FLIP[zone]??['th','asia','cyberhell'].includes(zone)};
+    return {im,x:def.bx-w/2,y:def.by-h*(CANTEEN_ART_FOOT_Y[zone]??1)+(physical?0:CANTEEN_ART_DY[zone]??0),w,h,flip:CANTEEN_ART_FLIP[zone]??['th','asia','cyberhell'].includes(zone)};
   }
   if (artUrl(key).includes('/map-v5/')) return reviewStationBox(def, im, zoneOf());
   if (def.k === 'frontier')
@@ -252,7 +253,7 @@ export function stationBox(def) {
 const footCache = new Map();
 export function footOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   // คนละโซนคนละรูป และกรอบอาจเปลี่ยนตอน manifest มาถึงทีหลัง — จำแยกตามทั้งสองอย่าง
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
@@ -289,7 +290,7 @@ export function footOf(def) {
 const bodyCache = new Map();
 export function bodyBoxOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (bodyCache.has(ck)) return bodyCache.get(ck);
@@ -326,7 +327,7 @@ const BLOCK_ROWS = 3;
 const blockCache = new Map();
 export function blockRectsOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (blockCache.has(ck)) return blockCache.get(ck);
