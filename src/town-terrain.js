@@ -1,6 +1,6 @@
 import {repairTownTerrain} from './town-terrain-repair.js';
 // Zone 1 ground = the painted map img/map-zone1/v5 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
-// cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
+// cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview. (v7: same grid at 2x, see zone-skin.js)
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.38 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
@@ -12,8 +12,10 @@ import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js
 export const TOWN_TERRAIN_DIR = ZONE_SKIN.th.terrain.dir;
 export const TOWN_TERRAIN_PREVIEW = ZONE_SKIN.th.terrain.preview;
 export const TOWN_TERRAIN_FULL_PX = ZONE_SKIN.th.terrain.fullPx;
-export const TOWN_TERRAIN_CHUNK_PX = 1024;
-export const TOWN_TERRAIN_COLS = 5, TOWN_TERRAIN_ROWS = 4;
+// Chunk size and grid come from the zone-1 ground set in zone-skin.js (ZONE1_GROUND_SET): v5 = 1024 px chunks of 4915x3277,
+// v7 = 2048 px chunks of 9830x6554. Both are a 5 x 4 grid, so nothing below is tied to one resolution.
+export const TOWN_TERRAIN_CHUNK_PX = ZONE_SKIN.th.terrain.chunk;
+export const TOWN_TERRAIN_COLS = Math.ceil(TOWN_TERRAIN_FULL_PX.w / TOWN_TERRAIN_CHUNK_PX), TOWN_TERRAIN_ROWS = Math.ceil(TOWN_TERRAIN_FULL_PX.h / TOWN_TERRAIN_CHUNK_PX);
 const grid = (t=activeTownSkin().terrain) => {
   const c = t.chunk || TOWN_TERRAIN_CHUNK_PX;
   return {chunk:c, cols:Math.ceil(t.fullPx.w/c), rows:Math.ceil(t.fullPx.h/c), full:t.fullPx,
