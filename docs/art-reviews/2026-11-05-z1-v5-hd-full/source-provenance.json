@@ -1,0 +1,12 @@
+{
+  "baseCommit": "812152d2",
+  "source": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+  "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773",
+  "size": [
+    4915,
+    3277
+  ],
+  "composition": "Prototype pilot master v5 plus repairs; read only",
+  "inventorySource": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/objects-inventory.json",
+  "prototypeScripts": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts"
+}

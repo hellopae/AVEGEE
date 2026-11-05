@@ -1,0 +1,6 @@
+{
+  "visualReview": "Inspected selected native outputs and final seam sheets. No obvious rectangular tile join in inspected views. Fine cracks/foliage may differ at cuts; owner review at 100% still needed.",
+  "fluidMasks": "Fluid base layers retained. Full pixel-exact match to runtime animation masks was not tested.",
+  "neighborChunkEdges": "Native 64px context preserved; no cross-chunk blending performed.",
+  "qaPassedClaimed": false
+}

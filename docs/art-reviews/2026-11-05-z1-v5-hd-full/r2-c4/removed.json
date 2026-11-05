@@ -1,0 +1,395 @@
+{
+  "requestedObjects": [
+    {
+      "id": "city-tree-07",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2258.4,
+        611.938,
+        96.0,
+        160.784
+      ],
+      "footWorld": [
+        2306.4,
+        759.859
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        2890.634375,
+        783.32844765625,
+        122.875,
+        205.81608125
+      ]
+    },
+    {
+      "id": "city-tree-08",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2366.4,
+        695.929,
+        103.2,
+        160.784
+      ],
+      "footWorld": [
+        2418.0,
+        843.85
+      ],
+      "chunk": [
+        "r1-c3",
+        "r1-c4",
+        "r2-c3",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3028.86875,
+        890.8434894531249,
+        132.09062500000002,
+        205.81608125
+      ]
+    },
+    {
+      "id": "city-tree-15",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2359.2,
+        1159.082,
+        100.8,
+        151.185
+      ],
+      "footWorld": [
+        2409.6,
+        1298.172
+      ],
+      "chunk": [
+        "r2-c3",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3019.653125,
+        1483.7155132812502,
+        129.01875,
+        193.528611328125
+      ]
+    },
+    {
+      "id": "city-tree-16",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2431.2,
+        1274.27,
+        108.0,
+        182.381
+      ],
+      "footWorld": [
+        2485.2,
+        1442.061
+      ],
+      "chunk": [
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3111.809375,
+        1631.16515234375,
+        138.234375,
+        233.461928515625
+      ]
+    },
+    {
+      "id": "city-tree-17",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2527.2,
+        1355.862,
+        105.6,
+        179.982
+      ],
+      "footWorld": [
+        2580.0,
+        1521.445
+      ],
+      "chunk": [
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3234.684375,
+        1735.6092867187501,
+        135.1625,
+        230.39102109375
+      ]
+    },
+    {
+      "id": "ice-tree-04",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3000.0,
+        669.532,
+        74.4,
+        143.985
+      ],
+      "footWorld": [
+        3037.2,
+        801.998
+      ],
+      "chunk": [
+        "r1-c4",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3839.84375,
+        857.0532671875001,
+        95.228125,
+        184.312048828125
+      ]
+    },
+    {
+      "id": "ice-tree-08",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3192.0,
+        952.703,
+        76.8,
+        153.584
+      ],
+      "footWorld": [
+        3230.4,
+        1094.001
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        4085.5937500000005,
+        1219.534269921875,
+        98.3,
+        196.59951875
+      ]
+    },
+    {
+      "id": "east-tree-00",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3076.8,
+        1243.074,
+        88.8,
+        155.984
+      ],
+      "footWorld": [
+        3121.2,
+        1386.579
+      ],
+      "chunk": [
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3938.1437500000006,
+        1591.23183515625,
+        113.659375,
+        199.67170625
+      ]
+    },
+    {
+      "id": "east-tree-01",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3122.4,
+        1257.472,
+        96.0,
+        167.983
+      ],
+      "footWorld": [
+        3170.4,
+        1412.016
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3996.5093750000005,
+        1609.6624,
+        122.875,
+        215.031363671875
+      ]
+    },
+    {
+      "id": "ice-mid-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        2416.8,
+        971.901,
+        180.0,
+        52.795
+      ],
+      "footWorld": [
+        2506.8,
+        1024.696
+      ],
+      "chunk": [
+        "r2-c4"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3093.3781250000006,
+        1244.1092097656249,
+        230.390625,
+        67.581724609375
+      ]
+    },
+    {
+      "id": "ice-mid-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        2414.4,
+        1017.496,
+        189.6,
+        71.993
+      ],
+      "footWorld": [
+        2509.2,
+        1089.489
+      ],
+      "chunk": [
+        "r2-c4"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3090.30625,
+        1302.4743718749999,
+        242.678125,
+        92.15666445312499
+      ]
+    },
+    {
+      "id": "ice-lower-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        3110.4,
+        1511.846,
+        247.2,
+        59.994
+      ],
+      "footWorld": [
+        3234.0,
+        1571.84
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3981.1500000000005,
+        1935.2809929687498,
+        316.403125,
+        76.79700703124999
+      ]
+    },
+    {
+      "id": "ice-lower-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        3112.8,
+        1564.641,
+        252.0,
+        76.792
+      ],
+      "footWorld": [
+        3238.8,
+        1641.433
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5",
+        "r3-c4",
+        "r3-c5"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3984.2218750000006,
+        2002.862717578125,
+        322.546875,
+        98.299759375
+      ]
+    }
+  ],
+  "removedIds": [
+    "city-tree-08",
+    "city-tree-15",
+    "ice-tree-08",
+    "east-tree-00",
+    "east-tree-01",
+    "ice-mid-back",
+    "ice-mid-front",
+    "ice-lower-back",
+    "ice-lower-front"
+  ],
+  "verification": "Visual inspection of generated native files and assembled overview: free-standing ground props cleared, bridge railings absent with deck retained. IDs use approximate survey boxes; unresolved identity mappings retained explicitly.",
+  "unresolvedIdentityIds": [
+    "city-tree-16",
+    "city-tree-17",
+    "ice-tree-04"
+  ],
+  "contextOnlyTargetIds": [
+    "city-tree-07"
+  ],
+  "perObjectPixelMaskVerified": false,
+  "allInventoryObjectsVerifiedRemoved": false,
+  "contextOnlyRemovalVerified": false,
+  "notes": [
+    "city-tree-16/17 boxes overlap multiple canopies and structural mountain. Main left trees were cleared, but red low vegetation remains near left ledge; exact inventory identity is unresolved.",
+    "ice-tree-04 intersects only a thin top-edge fragment and the box shows mostly rocks; not claimed removed.",
+    "The failed q21 attempt over-cleared inaccessible right forest; selected attempt restores it.",
+    "Selected q11 retry removes city-tree-08 canopy; original tool target is recorded in generation-prompts.json."
+  ]
+}

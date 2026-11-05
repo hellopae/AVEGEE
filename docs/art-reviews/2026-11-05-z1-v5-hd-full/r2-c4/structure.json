@@ -1,0 +1,374 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 v5 structure templates; DoG sigma 1.5/6; normalized correlation search +/-12 map px on assembled 1x output; independent from SIFT.",
+  "limitation": "Local translation diagnostic only. Low correlation and repeated steps are ambiguous. Does not certify all contours or pixel-exact fluid-mask alignment.",
+  "totalProbes": 24,
+  "reliableProbes": 18,
+  "maxReliableDisplacementPx1x": 3.605551275463989,
+  "p95ReliableDisplacementPx1x": 1.742914219336726,
+  "allReliableProbesWithin4px": true,
+  "semanticStructureVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "probes": [
+    {
+      "id": "bridge-deck-west",
+      "sourcePx1x": [
+        35,
+        262
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.4997565448284149,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-east",
+      "sourcePx1x": [
+        202,
+        270
+      ],
+      "displacementPx1x": [
+        -2,
+        0
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.43482261896133423,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-front-west",
+      "sourcePx1x": [
+        38,
+        300
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8000785708427429,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-front-east",
+      "sourcePx1x": [
+        208,
+        310
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6461796164512634,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-channel-bank-west",
+      "sourcePx1x": [
+        170,
+        160
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.5879988074302673,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "upper-channel-bank-east",
+      "sourcePx1x": [
+        295,
+        170
+      ],
+      "displacementPx1x": [
+        12,
+        -4
+      ],
+      "distancePx1x": 12.649110640673518,
+      "normalizedCorrelation": 0.2720949649810791,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "central-cliff-peak",
+      "sourcePx1x": [
+        510,
+        60
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8913818001747131,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "central-cliff-foot",
+      "sourcePx1x": [
+        510,
+        340
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8463839292526245,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-bank-west",
+      "sourcePx1x": [
+        280,
+        400
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7180023193359375,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-bank-mid",
+      "sourcePx1x": [
+        445,
+        455
+      ],
+      "displacementPx1x": [
+        3,
+        -2
+      ],
+      "distancePx1x": 3.605551275463989,
+      "normalizedCorrelation": 0.8944523334503174,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-bank-east",
+      "sourcePx1x": [
+        640,
+        520
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8611986041069031,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "sourcePx1x": [
+        833,
+        277
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9631799459457397,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "sourcePx1x": [
+        925,
+        277
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.904719889163971,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-bottom-left",
+      "sourcePx1x": [
+        833,
+        368
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9241997599601746,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-bottom-right",
+      "sourcePx1x": [
+        925,
+        368
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7421591281890869,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-upper-left",
+      "sourcePx1x": [
+        630,
+        520
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8960123658180237,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-upper-right",
+      "sourcePx1x": [
+        685,
+        550
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9276302456855774,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-middle-left",
+      "sourcePx1x": [
+        758,
+        650
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8480992317199707,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-middle-right",
+      "sourcePx1x": [
+        800,
+        675
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7094227075576782,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-low-left",
+      "sourcePx1x": [
+        800,
+        765
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8567622303962708,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-low-right",
+      "sourcePx1x": [
+        850,
+        775
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8676422834396362,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-rock-peak",
+      "sourcePx1x": [
+        325,
+        635
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.4158158600330353,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "south-cliff-face",
+      "sourcePx1x": [
+        390,
+        800
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9519853591918945,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bridge-deck-west",
+      "sourcePx1x": [
+        970,
+        950
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.5712794065475464,
+      "reliable": false,
+      "within4px": true
+    }
+  ]
+}

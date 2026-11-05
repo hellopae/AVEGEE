@@ -1,0 +1,243 @@
+[
+  {
+    "chunk": "r3-c2",
+    "id": "q11",
+    "corePx1x": [
+      1024,
+      2048,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      960,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "removeIds": [
+      "west-tree-17",
+      "pilot-red-tree-04",
+      "pilot-red-tree-05",
+      "south-bed-00"
+    ]
+  },
+  {
+    "chunk": "r3-c2",
+    "id": "q12",
+    "corePx1x": [
+      1536,
+      2048,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      1472,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "removeIds": [
+      "pilot-red-tree-02",
+      "pilot-red-tree-03",
+      "pilot-red-tree-04",
+      "pilot-red-tree-05",
+      "pilot-red-tree-06",
+      "pilot-gold-tree-00",
+      "south-bed-00",
+      "south-rock-03"
+    ]
+  },
+  {
+    "chunk": "r3-c2",
+    "id": "q21",
+    "corePx1x": [
+      1024,
+      2560,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      960,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "removeIds": [
+      "west-tree-17",
+      "pilot-red-tree-04",
+      "pilot-red-tree-05",
+      "south-bed-00",
+      "south-bed-13",
+      "south-bed-14",
+      "south-rock-00",
+      "south-rock-01"
+    ]
+  },
+  {
+    "chunk": "r3-c2",
+    "id": "q22",
+    "corePx1x": [
+      1536,
+      2560,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      1472,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "removeIds": [
+      "pilot-red-tree-04",
+      "pilot-red-tree-05",
+      "pilot-red-tree-06",
+      "pilot-red-tree-07",
+      "pilot-red-tree-08",
+      "pilot-gold-tree-03",
+      "south-bed-00",
+      "south-bed-01",
+      "south-bed-02",
+      "south-bed-03",
+      "south-bed-04",
+      "south-bed-13",
+      "south-rock-02",
+      "south-rock-03"
+    ]
+  },
+  {
+    "chunk": "r2-c4",
+    "id": "q11",
+    "corePx1x": [
+      3072,
+      1024,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      3008,
+      960,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "removeIds": [
+      "city-tree-07",
+      "city-tree-08",
+      "city-tree-15",
+      "ice-mid-back",
+      "ice-mid-front"
+    ]
+  },
+  {
+    "chunk": "r2-c4",
+    "id": "q12",
+    "corePx1x": [
+      3584,
+      1024,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      3520,
+      960,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "removeIds": [
+      "ice-tree-04",
+      "ice-tree-08",
+      "east-tree-00"
+    ]
+  },
+  {
+    "chunk": "r2-c4",
+    "id": "q21",
+    "corePx1x": [
+      3072,
+      1536,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      3008,
+      1472,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "removeIds": [
+      "city-tree-15",
+      "city-tree-16",
+      "city-tree-17"
+    ]
+  },
+  {
+    "chunk": "r2-c4",
+    "id": "q22",
+    "corePx1x": [
+      3584,
+      1536,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      3520,
+      1472,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "removeIds": [
+      "east-tree-00",
+      "east-tree-01",
+      "ice-lower-back",
+      "ice-lower-front"
+    ]
+  }
+]

@@ -1,0 +1,367 @@
+{
+  "coordinateSystem": "global master map pixels, 1x, xywh rectangles",
+  "chunk": "r2-c4",
+  "chunkRectPx1x": [
+    3072,
+    1024,
+    1024,
+    1024
+  ],
+  "tiles": [
+    {
+      "id": "q11",
+      "corePx1x": [
+        3072,
+        1024,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        3008,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "coreInContextPx1x": [
+        64,
+        64,
+        512,
+        512
+      ],
+      "overlapPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 64,
+        "bottom": 64
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativePxPerMapPixel": 1.959375,
+      "affine": [
+        [
+          1.0100299224563014,
+          0.00436141147168426,
+          -4.165117690277068
+        ],
+        [
+          -0.00436141147168426,
+          1.0100299224563014,
+          2.2303925737083823
+        ]
+      ],
+      "affineConvention": "resized native (640x640) -> context-local map 1x",
+      "nativeToContextPx1x": [
+        [
+          0.5154857658469162,
+          0.0022259197303651727,
+          -4.165117690277068
+        ],
+        [
+          -0.0022259197303651727,
+          0.5154857658469162,
+          2.2303925737083823
+        ]
+      ],
+      "nativeToMapPx1x": [
+        [
+          0.5154857658469162,
+          0.0022259197303651727,
+          3003.834882309723
+        ],
+        [
+          -0.0022259197303651727,
+          0.5154857658469162,
+          962.2303925737084
+        ]
+      ],
+      "siftMatches": 180,
+      "siftInliers": 93,
+      "inlierResidualPx1x": {
+        "median": 1.3494513034820557,
+        "p95": 2.367711305618286,
+        "max": 2.579055070877075
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "sourceColorCorrectionApplied": true,
+      "colorCorrection": "0.8*(Gaussian(source, sigma=35 map px)-Gaussian(aligned,sigma=35)); attenuated inside blurred inventory removal rectangles; disabled on r3-c2 lower tiles because source retains large removed props and shadows"
+    },
+    {
+      "id": "q12",
+      "corePx1x": [
+        3584,
+        1024,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        3520,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "coreInContextPx1x": [
+        64,
+        64,
+        512,
+        512
+      ],
+      "overlapPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 64,
+        "bottom": 64
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativePxPerMapPixel": 1.959375,
+      "affine": [
+        [
+          1.0009931274595116,
+          0.00047734681033080573,
+          -0.05759665938556052
+        ],
+        [
+          -0.00047734681033080573,
+          1.0009931274595116,
+          0.700182032744445
+        ]
+      ],
+      "affineConvention": "resized native (640x640) -> context-local map 1x",
+      "nativeToContextPx1x": [
+        [
+          0.5108736854657794,
+          0.00024362197656436655,
+          -0.05759665938556052
+        ],
+        [
+          -0.00024362197656436655,
+          0.5108736854657794,
+          0.700182032744445
+        ]
+      ],
+      "nativeToMapPx1x": [
+        [
+          0.5108736854657794,
+          0.00024362197656436655,
+          3519.9424033406144
+        ],
+        [
+          -0.00024362197656436655,
+          0.5108736854657794,
+          960.7001820327445
+        ]
+      ],
+      "siftMatches": 432,
+      "siftInliers": 399,
+      "inlierResidualPx1x": {
+        "median": 0.66358482837677,
+        "p95": 1.68068528175354,
+        "max": 2.9449479579925537
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "sourceColorCorrectionApplied": true,
+      "colorCorrection": "0.8*(Gaussian(source, sigma=35 map px)-Gaussian(aligned,sigma=35)); attenuated inside blurred inventory removal rectangles; disabled on r3-c2 lower tiles because source retains large removed props and shadows"
+    },
+    {
+      "id": "q21",
+      "corePx1x": [
+        3072,
+        1536,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        3008,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "coreInContextPx1x": [
+        64,
+        64,
+        512,
+        512
+      ],
+      "overlapPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 64,
+        "bottom": 64
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativePxPerMapPixel": 1.959375,
+      "affine": [
+        [
+          1.005780031903028,
+          0.001469928201330302,
+          -3.6835967869933177
+        ],
+        [
+          -0.001469928201330302,
+          1.005780031903028,
+          2.169176374918683
+        ]
+      ],
+      "affineConvention": "resized native (640x640) -> context-local map 1x",
+      "nativeToContextPx1x": [
+        [
+          0.5133167626937303,
+          0.0007502025907905847,
+          -3.6835967869933177
+        ],
+        [
+          -0.0007502025907905847,
+          0.5133167626937303,
+          2.169176374918683
+        ]
+      ],
+      "nativeToMapPx1x": [
+        [
+          0.5133167626937303,
+          0.0007502025907905847,
+          3004.3164032130067
+        ],
+        [
+          -0.0007502025907905847,
+          0.5133167626937303,
+          1474.1691763749186
+        ]
+      ],
+      "siftMatches": 651,
+      "siftInliers": 525,
+      "inlierResidualPx1x": {
+        "median": 1.1984444856643677,
+        "p95": 2.1975088119506836,
+        "max": 2.767951726913452
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "sourceColorCorrectionApplied": true,
+      "colorCorrection": "0.8*(Gaussian(source, sigma=35 map px)-Gaussian(aligned,sigma=35)); attenuated inside blurred inventory removal rectangles; disabled on r3-c2 lower tiles because source retains large removed props and shadows"
+    },
+    {
+      "id": "q22",
+      "corePx1x": [
+        3584,
+        1536,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        3520,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "coreInContextPx1x": [
+        64,
+        64,
+        512,
+        512
+      ],
+      "overlapPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 64,
+        "bottom": 64
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativePxPerMapPixel": 1.959375,
+      "affine": [
+        [
+          1.0004199213541423,
+          -0.0002806082379440276,
+          0.32346145620789324
+        ],
+        [
+          0.0002806082379440276,
+          1.0004199213541423,
+          0.3193973431322088
+        ]
+      ],
+      "affineConvention": "resized native (640x640) -> context-local map 1x",
+      "nativeToContextPx1x": [
+        [
+          0.5105811400850486,
+          -0.00014321313579280514,
+          0.32346145620789324
+        ],
+        [
+          0.00014321313579280514,
+          0.5105811400850486,
+          0.3193973431322088
+        ]
+      ],
+      "nativeToMapPx1x": [
+        [
+          0.5105811400850486,
+          -0.00014321313579280514,
+          3520.323461456208
+        ],
+        [
+          0.00014321313579280514,
+          0.5105811400850486,
+          1472.319397343132
+        ]
+      ],
+      "siftMatches": 865,
+      "siftInliers": 811,
+      "inlierResidualPx1x": {
+        "median": 0.5112127661705017,
+        "p95": 1.551865816116333,
+        "max": 2.867314338684082
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "sourceColorCorrectionApplied": true,
+      "colorCorrection": "0.8*(Gaussian(source, sigma=35 map px)-Gaussian(aligned,sigma=35)); attenuated inside blurred inventory removal rectangles; disabled on r3-c2 lower tiles because source retains large removed props and shadows"
+    }
+  ],
+  "composition": {
+    "method": "minimum squared RGB cost seam / 8 output px feather",
+    "overlapOutputPx": 256,
+    "outerCropOutputPx": [
+      128,
+      128,
+      2048,
+      2048
+    ],
+    "neighborChunkBlendingApplied": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "gameDevicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "roiPx1x": [
+    0,
+    0,
+    1024,
+    1024
+  ],
+  "deviceSize": [
+    2240,
+    2240
+  ],
+  "method": "same fixed full chunk; Pillow Lanczos at game zoom, grayscale Laplacian variance ksize=1; no sharpening",
+  "v5": {
+    "laplacianVariance": 68.26765003687463,
+    "highPassMeanSquare": 11.881578888318913
+  },
+  "new": {
+    "laplacianVariance": 1189.5000970959886,
+    "highPassMeanSquare": 124.28016145704284
+  },
+  "laplacianRatioToV5": 17.42406683771131,
+  "threshold": 10,
+  "meetsNumericalThreshold": true,
+  "caveat": "Texture energy, contrast and object removal affect ratio; it is not a resolution multiplier or semantic structure proof."
+}

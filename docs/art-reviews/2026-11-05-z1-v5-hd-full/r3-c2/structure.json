@@ -1,0 +1,254 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 v5 structure templates; DoG sigma 1.5/6; normalized correlation search +/-12 map px on assembled 1x output; independent from SIFT.",
+  "limitation": "Local translation diagnostic only. Low correlation and repeated steps are ambiguous. Does not certify all contours or pixel-exact fluid-mask alignment.",
+  "totalProbes": 16,
+  "reliableProbes": 12,
+  "maxReliableDisplacementPx1x": 1.0,
+  "p95ReliableDisplacementPx1x": 1.0,
+  "allReliableProbesWithin4px": true,
+  "semanticStructureVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "probes": [
+    {
+      "id": "lava-fall-foot-left",
+      "sourcePx1x": [
+        160,
+        125
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8763124942779541,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-foot-right",
+      "sourcePx1x": [
+        270,
+        125
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7813447117805481,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-left-bank",
+      "sourcePx1x": [
+        60,
+        170
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9193834066390991,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-island-foot",
+      "sourcePx1x": [
+        430,
+        120
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8989776372909546,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-central-bank",
+      "sourcePx1x": [
+        515,
+        95
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9553083181381226,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-east-bank-left",
+      "sourcePx1x": [
+        810,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6551620960235596,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-east-bank-right",
+      "sourcePx1x": [
+        930,
+        155
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8728545308113098,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-peak-west",
+      "sourcePx1x": [
+        165,
+        440
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7437974810600281,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-peak-midwest",
+      "sourcePx1x": [
+        325,
+        455
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8249680995941162,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-peak-center",
+      "sourcePx1x": [
+        470,
+        390
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8381716012954712,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-peak-east",
+      "sourcePx1x": [
+        935,
+        415
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.638603925704956,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-foot-west",
+      "sourcePx1x": [
+        60,
+        565
+      ],
+      "displacementPx1x": [
+        1,
+        3
+      ],
+      "distancePx1x": 3.1622776601683795,
+      "normalizedCorrelation": 0.22072872519493103,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-bank-foot-center",
+      "sourcePx1x": [
+        420,
+        590
+      ],
+      "displacementPx1x": [
+        5,
+        -10
+      ],
+      "distancePx1x": 11.180339887498949,
+      "normalizedCorrelation": 0.33538246154785156,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "plaza-outer-left",
+      "sourcePx1x": [
+        980,
+        650
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8627499938011169,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-outer-lower-left",
+      "sourcePx1x": [
+        950,
+        740
+      ],
+      "displacementPx1x": [
+        -2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.4609189033508301,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "plaza-outer-base",
+      "sourcePx1x": [
+        980,
+        805
+      ],
+      "displacementPx1x": [
+        -3,
+        3
+      ],
+      "distancePx1x": 4.242640687119285,
+      "normalizedCorrelation": 0.3705650866031647,
+      "reliable": false,
+      "within4px": false
+    }
+  ]
+}

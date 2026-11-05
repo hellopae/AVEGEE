@@ -1,0 +1,209 @@
+{
+  "imageGenCalls": 10,
+  "generationLimit": 10,
+  "allImagesDecode": true,
+  "imageCount": 36,
+  "nativeLosslessIntegrity": [
+    {
+      "chunk": "r3-c2",
+      "id": "q11",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "d12e0b17e936ef43246d02e1ef6296d731f1a5c4afc39fb1f3d4e855a6f62d18",
+      "sha256": "39212f0f98e14484e4ef90d9c73ef7d3049cae3b227c577054ba92a4e6e82282"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q12",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "5106b9657fadf87bcaaaeec12d1df4e293ce94d5a97d6bef7e759ff6b8e21a62",
+      "sha256": "ab83b15c459f52e66367696828b0d43a8989dad2f61e365d50af664fc3f2fb85"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q21",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "bda1c0700db9e788bcb819546a8b158267fc1b1c8b90b2eb820023d4c0cc22dc",
+      "sha256": "f0a48cb535916291f3286a80f6b92d158b1e7172d6dcc54919f62e519cb9e3b9"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q22",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "7cb9bf88988eba29acbb070e430d524c97b14ce1cd270450f8dfbf1de558301b",
+      "sha256": "c9e78eb863dc9717921ca9d8887902733f8389d954d4d0990d1f1425b722533d"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q12",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "95d76b44b1dee20503713ec21628f935f1e1d704a5e349b13891f0dfc4349e48",
+      "sha256": "4e4d792e094e885a5a213be44e49ba3a5ddd19f1268c7723f685ceaa2dcf0909"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q22",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "85711ac5efaa97689dfd3bb69a95523bcc9f90f99c78894df1bcbdece9e3696d",
+      "sha256": "5ba83c7bb9a021283c99f008bcb19a3024e3eadcaacccc5929cdacfec2d89d4e"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q21",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "9af911351f1ede0aa7203a94ab6e41ffad21c8c1f09bf720c58c69177a87245b",
+      "sha256": "6702fa90b02298177c134f2c913bfc33c8927c202c55805b6b81ae3178badcbf"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q11",
+      "matchesImageGenPixelsExactly": true,
+      "originalPngComparison": true,
+      "decodedRgbSha256": "6c04b8bcf3b716f89370378a7dc2a49c6095a0fdebb3b6624e719a8d3de9a4d8",
+      "sha256": "e91510f2106229728f7f06a31713b4f1332b110d05c002e3a462da96980c56ce"
+    }
+  ],
+  "chunks": [
+    {
+      "chunk": "r3-c2",
+      "imageGenCalls": 4,
+      "completedParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "exportSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "reliableStructureProbes": 12,
+      "totalStructureProbes": 16,
+      "allReliableStructureProbesWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessLaplacianRatioToV5": 17.42406683771131,
+      "sharpnessAtLeast10x": true,
+      "removedIds": [
+        "west-tree-17",
+        "pilot-red-tree-03",
+        "pilot-red-tree-04",
+        "pilot-red-tree-05",
+        "pilot-red-tree-06",
+        "pilot-red-tree-08",
+        "south-bed-00",
+        "south-bed-01",
+        "south-bed-02",
+        "south-bed-03",
+        "south-bed-04",
+        "south-bed-14",
+        "south-rock-00",
+        "south-rock-01",
+        "south-rock-02",
+        "south-rock-03"
+      ],
+      "unresolvedObjectIdentityIds": [],
+      "remainingReview": [
+        "all semantic contours and runtime liquid masks",
+        "owner inspection at 100%"
+      ]
+    },
+    {
+      "chunk": "r2-c4",
+      "imageGenCalls": 6,
+      "completedParts": [
+        "q12",
+        "q22",
+        "q21",
+        "q11"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "exportSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 3.605551275463989,
+      "reliableStructureProbes": 18,
+      "totalStructureProbes": 24,
+      "allReliableStructureProbesWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessLaplacianRatioToV5": 21.409147680595353,
+      "sharpnessAtLeast10x": true,
+      "removedIds": [
+        "city-tree-08",
+        "city-tree-15",
+        "ice-tree-08",
+        "east-tree-00",
+        "east-tree-01",
+        "ice-mid-back",
+        "ice-mid-front",
+        "ice-lower-back",
+        "ice-lower-front"
+      ],
+      "unresolvedObjectIdentityIds": [
+        "city-tree-16",
+        "city-tree-17",
+        "ice-tree-04"
+      ],
+      "remainingReview": [
+        "all semantic contours and runtime liquid masks",
+        "owner inspection at 100%",
+        "ambiguous inventory identities"
+      ]
+    }
+  ],
+  "outputByteLimit": 60000000,
+  "qaPassedClaimed": false,
+  "neighborChunkSeamsPendingAssemblyRun": true,
+  "reviewNotes": {
+    "visualReview": "Inspected selected native outputs and final seam sheets. No obvious rectangular tile join in inspected views. Fine cracks/foliage may differ at cuts; owner review at 100% still needed.",
+    "fluidMasks": "Fluid base layers retained. Full pixel-exact match to runtime animation masks was not tested.",
+    "neighborChunkEdges": "Native 64px context preserved; no cross-chunk blending performed.",
+    "qaPassedClaimed": false
+  },
+  "outputBytes": 58455604,
+  "withinSizeBudget": true
+}
