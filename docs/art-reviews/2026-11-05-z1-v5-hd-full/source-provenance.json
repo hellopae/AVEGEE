@@ -1,0 +1,41 @@
+[
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+    "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773",
+    "bytes": 23457314
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/objects-inventory.json",
+    "sha256": "4d7db3952d562a7fb458b59658b8e31d3455b4ebaac41055fd7edbd16ef8e794",
+    "bytes": 61129
+  },
+  {
+    "path": "src/town-terrain-repair.js",
+    "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174",
+    "bytes": 3899
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/evidence/pilot-base-1x.jpg",
+    "sha256": "cade29ced18b3a08d371f5e065941189554f9f70fdeb99d79ce78e34e88180bc",
+    "bytes": 2325435,
+    "role": "Cleared pilot for low-frequency color correction ONLY, same use as approved prototype; no pixel compositing into new art"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/assemble.py",
+    "bytes": 12165,
+    "sha256": "20b60b30b73127dfb4c7b14f38f0d5881fbb4150904fb770223e24e3b282e65d",
+    "role": "Read-only approved prototype/script or fine-material reference"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/verify.py",
+    "bytes": 7194,
+    "sha256": "d21c3e35a7af758e36444065a6f4e0fc4cd8c3effcf109dd772c29020aee3b25",
+    "role": "Read-only approved prototype/script or fine-material reference"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp",
+    "bytes": 2899814,
+    "sha256": "ffc17e3faf6d93b4602d4b7e0aaef01dd92275250e1387710ee8c0ff96b409d3",
+    "role": "Read-only approved prototype/script or fine-material reference"
+  }
+]

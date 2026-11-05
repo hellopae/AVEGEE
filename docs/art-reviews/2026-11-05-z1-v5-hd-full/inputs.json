@@ -1,0 +1,234 @@
+[
+  {
+    "chunk": "r2-c2",
+    "id": "q11",
+    "coreMapPx1x": [
+      1024,
+      1024,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      960,
+      960,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      -64,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q11-v5.webp"
+  },
+  {
+    "chunk": "r2-c2",
+    "id": "q12",
+    "coreMapPx1x": [
+      1536,
+      1024,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      1472,
+      960,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      -64,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q12-v5.webp"
+  },
+  {
+    "chunk": "r2-c2",
+    "id": "q21",
+    "coreMapPx1x": [
+      1024,
+      1536,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      960,
+      1472,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q21-v5.webp"
+  },
+  {
+    "chunk": "r2-c2",
+    "id": "q22",
+    "coreMapPx1x": [
+      1536,
+      1536,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      1472,
+      1472,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q22-v5.webp"
+  },
+  {
+    "chunk": "r3-c3",
+    "id": "q11",
+    "coreMapPx1x": [
+      2048,
+      2048,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      1984,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      -64,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q11-v5.webp"
+  },
+  {
+    "chunk": "r3-c3",
+    "id": "q12",
+    "coreMapPx1x": [
+      2560,
+      2048,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      2496,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      -64,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q12-v5.webp"
+  },
+  {
+    "chunk": "r3-c3",
+    "id": "q21",
+    "coreMapPx1x": [
+      2048,
+      2560,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      1984,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q21-v5.webp"
+  },
+  {
+    "chunk": "r3-c3",
+    "id": "q22",
+    "coreMapPx1x": [
+      2560,
+      2560,
+      512,
+      512
+    ],
+    "contextMapPx1x": [
+      2496,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q22-v5.webp"
+  }
+]

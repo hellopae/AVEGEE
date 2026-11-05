@@ -1,0 +1,64 @@
+{
+  "method": "decoded images at same 2.8 device px per engine world unit; Lanczos resample; grayscale Laplacian variance ksize1; no sharpening",
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "primaryRoi": "full_chunk",
+  "threshold": 10,
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "v5LaplacianVariance": 54.139893173124825,
+      "newLaplacianVariance": 1194.3967995686655,
+      "ratio": 22.061306913726366
+    },
+    "q11": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "v5LaplacianVariance": 32.23654649266215,
+      "newLaplacianVariance": 1081.2856161901884,
+      "ratio": 33.54222873831464
+    },
+    "q12": {
+      "rectPx1x": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "v5LaplacianVariance": 74.20623946131492,
+      "newLaplacianVariance": 1447.9936059453216,
+      "ratio": 19.51309777259616
+    },
+    "q21": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "v5LaplacianVariance": 39.70645775886163,
+      "newLaplacianVariance": 991.0121419450448,
+      "ratio": 24.95846262498377
+    },
+    "q22": {
+      "rectPx1x": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "v5LaplacianVariance": 70.70606562360693,
+      "newLaplacianVariance": 1261.5848667633495,
+      "ratio": 17.84266817332485
+    }
+  },
+  "caveat": "Texture contrast and object removal affect this metric; it is not a perceptual resolution multiplier."
+}

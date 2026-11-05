@@ -1,0 +1,142 @@
+{
+  "chunk": "r2-c2",
+  "inventorySource": "../source-provenance.json",
+  "requestedObjectIds": [
+    "city-tree-09",
+    "city-tree-10",
+    "city-bed-00",
+    "pilot-red-tree-00",
+    "pilot-red-tree-01",
+    "pilot-red-tree-02",
+    "pilot-red-tree-03",
+    "lava-lower-back",
+    "lava-lower-front"
+  ],
+  "removedObjectIds": [
+    "city-tree-09",
+    "city-tree-10",
+    "city-bed-00",
+    "pilot-red-tree-02",
+    "pilot-red-tree-03",
+    "lava-lower-back",
+    "lava-lower-front"
+  ],
+  "needsIndividualVerificationIds": [
+    "pilot-red-tree-00",
+    "pilot-red-tree-01"
+  ],
+  "allInventoryObjectsIndividuallyVerified": false,
+  "method": "Inventory bounds transformed from engine world to master map pixels; removal prompts include core and context objects. Visual review of grouped vegetation/rails, not segmentation proof for every id.",
+  "notes": [
+    "Removed green/gold trees on walkable platforms, lower path trees, bridge rails; old cliff forest retained.",
+    "Two red tree ids intersect cliff forest; cannot uniquely certify their removal from rough survey boxes."
+  ],
+  "objects": [
+    {
+      "id": "city-tree-09",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        726.969,
+        312.266,
+        125.947,
+        227.319
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "city-tree-10",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        846.772,
+        435.141,
+        144.378,
+        211.959
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "city-bed-00",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+      "rectChunkPx1x": [
+        822.197,
+        2.006,
+        138.234,
+        95.228
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-red-tree-00",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        640.956,
+        -163.875,
+        132.091,
+        181.241
+      ],
+      "reviewStatus": "needs-individual-verification"
+    },
+    {
+      "id": "pilot-red-tree-01",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        671.675,
+        66.515,
+        129.019,
+        199.672
+      ],
+      "reviewStatus": "needs-individual-verification"
+    },
+    {
+      "id": "pilot-red-tree-02",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        659.388,
+        757.687,
+        125.947,
+        208.887
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-red-tree-03",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        816.053,
+        945.072,
+        119.803,
+        202.744
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "lava-lower-back",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        -4.138,
+        137.169,
+        325.619,
+        86.012
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "lava-lower-front",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        -4.138,
+        201.679,
+        337.906,
+        116.732
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    }
+  ],
+  "contextObjectIds": [
+    "west-tree-07",
+    "west-tree-11",
+    "city-tree-11",
+    "city-bed-01",
+    "pilot-gold-tree-00"
+  ]
+}

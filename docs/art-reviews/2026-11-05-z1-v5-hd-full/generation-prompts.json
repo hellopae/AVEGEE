@@ -1,0 +1,456 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedGenerationCount": 8,
+  "generations": [
+    {
+      "chunk": "r2-c2",
+      "id": "q11",
+      "coreMapPx1x": [
+        1024,
+        1024,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        960,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q11-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r2-c2/q11: Lava gorge and curved horizontal bridge. Remove both thin bridge railing assemblies and their posts, preserve the stone deck, curved supporting arch, walkable width and exact lava waterfall outline.\nObjects to remove: west-tree-07 (tree): [-81, 1, 108, 190]; west-tree-11 (tree): [-88, 407, 98, 172]; lava-lower-back (bridge-rail): [60, 201, 326, 86]; lava-lower-front (bridge-rail): [60, 266, 338, 117]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-7d466b3b-eea0-4300-9617-7d424ccde7c4.png",
+      "nativeFile": "r2-c2/q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "1d63054f0ae18faac1b2e6dde5614389be17c4ccea60cc731c5e1237248dccdf",
+      "nativeSha256": "87cdba9918308f3e71cfe8b51621de31f41babaff9610792aca91ea7d6602f2a",
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q12",
+      "coreMapPx1x": [
+        1536,
+        1024,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1472,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q12-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r2-c2/q12: Diagonal staircase through volcanic cliffs with paving on right. Keep full stair treads, path and cliffs; remove only inventoried freestanding small trees/shrubs. Do not erase distant red forest on cliff slopes outside these bounds.\nObjects to remove: city-tree-09 (green-tree): [279, 376, 126, 227]; city-tree-10 (green-tree): [399, 499, 144, 212]; city-tree-11 (green-tree): [577, 554, 129, 221]; city-bed-00 (green-shrub): [374, 66, 138, 95]; city-bed-01 (green-shrub): [598, 41, 147, 108]; pilot-red-tree-00 (tree): [193, -100, 132, 181]; pilot-red-tree-01 (tree): [224, 131, 129, 200]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-317a8a06-0cec-4e98-96b0-85404a9034ea.png",
+      "nativeFile": "r2-c2/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "124c81ce0344835ba70145e64a7a35a66dce435cfcffaab75ab986c2c16a2148",
+      "nativeSha256": "f41e7b78f9f87dcc5a0627ade3bea1ddace71e52278339d00018fff450c6f743",
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q21",
+      "coreMapPx1x": [
+        1024,
+        1536,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        960,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q21-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r2-c2/q21: Mostly vertical volcanic cliff pinnacles and lava waterfall. Keep all lava channels, falls and cliff silhouettes exactly. This is unreachable distant rock/forest terrain: retain its vegetation except specified partial left-edge object.\nObjects to remove: west-tree-11 (tree): [-88, -105, 98, 172]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-0f3a4670-1212-4b15-9dd7-efa451c54456.png",
+      "nativeFile": "r2-c2/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "d4dd4f60146148792458a9c21453bb1ec1234f9e84bafb6d747fe62f048108dc",
+      "nativeSha256": "218b36d5656527bd613eb85a544348c71b157667bc9f8d8c95fae2a9c8112519",
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q22",
+      "coreMapPx1x": [
+        1536,
+        1536,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1472,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q22-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r2-c2/q22: Ochre paved winding route beside lava cliffs. Remove specified walk-over trees and their shadows; draw continuous paved/earthen floor beneath them. Retain distant cliff forest.\nObjects to remove: city-tree-09 (green-tree): [279, -136, 126, 227]; city-tree-10 (green-tree): [399, -13, 144, 212]; city-tree-11 (green-tree): [577, 42, 129, 221]; pilot-red-tree-02 (tree): [211, 310, 126, 209]; pilot-red-tree-03 (tree): [368, 497, 120, 203]; pilot-gold-tree-00 (green-tree): [629, 463, 89, 166] Semantic clarification: remove all the individually rooted small green/gold trees beside the large walkable paving in the upper half and the small red/orange trees beside the LOWER walkable path at bottom-right, including their trunks and shadows. These are the inventoried objects even if the rough survey rectangles are offset. Retain foliage rooted on unreachable lava cliff walls. Preserve exact stair treads clipped at far right.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-2f5ff28a-d504-4205-895b-772a7e2c51ef.png",
+      "nativeFile": null,
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "8d20f5a0b9fdbbd4804ee745205cfba3f6882486d28e86e914ac4911f3bbf6df",
+      "nativeSha256": "d07b1d6c2f28d9633d24efc8bff54277c90a7f574be783895ab9d2447485fda2",
+      "selected": false,
+      "archiveNote": "Discarded revision not included to respect 60MB budget; nativeSource, dimensions and SHA256 preserved."
+    },
+    {
+      "chunk": "r3-c3",
+      "id": "q11",
+      "coreMapPx1x": [
+        2048,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1984,
+        1984,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q11-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r3-c3/q11: Vertical stone bridge over purple river. Remove the tall dark gold railing/post assemblies on BOTH sides, retaining the complete stone bridge deck and ALL stair treads and rock supports. Purple water and bank outline unchanged.\nObjects to remove: pilot-red-tree-06 (tree): [-3, 566, 104, 197]; pilot-gold-tree-00 (green-tree): [117, -49, 89, 166]; river-back (bridge-rail): [363, -122, 65, 657]; river-front (bridge-rail): [526, -122, 61, 657]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-2a65e0d3-33ae-4010-9093-0937ed0e0c47.png",
+      "nativeFile": null,
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "1c9825eaeee725ace20485ca6653a4c500eb606b2b48e03893cabf7a71286dd0",
+      "nativeSha256": "0b35952830f34d978b80e9589c19e7105f2faa57eb97afe61cc67f6c332f6d69",
+      "selected": false,
+      "archiveNote": "Discarded revision not included to respect 60MB budget; nativeSource, dimensions and SHA256 preserved."
+    },
+    {
+      "chunk": "r3-c3",
+      "id": "q12",
+      "coreMapPx1x": [
+        2560,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        2496,
+        1984,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q12-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r3-c3/q12: Purple river with small rectangular stair landing at upper right and gold posts. Remove gold pier posts and bridge railing at far left, keeping ENTIRE pier deck and EVERY stair tread, bank and purple water outlines exact.\nObjects to remove: city-bed-07 (green-shrub): [235, -104, 154, 104]; river-front (bridge-rail): [14, -122, 61, 657]; pier-back (pillar): [284, 157, 43, 200]; pier-front (pillar): [425, 154, 52, 212]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-7b2fb868-a1e5-41d0-8289-cf185dd7a2f0.png",
+      "nativeFile": "r3-c3/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "ad6f543c404eb723042df8a82b51746a4b3957170785da4f9276c0fefd602d00",
+      "nativeSha256": "7a8ee9bc4f568298204182fbd2e48e939aa544f063457cb986d194bf156e9272",
+      "selected": true
+    },
+    {
+      "chunk": "r3-c3",
+      "id": "q21",
+      "coreMapPx1x": [
+        2048,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1984,
+        2496,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q21-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r3-c3/q21: Left half of large plain circular stone plaza, lower bridge stair at top and south stair bottom right. Keep exact plain circular ring geometry, bridge and stairs. Remove specified plants and ornamental stair posts. No new star design in plaza.\nObjects to remove: pilot-red-tree-06 (tree): [-3, 54, 104, 197]; pilot-red-tree-07 (tree): [126, 186, 117, 203]; pilot-red-tree-08 (tree): [-36, 471, 108, 212]; pilot-gold-tree-01 (green-tree): [169, 269, 111, 197]; pilot-gold-tree-03 (green-tree): [108, 505, 104, 197]; south-bed-03 (shrub): [-52, 229, 147, 104]; south-bed-04 (shrub): [-3, 345, 144, 111]; south-bed-05 (shrub): [145, 527, 160, 108]; river-back (bridge-rail): [363, -634, 65, 657]; river-front (bridge-rail): [526, -634, 61, 657]; south-stair-west (pillar): [369, 450, 46, 117]; south-stair-east (pillar): [532, 450, 46, 117] Critical semantic removal: ALL visible red, orange, gold and green leafy shrubs and small trees around the plain circular plaza and south stair in THIS FIRST crop are separable inventoried props. Remove their entire foliage, trunks and shadows, including partial plants at top and left edges. Keep exposed large cliff rocks, exact plaza curb ring, all stair treads. Replace plants with continuous underlying bare ochre earth/stone, NOT new smaller bushes. Preserve plain plaza composition; no new ornament.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-903cea7a-2847-475e-8c2d-c0a71374c332.png",
+      "nativeFile": "r3-c3/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "9ec53df651f25473ae26780867f2e72b27d53c2994601b6097797bdbd1e77f95",
+      "nativeSha256": "14bf6675875de8b9567d592e4e14acd3d5926e568c6511754c2b52947db8563d",
+      "selected": true
+    },
+    {
+      "chunk": "r3-c3",
+      "id": "q22",
+      "coreMapPx1x": [
+        2560,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        2496,
+        2496,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q22-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the FIRST image only. SECOND image is ONLY a reference for the approved fine painterly material detail, NOT a layout reference. Return ONE square terrain crop identical framing, full bleed, no border, no caption. Preserve EVERY original large shape and position exactly: paving boundary, cliff silhouette, bank, bridge DECK, stairs and stair count/width, liquid channel, lava fall and river edge. Do not shift, zoom, rotate or redesign. Repaint with substantially more ACTUAL DRAWN fine details: individual chipped stone bevels, tiny irregular mineral grain, fissures, recessed mortar, sparse moss in cracks, tiny fallen dry leaves. Retain first image's overall light, warm ochre ground, purple grey rocks, value hierarchy and original liquid colors. Keep all lava/purple river/blue water/fog as painted BASE layers in EXACT original shapes and positions for existing animation masks. Keep distant unreachable forest/rock foliage and improve its detail. No blur, DOF, parallax, fake sharpening halos or photographic noise. Need maximum native resolution, ideally 2048x2048. This crop spans 640 original map pixels. Fine resolved detail must be comparable to the approved SECOND image. Never borrow the circular star plaza from the style reference. Remove ONLY the freestanding objects specified below, including their foliage/trunk/rail/posts and associated cast shadows; paint continuous underlying ground/rock/water. Coordinates below are x,y,width,height in FIRST input's 640x640 coordinate system; rectangles are approximate object bounds, NOT rectangular paint areas: blend naturally. Clipped objects crossing an edge must be removed through that edge. Keep the exact bridge floor, supporting arch, cliffs and EVERY stair tread; bridge rails and ornamental posts may be removed. Do not add new trees, shrubs, props, structures, paths or stone circles.\nTile r3-c3/q22: Right half of plain circular plaza, river bank above and vegetation outside. Remove specified freestanding trees, shrub and loose rock, keeping landscape cliff rock mass and distant foliage. Retain exact circular ring and stair deck at lower left. No new star design.\nObjects to remove: pilot-red-tree-11 (tree): [447, 355, 120, 200]; pilot-red-tree-12 (tree): [625, 567, 123, 214]; pilot-gold-tree-02 (green-tree): [272, 269, 108, 197]; south-bed-06 (shrub): [207, 490, 147, 108]; south-rock-05 (rock): [561, 130, 120, 157]; river-front (bridge-rail): [14, -634, 61, 657]; south-stair-east (pillar): [20, 450, 46, 117] Critical semantic removal: ALL visible red/orange/gold/green leafy shrubs and small trees around the circular plaza, beside stairs and on lower walkable ground in THIS FIRST crop are separable inventoried props. Remove their entire foliage, trunks and shadows even where rough survey rectangles are offset, including partial plants at top/right/bottom edges. Keep large structural cliff rocks, ring, exact bank and stair treads. Replace plants with continuous bare ochre earth/stone. Do not draw replacement smaller bushes. Match the cleared adjacent lower-left tile.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-e82559db-15ed-4799-96b0-634bec1db2d8.png",
+      "nativeFile": "r3-c3/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "6f6fc727ea3de2cc4e8b20a46d908afa95a6192154719e242b80098c4ebb66d0",
+      "nativeSha256": "bee88d5687b1e874c19b3fd1a9b4bcd5fb117242fab595d6c2f9266f2b431b75",
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q22",
+      "coreMapPx1x": [
+        1536,
+        1536,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1472,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/inputs/q22-v5.webp",
+      "prompt": "Use case: precise-object-edit. Edit this painted game terrain crop. Remove the ENTIRE large group of GREEN, YELLOW and ORANGE LEAFY SMALL TREES AND SHRUBS on the UPPER LEFT PLATFORM, stretching from approx x=140 to 750, y=0 to 580 of this 1254x1254 image, INCLUDING all tree branches, foliage masses, trunks, dark tree shadows. Also remove the isolated orange leafy tree at x=190..400,y=400..570. Replace them with continuous bare ochre earth and individual fine cobblestones appropriate to neighboring paving, behind the existing curb, with tiny scattered fallen dry leaves only. These trees are separate objects to be drawn later. No replacement living plants. Preserve the existing curved path curb exactly. This is object removal only: keep EVERY OTHER pixel and all existing terrain composition, paving cracks, stairs at right, lava shape and waterfall, cliff silhouette/rocks, distant trees clipped only at far top-left, original color/lighting/detail. Do not redraw the whole image, zoom, rotate or add paths. Return same framing, full bleed, high resolution. No blur or DOF.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/q22-native.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "r2-c2/q22-native.webp",
+      "revision": 2,
+      "supersedesGenerationIndex": 3,
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-d2b92fc2-6d2a-40d6-ae29-13d8d0dec63b.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "3aa805ab87a7b6c92f6748e23dcacae438bd35ca9a86597059ebffd5b5028fc3",
+      "nativeSha256": "46284eeb56e2e9cde4afe0987243a9e52d6ddf95bd1332cf51d4269e9942b2b0",
+      "archivedEditTarget": null,
+      "editTargetSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-2f5ff28a-d504-4205-895b-772a7e2c51ef.png",
+      "selected": true
+    },
+    {
+      "chunk": "r3-c3",
+      "id": "q11",
+      "coreMapPx1x": [
+        2048,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1984,
+        1984,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "input": "docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/inputs/q11-v5.webp",
+      "prompt": "Use case: precise-object-edit. Object removal ONLY on this detailed isometric game terrain. REMOVE ALL living plants: every red, orange, yellow, green leafy shrub, bush and small tree along BOTH river banks, around stair landings, at top edge, and at lower left and lower right corners. Remove their branches, trunks and shadows, including plants clipped by image edges. Replace them with continuous detailed bare ochre earth and stone appropriate to their location, leaving only a FEW tiny fallen dry leaves and tiny moss crevices. NO replacement vegetation. Keep ALL other artwork precisely unchanged, especially every rock mass silhouette, every purple river shoreline, water area/shape, bridge deck width and edges and every stair tread count/position. Do not erase cliff or bank rocks; remove only leaves/trunks/root props. Retain the same fine hand-painted stone cracks and lighting. Do not shift, zoom or redesign any structure. Return identical framing full-bleed high resolution.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/q11-native.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "r3-c3/q11-native.webp",
+      "revision": 2,
+      "supersedesGenerationIndex": 4,
+      "archivedEditTarget": null,
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-845102db-41fe-4b31-bbb2-85dc2c3067c7.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "e3c41148810ad793ef5f9ed75714736a0d09b8d791ebdaa79210c7cb030dcab7",
+      "nativeSha256": "d6702502f7fcbcab1ea6bfb04be546e89fbc83696f6c1ca691be45c89422d79d",
+      "editTargetSource": "/Users/agapae/.codex/generated_images/01a1a9d5-2ef9-7b13-8d09-a554db486d32/exec-2a65e0d3-33ae-4010-9093-0937ed0e0c47.png",
+      "selected": true
+    }
+  ],
+  "generationCount": 10,
+  "revisionGenerationCount": 2
+}

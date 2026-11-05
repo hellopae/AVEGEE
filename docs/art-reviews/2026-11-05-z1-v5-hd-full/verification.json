@@ -1,0 +1,253 @@
+{
+  "allImagesDecode": true,
+  "imageCount": 34,
+  "generationCount": 10,
+  "generationLimit": 10,
+  "nativeLosslessArchive": true,
+  "selectedNativePixelEqualityToImageGenSources": true,
+  "selectedNativeSha256Verified": true,
+  "outputs2048x2048": true,
+  "registrationComplete": true,
+  "sharpnessThresholdMet": true,
+  "qaPassed": false,
+  "images": [
+    {
+      "path": "r2-c2/inputs/q11-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q11-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q12-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q12-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q21-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q21-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q22-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/q22-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r2-c2/inputs/v5-repaired.webp",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "r2-c2/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c2/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c2/r2-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r2-c2/r2-c2-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ]
+    },
+    {
+      "path": "r2-c2/seam-check.jpg",
+      "size": [
+        2110,
+        1760
+      ]
+    },
+    {
+      "path": "r2-c2/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q11-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q11-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q12-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q12-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q21-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q21-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q22-color-reference.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/q22-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c3/inputs/v5-repaired.webp",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "r3-c3/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c3/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c3/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c3/r3-c3-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c3/r3-c3-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ]
+    },
+    {
+      "path": "r3-c3/seam-check.jpg",
+      "size": [
+        2110,
+        1760
+      ]
+    },
+    {
+      "path": "r3-c3/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ]
+    }
+  ]
+}

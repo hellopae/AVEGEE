@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "chunk": "r2-c2",
+  "outputScale": 2,
+  "chunkRectMapPx1x": [
+    1024,
+    1024,
+    1024,
+    1024
+  ],
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMapPx1x": [
+        1024,
+        1024,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        960,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "overlapPerSidePx1x": 64,
+      "registrationModel": "full-affine",
+      "affine": [
+        [
+          0.9993738739866634,
+          -0.0011783679520780065,
+          0.315537044495211
+        ],
+        [
+          -0.0017502385296883488,
+          1.0187156607955399,
+          0.015528527798830542
+        ]
+      ],
+      "affineConvention": "resized-native context 640x640 -> v5 context map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.5100472722100994,
+          -0.000601399911746351,
+          0.315537044495211
+        ],
+        [
+          -0.0008932636834135113,
+          0.5199186785559374,
+          0.015528527798830542
+        ]
+      ],
+      "nativeToGlobalMapPx1x": [
+        [
+          0.5100472722100994,
+          -0.000601399911746351,
+          960.3155370444952
+        ],
+        [
+          -0.0008932636834135113,
+          0.5199186785559374,
+          960.0155285277988
+        ]
+      ],
+      "nativeToContextPx2x": [
+        [
+          1.0200945444201988,
+          -0.001202799823492702,
+          0.631074088990422
+        ],
+        [
+          -0.0017865273668270225,
+          1.0398373571118749,
+          0.031057055597661084
+        ]
+      ],
+      "registrationReference": "inputs/q11-v5.webp",
+      "siftMatches": 463,
+      "siftInliers": 414,
+      "inlierResidualPx1x": {
+        "median": 0.7548245787620544,
+        "p95": 1.9408326148986816,
+        "max": 2.9723379611968994
+      },
+      "colorCorrection": {
+        "method": "0.8 * Gaussian broad-color difference to cleared pilot, sigma 35 map pixels, same as approved prototype",
+        "reference": "inputs/q11-color-reference.webp",
+        "sigmaPx1x": 35
+      },
+      "interpolation": "OpenCV INTER_LANCZOS4",
+      "borderMode": "BORDER_REFLECT for affine uncovered fringe only",
+      "localWarpApplied": false
+    },
+    {
+      "id": "q12",
+      "coreMapPx1x": [
+        1536,
+        1024,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1472,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "overlapPerSidePx1x": 64,
+      "registrationModel": "partial-affine",
+      "affine": [
+        [
+          1.000480134285692,
+          -9.862593485144494e-05,
+          0.13120259447495855
+        ],
+        [
+          9.862593485144494e-05,
+          1.000480134285692,
+          0.34131316161536807
+        ]
+      ],
+      "affineConvention": "resized-native context 640x640 -> v5 context map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.5106118707678172,
+          -5.033540534682995e-05,
+          0.13120259447495855
+        ],
+        [
+          5.033540534682995e-05,
+          0.5106118707678172,
+          0.34131316161536807
+        ]
+      ],
+      "nativeToGlobalMapPx1x": [
+        [
+          0.5106118707678172,
+          -5.033540534682995e-05,
+          1472.1312025944749
+        ],
+        [
+          5.033540534682995e-05,
+          0.5106118707678172,
+          960.3413131616154
+        ]
+      ],
+      "nativeToContextPx2x": [
+        [
+          1.0212237415356344,
+          -0.0001006708106936599,
+          0.2624051889499171
+        ],
+        [
+          0.0001006708106936599,
+          1.0212237415356344,
+          0.6826263232307361
+        ]
+      ],
+      "registrationReference": "inputs/q12-v5.webp",
+      "siftMatches": 295,
+      "siftInliers": 274,
+      "inlierResidualPx1x": {
+        "median": 0.5679428577423096,
+        "p95": 1.5339484214782715,
+        "max": 2.3906493186950684
+      },
+      "colorCorrection": {
+        "method": "0.8 * Gaussian broad-color difference to cleared pilot, sigma 35 map pixels, same as approved prototype",
+        "reference": "inputs/q12-color-reference.webp",
+        "sigmaPx1x": 35
+      },
+      "interpolation": "OpenCV INTER_LANCZOS4",
+      "borderMode": "BORDER_REFLECT for affine uncovered fringe only",
+      "localWarpApplied": false
+    },
+    {
+      "id": "q21",
+      "coreMapPx1x": [
+        1024,
+        1536,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        960,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "nativeFile": "q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "overlapPerSidePx1x": 64,
+      "registrationModel": "full-affine",
+      "affine": [
+        [
+          1.0020574823967565,
+          -0.0009629909081214843,
+          -0.41654337619324666
+        ],
+        [
+          -0.0006561596673197835,
+          1.0103791800365778,
+          0.20075844735164244
+        ]
+      ],
+      "affineConvention": "resized-native context 640x640 -> v5 context map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.5114168969170049,
+          -0.0004914786133953349,
+          -0.41654337619324666
+        ],
+        [
+          -0.00033488212686177146,
+          0.5156640153296729,
+          0.20075844735164244
+        ]
+      ],
+      "nativeToGlobalMapPx1x": [
+        [
+          0.5114168969170049,
+          -0.0004914786133953349,
+          959.5834566238068
+        ],
+        [
+          -0.00033488212686177146,
+          0.5156640153296729,
+          1472.2007584473517
+        ]
+      ],
+      "nativeToContextPx2x": [
+        [
+          1.0228337938340097,
+          -0.0009829572267906698,
+          -0.8330867523864933
+        ],
+        [
+          -0.0006697642537235429,
+          1.0313280306593458,
+          0.4015168947032849
+        ]
+      ],
+      "registrationReference": "inputs/q21-v5.webp",
+      "siftMatches": 625,
+      "siftInliers": 565,
+      "inlierResidualPx1x": {
+        "median": 0.6258723139762878,
+        "p95": 1.8380335569381714,
+        "max": 3.0938472747802734
+      },
+      "colorCorrection": {
+        "method": "0.8 * Gaussian broad-color difference to cleared pilot, sigma 35 map pixels, same as approved prototype",
+        "reference": "inputs/q21-color-reference.webp",
+        "sigmaPx1x": 35
+      },
+      "interpolation": "OpenCV INTER_LANCZOS4",
+      "borderMode": "BORDER_REFLECT for affine uncovered fringe only",
+      "localWarpApplied": false
+    },
+    {
+      "id": "q22",
+      "coreMapPx1x": [
+        1536,
+        1536,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        1472,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "nativeFile": "q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "overlapPerSidePx1x": 64,
+      "registrationModel": "partial-affine",
+      "affine": [
+        [
+          1.0029384856547425,
+          0.0026205896711032997,
+          -1.8832262582283485
+        ],
+        [
+          -0.0026205896711032997,
+          1.0029384856547425,
+          2.1402340529178563
+        ]
+      ],
+      "affineConvention": "resized-native context 640x640 -> v5 context map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.5118665317536165,
+          0.0013374620330989725,
+          -1.8832262582283485
+        ],
+        [
+          -0.0013374620330989725,
+          0.5118665317536165,
+          2.1402340529178563
+        ]
+      ],
+      "nativeToGlobalMapPx1x": [
+        [
+          0.5118665317536165,
+          0.0013374620330989725,
+          1470.1167737417716
+        ],
+        [
+          -0.0013374620330989725,
+          0.5118665317536165,
+          1474.1402340529178
+        ]
+      ],
+      "nativeToContextPx2x": [
+        [
+          1.023733063507233,
+          0.002674924066197945,
+          -3.766452516456697
+        ],
+        [
+          -0.002674924066197945,
+          1.023733063507233,
+          4.280468105835713
+        ]
+      ],
+      "registrationReference": "inputs/q22-v5.webp",
+      "siftMatches": 155,
+      "siftInliers": 126,
+      "inlierResidualPx1x": {
+        "median": 0.8007301092147827,
+        "p95": 2.0237913131713867,
+        "max": 2.8012325763702393
+      },
+      "colorCorrection": {
+        "method": "0.8 * Gaussian broad-color difference to cleared pilot, sigma 35 map pixels, same as approved prototype",
+        "reference": "inputs/q22-color-reference.webp",
+        "sigmaPx1x": 35
+      },
+      "interpolation": "OpenCV INTER_LANCZOS4",
+      "borderMode": "BORDER_REFLECT for affine uncovered fringe only",
+      "localWarpApplied": false
+    }
+  ],
+  "internalBlend": {
+    "method": "minimum squared RGB color difference dynamic programming, 3-connected path; smoothstep feather +/-8 output px",
+    "overlapPx1x": 128
+  },
+  "neighborChunkEdgesBlended": false
+}

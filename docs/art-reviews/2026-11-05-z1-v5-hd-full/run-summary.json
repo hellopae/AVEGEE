@@ -1,0 +1,157 @@
+{
+  "task": "Z1-V5-HD-FULL",
+  "baseCommit": "812152d2",
+  "chunks": [
+    {
+      "chunk": "r2-c2",
+      "partsComplete": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingGenerationParts": [],
+      "imageGenCalls": 5,
+      "returnedSizes": [
+        {
+          "id": "q11",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q12",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q21",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "revision": 2,
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "structureMaxPx1x": 1.4142135623730951,
+      "reliableStructureProbes": 19,
+      "totalStructureProbes": 26,
+      "allReliableProbesWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacianToV5": 22.061306913726366,
+      "minCoreSharpnessRatio": 17.84266817332485,
+      "nativeAndRegistrationComplete": true,
+      "pendingReview": {
+        "individualObjectIds": [
+          "pilot-red-tree-00",
+          "pilot-red-tree-01"
+        ],
+        "wholeStructureContour": true,
+        "inGameAnimationMaskAlignment": true,
+        "remainingBaseFoliageReview": null
+      },
+      "allInventoryObjectsIndividuallyVerified": false,
+      "obviousRectangularJoinObserved": false
+    },
+    {
+      "chunk": "r3-c3",
+      "partsComplete": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingGenerationParts": [],
+      "imageGenCalls": 5,
+      "returnedSizes": [
+        {
+          "id": "q11",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q12",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q21",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "revision": 1,
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q11",
+          "revision": 2,
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "structureMaxPx1x": 2.23606797749979,
+      "reliableStructureProbes": 29,
+      "totalStructureProbes": 33,
+      "allReliableProbesWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacianToV5": 15.879213774308216,
+      "minCoreSharpnessRatio": 14.257610756923475,
+      "nativeAndRegistrationComplete": true,
+      "pendingReview": {
+        "individualObjectIds": [
+          "south-rock-05"
+        ],
+        "wholeStructureContour": true,
+        "inGameAnimationMaskAlignment": true,
+        "remainingBaseFoliageReview": "Red/orange low shrubs on south river bank in q12; full separation not certified"
+      },
+      "allInventoryObjectsIndividuallyVerified": false,
+      "obviousRectangularJoinObserved": false
+    }
+  ],
+  "imageGenCalls": 10,
+  "generationLimit": 10,
+  "tool": "built-in image_gen.imagegen",
+  "outputBudgetBytes": 60000000,
+  "qaPassed": false,
+  "neighborChunkEdgesBlended": false,
+  "outputBytes": 57715231,
+  "withinSizeBudget": true
+}

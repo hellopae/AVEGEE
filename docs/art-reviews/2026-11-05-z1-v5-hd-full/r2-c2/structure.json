@@ -1,0 +1,405 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed manually selected architecture/bank probes; 49x49 DoG sigma1.5/6 normalized template correlation, +/-12 map px; correlation>=0.6 considered reliable. Independent of SIFT.",
+  "totalProbes": 26,
+  "reliableProbes": 19,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "p95ReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableProbesWithin4px": true,
+  "failedReliableProbeIds": [],
+  "semanticStructureVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "limitation": "Local patch translation cannot certify entire semantic contours, stair count, liquid animation mask alignment or occluded boundaries. All low-confidence and out-of-threshold results retained.",
+  "probes": [
+    {
+      "id": "bridge-deck-west",
+      "sourcePx1x": [
+        52,
+        225
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7575358748435974,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-middle",
+      "sourcePx1x": [
+        135,
+        242
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8677248358726501,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-east",
+      "sourcePx1x": [
+        242,
+        260
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.4774298667907715,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lava-bank-northwest",
+      "sourcePx1x": [
+        173,
+        78
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9332156777381897,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-bank-northeast",
+      "sourcePx1x": [
+        327,
+        150
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9360459446907043,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-under-arch",
+      "sourcePx1x": [
+        154,
+        277
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.934729278087616,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-west-foot",
+      "sourcePx1x": [
+        447,
+        369
+      ],
+      "displacementPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8122297525405884,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-west-top",
+      "sourcePx1x": [
+        803,
+        242
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.30036914348602295,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-east-foot",
+      "sourcePx1x": [
+        527,
+        397
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.5345436334609985,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-east-top",
+      "sourcePx1x": [
+        880,
+        258
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.6179276704788208,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-mid-upper",
+      "sourcePx1x": [
+        602,
+        305
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8507696390151978,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-mid-lower",
+      "sourcePx1x": [
+        647,
+        341
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8649893403053284,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "terrace-cliff-west",
+      "sourcePx1x": [
+        627,
+        386
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6918856501579285,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "terrace-cliff-middle",
+      "sourcePx1x": [
+        761,
+        388
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9130864143371582,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "terrace-cliff-east",
+      "sourcePx1x": [
+        901,
+        378
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8116406798362732,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-plaza-ring",
+      "sourcePx1x": [
+        997,
+        239
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8210282325744629,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-right-bank",
+      "sourcePx1x": [
+        370,
+        470
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7690248489379883,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-left-bank",
+      "sourcePx1x": [
+        239,
+        509
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9796056747436523,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-fall-lip-left",
+      "sourcePx1x": [
+        292,
+        627
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9439014196395874,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-fall-lip-right",
+      "sourcePx1x": [
+        351,
+        660
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9290540814399719,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-platform-cliff-left",
+      "sourcePx1x": [
+        669,
+        807
+      ],
+      "displacementPx1x": [
+        0,
+        -6
+      ],
+      "distancePx1x": 6.0,
+      "normalizedCorrelation": 0.37692517042160034,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "lower-platform-cliff-middle",
+      "sourcePx1x": [
+        809,
+        850
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.4160991609096527,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-platform-cliff-right",
+      "sourcePx1x": [
+        944,
+        858
+      ],
+      "displacementPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.43784135580062866,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-cliff-point",
+      "sourcePx1x": [
+        538,
+        884
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8534765243530273,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-lava-bank",
+      "sourcePx1x": [
+        394,
+        943
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9443352818489075,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-east-stair",
+      "sourcePx1x": [
+        1000,
+        957
+      ],
+      "displacementPx1x": [
+        -3,
+        12
+      ],
+      "distancePx1x": 12.36931687685298,
+      "normalizedCorrelation": 0.2936103641986847,
+      "reliable": false,
+      "within4px": false
+    }
+  ]
+}

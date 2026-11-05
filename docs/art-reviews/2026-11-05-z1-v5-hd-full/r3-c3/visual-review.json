@@ -1,0 +1,13 @@
+{
+  "reviewType": "agent offline image inspection, not in-game QA",
+  "seamSheet": "seam-check.jpg",
+  "compare": "r3-c3-compare.jpg",
+  "obviousRectangularJoinObserved": false,
+  "contourCertification": false,
+  "ownerReviewPending": true,
+  "limitations": [
+    "Removed bridge rail/post groups; bridge decks and stair treads retained in generated art.",
+    "Continuous distant cliff forest retained. Red/orange low bank foliage remains in r3-c3/q12; cannot certify complete object separation around that bank.",
+    "Approximate inventory rectangles do not resolve every overlapping tree/rock identity. Uncertain ids are not claimed as confirmed removals."
+  ]
+}

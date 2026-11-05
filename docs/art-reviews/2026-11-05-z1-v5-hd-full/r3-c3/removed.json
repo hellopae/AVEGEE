@@ -1,0 +1,270 @@
+{
+  "chunk": "r3-c3",
+  "inventorySource": "../source-provenance.json",
+  "requestedObjectIds": [
+    "pilot-red-tree-06",
+    "pilot-red-tree-07",
+    "pilot-red-tree-08",
+    "pilot-red-tree-11",
+    "pilot-gold-tree-00",
+    "pilot-gold-tree-01",
+    "pilot-gold-tree-02",
+    "pilot-gold-tree-03",
+    "south-bed-03",
+    "south-bed-04",
+    "south-bed-05",
+    "south-bed-06",
+    "south-rock-05",
+    "river-back",
+    "river-front",
+    "pier-back",
+    "pier-front",
+    "south-stair-west",
+    "south-stair-east"
+  ],
+  "removedObjectIds": [
+    "pilot-red-tree-06",
+    "pilot-red-tree-07",
+    "pilot-red-tree-08",
+    "pilot-red-tree-11",
+    "pilot-gold-tree-00",
+    "pilot-gold-tree-01",
+    "pilot-gold-tree-02",
+    "pilot-gold-tree-03",
+    "south-bed-03",
+    "south-bed-04",
+    "south-bed-05",
+    "south-bed-06",
+    "river-back",
+    "river-front",
+    "pier-back",
+    "pier-front",
+    "south-stair-west",
+    "south-stair-east"
+  ],
+  "needsIndividualVerificationIds": [
+    "south-rock-05"
+  ],
+  "allInventoryObjectsIndividuallyVerified": false,
+  "method": "Inventory bounds transformed from engine world to master map pixels; removal prompts include core and context objects. Visual review of grouped vegetation/rails, not segmentation proof for every id.",
+  "notes": [
+    "Removed bridge rail/post groups; bridge decks and stair treads retained in generated art.",
+    "Continuous distant cliff forest retained. Red/orange low bank foliage remains in r3-c3/q12; cannot certify complete object separation around that bank.",
+    "Approximate inventory rectangles do not resolve every overlapping tree/rock identity. Uncertain ids are not claimed as confirmed removals."
+  ],
+  "objects": [
+    {
+      "id": "pilot-red-tree-06",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        -66.641,
+        501.656,
+        104.444,
+        196.6
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-red-tree-07",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        62.378,
+        633.747,
+        116.731,
+        202.744
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-red-tree-08",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        -100.431,
+        919.431,
+        107.516,
+        211.959
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-red-tree-11",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "rectChunkPx1x": [
+        894.856,
+        802.699,
+        119.803,
+        199.672
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-gold-tree-00",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        53.162,
+        -112.719,
+        89.084,
+        165.881
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-gold-tree-01",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        105.384,
+        716.687,
+        110.588,
+        196.6
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-gold-tree-02",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        719.759,
+        716.687,
+        107.516,
+        196.6
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pilot-gold-tree-03",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "rectChunkPx1x": [
+        43.947,
+        953.221,
+        104.444,
+        196.6
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-bed-03",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "rectChunkPx1x": [
+        -115.791,
+        676.753,
+        147.45,
+        104.444
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-bed-04",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "rectChunkPx1x": [
+        -66.641,
+        793.484,
+        144.378,
+        110.587
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-bed-05",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "rectChunkPx1x": [
+        80.809,
+        974.725,
+        159.738,
+        107.515
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-bed-06",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "rectChunkPx1x": [
+        655.25,
+        937.863,
+        147.45,
+        107.515
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-rock-05",
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "rectChunkPx1x": [
+        1008.516,
+        578.453,
+        119.803,
+        156.666
+      ],
+      "reviewStatus": "needs-individual-verification"
+    },
+    {
+      "id": "river-back",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        298.912,
+        -186.444,
+        64.509,
+        657.382
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "river-front",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        461.722,
+        -186.444,
+        61.438,
+        657.382
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pier-back",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        732.047,
+        93.097,
+        43.006,
+        199.672
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "pier-front",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        873.353,
+        90.025,
+        52.222,
+        211.959
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-stair-west",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        305.056,
+        897.928,
+        46.078,
+        116.732
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    },
+    {
+      "id": "south-stair-east",
+      "action": "extract-redraw",
+      "rectChunkPx1x": [
+        467.866,
+        897.928,
+        46.078,
+        116.732
+      ],
+      "reviewStatus": "visually-removed-as-group"
+    }
+  ],
+  "contextObjectIds": [
+    "city-bed-07",
+    "pilot-red-tree-12"
+  ]
+}

@@ -1,0 +1,401 @@
+[
+  {
+    "id": "west-tree-07",
+    "kind": "tree",
+    "bboxWorld": [
+      686.4,
+      751.124,
+      84.0,
+      148.785
+    ],
+    "footWorld": [
+      728.4,
+      888.006
+    ],
+    "chunk": [
+      "r1-c1",
+      "r2-c1"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      -145.444,
+      -62.503,
+      107.516,
+      190.456
+    ],
+    "intersectsCore": false
+  },
+  {
+    "id": "west-tree-11",
+    "kind": "tree",
+    "bboxWorld": [
+      681.6,
+      1067.891,
+      76.8,
+      134.386
+    ],
+    "footWorld": [
+      720.0,
+      1191.527
+    ],
+    "chunk": [
+      "r2-c1"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      -151.587,
+      342.984,
+      98.3,
+      172.025
+    ],
+    "intersectsCore": false
+  },
+  {
+    "id": "city-tree-09",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1368.0,
+      1043.894,
+      98.4,
+      177.582
+    ],
+    "footWorld": [
+      1417.2,
+      1207.269
+    ],
+    "chunk": [
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      726.969,
+      312.266,
+      125.947,
+      227.319
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "city-tree-10",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1461.6,
+      1139.884,
+      112.8,
+      165.583
+    ],
+    "footWorld": [
+      1518.0,
+      1292.221
+    ],
+    "chunk": [
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      846.772,
+      435.141,
+      144.378,
+      211.959
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "city-tree-11",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1600.8,
+      1183.08,
+      100.8,
+      172.782
+    ],
+    "footWorld": [
+      1651.2,
+      1342.039
+    ],
+    "chunk": [
+      "r2-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      1024.941,
+      490.435,
+      129.019,
+      221.174
+    ],
+    "intersectsCore": false
+  },
+  {
+    "id": "city-bed-00",
+    "kind": "green-shrub",
+    "bboxWorld": [
+      1442.4,
+      801.518,
+      108.0,
+      74.392
+    ],
+    "footWorld": [
+      1496.4,
+      869.959
+    ],
+    "chunk": [
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "note": "",
+    "nearWalk24": false,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      822.197,
+      2.006,
+      138.234,
+      95.228
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "city-bed-01",
+    "kind": "green-shrub",
+    "bboxWorld": [
+      1617.6,
+      782.32,
+      115.2,
+      83.991
+    ],
+    "footWorld": [
+      1675.2,
+      859.593
+    ],
+    "chunk": [
+      "r1-c3",
+      "r2-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      1046.444,
+      -22.569,
+      147.45,
+      107.515
+    ],
+    "intersectsCore": false
+  },
+  {
+    "id": "pilot-red-tree-00",
+    "kind": "tree",
+    "bboxWorld": [
+      1300.8,
+      671.932,
+      103.2,
+      141.586
+    ],
+    "footWorld": [
+      1352.4,
+      802.19
+    ],
+    "chunk": [
+      "r1-c2",
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      640.956,
+      -163.875,
+      132.091,
+      181.241
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "pilot-red-tree-01",
+    "kind": "tree",
+    "bboxWorld": [
+      1324.8,
+      851.913,
+      100.8,
+      155.984
+    ],
+    "footWorld": [
+      1375.2,
+      995.419
+    ],
+    "chunk": [
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": false,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      671.675,
+      66.515,
+      129.019,
+      199.672
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "pilot-red-tree-02",
+    "kind": "tree",
+    "bboxWorld": [
+      1315.2,
+      1391.858,
+      98.4,
+      163.183
+    ],
+    "footWorld": [
+      1364.4,
+      1541.987
+    ],
+    "chunk": [
+      "r2-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      659.388,
+      757.687,
+      125.947,
+      208.887
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "pilot-red-tree-03",
+    "kind": "tree",
+    "bboxWorld": [
+      1437.6,
+      1538.244,
+      93.6,
+      158.384
+    ],
+    "footWorld": [
+      1484.4,
+      1683.957
+    ],
+    "chunk": [
+      "r2-c2",
+      "r3-c2"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      816.053,
+      945.072,
+      119.803,
+      202.744
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "pilot-gold-tree-00",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1641.6,
+      1511.846,
+      69.6,
+      129.587
+    ],
+    "footWorld": [
+      1676.4,
+      1631.066
+    ],
+    "chunk": [
+      "r2-c3",
+      "r3-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      1077.162,
+      911.281,
+      89.084,
+      165.881
+    ],
+    "intersectsCore": false
+  },
+  {
+    "id": "lava-lower-back",
+    "kind": "bridge-rail",
+    "bboxWorld": [
+      796.8,
+      907.108,
+      254.4,
+      67.193
+    ],
+    "footWorld": [
+      924.0,
+      974.301
+    ],
+    "chunk": [
+      "r2-c1",
+      "r2-c2"
+    ],
+    "action": "extract-redraw",
+    "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      -4.138,
+      137.169,
+      325.619,
+      86.012
+    ],
+    "intersectsCore": true
+  },
+  {
+    "id": "lava-lower-front",
+    "kind": "bridge-rail",
+    "bboxWorld": [
+      796.8,
+      957.503,
+      264.0,
+      91.191
+    ],
+    "footWorld": [
+      928.8,
+      1048.693
+    ],
+    "chunk": [
+      "r2-c1",
+      "r2-c2"
+    ],
+    "action": "extract-redraw",
+    "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped",
+    "rectChunkPx1x": [
+      -4.138,
+      201.679,
+      337.906,
+      116.732
+    ],
+    "intersectsCore": true
+  }
+]

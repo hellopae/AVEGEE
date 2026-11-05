@@ -1,0 +1,12 @@
+{
+  "reviewType": "agent offline image inspection, not in-game QA",
+  "seamSheet": "seam-check.jpg",
+  "compare": "r2-c2-compare.jpg",
+  "obviousRectangularJoinObserved": false,
+  "contourCertification": false,
+  "ownerReviewPending": true,
+  "limitations": [
+    "Removed green/gold trees on walkable platforms, lower path trees, bridge rails; old cliff forest retained.",
+    "Two red tree ids intersect cliff forest; cannot uniquely certify their removal from rough survey boxes."
+  ]
+}
