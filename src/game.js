@@ -608,8 +608,32 @@ const API = {
     const pick = table => table[B.encounter] ?? table[B.eventKey] ?? table[B.kind] ?? table.default;
     return Math.min(pick(TEAM_PRESSURE.max), 1 + pick(TEAM_PRESSURE.share) * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1));
   },
+  /** KO-CREW (owner 6 Nov): is this teammate on the field of the battle that is open right now? (Then a fall keeps them in the scene, lying down.) */
+  battleParticipant(actor) {
+    const b = this.battle; if (!b || !actor) return false;
+    if (actor.k === 'guard') return !isFrontierDuoBattle(b) && b.eventKey !== 'westHypnotized';
+    if (actor.k === 'nira' && isFrontierDuoBattle(b)) return true;
+    const keys = b.team || this.party?.members || [];
+    if (this.isFinalBattle(b)) return teamIds(keys, this.roster, this.zone).includes(actor.id);
+    return keys.includes(actor.k);
+  },
+  /** Teammates who fell in the open battle: not in battleActors() (no turn, no target, not hit) but still drawn - lying down - until the battle is over. */
+  battleFallen() {
+    const b = this.battle; if (!b?.fallen?.length) return [];
+    return b.fallen.map(id => id === this.guard?.id ? this.guard : this.roster[id]).filter(Boolean);
+  },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
+    // KO-CREW: a teammate who falls DURING a battle stays in the scene lying down. The tea-house rest (same RECOVERY_MS, same startRecoveryTeaRest)
+    // starts when the battle is over: updateActorRecovery meets morale 0 with no battle open and comes back through here.
+    if (this.battle && this.battleParticipant(actor)) {
+      if ((this.battle.fallen ||= []).includes(actor.id)) return false;
+      actor.morale = actor.k === 'guard' ? 1 : 0;       // the Guard keeps 1 map HP as before; he is only out of this battle
+      this.battle.fallen.push(actor.id);
+      if (!(this.battle.absentActors ||= []).includes(actor.id)) this.battle.absentActors.push(actor.id);
+      this.releaseActorFromWork(actor);
+      return true;
+    }
     // Guard retains 1 map HP; absentActors keeps it knocked out for the rest of this battle.
     const fallenGuard = actor.k === 'guard' && this.battle;
     actor.morale = fallenGuard ? 1 : 0; actor.recoverUntil = fallenGuard ? 0 : now + RECOVERY_MS;
@@ -673,6 +697,9 @@ const API = {
       if (actor.teaRest) {
         if (actor.teaRest.recovery && this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
         changed = this.updateGuardRest(actor, now) || changed; continue;
+      }
+      if (this.battle?.fallen?.includes(actor.id) && actor.k !== 'guard' && actor.morale > 0) {      // revived in the middle of the battle: back on its feet and in the fight
+        this.battle.fallen = this.battle.fallen.filter(id => id !== actor.id); this.battle.absentActors = (this.battle.absentActors || []).filter(id => id !== actor.id); changed = true;
       }
       if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;
       if (actor.recoverUntil && now >= actor.recoverUntil) {
@@ -4114,6 +4141,7 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
+    this.updateActorRecovery();      // KO-CREW: teammates who fell in this battle walk to the tea house now (win, lose or flee), not at the moment they fell
     if(B.dungeonToken){
       resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);
       // L5: the single hook for "fled / lost a route fight": step back from the enemy and give it a short rest from chasing.

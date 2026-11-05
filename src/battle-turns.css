@@ -217,3 +217,7 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 .arena.combat-arena .formation-member.ko-down{rotate:-84deg;opacity:.8;animation:none!important}
 .arena.combat-arena .formation-member.ko-rise{animation:koRise .3s ease-out both!important}
 @media(prefers-reduced-motion:reduce){.arena.combat-arena .formation-member.ko-fall{animation:none!important;rotate:-84deg;opacity:.8}.arena.combat-arena .formation-member.ko-rise{animation:none!important}}
+
+/* KO-CREW (owner 6 Nov): a fallen teammate lies in the scene until the battle is over - not clickable, card greyed. */
+.arena.combat-arena .battle-squad .is-fallen,.arena.combat-arena .fig.you.ko-down{pointer-events:none}
+.battle-team-hud .battle-portrait.is-fallen{opacity:.55;pointer-events:none}

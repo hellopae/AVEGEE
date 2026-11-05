@@ -64,6 +64,6 @@ test('FX5-6: KO phases fall -> down (held) -> rise; a figure already down when t
 
 test('FX5: import map has a new ?v= for every module changed this round', () => {
   const html = read('index.html'); const map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const m of ['scene', 'ui', 'map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5$/, m);
-  assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261106-fx5">/); assert.match(html, /battle-turns\.css\?v=20261106-fx5/);
+  for (const m of ['scene', 'map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5$/, m);
+  assert.match(map['./src/ui.js'], /\?v=20261106-(fx5|kocrew-home-slots)$/); assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261106-kocrew-home-slots">/); assert.match(html, /battle-turns\.css\?v=20261106-kocrew-home-slots/);
 });

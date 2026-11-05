@@ -2519,7 +2519,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${(c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '') ? ` class="${((c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '')).trim()}"` : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id]})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), specialCooldown(c)) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
@@ -3945,6 +3945,11 @@ function openBattle(after) {
     if (phase === 'foe') for (const c of b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])) {
       if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || GUARD.name});
     }
+    // KO-CREW: teammates who fell stay in the scene (lying down) in the slot they had - same order all battle long. They are not in battleActors(), so they
+    // get no turn, no target and no hit; the squad list and the cards only DRAW them.
+    for (const c of g.battleFallen()) if (!squadMembers.some(s => s.id === c.id)) squadMembers.push(c.k === 'guard' ? { ...c, name: GUARD.name } : c);
+    { const order = (b.squadOrder ||= []); for (const c of squadMembers) if (!order.includes(c.id)) order.push(c.id);
+      squadMembers.sort((a, z) => order.indexOf(a.id) - order.indexOf(z.id)); }
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
     // กดได้ทุกปุ่ม ลำดับไหนก็ได้ หลายครั้งก็ได้ (ไม่ใช่ครั้งเดียวเหมือนของเดิม) เปิดหน้าต่างเดิมที่มีอยู่แล้ว
     // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
@@ -4124,7 +4129,8 @@ function openBattle(after) {
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
           const duration = specialCooldown(c);
-          return `<button class="battle-portrait${view.defending?.[c.id] ? ' is-defending' : ''}" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}">
+          const fallen = (b.fallen || []).includes(c.id);
+          return `<button class="battle-portrait${view.defending?.[c.id] ? ' is-defending' : ''}${fallen ? ' is-fallen' : ''}" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}"${fallen ? ' aria-disabled="true" tabindex="-1"' : ''}>
             ${b.protection?.[c.id] ? `<small class="battle-protection">โล่ ${b.protection[c.id].shield} · +${Math.round(b.protection[c.id].buff * 100)}%</small>` : ''}${view.defending?.[c.id] ? defendShieldHtml() : ''}<img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
             <div class="battle-numbered-meter">${meter(c.morale, 100, 'health', t('battle.hp'))}<small>${Math.round(c.morale)}/100</small></div><span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
           </button>`;
@@ -4222,8 +4228,8 @@ function openBattle(after) {
       const hurtStart=()=>hurtHold>0?Date.now()+hurtHold:phaseAt;
       // FX5: teammates whose health / morale is gone lie down (drawn `:ko` pose when the catalog has it, else a temporary tilt - see battle-ko.js)
       const koNow = Date.now(), koTrack = koTrackOf(b), koInfo = new Map();
-      for (const c of g.battleActors()) {
-        const isKo = c.id === 'you' ? b.youHp <= 0 : (c.morale ?? 100) <= 0;
+      for (const c of [...g.battleActors(), ...g.battleFallen()]) {
+        const isKo = c.id === 'you' ? b.youHp <= 0 : (c.morale ?? 100) <= 0 || (b.fallen || []).includes(c.id);
         const phase = koPhase(koTrack, c.id, isKo, koNow);
         const key = c.id === 'you' ? `yama:${g.outfit || g.zone}` : c.guestGuide ? null : `crew:${c.homeZone || g.zone}:${c.k}`;
         const root = c.id === 'you' ? stage.querySelector('.fig.you') : stage.querySelector(`.battle-squad [data-crew-pick="${crewBattleKey(c)}"], .fig.helper[data-crew-pick="${crewBattleKey(c)}"]`);
@@ -4236,7 +4242,7 @@ function openBattle(after) {
         ...(b.dmg?.hitActors||[]).map(a=>a.id),b.dmg?.hitActor?.id,
         ...(b.dmg?.crew>0?[b.dmg?.targetActorId]:[])
       ].filter(Boolean));
-      const poseActors = g.battleActors();
+      const poseActors = [...g.battleActors(), ...g.battleFallen()];
       if (dash?.actor && !poseActors.some(c => c.id === dash.actor.id)) poseActors.push(dash.actor);
       for(const c of poseActors){
         if(c.id==='you'||c.k==='nira')continue;
