@@ -1,0 +1,561 @@
+[
+  {
+    "chunk": "r1-c2",
+    "id": "q11",
+    "coreGlobalPx1x": [
+      1024,
+      0,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      960,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "remove": []
+  },
+  {
+    "chunk": "r1-c2",
+    "id": "q12",
+    "coreGlobalPx1x": [
+      1536,
+      0,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      1472,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "remove": [
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          573.9,
+          562.2,
+          132.1,
+          230.4
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c2",
+    "id": "q21",
+    "coreGlobalPx1x": [
+      1024,
+      512,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      960,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "remove": [
+      {
+        "id": "west-tree-07",
+        "kind": "tree",
+        "bboxCropPx1x": [
+          -81.4,
+          513.5,
+          107.5,
+          190.5
+        ]
+      },
+      {
+        "id": "lava-upper-back",
+        "kind": "bridge-rail",
+        "bboxCropPx1x": [
+          -32.3,
+          270.8,
+          451.6,
+          101.4
+        ]
+      },
+      {
+        "id": "lava-upper-front",
+        "kind": "bridge-rail",
+        "bboxCropPx1x": [
+          -41.5,
+          347.6,
+          460.8,
+          129.0
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c2",
+    "id": "q22",
+    "coreGlobalPx1x": [
+      1536,
+      512,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      1472,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "remove": [
+      {
+        "id": "city-tree-00",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          478.6,
+          224.7,
+          129.0,
+          181.2
+        ]
+      },
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          573.9,
+          114.2,
+          132.1,
+          230.4
+        ]
+      },
+      {
+        "id": "city-bed-00",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          374.2,
+          578.0,
+          138.2,
+          95.2
+        ]
+      },
+      {
+        "id": "city-bed-01",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          598.4,
+          553.4,
+          147.5,
+          107.5
+        ]
+      },
+      {
+        "id": "pilot-red-tree-00",
+        "kind": "tree",
+        "bboxCropPx1x": [
+          193.0,
+          412.1,
+          132.1,
+          181.2
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c3",
+    "id": "q11",
+    "coreGlobalPx1x": [
+      2048,
+      0,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      1984,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "remove": [
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          61.9,
+          562.2,
+          132.1,
+          230.4
+        ]
+      },
+      {
+        "id": "city-tree-02",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          378.3,
+          420.8,
+          132.1,
+          184.3
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c3",
+    "id": "q12",
+    "coreGlobalPx1x": [
+      2560,
+      0,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      2496,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "remove": [
+      {
+        "id": "ice-tree-00",
+        "kind": "snow-tree",
+        "bboxCropPx1x": [
+          388.5,
+          451.6,
+          86.0,
+          159.7
+        ]
+      },
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "bboxCropPx1x": [
+          425.4,
+          565.2,
+          92.2,
+          150.5
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c3",
+    "id": "q21",
+    "coreGlobalPx1x": [
+      2048,
+      512,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      1984,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "remove": [
+      {
+        "id": "city-tree-00",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          -33.4,
+          224.7,
+          129.0,
+          181.2
+        ]
+      },
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          61.9,
+          114.2,
+          132.1,
+          230.4
+        ]
+      },
+      {
+        "id": "city-tree-02",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          378.3,
+          -27.2,
+          132.1,
+          184.3
+        ]
+      },
+      {
+        "id": "city-tree-03",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          412.1,
+          151.0,
+          132.1,
+          184.3
+        ]
+      },
+      {
+        "id": "city-tree-04",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          534.9,
+          218.6,
+          147.5,
+          218.1
+        ]
+      },
+      {
+        "id": "city-bed-00",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          -137.8,
+          578.0,
+          138.2,
+          95.2
+        ]
+      },
+      {
+        "id": "city-bed-01",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          86.4,
+          553.4,
+          147.5,
+          107.5
+        ]
+      },
+      {
+        "id": "city-bed-02",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          482.7,
+          538.1,
+          129.0,
+          107.5
+        ]
+      },
+      {
+        "id": "city-bed-03",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          602.5,
+          608.7,
+          138.2,
+          98.3
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c3",
+    "id": "q22",
+    "coreGlobalPx1x": [
+      2560,
+      512,
+      512,
+      512
+    ],
+    "contextGlobalPx1x": [
+      2496,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "remove": [
+      {
+        "id": "city-tree-03",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          -99.9,
+          151.0,
+          132.1,
+          184.3
+        ]
+      },
+      {
+        "id": "city-tree-04",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          22.9,
+          218.6,
+          147.5,
+          218.1
+        ]
+      },
+      {
+        "id": "city-tree-05",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          170.4,
+          190.9,
+          147.5,
+          224.2
+        ]
+      },
+      {
+        "id": "city-tree-06",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          207.2,
+          344.5,
+          147.5,
+          193.5
+        ]
+      },
+      {
+        "id": "city-tree-07",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          394.6,
+          335.3,
+          122.9,
+          205.8
+        ]
+      },
+      {
+        "id": "city-tree-08",
+        "kind": "green-tree",
+        "bboxCropPx1x": [
+          532.9,
+          442.8,
+          132.1,
+          205.8
+        ]
+      },
+      {
+        "id": "city-bed-02",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          -29.3,
+          538.1,
+          129.0,
+          107.5
+        ]
+      },
+      {
+        "id": "city-bed-03",
+        "kind": "green-shrub",
+        "bboxCropPx1x": [
+          90.5,
+          608.7,
+          138.2,
+          98.3
+        ]
+      },
+      {
+        "id": "ice-tree-00",
+        "kind": "snow-tree",
+        "bboxCropPx1x": [
+          388.5,
+          3.6,
+          86.0,
+          159.7
+        ]
+      },
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "bboxCropPx1x": [
+          425.4,
+          117.2,
+          92.2,
+          150.5
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,326 @@
+[
+  {
+    "id": "distant-02",
+    "kind": "cliff-forest",
+    "bboxWorld": [
+      1560.0,
+      0.0,
+      648.0,
+      311.968
+    ],
+    "footWorld": [
+      1884.0,
+      287.011
+    ],
+    "chunk": [
+      "r1-c2",
+      "r1-c3"
+    ],
+    "action": "keep-baked",
+    "note": "กลุ่มป่าหินฉากไกล/ขอบโลก ตรวจเป็นกลุ่ม ไม่ใช่วัตถุแยก",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "distant-03",
+    "kind": "cliff-forest",
+    "bboxWorld": [
+      2160.0,
+      0.0,
+      648.0,
+      335.966
+    ],
+    "footWorld": [
+      2484.0,
+      309.089
+    ],
+    "chunk": [
+      "r1-c3",
+      "r1-c4"
+    ],
+    "action": "keep-baked",
+    "note": "กลุ่มป่าหินฉากไกล/ขอบโลก ตรวจเป็นกลุ่ม ไม่ใช่วัตถุแยก",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-00",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1524.0,
+      525.547,
+      100.8,
+      141.586
+    ],
+    "footWorld": [
+      1574.4,
+      655.805
+    ],
+    "chunk": [
+      "r1-c2",
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-01",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1598.4,
+      439.155,
+      103.2,
+      179.982
+    ],
+    "footWorld": [
+      1650.0,
+      604.738
+    ],
+    "chunk": [
+      "r1-c2",
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-02",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1845.6,
+      328.767,
+      103.2,
+      143.985
+    ],
+    "footWorld": [
+      1897.2,
+      461.233
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-03",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1872.0,
+      467.952,
+      103.2,
+      143.985
+    ],
+    "footWorld": [
+      1923.6,
+      600.419
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-04",
+    "kind": "green-tree",
+    "bboxWorld": [
+      1968.0,
+      520.747,
+      115.2,
+      170.383
+    ],
+    "footWorld": [
+      2025.6,
+      677.499
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-05",
+    "kind": "green-tree",
+    "bboxWorld": [
+      2083.2,
+      499.149,
+      115.2,
+      175.182
+    ],
+    "footWorld": [
+      2140.8,
+      660.317
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": false,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-06",
+    "kind": "green-tree",
+    "bboxWorld": [
+      2112.0,
+      619.137,
+      115.2,
+      151.185
+    ],
+    "footWorld": [
+      2169.6,
+      758.227
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-07",
+    "kind": "green-tree",
+    "bboxWorld": [
+      2258.4,
+      611.938,
+      96.0,
+      160.784
+    ],
+    "footWorld": [
+      2306.4,
+      759.859
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-tree-08",
+    "kind": "green-tree",
+    "bboxWorld": [
+      2366.4,
+      695.929,
+      103.2,
+      160.784
+    ],
+    "footWorld": [
+      2418.0,
+      843.85
+    ],
+    "chunk": [
+      "r1-c3",
+      "r1-c4",
+      "r2-c3",
+      "r2-c4"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-bed-01",
+    "kind": "green-shrub",
+    "bboxWorld": [
+      1617.6,
+      782.32,
+      115.2,
+      83.991
+    ],
+    "footWorld": [
+      1675.2,
+      859.593
+    ],
+    "chunk": [
+      "r1-c3",
+      "r2-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "city-bed-02",
+    "kind": "green-shrub",
+    "bboxWorld": [
+      1927.2,
+      770.322,
+      100.8,
+      83.991
+    ],
+    "footWorld": [
+      1977.6,
+      847.594
+    ],
+    "chunk": [
+      "r1-c3",
+      "r2-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "ice-tree-00",
+    "kind": "snow-tree",
+    "bboxWorld": [
+      2253.6,
+      352.764,
+      67.2,
+      124.787
+    ],
+    "footWorld": [
+      2287.2,
+      467.568
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  },
+  {
+    "id": "ice-tree-01",
+    "kind": "snow-tree",
+    "bboxWorld": [
+      2282.4,
+      441.555,
+      72.0,
+      117.588
+    ],
+    "footWorld": [
+      2318.4,
+      549.736
+    ],
+    "chunk": [
+      "r1-c3"
+    ],
+    "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+    "note": "",
+    "nearWalk24": true,
+    "survey": "manual overview bbox; continuous vegetation grouped"
+  }
+]
