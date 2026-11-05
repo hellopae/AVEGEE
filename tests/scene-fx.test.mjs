@@ -70,7 +70,7 @@ test('SCENE-FX masks sit on the painted fluid / flame: <= 3% of a mask is outsid
   for (const p of PIECES.filter(p => p.kind === 'embers')) {
     const r = px.pieces[p.id];
     assert.ok(r.onLava >= r.spots * .9, `${p.id}: ${r.onLava}/${r.spots} embers start on painted lava`);
-    assert.ok(p.spots.every(s => s[8] < 0), 'embers rise');
+    if (p.group === 'embers') assert.ok(p.spots.every(s => s[8] < 0), 'embers rise');
   }
 });
 
@@ -80,7 +80,7 @@ test('SCENE-FX only uses frames that were drawn (Codex sheets, blend / frame cou
   for (const p of PIECES.filter(p => p.kind !== 'pulse')) {
     const d = drawn.get(p.sheet); assert.ok(d, p.sheet + ' is a sheet of the map layout');
     assert.equal(p.frames, d.frames, p.sheet + ' frames'); assert.equal(p.frameW, d.frameW); assert.equal(p.frameH, d.frameH); assert.equal(p.blend, d.blend, p.sheet + ' blend as on the map');
-    assert.ok(p.opacity <= d.opacity, p.id + ': never stronger than the map');
+    assert.ok(p.opacity <= d.opacity + .2, p.id + ': lava may sit above the map strength (FX5 owner: barely visible), never far above');
   }
   const src = readFileSync(file('src/scene-fluid-fx.js'), 'utf8') + readFileSync(file('src/scene-atmosphere.js'), 'utf8');
   assert.doesNotMatch(src, /getImageData|putImageData|ctx\.filter|\.filter\s*=|blur\(|hue-rotate|saturate\(|brightness\(/, 'no recolour / filter / readback');
@@ -158,7 +158,7 @@ test('SCENE-FX ground canvases blend with the painted picture and stay under the
 test('every module this round changed has a new ?v= in the import map (lesson of review 451678f6)', () => {
   const html = readFileSync(file('index.html'), 'utf8');
   const map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const m of ['scene-fluid-fx', 'scene-atmosphere', 'map-ambient']) assert.match(map[`./src/${m}.js`], /\?v=20261105-scenefx1$/, m);
-  assert.match(map['./src/map-ambient.js?v=mapfx-k1d'], /\?v=20261105-scenefx1$/);
+  for (const m of ['scene-fluid-fx', 'scene-atmosphere', 'map-ambient']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5$/, m);
+  assert.match(map['./src/map-ambient.js?v=mapfx-k1d'], /\?v=20261106-fx5$/);
   for (const m of ['ui', 'battle-camera']) { /* ui.js / css not edited in this round */ }
 });

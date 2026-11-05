@@ -371,6 +371,9 @@ export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
 }
 let weatherSprites;
 const cloudLayers=new WeakMap();
+/** FX5 (owner 23:47): in the battle / interrogation scenes the Thai cloud shadows must be plainly visible (the painted backdrops are dark and busy):
+ *  stronger peak, bigger patches that cover ~40% of the picture, a faster drift (one pass in ~13 s). The MAP keeps MAP_FX.cloud.th untouched. */
+export const SCENE_CLOUD = Object.freeze({ th: Object.freeze({ peak: .55, fit: 1.3, cell: [.62, .52], oddFill: .7, spread: [.85, 1.3], speed: 1.35 }) });
 export const cloudOpacityForZone=zone=>MAP_FX.cloud.peakByZone[zone]??MAP_FX.cloud.peak;
 const weatherClocks=new WeakMap();
 const driftClocks=new WeakMap();
@@ -522,7 +525,7 @@ export function weatherLabelBounds(rects){
   }return out;
 }
 export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
-  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true}={}) {
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true,sceneClouds=false}={}) {
   if(!enabled||!(W>0&&H>0))return;
   const art=weatherArt();if(!art)return;
   let clock=weatherClocks.get(ctx);
@@ -541,11 +544,12 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   // Z1-V5-FX: a map that is only Thai ground uses real-cloud shadows once their textures are loaded (none drawn while they load;
   // old gradient blobs if they cannot load). Frontier halves that mix zones, and every other zone, keep the old blobs and values.
   const thaiOnly=halves.every(r=>r.zone==='th'),real=thaiOnly?townShadowSprites():false;
-  const cloud=real?{...base,...base.th}:base;
+  const sceneTh=sceneClouds&&real&&thaiOnly?SCENE_CLOUD.th:null;
+  const cloud=real?{...base,...base.th,...(sceneTh||{})}:base;
   let cloudLayer=null;
   if(view&&real!==null&&clouds){
     // Wind speed keeps the old lattice so the drift is the same for every zone.
-    const off=driftOffset(ctx,'cloud',time,[base.drift[0]*view.w*base.cell[0],base.drift[1]*view.h*base.cell[1]],!reduced&&!paused);
+    const off=driftOffset(ctx,'cloud',time,[base.drift[0]*view.w*base.cell[0]*(sceneTh?.speed||1),base.drift[1]*view.h*base.cell[1]*(sceneTh?.speed||1)],!reduced&&!paused);
     const bankAt=cx=>real||blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
     cloudLayer=composedClouds(ctx,view,cloud,off,t,bankAt);
     if(!cloudLayer)drawPatchField(ctx,view,{...cloud,peak:Math.min(...halves.map(r=>cloudOpacityForZone(r.zone)))},off,t,bankAt);
@@ -555,7 +559,7 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
     const style=WEATHER_ZONES[region.zone];if(!style)continue;
     const left=region.from*W,rw=(region.to-region.from)*W;
     ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
-    if(cloudLayer&&view){ctx.globalAlpha=cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
+    if(cloudLayer&&view){ctx.globalAlpha=sceneTh&&region.zone==='th'?sceneTh.peak:cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
       // Soft textured shafts follow visible scene coordinates and remain clipped to this biome.

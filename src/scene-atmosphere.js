@@ -54,7 +54,7 @@ export const SCENE_CLEAR_SELECTOR='.plate,.dmg,.battle-move-name,.target-arrow,.
 export function drawSceneAtmosphere(ctx,zone,time,W,H,{reduced=false,enabled=weatherEnabled(),paused=false,clouds=true,leaves=true,quiet=false}={}){
  if(!enabled||!(W>0&&H>0))return {particles:0};
  const dpr=globalThis.devicePixelRatio||1,cap=sceneWeatherCap(zone,W,H,dpr)??atmosphereBudget(W,H,dpr);
- drawMapWeather(ctx,{zone,time,W,H,reduced,paused,enabled,clouds,viewport:{width:W,height:H,dpr}});
+ drawMapWeather(ctx,{zone,time,W,H,reduced,paused,enabled,clouds,sceneClouds:true,viewport:{width:W,height:H,dpr}});
  if(zone==='west'){
   const wash=ctx.createLinearGradient(0,H*.72,0,H);wash.addColorStop(0,'rgba(234,247,255,0)');wash.addColorStop(1,'rgba(234,247,255,.16)');ctx.save();ctx.fillStyle=wash;ctx.fillRect(0,H*.72,W,H*.28);ctx.restore();
  }

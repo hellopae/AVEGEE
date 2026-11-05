@@ -13,6 +13,11 @@ export function groundSpriteVisible(s, view, pad = 80) {
   const [x, y, w, h] = s.rectWorld;
   return !(x + w < view[0] - pad || x > view[0] + view[2] + pad || y + h < view[1] - pad || y > view[1] + view[3] + pad);
 }
+// FX5 (owner 5-6 Nov): the 51 pilot sprites of trees / beds / rocks / lamp posts were placed wrongly and at the wrong size; the owner will place them himself.
+// Hidden by flag (sprites.json and the pictures stay). 'rails' = the bridge rails / pier posts (layers back / front), shown unless an id is listed in hideIds.
+export const GROUND_SPRITE_SHOW = { sort: false, rails: true, hideIds: new Set(['lava-lower-back', 'lava-lower-front']) };   // the left lava bridge rails floated off the deck (owner 23:36): removed; the central bridge + pier rails sit on their decks (checked)
+export const setGroundSpriteShow = v => Object.assign(GROUND_SPRITE_SHOW, v);
+export const groundSpriteShown = s => (s.layer === 'sort' ? GROUND_SPRITE_SHOW.sort : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
 const urlOf = () => activeTownSkin()?.terrain?.sprites || null;
 function storeOf(url) {
   let st = stores.get(url);
@@ -44,6 +49,7 @@ export function addGroundSpriteLayers(at, ctx) {
   const m = ctx.getTransform?.();
   const view = m && !m.b && !m.c && m.a > 0 && m.d > 0 ? [-m.e / m.a, -m.f / m.d, ctx.canvas.width / m.a, ctx.canvas.height / m.d] : null;
   for (const s of st.list) {
+    if (!groundSpriteShown(s)) continue;
     if (view && !groundSpriteVisible(s, view)) continue;
     at(groundSpriteLayerDepth(s), () => {
       const el = imageOf(st, s);

@@ -20,12 +20,14 @@ SHEETS = 'img/map-zone1/v5-fx/sheets/'
 SIZE = (1672, 941)
 
 # --- sheet recipes: frame counts / fps / blend from img/map-zone1/v5-fx/fx-layout.json (Codex / FX1). Opacity is lower than on the map (.72/.70/.68/.58): the
-#     backdrops here are finished paintings (the map ground is a flat base), and the sheets are more saturated than the painted lava / ice falls.
+#     backdrops here are finished paintings (the map ground is a flat base), and the cyan sheets are more saturated than the painted ice falls.
+#     FX5 (owner 23:47 "lava barely visible"): lava + lava falls are back at map strength or a little above (.85 / .9), embers + bubbles are larger and more numerous.
 SHEET = {
-    'lavafall':   dict(sheet='lavafall.webp', frames=8, fps=7, frameW=314, frameH=534, blend='overlay', opacity=.55, group='lavafall'),
+    'lavafall':   dict(sheet='lavafall.webp', frames=8, fps=7, frameW=314, frameH=534, blend='overlay', opacity=.9, group='lavafall'),
     'waterfall':  dict(sheet='waterfall-ice.webp', frames=8, fps=8, frameW=242, frameH=541, blend='overlay', opacity=.30, group='waterfall'),
-    'lava':       dict(sheet='lava-surface.webp', frames=8, fps=7, frameW=627, frameH=627, blend='overlay', opacity=.55, group='lava'),
+    'lava':       dict(sheet='lava-surface.webp', frames=8, fps=7, frameW=627, frameH=627, blend='overlay', opacity=.85, group='lava'),
     'water':      dict(sheet='ice-stream.webp', frames=8, fps=8, frameW=627, frameH=627, blend='overlay', opacity=.30, group='ice'),
+    'bubble':     dict(sheet='lava-bubble.webp', frames=8, fps=9, frameW=144, frameH=144, blend='normal', opacity=.95, group='lava-bubble', mode='once', win=.42),
     'embers':     dict(sheet='embers-ash.webp', frames=8, fps=7, frameW=128, frameH=160, blend='screen', opacity=.9, group='embers', mode='rise'),
     'sparkle':    dict(sheet='water-sparkle.webp', frames=8, fps=8, frameW=160, frameH=80, blend='screen', opacity=.9, group='sparkle', mode='once', win=.6),
 }
@@ -53,8 +55,8 @@ SCENES = {
     dict(id='lavafall-a',  kind='rect', recipe='lavafall', pred='hotY', box=[398,140,452,300], min=250),
     dict(id='lavafall-b',  kind='rect', recipe='lavafall', pred='hotY', box=[628,190,690,305], min=400),
     dict(id='lavafall-c',  kind='rect', recipe='lavafall', pred='hotY', box=[858,245,912,330], min=250),
-    dict(id='lava-river-right', kind='tile', recipe='lava', pred='hotLow', box=[1090,262,1440,348], tile=[90,54], min=900, embers=9),
-    dict(id='lava-pool-left',   kind='tile', recipe='lava', pred='hotLow', box=[285,285,572,352], tile=[90,54], min=900, embers=7),
+    dict(id='lava-river-right', kind='tile', recipe='lava', pred='hotLow', box=[1090,262,1440,348], tile=[90,54], min=900, embers=14, ember_px=42, bubbles=8, bubble_px=36),
+    dict(id='lava-pool-left',   kind='tile', recipe='lava', pred='hotLow', box=[285,285,572,352], tile=[90,54], min=900, embers=10, ember_px=42, bubbles=6, bubble_px=36),
     dict(id='volcano-streams',  kind='tile', recipe='lava', pred='hot', box=[1120,55,1250,235], tile=[60,36], min=300),
     dict(id='torch-left',  kind='pulse', pred='flame', box=[8,222,48,290], min=120),
     dict(id='torch-right', kind='pulse', pred='flame', box=[1598,255,1665,335], min=120),
@@ -77,14 +79,14 @@ SCENES = {
  ]),
  'img/frontier-route/battle-border-v1.webp': dict(id='battle-border', outdoor=True, pieces=[
     dict(id='lavafall-a', kind='rect', recipe='lavafall', pred='hotY', box=[378,160,436,292], min=500),
-    dict(id='lava-glow-left', kind='tile', recipe='lava', pred='hot', box=[230,100,420,175], tile=[80,48], min=600),
+    dict(id='lava-glow-left', kind='tile', recipe='lava', pred='hot', box=[230,100,420,175], tile=[80,48], min=600, embers=8, ember_px=40),
     dict(id='fall-a', kind='rect', recipe='waterfall', pred='fall', box=[1118,200,1172,372], min=500, op=.22),
     dict(id='fall-b', kind='rect', recipe='waterfall', pred='fall', box=[772,190,812,275], min=250, op=.22),
  ]),
  'img/frontier-route/battle-cave-v1.webp': dict(id='battle-cave', outdoor=False, pieces=[
     dict(id='lavafall-a', kind='rect', recipe='lavafall', pred='hotY', box=[68,100,132,250], min=600),
     dict(id='lavafall-b', kind='rect', recipe='lavafall', pred='hotY', box=[218,160,276,285], min=300),
-    dict(id='lava-cascade', kind='tile', recipe='lava', pred='hot', box=[0,285,200,480], tile=[90,54], min=1500, embers=8, ember_px=34),
+    dict(id='lava-cascade', kind='tile', recipe='lava', pred='hot', box=[0,285,200,480], tile=[90,54], min=1500, embers=12, ember_px=44, bubbles=6, bubble_px=40),
     dict(id='fall-far', kind='rect', recipe='waterfall', pred='fall', box=[1296,128,1330,292], min=250, op=.22),
     dict(id='torch-1', kind='pulse', pred='flame', box=[318,185,352,225], min=40),
     dict(id='torch-2', kind='pulse', pred='flame', box=[690,262,722,300], min=40),
@@ -92,7 +94,7 @@ SCENES = {
     dict(id='torch-4', kind='pulse', pred='flame', box=[1612,350,1652,395], min=40),
  ]),
  'img/map-zone1/arena-v1.webp': dict(id='arena-th', outdoor=True, pieces=[
-    dict(id='lava-streams', kind='tile', recipe='lava', pred='hot', box=[400,80,640,260], tile=[60,36], min=500),
+    dict(id='lava-streams', kind='tile', recipe='lava', pred='hot', box=[400,80,640,260], tile=[60,36], min=500, embers=8, ember_px=34),
     dict(id='fall-a', kind='rect', recipe='waterfall', pred='fall', box=[1455,150,1500,215], min=200, op=.22),
     dict(id='fall-b', kind='rect', recipe='waterfall', pred='fall', box=[1530,265,1572,320], min=200, op=.22),
     dict(id='river', kind='tile', recipe='water', pred='pond', box=[1300,330,1560,440], tile=[100,100], min=2000),
@@ -118,21 +120,25 @@ def mask_for(rgb, P, spec):
     soft = cv2.GaussianBlur(u.astype(np.float32), (0, 0), .8)      # 1 px feather: no hard stair-step edge
     return np.clip(soft * (u > 0) + soft * .0, 0, 1) if False else np.clip(soft, 0, 1) * (cv2.dilate(u, np.ones((3, 3), np.uint8)) > 0)
 
-def embers(m, n, seed, px):
+def embers(m, n, seed, px, recipe='embers'):
     """n placed rising embers on the (flat) lava of mask m: inside the mask, not on its edge, spaced apart. Deterministic."""
     rng = np.random.default_rng(1000 + seed)
-    core = cv2.erode((m > .6).astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+    core = cv2.erode((m > .6).astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
     ys, xs = np.nonzero(core)
     if len(xs) < 40: return None
     spots, tries = [], 0
-    while len(spots) < n and tries < 400:
+    while len(spots) < n and tries < 1500:
         tries += 1; i = int(rng.integers(len(xs))); x, y = int(xs[i]), int(ys[i])      # m is a full-picture mask
-        if any((x - s[0]) ** 2 + (y - s[1]) ** 2 < (px * 2.2) ** 2 for s in spots): continue
+        if any((x - s[0]) ** 2 + (y - s[1]) ** 2 < (px * 1.25) ** 2 for s in spots): continue
         spots.append([x, y, px, round(px * 1.25), 0, round(float(rng.random()), 3), round(2.6 + float(rng.random()) * 2.2, 2), round(float(rng.random() - .5) * px * .6, 1), -round(px * (1.1 + float(rng.random()) * .8), 1)])
-    r = SHEET['embers']
+    r = SHEET[recipe]
     xs2 = [s[0] for s in spots]; ys2 = [s[1] for s in spots]
-    return dict(id=f'embers-{seed}', kind='embers', rect=[min(xs2) - px, min(ys2) - px * 2, max(xs2) - min(xs2) + px * 2, max(ys2) - min(ys2) + px * 3], sheet=r['sheet'], frames=r['frames'], fps=r['fps'],
-                frameW=r['frameW'], frameH=r['frameH'], blend='screen', opacity=r['opacity'], group='embers', spriteW=px, spriteH=round(px * 1.25), spots=spots)
+    if recipe == 'bubble':
+        for s in spots: s[3] = s[2]; s[7] = 0; s[8] = 0; s[6] = round(2.2 + (s[5] * 2.5), 2)
+    extra = {k: r[k] for k in ('mode', 'win') if k in r}
+    rx0, ry0 = max(0, min(xs2) - px), max(0, min(ys2) - px * 2); rx1, ry1 = min(SIZE[0], max(xs2) + px), min(SIZE[1], max(ys2) + px)
+    return dict(id=f'{recipe}-{seed}', kind='embers', **extra, rect=[rx0, ry0, rx1 - rx0, ry1 - ry0], sheet=r['sheet'], frames=r['frames'], fps=r['fps'],
+                frameW=r['frameW'], frameH=r['frameH'], blend=r['blend'], opacity=r['opacity'], group=r['group'], spriteW=px, spriteH=round(px * 1.25) if recipe == 'embers' else px, spots=spots)
 
 def build(review=None):
     OUT.mkdir(parents=True, exist_ok=True); (OUT / 'masks').mkdir(exist_ok=True)
@@ -169,6 +175,9 @@ def build(review=None):
             if spec.get('embers'):
                 e = embers(m, spec['embers'], len(pieces), spec.get('ember_px', 28))
                 if e: pieces.append(e); rec['embers'] = len(e['spots'])
+            if spec.get('bubbles'):
+                e = embers(m, spec['bubbles'], len(pieces) + 50, spec.get('bubble_px', 34), 'bubble')
+                if e: pieces.append(e); rec['bubbles'] = len(e['spots'])
             if overlay is not None:
                 a = np.zeros((h, w), bool); a[y0:y1, x0:x1] = crop > 60
                 overlay[a] = (overlay[a] * .35 + np.array([0, 255, 255]) * .65).astype(np.uint8)

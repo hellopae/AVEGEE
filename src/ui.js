@@ -26,6 +26,7 @@ import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
 import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
+import { koTrackOf, koPhase, koClass, koSince, hasKoPose } from './battle-ko.js';
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
@@ -3999,7 +4000,8 @@ function openBattle(after) {
       return battleChoice(k, icon, (consumable ? itemName(k) : (it?.name || k)) + (['ice','hypno'].includes(k)?' · ทุกเป้าหมาย':''), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
-    const teamJudgmentChoice = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24`);
+    // FX5 (owner 23:43): the ultimate row is not shown at all until it is unlocked (g.abilities.teamJudgment); once unlocked it is the same row as before
+    const teamJudgmentChoice = !g.abilities?.teamJudgment ? '' : battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24`);
     // Q3: ท่าไม้ตายอยู่ล่างสุดของรายการพลัง (ใต้สะกดจิต)
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
@@ -4218,6 +4220,17 @@ function openBattle(after) {
       // underneath it and were over by the time the card faded. Hold them until the card is nearly gone (it fades from ~88%).
       const hurtHold=dlg.querySelector('.action-cutscene')?Math.max(0,Math.round(ACTION_CUT_MS*.88)-(Date.now()-phaseAt)):0;
       const hurtStart=()=>hurtHold>0?Date.now()+hurtHold:phaseAt;
+      // FX5: teammates whose health / morale is gone lie down (drawn `:ko` pose when the catalog has it, else a temporary tilt - see battle-ko.js)
+      const koNow = Date.now(), koTrack = koTrackOf(b), koInfo = new Map();
+      for (const c of g.battleActors()) {
+        const isKo = c.id === 'you' ? b.youHp <= 0 : (c.morale ?? 100) <= 0;
+        const phase = koPhase(koTrack, c.id, isKo, koNow);
+        const key = c.id === 'you' ? `yama:${g.outfit || g.zone}` : c.guestGuide ? null : `crew:${c.homeZone || g.zone}:${c.k}`;
+        const root = c.id === 'you' ? stage.querySelector('.fig.you') : stage.querySelector(`.battle-squad [data-crew-pick="${crewBattleKey(c)}"], .fig.helper[data-crew-pick="${crewBattleKey(c)}"]`);
+        const pose = !!key && hasKoPose(key);
+        koInfo.set(c.id, { phase, pose, key });
+        if (root) { root.classList.remove('ko-fall', 'ko-down', 'ko-rise'); const cls = koClass(phase); if (cls && !pose) root.classList.add(cls); root.dataset.ko = phase; }
+      }
       const entries=[], hits=new Set([
         ...(b.dmg?.enemyHits||[]).filter(h=>h.damage>0).map(h=>h.id),
         ...(b.dmg?.hitActors||[]).map(a=>a.id),b.dmg?.hitActor?.id,
@@ -4229,10 +4242,12 @@ function openBattle(after) {
         if(c.id==='you'||c.k==='nira')continue;
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
         const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id||dash?.actor?.id===c.id)&&fxNow?.key!=='defend';
-        const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
+        const ko=koInfo.get(c.id), koMode=ko?.pose&&(ko.phase==='fall'||ko.phase==='down');
+        const mode=koMode?'ko':phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
+        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='ko'?koSince(b,c.id):mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
-      if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});
+      if(koInfo.get('you')?.pose&&['fall','down'].includes(koInfo.get('you').phase))entries.push({root:stage.querySelector('.fig.you'),key:koInfo.get('you').key,mode:'ko',startedAt:koSince(b,'you')});
+      else if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});
       const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
       for(const root of stage.querySelectorAll('.fig.foe')){
         if(root.classList.contains('down'))continue;

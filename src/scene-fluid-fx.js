@@ -38,9 +38,16 @@ export function pulseLevel(piece, sec) {
   const v = .62 + .26 * Math.sin(a * Math.PI * 2) + .12 * Math.sin(a * Math.PI * 2 * 2.7 + 1.3);
   return clamp(v, 0, 1) * (piece.depth ?? .22);
 }
-/** One rising ember: spot = [x, y, w, h, rot, phase, period, dx, dy] (picture px); state at `sec` or null while it rests. */
+/** One placed sprite: spot = [x, y, w, h, rot, phase, period, dx, dy] (picture px); state at `sec` or null while it rests.
+ *  mode 'rise' (embers) loops the drawn frames while drifting (dx,dy) and fading in / out; mode 'once' (lava bubbles) plays the drawn frames once per period during the first `win` of it. */
 export function emberState(piece, spot, sec) {
   const period = spot[6] || 3.5, f = mod(sec / period + spot[5], 1), n = piece.frames || 8;
+  if (piece.mode === 'once') {
+    const win = piece.win || .5;
+    if (f >= win) return { alpha: 0, i: 0, j: 0, mix: 0, ox: 0, oy: 0 };
+    const g = f / win, pos = Math.min(n - 1, g * (n - 1)), i = Math.floor(pos);
+    return { alpha: Math.min(1, g * 6, (1 - g) * 6), i, j: Math.min(n - 1, i + 1), mix: pos - i, ox: 0, oy: 0 };
+  }
   const fr = sceneFxFrame(n, piece.fps || 7, (sec + spot[5] * period) * 1000);
   return { alpha: Math.sin(Math.PI * f) ** 1.2, ...fr, ox: spot[7] * f, oy: spot[8] * f };
 }
@@ -157,7 +164,7 @@ export function createSceneFluid(scene, layout, background) {
       pc.frames = []; for (let f = 0; f < sp.frames; f++) pc.frames.push(scaled(sEntry.image, f * sp.frameW, 0, sp.frameW, sp.frameH, Math.max(4, Math.ceil(sp.spriteW * s)), Math.max(4, Math.ceil(sp.spriteH * s))));
     }
     const s = pc.k; let n = 0;
-    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.save(); ctx.globalCompositeOperation = sp.blend === 'screen' ? 'lighter' : 'source-over';
     for (const sp2 of sp.spots) {
       const st = emberState(sp, sp2, sec);
       if (st.alpha < .02) continue;
@@ -179,7 +186,7 @@ export function createSceneFluid(scene, layout, background) {
     for (const pc of pieces) {
       const sp = pc.spec;
       if (sp.kind === 'embers') {
-        const ctx = groups('screen'); if (ctx) n += drawEmbers(pc, ctx, sec, box, size, W, H); continue;
+        const ctx = groups(sp.blend === 'screen' ? 'screen' : 'normal'); if (ctx) n += drawEmbers(pc, ctx, sec, box, size, W, H); continue;
       }
       const [dx, dy, dw, dh] = scenePieceRect(sp, box, size);
       if (dx + dw < 0 || dx > W || dy + dh < 0 || dy > H) continue;      // off screen: no load, no memory

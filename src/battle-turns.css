@@ -208,3 +208,12 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 .battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice b>span{display:inline-block;white-space:nowrap}
 /* Q3: ท่าไม้ตายย้ายมาอยู่ล่างสุดของรายการพลัง — ให้รายการสูงพอจะเห็นครบ 8 แถว (ui.js ย่อให้พอดีกรอบฉากเองถ้าไม่พอ) */
 .battle9-arena .battle9-menu .command-options[data-options="power"]{max-height:64vh}
+
+/* FX5 (owner 23:45): a teammate with no health / morale lies down. Temporary tilt about the feet until a drawn `:ko` pose exists (src/battle-ko.js). */
+@keyframes koFall{from{rotate:0deg;opacity:1}to{rotate:-84deg;opacity:.8}}
+@keyframes koRise{from{rotate:-84deg;opacity:.8}to{rotate:0deg;opacity:1}}
+.arena.combat-arena .formation-member.ko-fall,.arena.combat-arena .formation-member.ko-down,.arena.combat-arena .formation-member.ko-rise{transform-origin:var(--formation-mid,50%) var(--formation-foot,100%)}
+.arena.combat-arena .formation-member.ko-fall{animation:koFall .3s ease-in both!important}
+.arena.combat-arena .formation-member.ko-down{rotate:-84deg;opacity:.8;animation:none!important}
+.arena.combat-arena .formation-member.ko-rise{animation:koRise .3s ease-out both!important}
+@media(prefers-reduced-motion:reduce){.arena.combat-arena .formation-member.ko-fall{animation:none!important;rotate:-84deg;opacity:.8}.arena.combat-arena .formation-member.ko-rise{animation:none!important}}

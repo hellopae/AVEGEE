@@ -82,7 +82,8 @@
      86
     ],
     "kept": true,
-    "embers": 5
+    "embers": 6,
+    "bubbles": 8
    },
    {
     "id": "lava-pool-left",
@@ -102,7 +103,8 @@
      67
     ],
     "kept": true,
-    "embers": 3
+    "embers": 7,
+    "bubbles": 6
    },
    {
     "id": "volcano-streams",
@@ -443,7 +445,8 @@
      144,
      75
     ],
-    "kept": true
+    "kept": true,
+    "embers": 3
    },
    {
     "id": "fall-a",
@@ -549,7 +552,8 @@
      195
     ],
     "kept": true,
-    "embers": 3
+    "embers": 5,
+    "bubbles": 6
    },
    {
     "id": "fall-far",
@@ -673,7 +677,8 @@
      240,
      180
     ],
-    "kept": true
+    "kept": true,
+    "embers": 8
    },
    {
     "id": "fall-a",

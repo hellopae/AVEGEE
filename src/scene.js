@@ -829,7 +829,7 @@ function drawStation(ctx, g, st, t) {
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
-  if(d.k==='canteen')mapName(ctx,'🍙 โรงอาหาร',d.bx,d.by+14,'#ffe7c4');
+  // FX5 (owner 23:40): the canteen carries no map label (the painted building says what it is); its button / interaction are unchanged
   if (d.k === 'tarang' && prisonEventBurning(g)) {
     // flames climb from the base to the roofline (smaller sprites so the building stays readable)
     const bw = d.bw || 180, top = topOf(d) ?? d.by - bw, mid = (d.by + top) / 2;
