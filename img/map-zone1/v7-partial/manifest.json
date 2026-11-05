@@ -1,0 +1,150 @@
+{
+ "note": "built by scripts/build-z1-v7-partial.py",
+ "hdChunks": [
+  "r2-c3",
+  "r2-c2",
+  "r3-c3",
+  "r3-c2",
+  "r2-c4"
+ ],
+ "seams": {
+  "r1c2/r2c2": [
+   4.8,
+   26.4
+  ],
+  "r1c3/r2c3": [
+   7.4,
+   55.4
+  ],
+  "r1c4/r2c4": [
+   8.0,
+   54.3
+  ],
+  "r2c1|r2c2": [
+   5.7,
+   27.7
+  ],
+  "r2c2|r2c3": [
+   4.3,
+   28.9
+  ],
+  "r2c2/r3c2": [
+   4.0,
+   45.0
+  ],
+  "r2c3|r2c4": [
+   7.6,
+   83.2
+  ],
+  "r2c3/r3c3": [
+   7.0,
+   32.6
+  ],
+  "r2c4|r2c5": [
+   8.8,
+   45.7
+  ],
+  "r2c4/r3c4": [
+   6.2,
+   47.8
+  ],
+  "r3c1|r3c2": [
+   5.6,
+   63.8
+  ],
+  "r3c2|r3c3": [
+   6.2,
+   55.6
+  ],
+  "r3c2/r4c2": [
+   9.2,
+   61.8
+  ],
+  "r3c3|r3c4": [
+   6.2,
+   45.6
+  ],
+  "r3c3/r4c3": [
+   10.7,
+   71.2
+  ]
+ },
+ "qualityHd": 90,
+ "qualityUp": 82,
+ "bytes": {
+  "r1-c1.webp": 438504,
+  "r1-c2.webp": 446762,
+  "r1-c3.webp": 466604,
+  "r1-c4.webp": 461340,
+  "r1-c5.webp": 433978,
+  "r2-c1.webp": 433822,
+  "r2-c2.webp": 1709096,
+  "r2-c3.webp": 2055404,
+  "r2-c4.webp": 1883958,
+  "r2-c5.webp": 369334,
+  "r3-c1.webp": 472252,
+  "r3-c2.webp": 1648730,
+  "r3-c3.webp": 1724064,
+  "r3-c4.webp": 475166,
+  "r3-c5.webp": 365502,
+  "r4-c1.webp": 90456,
+  "r4-c2.webp": 102906,
+  "r4-c3.webp": 111226,
+  "r4-c4.webp": 102904,
+  "r4-c5.webp": 69982
+ },
+ "totalChunkBytes": 13861990,
+ "sprites": [
+  "west-tree-17",
+  "city-tree-08",
+  "city-tree-09",
+  "city-tree-10",
+  "city-tree-11",
+  "city-tree-12",
+  "city-tree-13",
+  "city-tree-14",
+  "city-tree-15",
+  "city-bed-00",
+  "city-bed-01",
+  "city-bed-02",
+  "city-bed-03",
+  "city-bed-04",
+  "city-bed-05",
+  "city-bed-06",
+  "city-bed-07",
+  "pilot-red-tree-00",
+  "pilot-red-tree-01",
+  "pilot-red-tree-02",
+  "pilot-red-tree-03",
+  "pilot-red-tree-04",
+  "pilot-red-tree-05",
+  "pilot-red-tree-06",
+  "pilot-red-tree-07",
+  "pilot-red-tree-08",
+  "pilot-red-tree-11",
+  "pilot-gold-tree-00",
+  "pilot-gold-tree-01",
+  "pilot-gold-tree-02",
+  "south-bed-00",
+  "south-bed-01",
+  "south-bed-02",
+  "south-bed-03",
+  "south-bed-04",
+  "south-bed-05",
+  "south-bed-06",
+  "south-bed-14",
+  "south-rock-00",
+  "south-rock-01",
+  "south-rock-02",
+  "south-rock-03",
+  "south-rock-05",
+  "lava-lower-back",
+  "lava-lower-front",
+  "river-back",
+  "river-front",
+  "pier-back",
+  "pier-front",
+  "south-stair-west",
+  "south-stair-east"
+ ]
+}

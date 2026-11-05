@@ -92,13 +92,18 @@ const terrain = (folder, name) => ({
 // Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only (v7 = Codex 2x redraw of v5, same 5x4 grid of 2048 px chunks;
 // the repairs of v5 are painted for v5 pixels, so v7 turns them off).  Everything else (chunk grid, preview, minimap, fluid masks) reads this.
 const V7_DIR = 'img/map-zone1/v7/';
+// v7-partial (Z1-V5-FX2): 5 chunks are Codex's HD redraws, the other 15 are v5 + repairs enlarged 2x; `sprites` = the trees / beds / rocks / bridge rails / pier
+// that were painted out of those HD chunks, cut from v5 and drawn again as depth-sorted sprites (src/town-ground-sprites.js).
+const V7P_DIR = 'img/map-zone1/v7-partial/';
 export const ZONE1_GROUND = Object.freeze({
   v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
                       fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
   v7: Object.freeze({ dir:V7_DIR, preview:V7_DIR + 'zone1-terrain-v7-preview.webp',   // built from parts: the folder arrives with Codex's 2x redraw, until then no literal URL may point at it
                       fullPx:Object.freeze({ w:9830, h:6554 }), chunk:2048, repairs:false }),
+  'v7-partial': Object.freeze({ dir:V7P_DIR, preview:V7P_DIR + 'zone1-terrain-v7-preview.webp',
+                      fullPx:Object.freeze({ w:9830, h:6554 }), chunk:2048, repairs:false, sprites:V7P_DIR + 'sprites.json' }),
 });
-export const ZONE1_GROUND_SET = 'v5';
+export const ZONE1_GROUND_SET = 'v7-partial';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {
