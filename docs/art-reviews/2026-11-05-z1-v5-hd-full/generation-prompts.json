@@ -1,0 +1,745 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCalls": 8,
+  "generations": [
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "coreGlobalPx1x": [
+        3072,
+        0,
+        512,
+        512
+      ],
+      "corePx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3008,
+        0,
+        640,
+        576
+      ],
+      "contextPx1x": [
+        -64,
+        0,
+        640,
+        576
+      ],
+      "reference": "r1-c4/inputs/q11-v5.webp",
+      "objects": [
+        {
+          "id": "ice-tree-01",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            -13.5,
+            98.1,
+            14.4,
+            26.1
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-02",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            83.9,
+            79.5,
+            13.4,
+            26.7
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-upper-back",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            94.0,
+            82.1,
+            59.5,
+            14.9
+          ],
+          "action": "extract-redraw"
+        },
+        {
+          "id": "ice-upper-front",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            95.4,
+            94.9,
+            59.0,
+            19.7
+          ],
+          "action": "extract-redraw"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"ice-tree-01\", \"kind\": \"snow-tree\", \"bboxPercent\": [-13.5, 98.1, 14.4, 26.1], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-02\", \"kind\": \"snow-tree\", \"bboxPercent\": [83.9, 79.5, 13.4, 26.7], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-upper-back\", \"kind\": \"bridge-rail\", \"bboxPercent\": [94.0, 82.1, 59.5, 14.9], \"action\": \"extract-redraw\"}, {\"id\": \"ice-upper-front\", \"kind\": \"bridge-rail\", \"bboxPercent\": [95.4, 94.9, 59.0, 19.7], \"action\": \"extract-redraw\"}]. Tile r1-c4/q11; represents 640 by 576 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "coreGlobalPx1x": [
+        3584,
+        0,
+        512,
+        512
+      ],
+      "corePx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3520,
+        0,
+        640,
+        576
+      ],
+      "contextPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "reference": "r1-c4/inputs/q12-v5.webp",
+      "objects": [
+        {
+          "id": "ice-tree-02",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            3.9,
+            79.5,
+            13.4,
+            26.7
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-upper-back",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            14.0,
+            82.1,
+            59.5,
+            14.9
+          ],
+          "action": "extract-redraw"
+        },
+        {
+          "id": "ice-upper-front",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            15.4,
+            94.9,
+            59.0,
+            19.7
+          ],
+          "action": "extract-redraw"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"ice-tree-02\", \"kind\": \"snow-tree\", \"bboxPercent\": [3.9, 79.5, 13.4, 26.7], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-upper-back\", \"kind\": \"bridge-rail\", \"bboxPercent\": [14.0, 82.1, 59.5, 14.9], \"action\": \"extract-redraw\"}, {\"id\": \"ice-upper-front\", \"kind\": \"bridge-rail\", \"bboxPercent\": [15.4, 94.9, 59.0, 19.7], \"action\": \"extract-redraw\"}]. Tile r1-c4/q12; represents 640 by 576 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "coreGlobalPx1x": [
+        3072,
+        512,
+        512,
+        512
+      ],
+      "corePx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3008,
+        448,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "reference": "r1-c4/inputs/q21-v5.webp",
+      "objects": [
+        {
+          "id": "city-tree-07",
+          "kind": "green-tree",
+          "bboxPercent": [
+            -18.3,
+            52.4,
+            19.2,
+            32.2
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png"
+        },
+        {
+          "id": "city-tree-08",
+          "kind": "green-tree",
+          "bboxPercent": [
+            3.3,
+            69.2,
+            20.6,
+            32.2
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png"
+        },
+        {
+          "id": "ice-tree-01",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            -13.5,
+            18.3,
+            14.4,
+            23.5
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-02",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            83.9,
+            1.5,
+            13.4,
+            24.0
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-03",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            88.7,
+            33.7,
+            16.3,
+            25.4
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-upper-back",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            94.0,
+            3.9,
+            59.5,
+            13.4
+          ],
+          "action": "extract-redraw"
+        },
+        {
+          "id": "ice-upper-front",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            95.4,
+            15.4,
+            59.0,
+            17.8
+          ],
+          "action": "extract-redraw"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"city-tree-07\", \"kind\": \"green-tree\", \"bboxPercent\": [-18.3, 52.4, 19.2, 32.2], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png\"}, {\"id\": \"city-tree-08\", \"kind\": \"green-tree\", \"bboxPercent\": [3.3, 69.2, 20.6, 32.2], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png\"}, {\"id\": \"ice-tree-01\", \"kind\": \"snow-tree\", \"bboxPercent\": [-13.5, 18.3, 14.4, 23.5], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-02\", \"kind\": \"snow-tree\", \"bboxPercent\": [83.9, 1.5, 13.4, 24.0], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-03\", \"kind\": \"snow-tree\", \"bboxPercent\": [88.7, 33.7, 16.3, 25.4], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-upper-back\", \"kind\": \"bridge-rail\", \"bboxPercent\": [94.0, 3.9, 59.5, 13.4], \"action\": \"extract-redraw\"}, {\"id\": \"ice-upper-front\", \"kind\": \"bridge-rail\", \"bboxPercent\": [95.4, 15.4, 59.0, 17.8], \"action\": \"extract-redraw\"}]. Tile r1-c4/q21; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "coreGlobalPx1x": [
+        3584,
+        512,
+        512,
+        512
+      ],
+      "corePx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3520,
+        448,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "reference": "r1-c4/inputs/q22-v5.webp",
+      "objects": [
+        {
+          "id": "ice-tree-02",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            3.9,
+            1.5,
+            13.4,
+            24.0
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-03",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            8.7,
+            33.7,
+            16.3,
+            25.4
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-04",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            50.0,
+            63.9,
+            14.9,
+            28.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-tree-05",
+          "kind": "snow-tree",
+          "bboxPercent": [
+            59.6,
+            41.4,
+            15.4,
+            28.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png"
+        },
+        {
+          "id": "ice-upper-back",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            14.0,
+            3.9,
+            59.5,
+            13.4
+          ],
+          "action": "extract-redraw"
+        },
+        {
+          "id": "ice-upper-front",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            15.4,
+            15.4,
+            59.0,
+            17.8
+          ],
+          "action": "extract-redraw"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"ice-tree-02\", \"kind\": \"snow-tree\", \"bboxPercent\": [3.9, 1.5, 13.4, 24.0], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-03\", \"kind\": \"snow-tree\", \"bboxPercent\": [8.7, 33.7, 16.3, 25.4], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-04\", \"kind\": \"snow-tree\", \"bboxPercent\": [50.0, 63.9, 14.9, 28.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-tree-05\", \"kind\": \"snow-tree\", \"bboxPercent\": [59.6, 41.4, 15.4, 28.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png\"}, {\"id\": \"ice-upper-back\", \"kind\": \"bridge-rail\", \"bboxPercent\": [14.0, 3.9, 59.5, 13.4], \"action\": \"extract-redraw\"}, {\"id\": \"ice-upper-front\", \"kind\": \"bridge-rail\", \"bboxPercent\": [15.4, 15.4, 59.0, 17.8], \"action\": \"extract-redraw\"}]. Tile r1-c4/q22; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q11",
+      "coreGlobalPx1x": [
+        3072,
+        2048,
+        512,
+        512
+      ],
+      "corePx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3008,
+        1984,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "reference": "r3-c4/inputs/q11-v5.webp",
+      "objects": [
+        {
+          "id": "pilot-red-tree-09",
+          "kind": "tree",
+          "bboxPercent": [
+            43.1,
+            98.0,
+            18.2,
+            33.1
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+        },
+        {
+          "id": "south-bed-08",
+          "kind": "shrub",
+          "bboxPercent": [
+            29.7,
+            99.9,
+            25.9,
+            17.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-12",
+          "kind": "shrub",
+          "bboxPercent": [
+            90.6,
+            83.1,
+            28.8,
+            16.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"pilot-red-tree-09\", \"kind\": \"tree\", \"bboxPercent\": [43.1, 98.0, 18.2, 33.1], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png\"}, {\"id\": \"south-bed-08\", \"kind\": \"shrub\", \"bboxPercent\": [29.7, 99.9, 25.9, 17.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-12\", \"kind\": \"shrub\", \"bboxPercent\": [90.6, 83.1, 28.8, 16.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}]. Tile r3-c4/q11; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q12",
+      "coreGlobalPx1x": [
+        3584,
+        2048,
+        512,
+        512
+      ],
+      "corePx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3520,
+        1984,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "reference": "r3-c4/inputs/q12-v5.webp",
+      "objects": [
+        {
+          "id": "south-bed-12",
+          "kind": "shrub",
+          "bboxPercent": [
+            10.6,
+            83.1,
+            28.8,
+            16.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "ice-lower-back",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            72.1,
+            -7.6,
+            49.4,
+            12.0
+          ],
+          "action": "extract-redraw"
+        },
+        {
+          "id": "ice-lower-front",
+          "kind": "bridge-rail",
+          "bboxPercent": [
+            72.5,
+            2.9,
+            50.4,
+            15.4
+          ],
+          "action": "extract-redraw"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"south-bed-12\", \"kind\": \"shrub\", \"bboxPercent\": [10.6, 83.1, 28.8, 16.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"ice-lower-back\", \"kind\": \"bridge-rail\", \"bboxPercent\": [72.1, -7.6, 49.4, 12.0], \"action\": \"extract-redraw\"}, {\"id\": \"ice-lower-front\", \"kind\": \"bridge-rail\", \"bboxPercent\": [72.5, 2.9, 50.4, 15.4], \"action\": \"extract-redraw\"}]. Tile r3-c4/q12; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q21",
+      "coreGlobalPx1x": [
+        3072,
+        2560,
+        512,
+        512
+      ],
+      "corePx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3008,
+        2496,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "reference": "r3-c4/inputs/q21-v5.webp",
+      "objects": [
+        {
+          "id": "pilot-red-tree-09",
+          "kind": "tree",
+          "bboxPercent": [
+            43.1,
+            18.0,
+            18.2,
+            33.1
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+        },
+        {
+          "id": "pilot-red-tree-10",
+          "kind": "tree",
+          "bboxPercent": [
+            53.2,
+            50.1,
+            20.2,
+            34.1
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+        },
+        {
+          "id": "pilot-red-tree-11",
+          "kind": "tree",
+          "bboxPercent": [
+            -10.2,
+            55.4,
+            18.7,
+            31.2
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+        },
+        {
+          "id": "pilot-red-tree-12",
+          "kind": "tree",
+          "bboxPercent": [
+            17.7,
+            88.5,
+            19.2,
+            33.5
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+        },
+        {
+          "id": "south-bed-08",
+          "kind": "shrub",
+          "bboxPercent": [
+            29.7,
+            19.9,
+            25.9,
+            17.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-09",
+          "kind": "shrub",
+          "bboxPercent": [
+            22.5,
+            52.5,
+            26.4,
+            17.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-10",
+          "kind": "shrub",
+          "bboxPercent": [
+            51.3,
+            73.2,
+            26.9,
+            18.2
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-11",
+          "kind": "shrub",
+          "bboxPercent": [
+            92.5,
+            62.1,
+            25.9,
+            17.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-12",
+          "kind": "shrub",
+          "bboxPercent": [
+            90.6,
+            3.1,
+            28.8,
+            16.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-rock-04",
+          "kind": "rock",
+          "bboxPercent": [
+            52.7,
+            44.9,
+            22.6,
+            28.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+        },
+        {
+          "id": "south-rock-05",
+          "kind": "rock",
+          "bboxPercent": [
+            7.6,
+            20.4,
+            18.7,
+            24.5
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"pilot-red-tree-09\", \"kind\": \"tree\", \"bboxPercent\": [43.1, 18.0, 18.2, 33.1], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png\"}, {\"id\": \"pilot-red-tree-10\", \"kind\": \"tree\", \"bboxPercent\": [53.2, 50.1, 20.2, 34.1], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png\"}, {\"id\": \"pilot-red-tree-11\", \"kind\": \"tree\", \"bboxPercent\": [-10.2, 55.4, 18.7, 31.2], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png\"}, {\"id\": \"pilot-red-tree-12\", \"kind\": \"tree\", \"bboxPercent\": [17.7, 88.5, 19.2, 33.5], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png\"}, {\"id\": \"south-bed-08\", \"kind\": \"shrub\", \"bboxPercent\": [29.7, 19.9, 25.9, 17.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-09\", \"kind\": \"shrub\", \"bboxPercent\": [22.5, 52.5, 26.4, 17.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-10\", \"kind\": \"shrub\", \"bboxPercent\": [51.3, 73.2, 26.9, 18.2], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-11\", \"kind\": \"shrub\", \"bboxPercent\": [92.5, 62.1, 25.9, 17.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-12\", \"kind\": \"shrub\", \"bboxPercent\": [90.6, 3.1, 28.8, 16.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-rock-04\", \"kind\": \"rock\", \"bboxPercent\": [52.7, 44.9, 22.6, 28.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png\"}, {\"id\": \"south-rock-05\", \"kind\": \"rock\", \"bboxPercent\": [7.6, 20.4, 18.7, 24.5], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png\"}]. Tile r3-c4/q21; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q22",
+      "coreGlobalPx1x": [
+        3584,
+        2560,
+        512,
+        512
+      ],
+      "corePx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextGlobalPx1x": [
+        3520,
+        2496,
+        640,
+        640
+      ],
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "reference": "r3-c4/inputs/q22-v5.webp",
+      "objects": [
+        {
+          "id": "south-bed-11",
+          "kind": "shrub",
+          "bboxPercent": [
+            12.5,
+            62.1,
+            25.9,
+            17.3
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-12",
+          "kind": "shrub",
+          "bboxPercent": [
+            10.6,
+            3.1,
+            28.8,
+            16.8
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-bed-15",
+          "kind": "shrub",
+          "bboxPercent": [
+            69.2,
+            76.1,
+            28.8,
+            15.4
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+        },
+        {
+          "id": "south-rock-06",
+          "kind": "rock",
+          "bboxPercent": [
+            58.6,
+            25.2,
+            20.6,
+            26.4
+          ],
+          "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop; SECOND image is ONLY the material-detail style reference from the approved plaza redraw. Return ONLY ONE terrain crop with exactly the FIRST image's aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, paved boundary, stair count/width/position, cliff silhouette, bank, bridge deck and path boundary at exact input coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp but hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and scattered tiny dry leaves. Preserve FIRST image's overall lighting, colors and broad value hierarchy. Preserve all blue water, purple river, lava, waterfalls, cloud sea and fog as a detailed base layer in their EXACT original outlines and locations for existing animation masks. Keep inaccessible distant forest and mountains. No blur, no DOF, no parallax, no fake sharpening halos, no photograph noise. Keep all objects clipped exactly where crossing the four edges. Need maximum native resolution, ideally 2048 on long side; never put smaller art inside a larger canvas. Create finer resolved detail instead of a blurry enlargement. Remove ONLY the listed foreground objects, including their shadows, filling with continuous underlying ground. For bridge-rail entries remove rails/posts ONLY, always preserve the complete deck and stairs. Do not add trees, shrubs, rocks or props. Object boxes below are [left,top,width,height] in percent of FIRST image, may be clipped by the frame. Treat boxes as approximate object locations, not rectangles to erase. Objects: [{\"id\": \"south-bed-11\", \"kind\": \"shrub\", \"bboxPercent\": [12.5, 62.1, 25.9, 17.3], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-12\", \"kind\": \"shrub\", \"bboxPercent\": [10.6, 3.1, 28.8, 16.8], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-bed-15\", \"kind\": \"shrub\", \"bboxPercent\": [69.2, 76.1, 28.8, 15.4], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png\"}, {\"id\": \"south-rock-06\", \"kind\": \"rock\", \"bboxPercent\": [58.6, 25.2, 20.6, 26.4], \"action\": \"replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png\"}]. Tile r3-c4/q22; represents 640 by 640 map pixels. Geometry must remain within 4 original map pixels. Match SECOND reference for material quality only, never copy its layout.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T041747Z-adc25f4d/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ]
+    }
+  ]
+}

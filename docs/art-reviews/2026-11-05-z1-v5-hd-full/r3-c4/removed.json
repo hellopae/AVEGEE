@@ -1,0 +1,171 @@
+{
+  "plannedObjects": [
+    {
+      "id": "pilot-red-tree-09",
+      "kind": "tree",
+      "bboxPercent": [
+        43.1,
+        18.0,
+        18.2,
+        33.1
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+    },
+    {
+      "id": "south-bed-08",
+      "kind": "shrub",
+      "bboxPercent": [
+        29.7,
+        19.9,
+        25.9,
+        17.3
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "south-bed-12",
+      "kind": "shrub",
+      "bboxPercent": [
+        10.6,
+        3.1,
+        28.8,
+        16.8
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "ice-lower-back",
+      "kind": "bridge-rail",
+      "bboxPercent": [
+        72.1,
+        -7.6,
+        49.4,
+        12.0
+      ],
+      "action": "extract-redraw"
+    },
+    {
+      "id": "ice-lower-front",
+      "kind": "bridge-rail",
+      "bboxPercent": [
+        72.5,
+        2.9,
+        50.4,
+        15.4
+      ],
+      "action": "extract-redraw"
+    },
+    {
+      "id": "pilot-red-tree-10",
+      "kind": "tree",
+      "bboxPercent": [
+        53.2,
+        50.1,
+        20.2,
+        34.1
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+    },
+    {
+      "id": "pilot-red-tree-11",
+      "kind": "tree",
+      "bboxPercent": [
+        -10.2,
+        55.4,
+        18.7,
+        31.2
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+    },
+    {
+      "id": "pilot-red-tree-12",
+      "kind": "tree",
+      "bboxPercent": [
+        17.7,
+        88.5,
+        19.2,
+        33.5
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png"
+    },
+    {
+      "id": "south-bed-09",
+      "kind": "shrub",
+      "bboxPercent": [
+        22.5,
+        52.5,
+        26.4,
+        17.3
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "south-bed-10",
+      "kind": "shrub",
+      "bboxPercent": [
+        51.3,
+        73.2,
+        26.9,
+        18.2
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "south-bed-11",
+      "kind": "shrub",
+      "bboxPercent": [
+        12.5,
+        62.1,
+        25.9,
+        17.3
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "south-rock-04",
+      "kind": "rock",
+      "bboxPercent": [
+        52.7,
+        44.9,
+        22.6,
+        28.3
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+    },
+    {
+      "id": "south-rock-05",
+      "kind": "rock",
+      "bboxPercent": [
+        7.6,
+        20.4,
+        18.7,
+        24.5
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+    },
+    {
+      "id": "south-bed-15",
+      "kind": "shrub",
+      "bboxPercent": [
+        69.2,
+        76.1,
+        28.8,
+        15.4
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png"
+    },
+    {
+      "id": "south-rock-06",
+      "kind": "rock",
+      "bboxPercent": [
+        58.6,
+        25.2,
+        20.6,
+        26.4
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png"
+    }
+  ],
+  "removedIds": [],
+  "verification": "Pending generation and visual inspection"
+}

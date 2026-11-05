@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+    "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/objects-inventory.json",
+    "sha256": "4d7db3952d562a7fb458b59658b8e31d3455b4ebaac41055fd7edbd16ef8e794"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/assemble.py",
+    "sha256": "20b60b30b73127dfb4c7b14f38f0d5881fbb4150904fb770223e24e3b282e65d"
+  },
+  {
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp",
+    "sha256": "ffc17e3faf6d93b4602d4b7e0aaef01dd92275250e1387710ee8c0ff96b409d3"
+  }
+]
