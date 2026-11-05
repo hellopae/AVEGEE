@@ -16,6 +16,7 @@ import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownFluidFx } from './town-fluid-fx.js?v=v5fx';
 import { addGroundSpriteLayers } from './town-ground-sprites.js';
+import { drawConstruction } from './construction-sheets.js';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
@@ -812,7 +813,8 @@ function drawStation(ctx, g, st, t) {
     const left = st.workerWork?st.workerWork.remaining:Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
-    if (im) {
+    if (drawConstruction(ctx, d, p, t, g.zone)) { /* Z1-V5-FX3: animated crane + posts + scaffold sheets (img/construction/<zone>/) */ }
+    else if (im) {
       const bh = bw * im.naturalHeight / im.naturalWidth;
       ctx.drawImage(im, d.bx - bw / 2, d.by - bh, bw, bh);
     }
