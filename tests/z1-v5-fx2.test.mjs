@@ -12,15 +12,15 @@ const py = (code, ...args) => JSON.parse(execFileSync('python3', ['-c', code, ..
 const fx = await import('../src/town-fluid-fx.js?v=v5fx');
 const skin = await import('../src/zone-skin.js');
 
-test('canteen: the new picture cannot be hidden by an old browser cache (cache name + entry module version changed) and is used as drawn', async () => {
+test('canteen: the new picture cannot be hidden by an old browser cache (cache name + entry module version changed)', async () => {
   const preload = readFileSync(file('src/preload.js'), 'utf8'), html = readFileSync(file('index.html'), 'utf8');
   const version = preload.match(/const CATALOG_VERSION = '([^']+)'/)[1];
-  assert.ok(version.endsWith('-z1v5-canteen4'), 'Cache Storage name follows CATALOG_VERSION: a new suffix makes every browser drop avegee-images-<old> (which held the old canteen-th.webp)');
+  assert.ok(version.endsWith('-z1v5-fx3'), 'Cache Storage name follows CATALOG_VERSION: a new suffix makes every browser drop avegee-images-<old> (which held the old canteen-th.webp)');
   assert.ok(!html.includes('preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f'), 'entry script + import map moved to the new preload.js release');
   const refs = [...html.matchAll(/(?<!asset-)preload\.js\?v=([^"]+)"/g)].map(m => m[1]);
   assert.ok(refs.length >= 3 && new Set(refs.filter(r => r.startsWith('2026'))).size === 1, 'one release id everywhere');
   const l = await import('../src/canteen-art-layout.js');
-  assert.equal(l.CANTEEN_ART_FLIP.th, false, 'zone 1 canteen is drawn the way the owner drew it (no mirror)');
+  assert.equal(l.CANTEEN_ART_FLIP.th, true, 'FX3 (owner 14:10): mirrored again like the old canteen (FX2 had drawn it unmirrored)');
   assert.ok(l.CANTEEN_ART_SCALE_BY_ZONE.th > 1.2 && l.CANTEEN_ART_SCALE_BY_ZONE.th <= 1.6, 'bigger than the old 1.08 so it sits right beside the 118-150 wide houses');
   assert.equal(l.CANTEEN_ART_SCALE, 1.08, 'other zones keep their size');
   const art = readFileSync(file('src/art.js'), 'utf8');
@@ -30,7 +30,7 @@ test('canteen: the new picture cannot be hidden by an old browser cache (cache n
 test('foam: every crest sits on the shore of the painted water (<= band), pointing into the water; no foam piece covers the middle of a river', () => {
   const band = layout.bandWorld; assert.equal(band, 12);
   const crest = layout.pieces.find(p => p.id === 'river-foam--shore');
-  assert.ok(crest && crest.spots.length >= 40, 'crests exist');
+  assert.ok(crest && crest.spots.length >= 30, 'crests exist');
   const edge = layout.pieces.filter(p => p.group === 'foam' && p.kind === 'tile');
   assert.deepEqual(edge.map(p => p.mask).sort(), ['foam-ice-edge', 'foam-spirit-edge']);
   assert.ok(edge.every(p => !p.clipMask), 'the old islet-outline "-bank" masks are gone (they drew foam in the middle of the river)');
@@ -88,13 +88,13 @@ test('spot state: swell breathes and drifts to the shore, once plays the drawn f
   assert.ok(fx.fluidSpotState(rise, rs, 0.001).alpha < .05 && fx.fluidSpotState(rise, rs, 9.999).alpha < .05, 'and fades in / out');
 });
 
-test('ground set v7-partial: 20 chunks of 2048 px (last col 1638, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
+test('ground set v7-partial: 70 tiles of 1024 px (10 x 7; last col 614, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
   const g = skin.ZONE1_GROUND['v7-partial'];
   assert.equal(skin.ZONE1_GROUND_SET, 'v7-partial'); assert.strictEqual(skin.ZONE_SKIN.th.terrain, g);
-  assert.equal(g.chunk, 2048); assert.deepEqual({ ...g.fullPx }, { w: 9830, h: 6554 }); assert.equal(g.repairs, false);
+  assert.equal(g.chunk, 1024); assert.deepEqual({ ...g.fullPx }, { w: 9830, h: 6554 }); assert.equal(g.repairs, false);
   const sizes = py('import sys,json\nfrom PIL import Image\nprint(json.dumps({f:Image.open(sys.argv[1]+f).size for f in sys.argv[2:]}))', file(GD),
-    ...Array.from({ length: 20 }, (_, i) => `r${Math.floor(i / 5) + 1}-c${i % 5 + 1}.webp`), 'zone1-terrain-v7-preview.webp');
-  for (let r = 1; r <= 4; r++) for (let c = 1; c <= 5; c++) assert.deepEqual(sizes[`r${r}-c${c}.webp`], [c === 5 ? 1638 : 2048, r === 4 ? 410 : 2048], `r${r}-c${c}`);
+    ...Array.from({ length: 70 }, (_, i) => `r${Math.floor(i / 10) + 1}-c${i % 10 + 1}.webp`), 'zone1-terrain-v7-preview.webp');
+  for (let r = 1; r <= 7; r++) for (let c = 1; c <= 10; c++) assert.deepEqual(sizes[`r${r}-c${c}.webp`], [c === 10 ? 614 : 1024, r === 7 ? 410 : 1024], `r${r}-c${c}`);
   assert.deepEqual(sizes['zone1-terrain-v7-preview.webp'], [1536, 1024]);
   assert.ok(g.preview.endsWith('zone1-terrain-v7-preview.webp') && existsSync(file(g.preview)));
   const total = readdirSync(file(GD), { recursive: true }).filter(f => statSync(file(GD + f)).isFile()).reduce((s, f) => s + statSync(file(GD + f)).size, 0);

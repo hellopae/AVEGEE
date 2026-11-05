@@ -1,0 +1,74 @@
+{
+ "old_loader": false,
+ "throttle": "4",
+ "walk_seconds": 63.8,
+ "rss_MB_start": {
+  "renderer": 120,
+  "GPU": 296
+ },
+ "rss_MB_peak": {
+  "renderer": 120,
+  "GPU": 372
+ },
+ "rss_MB_final": {
+  "renderer": 114,
+  "GPU": 370
+ },
+ "terrain": {
+  "idle": 42,
+  "loading": 0,
+  "ready": 28,
+  "error": 0,
+  "bake": {
+   "worker": 171,
+   "main": 0,
+   "workerFailed": false
+  },
+  "preview": true,
+  "evicted": 142,
+  "cap": 28,
+  "bakedMB": 106
+ },
+ "view_modes_sampled_every_0.5s": {
+  "detail": 84,
+  "loading-detail": 4
+ },
+ "worst_frame_ms": 550,
+ "frames_over_100ms": 77,
+ "frames": 3128,
+ "blur_samples_at_xy_mode_visible_ready_loading": [
+  [
+   1254,
+   1673,
+   "loading-detail",
+   15,
+   29,
+   1
+  ],
+  [
+   2520,
+   1641,
+   "loading-detail",
+   18,
+   31,
+   1
+  ],
+  [
+   2746,
+   545,
+   "loading-detail",
+   15,
+   28,
+   1
+  ],
+  [
+   1926,
+   1167,
+   "loading-detail",
+   18,
+   30,
+   2
+  ]
+ ],
+ "errors": []
+}

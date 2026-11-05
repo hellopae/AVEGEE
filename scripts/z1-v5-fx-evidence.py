@@ -28,6 +28,11 @@ VIEWS2 = {   # FX2 clips: placed foam on the shore, lava fall + bubbles / steam 
 }
 CANTEEN_JS = """async()=>{const d=await import('./src/data.js');const def=d.STATIONS.find(s=>s.k==='canteen');
   if(!G.stations.some(s=>s.def.k==='canteen'))G.stations.push({def,slots:[],crewK:null,intensity:3,build:0,buildWait:false,repair:0,repairWait:false,arrivalElapsed:0,fire:0,speedLv:0,capLv:0,fuelLv:0,mgCd:0});}"""
+VIEWS3 = {   # FX3: shore foam after the audit, canteen mirrored + lowered, a fast walk across the map
+    '09-bridge-river-foam': (1700, 1760, 300, 0),
+    '10-canteen': (1572, 930, 0, -170),
+}
+WALK_ROUTE = [(1900, 1850), (1900, 1000), (900, 760), (700, 1500), (1500, 1760)]      # ~3000 units at ~230 units/s = 13 s
 SETW = "async(on)=>{const m=await import('./src/map-ambient.js?v=mapfx-k1d');m.setWeatherEnabled(on)}"
 STATS = "async()=>{const m=await import('./src/town-fluid-fx.js?v=v5fx');return m.townFluidFxStats()}"
 FPS_JS = """async(ms)=>new Promise(res=>{const ts=[];function f(t){ts.push(t);if(t-ts[0]<ms)requestAnimationFrame(f);else{const d=[];for(let i=1;i<ts.length;i++)d.push(ts[i]-ts[i-1]);d.sort((a,b)=>a-b);res({fps:(ts.length-1)/((ts[ts.length-1]-ts[0])/1000),p95:d[Math.floor(d.length*.95)],max:d[d.length-1],n:ts.length})}}requestAnimationFrame(f)})"""
@@ -40,6 +45,10 @@ def boot(p, w=390, h=844, dpr=1, mobile=False, video=None, vsize=None):
         kw.update(record_video_dir=str(video), record_video_size=vsize or {'width': w, 'height': h})
     ctx = browser.new_context(**kw)
     pg = ctx.new_page(); errs = []; t0 = time.time()
+    if os.environ.get('OLD'):       # A/B: the ground loader of git ref OLD_REF (default: the FX2 commit) instead of the working tree
+        for name in ('town-terrain.js', 'town-lighting.js'):
+            body = subprocess.check_output(['git', 'show', f"{os.environ.get('OLD_REF', '454dc5b6')}:src/{name}"], cwd=Path(__file__).resolve().parent.parent, text=True)
+            ctx.route(f'**/src/{name}*', (lambda b: (lambda route, request=None: route.fulfill(status=200, content_type='text/javascript', body=b)))(body))
     if os.environ.get('GROUND'):    # A/B: serve zone-skin.js with another ground set (v5 | v7-partial) without touching the file
         def swap(route):
             r = route.fetch(); body = r.text()
@@ -76,7 +85,7 @@ def clips(out, views=None):
         tmp = out / ('_' + name); tmp.mkdir(exist_ok=True)
         with sync_playwright() as p:
             browser, ctx, pg, errs, t0 = boot(p, 390, 844, 1, False, tmp, {'width': 390, 'height': 844})   # Playwright records CSS pixels: 390x844
-            if name.endswith('canteen'):
+            if name.endswith('canteen') or name.endswith('-canteen'):
                 pg.evaluate(CANTEEN_JS)
             look(pg, x, y); pg.wait_for_timeout(2500)
             start = time.time() - t0
@@ -91,6 +100,27 @@ def clips(out, views=None):
                         '-crf', '20', '-movflags', '+faststart', '-an', str(out / f'{name}.mp4')], check=True)
         webm.unlink(); tmp.rmdir()
         print(name, 'stats', st, 'errors', [e for e in errs if 'willRead' not in e][:3], flush=True)
+
+
+def walk_only(out):
+    walk_clip(out)
+
+
+def walk_clip(out):
+    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    name = '11-fast-walk-across-map'; tmp = out / ('_' + name); tmp.mkdir(exist_ok=True)
+    with sync_playwright() as p:
+        browser, ctx, pg, errs, t0 = boot(p, 390, 844, 1, False, tmp, {'width': 390, 'height': 844})
+        look(pg, *WALK_ROUTE[0]); pg.wait_for_timeout(2500)
+        start = time.time() - t0
+        for a, b in zip(WALK_ROUTE, WALK_ROUTE[1:]):
+            n = max(2, int(((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2) ** .5 / 230 * 10))
+            for k in range(1, n + 1):
+                pg.evaluate("([x,y])=>{G.player.x=x;G.player.y=y;G.player.tx=x;G.player.ty=y;}", [a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]); pg.wait_for_timeout(100)
+        ctx.close(); browser.close()
+    webm = next(tmp.glob('*.webm'))
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{start - 0.3:.2f}', '-i', str(webm), '-t', '13.5', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-movflags', '+faststart', '-an', str(out / f'{name}.mp4')], check=True)
+    webm.unlink(); tmp.rmdir(); print(name, 'errors', [e for e in errs if 'willRead' not in e][:3])
 
 
 def fps(kind):
@@ -154,6 +184,10 @@ if __name__ == '__main__':
         clips(sys.argv[2])
     elif cmd == 'clips2':
         clips(sys.argv[2], VIEWS2)
+    elif cmd == 'walk':
+        walk_clip(sys.argv[2])
+    elif cmd == 'clips3':
+        clips(sys.argv[2], VIEWS3); walk_clip(sys.argv[2])
     elif cmd == 'fps':
         fps(sys.argv[2])
     elif cmd == 'seam':

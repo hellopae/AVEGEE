@@ -1,0 +1,31 @@
+{
+ "old_loader": true,
+ "throttle": 1,
+ "walk_seconds": 51.4,
+ "rss_MB_start": {
+  "renderer": 121,
+  "GPU": 302
+ },
+ "rss_MB_peak": {
+  "GPU": 428,
+  "renderer": 121
+ },
+ "rss_MB_final": {
+  "renderer": 114,
+  "GPU": 429
+ },
+ "terrain": {
+  "idle": 0,
+  "loading": 0,
+  "ready": 20,
+  "error": 0,
+  "preview": true
+ },
+ "view_modes_sampled_every_0.5s": {
+  "detail": 88
+ },
+ "worst_frame_ms": 133,
+ "frames_over_100ms": 1,
+ "frames": 3261,
+ "errors": []
+}
