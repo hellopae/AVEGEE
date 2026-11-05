@@ -12,7 +12,7 @@
   * sprites: the tree / bed / rock / river-rail / pier / stair sprites the pilot run cut from v5 for the removed objects of those 5 chunks are copied to
     sprites/ with sprites.json (world rect, foot, layer back|sort|front) for src/town-ground-sprites.js.
   * preview 1536x1024 is the downscale of the assembled ground, so the minimap / overview match.
-Output: img/map-zone1/v7-partial/{r1-c1..r4-c5.webp, zone1-terrain-v7-preview.webp, sprites/, sprites.json, manifest.json}
+Output: img/map-zone1/v7-partial/{r1-c1..r7-c10.webp (1024 px tiles; the 2048 px source chunks are only the unit of the HD drawings), zone1-terrain-v7-preview.webp, sprites/, sprites.json, manifest.json}
 """
 import json, shutil, sys, time
 from pathlib import Path
@@ -128,14 +128,20 @@ for r in range(1, 5):
             seams[f'r{r}c{c}/r{r+1}c{c}'] = seam_fix('h', r * CH, x0, x1)
 print('seams [median, max] strip step before correction (0..255):', seams)
 
+# FX3: the ground is served as 1024 px tiles (10 x 7 = 70 files, 400 world units each), not 2048 px chunks: at phone zoom the camera sees ~600 x 1200
+# world units, so 2048 px chunks kept 6-8 chunks (100-130 MB of graded canvas) alive for ~1 chunk of picture; 1024 px tiles keep 8-12 tiles (35-50 MB).
+TILE = 1024
+for old in OUT.glob('r*-c*.webp'):
+    old.unlink()
 total = 0
 files = {}
-for r in range(1, 5):
-    for c in range(1, 6):
-        x0, y0 = (c - 1) * CH, (r - 1) * CH
-        part = canvas[y0:min(FULL[1], y0 + CH), x0:min(FULL[0], x0 + CH)]
+for r in range(1, -(-FULL[1] // TILE) + 1):
+    for c in range(1, -(-FULL[0] // TILE) + 1):
+        x0, y0 = (c - 1) * TILE, (r - 1) * TILE
+        part = canvas[y0:min(FULL[1], y0 + TILE), x0:min(FULL[0], x0 + TILE)]
+        src_r, src_c = y0 // CH + 1, x0 // CH + 1
         f = OUT / f'r{r}-c{c}.webp'
-        Image.fromarray(part).save(f, 'WEBP', quality=Q_HD if kind[(r, c)] == 'hd' else Q_UP, method=4)
+        Image.fromarray(part).save(f, 'WEBP', quality=Q_HD if kind[(src_r, src_c)] == 'hd' else Q_UP, method=4)
         files[f.name] = f.stat().st_size
         total += f.stat().st_size
 prev = cv2.resize(canvas, (1536, 1024), interpolation=cv2.INTER_AREA)
@@ -166,7 +172,7 @@ for s in keep:
     slim.append({'id': s['id'], 'src': 'sprites/' + Path(s['src']).name, 'rectWorld': [round(v, 2) for v in s['rectWorld']],
                  'footWorld': [round(v, 2) for v in s['footWorld']], 'layer': s['layer'], 'verified': bool(s.get('placementVerified'))})
 (OUT / 'sprites.json').write_text(json.dumps(slim, separators=(',', ':')))
-manifest = {'note': 'built by scripts/build-z1-v7-partial.py', 'hdChunks': [f'r{r}-c{c}' for (r, c) in HD], 'seams': seams,
+manifest = {'note': 'built by scripts/build-z1-v7-partial.py', 'tilePx': TILE, 'hdChunks': [f'r{r}-c{c}' for (r, c) in HD], 'seams': seams,
             'qualityHd': Q_HD, 'qualityUp': Q_UP, 'bytes': files, 'totalChunkBytes': total, 'sprites': [s['id'] for s in slim]}
 (OUT / 'manifest.json').write_text(json.dumps(manifest, indent=1))
 alls = sum(f.stat().st_size for f in OUT.rglob('*') if f.is_file())
