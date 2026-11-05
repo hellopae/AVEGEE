@@ -1,6 +1,6 @@
 // Z1-V5-FX3: grades one terrain tile off the main thread.  Receives an ImageBitmap + the light field, returns the graded ground and the (1/glowDiv) glow layer
 // as ImageBitmaps.  Same maths as the main-thread fallback (town-grade.js gradeStrip).
-import { gradeStrip, lightColumns } from './town-grade.js';
+import { gradeStrip, lightColumns } from './town-grade.js?v=20261105-z1v5-fx4';   // workers ignore the page import map: the release id is carried here
 const SH = 32;
 async function bake(m) {
   const { bitmap, W, H, rect, field, COLS, ROWS, CELL, world, emit, fireOnly, glowDiv } = m;

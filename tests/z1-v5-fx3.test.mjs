@@ -141,7 +141,7 @@ test('ground loader: far tiles are released (LRU, memory cap), visible ones neve
 });
 test('ground loader: wiring - grading runs in a worker with a main-thread fallback, glow layer is optional and 1/4 size, tile set is 1024 px', () => {
   const light = readFileSync(file('src/town-lighting.js'), 'utf8'), terrain = readFileSync(file('src/town-terrain.js'), 'utf8'), worker = readFileSync(file('src/terrain-bake-worker.js'), 'utf8');
-  assert.match(light, /new Worker\(new URL\('\.\/terrain-bake-worker\.js\?v=fx3'/); assert.match(light, /workerFailed=true/); assert.match(light, /if\(!art\.fire\)return;/);
+  assert.match(light, /new Worker\(new URL\('\.\/terrain-bake-worker\.js\?v=20261105-z1v5-fx4'/); assert.match(light, /workerFailed=true/); assert.match(light, /if\(!art\.fire\)return;/);
   assert.match(light, /GLOW_DIV=4/); assert.match(worker, /gradeStrip/); assert.match(readFileSync(file('src/town-grade.js'), 'utf8'), /export function gradeStrip/);
   assert.match(terrain, /function evictFar/); assert.match(terrain, /TERRAIN_MEMORY_BUDGET = 120e6/); assert.match(terrain, /prepareTownLighting\(ready,\[r\.x,r\.y,r\.w,r\.h\],bakeBudget\)/);
   assert.match(readFileSync(file('src/zone-skin.js'), 'utf8'), /chunk:1024, repairs:false, sprites:V7P_DIR/);

@@ -98,7 +98,7 @@ function getWorker(){
  if(worker||workerFailed)return worker;
  if(typeof Worker==='undefined'||typeof OffscreenCanvas==='undefined'||typeof createImageBitmap!=='function'||typeof HTMLImageElement==='undefined'){workerFailed=true;return null;}
  try{
-  worker=new Worker(new URL('./terrain-bake-worker.js?v=fx3',import.meta.url),{type:'module'});
+  worker=new Worker(new URL('./terrain-bake-worker.js?v=20261105-z1v5-fx4',import.meta.url),{type:'module'});
   worker.onmessage=e=>{const w=waiting.get(e.data.id);if(!w)return;waiting.delete(e.data.id);if(e.data.ok)w.resolve(e.data);else w.reject(new Error(e.data.error));};
   worker.onerror=()=>{workerFailed=true;const dead=[...waiting.values()];waiting.clear();worker=null;for(const w of dead)w.reject(new Error('terrain worker failed'));};
  }catch{workerFailed=true;worker=null;}
@@ -110,7 +110,7 @@ async function bakeInWorker(image,rect){
  const id=++nextJob,emit=activeTownSkin().light.emit,W=bitmap.width,H=bitmap.height;
  const done=new Promise((resolve,reject)=>waiting.set(id,{resolve,reject}));
  try{w.postMessage({id,bitmap,W,H,rect,field:field.slice(),COLS,ROWS,CELL,world:{w:TOWN_SIZE.w,h:TOWN_SIZE.h},emit,fireOnly:emit.length===1&&emit[0].type==='fire',glowDiv:GLOW_DIV},[bitmap]);}
- catch{waiting.delete(id);return null;}
+ catch{waiting.delete(id);bitmap.close?.();return null;}
  try{const r=await done;return {ground:r.ground,fire:r.fire?{canvas:r.fire,x:0,y:0,w:W,h:H}:null,W,H};}catch{return null;}
 }
 let bakeTurn=Promise.resolve();   // one tile is graded at a time: three parallel bakes each took their own slice of the frame (3 x 4-10 ms)
