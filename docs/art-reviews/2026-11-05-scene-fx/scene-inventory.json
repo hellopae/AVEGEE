@@ -1,0 +1,701 @@
+{
+ "date": "2026-11-05",
+ "note": "Every picture a battle / interrogation scene can show. \"applied\" = pieces in img/scene-fx/scene-fx-layout.json. seen = how it was inspected.",
+ "weather": {
+  "zone3": "snow (drawBiomeWeather west) + light fog",
+  "zone4": "rain + lightning (flash <= .22, <= 2 pulses per strike)"
+ },
+ "pictures": [
+  {
+   "file": "img/map-zone1/battle-volcano-v1.webp",
+   "used_by": "zone 1 battle (hero x<1250): volcano",
+   "seen": "full-size",
+   "lava": true,
+   "river_water": false,
+   "waterfall": false,
+   "cloud_mist": false,
+   "torch": true,
+   "sky_clouds": true,
+   "notes": "3 lava falls on the cliffs, lava pools under the bridge arches, lava river far right, lava streams on the volcano, 2 braziers at the pavilions; the floor shows reflections only (not fluid)",
+   "codex_needs": [
+    "sky: slow red storm-cloud frames (the painted clouds are fixed)",
+    "far lava river: a perspective lava-surface strip (the map sheet is top-down)"
+   ],
+   "applied": [
+    {
+     "id": "lavafall-a",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      398,
+      153,
+      54,
+      147
+     ]
+    },
+    {
+     "id": "lavafall-b",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      628,
+      197,
+      62,
+      108
+     ]
+    },
+    {
+     "id": "lavafall-c",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      863,
+      250,
+      49,
+      80
+     ]
+    },
+    {
+     "id": "lava-river-right",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      1095,
+      262,
+      307,
+      86
+     ]
+    },
+    {
+     "id": "embers-4",
+     "kind": "embers",
+     "sheet": "embers-ash.webp",
+     "blend": "screen",
+     "opacity": 0.9,
+     "rect": [
+      1117,
+      210,
+      308,
+      161
+     ]
+    },
+    {
+     "id": "lava-pool-left",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      285,
+      285,
+      283,
+      67
+     ]
+    },
+    {
+     "id": "embers-6",
+     "kind": "embers",
+     "sheet": "embers-ash.webp",
+     "blend": "screen",
+     "opacity": 0.9,
+     "rect": [
+      269,
+      265,
+      268,
+      102
+     ]
+    },
+    {
+     "id": "volcano-streams",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      1120,
+      55,
+      130,
+      178
+     ]
+    },
+    {
+     "id": "torch-left",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      7,
+      221,
+      42,
+      64
+     ]
+    },
+    {
+     "id": "torch-right",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      1612,
+      256,
+      52,
+      74
+     ]
+    }
+   ],
+   "switched_off": [],
+   "cloud_shadow": "map strength .32 (zone 1)"
+  },
+  {
+   "file": "img/map-zone1/battle-ice-v1.webp",
+   "used_by": "zone 1 battle (x>3000,y<1100): ice",
+   "seen": "full-size",
+   "lava": false,
+   "river_water": false,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": false,
+   "sky_clouds": true,
+   "notes": "great ice fall right, wide fall centre, two narrow falls; white mist banks at the cliff feet; the floor is polished ice (reflections only)",
+   "codex_needs": [
+    "waterfall frames in the painted PALE ICE-BLUE / white (the sheets are vivid cyan: applied at .30 only)",
+    "cool-white mist frames (cloud-sea is a warm lavender/orange sea and does not match)"
+   ],
+   "applied": [
+    {
+     "id": "fall-big-right",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.3,
+     "rect": [
+      1150,
+      100,
+      295,
+      245
+     ]
+    },
+    {
+     "id": "fall-center",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.3,
+     "rect": [
+      850,
+      262,
+      225,
+      100
+     ]
+    },
+    {
+     "id": "fall-left",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.3,
+     "rect": [
+      676,
+      200,
+      59,
+      142
+     ]
+    },
+    {
+     "id": "fall-small",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.3,
+     "rect": [
+      1028,
+      145,
+      50,
+      105
+     ]
+    }
+   ],
+   "switched_off": [],
+   "cloud_shadow": "map strength .32 (zone 1)"
+  },
+  {
+   "file": "img/map-zone1/battle-forest-v1.webp",
+   "used_by": "zone 1 battle (x>2650,y>1450): forest + dungeon / frontier token battles",
+   "seen": "full-size",
+   "lava": false,
+   "river_water": true,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": true,
+   "sky_clouds": false,
+   "notes": "three falls into a pond (left), pond / river, spray mist, 4 braziers by the temple stair",
+   "codex_needs": [
+    "pond: a teal-green water texture with caustics (ice-stream is saturated cyan; the pond mask is only 2.2k px, switched off)",
+    "forest falls in white-green with spray"
+   ],
+   "applied": [
+    {
+     "id": "fall-a",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      438,
+      148,
+      70,
+      114
+     ]
+    },
+    {
+     "id": "fall-b",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      365,
+      272,
+      97,
+      90
+     ]
+    },
+    {
+     "id": "fall-c",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      633,
+      165,
+      57,
+      90
+     ]
+    },
+    {
+     "id": "torch-1",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      953,
+      316,
+      23,
+      23
+     ]
+    },
+    {
+     "id": "torch-2",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      1257,
+      313,
+      34,
+      29
+     ]
+    },
+    {
+     "id": "torch-3",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      1097,
+      219,
+      39,
+      30
+     ]
+    }
+   ],
+   "switched_off": [
+    {
+     "id": "pond",
+     "why": "only 2247 px of the painted fluid / flame found (need 3000)"
+    },
+    {
+     "id": "torch-4",
+     "why": "only 44 px of the painted fluid / flame found (need 120)"
+    }
+   ],
+   "cloud_shadow": "map strength .32 (zone 1)"
+  },
+  {
+   "file": "img/frontier-route/battle-border-v1.webp",
+   "used_by": "frontier border battle (sceneBiome border / dungeon token / frontier kinds in zone 1)",
+   "seen": "full-size",
+   "lava": true,
+   "river_water": false,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": false,
+   "sky_clouds": true,
+   "notes": "lava falls + fire left, two mist-veiled falls centre/right, a mist sea in the valley, a wet puddle bottom right",
+   "codex_needs": [
+    "valley mist: cool grey-white drifting mist (not the warm cloud-sea)",
+    "puddle shimmer (tiny)"
+   ],
+   "applied": [
+    {
+     "id": "lavafall-a",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      378,
+      160,
+      55,
+      132
+     ]
+    },
+    {
+     "id": "lava-glow-left",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      271,
+      100,
+      144,
+      75
+     ]
+    },
+    {
+     "id": "fall-a",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      1118,
+      202,
+      51,
+      170
+     ]
+    },
+    {
+     "id": "fall-b",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      780,
+      200,
+      28,
+      65
+     ]
+    }
+   ],
+   "switched_off": [],
+   "cloud_shadow": "map strength .32 (zone 1)"
+  },
+  {
+   "file": "img/frontier-route/battle-cave-v1.webp",
+   "used_by": "zone 1 cave battle (sceneBiome cave: event bosses, dungeon token)",
+   "seen": "full-size",
+   "lava": true,
+   "river_water": false,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": true,
+   "sky_clouds": false,
+   "notes": "INDOORS: lava falls and cascade left, glowing floor cracks, a far fall and mist through the cave mouth, 4 torches; no cloud shadow and no leaves here",
+   "codex_needs": [
+    "floor-crack glow pulse frames",
+    "steam rising from the ledge (lava-steam is a flat oval that reads as a pasted blob)"
+   ],
+   "applied": [
+    {
+     "id": "lavafall-a",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      73,
+      100,
+      59,
+      142
+     ]
+    },
+    {
+     "id": "lavafall-b",
+     "kind": "rect",
+     "sheet": "lavafall.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      218,
+      166,
+      58,
+      101
+     ]
+    },
+    {
+     "id": "lava-cascade",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      0,
+      285,
+      187,
+      195
+     ]
+    },
+    {
+     "id": "embers-3",
+     "kind": "embers",
+     "sheet": "embers-ash.webp",
+     "blend": "screen",
+     "opacity": 0.9,
+     "rect": [
+      51,
+      221,
+      128,
+      246
+     ]
+    },
+    {
+     "id": "fall-far",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      1296,
+      128,
+      34,
+      164
+     ]
+    },
+    {
+     "id": "torch-1",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      325,
+      188,
+      24,
+      33
+     ]
+    },
+    {
+     "id": "torch-2",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      699,
+      267,
+      21,
+      24
+     ]
+    },
+    {
+     "id": "torch-3",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      1373,
+      323,
+      19,
+      38
+     ]
+    },
+    {
+     "id": "torch-4",
+     "kind": "pulse",
+     "sheet": null,
+     "blend": null,
+     "opacity": null,
+     "rect": [
+      1614,
+      360,
+      34,
+      36
+     ]
+    }
+   ],
+   "switched_off": [],
+   "cloud_shadow": "none (indoors)"
+  },
+  {
+   "file": "img/map-zone1/arena-v1.webp",
+   "used_by": "zone 1 interrogation room + default zone 1 battle (BG-Turn-Base)",
+   "seen": "full-size",
+   "lava": true,
+   "river_water": true,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": true,
+   "sky_clouds": true,
+   "notes": "lava mountain left, small falls + pond right (far), mist, ~20 stone lanterns along the stair and terrace",
+   "codex_needs": [
+    "lantern flicker for the ~20 lanterns (needs hand masks, only the cloud shadows / lava streams / far river are done)"
+   ],
+   "applied": [
+    {
+     "id": "lava-streams",
+     "kind": "tile",
+     "sheet": "lava-surface.webp",
+     "blend": "overlay",
+     "opacity": 0.55,
+     "rect": [
+      400,
+      80,
+      240,
+      180
+     ]
+    },
+    {
+     "id": "fall-a",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      1455,
+      150,
+      45,
+      65
+     ]
+    },
+    {
+     "id": "fall-b",
+     "kind": "rect",
+     "sheet": "waterfall-ice.webp",
+     "blend": "overlay",
+     "opacity": 0.22,
+     "rect": [
+      1530,
+      273,
+      42,
+      47
+     ]
+    },
+    {
+     "id": "river",
+     "kind": "tile",
+     "sheet": "ice-stream.webp",
+     "blend": "overlay",
+     "opacity": 0.3,
+     "rect": [
+      1300,
+      330,
+      260,
+      110
+     ]
+    }
+   ],
+   "switched_off": [],
+   "cloud_shadow": "map strength .32 (zone 1)"
+  },
+  {
+   "file": "img/theme-v4/arena-asia.webp",
+   "used_by": "zone 2 battle + interrogation",
+   "seen": "contact sheet only",
+   "lava": false,
+   "river_water": false,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": true,
+   "sky_clouds": true,
+   "notes": "small white falls top-left / top-right behind the hall, mist; stone lanterns; red maple leaves. Not animated this round (zone 1 first): gets the shared leaves / cloud shadows / sun rays only",
+   "codex_needs": [],
+   "applied": [],
+   "switched_off": [],
+   "cloud_shadow": ".20 (zones 2-4, as on the map)"
+  },
+  {
+   "file": "img/theme-v4/arena-west.webp",
+   "used_by": "zone 3 battle + interrogation",
+   "seen": "contact sheet only",
+   "lava": false,
+   "river_water": false,
+   "waterfall": true,
+   "cloud_mist": true,
+   "torch": true,
+   "sky_clouds": true,
+   "notes": "snow mountains + far fall, 2 braziers; gets SNOW fall + light fog + cloud shadows",
+   "codex_needs": [],
+   "applied": [],
+   "switched_off": [],
+   "cloud_shadow": ".20 (zones 2-4, as on the map)"
+  },
+  {
+   "file": "img/theme-v4/arena-cyberhell.webp",
+   "used_by": "zone 4 battle + interrogation",
+   "seen": "contact sheet only",
+   "lava": true,
+   "river_water": false,
+   "waterfall": false,
+   "cloud_mist": false,
+   "torch": true,
+   "sky_clouds": false,
+   "notes": "lava streaks top-left / right, neon floor lines, blue flames; gets RAIN + lightning + cloud shadows. Lava is not animated (the map sheet does not fit the violet scene)",
+   "codex_needs": [
+    "cyberhell lava frames in magenta-orange"
+   ],
+   "applied": [],
+   "switched_off": [],
+   "cloud_shadow": ".20 (zones 2-4, as on the map)"
+  },
+  {
+   "file": "img/theme-v4/frontier-asia.webp / frontier-west.webp / frontier-cyberhell.webp / frontier-th.webp",
+   "used_by": "frontier battles of zones 1-4 outside the zone 1 border route",
+   "seen": "contact sheet only",
+   "lava": null,
+   "river_water": null,
+   "waterfall": null,
+   "cloud_mist": null,
+   "torch": true,
+   "sky_clouds": null,
+   "notes": "top-down courtyards: lava lake edge (th), ice pools (west), jade pool edge (asia), neon floor (cyberhell). Weather (snow / rain / lightning) and cloud shadows apply; fluids not inspected yet",
+   "codex_needs": [],
+   "applied": [],
+   "switched_off": [],
+   "cloud_shadow": ".20 (zones 2-4, as on the map)"
+  },
+  {
+   "file": "img/boss-justice/final-bound-v1.webp",
+   "used_by": "final boss judgement (an illustration with figures, not a backdrop)",
+   "seen": "contact sheet only",
+   "lava": false,
+   "river_water": false,
+   "waterfall": false,
+   "cloud_mist": false,
+   "torch": false,
+   "sky_clouds": false,
+   "notes": "left alone",
+   "codex_needs": [],
+   "applied": [],
+   "switched_off": [],
+   "cloud_shadow": ".20 (zones 2-4, as on the map)"
+  }
+ ]
+}
