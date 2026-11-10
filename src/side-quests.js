@@ -43,9 +43,9 @@ export const questState=(g,id)=>g.sideQuests?.[id]||{step:0,choice:null,done:fal
 export function questDialogue(g,q){
   const s=questState(g,q.id);
   if(!q.kin){
-    if(q.id==='sqDam'&&s.step>=3&&s.verdict&&!s.verdict.right)return ['ดำ: "ผมไม่ได้โทษท่านครับ ... บอกเฉย ๆ"'];
+    if(q.id==='sqDam'&&s.step>=3&&s.verdict&&!s.verdict.right)return ['ดำ: "ผมไม่ได้โทษท่านครับ แค่อยากบอกให้ท่านรู้ว่า ลุงคนนั้นไม่ได้ทำอะไรผิดเลย"'];
     const lines=[...(q.dialogue[String(Math.min(s.step+1,5))]||[])];
-    if(q.id==='sqKan'&&s.step===3&&s.verdict?.privateOpened)lines.unshift('ซาโตริ: "เรื่องนี้เขายังไม่ได้อนุญาตให้ใครรู้"');
+    if(q.id==='sqKan'&&s.step===3&&s.verdict?.privateOpened)lines.unshift('ซาโตริ: "ท่านเปิดเรื่องที่เขายังไม่ได้อนุญาตให้ใครรู้ไปแล้วนะครับ"');
     const reply=q.id==='sqBoon'?(s.choice===0&&s.step===2||s.choice===1&&s.step===3):s.step>=4;
     return reply?[...(q.responses?.[s.choice]||[]),...lines]:lines;
   }
