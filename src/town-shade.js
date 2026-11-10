@@ -244,7 +244,23 @@ function rebuildField() {
 export function updateTownShade(resolve, houseKey, stations, propArt) {
   const s = sig(resolve, houseKey, stations, propArt);
   if (s === signature) return;
-  signature = s; casters = listCasters(resolve, houseKey, stations, propArt); rebuildField();
+  signature = s; casters = listCasters(resolve, houseKey, stations, propArt); rebuildField(); scheduleContourWarm();
+}
+// PERF-1110: a building's contour shadow is baked on its first visible frame (a 80-160 ms main-thread stall each, 3-4 of them while walking through the town).
+// The bakes are the same pure function with the same inputs, so they are simply done early: one per idle slot right after the casters change, in the order
+// the list has them, instead of in the middle of a walk.  A frame that needs one before its turn still bakes it on the spot (cache hit afterwards).
+let warmTimer = 0;
+function scheduleContourWarm() {
+  if (typeof setTimeout !== 'function' || typeof document === 'undefined') return;
+  clearTimeout(warmTimer);
+  const todo = []; for (const c of casters) if (c.kind === 'sprite' && c.contour) for (const level of ['tight', 'soft']) todo.push([c, level]);
+  const step = () => {
+    warmTimer = 0;
+    const next = todo.shift(); if (!next) return;
+    try { bakeContour(next[0], next[1]); } catch { /* the on-demand path reports it */ }
+    warmTimer = setTimeout(step, 120);   // leave several frames between two bakes
+  };
+  warmTimer = setTimeout(step, 600);
 }
 onTownLayoutChange(() => { signature = ''; });   // M2: casters follow the placed objects of the active zone layout
 export const townShadeStats = () => ({ casters:casters.length, field:!!fieldAlpha });
@@ -268,6 +284,9 @@ export function drawTownShadows(ctx) {
   const m = ctx.getTransform?.(), plain = m && !m.b && !m.c && m.a && m.d;
   const x0 = plain ? -m.e / m.a : -1e9, y0 = plain ? -m.f / m.d : -1e9;
   const x1 = plain ? x0 + ctx.canvas.width / m.a : 1e9, y1 = plain ? y0 + ctx.canvas.height / m.d : 1e9;
+  // PERF-1110: 'high' quality turns every sheared silhouette blit into a bicubic/mip draw (~2.5 ms/frame on an iGPU at DPR 2); the shadows are soft
+  // dark blobs drawn at or above their baked resolution, so bilinear is visually identical (pixel-diffed, see Output/Toby/2026-11-10-avegee-perf-stutter.md).
+  ctx.save(); ctx.imageSmoothingQuality = 'low';
   for (const level of ['soft', 'tight']) {
     ctx.fillStyle = ctx.strokeStyle = GROUND[level];
     for (const c of casters) {
@@ -279,6 +298,7 @@ export function drawTownShadows(ctx) {
       } else paintCaster(ctx, c, level, GROUND[level]);
     }
   }
+  ctx.restore();
 }
 // Silhouettes are baked white; tint them dark with one small scratch canvas per level instead of per-sprite colour variants.
 const dark = new WeakMap();

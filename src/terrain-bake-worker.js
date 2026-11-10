@@ -3,7 +3,14 @@
 import { gradeStrip, lightColumns } from './town-grade.js?v=20261105-z1v5-fx4';   // workers ignore the page import map: the release id is carried here
 const SH = 32;
 async function bake(m) {
-  const { bitmap, W, H, rect, field, COLS, ROWS, CELL, world, emit, fireOnly, glowDiv } = m;
+  const { url, W, H, rect, field, COLS, ROWS, CELL, world, emit, fireOnly, glowDiv } = m;
+  let bitmap = m.bitmap;
+  if (!bitmap) {   // PERF-1110: the page hands over the tile's URL; fetch + decode happen here, not on the main thread
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('tile fetch ' + res.status);
+    bitmap = await createImageBitmap(await res.blob());
+    if (bitmap.width !== W || bitmap.height !== H) { bitmap.close(); throw new Error('tile size mismatch'); }
+  }
   const [ox, oy, ww, wh] = rect.length === 8 ? [0, 0, world.w, world.h] : rect;
   const ground = new OffscreenCanvas(W, H), gc = ground.getContext('2d');
   const scratch = new OffscreenCanvas(W, SH), sc = scratch.getContext('2d', { willReadFrequently: true });

@@ -34,6 +34,6 @@ test('LOAD-01b: terrain chunks and preview are graded in time slices before they
 test('LOAD-01b: full-bleed opaque dialogs throttle the hidden map, other dialogs do not',()=>{
   const ui=read('src/ui.js');
   assert.match(ui,/function render\(c, game, now, \.\.\.rest\) \{ if \(mapDrawDue\(now\)\) renderMap\(c, game, now, \.\.\.rest\); \}/);
-  assert.match(ui,/w \* h < c\.width \* c\.height \* 0\.95\) return false/,'partial dialogs keep the map drawing every frame');
+  assert.match(ui,/w \* h < c\.width \* c\.height \* OCCLUDE_MIN_COVER\) return false/,'partial dialogs keep the map drawing every frame');
   assert.match(ui,/Number\(parts\[3\]\) >= 1/,'translucent dialogs keep the map drawing every frame');
 });

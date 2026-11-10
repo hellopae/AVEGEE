@@ -77,9 +77,18 @@ export function mapViewport(width, height, bw, bh, camera) {
 }
 
 /** Resize only when viewport or DPR changes, never once per animation frame. */
+// Backing-store density of the map canvas: 2 (default, unchanged) or, as an opt-in economy mode for weak GPUs, ?mapdpr=1.5 (or 1) in the page URL.
+// Measured on an Intel UHD 630 at a 1792x958 window: DPR 2 = 6.9 MP per full-screen pass, 1.5 = 3.9 MP.  Nothing changes unless the URL asks for it.
+let mapDprCapValue = 0;
+function mapDprCap() {
+  if (mapDprCapValue) return mapDprCapValue;
+  let v = 2;
+  try { const q = Number(new URLSearchParams(globalThis.location?.search || '').get('mapdpr')); if (q >= 1 && q <= 2) v = q; } catch { /* no location (tests) */ }
+  return (mapDprCapValue = v);
+}
 export function prepareMapCanvas(ctx) {
   const cv = ctx.canvas, view = mapViews.get(cv);
-  const dpr = Math.min(2, globalThis.devicePixelRatio || 1);
+  const dpr = Math.min(mapDprCap(), globalThis.devicePixelRatio || 1);
   const width = view ? Math.max(1, Math.round(view.width * dpr)) : SCENE.w;
   const height = view ? Math.max(1, Math.round(view.height * dpr)) : SCENE.h;
   if (cv.width !== width) cv.width = width;

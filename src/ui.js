@@ -335,17 +335,19 @@ setInterval(() => {
 let saveAt = 0;
 
 /** LOAD-01b: แผนที่ที่อยู่ใต้กล่องเต็มจอ (ต่อสู้ · สอบสวน · ชายแดน) ยังถูกวาดทุกเฟรมทั้งที่มองไม่เห็น —
- *  บนมือถือกินราว 20 ms ต่อเฟรมแบบไม่มีใครได้เห็น · กล่องที่ทึบและคลุมแคนวาสเกือบทั้งใบ (>= 95% ของพื้นที่)
+ *  บนมือถือกินราว 20 ms ต่อเฟรมแบบไม่มีใครได้เห็น · กล่องที่ทึบและคลุมแคนวาสเกือบทั้งใบ (>= 85% ของพื้นที่ — เดิม 95% แต่กล่องต่อสู้ที่หน้าต่าง 1792x958 คลุมแค่ 90%)
  *  จึงวาดแผนที่แค่ ~6 ครั้งต่อวินาที (แถบขอบที่โผล่ใต้ฉากมืดยังขยับอยู่) · กล่องอื่นทุกแบบวาดทุกเฟรมเหมือนเดิม
  *  เช็คความคลุมทุก 250 ms เท่านั้น ไม่อ่าน layout ทุกเฟรม */
-const OCCLUDED_DRAW_MS = 160, OCCLUDE_CHECK_MS = 250;
+// PERF-1110: the cover threshold was 0.95, but a battle box at a 1792x958 window covers 0.90 (a 36 px / 29 px frame of map is left), so the map was redrawn at
+// full cost every frame behind it (battle = 5 fps at DPR 2, 60 fps once the map is skipped).  0.85 keeps the same ~6 fps refresh for the frame strips.
+const OCCLUDED_DRAW_MS = 160, OCCLUDE_CHECK_MS = 250, OCCLUDE_MIN_COVER = 0.85;
 let mapOccluded = false, mapOccludeCheckAt = 0, mapDrawnAt = 0;
 function dlgHidesMap() {
   if (!dlg.open) return false;
   const d = dlg.getBoundingClientRect(), c = cv.getBoundingClientRect();
   if (!d.width || !c.width || !c.height) return false;
   const w = Math.min(d.right, c.right) - Math.max(d.left, c.left), h = Math.min(d.bottom, c.bottom) - Math.max(d.top, c.top);
-  if (w <= 0 || h <= 0 || w * h < c.width * c.height * 0.95) return false;
+  if (w <= 0 || h <= 0 || w * h < c.width * c.height * OCCLUDE_MIN_COVER) return false;
   const bg = getComputedStyle(dlg).backgroundColor, m = /^rgba?\(([^)]*)\)$/.exec(bg);
   if (!m) return false;
   const parts = m[1].split(/[ ,/]+/).filter(Boolean);

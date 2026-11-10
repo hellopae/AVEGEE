@@ -688,7 +688,34 @@ export function drawEmbers(ctx, w, h, t) {
   }
 }
 
+// PERF-1110: the vignette is the same smooth gradient every frame; it is baked once into a small canvas per (w,h) and stretched over the rect
+// (a gradient shader pass over the rect cost ~1.5 ms/frame on an iGPU at DPR 2).  Skipped when the rect is off screen.
+const vignetteBake = new Map();
+function vignetteCanvas(w, h) {
+  const key = w + 'x' + h; let cv = vignetteBake.get(key);
+  if (cv === undefined) {
+    cv = null;
+    if (typeof document !== 'undefined') {
+      const bw = Math.max(2, Math.round(w / 2)), bh = Math.max(2, Math.round(h / 2)); cv = document.createElement('canvas'); cv.width = bw; cv.height = bh;
+      const q = cv.getContext('2d');
+      const g = q?.createRadialGradient?.(bw / 2, bh / 2, bh * 0.34, bw / 2, bh / 2, bh * 1.05);
+      if (g) {
+        g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)');
+        q.fillStyle = g; q.fillRect(0, 0, bw, bh);
+      } else cv = null;   // stub 2d context (tests): keep the direct gradient path
+    }
+    vignetteBake.set(key, cv);
+  }
+  return cv;
+}
 export function drawVignette(ctx, w, h) {
+  const m = ctx.getTransform?.();
+  if (m && !m.b && !m.c && m.a > 0 && m.d > 0 && ctx.canvas) {
+    const x0 = -m.e / m.a, y0 = -m.f / m.d, x1 = x0 + ctx.canvas.width / m.a, y1 = y0 + ctx.canvas.height / m.d;
+    if (x1 <= 0 || y1 <= 0 || x0 >= w || y0 >= h) return;   // rect is entirely off screen: nothing to paint
+  }
+  const bake = vignetteCanvas(w, h);
+  if (bake) { ctx.drawImage(bake, 0, 0, w, h); return; }
   const g = ctx.createRadialGradient(w / 2, h / 2, h * 0.34, w / 2, h / 2, h * 1.05);
   g.addColorStop(0, 'rgba(0,0,0,0)');
   g.addColorStop(1, 'rgba(8,3,6,.52)');

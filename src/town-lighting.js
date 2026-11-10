@@ -98,19 +98,32 @@ function getWorker(){
  if(worker||workerFailed)return worker;
  if(typeof Worker==='undefined'||typeof OffscreenCanvas==='undefined'||typeof createImageBitmap!=='function'||typeof HTMLImageElement==='undefined'){workerFailed=true;return null;}
  try{
-  worker=new Worker(new URL('./terrain-bake-worker.js?v=20261105-z1v5-fx4',import.meta.url),{type:'module'});
+  worker=new Worker(new URL('./terrain-bake-worker.js?v=20261110-perf',import.meta.url),{type:'module'});
   worker.onmessage=e=>{const w=waiting.get(e.data.id);if(!w)return;waiting.delete(e.data.id);if(e.data.ok)w.resolve(e.data);else w.reject(new Error(e.data.error));};
   worker.onerror=()=>{workerFailed=true;const dead=[...waiting.values()];waiting.clear();worker=null;for(const w of dead)w.reject(new Error('terrain worker failed'));};
  }catch{workerFailed=true;worker=null;}
  return worker;
 }
+// PERF-1110: createImageBitmap(<img>) on the main thread cost ~90 ms per tile (1.8 s of a 10 s walk, long tasks up to 123 ms).  A tile that is a plain
+// http(s) image is handed to the worker by URL instead: it fetches (HTTP cache hit, the <img> just loaded it) and decodes there.  If that fails the
+// main-thread bitmap path below runs exactly as before.
+let workerUrlFailed=false;
 async function bakeInWorker(image,rect){
  const w=getWorker();if(!w)return null;
+ const url=typeof image.currentSrc==='string'&&/^https?:/.test(image.currentSrc)&&!workerUrlFailed?image.currentSrc:null;
+ if(url&&image.naturalWidth&&image.naturalHeight){
+  const r=await bakeJob(w,{url,W:image.naturalWidth,H:image.naturalHeight},rect);
+  if(r)return r;
+  workerUrlFailed=true;   // do not retry the by-URL path for every tile when the browser / host refuses it
+ }
  let bitmap;try{bitmap=await createImageBitmap(image);}catch{return null;}
- const id=++nextJob,emit=activeTownSkin().light.emit,W=bitmap.width,H=bitmap.height;
+ return bakeJob(w,{bitmap,W:bitmap.width,H:bitmap.height},rect,[bitmap]);
+}
+async function bakeJob(w,src,rect,transfer=[]){
+ const id=++nextJob,emit=activeTownSkin().light.emit,W=src.W,H=src.H;
  const done=new Promise((resolve,reject)=>waiting.set(id,{resolve,reject}));
- try{w.postMessage({id,bitmap,W,H,rect,field:field.slice(),COLS,ROWS,CELL,world:{w:TOWN_SIZE.w,h:TOWN_SIZE.h},emit,fireOnly:emit.length===1&&emit[0].type==='fire',glowDiv:GLOW_DIV},[bitmap]);}
- catch{waiting.delete(id);bitmap.close?.();return null;}
+ try{w.postMessage({id,...src,rect,field:field.slice(),COLS,ROWS,CELL,world:{w:TOWN_SIZE.w,h:TOWN_SIZE.h},emit,fireOnly:emit.length===1&&emit[0].type==='fire',glowDiv:GLOW_DIV},transfer);}
+ catch{waiting.delete(id);src.bitmap?.close?.();return null;}
  try{const r=await done;return {ground:r.ground,fire:r.fire?{canvas:r.fire,x:0,y:0,w:W,h:H}:null,W,H};}catch{return null;}
 }
 let bakeTurn=Promise.resolve();   // one tile is graded at a time: three parallel bakes each took their own slice of the frame (3 x 4-10 ms)
