@@ -1,0 +1,9 @@
+{
+  "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/src/town-fluid-fx.js",
+  "sha256": "3bd53f358f03028a327d48935d4450ada5ec558cb5e7a1f75d71759ae048c5c7",
+  "changes": [
+    "Replaced four imports with fixed review settings",
+    "Weather enabled, fluid interval 0, artifact dir, world size 3840x2560"
+  ],
+  "scope": "Original fluid renderer in isolated review harness. No game scene, HUD, characters, grading, clouds or runtime integration."
+}
