@@ -85,6 +85,7 @@ import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bi
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
+import { GRAPHICS_MODES, getGraphicsMode, setGraphicsMode, frameDue } from './graphics-setting.js';   // GFX-1110
 import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
@@ -375,6 +376,7 @@ function mapDrawDue(now) {
 function render(c, game, now, ...rest) { if (mapDrawDue(now)) renderMap(c, game, now, ...rest); }
 
 function frame(now) {
+  if (!frameDue(now)) { requestAnimationFrame(frame); return; }   // GFX-1110: Performance graphics draws at most 60 times a second
   const elapsed = Math.max(0, now - last);
   const dt = Math.min(120, elapsed); last = now;
   g.recordPlayTime(elapsed, started && !document.hidden && !userPaused && !g.over);
@@ -6892,6 +6894,15 @@ function openSettings() {
       <input type="checkbox" id="s-weather" ${weatherEnabled() ? 'checked' : ''}>
     </label>
 
+    <!-- GFX-1110 -->
+    <div class="settings-gfx" role="radiogroup" aria-labelledby="s-gfx-label">
+      <span id="s-gfx-label" class="settings-gfx-label" data-t="settings.graphics"></span>
+      <div class="settings-gfx-options">
+        ${GRAPHICS_MODES.map(m => `<button type="button" role="radio" class="settings-gfx-opt" data-gfx="${m}" aria-checked="${getGraphicsMode() === m}" data-t="settings.graphics.${m}"></button>`).join('')}
+      </div>
+    </div>
+    <div class="hint settings-gfx-hint" id="s-gfx-hint" aria-live="polite"></div>
+
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
@@ -6930,6 +6941,15 @@ function openSettings() {
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };
       };
+      // GFX-1110: graphics mode, takes effect on the next frame
+      const paintGfx = () => {
+        const cur = getGraphicsMode();
+        d.querySelectorAll('[data-gfx]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.gfx === cur)));
+        const hint = d.querySelector('#s-gfx-hint'); if (hint) hint.textContent = t(`settings.graphics.${cur}Hint`);
+      };
+      d.querySelectorAll('[data-gfx]').forEach(b => b.onclick = () => { if (setGraphicsMode(b.dataset.gfx)) { sfx('stamp'); paintGfx(); } });
+      paintGfx();
+      d._gfxPaint = paintGfx;
       d.querySelector('#s-weather').onchange=e=>setWeatherEnabled(e.currentTarget.checked);
       d.querySelector('#s-cam').onchange = e => { camera.setEnabled(e.currentTarget.checked); sfx('stamp'); };   // M1: battle / interrogation camera effects
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
@@ -6965,7 +6985,7 @@ function openSettings() {
       }
     }, 'settings-modal');
 }
-onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAssets(d); });
+onLangChange(() => { const d = $('#dlg'); if (d && d.open) { paintSettingsLangAssets(d); d._gfxPaint?.(); } });
 
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
 const titleAudioReady = primeAudio(['bgm-title']); // ให้ path พร้อมก่อนจังหวะแตะ (สำคัญกับ Brave)

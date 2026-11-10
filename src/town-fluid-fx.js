@@ -13,6 +13,7 @@
 import { weatherEnabled } from './map-ambient.js?v=mapfx-k1d';
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
+import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
 
 export const FLUID_TILE_LEVELS = Object.freeze([2.56, 1.28, .64]);   // pre-scaled tile density, px per world unit
 export const FLUID_MAX_SCALE = 2.56;                                  // the composing layer never exceeds this many px per world unit
@@ -87,7 +88,7 @@ function storeOf(dir) {
   let st = stores.get(dir);
   if (!st) {
     st = { dir, status: 'idle', layout: null, plan: [], sheets: new Map(), masks: new Map(), loading: 0, clock: 0, lastRaw: null, frozen: false,
-      drawn: 0, composites: 0, lastDraw: 0, ms: 0, error: null, layers: new Map(), frameNo: 0 };
+      drawn: 0, composites: 0, lastDraw: 0, ms: 0, error: null, layers: new Map(), frameNo: 0, last: new Map() };
     stores.set(dir, st);
   }
   return st;
@@ -290,6 +291,14 @@ function drawPuffs(st, group, geo, vis, sec) {
   clipToMask(g, st, group.puffs[0], [rx, ry, rw, rh]);
   return layer;
 }
+/** The previous composition of a piece, re-aimed at the camera as it is now, while it is younger than `intervalMs` and the zoom has not changed. */
+function reuseLayer(st, id, m, time, intervalMs) {
+  if (!intervalMs) return null;
+  const prev = st.last.get(id), layer = st.layers.get(id);
+  if (!prev || !layer || time < prev.at || time - prev.at >= intervalMs || Math.abs(m.a - prev.a) > 1e-6 || Math.abs(m.d - prev.d) > 1e-6) return null;
+  layer.used = st.frameNo;
+  return { layer, geo: { ...prev.geo, dx0: prev.geo.dx0 + (m.e - prev.e), dy0: prev.geo.dy0 + (m.f - prev.f) } };
+}
 function composite(ctx, st, layer, geo, blend, opacity) {
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -323,8 +332,9 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
   view[2] = Math.min(TOWN_SIZE.w, (cv.width - m.e) / m.a) - view[0]; view[3] = Math.min(TOWN_SIZE.h, (cv.height - m.f) / m.d) - view[1];
   if (!(view[2] > 0 && view[3] > 0)) return;
   const loadView = [view[0] - LOAD_PAD, view[1] - LOAD_PAD, view[2] + 2 * LOAD_PAD, view[3] + 2 * LOAD_PAD];
-  const sec = st.clock / 1000, t0 = performance.now();
+  const sec = st.clock / 1000, t0 = performance.now(), fluidMs = graphicsProfile().fluidIntervalMs;
   st.frameNo++;
+  if (!fluidMs && st.last.size) st.last.clear();
   let drawn = 0;
   for (const item of st.plan) {
     const p = item.piece || item.puffs[0], rect = item.rect;
@@ -332,9 +342,13 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
     const ready = (item.piece ? [p] : item.puffs).every(q => pieceReady(st, q, true));
     const vis = intersect(rect, view);
     if (!ready || !vis) continue;
+    // GFX-1110 (Performance graphics): between two re-compositions the last layer is blitted again at the camera's new position
+    const again = reuseLayer(st, p.id, m, time, fluidMs);
+    if (again) { composite(ctx, st, again.layer, again.geo, p.blend, p.opacity); drawn++; continue; }
     const geo = layerGeometry(m, vis, cv.width, cv.height);
     if (!geo) continue;
     const layer = !item.piece ? drawPuffs(st, item, geo, vis, sec) : p.kind === 'spots' ? drawSpots(st, p, geo, rect, vis, sec) : drawPiece(st, p, geo, rect, sec);
+    if (fluidMs) st.last.set(p.id, { geo, at: time, e: m.e, f: m.f, a: m.a, d: m.d });
     composite(ctx, st, layer, geo, p.blend, p.opacity);
     drawn++;
   }

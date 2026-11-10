@@ -771,6 +771,16 @@ dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
   border:2px solid #e8c67a;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.5)}
 .settings-row-body input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);border:2px solid #e8c67a;cursor:pointer}
+/* GFX-1110: graphics mode, two pill buttons in the existing gold/dark style */
+.settings-gfx{margin:6px 0 0}
+.settings-gfx-label{display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:8px}
+.settings-gfx-options{display:flex;gap:8px}
+.settings-gfx-opt{all:unset;box-sizing:border-box;flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;
+  padding:6px 10px;border:2px solid #6b5230;border-radius:var(--radius);background:#120a0e;color:var(--muted-foreground);font-size:var(--text-sm);font-weight:600}
+.settings-gfx-opt:hover:not(:disabled){border-color:#e8c67a;background:#2a1620}
+.settings-gfx-opt[aria-checked="true"],.settings-gfx-opt[aria-checked="true"]:hover:not(:disabled){border-color:#e8c67a;background:linear-gradient(180deg,#f3ce80,#c8933f);color:#2a1608}
+.settings-gfx-opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.settings-gfx-hint{min-height:1.6em;margin:6px 0 var(--space-3)}
 .settings-lang{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 var(--space-4)}
 .settings-lang label{font-size:var(--text-sm);font-weight:600}
 .lang-toggle{all:unset;cursor:pointer;display:block;min-height:40px}
@@ -2354,8 +2364,8 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <script type="importmap">
 {
   "imports": {
-    "./src/town-fluid-fx.js?v=v5fx": "./src/town-fluid-fx.js?v=20261105-z1v5-fx4",
-    "./src/town-fluid-fx.js": "./src/town-fluid-fx.js?v=20261105-z1v5-fx4",
+    "./src/town-fluid-fx.js?v=v5fx": "./src/town-fluid-fx.js?v=20261110-gfx",
+    "./src/town-fluid-fx.js": "./src/town-fluid-fx.js?v=20261110-gfx",
     "./src/town-ground-sprites.js": "./src/town-ground-sprites.js?v=20261106-fx5",
     "./src/construction-sheets.js": "./src/construction-sheets.js?v=20261105-z1v5-fx4",
     "./src/town-grade.js": "./src/town-grade.js?v=20261105-z1v5-fx4",
@@ -2397,7 +2407,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/yama-animation.js?v=20261015-live-v1": "./src/yama-animation.js?v=20261015-live-v1-a7",
     "./src/town-startup.js": "./src/town-startup.js?v=20261027-m2-startup-ready-food-art-painted-pole",
     "./src/art.js": "./src/art.js?v=20261110-perf-fbui",
-    "./src/i18n.js": "./src/i18n.js?v=20261031-q2-hist-sentence-time",
+    "./src/i18n.js": "./src/i18n.js?v=20261110-gfx",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
     "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
@@ -2414,7 +2424,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/battle-facing.js?v=i1b-westhit-skillatk-j1": "./src/battle-facing.js?v=20261029-art-atk2",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/cyberhell-terrain.js": "./src/cyberhell-terrain.js?v=20261030-z4-town-a",
-    "./src/scene.js": "./src/scene.js?v=20261110-perf-fbui",
+    "./src/scene.js": "./src/scene.js?v=20261110-gfx",
     "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-flames-ground-r2-p5b",
     "./src/town-terrain.js": "./src/town-terrain.js?v=20261105-z1v5-fx4",
     "./src/proximity.js": "./src/proximity.js?v=20261030-e1-v2",
@@ -2436,11 +2446,12 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261105-z1v5-fx4",
     "./src/battle-result.js": "./src/battle-result.js?v=20261028-target-weapon",
     "./src/sfx.js": "./src/sfx.js?v=20261029-clean-404",
-    "./src/ui.js": "./src/ui.js?v=20261110-perf-fbui",
+    "./src/graphics-setting.js": "./src/graphics-setting.js?v=20261110-gfx",
+    "./src/ui.js": "./src/ui.js?v=20261110-gfx",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261106-kocrew-guard-home-slots",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-perf-fbui",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-gfx",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
     "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261110-perf",
@@ -2528,6 +2539,6 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 </script>
 <script type="module" src="src/preload.js?v=20261105-z1v5-fx3-tiles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261110-perf-fbui"></script>
+<script type="module" src="src/ui.js?v=20261110-gfx"></script>
 </body>
 </html>

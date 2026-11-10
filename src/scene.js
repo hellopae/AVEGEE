@@ -16,6 +16,7 @@ import { DAIS_GEOMETRY, daisWorldPoint } from './town-dais-geometry.js';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownFluidFx } from './town-fluid-fx.js?v=v5fx';
+import { mapDprCap } from './graphics-setting.js';   // GFX-1110
 import { addGroundSpriteLayers } from './town-ground-sprites.js';
 import { drawConstruction } from './construction-sheets.js';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
@@ -78,15 +79,8 @@ export function mapViewport(width, height, bw, bh, camera) {
 }
 
 /** Resize only when viewport or DPR changes, never once per animation frame. */
-// Backing-store density of the map canvas: 2 (default, unchanged) or, as an opt-in economy mode for weak GPUs, ?mapdpr=1.5 (or 1) in the page URL.
-// Measured on an Intel UHD 630 at a 1792x958 window: DPR 2 = 6.9 MP per full-screen pass, 1.5 = 3.9 MP.  Nothing changes unless the URL asks for it.
-let mapDprCapValue = 0;
-function mapDprCap() {
-  if (mapDprCapValue) return mapDprCapValue;
-  let v = 2;
-  try { const q = Number(new URLSearchParams(globalThis.location?.search || '').get('mapdpr')); if (q >= 1 && q <= 2) v = q; } catch { /* no location (tests) */ }
-  return (mapDprCapValue = v);
-}
+// Backing-store density of the map canvas comes from the Graphics setting (High = 2, Performance = 1.5); ?mapdpr=1..2 in the URL still wins (see graphics-setting.js).
+// Measured on an Intel UHD 630 at a 1792x958 window: DPR 2 = 6.9 MP per full-screen pass, 1.5 = 3.9 MP.
 export function prepareMapCanvas(ctx) {
   const cv = ctx.canvas, view = mapViews.get(cv);
   const dpr = Math.min(mapDprCap(), globalThis.devicePixelRatio || 1);

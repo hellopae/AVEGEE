@@ -154,6 +154,11 @@ const TH = {
   'settings.weather': 'สภาพอากาศ เงาเมฆ ควัน และผิวน้ำเคลื่อนไหว',
   'settings.camera': 'เอฟเฟกต์กล้อง',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'ซูมเข้า-ออกตัวละคร สั่นจอ และหรี่ฉากหลังตอนโจมตี ปิดได้ถ้าเวียนหัว',
+  'settings.graphics': 'กราฟิก',
+  'settings.graphics.high': 'ความละเอียดสูง',
+  'settings.graphics.highHint': 'ภาพคมที่สุด',
+  'settings.graphics.performance': 'เน้นประสิทธิภาพ',
+  'settings.graphics.performanceHint': 'ลื่นกว่า เครื่องร้อนน้อยกว่า ภาพคมน้อยลงเล็กน้อย',
 
   'hud.heroName': 'ยามา',
   'hud.mute': 'ปิดเสียง',
@@ -803,6 +808,11 @@ const EN = {
   'settings.weather': 'Weather, cloud shadows, smoke and moving water',
   'settings.camera': 'CAMERA EFFECTS',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'Zoom, screen shake and background dimming during attacks. Turn off if it feels dizzy.',
+  'settings.graphics': 'GRAPHICS',
+  'settings.graphics.high': 'High Resolution',
+  'settings.graphics.highHint': 'Sharpest picture.',
+  'settings.graphics.performance': 'Performance',
+  'settings.graphics.performanceHint': 'Smoother and cooler. Picture is slightly less sharp.',
 
   'hud.heroName': 'Yama',
   'hud.mute': 'Mute',
