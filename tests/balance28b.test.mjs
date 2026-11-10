@@ -85,15 +85,15 @@ test('ฐานบอส/อีเวนต์คูณ HP ตามโซน �
     gg.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].map(e => [e.k, 'cleared']));
     const b = gg.startZoneBoss();
     const tuning=ENCOUNTER_BALANCE[`${zone}:boss`]?.[b.balance.partySize] || {hp:1,atk:1};
-    assert.equal(b.foes[0].maxHp, Math.round(scaleFoeHp(zone, BOSS_BALANCE[zone].hp, 'boss') * tuning.hp));
+    assert.equal(b.foes[0].maxHp, Math.round(scaleFoeHp(zone, BOSS_BALANCE[zone].hp, 'boss') * tuning.hp * (tuning.bossHp ?? 1)));   // BATTLE-FX: bossHp/addsHp split
     assert.ok(scaleFoeHp(zone,BOSS_BALANCE[zone].hp,'boss') > 200+n*35, 'base boss scaling precedes team-specific balance');
-    assert.equal(b.foes[1].maxHp, Math.round((48 + n * 8)*tuning.hp), 'BALANCE-2 scales the constructed wave once');
+    assert.equal(b.foes[1].maxHp, Math.round((48 + n * 8)*tuning.hp*(tuning.addsHp ?? 1)), 'BALANCE-2 scales the constructed wave once');
     assert.deepEqual(b.foes[1].atk, scaleFoeAtk(zone,[7+n,12+n],'event').map(v=>Math.max(1,Math.round(v*tuning.atk))), 'zone ATK then BALANCE-2 enemy multiplier');
   }
   const th = createGame();
   th.zoneCases.th = 10; th.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'pending' };
   const thBattle=th.startZoneEvent('thBorderBoss');
-  assert.equal(thBattle.foes[0].maxHp, Math.round(scaleFoeHp('th', BOSS_BALANCE.th.hp, 'boss') * (ENCOUNTER_BALANCE['th:boss']?.[thBattle.balance.partySize]?.hp || 1)));
+  assert.equal(thBattle.foes[0].maxHp, Math.round(scaleFoeHp('th', BOSS_BALANCE.th.hp, 'boss') * (ENCOUNTER_BALANCE['th:boss']?.[thBattle.balance.partySize]?.hp || 1) * (ENCOUNTER_BALANCE['th:boss']?.[thBattle.balance.partySize]?.bossHp || 1)));
   assert.ok(scaleFoeHp('th', 155, 'boss') > 155);
   for (const [name, hp] of Object.entries(BEFORE.boss)) assert.ok(scaleFoeHp('th', hp, 'boss') > hp, name);
 });

@@ -25,7 +25,7 @@ test('every regional boss ultimate hits Yama, both companions and Guard; ordinar
  for(const zone of zones){
   const g=game();g.zone=zone;g.zoneEvents.th={frontierBreach:'cleared'};g.coin=10000;g.hire('boon');g.party.members=['taan','boon'];g.hireGuard();
   g.startBattle({id:99,who:'boss test',deserved:4});const B=g.battle;
-  B.kind='zoneBoss';B.zone=zone;B.foes=[{id:'boss',who:'boss',sp:'zone-boss',boss:true,hp:400,maxHp:1000,atk:[10,10],stun:0,confuse:0}];B.selectedFoeId='boss';
+  B.kind='zoneBoss';B.zone=zone;B.foes=[{id:'boss',who:'boss',sp:'zone-boss',boss:true,hp:400,maxHp:1000,atk:[10,10],stun:0,confuse:0,attacks:1}]/* BATTLE-FX: the next attack is its 2nd = cutscene move */;B.selectedFoeId='boss';
   const actors=g.battleActors();assert.equal(actors.length,4);const before=new Map(actors.map(a=>[a.id,a.morale]));
   g.battleAct('atk');assert.ok(B.ultimate);assert.deepEqual(B.dmg.enemyHits.map(h=>h.id).sort(),actors.map(a=>a.id).sort());
   if(zone==='th')assert.equal(B.ultimate.image,'img/zone-boss-cutscene.jpeg');

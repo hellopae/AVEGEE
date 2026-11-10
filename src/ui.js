@@ -63,11 +63,11 @@ import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_D
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
-import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';
+import { camera, strikeTime } from './battle-camera.js?v=20261110-battlefx';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
-import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual } from './battle-fx-map.js?v=m2';
+import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual, foeRank, FOE_RANK_FX } from './battle-fx-map.js?v=m2';
 import { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';
 setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
@@ -2636,10 +2636,16 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
-  const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
+  const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
+  if (ultimate && g.battle) {   // BATTLE-FX: dark vignette · speed lines · hit flash · shaking picture · big name · charge-and-boom sound
+    cut.classList.add('boss-cut');
+    if (!camera.motion) cut.classList.add('calm');
+    cut.insertAdjacentHTML('beforeend', '<i class="cut-dim"></i><i class="cut-speed"></i><i class="cut-flash"></i>');
+    playUltimate('boss');
+  }
   const img = battleCutscenes.image(src) || (!g.battle ? document.createElement('img') : null);
   if (img) { if (!img.src) img.src = src; img.onerror = () => img.remove(); img.alt = 'ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม'; cut.prepend(img); }
   else { cut.dataset.imageState = 'unavailable'; void battleCutscenes.warm([src]); }
@@ -3666,6 +3672,17 @@ function openBattle(after) {
     return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
   };
   const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
+  /** BATTLE-FX: the struck figure is pushed back a little (away from the attacker) and settles. Web Animations on the independent `translate` property,
+   *  composited on top of the idle breathing; skipped when camera effects are off / reduced motion (same gate as the screen shake). */
+  const recoilStruck = (imgs, rank, afterMs) => {
+    if (!camera.motion) return;
+    const px = FOE_RANK_FX[rank]?.recoil ?? 0, dir = -1;   // our side stands on the left, the enemy on the right: pushed back = to the left
+    for (const img of imgs) {
+      const root = img?.closest('[data-crew-pick]'); if (!root?.animate) continue;
+      try { root.animate([{ translate:'0 0' }, { translate:`${dir * px}px ${px * -.15}px`, offset:.28 }, { translate:'0 0' }],
+        { duration:240 + px * 10, delay:Math.max(0, afterMs), easing:'cubic-bezier(.2,.9,.3,1)', composite:'add' }); } catch (e) { /* cosmetic only */ }
+    }
+  };
   /** one move's effect. phase 'you' = our action (k = command key), 'foe' = their turn. Never throws: on any trouble the old numbers come back. */
   const startMoveFx = async (phaseKind, k, extraDelay = 0, cutMs = 0) => {
     const camHit = cueImpactAtMs;   // read before any await: the cue just started by startActionCue (null = no cue / camera parked)
@@ -3709,7 +3726,9 @@ function openBattle(after) {
           const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
           const fi = foeImg(d.counterFoeId), fk = fi && bossSpriteKey(fi.getAttribute('src') || '', b.zone || g.zone);
           const fc = fk ? poseContactMs(poseDurations(fk)) : 0;   // the foe's own attack-pose contact frame (Codex atlas), if it has one
-          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', ...(dash ? {numberDelay:-120} : {}), delay:dash ? 0 : delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
+          const rank = foeRank(b, d.counterFoeId, !!b.ultimate);   // BATTLE-FX: normal / lord / boss decides how heavy the hit looks
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', opts:{ rank, zone:b.zone || g.zone }, ...(dash ? {numberDelay:-120} : {}), delay:dash ? 0 : delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
+          if (src && targets.length) recoilStruck(hits.filter(h => h.damage > 0).map(h => allyImg(keyOfActor(h.id))), rank, (b.ultimate ? 0 : delay + (fc > 0 ? Math.max(0, fc - 170) : 60)) + (impactIn('foe-attack') || 170));
         }
       }
       if (!plays.length) { stopFxHandled(); return; }
@@ -3810,7 +3829,7 @@ function openBattle(after) {
       const targets = hit.length ? [...new Set(hit)] : ['you'];
       const atkRoot = camera.stageEl()?.querySelector(`[data-foe-id="${attacker}"]`), atkImg = atkRoot?.querySelector('img:not(.fx)');
       const atkKey = atkImg && bossSpriteKey(atkImg.getAttribute('src') || '', b.zone || g.zone);
-      cue('foe-attack', { impactAt:impactLead(atkKey), user:`foe:${attacker}`, targets, action:'foe', power:b.ultimate ? 3 : (b.dmg?.you || b.dmg?.crew || 0) >= (b.youMax || 100) * .2 ? 2 : 1, scope:targets.length > 1 ? 'all' : 'single', cutMs });
+      cue('foe-attack', { impactAt:impactLead(atkKey), user:`foe:${attacker}`, targets, action:'foe', hitStop:FOE_RANK_FX[foeRank(b, attacker, !!b.ultimate)].hitStop, shakeBoost:FOE_RANK_FX[foeRank(b, attacker, !!b.ultimate)].shake * 2, power:b.ultimate ? 3 : (b.dmg?.you || b.dmg?.crew || 0) >= (b.youMax || 100) * .2 ? 2 : 1, scope:targets.length > 1 ? 'all' : 'single', cutMs });
     }
   };
   /** after every paint: park the camera for the state the fight is in (action cues are started by executeCommand / enemy turn) */

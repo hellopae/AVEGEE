@@ -172,7 +172,7 @@ test('town vignette is pinned to the screen: identity transform, covers the whol
 
 test('index.html: every module this round changed carries a new ?v= in the import map', () => {
   const html = read('index.html'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const k of ['scene', 'art', 'workers', 'data', 'town-layout', 'town-cyberhell-layout']) assert.match(map[`./src/${k}.js`], /-(fbui|gfx)$/, k);
+  for (const k of ['scene', 'art', 'workers', 'data', 'town-layout', 'town-cyberhell-layout']) assert.match(map[`./src/${k}.js`], /-(fbui|gfx|battlefx)$/, k);
   assert.match(map['./src/town-map.js?v=l1'], /-fbui$/);
   assert.match(map['./src/town-layout.js?v=k1d'], /-fbui$/);
 });

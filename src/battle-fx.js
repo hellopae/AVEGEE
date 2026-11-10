@@ -3,7 +3,7 @@ import { SKILL_FX } from './combat-skill-assets.js';
 // Performance rules: single canvas, no ctx.filter / shadowBlur, <= MAX_PARTICLES live particles, requestAnimationFrame only while
 // something is playing. Camera: shake/dim/focus go through the adapter below (M1 camera plugs in with setBattleCamera()).
 import { texCell, preloadTex, setTexSuffix, TEX_KEYS } from './battle-fx-tex.js?v=m2';
-import { recipeFor, slashColorOf, RECIPE_IDS, RECIPE_META, powerVisual } from './battle-fx-map.js?v=m2';
+import { recipeFor, slashColorOf, RECIPE_IDS, RECIPE_META, powerVisual, FOE_RANK_FX, ZONE_HIT_HUE } from './battle-fx-map.js?v=m2';
 
 export const MAX_PARTICLES = 300;
 /** quality knobs (tests / low-end tuning): canvas pixel-ratio cap, built-in shake and dim fallbacks */
@@ -516,23 +516,49 @@ R.mirror = X => {
 
 R.foe_claw = (X, tier) => {
   const m = tier === 'l' ? 1.5 : tier === 'm' ? 1.15 : .85;
+  // BATTLE-FX: weight by who is hitting (normal < lord < boss) and a zone colour for flash / sparks / ground rings
+  const P = FOE_RANK_FX[X.opts.rank] || FOE_RANK_FX.normal, hue = ZONE_HIT_HUE[X.opts.zone] || ZONE_HIT_HUE.th, rank = X.opts.rank || 'normal';
+  const sparkTex = `fx-common-sparks-${hue.spark}`, ringTex = `fx-common-ring-${hue.ring}`;
   X.tg.forEach((t, i) => {
     const d = 90 + i * 60;
     spr('fx-foe-claw-triple', { x:t.x, y:t.y, w:t.h * 1.5 * m, h:t.h * 1.5 * m, rot:X.dir > 0 ? .1 : -.1, dur:300, delay:d, sx:[.5, 1.1, 'out'], sy:[.5, 1.1, 'out'], a:kf([[0, 0], [.15, 1], [.65, .9], [1, 0]]) });
     spr('fx-foe-impact-red', { x:t.x, y:t.y, w:t.h * 1.2 * m, h:t.h * 1.2 * m, rot:rnd(-.5, .5), dur:260, delay:d + 80, sx:[.5, 1.1, 'out'], sy:[.5, 1.1, 'out'], a:kf([[0, 0], [.15, 1], [1, 0]]) });
     if (tier !== 's') spr('fx-foe-dark-orb', { x:t.x, y:t.y, w:t.h * 2 * m, h:t.h * 2 * m, dur:420, delay:d + 60, sx:[.3, 1, 'out'], sy:[.3, 1, 'out'], a:kf([[0, 0], [.15, .9], [1, 0]]) });
     at(d + 80, () => sparks('fx-common-sparks-orange', t.x, t.y, tier === 'l' ? 14 : 8, { v:[120, 360] }));
+    // shock rings on the ground under the struck figure: 1 (ordinary) / 2 (lord) / 3 (boss), each a little later and wider
+    for (let r = 0; r < P.rings; r++) spr(ringTex, { x:t.x, y:t.feet - t.h * .04, w:t.h * 2.4, h:t.h * 2.4, sq:.3, dur:420 + r * 90, delay:d + 70 + r * 80, sx:[.15, 1.1 + r * .3, 'out'], sy:[.15, 1.1 + r * .3, 'out'], a:kf([[0, 0], [.1, .95 - r * .15], [1, 0]]) });
+    // extra spark burst in the zone colour (count scales with rank and hit size)
+    at(d + 85, () => sparks(sparkTex, t.x, t.y, Math.round((tier === 'l' ? 10 : tier === 'm' ? 7 : 4) * P.sparks), { v:[160, 460], s:[10, 22] }));
+    if (rank !== 'normal') {
+      spr('fx-club-shockwave', { x:t.x, y:t.feet - t.h * .04, w:t.h * 3.2, h:t.h * 3.2 * .3125, dur:520, delay:d + 80, sx:[.2, 1.5, 'out'], sy:[.2, 1.5, 'out'], a:kf([[0, 0], [.1, 1], [1, 0]]) });
+      spr('fx-club-crack', { x:t.x, y:t.feet - t.h * .04, w:t.h * 2.2, h:t.h * 2.2 * .3125, dur:700, delay:d + 80, sx:[.4, 1, 'out'], a:kf([[0, 0], [.08, 1], [.6, .8], [1, 0]]) });
+      at(d + 80, () => rocks(t.x, t.feet - t.h * .04, P.rocks, t.h, t.h * 4.4));
+    }
+    if (rank === 'boss') spr('fx-common-ray-burst-gold', { x:t.x, y:t.y, w:t.h * 2.8, h:t.h * 2.8, rot:rnd(0, 1), dur:480, delay:d + 80, a:kf([[0, 0], [.1, .85], [1, 0]]), sx:[.3, 1, 'out'], sy:[.3, 1, 'out'] });
   });
-  X.hit = 170; at(170, () => cam.shake(tier === 'l' ? 10 : tier === 'm' ? 6 : 3.5, tier === 'l' ? 420 : 260));
-  if (tier === 'l') { cam.flash('rgb(255,60,70)', .2, 320, 150); cam.dim(.3, 800); }
+  X.hit = 170;
+  at(170, () => cam.shake((tier === 'l' ? 10 : tier === 'm' ? 6 : 3.5) + P.shake * 2, (tier === 'l' ? 420 : 260) + P.shake * 80));
+  // zone-coloured flash: every hit gets a faint one, heavier tiers / ranks a stronger one
+  cam.flash(hue.flash, Math.max(P.flash, tier === 'l' ? .24 : 0), 280, 150);
+  if (tier === 'l' || rank === 'boss') cam.dim(.3, 800);
   return 800;
 };
 R.foe_ult = X => {
   const t = X.tg[0]; if (!t) return 0;
-  cam.flash('rgb(255,70,90)', .4, 520);
+  // BATTLE-FX: the cutscene move lands on EVERYONE it hits — big burst on the first, rings / sparks / cracks on each, zone-coloured flash
+  const hue = ZONE_HIT_HUE[X.opts.zone] || ZONE_HIT_HUE.th, P = FOE_RANK_FX.boss;
+  cam.flash(hue.flash, .5, 520);
+  cam.flash('rgb(255,255,255)', .35, 160, 80);
   spr('fx-foe-dark-orb', { x:t.x, y:t.y, w:X.U * 1.1, h:X.U * 1.1, dur:700, delay:60, sx:[.2, 1, 'out'], sy:[.2, 1, 'out'], a:kf([[0, 0], [.15, 1], [1, 0]]) });
   spr('fx-common-ray-burst-gold', { x:t.x, y:t.y, w:X.U * 1.3, h:X.U * 1.3, dur:700, delay:80, a:kf([[0, 0], [.12, .8], [1, 0]]), sx:[.3, 1, 'out'], sy:[.3, 1, 'out'] });
-  at(80, () => { sparks('fx-common-sparks-orange', t.x, t.y, 24, { v:[200, 560] }); cam.shake(14, 560); }); cam.dim(.5, 1100);
+  X.tg.forEach((u, i) => {
+    const d = 80 + i * 70;
+    spr('fx-foe-claw-triple', { x:u.x, y:u.y, w:u.h * 1.9, h:u.h * 1.9, rot:X.dir > 0 ? .1 : -.1, dur:340, delay:d, sx:[.5, 1.1, 'out'], sy:[.5, 1.1, 'out'], a:kf([[0, 0], [.15, 1], [.65, .9], [1, 0]]) });
+    for (let r = 0; r < 3; r++) spr(`fx-common-ring-${hue.ring}`, { x:u.x, y:u.feet - u.h * .04, w:u.h * 2.6, h:u.h * 2.6, sq:.3, dur:520 + r * 100, delay:d + 40 + r * 90, sx:[.15, 1.3 + r * .35, 'out'], sy:[.15, 1.3 + r * .35, 'out'], a:kf([[0, 0], [.1, 1 - r * .15], [1, 0]]) });
+    spr('fx-club-crack', { x:u.x, y:u.feet - u.h * .04, w:u.h * 2.4, h:u.h * 2.4 * .3125, dur:760, delay:d + 40, sx:[.4, 1, 'out'], a:kf([[0, 0], [.08, 1], [.6, .8], [1, 0]]) });
+    at(d + 40, () => { sparks(`fx-common-sparks-${hue.spark}`, u.x, u.y, i === 0 ? 24 : 12, { v:[200, 560] }); sparks('fx-common-sparks-orange', u.x, u.y, 8, { v:[160, 420] }); rocks(u.x, u.feet - u.h * .04, i === 0 ? P.rocks : 5, u.h, u.h * 4.6); });
+  });
+  at(80, () => cam.shake(14, 560)); cam.dim(.5, 1100);
   return 1100;
 };
 R.burn = X => {
@@ -585,7 +611,8 @@ export function playBattleFx(spec) {
       }
       X.hit = impact;
     }
-    if (spec.numbers !== false) tg.forEach((t, i) => { if (t.dmg > 0) numberAt(t, t.dmg > 900 ? '∞' : t.dmg, spec.side === 'you' ? { c0:'#ffe0d6', c1:'#ff7a62', edge:'#c42a2a', label:t.label, delay:(spec.numberDelay ?? X.hit ?? 200) + 120 + i * 60 } : { label:t.label, delay:(spec.numberDelay ?? X.hit ?? 170) + i * 60, ...(t.label ? { labelColor:'#ffd6ee' } : {}) }); });
+    const numScale = FOE_RANK_FX[X.opts.rank]?.num ?? 1;   // BATTLE-FX: bigger numbers for lords / bosses
+    if (spec.numbers !== false) tg.forEach((t, i) => { if (t.dmg > 0) numberAt(t, t.dmg > 900 ? '∞' : t.dmg, spec.side === 'you' ? { size:Math.min(86, clamp(t.h * .5, 26, 66) * numScale), c0:'#ffe0d6', c1:'#ff7a62', edge:'#c42a2a', label:t.label, delay:(spec.numberDelay ?? X.hit ?? 200) + 120 + i * 60 } : { label:t.label, delay:(spec.numberDelay ?? X.hit ?? 170) + i * 60, ...(t.label ? { labelColor:'#ffd6ee' } : {}) }); });
     return dur;
   };
   if (spec.delay > 0) { at(spec.delay, go); return spec.delay + 1000; }

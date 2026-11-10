@@ -6,6 +6,7 @@ import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSigna
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
 import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
+import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
@@ -31,7 +32,7 @@ import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTrainin
 import { isFrontierDuoBattle } from './nira-combat.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=minigame-review-20261011';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
+import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
@@ -2700,16 +2701,22 @@ const API = {
       kind = pick(pool);
     }
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
+    // BATTLE-FX (10 พ.ย. 2569, คุณเป้) — ปีศาจชายแดนสุ่ม 1–3 ตัวต่อการต่อสู้ (30/45/25 %) · ตัวแรกคือตัวที่ผู้เล่นเดินไปชน ที่เหลือสุ่มจากปีศาจของโซน
+    const frontierCount = rollFrontierFoeCount();
+    const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
+    const kinds = [kind, ...Array.from({ length:frontierCount - 1 }, () => pick(pool.length ? pool : [kind]))];
+    const foeAtk = scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]);
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'),
+      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'), frontierCount,
+      foes:kinds.map((k, i) => ({ id:`foe-${i + 1}`, who:k.nameKey ? t(k.nameKey) : k.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:k.img, hp, maxHp:hp, atk:[...foeAtk], stun:0, confuse:0 })),
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
-      foeAtk:scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]),
+      foeAtk,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null,
-      talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
+      talk:frontierCount > 1 ? `${kind.name}กับพวกอีก ${frontierCount - 1} ตนฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim() : `${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
     };
     prepareBattle(this.battle, hp);
     this.prepareEncounter(); this.onChange();
@@ -3835,7 +3842,7 @@ const API = {
         say(B.talk);
         this.bossPending = this.bossReady();
       } else if (B.kind === 'frontier') {
-        const coin = 32 + B.wave * 10;
+        const coin = Math.round((32 + B.wave * 10) * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1));   // BATTLE-FX: more demons, more reward
         const item = pick(FRONTIER.drops);
         this.coin += coin;
         this.inventory[item] = (this.inventory[item] || 0) + 1;
@@ -3869,7 +3876,7 @@ const API = {
       grantStoryBattleAbilities(this,B);
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : 20;
+      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : B.kind === 'frontier' ? Math.round(20 * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1)) : 20;
       // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
       // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
       if (B.kind !== 'soul') {
@@ -4021,15 +4028,19 @@ const API = {
     }
     else {
       const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
+      const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
       // A group strike must not apply the single-target team-pressure bonus to every ally.
       const groupBase = Math.round(normal / this.teamPressure(B));
       let ultimate = B.kind === 'zoneBoss' && counter.boss
-        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp}, groupBase) : null;
+        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp,bossAct}, groupBase) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.
+      // BATTLE-FX: the new rhythm (2nd, 4th, 6th ... attack) is for the zone-ending bosses only: Thai border boss and the final boss; Asia/West bosses use it through
+      // bossUltimate() above.  Border lords, deva tests, possessed rulers ... keep the old rule (HP under half, 4 turns apart) so their balance does not move.
+      const zoneBossRhythm = B.eventKey === 'thBorderBoss' || (B.eventKey === 'cyberFinal' && B.encounter === 'boss');
       if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
-          counter.hp <= counter.maxHp / 2 &&
-          (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4)) {
+          (zoneBossRhythm ? bossUltimateDue(bossAct)
+            : counter.hp <= counter.maxHp / 2 && (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4))) {
         const z = B.zone || this.zone;
         const folder = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' }[z] || '';
         const tester = B.kind === 'devaTest' || /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
@@ -4051,13 +4062,15 @@ const API = {
         const special = bossScenes[counter.sp]
           || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);
         ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
-          image:special, damage:Math.round(groupBase * 1.7) };
+          image:special, damage:Math.round(groupBase * (zoneBossRhythm ? BOSS_ULTIMATE_RHYTHM.damage : 1.7)) };
       }
       const d = ultimate ? ultimate.damage : normal;
       if (ultimate) {
+        ultimate.by = counter.who;   // the cutscene shows who is attacking
         B.ultimate = ultimate;
         B.ultimateUsed = true;
         B.ultimateLastTurn = B.turn;
+        (B.ultimateActs ||= []).push(bossAct);
       }
       const victims = ultimate
         ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you').map(actor => ({id:actor.id,actor}))]

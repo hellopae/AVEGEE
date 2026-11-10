@@ -20,6 +20,30 @@ export const FOE_TIER_MEDIUM = 14;
 export const FOE_TIER_LARGE = 24;
 export const foeTier = dmg => dmg >= FOE_TIER_LARGE ? 'foe_claw_l' : dmg >= FOE_TIER_MEDIUM ? 'foe_claw_m' : 'foe_claw_s';
 
+/** BATTLE-FX (10 Nov): how hard an enemy hit looks, by who is hitting.  normal = ordinary demons · lord = border lords, possessed leaders, event captains
+ *  (any `boss` foe that is not a zone boss) · boss = the zone boss / final boss.  Damage is never touched here — this only picks the visual weight.
+ *  shake = extra camera shake power (px amplitude = 1 + power) · hitStop = ms the scene freezes at the moment of impact (camera.hitStop, 40..120)
+ *  num = damage-number scale · rings/sparks/rocks = ground shock rings, spark count multiplier, flying rock chips · flash = full-screen colour flash alpha
+ *  recoil = px the struck figure is pushed back and settles again */
+export const FOE_RANKS = Object.freeze(['normal', 'lord', 'boss']);
+export const FOE_RANK_FX = Object.freeze({
+  normal: Object.freeze({ shake: 0,   hitStop: 60, num: 1,    rings: 1, sparks: 1,   rocks: 0,  flash: .1,  recoil: 7 }),
+  lord:   Object.freeze({ shake: .8,  hitStop: 75, num: 1.25, rings: 2, sparks: 1.6, rocks: 6,  flash: .22, recoil: 12 }),
+  boss:   Object.freeze({ shake: 1.6, hitStop: 90, num: 1.5,  rings: 3, sparks: 2.4, rocks: 12, flash: .34, recoil: 18 }),
+});
+export function foeRank(battle, foeId, ultimate = false) {
+  const foe = battle?.foes?.find(f => f.id === foeId);
+  if (!foe?.boss) return ultimate ? 'lord' : 'normal';
+  return battle.kind === 'zoneBoss' || battle.encounter === 'boss' || /^zone-boss/.test(foe.sp || '') ? 'boss' : 'lord';
+}
+/** Hit colour per zone (flash / spark / ground ring texture variants that already exist as separate art keys — nothing is recoloured). */
+export const ZONE_HIT_HUE = Object.freeze({
+  th:        Object.freeze({ flash: 'rgb(255,120,70)',  spark: 'orange', ring: 'gold' }),
+  asia:      Object.freeze({ flash: 'rgb(110,170,255)', spark: 'blue',   ring: 'blue' }),
+  west:      Object.freeze({ flash: 'rgb(200,120,255)', spark: 'violet', ring: 'violet' }),
+  cyberhell: Object.freeze({ flash: 'rgb(90,255,200)',  spark: 'green',  ring: 'green' }),
+});
+
 const CREW_RECIPE = {
   taan: 'club',            // ทัณฑ์/โกคุ ฟาดกระบอง
   guard: 'club_big',       // ยักษ์ทวารบาล ฟาดแรง

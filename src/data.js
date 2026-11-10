@@ -1999,11 +1999,17 @@ export const BOSS_ULTIMATE = {
   west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.jpeg' },
   cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.jpeg' },
 };
+// BATTLE-FX (10 พ.ย. 2569, คุณเป้: "บอสใช้ท่า cutscene ให้บ่อยขึ้น") — จังหวะใหม่นับจาก "ครั้งที่บอสโจมตีจริง" ของบอสตัวนั้น (foe.attacks)
+// เดิม: ใช้ได้เมื่อ HP บอส < 50% และห่างจากครั้งก่อน ≥ 4 ตาของทั้งสนาม (B.turn) → หลายศึกเห็นแค่ 0–1 ครั้ง
+// ใหม่: ครั้งแรกที่การโจมตีครั้งที่ `first` ของบอส แล้วทุก ๆ `every` ครั้ง (2, 4, 6, …) ไม่ผูกกับ HP · ไม่ติดกันสองตาแน่นอน
+// damage = ตัวคูณของดาเมจกลุ่ม (เดิม 1.7 แต่ใช้ 1–2 ครั้ง) — ลดลงเพราะใช้บ่อยขึ้น ปรับจากเทสต์จำลอง scripts/sim-battle-fx.mjs
+export const BOSS_ULTIMATE_RHYTHM = Object.freeze({ first: 2, every: 2, damage: 1.1 });
+export const bossUltimateDue = act => Number.isInteger(act) && act >= BOSS_ULTIMATE_RHYTHM.first
+  && (act - BOSS_ULTIMATE_RHYTHM.first) % BOSS_ULTIMATE_RHYTHM.every === 0;
 export const bossUltimate = (battle, normalDamage) => {
   const move = BOSS_ULTIMATE[battle.zone];
-  if (!move || battle.foeHp >= battle.foeMax / 2) return null;
-  if (battle.ultimateUsed && battle.turn - battle.ultimateLastTurn < 4) return null;
-  return { ...move, damage: Math.round(normalDamage * 1.7) };
+  if (!move || !bossUltimateDue(battle.bossAct)) return null;
+  return { ...move, damage: Math.round(normalDamage * BOSS_ULTIMATE_RHYTHM.damage) };
 };
 
 /** พญายมลงโทษ — ฉากที่ "ไม่มีทางชนะ" ตามที่เจ้าของสั่ง

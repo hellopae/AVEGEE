@@ -48,7 +48,8 @@ export const frontierAnchors = zone => ({ GATE, NIRA:zone === 'cyberhell' ? [0.5
 export const nearFrontierNira = (p, zone = 'th') => { const {NIRA} = frontierAnchors(zone); return Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH; };
 const SPAWN_EVERY = 2600;           // ลองสร้างศัตรูใหม่ทุกเท่านี้ (ms) ถ้ายังไม่เต็มจอ
 const MOVE_SPEED = 0.00015;         // สัดส่วนพื้นที่เดินต่อ ms — ศัตรูเดินจากขอบเข้ามาจุดในสนาม
-export const maxOnScreen = wave => wave >= 4 ? 3 : 2;
+// BATTLE-FX: one demon more on the border map (every fight is now 1-3 demons, so the field should look busier) — still thin enough to walk through
+export const maxOnScreen = wave => wave >= 4 ? 4 : 3;
 
 // เซสชันเดียวต่อโซน — สลับโซนแล้วเริ่มใหม่ (ของเก่าทิ้ง ตรงกับกติกาเดิมที่แต่ละโซนมีชายแดนแยกกัน)
 let session = null;   // { zone, player:{x,y,tx,ty,face}, enemies:[{id,kindIdx,x,y,tx,ty,arrived,level}], nextId }

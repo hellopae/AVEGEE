@@ -1,0 +1,102 @@
+{
+ "game": [
+  {
+   "before": "import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';\nimport {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';\n",
+   "after": "import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';\nimport { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';\nimport {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';\n"
+  },
+  {
+   "before": "import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';\nimport { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\nimport { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';\n",
+   "after": "import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';\nimport { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\nimport { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';\n"
+  },
+  {
+   "before": "    const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน\n    this.fights++;\n",
+   "after": "    const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน\n    // BATTLE-FX (10 พ.ย. 2569, คุณเป้) — ปีศาจชายแดนสุ่ม 1–3 ตัวต่อการต่อสู้ (30/45/25 %) · ตัวแรกคือตัวที่ผู้เล่นเดินไปชน ที่เหลือสุ่มจากปีศาจของโซน\n    const frontierCount = rollFrontierFoeCount();\n    const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);\n    const kinds = [kind, ...Array.from({ length:frontierCount - 1 }, () => pick(pool.length ? pool : [kind]))];\n    const foeAtk = scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]);\n    this.fights++;\n"
+  },
+  {
+   "before": "    this.battle = {\n      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'),\n      frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน\n",
+   "after": "    this.battle = {\n      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'), frontierCount,\n      foes:kinds.map((k, i) => ({ id:`foe-${i + 1}`, who:k.nameKey ? t(k.nameKey) : k.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:k.img, hp, maxHp:hp, atk:[...foeAtk], stun:0, confuse:0 })),\n      frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน\n"
+  },
+  {
+   "before": "      who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,\n      foeAtk:scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]),\n      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,\n",
+   "after": "      who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,\n      foeAtk,\n      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,\n"
+  },
+  {
+   "before": "      turn:1, over:null, log:[], dmg:null,\n      talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),\n    };\n",
+   "after": "      turn:1, over:null, log:[], dmg:null,\n      talk:frontierCount > 1 ? `${kind.name}กับพวกอีก ${frontierCount - 1} ตนฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim() : `${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),\n    };\n"
+  },
+  {
+   "before": "      } else if (B.kind === 'frontier') {\n        const coin = 32 + B.wave * 10;\n        const item = pick(FRONTIER.drops);\n",
+   "after": "      } else if (B.kind === 'frontier') {\n        const coin = Math.round((32 + B.wave * 10) * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1));   // BATTLE-FX: more demons, more reward\n        const item = pick(FRONTIER.drops);\n"
+  },
+  {
+   "before": "      this.hp = clamp(B.youHp, 1, this.hpMax);\n      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : 20;\n      // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที\n",
+   "after": "      this.hp = clamp(B.youHp, 1, this.hpMax);\n      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : B.kind === 'frontier' ? Math.round(20 * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1)) : 20;\n      // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที\n"
+  },
+  {
+   "before": "      const normal = Math.round(foeAtkRoll() * this.teamPressure(B));\n      // A group strike must not apply the single-target team-pressure bonus to every ally.\n",
+   "after": "      const normal = Math.round(foeAtkRoll() * this.teamPressure(B));\n      const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)\n      // A group strike must not apply the single-target team-pressure bonus to every ally.\n"
+  },
+  {
+   "before": "      let ultimate = B.kind === 'zoneBoss' && counter.boss\n        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp}, groupBase) : null;\n      // Story foes use their own cutscene when their stronger counterattack\n",
+   "after": "      let ultimate = B.kind === 'zoneBoss' && counter.boss\n        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp,bossAct}, groupBase) : null;\n      // Story foes use their own cutscene when their stronger counterattack\n"
+  },
+  {
+   "before": "      // starts. Keep the same { name, image, damage } shape as zone bosses.\n      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",
+   "after": "      // starts. Keep the same { name, image, damage } shape as zone bosses.\n      // BATTLE-FX: the new rhythm (2nd, 4th, 6th ... attack) is for the zone-ending bosses only: Thai border boss and the final boss; Asia/West bosses use it through\n      // bossUltimate() above.  Border lords, deva tests, possessed rulers ... keep the old rule (HP under half, 4 turns apart) so their balance does not move.\n      const zoneBossRhythm = B.eventKey === 'thBorderBoss' || (B.eventKey === 'cyberFinal' && B.encounter === 'boss');\n      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
+  },
+  {
+   "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n          counter.hp <= counter.maxHp / 2 &&\n          (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4)) {\n        const z = B.zone || this.zone;\n",
+   "after": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n          (zoneBossRhythm ? bossUltimateDue(bossAct)\n            : counter.hp <= counter.maxHp / 2 && (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4))) {\n        const z = B.zone || this.zone;\n"
+  },
+  {
+   "before": "        ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',\n          image:special, damage:Math.round(groupBase * 1.7) };\n      }\n",
+   "after": "        ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',\n          image:special, damage:Math.round(groupBase * (zoneBossRhythm ? BOSS_ULTIMATE_RHYTHM.damage : 1.7)) };\n      }\n"
+  },
+  {
+   "before": "      if (ultimate) {\n        B.ultimate = ultimate;\n",
+   "after": "      if (ultimate) {\n        ultimate.by = counter.who;   // the cutscene shows who is attacking\n        B.ultimate = ultimate;\n"
+  },
+  {
+   "before": "        B.ultimateLastTurn = B.turn;\n      }\n",
+   "after": "        B.ultimateLastTurn = B.turn;\n        (B.ultimateActs ||= []).push(bossAct);\n      }\n"
+  }
+ ],
+ "data": [
+  {
+   "before": "};\nexport const bossUltimate = (battle, normalDamage) => {\n",
+   "after": "};\n// BATTLE-FX (10 พ.ย. 2569, คุณเป้: \"บอสใช้ท่า cutscene ให้บ่อยขึ้น\") — จังหวะใหม่นับจาก \"ครั้งที่บอสโจมตีจริง\" ของบอสตัวนั้น (foe.attacks)\n// เดิม: ใช้ได้เมื่อ HP บอส < 50% และห่างจากครั้งก่อน ≥ 4 ตาของทั้งสนาม (B.turn) → หลายศึกเห็นแค่ 0–1 ครั้ง\n// ใหม่: ครั้งแรกที่การโจมตีครั้งที่ `first` ของบอส แล้วทุก ๆ `every` ครั้ง (2, 4, 6, …) ไม่ผูกกับ HP · ไม่ติดกันสองตาแน่นอน\n// damage = ตัวคูณของดาเมจกลุ่ม (เดิม 1.7 แต่ใช้ 1–2 ครั้ง) — ลดลงเพราะใช้บ่อยขึ้น ปรับจากเทสต์จำลอง scripts/sim-battle-fx.mjs\nexport const BOSS_ULTIMATE_RHYTHM = Object.freeze({ first: 2, every: 2, damage: 1.1 });\nexport const bossUltimateDue = act => Number.isInteger(act) && act >= BOSS_ULTIMATE_RHYTHM.first\n  && (act - BOSS_ULTIMATE_RHYTHM.first) % BOSS_ULTIMATE_RHYTHM.every === 0;\nexport const bossUltimate = (battle, normalDamage) => {\n"
+  },
+  {
+   "before": "  const move = BOSS_ULTIMATE[battle.zone];\n  if (!move || battle.foeHp >= battle.foeMax / 2) return null;\n  if (battle.ultimateUsed && battle.turn - battle.ultimateLastTurn < 4) return null;\n  return { ...move, damage: Math.round(normalDamage * 1.7) };\n};\n",
+   "after": "  const move = BOSS_ULTIMATE[battle.zone];\n  if (!move || !bossUltimateDue(battle.bossAct)) return null;\n  return { ...move, damage: Math.round(normalDamage * BOSS_ULTIMATE_RHYTHM.damage) };\n};\n"
+  }
+ ],
+ "party-balance": [
+  {
+   "before": "import { ENCOUNTER_BALANCE, encounterBalanceKey } from './encounter-balance.js';\n// C1: caps refer to the whole team, including Yama and the automatic Guard.\n",
+   "after": "import { ENCOUNTER_BALANCE, encounterBalanceKey, frontierSplit } from './encounter-balance.js';\n// C1: caps refer to the whole team, including Yama and the automatic Guard.\n"
+  },
+  {
+   "before": "  const n = Math.max(3, Math.min(7, count));\n  if (battle.kind === 'frontier') return { hp:1, adds:Math.floor((n-3)/2), kind:'frontier' };\n  const breach = battle.kind === 'frontierBreach' || /Breach$/.test(battle.eventKey || '');\n",
+   "after": "  const n = Math.max(3, Math.min(7, count));\n  // BATTLE-FX: a frontier fight rolls its own 1-3 demons (battle.frontierCount, built in startFrontierBattle) so nothing is added by party size; an older saved fight without the field keeps the old rule\n  if (battle.kind === 'frontier') return { hp:1, adds:battle.frontierCount ? 0 : Math.floor((n-3)/2), kind:'frontier' };\n  const breach = battle.kind === 'frontierBreach' || /Breach$/.test(battle.eventKey || '');\n"
+  },
+  {
+   "before": "  const tuning = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)]?.[count];\n  if (tuning) for (const foe of battle.foes) {\n",
+   "after": "  const tuning = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)]?.[count];\n  const split = battle.kind === 'frontier' && battle.frontierCount ? frontierSplit(count, battle.frontierCount) : null;   // share the tuned total out among the rolled demons\n  if (tuning) for (const foe of battle.foes) {\n"
+  },
+  {
+   "before": "    const preparedDamage = foe.maxHp - foe.hp;\n    foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp));\n    foe.hp = Math.max(1, foe.maxHp - preparedDamage);\n",
+   "after": "    const preparedDamage = foe.maxHp - foe.hp;\n    // BATTLE-FX: optional bossHp / addsHp split — a boss that lives long enough to use its cutscene move twice (see BOSS_ULTIMATE_RHYTHM in data.js)\n    // while the attendants die sooner, so the whole fight keeps about the same total HP and length.\n    foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp * (split?.hp ?? 1) * (foe.boss ? tuning.bossHp ?? 1 : tuning.addsHp ?? 1)));\n    foe.hp = Math.max(1, foe.maxHp - preparedDamage);\n"
+  },
+  {
+   "before": "    const baseAtk = foe.atk || (battle.kind === 'zoneBoss' ? [14, 22 + ['th','asia','west','cyberhell'].indexOf(battle.zone) * 3] : battle.foeAtk);\n    if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index])));\n  }\n",
+   "after": "    const baseAtk = foe.atk || (battle.kind === 'zoneBoss' ? [14, 22 + ['th','asia','west','cyberhell'].indexOf(battle.zone) * 3] : battle.foeAtk);\n    if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index] * (split?.atk ?? 1))));\n  }\n"
+  }
+ ],
+ "encounter-balance": [
+  {
+   "before": "}\n",
+   "after": "}\n\n// BATTLE-FX (10 Nov): the boss's cutscene move now fires on its 2nd, 4th, 6th ... attack (BOSS_ULTIMATE_RHYTHM, data.js).  That needs a boss that lives for at\n// least four of its own turns, so these rows lengthen the boss's life and take the same fight length back from its attendants and its attack:\n//   size: [bossHp x, addsHp x, atkMul x]  — multiplied on top of the BALANCE-2 numbers above (missing row = unchanged, the fit was within 0.05 of 1).\n// Fitted by scripts/fit-battle-fx.mjs (seeds 50000+, goal: the previous win rate and the move seen twice in >= 80 % of fights; bossHp capped at 1.8).\n// Cyberhell with 3-5 members is a what-if team (the real final boss is met with 7) so it keeps the milder 1.4.\nexport const BATTLE_FX_BOSS = {\n  'th:boss': { 4: [1.2, 0.5, 0.82] },\n  'asia:boss': { 4: [1.2, 0.5, 0.84], 5: [1.2, 0.5, 0.89] },\n  'west:boss': { 3: [1.8, 0.5, 0.7], 4: [1.6, 0.5, 0.75], 5: [1.6, 0.5, 0.84], 6: [1.4, 0.5, 0.89] },\n  'cyberhell:boss': { 3: [1.4, 0.62, 1.1], 4: [1.4, 0.52, 0.96], 5: [1.4, 0.5, 1.1], 6: [1.4, 0.5, 0.93], 7: [1.4, 0.5, 0.98] },\n};\nfor (const [key, sizes] of Object.entries(BATTLE_FX_BOSS)) for (const [size, [bossHp, addsHp, atkMul]] of Object.entries(sizes)) {\n  const row = ENCOUNTER_BALANCE[key][size];\n  row.bossHp = bossHp; row.addsHp = addsHp;\n  for (const field of ['atk', 'atkLow', 'atkHigh']) if (row[field] != null) row[field] = +(row[field] * atkMul).toFixed(2);\n}\n\n// BATTLE-FX (10 Nov): every border fight (kind 'frontier', all four zones) now has 1-3 demons, rolled when the fight starts.  Boss and story fights keep their own foes.\nexport const FRONTIER_FOE_COUNT = Object.freeze([[1, 0.30], [2, 0.45], [3, 0.25]]);   // [count, probability]; sums to 1\nexport function rollFrontierFoeCount(rand = Math.random) {\n  let r = rand();\n  for (const [count, p] of FRONTIER_FOE_COUNT) { if (r < p) return count; r -= p; }\n  return FRONTIER_FOE_COUNT.at(-1)[0];\n}\n/** reward multiplier by number of demons (coin and EXP of the win) — more demons, more reward, but less than proportionally */\nexport const FRONTIER_REWARD_SCALE = Object.freeze({ 1: 1, 2: 1.25, 3: 1.5 });\n/** The table above was fitted for the old foe count, which grew with the party: 1 + floor((size - 3) / 2).  With a rolled count the same total strength is\n *  shared out: r = old / rolled, HP per demon x r^hpExp, ATK per demon x r^atkExp (hpExp 1 = same total HP; atkExp < 1 = few big demons hit a bit softer\n *  than the old total, many small ones a bit harder, because a swarm loses damage as demons fall).  Fitted by scripts/sim-battle-fx.mjs. */\nexport const FRONTIER_SPLIT = { hpExp: 1, atkExp: 0.5 };   // plain object so scripts/fit-frontier-split.mjs can try values; nothing else writes to it\nexport const legacyFrontierFoes = size => 1 + Math.floor((Math.max(3, Math.min(7, size)) - 3) / 2);\nexport function frontierSplit(size, count) {\n  const r = legacyFrontierFoes(size) / Math.max(1, count);\n  return { hp: r ** FRONTIER_SPLIT.hpExp, atk: r ** FRONTIER_SPLIT.atkExp };\n}\n// The Thai border (party of 3 only) came out ~10 points harder with 1-3 demons than with the old single one: ATK x0.95 brings it back (fit: seeds 50000+, 300 per state).\nexport const BATTLE_FX_FRONTIER_ATK = { 'th:frontier': { 3: 0.95 } };\nfor (const [key, sizes] of Object.entries(BATTLE_FX_FRONTIER_ATK)) for (const [size, m] of Object.entries(sizes)) {\n  const row = ENCOUNTER_BALANCE[key][size];\n  for (const field of ['atk', 'atkLow', 'atkHigh']) if (row[field] != null) row[field] = +(row[field] * m).toFixed(2);\n}\n"
+  }
+ ]
+}

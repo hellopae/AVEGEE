@@ -125,18 +125,25 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const koOnly=JSON.parse(readFileSync(new URL('./fixtures/ko-crew-runtime-changes.json',import.meta.url)));
   // FB-UI (10 Nov): zone-1 tea pavilion drawn mirrored (STATION_FLIP table entry, render orientation only).
   const flipOnly=JSON.parse(readFileSync(new URL('./fixtures/fb-ui-1110-noncombat-changes.json',import.meta.url)));
+  // BATTLE-FX (10 Nov): the zone boss's cutscene move comes every 2nd attack (data.js, game.js), the boss rows of encounter-balance.js get a bossHp/addsHp/ATK correction
+  // (re-fitted to the same win rates, output/coordination/2026-11-10-battle-fx/) and a border fight rolls 1-3 demons.  This IS a deliberate combat change, so the
+  // exact reversible snippets are kept in a fixture and the 32,000-trial evidence above stays untouched; the new numbers live in the battle-fx folder.
+  const fxOnly=JSON.parse(readFileSync(new URL('./fixtures/battle-fx-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);
     }
     assert.equal(createHash('sha256').update(source).digest('hex'),hash,name);
   }
-  // Re-run the original failing small-team scenario with production commands.
+  // Re-run the original failing small-team scenario with production commands.  BATTLE-FX changed the boss's move rhythm on purpose, so the number of wins is no
+  // longer the historical one: it has to stay within 15 percentage points of it (the fitted rows land within about 10), and the run must still be deterministic.
   const scenario={zone:'th',size:3,kind:'boss',moves:true};
   const fresh=Array.from({length:200},(_,i)=>simulate({...scenario,seed:30000+i}));
+  const again=Array.from({length:20},(_,i)=>simulate({...scenario,seed:30000+i}));
   const row=after.rows.find(r=>id(r)===id(scenario));
-  assert.equal(fresh.filter(r=>r.result==='win').length,row.wins);
+  assert.ok(Math.abs(fresh.filter(r=>r.result==='win').length-row.wins)<=30,`wins ${fresh.filter(r=>r.result==='win').length} vs historical ${row.wins}`);
+  assert.deepEqual(again.map(r=>r.result),fresh.slice(0,20).map(r=>r.result));
 });
