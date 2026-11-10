@@ -3179,7 +3179,7 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
   const choiceAt=q.kin?(q.id==='kinGuard'?2:1):q.id==='sqBoon'?1:3;
   // QUEST-REWARDS: sqKan / sqBoon / sqGuard end in a fight at step 3. After a lost fight the choice is already saved (retry = no choice buttons)
   const fightQuest=!q.kin&&questNeedsFight(q.id)&&s.step===3&&!s.fought;
-  const retryFight=fightQuest&&q.id!=='sqBoon'&&[0,1].includes(s.choice);
+  const retryFight=fightQuest&&(s.fightLost||q.id!=='sqBoon'&&[0,1].includes(s.choice));
   const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right)&&!retryFight;
   const lines=questDialogue(g,q);
   const ownerConversation=owner===p.npc&&g.zone===p.zone;
@@ -3231,9 +3231,17 @@ const afterQuestFight=(id,owner)=>(over,done)=>openQuestFightResult(id,done?.ove
 function openQuestFightResult(id,outcome,owner=null){
   const def=QUEST_FIGHTS[id];if(!def)return;
   const s=questState(g,id),lines=fightScene(id,s,outcome);
-  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row"><button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button></div>`,d=>{
+  // PART-A: lost / fled → "สู้อีกครั้ง" (same choice, straight back into the fight) or "พักไว้ก่อน" (back to the map; the quest stays at step 3 and can be fought later from the quest window)
+  const buttons=outcome==='win'?`<button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button>`:`<button type="button" class="gold" data-quest-fight-retry>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.retry)}</button><button type="button" data-quest-fight-rest>${esc(QUEST_FIGHT_SYSTEM_TEXT.rest)}</button>`;
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
     if(outcome==='win')sfx('star');
-    d.querySelector('[data-quest-fight-next]').onclick=()=>openQuests(id,{owner});
+    d.querySelector('[data-quest-fight-next]')?.addEventListener('click',()=>openQuests(id,{owner}));
+    d.querySelector('[data-quest-fight-rest]')?.addEventListener('click',()=>{dlg.close();refresh();});
+    d.querySelector('[data-quest-fight-retry]')?.addEventListener('click',()=>{
+      const retry=createQuestAction(g,id,3);
+      if(retry(null)&&g.battle?.kind==='questFight'){refresh();openBattle(afterQuestFight(id,owner));}
+      else openQuests(id,{owner});
+    });
   },'quest-journal');
 }
 /** old saves that closed quests before the reward table existed: told once, after the fact (the reward was already added when the save loaded) */

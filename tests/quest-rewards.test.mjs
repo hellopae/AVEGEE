@@ -14,7 +14,8 @@ globalThis.Image ??= class {};
 const make = () => { const g = createGame(); g.save = () => true; g.onChange = () => {}; g.gameCompleted = true;
   g.zoneTravel.visited = { th:true, asia:true, west:true, cyberhell:true }; g.zoneTravel.ports = { th:true, asia:true, west:true, cyberhell:true };
   g.merchantJourney = { asia:{ arrived:true }, west:{ arrived:true }, cyberhell:{ arrived:true } }; return g; };
-const meet = (g, q) => { const p = questTarget(g, q); g.zone = p.zone; syncSceneZone(p.zone); Object.assign(g.player, questTarget(g, q)); };
+import {hireFor,hireAll} from './helpers/quest-hire.mjs';
+const meet = (g, q) => { const p = questTarget(g, q); g.zone = p.zone; syncSceneZone(p.zone); hireFor(g, q); Object.assign(g.player, questTarget(g, q)); };
 const reload = g => { const h = make(); assert.ok(h.restore(JSON.parse(JSON.stringify(g.snapshot())))); h.save = () => true; h.onChange = () => {}; return h; };
 function win(g) {
   for (let n = 0; g.battle && !g.battle.over && n < 70; n++) {
@@ -167,10 +168,11 @@ test('privateOpened adds one more debt-collector to the sqKan fight', () => {
 test('the owner joins the team when hired and standing, otherwise stands by; the guard joins on his own', () => {
   for (const id of ['sqKan', 'sqBoon']) { const q = SIDE_QUESTS.find(q => q.id === id), owner = QUEST_FIGHTS[id].owner;
     const full = setup({ id, size:5, level:5, variant:'first' }); assert.equal(full.battle.ownerJoined, true); assert.ok(full.battleActors().some(a => a.k === owner)); assert.equal(full.battle.team[0], owner);
-    const bare = make(); toStep3(bare, q); assert.ok(advanceQuest(bare, id, id === 'sqBoon' ? null : 0)); assert.equal(bare.battle.ownerJoined, false, 'not hired → stands by'); assert.ok(!bare.battleActors().some(a => a.k === owner));
+    // PART-A: the owner is always hired (the quest does not exist otherwise) — only a fallen / recovering owner stands by
+    const bare = make(); toStep3(bare, q); bare.crew.find(c => c.k === owner).recoverUntil = Date.now() + 60000; assert.ok(advanceQuest(bare, id, id === 'sqBoon' ? null : 0)); assert.equal(bare.battle.ownerJoined, false, 'recovering → stands by'); assert.ok(!bare.battleActors().some(a => a.k === owner));
   }
   const gq = setup({ id:'sqGuard', size:5, level:5, variant:'first' }); assert.equal(gq.battle.ownerJoined, true); assert.ok(gq.battleActors().some(a => a.k === 'guard'));
-  const noGuard = make(); toStep3(noGuard, SIDE_QUESTS.find(q => q.id === 'sqGuard')); assert.ok(advanceQuest(noGuard, 'sqGuard', 0)); assert.equal(noGuard.battle.ownerJoined, false);
+  const noGuard = make(); toStep3(noGuard, SIDE_QUESTS.find(q => q.id === 'sqGuard')); noGuard.guard.recoverUntil = Date.now() + 60000; assert.ok(advanceQuest(noGuard, 'sqGuard', 0)); assert.equal(noGuard.battle.ownerJoined, false);
 });
 test('the owner is put in the team even when the saved team did not include them, and the team never exceeds the zone limit', () => {
   const g = setup({ id:'sqKan', size:4, level:5, variant:'first' });   // team: Yama + kan + nira + taan

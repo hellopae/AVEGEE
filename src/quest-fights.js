@@ -10,7 +10,7 @@ const Q = (text) => text;   // marker only: keeps the lines greppable as verbati
 export const QUEST_FIGHTS = Object.freeze({
   sqKan: {
     zone:'asia', owner:'kan', ownerName:'ซาโตริ', title:'เงาเจ้าหนี้', skill:'eyeAwaitingPermission',
-    // เจ้าของภารกิจ (ซาโตริ) เป็นกานต์ของบูรพา · เข้าทีมสู้ได้เมื่อจ้างไว้และยังยืนไหว ไม่งั้นยืนข้างสนาม
+    // เจ้าของภารกิจ (ซาโตริ) เป็นกานต์ของบูรพา · PART-A: ภารกิจขึ้นต่อเมื่อจ้างแล้ว จึงเข้าทีมสู้เสมอ ยกเว้นล้ม/พักฟื้นอยู่ (ยืนข้างสนาม = fallback)
     pre:{
       0:[
         Q('ซาโตริวางพู่กันลงบนกระดาษเปล่า ผู้ต้องหาเงยหน้าขึ้นเป็นครั้งแรกในรอบสิบเอ็ดปี'),
@@ -126,8 +126,8 @@ export const QUEST_FIGHTS = Object.freeze({
 /** ข้อความระบบชั่วคราว (ไม่ใช่บทของ Rae) — Rae ควรเกลา */
 export const QUEST_FIGHT_SYSTEM_TEXT = Object.freeze({
   standby:name => `${name}ไม่ได้อยู่ในทีมสู้ตอนนี้ ยืนอยู่ข้างสนามคอยให้กำลังใจ`,
-  loseNote:'แพ้ไม่เสียความคืบหน้าของภารกิจ กดคุยอีกครั้งเพื่อสู้ใหม่ได้',
-  enter:'เข้าสู้', back:'ไปต่อ', retry:'สู้อีกครั้ง',
+  loseNote:'แพ้ไม่เสียความคืบหน้าของภารกิจ · สู้ใหม่ได้เลย หรือพักไว้ก่อนแล้วกลับมาคุยที่จุดเดิม',
+  enter:'เข้าสู้', back:'ไปต่อ', retry:'สู้อีกครั้ง', rest:'พักไว้ก่อน',
 });
 
 export function fightScene(id, s, kind) {

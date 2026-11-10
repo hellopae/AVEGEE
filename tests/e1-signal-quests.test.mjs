@@ -17,7 +17,8 @@ import {harbourTravel} from './helpers/travel.mjs';
 const reload=g=>{const h=createGame();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);return h;};
 function zone(g,z){g.zone=z;syncSceneZone(z);g.pendingZone=null;g.refreshZoneEvents();}
 function unlock(g){g.zoneTravel.visited={th:true,asia:true,west:true,cyberhell:true};g.zoneEvents.cyberhell={cyberRescue:'cleared',cyberBreach:'cleared'};zone(g,'cyberhell');g.merchantJourney={asia:{arrived:true},west:{arrived:true},cyberhell:{arrived:true}};}
-function meet(g,q){const p=questTarget(g,q);zone(g,p.zone);Object.assign(g.player,questTarget(g,q));}
+import {hireFor,hireAll} from './helpers/quest-hire.mjs';
+function meet(g,q){const p=questTarget(g,q);zone(g,p.zone);hireFor(g,q);Object.assign(g.player,questTarget(g,q));}
 function win(g){
  for(let n=0;g.battle&&!g.battle.over&&n<70;n++){
   if(g.battle.pendingWave){assert.equal(g.advanceZoneEventWave(),true);continue;}
@@ -226,7 +227,7 @@ test('W3 kin choices pay exact rewards through real harbour travel, persist, and
     for(let step=0;step<3;step++){
       const p=questTarget(g,q);
       if(g.zone!==p.zone){assert.equal(harbourTravel(g,p.zone),true);g.pendingZone=null;}
-      Object.assign(g.player,questTarget(g,q));
+      hireFor(g,q);Object.assign(g.player,questTarget(g,q));
       if(step===2){g.coin=1000;g.order=20;g.inventory={};g.exp=0;g.level=1;}
       assert.ok(advanceQuest(g,q.id,choice),q.id);g=reload(g);
     }

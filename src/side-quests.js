@@ -1,6 +1,7 @@
 import {actorStanding} from './actor-recovery.js';
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
 import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, crewName } from './data.js';
+import { rosterId } from './roster.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
 import { isTownZone } from './zone-skin.js';
 import { questBonus, questSkillOf, questNeedsFight } from './quest-rewards.js';
@@ -28,7 +29,7 @@ export function initializeQuests(g,saved={}) {
     step:Math.max(0,Math.min(q.kin?3:5,Math.trunc(s.step)||0)),choice:[0,1].includes(s.choice)?s.choice:null,
     done:!!s.done,caseId:s.caseId||null,verdict:s.verdict?structuredClone(s.verdict):null,
     // QUEST-REWARDS: fought = the end-of-quest fight was won · reward = what the closing paid (null on saves made before the reward table)
-    ...(s.fought?{fought:true}:{}),...(s.reward&&typeof s.reward==='object'?{reward:structuredClone(s.reward)}:{})};}
+    ...(s.fought?{fought:true}:{}),...(s.fightLost&&!s.fought?{fightLost:true}:{}),...(s.reward&&typeof s.reward==='object'?{reward:structuredClone(s.reward)}:{})};}
   g.merchantJourney=structuredClone(saved.merchantJourney||{asia:{elapsed:0,arrived:false}});
   // Existing saves already showed the shop. Do not revoke it from a legacy visit.
   if(!saved.e1Version && saved.zone && g.zoneTravel?.visited?.asia)g.merchantJourney.asia={elapsed:90000,arrived:true};
@@ -91,8 +92,21 @@ export function questDialogue(g,q){
   }
   return lines;
 }
+/** zone of the character the quest currently points at (same rule as questTarget, without the walk lookup) */
+export const questTargetZone=(g,q)=>{const s=questState(g,q.id);return q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);};
+/** PART-A (10 พ.ย. 2569): a quest tied to a character exists only once that character is hired in the zone the quest points at.
+ *  Nira (follows every branch) and the merchant (not hireable) always count as hired; Taan / Nira given at the start of a branch are in `crew` already.
+ *  Other branches are read from the roster (owned actors only), the current branch from `crew` / `guard`. Progress is never deleted — a started quest is hidden until the hire. */
+export function questCharacterHired(g,q){
+  if(!q)return false;const npc=q.npc;
+  if(npc==='nira'||npc==='merchant')return true;
+  const zone=questTargetZone(g,q);
+  if(zone===g.zone)return npc==='guard'?!!g.guard:(g.crew||[]).some(c=>c.k===npc);
+  return !!g.roster?.[rosterId(zone,npc)];
+}
 export function questUnlocked(g,q){
   if(!q)return false;
+  if(!questCharacterHired(g,q))return false;
   if(q.kin)return (g.gameCompleted||g.zoneEvents?.cyberhell?.cyberBreach==='cleared')&&[q.from,q.to].every(z=>g.zoneTravel?.visited?.[z]&&g.zoneTravel?.ports?.[z]);
   return g.gameCompleted||g.zoneEvents?.cyberhell?.[q.requires]==='cleared';
 }
@@ -101,7 +115,7 @@ export function questsPaused(g){
   return !g.gameCompleted && ((phase&&!['locked','completed'].includes(phase))||['pending','active'].includes(g.zoneEvents?.cyberhell?.cyberFinal));
 }
 export function questTarget(g,q){
-  const s=questState(g,q.id),zone=q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);
+  const zone=questTargetZone(g,q);
   const npc=q.npc;
   const actor=npc==='guard'?g.guard:(g.crew||[]).find(c=>c.k===npc);
   const def=CREW.find(c=>c.k===npc);
@@ -189,8 +203,9 @@ export function advanceQuest(g,id,choice=null){
 export function finishQuestFight(g,B){
   const q=QUESTS.find(x=>x.id===B.questId),s=g.sideQuests?.[B.questId];
   if(!q||!s||s.done||s.step!==3)return false;
-  if(B.over!=='win'){g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังอยู่ — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');return false;}
-  s.fought=true;s.step=4;
+  // PART-A: a lost / fled fight is remembered (the quest window then offers "สู้อีกครั้ง" instead of the first-time talk button) — the choice and step stay
+  if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังอยู่ — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');g.save();return false;}
+  s.fought=true;s.step=4;delete s.fightLost;
   const skill=questSkillOf(q.id);
   g.log(`⚔️ ชนะ${QUEST_FIGHTS[q.id]?.title||'ศัตรู'}`,'good');
   if(skill&&unlockQuestSkill(g,skill))g.log(QUEST_FIGHTS[q.id].unlockLog,'good');
