@@ -7,17 +7,15 @@ import {teamReportsHtml} from '../src/interrogation-ui.js';
 globalThis.Image??=class {};
 function game(){const g=createGame();g.save=()=>{};g.onChange=()=>{};g.coin=1000;g.food=0;g.inventory.food=2;return g;}
 function controls(g){const handlers={};let changes=0;bindWorkersPanel({querySelector:s=>({addEventListener:(_,f)=>handlers[s]=f}),querySelectorAll:()=>[]},g,()=>changes++);return {click:s=>handlers[s](),changes:()=>changes};}
-test('office service bindings pay the actual supply and inventory cost once and preserve hire unlock',()=>{
+test('office hires after frontier victory and has no food purchase/distribution bindings',()=>{
  const g=game(),b=controls(g);b.click('[data-hire-worker]');assert.equal(g.workers().length,0);assert.equal(g.coin,1000);
- b.click('[data-worker-buy-food]');assert.equal(g.coin,990);assert.equal(g.food,10);
- b.click('[data-worker-share-food]');assert.equal(g.inventory.food,1);assert.equal(g.food,22);
- (g.zoneEvents.th||={}).frontierBreach='cleared';b.click('[data-hire-worker]');assert.equal(g.workers().length,1);assert.equal(g.coin,810);assert.equal(b.changes(),3);
- g.coin=0;g.inventory.food=0;b.click('[data-worker-buy-food]');b.click('[data-worker-share-food]');b.click('[data-hire-worker]');assert.equal(g.food,22);assert.equal(g.workers().length,1);assert.equal(b.changes(),3);
+ (g.zoneEvents.th||={}).frontierBreach='cleared';b.click('[data-hire-worker]');assert.equal(g.workers().length,1);assert.equal(g.coin,820);assert.equal(b.changes(),1);
+ assert.equal(g.food,0);assert.equal(g.inventory.food,2);
 });
-test('service availability follows funds, inventory and office-only hiring',()=>{
- const g=game();g.coin=0;g.inventory.food=0;const html=workersPanelHtml(g);
- for(const key of ['worker-buy-food','worker-share-food','hire-worker'])assert.match(html,new RegExp('data-'+key+'[^>]*disabled'));
- assert.match(html,/ชนะปีศาจที่บุกจากชายแดนก่อน/);assert.doesNotMatch(workerSuppliesHtml(g),/data-hire-worker/);assert.doesNotMatch(workersPanelHtml(g,{allowHire:false}),/data-hire-worker/);
+test('hire availability follows funds and unlock; all office views omit food actions',()=>{
+ const g=game();g.coin=0;const html=workersPanelHtml(g);assert.match(html,/data-hire-worker[^>]*disabled/);assert.match(html,/ชนะปีศาจที่บุกจากชายแดนก่อน/);
+ for(const panel of [html,workerSuppliesHtml(g),workersPanelHtml(g,{allowHire:false})])assert.doesNotMatch(panel,/data-worker-buy-food|data-worker-share-food|data-feed-worker/);
+ assert.doesNotMatch(workerSuppliesHtml(g),/data-hire-worker/);assert.doesNotMatch(workersPanelHtml(g,{allowHire:false}),/data-hire-worker/);
 });
 test('office hides accounting details without clearing the ledger or the report in other views',()=>{
  const g=game();g.workerState.ledger.income=987;g.workerState.ledger.escortsDone=23;g.teamReports=[{id:1,zone:'th',keeperName:'ทัณฑ์',soulName:'งานเสร็จ',summary:'คุมครบ',benefits:[],seen:false}];

@@ -79,7 +79,8 @@ const workerTalkGroup = (g, w) => {
   if (w.reason === 'รอค่าจ้าง') return 'waitingWage';
   if (w.reason === 'รอเสบียง') return 'waitingFood';
   const k = w.job?.kind;
-  if(k==='food')return 'food';
+  if(k==='food')return 'serve';
+  if(k==='cook')return 'cook';
   if (k === 'gather') return 'gather';
   if (k === 'supervise') return 'supervise';
   if (k === 'build' || k === 'repair') return 'buildRepair';

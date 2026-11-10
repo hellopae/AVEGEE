@@ -478,7 +478,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     }));
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
-    if(worker.teaRest&&worker.teaRest.phase!=='travel')continue;
+    if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
     at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
   }
@@ -1087,7 +1087,7 @@ export function hitActor(g, sx, sy) {
   for (const c of g.crew)
     if (actorStanding(c) && !canteenCookPose(g,c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
   if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
-  for (const w of zoneWorkers(g).filter(w=>!w.teaRest||w.teaRest.phase==='travel')) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
+  for (const w of zoneWorkers(g).filter(w=>!canteenCookPose(g,w)&&(!w.teaRest||w.teaRest.phase==='travel'))) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
   if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;

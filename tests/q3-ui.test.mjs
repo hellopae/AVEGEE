@@ -19,12 +19,12 @@ test('Q3 ultimate sits last in the power list, no ready caption, no native toolt
 });
 
 test('Q3 canteen form lives in the card, not in the full-stage #st-actions layer', () => {
-  const i=ui.indexOf("if(k==='canteen'){\n      // Q3"),j=ui.indexOf('if(Rg)Rg.hidden=true;return;',i);
+  const i=ui.indexOf("if(k==='canteen'){"),j=ui.indexOf('if(Rg)Rg.hidden=true;return;',i);
   const block=ui.slice(i,j);
-  assert.match(block,/canteen-panel/);
+  assert.match(block,/canteenPanelHtml/);
   assert.match(block,/put\(L,/);
   assert.doesNotMatch(block,/put\(A, `<div class="st-pane">/);
-  assert.match(block,/keepCook/,'chosen cook/count survive a redraw');
+  assert.match(block,/bindWorkersPanel/,'worker role and recipient selections are stored in game state');
 });
 
 test('map workers are 90% of Yama (Pae 10 Nov, was 100% in Q3); the crew-hierarchy scale is untouched', () => {

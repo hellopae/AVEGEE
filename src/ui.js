@@ -1,3 +1,4 @@
+import {foodAvailable,canFeedActor} from './canteen.js';
 import {storyPowerHint} from './story-progression.js';
 import {questOwnerButtonHtml,questTrackerHtml,questJournalHtml,createQuestAction} from './quest-panels.js';
 import {mountSceneAtmosphere} from './scene-atmosphere.js';
@@ -18,13 +19,12 @@ import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
-import {canteenState} from './canteen.js';
 import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant,bossPierRetired} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
-import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
+import {workersPanelHtml,workerSupplyBlocked,bindWorkersPanel,canteenPanelHtml} from './worker-ui.js';
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
 import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
@@ -454,8 +454,10 @@ function openTeamManage(selected=''){
     const scroll=dlg.scrollTop;dlg.innerHTML=teamManageHtml(g,c=>crewArt(c,'-profile'),selected);dlg.scrollTop=scroll;
     const worker=id=>g.workers().some(w=>w.id===id);
     const done=ok=>{if(ok){sfx('coin');paint();refresh();}};
-    dlg.querySelectorAll('[data-team-feed]').forEach(b=>b.onclick=()=>done(worker(b.dataset.teamFeed)?g.feedWorker(b.dataset.teamFeed):g.giveCrewItem(b.dataset.food,b.dataset.teamFeed)));
+    dlg.querySelectorAll('[data-team-feed]').forEach(b=>b.onclick=()=>done(g.feedActor(b.dataset.teamFeed)));
+    dlg.querySelectorAll('[data-team-eat]').forEach(b=>b.onclick=()=>{if(g.eatAtCanteen(b.dataset.teamEat)){dlg.close();refresh();}});
     dlg.querySelectorAll('[data-team-rest]').forEach(b=>b.onclick=()=>done(worker(b.dataset.teamRest)?g.restWorkerAtTea(b.dataset.teamRest):g.restActor(b.dataset.teamRest)));
+    dlg.querySelectorAll('[data-team-dismiss]').forEach(b=>b.onclick=()=>done(g.dismissWorker(b.dataset.teamDismiss)));
     dlg.querySelectorAll('[data-team-party]').forEach(b=>b.onclick=()=>done(g.toggleParty(b.dataset.teamParty)));
     dlg.querySelectorAll('[data-team-mode]').forEach(b=>b.onchange=()=>done(g.setWorkerMode(b.dataset.teamMode,b.value)));
   };
@@ -529,10 +531,10 @@ function explainBar(k) {
       ? (g.fed ? ' · <span style="color:var(--success)">อิ่ม ทำงานไว</span>' : ' · <span style="color:var(--destructive)">หิว ทำงานช้า</span>') : ''}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
-    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ที่พ่อค้าหรือโรงอาหาร</div></div>
+    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ที่พ่อค้า หรือให้พ่อครัวซื้อเพิ่มอัตโนมัติเมื่อมีเบี้ยกรรม</div></div>
     <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
-    <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs in Build for ${BAL.foodPrice * 10} coins, or win food packs as random loot from defeated ghosts and foes` : `ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือรับ<b>ห่อเสบียง</b>ที่สุ่มได้เป็นของรางวัลเมื่อปราบเปรตหรือศัตรู`}</div></div>
-    ${workerSuppliesHtml(g)}
+    <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs from the merchant for ${BAL.foodPrice * 10} coins, or win food packs as random loot from defeated ghosts and foes` : `ซื้อจากพ่อค้า (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือรับ<b>ห่อเสบียง</b>ที่สุ่มได้เป็นของรางวัลเมื่อปราบเปรตหรือศัตรู`}</div></div>
+    <p>จัดหน้าที่พ่อครัว/คนเสิร์ฟที่โรงอาหาร และให้ข้าวหรือสั่งไปกินได้ที่จัดทีม</p>
     <div class="row"><button class="gold" data-close>กลับไปทำงาน</button></div>`);
     bindWorkersPanel(dlg,g,()=>explainBar('food'));
     return;
@@ -661,11 +663,7 @@ function drawTab() {
 
   } else {
     b.innerHTML = `
-      <div class="shop"><span class="g">🍙</span>
-        <span class="n"><b>${getLang() === 'en' ? '10 food packs' : 'เสบียง 10 ห่อ'}</b><div>ค่าจ้างยมทูตที่กำลังทำงาน — หมดแล้วยังทำงานได้ แค่ช้าลง</div></span>
-        <button class="sm" id="buyfood" ${g.coin < BAL.foodPrice * 10 ? 'disabled' : ''}>${getLang() === 'en' ? 'Buy' : 'ซื้อ'} ${BAL.foodPrice * 10}</button>
-      </div>
-      `
+      <p>ซื้อเสบียงได้ที่พ่อค้า · หลังสร้างโรงอาหาร พ่อครัวและคนเสิร์ฟดูแลอาหารอัตโนมัติ</p>`
       + (g.stations.some(x => x.def.k === 'tea') ? `
       <div class="shop"><span class="g">🪷</span>
         <span class="n"><b>ดอกบัวบูชา</b><div>วางที่ศาลาน้ำชา — ลดกรรมของท่านเอง ${KARMA_RELIEF.lotusCut}
@@ -681,15 +679,14 @@ function drawTab() {
         const lockedS = !built && g.buildLocked(s.k), recS = !built && g.recommendedBuild() === s.k;
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop${lockedS ? ' build-locked' : ''}${recS ? ' build-recommended' : ''}" ${lockedS ? 'style="opacity:.62"' : ''}><span class="g">${s.glyph}</span>
-          <span class="n"><b>${s.name}</b>${recS ? ` <span class="tag" style="background:#d4a35533;color:var(--gold)">★ ${esc(t('unlock.recommend'))}</span>` : ''}${lockedS ? ` <span class="tag">🔒 ${esc(t('unlock.lockedAt', { n: g.buildUnlockLv(s.k) }))}</span>` : ''}<div>${esc(s.desc)}</div>
+          <span class="n"><b>${s.name}</b>${recS ? ` <span class="tag" style="background:#d4a35533;color:var(--gold)">★ ${esc(t('unlock.recommend'))}</span>` : ''}${lockedS ? ` <span class="tag">🔒 ${esc(buildLockHint(s.k))}</span>` : ''}<div>${esc(s.desc)}</div>
             ${s.use ? `<div style="color:var(--gold)">${esc(s.use)}</div>` : ''}
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || lockedS || g.coin < s.cost || builderBusy ? 'disabled' : ''}
-            ${!built && !lockedS && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : lockedS ? '🔒 ' + t('unlock.lockShort', { n: g.buildUnlockLv(s.k) }) : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
+            ${!built && !lockedS && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : lockedS ? '🔒 ' + buildLockHint(s.k) : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
-    const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
     const bl = $('#buylotus'); if (bl) bl.onclick = () => { g.buy('lotus'); refresh(); };
     b.querySelectorAll('[data-build]').forEach(el =>
       el.onclick = () => { g.build(el.dataset.build); refresh(); });
@@ -1002,12 +999,12 @@ function hungerWidget(c) {
   const empty = h <= 0;
   // โทนสี: หิวหมด (0) = แดง · ต่ำกว่า 40 = สีทองเตือน · เหลือมาก = เขียว
   const tone = empty ? 'karma' : h < 40 ? '' : 'hp';
-  const canFeed = g.food >= BAL.feedFoodCost;
+  const canFeed = canFeedActor(g,c.id);
   return `<div class="hunger-line">
     <span class="bar ${tone}" title="หิว ${h}/100"><i style="width:${h}%"></i></span>
     <small>🍙 หิว ${h}/100${empty ? ` — ทำงานช้าลงอีก ${Math.round((1 - BAL.hungerPenalty) * 100)}%` : ''}</small>
     <button data-feed="${esc(c.k)}" class="sm" ${canFeed ? '' : 'disabled'}
-      title="${canFeed ? `หัก ${BAL.feedFoodCost} ห่อจากเสบียงกลาง (เหลือ ${Math.round(g.food)} ห่อ)` : 'เสบียงกลางหมด — ซื้อเพิ่มที่แท็บก่อสร้าง'}">🍙 ให้ข้าวปั้น</button>
+      title="${canFeed ? `อาหารพร้อมให้ ${Math.floor(foodAvailable(g))} ห่อ` : 'ไม่มีอาหารพร้อมให้ — ดูปุ่มจัดทีมหรือโรงอาหาร'}">🍙 ให้ข้าวปั้น</button>
   </div>`;
 }
 /** bind ปุ่ม data-feed ทั้งหมดในกล่อง — เรียกซ้ำได้ (ปุ่มถูกวาดใหม่ทุก paint()) */
@@ -1547,7 +1544,7 @@ function updateTownHud(now) {
   const action=show ? currentTownAction() : null;
   townActionButton.hidden=!action || action.kind==='interaction' && action.target.kind==='harbour';
   if (action) {
-    const label=action.kind==='build' ? (g.buildLocked(action.target.k) ? `🔒 ${action.target.name} · ${t('unlock.lockedAt',{n:g.buildUnlockLv(action.target.k)})}` : `${g.recommendedBuild()===action.target.k ? '★ ' : ''}${t('town.build')} · ${action.target.name}`)
+    const label=action.kind==='build' ? (g.buildLocked(action.target.k) ? `🔒 ${action.target.name} · ${buildLockHint(action.target.k)}` : `${g.recommendedBuild()===action.target.k ? '★ ' : ''}${t('town.build')} · ${action.target.name}`)
       : action.kind==='frontier' ? t('town.frontier')
       : [action.target.label,STATIONS.find(s=>s.k===action.target.key)?.name].filter(Boolean).join(' · ');
     townActionButton.innerHTML=`<kbd>E</kbd>${esc(label)}`;
@@ -2323,10 +2320,11 @@ function openHelp(initialTab = 'guide') {
       <li><b>กดตัวละครหรือวิญญาณบนฉาก</b> แล้วดูรายละเอียดที่แผง <b>ข้อมูล</b> ด้านขวา —
           <b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
-      <li><b>ยมทูตแต่ละคนหิวได้</b> (แถบ 🍙 แยกจากเสบียงกองกลาง) ดูและป้อนข้าวปั้นได้ 3 ทาง:
-          ที่<b>โต๊ะนิรา</b> · ที่<b>หน้าต่างสถานี</b>ที่เขาประจำอยู่ · หรือกด<b>ตัวเขาบนแผนที่</b>โดยตรง
-          หิวจนหมดแถบ (0) จะ<b>ทำงานช้าลงอีกชั้นหนึ่ง</b> — ป้อนข้าวปั้นหักจากเสบียงกองกลางครั้งละ 1 ห่อ
-          ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ซื้อเพิ่มได้ที่พ่อค้าหรือโรงอาหาร</li>
+      <li><b>ยมทูตแต่ละคนหิวได้</b> — ก่อนมีโรงอาหาร ซื้อเสบียงจากพ่อค้าแล้วให้ผ่านปุ่ม <b>จัดทีม</b>
+          ชนะบอสชายแดนโซน 1 แล้วจึงสร้างโรงอาหารได้ · จ้างคนงานที่นิรา แล้วกำหนด <b>พ่อครัว</b> และ <b>คนเสิร์ฟ</b> ที่โรงอาหาร
+          พ่อครัวใช้เสบียงปั้นข้าวและซื้อเสบียงเพิ่มอัตโนมัติเมื่อใกล้หมด (ต้องมีเบี้ยกรรม) คนเสิร์ฟเดินส่งให้คนที่หิวที่สุดก่อน หรือเลือกส่งเฉพาะคน · หลายคนส่งได้เร็วขึ้น
+          หลังสร้างโรงอาหารแล้ว ปุ่มให้ข้าวใช้คลังพร้อมเสิร์ฟ หรือสั่งเดินไปกินได้จากจัดทีม พร้อมดู HP ความอิ่ม จัดทีมต่อสู้ กำหนดหน้าที่ และสั่งพักศาลาน้ำชา
+          นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · ดำและเพลิงไม่ปรุงอาหารแล้ว</li>
       ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}<li>${clockGuide}</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
@@ -3113,16 +3111,6 @@ function doVerdict(soul, stK, crK, inten) {
 }
 
 // ---------- ศูนย์จัดทีม / ร้านค้า / ผู้ตรวจการ ----------
-function niraItemWidget(c) {
-  const h = Math.round(c.hunger ?? 100);
-  return `<div class="hunger-line"><small>🍙 หิว ${h}/100</small>${['food', 'health'].map(kind => {
-    const keys = Object.keys(ITEMS).filter(k => kind === 'food' ? /^food(Z[234])?$/.test(k) : /^health(Z[234]|Large)?$/.test(k));
-    const count = keys.reduce((n,k) => n + (g.inventory[k] || 0), 0), item = keys.find(k => g.inventory[k] > 0) || kind;
-    const ready = count > 0 && actorStanding(c) && (kind === 'food' ? h < 100 : c.morale < 100);
-    return `<button class="sm" data-nira-item="${item}" data-actor-id="${esc(c.id)}" ${ready ? '' : 'disabled'}>${kind === 'food' ? '🍙 ให้ข้าวปั้น' : '💊 ให้กล่องยา'} · มี ${count}</button>`;
-  }).join('')}</div>`;
-}
-
 /** P4 §3.3 — แผ่นรายละเอียดพลัง · เปิดทับกล่องที่เปิดอยู่ (โต๊ะนิรา/ทีมชายแดน) เป็นชั้นเล็ก ๆ ไม่แทนกล่อง จึงกลับมาที่เดิมเสมอ
  *  ไม่มีกล่องเปิดอยู่ (โปรไฟล์/แท็บ/แผงข้อมูล) → ใช้ modal() ปกติ */
 let afterPowerSheet = null;
@@ -3289,12 +3277,12 @@ function openNiraOffice() {
       const why = final ? g.finalTeamWhy(c) : '';
       const rank = final ? 0 : hireRank(def.k);
       return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><span class="pw-av"><img src="${crewArt(c || def, '-profile')}" alt="">${powerBadgeHtml(def.k, { zone: g.zone, actor: c })}</span>
-          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(c?.cook?'พ่อครัวโรงอาหาร · ทำอาหารให้ทุกคน':def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
+          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
-          ${c ? niraItemWidget(c) + guardRestWidget(c) : ''}</span>
-          ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
-              : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
+          </span>
+          ${c ? '<small>จ้างแล้ว · จัดทีมได้ที่ปุ่มจัดทีม</small>' : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
+
         </article>` };
     });
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาวด้านล่างเดิม
@@ -3303,22 +3291,20 @@ function openNiraOffice() {
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — นับรวมในทีม</small>
         ${hireTag('guard', !!g.guard)}
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small></span>
         ${g.guard
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อทีมปลดช่องที่ 4">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(นับรวมยามาและยักษ์ ${g.partyCap()} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${questOwnerButtonHtml(g,'nira')}${final ? '' : niraGreet}
-      <p class="hint">ทีมรวมสูงสุด ${g.partyCap()} คน (รวมยามาและยักษ์) ${party.length > max ? 'ทีมเดิมเกินช่อง: เก็บรายชื่อไว้ครบ แต่ใช้เฉพาะลำดับแรก กรุณาจัดทีมใหม่ · ' : ''}เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — จ้างบุคลากรและจัดการภารกิจ</h2>${questOwnerButtonHtml(g,'nira')}${final ? '' : niraGreet}
+      <p class="hint">จ้างยมทูตและคนงานที่นี่ · จัดทีมต่อสู้ กำหนดหน้าที่ ให้ข้าว และสั่งพักได้ที่ปุ่มจัดทีม</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     bindOwnerQuestButtons(dlg);
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
-    dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
-    dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
     if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
@@ -5720,23 +5706,9 @@ function openStation(k, emergency = false) {
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
     if(k==='canteen'){
-      // Q3: ฟอร์มสั่งข้าวปั้นอยู่ในการ์ดซ้ายบน (.st-card) แถวเรียงในกรอบ — เดิมวางใน #st-actions (inset:0 + pointer-events:none) ทับการ์ดและกดไม่ได้
-      const state=canteenState(g);
-      const keepCook=L.querySelector('#rice-cook')?.value, keepCount=L.querySelector('#rice-count')?.value;   // วาดซ้ำทุกครั้งที่คิวเปลี่ยน — อย่าให้ค่าที่ผู้เล่นเลือกค้างไว้เด้งกลับ
-      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',entering:'เดินเข้าโรงอาหาร',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
-      put(L, `<h2>🍙 โรงอาหาร</h2>${foodSupplyCard(!inside)}<p>ครัวทำอาหารสำหรับคนงานแจกให้ทีม (แยกจากคลังเสบียง) · เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
-        <div class="canteen-panel"><p class="canteen-status">พร้อมแจก ${state.meals}/6 · ${queue}</p>
-        <div class="canteen-form"><label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
-        <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" inputmode="numeric"></label></div>
-        <div class="canteen-buttons"><button id="rice-order" class="btn-gold" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
-        ${state.orders.map(o=>`<button class="btn-gold" data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}</div><small id="rice-error" role="status"></small></div>`);
-      bindFoodSupply(L,panels,()=>!!R?.inReach());
-      if(keepCook&&[...L.querySelector('#rice-cook').options].some(o=>o.value===keepCook))L.querySelector('#rice-cook').value=keepCook;
-      if(keepCount)L.querySelector('#rice-count').value=keepCount;
-      put(A,'');
-      L.querySelector('#rice-order').onclick=()=>{if(!R?.inReach())return;const ok=g.orderRice(L.querySelector('#rice-cook').value,L.querySelector('#rice-count').value);if(ok)panels();else L.querySelector('#rice-error').textContent='สั่งไม่ได้: ตรวจคนว่าง เบี้ยกรรม จำนวน และพื้นที่เก็บ';};
-      L.querySelectorAll('[data-rice-cancel]').forEach(b=>b.onclick=()=>{if(R?.inReach()){g.cancelRice(b.dataset.riceCancel);panels();}});
-      if(Rg)Rg.hidden=true;return;
+      put(L,`<h2>🍙 โรงอาหาร</h2>${canteenPanelHtml(g,inside)}`);
+      bindWorkersPanel(L,g,()=>{panels();refresh();});
+      put(A,'');if(Rg)Rg.hidden=true;return;
     }
 
     // 29M: ปุ่มซ่อมย้ายไปอยู่บนแผนที่ทุกสถานที่แล้ว (รวมตะราง/ประตูสวรรค์) — ในห้องเหลือแค่ปุ่มเยี่ยมนิรา
@@ -6334,6 +6306,7 @@ function openStation(k, emergency = false) {
   // (close ยิงแบบ async · ใบที่ปิดไปตอน openDlg จะมาถึงหลังกล่องใหม่เปิด แล้วเก็บของใหม่ทิ้ง)
 }
 
+function buildLockHint(k){return k==='canteen'&&g.buildLocked(k)?t('unlock.canteenBoss'):t('unlock.lockedAt',{n:g.buildUnlockLv(k)});}
 function openBuild(def) {
   const worker = g.availableBuilder();
   const zoneBlock = g.zone === 'west' && g.zoneEventStatus('westHypnotized') !== 'cleared' ? t('build.westBlocked')
@@ -6349,10 +6322,10 @@ function openBuild(def) {
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
       · แรง ${def.pow} · ${esc(builderHint)}</div>
     ${zoneBlock ? `<div class="hint" style="color:var(--gold)">${esc(zoneBlock)}</div>` : ''}
-    ${locked ? `<div class="hint build-lock" style="color:var(--gold)">🔒 ${esc(t('unlock.lockedAt', { n: g.buildUnlockLv(def.k) }))} — ${esc(t('unlock.why.' + def.k))}</div>`
+    ${locked ? `<div class="hint build-lock" style="color:var(--gold)">🔒 ${esc(buildLockHint(def.k))} — ${esc(t('unlock.why.' + def.k))}</div>`
       : recommended ? `<div class="hint build-recommend" style="color:var(--gold)">★ ${esc(t('unlock.recommend'))} — ${esc(t('unlock.why.' + def.k))}</div>` : ''}
     <div class="row"><button data-close>ยังไม่สร้าง</button>
-      <button class="gold" id="bd" ${afford ? '' : 'disabled'}>${locked ? esc(t('unlock.lockedAt', { n: g.buildUnlockLv(def.k) })) : `สร้าง ${def.cost} เบี้ยกรรม`}</button></div>`,
+      <button class="gold" id="bd" ${afford ? '' : 'disabled'}>${locked ? esc(buildLockHint(def.k)) : `สร้าง ${def.cost} เบี้ยกรรม`}</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
 }
 

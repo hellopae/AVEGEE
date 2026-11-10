@@ -9,11 +9,11 @@ import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffec
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
-import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
+import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,canteenBuilt} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
-import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
+import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
@@ -665,7 +665,7 @@ const API = {
   },
   /** ปล่อยตัวละครออกจากงานที่ทำอยู่ (สถานี/พาวิญญาณ/ก่อสร้าง) — ใช้ทั้งตอนล้มและตอนไปพักศาลา */
   releaseActorFromWork(actor) {
-    actor.at = null; actor.path = null; actor.escort = null;
+    actor.at = null; actor.eatOrder=null; actor.path = null; actor.escort = null;
     for (const walk of this.afterlifeWalks) if (walk.escort?.k === actor.k) walk.escort = null;
     for (const transit of this.transits) if (transit.crew === actor.k) { transit.crew = null; transit.crewName = ''; }
 
@@ -1137,7 +1137,7 @@ const API = {
     const c = this.crewOf(st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK);
     if (!actorStanding(c) || c.self || c.reader) return { key: 'crewMissing' };
     if (c.escort && !(st.slots.length && st.crewK === c.k && c.at === stKey)) return { key: 'crewEscort' };
-    if (c.buildK || canteenState(this).orders.some(o=>o.cook===c.k)) return { key: 'crewBuilding' };
+    if (c.buildK || c.eatOrder || canteenState(this).orders.some(o=>o.cook===c.k)) return { key: 'crewBuilding' };
     if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
     if(c.k==='plerng'&&this.food<2)return {key:'keeperCost',text:'เพลิงต้องใช้เสบียงเพิ่ม 2 หน่วยก่อนรับหมาย'};
     return null;
@@ -1434,7 +1434,7 @@ const API = {
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
     const reader=walk.destination==='arrival'?this.niraCourtCourier():null;
     if(walk.destination==='arrival'&&!reader)return false;
-    const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !canteenState(this).orders.some(o=>o.cook===c.k) && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
+    const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k) && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
     for (const c of ranked) {
       if(walk.destination==='station'&&c.k!==keeperK)continue;
@@ -2073,9 +2073,10 @@ const API = {
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       if (!actorStanding(c)) continue;
+      if(advanceCanteenDiner(this,c,dt))continue;
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
-      const post = c.cook ? {x:c.cookX,y:c.cookY} : rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
+      const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
         : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===(c.k==='dam'?'ngiw':'krata')):null);
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
@@ -4862,8 +4863,8 @@ const API = {
    *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
   feedCrew(k) {
     const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);
-    if (!actorStanding(c) || this.food < BAL.feedFoodCost) return false;
-    this.food -= BAL.feedFoodCost;
+    if (!actorStanding(c) || this.battle || foodAvailable(this) < BAL.feedFoodCost) return false;
+    if(canteenBuilt(this))canteenState(this).meals-=BAL.feedFoodCost;else this.food -= BAL.feedFoodCost;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
     c.morale = Math.min(100, c.morale + Math.round(100 * ITEMS.food.hpRatio));
     this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
@@ -4978,6 +4979,9 @@ const API = {
     return true;
   },
 
+  feedActor(id) {const ok=feedActor(this,id);if(ok){this.save();this.onChange();}return ok;},
+  eatAtCanteen(id) {const ok=orderCanteenMeal(this,id);if(ok){this.save();this.onChange();}return ok;},
+  setWorkerServeTarget(id,target) {const ok=setWorkerServeTarget(this,id,target);if(ok){this.save();this.onChange();}return ok;},
   orderRice(key,n) {return orderRice(this,key,n);},
   cancelRice(key) {return cancelRice(this,key);},
   workers() { return zoneWorkers(this); },
@@ -4989,7 +4993,7 @@ const API = {
   dismissWorker(id) { const ok=dismissWorker(this,id);if(ok){this.save();this.onChange();}return ok; },
 
   builders() {
-    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !canteenState(this).orders.some(o=>o.cook===c.k));
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
   },
 
   availableBuilder() {
@@ -5061,7 +5065,7 @@ API.snapshot = function (withEntry = true) {
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     playTimeMs:Math.max(0,Number(this.playTimeMs)||0),playTimePartial:!!this.playTimePartial,
-    canteenVersion:1,workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
+    canteenVersion:1,foodSystemVersion:1,workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
     interrogationSupport:structuredClone(this.interrogationSupport),
     teamReports:structuredClone(this.teamReports), nextTeamReportId:this.nextTeamReportId,
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -5198,7 +5202,13 @@ API.restore = function (d) {
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
   this.workerState = normalizeWorkers(d.workerState);this.canteenState=structuredClone(d.canteenState||{});
-  for(const v of Object.values(this.canteenState)){v.meals=Math.max(0,Math.min(6,Number(v.meals)||0));v.orders=(v.orders||[]).filter(o=>['dam','plerng'].includes(o.cook)&&Number.isInteger(o.remaining)&&o.remaining>0&&o.remaining<=6);}
+  let foodRefund=0;
+  for(const v of Object.values(this.canteenState)){
+    v.meals=Math.max(0,Number(v.meals)||0);v.served=Math.max(0,Number(v.served)||0);
+    if(!d.foodSystemVersion)for(const o of v.orders||[])if(['dam','plerng'].includes(o.cook)&&Number.isInteger(o.remaining)&&o.remaining>0&&o.remaining<=6)foodRefund+=o.remaining*2;
+    v.orders=[];
+  }
+  for(const c of Object.values(this.roster)){c.cook=false;delete c.cookX;delete c.cookY;}
   // Legacy kitchens were implicit in every visited branch once workers unlocked.
   if(!d.canteenVersion&&(d.zoneEvents?.th?.frontierBreach==='cleared'||d.bossCleared?.th||this.workerState.workers.length)){
     for(const list of [d.stations,...Object.values(d.zoneSave||{}).map(z=>z.stations)])if(list&&!list.some(s=>s.k==='canteen'))list.push({k:'canteen',build:0,slots:[]});
@@ -5243,6 +5253,7 @@ API.restore = function (d) {
   for (const k of ['coin', 'order', 'karma', 'scoreSum']) {
     this[k] = Number.isFinite(d[k]) ? d[k] : k === 'coin' ? BAL.startCoin : k === 'order' ? 72 : 0;
   }
+  this.coin+=foodRefund;
   this.courtClosed = !!d.courtClosed;
   this.courtArrivals=(d.courtArrivals||[]).filter(a=>a&&Number.isFinite(a.soulId))
     .map(a=>({...a,zone:a.zone||d.zone||'th',phase:['queued','ferry','dock','escort'].includes(a.phase)?a.phase:'dock',elapsed:Math.max(0,a.elapsed||0),duration:Math.max(1,a.duration||3600)}));

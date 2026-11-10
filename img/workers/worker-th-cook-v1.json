@@ -1,0 +1,8 @@
+{
+  "enabled": false,
+  "image": "worker-th-cook-v1.webp",
+  "frames": 4,
+  "frameMs": 160,
+  "layout": "horizontal strip, transparent background, feet at bottom centre",
+  "fallback": "worker sheet build row"
+}

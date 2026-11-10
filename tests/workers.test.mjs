@@ -6,6 +6,7 @@ import {createGame} from '../src/game.js';
 import {STATIONS,SPOTS} from '../src/data.js';
 import {canWalk,nearestWalk,resetWalk,setBlocks,setNpcDiscs} from '../src/walk.js?v=k1d';
 import {WORKER_RULES,normalizeWorkers,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,workerDiscs,workerSheet,workerFrameRect} from '../src/workers.js';
+import {teamManageHtml} from '../src/team-hud.js';
 import {workersPanelHtml} from '../src/worker-ui.js';
 globalThis.Image??=class {};
 function game() {
@@ -127,10 +128,10 @@ test('workers and ledger survive normal game save/restore; old saves initialize 
   assert.equal(invalid.workers.length,1);assert.equal(invalid.workers[0].stamina,0);assert.equal(invalid.nextId,10);
 });
 
-test('worker collision and Nira management controls expose real hire, task, rest and dismissal actions',()=>{
+test('worker collision and split Nira/team controls expose real hire, task, rest and dismissal actions',()=>{
   const g=game(),w=g.hireWorker();assert.deepEqual(workerDiscs(g),[[w.x,w.y]]);
   w.moving=true;assert.deepEqual(workerDiscs(g),[]);
-  const html=workersPanelHtml(g);assert.match(html,/data-hire-worker/);assert.match(html,/data-worker-mode="worker:1"/);assert.match(html,/data-dismiss-worker="worker:1"/);
+  const html=workersPanelHtml(g);assert.match(html,/data-hire-worker/);const team=teamManageHtml(g,()=>'');assert.match(team,/data-team-mode="worker:1"/);assert.match(team,/data-team-dismiss="worker:1"/);
   for(const zone of ['th','asia','west','cyberhell'])assert.equal(workerSheet(zone),`img/workers/worker-${zone}-sheet-v1.webp`);
 });
 

@@ -165,7 +165,8 @@ test('G4 tea rest: Guard keeps working through the same method (restGuard alias)
   const g = game(); g.hireGuard(); tea(g); g.guard.morale = 20;
   assert.ok(g.restGuard()); assert.equal(g.guard.teaRest.phase, 'travel');
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /niraItemWidget\(c\) \+ guardRestWidget\(c\)/, 'rest widget on every reaper card');
+  const team=readFileSync(new URL('../src/team-hud.js',import.meta.url),'utf8');
+  assert.match(team,/data-team-rest/, 'rest control on every team card');
   assert.match(ui, /dlg\.querySelectorAll\('\[data-guard-status\]'\)/, 'live refresh for all cards');
   const scene = readFileSync(new URL('../src/scene.js', import.meta.url), 'utf8');
   assert.match(scene, /c\.teaRest\?\.phase !== 'travel'/, 'walking reaper is drawn on the map');

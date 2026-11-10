@@ -45,10 +45,10 @@ test('J3 guard travels on map, rests exactly 120 s across saves, resumes origina
  copy.startBattle({id:101,who:'after',deserved:4,resist:true});assert.equal(copy.enemyGuard(),copy.guard);
  const offline=reload(g);offline.updateActorRecovery(now+300000);assert.equal(offline.guard.morale,100);assert.equal(offline.guard.teaRest,null);
 });
-test('J3 UI exposes per actor bag-stock controls and current zone guard, without old bag or Nira bulk controls',()=>{
+test('J3 UI moves individual food/rest controls to team management and retains current-zone guard status',()=>{
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
  assert.doesNotMatch(ui,/data-bag-target|data-gift-nira|ส่งข้าวปั้นให้นิราแจกทีม/);
- assert.match(ui,/niraItemWidget\(c\) \+ guardRestWidget\(c\)/);assert.match(ui,/niraItemWidget\(g\.guard\)/);
- assert.match(ui,/g\.giveCrewItem\(b\.dataset\.niraItem, b\.dataset\.actorId\)/);
+ const team=readFileSync(new URL('../src/team-hud.js',import.meta.url),'utf8');assert.match(team,/data-team-feed/);assert.match(team,/data-team-rest/);assert.doesNotMatch(ui,/niraItemWidget/);
+ assert.match(ui,/g\.feedActor\(b\.dataset\.teamFeed\)/);
  assert.match(ui,/rest\.until-Date\.now\(\)/);assert.match(ui,/พักฟื้น — ไม่ร่วมต่อสู้/);
 });

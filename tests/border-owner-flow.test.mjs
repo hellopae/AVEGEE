@@ -26,9 +26,8 @@ test('enemy patrols travel smoothly along the road without snapping back to an a
  }
  assert.ok(maxTravel>.015,'patrols actually traverse a visible stretch of road');
 });
-test('worker office explains empty supplies and offers actual paid or inventory refill paths',()=>{
- const g=game();g.food=0;g.inventory.food=1;const w=g.hireWorker();g.setWorkerMode(w.id,'escort');
- const html=workersPanelHtml(g);assert.match(html,/เสบียงกลางหมด/);assert.match(html,/data-worker-buy-food/);assert.match(html,/data-worker-share-food/);assert.match(html,/รอเสบียง/);
- const coin=g.coin;assert.equal(g.buy('food',1),true);assert.equal(g.food,10);assert.equal(g.coin,coin-10);assert.equal(g.giveOnigiriNira(),true);assert.equal(g.food,22);assert.equal(g.inventory.food,undefined);
- assert.doesNotMatch(workersPanelHtml(g),/เสบียงกลางหมด/);assert.match(workersPanelHtml(g),/รอวิญญาณหรืองานสร้าง/);
+test('worker office directs empty supplies to merchant/team controls and exposes no food actions',()=>{
+ const g=game();g.food=0;g.inventory.food=1;g.hireWorker();
+ const html=workersPanelHtml(g);assert.match(html,/พ่อค้า/);assert.match(html,/จัดทีม/);assert.doesNotMatch(html,/data-worker-buy-food|data-worker-share-food|data-feed-worker/);
+ const coin=g.coin;assert.equal(g.buy('food',1),true);assert.equal(g.food,10);assert.equal(g.coin,coin-10);assert.equal(g.inventory.food,1);
 });
