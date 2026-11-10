@@ -1,0 +1,290 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 templates, normalized correlation +/-12 map px on assembled output; separate from affine inlier residuals; c2 q22 retry received three landmark coordinates as feedback.",
+  "limitation": "Local patch correspondence does not certify every semantic contour; uncertain probes retained. Removed and formerly occluded structures cannot be proven against source.",
+  "totalProbes": 17,
+  "reliableProbes": 14,
+  "maxReliableDisplacementPx1x": 2.0,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "redrawFeedbackLandmarks": [
+    "stair-top-left",
+    "stair-top-right",
+    "plaza-front-edge"
+  ],
+  "probes": [
+    {
+      "id": "rock-summit",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        466,
+        44
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8285983204841614,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "rock-east-tip",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        576,
+        110
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8152245283126831,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-peak-west",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        241,
+        211
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8481358885765076,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fork",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        96,
+        379
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9406173825263977,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        120,
+        465
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.9435784220695496,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-base",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        193,
+        581
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9145026206970215,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-west",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        82,
+        805
+      ],
+      "displacementPx1x": [
+        -1,
+        2
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.7792004346847534,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-east",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        316,
+        852
+      ],
+      "displacementPx1x": [
+        -2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.33372676372528076,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        390,
+        869
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7671617269515991,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        534,
+        906
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8782774806022644,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-mid-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        529,
+        777
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9341596961021423,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-mid-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        660,
+        817
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9352772831916809,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        709,
+        626
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9564398527145386,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        814,
+        663
+      ],
+      "displacementPx1x": [
+        0,
+        2
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.8964781761169434,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-edge",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        884,
+        649
+      ],
+      "displacementPx1x": [
+        0,
+        2
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.8477362394332886,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-east-edge",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        941,
+        702
+      ],
+      "displacementPx1x": [
+        2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.669249951839447,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "cliff-lower-west",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        386,
+        948
+      ],
+      "displacementPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.6784830093383789,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

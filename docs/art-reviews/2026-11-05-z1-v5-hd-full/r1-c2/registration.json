@@ -1,0 +1,447 @@
+{
+  "chunk": "r1-c2",
+  "outputScale": 2,
+  "neighborChunkSeamsApplied": false,
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMasterPx1x": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        960,
+        0,
+        640,
+        576
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        0,
+        640,
+        576
+      ],
+      "removalTargets": [
+        {
+          "id": "lump-00",
+          "kind": "embedded white fog lump",
+          "bboxInputPx": [
+            559,
+            440,
+            140,
+            71
+          ]
+        }
+      ],
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "affine": [
+        [
+          1.0024967062662429,
+          -0.00022164520352809506,
+          -0.6041479077736667
+        ],
+        [
+          0.00022164520352809506,
+          1.0024967062662429,
+          -0.5248575733369889
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.48495683447497767,
+          -0.0001073739589841739,
+          -0.6041479077736667
+        ],
+        [
+          0.00010722065779136874,
+          0.4856502126235121,
+          -0.5248575733369889
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.48495683447497767,
+          -0.0001073739589841739,
+          959.3958520922263
+        ],
+        [
+          0.00010722065779136874,
+          0.4856502126235121,
+          -0.5248575733369889
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        2.0671875,
+        2.064236111111111
+      ],
+      "siftMatches": 464,
+      "siftInliers": 379,
+      "inlierResidualPx1x": {
+        "median": 0.7487269043922424,
+        "p95": 1.6520854234695435,
+        "max": 2.6856529712677
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 1.0,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreMasterPx1x": [
+        1536,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        1472,
+        0,
+        640,
+        576
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "removalTargets": [
+        {
+          "id": "city-tree-01",
+          "kind": "green-tree",
+          "bboxInputPx": [
+            574,
+            562,
+            132,
+            230
+          ]
+        },
+        {
+          "id": "lump-00",
+          "kind": "embedded white fog lump",
+          "bboxInputPx": [
+            47,
+            440,
+            140,
+            71
+          ]
+        }
+      ],
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "affine": [
+        [
+          0.999366905227865,
+          0.00011150697367624994,
+          0.23069914906463213
+        ],
+        [
+          -0.00011150697367624994,
+          0.999366905227865,
+          -0.043878827064905174
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.48344279617976843,
+          5.401851710472663e-05,
+          0.23069914906463213
+        ],
+        [
+          -5.394139316160239e-05,
+          0.4841340095973509,
+          -0.043878827064905174
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.48344279617976843,
+          5.401851710472663e-05,
+          1472.2306991490645
+        ],
+        [
+          -5.394139316160239e-05,
+          0.4841340095973509,
+          -0.043878827064905174
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        2.0671875,
+        2.064236111111111
+      ],
+      "siftMatches": 713,
+      "siftInliers": 672,
+      "inlierResidualPx1x": {
+        "median": 0.47730857133865356,
+        "p95": 1.4948620796203613,
+        "max": 2.8117806911468506
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9984856499565973,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q21",
+      "coreMasterPx1x": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        960,
+        448,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "lava-upper-back",
+          "kind": "bridge-rail",
+          "bboxInputPx": [
+            -32,
+            271,
+            452,
+            101
+          ]
+        },
+        {
+          "id": "lava-upper-front",
+          "kind": "bridge-rail",
+          "bboxInputPx": [
+            -42,
+            348,
+            461,
+            129
+          ]
+        },
+        {
+          "id": "lump-00",
+          "kind": "embedded white fog lump",
+          "bboxInputPx": [
+            559,
+            -8,
+            140,
+            71
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.0005356853025935,
+          -0.0006203776728849037,
+          0.06350204648086807
+        ],
+        [
+          0.0006203776728849037,
+          1.0005356853025935,
+          0.7531298930592893
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5106402221640031,
+          -0.0003166201839284995,
+          0.06350204648086807
+        ],
+        [
+          0.0003166201839284995,
+          0.5106402221640031,
+          0.7531298930592893
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5106402221640031,
+          -0.0003166201839284995,
+          960.0635020464808
+        ],
+        [
+          0.0003166201839284995,
+          0.5106402221640031,
+          448.7531298930593
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 857,
+      "siftInliers": 796,
+      "inlierResidualPx1x": {
+        "median": 0.6032956838607788,
+        "p95": 1.7515435218811035,
+        "max": 2.9905319213867188
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9984423828125,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q22",
+      "coreMasterPx1x": [
+        1536,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        1472,
+        448,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "city-tree-00",
+          "kind": "green-tree",
+          "bboxInputPx": [
+            479,
+            225,
+            129,
+            181
+          ]
+        },
+        {
+          "id": "city-tree-01",
+          "kind": "green-tree",
+          "bboxInputPx": [
+            574,
+            114,
+            132,
+            230
+          ]
+        },
+        {
+          "id": "pilot-red-tree-00",
+          "kind": "tree",
+          "bboxInputPx": [
+            193,
+            412,
+            132,
+            181
+          ]
+        },
+        {
+          "id": "lump-00",
+          "kind": "embedded white fog lump",
+          "bboxInputPx": [
+            47,
+            -8,
+            140,
+            71
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.0149018343938732,
+          -0.005311127331090362,
+          4.129666164901604
+        ],
+        [
+          0.005311127331090362,
+          1.0149018343938732,
+          -1.2793006888162437
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5179722280798076,
+          -0.0027106231992805674,
+          4.129666164901604
+        ],
+        [
+          0.0027106231992805674,
+          0.5179722280798076,
+          -1.2793006888162437
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5179722280798076,
+          -0.0027106231992805674,
+          1476.1296661649017
+        ],
+        [
+          0.0027106231992805674,
+          0.5179722280798076,
+          446.72069931118375
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 757,
+      "siftInliers": 439,
+      "inlierResidualPx1x": {
+        "median": 0.908435583114624,
+        "p95": 1.9574036598205566,
+        "max": 2.9257705211639404
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9952081298828125,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    }
+  ]
+}

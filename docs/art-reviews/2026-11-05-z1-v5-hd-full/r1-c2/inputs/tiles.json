@@ -1,0 +1,218 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      1024,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      960,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "lump-00",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          559,
+          440,
+          140,
+          71
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      1536,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1472,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          574,
+          562,
+          132,
+          230
+        ]
+      },
+      {
+        "id": "lump-00",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          47,
+          440,
+          140,
+          71
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      1024,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      960,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "lava-upper-back",
+        "kind": "bridge-rail",
+        "bboxInputPx": [
+          -32,
+          271,
+          452,
+          101
+        ]
+      },
+      {
+        "id": "lava-upper-front",
+        "kind": "bridge-rail",
+        "bboxInputPx": [
+          -42,
+          348,
+          461,
+          129
+        ]
+      },
+      {
+        "id": "lump-00",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          559,
+          -8,
+          140,
+          71
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      1536,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1472,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "city-tree-00",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          479,
+          225,
+          129,
+          181
+        ]
+      },
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          574,
+          114,
+          132,
+          230
+        ]
+      },
+      {
+        "id": "pilot-red-tree-00",
+        "kind": "tree",
+        "bboxInputPx": [
+          193,
+          412,
+          132,
+          181
+        ]
+      },
+      {
+        "id": "lump-00",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          47,
+          -8,
+          140,
+          71
+        ]
+      }
+    ]
+  }
+]

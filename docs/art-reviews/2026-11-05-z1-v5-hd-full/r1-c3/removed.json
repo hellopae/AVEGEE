@@ -1,0 +1,426 @@
+{
+  "objects": [
+    {
+      "id": "city-tree-00",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1524.0,
+        525.547,
+        100.8,
+        141.586
+      ],
+      "footWorld": [
+        1574.4,
+        655.805
+      ],
+      "chunk": [
+        "r1-c2",
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        1950.640625,
+        672.741218359375,
+        129.01875,
+        181.24114140625002
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-01",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1598.4,
+        439.155,
+        103.2,
+        179.982
+      ],
+      "footWorld": [
+        1650.0,
+        604.738
+      ],
+      "chunk": [
+        "r1-c2",
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2045.8687500000003,
+        562.152708984375,
+        132.09062500000002,
+        230.39102109375
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-02",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1845.6,
+        328.767,
+        103.2,
+        143.985
+      ],
+      "footWorld": [
+        1897.2,
+        461.233
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2362.271875,
+        420.84744492187497,
+        132.09062500000002,
+        184.312048828125
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-03",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1872.0,
+        467.952,
+        103.2,
+        143.985
+      ],
+      "footWorld": [
+        1923.6,
+        600.419
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2396.0625,
+        599.0151187499999,
+        132.09062500000002,
+        184.312048828125
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-04",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1968.0,
+        520.747,
+        115.2,
+        170.383
+      ],
+      "footWorld": [
+        2025.6,
+        677.499
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2518.9375,
+        666.5968433593749,
+        147.45000000000002,
+        218.103551171875
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-05",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2083.2,
+        499.149,
+        115.2,
+        175.182
+      ],
+      "footWorld": [
+        2140.8,
+        660.317
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2666.3875,
+        638.949716015625,
+        147.45000000000002,
+        224.24664609374997
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-06",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2112.0,
+        619.137,
+        115.2,
+        151.185
+      ],
+      "footWorld": [
+        2169.6,
+        758.227
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2703.25,
+        792.5437300781249,
+        147.45000000000002,
+        193.528611328125
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-07",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2258.4,
+        611.938,
+        96.0,
+        160.784
+      ],
+      "footWorld": [
+        2306.4,
+        759.859
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2890.634375,
+        783.32844765625,
+        122.875,
+        205.81608125
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-tree-08",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2366.4,
+        695.929,
+        103.2,
+        160.784
+      ],
+      "footWorld": [
+        2418.0,
+        843.85
+      ],
+      "chunk": [
+        "r1-c3",
+        "r1-c4",
+        "r2-c3",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        3028.86875,
+        890.8434894531249,
+        132.09062500000002,
+        205.81608125
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "city-bed-01",
+      "kind": "green-shrub",
+      "bboxWorld": [
+        1617.6,
+        782.32,
+        115.2,
+        83.991
+      ],
+      "footWorld": [
+        1675.2,
+        859.593
+      ],
+      "chunk": [
+        "r1-c3",
+        "r2-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2070.44375,
+        1001.43071875,
+        147.45000000000002,
+        107.515041796875
+      ],
+      "removalVerified": false,
+      "review": "Foliage still intersects the bottom edge in q21; removal of every visible leaf is not verified."
+    },
+    {
+      "id": "city-bed-02",
+      "kind": "green-shrub",
+      "bboxWorld": [
+        1927.2,
+        770.322,
+        100.8,
+        83.991
+      ],
+      "footWorld": [
+        1977.6,
+        847.594
+      ],
+      "chunk": [
+        "r1-c3",
+        "r2-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2466.7156250000003,
+        986.07234140625,
+        129.01875,
+        107.515041796875
+      ],
+      "removalVerified": true,
+      "review": "Visible tree/shrub/target conifer removed in generated terrain; offline visual review only."
+    },
+    {
+      "id": "ice-tree-00",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        2253.6,
+        352.764,
+        67.2,
+        124.787
+      ],
+      "footWorld": [
+        2287.2,
+        467.568
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2884.490625,
+        451.5654796875,
+        86.0125,
+        159.737108984375
+      ],
+      "removalVerified": false,
+      "review": "Snow-covered foliage remains among rocks near the original object bbox; full object removal is not verified."
+    },
+    {
+      "id": "ice-tree-01",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        2282.4,
+        441.555,
+        72.0,
+        117.588
+      ],
+      "footWorld": [
+        2318.4,
+        549.736
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2921.353125,
+        565.224896484375,
+        92.15625,
+        150.5218265625
+      ],
+      "removalVerified": false,
+      "review": "Snow-covered foliage remains among rocks near the original object bbox; full object removal is not verified."
+    }
+  ],
+  "whiteLumps": [
+    {
+      "id": "lump-01",
+      "masterPx": [
+        2697,
+        440,
+        351,
+        432
+      ],
+      "worldRect": [
+        2107,
+        344,
+        274,
+        338
+      ],
+      "areaWorld": 25931,
+      "meanBrightness": 211,
+      "v7Px2x": [
+        5394,
+        880,
+        702,
+        864
+      ],
+      "chunks": [
+        "r1-c3"
+      ],
+      "review": "fog lump - delete when the ground is repainted",
+      "removalVerified": true,
+      "reviewResult": "Targeted call10 removed the embedded fog in q22. q12 foreground portion was already cleared; distant cloud sea retained."
+    }
+  ],
+  "allRemovalsVisuallyVerified": false,
+  "unverifiedRemovalIds": [
+    "city-bed-01",
+    "ice-tree-00",
+    "ice-tree-01"
+  ],
+  "verificationScope": "Visible portions in assigned chunk only. Remaining foliage/ambiguous snowy plants kept as open acceptance items after 10-call limit."
+}

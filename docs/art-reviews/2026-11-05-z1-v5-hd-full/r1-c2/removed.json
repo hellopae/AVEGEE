@@ -1,0 +1,187 @@
+{
+  "objects": [
+    {
+      "id": "city-tree-00",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1524.0,
+        525.547,
+        100.8,
+        141.586
+      ],
+      "footWorld": [
+        1574.4,
+        655.805
+      ],
+      "chunk": [
+        "r1-c2",
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        1950.640625,
+        672.741218359375,
+        129.01875,
+        181.24114140625002
+      ],
+      "removalVerified": true,
+      "review": "Visual inspection of generated native and assembled terrain: visible portion within this chunk removed; bridge deck/stair retained where applicable."
+    },
+    {
+      "id": "city-tree-01",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1598.4,
+        439.155,
+        103.2,
+        179.982
+      ],
+      "footWorld": [
+        1650.0,
+        604.738
+      ],
+      "chunk": [
+        "r1-c2",
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        2045.8687500000003,
+        562.152708984375,
+        132.09062500000002,
+        230.39102109375
+      ],
+      "removalVerified": true,
+      "review": "Visual inspection of generated native and assembled terrain: visible portion within this chunk removed; bridge deck/stair retained where applicable."
+    },
+    {
+      "id": "pilot-red-tree-00",
+      "kind": "tree",
+      "bboxWorld": [
+        1300.8,
+        671.932,
+        103.2,
+        141.586
+      ],
+      "footWorld": [
+        1352.4,
+        802.19
+      ],
+      "chunk": [
+        "r1-c2",
+        "r2-c2"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        1664.95625,
+        860.1254546875,
+        132.09062500000002,
+        181.24114140625002
+      ],
+      "removalVerified": true,
+      "review": "Visual inspection of generated native and assembled terrain: visible portion within this chunk removed; bridge deck/stair retained where applicable."
+    },
+    {
+      "id": "lava-upper-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        724.8,
+        561.543,
+        352.8,
+        79.192
+      ],
+      "footWorld": [
+        901.2,
+        640.735
+      ],
+      "chunk": [
+        "r1-c1",
+        "r1-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        927.70625,
+        718.818910546875,
+        451.56562500000007,
+        101.37194687499999
+      ],
+      "removalVerified": true,
+      "review": "Visual inspection of generated native and assembled terrain: visible portion within this chunk removed; bridge deck/stair retained where applicable."
+    },
+    {
+      "id": "lava-upper-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        717.6,
+        621.537,
+        360.0,
+        100.79
+      ],
+      "footWorld": [
+        897.6,
+        722.327
+      ],
+      "chunk": [
+        "r1-c1",
+        "r1-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterPx": [
+        918.4906250000001,
+        795.615917578125,
+        460.78125,
+        129.01907421875
+      ],
+      "removalVerified": true,
+      "review": "Visual inspection of generated native and assembled terrain: visible portion within this chunk removed; bridge deck/stair retained where applicable."
+    }
+  ],
+  "whiteLumps": [
+    {
+      "id": "lump-00",
+      "masterPx": [
+        1519,
+        440,
+        140,
+        71
+      ],
+      "worldRect": [
+        1187,
+        344,
+        109,
+        55
+      ],
+      "areaWorld": 2840,
+      "meanBrightness": 208,
+      "v7Px2x": [
+        3038,
+        880,
+        280,
+        142
+      ],
+      "chunks": [
+        "r1-c2"
+      ],
+      "review": "fog lump - delete when the ground is repainted",
+      "removalVerified": true,
+      "reviewResult": "Visible lump removed in all intersecting native parts; surrounding large cloud sea retained."
+    }
+  ],
+  "allRemovalsVisuallyVerified": true,
+  "verificationScope": "Offline visual review of visible portions inside assigned chunk only, not in-game QA."
+}

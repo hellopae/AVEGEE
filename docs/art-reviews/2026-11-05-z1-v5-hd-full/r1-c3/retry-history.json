@@ -1,0 +1,290 @@
+{
+  "reason": "q22 attempt1 retained embedded fog lump01 and the target conifer. Targeted correction uses exact archived input plus location mask.",
+  "attempt1Structure": {
+    "thresholdPx1x": 4,
+    "method": "Fixed 49x49 DoG sigma1.5/6 templates, normalized correlation +/-12 map px on assembled output; independent from affine inliers.",
+    "limitation": "Local patch correspondence does not certify every semantic contour; uncertain probes retained. Removed and formerly occluded structures cannot be proven against source.",
+    "totalProbes": 17,
+    "reliableProbes": 8,
+    "maxReliableDisplacementPx1x": 3.605551275463989,
+    "allReliableProbesWithin4px": true,
+    "wholeStructureWithin4pxVerified": false,
+    "semanticStructureVerified": false,
+    "probes": [
+      {
+        "id": "mountain-west-summit",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          76,
+          42
+        ],
+        "displacementPx1x": [
+          1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.8725499510765076,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "rock-spire",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          214,
+          170
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.8013434410095215,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "mountain-mid-summit",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          447,
+          109
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.981680154800415,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "mountain-east-summit",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          910,
+          31
+        ],
+        "displacementPx1x": [
+          -1,
+          -1
+        ],
+        "distancePx1x": 1.4142135623730951,
+        "normalizedCorrelation": 0.9604867100715637,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "plaza-front-left",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          91,
+          650
+        ],
+        "displacementPx1x": [
+          6,
+          -3
+        ],
+        "distancePx1x": 6.708203932499369,
+        "normalizedCorrelation": 0.44120848178863525,
+        "reliable": false,
+        "within4px": false
+      },
+      {
+        "id": "plaza-front-right",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          438,
+          632
+        ],
+        "displacementPx1x": [
+          0,
+          1
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.7529564499855042,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "plaza-east-edge",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          520,
+          587
+        ],
+        "displacementPx1x": [
+          1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.769970178604126,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "stair-top-left",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          140,
+          674
+        ],
+        "displacementPx1x": [
+          -2,
+          1
+        ],
+        "distancePx1x": 2.23606797749979,
+        "normalizedCorrelation": 0.7729516625404358,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "stair-top-right",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          239,
+          673
+        ],
+        "displacementPx1x": [
+          -2,
+          0
+        ],
+        "distancePx1x": 2.0,
+        "normalizedCorrelation": 0.7947817444801331,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "stair-foot-left",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          139,
+          773
+        ],
+        "displacementPx1x": [
+          -1,
+          1
+        ],
+        "distancePx1x": 1.4142135623730951,
+        "normalizedCorrelation": 0.6911284923553467,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "stair-foot-right",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          239,
+          772
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.5820448398590088,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "cliff-face-left",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          263,
+          704
+        ],
+        "displacementPx1x": [
+          -1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.5940955877304077,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "cliff-face-mid",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          373,
+          697
+        ],
+        "displacementPx1x": [
+          -11,
+          5
+        ],
+        "distancePx1x": 12.083045973594572,
+        "normalizedCorrelation": 0.3704282343387604,
+        "reliable": false,
+        "within4px": false
+      },
+      {
+        "id": "lower-path-edge",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          408,
+          862
+        ],
+        "displacementPx1x": [
+          2,
+          -3
+        ],
+        "distancePx1x": 3.605551275463989,
+        "normalizedCorrelation": 0.6888703107833862,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "lower-stair-left",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          274,
+          943
+        ],
+        "displacementPx1x": [
+          1,
+          -3
+        ],
+        "distancePx1x": 3.1622776601683795,
+        "normalizedCorrelation": 0.7402532696723938,
+        "reliable": true,
+        "within4px": true
+      },
+      {
+        "id": "lower-stair-right",
+        "overlapsRemovalBox": false,
+        "sourcePx1x": [
+          373,
+          944
+        ],
+        "displacementPx1x": [
+          3,
+          -2
+        ],
+        "distancePx1x": 3.605551275463989,
+        "normalizedCorrelation": 0.59335857629776,
+        "reliable": false,
+        "within4px": true
+      },
+      {
+        "id": "path-southeast",
+        "overlapsRemovalBox": true,
+        "sourcePx1x": [
+          894,
+          971
+        ],
+        "displacementPx1x": [
+          1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.6607636213302612,
+        "reliable": false,
+        "within4px": true
+      }
+    ]
+  },
+  "attempt1FogRemovalVerified": false,
+  "archivedEditTarget": "inputs/q22-edit-input.webp"
+}

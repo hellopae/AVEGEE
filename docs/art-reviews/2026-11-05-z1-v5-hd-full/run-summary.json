@@ -1,0 +1,123 @@
+{
+  "chunks": [
+    {
+      "chunk": "r1-c2",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 2.0,
+      "structureReliableProbes": 14,
+      "structureTotalProbes": 17,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 31.025747261468034,
+      "sharpnessNumericalThresholdMet": true,
+      "pendingRemovalIds": [],
+      "imageGenCalls": 5,
+      "seamVisualReview": "No obvious rectangular tile join in inspected full overview and native 2x strips; offline review, not in-game QA."
+    },
+    {
+      "chunk": "r1-c3",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 3.605551275463989,
+      "structureReliableProbes": 8,
+      "structureTotalProbes": 17,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 23.933199314161417,
+      "sharpnessNumericalThresholdMet": true,
+      "pendingRemovalIds": [
+        "city-bed-01",
+        "ice-tree-00",
+        "ice-tree-01"
+      ],
+      "imageGenCalls": 5,
+      "seamVisualReview": "No obvious rectangular tile join in inspected full overview and native 2x strips; offline review, not in-game QA."
+    }
+  ],
+  "imageGenCalls": 10,
+  "generationLimit": 10,
+  "tool": "built-in image_gen.imagegen",
+  "neighborChunkSeamsApplied": false,
+  "qaPassedClaimed": false,
+  "inGameTestRun": false,
+  "allPartsGenerated": true,
+  "acceptance": [
+    {
+      "id": 1,
+      "status": "partially verified",
+      "detail": "8/8 parts; sharpness >=10 and reliable local probes <=4px; every semantic contour remains unverified."
+    },
+    {
+      "id": 2,
+      "status": "open",
+      "detail": "No obvious join in inspected seam sheets. Three r1-c3 foliage removals remain unverified after10-call cap."
+    },
+    {
+      "id": 3,
+      "status": "deliverables present",
+      "detail": "8 selected native tiles, lossless pixel hashes, core/context rects and native-to-master affine complete. Neighbor chunk seams deferred."
+    }
+  ],
+  "limitBytes": 60000000,
+  "openAcceptanceItems": [
+    "r1-c2: full semantic contours not verified",
+    "r1-c3: full semantic contours not verified",
+    "r1-c3: unverified removals: city-bed-01, ice-tree-00, ice-tree-01"
+  ],
+  "verificationErrors": [],
+  "outputBytes": 58172921,
+  "withinSizeBudget": true
+}

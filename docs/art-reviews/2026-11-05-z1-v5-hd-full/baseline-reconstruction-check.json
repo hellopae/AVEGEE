@@ -1,0 +1,10 @@
+{
+  "r1-c2": {
+    "exactPixelEquality": true,
+    "decodedSha256": "91a346ddbdee49cf062170e8ddbe7ffc4e07160c8ea1e2a14e885f37c3106a2a"
+  },
+  "r1-c3": {
+    "exactPixelEquality": true,
+    "decodedSha256": "e4d4a1de4ca9d6d83dee9ac45e87a860645e1c484eed56268d5a7830d421e20a"
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "deliverableChecks": {
+    "r1-c2": {
+      "requiredFilesPresent": true,
+      "nativeCount": 4,
+      "exportSize": [
+        2048,
+        2048
+      ],
+      "sharpnessRatio": 31.025747261468034,
+      "sharpnessThresholdMet": true,
+      "structureReliableProbeMax": 2.0,
+      "structureReliableProbeCount": 14,
+      "structureTotalProbeCount": 17,
+      "wholeStructureWithin4pxVerified": false,
+      "allRemovalsVisuallyVerified": true,
+      "unverifiedRemovalIds": []
+    },
+    "r1-c3": {
+      "requiredFilesPresent": true,
+      "nativeCount": 4,
+      "exportSize": [
+        2048,
+        2048
+      ],
+      "sharpnessRatio": 23.933199314161417,
+      "sharpnessThresholdMet": true,
+      "structureReliableProbeMax": 3.605551275463989,
+      "structureReliableProbeCount": 8,
+      "structureTotalProbeCount": 17,
+      "wholeStructureWithin4pxVerified": false,
+      "allRemovalsVisuallyVerified": false,
+      "unverifiedRemovalIds": [
+        "city-bed-01",
+        "ice-tree-00",
+        "ice-tree-01"
+      ]
+    }
+  },
+  "imageGenCalls": 10,
+  "generationLimitRespected": true,
+  "images": [
+    {
+      "path": "r1-c2/inputs/q11-v5.webp",
+      "size": [
+        640,
+        576
+      ],
+      "sha256": "4c81ebf27490e2c641d4b00117504d44c12b666c88f55fff140112c446fe8f67"
+    },
+    {
+      "path": "r1-c2/inputs/q12-v5.webp",
+      "size": [
+        640,
+        576
+      ],
+      "sha256": "264dab6a0518ea24c23858fccdc996e048aa9d0c1897de72cc91f7991ea411ba"
+    },
+    {
+      "path": "r1-c2/inputs/q21-v5.webp",
+      "size": [
+        640,
+        640
+      ],
+      "sha256": "9a1b0d397a6cbb211093ddac3277684a91758d394fd516910f531335c225c104"
+    },
+    {
+      "path": "r1-c2/inputs/q22-v5.webp",
+      "size": [
+        640,
+        640
+      ],
+      "sha256": "52770152fd07dae259397626417fab7de9b79960978d6ce348883634733a4dff"
+    },
+    {
+      "path": "r1-c2/q11-native.webp",
+      "size": [
+        1323,
+        1189
+      ],
+      "sha256": "ce85adbf630777250637860694600daca857692b1a04574380ab789ddac46d53"
+    },
+    {
+      "path": "r1-c2/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ],
+      "sha256": "43b61f478948b681b02461e0463c32d3e63f4100f7ff101195c8f23b8edfe259"
+    },
+    {
+      "path": "r1-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "84769ee6efddf68ca6f86863ab6289f161988ecadff860618a95b9ec70bce2ce"
+    },
+    {
+      "path": "r1-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3a7d08756aa1adfdd418c680cffc5444e396b297af0be8269a20dd30991a767e"
+    },
+    {
+      "path": "r1-c2/r1-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "sha256": "90e69fadf9cdaa258792cba3a4d34542e8b84c521b488b9a5d731ceb3da95eb2"
+    },
+    {
+      "path": "r1-c2/r1-c2-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ],
+      "sha256": "917bbd3041babc7907cd27d8ebe7b9342d11ad069cca5b84f36ffc55c2442a18"
+    },
+    {
+      "path": "r1-c2/seam-check.jpg",
+      "size": [
+        2200,
+        1850
+      ],
+      "sha256": "3a603047171c747220ecc55533f2aa1a0bc78cb5531134030501646a834a905c"
+    },
+    {
+      "path": "r1-c2/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ],
+      "sha256": "b3cfbc754eb48cf08fd9f58f99fe0adb78d0f7762a86f47e1fab70e223b48fca"
+    },
+    {
+      "path": "r1-c3/inputs/q11-v5.webp",
+      "size": [
+        640,
+        576
+      ],
+      "sha256": "35dfce047920919e321ddb0d9674680aac83fc872e5620349c6a0f12eaa83c56"
+    },
+    {
+      "path": "r1-c3/inputs/q12-v5.webp",
+      "size": [
+        640,
+        576
+      ],
+      "sha256": "e8d3312d02c3194f478cb7cd6b6a7ba7ba71ee3806675b8dfdd4f121147007b0"
+    },
+    {
+      "path": "r1-c3/inputs/q21-v5.webp",
+      "size": [
+        640,
+        640
+      ],
+      "sha256": "c986e0bb42b91f111baa3b8640b0456a57e404f32e4fdb839c0309cd49a1bc52"
+    },
+    {
+      "path": "r1-c3/inputs/q22-edit-input.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "35663291e76dcabb75b2ba2f330dfb3ddd4e63419ffcea92658094c65217b934"
+    },
+    {
+      "path": "r1-c3/inputs/q22-lump-removal-mask.png",
+      "size": [
+        640,
+        640
+      ],
+      "sha256": "93c017f76864d3a8f6958db3061dea34ff9ee4d70af58ed9420408cca2f8b95c"
+    },
+    {
+      "path": "r1-c3/inputs/q22-v5.webp",
+      "size": [
+        640,
+        640
+      ],
+      "sha256": "b17bf6858bebfbb2fd2af5abbacd6b8fb41904ee185afe5c3810859070884302"
+    },
+    {
+      "path": "r1-c3/q11-native.webp",
+      "size": [
+        1323,
+        1189
+      ],
+      "sha256": "13c07844598319798a594eddf952fe1a03c1c9190dcf29660ea0a17cf75e62f0"
+    },
+    {
+      "path": "r1-c3/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ],
+      "sha256": "1337accd0eb84174b223468052daf0cd41050de8dc1764de60ca6c298148bf61"
+    },
+    {
+      "path": "r1-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "fe8e9d1c4135c713493bdf85d6198f39e77883a0d2becf4ebeece1eb8e6470c4"
+    },
+    {
+      "path": "r1-c3/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "5992ed18e13fd0454258943df15b53415fefd08199116ee4a15447767292e0a9"
+    },
+    {
+      "path": "r1-c3/r1-c3-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "sha256": "b83608b83fc26351d082f1a9e86f6b8682e5f63293ef32c6c725109f4cbb6b98"
+    },
+    {
+      "path": "r1-c3/r1-c3-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ],
+      "sha256": "ecb5e3a0b14532791793da66b04b7f0c4b66c55c5d75171959fd6af869db78e3"
+    },
+    {
+      "path": "r1-c3/seam-check.jpg",
+      "size": [
+        2200,
+        1850
+      ],
+      "sha256": "52157084eee3f3c24874805d9bfc5f75e4c15e9b9f259d1ff1f8e46206cfa3f2"
+    },
+    {
+      "path": "r1-c3/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ],
+      "sha256": "8c5d2d240819847dc2a0c73b0177ac3e83151b73ab720a6c5bc36f18c25ad653"
+    },
+    {
+      "path": "style-reference.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ffc17e3faf6d93b4602d4b7e0aaef01dd92275250e1387710ee8c0ff96b409d3"
+    }
+  ],
+  "allImagesDecoded": true,
+  "sourceHashesUnchanged": true,
+  "limitBytes": 60000000,
+  "errors": [],
+  "openAcceptanceItems": [
+    "r1-c2: full semantic contours not verified",
+    "r1-c3: full semantic contours not verified",
+    "r1-c3: unverified removals: city-bed-01, ice-tree-00, ice-tree-01"
+  ],
+  "qaPassedClaimed": false,
+  "inGameTestRun": false,
+  "outputBytes": 58172921,
+  "withinSizeBudget": true
+}

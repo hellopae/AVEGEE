@@ -1,0 +1,338 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      2048,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1984,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          62,
+          562,
+          132,
+          230
+        ]
+      },
+      {
+        "id": "city-tree-02",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          378,
+          421,
+          132,
+          184
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      2560,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      2496,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "ice-tree-00",
+        "kind": "snow-tree",
+        "bboxInputPx": [
+          388,
+          452,
+          86,
+          160
+        ]
+      },
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "bboxInputPx": [
+          425,
+          565,
+          92,
+          151
+        ]
+      },
+      {
+        "id": "lump-01",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          201,
+          440,
+          351,
+          432
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      2048,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1984,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "city-tree-00",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          -33,
+          225,
+          129,
+          181
+        ]
+      },
+      {
+        "id": "city-tree-01",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          62,
+          114,
+          132,
+          230
+        ]
+      },
+      {
+        "id": "city-tree-02",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          378,
+          -27,
+          132,
+          184
+        ]
+      },
+      {
+        "id": "city-tree-03",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          412,
+          151,
+          132,
+          184
+        ]
+      },
+      {
+        "id": "city-tree-04",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          535,
+          219,
+          147,
+          218
+        ]
+      },
+      {
+        "id": "city-bed-01",
+        "kind": "green-shrub",
+        "bboxInputPx": [
+          86,
+          553,
+          147,
+          108
+        ]
+      },
+      {
+        "id": "city-bed-02",
+        "kind": "green-shrub",
+        "bboxInputPx": [
+          483,
+          538,
+          129,
+          108
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      2560,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      2496,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "city-tree-03",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          -100,
+          151,
+          132,
+          184
+        ]
+      },
+      {
+        "id": "city-tree-04",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          23,
+          219,
+          147,
+          218
+        ]
+      },
+      {
+        "id": "city-tree-05",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          170,
+          191,
+          147,
+          224
+        ]
+      },
+      {
+        "id": "city-tree-06",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          207,
+          345,
+          147,
+          194
+        ]
+      },
+      {
+        "id": "city-tree-07",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          395,
+          335,
+          123,
+          206
+        ]
+      },
+      {
+        "id": "city-tree-08",
+        "kind": "green-tree",
+        "bboxInputPx": [
+          533,
+          443,
+          132,
+          206
+        ]
+      },
+      {
+        "id": "city-bed-02",
+        "kind": "green-shrub",
+        "bboxInputPx": [
+          -29,
+          538,
+          129,
+          108
+        ]
+      },
+      {
+        "id": "ice-tree-00",
+        "kind": "snow-tree",
+        "bboxInputPx": [
+          388,
+          4,
+          86,
+          160
+        ]
+      },
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "bboxInputPx": [
+          425,
+          117,
+          92,
+          151
+        ]
+      },
+      {
+        "id": "lump-01",
+        "kind": "embedded white fog lump",
+        "bboxInputPx": [
+          201,
+          -8,
+          351,
+          432
+        ]
+      }
+    ]
+  }
+]
