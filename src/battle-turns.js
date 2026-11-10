@@ -35,6 +35,9 @@ export function completeCombatTurn(game,turn) {
     (b.actorTurns ||= {})[turn.id] = (b.actorTurns?.[turn.id] || 0) + 1;
     const protection = b.protection?.[turn.id];
     if (protection && b.actorTurns[turn.id] >= protection.expires) delete b.protection[turn.id];
+    // QUEST-REWARDS: rope/gauze and taunt end after the affected / casting ally's own turn count passes `until`
+    if (b.sealed?.[turn.id] && b.actorTurns[turn.id] >= b.sealed[turn.id].until) delete b.sealed[turn.id];
+    if (b.taunt?.id === turn.id && b.actorTurns[turn.id] >= b.taunt.until) { delete b.taunt; if (b.defending) delete b.defending[turn.id]; }
     if (turn.id === 'you' && game.isFinalBattle?.()) game.finalEventState().teamCooldownTurns = game.teamJudgmentRemaining();
   }
   q.remaining.splice(i,1);ensureTurnQueue(game);return true;

@@ -11,8 +11,41 @@ export const COMBAT_SKILLS = Object.freeze({
   abyssGatebreaker:{ chipParts:['ทวารบาล','ทลาย','โลกันต์'], actor:'guard', station:'lokan', name:'ทวารบาลทลายโลกันต์', damage:1.3, morale:8 },
   karmaFracture:{ chipParts:['กระจกกรรม','สะท้อนคม'], actor:'kan', station:'krajok', name:'กระจกกรรมสะท้อนคม', base:28, morale:6 },
   teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการยมทูตประสานพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },
+  // QUEST-REWARDS (10 พ.ย. 2569) — ท่าไม้ตายจากฉากต่อสู้ท้ายภารกิจ (Rae: Output/Rae/2026-11-10-avegee-quest-battle-script.md)
+  // ผูกกับ roster ID (rosterId) ไม่ผูกกับชนิดตัวละคร: ซาโตริ@บูรพาได้ท่านี้ ซาโตริ/ซิบิลที่โซนอื่นไม่ได้ · ปลดล็อกจากภารกิจ ไม่ผ่านการฝึก (quest = id ภารกิจ)
+  // ใช้ภาพ/effect ของท่าเดิมของตัวละครเดียวกันไปก่อน (combat-skill-assets.js) จนกว่า Codex จะวาดชุดใหม่
+  eyeAwaitingPermission:{ chipParts:['เนตร','รอคำอนุญาต'], actor:'kan', rosterId:'asia:kan', quest:'sqKan', station:null,
+    name:'เนตรรอคำอนุญาต', reflect:1.6, shield:14, cap:28, team:true, target:'foe', morale:10 },
+  letterDelivered:{ chipParts:['คำฝาก','ถึงมือ'], actor:'boon', rosterId:'west:boon', quest:'sqBoon', station:null,
+    name:'คำฝากถึงมือ', heal:.7, shield:8, cap:16, buff:.1, team:true, cleanse:true, morale:10 },
+  gatekeeperStand:{ chipParts:['ทวารบาล','ยืนรับแค้น'], actor:'guard', rosterId:'th:guard', quest:'sqGuard', station:null,
+    name:'ทวารบาลยืนรับแค้น', damage:.7, area:true, taunt:true, morale:10 },
 });
-export const skillForActor = actor => Object.keys(COMBAT_SKILLS).find(k => COMBAT_SKILLS[k].actor === (actor?.kind || actor?.k));
+// training-based skill of this actor kind (one per kind) — quest skills never appear here
+export const skillForActor = actor => Object.keys(COMBAT_SKILLS).find(k => !COMBAT_SKILLS[k].quest && COMBAT_SKILLS[k].actor === (actor?.kind || actor?.k));
+/** does this actor own that skill? quest skills belong to one roster ID only (e.g. 'asia:kan'), the others to every actor of the kind */
+export const skillBelongsTo = (skill, actor) => {
+  const def = COMBAT_SKILLS[skill];
+  return !!def && !!actor && def.actor === (actor.kind || actor.k) && (!def.rosterId || def.rosterId === actor.id);
+};
+export const questSkillsForActor = actor => Object.keys(COMBAT_SKILLS).filter(k => COMBAT_SKILLS[k].quest && skillBelongsTo(k, actor));
+/** unlock a quest skill straight into the owner's training record (same record the training path writes, so save/restore already carries it) */
+export function unlockQuestSkill(game, skill) {
+  const def = COMBAT_SKILLS[skill];
+  if (!def?.rosterId) return false;
+  const zone = def.rosterId.split(':')[0];
+  const zones = (game.training.zones ||= {});
+  const record = (zones[zone] ||= {})[def.rosterId] ||= { exp:0, readyAtTick:0, attempts:{} };
+  const move = (record.moves ||= {})[skill] ||= { successes:0, high:false, unlocked:false };
+  if (move.unlocked) return false;
+  Object.assign(move, { successes:2, high:true, unlocked:true });
+  return true;
+}
+export const questSkillUnlocked = (game, skill) => {
+  const def = COMBAT_SKILLS[skill];
+  const rec = def?.rosterId && game.training?.zones?.[def.rosterId.split(':')[0]]?.[def.rosterId];
+  return !!rec?.moves?.[skill]?.unlocked;
+};
 export const skillUnlocked = (game, actor, skill = skillForActor(actor)) => !!skill && !!actorTraining(game.training, actor, game.zone).moves?.[skill]?.unlocked;
 export function trainingSkill(actor, station) {
   const skill = skillForActor(actor);

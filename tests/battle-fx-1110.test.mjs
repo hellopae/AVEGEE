@@ -160,8 +160,11 @@ test('boss story fights are untouched: zone bosses and story events never roll a
 
 test('cache-busting: the changed modules moved to a new release string', () => {
   const html = read('index.html');
-  for (const m of ['game', 'data', 'ui', 'sfx', 'frontier', 'battle-fx', 'battle-fx-map', 'encounter-balance', 'party-balance'])
+  // QUEST-REWARDS (10 Nov, later the same day) moved game / ui / battle-fx-map on to 20261110-questrewards (see tests/quest-rewards.test.mjs); the rest stay on this release
+  for (const m of ['data', 'sfx', 'frontier', 'battle-fx', 'encounter-balance', 'party-balance'])
     assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-battlefx"/);
+  for (const m of ['game', 'ui', 'battle-fx-map'])
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards"/);
   assert.match(read('src/ui.js'), /battle-camera\.js\?v=20261110-battlefx/);
 });

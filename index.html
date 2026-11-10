@@ -2170,6 +2170,15 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .quest-tracker-heading{display:flex;justify-content:space-between;gap:8px;color:#efd29c}.quest-tracker button{display:block;width:100%;padding:5px 0;background:transparent;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer}.quest-tracker button strong,.quest-tracker button span,.quest-tracker button small{display:block}.quest-tracker button strong{color:#ffe2a4}.quest-tracker button small{color:#c7b298}.quest-tracker.is-compact [data-tracker-entry]>span,.quest-tracker.is-compact [data-tracker-entry]>small{display:none}.quest-tracker [data-tracker-journal]{border-top:1px solid #b98e4944;color:#eac77c}
 .quest-help-tabs{display:flex;gap:8px;position:sticky;top:0;background:#21131b;z-index:2;padding:8px 0;margin-bottom:16px}.quest-help-tabs button{min-height:44px;padding:8px 18px}.quest-help-tabs [aria-selected="true"]{border-color:#efd29c;color:#ffe2a4;background:#513826}
 .quest-journal-card{padding:14px;border:1px solid #b98e4955;border-radius:10px;background:#2b1b23;margin:10px 0;overflow-wrap:anywhere}.quest-journal-card h3{margin:0 0 8px;color:#f4d39b}.quest-journal-card p{line-height:1.6}.quest-owner-button{margin-top:8px;max-width:100%;white-space:normal}.quest-accepted{padding:12px;border:1px solid #7ab58c;border-radius:8px;color:#a7e2b5;background:#20382a}
+/* QUEST-REWARDS: "ได้รับ:" receipt in the quest window · reward line in the journal · fight scene text */
+.quest-receipt{margin:12px 0;padding:10px;border:1px solid #b98e49;border-radius:10px;background:#251823}.quest-receipt h3{margin:0 0 8px;color:#f4d39b;font-size:15px}
+.quest-receipt .reward-list{display:grid;gap:7px}.quest-receipt .reward-row{min-width:0;margin:0}.quest-receipt .reward-row small{display:block;color:#dfd1c0;font-size:12px}
+.quest-receipt.celebrate .reward-row{animation:questRewardPop .42s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i,0)*110ms)}
+.quest-receipt.celebrate .reward-row.power{animation-name:questRewardPop,questRewardGlow;animation-duration:.42s,1.6s;animation-delay:calc(var(--i,0)*110ms),calc(var(--i,0)*110ms + .4s);animation-iteration-count:1,2}
+@keyframes questRewardPop{from{opacity:0;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes questRewardGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 14px 2px #e8c870aa}}
+.quest-reward-line{font-size:13px;color:#e8c98f}.quest-fight-scene p{line-height:1.7;margin:.5em 0}.quest-fight-standby{padding:8px 10px;border-left:3px solid #8a7ab5;color:#cfc2e6;font-size:13px}
+@media(prefers-reduced-motion:reduce){.quest-receipt.celebrate .reward-row{animation:none}}
 /* FB-UI 6: handbook tab bar is flush with the top edge of the box (solid, full width) so no text shows above it; cards keep their own height and pack into columns */
 dialog.help-modal[open]{--help-pad-top:34px;--help-pad-x:42px}
 dialog.help-modal[open] .quest-help-tabs{top:calc(-1*var(--help-pad-top));margin:calc(-1*var(--help-pad-top)) calc(-1*var(--help-pad-x)) 16px;padding:14px var(--help-pad-x) 10px;background:#21131b;border-bottom:1px solid #b98e4955;position:sticky;z-index:5}
@@ -2433,7 +2442,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/yama-animation.js?v=20261015-live-v1": "./src/yama-animation.js?v=20261015-live-v1-a7",
     "./src/town-startup.js": "./src/town-startup.js?v=20261027-m2-startup-ready-food-art-painted-pole",
     "./src/art.js": "./src/art.js?v=20261110-perf-fbui",
-    "./src/i18n.js": "./src/i18n.js?v=20261110-gfx",
+    "./src/i18n.js": "./src/i18n.js?v=20261110-questrewards",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
     "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
@@ -2467,16 +2476,16 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/soul-poses.js": "./src/soul-poses.js?v=20261030-e1-v2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261110-battlefx",
+    "./src/game.js": "./src/game.js?v=20261110-questrewards",
     "./src/preload.js": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261105-z1v5-fx4",
-    "./src/battle-result.js": "./src/battle-result.js?v=20261028-target-weapon",
+    "./src/battle-result.js": "./src/battle-result.js?v=20261110-questrewards",
     "./src/sfx.js": "./src/sfx.js?v=20261110-battlefx",
     "./src/graphics-setting.js": "./src/graphics-setting.js?v=20261110-gfx",
-    "./src/ui.js": "./src/ui.js?v=20261110-battlefx",
+    "./src/ui.js": "./src/ui.js?v=20261110-questrewards",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-battlefx",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-questrewards",
     "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-gfx",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
@@ -2491,7 +2500,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/cases.js": "./src/cases.js?v=20261030-e1-v2",
     "./src/cases-asia.js": "./src/cases-asia.js?v=n3b",
     "./src/battle-dash.js": "./src/battle-dash.js?v=20261101-tweak",
-    "./src/battle-turns.js": "./src/battle-turns.js?v=20261029-c1-v2",
+    "./src/battle-turns.js": "./src/battle-turns.js?v=20261110-questrewards",
     "./src/battle-background.js": "./src/battle-background.js?v=20261016-boss-justice-workers-v1",
     "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261020-m2-frontier-scale",
     "./src/frontier.js": "./src/frontier.js?v=20261110-battlefx",
@@ -2526,29 +2535,29 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/map-travel.js": "./src/map-travel.js?v=20261103-boat-deck-fit",
     "./src/battle-fx.js": "./src/battle-fx.js?v=20261110-battlefx",
     "./src/battle-fx.js?v=m2": "./src/battle-fx.js?v=20261110-battlefx",
-    "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261110-battlefx",
-    "./src/battle-fx-map.js?v=m2": "./src/battle-fx-map.js?v=20261110-battlefx",
+    "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261110-questrewards",
+    "./src/battle-fx-map.js?v=m2": "./src/battle-fx-map.js?v=20261110-questrewards",
     "./src/cutscene-presentation.js": "./src/cutscene-presentation.js?v=20261029-r2-battle-fx",
     "./src/actor-recovery.js": "./src/actor-recovery.js?v=20261029-c1-v2-recovery-120",
     "./src/krata-control.js": "./src/krata-control.js?v=20261029-c1-v2",
     "./src/minigames/krata-qte.js": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
     "./src/progression.js": "./src/progression.js?v=20261029-c1-v2",
     "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120",
-    "./src/combat-skills.js": "./src/combat-skills.js?v=20261030-balance2",
-    "./src/combat-skill-assets.js": "./src/combat-skill-assets.js?v=20261029-c1-v2",
+    "./src/combat-skills.js": "./src/combat-skills.js?v=20261110-questrewards",
+    "./src/combat-skill-assets.js": "./src/combat-skill-assets.js?v=20261110-questrewards",
     "./src/encounter-balance.js": "./src/encounter-balance.js?v=20261110-battlefx",
     "./src/party-balance.js": "./src/party-balance.js?v=20261110-battlefx",
     "./src/breach-approach.js": "./src/breach-approach.js?v=20261030-e1-v2",
-    "./src/e1-content.js": "./src/e1-content.js?v=20261031-q2-hist-quest-owner",
+    "./src/e1-content.js": "./src/e1-content.js?v=20261110-questrewards",
     "./src/quest-cases.js": "./src/quest-cases.js?v=20261030-e1-v2",
     "./src/remorse.js": "./src/remorse.js?v=20261030-e1-v2-sentence-time",
-    "./src/side-quests.js": "./src/side-quests.js?v=20261030-z4-town-a-quest-owner",
+    "./src/side-quests.js": "./src/side-quests.js?v=20261110-questrewards",
     "./src/signal-arc.js": "./src/signal-arc.js?v=20261030-e1-v2",
     "./src/talk.js": "./src/talk.js?v=20261030-e1-v2",
     "./src/history-unlock.js": "./src/history-unlock.js?v=20261031-q2-hist",
     "./src/save-slots.js": "./src/save-slots.js?v=20261101-home-slots",
     "./src/save-slot-menu.js": "./src/save-slot-menu.js?v=20261102-save-visual",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-battlefx",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-questrewards",
     "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
     "./src/diagnosis.js": "./src/diagnosis.js?v=20261101-sentence-time",
     "./src/battle-ko.js": "./src/battle-ko.js?v=20261106-fx5",
@@ -2558,13 +2567,13 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/onboarding.js": "./src/onboarding.js?v=20261102-onboard-food",
     "./src/sun-shafts.js": "./src/sun-shafts.js?v=20261102-cloud-rays",
     "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner",
-    "./src/quest-panels.js": "./src/quest-panels.js?v=20261102-quest-owner",
+    "./src/quest-panels.js": "./src/quest-panels.js?v=20261110-questrewards",
     "./src/story-progression.js": "./src/story-progression.js?v=20261102-w4-foundation"
   }
 }
 </script>
 <script type="module" src="src/preload.js?v=20261105-z1v5-fx3-tiles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261110-battlefx"></script>
+<script type="module" src="src/ui.js?v=20261110-questrewards"></script>
 </body>
 </html>

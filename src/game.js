@@ -3,8 +3,9 @@ import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recor
 import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
-import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
-import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
+import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant, finishQuestFight } from './side-quests.js';
+import { QUEST_FIGHTS, questFightFoes } from './quest-fights.js';
+import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
@@ -62,7 +63,7 @@ import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
 export const DEFEND_DAMAGE_RATIO = 0.5;
 /** L2: battle kinds the team may run away from (everything else is a boss / story / event fight). One list, used by battleAct and the UI. */
-export const FLEEABLE_KINDS = ['soul', 'mob', 'frontier'];
+export const FLEEABLE_KINDS = ['soul', 'mob', 'frontier', 'questFight'];
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const LOTUS_BOON_CUT = 8;   // ดอกบัวหนึ่งดอกที่มอบให้บุญลดกรรมของยมบาทน้อย (ค่าเดิมของ offerLotusBoon)
@@ -593,9 +594,11 @@ const API = {
       if (this.teamJudgmentRemaining()) return `อีก ${this.teamJudgmentRemaining()} เทิร์นยามา`;
       return this.mp < def.mp ? 'พลังเวทไม่พอ' : '';
     }
-    if (def.actor !== actor.k || !skillUnlocked(this, actor, skill)) return 'ฝึกเฉพาะตัว 2 ครั้ง ≥60 และมีครั้ง ≥80';
+    if (!skillBelongsTo(skill, actor) || !skillUnlocked(this, actor, skill)) return def.quest ? 'ได้จากการสู้ท้ายภารกิจ' : 'ฝึกเฉพาะตัว 2 ครั้ง ≥60 และมีครั้ง ≥80';
     if ((actor.morale || 0) < def.morale) return 'กำลังใจไม่พอ';
-    return actor.k === 'guard' ? this.guardHelpWhy() : this.crewHelpWhy(actor);
+    const why = actor.k === 'guard' ? this.guardHelpWhy() : this.crewHelpWhy(actor);
+    // คำฝากถึงมือ is the cure for rope/gauze, so it can still be cast by an ally who is sealed (otherwise Grace could be silenced out of her own answer)
+    return def.cleanse && why && why === this.sealWhy(actor) ? '' : why;
   },
   teamJudgmentRemaining() { const b = this.battle; return Math.max(0, (b?.teamReadyTurn || 0) - (b?.actorTurns?.you || 0)); },
   guardActive() { return !isFrontierDuoBattle(this.battle) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
@@ -604,6 +607,17 @@ const API = {
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
   },
   enemyTarget() { return weightedTarget(this.battleCrew(), this.enemyGuard()); },
+  /** QUEST-REWARDS: who this foe hits. Taunt (ทวารบาลยืนรับแค้น) pulls everything to its caster; a foe with `aim` prefers the guard / the support line.
+   *  Foes without `aim` and fights without taunt fall through to enemyTarget() untouched (no extra random draw, so older fights replay identically). */
+  foeTarget(foe) {
+    const b = this.battle, taunt = b?.taunt && this.battleActors().find(a => a.id === b.taunt.id);
+    if (taunt) return taunt.id === 'you' ? { id:'you' } : { id:taunt.id, actor:taunt };
+    if (foe?.aim && Math.random() < (foe.aimChance ?? .7)) {
+      const pool = this.battleActors().filter(a => a.id !== 'you' && (foe.aim === 'guard' ? a.k === 'guard' : ['boon', 'nira', 'kan'].includes(a.k)));
+      if (pool.length) { const a = pool[Math.floor(Math.random() * pool.length)]; return { id:a.id, actor:a }; }
+    }
+    return this.enemyTarget();
+  },
   /** B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ทำให้ยมบาทรอดง่ายขึ้น — ชดเชยด้วย TEAM_PRESSURE (data.js) */
   teamPressure(B) {
     const pick = table => table[B.encounter] ?? table[B.eventKey] ?? table[B.kind] ?? table.default;
@@ -2669,6 +2683,28 @@ const API = {
     return this.battle;
   },
 
+  /** QUEST-REWARDS (10 Nov 2026): the end-of-quest fight of sqKan / sqBoon / sqGuard (src/quest-fights.js · script by Rae).
+   *  Uses the normal battle loop but with its own kind 'questFight': no coin / EXP / loot (the quest pays on closing), flee allowed, a defeat costs nothing.
+   *  The quest owner joins the team when he or she is hired and standing (the Guard joins on his own as always); otherwise the owner stands by (battle.ownerJoined=false). */
+  startQuestFight(id) {
+    const def = QUEST_FIGHTS[id];
+    if (!def || this.battle || this.over || bossJusticeActive(this)) return null;
+    const ownerCrew = def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);
+    const ownerJoined = def.owner === 'guard' ? this.guardActive() : !!ownerCrew;
+    const members = (this.party?.members || []).filter(k => k !== def.owner);
+    const team = [...(ownerCrew ? [def.owner] : []), ...members].slice(0, this.partyMax());
+    this.fights++;
+    this.battle = { kind:'questFight', questId:id, zone:this.zone, title:def.title, team, ownerJoined,
+      foes:[], who:def.title, sub:'', sp:'mob-hitodama',
+      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax, turn:1, over:null, log:[], dmg:null,
+      talk:'', ownerName:def.ownerName };
+    const foes = questFightFoes(this, id, this.battleActors().filter(a => !a.guestGuide).length);
+    Object.assign(this.battle, { foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp, talk:foes[0].who });
+    prepareBattle(this.battle);
+    this.prepareEncounter();
+    return this.battle;
+  },
+
   /** เลือกยมทูตเข้าทีมชายแดน (สูงสุดสองคน) */
   setFrontierTeam(k) {
     const c = this.crew.find(x => x.k === k && !x.self);
@@ -3378,7 +3414,7 @@ const API = {
     const remaining = this.crewCooldown(c);
     if (remaining) return `รออีก ${remaining} วินาที`;
     if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
-    return '';
+    return this.sealWhy(c);   // last: คำฝากถึงมือ may still be cast when this is the only thing in the way
   },
 
   /** ยักษ์ทวารบาล (ข้อ C คุณเป้ 25 ก.ย. 2569) — เข้าช่วยฉากต่อสู้เองอัตโนมัติถ้าจ้างไว้แล้ว
@@ -3386,12 +3422,17 @@ const API = {
   guardCooldown(now = Date.now()) {
     return Math.ceil((this.guard?.helpRemainingMs || 0) / 1000);
   },
+  /** QUEST-REWARDS: a foe's rope / gauze stops an ally's special for one of its own turns (cleared early by คำฝากถึงมือ) */
+  sealWhy(actor) {
+    const seal = actor && this.battle?.sealed?.[actor.id];
+    return seal ? (seal.by === 'rope' ? 'ถูกเชือกรัด ใช้ท่าพิเศษไม่ได้' : 'ถูกผ้าปิดปาก ใช้ท่าพิเศษไม่ได้') : '';
+  },
   guardHelpWhy() {
     if (!this.guardActive() || (this.battle?.absentActors || []).includes(this.guard.id)) return 'พักฟื้น / Recovering';
     if (this.guard.morale < GUARD.helpMorale) return 'กำลังใจไม่พอ / Low morale';
     const remaining = this.guardCooldown();
     if (remaining) return `รออีก ${remaining} วินาที`;
-    return '';
+    return this.sealWhy(this.guard);
   },
 
   battleActors() {
@@ -3541,11 +3582,32 @@ const API = {
     } else if (newSkill) {
       const c = skillActor, effect = skillEffect(this, c, what);
       const receiver = recipient || { id:'you' };
-      if (newSkill.heal && !this.battleActors().some(a => a.id === receiver.id)) return false;
+      if (newSkill.heal && !newSkill.team && !this.battleActors().some(a => a.id === receiver.id)) return false;
       c.helpReadyAt = 0; c.helpRemainingMs = 120000; c.helpCooldownSeconds = 120;
       c.morale = Math.max(0, c.morale - newSkill.morale);
       B.helper = { ...c, at:Date.now(), lunge:!!newSkill.damage && c.k !== 'plerng', pose:newSkill.heal ? 'heal' : undefined };
-      if (newSkill.heal) {
+      if (newSkill.quest) {
+        // QUEST-REWARDS ultimates (combat-skills.js, `quest:`): team-wide support / reflect / taunt built from the existing shield, confuse, defend and area-damage rules
+        const team = this.battleActors();
+        if (newSkill.heal) {
+          let total = 0;
+          for (const a of team) {
+            const room = a.id === 'you' ? B.youMax - B.youHp : 100 - a.morale, gain = Math.max(0, Math.min(effect.heal, room));
+            if (a.id === 'you') B.youHp += gain; else a.morale += gain;
+            total += gain;
+          }
+          B.dmg.healActorId = 'you'; B.dmg.healAmount = total;
+        }
+        if (newSkill.shield || newSkill.buff) for (const a of team) grantProtection(B, a.id, effect);
+        if (newSkill.cleanse) B.sealed = {};
+        if (newSkill.reflect) confuseFoe = 1;
+        if (newSkill.taunt) {
+          B.taunt = { id:c.id, until:(B.actorTurns?.[c.id] || 0) + 2 };
+          (B.defending ||= {})[c.id] = true;
+        }
+        if (newSkill.damage) dmg = effect.damage;
+        say(`${c.name || 'ยมทูต'}ใช้ ${newSkill.name}`);
+      } else if (newSkill.heal) {
         const heal = Math.max(0, Math.min(effect.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale));
         if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
         grantProtection(B, receiver.id, effect);
@@ -3702,7 +3764,7 @@ const API = {
 
     if (YAMA_SKILL_SECONDS[what])
       (B.skillRemainingMs ||= {})[what] = YAMA_SKILL_SECONDS[what] * 1000;
-    if (what !== 'defend' && actor && B.defending) delete B.defending[actor.id];
+    if (what !== 'defend' && actor && B.defending && !newSkill?.taunt) delete B.defending[actor.id];
 
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
@@ -3721,14 +3783,15 @@ const API = {
       if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
-    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what);
+    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area;
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
       if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
       if (confuseFoe) {
         foe.confuse = (foe.confuse || 0) + confuseFoe;
-        if (what !== 'crew:kan') foe.confuseMultiplier = 1;
+        if (newSkill?.reflect) foe.confuseMultiplier = newSkill.reflect;   // เนตรรอคำอนุญาต: the foe's next attack comes back at it, harder
+        else if (what !== 'crew:kan') foe.confuseMultiplier = 1;
         if(what==='hypno'&&B.initiativeAction)foe.confuseKind='group';
       }
     }
@@ -3841,6 +3904,10 @@ const API = {
         B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
         say(B.talk);
         this.bossPending = this.bossReady();
+      } else if (B.kind === 'questFight') {
+        // QUEST-REWARDS: no coin / EXP / loot here — the quest pays when it is closed; endBattle() -> finishQuestFight() moves the quest on and teaches the move
+        B.talk = `ชนะ${B.title}`;
+        say(B.talk);
       } else if (B.kind === 'frontier') {
         const coin = Math.round((32 + B.wave * 10) * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1));   // BATTLE-FX: more demons, more reward
         const item = pick(FRONTIER.drops);
@@ -3876,10 +3943,10 @@ const API = {
       grantStoryBattleAbilities(this,B);
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : B.kind === 'frontier' ? Math.round(20 * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1)) : 20;
+      const expGain = B.kind === 'questFight' ? 0 : this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : B.kind === 'frontier' ? Math.round(20 * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1)) : 20;
       // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
       // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
-      if (B.kind !== 'soul') {
+      if (B.kind !== 'soul' && B.kind !== 'questFight') {
         // G3b — ของที่ได้ระหว่างระลอก (เบี้ยกรรม/น้ำมนต์ที่จุดพัก) จ่ายไปก่อนแล้ว บวกกลับให้สรุปครั้งเดียวตอนจบ · อาวุธใหม่แยกแถว
         const gain = B.waveGain || { coin:0, items:{} };
         const items = Object.keys(this.inventory).filter(k => (this.inventory[k] || 0) > (before.inv[k] || 0))
@@ -4074,7 +4141,7 @@ const API = {
       }
       const victims = ultimate
         ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you').map(actor => ({id:actor.id,actor}))]
-        : [this.enemyTarget()];
+        : [B.kind === 'questFight' ? this.foeTarget(counter) : this.enemyTarget()];
       B.dmg.enemyHits = [];
       B.dmg.hitActors = [];
       for (const victim of victims) {
@@ -4090,6 +4157,12 @@ const API = {
       }
       B.dmg.targetActorId = victims[0].id;
       B.dmg.hitActor = B.dmg.hitActors[0];
+      // QUEST-REWARDS: rope / gauze — the victim's special is blocked for one of its own turns (sealWhy · cleared by completeCombatTurn or by คำฝากถึงมือ)
+      if (counter.seal && !ultimate && victims[0].actor && !B.sealed?.[victims[0].id]) {
+        (B.sealed ||= {})[victims[0].id] = { by:counter.seal, until:(B.actorTurns?.[victims[0].id] || 0) + 1 };
+        B.dmg.sealedId = victims[0].id;
+        say(`${victims[0].actor.name || 'ยมทูต'}${counter.seal === 'rope' ? 'ถูกเชือกรัด' : 'ถูกผ้าปิดปาก'} — ใช้ท่าพิเศษไม่ได้หนึ่งตา`);
+      }
       if (victims.some(v => v.actor)) this.save();
       const dealt = B.dmg.enemyHits[0]?.damage ?? d;     // L2: the number after the defend stance, not before
       say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);
@@ -4130,6 +4203,8 @@ const API = {
         this.hp = 1;
         B.talk = `${ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey)?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;
         say(B.talk);
+      } else if (B.kind === 'questFight') {
+        say('ทีมถอยมาตั้งหลัก — ไม่เสียความคืบหน้าของภารกิจ กลับไปคุยเพื่อสู้ใหม่ได้');
       } else if (B.kind === 'frontier') {
         this.hp = Math.max(1, this.hp - 8);
         say('ทีมถอยกลับเข้าประตู — ชายแดนยังไม่แตก แต่บารมีท่านหาย 8');
@@ -4163,6 +4238,13 @@ const API = {
       // L5: the single hook for "fled / lost a route fight": step back from the enemy and give it a short rest from chasing.
       if(B.over!=='win')this.retreatFromDungeonFoe(B.dungeonRetreatProgress);
       this.save();
+    }
+    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no tea-house recovery, no penalty)
+    if (B.kind === 'questFight') {
+      if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+      finishQuestFight(this, B);
+      this.pendingReward = null;
+      this.save(); this.onChange(); return B;
     }
     if (B.over === 'lose') {
       this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };

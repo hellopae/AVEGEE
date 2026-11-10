@@ -129,9 +129,13 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   // (re-fitted to the same win rates, output/coordination/2026-11-10-battle-fx/) and a border fight rolls 1-3 demons.  This IS a deliberate combat change, so the
   // exact reversible snippets are kept in a fixture and the 32,000-trial evidence above stays untouched; the new numbers live in the battle-fx folder.
   const fxOnly=JSON.parse(readFileSync(new URL('./fixtures/battle-fx-runtime-changes.json',import.meta.url)));
+  // QUEST-REWARDS (10 Nov): three end-of-quest fights (own battle kind 'questFight', foes of its own), three roster-bound quest moves, rope/gauze/taunt.  None of it is reachable from the fights the
+  // 32,000 trials measured (ordinary kinds never set `aim` / `seal` / `taunt`; no random draw was added to them) — the new fights have their own simulation: scripts/sim-quest-fights.mjs,
+  // output/coordination/2026-11-10-quest-rewards/.  Reversible snippets, same method as above.
+  const questOnly=JSON.parse(readFileSync(new URL('./fixtures/quest-rewards-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

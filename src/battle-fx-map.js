@@ -56,6 +56,7 @@ const CREW_RECIPE = {
 /** Fixed (action key -> recipe). Items that heal are handled by `heal` below. */
 const ACTION_RECIPE = {
   copperInferno:'fire_l', mercySeal:'heal', lotusSanctuary:'heal', laborJudgment:'club_big', shadowCleaver:'slash_multi', abyssGatebreaker:'club_big', karmaFracture:'slash', teamJudgment:'slash',
+  eyeAwaitingPermission:'hypno', letterDelivered:'heal', gatekeeperStand:'club_big',
   atk: 'slash', strike: 'slash',
   fire: null,                 // tier by damage
   flameCharge: 'fire_charge',

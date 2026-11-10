@@ -119,7 +119,7 @@ test('L2 wording: Thai UI says พลังเวท where it said MP, English k
 
 test('L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list lives in game.js)',async()=>{
  const {FLEEABLE_KINDS}=await import('../src/game.js');
- assert.deepEqual(FLEEABLE_KINDS,['soul','mob','frontier']);
+ assert.deepEqual(FLEEABLE_KINDS,['soul','mob','frontier','questFight']);   // QUEST-REWARDS: a quest fight costs nothing to lose, so leaving it is allowed too
  const g=mk();
  assert.equal(g.fleeWhy('soul'),'');assert.equal(g.fleeWhy('mob'),'');assert.equal(g.fleeWhy('frontier'),'');
  assert.equal(g.fleeWhy('zoneBoss'),'noBoss');assert.equal(g.fleeWhy('dad'),'noBoss');assert.equal(g.fleeWhy('zoneEvent'),'noEvent');

@@ -7,9 +7,11 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
-import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor } from './side-quests.js';
+import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, pendingRetroQuestRewards, ackRetroQuestRewards } from './side-quests.js';
+import { questNeedsFight } from './quest-rewards.js';
+import { QUEST_FIGHTS, QUEST_FIGHT_SYSTEM_TEXT, fightScene } from './quest-fights.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
-import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
+import { COMBAT_SKILLS, skillForActor, questSkillsForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
 import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
@@ -340,6 +342,10 @@ setInterval(() => {
     openZoneEventAlert(nextEvent);
   }
   updateZoneEventFabs();
+  // QUEST-REWARDS: a quest fight is open in g.battle but its window is gone (should not happen — the scene blocks Esc): open it again instead of leaving the world stuck
+  if (started && g.battle?.kind === 'questFight' && !g.battle.over && !battleUI && !dlg.open) { openBattle(afterQuestFight(g.battle.questId, null)); return; }
+  if (started && !g.battle && !g.over && !dlg.open && !fx && !storyPlaying && !g.storyQueue.length && !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone &&
+      !g.assetsLoading && pendingRetroQuestRewards(g).length) openRetroQuestNotice();
 }, 400);
 
 // ---------- ลูป ----------
@@ -2534,7 +2540,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${(c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '') ? ` class="${((c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '')).trim()}"` : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
-      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id]})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id],sealed:hp?.sealed?.[c.id]?.by,taunt:hp?.taunt?.id===c.id})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), specialCooldown(c)) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
@@ -3165,18 +3171,21 @@ function openOwnerQuests(npc){
   const person=questTarget(g,quests[0]);
   modal(`<h2>ภารกิจของ${esc(person.name)}</h2>${quests.map(q=>`<article class="quest-journal-card"><h3>${esc(q.title)}</h3><button type="button" data-owner-quest="${esc(q.id)}">${questState(g,q.id).step===0?'คุยเพื่อรับเรื่อง':'คุยเรื่องที่รับไว้'}</button></article>`).join('')}<button data-close>ปิด</button>`,d=>d.querySelectorAll('[data-owner-quest]').forEach(button=>button.onclick=()=>openQuests(button.dataset.ownerQuest,{owner:npc})),'quest-journal');
 }
-function openQuests(id = null,{owner=null,notice=''}={}){
+function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
   const q=QUESTS.find(q=>q.id===id),s=q&&questState(g,id),p=q&&questTarget(g,q),blocked=(!q||!q.kin)&&questsPaused(g);
   const zoneName=z=>ZONES.find(x=>x.k===z)?.name||z;
   if(!q){openHelp('quests');return;}
   const waiting=!q.kin&&s.step===2;
   const choiceAt=q.kin?(q.id==='kinGuard'?2:1):q.id==='sqBoon'?1:3;
-  const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right);
+  // QUEST-REWARDS: sqKan / sqBoon / sqGuard end in a fight at step 3. After a lost fight the choice is already saved (retry = no choice buttons)
+  const fightQuest=!q.kin&&questNeedsFight(q.id)&&s.step===3&&!s.fought;
+  const retryFight=fightQuest&&q.id!=='sqBoon'&&[0,1].includes(s.choice);
+  const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right)&&!retryFight;
   const lines=questDialogue(g,q);
   const ownerConversation=owner===p.npc&&g.zone===p.zone;
   const acceptanceNeedsTalk=s.step===0&&!ownerConversation;
   const art=p.art||artUrl('crew-'+p.npc,'png',p.zone);
-  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?'<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>':g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
+  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?`<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>${questReceiptHtml(s.reward,celebrate)}`:g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:'คุย · เผชิญหน้า'):'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
     d.querySelector('[data-quest-list]').onclick=()=>openHelp('quests');
     d.querySelector('[data-quest-talk]')?.addEventListener('click',()=>{if(questNear(g,q))openOwnerQuests(p.npc);});
     d.querySelector('[data-walk-quest]')?.addEventListener('click',()=>{d.close();g.walkTo(p.x,p.y);});
@@ -3184,10 +3193,54 @@ function openQuests(id = null,{owner=null,notice=''}={}){
     const act=c=>{if(renderedStep===0&&!ownerConversation||questState(g,id).step!==renderedStep)return;const accepting=renderedStep===0;
       const buttons=[...d.querySelectorAll('[data-quest-next],[data-quest-choice]')],disabled=buttons.map(b=>b.disabled);buttons.forEach(b=>b.disabled=true);
       if(!advanceOnce(c)){buttons.forEach((b,i)=>b.disabled=disabled[i]);return;}
-      const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(accepting)trackedQuestId=id;refresh();openQuests(id,{owner,notice:accepting?'รับภารกิจ “'+q.title+'” แล้ว':''});
+      const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(accepting)trackedQuestId=id;refresh();
+      // a quest fight started: show Rae's scene, then the battle (the result scene brings the player back here)
+      if(g.battle?.kind==='questFight'){openQuestFightScene(id,{owner});return;}
+      const closed=questState(g,id).done;
+      openQuests(id,{owner,notice:accepting?'รับภารกิจ “'+q.title+'” แล้ว':closed?'ปิดภารกิจ “'+q.title+'” แล้ว':'',celebrate:closed});
     };
     d.querySelector('[data-quest-next]')?.addEventListener('click',()=>act(null));
     d.querySelectorAll('[data-quest-choice]').forEach(b=>b.onclick=()=>act(Number(b.dataset.questChoice)));
+  },'quest-journal');
+}
+// ---------- QUEST-REWARDS · ใบรับของ + ฉากต่อสู้ท้ายภารกิจ ----------
+/** "ได้รับ:" rows for a closed quest (coin · EXP · items · the quest's ultimate). `celebrate` = just closed: pop-in animation + sound. */
+function questReceiptHtml(r,celebrate=false){
+  if(!r)return '';
+  const rows=[];
+  if(r.coin)rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">${r.coin>0?'+':''}${r.coin}</span></div>`);
+  if(r.exp)rows.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt">+${r.exp}</span></div>`);
+  for(const[k,n]of Object.entries(r.items||{}))if(n>0&&ITEMS[k])rows.push(`<div class="reward-row">${itemImg(k)}<span><b>${esc(itemName(k))}</b></span><span class="amt">×${n}</span></div>`);
+  if(r.skill&&COMBAT_SKILLS[r.skill])rows.push(`<div class="reward-row power"><img src="${esc(SKILL_ICONS[r.skill]||'')}" alt="" onerror="this.remove()"><span><b>${esc(COMBAT_SKILLS[r.skill].name)}</b><small>ท่าไม้ตายใหม่</small></span></div>`);
+  if(!rows.length)return '';
+  if(celebrate)sfx('star');
+  return `<section class="quest-receipt${celebrate?' celebrate':''}" aria-label="ได้รับ"><h3>ได้รับ:</h3><div class="reward-list">${rows.map((row,i)=>row.replace('class="reward-row','style="--i:'+i+'" class="reward-row')).join('')}</div></section>`;
+}
+/** scene before the quest fight (Rae's "ก่อนสู้" lines) → the battle itself */
+function openQuestFightScene(id,{owner=null}={}){
+  const def=QUEST_FIGHTS[id],b=g.battle;
+  if(!def||b?.kind!=='questFight')return;
+  const s=questState(g,id),lines=fightScene(id,s,'pre');
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${b.ownerJoined?'':`<p class="quest-fight-standby">${esc(QUEST_FIGHT_SYSTEM_TEXT.standby(def.ownerName))}</p>`}<div class="row"><button type="button" class="gold" data-quest-fight-go>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.enter)}</button></div>`,d=>{
+    const block=e=>e.preventDefault();d.addEventListener('cancel',block);   // the fight is already open in g.battle: leave through the button only
+    d.querySelector('[data-quest-fight-go]').onclick=()=>{d.removeEventListener('cancel',block);if(g.battle?.kind==='questFight')openBattle(afterQuestFight(id,owner));};
+  },'quest-journal');
+}
+/** openBattle() `after` for a quest fight: win/lose/flee text by Rae, then back to the quest dialogue */
+const afterQuestFight=(id,owner)=>(over,done)=>openQuestFightResult(id,done?.over==='win'?'win':'lose',owner);
+function openQuestFightResult(id,outcome,owner=null){
+  const def=QUEST_FIGHTS[id];if(!def)return;
+  const s=questState(g,id),lines=fightScene(id,s,outcome);
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row"><button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button></div>`,d=>{
+    if(outcome==='win')sfx('star');
+    d.querySelector('[data-quest-fight-next]').onclick=()=>openQuests(id,{owner});
+  },'quest-journal');
+}
+/** old saves that closed quests before the reward table existed: told once, after the fact (the reward was already added when the save loaded) */
+function openRetroQuestNotice(){
+  const list=pendingRetroQuestRewards(g);if(!list.length)return;
+  modal(`<h2>รางวัลภารกิจที่ปิดไปแล้ว</h2><p>ภารกิจที่ท่านปิดไปก่อนมีระบบรางวัลตามระดับ ได้รับของเพิ่มย้อนหลังครั้งเดียวแล้ว</p>${list.map(q=>`<article class="quest-journal-card"><h3>${esc(q.title)}</h3>${questReceiptHtml({...g.sideQuests[q.id].reward,exp:0},false)}</article>`).join('')}<div class="row"><button type="button" class="gold" data-retro-ok>รับทราบ</button></div>`,d=>{
+    d.querySelector('[data-retro-ok]').onclick=()=>{ackRetroQuestRewards(g);dlg.close();};
   },'quest-journal');
 }
 function openSignalChoice(ev){
@@ -3620,7 +3673,7 @@ function openBattle(after) {
     const sources = g.battleActors().flatMap(actor => actor.id === 'you'
       ? ['fire',...POWERS.filter(p => ['ice','hypno'].includes(p.k) && !g.powerLocked(p)).map(p => p.k),...['flameCharge','windFan','rage','valkyrieSpear','cooldownClock'].filter(k => g.abilities?.[k])].map(k => actionCutsceneSrc(k))
       : [actor.k === 'nira' ? niraHealingCutscene(g.zone) : crewCutsceneSrc(crewBattleKey(actor))?.src]);
-    void battleCutscenes.warm([...sources, ...g.battleActors().flatMap(a => skillScenes(skillForActor(a), a.homeZone === 'global' ? g.zone : a.homeZone || g.zone))]);
+    void battleCutscenes.warm([...sources, ...g.battleActors().flatMap(a => [skillForActor(a), ...questSkillsForActor(a).filter(k => g.skillUnlocked(a, k))].flatMap(k => skillScenes(k, a.homeZone === 'global' ? g.zone : a.homeZone || g.zone)))]);
   };
   warmBattleCutscenes();
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
@@ -4062,7 +4115,10 @@ function openBattle(after) {
     const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
     const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
     const unlockedSkill = skillForActor(actor);
-    const newSkillChoice = unlockedSkill && g.skillUnlocked(actor, unlockedSkill) ? battleChoice(unlockedSkill, SKILL_ICONS[unlockedSkill], COMBAT_SKILLS[unlockedSkill].name, !g.skillWhy(unlockedSkill, actor), g.skillWhy(unlockedSkill, actor) || `กำลังใจ ${COMBAT_SKILLS[unlockedSkill].morale} · 120 วินาที`) : '';
+    const skillChoiceFor = k => battleChoice(k, SKILL_ICONS[k], COMBAT_SKILLS[k].name, !g.skillWhy(k, actor), g.skillWhy(k, actor) || `กำลังใจ ${COMBAT_SKILLS[k].morale} · 120 วินาที`);
+    // QUEST-REWARDS: an ultimate won from a quest fight sits next to the trained one (bound to this roster ID only — see combat-skills.js)
+    const questSkillChoices = questSkillsForActor(actor).filter(k => g.skillUnlocked(actor, k)).map(skillChoiceFor).join('');
+    const newSkillChoice = (unlockedSkill && g.skillUnlocked(actor, unlockedSkill) ? skillChoiceFor(unlockedSkill) : '') + questSkillChoices;
     const specialChoice = newSkillChoice + battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
@@ -4093,7 +4149,8 @@ function openBattle(after) {
         <div class="battle9-confirm" ${selection?'':'hidden'}>${selection}</div>
       </section>`;
 
-    const finLabel = b.over==='win' && b.dungeonToken ? 'เก็บไอเท็มที่ตก' : b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
+    const finLabel = b.kind === 'questFight' && b.over ? (b.over === 'win' ? 'กลับไปคุยต่อ' : 'กลับไปตั้งหลัก')
+      : b.over==='win' && b.dungeonToken ? 'เก็บไอเท็มที่ตก' : b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
@@ -4129,6 +4186,7 @@ function openBattle(after) {
           : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? 'ผีบุกเข้าโซน'
+          : b.kind === 'questFight' ? `${b.title} · ${QUEST_FIGHTS[b.questId]?.ownerName || ''}`
                                : 'วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, {...view,choosingTarget}, act, false, fxNow,
             b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
@@ -4203,7 +4261,7 @@ function openBattle(after) {
     // ชุด 29C ข้อ 6 — ปุ่ม "กลับไปคุมโซน" ของศึกที่กลับสู่แผนที่ (ผีบุก · เทวดาทดสอบ · แหกคุก · ชายแดนบุก) ต้องอยู่กลางจอ
     // ใหญ่ระดับปุ่มหลัก ไม่ใช่ปุ่มเล็กมุมล่างที่ทับ/ชิดกล่องผลกับแถบ HUD (ภาพจากคุณเป้ 2 ต.ค. 2569)
     // ชุด 30B ข้อ 6 — ศึกอีเวนต์โซน 2–4 ที่ชนะ (ปุ่ม "รับรางวัล" ระลอกสุดท้าย) ก็อยู่กลางจอเหมือนกัน ไม่ทับป้ายมุมล่าง
-    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak'].includes(b.kind) || (['mob', 'zoneEvent'].includes(b.kind) && b.over === 'win');
+    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak', 'questFight'].includes(b.kind) || (['mob', 'zoneEvent'].includes(b.kind) && b.over === 'win');
     const finRow = b.over === 'win' || (b.over && returnsToZone) ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
     if (finRow) {
       const multi = view.foes?.length > 1;
@@ -4502,6 +4560,8 @@ function openBattle(after) {
     if (fleeLayerEl) bindFleeConfirm(fleeLayerEl, { onCancel:() => { fleeConfirm = false; paint(); }, onConfirm:() => { fleeConfirm = false; performFlee(); } });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
+      // QUEST-REWARDS: team-wide / area ultimates need no target or receiver (คำฝากถึงมือ · ทวารบาลยืนรับแค้น); เนตรรอคำอนุญาต still asks for the foe it reads
+      const wide = COMBAT_SKILLS[el.dataset.act]; if (wide?.quest && (wide.area || (wide.team && !wide.target))) { executeCommand(el.dataset.act, 'you'); return; }
       if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
       b.command = el.dataset.act;b.commandLabel=(el.querySelector("b")?.textContent||el.textContent).trim();b.commandTarget=null;b.commandRecipient=null;paint();
     });
@@ -4742,7 +4802,7 @@ function openBattle(after) {
     updatePlay();
     refresh();
     // ชุด 28B — ถ้ามีหน้าต่างรางวัลรออยู่ ให้ฟังก์ชันต่อท้าย (เช่นกลับแผนที่ชายแดน) รอจนปิดหน้าต่างรางวัลก่อน
-    if (done?.over === 'lose') return;
+    if (done?.over === 'lose' && done.kind !== 'questFight') return;
     if (after) afterReward(() => after(done ? done.over : null, done));
   }
 
