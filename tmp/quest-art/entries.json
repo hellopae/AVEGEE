@@ -1,0 +1,92 @@
+[
+  {
+    "key": "debtor",
+    "name": "mob-q-debtor.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-2185c4f6-bc14-47a2-8da7-63d399a09884.png"
+  },
+  {
+    "key": "collector",
+    "name": "mob-q-collector.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-1ec39d1f-c321-462a-b6ca-1eaf78d5dcb7.png"
+  },
+  {
+    "key": "gauze-big",
+    "name": "mob-q-gauze-big.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-b93f5804-85f2-485a-b744-40a10aebdb2d.png"
+  },
+  {
+    "key": "gauze",
+    "name": "mob-q-gauze.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-db010f6c-a02d-4285-aaaf-e48022724c02.png"
+  },
+  {
+    "key": "tale-big",
+    "name": "mob-q-tale-big.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-822707b8-aaeb-4ce1-aafa-619ddd3a6714.png"
+  },
+  {
+    "key": "tale",
+    "name": "mob-q-tale.png",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-9455e751-b430-42c3-b65f-0c2e1e08d79b.png"
+  },
+  {
+    "key": "eye-icon",
+    "name": "skills-v1/icons/eyeAwaitingPermission.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-50ad320e-9c2c-4fee-a3c5-335a058c464d.png"
+  },
+  {
+    "key": "letter-icon",
+    "name": "skills-v1/icons/letterDelivered.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-7a5beb9b-551e-48c3-828e-028d28916211.png"
+  },
+  {
+    "key": "gate-icon",
+    "name": "skills-v1/icons/gatekeeperStand.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-e0a23ece-2cb9-428c-af75-93e4c731920c.png"
+  },
+  {
+    "key": "eye-cut-01",
+    "name": "skills-v1/th/kan-eyeAwaitingPermission-cut-01.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-045f55e6-7770-46a2-adf5-d0572734ebe4.png"
+  },
+  {
+    "key": "eye-cut-02",
+    "name": "skills-v1/th/kan-eyeAwaitingPermission-cut-02.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-5816bd72-842e-44bd-a72a-b1411d8606f1.png"
+  },
+  {
+    "key": "letter-cut-01",
+    "name": "skills-v1/th/boon-letterDelivered-cut-01.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-e91122a4-9454-415b-ae40-0d4169fd41f8.png"
+  },
+  {
+    "key": "letter-cut-02",
+    "name": "skills-v1/th/boon-letterDelivered-cut-02.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-918fd9d4-babf-4360-8dc0-ca778b6cd8a4.png"
+  },
+  {
+    "key": "gate-cut-01",
+    "name": "skills-v1/th/guard-gatekeeperStand-cut-01.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-d1f28397-17d2-4628-a6a2-d790e6e8a710.png"
+  },
+  {
+    "key": "gate-cut-02",
+    "name": "skills-v1/th/guard-gatekeeperStand-cut-02.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-f518462c-c86a-4b8d-9276-9d1c65f7ead9.png"
+  },
+  {
+    "key": "eye-fx",
+    "name": "skills-v1/fx/kan-eye-reflect-512.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-f9a2a57f-f832-4d85-bb99-d26356af7ccc.png"
+  },
+  {
+    "key": "letter-fx",
+    "name": "skills-v1/fx/boon-letter-glow-512.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-ee6e580b-845d-4412-97c3-f1f2aa814685.png"
+  },
+  {
+    "key": "gate-fx",
+    "name": "skills-v1/fx/guard-gate-wave-768.webp",
+    "source": "/Users/agapae/.codex/generated_images/01a1c669-790c-7291-9951-f9609a7e950b/exec-3a74b1eb-5509-4ad9-81e4-c6f57f67f20f.png"
+  }
+]

@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { createGame } from '../src/game.js';
 import { syncSceneZone, ITEMS } from '../src/data.js';
 import { QUESTS, SIDE_QUESTS, KIN_QUESTS, questTarget, questState, advanceQuest, recordQuestVerdict, pendingRetroQuestRewards, ackRetroQuestRewards } from '../src/side-quests.js';
 import { QUEST_REWARDS, QUEST_TIER_LABEL, questRewardPreview } from '../src/quest-rewards.js';
 import { COMBAT_SKILLS, skillBelongsTo, questSkillsForActor, skillForActor, skillUnlocked, unlockQuestSkill } from '../src/combat-skills.js';
 import { QUEST_FIGHTS, fightScene, questFightFoes } from '../src/quest-fights.js';
-import { SKILL_ICONS, skillScenes } from '../src/combat-skill-assets.js';
+import { SKILL_ICONS, skillScenes, SKILL_FX, SKILL_CAST_MS, QUEST_ART_PLACEHOLDER } from '../src/combat-skill-assets.js';
+import { enemyArt } from '../src/enemy-art.js';
 import { questJournalHtml, questRewardText, questReceiptText } from '../src/quest-panels.js';
 import { simulate, setup } from '../scripts/sim-quest-fights.mjs';
 globalThis.Image ??= class {};
@@ -273,11 +275,61 @@ test('the new moves are in the same strength class as the trained ones (replay w
     assert.ok(trained - first <= 35);
   }
 });
-test('every new move has icon + scenes that exist (placeholders point at the same character\'s existing move art) and never touches the art files', () => {
-  for (const skill of ['eyeAwaitingPermission', 'letterDelivered', 'gatekeeperStand'])
-    for (const zone of ['th', 'asia', 'west', 'cyberhell']) { for (const src of [...skillScenes(skill, zone), SKILL_ICONS[skill]]) assert.ok(existsSync(new URL('../' + src, import.meta.url)), src); }
-  assert.deepEqual(skillScenes('eyeAwaitingPermission', 'asia'), skillScenes('karmaFracture', 'asia'));
+test('quest ultimates resolve their dedicated icons, two scenes and effects while retaining cast timing', () => {
+  const moves = {
+    eyeAwaitingPermission:['kan', 'kan-eye-reflect-512', 512],
+    letterDelivered:['boon', 'boon-letter-glow-512', 512],
+    gatekeeperStand:['guard', 'guard-gate-wave-768', 768],
+  };
+  assert.deepEqual(QUEST_ART_PLACEHOLDER, {});
+  for (const [skill, [kind, impact, size]] of Object.entries(moves)) {
+    const scenes = ['01', '02'].map(frame => `img/skills-v1/th/${kind}-${skill}-cut-${frame}.webp`);
+    assert.equal(SKILL_ICONS[skill], `img/skills-v1/icons/${skill}.webp`);
+    assert.deepEqual(SKILL_FX[skill], { impact, size });
+    assert.equal(SKILL_CAST_MS[skill], 250);
+    for (const zone of ['th', 'asia', 'west', 'cyberhell']) assert.deepEqual(skillScenes(skill, zone), scenes);
+    for (const src of [...scenes, SKILL_ICONS[skill], `img/skills-v1/fx/${impact}.webp`])
+      assert.ok(existsSync(new URL('../' + src, import.meta.url)), src);
+  }
   const css = readFileSync(new URL('../src/combat-skill-assets.js', import.meta.url), 'utf8'); assert.doesNotMatch(css, /hue-rotate|brightness\(|saturate\(|tint\s*:/i);
+});
+test('quest enemy art resolves through the normal sprite entry point and all 18 review assets meet export constraints', () => {
+  const pairs = { sqKan:['mob-q-debtor', 'mob-q-collector'], sqBoon:['mob-q-gauze-big', 'mob-q-gauze'], sqGuard:['mob-q-tale-big', 'mob-q-tale'] };
+  const assets = [];
+  for (const [id, sprites] of Object.entries(pairs)) {
+    for (const extra of [false, true]) assert.deepEqual([...new Set(QUEST_FIGHTS[id].foes(extra).map(foe => foe.sp))], sprites);
+    for (const sprite of sprites) {
+      for (const zone of ['th', 'asia', 'west', 'cyberhell']) assert.equal(enemyArt(sprite, zone), `img/${sprite}.png`);
+      assets.push([`${sprite}.png`, 512, 512, true]);
+    }
+  }
+  for (const skill of ['eyeAwaitingPermission', 'letterDelivered', 'gatekeeperStand']) {
+    assets.push([SKILL_ICONS[skill].slice(4), 256, 256, true]);
+    for (const scene of skillScenes(skill)) assets.push([scene.slice(4), 1375, 768, false]);
+    const { impact, size } = SKILL_FX[skill];
+    assets.push([`skills-v1/fx/${impact}.webp`, size, size, true]);
+  }
+  assert.equal(assets.length, 18);
+  execFileSync('python3', ['-c', `
+import json, sys
+from pathlib import Path
+from PIL import Image
+review = Path('docs/art-reviews/2026-11-10-quest-art')
+for name, width, height, transparent in json.loads(sys.argv[1]):
+    path = Path('img') / name
+    image = Image.open(path)
+    assert image.size == (width, height), (name, image.size)
+    if transparent:
+        assert image.mode == 'RGBA', (name, image.mode)
+        alpha = image.getchannel('A')
+        assert alpha.getextrema() == (0, 255), name
+        left, top, right, bottom = alpha.getbbox()
+        assert left > 0 and top > 0 and right < width and bottom < height, name
+    assert path.read_bytes() == (review / name).read_bytes(), name
+assert (review / 'contact-sheet.jpg').is_file()
+assert (review / 'README.md').is_file()
+assert sum(p.stat().st_size for p in review.rglob('*') if p.is_file()) <= 40_000_000
+`, JSON.stringify(assets)], { cwd:new URL('..', import.meta.url) });
 });
 test('UI: the battle menu lists quest moves next to the trained one and wide moves fire without asking for a target', () => {
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');

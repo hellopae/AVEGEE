@@ -2,7 +2,7 @@
 // บทและท่าไม้ตายมาจาก Rae: Output/Rae/2026-11-10-avegee-quest-battle-script.md (บทด้านล่างคัดมาทุกตัวอักษร ห้ามแก้ที่นี่ ให้แก้ผ่าน Rae)
 // ที่ไม่ใช่บทของ Rae มีเฉพาะ `standby*` / `loseNote` (ข้อความระบบชั่วคราว) — ดูหัวข้อ "ข้อความที่ Rae ควรเกลา" ในรายงาน
 // รูปแบบบท: บรรทัดบรรยายไม่มีป้าย · บรรทัดพูดขึ้นต้นด้วยชื่อผู้พูดและเครื่องหมายคำพูด (เหมือน SIDE_CONTENT)
-// ภาพศัตรู: ใช้ sprite ปีศาจเดิมเป็นตัวแทน (ไม่แต่งสี/ฟิลเตอร์) จนกว่า Codex จะวาด "เงา" ชุดใหม่ — ดูรายการ prompt ในรายงาน
+// ภาพศัตรู: ชุดเงาภารกิจ — ดูภาพและ prompt ใน docs/art-reviews/2026-11-10-quest-art/
 import { scaleFoeHp, scaleFoeAtk } from './data.js';
 
 const Q = (text) => text;   // marker only: keeps the lines greppable as verbatim Rae copy
@@ -46,8 +46,8 @@ export const QUEST_FIGHTS = Object.freeze({
     unlockLog:Q('✓ ซาโตริเรียนท่าไม้ตาย "เนตรรอคำอนุญาต"'),
     foes(extra) {   // extra = privateOpened → ลูกทวงหนี้เพิ่ม 1 ตัว (Rae)
       return [
-        { who:'เงาเจ้าหนี้', sub:'สมุดบัญชีหนี้กับเชือก', sp:'mob-kasha', hp:340, atk:[23, 39], speed:5, bigOne:true },
-        ...Array.from({ length:extra ? 3 : 2 }, (_, i) => ({ who:'เงาลูกทวงหนี้', sub:'เชือกจับตัว', sp:'mob-hitodama', hp:100, atk:[12, 21], speed:11, seal:'rope', aim:'support', aimChance:.6 })),
+        { who:'เงาเจ้าหนี้', sub:'สมุดบัญชีหนี้กับเชือก', sp:'mob-q-debtor', hp:340, atk:[23, 39], speed:5, bigOne:true },
+        ...Array.from({ length:extra ? 3 : 2 }, (_, i) => ({ who:'เงาลูกทวงหนี้', sub:'เชือกจับตัว', sp:'mob-q-collector', hp:100, atk:[12, 21], speed:11, seal:'rope', aim:'support', aimChance:.6 })),
       ];
     },
   },
@@ -78,8 +78,8 @@ export const QUEST_FIGHTS = Object.freeze({
     unlockLog:Q('✓ เกรซเรียนท่าไม้ตาย "คำฝากถึงมือ"'),
     foes() {   // หนักสุด: ผืนใหญ่ 1 + ผืนเล็ก 3 · ปิดปากฝ่ายสนับสนุน ต้องเก็บ "คำฝากถึงมือ"/ผู้ฟื้นพลังไว้ปลด
       return [
-        { who:'เงาผ้าก๊อซผืนใหญ่', sub:'ม่านเตียงผู้ป่วย', sp:'mob-tanee', hp:260, atk:[22, 38], speed:6, seal:'gauze', aim:'support', aimChance:.5, bigOne:true },
-        ...Array.from({ length:3 }, () => ({ who:'เงาผ้าก๊อซ', sub:'กระซิบซ้ำ ๆ', sp:'mob-hitodama', hp:62, atk:[11, 20], speed:11, seal:'gauze', aim:'support', aimChance:.7 })),
+        { who:'เงาผ้าก๊อซผืนใหญ่', sub:'ม่านเตียงผู้ป่วย', sp:'mob-q-gauze-big', hp:260, atk:[22, 38], speed:6, seal:'gauze', aim:'support', aimChance:.5, bigOne:true },
+        ...Array.from({ length:3 }, () => ({ who:'เงาผ้าก๊อซ', sub:'กระซิบซ้ำ ๆ', sp:'mob-q-gauze', hp:62, atk:[11, 20], speed:11, seal:'gauze', aim:'support', aimChance:.7 })),
       ];
     },
   },
@@ -116,8 +116,8 @@ export const QUEST_FIGHTS = Object.freeze({
     unlockLog:Q('✓ ยักษ์ทวารบาลเรียนท่าไม้ตาย "ทวารบาลยืนรับแค้น"'),
     foes() {   // เบาสุด: เงาเล่าเรื่อง 1 (ล็อกเป้าที่ยักษ์) + เงาเล็ก 2 (กระจายตีทีมสนับสนุน)
       return [
-        { who:'เงาแค้นเล่าเรื่อง', sub:'เรื่องเล่าที่เล่าผิดคน', sp:'mob-pret2', hp:420, atk:[26, 46], speed:6, aim:'guard', aimChance:1, bigOne:true },
-        ...Array.from({ length:2 }, () => ({ who:'เงาแค้น', sub:'พึมพำพร้อมกัน', sp:'mob-hitodama', hp:120, atk:[14, 25], speed:11, aim:'support', aimChance:.7 })),
+        { who:'เงาแค้นเล่าเรื่อง', sub:'เรื่องเล่าที่เล่าผิดคน', sp:'mob-q-tale-big', hp:420, atk:[26, 46], speed:6, aim:'guard', aimChance:1, bigOne:true },
+        ...Array.from({ length:2 }, () => ({ who:'เงาแค้น', sub:'พึมพำพร้อมกัน', sp:'mob-q-tale', hp:120, atk:[14, 25], speed:11, aim:'support', aimChance:.7 })),
       ];
     },
   },

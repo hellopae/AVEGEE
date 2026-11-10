@@ -5,11 +5,12 @@ const thai = {
   laborJudgment:['taan-laborJudgment-cut-01'], shadowCleaver:['dam-shadowCleaver-cut-01'],
   abyssGatebreaker:['guard-abyssGatebreaker-cut-01'], karmaFracture:['kan-karmaFracture-cut-01'],
   teamJudgment:['yama-teamJudgment-cut-01','yama-teamJudgment-cut-02'],
+  eyeAwaitingPermission:['kan-eyeAwaitingPermission-cut-01','kan-eyeAwaitingPermission-cut-02'],
+  letterDelivered:['boon-letterDelivered-cut-01','boon-letterDelivered-cut-02'],
+  gatekeeperStand:['guard-gatekeeperStand-cut-01','guard-gatekeeperStand-cut-02'],
 };
-// QUEST-REWARDS (10 Nov 2026): the three quest ultimates have no drawn art yet. Until Codex/Kittanate draw their own set (see Output/Toby/2026-11-10-avegee-quest-rewards.md),
-// each one points at the files of the move the SAME character already has — files are used as drawn, nothing is recoloured or filtered.
-// To switch to real art later: add the skill's own files to `thai` below and delete its row here.
-export const QUEST_ART_PLACEHOLDER = { eyeAwaitingPermission:'karmaFracture', letterDelivered:'lotusSanctuary', gatekeeperStand:'abyssGatebreaker' };
+// Quest ultimates now have dedicated art. Keep the exported fallback table for existing callers.
+export const QUEST_ART_PLACEHOLDER = {};
 const artOf = skill => QUEST_ART_PLACEHOLDER[skill] || skill;
 const allSkills = [...Object.keys(thai), ...Object.keys(QUEST_ART_PLACEHOLDER)];
 export const SKILL_SCENES = Object.fromEntries(['th','asia','west','cyberhell'].map(zone => [zone,
@@ -25,7 +26,11 @@ export const SKILL_FX = {
   abyssGatebreaker:{ impact:'guard-impact-768', size:768 },
   karmaFracture:{ projectile:'kan-mirror-shard-256', impact:'kan-impact-512', size:512 },
   teamJudgment:{ impact:'yama-impact-768', size:768 },
+  eyeAwaitingPermission:{ impact:'kan-eye-reflect-512', size:512 },
+  letterDelivered:{ impact:'boon-letter-glow-512', size:512 },
+  gatekeeperStand:{ impact:'guard-gate-wave-768', size:768 },
 };
 for (const [skill, from] of Object.entries(QUEST_ART_PLACEHOLDER)) SKILL_FX[skill] = SKILL_FX[from];
-export const SKILL_CAST_MS = { copperInferno:250, mercySeal:250, lotusSanctuary:250, laborJudgment:200, shadowCleaver:180, abyssGatebreaker:250, karmaFracture:250, teamJudgment:250 };
+export const SKILL_CAST_MS = { copperInferno:250, mercySeal:250, lotusSanctuary:250, laborJudgment:200, shadowCleaver:180, abyssGatebreaker:250, karmaFracture:250, teamJudgment:250,
+  eyeAwaitingPermission:250, letterDelivered:250, gatekeeperStand:250 };
 for (const [skill, from] of Object.entries(QUEST_ART_PLACEHOLDER)) SKILL_CAST_MS[skill] = SKILL_CAST_MS[from];
