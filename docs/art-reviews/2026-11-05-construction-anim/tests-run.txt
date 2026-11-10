@@ -1,0 +1,86 @@
+{
+  "stages": {
+    "1": {
+      "unique": 8,
+      "delta": [
+        1.66789,
+        1.21224,
+        1.24427,
+        1.69825,
+        1.47999,
+        1.13389,
+        1.13809,
+        1.80599
+      ],
+      "wrapRatio": 1.4514,
+      "groundWidths": [
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ]
+    },
+    "2": {
+      "unique": 8,
+      "delta": [
+        1.76073,
+        1.30073,
+        1.64358,
+        1.7686,
+        1.43113,
+        1.41685,
+        1.64205,
+        1.95387
+      ],
+      "wrapRatio": 1.1899,
+      "groundWidths": [
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ]
+    },
+    "3": {
+      "unique": 8,
+      "delta": [
+        1.50529,
+        1.24382,
+        1.98846,
+        1.84931,
+        1.18234,
+        1.5826,
+        1.793,
+        1.50463
+      ],
+      "wrapRatio": 0.9507,
+      "groundWidths": [
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ]
+    }
+  }
+}
+stage-1: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Base edge drift 0 px; min silhouette IoU 1.00000
+  Static RGBA pixels fixed: 449,401; original motion cores preserved in all 8 cels
+stage-2: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Base edge drift 0 px; min silhouette IoU 1.00000
+  Static RGBA pixels fixed: 434,440; original motion cores preserved in all 8 cels
+stage-3: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Base edge drift 0 px; min silhouette IoU 1.00000
+  Static RGBA pixels fixed: 433,189; original motion cores preserved in all 8 cels
+Container checks complete; bundle 14,164,699 bytes. Visual acceptance is separate.
