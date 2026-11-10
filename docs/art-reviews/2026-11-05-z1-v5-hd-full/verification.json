@@ -1,0 +1,331 @@
+{
+  "imageGenCount": 10,
+  "allImagesDecode": true,
+  "imageCount": 31,
+  "images": [
+    {
+      "path": "style-reference.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "review-closeups.jpg",
+      "size": [
+        1424,
+        1344
+      ]
+    },
+    {
+      "path": "r1-c5/q22-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r1-c5/removed-check.jpg",
+      "size": [
+        640,
+        600
+      ]
+    },
+    {
+      "path": "r1-c5/r1-c5-compare.jpg",
+      "size": [
+        3608,
+        2304
+      ]
+    },
+    {
+      "path": "r1-c5/seam-check.jpg",
+      "size": [
+        1670,
+        1472
+      ]
+    },
+    {
+      "path": "r1-c5/structure-check.jpg",
+      "size": [
+        1670,
+        1088
+      ]
+    },
+    {
+      "path": "r1-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r1-c5/q11-native.webp",
+      "size": [
+        1212,
+        1298
+      ]
+    },
+    {
+      "path": "r1-c5/q12-native.webp",
+      "size": [
+        1136,
+        1385
+      ]
+    },
+    {
+      "path": "r1-c5/r1-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c1/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c1/removed-check.jpg",
+      "size": [
+        640,
+        2400
+      ]
+    },
+    {
+      "path": "r3-c1/r3-c1-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c1/seam-check.jpg",
+      "size": [
+        2080,
+        1472
+      ]
+    },
+    {
+      "path": "r3-c1/structure-check.jpg",
+      "size": [
+        2080,
+        1088
+      ]
+    },
+    {
+      "path": "r3-c1/q21-native.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "path": "r3-c1/q11-native.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "path": "r3-c1/r3-c1-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ]
+    },
+    {
+      "path": "r3-c1/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/q12-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/v5.webp",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/q11-v5.webp",
+      "size": [
+        576,
+        640
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/q22-v5.webp",
+      "size": [
+        640,
+        640
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/q21-removal-reference.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "path": "r3-c1/inputs/q21-v5.webp",
+      "size": [
+        576,
+        640
+      ]
+    },
+    {
+      "path": "r1-c5/inputs/q12-v5.webp",
+      "size": [
+        473,
+        576
+      ]
+    },
+    {
+      "path": "r1-c5/inputs/v5.webp",
+      "size": [
+        819,
+        1024
+      ]
+    },
+    {
+      "path": "r1-c5/inputs/q11-v5.webp",
+      "size": [
+        538,
+        576
+      ]
+    },
+    {
+      "path": "r1-c5/inputs/q22-v5.webp",
+      "size": [
+        473,
+        640
+      ]
+    },
+    {
+      "path": "r1-c5/inputs/q21-v5.webp",
+      "size": [
+        538,
+        640
+      ]
+    }
+  ],
+  "pythonScriptsParse": true,
+  "chunks": {
+    "r3-c1": {
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "native": [
+        {
+          "id": "q11",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1189,
+            1323
+          ],
+          "sha256": "c1b4e32829829e15602988768c5e47379d1b0adfd037edbd67b4716103f94202"
+        },
+        {
+          "id": "q12",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1254,
+            1254
+          ],
+          "sha256": "627df16db6187feca1d452b820c74d0b1642120930b0a289a57b675751a96981"
+        },
+        {
+          "id": "q21",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1189,
+            1323
+          ],
+          "sha256": "861f9c5b5dbb8b0adf06b039a00686c0a7d31b397d14dbf0f8a2e90c858e8660"
+        },
+        {
+          "id": "q22",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1254,
+            1254
+          ],
+          "sha256": "50f39ab70de5e95bbf773b007fe935730aec10d12bec012781b322c16769a095"
+        }
+      ],
+      "sharpnessRatio": 17.136554819549115,
+      "reliableStructureMaxPx1x": 1.0,
+      "reliableStructureProbes": 17,
+      "totalStructureProbes": 18,
+      "wholeStructureWithin4pxVerified": false
+    },
+    "r1-c5": {
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "native": [
+        {
+          "id": "q11",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1212,
+            1298
+          ],
+          "sha256": "6cf43569ceba937fecd509411d31e4345e6f05c6242b3ab3fcf53fb80240c2e4"
+        },
+        {
+          "id": "q12",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1136,
+            1385
+          ],
+          "sha256": "508d6d5b09b88d34a43a585b3d2f6087e82cdd0be8f9948ec75a6d023cb4701e"
+        },
+        {
+          "id": "q21",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1149,
+            1368
+          ],
+          "sha256": "f75ce7274d73c515613a3e16b97c1792462c0598af59c6a9ca7cb56c931d6e03"
+        },
+        {
+          "id": "q22",
+          "pixelExactLossless": true,
+          "nativeSize": [
+            1078,
+            1460
+          ],
+          "sha256": "41704d159611c4142379099024fbae66727a3bcd13e67247647b00d37c1eff48"
+        }
+      ],
+      "sharpnessRatio": 31.26062095892015,
+      "reliableStructureMaxPx1x": 1.0,
+      "reliableStructureProbes": 20,
+      "totalStructureProbes": 20,
+      "wholeStructureWithin4pxVerified": false
+    }
+  },
+  "protectedSourceDirectoriesUnchanged": true,
+  "changedPathsRestrictedToBrief": true,
+  "qaPassedClaimed": false,
+  "outputBytes": 58123054,
+  "limitBytes": 60000000,
+  "withinSizeBudget": true
+}

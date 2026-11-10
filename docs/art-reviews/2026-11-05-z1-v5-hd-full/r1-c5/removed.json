@@ -1,0 +1,78 @@
+{
+  "objects": [
+    {
+      "id": "ice-tree-06",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3396.0,
+        698.329,
+        67.2,
+        139.186
+      ],
+      "footWorld": [
+        3429.6,
+        826.38
+      ],
+      "chunk": [
+        "r1-c5",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        4346.703125,
+        893.915676953125,
+        86.0125,
+        178.16895390625
+      ]
+    },
+    {
+      "id": "ice-tree-07",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3588.0,
+        619.137,
+        69.6,
+        131.987
+      ],
+      "footWorld": [
+        3622.8,
+        740.565
+      ],
+      "chunk": [
+        "r1-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        4592.453125,
+        792.5437300781249,
+        89.084375,
+        168.95367148437498
+      ]
+    }
+  ],
+  "requestedRemovedIds": [
+    "ice-tree-06",
+    "ice-tree-07"
+  ],
+  "removedIds": [],
+  "fogRemovalIds": [],
+  "fogKeptIds": [
+    "lump-03",
+    "lump-06"
+  ],
+  "visualRemovalVerified": false,
+  "clearAtCoreSurveyRectIds": [
+    "ice-tree-06",
+    "ice-tree-07"
+  ],
+  "contextOnlyUnverifiedIds": [],
+  "fogRemovedIds": [],
+  "notes": "Survey rectangles contain lower path/cliff and no identifiable snow-tree in source core; do not claim these IDs were removed. Two stump-like shapes at west plaza front are visible in v5 source and retained; they were not newly introduced. Distant forest preserved.",
+  "identityMappingNeedsReview": true
+}

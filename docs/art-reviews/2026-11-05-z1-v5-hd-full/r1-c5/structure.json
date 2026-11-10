@@ -1,0 +1,312 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Prototype independent fixed 49x49 DoG sigma1.5/6 template probes, search +/-12 map px; confidence>=0.6. Not SIFT residual.",
+  "probes": [
+    {
+      "id": "plaza-north-0",
+      "sourcePx1x": [
+        369,
+        507
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9283977746963501,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-north-1",
+      "sourcePx1x": [
+        464,
+        512
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9208124876022339,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west-2",
+      "sourcePx1x": [
+        235,
+        534
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9140470623970032,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west-3",
+      "sourcePx1x": [
+        186,
+        572
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8960364460945129,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west-4",
+      "sourcePx1x": [
+        162,
+        628
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7638396620750427,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-5",
+      "sourcePx1x": [
+        625,
+        576
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8967075943946838,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-6",
+      "sourcePx1x": [
+        634,
+        626
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8839548826217651,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-south-7",
+      "sourcePx1x": [
+        222,
+        735
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8945164084434509,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-south-8",
+      "sourcePx1x": [
+        318,
+        746
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9210821390151978,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-9",
+      "sourcePx1x": [
+        577,
+        750
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8134068846702576,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-top-left-10",
+      "sourcePx1x": [
+        365,
+        779
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9270302653312683,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-top-right-11",
+      "sourcePx1x": [
+        447,
+        784
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8391038179397583,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-mid-left-12",
+      "sourcePx1x": [
+        346,
+        825
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9475263357162476,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-mid-right-13",
+      "sourcePx1x": [
+        437,
+        830
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.945128858089447,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-bottom-left-14",
+      "sourcePx1x": [
+        325,
+        879
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9288256764411926,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stairs-bottom-right-15",
+      "sourcePx1x": [
+        416,
+        883
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9450978636741638,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-edge-16",
+      "sourcePx1x": [
+        111,
+        720
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9394779205322266,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-edge-17",
+      "sourcePx1x": [
+        539,
+        825
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9483341574668884,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-18",
+      "sourcePx1x": [
+        409,
+        403
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9183973670005798,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-19",
+      "sourcePx1x": [
+        377,
+        318
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.876887857913971,
+      "reliable": true,
+      "within4px": true
+    }
+  ],
+  "reliableCount": 20,
+  "totalCount": 20,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitation": "Local translations do not verify all contours, stair counts, liquid masks or newly exposed terrain. Low confidence probes remain recorded."
+}

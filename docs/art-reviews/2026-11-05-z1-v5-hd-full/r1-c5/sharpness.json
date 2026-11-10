@@ -1,0 +1,14 @@
+{
+  "method": "Whole chunk grayscale Laplacian variance ksize1 after Pillow Lanczos to 2.8 device px/world unit; same prototype units; no sharpening.",
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "deviceSize": [
+    1792,
+    2240
+  ],
+  "v5LaplacianVariance": 87.08603212930694,
+  "newLaplacianVariance": 2722.363441210606,
+  "ratioToV5": 31.26062095892015,
+  "threshold": 10,
+  "meetsNumericalThreshold": true,
+  "limitation": "Texture/contrast and object removal affect this metric; not a resolution or visual quality multiplier."
+}

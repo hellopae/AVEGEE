@@ -1,0 +1,258 @@
+{
+  "objects": [
+    {
+      "id": "west-tree-14",
+      "kind": "tree",
+      "bboxWorld": [
+        640.8,
+        1461.451,
+        93.6,
+        163.183
+      ],
+      "footWorld": [
+        687.6,
+        1611.58
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        820.190625,
+        1870.771455859375,
+        119.803125,
+        208.886988671875
+      ]
+    },
+    {
+      "id": "west-tree-15",
+      "kind": "tree",
+      "bboxWorld": [
+        43.2,
+        1519.045,
+        72.0,
+        131.987
+      ],
+      "footWorld": [
+        79.2,
+        1640.473
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        55.29375,
+        1944.496275390625,
+        92.15625,
+        168.95367148437498
+      ]
+    },
+    {
+      "id": "west-tree-16",
+      "kind": "tree",
+      "bboxWorld": [
+        57.6,
+        2008.596,
+        96.0,
+        155.984
+      ],
+      "footWorld": [
+        105.6,
+        2152.101
+      ],
+      "chunk": [
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        73.725,
+        2571.1598015625,
+        122.875,
+        199.67170625
+      ]
+    },
+    {
+      "id": "west-tree-17",
+      "kind": "tree",
+      "bboxWorld": [
+        696.0,
+        1994.197,
+        108.0,
+        163.183
+      ],
+      "footWorld": [
+        750.0,
+        2144.326
+      ],
+      "chunk": [
+        "r3-c1",
+        "r3-c2"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        890.84375,
+        2552.7279566406246,
+        138.234375,
+        208.886988671875
+      ]
+    },
+    {
+      "id": "west-bed-09",
+      "kind": "shrub",
+      "bboxWorld": [
+        564.0,
+        1588.638,
+        139.2,
+        74.392
+      ],
+      "footWorld": [
+        633.6,
+        1657.079
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        721.890625,
+        2033.58075234375,
+        178.16875,
+        95.227571875
+      ]
+    },
+    {
+      "id": "west-bed-10",
+      "kind": "shrub",
+      "bboxWorld": [
+        69.6,
+        1735.023,
+        144.0,
+        74.392
+      ],
+      "footWorld": [
+        141.6,
+        1803.465
+      ],
+      "chunk": [
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        89.084375,
+        2220.964988671875,
+        184.3125,
+        95.227571875
+      ]
+    },
+    {
+      "id": "west-bed-11",
+      "kind": "shrub",
+      "bboxWorld": [
+        360.0,
+        1631.834,
+        153.6,
+        67.193
+      ],
+      "footWorld": [
+        436.8,
+        1693.652
+      ],
+      "chunk": [
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        460.78125,
+        2088.87500703125,
+        196.6,
+        86.01228945312499
+      ]
+    },
+    {
+      "id": "south-rock-00",
+      "kind": "rock",
+      "bboxWorld": [
+        832.8,
+        2109.385,
+        117.6,
+        165.583
+      ],
+      "footWorld": [
+        891.6,
+        2261.722
+      ],
+      "chunk": [
+        "r3-c2"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        1065.940625,
+        2700.177595703125,
+        150.521875,
+        211.95917617187501
+      ]
+    }
+  ],
+  "requestedRemovedIds": [
+    "west-tree-14",
+    "west-tree-15",
+    "west-tree-16",
+    "west-tree-17",
+    "west-bed-09",
+    "west-bed-10",
+    "west-bed-11",
+    "south-rock-00"
+  ],
+  "removedIds": [
+    "west-tree-16",
+    "west-tree-17",
+    "west-bed-11"
+  ],
+  "fogRemovalIds": [
+    "lump-13"
+  ],
+  "fogKeptIds": [],
+  "visualRemovalVerified": false,
+  "clearAtCoreSurveyRectIds": [
+    "west-tree-14",
+    "west-tree-15",
+    "west-bed-09",
+    "west-bed-10"
+  ],
+  "contextOnlyUnverifiedIds": [
+    "south-rock-00"
+  ],
+  "fogRemovedIds": [
+    "lump-13"
+  ],
+  "notes": "west-tree-16 removed in attempt 3; west-tree-17 survey tree label covers shrub-like foliage, cleared in core. west-tree-14/15 cross north core boundary; visible core portion cleared. west-bed-09 source core shows stairs/paving, west-bed-10 survey rect is river: no identifiable shrub there. Full ID attribution remains unverified.",
+  "identityMappingNeedsReview": true
+}

@@ -1,0 +1,282 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Prototype independent fixed 49x49 DoG sigma1.5/6 template probes, search +/-12 map px; confidence>=0.6. Not SIFT residual.",
+  "probes": [
+    {
+      "id": "north-bank-0",
+      "sourcePx1x": [
+        90,
+        206
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9411922693252563,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-1",
+      "sourcePx1x": [
+        213,
+        207
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.915656566619873,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-2",
+      "sourcePx1x": [
+        327,
+        207
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9681409001350403,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-3",
+      "sourcePx1x": [
+        460,
+        192
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8884209990501404,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-4",
+      "sourcePx1x": [
+        580,
+        207
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9386314153671265,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-5",
+      "sourcePx1x": [
+        723,
+        213
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.916425347328186,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-6",
+      "sourcePx1x": [
+        866,
+        212
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9238438010215759,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-bank-7",
+      "sourcePx1x": [
+        972,
+        209
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9167415499687195,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-8",
+      "sourcePx1x": [
+        64,
+        421
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6856384873390198,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-9",
+      "sourcePx1x": [
+        211,
+        483
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8558253049850464,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-10",
+      "sourcePx1x": [
+        410,
+        444
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8495537042617798,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-11",
+      "sourcePx1x": [
+        554,
+        448
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8923693299293518,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-12",
+      "sourcePx1x": [
+        710,
+        469
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8201013207435608,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "south-bank-13",
+      "sourcePx1x": [
+        851,
+        470
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9440924525260925,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-tip-14",
+      "sourcePx1x": [
+        389,
+        353
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7495971918106079,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-tip-15",
+      "sourcePx1x": [
+        156,
+        129
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7029935717582703,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-tip-16",
+      "sourcePx1x": [
+        264,
+        106
+      ],
+      "displacementPx1x": [
+        -1,
+        2
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.2751287519931793,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "cliff-tip-17",
+      "sourcePx1x": [
+        625,
+        153
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7169437408447266,
+      "reliable": true,
+      "within4px": true
+    }
+  ],
+  "reliableCount": 17,
+  "totalCount": 18,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitation": "Local translations do not verify all contours, stair counts, liquid masks or newly exposed terrain. Low confidence probes remain recorded."
+}

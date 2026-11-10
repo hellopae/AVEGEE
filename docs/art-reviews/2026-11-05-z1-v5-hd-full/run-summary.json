@@ -1,0 +1,139 @@
+{
+  "chunks": [
+    {
+      "chunk": "r3-c1",
+      "generationCount": 6,
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "actualNativeSizes": [
+        {
+          "id": "q11",
+          "size": [
+            1189,
+            1323
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1189,
+            1323
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "structureReliableCount": 17,
+      "structureTotalCount": 18,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 17.136554819549115,
+      "sharpnessThresholdMet": true
+    },
+    {
+      "chunk": "r1-c5",
+      "generationCount": 4,
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "actualNativeSizes": [
+        {
+          "id": "q11",
+          "size": [
+            1212,
+            1298
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1136,
+            1385
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1149,
+            1368
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1078,
+            1460
+          ]
+        }
+      ],
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "structureReliableCount": 20,
+      "structureTotalCount": 20,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 31.26062095892015,
+      "sharpnessThresholdMet": true
+    }
+  ],
+  "imageGenCount": 10,
+  "imageGenLimit": 10,
+  "qaPassedClaimed": false,
+  "neighborChunkSeamsAssembled": false,
+  "pendingReview": [
+    "Semantic structure contours and exact animation-mask alignment not fully verified.",
+    "Inventory ID attribution: several survey rectangles show no matching source object; south-rock-00 context-only is unverified."
+  ],
+  "visualReviewFile": "visual-review.json",
+  "acceptance": [
+    {
+      "id": 1,
+      "allEightPartsComplete": true,
+      "sharpnessNumericalThresholdMet": true,
+      "reliableStructureProbesWithin4px": true,
+      "wholeSemanticStructureVerified": false
+    },
+    {
+      "id": 2,
+      "internalSeamsInspected": true,
+      "obviousRectangularJoinObserved": false,
+      "inventoryRemovalIdentityMappingVerified": false,
+      "fogLump13Removed": true,
+      "paleIcePlazasKept": true
+    },
+    {
+      "id": 3,
+      "eightLosslessNativePartsAndRegistrationComplete": true,
+      "neighborSeamsDeferred": true
+    }
+  ],
+  "pendingParts": [],
+  "generationMethod": "Built-in ImageGen only; 8 initial generations + 2 retries for r3-c1/q21; no Shado/API/CLI."
+}

@@ -1,0 +1,263 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedGenerations": 8,
+  "generations": [
+    {
+      "chunk": "r3-c1",
+      "id": "q11",
+      "chunkRectPx1x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "coreMapPx1x": [
+        0,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        0,
+        1984,
+        576,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r3-c1/q11, 576 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: west-tree-15 (tree) near crop rectangle [55, -40, 92, 169]; west-tree-16 (tree) near crop rectangle [74, 587, 123, 200]; west-bed-10 (shrub) near crop rectangle [89, 237, 184, 95]; west-bed-11 (shrub) near crop rectangle [461, 105, 197, 86]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: lump-13 [37, 48, 275, 153]: fog lump - delete when the ground is repainted. For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-47e14ddf-3974-400e-b6c8-9c503ae89347.png"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q12",
+      "chunkRectPx1x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "coreMapPx1x": [
+        512,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        448,
+        1984,
+        640,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r3-c1/q12, 640 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: west-tree-14 (tree) near crop rectangle [372, -113, 120, 209]; west-tree-17 (tree) near crop rectangle [443, 569, 138, 209]; west-bed-09 (shrub) near crop rectangle [274, 50, 178, 95]; west-bed-11 (shrub) near crop rectangle [13, 105, 197, 86]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: no specified small fog lump here; preserve large edge cloud seas. For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-4eaeaafa-da40-4f1c-86a2-83b92267d384.png"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q21",
+      "chunkRectPx1x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "coreMapPx1x": [
+        0,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        0,
+        2496,
+        576,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r3-c1/q21, 576 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: west-tree-16 (tree) near crop rectangle [74, 75, 123, 200]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: no specified small fog lump here; preserve large edge cloud seas. For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-d635b40e-fa8b-4b40-bd3b-0530712a1e08.png",
+      "initialNativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-c753c234-d9d0-48d2-9012-b7b144656919.png",
+      "selectedAttempt": 3
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q22",
+      "chunkRectPx1x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "coreMapPx1x": [
+        512,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        448,
+        2496,
+        640,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r3-c1/q22, 640 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: west-tree-17 (tree) near crop rectangle [443, 57, 138, 209]; south-rock-00 (rock) near crop rectangle [618, 204, 151, 212]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: no specified small fog lump here; preserve large edge cloud seas. For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-c99b8bd3-f055-45e1-8664-2c1a5fc58b40.png"
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q11",
+      "chunkRectPx1x": [
+        4096,
+        0,
+        819,
+        1024
+      ],
+      "coreMapPx1x": [
+        4096,
+        0,
+        410,
+        512
+      ],
+      "contextMapPx1x": [
+        4032,
+        0,
+        538,
+        576
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r1-c5/q11, 538 by 576 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: none in this crop; keep distant scenery. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: lump-03 [219, 523, 440, 205]: false positive - pale stone plaza of the ice zone (keep). For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-e0dcc8f4-6c81-433b-acc2-452e17a6034c.png"
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q12",
+      "chunkRectPx1x": [
+        4096,
+        0,
+        819,
+        1024
+      ],
+      "coreMapPx1x": [
+        4506,
+        0,
+        409,
+        512
+      ],
+      "contextMapPx1x": [
+        4442,
+        0,
+        473,
+        576
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r1-c5/q12, 473 by 576 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: none in this crop; keep distant scenery. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: lump-03 [-191, 523, 440, 205]: false positive - pale stone plaza of the ice zone (keep). For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-9a5fb43d-05e4-4a3d-b541-bff88ffa58aa.png"
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q21",
+      "chunkRectPx1x": [
+        4096,
+        0,
+        819,
+        1024
+      ],
+      "coreMapPx1x": [
+        4096,
+        512,
+        410,
+        512
+      ],
+      "contextMapPx1x": [
+        4032,
+        448,
+        538,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r1-c5/q21, 538 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: ice-tree-06 (snow-tree) near crop rectangle [315, 446, 86, 178]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: lump-03 [219, 75, 440, 205]: false positive - pale stone plaza of the ice zone (keep); lump-06 [70, 555, 301, 117]: false positive - grey stone plaza of the ice zone (keep). For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/inputs/q21-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-bb893b08-99de-40f7-870c-008e90c4d425.png"
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q22",
+      "chunkRectPx1x": [
+        4096,
+        0,
+        819,
+        1024
+      ],
+      "coreMapPx1x": [
+        4506,
+        512,
+        409,
+        512
+      ],
+      "contextMapPx1x": [
+        4442,
+        448,
+        473,
+        640
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r1-c5/q22, 473 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: ice-tree-07 (snow-tree) near crop rectangle [150, 345, 89, 169]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: lump-03 [-191, 75, 440, 205]: false positive - pale stone plaza of the ice zone (keep). For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/inputs/q22-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/style-reference.webp"
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-62344080-5b5f-44d6-9d8e-c00497601372.png"
+    }
+  ],
+  "sourceMaster": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+  "sourceMasterSha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773",
+  "repairNote": "Pilot repaired lossless master; no repair definitions intersect these chunks or their 64px contexts.",
+  "generationCount": 10,
+  "retries": [
+    {
+      "index": 2,
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image; SECOND image is ONLY the approved material-detail style reference, never copy its layout. Return ONE full-bleed terrain crop with IDENTICAL framing and aspect ratio to FIRST image. Crop r3-c1/q21, 576 by 640 original map pixels. Preserve every large shape, paving ring, ornament, stair count/width/position, cliff silhouette, path boundary, riverbank, liquid channel and bridge DECK at exact input coordinates. No redesign, crop, zoom, rotation or camera change. Repaint substantially finer actual drawn detail: individual chipped stone bevels, fine mineral grain, fissures, recessed mortar, subtle sparse moss inside cracks and tiny dry leaves, at the approved second image's material quality. Preserve FIRST image's overall lighting, colors and broad value hierarchy, including cool purple/brown cliffs or ice-blue stones as present. Keep lava, purple river, blue water, waterfalls and large white cloud seas as BASE terrain with exactly original shapes; animation masks must still align. Keep distant inaccessible forest, mountains and sky with matching fine detail. Remove ONLY these inventoried foreground objects and their shadows, filling continuous matching ground underneath: west-tree-16 (tree) near crop rectangle [74, 75, 123, 200]. Rectangle units are FIRST-image original pixels [x,y,width,height], approximate object survey; do not erase the rectangular region or architecture. Bridge rails/posts may be removed, NEVER bridge floors or stairs. Fog instructions: no specified small fog lump here; preserve large edge cloud seas. For deleted fog fill coherent existing ravine/cliff terrain; keep specified pale stone plazas. No new trees, bushes, props or structures. Keep all features clipped at identical edge locations. No blur, DOF, parallax, sharpening halos or photographic noise. Maximum resolved native detail, ideally 2048px long edge; do not embed image in a larger canvas. No borders, captions, text or watermark.\nCRITICAL SPECIFIC REMOVAL: In FIRST image, REMOVE the large red-leaf TREE on the exposed walkable ground in the UPPER LEFT quadrant: canopy around x=75..235, y=70..255 and trunk/roots around x=110..180,y=180..295 (576x640 input coordinates). This is west-tree-16. Erase the ENTIRE canopy, trunk and roots; fill with continuous ochre/brown paved ground and any original cliff behind it. No stump, no roots, no replacement bushes. Do not keep this tree as distant scenery. Preserve the other red forest trees in lower half of image and all cliff shapes.",
+      "chunk": "r3-c1",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-3bb3ea99-9607-43b3-80b1-360a6863e629.png"
+    },
+    {
+      "index": 2,
+      "prompt": "Use case: precise-object-edit. Edit this terrain image ONLY. Remove the ONE large freestanding RED LEAF TREE in the upper-left/upper-middle clearing, just below the upper cliff wall and above the central paved clearing. Its canopy spans roughly x=260..740,y=210..450 and its trunk/root around x=420,y=400 in this 1189x1323 image. Remove ALL of that tree's red leaves, branches, trunk, shadow and roots. Fill the entire exposed area with continuous ochre stone paving and original purple rocky cliff behind it, matching the surrounding detailed hand-painted terrain. No tree, bushes or stump left there. This is a strict object removal, not a restyle. Preserve every other pixel, especially the orange tree clipped at far LEFT, all trees in the LOWER HALF, all rocks and every image edge. Same framing, same dimensions and colors; no crop, zoom, relighting, text, DOF or blur.",
+      "referenced_image_paths": [
+        "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-3bb3ea99-9607-43b3-80b1-360a6863e629.png"
+      ],
+      "chunk": "r3-c1",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-80a1-7e83-9b3d-a9a59abbd506/exec-d635b40e-fa8b-4b40-bd3b-0530712a1e08.png"
+    }
+  ]
+}

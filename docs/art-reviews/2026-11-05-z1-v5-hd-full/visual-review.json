@@ -1,0 +1,43 @@
+{
+  "basis": "Offline inspection of final seam-check sheets, inventory source/final crops and review-closeups.jpg. Not in-game QA.",
+  "internalSeams": "No obvious straight rectangular joins in inspected final overview and seam strips; fine painted cracks can differ near seams.",
+  "structure": "Reliable local probes <=1px; one low-confidence r3-c1 probe retained, all contours and animation masks not certified.",
+  "inventory": {
+    "r3-c1": {
+      "removedIds": [
+        "west-tree-16",
+        "west-tree-17",
+        "west-bed-11"
+      ],
+      "clearAtCoreSurveyRectIds": [
+        "west-tree-14",
+        "west-tree-15",
+        "west-bed-09",
+        "west-bed-10"
+      ],
+      "contextOnlyUnverifiedIds": [
+        "south-rock-00"
+      ],
+      "fogRemovedIds": [
+        "lump-13"
+      ],
+      "fogKeptIds": [],
+      "notes": "west-tree-16 removed in attempt 3; west-tree-17 survey tree label covers shrub-like foliage, cleared in core. west-tree-14/15 cross north core boundary; visible core portion cleared. west-bed-09 source core shows stairs/paving, west-bed-10 survey rect is river: no identifiable shrub there. Full ID attribution remains unverified."
+    },
+    "r1-c5": {
+      "removedIds": [],
+      "clearAtCoreSurveyRectIds": [
+        "ice-tree-06",
+        "ice-tree-07"
+      ],
+      "contextOnlyUnverifiedIds": [],
+      "fogRemovedIds": [],
+      "fogKeptIds": [
+        "lump-03",
+        "lump-06"
+      ],
+      "notes": "Survey rectangles contain lower path/cliff and no identifiable snow-tree in source core; do not claim these IDs were removed. Two stump-like shapes at west plaza front are visible in v5 source and retained; they were not newly introduced. Distant forest preserved."
+    }
+  },
+  "qaPassedClaimed": false
+}

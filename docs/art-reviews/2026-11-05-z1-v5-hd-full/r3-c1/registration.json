@@ -1,0 +1,226 @@
+{
+  "chunk": "r3-c1",
+  "chunkRectMapPx1x": [
+    0,
+    2048,
+    1024,
+    1024
+  ],
+  "outputSize": [
+    2048,
+    2048
+  ],
+  "overlapMapPx1x": 128,
+  "featherOutputPx": 8,
+  "colorCorrection": "0.8*normalized Gaussian(reference-aligned,sigma70), excluding removed object/fog boxes from color reference, at 2x; no sharpening",
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMapPx1x": [
+        0,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        0,
+        1984,
+        576,
+        640
+      ],
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "affine": [
+        [
+          1.0006746181787483,
+          -0.0005834702061938404,
+          -0.022113722924359463
+        ],
+        [
+          0.0005834702061938404,
+          1.0006746181787483,
+          -0.5501020875452791
+        ]
+      ],
+      "affineConvention": "resized native (context width,height) to context-local 1x; nativeToContextPx1x is directly usable",
+      "nativeToContextPx1x": [
+        [
+          0.48476751898314463,
+          -0.00028225316097056527,
+          -0.022113722924359463
+        ],
+        [
+          0.0002826567188962591,
+          0.4840754010842017,
+          -0.5501020875452791
+        ]
+      ],
+      "siftMatches": 339,
+      "siftInliers": 316,
+      "inlierResidualPx1x": {
+        "median": 0.661616325378418,
+        "max": 2.7473111152648926
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreMapPx1x": [
+        512,
+        2048,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        448,
+        1984,
+        640,
+        640
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.0004561607063984,
+          -8.540640760303866e-05,
+          0.08626237716432603
+        ],
+        [
+          8.540640760303866e-05,
+          1.0004561607063984,
+          -0.0650419192801198
+        ]
+      ],
+      "affineConvention": "resized native (context width,height) to context-local 1x; nativeToContextPx1x is directly usable",
+      "nativeToContextPx1x": [
+        [
+          0.5105996354482416,
+          -4.3588597181774114e-05,
+          0.08626237716432603
+        ],
+        [
+          4.3588597181774114e-05,
+          0.5105996354482416,
+          -0.0650419192801198
+        ]
+      ],
+      "siftMatches": 726,
+      "siftInliers": 676,
+      "inlierResidualPx1x": {
+        "median": 0.5417053699493408,
+        "max": 2.747744560241699
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q21",
+      "coreMapPx1x": [
+        0,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        0,
+        2496,
+        576,
+        640
+      ],
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "affine": [
+        [
+          1.000496583035183,
+          -1.9762255199814326e-05,
+          -0.3383373464750643
+        ],
+        [
+          1.9762255199814326e-05,
+          1.000496583035183,
+          -0.34457934012533264
+        ]
+      ],
+      "affineConvention": "resized native (context width,height) to context-local 1x; nativeToContextPx1x is directly usable",
+      "nativeToContextPx1x": [
+        [
+          0.48468127151241835,
+          -9.559972281089318e-06,
+          -0.3383373464750643
+        ],
+        [
+          9.573640870557655e-06,
+          0.48398927675171366,
+          -0.34457934012533264
+        ]
+      ],
+      "siftMatches": 824,
+      "siftInliers": 778,
+      "inlierResidualPx1x": {
+        "median": 0.5912795066833496,
+        "max": 2.6274333000183105
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q22",
+      "coreMapPx1x": [
+        512,
+        2560,
+        512,
+        512
+      ],
+      "contextMapPx1x": [
+        448,
+        2496,
+        640,
+        640
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.022879788365879,
+          5.045777932762546e-05,
+          -11.874424882611606
+        ],
+        [
+          -5.045777932762546e-05,
+          1.022879788365879,
+          0.8082805119957113
+        ]
+      ],
+      "affineConvention": "resized native (context width,height) to context-local 1x; nativeToContextPx1x is directly usable",
+      "nativeToContextPx1x": [
+        [
+          0.5220439111277212,
+          2.575197669033516e-05,
+          -11.874424882611606
+        ],
+        [
+          -2.575197669033516e-05,
+          0.5220439111277212,
+          0.8082805119957113
+        ]
+      ],
+      "siftMatches": 910,
+      "siftInliers": 396,
+      "inlierResidualPx1x": {
+        "median": 1.6484309434890747,
+        "max": 2.5997796058654785
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    }
+  ]
+}
