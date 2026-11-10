@@ -1,0 +1,567 @@
+{
+  "devicePxPerWorldUnit": 2.8,
+  "method": "Decoded lossy output vs v5 + baked repairs. Identical Lanczos game scale. Laplacian ksize1/full chunk; highpass sigma1/full chunk; Hann FFT >=0.25 cycles/device pixel in centre512 window.",
+  "limitations": "Texture, contrast and object removal affect these diagnostics; a ratio is not a perceptual resolution multiplier. No threshold was requested for this assembly.",
+  "chunks": [
+    {
+      "chunk": "r1-c1",
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 28.657204828350146,
+        "highPassMeanSquare": 5.139094340895863,
+        "fftHighFrequencyFraction": 0.0002335324743946217
+      },
+      "v7": {
+        "laplacianVariance": 1237.8464787946402,
+        "highPassMeanSquare": 114.4406591587478,
+        "fftHighFrequencyFraction": 0.10865306182520063
+      },
+      "ratioToV5": {
+        "laplacianVariance": 43.194948223633354,
+        "highPassMeanSquare": 22.26864337711266,
+        "fftHighFrequencyFraction": 465.2588986043944
+      }
+    },
+    {
+      "chunk": "r1-c2",
+      "rectPx1x": [
+        1024,
+        0,
+        2048,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 44.834972297312525,
+        "highPassMeanSquare": 7.883784597680906,
+        "fftHighFrequencyFraction": 0.0002050210220466833
+      },
+      "v7": {
+        "laplacianVariance": 1352.5302951348415,
+        "highPassMeanSquare": 131.07787921190882,
+        "fftHighFrequencyFraction": 0.09270197271731516
+      },
+      "ratioToV5": {
+        "laplacianVariance": 30.16685916890628,
+        "highPassMeanSquare": 16.626263387569807,
+        "fftHighFrequencyFraction": 452.1583776721536
+      }
+    },
+    {
+      "chunk": "r1-c3",
+      "rectPx1x": [
+        2048,
+        0,
+        3072,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 63.76730575969463,
+        "highPassMeanSquare": 11.237618435049562,
+        "fftHighFrequencyFraction": 0.00027227011888270855
+      },
+      "v7": {
+        "laplacianVariance": 1519.0384836964051,
+        "highPassMeanSquare": 151.7864643140281,
+        "fftHighFrequencyFraction": 0.0356642177753658
+      },
+      "ratioToV5": {
+        "laplacianVariance": 23.821587968932867,
+        "highPassMeanSquare": 13.50699573858228,
+        "fftHighFrequencyFraction": 130.9883652371328
+      }
+    },
+    {
+      "chunk": "r1-c4",
+      "rectPx1x": [
+        3072,
+        0,
+        4096,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 66.42646085771055,
+        "highPassMeanSquare": 11.808000864166068,
+        "fftHighFrequencyFraction": 0.00017859078584780375
+      },
+      "v7": {
+        "laplacianVariance": 1399.9304399082348,
+        "highPassMeanSquare": 140.14224268372186,
+        "fftHighFrequencyFraction": 0.036165602010844296
+      },
+      "ratioToV5": {
+        "laplacianVariance": 21.074891268209658,
+        "highPassMeanSquare": 11.868413992838855,
+        "fftHighFrequencyFraction": 202.50541952183838
+      }
+    },
+    {
+      "chunk": "r1-c5",
+      "rectPx1x": [
+        4096,
+        0,
+        4915,
+        1024
+      ],
+      "deviceSize": [
+        1792,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 87.08603212930694,
+        "highPassMeanSquare": 15.945524366589861,
+        "fftHighFrequencyFraction": 0.00024105188049438516
+      },
+      "v7": {
+        "laplacianVariance": 2769.0138166024453,
+        "highPassMeanSquare": 236.79977797190742,
+        "fftHighFrequencyFraction": 0.0829048667833985
+      },
+      "ratioToV5": {
+        "laplacianVariance": 31.796302448261308,
+        "highPassMeanSquare": 14.850548186929888,
+        "fftHighFrequencyFraction": 343.9295582899616
+      }
+    },
+    {
+      "chunk": "r2-c1",
+      "rectPx1x": [
+        0,
+        1024,
+        1024,
+        2048
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 30.734828600753758,
+        "highPassMeanSquare": 5.417596914389681,
+        "fftHighFrequencyFraction": 0.00019010633451146041
+      },
+      "v7": {
+        "laplacianVariance": 946.3690282721451,
+        "highPassMeanSquare": 97.37182850813535,
+        "fftHighFrequencyFraction": 0.0281227017778561
+      },
+      "ratioToV5": {
+        "laplacianVariance": 30.791420396889276,
+        "highPassMeanSquare": 17.97325087983309,
+        "fftHighFrequencyFraction": 147.93142927155193
+      }
+    },
+    {
+      "chunk": "r2-c2",
+      "rectPx1x": [
+        1024,
+        1024,
+        2048,
+        2048
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 54.139893173124825,
+        "highPassMeanSquare": 9.66740168007881,
+        "fftHighFrequencyFraction": 0.00034596956747499284
+      },
+      "v7": {
+        "laplacianVariance": 1153.2247832675664,
+        "highPassMeanSquare": 118.34411267691638,
+        "fftHighFrequencyFraction": 0.051326705449047466
+      },
+      "ratioToV5": {
+        "laplacianVariance": 21.3008322639253,
+        "highPassMeanSquare": 12.241563616910934,
+        "fftHighFrequencyFraction": 148.35612803648527
+      }
+    },
+    {
+      "chunk": "r2-c3",
+      "rectPx1x": [
+        2048,
+        1024,
+        3072,
+        2048
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 94.45302367997542,
+        "highPassMeanSquare": 17.1614180924185,
+        "fftHighFrequencyFraction": 0.00018369662632964707
+      },
+      "v7": {
+        "laplacianVariance": 2217.389032948648,
+        "highPassMeanSquare": 230.84188367527037,
+        "fftHighFrequencyFraction": 0.044737885862690084
+      },
+      "ratioToV5": {
+        "laplacianVariance": 23.476104274454766,
+        "highPassMeanSquare": 13.45121262311363,
+        "fftHighFrequencyFraction": 243.54222914473726
+      }
+    },
+    {
+      "chunk": "r2-c4",
+      "rectPx1x": [
+        3072,
+        1024,
+        4096,
+        2048
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 91.85774249913261,
+        "highPassMeanSquare": 16.361886812821893,
+        "fftHighFrequencyFraction": 0.00018222696585388018
+      },
+      "v7": {
+        "laplacianVariance": 1922.6321077395246,
+        "highPassMeanSquare": 191.67943635352492,
+        "fftHighFrequencyFraction": 0.06288706373253301
+      },
+      "ratioToV5": {
+        "laplacianVariance": 20.93053949978881,
+        "highPassMeanSquare": 11.714995864860555,
+        "fftHighFrequencyFraction": 345.10295135440816
+      }
+    },
+    {
+      "chunk": "r2-c5",
+      "rectPx1x": [
+        4096,
+        1024,
+        4915,
+        2048
+      ],
+      "deviceSize": [
+        1792,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 45.20697559935352,
+        "highPassMeanSquare": 8.248375978628074,
+        "fftHighFrequencyFraction": 9.794502883442345e-05
+      },
+      "v7": {
+        "laplacianVariance": 2211.2333214924724,
+        "highPassMeanSquare": 204.45717039307607,
+        "fftHighFrequencyFraction": 0.043426683155889156
+      },
+      "ratioToV5": {
+        "laplacianVariance": 48.91354248268035,
+        "highPassMeanSquare": 24.78756677954959,
+        "fftHighFrequencyFraction": 443.3781241649556
+      }
+    },
+    {
+      "chunk": "r3-c1",
+      "rectPx1x": [
+        0,
+        2048,
+        1024,
+        3072
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 55.878332862598164,
+        "highPassMeanSquare": 9.654794704010966,
+        "fftHighFrequencyFraction": 0.0005147397367614289
+      },
+      "v7": {
+        "laplacianVariance": 936.0939418889552,
+        "highPassMeanSquare": 92.74476737532682,
+        "fftHighFrequencyFraction": 0.06484237922059251
+      },
+      "ratioToV5": {
+        "laplacianVariance": 16.752359885015903,
+        "highPassMeanSquare": 9.606083839027374,
+        "fftHighFrequencyFraction": 125.97119396407818
+      }
+    },
+    {
+      "chunk": "r3-c2",
+      "rectPx1x": [
+        1024,
+        2048,
+        2048,
+        3072
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 68.26765003687463,
+        "highPassMeanSquare": 11.881578888318913,
+        "fftHighFrequencyFraction": 0.0005815751711524919
+      },
+      "v7": {
+        "laplacianVariance": 1156.9877516783445,
+        "highPassMeanSquare": 120.41789969263563,
+        "fftHighFrequencyFraction": 0.06934270975729276
+      },
+      "ratioToV5": {
+        "laplacianVariance": 16.94781863816024,
+        "highPassMeanSquare": 10.13483989160915,
+        "fftHighFrequencyFraction": 119.23258281449357
+      }
+    },
+    {
+      "chunk": "r3-c3",
+      "rectPx1x": [
+        2048,
+        2048,
+        3072,
+        3072
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 99.41437080159976,
+        "highPassMeanSquare": 17.651246965423688,
+        "fftHighFrequencyFraction": 0.000268024678547833
+      },
+      "v7": {
+        "laplacianVariance": 1449.187469237352,
+        "highPassMeanSquare": 150.2853757251804,
+        "fftHighFrequencyFraction": 0.04988739641510496
+      },
+      "ratioToV5": {
+        "laplacianVariance": 14.57724328537451,
+        "highPassMeanSquare": 8.514150644403102,
+        "fftHighFrequencyFraction": 186.1298619418055
+      }
+    },
+    {
+      "chunk": "r3-c4",
+      "rectPx1x": [
+        3072,
+        2048,
+        4096,
+        3072
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 53.410617959983945,
+        "highPassMeanSquare": 9.358290352443271,
+        "fftHighFrequencyFraction": 0.00035704855005914493
+      },
+      "v7": {
+        "laplacianVariance": 1325.4411391104516,
+        "highPassMeanSquare": 135.5021929933249,
+        "fftHighFrequencyFraction": 0.0541956438009722
+      },
+      "ratioToV5": {
+        "laplacianVariance": 24.81606073353228,
+        "highPassMeanSquare": 14.47937474583142,
+        "fftHighFrequencyFraction": 151.78788372616194
+      }
+    },
+    {
+      "chunk": "r3-c5",
+      "rectPx1x": [
+        4096,
+        2048,
+        4915,
+        3072
+      ],
+      "deviceSize": [
+        1792,
+        2240
+      ],
+      "v5": {
+        "laplacianVariance": 41.27623041656546,
+        "highPassMeanSquare": 7.218336055669207,
+        "fftHighFrequencyFraction": 0.0004259564228466428
+      },
+      "v7": {
+        "laplacianVariance": 1619.1414588149707,
+        "highPassMeanSquare": 145.8086356818325,
+        "fftHighFrequencyFraction": 0.0679731992738664
+      },
+      "ratioToV5": {
+        "laplacianVariance": 39.22697015871774,
+        "highPassMeanSquare": 20.199757195748166,
+        "fftHighFrequencyFraction": 159.57782446290005
+      }
+    },
+    {
+      "chunk": "r4-c1",
+      "rectPx1x": [
+        0,
+        3072,
+        1024,
+        3277
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "v5": {
+        "laplacianVariance": 35.113287773012175,
+        "highPassMeanSquare": 5.888916233010763,
+        "fftHighFrequencyFraction": 0.00045572986072784304
+      },
+      "v7": {
+        "laplacianVariance": 902.5818425489445,
+        "highPassMeanSquare": 58.8713671206834,
+        "fftHighFrequencyFraction": 0.04637729853719221
+      },
+      "ratioToV5": {
+        "laplacianVariance": 25.704851348117348,
+        "highPassMeanSquare": 9.99697818601588,
+        "fftHighFrequencyFraction": 101.76488866260233
+      }
+    },
+    {
+      "chunk": "r4-c2",
+      "rectPx1x": [
+        1024,
+        3072,
+        2048,
+        3277
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "v5": {
+        "laplacianVariance": 52.782630480437014,
+        "highPassMeanSquare": 9.052957714537834,
+        "fftHighFrequencyFraction": 0.0007853917779391436
+      },
+      "v7": {
+        "laplacianVariance": 1684.2387826323125,
+        "highPassMeanSquare": 129.70684820780704,
+        "fftHighFrequencyFraction": 0.13457510286971394
+      },
+      "ratioToV5": {
+        "laplacianVariance": 31.908958824182644,
+        "highPassMeanSquare": 14.327565895896681,
+        "fftHighFrequencyFraction": 171.34773580497242
+      }
+    },
+    {
+      "chunk": "r4-c3",
+      "rectPx1x": [
+        2048,
+        3072,
+        3072,
+        3277
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "v5": {
+        "laplacianVariance": 62.85066295669458,
+        "highPassMeanSquare": 10.885578824192896,
+        "fftHighFrequencyFraction": 0.00016396793935460262
+      },
+      "v7": {
+        "laplacianVariance": 2107.1233666550575,
+        "highPassMeanSquare": 167.8550389773595,
+        "fftHighFrequencyFraction": 0.07813266440500465
+      },
+      "ratioToV5": {
+        "laplacianVariance": 33.52587335644987,
+        "highPassMeanSquare": 15.41994612213972,
+        "fftHighFrequencyFraction": 476.51183952511775
+      }
+    },
+    {
+      "chunk": "r4-c4",
+      "rectPx1x": [
+        3072,
+        3072,
+        4096,
+        3277
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "v5": {
+        "laplacianVariance": 46.40362490763618,
+        "highPassMeanSquare": 7.786252022179121,
+        "fftHighFrequencyFraction": 0.00037241335740734806
+      },
+      "v7": {
+        "laplacianVariance": 1598.6519057475634,
+        "highPassMeanSquare": 113.2859395528585,
+        "fftHighFrequencyFraction": 0.054173490312925114
+      },
+      "ratioToV5": {
+        "laplacianVariance": 34.45101344840173,
+        "highPassMeanSquare": 14.549482758863155,
+        "fftHighFrequencyFraction": 145.46602380233588
+      }
+    },
+    {
+      "chunk": "r4-c5",
+      "rectPx1x": [
+        4096,
+        3072,
+        4915,
+        3277
+      ],
+      "deviceSize": [
+        1792,
+        448
+      ],
+      "v5": {
+        "laplacianVariance": 33.78450832474528,
+        "highPassMeanSquare": 5.625265437785344,
+        "fftHighFrequencyFraction": 0.0005408812887048299
+      },
+      "v7": {
+        "laplacianVariance": 1252.1166191710527,
+        "highPassMeanSquare": 87.85688009446876,
+        "fftHighFrequencyFraction": 0.0655956343568578
+      },
+      "ratioToV5": {
+        "laplacianVariance": 37.0618570835896,
+        "highPassMeanSquare": 15.618263896371413,
+        "fftHighFrequencyFraction": 121.2754734295397
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "fileChecksSucceeded": true,
+  "imagesDecoded": 55,
+  "v7Bytes": 26759262,
+  "v7MBDecimal": 26.759262,
+  "imageGenCalls": 0,
+  "sourceHashesUnchanged": true,
+  "shippingImages": 21,
+  "chunkCount": 20,
+  "minCostJoins": 93,
+  "structureReliableFailures": 7,
+  "structureUncertain": 526,
+  "inGameTested": false,
+  "acceptance": [
+    {
+      "id": 1,
+      "verified": true,
+      "evidence": "20 expected chunks, preview, manifest; dimensions/decode/SHA256/<=40MB checked."
+    },
+    {
+      "id": 2,
+      "verified": false,
+      "evidence": "Offline seam strips and game-scale comparisons supplied. Whole semantic structure<=4px and invisible joins in-game are not certified.",
+      "reliableProbeFailures": 7
+    },
+    {
+      "id": 3,
+      "verified": true,
+      "evidence": "Fallback r4-c1/q12, six architecture patches and unresolved findings in inventory.json and Thai README. ImageGen0."
+    }
+  ]
+}

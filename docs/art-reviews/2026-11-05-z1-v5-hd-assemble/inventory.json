@@ -1,0 +1,3700 @@
+{
+  "chunks": {
+    "r2-c2": [
+      {
+        "id": "q11",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1024,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "87cdba9918308f3e71cfe8b51621de31f41babaff9610792aca91ea7d6602f2a",
+        "nativeToContextPx1x": [
+          [
+            0.5100472722100994,
+            -0.000601399911746351,
+            0.315537044495211
+          ],
+          [
+            -0.0008932636834135113,
+            0.5199186785559374,
+            0.015528527798830542
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5100472722100994,
+            -0.000601399911746351,
+            960.3155370444952
+          ],
+          [
+            -0.0008932636834135113,
+            0.5199186785559374,
+            960.0155285277988
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/registration.json",
+        "registrationSha256": "4484372d8898fd6809d6c9b750f844b1095ff9fff80c325af7efc426a997ddac",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1536,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "f41e7b78f9f87dcc5a0627ade3bea1ddace71e52278339d00018fff450c6f743",
+        "nativeToContextPx1x": [
+          [
+            0.5106118707678172,
+            -5.033540534682995e-05,
+            0.13120259447495855
+          ],
+          [
+            5.033540534682995e-05,
+            0.5106118707678172,
+            0.34131316161536807
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5106118707678172,
+            -5.033540534682995e-05,
+            1472.1312025944749
+          ],
+          [
+            5.033540534682995e-05,
+            0.5106118707678172,
+            960.3413131616154
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/registration.json",
+        "registrationSha256": "4484372d8898fd6809d6c9b750f844b1095ff9fff80c325af7efc426a997ddac",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1024,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "218b36d5656527bd613eb85a544348c71b157667bc9f8d8c95fae2a9c8112519",
+        "nativeToContextPx1x": [
+          [
+            0.5114168969170049,
+            -0.0004914786133953349,
+            -0.41654337619324666
+          ],
+          [
+            -0.00033488212686177146,
+            0.5156640153296729,
+            0.20075844735164244
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5114168969170049,
+            -0.0004914786133953349,
+            959.5834566238068
+          ],
+          [
+            -0.00033488212686177146,
+            0.5156640153296729,
+            1472.2007584473517
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/registration.json",
+        "registrationSha256": "4484372d8898fd6809d6c9b750f844b1095ff9fff80c325af7efc426a997ddac",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1536,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "46284eeb56e2e9cde4afe0987243a9e52d6ddf95bd1332cf51d4269e9942b2b0",
+        "nativeToContextPx1x": [
+          [
+            0.5118665317536165,
+            0.0013374620330989725,
+            -1.8832262582283485
+          ],
+          [
+            -0.0013374620330989725,
+            0.5118665317536165,
+            2.1402340529178563
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5118665317536165,
+            0.0013374620330989725,
+            1470.1167737417716
+          ],
+          [
+            -0.0013374620330989725,
+            0.5118665317536165,
+            1474.1402340529178
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c2/registration.json",
+        "registrationSha256": "4484372d8898fd6809d6c9b750f844b1095ff9fff80c325af7efc426a997ddac",
+        "fallback": false
+      }
+    ],
+    "r3-c3": [
+      {
+        "id": "q11",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2048,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "d6702502f7fcbcab1ea6bfb04be546e89fbc83696f6c1ca691be45c89422d79d",
+        "nativeToContextPx1x": [
+          [
+            0.5108375323573208,
+            0.00044804200675681554,
+            -0.2927152936724818
+          ],
+          [
+            -0.00044804200675681554,
+            0.5108375323573208,
+            2.192958609279913
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5108375323573208,
+            0.00044804200675681554,
+            1983.7072847063275
+          ],
+          [
+            -0.00044804200675681554,
+            0.5108375323573208,
+            1986.19295860928
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/registration.json",
+        "registrationSha256": "1cb4fa2d7451d12cfa87ca1d30196c58ee54a11cb3e6ea3352a5658dfc9f1e6c",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2560,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "7a8ee9bc4f568298204182fbd2e48e939aa544f063457cb986d194bf156e9272",
+        "nativeToContextPx1x": [
+          [
+            0.5104263498808094,
+            0.0002593179764966417,
+            0.006327022257408628
+          ],
+          [
+            -0.0002593179764966417,
+            0.5104263498808094,
+            0.1318085329700382
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5104263498808094,
+            0.0002593179764966417,
+            2496.006327022257
+          ],
+          [
+            -0.0002593179764966417,
+            0.5104263498808094,
+            1984.1318085329701
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/registration.json",
+        "registrationSha256": "1cb4fa2d7451d12cfa87ca1d30196c58ee54a11cb3e6ea3352a5658dfc9f1e6c",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2048,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "14bf6675875de8b9567d592e4e14acd3d5926e568c6511754c2b52947db8563d",
+        "nativeToContextPx1x": [
+          [
+            0.5109409483252783,
+            -0.0007192113636246642,
+            0.3091553270717089
+          ],
+          [
+            -0.0006170443516385611,
+            0.5119018790260139,
+            1.0222425121276622
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5109409483252783,
+            -0.0007192113636246642,
+            1984.3091553270717
+          ],
+          [
+            -0.0006170443516385611,
+            0.5119018790260139,
+            2497.022242512128
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/registration.json",
+        "registrationSha256": "1cb4fa2d7451d12cfa87ca1d30196c58ee54a11cb3e6ea3352a5658dfc9f1e6c",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2560,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "bee88d5687b1e874c19b3fd1a9b4bcd5fb117242fab595d6c2f9266f2b431b75",
+        "nativeToContextPx1x": [
+          [
+            0.5098718095464494,
+            -0.0010027800739371992,
+            1.2067890271910577
+          ],
+          [
+            0.0010027800739371992,
+            0.5098718095464494,
+            2.6978148351693587
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5098718095464494,
+            -0.0010027800739371992,
+            2497.206789027191
+          ],
+          [
+            0.0010027800739371992,
+            0.5098718095464494,
+            2498.6978148351695
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035112Z-7cf015da/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c3/registration.json",
+        "registrationSha256": "1cb4fa2d7451d12cfa87ca1d30196c58ee54a11cb3e6ea3352a5658dfc9f1e6c",
+        "fallback": false
+      }
+    ],
+    "r2-c4": [
+      {
+        "id": "q11",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3072,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "e91510f2106229728f7f06a31713b4f1332b110d05c002e3a462da96980c56ce",
+        "nativeToContextPx1x": [
+          [
+            0.5154857658469162,
+            0.0022259197303651727,
+            -4.165117690277068
+          ],
+          [
+            -0.0022259197303651727,
+            0.5154857658469162,
+            2.2303925737083823
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5154857658469162,
+            0.0022259197303651727,
+            3003.834882309723
+          ],
+          [
+            -0.0022259197303651727,
+            0.5154857658469162,
+            962.2303925737084
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/registration.json",
+        "registrationSha256": "188017bd1ae6ab68288a0ba9a0578cc111670129935056fa9febd7ca1dac9b3d",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3584,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "4e4d792e094e885a5a213be44e49ba3a5ddd19f1268c7723f685ceaa2dcf0909",
+        "nativeToContextPx1x": [
+          [
+            0.5108736854657794,
+            0.00024362197656436655,
+            -0.05759665938556052
+          ],
+          [
+            -0.00024362197656436655,
+            0.5108736854657794,
+            0.700182032744445
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5108736854657794,
+            0.00024362197656436655,
+            3519.9424033406144
+          ],
+          [
+            -0.00024362197656436655,
+            0.5108736854657794,
+            960.7001820327445
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/registration.json",
+        "registrationSha256": "188017bd1ae6ab68288a0ba9a0578cc111670129935056fa9febd7ca1dac9b3d",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3072,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "6702fa90b02298177c134f2c913bfc33c8927c202c55805b6b81ae3178badcbf",
+        "nativeToContextPx1x": [
+          [
+            0.5133167626937303,
+            0.0007502025907905847,
+            -3.6835967869933177
+          ],
+          [
+            -0.0007502025907905847,
+            0.5133167626937303,
+            2.169176374918683
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5133167626937303,
+            0.0007502025907905847,
+            3004.3164032130067
+          ],
+          [
+            -0.0007502025907905847,
+            0.5133167626937303,
+            1474.1691763749186
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/registration.json",
+        "registrationSha256": "188017bd1ae6ab68288a0ba9a0578cc111670129935056fa9febd7ca1dac9b3d",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3584,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "5ba83c7bb9a021283c99f008bcb19a3024e3eadcaacccc5929cdacfec2d89d4e",
+        "nativeToContextPx1x": [
+          [
+            0.5105811400850486,
+            -0.00014321313579280514,
+            0.32346145620789324
+          ],
+          [
+            0.00014321313579280514,
+            0.5105811400850486,
+            0.3193973431322088
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5105811400850486,
+            -0.00014321313579280514,
+            3520.323461456208
+          ],
+          [
+            0.00014321313579280514,
+            0.5105811400850486,
+            1472.319397343132
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c4/registration.json",
+        "registrationSha256": "188017bd1ae6ab68288a0ba9a0578cc111670129935056fa9febd7ca1dac9b3d",
+        "fallback": false
+      }
+    ],
+    "r3-c2": [
+      {
+        "id": "q11",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1024,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "39212f0f98e14484e4ef90d9c73ef7d3049cae3b227c577054ba92a4e6e82282",
+        "nativeToContextPx1x": [
+          [
+            0.5108146915023393,
+            0.0003441076587620522,
+            -0.30616195996460577
+          ],
+          [
+            -0.0003441076587620522,
+            0.5108146915023393,
+            0.45317641947655424
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5108146915023393,
+            0.0003441076587620522,
+            959.6938380400354
+          ],
+          [
+            -0.0003441076587620522,
+            0.5108146915023393,
+            1984.4531764194764
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/registration.json",
+        "registrationSha256": "9c547a89d170a09413282a7982694df37364a568299b06ba18e17707f4113152",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1536,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "ab83b15c459f52e66367696828b0d43a8989dad2f61e365d50af664fc3f2fb85",
+        "nativeToContextPx1x": [
+          [
+            0.5108587838454682,
+            -0.0005907616741386472,
+            0.20485805540032462
+          ],
+          [
+            0.0005907616741386472,
+            0.5108587838454682,
+            -0.27709096526941834
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5108587838454682,
+            -0.0005907616741386472,
+            1472.2048580554003
+          ],
+          [
+            0.0005907616741386472,
+            0.5108587838454682,
+            1983.7229090347305
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/registration.json",
+        "registrationSha256": "9c547a89d170a09413282a7982694df37364a568299b06ba18e17707f4113152",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1024,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "f0a48cb535916291f3286a80f6b92d158b1e7172d6dcc54919f62e519cb9e3b9",
+        "nativeToContextPx1x": [
+          [
+            0.5434487024738777,
+            -0.0004315571021723768,
+            -0.8381800110492942
+          ],
+          [
+            0.0004315571021723768,
+            0.5434487024738777,
+            1.2095484242278038
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5434487024738777,
+            -0.0004315571021723768,
+            959.1618199889507
+          ],
+          [
+            0.0004315571021723768,
+            0.5434487024738777,
+            2497.2095484242277
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/registration.json",
+        "registrationSha256": "9c547a89d170a09413282a7982694df37364a568299b06ba18e17707f4113152",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1536,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "c9e78eb863dc9717921ca9d8887902733f8389d954d4d0990d1f1425b722533d",
+        "nativeToContextPx1x": [
+          [
+            0.5087060342861421,
+            0.0008190346008378669,
+            2.041253736543043
+          ],
+          [
+            -0.0008190346008378669,
+            0.5087060342861421,
+            7.381650410299398
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5087060342861421,
+            0.0008190346008378669,
+            1474.041253736543
+          ],
+          [
+            -0.0008190346008378669,
+            0.5087060342861421,
+            2503.3816504102992
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T035132Z-46d9fa9a/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c2/registration.json",
+        "registrationSha256": "9c547a89d170a09413282a7982694df37364a568299b06ba18e17707f4113152",
+        "fallback": false
+      }
+    ],
+    "r1-c2": [
+      {
+        "id": "q11",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1024,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/q11-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "ce85adbf630777250637860694600daca857692b1a04574380ab789ddac46d53",
+        "nativeToContextPx1x": [
+          [
+            0.48495683447497767,
+            -0.0001073739589841739,
+            -0.6041479077736667
+          ],
+          [
+            0.00010722065779136874,
+            0.4856502126235121,
+            -0.5248575733369889
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48495683447497767,
+            -0.0001073739589841739,
+            959.3958520922263
+          ],
+          [
+            0.00010722065779136874,
+            0.4856502126235121,
+            -0.5248575733369889
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/registration.json",
+        "registrationSha256": "3e70f6732b7af1d510a5a7f1e6cba669b3b45be1258ef05ecef281e5c9bfb230",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1536,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "43b61f478948b681b02461e0463c32d3e63f4100f7ff101195c8f23b8edfe259",
+        "nativeToContextPx1x": [
+          [
+            0.48344279617976843,
+            5.401851710472663e-05,
+            0.23069914906463213
+          ],
+          [
+            -5.394139316160239e-05,
+            0.4841340095973509,
+            -0.043878827064905174
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48344279617976843,
+            5.401851710472663e-05,
+            1472.2306991490645
+          ],
+          [
+            -5.394139316160239e-05,
+            0.4841340095973509,
+            -0.043878827064905174
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/registration.json",
+        "registrationSha256": "3e70f6732b7af1d510a5a7f1e6cba669b3b45be1258ef05ecef281e5c9bfb230",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1024,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "84769ee6efddf68ca6f86863ab6289f161988ecadff860618a95b9ec70bce2ce",
+        "nativeToContextPx1x": [
+          [
+            0.5106402221640031,
+            -0.0003166201839284995,
+            0.06350204648086807
+          ],
+          [
+            0.0003166201839284995,
+            0.5106402221640031,
+            0.7531298930592893
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5106402221640031,
+            -0.0003166201839284995,
+            960.0635020464808
+          ],
+          [
+            0.0003166201839284995,
+            0.5106402221640031,
+            448.7531298930593
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/registration.json",
+        "registrationSha256": "3e70f6732b7af1d510a5a7f1e6cba669b3b45be1258ef05ecef281e5c9bfb230",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1536,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "3a7d08756aa1adfdd418c680cffc5444e396b297af0be8269a20dd30991a767e",
+        "nativeToContextPx1x": [
+          [
+            0.5179722280798076,
+            -0.0027106231992805674,
+            4.129666164901604
+          ],
+          [
+            0.0027106231992805674,
+            0.5179722280798076,
+            -1.2793006888162437
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5179722280798076,
+            -0.0027106231992805674,
+            1476.1296661649017
+          ],
+          [
+            0.0027106231992805674,
+            0.5179722280798076,
+            446.72069931118375
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c2/registration.json",
+        "registrationSha256": "3e70f6732b7af1d510a5a7f1e6cba669b3b45be1258ef05ecef281e5c9bfb230",
+        "fallback": false
+      }
+    ],
+    "r1-c3": [
+      {
+        "id": "q11",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2048,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/q11-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "13c07844598319798a594eddf952fe1a03c1c9190dcf29660ea0a17cf75e62f0",
+        "nativeToContextPx1x": [
+          [
+            0.4832569691647729,
+            -0.00023571095073076642,
+            0.5773164343309917
+          ],
+          [
+            0.0002353744187611332,
+            0.48394791689192185,
+            -0.2413127769094114
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4832569691647729,
+            -0.00023571095073076642,
+            1984.577316434331
+          ],
+          [
+            0.0002353744187611332,
+            0.48394791689192185,
+            -0.2413127769094114
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/registration.json",
+        "registrationSha256": "00ded151e3fed99438a64744ccd7ada3231289d95335ae75cf9f679520b29594",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2560,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "1337accd0eb84174b223468052daf0cd41050de8dc1764de60ca6c298148bf61",
+        "nativeToContextPx1x": [
+          [
+            0.4839739302240971,
+            0.0002202145021813711,
+            -0.4959782867477987
+          ],
+          [
+            -0.00021990009498080982,
+            0.4846659030427522,
+            -1.0154896443123913
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4839739302240971,
+            0.0002202145021813711,
+            2495.5040217132523
+          ],
+          [
+            -0.00021990009498080982,
+            0.4846659030427522,
+            -1.0154896443123913
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/registration.json",
+        "registrationSha256": "00ded151e3fed99438a64744ccd7ada3231289d95335ae75cf9f679520b29594",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2048,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "fe8e9d1c4135c713493bdf85d6198f39e77883a0d2becf4ebeece1eb8e6470c4",
+        "nativeToContextPx1x": [
+          [
+            0.5136859388345788,
+            0.004770366762367589,
+            -5.041867760162107
+          ],
+          [
+            -0.004770366762367589,
+            0.5136859388345788,
+            5.803229945513849
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5136859388345788,
+            0.004770366762367589,
+            1978.9581322398378
+          ],
+          [
+            -0.004770366762367589,
+            0.5136859388345788,
+            453.80322994551386
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/registration.json",
+        "registrationSha256": "00ded151e3fed99438a64744ccd7ada3231289d95335ae75cf9f679520b29594",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2560,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "5992ed18e13fd0454258943df15b53415fefd08199116ee4a15447767292e0a9",
+        "nativeToContextPx1x": [
+          [
+            0.5099933579162673,
+            0.0001928256690235601,
+            0.2393341918395678
+          ],
+          [
+            -0.0001928256690235601,
+            0.5099933579162673,
+            0.87276967752856
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5099933579162673,
+            0.0001928256690235601,
+            2496.2393341918396
+          ],
+          [
+            -0.0001928256690235601,
+            0.5099933579162673,
+            448.87276967752854
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105803Z-bc08e0c8/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c3/registration.json",
+        "registrationSha256": "00ded151e3fed99438a64744ccd7ada3231289d95335ae75cf9f679520b29594",
+        "fallback": false
+      }
+    ],
+    "r1-c4": [
+      {
+        "id": "q11",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3072,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/q11-native.webp",
+        "nativeSize": [
+          1322,
+          1190
+        ],
+        "sha256": "e76c0ea6be349fcfbe23c0bdf74cdf223fa9f8a554b8e2e7592c550d2ddfa900",
+        "nativeToContextPx1x": [
+          [
+            0.48351313744578045,
+            0.000260800642035061,
+            0.4665393645023101
+          ],
+          [
+            -0.00026084448144370704,
+            0.48343187473360466,
+            0.028859532144127807
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48351313744578045,
+            0.000260800642035061,
+            3008.4665393645023
+          ],
+          [
+            -0.00026084448144370704,
+            0.48343187473360466,
+            0.028859532144127807
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/registration.json",
+        "registrationSha256": "4a89f6a4a51d038cfdff0e548537044316b876be4f236449b0699499633ed4ea",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3584,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "5e6f1727afbd0a7b016a88a1481bd9be1aac9cd01045381c4f22c3cd83bd307e",
+        "nativeToContextPx1x": [
+          [
+            0.4838371111882518,
+            -7.065238263606092e-06,
+            0.026647055863817434
+          ],
+          [
+            7.055150999771264e-06,
+            0.48452888838675473,
+            0.02889985875006605
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4838371111882518,
+            -7.065238263606092e-06,
+            3520.026647055864
+          ],
+          [
+            7.055150999771264e-06,
+            0.48452888838675473,
+            0.02889985875006605
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/registration.json",
+        "registrationSha256": "4a89f6a4a51d038cfdff0e548537044316b876be4f236449b0699499633ed4ea",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3072,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "7c49b4b1fc0b3d0193c8b1da4aeea8719ea92b540d510f8ae793bf96c7035115",
+        "nativeToContextPx1x": [
+          [
+            0.510274756429437,
+            9.966763662823421e-05,
+            0.1599733973101816
+          ],
+          [
+            -9.966763662823421e-05,
+            0.510274756429437,
+            0.14887805493741874
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.510274756429437,
+            9.966763662823421e-05,
+            3008.1599733973103
+          ],
+          [
+            -9.966763662823421e-05,
+            0.510274756429437,
+            448.1488780549374
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/registration.json",
+        "registrationSha256": "4a89f6a4a51d038cfdff0e548537044316b876be4f236449b0699499633ed4ea",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3584,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "fa3afda839aded026e2baf9d5bc905ca695214bf6e9eaec1bfe435447f98ae76",
+        "nativeToContextPx1x": [
+          [
+            0.529315060882496,
+            0.0003733324530046405,
+            -23.60174953634712
+          ],
+          [
+            -0.0003733324530046405,
+            0.529315060882496,
+            -2.4674380761952954
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.529315060882496,
+            0.0003733324530046405,
+            3496.398250463653
+          ],
+          [
+            -0.0003733324530046405,
+            0.529315060882496,
+            445.5325619238047
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/registration.json",
+        "registrationSha256": "4a89f6a4a51d038cfdff0e548537044316b876be4f236449b0699499633ed4ea",
+        "fallback": false
+      }
+    ],
+    "r3-c4": [
+      {
+        "id": "q11",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3072,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "317737c6f40c24266e6e949a86c5467266643a52a0a155f9dc68047b6f460c40",
+        "nativeToContextPx1x": [
+          [
+            0.5107563820822185,
+            -0.00014605246690626553,
+            -0.3282517228911098
+          ],
+          [
+            0.00014605246690626553,
+            0.5107563820822185,
+            0.6689585234965708
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5107563820822185,
+            -0.00014605246690626553,
+            3007.6717482771087
+          ],
+          [
+            0.00014605246690626553,
+            0.5107563820822185,
+            1984.6689585234965
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/registration.json",
+        "registrationSha256": "6767daa8d78ee413b223a86ae974239bad03dbde246fa13a0fdcd65b436f9391",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3584,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "ffb5c81a82f6c82eca391e7ac781a450d0dbeaf7fa9fecce4d7580c74773ec87",
+        "nativeToContextPx1x": [
+          [
+            0.5110106375439945,
+            -0.0009777273252513155,
+            -0.44271449346281055
+          ],
+          [
+            0.0009777273252513155,
+            0.5110106375439945,
+            0.609527949341103
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5110106375439945,
+            -0.0009777273252513155,
+            3519.557285506537
+          ],
+          [
+            0.0009777273252513155,
+            0.5110106375439945,
+            1984.609527949341
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/registration.json",
+        "registrationSha256": "6767daa8d78ee413b223a86ae974239bad03dbde246fa13a0fdcd65b436f9391",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3072,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "773aab9c37cd2f67eef28538be8504ceeb8ddda3f3e6eb4a6865ee50ca79bf35",
+        "nativeToContextPx1x": [
+          [
+            0.5106248588369908,
+            0.0002172699425839085,
+            -0.35338826405267715
+          ],
+          [
+            -0.0002172699425839085,
+            0.5106248588369908,
+            0.7236044055265564
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5106248588369908,
+            0.0002172699425839085,
+            3007.6466117359473
+          ],
+          [
+            -0.0002172699425839085,
+            0.5106248588369908,
+            2496.7236044055267
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/registration.json",
+        "registrationSha256": "6767daa8d78ee413b223a86ae974239bad03dbde246fa13a0fdcd65b436f9391",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3584,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "cd6614b2b8ae4cec00399ef6c5060b63f9fe3af8dec8ce3e5995d85b35eff987",
+        "nativeToContextPx1x": [
+          [
+            0.5122026588158368,
+            0.00025863064628661074,
+            -1.630771401450035
+          ],
+          [
+            -0.00025863064628661074,
+            0.5122026588158368,
+            0.6500806918546521
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5122026588158368,
+            0.00025863064628661074,
+            3518.36922859855
+          ],
+          [
+            -0.00025863064628661074,
+            0.5122026588158368,
+            2496.650080691855
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/registration.json",
+        "registrationSha256": "6767daa8d78ee413b223a86ae974239bad03dbde246fa13a0fdcd65b436f9391",
+        "fallback": false
+      }
+    ],
+    "r1-c1": [
+      {
+        "id": "q11",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          0,
+          576,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "71b035550aae0a398bfdf8ff33df3d466fe57f10cd10b637eff4c8c27f53118c",
+        "nativeToContextPx1x": [
+          [
+            0.45980607867227585,
+            0.0004956677547272901,
+            -0.5185751510485301
+          ],
+          [
+            -0.0004956677547272901,
+            0.45980607867227585,
+            2.3152524816161772
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.45980607867227585,
+            0.0004956677547272901,
+            -0.5185751510485301
+          ],
+          [
+            -0.0004956677547272901,
+            0.45980607867227585,
+            2.3152524816161772
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/registration.json",
+        "registrationSha256": "1b1ce8697ba8a8980e5234a19cf5b769042cb9afef60055e35960fbca6418501",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          512,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "036cf6d02188baa997a0581dd82ed03656606aade61ae2389cf989e03a7076cf",
+        "nativeToContextPx1x": [
+          [
+            0.4823355126358933,
+            -0.001645931103380727,
+            1.4275136676586309
+          ],
+          [
+            0.0016435811555552905,
+            0.48302514288945175,
+            -0.753156782897189
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4823355126358933,
+            -0.001645931103380727,
+            449.4275136676586
+          ],
+          [
+            0.0016435811555552905,
+            0.48302514288945175,
+            -0.753156782897189
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/registration.json",
+        "registrationSha256": "1b1ce8697ba8a8980e5234a19cf5b769042cb9afef60055e35960fbca6418501",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          0,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          448,
+          576,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "aaf7007e667e30be5640c597d95249e53dda6f9f7795a44af3e93101da0c7866",
+        "nativeToContextPx1x": [
+          [
+            0.4849709672533895,
+            -4.5083042885529046e-05,
+            -0.15019429451925945
+          ],
+          [
+            4.514750139932669e-05,
+            0.48427855888492494,
+            0.1068685502196452
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4849709672533895,
+            -4.5083042885529046e-05,
+            -0.15019429451925945
+          ],
+          [
+            4.514750139932669e-05,
+            0.48427855888492494,
+            448.10686855021964
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/registration.json",
+        "registrationSha256": "1b1ce8697ba8a8980e5234a19cf5b769042cb9afef60055e35960fbca6418501",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          512,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "14cbfca9bdb19b4db3c09a74e451866d5a76d55d33515cb9c1906dfaebbf5dbf",
+        "nativeToContextPx1x": [
+          [
+            0.5100783945664336,
+            0.00032382287137354356,
+            -0.11178159928743309
+          ],
+          [
+            -0.00032382287137354356,
+            0.5100783945664336,
+            1.3910501511513125
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5100783945664336,
+            0.00032382287137354356,
+            447.88821840071256
+          ],
+          [
+            -0.00032382287137354356,
+            0.5100783945664336,
+            449.3910501511513
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c1/registration.json",
+        "registrationSha256": "1b1ce8697ba8a8980e5234a19cf5b769042cb9afef60055e35960fbca6418501",
+        "fallback": false
+      }
+    ],
+    "r2-c1": [
+      {
+        "id": "q11",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          0,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          960,
+          576,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/q11-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "22cbbb3ab109c40bc28feb1577b026b599f9bb0253d888060a3272cac0d499a3",
+        "nativeToContextPx1x": [
+          [
+            0.48439266024039107,
+            -7.623555237455254e-05,
+            0.288264783699379
+          ],
+          [
+            7.634455190275838e-05,
+            0.4837010775391156,
+            -0.24643672866331165
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48439266024039107,
+            -7.623555237455254e-05,
+            0.288264783699379
+          ],
+          [
+            7.634455190275838e-05,
+            0.4837010775391156,
+            959.7535632713367
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/registration.json",
+        "registrationSha256": "48cf74e56c9ded437797f69269877ecd7f4a4731e64eaf5b726e6e8d2cc5f5d9",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          512,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "3703eda24ed2440aef06857f16f985fe78827f17402eb2da1fca2dd4e8a74960",
+        "nativeToContextPx1x": [
+          [
+            0.510353844185818,
+            -3.511396160698027e-05,
+            -0.0771448354765165
+          ],
+          [
+            3.511396160698027e-05,
+            0.510353844185818,
+            0.3888299629227444
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.510353844185818,
+            -3.511396160698027e-05,
+            447.92285516452347
+          ],
+          [
+            3.511396160698027e-05,
+            0.510353844185818,
+            960.3888299629227
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/registration.json",
+        "registrationSha256": "48cf74e56c9ded437797f69269877ecd7f4a4731e64eaf5b726e6e8d2cc5f5d9",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          0,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          1472,
+          576,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "4da83b20cf1abdc540215c20bcf7e7a9c8df5ffe866849000d7257dfa6476450",
+        "nativeToContextPx1x": [
+          [
+            0.4839080276899238,
+            0.00039249957445966054,
+            0.10812397361921634
+          ],
+          [
+            -0.0003930607597217139,
+            0.4832171369138485,
+            0.1615349450063704
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4839080276899238,
+            0.00039249957445966054,
+            0.10812397361921634
+          ],
+          [
+            -0.0003930607597217139,
+            0.4832171369138485,
+            1472.1615349450065
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/registration.json",
+        "registrationSha256": "48cf74e56c9ded437797f69269877ecd7f4a4731e64eaf5b726e6e8d2cc5f5d9",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          512,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "fea8a7e689dc6a8fc03a7eb8206b419d4dd7f1ead70016a761ffbdc8c0cc1b97",
+        "nativeToContextPx1x": [
+          [
+            0.5092013458887432,
+            0.0045172008483901375,
+            -4.452986841108463
+          ],
+          [
+            -0.0045172008483901375,
+            0.5092013458887432,
+            0.3349283020206006
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5092013458887432,
+            0.0045172008483901375,
+            443.54701315889156
+          ],
+          [
+            -0.0045172008483901375,
+            0.5092013458887432,
+            1472.3349283020207
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112026Z-a7642a20/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c1/registration.json",
+        "registrationSha256": "48cf74e56c9ded437797f69269877ecd7f4a4731e64eaf5b726e6e8d2cc5f5d9",
+        "fallback": false
+      }
+    ],
+    "r1-c5": [
+      {
+        "id": "q11",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4096,
+          0,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          0,
+          538,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/q11-native.webp",
+        "nativeSize": [
+          1212,
+          1298
+        ],
+        "sha256": "6cf43569ceba937fecd509411d31e4345e6f05c6242b3ab3fcf53fb80240c2e4",
+        "nativeToContextPx1x": [
+          [
+            0.4441067861102123,
+            -0.0003563328247159248,
+            0.3887265653004171
+          ],
+          [
+            0.00035644103451440954,
+            0.4439719623913435,
+            -0.2905160237379007
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4441067861102123,
+            -0.0003563328247159248,
+            4032.3887265653
+          ],
+          [
+            0.00035644103451440954,
+            0.4439719623913435,
+            -0.2905160237379007
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/registration.json",
+        "registrationSha256": "7d68161d154219b000617237135422fc2ac6fa99d08eeec1466c41ac28e064e6",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4506,
+          0,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          0,
+          473,
+          576
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/q12-native.webp",
+        "nativeSize": [
+          1136,
+          1385
+        ],
+        "sha256": "508d6d5b09b88d34a43a585b3d2f6087e82cdd0be8f9948ec75a6d023cb4701e",
+        "nativeToContextPx1x": [
+          [
+            0.4162489648853139,
+            6.844976048527661e-05,
+            0.39565489654526365
+          ],
+          [
+            -6.853020518924089e-05,
+            0.41576034786362,
+            0.07422037936065407
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4162489648853139,
+            6.844976048527661e-05,
+            4442.395654896545
+          ],
+          [
+            -6.853020518924089e-05,
+            0.41576034786362,
+            0.07422037936065407
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/registration.json",
+        "registrationSha256": "7d68161d154219b000617237135422fc2ac6fa99d08eeec1466c41ac28e064e6",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4096,
+          512,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          448,
+          538,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "f75ce7274d73c515613a3e16b97c1792462c0598af59c6a9ca7cb56c931d6e03",
+        "nativeToContextPx1x": [
+          [
+            0.46862643759567063,
+            0.00010718710277274747,
+            -0.16850232906954016
+          ],
+          [
+            -0.00010727805788606638,
+            0.4682291152393969,
+            -0.17864137670898145
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46862643759567063,
+            0.00010718710277274747,
+            4031.8314976709303
+          ],
+          [
+            -0.00010727805788606638,
+            0.4682291152393969,
+            447.821358623291
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/registration.json",
+        "registrationSha256": "7d68161d154219b000617237135422fc2ac6fa99d08eeec1466c41ac28e064e6",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4506,
+          512,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          448,
+          473,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "41704d159611c4142379099024fbae66727a3bcd13e67247647b00d37c1eff48",
+        "nativeToContextPx1x": [
+          [
+            0.43890956175767903,
+            -0.00015396924068838042,
+            0.21084288012419256
+          ],
+          [
+            0.00015411653269158996,
+            0.43849008782162513,
+            -0.0482323758318583
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43890956175767903,
+            -0.00015396924068838042,
+            4442.210842880124
+          ],
+          [
+            0.00015411653269158996,
+            0.43849008782162513,
+            447.95176762416816
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c5/registration.json",
+        "registrationSha256": "7d68161d154219b000617237135422fc2ac6fa99d08eeec1466c41ac28e064e6",
+        "fallback": false
+      }
+    ],
+    "r3-c1": [
+      {
+        "id": "q11",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          0,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          1984,
+          576,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/q11-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "c1b4e32829829e15602988768c5e47379d1b0adfd037edbd67b4716103f94202",
+        "nativeToContextPx1x": [
+          [
+            0.48476751898314463,
+            -0.00028225316097056527,
+            -0.022113722924359463
+          ],
+          [
+            0.0002826567188962591,
+            0.4840754010842017,
+            -0.5501020875452791
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48476751898314463,
+            -0.00028225316097056527,
+            -0.022113722924359463
+          ],
+          [
+            0.0002826567188962591,
+            0.4840754010842017,
+            1983.4498979124546
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/registration.json",
+        "registrationSha256": "6b1761ba7becadbb7717fdf4bf5050253431f797b6acb3c7f783898fdbc6ef5f",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          512,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "627df16db6187feca1d452b820c74d0b1642120930b0a289a57b675751a96981",
+        "nativeToContextPx1x": [
+          [
+            0.5105996354482416,
+            -4.3588597181774114e-05,
+            0.08626237716432603
+          ],
+          [
+            4.3588597181774114e-05,
+            0.5105996354482416,
+            -0.0650419192801198
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5105996354482416,
+            -4.3588597181774114e-05,
+            448.0862623771643
+          ],
+          [
+            4.3588597181774114e-05,
+            0.5105996354482416,
+            1983.93495808072
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/registration.json",
+        "registrationSha256": "6b1761ba7becadbb7717fdf4bf5050253431f797b6acb3c7f783898fdbc6ef5f",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          0,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          2496,
+          576,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "861f9c5b5dbb8b0adf06b039a00686c0a7d31b397d14dbf0f8a2e90c858e8660",
+        "nativeToContextPx1x": [
+          [
+            0.48468127151241835,
+            -9.559972281089318e-06,
+            -0.3383373464750643
+          ],
+          [
+            9.573640870557655e-06,
+            0.48398927675171366,
+            -0.34457934012533264
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48468127151241835,
+            -9.559972281089318e-06,
+            -0.3383373464750643
+          ],
+          [
+            9.573640870557655e-06,
+            0.48398927675171366,
+            2495.655420659875
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/registration.json",
+        "registrationSha256": "6b1761ba7becadbb7717fdf4bf5050253431f797b6acb3c7f783898fdbc6ef5f",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          512,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "50f39ab70de5e95bbf773b007fe935730aec10d12bec012781b322c16769a095",
+        "nativeToContextPx1x": [
+          [
+            0.5220439111277212,
+            2.575197669033516e-05,
+            -11.874424882611606
+          ],
+          [
+            -2.575197669033516e-05,
+            0.5220439111277212,
+            0.8082805119957113
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5220439111277212,
+            2.575197669033516e-05,
+            436.1255751173884
+          ],
+          [
+            -2.575197669033516e-05,
+            0.5220439111277212,
+            2496.8082805119957
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T112046Z-14492593/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c1/registration.json",
+        "registrationSha256": "6b1761ba7becadbb7717fdf4bf5050253431f797b6acb3c7f783898fdbc6ef5f",
+        "fallback": false
+      }
+    ],
+    "r2-c5": [
+      {
+        "id": "q11",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4096,
+          1024,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          960,
+          538,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/q11-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "001ebefab3757db45f980b6f71d4211cc761b528d2da11daa2be1cc839c10585",
+        "nativeToContextPx1x": [
+          [
+            0.46782944526644815,
+            -0.0003116988000271136,
+            0.5616426150312965
+          ],
+          [
+            0.0003119632963978938,
+            0.46743279863575193,
+            -0.27408055602181525
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46782944526644815,
+            -0.0003116988000271136,
+            4032.5616426150314
+          ],
+          [
+            0.0003119632963978938,
+            0.46743279863575193,
+            959.7259194439782
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/registration.json",
+        "registrationSha256": "f76710459487d6b4110027542e730b5cf7e976825a7f012419b35557cc6157f3",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4506,
+          1024,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          960,
+          473,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/q12-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "86808a4fa1c7e4b6a3fc327ed0477c631e1da8ae65ed90b36038a3910d98de23",
+        "nativeToContextPx1x": [
+          [
+            0.4386772458398204,
+            -4.314282966721797e-05,
+            0.06445456523252081
+          ],
+          [
+            4.3184101506823094e-05,
+            0.43825799393235954,
+            0.016756824193199207
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4386772458398204,
+            -4.314282966721797e-05,
+            4442.064454565232
+          ],
+          [
+            4.3184101506823094e-05,
+            0.43825799393235954,
+            960.0167568241932
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/registration.json",
+        "registrationSha256": "f76710459487d6b4110027542e730b5cf7e976825a7f012419b35557cc6157f3",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4096,
+          1536,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          1472,
+          538,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "ed827ddb4810d51404966f61ebf2fee35c6211fc0206c1e7b4e54dbcb6f690cb",
+        "nativeToContextPx1x": [
+          [
+            0.4682373948422963,
+            -1.3263407809757416e-05,
+            -0.31918761153869896
+          ],
+          [
+            1.3274662659726534e-05,
+            0.4678404023337885,
+            -0.31196827320675635
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4682373948422963,
+            -1.3263407809757416e-05,
+            4031.680812388461
+          ],
+          [
+            1.3274662659726534e-05,
+            0.4678404023337885,
+            1471.6880317267933
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/registration.json",
+        "registrationSha256": "f76710459487d6b4110027542e730b5cf7e976825a7f012419b35557cc6157f3",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4506,
+          1536,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          1472,
+          473,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "fb666cb1b96e98f4792839a2241a38a877fa529ce30aaaafaaadfb5eb9eea880",
+        "nativeToContextPx1x": [
+          [
+            0.4389311534276444,
+            0.0007317695767927989,
+            -0.378220746337874
+          ],
+          [
+            -0.0007324696114644758,
+            0.4385116588560346,
+            -0.18703612783713858
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4389311534276444,
+            0.0007317695767927989,
+            4441.621779253662
+          ],
+          [
+            -0.0007324696114644758,
+            0.4385116588560346,
+            1471.8129638721628
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/registration.json",
+        "registrationSha256": "f76710459487d6b4110027542e730b5cf7e976825a7f012419b35557cc6157f3",
+        "fallback": false
+      }
+    ],
+    "r3-c5": [
+      {
+        "id": "q11",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4096,
+          2048,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          1984,
+          538,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/q11-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "b45bd84bb091ec88cf12dba57719fc103b22145b48c8c4db92450e72cc491614",
+        "nativeToContextPx1x": [
+          [
+            0.46811245289419723,
+            -5.8857833261273585e-06,
+            0.03777558885825193
+          ],
+          [
+            5.8907777897853e-06,
+            0.4677155663170352,
+            -0.14022832072122332
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46811245289419723,
+            -5.8857833261273585e-06,
+            4032.037775588858
+          ],
+          [
+            5.8907777897853e-06,
+            0.4677155663170352,
+            1983.8597716792788
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/registration.json",
+        "registrationSha256": "99df1a49e52ef6026eaebc11aae462a2865e0dd877cfa8b113015efc68e0bdf6",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4506,
+          2048,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          1984,
+          473,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/q12-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "1185d7c406129ffdeca8030bab7cf337b9b831dcaf2f9be4d9d977671d807d7b",
+        "nativeToContextPx1x": [
+          [
+            0.4391156369627561,
+            -0.0002152753480136371,
+            0.21794751871425683
+          ],
+          [
+            0.00021548128744094605,
+            0.4386959660768407,
+            -0.22911283933701027
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4391156369627561,
+            -0.0002152753480136371,
+            4442.217947518714
+          ],
+          [
+            0.00021548128744094605,
+            0.4386959660768407,
+            1983.770887160663
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/registration.json",
+        "registrationSha256": "99df1a49e52ef6026eaebc11aae462a2865e0dd877cfa8b113015efc68e0bdf6",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4096,
+          2560,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          2496,
+          538,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "40227293a9686af9da85ce8291f922ac670d7d85e4d9628b0940abde8f0f3e8e",
+        "nativeToContextPx1x": [
+          [
+            0.46846889772850203,
+            0.00016149981684616661,
+            -0.18356108308463442
+          ],
+          [
+            -0.00016163685977168884,
+            0.46807170894154115,
+            -0.09937302799202703
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46846889772850203,
+            0.00016149981684616661,
+            4031.8164389169156
+          ],
+          [
+            -0.00016163685977168884,
+            0.46807170894154115,
+            2495.900626972008
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/registration.json",
+        "registrationSha256": "99df1a49e52ef6026eaebc11aae462a2865e0dd877cfa8b113015efc68e0bdf6",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4506,
+          2560,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          2496,
+          473,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "1f6d30492c5734cf4ba1a79ebee5668b25e44304d29a86ce5c218a7348f06888",
+        "nativeToContextPx1x": [
+          [
+            0.43936053839298583,
+            5.178535983262366e-05,
+            -0.5843106537184747
+          ],
+          [
+            -5.1834899398790075e-05,
+            0.43894063345027196,
+            -0.40899240558642475
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43936053839298583,
+            5.178535983262366e-05,
+            4441.415689346281
+          ],
+          [
+            -5.1834899398790075e-05,
+            0.43894063345027196,
+            2495.5910075944134
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/registration.json",
+        "registrationSha256": "99df1a49e52ef6026eaebc11aae462a2865e0dd877cfa8b113015efc68e0bdf6",
+        "fallback": false
+      }
+    ],
+    "r4-c1": [
+      {
+        "id": "q11",
+        "chunk": "r4-c1",
+        "corePx1x": [
+          0,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          0,
+          3008,
+          576,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/q11-native.webp",
+        "nativeSize": [
+          1836,
+          857
+        ],
+        "sha256": "95612abbfbbde1438e1674e729e41f19aaa0a44d26c91f4cef432aa94b7cae7a",
+        "nativeToContextPx1x": [
+          [
+            0.3136976872737709,
+            -0.00022589966084632327,
+            0.2596666230386246
+          ],
+          [
+            0.00022578439751620269,
+            0.31385783049218663,
+            0.22147099316665803
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3136976872737709,
+            -0.00022589966084632327,
+            0.2596666230386246
+          ],
+          [
+            0.00022578439751620269,
+            0.31385783049218663,
+            3008.221470993167
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/registration.json",
+        "registrationSha256": "ed788592da2fdb98432324e80260cd72076210eaff2c50a245fec0a8eebd1d9d",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c1",
+        "corePx1x": [
+          512,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          448,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "88a8f4099a9396bac35ad6600dac8db27d1689b90b0283ef4971dcd75fad5e69",
+        "nativeToContextPx1x": [
+          [
+            0.33065201249653997,
+            -0.00012813763898277135,
+            0.42164657055857746
+          ],
+          [
+            0.00012808963491064734,
+            0.3307759307438432,
+            -0.2761978301312861
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33065201249653997,
+            -0.00012813763898277135,
+            448.42164657055855
+          ],
+          [
+            0.00012808963491064734,
+            0.3307759307438432,
+            3007.7238021698686
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/registration.json",
+        "registrationSha256": "ed788592da2fdb98432324e80260cd72076210eaff2c50a245fec0a8eebd1d9d",
+        "fallback": true
+      }
+    ],
+    "r4-c2": [
+      {
+        "id": "q11",
+        "chunk": "r4-c2",
+        "corePx1x": [
+          1024,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          960,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/q11-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "1568e41f44947185744c355dbfbb0bf111944380821833885f77f16e5d5fb810",
+        "nativeToContextPx1x": [
+          [
+            0.33066942189391924,
+            -8.119674054599324e-06,
+            0.1744128151943534
+          ],
+          [
+            8.116632189445299e-06,
+            0.3307933466657314,
+            -0.41001437045709926
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33066942189391924,
+            -8.119674054599324e-06,
+            960.1744128151944
+          ],
+          [
+            8.116632189445299e-06,
+            0.3307933466657314,
+            3007.5899856295428
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/registration.json",
+        "registrationSha256": "055e240406636fffae351557e51e0d53673c77e29daf85c7ad10b0a0f9d4b168",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c2",
+        "corePx1x": [
+          1536,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          1472,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "07f12703bbc976d15cb035c8b829a56b5e7d5253679512c98defda0b875b2249",
+        "nativeToContextPx1x": [
+          [
+            0.33040262585156177,
+            0.00023158083821382547,
+            0.14479317341363007
+          ],
+          [
+            -0.00023149408132218605,
+            0.3305264506363885,
+            -0.31334816833270235
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33040262585156177,
+            0.00023158083821382547,
+            1472.1447931734135
+          ],
+          [
+            -0.00023149408132218605,
+            0.3305264506363885,
+            3007.6866518316674
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/registration.json",
+        "registrationSha256": "055e240406636fffae351557e51e0d53673c77e29daf85c7ad10b0a0f9d4b168",
+        "fallback": false
+      }
+    ],
+    "r4-c3": [
+      {
+        "id": "q11",
+        "chunk": "r4-c3",
+        "corePx1x": [
+          2048,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          1984,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/q11-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "339703e0f83ead84ef4020b09f2beab22ff63e4f53cd717f8ac9c7ad5ab262ec",
+        "nativeToContextPx1x": [
+          [
+            0.3306419654208251,
+            -1.1975578575902435e-05,
+            0.41138494717868246
+          ],
+          [
+            1.1971092177196729e-05,
+            0.33076587990279205,
+            -0.47455694241130486
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3306419654208251,
+            -1.1975578575902435e-05,
+            1984.4113849471787
+          ],
+          [
+            1.1971092177196729e-05,
+            0.33076587990279205,
+            3007.5254430575887
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/registration.json",
+        "registrationSha256": "d6ef851be9fc6cf26f50d6096279b33289b3ebca01600f280df43a94a9db188b",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c3",
+        "corePx1x": [
+          2560,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          2496,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "08454593c9eb8b1e379150d906d8ea425625dbdd0c4eee7a55e1731c3d7e4133",
+        "nativeToContextPx1x": [
+          [
+            0.33102724412373635,
+            4.3429303356764405e-05,
+            -0.2872171540799696
+          ],
+          [
+            -4.3413033481439835e-05,
+            0.33115130299636114,
+            0.20594095546562924
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33102724412373635,
+            4.3429303356764405e-05,
+            2495.71278284592
+          ],
+          [
+            -4.3413033481439835e-05,
+            0.33115130299636114,
+            3008.205940955466
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/registration.json",
+        "registrationSha256": "d6ef851be9fc6cf26f50d6096279b33289b3ebca01600f280df43a94a9db188b",
+        "fallback": false
+      }
+    ],
+    "r4-c4": [
+      {
+        "id": "q11",
+        "chunk": "r4-c4",
+        "corePx1x": [
+          3072,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          3008,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/q11-native.webp",
+        "nativeSize": [
+          1934,
+          813
+        ],
+        "sha256": "3856d6dedbcccd2726e4414950db70c2fcb86b844b5d1f92e4c6d748932c47e5",
+        "nativeToContextPx1x": [
+          [
+            0.33064335191303323,
+            -0.00012582079686732236,
+            0.6665545132401814
+          ],
+          [
+            0.00012583869366800547,
+            0.3305963277585868,
+            -0.6947871287887846
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33064335191303323,
+            -0.00012582079686732236,
+            3008.66655451324
+          ],
+          [
+            0.00012583869366800547,
+            0.3305963277585868,
+            3007.305212871211
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/registration.json",
+        "registrationSha256": "634cbfd307b103bc1b3512f6a1c547b6728c55ef892244e9798823203faba0dc",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c4",
+        "corePx1x": [
+          3584,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          3520,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "3486fc01e467b34e1d676fce24d22f3e89aa2e23f535fac2db5ec3515ba3360d",
+        "nativeToContextPx1x": [
+          [
+            0.3309970812177763,
+            1.6441611314362172e-05,
+            -0.06352454830780024
+          ],
+          [
+            -1.643545181039725e-05,
+            0.33112112878626776,
+            0.28490484642508423
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3309970812177763,
+            1.6441611314362172e-05,
+            3519.9364754516923
+          ],
+          [
+            -1.643545181039725e-05,
+            0.33112112878626776,
+            3008.284904846425
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/registration.json",
+        "registrationSha256": "634cbfd307b103bc1b3512f6a1c547b6728c55ef892244e9798823203faba0dc",
+        "fallback": false
+      }
+    ],
+    "r4-c5": [
+      {
+        "id": "q11",
+        "chunk": "r4-c5",
+        "corePx1x": [
+          4096,
+          3072,
+          410,
+          205
+        ],
+        "contextPx1x": [
+          4032,
+          3008,
+          538,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/q11-native.webp",
+        "nativeSize": [
+          1774,
+          887
+        ],
+        "sha256": "50abd5d7a4c503833ab655e8b0e010062185a6df5fdfcf9902cfee8bc091803f",
+        "nativeToContextPx1x": [
+          [
+            0.3033542960136961,
+            -1.4415987040563137e-05,
+            0.16519992567181652
+          ],
+          [
+            1.4415987040563137e-05,
+            0.3033542960136961,
+            -0.020775970084863878
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3033542960136961,
+            -1.4415987040563137e-05,
+            4032.165199925672
+          ],
+          [
+            1.4415987040563137e-05,
+            0.3033542960136961,
+            3007.9792240299153
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/registration.json",
+        "registrationSha256": "4975fc66d35a45c4d9373847551a014b54f7789a81326c3840aa6c183afcedc1",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c5",
+        "corePx1x": [
+          4506,
+          3072,
+          409,
+          205
+        ],
+        "contextPx1x": [
+          4442,
+          3008,
+          473,
+          269
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/q12-native.webp",
+        "nativeSize": [
+          1663,
+          946
+        ],
+        "sha256": "e15ed857b282dd7f99f064486f836b670cb3180507cb97b94ba6ef918d79b9bc",
+        "nativeToContextPx1x": [
+          [
+            0.28445361932165386,
+            -9.09101326771216e-05,
+            0.05125819135507693
+          ],
+          [
+            9.093269016544089e-05,
+            0.28438305548830034,
+            -0.26048114000013395
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.28445361932165386,
+            -9.09101326771216e-05,
+            4442.051258191355
+          ],
+          [
+            9.093269016544089e-05,
+            0.28438305548830034,
+            3007.73951886
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/registration.json",
+        "registrationSha256": "4975fc66d35a45c4d9373847551a014b54f7789a81326c3840aa6c183afcedc1",
+        "fallback": false
+      }
+    ],
+    "r2-c3": [
+      {
+        "id": "q11",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2048,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "ffc17e3faf6d93b4602d4b7e0aaef01dd92275250e1387710ee8c0ff96b409d3",
+        "nativeToContextPx1x": [
+          [
+            0.5101954934969288,
+            0.00043243753797942867,
+            0.07519425977454411
+          ],
+          [
+            -0.00043243753797942867,
+            0.5101954934969288,
+            0.0778367540842325
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101954934969288,
+            0.00043243753797942867,
+            1984.0751942597744
+          ],
+          [
+            -0.00043243753797942867,
+            0.5101954934969288,
+            960.0778367540843
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/registration.json",
+        "registrationSha256": "77dd194b2667874cccaee3ddc651f96f5de72e1f711c68a56eabf303d1b59263",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2560,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "980db955e90b02fbbb91db16e28447f1d477c05d4e1fcd3267051635d63b1d34",
+        "nativeToContextPx1x": [
+          [
+            0.5102402826095424,
+            -0.0001024658708876397,
+            0.2891216841341974
+          ],
+          [
+            0.0001024658708876397,
+            0.5102402826095424,
+            -0.2667673054078284
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5102402826095424,
+            -0.0001024658708876397,
+            2496.289121684134
+          ],
+          [
+            0.0001024658708876397,
+            0.5102402826095424,
+            959.7332326945922
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/registration.json",
+        "registrationSha256": "77dd194b2667874cccaee3ddc651f96f5de72e1f711c68a56eabf303d1b59263",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2048,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "d0ee06d828708a20b06279768a97dc63edee2e5074d23e445afe2bf8380282f3",
+        "nativeToContextPx1x": [
+          [
+            0.5100447833835522,
+            -0.00023303547797674296,
+            0.1337466586721836
+          ],
+          [
+            0.00023303547797674296,
+            0.5100447833835522,
+            -0.13798115792007948
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5100447833835522,
+            -0.00023303547797674296,
+            1984.1337466586722
+          ],
+          [
+            0.00023303547797674296,
+            0.5100447833835522,
+            1471.86201884208
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/registration.json",
+        "registrationSha256": "77dd194b2667874cccaee3ddc651f96f5de72e1f711c68a56eabf303d1b59263",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2560,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "aac9dc2f65bd89f265fc21959a84c4796d9c0b3237e09b35d5cbd4d77436bdae",
+        "nativeToContextPx1x": [
+          [
+            0.5104842080772235,
+            -0.00013491816077263307,
+            0.12863517330461688
+          ],
+          [
+            0.00013491816077263307,
+            0.5104842080772235,
+            -0.14908346407719691
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5104842080772235,
+            -0.00013491816077263307,
+            2496.1286351733047
+          ],
+          [
+            0.00013491816077263307,
+            0.5104842080772235,
+            1471.8509165359228
+          ]
+        ],
+        "sourceRegistration": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/registration.json",
+        "registrationSha256": "77dd194b2667874cccaee3ddc651f96f5de72e1f711c68a56eabf303d1b59263",
+        "fallback": false
+      }
+    ]
+  },
+  "imageGenCalls": 0,
+  "fallback": [
+    {
+      "part": "r4-c1/q12",
+      "reason": "HD-FULL-8 manual-review.json: lower forest incorrectly replaced; source correction remains pending.",
+      "corePx1x": [
+        512,
+        3072,
+        512,
+        205
+      ],
+      "contextPx1x": [
+        448,
+        3008,
+        640,
+        269
+      ],
+      "method": "v5 + baked runtime repairs, Lanczos 2x; min-cost join to native neighbour"
+    }
+  ],
+  "baselineInputs": [
+    {
+      "path": "img/map-zone1/v5/r1-c1.webp",
+      "sha256": "c4a328be0efefebbc86476b834257edc7d13c7ecfe16250e4b19696a8473406f"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c2.webp",
+      "sha256": "771bbadc742645409a9bbb45da87e74794fcea8e561c806e350732b8e30217c8"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c3.webp",
+      "sha256": "799864341ce7ad8683b3b0ecb3c4f94e2125097c2f428707dcb3abce2cb9eee9"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c4.webp",
+      "sha256": "1507d02063b86ad416551924e25483531ff40f8b405470ec782aa6b094afffd3"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c5.webp",
+      "sha256": "81e2f47e6891a7d8691b176f1cd6f2027c72cbdf5d17b2b6e8c2895bf9ecf079"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c1.webp",
+      "sha256": "4a4f2463ffccb9ea950111bef50be899e89889a626fa152f809415d1013fb172"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c2.webp",
+      "sha256": "587b94844db18e1f7675761bcf84cf34233cc5ca5e42d5cca7a771dbb22236cb"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c3.webp",
+      "sha256": "cc1341bc2abede40b96834875d355ee09f0f77779897b7d4e785a57744e70d01"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c4.webp",
+      "sha256": "1797af543dad58ed0121a80484dc05d06e88543666815542b7e3496b2e3aca78"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c5.webp",
+      "sha256": "b9f8e328060996f8b02afbdd58ad0f44d52403cd3bfc67932b0cd833c53f2703"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c1.webp",
+      "sha256": "37057f96f804273ed4ee60746d89d20478f7f8f742f141265cf144af8291e253"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c2.webp",
+      "sha256": "23c1a4028b319d08d75314ff505148c64d4f3e35b7a867f1cce6642656be28f6"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c3.webp",
+      "sha256": "b8ae72e5271e6b10d141b52b6502fd91b8011e4341653646789ba3c5e3ee8a57"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c4.webp",
+      "sha256": "6af7a984a5a4a36a577f2d8d05866504bed648d09de7a5e399f6724ff0fc2604"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c5.webp",
+      "sha256": "9259597d6798f43578f9b2408368ad5f704bfc454fbfcb5947260334f2380e56"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c1.webp",
+      "sha256": "47c563cb2d43dad149679fe9560ebbde06a7570d89652e04c33a9afcae48c16c"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c2.webp",
+      "sha256": "da0899e652b7d8ae1c3e717d4045011d3243a63f732820ed9d4b0672566eabbb"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c3.webp",
+      "sha256": "e7754f1b206138c04d946727e74c2ab600ee2e176f8f4f45b7b1a50cb8eed2e5"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c4.webp",
+      "sha256": "7dcfc683b73a6b6f690bcb03e1d104e8416968b42d7fa1bc8ee9817dde38cb51"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c5.webp",
+      "sha256": "23d1f210a9fca9301e70b0a27cd1708a2a4a6b559c1e9bd0b2980dfb2f1fec6e"
+    },
+    {
+      "path": "img/map-zone1/repairs/r1-c3-v1.webp",
+      "sha256": "aad81d7f0b3448435e95b2104cefdf1e4bca3ec9b224e96e46785e8ec50f7685"
+    },
+    {
+      "path": "img/map-zone1/repairs/r2-c3-v1.webp",
+      "sha256": "15fe46a968e8efa84a2c6624b663bd2be6023e1df92bce3b0455b5c7dc98887d"
+    },
+    {
+      "path": "img/map-zone1/repairs/r3-c3-pier-v1.webp",
+      "sha256": "b0cf8beb0ebb8c8ac77903cf3217a020938fa30e4c727e99b3b02a4b7154d76e"
+    },
+    {
+      "path": "src/town-terrain-repair.js",
+      "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+    },
+    {
+      "path": "src/town-walkmask.js",
+      "sha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a"
+    }
+  ],
+  "fallbackPatches": [
+    {
+      "id": "heaven-bridge",
+      "core": [
+        3620,
+        545,
+        4065,
+        745
+      ],
+      "reason": "HD-FULL-4 bridge supports/rock tip displaced5-12px; bridge railing/abutment changed.",
+      "contextRectPx1x": [
+        3572,
+        497,
+        4113,
+        793
+      ],
+      "effectiveFallbackPixels2x": 500574
+    },
+    {
+      "id": "lava-north-stair",
+      "core": [
+        570,
+        800,
+        750,
+        940
+      ],
+      "reason": "Stair side/landing outline changed in r1-c1 lower native.",
+      "contextRectPx1x": [
+        522,
+        752,
+        798,
+        988
+      ],
+      "effectiveFallbackPixels2x": 173279
+    },
+    {
+      "id": "lava-mid-stairs",
+      "core": [
+        620,
+        1420,
+        820,
+        1620
+      ],
+      "reason": "Stair width/landing edge changed in r2-c1 lower-left native.",
+      "contextRectPx1x": [
+        572,
+        1372,
+        868,
+        1668
+      ],
+      "effectiveFallbackPixels2x": 255801
+    },
+    {
+      "id": "lava-low-stair",
+      "core": [
+        700,
+        1960,
+        825,
+        2050
+      ],
+      "reason": "r2-c1 bottom stair top-left displaced9,5px; inspected width changed.",
+      "contextRectPx1x": [
+        652,
+        1912,
+        873,
+        2098
+      ],
+      "effectiveFallbackPixels2x": 113087
+    },
+    {
+      "id": "south-plaza-stair",
+      "core": [
+        2420,
+        2910,
+        2620,
+        3060
+      ],
+      "reason": "South plaza stair side moved7px and railing silhouette changed.",
+      "contextRectPx1x": [
+        2372,
+        2862,
+        2668,
+        3108
+      ],
+      "effectiveFallbackPixels2x": 196058
+    },
+    {
+      "id": "pier-stair",
+      "core": [
+        2770,
+        2120,
+        2960,
+        2240
+      ],
+      "reason": "Pier stair side/rail silhouette changed; correspondence displaced10px.",
+      "contextRectPx1x": [
+        2722,
+        2072,
+        3008,
+        2288
+      ],
+      "effectiveFallbackPixels2x": 154041
+    }
+  ]
+}

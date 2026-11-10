@@ -1,0 +1,83 @@
+{
+  "reviewType": "Offline visual inspection of7 complete folded game-scale seam sheets,6 game-scale comparisons, overview and restored bridge; no game execution or QA sign-off.",
+  "devicePxPerWorldUnit": 2.8,
+  "inGameTested": false,
+  "chunkEdgeReview": {
+    "horizontal-2048-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "horizontal-4096-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "horizontal-6144-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "vertical-2048-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "vertical-4096-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "vertical-6144-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only.",
+    "vertical-8192-game.jpg": "No dominant straight rectangular chunk border observed in the full sheet inspected. Fine stone/foliage continuity and fallback sharpness remain limitations; offline observation only."
+  },
+  "knownVisibleIssues": [
+    "Sharpness transitions remain visible at v5 fallback boundaries: lava-low-stair, pier-stair, south-plaza-stair and r4-c1/q12 forest.",
+    "South plaza fallback has an obvious softer stone patch above the stair in compare-zoom/south-plaza.jpg.",
+    "Central bridge native retains altered/removed side rail details relative to v5; full silhouette equivalence is not certified.",
+    "Heaven platform native removes/replaces background glow and some side details. These are inherited source changes, not assembly colour grading."
+  ],
+  "structureReview": "After six local original-image restorations,7 confident NCC probes remain over4px (max5px),526 uncertain. Low-confidence changes and full semantic contours unresolved. No claim of4px whole-map compliance.",
+  "inspectedFiles": [
+    {
+      "path": "seam-check/horizontal-2048-game.jpg",
+      "sha256": "647fd62cf974cb2df9eb8b049bcf5f114d2dd7c64ea1b7781970a8f93952f9a4"
+    },
+    {
+      "path": "seam-check/horizontal-4096-game.jpg",
+      "sha256": "7b0b3944ed0b463df66d757435d778ba1ce9a74cdbd95d4e5ca68053da6ca5fc"
+    },
+    {
+      "path": "seam-check/horizontal-6144-game.jpg",
+      "sha256": "1dc8d845cec893f18327e98f6e753c971c1048a5e92c0ccea1f8cde65e6106d3"
+    },
+    {
+      "path": "seam-check/vertical-2048-game.jpg",
+      "sha256": "bf47f45a348064eb01078a1c701144ca98f6aae5136d0d18c930e7ec0bf64de5"
+    },
+    {
+      "path": "seam-check/vertical-4096-game.jpg",
+      "sha256": "e81046715624430aebdfb871b67da8b922034ede12ccf95a35f3ec9887b68c1c"
+    },
+    {
+      "path": "seam-check/vertical-6144-game.jpg",
+      "sha256": "c6eaf32088634b36c6a8cf34ed5b9e7087effdccaa57978c7890ff6b0d58d620"
+    },
+    {
+      "path": "seam-check/vertical-8192-game.jpg",
+      "sha256": "2cfd7a80bd4ab176a328231884579803fab7ccb5508e7fadaf2db93367d1b5ff"
+    },
+    {
+      "path": "compare-zoom/central-bridge.jpg",
+      "sha256": "81c5e9e7e77ac356f597d1c5b8adc8daa83033f442afc9df6b4db7982b0b1c67"
+    },
+    {
+      "path": "compare-zoom/heaven-gate.jpg",
+      "sha256": "19949ce14967b950d676b6be98a405a18e46ce2eede1b829af6ae161155dd595"
+    },
+    {
+      "path": "compare-zoom/ice-bank.jpg",
+      "sha256": "c505e45670b25d95b64a90bbce7c3fa33759a14b911b02c369fcb9945857f24d"
+    },
+    {
+      "path": "compare-zoom/lava-bank.jpg",
+      "sha256": "326787a0599b2f9f6dc3b9c9ebefa01b5af17e4baae779e4eb7fe7505f2fa70b"
+    },
+    {
+      "path": "compare-zoom/main-plaza.jpg",
+      "sha256": "a2647e83dc7a09cd2e0de10731df5300b399f03dd84080fb52afdb77b4facec3"
+    },
+    {
+      "path": "compare-zoom/south-plaza.jpg",
+      "sha256": "2f5004c19a52c466684b42e7053bbd31df8c4723d7f3f7dfb2e66362cbb883a3"
+    },
+    {
+      "path": "fallback-check/heaven-bridge.jpg",
+      "sha256": "6c3ddfb8eba82e6220f72a7bacf31211b6381465421eeef1b80bd6880bb0a1fe"
+    },
+    {
+      "path": "v7/zone1-terrain-v7-preview.webp",
+      "sha256": "fda5679bf88f2181dbac7e741fe556aa9ecaaef0b3bd6404bfa559655268445c"
+    }
+  ]
+}
