@@ -1,0 +1,300 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      4096,
+      1024,
+      410,
+      512
+    ],
+    "contextMasterPx1x": [
+      4032,
+      960,
+      538,
+      640
+    ],
+    "removal": [
+      {
+        "id": "ice-tree-06",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          315,
+          -66,
+          86,
+          178
+        ]
+      },
+      {
+        "id": "ice-tree-08",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          54,
+          260,
+          98,
+          197
+        ]
+      },
+      {
+        "id": "ice-tree-09",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          398,
+          336,
+          92,
+          178
+        ]
+      },
+      {
+        "id": "lump-07",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          176,
+          190,
+          124,
+          70
+        ]
+      },
+      {
+        "id": "lump-08",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          -40,
+          201,
+          180,
+          75
+        ]
+      },
+      {
+        "id": "lump-10",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          443,
+          423,
+          103,
+          119
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      4506,
+      1024,
+      409,
+      512
+    ],
+    "contextMasterPx1x": [
+      4442,
+      960,
+      473,
+      640
+    ],
+    "removal": [
+      {
+        "id": "ice-tree-09",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          -12,
+          336,
+          92,
+          178
+        ]
+      },
+      {
+        "id": "ice-tree-10",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          135,
+          481,
+          98,
+          190
+        ]
+      },
+      {
+        "id": "lump-09",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          187,
+          366,
+          159,
+          148
+        ]
+      },
+      {
+        "id": "lump-10",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          33,
+          423,
+          103,
+          119
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      4096,
+      1536,
+      410,
+      512
+    ],
+    "contextMasterPx1x": [
+      4032,
+      1472,
+      538,
+      640
+    ],
+    "removal": [
+      {
+        "id": "ice-tree-09",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          398,
+          -176,
+          92,
+          178
+        ]
+      },
+      {
+        "id": "east-tree-01",
+        "kind": "green-tree",
+        "rectInInputPx": [
+          -35,
+          138,
+          123,
+          215
+        ]
+      },
+      {
+        "id": "east-tree-02",
+        "kind": "green-tree",
+        "rectInInputPx": [
+          318,
+          248,
+          120,
+          209
+        ]
+      },
+      {
+        "id": "ice-lower-back",
+        "kind": "bridge-rail",
+        "rectInInputPx": [
+          -51,
+          463,
+          316,
+          77
+        ]
+      },
+      {
+        "id": "ice-lower-front",
+        "kind": "bridge-rail",
+        "rectInInputPx": [
+          -48,
+          531,
+          323,
+          98
+        ]
+      },
+      {
+        "id": "lump-10",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          443,
+          -89,
+          103,
+          119
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      4506,
+      1536,
+      409,
+      512
+    ],
+    "contextMasterPx1x": [
+      4442,
+      1472,
+      473,
+      640
+    ],
+    "removal": [
+      {
+        "id": "ice-tree-09",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          -12,
+          -176,
+          92,
+          178
+        ]
+      },
+      {
+        "id": "ice-tree-10",
+        "kind": "snow-tree",
+        "rectInInputPx": [
+          135,
+          -31,
+          98,
+          190
+        ]
+      },
+      {
+        "id": "east-tree-02",
+        "kind": "green-tree",
+        "rectInInputPx": [
+          -92,
+          248,
+          120,
+          209
+        ]
+      },
+      {
+        "id": "east-tree-03",
+        "kind": "green-tree",
+        "rectInInputPx": [
+          169,
+          236,
+          123,
+          218
+        ]
+      },
+      {
+        "id": "east-tree-04",
+        "kind": "green-tree",
+        "rectInInputPx": [
+          381,
+          316,
+          92,
+          206
+        ]
+      },
+      {
+        "id": "lump-09",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          187,
+          -146,
+          159,
+          148
+        ]
+      },
+      {
+        "id": "lump-10",
+        "kind": "embedded-fog-lump",
+        "rectInInputPx": [
+          33,
+          -89,
+          103,
+          119
+        ]
+      }
+    ]
+  }
+]

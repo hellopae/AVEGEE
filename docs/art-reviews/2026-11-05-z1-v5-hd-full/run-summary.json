@@ -1,0 +1,152 @@
+{
+  "tool": "built-in ImageGen only",
+  "imageGenCalls": 9,
+  "generationLimit": 10,
+  "chunks": [
+    {
+      "chunk": "r2-c5",
+      "selectedParts": 4,
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "coreCoverageExactlyOnce": true,
+      "imageGenCalls": 5,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1149,
+            1368
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "001ebefab3757db45f980b6f71d4211cc761b528d2da11daa2be1cc839c10585"
+        },
+        {
+          "id": "q12",
+          "size": [
+            1078,
+            1460
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "86808a4fa1c7e4b6a3fc327ed0477c631e1da8ae65ed90b36038a3910d98de23"
+        },
+        {
+          "id": "q21",
+          "size": [
+            1149,
+            1368
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "ed827ddb4810d51404966f61ebf2fee35c6211fc0206c1e7b4e54dbcb6f690cb"
+        },
+        {
+          "id": "q22",
+          "size": [
+            1078,
+            1460
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "fb666cb1b96e98f4792839a2241a38a877fa529ce30aaaafaaadfb5eb9eea880"
+        }
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "reliableStructureProbes": 15,
+      "totalStructureProbes": 16,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 48.995093175864,
+      "sharpnessAtLeast10": true,
+      "pendingParts": [],
+      "pendingObjectIds": [
+        "ice-tree-06",
+        "ice-tree-08",
+        "ice-tree-09",
+        "ice-tree-10",
+        "east-tree-01",
+        "east-tree-02",
+        "east-tree-03",
+        "east-tree-04"
+      ],
+      "pendingReview": [
+        "Full semantic contour verification; local probes alone are insufficient.",
+        "Survey box/object correspondence before separate sprite placement.",
+        "Liquid masks against final assembled terrain; previously fog-covered valley is reconstructed."
+      ],
+      "visualSeamReview": "Inspected final seam sheet and unscaled horizontal strip. No obvious rectangular tile boundary; independently drawn fine cracks/ripples and vegetation can differ near cuts. No in-game review."
+    },
+    {
+      "chunk": "r3-c5",
+      "selectedParts": 4,
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "coreCoverageExactlyOnce": true,
+      "imageGenCalls": 4,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1149,
+            1368
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "b45bd84bb091ec88cf12dba57719fc103b22145b48c8c4db92450e72cc491614"
+        },
+        {
+          "id": "q12",
+          "size": [
+            1078,
+            1460
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "1185d7c406129ffdeca8030bab7cf337b9b831dcaf2f9be4d9d977671d807d7b"
+        },
+        {
+          "id": "q21",
+          "size": [
+            1149,
+            1368
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "40227293a9686af9da85ce8291f922ac670d7d85e4d9628b0940abde8f0f3e8e"
+        },
+        {
+          "id": "q22",
+          "size": [
+            1078,
+            1460
+          ],
+          "losslessPixelsEqualOriginal": true,
+          "sha256": "1f6d30492c5734cf4ba1a79ebee5668b25e44304d29a86ce5c218a7348f06888"
+        }
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "reliableStructureProbes": 13,
+      "totalStructureProbes": 14,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 40.57804897100661,
+      "sharpnessAtLeast10": true,
+      "pendingParts": [],
+      "pendingObjectIds": [
+        "south-rock-08"
+      ],
+      "pendingReview": [
+        "Full semantic contour verification; local probes alone are insufficient.",
+        "Survey box/object correspondence before separate sprite placement.",
+        "Liquid masks against final assembled terrain; previously fog-covered valley is reconstructed."
+      ],
+      "visualSeamReview": "Inspected final seam sheet and unscaled horizontal strip. No obvious rectangular tile boundary; independently drawn fine cracks/ripples and vegetation can differ near cuts. No in-game review."
+    }
+  ],
+  "qaSignoff": false,
+  "allImagesDecoded": true,
+  "imageCount": 26,
+  "pendingParts": [],
+  "completeAcceptanceVerified": false,
+  "outputBytes": 52668702,
+  "sizeBudgetBytes": 60000000,
+  "withinSizeBudget": true
+}

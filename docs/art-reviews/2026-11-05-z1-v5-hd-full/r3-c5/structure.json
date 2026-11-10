@@ -1,0 +1,222 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Independent fixed 49x49 DoG sigma1.5/6 landmark templates, normalized correlation search +/-16 map pixels on assembled output. Not SIFT residual.",
+  "totalProbes": 14,
+  "reliableProbes": 13,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Local patch translation does not prove complete contours, stair count or hidden edges; all uncertain and failed probes retained.",
+  "probes": [
+    {
+      "id": "blue-fall-bank",
+      "sourcePx1x": [
+        110,
+        63
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9134003520011902,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-northwest-bank",
+      "sourcePx1x": [
+        67,
+        141
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.95278000831604,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-north-bank",
+      "sourcePx1x": [
+        250,
+        142
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9573960304260254,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-north-mid-bank",
+      "sourcePx1x": [
+        399,
+        137
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9400220513343811,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-north-fall",
+      "sourcePx1x": [
+        508,
+        147
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9447493553161621,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-northeast-bank",
+      "sourcePx1x": [
+        679,
+        180
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9524266719818115,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-east-bank",
+      "sourcePx1x": [
+        770,
+        199
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9379094243049622,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-southwest-bank",
+      "sourcePx1x": [
+        74,
+        472
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9414470195770264,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-south-bank",
+      "sourcePx1x": [
+        265,
+        482
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.9047533869743347,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-south-mid-bank",
+      "sourcePx1x": [
+        464,
+        465
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8920472860336304,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "purple-southeast-bank",
+      "sourcePx1x": [
+        672,
+        455
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9062910079956055,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-peak-right",
+      "sourcePx1x": [
+        711,
+        657
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.3621789813041687,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "cliff-east-ridge",
+      "sourcePx1x": [
+        764,
+        828
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8484665751457214,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-east-toe",
+      "sourcePx1x": [
+        758,
+        969
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8483503460884094,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Independent fixed 49x49 DoG sigma1.5/6 landmark templates, normalized correlation search +/-16 map pixels on assembled output. Not SIFT residual.",
+  "totalProbes": 16,
+  "reliableProbes": 15,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Local patch translation does not prove complete contours, stair count or hidden edges; all uncertain and failed probes retained.",
+  "probes": [
+    {
+      "id": "plaza-front-west",
+      "sourcePx1x": [
+        75,
+        274
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7410375475883484,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-mid",
+      "sourcePx1x": [
+        180,
+        249
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "correlation": 0.8632903695106506,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-east",
+      "sourcePx1x": [
+        300,
+        202
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8895209431648254,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-corner",
+      "sourcePx1x": [
+        421,
+        154
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8724810481071472,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-bank",
+      "sourcePx1x": [
+        579,
+        166
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.881233274936676,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "snow-bank-east",
+      "sourcePx1x": [
+        743,
+        216
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8263192176818848,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "water-bank-east",
+      "sourcePx1x": [
+        776,
+        264
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8316845893859863,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "waterfall-base",
+      "sourcePx1x": [
+        545,
+        161
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.960766613483429,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-ridge",
+      "sourcePx1x": [
+        307,
+        332
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8095574975013733,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-ridge-east",
+      "sourcePx1x": [
+        408,
+        307
+      ],
+      "displacementPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "correlation": 0.8588097095489502,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-west-foot",
+      "sourcePx1x": [
+        74,
+        416
+      ],
+      "displacementPx1x": [
+        -1,
+        2
+      ],
+      "distancePx1x": 2.23606797749979,
+      "correlation": 0.45302361249923706,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "sourcePx1x": [
+        103,
+        543
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7533068656921387,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "sourcePx1x": [
+        162,
+        530
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.805052638053894,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-bottom-left",
+      "sourcePx1x": [
+        126,
+        650
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.950084388256073,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-bottom-right",
+      "sourcePx1x": [
+        194,
+        648
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9615777134895325,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "path-cliff-southeast",
+      "sourcePx1x": [
+        655,
+        921
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.856401264667511,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

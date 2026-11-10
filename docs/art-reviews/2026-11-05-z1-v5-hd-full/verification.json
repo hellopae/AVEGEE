@@ -1,0 +1,189 @@
+{
+  "checks": "decode, full core coverage once, 4 native files/chunk, exact native decoded pixel equality, output dimensions, generation limit, sharpness threshold, reliable local structure threshold and size budget",
+  "allMechanicalAssertionsCompleted": true,
+  "images": [
+    {
+      "path": "r3-c5/q22-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r3-c5/r3-c5-compare.jpg",
+      "size": [
+        3620,
+        2300
+      ]
+    },
+    {
+      "path": "r3-c5/seam-check.jpg",
+      "size": [
+        1720,
+        1900
+      ]
+    },
+    {
+      "path": "r3-c5/structure-check.jpg",
+      "size": [
+        1674,
+        1080
+      ]
+    },
+    {
+      "path": "r3-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r3-c5/r3-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c5/q11-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r3-c5/q12-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r2-c5/q22-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r2-c5/r2-c5-compare.jpg",
+      "size": [
+        3620,
+        2300
+      ]
+    },
+    {
+      "path": "r2-c5/r2-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ]
+    },
+    {
+      "path": "r2-c5/seam-check.jpg",
+      "size": [
+        1720,
+        1900
+      ]
+    },
+    {
+      "path": "r2-c5/structure-check.jpg",
+      "size": [
+        1674,
+        1080
+      ]
+    },
+    {
+      "path": "r2-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r2-c5/q11-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r2-c5/q12-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r2-c5/inputs/q22-v5.png",
+      "size": [
+        473,
+        640
+      ]
+    },
+    {
+      "path": "r2-c5/inputs/v5.webp",
+      "size": [
+        819,
+        1024
+      ]
+    },
+    {
+      "path": "r2-c5/inputs/q12-v5.png",
+      "size": [
+        473,
+        640
+      ]
+    },
+    {
+      "path": "r2-c5/inputs/q21-v5.png",
+      "size": [
+        538,
+        640
+      ]
+    },
+    {
+      "path": "r2-c5/inputs/q11-v5.png",
+      "size": [
+        538,
+        640
+      ]
+    },
+    {
+      "path": "r3-c5/inputs/q22-v5.png",
+      "size": [
+        473,
+        640
+      ]
+    },
+    {
+      "path": "r3-c5/inputs/v5.webp",
+      "size": [
+        819,
+        1024
+      ]
+    },
+    {
+      "path": "r3-c5/inputs/q12-v5.png",
+      "size": [
+        473,
+        640
+      ]
+    },
+    {
+      "path": "r3-c5/inputs/q21-v5.png",
+      "size": [
+        538,
+        640
+      ]
+    },
+    {
+      "path": "r3-c5/inputs/q11-v5.png",
+      "size": [
+        538,
+        640
+      ]
+    }
+  ],
+  "doesNotCertifyVisualOrSemanticAcceptance": true
+}

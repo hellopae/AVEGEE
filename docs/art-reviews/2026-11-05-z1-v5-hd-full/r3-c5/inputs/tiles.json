@@ -1,0 +1,139 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      4096,
+      2048,
+      410,
+      512
+    ],
+    "contextMasterPx1x": [
+      4032,
+      1984,
+      538,
+      640
+    ],
+    "removal": [
+      {
+        "id": "ice-lower-front",
+        "kind": "bridge-rail",
+        "rectInInputPx": [
+          -48,
+          19,
+          323,
+          98
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      4506,
+      2048,
+      409,
+      512
+    ],
+    "contextMasterPx1x": [
+      4442,
+      1984,
+      473,
+      640
+    ],
+    "removal": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      4096,
+      2560,
+      410,
+      512
+    ],
+    "contextMasterPx1x": [
+      4032,
+      2496,
+      538,
+      640
+    ],
+    "removal": [
+      {
+        "id": "south-bed-15",
+        "kind": "shrub",
+        "rectInInputPx": [
+          -69,
+          487,
+          184,
+          98
+        ]
+      },
+      {
+        "id": "south-bed-16",
+        "kind": "shrub",
+        "rectInInputPx": [
+          428,
+          201,
+          190,
+          111
+        ]
+      },
+      {
+        "id": "south-rock-07",
+        "kind": "rock",
+        "rectInInputPx": [
+          305,
+          407,
+          123,
+          187
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      4506,
+      2560,
+      409,
+      512
+    ],
+    "contextMasterPx1x": [
+      4442,
+      2496,
+      473,
+      640
+    ],
+    "removal": [
+      {
+        "id": "south-bed-16",
+        "kind": "shrub",
+        "rectInInputPx": [
+          18,
+          201,
+          190,
+          111
+        ]
+      },
+      {
+        "id": "south-rock-07",
+        "kind": "rock",
+        "rectInInputPx": [
+          -105,
+          407,
+          123,
+          187
+        ]
+      },
+      {
+        "id": "south-rock-08",
+        "kind": "rock",
+        "rectInInputPx": [
+          319,
+          189,
+          138,
+          178
+        ]
+      }
+    ]
+  }
+]

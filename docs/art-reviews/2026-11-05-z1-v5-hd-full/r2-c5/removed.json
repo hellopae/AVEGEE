@@ -1,0 +1,493 @@
+{
+  "requestedObjects": [
+    {
+      "id": "ice-tree-06",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3396.0,
+        698.329,
+        67.2,
+        139.186
+      ],
+      "footWorld": [
+        3429.6,
+        826.38
+      ],
+      "chunk": [
+        "r1-c5",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4346.703125,
+        893.915676953125,
+        86.0125,
+        178.16895390625
+      ]
+    },
+    {
+      "id": "ice-tree-08",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3192.0,
+        952.703,
+        76.8,
+        153.584
+      ],
+      "footWorld": [
+        3230.4,
+        1094.001
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4085.59375,
+        1219.534269921875,
+        98.3,
+        196.59951875
+      ]
+    },
+    {
+      "id": "ice-tree-09",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3460.8,
+        1012.697,
+        72.0,
+        139.186
+      ],
+      "footWorld": [
+        3496.8,
+        1140.748
+      ],
+      "chunk": [
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4429.64375,
+        1296.331276953125,
+        92.15625,
+        178.16895390625
+      ]
+    },
+    {
+      "id": "ice-tree-10",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3576.0,
+        1125.486,
+        76.8,
+        148.785
+      ],
+      "footWorld": [
+        3614.4,
+        1262.368
+      ],
+      "chunk": [
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4577.09375,
+        1440.7100085937502,
+        98.3,
+        190.456423828125
+      ]
+    },
+    {
+      "id": "east-tree-01",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3122.4,
+        1257.472,
+        96.0,
+        167.983
+      ],
+      "footWorld": [
+        3170.4,
+        1412.016
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3996.509375,
+        1609.6624,
+        122.875,
+        215.031363671875
+      ]
+    },
+    {
+      "id": "east-tree-02",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3398.4,
+        1343.863,
+        93.6,
+        163.183
+      ],
+      "footWorld": [
+        3445.2,
+        1493.992
+      ],
+      "chunk": [
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4349.775,
+        1720.249629296875,
+        119.803125,
+        208.886988671875
+      ]
+    },
+    {
+      "id": "east-tree-03",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3602.4,
+        1334.264,
+        96.0,
+        170.383
+      ],
+      "footWorld": [
+        3650.4,
+        1491.016
+      ],
+      "chunk": [
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4610.884375,
+        1707.9621593749998,
+        122.875,
+        218.103551171875
+      ]
+    },
+    {
+      "id": "east-tree-04",
+      "kind": "green-tree",
+      "bboxWorld": [
+        3768.0,
+        1396.658,
+        72.0,
+        160.784
+      ],
+      "footWorld": [
+        3804.0,
+        1544.579
+      ],
+      "chunk": [
+        "r2-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4822.84375,
+        1787.83135390625,
+        92.15625,
+        205.81608124999997
+      ]
+    },
+    {
+      "id": "ice-lower-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        3110.4,
+        1511.846,
+        247.2,
+        59.994
+      ],
+      "footWorld": [
+        3234.0,
+        1571.84
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3981.15,
+        1935.28099296875,
+        316.403125,
+        76.79700703124999
+      ]
+    },
+    {
+      "id": "ice-lower-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        3112.8,
+        1564.641,
+        252.0,
+        76.792
+      ],
+      "footWorld": [
+        3238.8,
+        1641.433
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5",
+        "r3-c4",
+        "r3-c5"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3984.221875,
+        2002.862717578125,
+        322.546875,
+        98.299759375
+      ]
+    }
+  ],
+  "requestedFogLumps": [
+    {
+      "id": "lump-07",
+      "masterPx": [
+        4208,
+        1150,
+        124,
+        70
+      ],
+      "worldRect": [
+        3288,
+        898,
+        97,
+        55
+      ],
+      "areaWorld": 2908,
+      "meanBrightness": 185,
+      "v7Px2x": [
+        8416,
+        2300,
+        248,
+        140
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-08",
+      "masterPx": [
+        3992,
+        1161,
+        180,
+        75
+      ],
+      "worldRect": [
+        3119,
+        907,
+        141,
+        59
+      ],
+      "areaWorld": 3468,
+      "meanBrightness": 180,
+      "v7Px2x": [
+        7984,
+        2322,
+        360,
+        150
+      ],
+      "chunks": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-09",
+      "masterPx": [
+        4629,
+        1326,
+        159,
+        148
+      ],
+      "worldRect": [
+        3617,
+        1036,
+        124,
+        116
+      ],
+      "areaWorld": 6582,
+      "meanBrightness": 196,
+      "v7Px2x": [
+        9258,
+        2652,
+        318,
+        296
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-10",
+      "masterPx": [
+        4475,
+        1383,
+        103,
+        119
+      ],
+      "worldRect": [
+        3496,
+        1081,
+        80,
+        93
+      ],
+      "areaWorld": 3803,
+      "meanBrightness": 215,
+      "v7Px2x": [
+        8950,
+        2766,
+        206,
+        238
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    }
+  ],
+  "keptPalePlazas": [
+    {
+      "id": "lump-06",
+      "masterPx": [
+        4102,
+        1003,
+        301,
+        117
+      ],
+      "worldRect": [
+        3205,
+        784,
+        235,
+        91
+      ],
+      "areaWorld": 7249,
+      "meanBrightness": 174,
+      "v7Px2x": [
+        8204,
+        2006,
+        602,
+        234
+      ],
+      "chunks": [
+        "r1-c5",
+        "r2-c5"
+      ],
+      "review": "false positive - grey stone plaza of the ice zone (keep)"
+    }
+  ],
+  "status": "partial visual confirmation; survey mismatch recorded; not blanket certification",
+  "confirmedRemovedIds": [
+    "ice-lower-back",
+    "ice-lower-front"
+  ],
+  "visuallyRemovedAdditionalDescription": [
+    "pink-flowering foreground tree beside path in q22; bridge rails/posts (deck remains)"
+  ],
+  "objectReview": [
+    {
+      "id": "ice-tree-06",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "ice-tree-08",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "ice-tree-09",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "ice-tree-10",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "east-tree-01",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "east-tree-02",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "east-tree-03",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "east-tree-04",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "ice-lower-back",
+      "status": "visually removed in delivered core/context"
+    },
+    {
+      "id": "ice-lower-front",
+      "status": "visually removed in delivered core/context"
+    }
+  ],
+  "fogReview": [
+    {
+      "id": "lump-07",
+      "status": "No fog identifiable at source master rect [4208,1150,124,70]; exposed stone paving preserved."
+    },
+    {
+      "id": "lump-08",
+      "status": "No fog identifiable at clipped source master rect [3992,1161,180,75]; exposed stone paving preserved."
+    },
+    {
+      "id": "lump-09",
+      "status": "White cliff-valley fog removed in q12 redraw; original contours only locally checked."
+    },
+    {
+      "id": "lump-10",
+      "status": "White cliff-valley fog removed across q11/q12; replacement valley/water beneath former occlusion needs semantic review."
+    }
+  ],
+  "remainingReview": [
+    "Do not assume every requested ID is cleanly removed from approximate boxes. Keep inaccessible forest and terrain cliffs; source/result review needed before using independent sprites."
+  ]
+}

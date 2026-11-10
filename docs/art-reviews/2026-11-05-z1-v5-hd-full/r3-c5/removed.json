@@ -1,0 +1,184 @@
+{
+  "requestedObjects": [
+    {
+      "id": "south-bed-15",
+      "kind": "shrub",
+      "bboxWorld": [
+        3096.0,
+        2330.163,
+        144.0,
+        76.792
+      ],
+      "footWorld": [
+        3168.0,
+        2400.812
+      ],
+      "chunk": [
+        "r3-c4",
+        "r3-c5",
+        "r4-c4",
+        "r4-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3962.71875,
+        2982.790683984375,
+        184.3125,
+        98.299759375
+      ]
+    },
+    {
+      "id": "south-bed-16",
+      "kind": "shrub",
+      "bboxWorld": [
+        3484.8,
+        2106.986,
+        148.8,
+        86.391
+      ],
+      "footWorld": [
+        3559.2,
+        2186.466
+      ],
+      "chunk": [
+        "r3-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4460.3625,
+        2697.1066882812497,
+        190.45625,
+        110.58722929687501
+      ]
+    },
+    {
+      "id": "south-rock-07",
+      "kind": "rock",
+      "bboxWorld": [
+        3388.8,
+        2267.769,
+        96.0,
+        146.385
+      ],
+      "footWorld": [
+        3436.8,
+        2402.444
+      ],
+      "chunk": [
+        "r3-c5",
+        "r4-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4337.4875,
+        2902.9214894531247,
+        122.875,
+        187.38423632812498
+      ]
+    },
+    {
+      "id": "south-rock-08",
+      "kind": "rock",
+      "bboxWorld": [
+        3720.0,
+        2097.387,
+        108.0,
+        139.186
+      ],
+      "footWorld": [
+        3774.0,
+        2225.438
+      ],
+      "chunk": [
+        "r3-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        4761.40625,
+        2684.8192183593756,
+        138.234375,
+        178.16895390625
+      ]
+    },
+    {
+      "id": "ice-lower-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        3112.8,
+        1564.641,
+        252.0,
+        76.792
+      ],
+      "footWorld": [
+        3238.8,
+        1641.433
+      ],
+      "chunk": [
+        "r2-c4",
+        "r2-c5",
+        "r3-c4",
+        "r3-c5"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3984.221875,
+        2002.862717578125,
+        322.546875,
+        98.299759375
+      ]
+    }
+  ],
+  "requestedFogLumps": [],
+  "keptPalePlazas": [],
+  "status": "partial visual confirmation; survey mismatch recorded; not blanket certification",
+  "confirmedRemovedIds": [
+    "ice-lower-front",
+    "south-bed-15",
+    "south-bed-16",
+    "south-rock-07"
+  ],
+  "visuallyRemovedAdditionalDescription": [
+    "foreground low bushes and freestanding rock in q21; large contiguous cliff in q22 retained"
+  ],
+  "objectReview": [
+    {
+      "id": "south-bed-15",
+      "status": "visually removed in delivered core/context"
+    },
+    {
+      "id": "south-bed-16",
+      "status": "visually removed in delivered core/context"
+    },
+    {
+      "id": "south-rock-07",
+      "status": "visually removed in delivered core/context"
+    },
+    {
+      "id": "south-rock-08",
+      "status": "not individually certified: approximate overview survey box does not reliably identify a matching foreground object in v5; check source/result before separate sprite placement"
+    },
+    {
+      "id": "ice-lower-front",
+      "status": "visually removed in delivered core/context"
+    }
+  ],
+  "fogReview": [],
+  "remainingReview": [
+    "Do not assume every requested ID is cleanly removed from approximate boxes. Keep inaccessible forest and terrain cliffs; source/result review needed before using independent sprites."
+  ]
+}

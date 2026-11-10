@@ -1,0 +1,282 @@
+{
+  "chunk": "r2-c5",
+  "coordinateFormat": "rectangles [x,y,width,height]; global master top-left origin; affine native pixels to map1x; no external chunk blend",
+  "chunkMasterPx1x": [
+    4096,
+    1024,
+    819,
+    1024
+  ],
+  "outputSize": [
+    1638,
+    2048
+  ],
+  "colorCorrection": {
+    "sigmaMapPx": 35,
+    "gain": 0.8,
+    "excluded": "requested removal boxes +64px, lower half q11/q12 r2-c5, entire q21 r3-c5 (erased rock extends beyond survey box)",
+    "noSharpening": true
+  },
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMasterPx1x": [
+        4096,
+        1024,
+        410,
+        512
+      ],
+      "contextMasterPx1x": [
+        4032,
+        960,
+        538,
+        640
+      ],
+      "overlapPx1x": 64,
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "nativePixelToContextPx1x": [
+        [
+          0.46782944526644815,
+          -0.0003116988000271136,
+          0.5616426150312965
+        ],
+        [
+          0.0003119632963978938,
+          0.46743279863575193,
+          -0.27408055602181525
+        ]
+      ],
+      "nativePixelToMasterPx1x": [
+        [
+          0.46782944526644815,
+          -0.0003116988000271136,
+          4032.5616426150314
+        ],
+        [
+          0.0003119632963978938,
+          0.46743279863575193,
+          959.7259194439782
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          0.9991376070839199,
+          -0.0006662561850579553,
+          0.5616426150312965
+        ],
+        [
+          0.0006662561850579553,
+          0.9991376070839199,
+          -0.27408055602181525
+        ]
+      ],
+      "siftMatches": 270,
+      "siftInliers": 204,
+      "inlierResidualPx1x": {
+        "median": 0.7351816892623901,
+        "p95": 1.8580576181411743,
+        "max": 2.666846752166748
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreMasterPx1x": [
+        4506,
+        1024,
+        409,
+        512
+      ],
+      "contextMasterPx1x": [
+        4442,
+        960,
+        473,
+        640
+      ],
+      "overlapPx1x": 64,
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "nativePixelToContextPx1x": [
+        [
+          0.4386772458398204,
+          -4.314282966721797e-05,
+          0.06445456523252081
+        ],
+        [
+          4.3184101506823094e-05,
+          0.43825799393235954,
+          0.016756824193199207
+        ]
+      ],
+      "nativePixelToMasterPx1x": [
+        [
+          0.4386772458398204,
+          -4.314282966721797e-05,
+          4442.064454565232
+        ],
+        [
+          4.3184101506823094e-05,
+          0.43825799393235954,
+          960.0167568241932
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          0.9997760486581952,
+          -9.8419580178341e-05,
+          0.06445456523252081
+        ],
+        [
+          9.8419580178341e-05,
+          0.9997760486581952,
+          0.016756824193199207
+        ]
+      ],
+      "siftMatches": 799,
+      "siftInliers": 763,
+      "inlierResidualPx1x": {
+        "median": 0.43871694803237915,
+        "p95": 1.2714043855667114,
+        "max": 2.2603538036346436
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q21",
+      "coreMasterPx1x": [
+        4096,
+        1536,
+        410,
+        512
+      ],
+      "contextMasterPx1x": [
+        4032,
+        1472,
+        538,
+        640
+      ],
+      "overlapPx1x": 64,
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "nativePixelToContextPx1x": [
+        [
+          0.4682373948422963,
+          -1.3263407809757416e-05,
+          -0.31918761153869896
+        ],
+        [
+          1.3274662659726534e-05,
+          0.4678404023337885,
+          -0.31196827320675635
+        ]
+      ],
+      "nativePixelToMasterPx1x": [
+        [
+          0.4682373948422963,
+          -1.3263407809757416e-05,
+          4031.680812388461
+        ],
+        [
+          1.3274662659726534e-05,
+          0.4678404023337885,
+          1471.6880317267933
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          1.0000088599884729,
+          -2.835053419335648e-05,
+          -0.31918761153869896
+        ],
+        [
+          2.835053419335648e-05,
+          1.0000088599884729,
+          -0.31196827320675635
+        ]
+      ],
+      "siftMatches": 351,
+      "siftInliers": 319,
+      "inlierResidualPx1x": {
+        "median": 0.5937166213989258,
+        "p95": 1.6908057928085327,
+        "max": 2.1241681575775146
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q22",
+      "coreMasterPx1x": [
+        4506,
+        1536,
+        409,
+        512
+      ],
+      "contextMasterPx1x": [
+        4442,
+        1472,
+        473,
+        640
+      ],
+      "overlapPx1x": 64,
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "nativePixelToContextPx1x": [
+        [
+          0.4389311534276444,
+          0.0007317695767927989,
+          -0.378220746337874
+        ],
+        [
+          -0.0007324696114644758,
+          0.4385116588560346,
+          -0.18703612783713858
+        ]
+      ],
+      "nativePixelToMasterPx1x": [
+        [
+          0.4389311534276444,
+          0.0007317695767927989,
+          4441.621779253662
+        ],
+        [
+          -0.0007324696114644758,
+          0.4385116588560346,
+          1471.8129638721628
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          1.000354721765329,
+          0.0016693493470585727,
+          -0.378220746337874
+        ],
+        [
+          -0.0016693493470585727,
+          1.000354721765329,
+          -0.18703612783713858
+        ]
+      ],
+      "siftMatches": 131,
+      "siftInliers": 108,
+      "inlierResidualPx1x": {
+        "median": 0.866222083568573,
+        "p95": 2.0174880027770996,
+        "max": 2.7328481674194336
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    }
+  ]
+}

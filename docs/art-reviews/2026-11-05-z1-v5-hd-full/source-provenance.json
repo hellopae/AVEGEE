@@ -1,0 +1,21 @@
+{
+  "method": "Reference repaired master. No repair intersects these contexts (x >=4032).",
+  "sources": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+      "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/objects-inventory.json",
+      "sha256": "4d7db3952d562a7fb458b59658b8e31d3455b4ebaac41055fd7edbd16ef8e794"
+    },
+    {
+      "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Toby/2026-11-05-v5-white-lumps.json",
+      "sha256": "40135fcfcfd3fbd6276d411ebd69ef0b0b764eedbd8f913b7ea0604114036e2f"
+    },
+    {
+      "path": "src/town-terrain-repair.js",
+      "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+    }
+  ]
+}

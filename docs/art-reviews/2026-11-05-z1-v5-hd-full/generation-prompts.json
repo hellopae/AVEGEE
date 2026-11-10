@@ -1,0 +1,160 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCount": 8,
+  "generationCount": 9,
+  "generations": [
+    {
+      "chunk": "r2-c5",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 538x640 original map pixels. Tile r2-c5/q11. Preserve exposed upper bare stone plaza and its entire curved cliff boundary. Remove the small white fog puffs below cliff, filling continuous rocky valley; preserve blue water beyond. Remove visible foreground small trees overlapping the path only as identified, retain inaccessible forest beyond. Requested obstacle survey: [{\"id\": \"ice-tree-06\", \"kind\": \"snow-tree\", \"rectInInputPx\": [315, -66, 86, 178]}, {\"id\": \"ice-tree-08\", \"kind\": \"snow-tree\", \"rectInInputPx\": [54, 260, 98, 197]}, {\"id\": \"ice-tree-09\", \"kind\": \"snow-tree\", \"rectInInputPx\": [398, 336, 92, 178]}, {\"id\": \"lump-07\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [176, 190, 124, 70]}, {\"id\": \"lump-08\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [-40, 201, 180, 75]}, {\"id\": \"lump-10\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [443, 423, 103, 119]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/inputs/q11-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-6b43c9bf-9f57-40c8-96a0-f4270ea2098f.png",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 473x640 original map pixels. Tile r2-c5/q12. Preserve exact blue waterfall/channel banks and snow plateau. Remove localized white fog puffs within the rocky valley, replace with matching cliff/valley texture. Retain snow surfaces and white water foam. Retain distant inaccessible cliff-forest; remove foreground path-overlapping tree parts only. Requested obstacle survey: [{\"id\": \"ice-tree-09\", \"kind\": \"snow-tree\", \"rectInInputPx\": [-12, 336, 92, 178]}, {\"id\": \"ice-tree-10\", \"kind\": \"snow-tree\", \"rectInInputPx\": [135, 481, 98, 190]}, {\"id\": \"lump-09\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [187, 366, 159, 148]}, {\"id\": \"lump-10\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [33, 423, 103, 119]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/inputs/q12-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-0dd3f259-9f3d-4751-bd34-fd2055d39e4c.png",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "selected": false,
+      "rejectionReason": "Invented wood paving on stone ground; fog not removed."
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 538x640 original map pixels. Tile r2-c5/q21. Preserve the exact stair flight at top and the wooden bridge DECK at bottom. Erase all dark bridge posts/ropes, retaining continuous wooden planks and banks. Remove foreground yellow trees/shrubs intruding onto exposed path in listed rectangles, including clipped tree at top. Retain distant forest off the path. Requested obstacle survey: [{\"id\": \"ice-tree-09\", \"kind\": \"snow-tree\", \"rectInInputPx\": [398, -176, 92, 178]}, {\"id\": \"east-tree-01\", \"kind\": \"green-tree\", \"rectInInputPx\": [-35, 138, 123, 215]}, {\"id\": \"east-tree-02\", \"kind\": \"green-tree\", \"rectInInputPx\": [318, 248, 120, 209]}, {\"id\": \"ice-lower-back\", \"kind\": \"bridge-rail\", \"rectInInputPx\": [-51, 463, 316, 77]}, {\"id\": \"ice-lower-front\", \"kind\": \"bridge-rail\", \"rectInInputPx\": [-48, 531, 323, 98]}, {\"id\": \"lump-10\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [443, -89, 103, 119]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/inputs/q21-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-ad7034ab-5e70-4c10-a229-b065a82303ba.png",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 473x640 original map pixels. Tile r2-c5/q22. Remove the foreground pink-flowering tree beside path and small yellow-leaved trees that overhang path in listed rectangles; extend continuous ground at their bases. Keep the dense inaccessible forest along far right, including its cliff mass. Preserve the left exposed ground boundary and cliff bottom right exactly. Requested obstacle survey: [{\"id\": \"ice-tree-09\", \"kind\": \"snow-tree\", \"rectInInputPx\": [-12, -176, 92, 178]}, {\"id\": \"ice-tree-10\", \"kind\": \"snow-tree\", \"rectInInputPx\": [135, -31, 98, 190]}, {\"id\": \"east-tree-02\", \"kind\": \"green-tree\", \"rectInInputPx\": [-92, 248, 120, 209]}, {\"id\": \"east-tree-03\", \"kind\": \"green-tree\", \"rectInInputPx\": [169, 236, 123, 218]}, {\"id\": \"east-tree-04\", \"kind\": \"green-tree\", \"rectInInputPx\": [381, 316, 92, 206]}, {\"id\": \"lump-09\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [187, -146, 159, 148]}, {\"id\": \"lump-10\", \"kind\": \"embedded-fog-lump\", \"rectInInputPx\": [33, -89, 103, 119]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/inputs/q22-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-0abd858f-08c1-4898-bc8a-46c39a6a19a7.png",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r3-c5",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 538x640 original map pixels. Tile r3-c5/q11. Wooden bridge at top: remove all dark posts, finials, ropes and rails, preserve complete DECK and every plank at original location. Keep blue waterfall and broad PURPLE liquid with exact banks and original luminous flow placement, adding restrained resolved ripples. Do not add ground over any liquid. Requested obstacle survey: [{\"id\": \"ice-lower-front\", \"kind\": \"bridge-rail\", \"rectInInputPx\": [-48, 19, 323, 98]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/inputs/q11-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-0458a30b-d64a-4240-8835-db9311f5855b.png",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r3-c5",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 473x640 original map pixels. Tile r3-c5/q12. No foreground objects requested here. Preserve purple liquid silhouette/shorelines exactly. Keep snow-free rocky cliffs and inaccessible red/yellow forest. Local pale mist against right cliff can be detailed but preserve outer atmosphere. Draw crisp stone/leaf details, do not invent new shore stones or alter bank. Requested obstacle survey: []",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/inputs/q12-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-7ef54a8e-4524-4a59-92d4-6ac79fde8896.png",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r3-c5",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 538x640 original map pixels. Tile r3-c5/q21. Remove listed foreground low shrubs intruding on the open walkable orange stone path and the freestanding rocky obstacle near lower center-right (source rectangle x305 y407 w123 h187); extend continuous orange ground under it. Keep true tall cliff formations and inaccessible red forest outside listed boxes. Preserve upper purple shoreline. Requested obstacle survey: [{\"id\": \"south-bed-15\", \"kind\": \"shrub\", \"rectInInputPx\": [-69, 487, 184, 98]}, {\"id\": \"south-bed-16\", \"kind\": \"shrub\", \"rectInInputPx\": [428, 201, 190, 111]}, {\"id\": \"south-rock-07\", \"kind\": \"rock\", \"rectInInputPx\": [305, 407, 123, 187]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/inputs/q21-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-d4ebc5fc-c3e9-44ce-b4a5-db18fcf9908e.png",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r3-c5",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input only; SECOND is ONLY a reference for the approved fine painterly MATERIAL DETAIL, never its layout or warmer color. Return one full-bleed portrait terrain crop with EXACT SAME ASPECT RATIO and framing as first input. No borders/captions. Preserve every original major shape, stone pattern, stair count/width/position, cliff silhouette, shoreline, bridge deck, path boundary and liquid channel at exact proportional pixel coordinates. Do not redesign, shift, zoom or rotate. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny mineral grain, fissures, fine recessed mortar, sparse moss in cracks and tiny dry leaves. Match FIRST image lighting, colors and broad value hierarchy. Detail remote forest/mountains equally but retain inaccessible forest. No blur, DOF, parallax, sharpening halos, photo noise, or new objects. Keep edge-clipped forms exactly. Need maximum native resolution, ideally 2048px tall, with truly resolved finer detail rather than blurry enlargement. Preserve blue water, waterfall and purple liquid as BASE layers with exact original outline and position (animation masks must align). Remove embedded white/lavender fog puffs in cliff hollows and reconstruct continuous dark cliff/valley beneath; keep genuine large outer sea-of-clouds and water foam. Keep pale stone plazas. Remove ONLY identified foreground obstacles intersecting the indicated input-coordinate rectangles, completing uninterrupted underlying ground. Coordinates are approximate survey boxes, NOT instructions to erase underlying architecture or entire forest. If a marked object is already absent, retain ground there. Remove bridge RAILS/POSTS only, preserving every deck plank, abutment and stair tread. All coordinates below are source-input pixel units, not output pixels. Input represents 473x640 original map pixels. Tile r3-c5/q22. Remove listed low foreground shrubs and the small removable rock within source rectangle x319 y189 w138 h178, completing continuous surrounding ground. Retain the LARGE contiguous cliff mass filling bottom/right: it is terrain, not a removable prop. Retain inaccessible forest and original terrain silhouettes. Requested obstacle survey: [{\"id\": \"south-bed-16\", \"kind\": \"shrub\", \"rectInInputPx\": [18, 201, 190, 111]}, {\"id\": \"south-rock-07\", \"kind\": \"rock\", \"rectInInputPx\": [-105, 407, 123, 187]}, {\"id\": \"south-rock-08\", \"kind\": \"rock\", \"rectInInputPx\": [319, 189, 138, 178]}]",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c5/inputs/q22-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "transparent_background": false,
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-bfbe4d89-b15a-43ef-8ed5-a7ef316fdaee.png",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "selected": true
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Edit ONLY the provided terrain crop at identical framing and aspect ratio. This is a very constrained restoration: preserve the exact source large forms, locations and stone pattern. Left is STONE PAVING, not wood: no timber, no deck, no stairs, no bridge anywhere. Preserve exact left cliff silhouette, upper snow plateau, blue waterfall and entire blue water shape and shoreline: animation mask must align. Increase actually painted detail like finely chipped stones, hairline cracks, mineral grain, fine mortar, tiny sparse moss and leaves; keep source blue-grey-purple colors and overall illumination. Remove the two WHITE FOG PUFFS inside the lower rocky valley (source pixel x0..340 y380..525), replacing them with continuous blue-grey rocky hollow, keep all cliff edges and forest silhouettes. Keep white snow and white water foam. Keep inaccessible dark evergreen forest at bottom. No new trees or objects. No geometry changes, no new cliff projections, no zoom, no shift, no redesign, no DOF, no blur, no photographic noise, no halos. Return full-bleed portrait, ideally 2048px tall. Exact source proportions; retain original clipped-edge objects. Sharply resolved detailed HAND PAINTED game terrain.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114020Z-976a4086/docs/art-reviews/2026-11-05-z1-v5-hd-full/r2-c5/inputs/q12-v5.png"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-5f00-7662-93fd-fded5ee7ca08/exec-5ff30513-ff64-411b-87d3-4fdf55afc09a.png",
+      "status": "generated",
+      "selected": true,
+      "nativeSize": [
+        1078,
+        1460
+      ]
+    }
+  ]
+}

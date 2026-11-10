@@ -1,0 +1,84 @@
+{
+  "method": "Identical 2.8 device px/world unit, separate axis scales4915/3840 and3277/2560, Pillow Lanczos, grayscale Laplacian ksize1 variance. No sharpening. Primary full chunk fixed before measurement.",
+  "threshold": 10,
+  "primaryRatio": 40.57804897100661,
+  "numericalThresholdMet": true,
+  "caveat": "Texture, contrast, liquid ripples and object removal affect energy. This is not perceptual resolution or proof of structure.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        819,
+        1024
+      ],
+      "deviceSize": [
+        1792,
+        2240
+      ],
+      "v5LaplacianVariance": 41.27623041656546,
+      "newLaplacianVariance": 1674.9088991819458,
+      "ratio": 40.57804897100661
+    },
+    "upper_left_core": {
+      "rectPx1x": [
+        0,
+        0,
+        410,
+        512
+      ],
+      "deviceSize": [
+        897,
+        1120
+      ],
+      "v5LaplacianVariance": 36.134970460616444,
+      "newLaplacianVariance": 1566.0091841609105,
+      "ratio": 43.337774023302615
+    },
+    "upper_right_core": {
+      "rectPx1x": [
+        410,
+        0,
+        409,
+        512
+      ],
+      "deviceSize": [
+        895,
+        1120
+      ],
+      "v5LaplacianVariance": 27.03740620875422,
+      "newLaplacianVariance": 1461.5951828471643,
+      "ratio": 54.05826178599656
+    },
+    "lower_left_core": {
+      "rectPx1x": [
+        0,
+        512,
+        410,
+        512
+      ],
+      "deviceSize": [
+        897,
+        1120
+      ],
+      "v5LaplacianVariance": 52.96105068259276,
+      "newLaplacianVariance": 1932.8545158594557,
+      "ratio": 36.49577360999649
+    },
+    "lower_right_core": {
+      "rectPx1x": [
+        410,
+        512,
+        409,
+        512
+      ],
+      "deviceSize": [
+        895,
+        1120
+      ],
+      "v5LaplacianVariance": 49.18248467882887,
+      "newLaplacianVariance": 1743.4490683643176,
+      "ratio": 35.44857645459307
+    }
+  }
+}
