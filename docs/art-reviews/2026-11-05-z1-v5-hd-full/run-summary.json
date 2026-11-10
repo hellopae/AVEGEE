@@ -1,0 +1,285 @@
+{
+  "chunks": [
+    {
+      "chunk": "r1-c1",
+      "completedParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "71b035550aae0a398bfdf8ff33df3d466fe57f10cd10b637eff4c8c27f53118c"
+        },
+        {
+          "id": "q12",
+          "size": [
+            1323,
+            1189
+          ],
+          "sha256": "036cf6d02188baa997a0581dd82ed03656606aade61ae2389cf989e03a7076cf"
+        },
+        {
+          "id": "q21",
+          "size": [
+            1189,
+            1323
+          ],
+          "sha256": "aaf7007e667e30be5640c597d95249e53dda6f9f7795a44af3e93101da0c7866"
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "14cbfca9bdb19b4db3c09a74e451866d5a76d55d33515cb9c1906dfaebbf5dbf"
+        }
+      ],
+      "imageGenCalls": 4,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxPx1x": 4.0,
+      "structureDiagnostic": true,
+      "structureReliableProbes": 20,
+      "structureTotalProbes": 28,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpness": {
+        "method": "Grayscale Laplacian variance ksize1, full chunk at identical 2.8 device px/world unit, Lanczos, no sharpening.",
+        "deviceSize": [
+          2240,
+          2240
+        ],
+        "v5": 28.657204828350146,
+        "hd": 1334.7458662910362,
+        "ratioToV5": 46.576275470194915,
+        "threshold": 10,
+        "thresholdMet": true
+      },
+      "acceptance": {
+        "allPartsPresent": true,
+        "sharpnessAtLeast10": true,
+        "wholeStructureWithin4pxVerified": false,
+        "seamlessAndAllRemovalsVerified": false,
+        "nativeAndRegistrationComplete": true
+      }
+    },
+    {
+      "chunk": "r2-c1",
+      "completedParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1189,
+            1323
+          ],
+          "sha256": "22cbbb3ab109c40bc28feb1577b026b599f9bb0253d888060a3272cac0d499a3"
+        },
+        {
+          "id": "q12",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "3703eda24ed2440aef06857f16f985fe78827f17402eb2da1fca2dd4e8a74960"
+        },
+        {
+          "id": "q21",
+          "size": [
+            1189,
+            1323
+          ],
+          "sha256": "4da83b20cf1abdc540215c20bcf7e7a9c8df5ffe866849000d7257dfa6476450"
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "fea8a7e689dc6a8fc03a7eb8206b419d4dd7f1ead70016a761ffbdc8c0cc1b97"
+        }
+      ],
+      "imageGenCalls": 6,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxPx1x": 10.295630140987,
+      "structureDiagnostic": false,
+      "structureReliableProbes": 15,
+      "structureTotalProbes": 26,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpness": {
+        "method": "Grayscale Laplacian variance ksize1, full chunk at identical 2.8 device px/world unit, Lanczos, no sharpening.",
+        "deviceSize": [
+          2240,
+          2240
+        ],
+        "v5": 30.734828600753758,
+        "hd": 1073.7752736675416,
+        "ratioToV5": 34.93675815199463,
+        "threshold": 10,
+        "thresholdMet": true
+      },
+      "acceptance": {
+        "allPartsPresent": true,
+        "sharpnessAtLeast10": true,
+        "wholeStructureWithin4pxVerified": false,
+        "seamlessAndAllRemovalsVerified": false,
+        "nativeAndRegistrationComplete": true
+      }
+    }
+  ],
+  "generationCount": 10,
+  "generationLimit": 10,
+  "generationResults": [
+    {
+      "call": 1,
+      "chunk": "r1-c1",
+      "id": "q11",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 2,
+      "chunk": "r1-c1",
+      "id": "q12",
+      "returnedSize": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "call": 3,
+      "chunk": "r1-c1",
+      "id": "q21",
+      "returnedSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "call": 4,
+      "chunk": "r1-c1",
+      "id": "q22",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 5,
+      "chunk": "r2-c1",
+      "id": "q11",
+      "returnedSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "call": 6,
+      "chunk": "r2-c1",
+      "id": "q12",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 7,
+      "chunk": "r2-c1",
+      "id": "q21",
+      "returnedSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "call": 8,
+      "chunk": "r2-c1",
+      "id": "q22",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 9,
+      "chunk": "r2-c1",
+      "id": "q11",
+      "returnedSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "call": 10,
+      "chunk": "r2-c1",
+      "id": "q22",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "method": "Approved reference SIFT/partial-affine, direct native-to-2x warp, broad lighting correction, min-cost seam. No sharpening.",
+  "gameDevicePxPerWorldUnit": 2.8,
+  "mapSizePx1x": [
+    4915,
+    3277
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "pendingParts": [],
+  "qaPassed": false,
+  "inGameTestRun": false,
+  "status": "incomplete-acceptance",
+  "pendingCorrections": [
+    {
+      "chunk": "r2-c1",
+      "part": "q22",
+      "reason": "Bottom staircase exceeds 4px structure threshold after final ImageGen edit."
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q21",
+      "reason": "Vegetation remains in the approximate west-bed-07 inventory rectangle. Exact removal unresolved."
+    },
+    {
+      "chunk": "r1-c1",
+      "part": "q21",
+      "reason": "Generated diagonal stone course on plaza needs review against original geometry."
+    },
+    {
+      "chunk": "both",
+      "part": "structure",
+      "reason": "Low-correlation probes and full contour/mask alignment remain unverified."
+    }
+  ],
+  "allImagesDecode": true,
+  "imageCount": 27,
+  "outputBytes": 57796643,
+  "sizeLimitBytes": 60000000,
+  "withinSizeBudget": true
+}

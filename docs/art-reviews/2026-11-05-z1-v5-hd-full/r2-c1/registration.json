@@ -1,0 +1,306 @@
+{
+  "chunk": "r2-c1",
+  "coordinateUnits": "v5 master pixels at 1x",
+  "chunkOriginMasterPx1x": [
+    0,
+    1024
+  ],
+  "overlapEachSidePx1x": 64,
+  "exteriorMapEdgesClipped": true,
+  "composition": "reference min-cost seam, squared RGB difference, 16 output-pixel smoothstep feather",
+  "interChunkSeamsProcessed": false,
+  "tiles": [
+    {
+      "id": "q11",
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "corePx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        -64,
+        576,
+        640
+      ],
+      "coreMasterPx1x": [
+        0,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        960,
+        576,
+        640
+      ],
+      "affine": [
+        [
+          0.9999008212253906,
+          -0.00015759318092427034,
+          0.288264783699379
+        ],
+        [
+          0.00015759318092427034,
+          0.9999008212253906,
+          -0.24643672866331165
+        ]
+      ],
+      "affineConvention": "resized native to context-local map pixels, OpenCV pixel centers",
+      "nativeToContextAffine": [
+        [
+          0.48439266024039107,
+          -7.623555237455254e-05,
+          0.288264783699379
+        ],
+        [
+          7.634455190275838e-05,
+          0.4837010775391156,
+          -0.24643672866331165
+        ]
+      ],
+      "registrationReference": "r2-c1/inputs/q11-v5.webp",
+      "siftMatches": 153,
+      "siftInliers": 137,
+      "inlierResidualPx1x": {
+        "median": 0.8390354514122009,
+        "p95": 1.9566832780838013,
+        "max": 2.4420061111450195
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "broadLightingCorrection": {
+        "strength": 0.8,
+        "sigmaPx1x": 35,
+        "exclusion": "removal/fog rectangles dilated and feathered"
+      },
+      "borderMode": "BORDER_REFLECT outside transformed native coverage"
+    },
+    {
+      "id": "q12",
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "corePx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "coreMasterPx1x": [
+        512,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        960,
+        640,
+        640
+      ],
+      "affine": [
+        [
+          0.9999745634515871,
+          -6.880141852367697e-05,
+          -0.0771448354765165
+        ],
+        [
+          6.880141852367697e-05,
+          0.9999745634515871,
+          0.3888299629227444
+        ]
+      ],
+      "affineConvention": "resized native to context-local map pixels, OpenCV pixel centers",
+      "nativeToContextAffine": [
+        [
+          0.510353844185818,
+          -3.511396160698027e-05,
+          -0.0771448354765165
+        ],
+        [
+          3.511396160698027e-05,
+          0.510353844185818,
+          0.3888299629227444
+        ]
+      ],
+      "registrationReference": "r2-c1/inputs/q12-v5.webp",
+      "siftMatches": 204,
+      "siftInliers": 171,
+      "inlierResidualPx1x": {
+        "median": 0.6514104604721069,
+        "p95": 1.6100221872329712,
+        "max": 2.3588082790374756
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "broadLightingCorrection": {
+        "strength": 0.8,
+        "sigmaPx1x": 35,
+        "exclusion": "removal/fog rectangles dilated and feathered"
+      },
+      "borderMode": "BORDER_REFLECT outside transformed native coverage"
+    },
+    {
+      "id": "q21",
+      "nativeFile": "q21-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "corePx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "coreMasterPx1x": [
+        0,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        1472,
+        576,
+        640
+      ],
+      "affine": [
+        [
+          0.9989004252140962,
+          0.0008113702140783296,
+          0.10812397361921634
+        ],
+        [
+          -0.0008113702140783296,
+          0.9989004252140962,
+          0.1615349450063704
+        ]
+      ],
+      "affineConvention": "resized native to context-local map pixels, OpenCV pixel centers",
+      "nativeToContextAffine": [
+        [
+          0.4839080276899238,
+          0.00039249957445966054,
+          0.10812397361921634
+        ],
+        [
+          -0.0003930607597217139,
+          0.4832171369138485,
+          0.1615349450063704
+        ]
+      ],
+      "registrationReference": "r2-c1/inputs/q21-v5.webp",
+      "siftMatches": 167,
+      "siftInliers": 134,
+      "inlierResidualPx1x": {
+        "median": 0.5901292562484741,
+        "p95": 1.3904327154159546,
+        "max": 2.8095293045043945
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "broadLightingCorrection": {
+        "strength": 0.8,
+        "sigmaPx1x": 35,
+        "exclusion": "removal/fog rectangles dilated and feathered"
+      },
+      "borderMode": "BORDER_REFLECT outside transformed native coverage"
+    },
+    {
+      "id": "q22",
+      "nativeFile": "q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "corePx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "coreMasterPx1x": [
+        512,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        1472,
+        640,
+        640
+      ],
+      "affine": [
+        [
+          0.9977163871007563,
+          0.008850890412314426,
+          -4.452986841108463
+        ],
+        [
+          -0.008850890412314426,
+          0.9977163871007563,
+          0.3349283020206006
+        ]
+      ],
+      "affineConvention": "resized native to context-local map pixels, OpenCV pixel centers",
+      "nativeToContextAffine": [
+        [
+          0.5092013458887432,
+          0.0045172008483901375,
+          -4.452986841108463
+        ],
+        [
+          -0.0045172008483901375,
+          0.5092013458887432,
+          0.3349283020206006
+        ]
+      ],
+      "registrationReference": "r2-c1/inputs/q22-v5.webp",
+      "siftMatches": 157,
+      "siftInliers": 69,
+      "inlierResidualPx1x": {
+        "median": 1.4693543910980225,
+        "p95": 2.318175792694092,
+        "max": 2.761690855026245
+      },
+      "localWarpApplied": false,
+      "semanticStructureVerified": false,
+      "broadLightingCorrection": {
+        "strength": 0.8,
+        "sigmaPx1x": 35,
+        "exclusion": "removal/fog rectangles dilated and feathered"
+      },
+      "borderMode": "BORDER_REFLECT outside transformed native coverage"
+    }
+  ]
+}

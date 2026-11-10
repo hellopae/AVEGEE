@@ -1,0 +1,539 @@
+{
+  "objects": [
+    {
+      "id": "west-tree-05",
+      "kind": "tree",
+      "bboxWorld": [
+        48.0,
+        724.726,
+        81.6,
+        148.785
+      ],
+      "footWorld": [
+        88.8,
+        861.608
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-06",
+      "kind": "tree",
+      "bboxWorld": [
+        568.8,
+        719.927,
+        81.6,
+        155.984
+      ],
+      "footWorld": [
+        609.6,
+        863.432
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-07",
+      "kind": "tree",
+      "bboxWorld": [
+        686.4,
+        751.124,
+        84.0,
+        148.785
+      ],
+      "footWorld": [
+        728.4,
+        888.006
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-08",
+      "kind": "tree",
+      "bboxWorld": [
+        57.6,
+        962.302,
+        69.6,
+        131.987
+      ],
+      "footWorld": [
+        92.4,
+        1083.73
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-09",
+      "kind": "tree",
+      "bboxWorld": [
+        115.2,
+        1007.897,
+        67.2,
+        127.187
+      ],
+      "footWorld": [
+        148.8,
+        1124.91
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-10",
+      "kind": "tree",
+      "bboxWorld": [
+        636.0,
+        1017.496,
+        79.2,
+        148.785
+      ],
+      "footWorld": [
+        675.6,
+        1154.379
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-11",
+      "kind": "tree",
+      "bboxWorld": [
+        681.6,
+        1067.891,
+        76.8,
+        134.386
+      ],
+      "footWorld": [
+        720.0,
+        1191.527
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-12",
+      "kind": "tree",
+      "bboxWorld": [
+        96.0,
+        1288.669,
+        86.4,
+        143.985
+      ],
+      "footWorld": [
+        139.2,
+        1421.135
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-13",
+      "kind": "tree",
+      "bboxWorld": [
+        648.0,
+        1279.07,
+        91.2,
+        155.984
+      ],
+      "footWorld": [
+        693.6,
+        1422.575
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-14",
+      "kind": "tree",
+      "bboxWorld": [
+        640.8,
+        1461.451,
+        93.6,
+        163.183
+      ],
+      "footWorld": [
+        687.6,
+        1611.58
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-15",
+      "kind": "tree",
+      "bboxWorld": [
+        43.2,
+        1519.045,
+        72.0,
+        131.987
+      ],
+      "footWorld": [
+        79.2,
+        1640.473
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-03",
+      "kind": "shrub",
+      "bboxWorld": [
+        578.4,
+        902.308,
+        127.2,
+        71.993
+      ],
+      "footWorld": [
+        642.0,
+        968.541
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-04",
+      "kind": "shrub",
+      "bboxWorld": [
+        60.0,
+        878.311,
+        132.0,
+        71.993
+      ],
+      "footWorld": [
+        126.0,
+        944.544
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-05",
+      "kind": "shrub",
+      "bboxWorld": [
+        14.4,
+        1159.082,
+        108.0,
+        71.993
+      ],
+      "footWorld": [
+        68.4,
+        1225.315
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-06",
+      "kind": "shrub",
+      "bboxWorld": [
+        487.2,
+        1178.28,
+        139.2,
+        76.792
+      ],
+      "footWorld": [
+        556.8,
+        1248.929
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-07",
+      "kind": "shrub",
+      "bboxWorld": [
+        144.0,
+        1211.877,
+        132.0,
+        71.993
+      ],
+      "footWorld": [
+        210.0,
+        1278.11
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "vegetation-remains-in-approximate-box"
+    },
+    {
+      "id": "west-bed-08",
+      "kind": "shrub",
+      "bboxWorld": [
+        14.4,
+        1466.251,
+        144.0,
+        74.392
+      ],
+      "footWorld": [
+        86.4,
+        1534.692
+      ],
+      "chunk": [
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-09",
+      "kind": "shrub",
+      "bboxWorld": [
+        564.0,
+        1588.638,
+        139.2,
+        74.392
+      ],
+      "footWorld": [
+        633.6,
+        1657.079
+      ],
+      "chunk": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "lava-lower-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        796.8,
+        907.108,
+        254.4,
+        67.193
+      ],
+      "footWorld": [
+        924.0,
+        974.301
+      ],
+      "chunk": [
+        "r2-c1",
+        "r2-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "lava-lower-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        796.8,
+        957.503,
+        264.0,
+        91.191
+      ],
+      "footWorld": [
+        928.8,
+        1048.693
+      ],
+      "chunk": [
+        "r2-c1",
+        "r2-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    }
+  ],
+  "fogLumps": [
+    {
+      "id": "lump-11",
+      "masterPx": [
+        0,
+        1434,
+        294,
+        224
+      ],
+      "worldRect": [
+        0,
+        1120,
+        230,
+        175
+      ],
+      "areaWorld": 10354,
+      "meanBrightness": 201,
+      "v7Px2x": [
+        0,
+        2868,
+        588,
+        448
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "review": "fog lump - delete when the ground is repainted",
+      "reviewStatus": "listed-in-chunk-fog-area-cleared-in-offline-comparison"
+    },
+    {
+      "id": "lump-13",
+      "masterPx": [
+        37,
+        2032,
+        275,
+        153
+      ],
+      "worldRect": [
+        29,
+        1588,
+        215,
+        120
+      ],
+      "areaWorld": 9502,
+      "meanBrightness": 170,
+      "v7Px2x": [
+        74,
+        4064,
+        550,
+        306
+      ],
+      "chunks": [
+        "r2-c1",
+        "r3-c1"
+      ],
+      "review": "fog lump - delete when the ground is repainted",
+      "reviewStatus": "listed-in-chunk-fog-area-cleared-in-offline-comparison"
+    }
+  ],
+  "verification": "Offline visual comparison of source/final inventory rectangles. Approximate survey boxes do not establish exact semantic identity or pixel masks. All requested targets retained below, including unresolved ones.",
+  "removedIds": [
+    "west-tree-05",
+    "west-tree-06",
+    "west-tree-07",
+    "west-tree-08",
+    "west-tree-09",
+    "west-tree-10",
+    "west-tree-11",
+    "west-tree-12",
+    "west-tree-13",
+    "west-tree-14",
+    "west-tree-15",
+    "west-bed-03",
+    "west-bed-04",
+    "west-bed-05",
+    "west-bed-06",
+    "west-bed-08",
+    "west-bed-09",
+    "lava-lower-back",
+    "lava-lower-front",
+    "lump-11",
+    "lump-13"
+  ],
+  "needsReviewIds": [
+    "west-bed-07"
+  ],
+  "fogReview": "lump-11 and the in-chunk/64px overlap portion of lump-13 reconstructed as ravine rock"
+}

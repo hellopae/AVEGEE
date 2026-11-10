@@ -1,0 +1,859 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedGenerationCount": 8,
+  "generationLimit": 10,
+  "generations": [
+    {
+      "chunk": "r1-c1",
+      "id": "q11",
+      "corePx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "coreMasterPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "input": "r1-c1/inputs/q11-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r1-c1/q11, covering 576x576 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-00\", \"kind\": \"tree\", \"percentRect\": [10.7, 75.7, 24.5, 110.4]}, {\"id\": \"west-tree-01\", \"kind\": \"tree\", \"percentRect\": [29.9, 78.9, 46.9, 117.3]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-00",
+          "kind": "tree",
+          "percentRect": [
+            10.7,
+            75.7,
+            24.5,
+            110.4
+          ]
+        },
+        {
+          "id": "west-tree-01",
+          "kind": "tree",
+          "percentRect": [
+            29.9,
+            78.9,
+            46.9,
+            117.3
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-8eaa631c-03a8-4dc0-b841-af215fc8bac0.png",
+      "returnedSize": [
+        1254,
+        1254
+      ],
+      "selectedNativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q12",
+      "corePx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "coreMasterPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "input": "r1-c1/inputs/q12-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r1-c1/q12, covering 640x576 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-02\", \"kind\": \"tree\", \"percentRect\": [53.4, 68.3, 73.5, 105.6]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-02",
+          "kind": "tree",
+          "percentRect": [
+            53.4,
+            68.3,
+            73.5,
+            105.6
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-68faeb6c-7953-406a-8d95-636c21de0f62.png",
+      "returnedSize": [
+        1323,
+        1189
+      ],
+      "selectedNativeSize": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q21",
+      "corePx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "coreMasterPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "input": "r1-c1/inputs/q21-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r1-c1/q21, covering 576x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-00\", \"kind\": \"tree\", \"percentRect\": [10.7, -1.8, 24.5, 29.4]}, {\"id\": \"west-tree-01\", \"kind\": \"tree\", \"percentRect\": [29.9, 1.0, 46.9, 35.6]}, {\"id\": \"west-tree-04\", \"kind\": \"tree\", \"percentRect\": [28.8, 54.8, 46.4, 88.4]}, {\"id\": \"west-tree-05\", \"kind\": \"tree\", \"percentRect\": [10.7, 75.0, 28.8, 104.7]}, {\"id\": \"west-bed-00\", \"kind\": \"shrub\", \"percentRect\": [35.7, 37.0, 64.0, 47.6]}, {\"id\": \"west-bed-01\", \"kind\": \"shrub\", \"percentRect\": [50.1, 68.7, 75.7, 80.7]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-00",
+          "kind": "tree",
+          "percentRect": [
+            10.7,
+            -1.8,
+            24.5,
+            29.4
+          ]
+        },
+        {
+          "id": "west-tree-01",
+          "kind": "tree",
+          "percentRect": [
+            29.9,
+            1,
+            46.9,
+            35.6
+          ]
+        },
+        {
+          "id": "west-tree-04",
+          "kind": "tree",
+          "percentRect": [
+            28.8,
+            54.8,
+            46.4,
+            88.4
+          ]
+        },
+        {
+          "id": "west-tree-05",
+          "kind": "tree",
+          "percentRect": [
+            10.7,
+            75,
+            28.8,
+            104.7
+          ]
+        },
+        {
+          "id": "west-bed-00",
+          "kind": "shrub",
+          "percentRect": [
+            35.7,
+            37,
+            64,
+            47.6
+          ]
+        },
+        {
+          "id": "west-bed-01",
+          "kind": "shrub",
+          "percentRect": [
+            50.1,
+            68.7,
+            75.7,
+            80.7
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-646c84f6-aaee-4f6a-8ad8-f3e6029190c8.png",
+      "returnedSize": [
+        1189,
+        1323
+      ],
+      "selectedNativeSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q22",
+      "corePx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "coreMasterPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "input": "r1-c1/inputs/q22-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r1-c1/q22, covering 640x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-02\", \"kind\": \"tree\", \"percentRect\": [53.4, -8.6, 73.5, 25.0]}, {\"id\": \"west-tree-03\", \"kind\": \"tree\", \"percentRect\": [60.6, 37.0, 75.9, 63.9]}, {\"id\": \"west-tree-06\", \"kind\": \"tree\", \"percentRect\": [43.8, 74.0, 60.1, 105.2]}, {\"id\": \"west-tree-07\", \"kind\": \"tree\", \"percentRect\": [67.3, 80.2, 84.1, 110.0]}, {\"id\": \"west-bed-02\", \"kind\": \"shrub\", \"percentRect\": [30.8, 63.9, 58.2, 75.9]}, {\"id\": \"lava-upper-back\", \"kind\": \"bridge-rail\", \"percentRect\": [75.0, 42.3, 145.5, 58.2]}, {\"id\": \"lava-upper-front\", \"kind\": \"bridge-rail\", \"percentRect\": [73.5, 54.3, 145.5, 74.5]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-02",
+          "kind": "tree",
+          "percentRect": [
+            53.4,
+            -8.6,
+            73.5,
+            25
+          ]
+        },
+        {
+          "id": "west-tree-03",
+          "kind": "tree",
+          "percentRect": [
+            60.6,
+            37,
+            75.9,
+            63.9
+          ]
+        },
+        {
+          "id": "west-tree-06",
+          "kind": "tree",
+          "percentRect": [
+            43.8,
+            74,
+            60.1,
+            105.2
+          ]
+        },
+        {
+          "id": "west-tree-07",
+          "kind": "tree",
+          "percentRect": [
+            67.3,
+            80.2,
+            84.1,
+            110
+          ]
+        },
+        {
+          "id": "west-bed-02",
+          "kind": "shrub",
+          "percentRect": [
+            30.8,
+            63.9,
+            58.2,
+            75.9
+          ]
+        },
+        {
+          "id": "lava-upper-back",
+          "kind": "bridge-rail",
+          "percentRect": [
+            75,
+            42.3,
+            145.5,
+            58.2
+          ]
+        },
+        {
+          "id": "lava-upper-front",
+          "kind": "bridge-rail",
+          "percentRect": [
+            73.5,
+            54.3,
+            145.5,
+            74.5
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-71f340cc-e06f-44d3-b041-1f005e78f981.png",
+      "returnedSize": [
+        1254,
+        1254
+      ],
+      "selectedNativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q11",
+      "corePx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        -64,
+        576,
+        640
+      ],
+      "coreMasterPx1x": [
+        0,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        960,
+        576,
+        640
+      ],
+      "input": "r2-c1/inputs/q11-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r2-c1/q11, covering 576x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-04\", \"kind\": \"tree\", \"percentRect\": [28.8, -25.2, 46.4, 8.4]}, {\"id\": \"west-tree-05\", \"kind\": \"tree\", \"percentRect\": [10.7, -5.0, 28.8, 24.7]}, {\"id\": \"west-tree-08\", \"kind\": \"tree\", \"percentRect\": [12.8, 42.5, 28.3, 68.9]}, {\"id\": \"west-tree-09\", \"kind\": \"tree\", \"percentRect\": [25.6, 51.6, 40.5, 77.0]}, {\"id\": \"west-bed-01\", \"kind\": \"shrub\", \"percentRect\": [50.1, -11.3, 75.7, 0.7]}, {\"id\": \"west-bed-04\", \"kind\": \"shrub\", \"percentRect\": [13.3, 25.7, 42.7, 40.1]}, {\"id\": \"west-bed-05\", \"kind\": \"shrub\", \"percentRect\": [3.2, 81.8, 27.2, 96.2]}, {\"id\": \"west-bed-07\", \"kind\": \"shrub\", \"percentRect\": [32.0, 92.4, 61.3, 106.8]}]. Also DELETE these localized white/lavender fog lumps, reconstruct the continuous dark volcanic ravine/cliff underneath, preserving adjacent rock and lava silhouettes: [{\"id\": \"lump-11\", \"percentRect\": [0.0, 74.1, 51.0, 109.1]}]. Preserve the large cloud sea elsewhere.",
+      "removalTargets": [
+        {
+          "id": "west-tree-04",
+          "kind": "tree",
+          "percentRect": [
+            28.8,
+            -25.2,
+            46.4,
+            8.4
+          ]
+        },
+        {
+          "id": "west-tree-05",
+          "kind": "tree",
+          "percentRect": [
+            10.7,
+            -5,
+            28.8,
+            24.7
+          ]
+        },
+        {
+          "id": "west-tree-08",
+          "kind": "tree",
+          "percentRect": [
+            12.8,
+            42.5,
+            28.3,
+            68.9
+          ]
+        },
+        {
+          "id": "west-tree-09",
+          "kind": "tree",
+          "percentRect": [
+            25.6,
+            51.6,
+            40.5,
+            77
+          ]
+        },
+        {
+          "id": "west-bed-01",
+          "kind": "shrub",
+          "percentRect": [
+            50.1,
+            -11.3,
+            75.7,
+            0.7
+          ]
+        },
+        {
+          "id": "west-bed-04",
+          "kind": "shrub",
+          "percentRect": [
+            13.3,
+            25.7,
+            42.7,
+            40.1
+          ]
+        },
+        {
+          "id": "west-bed-05",
+          "kind": "shrub",
+          "percentRect": [
+            3.2,
+            81.8,
+            27.2,
+            96.2
+          ]
+        },
+        {
+          "id": "west-bed-07",
+          "kind": "shrub",
+          "percentRect": [
+            32,
+            92.4,
+            61.3,
+            106.8
+          ]
+        }
+      ],
+      "fogTargets": [
+        {
+          "id": "lump-11",
+          "percentRect": [
+            0,
+            74.1,
+            51,
+            109.1
+          ]
+        }
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-4bcf800f-8511-4cc6-93ed-ce546d617acf.png",
+      "initialNativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-1d5e6bfd-3b80-4d93-9597-31e00299f1a5.png",
+      "returnedSize": [
+        1189,
+        1323
+      ],
+      "selectedNativeSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q12",
+      "corePx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "coreMasterPx1x": [
+        512,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        960,
+        640,
+        640
+      ],
+      "input": "r2-c1/inputs/q12-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r2-c1/q12, covering 640x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-06\", \"kind\": \"tree\", \"percentRect\": [43.8, -6.0, 60.1, 25.2]}, {\"id\": \"west-tree-07\", \"kind\": \"tree\", \"percentRect\": [67.3, 0.2, 84.1, 30.0]}, {\"id\": \"west-tree-10\", \"kind\": \"tree\", \"percentRect\": [57.2, 53.5, 73.0, 83.3]}, {\"id\": \"west-tree-11\", \"kind\": \"tree\", \"percentRect\": [66.3, 63.6, 81.7, 90.5]}, {\"id\": \"west-bed-03\", \"kind\": \"shrub\", \"percentRect\": [45.7, 30.5, 71.1, 44.9]}, {\"id\": \"west-bed-06\", \"kind\": \"shrub\", \"percentRect\": [27.4, 85.7, 55.3, 101.0]}, {\"id\": \"lava-lower-back\", \"kind\": \"bridge-rail\", \"percentRect\": [89.4, 31.4, 140.2, 44.9]}, {\"id\": \"lava-lower-front\", \"kind\": \"bridge-rail\", \"percentRect\": [89.4, 41.5, 142.2, 59.8]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-06",
+          "kind": "tree",
+          "percentRect": [
+            43.8,
+            -6,
+            60.1,
+            25.2
+          ]
+        },
+        {
+          "id": "west-tree-07",
+          "kind": "tree",
+          "percentRect": [
+            67.3,
+            0.2,
+            84.1,
+            30
+          ]
+        },
+        {
+          "id": "west-tree-10",
+          "kind": "tree",
+          "percentRect": [
+            57.2,
+            53.5,
+            73,
+            83.3
+          ]
+        },
+        {
+          "id": "west-tree-11",
+          "kind": "tree",
+          "percentRect": [
+            66.3,
+            63.6,
+            81.7,
+            90.5
+          ]
+        },
+        {
+          "id": "west-bed-03",
+          "kind": "shrub",
+          "percentRect": [
+            45.7,
+            30.5,
+            71.1,
+            44.9
+          ]
+        },
+        {
+          "id": "west-bed-06",
+          "kind": "shrub",
+          "percentRect": [
+            27.4,
+            85.7,
+            55.3,
+            101
+          ]
+        },
+        {
+          "id": "lava-lower-back",
+          "kind": "bridge-rail",
+          "percentRect": [
+            89.4,
+            31.4,
+            140.2,
+            44.9
+          ]
+        },
+        {
+          "id": "lava-lower-front",
+          "kind": "bridge-rail",
+          "percentRect": [
+            89.4,
+            41.5,
+            142.2,
+            59.8
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-e85d20a8-ba2b-4556-bcbd-2bad5585b58a.png",
+      "returnedSize": [
+        1254,
+        1254
+      ],
+      "selectedNativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q21",
+      "corePx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "coreMasterPx1x": [
+        0,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        1472,
+        576,
+        640
+      ],
+      "input": "r2-c1/inputs/q21-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r2-c1/q21, covering 576x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-12\", \"kind\": \"tree\", \"percentRect\": [21.3, 27.7, 40.5, 56.5]}, {\"id\": \"west-tree-15\", \"kind\": \"tree\", \"percentRect\": [9.6, 73.8, 25.6, 100.2]}, {\"id\": \"west-bed-05\", \"kind\": \"shrub\", \"percentRect\": [3.2, 1.8, 27.2, 16.2]}, {\"id\": \"west-bed-07\", \"kind\": \"shrub\", \"percentRect\": [32.0, 12.4, 61.3, 26.8]}, {\"id\": \"west-bed-08\", \"kind\": \"shrub\", \"percentRect\": [3.2, 63.3, 35.2, 78.1]}, {\"id\": \"west-bed-11\", \"kind\": \"shrub\", \"percentRect\": [80.0, 96.4, 114.1, 109.8]}]. Also DELETE these localized white/lavender fog lumps, reconstruct the continuous dark volcanic ravine/cliff underneath, preserving adjacent rock and lava silhouettes: [{\"id\": \"lump-11\", \"percentRect\": [0.0, -5.9, 51.0, 29.1]}, {\"id\": \"lump-13\", \"percentRect\": [6.4, 87.5, 54.2, 111.4]}]. Preserve the large cloud sea elsewhere. CRITICAL OVERRIDE for this crop: ALL pale white/lavender mist at upper left and along the bottom edge is embedded fog marked for deletion, not the distant cloud sea. Remove these mist banks completely and paint the existing dark purple rock ravine continuously beneath. Keep all visible original lava channels at the same pixel positions. No mist or cloud puffs anywhere in this tile. Keep original red/purple unreachable forest groups except specifically listed foreground objects.",
+      "removalTargets": [
+        {
+          "id": "west-tree-12",
+          "kind": "tree",
+          "percentRect": [
+            21.3,
+            27.7,
+            40.5,
+            56.5
+          ]
+        },
+        {
+          "id": "west-tree-15",
+          "kind": "tree",
+          "percentRect": [
+            9.6,
+            73.8,
+            25.6,
+            100.2
+          ]
+        },
+        {
+          "id": "west-bed-05",
+          "kind": "shrub",
+          "percentRect": [
+            3.2,
+            1.8,
+            27.2,
+            16.2
+          ]
+        },
+        {
+          "id": "west-bed-07",
+          "kind": "shrub",
+          "percentRect": [
+            32,
+            12.4,
+            61.3,
+            26.8
+          ]
+        },
+        {
+          "id": "west-bed-08",
+          "kind": "shrub",
+          "percentRect": [
+            3.2,
+            63.3,
+            35.2,
+            78.1
+          ]
+        },
+        {
+          "id": "west-bed-11",
+          "kind": "shrub",
+          "percentRect": [
+            80,
+            96.4,
+            114.1,
+            109.8
+          ]
+        }
+      ],
+      "fogTargets": [
+        {
+          "id": "lump-11",
+          "percentRect": [
+            0,
+            -5.9,
+            51,
+            29.1
+          ]
+        },
+        {
+          "id": "lump-13",
+          "percentRect": [
+            6.4,
+            87.5,
+            54.2,
+            111.4
+          ]
+        }
+      ],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-3751b4d9-d766-49cd-8c8f-d6267f1a8c96.png",
+      "returnedSize": [
+        1189,
+        1323
+      ],
+      "selectedNativeSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q22",
+      "corePx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "coreMasterPx1x": [
+        512,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        1472,
+        640,
+        640
+      ],
+      "input": "r2-c1/inputs/q22-v5.webp",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image as the exact layout. SECOND image is ONLY the approved reference for fine painterly material quality, never copy its layout or circular plaza. Return ONLY ONE terrain crop, identical framing and aspect ratio, full bleed, no borders, no captions. Preserve every original large shape, paving outline, stair count/width/position, cliff silhouette, lava channel and waterfall boundary at exact input pixel coordinates. Do not redesign, shift, zoom or rotate anything. Repaint with substantially more ACTUAL DRAWN detail per stone: sharp hand-painted chipped bevels, tiny irregular mineral grain, fissures, fine recessed mortar, subtle sparse moss inside cracks and tiny dry leaves. Resolve distant mountains, red forest leaves and sky to the same painted detail level. Preserve the FIRST image overall warm ochre lighting, orange lava glow, purple grey cliffs, color and broad value hierarchy. Keep ALL lava, liquid falls and large sky/edge cloud sea painted as a base, with their exact existing silhouettes for animation mask alignment. No blur, DOF, parallax, fake sharpening halos, photographic noise, new objects or new vegetation. Keep objects clipped exactly where they cross the four edges. Need maximum native resolution, ideally 1254px or higher on the long side. Draw finer resolved detail instead of a blurry enlargement. Remove only the listed foreground trees/shrub beds and bridge rails/posts when visible in the approximate percent rectangles below, including any residual blurry object-erasure blobs there. Fill with continuous matching underlying ground or rock. Retain unreachable continuous distant forest and mountains. Bridge DECKS, stair treads and their exact outlines MUST remain intact.  This is r2-c1/q22, covering 640x640 original map pixels. Removal rectangles are [left,top,right,bottom] percentages and may extend outside the crop. Foreground removal targets: [{\"id\": \"west-tree-10\", \"kind\": \"tree\", \"percentRect\": [57.2, -26.5, 73.0, 3.3]}, {\"id\": \"west-tree-11\", \"kind\": \"tree\", \"percentRect\": [66.3, -16.4, 81.7, 10.5]}, {\"id\": \"west-tree-13\", \"kind\": \"tree\", \"percentRect\": [59.6, 25.8, 77.8, 57.0]}, {\"id\": \"west-tree-14\", \"kind\": \"tree\", \"percentRect\": [58.2, 62.3, 76.9, 94.9]}, {\"id\": \"west-bed-06\", \"kind\": \"shrub\", \"percentRect\": [27.4, 5.7, 55.3, 21.0]}, {\"id\": \"west-bed-09\", \"kind\": \"shrub\", \"percentRect\": [42.8, 87.7, 70.6, 102.6]}, {\"id\": \"west-bed-11\", \"kind\": \"shrub\", \"percentRect\": [2.0, 96.4, 32.7, 109.8]}].",
+      "removalTargets": [
+        {
+          "id": "west-tree-10",
+          "kind": "tree",
+          "percentRect": [
+            57.2,
+            -26.5,
+            73,
+            3.3
+          ]
+        },
+        {
+          "id": "west-tree-11",
+          "kind": "tree",
+          "percentRect": [
+            66.3,
+            -16.4,
+            81.7,
+            10.5
+          ]
+        },
+        {
+          "id": "west-tree-13",
+          "kind": "tree",
+          "percentRect": [
+            59.6,
+            25.8,
+            77.8,
+            57
+          ]
+        },
+        {
+          "id": "west-tree-14",
+          "kind": "tree",
+          "percentRect": [
+            58.2,
+            62.3,
+            76.9,
+            94.9
+          ]
+        },
+        {
+          "id": "west-bed-06",
+          "kind": "shrub",
+          "percentRect": [
+            27.4,
+            5.7,
+            55.3,
+            21
+          ]
+        },
+        {
+          "id": "west-bed-09",
+          "kind": "shrub",
+          "percentRect": [
+            42.8,
+            87.7,
+            70.6,
+            102.6
+          ]
+        },
+        {
+          "id": "west-bed-11",
+          "kind": "shrub",
+          "percentRect": [
+            2,
+            96.4,
+            32.7,
+            109.8
+          ]
+        }
+      ],
+      "fogTargets": [],
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-feab6ecd-81be-4e38-98f1-4ba16d023c74.png",
+      "initialNativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-9dadd523-9753-4a33-b7a6-c9732255e903.png",
+      "returnedSize": [
+        1254,
+        1254
+      ],
+      "selectedNativeSize": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "generationCount": 10,
+  "revisions": [
+    {
+      "call": 9,
+      "chunk": "r2-c1",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Edit the FIRST image, which is the finished high-detail volcanic terrain crop. Remove the entire pale lavender/white fog bank in the LOWER LEFT corner, specifically x=0% to 52%, y=72% to 100%. Paint continuous dark purple volcanic ravine walls and fissured rock beneath this fog, seamlessly matching the surrounding rocks. This is the owner-requested embedded fog lump, and must be completely gone. Keep the small distant sky mist at the very TOP LEFT only. Preserve every other existing pixel layout, stone, lava channel, cliff rim, path shape, stair position, red foliage, lighting and fine hand-painted detail. The SECOND image is the lower neighbouring tile, use it ONLY to match dark ravine rock where the fog is removed along the bottom edge. Do not change framing, scale, rotate, add paths or move anything. Return one full-bleed portrait crop with exactly the same aspect ratio as FIRST, high native resolution. No text, borders, blur, DOF, parallax or sharpening.",
+      "inputNativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-1d5e6bfd-3b80-4d93-9597-31e00299f1a5.png",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-4bcf800f-8511-4cc6-93ed-ce546d617acf.png",
+      "returnedSize": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "call": 10,
+      "chunk": "r2-c1",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. FIRST input is the finished HD volcanic terrain tile, 1254x1254 pixels. Make ONE tiny geometric correction ONLY to the LOWEST staircase near the bottom center, the stair whose top is at approximately x=46%, y=82% and whose foot is at y=96%. Shift this entire lowest stair and its immediate stair-side rock edge RIGHT by 16 native image pixels and DOWN by 7 native image pixels. Blend its old location with the surrounding stone. SECOND image is the exact original layout reference, match this lowest staircase's placement and width to it while retaining FIRST image's detailed hand-painted materials. Keep the upper two staircases and all other image content EXACTLY fixed, same pixels, framing, lava outlines, paving rim, cliffs, foliage, lighting and sharpness. Do not remove or add stair treads. Do not invent new structures. Return one full-bleed 1254x1254 terrain image. No text, border, DOF, parallax, blur or sharpening. The only edit is the small right/down translation of the bottom staircase.",
+      "inputNativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-9dadd523-9753-4a33-b7a6-c9732255e903.png",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c530-312c-7cb2-9a56-1011542457f0/exec-feab6ecd-81be-4e38-98f1-4ba16d023c74.png",
+      "returnedSize": [
+        1254,
+        1254
+      ]
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "objects": [
+    {
+      "id": "west-tree-00",
+      "kind": "tree",
+      "bboxWorld": [
+        48.0,
+        340.765,
+        62.4,
+        155.984
+      ],
+      "footWorld": [
+        79.2,
+        484.271
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-01",
+      "kind": "tree",
+      "bboxWorld": [
+        134.4,
+        355.164,
+        76.8,
+        172.782
+      ],
+      "footWorld": [
+        172.8,
+        514.124
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-02",
+      "kind": "tree",
+      "bboxWorld": [
+        616.8,
+        307.169,
+        100.8,
+        167.983
+      ],
+      "footWorld": [
+        667.2,
+        461.713
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-03",
+      "kind": "tree",
+      "bboxWorld": [
+        652.8,
+        535.146,
+        76.8,
+        134.386
+      ],
+      "footWorld": [
+        691.2,
+        658.781
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-04",
+      "kind": "tree",
+      "bboxWorld": [
+        129.6,
+        623.937,
+        79.2,
+        167.983
+      ],
+      "footWorld": [
+        169.2,
+        778.481
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-05",
+      "kind": "tree",
+      "bboxWorld": [
+        48.0,
+        724.726,
+        81.6,
+        148.785
+      ],
+      "footWorld": [
+        88.8,
+        861.608
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-06",
+      "kind": "tree",
+      "bboxWorld": [
+        568.8,
+        719.927,
+        81.6,
+        155.984
+      ],
+      "footWorld": [
+        609.6,
+        863.432
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-tree-07",
+      "kind": "tree",
+      "bboxWorld": [
+        686.4,
+        751.124,
+        84.0,
+        148.785
+      ],
+      "footWorld": [
+        728.4,
+        888.006
+      ],
+      "chunk": [
+        "r1-c1",
+        "r2-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-00",
+      "kind": "shrub",
+      "bboxWorld": [
+        160.8,
+        535.146,
+        127.2,
+        52.795
+      ],
+      "footWorld": [
+        224.4,
+        583.717
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-01",
+      "kind": "shrub",
+      "bboxWorld": [
+        225.6,
+        693.529,
+        115.2,
+        59.994
+      ],
+      "footWorld": [
+        283.2,
+        748.724
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "west-bed-02",
+      "kind": "shrub",
+      "bboxWorld": [
+        504.0,
+        669.532,
+        136.8,
+        59.994
+      ],
+      "footWorld": [
+        572.4,
+        724.726
+      ],
+      "chunk": [
+        "r1-c1"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "lava-upper-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        724.8,
+        561.543,
+        352.8,
+        79.192
+      ],
+      "footWorld": [
+        901.2,
+        640.735
+      ],
+      "chunk": [
+        "r1-c1",
+        "r1-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    },
+    {
+      "id": "lava-upper-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        717.6,
+        621.537,
+        360.0,
+        100.79
+      ],
+      "footWorld": [
+        897.6,
+        722.327
+      ],
+      "chunk": [
+        "r1-c1",
+        "r1-c2"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "reviewStatus": "requested-foreground-or-old-blurry-patch-cleared-in-inspected-box"
+    }
+  ],
+  "fogLumps": [],
+  "verification": "Offline visual comparison of source/final inventory rectangles. Approximate survey boxes do not establish exact semantic identity or pixel masks. All requested targets retained below, including unresolved ones.",
+  "removedIds": [
+    "west-tree-00",
+    "west-tree-01",
+    "west-tree-02",
+    "west-tree-03",
+    "west-tree-04",
+    "west-tree-05",
+    "west-tree-06",
+    "west-tree-07",
+    "west-bed-00",
+    "west-bed-01",
+    "west-bed-02",
+    "lava-upper-back",
+    "lava-upper-front"
+  ],
+  "needsReviewIds": [],
+  "fogReview": "No listed fog lumps intersect this chunk."
+}

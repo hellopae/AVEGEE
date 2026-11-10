@@ -1,0 +1,433 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Reference independent 49x49 DoG sigma1.5/6 landmark templates, normalized correlation, +/-12 map pixels on final assembled output.",
+  "limitation": "Local patch translation does not establish every contour or tread count. All probes retained. Low correlation remains unverified, never counted as success.",
+  "totalProbes": 28,
+  "reliableProbes": 20,
+  "maxReliableDisplacementPx1x": 4.0,
+  "maxAllProbeDisplacementPx1x": 15.620499351813308,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "probes": [
+    {
+      "id": "mountain-apex-west",
+      "sourcePx1x": [
+        188,
+        38
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8675040006637573,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "mountain-face-west",
+      "sourcePx1x": [
+        225,
+        160
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8416171669960022,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-west-lip",
+      "sourcePx1x": [
+        443,
+        256
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9587591290473938,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-west-foot",
+      "sourcePx1x": [
+        452,
+        312
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9482138752937317,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "volcano-lip-west",
+      "sourcePx1x": [
+        681,
+        78
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.940312385559082,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "volcano-lip-east",
+      "sourcePx1x": [
+        809,
+        104
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9433612823486328,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "volcano-fall-foot",
+      "sourcePx1x": [
+        781,
+        236
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9426625370979309,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-rock-apex",
+      "sourcePx1x": [
+        829,
+        243
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.932742178440094,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-top-left",
+      "sourcePx1x": [
+        420,
+        378
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7286548018455505,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-top-right",
+      "sourcePx1x": [
+        506,
+        364
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8471019268035889,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-foot-left",
+      "sourcePx1x": [
+        455,
+        443
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.885908305644989,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-foot-right",
+      "sourcePx1x": [
+        544,
+        430
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.6775436997413635,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-north-rim",
+      "sourcePx1x": [
+        567,
+        452
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.6845670342445374,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-rim",
+      "sourcePx1x": [
+        859,
+        526
+      ],
+      "displacementPx1x": [
+        -1,
+        2
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.37767907977104187,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "plaza-southwest-rim",
+      "sourcePx1x": [
+        440,
+        738
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.26582664251327515,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "plaza-south-rim",
+      "sourcePx1x": [
+        552,
+        785
+      ],
+      "displacementPx1x": [
+        -2,
+        0
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.4045051038265228,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-left",
+      "sourcePx1x": [
+        647,
+        816
+      ],
+      "displacementPx1x": [
+        2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.8097906112670898,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-right",
+      "sourcePx1x": [
+        720,
+        826
+      ],
+      "displacementPx1x": [
+        -4,
+        0
+      ],
+      "distancePx1x": 4.0,
+      "normalizedCorrelation": 0.6835952997207642,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-foot-left",
+      "sourcePx1x": [
+        600,
+        902
+      ],
+      "displacementPx1x": [
+        -8,
+        -12
+      ],
+      "distancePx1x": 14.422205101855956,
+      "normalizedCorrelation": 0.354545921087265,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "lower-stair-foot-right",
+      "sourcePx1x": [
+        682,
+        914
+      ],
+      "displacementPx1x": [
+        2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.8445420265197754,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-path-west",
+      "sourcePx1x": [
+        574,
+        950
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.3919945955276489,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-path-east",
+      "sourcePx1x": [
+        685,
+        956
+      ],
+      "displacementPx1x": [
+        5,
+        10
+      ],
+      "distancePx1x": 11.180339887498949,
+      "normalizedCorrelation": 0.2650374174118042,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "bridge-deck-west",
+      "sourcePx1x": [
+        958,
+        743
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7569572329521179,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-east",
+      "sourcePx1x": [
+        987,
+        764
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.826321542263031,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-lower-fall-lip",
+      "sourcePx1x": [
+        239,
+        747
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9368409514427185,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-lower-fall-foot",
+      "sourcePx1x": [
+        250,
+        887
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8885896801948547,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-lower-bank",
+      "sourcePx1x": [
+        370,
+        897
+      ],
+      "displacementPx1x": [
+        9,
+        3
+      ],
+      "distancePx1x": 9.486832980505138,
+      "normalizedCorrelation": 0.3145003914833069,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "cliff-east-face",
+      "sourcePx1x": [
+        843,
+        851
+      ],
+      "displacementPx1x": [
+        -10,
+        12
+      ],
+      "distancePx1x": 15.620499351813308,
+      "normalizedCorrelation": 0.19292110204696655,
+      "reliable": false,
+      "within4px": false
+    }
+  ]
+}
