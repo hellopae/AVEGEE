@@ -1,0 +1,347 @@
+[
+  {
+    "id": "r1-c3-q1-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "3c66fe27f43f9ee2b3a1da1965d519d5ac6298083d3493a839d8fc0e3dc1b9f9",
+    "savedFile": "sources/r1-c3-q1-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c2-q1-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "a0b8d5f57a05f72cbe3e8cbba597c42de67070c33524fab881b40cd1ae426c10",
+    "savedFile": "sources/r1-c2-q1-A.webp",
+    "alphaExtrema": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "r1-c2-q2-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "9cda3349b6bc6c0a09f0ce9b7cba37f74255360ec3f27708c8d5d489891f2883",
+    "savedFile": "sources/r1-c2-q2-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c2-q1-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "5e82b429873f4223e6ea134fd93d5f1f9889834c72845a22dd7e08e5580879ae",
+    "savedFile": "sources/r1-c2-q1-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c2-q2-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "2f0afeeb918ec8aebcce8ba71cd04a818c542606fe5d966b73a420cb2cf3c51e",
+    "savedFile": "sources/r1-c2-q2-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c3-q1-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "393ee53d9258b45ca035910c84363be0565e190ecaff736e153f29ab9be570f1",
+    "savedFile": "sources/r1-c3-q1-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c3-q2-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "714aaadc2551eee75f3c82768d547fdc8e81740c4ffe48b16f74d23eec068937",
+    "savedFile": "sources/r1-c3-q2-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c3-q2-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "020ba82fd3a9de91f1f7617f8713eacf03edea09957e5317564eeb8f5c800b0b",
+    "savedFile": "sources/r1-c3-q2-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c3-q4-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "d4311c330c0f19f800170efb4618772951ae19ed5deee3ed0f8bc31167c11fc6",
+    "savedFile": "sources/r1-c3-q4-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c3-q4-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "56ad3262f60dc6009daae47942d4a413238d55f6cc8c1b667b6c95d1ce934288",
+    "savedFile": "sources/r1-c3-q4-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c4-q1-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "ccffbd363ab0a5bc999595ccd38a54cb1da29bb791f641634681fb043a87f3df",
+    "savedFile": "sources/r1-c4-q1-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c4-q1-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "8d3b9469e3b7c1408a7ed5ae590f1b6d9d9dbcc8819774573ebf40085a8b79c7",
+    "savedFile": "sources/r1-c4-q1-B.webp",
+    "alphaExtrema": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "r1-c4-q2-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "862e55874b7388dd322be65800fa52633e96b5c3c7e0b2787bdc4b23fcc0da8a",
+    "savedFile": "sources/r1-c4-q2-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c4-q2-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1536,
+      1024
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "985929f3ad69369ad2a274a13a9ec3c044f05f9b8a7451cf2d75e107106b0b05",
+    "savedFile": "sources/r1-c4-q2-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c4-q3-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "666a19814bbc57378561894178d1d3fa5de1d2c0447307a6840f97b3c761aba3",
+    "savedFile": "sources/r1-c4-q3-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r1-c4-q3-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "303bfe36a4461a82c4ff45249eb70ca975aa84e58469719f9b0a756a87249f85",
+    "savedFile": "sources/r1-c4-q3-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c1-q1-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "2251b44ea6c3580fbc03cdf2caa7d71bf7e9f04fd22e8fe41784727d42abd915",
+    "savedFile": "sources/r2-c1-q1-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c1-q1-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "f804fa5284da7461ff0443eae5f7ac54e3d8db286e8b22734045d8df634fe016",
+    "savedFile": "sources/r2-c1-q1-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c4-q3-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "c5ef9842d6e6f100db83939bc483d8887a06f61db2a1634d83a4085b0de4894a",
+    "savedFile": "sources/r2-c4-q3-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c4-q3-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1536,
+      1024
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "8bf00341eba5c578aefdfdd131b39a156c89716c4609f06cad39c9ea7e714bc7",
+    "savedFile": "sources/r2-c4-q3-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c5-q1-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "c09dcca3201e44582b2559294cbe90042ce390fc4327279d8c50decc1834c4bd",
+    "savedFile": "sources/r2-c5-q1-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c5-q1-B",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1536,
+      1024
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "f3f721f1a3202a0936875a06bfb284a60f5d0be76c872ff0680946e1b40e45c7",
+    "savedFile": "sources/r2-c5-q1-B.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  },
+  {
+    "id": "r2-c5-q2-A",
+    "tool": "built-in image_gen",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeMode": "RGBA",
+    "originalSha256": "4437f068191baef573961efd673b18c0b6b11670575ce2239965279f9fe26367",
+    "savedFile": "sources/r2-c5-q2-A.webp",
+    "alphaExtrema": [
+      0,
+      253
+    ]
+  }
+]
