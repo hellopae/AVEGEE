@@ -30,6 +30,14 @@ export function normalizeWorkers(value) {
   return out;
 }
 const state=g=>g.workerState ||= normalizeWorkers();
+// FB-UI 4 (owner 10 Nov): an assistant with nothing to do used to stay wherever his last job ended, and new hires were put 80-115 units
+// south of the bench - that is the great staircase (a worker stood across it for ever). Idle assistants now wait on the flat plaza west of the central road
+// in the middle of the map (open floor in all four zones, outside the tree canopies, clear of the soul queue and the stairs).
+export const WORKER_STANDBY=Object.freeze([[1650,1300],[1690,1300],[1650,1340],[1690,1340],[1650,1380],[1690,1380]]);   // world points on the open west-central plaza (checked open to 24 units, clear of tree canopies and the queue, in all four zones)
+export function workerStandbyPoint(i) {
+  const [dx,dy]=WORKER_STANDBY[((i%WORKER_STANDBY.length)+WORKER_STANDBY.length)%WORKER_STANDBY.length];
+  return nearestWalk(dx,dy);
+}
 export const zoneWorkers=g=>state(g).workers.filter(w=>w.homeZone===g.zone);
 export const workerHireCost=g=>WORKER_RULES.hireBase+zoneWorkers(g).length*WORKER_RULES.hireExtra;
 export function workerHireWhy(g) {
@@ -42,7 +50,7 @@ export function workerHireWhy(g) {
 export function hireWorker(g) {
   if(workerHireWhy(g))return false;
   const s=state(g),price=workerHireCost(g),id=`worker:${s.nextId++}`,i=zoneWorkers(g).length;
-  const home=nearestWalk(SPOTS.bench.x-100+(i%3)*38,SPOTS.bench.y+80+Math.floor(i/3)*35)||[SPOTS.bench.x,SPOTS.bench.y];
+  const home=workerStandbyPoint(i)||[SPOTS.bench.x,SPOTS.bench.y];
   const worker={id,homeZone:g.zone,name:`${names[g.zone]} ${id.split(':').at(-1)}`,mode:'auto',x:home[0],y:home[1],face:1,stamina:100,morale:100,hunger:100,workTicks:0,funded:true,job:null};
   s.workers.push(worker);g.coin-=price;s.ledger.hired++;s.ledger.hireSpent+=price;
   g.log?.(`นิราจ้าง${worker.name} · ${price} เบี้ยกรรม`,'act');return worker;
@@ -169,6 +177,16 @@ export function advanceWorkers(g,dt,now=Date.now()) {
     if(w.teaRest===true){w.teaRest=null;restWorkerAtTea(g,w.id,now);} // legacy boolean order: travel, then a full minute
     if(w.teaRest){advanceTeaRest(g,w,now);w.moving=w.teaRest?.phase==='travel';w.sitting=w.teaRest?.phase==='rest';continue;}
     if(!canWalk(w.x,w.y)){const safe=nearestWalk(w.x,w.y);if(safe){[w.x,w.y]=safe;w.path=null;}}
+    if(!w.job&&!w.cargo&&!w.resting&&w.mode!=='rest') {          // idle: walk to the standby plaza (no wage, no food, no job)
+      const spot=workerStandbyPoint(zoneWorkers(g).indexOf(w));if(!spot)continue;
+      w.arrived=Math.hypot(w.x-spot[0],w.y-spot[1])<24;
+      if(!w.arrived) {
+        if(!w.path?.length||w.target?.[0]!==spot[0]||w.target?.[1]!==spot[1]){w.path=findPath(w.x,w.y,...spot);w.target=spot;}
+        if(w.path?.length){const next=w.path[0],dx=next[0]-w.x,dy=next[1]-w.y,d=Math.hypot(dx,dy);
+          if(d<2)w.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);w.moving=stepTo(w,dx/d*speed,dy/d*speed);w.face=dx<0?-1:1;w.heading=workerHeading(dx,dy);if(!w.moving)w.path=null;}}
+      }
+      continue;
+    }
     if((!w.funded||!w.job||w.job.kind==='escort')&&!w.resting&&w.mode!=='rest')continue;
     const goal=target(g,w);if(!goal)continue;
     w.arrived=Math.hypot(w.x-goal[0],w.y-goal[1])<24;

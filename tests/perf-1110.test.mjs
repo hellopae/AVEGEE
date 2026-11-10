@@ -48,8 +48,8 @@ test('ground bake: the tile URL goes to the worker (fetch + decode off the main 
 
 test('index.html: the changed modules carry the PERF-1110 cache-bust id', () => {
   const html = read('index.html'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const k of ['terrain-detail', 'art', 'town-shade', 'town-lighting', 'ui', 'scene']) assert.match(map[`./src/${k}.js`], /\?v=20261110-perf$/, k);
-  assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261110-perf">/);
+  for (const k of ['terrain-detail', 'art', 'town-shade', 'town-lighting', 'ui', 'scene']) assert.match(map[`./src/${k}.js`], /\?v=20261110-perf(-fbui)?$/, k);
+  assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261110-perf(-fbui)?">/);
 });
 
 test('map canvas density: default stays DPR 2, ?mapdpr=1..2 is an opt-in economy knob', () => {

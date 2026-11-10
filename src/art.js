@@ -708,6 +708,39 @@ function vignetteCanvas(w, h) {
   }
   return cv;
 }
+// FB-UI 7 (owner OK 10 Nov): in the town zones the world is 3840x2560 but the vignette used the old 1678x937 scene size, so it sat as a
+// rectangle in the top-left corner of the world.  The town vignette is now a screen-space overlay pinned to the camera: same gradient formula
+// (inner .34 / outer 1.05 of the height, max alpha .52) applied to the visible canvas, baked once at half size and rebuilt only when the canvas size changes.
+let screenVignette = null;   // {key, cv}
+export function screenVignetteCanvas(cw, ch) {
+  const key = cw + 'x' + ch;
+  if (screenVignette && screenVignette.key === key) return screenVignette.cv;
+  let cv = null;
+  if (typeof document !== 'undefined') {
+    const bw = Math.max(2, Math.round(cw / 2)), bh = Math.max(2, Math.round(ch / 2));
+    cv = document.createElement('canvas'); cv.width = bw; cv.height = bh;
+    const q = cv.getContext('2d');
+    const g = q?.createRadialGradient?.(bw / 2, bh / 2, bh * 0.34, bw / 2, bh / 2, bh * 1.05);
+    if (g) { g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)'); q.fillStyle = g; q.fillRect(0, 0, bw, bh); }
+    else cv = null;
+  }
+  screenVignette = { key, cv };
+  return cv;
+}
+/** Draw with an identity transform: covers exactly the canvas (= the screen), whatever the camera. */
+export function drawScreenVignette(ctx) {
+  const cw = ctx.canvas?.width, ch = ctx.canvas?.height;
+  if (!cw || !ch) return;
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const bake = screenVignetteCanvas(cw, ch);
+  if (bake) ctx.drawImage(bake, 0, 0, cw, ch);
+  else {
+    const g = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.34, cw / 2, ch / 2, ch * 1.05);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, cw, ch);
+  }
+  ctx.restore();
+}
 export function drawVignette(ctx, w, h) {
   const m = ctx.getTransform?.();
   if (m && !m.b && !m.c && m.a > 0 && m.d > 0 && ctx.canvas) {

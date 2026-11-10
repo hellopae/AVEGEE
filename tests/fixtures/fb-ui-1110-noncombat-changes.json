@@ -1,0 +1,8 @@
+{
+ "data": [
+  {
+   "before": "  th: ['krata', 'dab', 'tarang', 'lokan'], asia: ['krata'],",
+   "after": "  th: ['krata', 'dab', 'tarang', 'lokan', 'tea'], asia: ['krata'],   // FB-UI 4 (owner 10 Nov): zone-1 tea pavilion mirrored to face left-to-right"
+  }
+ ]
+}

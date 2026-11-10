@@ -12,6 +12,7 @@ import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
+import { DAIS_GEOMETRY, daisWorldPoint } from './town-dais-geometry.js';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownFluidFx } from './town-fluid-fx.js?v=v5fx';
@@ -32,7 +33,7 @@ import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
+         drawFire, drawVignette, drawScreenVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk,canWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
@@ -288,10 +289,11 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground (off while the painted frames own them)
   drawTownGround(ctx, g, t);
   if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
+  let drawDais=null;   // FB-UI 5: the dais joins the y-sorted layer (see below) instead of lying under every actor
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
     const dais=newDais||img('prop-throne-platform-v1');
-    if(dais) {
+    if(dais) drawDais=()=>{
       ctx.save();ctx.imageSmoothingEnabled=true;
       if(newDais){
         // K1d: the dais is placed by the owner's drawing (foot centre + width), not by the old throne spot.
@@ -360,6 +362,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  // FB-UI 5 (owner 10 Nov): the judgement dais is sorted by its BACK edge (top of the back rail) - anyone walking on the ring road
+  // behind the platform is drawn first and is covered by the dais; anyone on the platform, the stairs or in front is drawn after it.
+  if(drawDais)at(daisDepthY(g.zone),drawDais);
   if(town&&g.zone==='th'){
     const lamp=img('town-prop-lamp-gold');
     if(lamp?.naturalWidth)for(const site of TH_ATMOS_LAMPS)at(site.y,()=>{
@@ -803,7 +808,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (spot) buildPrompt(ctx, spot, t, g);
 
   if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
-  drawVignette(ctx, SCENE.w, SCENE.h);
+  // FB-UI 7: the town vignette is pinned to the screen (a CSS gradient over the canvas; canvas blit only when that element is absent), not a rectangle in the world's corner
+  if (isTownZone(g.zone)) { if (!vignetteOverlay(ctx.canvas)) drawScreenVignette(ctx); }
+  else drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
@@ -813,6 +820,16 @@ function drawStationAO(ctx, def) {
   const f = footOf(def) || [def.bx - def.bw * .32, def.by - def.bw * .05, def.bx + def.bw * .32, def.by];
   const rx = (f[2] - f[0]) / 2 * 1.08;
   drawContactAO(ctx, (f[0] + f[2]) / 2 + 4, f[3] - 2, rx, Math.max(10, rx * .22));
+}
+
+// Town vignette: a CSS overlay (#map-vignette in index.html, geometry kept in sync by ui.js) owns it in the browser; the canvas blit is only the fallback
+// when that element does not exist (tests / other hosts).
+const vignetteOverlay = cv => !!cv?.parentElement?.querySelector?.(':scope > #map-vignette');
+
+/** Depth (world y) at which the judgement dais is drawn in the actor layer: the back rail line of its traced geometry. */
+export function daisDepthY(zone) {
+  const rail=DAIS_GEOMETRY[zone]?.rail;
+  return daisWorldPoint([768,rail?Math.min(...rail.map(p=>p[1])):245],TOWN_DAIS)[1];
 }
 
 /** อาคารหนึ่งหลังบนแผนที่ — รวมนั่งร้านตอนกำลังสร้าง และไฟไหม้ตอนผีมาเผา */
@@ -831,10 +848,8 @@ function drawStation(ctx, g, st, t) {
     const W = 120 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 10;
     ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12 * UI_SCALE_MAP, 6); ctx.fill();
     ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12 * UI_SCALE_MAP, 6); ctx.fill();
-    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร หาตัวจริงที่กำลังสร้างหลังนี้อยู่
-    // (buildK ตรงกับ d.k) แล้วใช้ชื่อของเขา (ตามโซนผ่าน crewName แล้ว) แทนพิมพ์ "ทัณฑ์" ตรง ๆ
-    const builder = g.crew.find(c => c.buildK === d.k);
-    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ คนงานกำลังสร้าง ${Math.round(p*100)}%`):st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
+    // FB-UI 2 (owner 10 Nov): small sign, and while nobody has reached the site yet it just says "กำลังก่อสร้าง" (no waiting-for-name text)
+    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ กำลังก่อสร้าง ${Math.round(p*100)}%`):st.buildWait ? '🏗️ กำลังก่อสร้าง' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 10, 10, '#ffe7c4', 4);
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);

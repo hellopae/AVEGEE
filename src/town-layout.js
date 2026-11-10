@@ -41,9 +41,12 @@ export const TOWN_SPOTS = {
 // x 1822-1898 and the soul queue starts at y 1100, so she strolls only inside TOWN_NIRA_STAGE (right of the throne).
 export const TOWN_NIRA_STAGE = [1914,934,1962,968];
 // Zone 1 only: crew who stroll inside a rectangle instead of a radius around home.
-export const TOWN_CREW_STAGE = { nira:TOWN_NIRA_STAGE };
+// FB-UI 2 (owner 10 Nov): an idle Taan waits on the plaza in front of the judgement dais - the middle of the map, so a new build
+// never sends him far. He strolls only inside this rectangle (the open strip beside the dais's left corner: outside the banyan canopies, clear of the soul queue at x~1856).
+export const TOWN_TAAN_STAGE = [1650,1040,1668,1054];
+export const TOWN_CREW_STAGE = { nira:TOWN_NIRA_STAGE, taan:TOWN_TAAN_STAGE };
 export const TOWN_CREW = {
-  nira:[1938,950], taan:[3150,972], dam:[470,1092],
+  nira:[1938,950], taan:[1662,1052], dam:[470,1092],
   plerng:[542,640], kan:[2304,1397], boon:[2460,470],
 };
 export const TOWN_GUARD_POST = [1720,2190];
@@ -246,8 +249,8 @@ export const TOWN_ZONE_LAYOUT = {
   // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
   // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
-    spots:{throne:{x:1862,y:966}},entry:{niraGoal:[1938,968]},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982]} },
-  west:      { spots:{throne:{x:1862,y:970}}, entry:{niraGoal:[1938,974]}, crewStage:{nira:[1914,964,1950,982]}, crew:{nira:[1938,974],boon:[2460,468]}, walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}} },
+    spots:{throne:{x:1862,y:966}},entry:{niraGoal:[1938,968]},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982],taan:TOWN_TAAN_STAGE} },
+  west:      { spots:{throne:{x:1862,y:970}}, entry:{niraGoal:[1938,974]}, crewStage:{nira:[1914,964,1950,982],taan:TOWN_TAAN_STAGE}, crew:{nira:[1938,974],boon:[2460,468]}, walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}} },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);

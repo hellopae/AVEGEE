@@ -123,9 +123,11 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const daisOnly=JSON.parse(readFileSync(new URL('./fixtures/dais-navigation-noncombat-changes.json',import.meta.url)));
   // KO-CREW (6 Nov): only WHEN a fallen teammate's tea-house rest starts (battle end instead of the fall); no damage / HP / morale / cooldown number is touched.
   const koOnly=JSON.parse(readFileSync(new URL('./fixtures/ko-crew-runtime-changes.json',import.meta.url)));
+  // FB-UI (10 Nov): zone-1 tea pavilion drawn mirrored (STATION_FLIP table entry, render orientation only).
+  const flipOnly=JSON.parse(readFileSync(new URL('./fixtures/fb-ui-1110-noncombat-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

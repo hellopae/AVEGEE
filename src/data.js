@@ -2095,7 +2095,7 @@ export const ZONES = [
  */
 export const STATION_FLIP = {
   // Map-Zone1-3 review arrows: each facade opens toward its approach road.
-  th: ['krata', 'dab', 'tarang', 'lokan'], asia: ['krata'],
+  th: ['krata', 'dab', 'tarang', 'lokan', 'tea'], asia: ['krata'],   // FB-UI 4 (owner 10 Nov): zone-1 tea pavilion mirrored to face left-to-right
   west: ['krata', 'tea'], cyberhell: ['krata'],
 };
 

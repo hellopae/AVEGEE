@@ -231,6 +231,16 @@ function updateMapCamera(now) {
   // The canvas covers the stage; only DOM labels retain the old world-space scale.
   cv.style.left = `${-L}px`; cv.style.top = `${-T}px`;
   cv.style.width = `${cw}px`; cv.style.height = `${ch}px`;
+  // FB-UI 7: the town vignette element covers exactly the canvas (the stage); its geometry is written only when it changes (resize / letterbox), never per frame
+  const vig = document.getElementById('map-vignette');
+  if (vig?.dataset && vig.style?.setProperty) {
+    const geo = `${-L}|${-T}|${cw}|${ch}`;
+    if (vig.dataset.geo !== geo) {
+      vig.dataset.geo = geo;
+      vig.style.left = `${-L}px`; vig.style.top = `${-T}px`; vig.style.width = `${cw}px`; vig.style.height = `${ch}px`;
+      vig.style.setProperty('--vig-h', `${ch}px`);
+    }
+  }
   const overlay = document.getElementById('ov');
   overlay.style.transformOrigin = '0 0';
   overlay.style.transform = `translate(${view.tx - L}px,${view.ty - T}px) scale(${mapCam.z})`;

@@ -4,10 +4,10 @@ import { STATIONS, STATION_FLIP, syncSceneZone, MAP_BUILDING_SCALE } from '../sr
 import { reviewStationBox, MAP_REVIEW_SIZES } from '../src/map-art-v5.js';
 import {disableTownSkin,enableTownSkin} from '../src/zone-skin.js';
 
-const expected = { th:['krata','dab','tarang','lokan'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] };
+const expected = { th:['krata','dab','tarang','lokan','tea'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] };
 // Effective pre-E1 draw flags: map-v5 ignored def.flip, while lokan/tea used the legacy renderer.
 const before = { th:[], asia:['lokan','tea'], west:['tarang'], cyberhell:[] };
-const requested = { th:['krata','dab','tarang','lokan'], asia:['lokan','tea','krata'], west:['tarang','krata','tea'], cyberhell:['krata'] };
+const requested = { th:['krata','dab','tarang','lokan','tea'], asia:['lokan','tea','krata'], west:['tarang','krata','tea'], cyberhell:['krata'] };
 const station = key => STATIONS.find(d=>d.k===key);
 
 test('E1: one final flip table toggles exactly the eight requested rendered orientations', () => {
@@ -28,7 +28,7 @@ test('E1: one final flip table toggles exactly the eight requested rendered orie
       }
     }
   }
-  assert.equal(toggled,11);
+  assert.equal(toggled,12);   // +1: zone-1 tea mirrored (FB-UI 10 Nov)
   syncSceneZone('th');
 });
 

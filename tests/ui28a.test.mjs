@@ -25,11 +25,11 @@ test('ประตูสวรรค์ ดงต้นงิ้ว หอส่
 });
 
 // ---------- ข้อ 2: กลับด้านโรงน้ำชาโซนบูรพา ----------
-test('E1 supersedes 28A: tea mirrors only in west', () => {
+test('E1 supersedes 28A: tea mirrors in west (and, since FB-UI 10 Nov, in zone 1)', () => {
   const tea = () => STATIONS.find(s => s.k === 'tea');
   for (const z of ZONES) {
     syncSceneZone(z.k);
-    assert.equal(tea().flip, z.k === 'west', z.k);
+    assert.equal(tea().flip, z.k === 'west' || z.k === 'th', z.k);
   }
   syncSceneZone('th');
 });
