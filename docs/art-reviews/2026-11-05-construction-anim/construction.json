@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "layout": "single-row",
+  "alpha": "straight",
+  "stages": [
+    {
+      "stage": 1,
+      "file": "stage-1.webp",
+      "frames": 8,
+      "frameW": 704,
+      "frameH": 704,
+      "fps": 8,
+      "foot": [
+        352,
+        640
+      ],
+      "worldWidth": 256,
+      "groundWidthPx": 600,
+      "groundWorldWidth": 218.1818181818182
+    },
+    {
+      "stage": 2,
+      "file": "stage-2.webp",
+      "frames": 8,
+      "frameW": 704,
+      "frameH": 704,
+      "fps": 8,
+      "foot": [
+        352,
+        640
+      ],
+      "worldWidth": 256,
+      "groundWidthPx": 600,
+      "groundWorldWidth": 218.1818181818182
+    },
+    {
+      "stage": 3,
+      "file": "stage-3.webp",
+      "frames": 8,
+      "frameW": 704,
+      "frameH": 704,
+      "fps": 8,
+      "foot": [
+        352,
+        640
+      ],
+      "worldWidth": 256,
+      "groundWidthPx": 600,
+      "groundWorldWidth": 218.1818181818182
+    }
+  ]
+}

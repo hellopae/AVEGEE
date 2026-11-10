@@ -1,0 +1,21 @@
+CONSTRUCTION-ANIM continuation verification — 2026-11-10
+python3 -B docs/art-reviews/2026-11-05-construction-anim/export.py
+Exit 0: recovered stage-1 from 8 previously generated cels; rebuilt atlases, previews and review images.
+python3 -B docs/art-reviews/2026-11-05-construction-anim/verify.py
+stage-1: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Static-ground limitation: edge drift 9 px; min silhouette IoU 0.94717
+stage-2: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Static-ground limitation: edge drift 4 px; min silhouette IoU 0.95740
+stage-3: 8 unique RGBA cels, 704x704, GIF loop 1000 ms
+  Static-ground limitation: edge drift 5 px; min silhouette IoU 0.95132
+Container checks complete; bundle 17,514,168 bytes. Visual acceptance is separate.
+Exit 0
+stage-2.webp: SHA-256 matches original; 64e6bd2a9227cca930f6540ed6a8db508890dc1cd4939dbeeb7093a388332b88
+stage-3.webp: SHA-256 matches original; 3778c2b2471d7150f47ab5779e367982ec8f068b44dada86070651a7030d4813
+All 7 copied source/reference files match original bytes.
+Original stage-1 was 0 bytes; recovered atlas is nonempty and fully decoded by verify.py.
+Visually inspected frame-strip.jpg and updated style-compare.jpg (all 3 stages / white, dark, warm backgrounds).
+Acceptance 1 remains incomplete: static ground contour/texture/post drift; no seamless-loop or runtime QA claim.
+Acceptance 2: warm teak/sandstone comparison reviewed; no saturated red/yellow alpha-edge pixels under documented thresholds.
+New ImageGen calls this continuation: 0. Original built-in prompts preserved in prompts.json.
+No game/runtime tests run: art review assets only. No commit/push/merge/deploy.

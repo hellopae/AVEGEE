@@ -1,0 +1,1391 @@
+{
+  "method": "8 separate ImageGen-drawn cels per stage, chronological order. Export downsampling normalizes ground width to 600 px, then integer foot registration. Every source cel appears once; no synthetic motion, interpolation, fading or duplicated cels. MAE measures image differences, not artistic acceptance.",
+  "continuation": {
+    "sourceWorktree": "20261110T121452Z-e5633251",
+    "recovered": "stage-1.webp was 0 bytes; rebuilt from existing ImageGen sources stage-1-a and stage-1-b.",
+    "newImageGenCalls": 0,
+    "acceptance1Status": "incomplete: static ground/post details drift between drawn cels",
+    "runtimeQA": "not run"
+  },
+  "stages": {
+    "1": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "96db35396c46b1b101a4aeb66605c966b00a31c7aa0c8d1f869efd6821129854",
+        "941f818e712a29664b2254d2a40d52074c453d96f6cf1fec726d8a3f6bb3d50c",
+        "a5acef419c452e7a6b559b9bff0b8b702cd02b0ce1f2633c8fac4dc17dbe3fc5",
+        "d784c131ddb8b9d83470d78c76af1462419eabd190daa9da034082ef2db305d6",
+        "e55d6ddcd18877da60381b96291d4f77f728be15140dd180b64d32dab23e3051",
+        "347f404832f873467d2a883f712d1e1bedadd85a404442745571a7eff374773e",
+        "42e1697186be9db26ed755643f1769fcf49de7a6638d201bd8297d3d4f3ee614",
+        "b0bbc1a9a29e6f496a4a8910e4b7a9c98714557a7ccdecd3673381542e69e806"
+      ],
+      "visibleSHA256": [
+        "96db35396c46b1b101a4aeb66605c966b00a31c7aa0c8d1f869efd6821129854",
+        "941f818e712a29664b2254d2a40d52074c453d96f6cf1fec726d8a3f6bb3d50c",
+        "a5acef419c452e7a6b559b9bff0b8b702cd02b0ce1f2633c8fac4dc17dbe3fc5",
+        "d784c131ddb8b9d83470d78c76af1462419eabd190daa9da034082ef2db305d6",
+        "e55d6ddcd18877da60381b96291d4f77f728be15140dd180b64d32dab23e3051",
+        "347f404832f873467d2a883f712d1e1bedadd85a404442745571a7eff374773e",
+        "42e1697186be9db26ed755643f1769fcf49de7a6638d201bd8297d3d4f3ee614",
+        "b0bbc1a9a29e6f496a4a8910e4b7a9c98714557a7ccdecd3673381542e69e806"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            570
+          ],
+          "integerOffset": [
+            43,
+            70
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            575
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            568
+          ],
+          "integerOffset": [
+            43,
+            72
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            569
+          ],
+          "integerOffset": [
+            42,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            568
+          ],
+          "integerOffset": [
+            43,
+            72
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        3.9543,
+        2.63087,
+        2.64243,
+        3.6923,
+        3.63402,
+        3.08297,
+        2.9917,
+        4.72109
+      ],
+      "wrapToMedianInternalDelta": 1.5313,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.57715,
+          "partialAlphaPixels": 9038
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.61264,
+          "partialAlphaPixels": 9021
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.56795,
+          "partialAlphaPixels": 8725
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.57115,
+          "partialAlphaPixels": 8774
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.61888,
+          "partialAlphaPixels": 9417
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.63193,
+          "partialAlphaPixels": 9504
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.62,
+          "partialAlphaPixels": 9257
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.61822,
+          "partialAlphaPixels": 9290
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        0.95741,
+        0.9579,
+        0.95548,
+        0.94717,
+        0.97555,
+        0.95011,
+        0.95081
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            231,
+            446
+          ],
+          [
+            278,
+            407
+          ],
+          [
+            327,
+            358
+          ]
+        ],
+        [
+          [
+            230,
+            447
+          ],
+          [
+            277,
+            406
+          ],
+          [
+            327,
+            358
+          ]
+        ],
+        [
+          [
+            231,
+            447
+          ],
+          [
+            277,
+            406
+          ],
+          [
+            325,
+            358
+          ]
+        ],
+        [
+          [
+            232,
+            446
+          ],
+          [
+            274,
+            407
+          ],
+          [
+            325,
+            358
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            276,
+            406
+          ],
+          [
+            325,
+            356
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            269,
+            405
+          ],
+          [
+            325,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            273,
+            406
+          ],
+          [
+            323,
+            358
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 9,
+      "nativeGroundPixelsPerWorldUnit": [
+        2.7821,
+        2.7821,
+        2.7821,
+        2.7821,
+        2.7867,
+        2.7867,
+        2.7821,
+        2.7867
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    },
+    "2": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "9a38a56ee0b1620f9b9cb2145acc14dc922e60552e809e8ea2f362d3d97be8e2",
+        "040ee53b72dd2a18887d0158c7daee7eddd50a8113fe074210eda9d34de2ac3f",
+        "3c48ada097f6535bd58a066b4fb674d61dde5416aa8c70608892fb806f6426cc",
+        "aea70ee9a35ddc9eca2b7d540e3252e01997a4afd5bcbff65c09b4daee549a04",
+        "182edce8165381e7cd2841cc5af494bae342d775118a2be1cff5bbcd6d7fd562",
+        "ef24eb76f769df9d0960c14c7d0048400f15abb84290ff16802e5d405615e13b",
+        "0ca8d1fe4d46856f76d41d9955b5c6519a1c9076e505cdce501eb1f4797c26f1",
+        "8d56706b1cde085e19d8ed7243bb64e22657572cf259ee15d348f76893175b54"
+      ],
+      "visibleSHA256": [
+        "9a38a56ee0b1620f9b9cb2145acc14dc922e60552e809e8ea2f362d3d97be8e2",
+        "040ee53b72dd2a18887d0158c7daee7eddd50a8113fe074210eda9d34de2ac3f",
+        "3c48ada097f6535bd58a066b4fb674d61dde5416aa8c70608892fb806f6426cc",
+        "aea70ee9a35ddc9eca2b7d540e3252e01997a4afd5bcbff65c09b4daee549a04",
+        "182edce8165381e7cd2841cc5af494bae342d775118a2be1cff5bbcd6d7fd562",
+        "ef24eb76f769df9d0960c14c7d0048400f15abb84290ff16802e5d405615e13b",
+        "0ca8d1fe4d46856f76d41d9955b5c6519a1c9076e505cdce501eb1f4797c26f1",
+        "8d56706b1cde085e19d8ed7243bb64e22657572cf259ee15d348f76893175b54"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            566
+          ],
+          "integerOffset": [
+            41,
+            74
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            12,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 602,
+          "resampledGroundBox": [
+            12,
+            312,
+            611,
+            566
+          ],
+          "integerOffset": [
+            40,
+            74
+          ],
+          "groundWidth": 600,
+          "scale": 0.99681,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            565
+          ],
+          "integerOffset": [
+            41,
+            75
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            565
+          ],
+          "integerOffset": [
+            41,
+            75
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 605,
+          "resampledGroundBox": [
+            11,
+            311,
+            610,
+            564
+          ],
+          "integerOffset": [
+            41,
+            76
+          ],
+          "groundWidth": 600,
+          "scale": 0.992026,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        3.60172,
+        3.10362,
+        2.96242,
+        4.34275,
+        3.02156,
+        3.49583,
+        3.64592,
+        5.12638
+      ],
+      "wrapToMedianInternalDelta": 1.4664,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.52843,
+          "partialAlphaPixels": 13039
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.53795,
+          "partialAlphaPixels": 12942
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.51311,
+          "partialAlphaPixels": 12670
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.51181,
+          "partialAlphaPixels": 12499
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.54675,
+          "partialAlphaPixels": 12934
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.56453,
+          "partialAlphaPixels": 12627
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.53604,
+          "partialAlphaPixels": 12827
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.53682,
+          "partialAlphaPixels": 12706
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        0.96211,
+        0.96182,
+        0.96049,
+        0.9574,
+        0.95927,
+        0.96408,
+        0.95973
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            226,
+            455
+          ],
+          [
+            273,
+            414
+          ],
+          [
+            322,
+            364
+          ]
+        ],
+        [
+          [
+            225,
+            455
+          ],
+          [
+            272,
+            414
+          ],
+          [
+            322,
+            364
+          ]
+        ],
+        [
+          [
+            226,
+            455
+          ],
+          [
+            273,
+            414
+          ],
+          [
+            322,
+            364
+          ]
+        ],
+        [
+          [
+            227,
+            455
+          ],
+          [
+            273,
+            413
+          ],
+          [
+            326,
+            363
+          ]
+        ],
+        [
+          [
+            226,
+            455
+          ],
+          [
+            274,
+            413
+          ],
+          [
+            326,
+            363
+          ]
+        ],
+        [
+          [
+            226,
+            455
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            326,
+            362
+          ]
+        ],
+        [
+          [
+            226,
+            455
+          ],
+          [
+            273,
+            413
+          ],
+          [
+            326,
+            362
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 4,
+      "nativeGroundPixelsPerWorldUnit": [
+        2.7637,
+        2.7592,
+        2.7637,
+        2.7637,
+        2.7775,
+        2.7775,
+        2.7729,
+        2.7775
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    },
+    "3": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "35343af04fe9576e9da6888f1ab5a693daeb0e454013e5825bc766c0c4a094fe",
+        "eac645269f58e92675880461b687e66a52f13bcd69f8daf36e5a8177c0550d88",
+        "28254e86c57c713570498837236214b916aa80ab2b759af84abe746298205c72",
+        "97a63af16fc0927ecc948436ce4c327c0cecf525eeb029f045341c4eb7501a19",
+        "efa8815e76be858e2142f476ecbaaaec9d6dc00bdb759572dab992c0394e8d14",
+        "99807036f5f8d4668a6899304ce39e3085e1aef004f2c0a8794d75544e6787f7",
+        "cfcdd5492ec38061f70fa51de2e99817f47ae49404c23f016a703b53413edd09",
+        "7c3e506d8bcb20441765db1c3419dcb7833632f691580db7d5aefab466409b73"
+      ],
+      "visibleSHA256": [
+        "35343af04fe9576e9da6888f1ab5a693daeb0e454013e5825bc766c0c4a094fe",
+        "eac645269f58e92675880461b687e66a52f13bcd69f8daf36e5a8177c0550d88",
+        "28254e86c57c713570498837236214b916aa80ab2b759af84abe746298205c72",
+        "97a63af16fc0927ecc948436ce4c327c0cecf525eeb029f045341c4eb7501a19",
+        "efa8815e76be858e2142f476ecbaaaec9d6dc00bdb759572dab992c0394e8d14",
+        "99807036f5f8d4668a6899304ce39e3085e1aef004f2c0a8794d75544e6787f7",
+        "cfcdd5492ec38061f70fa51de2e99817f47ae49404c23f016a703b53413edd09",
+        "7c3e506d8bcb20441765db1c3419dcb7833632f691580db7d5aefab466409b73"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            569
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            559
+          ],
+          "integerOffset": [
+            43,
+            81
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            569
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            559
+          ],
+          "integerOffset": [
+            44,
+            81
+          ],
+          "groundWidth": 600,
+          "scale": 0.980861,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            570
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            560
+          ],
+          "integerOffset": [
+            43,
+            80
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            618,
+            570
+          ],
+          "nativeGroundWidth": 610,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            561
+          ],
+          "integerOffset": [
+            43,
+            79
+          ],
+          "groundWidth": 600,
+          "scale": 0.984051,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 612,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            8,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 613,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            571
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            561
+          ],
+          "integerOffset": [
+            43,
+            79
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 612,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        3.27189,
+        3.04311,
+        3.67378,
+        4.39898,
+        2.73332,
+        4.25895,
+        4.69445,
+        3.49756
+      ],
+      "wrapToMedianInternalDelta": 0.952,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.60611,
+          "partialAlphaPixels": 15655
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.60331,
+          "partialAlphaPixels": 16085
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.60179,
+          "partialAlphaPixels": 16250
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.59633,
+          "partialAlphaPixels": 15751
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.63338,
+          "partialAlphaPixels": 14839
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.63541,
+          "partialAlphaPixels": 14396
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.63086,
+          "partialAlphaPixels": 14761
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.63256,
+          "partialAlphaPixels": 14709
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        0.96454,
+        0.95443,
+        0.95132,
+        0.98183,
+        0.97692,
+        0.95919,
+        0.97795
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            224,
+            452
+          ],
+          [
+            271,
+            411
+          ],
+          [
+            325,
+            360
+          ]
+        ],
+        [
+          [
+            223,
+            452
+          ],
+          [
+            272,
+            411
+          ],
+          [
+            322,
+            359
+          ]
+        ],
+        [
+          [
+            224,
+            452
+          ],
+          [
+            271,
+            410
+          ],
+          [
+            323,
+            359
+          ]
+        ],
+        [
+          [
+            223,
+            454
+          ],
+          [
+            268,
+            412
+          ],
+          [
+            320,
+            361
+          ]
+        ],
+        [
+          [
+            222,
+            452
+          ],
+          [
+            268,
+            413
+          ],
+          [
+            322,
+            360
+          ]
+        ],
+        [
+          [
+            224,
+            452
+          ],
+          [
+            271,
+            411
+          ],
+          [
+            324,
+            359
+          ]
+        ],
+        [
+          [
+            222,
+            454
+          ],
+          [
+            267,
+            412
+          ],
+          [
+            321,
+            360
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 5,
+      "nativeGroundPixelsPerWorldUnit": [
+        2.8004,
+        2.8004,
+        2.8004,
+        2.7958,
+        2.805,
+        2.8096,
+        2.8004,
+        2.805
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    }
+  },
+  "visualReview": {
+    "scope": "Source contact sheets, 24-cel strip and material/edge comparison inspected; edge comparison includes all three stages. Not an in-game QA run.",
+    "observations": [
+      "Three distinct construction stages; no roof, walls or temple finials in selected art.",
+      "Workers have drawn hammer, hauling, carrying and guiding poses; stage3 has scaffold workers.",
+      "Red teak, sandstone and warm light compared with owner canteen screenshot.",
+      "No obvious red/yellow fringe on white, dark and warm backgrounds in the comparison."
+    ],
+    "acceptance1": {
+      "delivered": "3 stages x 8 unique drawn cels; common 600px ground width, 704px canvas and [352,640] foot; no roof/walls.",
+      "limitation": "Fixed textures, post details and ground contour still vary slightly across ImageGen cels. Pixel-exact static registration and fully seamless playback are not certified."
+    },
+    "acceptance2": {
+      "delivered": "Owner material reference used, genuine RGBA retained, saturated red/yellow alpha-edge screen recorded for all 24 cels.",
+      "limitation": "Style match is a visual judgment; edge thresholds do not detect every possible halo. No runtime map placement test."
+    }
+  }
+}
