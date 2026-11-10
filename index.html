@@ -610,9 +610,13 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   gap:clamp(10px,2vh,18px);text-align:right;padding-right:clamp(30px,5vw,50px)}
 #title .agewarn,#title .disclaimer{margin-top:auto}
 #title .disclaimer{margin-top:2px}
+/* FB-UI 1: the START button sits on the logo's centre line (was hugging the right edge); the two notices follow it */
+#title .title-menu{align-items:center;text-align:center}
+#title .agewarn{flex-direction:row;justify-content:center}
+#title .disclaimer{text-align:center}
 
 /* HOME-SLOTS: one launch action, followed by three isolated save cards. */
-#title #t-start{min-height:48px;justify-content:center;align-self:flex-end;width:76%;padding:8px 16px;border:1px solid #bd934c;border-radius:12px;background:linear-gradient(180deg,rgba(67,35,24,.94),rgba(23,11,13,.96));box-shadow:0 6px 22px #0008}
+#title #t-start{min-height:48px;justify-content:center;align-self:center;width:76%;padding:8px 16px;border:1px solid #bd934c;border-radius:12px;background:linear-gradient(180deg,rgba(67,35,24,.94),rgba(23,11,13,.96));box-shadow:0 6px 22px #0008}
 #title #t-start .label{align-items:center}#title #t-start b{font-size:clamp(1.15rem,2.3vw,1.65rem);letter-spacing:.10em}
 #title #t-start:focus-visible{outline:3px solid #ffe5ab;outline-offset:5px}
 dialog.save-slots-modal{width:min(720px,94vw);max-height:90dvh;padding:clamp(14px,3vw,26px);border:2px solid #b98e49;border-radius:18px;background:linear-gradient(145deg,#281714,#100c12);box-shadow:0 24px 90px #000b;overflow:auto}
@@ -2125,6 +2129,13 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .quest-tracker-heading{display:flex;justify-content:space-between;gap:8px;color:#efd29c}.quest-tracker button{display:block;width:100%;padding:5px 0;background:transparent;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer}.quest-tracker button strong,.quest-tracker button span,.quest-tracker button small{display:block}.quest-tracker button strong{color:#ffe2a4}.quest-tracker button small{color:#c7b298}.quest-tracker.is-compact [data-tracker-entry]>span,.quest-tracker.is-compact [data-tracker-entry]>small{display:none}.quest-tracker [data-tracker-journal]{border-top:1px solid #b98e4944;color:#eac77c}
 .quest-help-tabs{display:flex;gap:8px;position:sticky;top:0;background:#21131b;z-index:2;padding:8px 0;margin-bottom:16px}.quest-help-tabs button{min-height:44px;padding:8px 18px}.quest-help-tabs [aria-selected="true"]{border-color:#efd29c;color:#ffe2a4;background:#513826}
 .quest-journal-card{padding:14px;border:1px solid #b98e4955;border-radius:10px;background:#2b1b23;margin:10px 0;overflow-wrap:anywhere}.quest-journal-card h3{margin:0 0 8px;color:#f4d39b}.quest-journal-card p{line-height:1.6}.quest-owner-button{margin-top:8px;max-width:100%;white-space:normal}.quest-accepted{padding:12px;border:1px solid #7ab58c;border-radius:8px;color:#a7e2b5;background:#20382a}
+/* FB-UI 6: handbook tab bar is flush with the top edge of the box (solid, full width) so no text shows above it; cards keep their own height and pack into columns */
+dialog.help-modal[open]{--help-pad-top:34px;--help-pad-x:42px}
+dialog.help-modal[open] .quest-help-tabs{top:calc(-1*var(--help-pad-top));margin:calc(-1*var(--help-pad-top)) calc(-1*var(--help-pad-x)) 16px;padding:14px var(--help-pad-x) 10px;background:#21131b;border-bottom:1px solid #b98e4955;position:sticky;z-index:5}
+dialog.help-modal[open] .guide-card-grid{display:block;column-width:280px;column-gap:16px}
+dialog.help-modal[open] .guide-card-grid>.guide-card{break-inside:avoid;margin:0 0 16px;display:block}
+dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
+@media(max-width:600px){dialog.help-modal[open]{--help-pad-top:65px;--help-pad-x:20px}dialog.help-modal[open] .quest-help-tabs{position:sticky;padding-right:70px}}
 @media(max-width:600px){.quest-tracker{font-size:10px;padding:7px;max-height:145px}.quest-tracker button span{max-height:3em;overflow:hidden}.quest-help-tabs{position:static}.quest-help-tabs button{flex:1;padding:8px}.quest-journal-card{padding:10px}}
 
 </style>
