@@ -1,0 +1,128 @@
+{
+  "requestedObjects": [
+    {
+      "id": "pilot-red-tree-08",
+      "kind": "tree",
+      "bboxWorld": [
+        1521.6,
+        2318.164,
+        84.0,
+        165.583
+      ],
+      "footWorld": [
+        1563.6,
+        2470.501
+      ],
+      "chunk": [
+        "r3-c2",
+        "r3-c3",
+        "r4-c2",
+        "r4-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        1947.56875,
+        2967.4310265625,
+        107.515625,
+        211.95917617187501
+      ]
+    },
+    {
+      "id": "pilot-gold-tree-03",
+      "kind": "green-tree",
+      "bboxWorld": [
+        1634.4,
+        2344.561,
+        81.6,
+        153.584
+      ],
+      "footWorld": [
+        1675.2,
+        2485.859
+      ],
+      "chunk": [
+        "r3-c3",
+        "r4-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        2091.946875,
+        3001.221248828125,
+        104.44375,
+        196.59951875
+      ]
+    },
+    {
+      "id": "south-bed-13",
+      "kind": "shrub",
+      "bboxWorld": [
+        1173.6,
+        2426.153,
+        124.8,
+        81.592
+      ],
+      "footWorld": [
+        1236.0,
+        2501.218
+      ],
+      "chunk": [
+        "r4-c2"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        1502.146875,
+        3105.6653832031247,
+        159.7375,
+        104.444134375
+      ]
+    },
+    {
+      "id": "south-rock-01",
+      "kind": "rock",
+      "bboxWorld": [
+        998.4,
+        2248.571,
+        108.0,
+        148.785
+      ],
+      "footWorld": [
+        1052.4,
+        2385.453
+      ],
+      "chunk": [
+        "r3-c2"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        1277.9,
+        2878.346549609375,
+        138.234375,
+        190.456423828125
+      ]
+    }
+  ],
+  "removedIds": [],
+  "visuallyVerified": false,
+  "fogLumps": [],
+  "note": "No white lump intersects row4 or its context. Includes geometric context intersections even when inventory chunk labels omit r4. Rough boxes partly contain already bare ground; unverified IDs are not counted as removed.",
+  "removalEvidence": [],
+  "unverifiedIds": [
+    "pilot-red-tree-08",
+    "pilot-gold-tree-03",
+    "south-bed-13",
+    "south-rock-01"
+  ],
+  "allRequestedObjectsVerified": false
+}

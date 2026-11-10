@@ -1,0 +1,169 @@
+{
+  "coordinateConvention": "rect=[x,y,width,height], absolute master map pixels at 1x; affine maps native pixel centres into context or master, output scale2. Core and context coordinates are half-open.",
+  "parts": [
+    {
+      "id": "q11",
+      "coreMapPx1x": [
+        4096,
+        3072,
+        410,
+        205
+      ],
+      "contextMapPx1x": [
+        4032,
+        3008,
+        538,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        410,
+        205
+      ],
+      "nativeSize": [
+        1774,
+        887
+      ],
+      "coreOffsetInContextPx1x": [
+        64,
+        64
+      ],
+      "overlapMarginsPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 64,
+        "bottom": 0
+      },
+      "siftMatches": 415,
+      "siftInliers": 400,
+      "registrationReliable": true,
+      "affineResizedToContext": [
+        [
+          1.000279779048879,
+          -4.753524351293496e-05,
+          0.16519992567181652
+        ],
+        [
+          4.753524351293496e-05,
+          1.000279779048879,
+          -0.020775970084863878
+        ]
+      ],
+      "affineNativeToContext": [
+        [
+          0.3033542960136961,
+          -1.4415987040563137e-05,
+          0.16519992567181652
+        ],
+        [
+          1.4415987040563137e-05,
+          0.3033542960136961,
+          -0.020775970084863878
+        ]
+      ],
+      "affineNativeToMapPx1x": [
+        [
+          0.3033542960136961,
+          -1.4415987040563137e-05,
+          4032.165199925672
+        ],
+        [
+          1.4415987040563137e-05,
+          0.3033542960136961,
+          3007.9792240299153
+        ]
+      ],
+      "inlierResidualPx1x": {
+        "max": 2.6607770919799805,
+        "p95": 1.4047801494598389,
+        "median": 0.4646960496902466
+      },
+      "localWarpApplied": false,
+      "colorCorrection": "0.8*(Gaussian(reference,sigma70)-Gaussian(aligned,sigma70)) at 2x; removal survey boxes excluded from reference delta",
+      "borderMode": "reflect"
+    },
+    {
+      "id": "q12",
+      "coreMapPx1x": [
+        4506,
+        3072,
+        409,
+        205
+      ],
+      "contextMapPx1x": [
+        4442,
+        3008,
+        473,
+        269
+      ],
+      "coreChunkPx1x": [
+        410,
+        0,
+        409,
+        205
+      ],
+      "nativeSize": [
+        1663,
+        946
+      ],
+      "coreOffsetInContextPx1x": [
+        64,
+        64
+      ],
+      "overlapMarginsPx1x": {
+        "left": 64,
+        "top": 64,
+        "right": 0,
+        "bottom": 0
+      },
+      "siftMatches": 305,
+      "siftInliers": 295,
+      "registrationReliable": true,
+      "affineResizedToContext": [
+        [
+          1.0000980315685208,
+          -0.00031970626584593696,
+          0.05125819135507693
+        ],
+        [
+          0.00031970626584593696,
+          1.0000980315685208,
+          -0.26048114000013395
+        ]
+      ],
+      "affineNativeToContext": [
+        [
+          0.28445361932165386,
+          -9.09101326771216e-05,
+          0.05125819135507693
+        ],
+        [
+          9.093269016544089e-05,
+          0.28438305548830034,
+          -0.26048114000013395
+        ]
+      ],
+      "affineNativeToMapPx1x": [
+        [
+          0.28445361932165386,
+          -9.09101326771216e-05,
+          4442.051258191355
+        ],
+        [
+          9.093269016544089e-05,
+          0.28438305548830034,
+          3007.73951886
+        ]
+      ],
+      "inlierResidualPx1x": {
+        "max": 2.2422444820404053,
+        "p95": 1.1842001676559448,
+        "median": 0.45405465364456177
+      },
+      "localWarpApplied": false,
+      "colorCorrection": "0.8*(Gaussian(reference,sigma70)-Gaussian(aligned,sigma70)) at 2x; removal survey boxes excluded from reference delta",
+      "borderMode": "reflect"
+    }
+  ]
+}

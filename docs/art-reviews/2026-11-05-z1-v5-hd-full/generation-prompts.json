@@ -1,0 +1,600 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "generationCount": 10,
+  "mapSize": [
+    4915,
+    3277
+  ],
+  "generations": [
+    {
+      "chunk": "r4-c1",
+      "id": "q11",
+      "coreMapPx1x": [
+        0,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        0,
+        3008,
+        576,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. Retain all unmarked distant forest, cliffs, clouds and architecture. THIRD input is an approved terrain detail example, only for material quality; never import its composition. Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 576 by 269 original map pixels. Tile r4-c1/q11. Remove guide objects [].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/inputs/q11-removal-guide.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-361f563c-9eaa-4526-9332-7525e366ad0e.png",
+      "removals": [],
+      "nativeSize": [
+        1836,
+        857
+      ],
+      "nativeRgbSha256": "1341a1ddf278892f6ca2677692173d3805e3de6443b5f635185f5d85aac787c1",
+      "originalPngSha256": "ef15546615cd3f4c1629ca9d93b47ee35487e3e9d711acd18ad12f66c1308125"
+    },
+    {
+      "chunk": "r4-c1",
+      "id": "q12",
+      "coreMapPx1x": [
+        512,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        448,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. Retain all unmarked distant forest, cliffs, clouds and architecture. THIRD input is an approved terrain detail example, only for material quality; never import its composition. Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c1/q12. Remove guide objects [].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c1/inputs/q12-removal-guide.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/r2-c3-2x2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-e23ca084-c604-4fae-aab3-8b993c1585f2.png",
+      "removals": [],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "a034bdd8ba113f1022480f7aecc57a29ae64bdd4230b56fb72165b1a26ca65de",
+      "originalPngSha256": "ac112bfb7a6bb2e584b02bf28cda014a8f3d1b801e30942a03851cdbb80bebb8"
+    },
+    {
+      "chunk": "r4-c2",
+      "id": "q11",
+      "coreMapPx1x": [
+        1024,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        960,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c2/q11. Remove guide objects [{\"id\": \"south-bed-13\", \"rectCropPx1x\": [542.15, 97.67, 640, 202.11]}, {\"id\": \"south-rock-01\", \"rectCropPx1x\": [317.9, 0, 456.13, 60.8]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/inputs/q11-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-692a9b00-301f-4711-8539-1baf7cf4f74b.png",
+      "removals": [
+        {
+          "id": "south-bed-13",
+          "rectCropPx1x": [
+            542.15,
+            97.67,
+            640,
+            202.11
+          ]
+        },
+        {
+          "id": "south-rock-01",
+          "rectCropPx1x": [
+            317.9,
+            0,
+            456.13,
+            60.8
+          ]
+        }
+      ],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "0604821dea2b06bc12f6e7904c480b26d41ff537d8cd80b8e67e4730d4468240",
+      "originalPngSha256": "50454bb24f1ea3bcef671c1cc02821492b9c4335e0638eaa446b3fb3cdb16a89"
+    },
+    {
+      "chunk": "r4-c2",
+      "id": "q12",
+      "coreMapPx1x": [
+        1536,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        1472,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c2/q12. Remove guide objects [{\"id\": \"pilot-red-tree-08\", \"rectCropPx1x\": [475.57, 0, 583.08, 171.39]}, {\"id\": \"pilot-gold-tree-03\", \"rectCropPx1x\": [619.95, 0, 640, 189.82]}, {\"id\": \"south-bed-13\", \"rectCropPx1x\": [30.15, 97.67, 189.88, 202.11]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c2/inputs/q12-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-025ef0c2-5748-4488-8b8a-cda7b6491cd3.png",
+      "removals": [
+        {
+          "id": "pilot-red-tree-08",
+          "rectCropPx1x": [
+            475.57,
+            0,
+            583.08,
+            171.39
+          ]
+        },
+        {
+          "id": "pilot-gold-tree-03",
+          "rectCropPx1x": [
+            619.95,
+            0,
+            640,
+            189.82
+          ]
+        },
+        {
+          "id": "south-bed-13",
+          "rectCropPx1x": [
+            30.15,
+            97.67,
+            189.88,
+            202.11
+          ]
+        }
+      ],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "90c79b62fcd36d89688fa5e1211cc93e4e4ecda65bc45216272f42813a26e485",
+      "originalPngSha256": "3e2be61bdb2a505a530d8a8a08f3848710e07d8c56fd038ecc3a9ec861603769"
+    },
+    {
+      "chunk": "r4-c3",
+      "id": "q11",
+      "coreMapPx1x": [
+        2048,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        1984,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c3/q11. Remove guide objects [{\"id\": \"pilot-red-tree-08\", \"rectCropPx1x\": [0, 0, 71.08, 171.39]}, {\"id\": \"pilot-gold-tree-03\", \"rectCropPx1x\": [107.95, 0, 212.39, 189.82]}, {\"id\": \"south-bed-05\", \"rectCropPx1x\": [144.81, 14.73, 304.55, 122.24]}, {\"id\": \"south-stair-west\", \"rectCropPx1x\": [369.06, 0, 415.13, 54.66]}, {\"id\": \"south-stair-east\", \"rectCropPx1x\": [531.87, 0, 577.94, 54.66]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/inputs/q11-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-84d9b0e1-37d3-45e3-b789-94735c62f8ec.png",
+      "removals": [
+        {
+          "id": "pilot-red-tree-08",
+          "rectCropPx1x": [
+            0,
+            0,
+            71.08,
+            171.39
+          ]
+        },
+        {
+          "id": "pilot-gold-tree-03",
+          "rectCropPx1x": [
+            107.95,
+            0,
+            212.39,
+            189.82
+          ]
+        },
+        {
+          "id": "south-bed-05",
+          "rectCropPx1x": [
+            144.81,
+            14.73,
+            304.55,
+            122.24
+          ]
+        },
+        {
+          "id": "south-stair-west",
+          "rectCropPx1x": [
+            369.06,
+            0,
+            415.13,
+            54.66
+          ]
+        },
+        {
+          "id": "south-stair-east",
+          "rectCropPx1x": [
+            531.87,
+            0,
+            577.94,
+            54.66
+          ]
+        }
+      ],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "c9eaaf26758c6634aa64337b34fab9d5e777ae2076b004eb9ba5d320e1564935",
+      "originalPngSha256": "5c355ca1bd25bb498fa14e27406f3b92b0ac53ec4f959949cbbcf09c3ccfb4d1"
+    },
+    {
+      "chunk": "r4-c3",
+      "id": "q12",
+      "coreMapPx1x": [
+        2560,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        2496,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c3/q12. Remove guide objects [{\"id\": \"pilot-red-tree-11\", \"rectCropPx1x\": [446.86, 0, 566.66, 42.37]}, {\"id\": \"pilot-red-tree-12\", \"rectCropPx1x\": [625.03, 54.66, 640, 269]}, {\"id\": \"south-bed-06\", \"rectCropPx1x\": [207.25, 0, 354.7, 85.38]}, {\"id\": \"south-bed-07\", \"rectCropPx1x\": [317.84, 156.03, 477.58, 254.33]}, {\"id\": \"south-stair-east\", \"rectCropPx1x\": [19.87, 0, 65.94, 54.66]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c3/inputs/q12-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-095dc155-d2ec-4883-9376-688e312056b2.png",
+      "removals": [
+        {
+          "id": "pilot-red-tree-11",
+          "rectCropPx1x": [
+            446.86,
+            0,
+            566.66,
+            42.37
+          ]
+        },
+        {
+          "id": "pilot-red-tree-12",
+          "rectCropPx1x": [
+            625.03,
+            54.66,
+            640,
+            269
+          ]
+        },
+        {
+          "id": "south-bed-06",
+          "rectCropPx1x": [
+            207.25,
+            0,
+            354.7,
+            85.38
+          ]
+        },
+        {
+          "id": "south-bed-07",
+          "rectCropPx1x": [
+            317.84,
+            156.03,
+            477.58,
+            254.33
+          ]
+        },
+        {
+          "id": "south-stair-east",
+          "rectCropPx1x": [
+            19.87,
+            0,
+            65.94,
+            54.66
+          ]
+        }
+      ],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "217bc320f39ec68c2474116f650cfdac999b89ca886c5f1d1e238cc9761cbb08",
+      "originalPngSha256": "a6ca52379820830c02c50e07ed97c9f795a085cead15e0964dd0f2e0b1946c4e"
+    },
+    {
+      "chunk": "r4-c4",
+      "id": "q11",
+      "coreMapPx1x": [
+        3072,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        3008,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c4/q11. Remove guide objects [{\"id\": \"pilot-red-tree-10\", \"rectCropPx1x\": [340.34, 0, 469.36, 27.01]}, {\"id\": \"pilot-red-tree-11\", \"rectCropPx1x\": [0, 0, 54.66, 42.37]}, {\"id\": \"pilot-red-tree-12\", \"rectCropPx1x\": [113.03, 54.66, 235.9, 269]}, {\"id\": \"south-bed-10\", \"rectCropPx1x\": [328.06, 0, 500.08, 73.09]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/inputs/q11-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-38854bca-8781-4c21-beb7-aacc581d2467.png",
+      "removals": [
+        {
+          "id": "pilot-red-tree-10",
+          "rectCropPx1x": [
+            340.34,
+            0,
+            469.36,
+            27.01
+          ]
+        },
+        {
+          "id": "pilot-red-tree-11",
+          "rectCropPx1x": [
+            0,
+            0,
+            54.66,
+            42.37
+          ]
+        },
+        {
+          "id": "pilot-red-tree-12",
+          "rectCropPx1x": [
+            113.03,
+            54.66,
+            235.9,
+            269
+          ]
+        },
+        {
+          "id": "south-bed-10",
+          "rectCropPx1x": [
+            328.06,
+            0,
+            500.08,
+            73.09
+          ]
+        }
+      ],
+      "nativeSize": [
+        1934,
+        813
+      ],
+      "nativeRgbSha256": "7f7fc34054dee082e794364b588ac0c62e64b623c7c2069c9884c7d0148292af",
+      "originalPngSha256": "cdb30d5d65f962a65a2c7a0a76adb08922e16c62e6d753af30442b1eb596db2f"
+    },
+    {
+      "chunk": "r4-c4",
+      "id": "q12",
+      "coreMapPx1x": [
+        3584,
+        3072,
+        512,
+        205
+      ],
+      "contextMapPx1x": [
+        3520,
+        3008,
+        640,
+        269
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 640 by 269 original map pixels. Tile r4-c4/q12. Remove guide objects [{\"id\": \"south-bed-15\", \"rectCropPx1x\": [442.72, 0, 627.03, 73.09]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c4/inputs/q12-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-0e5bebfc-dd3b-41fb-a9cc-4e0c2ca88f2a.png",
+      "removals": [
+        {
+          "id": "south-bed-15",
+          "rectCropPx1x": [
+            442.72,
+            0,
+            627.03,
+            73.09
+          ]
+        }
+      ],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeRgbSha256": "9281c010fb9238dd57d2f5fa3adf9297b566c7af310685a3ae8afea3542664fe",
+      "originalPngSha256": "be659b98e2253d60b1c24ad4e845fe5d65c933d0553443e2090539a7ccc7b1c7"
+    },
+    {
+      "chunk": "r4-c5",
+      "id": "q11",
+      "coreMapPx1x": [
+        4096,
+        3072,
+        410,
+        205
+      ],
+      "contextMapPx1x": [
+        4032,
+        3008,
+        538,
+        269
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        410,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 538 by 269 original map pixels. Tile r4-c5/q11. Remove guide objects [{\"id\": \"south-bed-15\", \"rectCropPx1x\": [0, 0, 115.03, 73.09]}, {\"id\": \"south-rock-07\", \"rectCropPx1x\": [305.49, 0, 428.36, 82.31]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/inputs/q11-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/inputs/q11-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-c376ae31-d829-4b35-8be7-612c96921731.png",
+      "removals": [
+        {
+          "id": "south-bed-15",
+          "rectCropPx1x": [
+            0,
+            0,
+            115.03,
+            73.09
+          ]
+        },
+        {
+          "id": "south-rock-07",
+          "rectCropPx1x": [
+            305.49,
+            0,
+            428.36,
+            82.31
+          ]
+        }
+      ],
+      "nativeSize": [
+        1774,
+        887
+      ],
+      "nativeRgbSha256": "36d0edb9526d51e85e0e8c4cc5ff71f94271b45f1d2e60b298b503c20f3c1712",
+      "originalPngSha256": "daa74e0bba86d6a991ee72a6d1769c449e4caa6bf707ad6ab34ad750cf7172a4"
+    },
+    {
+      "chunk": "r4-c5",
+      "id": "q12",
+      "coreMapPx1x": [
+        4506,
+        3072,
+        409,
+        205
+      ],
+      "contextMapPx1x": [
+        4442,
+        3008,
+        473,
+        269
+      ],
+      "coreChunkPx1x": [
+        410,
+        0,
+        409,
+        205
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST input crop. SECOND input is only a removal guide: bright green rectangles identify baked foreground trees/shrubs/rocks to erase completely, including cast shadows. Remove ONLY those marked foreground objects, fill their areas with continuous matching cliff/ground; do not copy guide outlines. CRITICAL: trace and retain ALL unmarked distant forest, every mountain peak and tree canopy, including the entire bottom foreground; no replacement of forests with paving. Only remove the listed objects where they actually exist inside the rough survey rectangles; rectangles can include plain ground, so do not erase everything within a box.  Return ONLY ONE wide terrain crop with the FIRST image exact aspect ratio, identical framing, full bleed, no borders or captions. Preserve every original large shape, stair count/width/position, cliff silhouette, riverbanks, water/lava channels, paths, bridge floors and boundary at the exact input relative coordinates. Do not redesign, shift, zoom, rotate or crop. Retain large cloud sea and all liquids as a painted base, identical contours and locations. Repaint substantially more ACTUAL DRAWN detail: individual sharp hand-painted chipped stones, tiny mineral grain, fissures, recessed mortar, sparse moss and tiny fallen leaves where appropriate, crisp fine branching and leaves in distant forest. Match FIRST image overall lighting, palette and broad value hierarchy. No blur, DOF, parallax, sharpening halos or photographic noise. Keep all objects clipped exactly at the four edges. Request maximum native detail, ideally width 1536 or greater, never pad canvas. This crop represents 473 by 269 original map pixels. Tile r4-c5/q12. Remove guide objects [{\"id\": \"south-bed-17\", \"rectCropPx1x\": [221.11, 100.74, 408.49, 211.32]}, {\"id\": \"south-rock-07\", \"rectCropPx1x\": [0, 0, 18.36, 82.31]}].",
+      "references": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/inputs/q12-v5.webp",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T114040Z-659a291e/docs/art-reviews/2026-11-05-z1-v5-hd-full/r4-c5/inputs/q12-removal-guide.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c542-af03-7183-9a33-c8552ea65a8f/exec-2386de83-e33b-4b17-a6af-d521b275baa7.png",
+      "removals": [
+        {
+          "id": "south-bed-17",
+          "rectCropPx1x": [
+            221.11,
+            100.74,
+            408.49,
+            211.32
+          ]
+        },
+        {
+          "id": "south-rock-07",
+          "rectCropPx1x": [
+            0,
+            0,
+            18.36,
+            82.31
+          ]
+        }
+      ],
+      "nativeSize": [
+        1663,
+        946
+      ],
+      "nativeRgbSha256": "ff4c5f54373a5db68a2e9c89a464d05992bca30280692f64c9a94ba10690fca9",
+      "originalPngSha256": "b51d08005e0f38687fbdf7f975712edba5f1778a315be36a83b23188f80a9bd4"
+    }
+  ],
+  "sourceProvenance": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/inputs/master-lossless.webp",
+      "sha256": "e098b8b2e648c1ee67cd5cd89c1144112127e9467c2eb54a9a5f80d0c9359773"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261105T020514Z-5d66c53d/docs/art-reviews/2026-11-05-z1-v5-hd/objects-inventory.json",
+      "sha256": "4d7db3952d562a7fb458b59658b8e31d3455b4ebaac41055fd7edbd16ef8e794"
+    },
+    {
+      "path": "src/town-terrain-repair.js",
+      "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+    }
+  ]
+}

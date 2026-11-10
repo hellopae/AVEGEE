@@ -1,0 +1,426 @@
+{
+  "integrityChecksSuccessful": true,
+  "qaPassed": false,
+  "checks": [
+    {
+      "name": "ten built-in generations",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "decode all images",
+      "ok": true,
+      "details": {
+        "decoded": 51
+      }
+    },
+    {
+      "name": "r4-c1/q11 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1/q11 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1/q11 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1/q12 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1/q12 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1/q12 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q11 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q11 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q11 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q12 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q12 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2/q12 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q11 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q11 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q11 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q12 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q12 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3/q12 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q11 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q11 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q11 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q12 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q12 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4/q12 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q11 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q11 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q11 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q12 native size and lossless",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q12 native pixel hash",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5/q12 equals original ImageGen pixels",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 core coverage",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 context clipped64",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 overlap128",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 registration finite and supported",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 output dimensions",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 exact v5 baseline",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 sharpness recomputed >=10",
+      "ok": true,
+      "details": 64.23618523891254
+    },
+    {
+      "name": "r4-c1 structure sample accounting",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c1 all required files",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 core coverage",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 context clipped64",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 overlap128",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 registration finite and supported",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 output dimensions",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 exact v5 baseline",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 sharpness recomputed >=10",
+      "ok": true,
+      "details": 33.89593637140467
+    },
+    {
+      "name": "r4-c2 structure sample accounting",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c2 all required files",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 core coverage",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 context clipped64",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 overlap128",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 registration finite and supported",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 output dimensions",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 exact v5 baseline",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 sharpness recomputed >=10",
+      "ok": true,
+      "details": 35.19916141761721
+    },
+    {
+      "name": "r4-c3 structure sample accounting",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c3 all required files",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 core coverage",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 context clipped64",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 overlap128",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 registration finite and supported",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 output dimensions",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 exact v5 baseline",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 sharpness recomputed >=10",
+      "ok": true,
+      "details": 37.85328218600769
+    },
+    {
+      "name": "r4-c4 structure sample accounting",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c4 all required files",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 core coverage",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 context clipped64",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 overlap128",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 registration finite and supported",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 output dimensions",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 exact v5 baseline",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 sharpness recomputed >=10",
+      "ok": true,
+      "details": 40.15793794652299
+    },
+    {
+      "name": "r4-c5 structure sample accounting",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "r4-c5 all required files",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "changes confined to brief folder",
+      "ok": true,
+      "details": [
+        "docs/art-reviews/2026-11-05-z1-v5-hd-full/"
+      ]
+    },
+    {
+      "name": "semantic verification remains candid",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "delivery <=60 decimal MB",
+      "ok": true,
+      "details": null
+    }
+  ],
+  "semanticAcceptanceComplete": false,
+  "pendingCorrections": [
+    {
+      "part": "r4-c1/q12",
+      "reason": "Restore unmarked lower distant forest and its silhouette; correct associated color tint. Current generation violates forest-preservation requirement."
+    },
+    {
+      "part": "all five chunks",
+      "reason": "Complete per-object removal identity audit against rough inventory rectangles; cannot infer removal from an empty rectangle."
+    },
+    {
+      "part": "all five chunks",
+      "reason": "Verify all semantic cliff/path/stair boundaries within 4 map pixels, including weak correspondence patches."
+    }
+  ],
+  "totalBytes": 49754054
+}

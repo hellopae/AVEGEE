@@ -1,0 +1,236 @@
+{
+  "generationCount": 10,
+  "generationLimit": 10,
+  "chunks": [
+    {
+      "chunk": "r4-c1",
+      "parts": [
+        "q11",
+        "q12"
+      ],
+      "generationCount": 2,
+      "nativeSizes": [
+        [
+          1836,
+          857
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "laplacianV5": 35.113287773012175,
+      "laplacianNew": 2255.5436577344526,
+      "sharpnessRatio": 64.23618523891254,
+      "sharpnessAtLeast10": true,
+      "structureMaxConfidentPx1x": 2.0,
+      "structureConfidentPoints": 18,
+      "structureTotalPoints": 36,
+      "wholeStructureWithin4pxVerified": false,
+      "allAffinesReliable": true,
+      "objectRemovalVerified": false,
+      "seamsVisuallyVerified": false,
+      "seamReview": "No straight tile line evident in seam sheet; q12 lower forest is incorrectly replaced by ground. Red tint from source canopy remains outside inventory boxes. Needs redraw before assembly acceptance."
+    },
+    {
+      "chunk": "r4-c2",
+      "parts": [
+        "q11",
+        "q12"
+      ],
+      "generationCount": 2,
+      "nativeSizes": [
+        [
+          1935,
+          813
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "laplacianV5": 52.782630480437014,
+      "laplacianNew": 1789.116684280258,
+      "sharpnessRatio": 33.89593637140467,
+      "sharpnessAtLeast10": true,
+      "structureMaxConfidentPx1x": 1.0,
+      "structureConfidentPoints": 31,
+      "structureTotalPoints": 36,
+      "wholeStructureWithin4pxVerified": false,
+      "allAffinesReliable": true,
+      "objectRemovalVerified": false,
+      "seamsVisuallyVerified": false,
+      "seamReview": "No obvious straight seam in inspected sheet; fine cracks differ across cut. Object identity checks remain unresolved."
+    },
+    {
+      "chunk": "r4-c3",
+      "parts": [
+        "q11",
+        "q12"
+      ],
+      "generationCount": 2,
+      "nativeSizes": [
+        [
+          1935,
+          813
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "laplacianV5": 62.85066295669458,
+      "laplacianNew": 2212.290630616947,
+      "sharpnessRatio": 35.19916141761721,
+      "sharpnessAtLeast10": true,
+      "structureMaxConfidentPx1x": 1.0,
+      "structureConfidentPoints": 39,
+      "structureTotalPoints": 52,
+      "wholeStructureWithin4pxVerified": false,
+      "allAffinesReliable": true,
+      "objectRemovalVerified": false,
+      "seamsVisuallyVerified": false,
+      "seamReview": "No obvious straight seam; path edges continuous in inspected sheet. Full semantic structure and object-removal audit remain unresolved."
+    },
+    {
+      "chunk": "r4-c4",
+      "parts": [
+        "q11",
+        "q12"
+      ],
+      "generationCount": 2,
+      "nativeSizes": [
+        [
+          1934,
+          813
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "laplacianV5": 46.40362490763618,
+      "laplacianNew": 1756.5295080824071,
+      "sharpnessRatio": 37.85328218600769,
+      "sharpnessAtLeast10": true,
+      "structureMaxConfidentPx1x": 0.0,
+      "structureConfidentPoints": 31,
+      "structureTotalPoints": 36,
+      "wholeStructureWithin4pxVerified": false,
+      "allAffinesReliable": true,
+      "objectRemovalVerified": false,
+      "seamsVisuallyVerified": false,
+      "seamReview": "No obvious straight seam; cut follows foliage/trunk. Full canopy continuity and removal identity still need review."
+    },
+    {
+      "chunk": "r4-c5",
+      "parts": [
+        "q11",
+        "q12"
+      ],
+      "generationCount": 2,
+      "nativeSizes": [
+        [
+          1774,
+          887
+        ],
+        [
+          1663,
+          946
+        ]
+      ],
+      "outputSize": [
+        1638,
+        410
+      ],
+      "laplacianV5": 33.78450832474528,
+      "laplacianNew": 1356.7161888589105,
+      "sharpnessRatio": 40.15793794652299,
+      "sharpnessAtLeast10": true,
+      "structureMaxConfidentPx1x": 1.0,
+      "structureConfidentPoints": 25,
+      "structureTotalPoints": 30,
+      "wholeStructureWithin4pxVerified": false,
+      "allAffinesReliable": true,
+      "objectRemovalVerified": false,
+      "seamsVisuallyVerified": false,
+      "seamReview": "No obvious straight seam; south-bed-17 survey region changes from canopy to continuous cliff/ground. Some source color tint may remain at removal boundary."
+    }
+  ],
+  "inGameTested": false,
+  "qaPassed": false,
+  "pendingParts": [],
+  "knownDefects": [
+    "r4-c1/q12: unmarked lower forest was replaced by ground.",
+    "Inventory rectangles are rough and partly misaligned; complete object removal is not verified."
+  ],
+  "method": "Prototype SIFT/RANSAC partial affine; direct native warp at 2x; Gaussian sigma35 map-px broad color correction factor0.8; min-cost seam feather8 output px; no sharpening, no dense warp.",
+  "sharpnessMethod": {
+    "devicePxPerWorldUnit": 2.8,
+    "devicePxPerMapPixel": 2.1875890132248217,
+    "roi": "entire core per chunk; same decoded Lanczos game scale",
+    "metric": "grayscale Laplacian variance ksize1",
+    "caveat": "Texture and contrast influence ratio; this is not a multiplier of perceived resolution."
+  },
+  "manualReview": {
+    "reviewType": "Offline visual inspection of all five seam sheets and comparisons; no in-game test",
+    "qaPassed": false,
+    "seamReview": {
+      "r4-c1": "No straight tile line evident in seam sheet; q12 lower forest is incorrectly replaced by ground. Red tint from source canopy remains outside inventory boxes. Needs redraw before assembly acceptance.",
+      "r4-c2": "No obvious straight seam in inspected sheet; fine cracks differ across cut. Object identity checks remain unresolved.",
+      "r4-c3": "No obvious straight seam; path edges continuous in inspected sheet. Full semantic structure and object-removal audit remain unresolved.",
+      "r4-c4": "No obvious straight seam; cut follows foliage/trunk. Full canopy continuity and removal identity still need review.",
+      "r4-c5": "No obvious straight seam; south-bed-17 survey region changes from canopy to continuous cliff/ground. Some source color tint may remain at removal boundary."
+    },
+    "pendingCorrections": [
+      {
+        "part": "r4-c1/q12",
+        "reason": "Restore unmarked lower distant forest and its silhouette; correct associated color tint. Current generation violates forest-preservation requirement."
+      },
+      {
+        "part": "all five chunks",
+        "reason": "Complete per-object removal identity audit against rough inventory rectangles; cannot infer removal from an empty rectangle."
+      },
+      {
+        "part": "all five chunks",
+        "reason": "Verify all semantic cliff/path/stair boundaries within 4 map pixels, including weak correspondence patches."
+      }
+    ],
+    "generationPolicy": "All ten authorized calls used; no retry beyond the limit. All native parts delivered; pending work concerns corrections and verification."
+  },
+  "pendingCorrections": [
+    {
+      "part": "r4-c1/q12",
+      "reason": "Restore unmarked lower distant forest and its silhouette; correct associated color tint. Current generation violates forest-preservation requirement."
+    },
+    {
+      "part": "all five chunks",
+      "reason": "Complete per-object removal identity audit against rough inventory rectangles; cannot infer removal from an empty rectangle."
+    },
+    {
+      "part": "all five chunks",
+      "reason": "Verify all semantic cliff/path/stair boundaries within 4 map pixels, including weak correspondence patches."
+    }
+  ],
+  "totalBytes": 49754054,
+  "status": "partial-delivery",
+  "allPartsGenerated": true,
+  "missingParts": [],
+  "structureMaxConfidentPx1x": 2.0
+}

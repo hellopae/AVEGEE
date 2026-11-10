@@ -1,0 +1,17 @@
+{
+  "reviewType": "Offline visual inspection of all five seam sheets and comparisons; no in-game test",
+  "qaPassed": false,
+  "seamReview": {
+    "r4-c1": "No straight tile line evident in seam sheet; q12 lower forest is incorrectly replaced by ground. Red tint from source canopy remains outside inventory boxes. Needs redraw before assembly acceptance.",
+    "r4-c2": "No obvious straight seam in inspected sheet; fine cracks differ across cut. Object identity checks remain unresolved.",
+    "r4-c3": "No obvious straight seam; path edges continuous in inspected sheet. Full semantic structure and object-removal audit remain unresolved.",
+    "r4-c4": "No obvious straight seam; cut follows foliage/trunk. Full canopy continuity and removal identity still need review.",
+    "r4-c5": "No obvious straight seam; south-bed-17 survey region changes from canopy to continuous cliff/ground. Some source color tint may remain at removal boundary."
+  },
+  "pendingCorrections": [
+    {"part": "r4-c1/q12", "reason": "Restore unmarked lower distant forest and its silhouette; correct associated color tint. Current generation violates forest-preservation requirement."},
+    {"part": "all five chunks", "reason": "Complete per-object removal identity audit against rough inventory rectangles; cannot infer removal from an empty rectangle."},
+    {"part": "all five chunks", "reason": "Verify all semantic cliff/path/stair boundaries within 4 map pixels, including weak correspondence patches."}
+  ],
+  "generationPolicy": "All ten authorized calls used; no retry beyond the limit. All native parts delivered; pending work concerns corrections and verification."
+}

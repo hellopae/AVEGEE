@@ -1,0 +1,553 @@
+{
+  "method": "Fixed grid + south path edge DoG patch49 search+/-12 map px; confidence NCC>=0.6. Texture correspondence is NOT full semantic contour verification. All low confidence points retained.",
+  "points": [
+    {
+      "pointPx1x": [
+        40,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9636467099189758,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        120,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9702391624450684,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        200,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8793452978134155,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        280,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8550836443901062,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        360,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8071606159210205,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        440,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.45022666454315186,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": false,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        520,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.6871978640556335,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        600,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.7867915630340576,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        680,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8126416802406311,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        760,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.875633180141449,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        840,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8300995826721191,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        920,
+        40
+      ],
+      "kind": "fixed-grid",
+      "score": 0.6872795820236206,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        40,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9675168395042419,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        120,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9744552373886108,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        200,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9322164058685303,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        280,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9572505950927734,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        360,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.831945538520813,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        440,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.22648006677627563,
+      "offsetPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "confident": false,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        520,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.5824826955795288,
+      "offsetPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "confident": false,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        600,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8214003443717957,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        680,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.7666269540786743,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        760,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8962975740432739,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        840,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8724439144134521,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        920,
+        100
+      ],
+      "kind": "fixed-grid",
+      "score": 0.4580439031124115,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": false,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        40,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9719565510749817,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        120,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9758244752883911,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        200,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9333849549293518,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        280,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9649049043655396,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        360,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9478661417961121,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        440,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.5158149003982544,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": false,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        520,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9059858322143555,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        600,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.7666630148887634,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        680,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.647854208946228,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        760,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.9057466387748718,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        840,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.8980743885040283,
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "confident": true,
+      "searchBoundary": false
+    },
+    {
+      "pointPx1x": [
+        920,
+        164
+      ],
+      "kind": "fixed-grid",
+      "score": 0.7814412117004395,
+      "offsetPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "confident": true,
+      "searchBoundary": false
+    }
+  ],
+  "confidentCount": 31,
+  "totalCount": 36,
+  "maxConfidentDisplacementPx1x": 1.0,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "thresholdPx1x": 4,
+  "confidentSamplesWithin4px": true,
+  "knownDefects": []
+}

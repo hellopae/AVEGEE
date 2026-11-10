@@ -1,0 +1,10 @@
+{
+  "requestedObjects": [],
+  "removedIds": [],
+  "visuallyVerified": false,
+  "fogLumps": [],
+  "note": "No white lump intersects row4 or its context. Includes geometric context intersections even when inventory chunk labels omit r4. Rough boxes partly contain already bare ground; unverified IDs are not counted as removed.",
+  "removalEvidence": [],
+  "unverifiedIds": [],
+  "allRequestedObjectsVerified": false
+}

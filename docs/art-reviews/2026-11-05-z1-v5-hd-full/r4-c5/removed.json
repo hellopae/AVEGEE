@@ -1,0 +1,108 @@
+{
+  "requestedObjects": [
+    {
+      "id": "south-bed-15",
+      "kind": "shrub",
+      "bboxWorld": [
+        3096.0,
+        2330.163,
+        144.0,
+        76.792
+      ],
+      "footWorld": [
+        3168.0,
+        2400.812
+      ],
+      "chunk": [
+        "r3-c4",
+        "r3-c5",
+        "r4-c4",
+        "r4-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        3962.71875,
+        2982.790683984375,
+        184.3125,
+        98.299759375
+      ]
+    },
+    {
+      "id": "south-bed-17",
+      "kind": "shrub",
+      "bboxWorld": [
+        3643.2,
+        2428.553,
+        146.4,
+        86.391
+      ],
+      "footWorld": [
+        3716.4,
+        2508.033
+      ],
+      "chunk": [
+        "r4-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        4663.10625,
+        3108.737570703125,
+        187.384375,
+        110.58722929687501
+      ]
+    },
+    {
+      "id": "south-rock-07",
+      "kind": "rock",
+      "bboxWorld": [
+        3388.8,
+        2267.769,
+        96.0,
+        146.385
+      ],
+      "footWorld": [
+        3436.8,
+        2402.444
+      ],
+      "chunk": [
+        "r3-c5",
+        "r4-c5"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "rectMapPx1x": [
+        4337.4875,
+        2902.9214894531247,
+        122.875,
+        187.38423632812498
+      ]
+    }
+  ],
+  "removedIds": [
+    "south-bed-17"
+  ],
+  "visuallyVerified": false,
+  "fogLumps": [],
+  "note": "No white lump intersects row4 or its context. Includes geometric context intersections even when inventory chunk labels omit r4. Rough boxes partly contain already bare ground; unverified IDs are not counted as removed.",
+  "removalEvidence": [
+    {
+      "id": "south-bed-17",
+      "part": "q12",
+      "level": "survey-region visual confirmation",
+      "finding": "Original red canopy in guide rectangle is absent in native generation and assembled image; replaced by cliff and ground. ID attribution uses approximate inventory rectangle."
+    }
+  ],
+  "unverifiedIds": [
+    "south-bed-15",
+    "south-rock-07"
+  ],
+  "allRequestedObjectsVerified": false
+}
