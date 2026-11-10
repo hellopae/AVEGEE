@@ -1,0 +1,361 @@
+{
+  "objects": [
+    {
+      "id": "city-tree-07",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2258.4,
+        611.938,
+        96.0,
+        160.784
+      ],
+      "footWorld": [
+        2306.4,
+        759.859
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        2890.634375,
+        783.32844765625,
+        122.875,
+        205.81608124999997
+      ]
+    },
+    {
+      "id": "city-tree-08",
+      "kind": "green-tree",
+      "bboxWorld": [
+        2366.4,
+        695.929,
+        103.2,
+        160.784
+      ],
+      "footWorld": [
+        2418.0,
+        843.85
+      ],
+      "chunk": [
+        "r1-c3",
+        "r1-c4",
+        "r2-c3",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3028.86875,
+        890.843489453125,
+        132.090625,
+        205.81608124999997
+      ]
+    },
+    {
+      "id": "ice-tree-01",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        2282.4,
+        441.555,
+        72.0,
+        117.588
+      ],
+      "footWorld": [
+        2318.4,
+        549.736
+      ],
+      "chunk": [
+        "r1-c3"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        2921.353125,
+        565.224896484375,
+        92.15625,
+        150.5218265625
+      ]
+    },
+    {
+      "id": "ice-tree-02",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        2769.6,
+        357.564,
+        67.2,
+        119.988
+      ],
+      "footWorld": [
+        2803.2,
+        467.952
+      ],
+      "chunk": [
+        "r1-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3544.94375,
+        457.70985468750007,
+        86.0125,
+        153.59401406249998
+      ]
+    },
+    {
+      "id": "ice-tree-03",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        2793.6,
+        518.347,
+        81.6,
+        127.187
+      ],
+      "footWorld": [
+        2834.4,
+        635.359
+      ],
+      "chunk": [
+        "r1-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3575.6625,
+        663.524655859375,
+        104.44375,
+        162.809296484375
+      ]
+    },
+    {
+      "id": "ice-tree-04",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3000.0,
+        669.532,
+        74.4,
+        143.985
+      ],
+      "footWorld": [
+        3037.2,
+        801.998
+      ],
+      "chunk": [
+        "r1-c4",
+        "r2-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3839.84375,
+        857.0532671875001,
+        95.228125,
+        184.312048828125
+      ]
+    },
+    {
+      "id": "ice-tree-05",
+      "kind": "snow-tree",
+      "bboxWorld": [
+        3048.0,
+        556.743,
+        76.8,
+        143.985
+      ],
+      "footWorld": [
+        3086.4,
+        689.21
+      ],
+      "chunk": [
+        "r1-c4"
+      ],
+      "action": "replace:ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+      "note": "",
+      "nearWalk24": false,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3901.28125,
+        712.6745355468751,
+        98.3,
+        184.312048828125
+      ]
+    },
+    {
+      "id": "ice-upper-back",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        2820.0,
+        369.562,
+        297.6,
+        67.193
+      ],
+      "footWorld": [
+        2968.8,
+        436.756
+      ],
+      "chunk": [
+        "r1-c4"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหลัง พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3609.453125,
+        473.06823203125003,
+        380.9125,
+        86.01228945312499
+      ]
+    },
+    {
+      "id": "ice-upper-front",
+      "kind": "bridge-rail",
+      "bboxWorld": [
+        2827.2,
+        427.157,
+        295.2,
+        88.791
+      ],
+      "footWorld": [
+        2974.8,
+        515.948
+      ],
+      "chunk": [
+        "r1-c4"
+      ],
+      "action": "extract-redraw",
+      "note": "เฉพาะราว/เสาหน้า พื้นสะพานอยู่ใน terrain",
+      "nearWalk24": true,
+      "survey": "manual overview bbox; continuous vegetation grouped",
+      "masterRectPx1x": [
+        3618.66875,
+        546.7943316406249,
+        377.840625,
+        113.659416796875
+      ]
+    }
+  ],
+  "fog": [
+    {
+      "id": "lump-01",
+      "masterPx": [
+        2697,
+        440,
+        351,
+        432
+      ],
+      "worldRect": [
+        2107,
+        344,
+        274,
+        338
+      ],
+      "areaWorld": 25931,
+      "meanBrightness": 211,
+      "v7Px2x": [
+        5394,
+        880,
+        702,
+        864
+      ],
+      "chunks": [
+        "r1-c3"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-02",
+      "masterPx": [
+        3799,
+        440,
+        173,
+        52
+      ],
+      "worldRect": [
+        2968,
+        344,
+        135,
+        41
+      ],
+      "areaWorld": 4326,
+      "meanBrightness": 233,
+      "v7Px2x": [
+        7598,
+        880,
+        346,
+        104
+      ],
+      "chunks": [
+        "r1-c4"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-04",
+      "masterPx": [
+        3558,
+        708,
+        159,
+        139
+      ],
+      "worldRect": [
+        2780,
+        553,
+        124,
+        109
+      ],
+      "areaWorld": 5774,
+      "meanBrightness": 228,
+      "v7Px2x": [
+        7116,
+        1416,
+        318,
+        278
+      ],
+      "chunks": [
+        "r1-c4"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    },
+    {
+      "id": "lump-05",
+      "masterPx": [
+        3213,
+        893,
+        246,
+        120
+      ],
+      "worldRect": [
+        2510,
+        698,
+        192,
+        94
+      ],
+      "areaWorld": 10847,
+      "meanBrightness": 202,
+      "v7Px2x": [
+        6426,
+        1786,
+        492,
+        240
+      ],
+      "chunks": [
+        "r1-c4"
+      ],
+      "review": "fog lump - delete when the ground is repainted"
+    }
+  ]
+}

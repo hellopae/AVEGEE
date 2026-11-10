@@ -1,0 +1,86 @@
+{
+  "gameDevicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "method": "Same Lanczos game zoom; grayscale Laplacian variance ksize=1. No sharpening. Full chunk primary ROI, fixed quadrants supplementary.",
+  "threshold": 10,
+  "primaryRatio": 22.060061688619435,
+  "meetsNumericalThreshold": true,
+  "limitation": "Texture/contrast/object removal affect variance; ratio is not a resolution or beauty multiplier.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v5LaplacianVariance": 66.42646085771055,
+      "hdLaplacianVariance": 1465.371824277759,
+      "ratio": 22.060061688619435
+    },
+    "upper_left": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "v5LaplacianVariance": 68.67850924433495,
+      "hdLaplacianVariance": 1394.2374658525403,
+      "ratio": 20.300927920440355
+    },
+    "upper_right": {
+      "rectPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "v5LaplacianVariance": 42.718992916807835,
+      "hdLaplacianVariance": 877.7745665594956,
+      "ratio": 20.547641847945677
+    },
+    "lower_left": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "v5LaplacianVariance": 71.35162935745512,
+      "hdLaplacianVariance": 2233.7141599205993,
+      "ratio": 31.305720416421174
+    },
+    "lower_right": {
+      "rectPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "v5LaplacianVariance": 83.57859853242861,
+      "hdLaplacianVariance": 1363.944610116469,
+      "ratio": 16.319304631403416
+    }
+  }
+}

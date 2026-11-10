@@ -1,0 +1,737 @@
+[
+  {
+    "chunk": "r1-c4",
+    "id": "q11",
+    "coreMasterPx1x": [
+      3072,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removals": [
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          -87,
+          565,
+          92,
+          151
+        ]
+      },
+      {
+        "id": "ice-tree-02",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          537,
+          458,
+          86,
+          154
+        ]
+      },
+      {
+        "id": "ice-upper-back",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          601,
+          473,
+          381,
+          86
+        ]
+      },
+      {
+        "id": "ice-upper-front",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          611,
+          547,
+          378,
+          114
+        ]
+      }
+    ],
+    "fog": [
+      {
+        "id": "lump-01",
+        "rectCropPx": [
+          -311,
+          440,
+          351,
+          432
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c4",
+    "id": "q12",
+    "coreMasterPx1x": [
+      3584,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removals": [
+      {
+        "id": "ice-tree-02",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          25,
+          458,
+          86,
+          154
+        ]
+      },
+      {
+        "id": "ice-upper-back",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          89,
+          473,
+          381,
+          86
+        ]
+      },
+      {
+        "id": "ice-upper-front",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          99,
+          547,
+          378,
+          114
+        ]
+      }
+    ],
+    "fog": [
+      {
+        "id": "lump-02",
+        "rectCropPx": [
+          279,
+          440,
+          173,
+          52
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c4",
+    "id": "q21",
+    "coreMasterPx1x": [
+      3072,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "city-tree-07",
+        "kind": "green-tree",
+        "rectCropPx": [
+          -117,
+          335,
+          123,
+          206
+        ]
+      },
+      {
+        "id": "city-tree-08",
+        "kind": "green-tree",
+        "rectCropPx": [
+          21,
+          443,
+          132,
+          206
+        ]
+      },
+      {
+        "id": "ice-tree-01",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          -87,
+          117,
+          92,
+          151
+        ]
+      },
+      {
+        "id": "ice-tree-02",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          537,
+          10,
+          86,
+          154
+        ]
+      },
+      {
+        "id": "ice-tree-03",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          568,
+          216,
+          104,
+          163
+        ]
+      },
+      {
+        "id": "ice-upper-back",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          601,
+          25,
+          381,
+          86
+        ]
+      },
+      {
+        "id": "ice-upper-front",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          611,
+          99,
+          378,
+          114
+        ]
+      }
+    ],
+    "fog": [
+      {
+        "id": "lump-01",
+        "rectCropPx": [
+          -311,
+          -8,
+          351,
+          432
+        ]
+      },
+      {
+        "id": "lump-04",
+        "rectCropPx": [
+          550,
+          260,
+          159,
+          139
+        ]
+      },
+      {
+        "id": "lump-05",
+        "rectCropPx": [
+          205,
+          445,
+          246,
+          120
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r1-c4",
+    "id": "q22",
+    "coreMasterPx1x": [
+      3584,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "ice-tree-02",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          25,
+          10,
+          86,
+          154
+        ]
+      },
+      {
+        "id": "ice-tree-03",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          56,
+          216,
+          104,
+          163
+        ]
+      },
+      {
+        "id": "ice-tree-04",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          320,
+          409,
+          95,
+          184
+        ]
+      },
+      {
+        "id": "ice-tree-05",
+        "kind": "snow-tree",
+        "rectCropPx": [
+          381,
+          265,
+          98,
+          184
+        ]
+      },
+      {
+        "id": "ice-upper-back",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          89,
+          25,
+          381,
+          86
+        ]
+      },
+      {
+        "id": "ice-upper-front",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          99,
+          99,
+          378,
+          114
+        ]
+      }
+    ],
+    "fog": [
+      {
+        "id": "lump-02",
+        "rectCropPx": [
+          279,
+          -8,
+          173,
+          52
+        ]
+      },
+      {
+        "id": "lump-04",
+        "rectCropPx": [
+          38,
+          260,
+          159,
+          139
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "id": "q11",
+    "coreMasterPx1x": [
+      3072,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      -64,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "pilot-red-tree-09",
+        "kind": "tree",
+        "rectCropPx": [
+          276,
+          627,
+          117,
+          212
+        ]
+      },
+      {
+        "id": "south-bed-08",
+        "kind": "shrub",
+        "rectCropPx": [
+          190,
+          639,
+          166,
+          111
+        ]
+      },
+      {
+        "id": "south-bed-12",
+        "kind": "shrub",
+        "rectCropPx": [
+          580,
+          532,
+          184,
+          108
+        ]
+      }
+    ],
+    "fog": [
+      {
+        "id": "lump-12",
+        "rectCropPx": [
+          250,
+          43,
+          143,
+          74
+        ]
+      }
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "id": "q12",
+    "coreMasterPx1x": [
+      3584,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      1984,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      -64,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "south-bed-12",
+        "kind": "shrub",
+        "rectCropPx": [
+          68,
+          532,
+          184,
+          108
+        ]
+      },
+      {
+        "id": "ice-lower-back",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          461,
+          -49,
+          316,
+          77
+        ]
+      },
+      {
+        "id": "ice-lower-front",
+        "kind": "bridge-rail",
+        "rectCropPx": [
+          464,
+          19,
+          323,
+          98
+        ]
+      }
+    ],
+    "fog": []
+  },
+  {
+    "chunk": "r3-c4",
+    "id": "q21",
+    "coreMasterPx1x": [
+      3072,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "pilot-red-tree-09",
+        "kind": "tree",
+        "rectCropPx": [
+          276,
+          115,
+          117,
+          212
+        ]
+      },
+      {
+        "id": "pilot-red-tree-10",
+        "kind": "tree",
+        "rectCropPx": [
+          340,
+          321,
+          129,
+          218
+        ]
+      },
+      {
+        "id": "pilot-red-tree-11",
+        "kind": "tree",
+        "rectCropPx": [
+          -65,
+          355,
+          120,
+          200
+        ]
+      },
+      {
+        "id": "pilot-red-tree-12",
+        "kind": "tree",
+        "rectCropPx": [
+          113,
+          567,
+          123,
+          214
+        ]
+      },
+      {
+        "id": "south-bed-08",
+        "kind": "shrub",
+        "rectCropPx": [
+          190,
+          127,
+          166,
+          111
+        ]
+      },
+      {
+        "id": "south-bed-09",
+        "kind": "shrub",
+        "rectCropPx": [
+          144,
+          336,
+          169,
+          111
+        ]
+      },
+      {
+        "id": "south-bed-10",
+        "kind": "shrub",
+        "rectCropPx": [
+          328,
+          468,
+          172,
+          117
+        ]
+      },
+      {
+        "id": "south-bed-11",
+        "kind": "shrub",
+        "rectCropPx": [
+          592,
+          398,
+          166,
+          111
+        ]
+      },
+      {
+        "id": "south-bed-12",
+        "kind": "shrub",
+        "rectCropPx": [
+          580,
+          20,
+          184,
+          108
+        ]
+      },
+      {
+        "id": "south-rock-04",
+        "kind": "rock",
+        "rectCropPx": [
+          337,
+          287,
+          144,
+          181
+        ]
+      },
+      {
+        "id": "south-rock-05",
+        "kind": "rock",
+        "rectCropPx": [
+          49,
+          130,
+          120,
+          157
+        ]
+      }
+    ],
+    "fog": []
+  },
+  {
+    "chunk": "r3-c4",
+    "id": "q22",
+    "coreMasterPx1x": [
+      3584,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      2496,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removals": [
+      {
+        "id": "south-bed-11",
+        "kind": "shrub",
+        "rectCropPx": [
+          80,
+          398,
+          166,
+          111
+        ]
+      },
+      {
+        "id": "south-bed-12",
+        "kind": "shrub",
+        "rectCropPx": [
+          68,
+          20,
+          184,
+          108
+        ]
+      },
+      {
+        "id": "south-bed-15",
+        "kind": "shrub",
+        "rectCropPx": [
+          443,
+          487,
+          184,
+          98
+        ]
+      },
+      {
+        "id": "south-rock-06",
+        "kind": "rock",
+        "rectCropPx": [
+          375,
+          161,
+          132,
+          169
+        ]
+      }
+    ],
+    "fog": []
+  }
+]

@@ -1,0 +1,398 @@
+[
+  {
+    "id": "q11",
+    "corePx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      -64,
+      -64,
+      640,
+      640
+    ],
+    "coreMasterPx1x": [
+      3072,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      1984,
+      640,
+      640
+    ],
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativePxPerMapPixel": [
+      1.959375,
+      1.959375
+    ],
+    "registrationReference": "v5+repairs master crop",
+    "affine": [
+      [
+        1.000763286142347,
+        -0.00028617155234446405,
+        -0.3282517228911098
+      ],
+      [
+        0.00028617155234446405,
+        1.000763286142347,
+        0.6689585234965708
+      ]
+    ],
+    "affineMeaning": "resized native context 1x to reference context 1x",
+    "nativeToContextPx1x": [
+      [
+        0.5107563820822185,
+        -0.00014605246690626553,
+        -0.3282517228911098
+      ],
+      [
+        0.00014605246690626553,
+        0.5107563820822185,
+        0.6689585234965708
+      ]
+    ],
+    "nativeToMasterPx1x": [
+      [
+        0.5107563820822185,
+        -0.00014605246690626553,
+        3007.6717482771087
+      ],
+      [
+        0.00014605246690626553,
+        0.5107563820822185,
+        1984.6689585234965
+      ]
+    ],
+    "nativeToOutputContext2x": [
+      [
+        1.021512764164437,
+        -0.00029210493381253105,
+        -0.6565034457822196
+      ],
+      [
+        0.00029210493381253105,
+        1.021512764164437,
+        1.3379170469931416
+      ]
+    ],
+    "siftMatches": 328,
+    "siftInliers": 308,
+    "inlierResidualPx1x": {
+      "median": 0.5636031031608582,
+      "p95": 1.811898112297058,
+      "max": 2.558711051940918
+    },
+    "localWarpApplied": false,
+    "semanticStructureVerified": false,
+    "colorCorrection": {
+      "gaussianSigmaMapPx": 35,
+      "strength": 0.8,
+      "reference": "inputs/q11-v5.png"
+    }
+  },
+  {
+    "id": "q12",
+    "corePx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      448,
+      -64,
+      640,
+      640
+    ],
+    "coreMasterPx1x": [
+      3584,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      1984,
+      640,
+      640
+    ],
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativePxPerMapPixel": [
+      1.959375,
+      1.959375
+    ],
+    "registrationReference": "v5+repairs master crop",
+    "affine": [
+      [
+        1.0012614679377643,
+        -0.0019157344779142966,
+        -0.44271449346281055
+      ],
+      [
+        0.0019157344779142966,
+        1.0012614679377643,
+        0.609527949341103
+      ]
+    ],
+    "affineMeaning": "resized native context 1x to reference context 1x",
+    "nativeToContextPx1x": [
+      [
+        0.5110106375439945,
+        -0.0009777273252513155,
+        -0.44271449346281055
+      ],
+      [
+        0.0009777273252513155,
+        0.5110106375439945,
+        0.609527949341103
+      ]
+    ],
+    "nativeToMasterPx1x": [
+      [
+        0.5110106375439945,
+        -0.0009777273252513155,
+        3519.557285506537
+      ],
+      [
+        0.0009777273252513155,
+        0.5110106375439945,
+        1984.609527949341
+      ]
+    ],
+    "nativeToOutputContext2x": [
+      [
+        1.022021275087989,
+        -0.001955454650502631,
+        -0.8854289869256211
+      ],
+      [
+        0.001955454650502631,
+        1.022021275087989,
+        1.219055898682206
+      ]
+    ],
+    "siftMatches": 642,
+    "siftInliers": 335,
+    "inlierResidualPx1x": {
+      "median": 0.958863377571106,
+      "p95": 2.05053973197937,
+      "max": 3.637744426727295
+    },
+    "localWarpApplied": false,
+    "semanticStructureVerified": false,
+    "colorCorrection": {
+      "gaussianSigmaMapPx": 35,
+      "strength": 0.8,
+      "reference": "inputs/q12-v5.png"
+    }
+  },
+  {
+    "id": "q21",
+    "corePx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "coreMasterPx1x": [
+      3072,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      2496,
+      640,
+      640
+    ],
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativePxPerMapPixel": [
+      1.959375,
+      1.959375
+    ],
+    "registrationReference": "v5+repairs master crop",
+    "affine": [
+      [
+        1.000505582783729,
+        0.00042571329375034575,
+        -0.35338826405267715
+      ],
+      [
+        -0.00042571329375034575,
+        1.000505582783729,
+        0.7236044055265564
+      ]
+    ],
+    "affineMeaning": "resized native context 1x to reference context 1x",
+    "nativeToContextPx1x": [
+      [
+        0.5106248588369908,
+        0.0002172699425839085,
+        -0.35338826405267715
+      ],
+      [
+        -0.0002172699425839085,
+        0.5106248588369908,
+        0.7236044055265564
+      ]
+    ],
+    "nativeToMasterPx1x": [
+      [
+        0.5106248588369908,
+        0.0002172699425839085,
+        3007.6466117359473
+      ],
+      [
+        -0.0002172699425839085,
+        0.5106248588369908,
+        2496.7236044055267
+      ]
+    ],
+    "nativeToOutputContext2x": [
+      [
+        1.0212497176739816,
+        0.000434539885167817,
+        -0.7067765281053543
+      ],
+      [
+        -0.000434539885167817,
+        1.0212497176739816,
+        1.4472088110531127
+      ]
+    ],
+    "siftMatches": 198,
+    "siftInliers": 177,
+    "inlierResidualPx1x": {
+      "median": 0.6284782886505127,
+      "p95": 1.6974067687988281,
+      "max": 2.6179161071777344
+    },
+    "localWarpApplied": false,
+    "semanticStructureVerified": false,
+    "colorCorrection": {
+      "gaussianSigmaMapPx": 35,
+      "strength": 0.8,
+      "reference": "inputs/q21-v5.png"
+    }
+  },
+  {
+    "id": "q22",
+    "corePx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "coreMasterPx1x": [
+      3584,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      2496,
+      640,
+      640
+    ],
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativePxPerMapPixel": [
+      1.959375,
+      1.959375
+    ],
+    "registrationReference": "v5+repairs master crop",
+    "affine": [
+      [
+        1.0035970846172804,
+        0.0005067544225678279,
+        -1.630771401450035
+      ],
+      [
+        -0.0005067544225678279,
+        1.0035970846172804,
+        0.6500806918546521
+      ]
+    ],
+    "affineMeaning": "resized native context 1x to reference context 1x",
+    "nativeToContextPx1x": [
+      [
+        0.5122026588158368,
+        0.00025863064628661074,
+        -1.630771401450035
+      ],
+      [
+        -0.00025863064628661074,
+        0.5122026588158368,
+        0.6500806918546521
+      ]
+    ],
+    "nativeToMasterPx1x": [
+      [
+        0.5122026588158368,
+        0.00025863064628661074,
+        3518.36922859855
+      ],
+      [
+        -0.00025863064628661074,
+        0.5122026588158368,
+        2496.650080691855
+      ]
+    ],
+    "nativeToOutputContext2x": [
+      [
+        1.0244053176316736,
+        0.0005172612925732215,
+        -3.26154280290007
+      ],
+      [
+        -0.0005172612925732215,
+        1.0244053176316736,
+        1.3001613837093042
+      ]
+    ],
+    "siftMatches": 201,
+    "siftInliers": 153,
+    "inlierResidualPx1x": {
+      "median": 0.7232345938682556,
+      "p95": 1.9498310089111328,
+      "max": 2.689821481704712
+    },
+    "localWarpApplied": false,
+    "semanticStructureVerified": false,
+    "colorCorrection": {
+      "gaussianSigmaMapPx": 35,
+      "strength": 0.8,
+      "reference": "inputs/q22-v5.png"
+    }
+  }
+]

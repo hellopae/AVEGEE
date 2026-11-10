@@ -1,0 +1,429 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Prototype independent 49x49 DoG sigma1.5/6 template correspondence, search +/-12 map pixels, correlation>=0.6. Fixed v5 probes, all retained.",
+  "totalProbes": 26,
+  "reliableProbes": 13,
+  "maxReliableDisplacementPx1x": 12.0,
+  "allReliableProbesWithin4px": false,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "limitation": "Patch correspondence is not full contour verification. New rock exposed by removed fog, repeated stair treads and changed vegetation may defeat matching. Search-limited and low-confidence probes remain recorded; none certifies animation-mask alignment.",
+  "probes": [
+    {
+      "id": "upper-stair-left",
+      "sourcePx1x": [
+        100,
+        340
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.6784427165985107,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "upper-stair-right",
+      "sourcePx1x": [
+        218,
+        340
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.7124480605125427,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "upper-stair-foot-left",
+      "sourcePx1x": [
+        100,
+        382
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8737776875495911,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "upper-stair-foot-right",
+      "sourcePx1x": [
+        218,
+        382
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8933858871459961,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "plaza-west-edge",
+      "sourcePx1x": [
+        67,
+        659
+      ],
+      "displacementPx1x": [
+        0,
+        -2
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.4175489544868469,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "plaza-south-edge",
+      "sourcePx1x": [
+        291,
+        666
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.824358344078064,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "plaza-east-edge",
+      "sourcePx1x": [
+        492,
+        596
+      ],
+      "displacementPx1x": [
+        3,
+        5
+      ],
+      "distancePx1x": 5.830951894845301,
+      "normalizedCorrelation": 0.2001086324453354,
+      "reliable": false,
+      "within4px": false,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "lower-stair-top-left",
+      "sourcePx1x": [
+        95,
+        721
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.4896937608718872,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "lower-stair-top-right",
+      "sourcePx1x": [
+        197,
+        727
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.4547524154186249,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "lower-stair-bottom-left",
+      "sourcePx1x": [
+        50,
+        825
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6887912154197693,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "lower-stair-bottom-right",
+      "sourcePx1x": [
+        141,
+        840
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.4961361587047577,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "cliff-west",
+      "sourcePx1x": [
+        224,
+        792
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8424834609031677,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "cliff-center",
+      "sourcePx1x": [
+        342,
+        750
+      ],
+      "displacementPx1x": [
+        1,
+        -3
+      ],
+      "distancePx1x": 3.1622776601683795,
+      "normalizedCorrelation": 0.399292528629303,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "cliff-east",
+      "sourcePx1x": [
+        451,
+        679
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.3542267680168152,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "bridge-west-deck",
+      "sourcePx1x": [
+        647,
+        553
+      ],
+      "displacementPx1x": [
+        -12,
+        -1
+      ],
+      "distancePx1x": 12.041594578792296,
+      "normalizedCorrelation": 0.583957314491272,
+      "reliable": false,
+      "within4px": false,
+      "searchBoundaryHit": true
+    },
+    {
+      "id": "bridge-center-deck",
+      "sourcePx1x": [
+        758,
+        525
+      ],
+      "displacementPx1x": [
+        -6,
+        -2
+      ],
+      "distancePx1x": 6.324555320336759,
+      "normalizedCorrelation": 0.46320465207099915,
+      "reliable": false,
+      "within4px": false,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "bridge-east-deck",
+      "sourcePx1x": [
+        873,
+        558
+      ],
+      "displacementPx1x": [
+        -4,
+        0
+      ],
+      "distancePx1x": 4.0,
+      "normalizedCorrelation": 0.454725444316864,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "bridge-west-support",
+      "sourcePx1x": [
+        641,
+        644
+      ],
+      "displacementPx1x": [
+        -12,
+        0
+      ],
+      "distancePx1x": 12.0,
+      "normalizedCorrelation": 0.7837492823600769,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": true
+    },
+    {
+      "id": "bridge-east-support",
+      "sourcePx1x": [
+        848,
+        643
+      ],
+      "displacementPx1x": [
+        -4,
+        3
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.8763067722320557,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "waterfall-lip-left",
+      "sourcePx1x": [
+        923,
+        682
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8998615145683289,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "waterfall-lip-right",
+      "sourcePx1x": [
+        978,
+        676
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9153531193733215,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "island-rock-tip",
+      "sourcePx1x": [
+        764,
+        699
+      ],
+      "displacementPx1x": [
+        -7,
+        2
+      ],
+      "distancePx1x": 7.280109889280518,
+      "normalizedCorrelation": 0.8254179358482361,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "island-front-bank",
+      "sourcePx1x": [
+        836,
+        870
+      ],
+      "displacementPx1x": [
+        -5,
+        0
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.5968526601791382,
+      "reliable": false,
+      "within4px": false,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "river-west-bank",
+      "sourcePx1x": [
+        451,
+        940
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8716140985488892,
+      "reliable": true,
+      "within4px": true,
+      "searchBoundaryHit": false
+    },
+    {
+      "id": "river-east-bank",
+      "sourcePx1x": [
+        632,
+        901
+      ],
+      "displacementPx1x": [
+        -12,
+        2
+      ],
+      "distancePx1x": 12.165525060596439,
+      "normalizedCorrelation": 0.49138343334198,
+      "reliable": false,
+      "within4px": false,
+      "searchBoundaryHit": true
+    },
+    {
+      "id": "snow-bank",
+      "sourcePx1x": [
+        948,
+        571
+      ],
+      "displacementPx1x": [
+        -1,
+        -2
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.4580540955066681,
+      "reliable": false,
+      "within4px": true,
+      "searchBoundaryHit": false
+    }
+  ]
+}

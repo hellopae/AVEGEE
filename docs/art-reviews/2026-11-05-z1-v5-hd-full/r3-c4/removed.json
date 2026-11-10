@@ -1,0 +1,234 @@
+{
+  "note": "Lists requested removal IDs and honest review state; appearance-based groups are not per-ID certification. Context-only IDs are included for assembly overlap.",
+  "removedIds": [
+    "lump-12",
+    "ice-lower-front",
+    "pilot-red-tree-09",
+    "pilot-red-tree-10",
+    "pilot-red-tree-12",
+    "south-bed-09",
+    "south-bed-10",
+    "south-bed-11",
+    "south-bed-15"
+  ],
+  "pendingIds": [
+    "south-bed-08",
+    "south-bed-12"
+  ],
+  "uncertainIds": [
+    "south-rock-04",
+    "south-rock-05",
+    "south-rock-06"
+  ],
+  "allRequiredObjectsRemovedVerified": false,
+  "objects": [
+    {
+      "id": "pilot-red-tree-09",
+      "kind": "tree",
+      "masterRectPx1x": [
+        3283.834375,
+        2611.09311875,
+        116.73125,
+        211.95917617187501
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "pilot-red-tree-10",
+      "kind": "tree",
+      "masterRectPx1x": [
+        3348.34375,
+        2816.9092,
+        129.01875,
+        218.103551171875
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "pilot-red-tree-11",
+      "kind": "tree",
+      "masterRectPx1x": [
+        2942.85625,
+        2850.699422265625,
+        119.803125,
+        199.67170625
+      ],
+      "inCore": false,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "pilot-red-tree-12",
+      "kind": "tree",
+      "masterRectPx1x": [
+        3121.025,
+        3062.6598785156248,
+        122.875,
+        214.340121484375
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-08",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3197.821875,
+        2623.3818687499997,
+        165.88125,
+        110.58722929687501
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-09",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3151.74375,
+        2832.2688574218746,
+        168.953125,
+        110.58722929687501
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-10",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3336.05625,
+        2964.3588390625,
+        172.025,
+        116.731604296875
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-11",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3600.2375,
+        2893.7062070312504,
+        165.88125,
+        110.58722929687501
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-12",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3587.95,
+        2515.8655468750003,
+        184.3125,
+        107.515041796875
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "south-bed-15",
+      "kind": "shrub",
+      "masterRectPx1x": [
+        3962.71875,
+        2982.790683984375,
+        184.3125,
+        98.299759375
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "south-rock-04",
+      "kind": "rock",
+      "masterRectPx1x": [
+        3345.271875,
+        2783.118977734375,
+        144.378125,
+        181.24114140625002
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "south-rock-05",
+      "kind": "rock",
+      "masterRectPx1x": [
+        3056.515625,
+        2626.4527761718755,
+        119.803125,
+        156.66620156250002
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "south-rock-06",
+      "kind": "rock",
+      "masterRectPx1x": [
+        3895.1375,
+        2657.172091015625,
+        132.090625,
+        168.95367148437498
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-lower-back",
+      "kind": "bridge-rail",
+      "masterRectPx1x": [
+        3981.15,
+        1935.28099296875,
+        316.403125,
+        76.79700703124999
+      ],
+      "inCore": false,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-lower-front",
+      "kind": "bridge-rail",
+      "masterRectPx1x": [
+        3984.221875,
+        2002.862717578125,
+        322.546875,
+        98.299759375
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "lump-12",
+      "kind": "embedded-fog",
+      "masterRectPx1x": [
+        3258,
+        2027,
+        143,
+        74
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    }
+  ]
+}

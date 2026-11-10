@@ -1,0 +1,17 @@
+{
+  "reviewedArtifacts": ["r1-c4/seam-check.jpg", "r3-c4/seam-check.jpg", "r1-c4/structure-check.jpg", "r3-c4/structure-check.jpg", "r1-c4/r1-c4-compare.jpg", "r3-c4/r3-c4-compare.jpg"],
+  "qaPassedClaimed": false,
+  "r1-c4": {
+    "internalSeamsVerifiedInvisible": false,
+    "findings": ["ราวบนสะพานถูกลบ เห็นพื้นสะพานและส่วนรองรับครบ", "กลุ่มต้นทองบนเกาะหินหน้าสะพานถูกลบใน q22 รอบแก้", "ยังมีต้นเขียวบริเวณมุมล่างซ้ายที่ต้องตรวจเทียบ city-tree-08", "แถบเมฆเหนือหัวสะพานต่างจาก v5 และแนวต่อใกล้เมฆยังต้องแก้/ตรวจ ไม่รับรองว่าไร้รอยต่อ", "รูปทรงส่วนรองรับสะพานและยอดหินเกาะคลาดเกิน 4 px ในจุดตรวจ"],
+    "pendingRemovalIds": ["city-tree-08", "ice-tree-02", "ice-tree-03", "lump-02"],
+    "visuallyRemovedGroups": ["ice-upper-back", "ice-upper-front", "ice-tree-04", "ice-tree-05", "lump-04", "lump-05"]
+  },
+  "r3-c4": {
+    "internalSeamsVerifiedInvisible": false,
+    "findings": ["หมอก lump-12 ถูกเติมเป็นหน้าผา", "พื้นล่างเปิดต่อเนื่องหลังลบต้นไม้/พุ่มจำนวนมาก แต่ยังมีพุ่มแดงและรูปคล้ายรากไม้ตามแนวต่อริมแม่น้ำ", "ต้องตรวจความครบราย id เพราะ bbox inventory เป็น survey โดยประมาณ และบางจุดซ้อนกับยอดหินที่ต้องคงไว้", "จุดโครงสร้างที่จับคู่มั่นใจอยู่ใน 4 px แต่ยังมี 8 จุดที่ correlation ต่ำกว่าเกณฑ์ และยังไม่ได้ตรวจเส้น mask ทุกจุด"],
+    "pendingRemovalIds": ["south-bed-08", "south-bed-12"],
+    "visuallyRemovedGroups": ["lump-12", "ice-lower-front", "pilot-red-tree-09", "pilot-red-tree-10", "pilot-red-tree-12", "south-bed-09", "south-bed-10", "south-bed-11", "south-bed-15"],
+    "uncertainRemovalIds": ["south-rock-04", "south-rock-05", "south-rock-06"]
+  }
+}

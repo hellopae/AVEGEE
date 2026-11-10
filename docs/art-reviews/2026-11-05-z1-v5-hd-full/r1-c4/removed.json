@@ -1,0 +1,190 @@
+{
+  "note": "Lists requested removal IDs and honest review state; appearance-based groups are not per-ID certification. Context-only IDs are included for assembly overlap.",
+  "removedIds": [
+    "ice-upper-back",
+    "ice-upper-front",
+    "ice-tree-04",
+    "ice-tree-05",
+    "lump-04",
+    "lump-05"
+  ],
+  "pendingIds": [
+    "city-tree-08",
+    "ice-tree-02",
+    "ice-tree-03",
+    "lump-02"
+  ],
+  "uncertainIds": [],
+  "allRequiredObjectsRemovedVerified": false,
+  "objects": [
+    {
+      "id": "city-tree-07",
+      "kind": "green-tree",
+      "masterRectPx1x": [
+        2890.634375,
+        783.32844765625,
+        122.875,
+        205.81608124999997
+      ],
+      "inCore": false,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "city-tree-08",
+      "kind": "green-tree",
+      "masterRectPx1x": [
+        3028.86875,
+        890.843489453125,
+        132.090625,
+        205.81608124999997
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-tree-01",
+      "kind": "snow-tree",
+      "masterRectPx1x": [
+        2921.353125,
+        565.224896484375,
+        92.15625,
+        150.5218265625
+      ],
+      "inCore": false,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-tree-02",
+      "kind": "snow-tree",
+      "masterRectPx1x": [
+        3544.94375,
+        457.70985468750007,
+        86.0125,
+        153.59401406249998
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-tree-03",
+      "kind": "snow-tree",
+      "masterRectPx1x": [
+        3575.6625,
+        663.524655859375,
+        104.44375,
+        162.809296484375
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-tree-04",
+      "kind": "snow-tree",
+      "masterRectPx1x": [
+        3839.84375,
+        857.0532671875001,
+        95.228125,
+        184.312048828125
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-tree-05",
+      "kind": "snow-tree",
+      "masterRectPx1x": [
+        3901.28125,
+        712.6745355468751,
+        98.3,
+        184.312048828125
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-upper-back",
+      "kind": "bridge-rail",
+      "masterRectPx1x": [
+        3609.453125,
+        473.06823203125003,
+        380.9125,
+        86.01228945312499
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "ice-upper-front",
+      "kind": "bridge-rail",
+      "masterRectPx1x": [
+        3618.66875,
+        546.7943316406249,
+        377.840625,
+        113.659416796875
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "lump-01",
+      "kind": "embedded-fog",
+      "masterRectPx1x": [
+        2697,
+        440,
+        351,
+        432
+      ],
+      "inCore": false,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "lump-02",
+      "kind": "embedded-fog",
+      "masterRectPx1x": [
+        3799,
+        440,
+        173,
+        52
+      ],
+      "inCore": true,
+      "status": "pending-or-uncertain",
+      "removalVerified": false
+    },
+    {
+      "id": "lump-04",
+      "kind": "embedded-fog",
+      "masterRectPx1x": [
+        3558,
+        708,
+        159,
+        139
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    },
+    {
+      "id": "lump-05",
+      "kind": "embedded-fog",
+      "masterRectPx1x": [
+        3213,
+        893,
+        246,
+        120
+      ],
+      "inCore": true,
+      "status": "visually-removed-group-needs-per-id-confirmation",
+      "removalVerified": false
+    }
+  ]
+}

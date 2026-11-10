@@ -1,0 +1,182 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "generationCount": 10,
+  "generations": [
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile r1-c4 q11. Edit FIRST input only; SECOND input is approved material-detail reference only, never copy its layout or palette. Return one full-bleed terrain crop identical framing and aspect ratio 640:576, maximum native detail ideally 2048 pixels wide. Preserve ALL large shapes at exact input coordinates: distant mountain silhouettes, cloud sea, every stone path boundary, stair count/width/position, cliff outline, golden forest, sunrise and illumination. No redesign, rotation, zoom or crop change. Repaint with substantially more actual drawn resolved detail: separate chipped stone bevels, tiny mineral grain, fissures, recessed mortar, sparse subtle moss and tiny fallen leaves. Distant inaccessible trees and mountains receive equally fine painted detail; preserve forest. Preserve the broad golden light, purple-gray cliffs and original value/color hierarchy. No blur, DOF, parallax, sharpening halos or photo noise. Only remove the isolated snow tree at crop rectangle [537,458,86,154] (clipped by bottom edge) and tiny clipped snow-tree fragment at [-87,565,92,151], filling terrain beneath. Remove bridge rail/post fragments at [601,473,381,86] and [611,547,378,114] if visible; bridge walking deck must remain intact. Remove ONLY the local baked fog fragment at [-311,440,351,432], filling its cliff/valley continuation. Keep the large distant cloud sea, all other background forest, stair architecture and everything clipped precisely at the four edges.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q11-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-5c7ed5dc-4f41-47e3-b85c-4eb47b2d4d8a.png",
+      "archivedResult": "r1-c4/q11-native.webp",
+      "nativeSize": [
+        1322,
+        1190
+      ],
+      "decodedRGBsha256": "0caf3293a5fa0ed5dd3eaf4db8cd083676da89667a0b3366ccad0d7e9950cdbf"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r1-c4 q12, aspect 640:576. Remove isolated snow tree ice-tree-02 at [25,458,86,154]. Remove bridge rails/posts ice-upper-back [89,473,381,86] and ice-upper-front [99,547,378,114]; leave exact curved walking deck unchanged. Remove small baked white fog lump-02 [279,440,173,52] directly above bridge, extend valley/cliff background. Keep large cloud sea everywhere else. Do not copy snow from style reference or change warm/cold regions.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q12-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-f62376bd-6472-49eb-8ab2-a725d26a7827.png",
+      "archivedResult": "r1-c4/q12-native.webp",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRGBsha256": "e322d1d50c7bf4197c40fc130e977603f9abedbde7bc1b30687ec9ec80eda340"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r1-c4 q21, square 640x640 source. Remove listed foreground vegetation: city-tree-07 [-117,335,123,206], city-tree-08 [21,443,132,206] (green broadleaf tree adjacent lower-left path), ice-tree-01 [-87,117,92,151], ice-tree-02 [537,10,86,154], ice-tree-03 [568,216,104,163]. Remove rail/post fragments of bridge at [601,25,381,86] and [611,99,378,114], keep deck. Remove white baked fog lump-05 [205,445,246,120] at foot of central cliff, lump-04 [550,260,159,139] at right and clipped lump-01 [-311,-8,351,432] at left: replace with continuous cliff rock/valley according to adjacent rock shapes. These are small terrain fog lumps; preserve distant cloud sea. Blue river and all banks MUST retain exact original silhouettes and channels for animation mask alignment. Preserve original stair and all treads. Do not add snow to the golden region.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q21-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-93cc1cf2-378b-4ed6-8fbb-1116e7e442f2.png",
+      "archivedResult": "r1-c4/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRGBsha256": "69f37413caf45d0586189b940d2000d0df51595d7f77ccee0a2be94e5b648907"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r1-c4 q22, square 640x640 source. Remove isolated foreground trees ice-tree-02 [25,10,86,154], ice-tree-03 [56,216,104,163], ice-tree-04 [320,409,95,184], ice-tree-05 [381,265,98,184]. Remove rails and upright railing posts ice-upper-back [89,25,381,86] and ice-upper-front [99,99,378,114] from bridge at top; preserve original bridge arch, full walking deck, support pillars beneath deck and bank connections. Remove white fog lump-04 [38,260,159,139] at LEFT central cliff base, filling rock valley; remove clipped lump-02 [279,-8,173,52] at top edge. Preserve large distant cloud sea visible through bridge. Snow-covered inaccessible forest at upper right stays. Golden tiny trees at central foreground cliff are foreground inventory trees; remove them where specified. Blue river/waterfall and cliff edges must remain exactly in original positions, no widening or narrowing. Keep snow on existing snow terrain only.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/inputs/q22-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-7cb71e84-1a01-4226-bc5f-7a4615cada6d.png",
+      "archivedResult": null,
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "archiveNote": "Superseded; retained generation provenance and actual size, not part of selected eight deliverables.",
+      "decodedRGBsha256": "00ded8f5ec48136f7b572dc490e313b7e06aeb28ed1c0e1cb9928272fc3a5009"
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r3-c4 q11 square 640x640. CRITICAL preserve exact purple river shoreline and violet glowing branch patterns as animation base, no change of bank position or liquid shape. Keep all stairs and step counts at upper left. Remove embedded white/lavender fog lump-12 at [250,43,143,74], expose continuous rock crevices behind it while retaining cliff silhouette. Remove only clipped inventory vegetation: pilot-red-tree-09 at [276,627,117,212] (bottom strip), south-bed-08 [190,639,166,111], south-bed-12 [580,532,184,108]. All other inaccessible forest/rocks remain. Make purple liquid surface genuinely finely painted, sharp ripples and luminous filaments, same violet hue, brightness and exact broad current shapes, no new islands. Do not import golden palette from reference.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q11-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-4ff7dfc8-e1dc-40ca-8f13-0047010fa11d.png",
+      "archivedResult": "r3-c4/q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRGBsha256": "ce589971512ede5b6ebdc743932e787d84dc143784e3899a4e9262160bc527e3"
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r3-c4 q12 square 640x640. Preserve exact purple river and its shorelines. Keep blue river entering at upper right and its interface with purple water in exact original location; no new islands or channels. Remove south-bed-12 shrub in foreground bottom at [68,532,184,108], filling continuous rocky ground without shifting shoreline. Remove bridge rails and upright railing posts at upper right: ice-lower-back [461,-49,316,77], ice-lower-front [464,19,323,98]. Preserve complete curved bridge deck and its stone under-supports unchanged. Keep distant green forest and rocks. Refine liquid filaments and small ripples in original purple palette and broad patterns. Fine material detail as approved reference without borrowing its golden hue.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q12-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-8f0f5edd-16a4-4dda-8949-101a9bf2c7d9.png",
+      "archivedResult": "r3-c4/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRGBsha256": "26d0555cd5c0faf6e98fb74cabc7ea1b3a52e7ac83bb3919256f71130db3d13a"
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r3-c4 q21 square 640x640. This crop is brown rocky paths around tall purple rock spires with red/orange foliage. REMOVE all isolated RED/ORANGE/MAGENTA SMALL TREES and LOW SHRUB BEDS on foreground walkable terrain (inventory below), revealing continuous brown paving and cliff foot. Keep the tall immovable PURPLE ROCK SPIRES and their silhouettes exactly, except the explicitly listed small removable rocks. Inventory tree rectangles: pilot-red-tree-09 [276,115,117,212], pilot-red-tree-10 [340,321,129,218], clipped pilot-red-tree-11 [-65,355,120,200], pilot-red-tree-12 [113,567,123,214]. Shrub beds: south-bed-08 [190,127,166,111], south-bed-09 [144,336,169,111], south-bed-10 [328,468,172,117], south-bed-11 [592,398,166,111], south-bed-12 [580,20,184,108]. Removable SMALL rocks south-rock-04 [337,287,144,181], south-rock-05 [49,130,120,157]: remove only the small foreground rock cluster within each bbox, preserve large background cliff mountain. Sparse fallen leaves can remain, not standing vegetation. Preserve exact purple river sliver at top edge. Detailed rocky paving should extend naturally under removed objects with no invented stairs or structures.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q21-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-6af78eff-d921-4b88-bc79-cab601625ad0.png",
+      "archivedResult": "r3-c4/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRGBsha256": "3fcc13ee1f622737b3ac02147c240ef3c6d58a82886f2c755ebb1990362e8cd7"
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit FIRST image at exactly the same framing and normalized pixel coordinates. SECOND is approved microtexture quality reference ONLY, not its layout, palette or architecture. This is a conservative texture-detail redraw: lock all existing silhouettes, stone outlines, mountain peaks, cloud shapes, shorelines, liquid channels, bridge walking decks and stair edges exactly to the FIRST image. No new shapes, zoom, translation, rotation or perspective changes. Add much finer actually drawn chips, mineral grain, crevices, fine recessed mortar, sparse moss and tiny fallen leaves, crisp painted detail with no noise, blur, DOF, parallax or sharpening halos. Preserve original broad color, light and value hierarchy. Detail inaccessible forest/mountains too without removing their trees. Preserve large cloud sea and all liquid base shapes exactly. Full bleed single crop, no borders, no text. Maximum native resolution ideally 2048 wide. Rectangles below are [x,y,width,height] in FIRST image pixels, partially clipped objects stay clipped. Removal rectangles identify objects, NOT permission to erase surrounding terrain or move its boundaries. Remove only listed foreground objects and small embedded fog; fill beneath with continuous existing ground/cliff/valley. Preserve bridge deck, piers supporting deck, stairs and banks even when removing railings/posts. Tile r3-c4 q22 square 640x640. Remove isolated standing trees, shrubs and small removable objects on the brown paths. Inventory shrub beds south-bed-11 [80,398,166,111], south-bed-12 [68,20,184,108], south-bed-15 [443,487,184,98]. Small removable rock south-rock-06 [375,161,132,169] on open central ground; remove only this small protruding rock cluster, never the tall purple cliff/spires at upper and lower edges. Reveal continuous rocky brown ground. Keep all tall rock silhouettes, valley shapes and purple river sliver at top in exactly original coordinates. Trees and low bushes immediately around inventory areas should be absent, scattered tiny fallen leaves allowed. Keep inaccessible background vegetation outside those areas. Refine each original stone and rock facet with genuinely fine painted cracks and chips and subtle moss; don't add a new path pattern or alter existing contour. Original orange-brown ground and violet-gray rock colors unchanged.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/inputs/q22-v5.png",
+        "/Users/agapae/agapae-work/.codex-worktrees/20261105T025229Z-00c52f6e/docs/art-reviews/2026-11-05-z1-v5-plaza-detail/tiles-2x2/q11-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-45bc7ab3-743c-4cc5-90f8-7aa8f11522e4.png",
+      "archivedResult": null,
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "archiveNote": "Superseded; retained generation provenance and actual size, not part of selected eight deliverables.",
+      "decodedRGBsha256": "a902b6475d8d1b8efbb24152637a8552b6d8bb33de8665cf0f6d02ac9bc3fb3b"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "purpose": "targeted-removal-correction",
+      "prompt": "Use case: precise-object-edit. Edit this existing HD terrain image r1-c4 q22 ONLY to finish object removal. Keep every other pixel as unchanged as possible: identical 1254x1254 square composition, exact bridge deck/arch, cliffs, blue river shorelines, waterfall, background cloud sea, snow and all rock silhouettes. DO NOT redraw, redesign, recolor, move, zoom or change any structure or liquid. REMOVE the cluster of golden standing miniature trees/shrubs on the central foreground rocky island: golden tree tops around native x500-645,y565-715, the spreading gold tree around x680-800,y680-780 and little standing gold sapling x815-855,y735-795. Fill only their silhouettes with the existing grey rocky ground underneath at same surface level. Also remove the clipped gold foreground tree at left edge x0-105,y90-260 and the small snow/gold tree just right of bridge x860-950,y50-205, restoring snow bank behind. Preserve the big inaccessible snow forest at upper right. Do not add any new trees, stumps, rocks or details elsewhere. Keep fine surface detail already present, only inpaint removal areas. Keep original overall brightness and color.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r1-c4/q22-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-7abe2f30-0e2d-45c2-ad5b-3555be24d356.png",
+      "supersedesGeneration": 4,
+      "archivedResult": "r1-c4/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "editInputOriginalFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-7cb71e84-1a01-4226-bc5f-7a4615cada6d.png",
+      "decodedRGBsha256": "d2a8774f6947839837bcddae142fd148fbd604c5a6d8bed6cfc51b6eca359f06"
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q22",
+      "purpose": "targeted-removal-correction",
+      "prompt": "Use case: precise-object-edit. Finish removal of walk-over foreground vegetation from this existing HD terrain r3-c4 q22. Keep the exact 1254x1254 square composition, all rock spire silhouettes, brown paving layout, purple river strip, colors and fine texture otherwise unchanged. DO NOT redraw or move rocks, shorelines, paths or perspective. REMOVE ALL standing orange/red/magenta trees and low bushes along the open ground, including: the orange tree and sapling at upper-left/center around x370-650,y110-410; red bush at x340-550,y350-500; bushes along foreground rocks around x350-620,y780-1100; the large red/orange tree between bottom foreground rocks x490-685,y880-1160; red/orange foreground tree at x960-1180,y800-1120; magenta bushes right edge x1140-1254,y850-1254; small red shrubs around lower left x0-230,y770-1130. Fill exactly with continuous existing brown rock paving or rock foot under each object, at original surface level. Keep tall purple rock spires in exact positions and outlines. Preserve inaccessible foliage behind the TOP rock ridge against the purple river. Fallen leaves can remain sparsely. No new plants, stumps or rocks. Use original lighting, no palette or contrast change; only targeted vegetation inpainting.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261110T105823Z-31826e77/docs/art-reviews/2026-11-05-z1-v5-hd-full/r3-c4/q22-native.webp"
+      ],
+      "transparent_background": false,
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-fb1e4bcf-528a-45d6-9ebd-e6ed0865f2f7.png",
+      "supersedesGeneration": 8,
+      "archivedResult": "r3-c4/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "editInputOriginalFile": "/Users/agapae/.codex/generated_images/01a1c51b-f6b4-79f1-99ff-9e4ed275186e/exec-45bc7ab3-743c-4cc5-90f8-7aa8f11522e4.png",
+      "decodedRGBsha256": "ed1d3bfa984c524a2701b952d20dc79f3e195d88da5144ffccbd97e78fcdace5"
+    }
+  ]
+}

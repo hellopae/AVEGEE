@@ -1,0 +1,103 @@
+{
+  "allImagesDecode": true,
+  "imageCount": 26,
+  "generationCount": 10,
+  "generationLimitRespected": true,
+  "nativePixelChecks": [
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "0caf3293a5fa0ed5dd3eaf4db8cd083676da89667a0b3366ccad0d7e9950cdbf",
+      "nativeSize": [
+        1322,
+        1190
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "e322d1d50c7bf4197c40fc130e977603f9abedbde7bc1b30687ec9ec80eda340",
+      "nativeSize": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "69f37413caf45d0586189b940d2000d0df51595d7f77ccee0a2be94e5b648907",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q11",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "ce589971512ede5b6ebdc743932e787d84dc143784e3899a4e9262160bc527e3",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q12",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "26d0555cd5c0faf6e98fb74cabc7ea1b3a52e7ac83bb3919256f71130db3d13a",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q21",
+      "purpose": "redraw",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "3fcc13ee1f622737b3ac02147c240ef3c6d58a82886f2c755ebb1990362e8cd7",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "purpose": "targeted-removal-correction",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "d2a8774f6947839837bcddae142fd148fbd604c5a6d8bed6cfc51b6eca359f06",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "id": "q22",
+      "purpose": "targeted-removal-correction",
+      "pixelsIdentical": true,
+      "decodedRGBsha256": "ed1d3bfa984c524a2701b952d20dc79f3e195d88da5144ffccbd97e78fcdace5",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "allNativePixelsPreserved": true,
+  "bothChunksHaveFourParts": true,
+  "bothExports2048": true,
+  "qaPassedClaimed": false,
+  "outputBytes": 59178187,
+  "limitBytes": 60000000,
+  "withinSizeBudget": true
+}
