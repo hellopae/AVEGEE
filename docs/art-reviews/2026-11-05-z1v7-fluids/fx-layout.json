@@ -1,0 +1,2343 @@
+{
+  "schemaVersion": 4,
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "note": "v7 fluid asset pack. Masks contain alpha at map 2x. Spatial registration only. Eight painted frames.",
+  "bandWorld": 12,
+  "pieces": [
+    {
+      "id": "icefall-summit--icefall-summit",
+      "group": "waterfall",
+      "sheet": "icefall-summit.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        4320,
+        160,
+        250,
+        340
+      ],
+      "mask": "icefall-summit",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-summit-12.webp",
+        "sources/icefall-summit-12.webp",
+        "sources/icefall-summit-34.webp",
+        "sources/icefall-summit-34.webp",
+        "sources/icefall-summit-56.webp",
+        "sources/icefall-summit-56.webp",
+        "sources/icefall-summit-78.webp",
+        "sources/icefall-summit-78.webp"
+      ],
+      "drawnShape": "multi-level cyan cataract wrapping around pointed snow-capped rock spires, main tall narrow curtain centered, preserve every occluding rock"
+    },
+    {
+      "id": "icefall-upper-tree--icefall-upper-tree",
+      "group": "waterfall",
+      "sheet": "icefall-upper-tree.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        4070,
+        485,
+        180,
+        150
+      ],
+      "mask": "icefall-upper-tree",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-upper-tree-12.webp",
+        "sources/icefall-upper-tree-12.webp",
+        "sources/icefall-upper-tree-34.webp",
+        "sources/icefall-upper-tree-34.webp",
+        "sources/icefall-upper-tree-56.webp",
+        "sources/icefall-upper-tree-56.webp",
+        "sources/icefall-upper-tree-78.webp",
+        "sources/icefall-upper-tree-78.webp"
+      ],
+      "drawnShape": "small cyan cascades partly hidden behind snowy tree branches, preserve foreground branches as exact occluders"
+    },
+    {
+      "id": "icefall-upper-right--icefall-upper-right",
+      "group": "waterfall",
+      "sheet": "icefall-upper-right.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3920,
+        625,
+        180,
+        210
+      ],
+      "mask": "icefall-upper-right",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-upper-right-12.webp",
+        "sources/icefall-upper-right-12.webp",
+        "sources/icefall-upper-right-34.webp",
+        "sources/icefall-upper-right-34.webp",
+        "sources/icefall-upper-right-56.webp",
+        "sources/icefall-upper-right-56.webp",
+        "sources/icefall-upper-right-78.webp",
+        "sources/icefall-upper-right-78.webp"
+      ],
+      "drawnShape": "single slanting narrow waterfall from upper right toward lower left, with a pointed rock in front of the base"
+    },
+    {
+      "id": "icefall-east-cliff--icefall-east-cliff",
+      "group": "waterfall",
+      "sheet": "icefall-east-cliff.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        4570,
+        1030,
+        160,
+        200
+      ],
+      "mask": "icefall-east-cliff",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-east-cliff-12.webp",
+        "sources/icefall-east-cliff-12.webp",
+        "sources/icefall-east-cliff-34.webp",
+        "sources/icefall-east-cliff-34.webp",
+        "sources/icefall-east-cliff-56.webp",
+        "sources/icefall-east-cliff-56.webp",
+        "sources/icefall-east-cliff-78.webp",
+        "sources/icefall-east-cliff-78.webp"
+      ],
+      "drawnShape": "thin vertical cyan water strands descending between cliff spires into a narrow horizontal pool, rocks occlude most of the cliff",
+      "replacesOff": "waterfall-ice-east-cliff--waterfall-ice-east-cliff"
+    },
+    {
+      "id": "icefall-center-bridge--icefall-center-bridge",
+      "group": "waterfall",
+      "sheet": "icefall-center-bridge.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3040,
+        1290,
+        210,
+        200
+      ],
+      "mask": "icefall-center-bridge",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-center-bridge-12.webp",
+        "sources/icefall-center-bridge-12.webp",
+        "sources/icefall-center-bridge-34.webp",
+        "sources/icefall-center-bridge-34.webp",
+        "sources/icefall-center-bridge-56.webp",
+        "sources/icefall-center-bridge-56.webp",
+        "sources/icefall-center-bridge-78.webp",
+        "sources/icefall-center-bridge-78.webp"
+      ],
+      "drawnShape": "short curved waterfall below a wooden bridge, two curving strands form a V and converge in white base spray"
+    },
+    {
+      "id": "icefall-lower-inlet--icefall-lower-inlet",
+      "group": "waterfall",
+      "sheet": "icefall-lower-inlet.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3660,
+        1505,
+        130,
+        160
+      ],
+      "mask": "icefall-lower-inlet",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-lower-inlet-12.webp",
+        "sources/icefall-lower-inlet-12.webp",
+        "sources/icefall-lower-inlet-34.webp",
+        "sources/icefall-lower-inlet-34.webp",
+        "sources/icefall-lower-inlet-56.webp",
+        "sources/icefall-lower-inlet-56.webp",
+        "sources/icefall-lower-inlet-78.webp",
+        "sources/icefall-lower-inlet-78.webp"
+      ],
+      "drawnShape": "small narrow cyan vertical waterfall descending from a flat channel, yellow tree occludes its lower right"
+    },
+    {
+      "id": "icefall-lower-1--icefall-lower-1",
+      "group": "waterfall",
+      "sheet": "icefall-lower-1.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3805,
+        1554,
+        160,
+        189
+      ],
+      "mask": "icefall-lower-1",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-lower-1-a.webp",
+        "sources/icefall-lower-1-a.webp",
+        "sources/icefall-lower-1-a.webp",
+        "sources/icefall-lower-1-a.webp",
+        "sources/icefall-lower-1-56.webp",
+        "sources/icefall-lower-1-56.webp",
+        "sources/icefall-lower-1-78.webp",
+        "sources/icefall-lower-1-78.webp"
+      ],
+      "drawnShape": "single curved upper lip with a straight narrow cyan curtain and white base splashes"
+    },
+    {
+      "id": "icefall-lower-2--icefall-lower-2",
+      "group": "waterfall",
+      "sheet": "icefall-lower-2.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3830,
+        1695,
+        170,
+        160
+      ],
+      "mask": "icefall-lower-2",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-lower-2-12.webp",
+        "sources/icefall-lower-2-12.webp",
+        "sources/icefall-lower-2-34.webp",
+        "sources/icefall-lower-2-34.webp",
+        "sources/icefall-lower-2-56.webp",
+        "sources/icefall-lower-2-56.webp",
+        "sources/icefall-lower-2-78.webp",
+        "sources/icefall-lower-2-78.webp"
+      ],
+      "drawnShape": "short curved cyan curtain between ledges, slight diagonal rightward bend with white pool at base"
+    },
+    {
+      "id": "icefall-lower-3--icefall-lower-3",
+      "group": "waterfall",
+      "sheet": "icefall-lower-3.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        3820,
+        1800,
+        230,
+        185
+      ],
+      "mask": "icefall-lower-3",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-lower-3-12.webp",
+        "sources/icefall-lower-3-12.webp",
+        "sources/icefall-lower-3-34.webp",
+        "sources/icefall-lower-3-34.webp",
+        "sources/icefall-lower-3-56.webp",
+        "sources/icefall-lower-3-56.webp",
+        "sources/icefall-lower-3-78.webp",
+        "sources/icefall-lower-3-78.webp"
+      ],
+      "drawnShape": "broad curtain split by a central protruding dark mossy stone pillar, separate left and right falling streams, white impact spray"
+    },
+    {
+      "id": "icefall-mouth--icefall-mouth",
+      "group": "waterfall",
+      "sheet": "icefall-mouth.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.48,
+      "maskRectPx": [
+        4020,
+        2005,
+        265,
+        180
+      ],
+      "mask": "icefall-mouth",
+      "frameW": 800,
+      "frameH": 800,
+      "kind": "rect",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "sources": [
+        "sources/icefall-mouth-12.webp",
+        "sources/icefall-mouth-12.webp",
+        "sources/icefall-mouth-34.webp",
+        "sources/icefall-mouth-34.webp",
+        "sources/icefall-mouth-56.webp",
+        "sources/icefall-mouth-56.webp",
+        "sources/icefall-mouth-78.webp",
+        "sources/icefall-mouth-78.webp"
+      ],
+      "drawnShape": "two diagonal waterfall curtains beneath a wooden bridge, left face flows down-right and right face down-left, foreground vegetation and rocks occlude the base",
+      "replacesOff": "waterfall-ice-mouth--waterfall-ice-mouth"
+    },
+    {
+      "id": "lavafall-volcano--lavafall-volcano",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        723,
+        73,
+        100,
+        165
+      ],
+      "mask": "lavafall-volcano",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-upper-left--lavafall-upper-left",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        455,
+        246,
+        60,
+        99
+      ],
+      "mask": "lavafall-upper-left",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-upper-step--lavafall-upper-step",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        1121,
+        423,
+        104,
+        165
+      ],
+      "mask": "lavafall-upper-step",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-west--lavafall-west",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        188,
+        734,
+        114,
+        169
+      ],
+      "mask": "lavafall-west",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-bridge--lavafall-bridge",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        1117,
+        865,
+        114,
+        156
+      ],
+      "mask": "lavafall-bridge",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-middle--lavafall-middle",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        1100,
+        1282,
+        123,
+        178
+      ],
+      "mask": "lavafall-middle",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-lower-step--lavafall-lower-step",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        1346,
+        1681,
+        135,
+        159
+      ],
+      "mask": "lavafall-lower-step",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lavafall-mouth--lavafall-mouth",
+      "group": "lavafall",
+      "sheet": "lavafall.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.62,
+      "maskRectPx": [
+        1203,
+        2033,
+        86,
+        157
+      ],
+      "mask": "lavafall-mouth",
+      "frameW": 314,
+      "frameH": 534,
+      "kind": "rect",
+      "reusedFrom": "fluids-HD",
+      "shapeDecision": "Same terrace lip and vertical curtain visible in v7 survey; reuse painted flow, retrace support."
+    },
+    {
+      "id": "lava-flat-upper--lava-flat-upper",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "mask": "lava-flat-upper",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "lava-flat-west--lava-flat-west",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        30,
+        490,
+        520,
+        560
+      ],
+      "mask": "lava-flat-west",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "lava-flat-middle--lava-flat-middle",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "mask": "lava-flat-middle",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "lava-flat-lower--lava-flat-lower",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "mask": "lava-flat-lower",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "lava-flat-left-bottom--lava-flat-left-bottom",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        160,
+        1180,
+        330,
+        220
+      ],
+      "mask": "lava-flat-left-bottom",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "lava-flat-southwest--lava-flat-southwest",
+      "group": "lava",
+      "sheet": "lava-surface.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        215,
+        1700,
+        405,
+        390
+      ],
+      "mask": "lava-flat-southwest",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "ice-stream-flat-upper--ice-stream-flat-upper",
+      "group": "ice",
+      "sheet": "ice-stream.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        3650,
+        660,
+        650,
+        250
+      ],
+      "mask": "ice-stream-flat-upper",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "ice-stream-flat-central--ice-stream-flat-central",
+      "group": "ice",
+      "sheet": "ice-stream.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        3070,
+        925,
+        630,
+        360
+      ],
+      "mask": "ice-stream-flat-central",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        -0.83,
+        0.56
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "ice-stream-flat-lower--ice-stream-flat-lower",
+      "group": "ice",
+      "sheet": "ice-stream.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        3020,
+        1440,
+        1110,
+        570
+      ],
+      "mask": "ice-stream-flat-lower",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "ice-stream-flat-east--ice-stream-flat-east",
+      "group": "ice",
+      "sheet": "ice-stream.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        4650,
+        1175,
+        265,
+        170
+      ],
+      "mask": "ice-stream-flat-east",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "ice-stream-flat-mouth--ice-stream-flat-mouth",
+      "group": "ice",
+      "sheet": "ice-stream.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        4140,
+        2135,
+        140,
+        55
+      ],
+      "mask": "ice-stream-flat-mouth",
+      "frameW": 627,
+      "frameH": 627,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "spirit-river-west--spirit-river-west",
+      "group": "river",
+      "sheet": "spirit-river.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        0,
+        2110,
+        2370,
+        440
+      ],
+      "mask": "spirit-river-west",
+      "frameW": 384,
+      "frameH": 192,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "spirit-river-east--spirit-river-east",
+      "group": "river",
+      "sheet": "spirit-river.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "overlay",
+      "opacity": 0.36,
+      "maskRectPx": [
+        2560,
+        2110,
+        2355,
+        450
+      ],
+      "mask": "spirit-river-east",
+      "frameW": 384,
+      "frameH": 192,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        100
+      ],
+      "flowDir": [
+        1,
+        0.25
+      ],
+      "flowDirPolicy": "Direction describes painted channel. Runtime v5 does not consume flowDir; tile remains world-anchored."
+    },
+    {
+      "id": "shore-band-ice--shore-band-ice",
+      "group": "bank-foam",
+      "sheet": "bank-foam-ice.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.32,
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "mask": "shore-band-ice",
+      "frameW": 384,
+      "frameH": 96,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "maxDistanceWorld": 11.719226856561546
+    },
+    {
+      "id": "shore-band-spirit--shore-band-spirit",
+      "group": "bank-foam",
+      "sheet": "bank-foam-spirit.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.32,
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "mask": "shore-band-spirit",
+      "frameW": 384,
+      "frameH": 96,
+      "kind": "tile",
+      "tileWorld": [
+        150,
+        37.5
+      ],
+      "maxDistanceWorld": 11.719226856561546
+    },
+    {
+      "id": "river-foam--shore",
+      "group": "foam",
+      "sheet": "river-foam.webp",
+      "frames": 8,
+      "fps": 8,
+      "blend": "normal",
+      "opacity": 0.82,
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "mask": "shore-band-spirit",
+      "frameW": 320,
+      "frameH": 128,
+      "kind": "spots",
+      "mode": "swell",
+      "spots": [
+        [
+          3168.3,
+          1777.5,
+          79.6,
+          31.8,
+          3.03,
+          0.411,
+          7.49,
+          -0.44,
+          -3.98
+        ],
+        [
+          3008.2,
+          1779.5,
+          66.8,
+          26.7,
+          -2.886,
+          0.255,
+          5.84,
+          1.01,
+          -3.87
+        ],
+        [
+          2891.2,
+          1759.8,
+          82.4,
+          33.0,
+          2.778,
+          0.855,
+          7.52,
+          -1.42,
+          -3.74
+        ],
+        [
+          2773.4,
+          1723.7,
+          56.7,
+          22.7,
+          -3.008,
+          0.702,
+          6.2,
+          0.53,
+          -3.96
+        ],
+        [
+          2657.6,
+          1720.7,
+          85.1,
+          34.0,
+          -2.998,
+          0.396,
+          4.88,
+          0.57,
+          -3.96
+        ],
+        [
+          2547.8,
+          1720.3,
+          65.2,
+          26.1,
+          -3.064,
+          0.726,
+          4.96,
+          0.31,
+          -3.99
+        ],
+        [
+          2489.2,
+          1720.5,
+          69.4,
+          27.8,
+          2.44,
+          0.868,
+          5.21,
+          -2.58,
+          -3.06
+        ],
+        [
+          2422.0,
+          1710.3,
+          69.2,
+          27.7,
+          2.452,
+          0.648,
+          5.8,
+          -2.54,
+          -3.09
+        ],
+        [
+          2330.9,
+          1749.1,
+          62.6,
+          25.1,
+          -3.123,
+          0.807,
+          5.21,
+          0.07,
+          -4.0
+        ],
+        [
+          2273.7,
+          1830.0,
+          83.4,
+          33.4,
+          -3.056,
+          0.769,
+          4.82,
+          0.34,
+          -3.99
+        ],
+        [
+          2172.5,
+          1774.3,
+          75.6,
+          30.2,
+          -1.666,
+          0.597,
+          4.78,
+          3.98,
+          -0.38
+        ],
+        [
+          2115.9,
+          1758.3,
+          80.4,
+          32.1,
+          -3.112,
+          0.218,
+          6.25,
+          0.12,
+          -4.0
+        ],
+        [
+          3747.4,
+          1753.8,
+          76.4,
+          30.6,
+          -2.93,
+          0.3,
+          6.94,
+          0.84,
+          -3.91
+        ],
+        [
+          3627.2,
+          1720.6,
+          86.8,
+          34.7,
+          -2.69,
+          0.516,
+          6.58,
+          1.75,
+          -3.6
+        ],
+        [
+          3535.5,
+          1706.5,
+          69.3,
+          27.7,
+          2.692,
+          0.051,
+          7.55,
+          -1.74,
+          -3.6
+        ],
+        [
+          3458.2,
+          1720.7,
+          80.6,
+          32.2,
+          -2.802,
+          0.771,
+          6.63,
+          1.33,
+          -3.77
+        ],
+        [
+          1127.6,
+          1703.7,
+          70.6,
+          28.2,
+          2.546,
+          0.775,
+          6.64,
+          -2.24,
+          -3.31
+        ],
+        [
+          793.8,
+          1769.1,
+          58.2,
+          23.3,
+          -2.571,
+          0.044,
+          5.04,
+          2.16,
+          -3.37
+        ],
+        [
+          672.2,
+          1760.6,
+          64.2,
+          25.7,
+          3.088,
+          0.06,
+          6.06,
+          -0.21,
+          -3.99
+        ],
+        [
+          611.6,
+          1756.7,
+          64.4,
+          25.8,
+          2.875,
+          0.046,
+          6.77,
+          -1.05,
+          -3.86
+        ],
+        [
+          538.0,
+          1758.5,
+          79.1,
+          31.7,
+          3.135,
+          0.674,
+          4.89,
+          -0.03,
+          -4.0
+        ],
+        [
+          421.4,
+          1740.7,
+          70.3,
+          28.1,
+          -2.395,
+          0.174,
+          4.92,
+          2.72,
+          -2.94
+        ],
+        [
+          383.9,
+          1732.9,
+          68.4,
+          27.4,
+          -3.124,
+          0.851,
+          7.63,
+          0.07,
+          -4.0
+        ],
+        [
+          281.2,
+          1755.3,
+          81.6,
+          32.7,
+          2.736,
+          0.927,
+          5.29,
+          -1.58,
+          -3.68
+        ],
+        [
+          157.5,
+          1762.7,
+          83.3,
+          33.3,
+          2.978,
+          0.062,
+          6.5,
+          -0.65,
+          -3.95
+        ],
+        [
+          1840.4,
+          1747.3,
+          82.0,
+          32.8,
+          -2.647,
+          0.462,
+          6.23,
+          1.9,
+          -3.52
+        ],
+        [
+          1713.4,
+          1749.1,
+          63.9,
+          25.6,
+          3.079,
+          0.479,
+          4.85,
+          -0.25,
+          -3.99
+        ],
+        [
+          1644.9,
+          1748.5,
+          58.2,
+          23.3,
+          -2.785,
+          0.281,
+          5.54,
+          1.4,
+          -3.75
+        ],
+        [
+          1508.5,
+          1751.9,
+          75.9,
+          30.4,
+          -2.918,
+          0.002,
+          7.73,
+          0.89,
+          -3.9
+        ],
+        [
+          1429.8,
+          1670.8,
+          71.8,
+          28.7,
+          -2.206,
+          0.713,
+          6.75,
+          3.22,
+          -2.37
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "lava-bubble--lava-upper",
+      "group": "lava-bubble",
+      "sheet": "lava-bubble.webp",
+      "frames": 8,
+      "fps": 9,
+      "blend": "normal",
+      "opacity": 0.95,
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "mask": "lava-flat-upper",
+      "frameW": 144,
+      "frameH": 144,
+      "kind": "spots",
+      "mode": "once",
+      "spots": [
+        [
+          334.9,
+          276.5,
+          50.6,
+          50.6,
+          0,
+          0.956,
+          4.56,
+          0,
+          0
+        ],
+        [
+          807.9,
+          276.1,
+          58.9,
+          58.9,
+          0,
+          0.219,
+          5.33,
+          0,
+          0
+        ],
+        [
+          835.9,
+          293.1,
+          42.3,
+          42.3,
+          0,
+          0.414,
+          8.31,
+          0,
+          0
+        ],
+        [
+          869.3,
+          301.5,
+          46.7,
+          46.7,
+          0,
+          0.322,
+          8.36,
+          0,
+          0
+        ],
+        [
+          898.6,
+          522.3,
+          55.4,
+          55.4,
+          0,
+          0.215,
+          5.38,
+          0,
+          0
+        ],
+        [
+          964.3,
+          567.7,
+          46.3,
+          46.3,
+          0,
+          0.077,
+          5.0,
+          0,
+          0
+        ]
+      ],
+      "fx2": true,
+      "win": 0.42
+    },
+    {
+      "id": "lava-bubble--lava-left",
+      "group": "lava-bubble",
+      "sheet": "lava-bubble.webp",
+      "frames": 8,
+      "fps": 9,
+      "blend": "normal",
+      "opacity": 0.95,
+      "maskRectPx": [
+        30,
+        490,
+        520,
+        560
+      ],
+      "mask": "lava-flat-west",
+      "frameW": 144,
+      "frameH": 144,
+      "kind": "spots",
+      "mode": "once",
+      "spots": [
+        [
+          158.5,
+          719.5,
+          49.5,
+          49.5,
+          0,
+          0.128,
+          6.49,
+          0,
+          0
+        ]
+      ],
+      "fx2": true,
+      "win": 0.42
+    },
+    {
+      "id": "lava-bubble--lava-middle",
+      "group": "lava-bubble",
+      "sheet": "lava-bubble.webp",
+      "frames": 8,
+      "fps": 9,
+      "blend": "normal",
+      "opacity": 0.95,
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "mask": "lava-flat-middle",
+      "frameW": 144,
+      "frameH": 144,
+      "kind": "spots",
+      "mode": "once",
+      "spots": [
+        [
+          912.0,
+          808.1,
+          50.6,
+          50.6,
+          0,
+          0.361,
+          7.98,
+          0,
+          0
+        ],
+        [
+          1043.3,
+          879.5,
+          51.1,
+          51.1,
+          0,
+          0.704,
+          8.3,
+          0,
+          0
+        ],
+        [
+          1008.9,
+          894.5,
+          59.5,
+          59.5,
+          0,
+          0.817,
+          8.79,
+          0,
+          0
+        ],
+        [
+          1067.3,
+          915.8,
+          47.0,
+          47.0,
+          0,
+          0.233,
+          5.32,
+          0,
+          0
+        ]
+      ],
+      "fx2": true,
+      "win": 0.42
+    },
+    {
+      "id": "lava-bubble--lava-lower",
+      "group": "lava-bubble",
+      "sheet": "lava-bubble.webp",
+      "frames": 8,
+      "fps": 9,
+      "blend": "normal",
+      "opacity": 0.95,
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "mask": "lava-flat-lower",
+      "frameW": 144,
+      "frameH": 144,
+      "kind": "spots",
+      "mode": "once",
+      "spots": [
+        [
+          1013.8,
+          1260.7,
+          56.9,
+          56.9,
+          0,
+          0.489,
+          8.52,
+          0,
+          0
+        ],
+        [
+          1044.5,
+          1286.0,
+          51.1,
+          51.1,
+          0,
+          0.535,
+          8.1,
+          0,
+          0
+        ],
+        [
+          1097.3,
+          1458.8,
+          52.2,
+          52.2,
+          0,
+          0.863,
+          7.95,
+          0,
+          0
+        ],
+        [
+          1071.0,
+          1466.7,
+          52.8,
+          52.8,
+          0,
+          0.07,
+          8.57,
+          0,
+          0
+        ],
+        [
+          1073.5,
+          1526.7,
+          53.3,
+          53.3,
+          0,
+          0.954,
+          6.72,
+          0,
+          0
+        ],
+        [
+          1168.6,
+          1550.8,
+          50.7,
+          50.7,
+          0,
+          0.677,
+          5.53,
+          0,
+          0
+        ],
+        [
+          1215.5,
+          1570.8,
+          55.6,
+          55.6,
+          0,
+          0.901,
+          8.69,
+          0,
+          0
+        ],
+        [
+          1234.2,
+          1605.7,
+          45.4,
+          45.4,
+          0,
+          0.278,
+          8.9,
+          0,
+          0
+        ],
+        [
+          1279.3,
+          1618.8,
+          42.4,
+          42.4,
+          0,
+          0.342,
+          8.21,
+          0,
+          0
+        ],
+        [
+          933.1,
+          1675.4,
+          47.0,
+          47.0,
+          0,
+          0.025,
+          6.85,
+          0,
+          0
+        ]
+      ],
+      "fx2": true,
+      "win": 0.42
+    },
+    {
+      "id": "lava-steam--lava-upper",
+      "group": "lava-steam",
+      "sheet": "lava-steam.webp",
+      "frames": 6,
+      "fps": 4,
+      "blend": "normal",
+      "opacity": 0.5,
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "mask": "lava-flat-upper",
+      "frameW": 256,
+      "frameH": 120,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          833.1,
+          288.2,
+          86.1,
+          40.3,
+          0,
+          0.473,
+          11.43,
+          0,
+          -26.0
+        ],
+        [
+          1034.6,
+          544.0,
+          84.4,
+          39.6,
+          0,
+          0.281,
+          9.05,
+          0,
+          -26.0
+        ],
+        [
+          1054.8,
+          528.5,
+          82.4,
+          38.6,
+          0,
+          0.538,
+          8.54,
+          0,
+          -26.0
+        ],
+        [
+          941.2,
+          577.5,
+          84.4,
+          39.6,
+          0,
+          0.575,
+          9.72,
+          0,
+          -26.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "lava-steam--lava-middle",
+      "group": "lava-steam",
+      "sheet": "lava-steam.webp",
+      "frames": 6,
+      "fps": 4,
+      "blend": "normal",
+      "opacity": 0.5,
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "mask": "lava-flat-middle",
+      "frameW": 256,
+      "frameH": 120,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          989.1,
+          841.9,
+          75.9,
+          35.6,
+          0,
+          0.31,
+          11.98,
+          0,
+          -26.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "lava-steam--lava-lower",
+      "group": "lava-steam",
+      "sheet": "lava-steam.webp",
+      "frames": 6,
+      "fps": 4,
+      "blend": "normal",
+      "opacity": 0.5,
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "mask": "lava-flat-lower",
+      "frameW": 256,
+      "frameH": 120,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          1079.0,
+          1470.1,
+          78.6,
+          36.9,
+          0,
+          0.537,
+          10.17,
+          0,
+          -26.0
+        ],
+        [
+          1138.7,
+          1505.8,
+          89.3,
+          41.9,
+          0,
+          0.081,
+          10.28,
+          0,
+          -26.0
+        ],
+        [
+          1222.2,
+          1562.2,
+          82.3,
+          38.6,
+          0,
+          0.666,
+          9.34,
+          0,
+          -26.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "lava-steam--lava-left-bottom",
+      "group": "lava-steam",
+      "sheet": "lava-steam.webp",
+      "frames": 6,
+      "fps": 4,
+      "blend": "normal",
+      "opacity": 0.5,
+      "maskRectPx": [
+        160,
+        1180,
+        330,
+        220
+      ],
+      "mask": "lava-flat-left-bottom",
+      "frameW": 256,
+      "frameH": 120,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          219.3,
+          932.2,
+          79.1,
+          37.1,
+          0,
+          0.604,
+          10.61,
+          0,
+          -26.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "lava-steam--lava-southwest",
+      "group": "lava-steam",
+      "sheet": "lava-steam.webp",
+      "frames": 6,
+      "fps": 4,
+      "blend": "normal",
+      "opacity": 0.5,
+      "maskRectPx": [
+        215,
+        1700,
+        405,
+        390
+      ],
+      "mask": "lava-flat-southwest",
+      "frameW": 256,
+      "frameH": 120,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          310.6,
+          1417.8,
+          88.6,
+          41.5,
+          0,
+          0.023,
+          10.66,
+          0,
+          -26.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "embers--lava-upper",
+      "group": "embers",
+      "sheet": "embers-ash.webp",
+      "frames": 8,
+      "fps": 7,
+      "blend": "screen",
+      "opacity": 0.9,
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "mask": "lava-flat-upper",
+      "frameW": 128,
+      "frameH": 160,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          634.3,
+          202.1,
+          41.6,
+          52.0,
+          0,
+          0.721,
+          5.74,
+          6.0,
+          -34.0
+        ],
+        [
+          848.2,
+          299.9,
+          52.5,
+          65.6,
+          0,
+          0.841,
+          6.18,
+          6.0,
+          -34.0
+        ],
+        [
+          933.4,
+          312.7,
+          48.4,
+          60.6,
+          0,
+          0.079,
+          8.35,
+          6.0,
+          -34.0
+        ],
+        [
+          958.2,
+          596.8,
+          52.4,
+          65.4,
+          0,
+          0.18,
+          5.55,
+          6.0,
+          -34.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "embers--lava-middle",
+      "group": "embers",
+      "sheet": "embers-ash.webp",
+      "frames": 8,
+      "fps": 7,
+      "blend": "screen",
+      "opacity": 0.9,
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "mask": "lava-flat-middle",
+      "frameW": 128,
+      "frameH": 160,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          977.2,
+          846.1,
+          51.3,
+          64.1,
+          0,
+          0.039,
+          7.78,
+          6.0,
+          -34.0
+        ],
+        [
+          1058.3,
+          906.2,
+          58.5,
+          73.1,
+          0,
+          0.467,
+          6.17,
+          6.0,
+          -34.0
+        ]
+      ],
+      "fx2": true
+    },
+    {
+      "id": "embers--lava-lower",
+      "group": "embers",
+      "sheet": "embers-ash.webp",
+      "frames": 8,
+      "fps": 7,
+      "blend": "screen",
+      "opacity": 0.9,
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "mask": "lava-flat-lower",
+      "frameW": 128,
+      "frameH": 160,
+      "kind": "spots",
+      "mode": "rise",
+      "spots": [
+        [
+          1060.9,
+          1301.3,
+          45.6,
+          57.0,
+          0,
+          0.495,
+          6.19,
+          6.0,
+          -34.0
+        ],
+        [
+          1069.3,
+          1485.4,
+          49.5,
+          61.9,
+          0,
+          0.965,
+          6.3,
+          6.0,
+          -34.0
+        ],
+        [
+          1157.5,
+          1549.3,
+          54.9,
+          68.6,
+          0,
+          0.365,
+          5.43,
+          6.0,
+          -34.0
+        ],
+        [
+          926.4,
+          1675.5,
+          56.2,
+          70.2,
+          0,
+          0.658,
+          5.34,
+          6.0,
+          -34.0
+        ]
+      ],
+      "fx2": true
+    }
+  ],
+  "sheets": [
+    "bank-foam-ice.webp",
+    "bank-foam-spirit.webp",
+    "embers-ash.webp",
+    "ice-stream.webp",
+    "icefall-center-bridge.webp",
+    "icefall-east-cliff.webp",
+    "icefall-lower-1.webp",
+    "icefall-lower-2.webp",
+    "icefall-lower-3.webp",
+    "icefall-lower-inlet.webp",
+    "icefall-mouth.webp",
+    "icefall-summit.webp",
+    "icefall-upper-right.webp",
+    "icefall-upper-tree.webp",
+    "lava-bubble.webp",
+    "lava-steam.webp",
+    "lava-surface.webp",
+    "lavafall.webp",
+    "river-foam.webp",
+    "spirit-river.webp"
+  ]
+}

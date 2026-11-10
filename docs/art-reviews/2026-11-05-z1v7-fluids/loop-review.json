@@ -1,0 +1,526 @@
+{
+  "method": "RGB mean absolute change inside spatial mask, all 8 transitions including 8->1, before encoding",
+  "frames": [
+    {
+      "id": "icefall-summit",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        9.596292495727539,
+        27.18143653869629,
+        8.17889404296875,
+        29.810653686523438,
+        15.179524421691895,
+        32.21323013305664,
+        7.884754180908203,
+        31.11775779724121
+      ],
+      "wrapToMedianRatio": 1.4691714773108895,
+      "largestToMedianRatio": 1.520892321738371,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-upper-tree",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        10.374716758728027,
+        76.39734649658203,
+        11.749715805053711,
+        41.253929138183594,
+        15.812542915344238,
+        71.45718383789062,
+        8.352897644042969,
+        45.12895965576172
+      ],
+      "wrapToMedianRatio": 1.5816278116310105,
+      "largestToMedianRatio": 2.6774862278124365,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-upper-right",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        23.48450469970703,
+        35.4160270690918,
+        18.487394332885742,
+        35.98688888549805,
+        15.1260986328125,
+        37.47028350830078,
+        31.41656494140625,
+        44.821678161621094
+      ],
+      "wrapToMedianRatio": 1.3413119800764428,
+      "largestToMedianRatio": 1.3413119800764428,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-east-cliff",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        31.079551696777344,
+        30.741737365722656,
+        24.243303298950195,
+        39.47333908081055,
+        31.74015998840332,
+        45.62574005126953,
+        39.48836898803711,
+        40.809268951416016
+      ],
+      "wrapToMedianRatio": 1.1461104842426755,
+      "largestToMedianRatio": 1.2813789702125136,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-center-bridge",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        24.802967071533203,
+        37.66636276245117,
+        33.646976470947266,
+        36.48243713378906,
+        25.491058349609375,
+        35.66775894165039,
+        27.507171630859375,
+        27.11773109436035
+      ],
+      "wrapToMedianRatio": 0.8868648141158303,
+      "largestToMedianRatio": 1.231849806811009,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-lower-inlet",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        40.822906494140625,
+        43.474178314208984,
+        28.808996200561523,
+        48.85732650756836,
+        28.793344497680664,
+        48.88666534423828,
+        34.01515579223633,
+        45.07603454589844
+      ],
+      "wrapToMedianRatio": 1.069456545226429,
+      "largestToMedianRatio": 1.1598660963278309,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-lower-1",
+      "nativeFrameSizes": [
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        34.37503433227539,
+        33.823402404785156,
+        29.215330123901367,
+        57.63085174560547,
+        15.25810432434082,
+        67.66494750976562,
+        39.267494201660156,
+        56.7436637878418
+      ],
+      "wrapToMedianRatio": 1.5410569114745563,
+      "largestToMedianRatio": 1.8376595387700365,
+      "native800AllFrames": false,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-lower-2",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        25.619112014770508,
+        39.1184196472168,
+        32.72791290283203,
+        34.852664947509766,
+        30.97911834716797,
+        45.620304107666016,
+        37.59834671020508,
+        36.86161422729492
+      ],
+      "wrapToMedianRatio": 1.0280132395235866,
+      "largestToMedianRatio": 1.2722795134415505,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-lower-3",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        32.20760726928711,
+        51.653812408447266,
+        20.025741577148438,
+        41.30123519897461,
+        34.98878860473633,
+        37.43941116333008,
+        29.344253540039062,
+        44.74826431274414
+      ],
+      "wrapToMedianRatio": 1.2356586096586555,
+      "largestToMedianRatio": 1.426345334382353,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    },
+    {
+      "id": "icefall-mouth",
+      "nativeFrameSizes": [
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ],
+        [
+          887,
+          887
+        ]
+      ],
+      "distinctFrames": 8,
+      "maskedAdjacentRgbMAE": [
+        28.600582122802734,
+        71.21772003173828,
+        33.89244842529297,
+        58.07617950439453,
+        38.528282165527344,
+        61.02383804321289,
+        38.26710891723633,
+        68.31796264648438
+      ],
+      "wrapToMedianRatio": 1.4143852460958417,
+      "largestToMedianRatio": 1.4744188581077133,
+      "native800AllFrames": true,
+      "temporalSynthesis": false
+    }
+  ],
+  "visualPlaybackReviewed": false
+}
