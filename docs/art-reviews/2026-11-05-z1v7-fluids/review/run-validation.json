@@ -1,0 +1,103 @@
+{
+  "run": "20261111T115315Z-11a68ec7",
+  "commands": [
+    {
+      "command": "measure_references.py --reference review/run-start-liquid-reference.json --output review/run-start-rechecked-liquid-reference-result.json --proof-mask __none__",
+      "exitCode": 0,
+      "evidence": "review/run-start-rechecked-liquid-reference-result.json"
+    },
+    {
+      "command": "measure_references.py --proof-mask lavafall-west --proof-mask lavafall-bridge --proof-mask spirit-river-east --proof-mask spirit-river-west --proof-mask spirit-river --proof-mask shore-band-spirit --proof-mask shore-band",
+      "exitCode": 0,
+      "evidence": "review/liquid-reference-result.json"
+    },
+    {
+      "command": "render_offline.py --pairs lavafall-west lavafall-bridge lava-flat-west lava-flat-middle --clips owner-3-lava",
+      "exitCode": 0,
+      "evidence": "review/offline-render-report.json"
+    },
+    {
+      "command": "audit_particle_coverage.py",
+      "exitCode": 0,
+      "evidence": "review/particle-coverage-result.json"
+    },
+    {
+      "command": "measure_shore.py",
+      "exitCode": 0,
+      "evidence": "review/shore-ground-result.json"
+    },
+    {
+      "command": "check_loop_metrics.py --update-mask lavafall-bridge --update-mask lavafall-west",
+      "exitCode": 0,
+      "evidence": "loop-review.json"
+    },
+    {
+      "command": "check_reference_union.py",
+      "exitCode": 0,
+      "evidence": "review/reference-union-regression.json",
+      "assertions": 9
+    },
+    {
+      "command": "check_shore_regression.py",
+      "exitCode": 0,
+      "evidence": "review/shore-regression-check.json",
+      "assertions": 4
+    },
+    {
+      "command": "repeat ground contour registration and targeted mask repairs; compare 104 asset/reference hashes",
+      "exitCode": 0,
+      "evidence": "review/run2-idempotence.json"
+    },
+    {
+      "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/check_loop_metrics.py",
+      "exitCode": 0
+    },
+    {
+      "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/audit_current_continuation.py",
+      "exitCode": 0
+    },
+    {
+      "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/verify_delivery.py",
+      "exitCode": 1
+    },
+    {
+      "command": "check_pack.py",
+      "exitCode": 0,
+      "evidence": "review/scope-check.json + delivery-size.json",
+      "scope": "File/schema/link/byte-budget/git-diff checks; not art acceptance"
+    }
+  ],
+  "allTechnicalChecks": true,
+  "failedTechnicalChecks": [],
+  "clipDecode": [
+    {
+      "file": "review/clips/owner-2-ice-bridge.mp4",
+      "durationSeconds": 12.0,
+      "decodedFrames": 288,
+      "decoderExitCode": 0
+    },
+    {
+      "file": "review/clips/owner-3-lava.mp4",
+      "durationSeconds": 12.0,
+      "decodedFrames": 288,
+      "decoderExitCode": 0
+    },
+    {
+      "file": "review/clips/owner-4-central-stream.mp4",
+      "durationSeconds": 12.0,
+      "decodedFrames": 288,
+      "decoderExitCode": 0
+    }
+  ],
+  "acceptanceComplete": false,
+  "acceptanceFailures": [
+    "Semantic <=3% leakage upper bounds remain unverified for 23 of 37 masks",
+    "Global coverage of every painted waterfall and smooth visual playback remain unverified",
+    "Actual shore-bank references are partial; full bank-distance verification remains incomplete",
+    "All 12 particle pieces sampled at 288 times; partial ground-only flat/falling labels leave flat-only placement unresolved"
+  ],
+  "gameTestsRun": false,
+  "visualPlaybackReviewed": false,
+  "humanQA": false,
+  "limitation": "Exit codes reflect observed commands. Verification exit 1 is retained because art acceptance is incomplete. Metadata and regression checks are not QA approval."
+}

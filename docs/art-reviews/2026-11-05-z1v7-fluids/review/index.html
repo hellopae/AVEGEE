@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Z1 v7 fluids — หลักฐานออฟไลน์</title>
+<style>
+body{margin:24px auto;padding:0 16px;max-width:1100px;background:#17171e;color:#eee;font:16px/1.6 system-ui}a{color:#99dcff}img,video{max-width:100%;height:auto}figure{margin:24px 0}strong{color:#ffbd8b}table{border-collapse:collapse}td,th{border:1px solid #666;padding:8px;text-align:left}
+</style>
+<h1>Z1 v7 fluids — หลักฐานออฟไลน์</h1>
+<p><strong>incomplete</strong> — summit ขั้นล่างครอบครบตัวอย่าง 528 พิกเซลและมี 8 เฟรมเดิมขยับแล้ว แต่ reference ของขอบ mask, ฝั่งจริง และ particles ยังไม่ครบทั้งแพ็ก ไม่รับรอง QA หรือการรวมเข้าเกม</p>
+<p><a href="../README.md">README และข้อจำกัด</a> · <a href="delivery-verification.json">ผลตรวจไฟล์/เฟรม/คลิป</a> · <a href="independent-mask-review.json">ผลตรวจ mask</a> · <a href="../queue-check.json">รายการงานค้าง</a></p>
+<h2>ผลแก้รอบ 071117Z</h2>
+<p>ตัด mask บนผิวหิน east-cliff 1,332 พิกเซล และลาวาช่วงล่าง 4,460 พิกเซล พร้อม aggregate ขอบเขตบนของ east-cliff เป็น 0.5024% ส่วนทั้งชุดยืนยัน ≤3% ได้ 9/37 masks</p>
+<p><a href="solid-repair-result.json">ผล repair</a> · <a href="per-mask-handoff.json">งานราย mask</a> · <a href="shore-regression-check.json">ผลตรวจ union/clipping</a></p>
+<figure><a href="boundary/icefall-east-cliff-solid-repair.webp"><img src="boundary/icefall-east-cliff-solid-repair.webp" alt="ผิวหินข้างน้ำตกก่อนและหลังตัด mask"></a></figure>
+<figure><a href="boundary/lava-flat-lower-solid-repair.webp"><img src="boundary/lava-flat-lower-solid-repair.webp" alt="ผิวหินสะท้อนแสงลาวาก่อนและหลังตัด mask"></a></figure>
+<h2>ผลแก้ mask และข้อที่ยังไม่ครบ</h2>
+<figure><a href="boundary/icefall-upper-tree-repair.webp"><img src="boundary/icefall-upper-tree-repair.webp" alt="พื้น v7 เทียบ mask upper-tree ก่อนและหลังตัด"></a><figcaption>พื้น | mask ก่อน | mask หลัง — upper-tree 6,578 → 668 พิกเซล ตัดหิน กิ่ง และแอ่งราบ ผล regression ไม่ใช่การยืนยัน % นอกของเหลวครบภาพ</figcaption></figure>
+<figure><a href="boundary/ice-stream-flat-central-shore-repair.webp"><img src="boundary/ice-stream-flat-central-shore-repair.webp" alt="แถบฝั่งลำธารกลางก่อนและหลังตัด"></a><figcaption>เลือกแถบฟองใกล้แนวฝั่งที่ตรวจจากพื้น บางช่วงเท่านั้น ตัวอย่างผิดเดิม 121 พิกเซลถูกเอาออก แต่ยังไม่มีการสำรวจฝั่งจริงครบ</figcaption></figure>
+<figure><a href="boundary/summit-lower-registration-current.webp"><img src="boundary/summit-lower-registration-current.webp" alt="น้ำตกขั้นล่าง summit หลังแก้ registration"></a><figcaption>พื้น | mask ปัจจุบัน | effect — เพิ่ม 2,360 พิกเซลจากเฟรมเดิม ตัวอย่าง 528/528 มี effective alpha ครบทุกเฟรม</figcaption></figure>
+<figure><a href="boundary/summit-lower-eight-phases.jpg"><img src="boundary/summit-lower-eight-phases.jpg" alt="เฟรมเดิม 8 เฟรมที่ขั้นล่าง summit"></a><figcaption>8 เฟรมวาดเดิม ไม่มีการเลื่อนหรือเฟดภาพนิ่งสร้างเฟรม; ความลื่นยังต้องตรวจเพิ่มเติม</figcaption></figure>
+<p><a href="summit-registration-result.json">ผล registration</a> · <a href="liquid-reference-result.json">ผลแยกทุก mask 9/37 มีขอบเขตบน ≤3%</a> · <a href="shore-ground-result.json">ระยะถึงฝั่งจริง (บางช่วง)</a> · <a href="particle-coverage-result.json">footprints ลาวาครบ 12 ชิ้น</a></p>
+<p><a href="mask-correction-result.json">ผลตัด mask และ hash</a> · <a href="coverage-witness-result.json">ผลตรวจ coverage</a> · <a href="../loop-review.json">loop review ปัจจุบัน</a> · <a href="boundary/icefall-summit-repair.webp">summit ก่อน/หลัง</a> · <a href="boundary/icefall-east-cliff-repair.webp">east-cliff ก่อน/หลัง</a></p>
+<h2>คลิป 12 วินาที</h2>
+<p>เรนเดอร์ออฟไลน์ 24 fps; decode ครบมุมละ 288 เฟรม มุมประมาณจาก landmark ไม่ใช่ภาพเกมจริง ไม่มี runtime cross-fade</p>
+<figure><video controls preload="metadata" src="clips/owner-2-ice-bridge.mp4" poster="owner-2-ice-bridge-sequence.jpg"></video><figcaption>ภาพคุณเป้ 2 — สะพานน้ำแข็ง · <a href="owner-reference/2-18.09.37.jpg">ภาพอ้างอิง</a></figcaption></figure>
+<figure><video controls preload="metadata" src="clips/owner-3-lava.mp4" poster="owner-3-lava-sequence.jpg"></video><figcaption>ภาพคุณเป้ 3 — ลาวา · <a href="owner-reference/3-18.11.44.jpg">ภาพอ้างอิง</a></figcaption></figure>
+<figure><video controls preload="metadata" src="clips/owner-4-central-stream.mp4" poster="owner-4-central-stream-sequence.jpg"></video><figcaption>ภาพคุณเป้ 4 — ลำธารกลาง · <a href="owner-reference/4-18.09.11.jpg">ภาพอ้างอิง</a></figcaption></figure>
+<h2>ภาพเทียบครบ 31 จุด</h2>
+<p>ซ้าย = พื้น v7; ขวา = พื้น + effect เวลา 0.375 วินาที แต่ละจุดเปิดแยกได้ใน <code>pairs/</code>; ภาพพื้น/overlay สำหรับตรวจ mask อยู่ใน <code>boundary/</code></p>
+<figure><a href="contact-icefalls.jpg"><img loading="lazy" src="contact-icefalls.jpg" alt="ภาพเทียบ 10 น้ำตกฟ้า"></a><figcaption>น้ำตกฟ้า 10 จุด</figcaption></figure>
+<figure><a href="contact-lavafalls.jpg"><img loading="lazy" src="contact-lavafalls.jpg" alt="ภาพเทียบ 8 ลาวาตก"></a><figcaption>ลาวาตก 8 จุด</figcaption></figure>
+<figure><a href="contact-streams.jpg"><img loading="lazy" src="contact-streams.jpg" alt="ภาพเทียบ 13 ผิวราบและลำธาร"></a><figcaption>ผิวราบและลำธาร 13 จุด</figcaption></figure>
+</html>

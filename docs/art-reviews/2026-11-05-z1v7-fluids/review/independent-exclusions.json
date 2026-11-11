@@ -1,0 +1,55 @@
+{
+  "method": "Visual labels of solid-surface interiors on the assembled v7 ground. These polygons were not read from mask-annotations.json or used to construct the production masks. Conservative exclusion interiors only: this is a leakage LOWER BOUND, not a complete semantic segmentation.",
+  "coordinates": "Local native 2x pixels, origin at maskRectPx top-left. Vertices refer to the ground image, not the generated animation.",
+  "thresholdPercent": 3,
+  "productionMasksModified": false,
+  "regions": [
+    {
+      "mask": "icefall-summit",
+      "label": "snow-capped faceted solid spire, central foreground",
+      "polygon": [[133, 227], [147, 217], [159, 231], [166, 266], [170, 294], [187, 328], [180, 334], [153, 305], [138, 276], [131, 248]],
+      "evidence": "review/boundary/icefall-summit-detail-0.jpg"
+    },
+    {
+      "mask": "icefall-summit",
+      "label": "solid face left of central spire, below snow cap",
+      "polygon": [[113, 268], [120, 279], [128, 312], [133, 345], [126, 360], [115, 340], [107, 305]],
+      "evidence": "review/boundary/icefall-summit.webp"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "label": "snow-covered tree branch, upper diagonal foreground",
+      "polygon": [[146, 58], [156, 60], [174, 71], [186, 84], [183, 90], [165, 77], [152, 72], [141, 75], [135, 70]],
+      "evidence": "review/boundary/icefall-upper-tree-detail-0.jpg"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "label": "snow-covered diagonal branch in front of the water",
+      "polygon": [[176, 117], [185, 111], [196, 108], [201, 115], [191, 124], [182, 130], [173, 131]],
+      "evidence": "review/boundary/icefall-upper-tree-detail-0.jpg"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "label": "faceted blue solid foreground spire, left interior",
+      "polygon": [[139, 147], [147, 153], [143, 164], [134, 179], [124, 187], [124, 174], [132, 158]],
+      "evidence": "review/boundary/icefall-upper-tree-detail-0.jpg"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "label": "solid foreground face to the right of tall grey spire",
+      "polygon": [[201, 181], [209, 186], [212, 203], [219, 221], [219, 233], [211, 222], [206, 203]],
+      "evidence": "review/boundary/icefall-upper-tree-detail-0.jpg"
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "label": "faceted snow-capped solid spire in front of falling water; left face interior",
+      "polygon": [[151, 142], [157, 147], [159, 182], [167, 222], [171, 238], [160, 226], [148, 199], [143, 171]],
+      "evidence": "review/boundary/icefall-east-cliff-detail-0.jpg"
+    }
+  ],
+  "limitations": [
+    "Painted blue ice and water can be ambiguous. Labels deliberately avoid boundary pixels, foam and spray.",
+    "An unlabelled pixel is not asserted to be liquid. Zero counted exclusions does not establish zero leakage.",
+    "This is a second visual review by the current agent, not an independent human review."
+  ]
+}

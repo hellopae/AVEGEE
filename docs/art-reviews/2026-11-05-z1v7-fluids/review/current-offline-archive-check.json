@@ -1,0 +1,438 @@
+{
+  "archive": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/runs/avegee-fluids-offline-review-20261111.tar.gz",
+  "archiveSha256": "83b0d6e172ce69d5a6d40cc13252c129e0d904029168bbf63a6b16c57971d28c",
+  "extractedWithinDeliveryThenRemovedDuplicate": true,
+  "entries": [
+    {
+      "path": "review/._clips",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._contact-icefalls.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._contact-lavafalls.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._contact-streams.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._offline-render-report.json",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._owner-2-ice-bridge-sequence.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._owner-3-lava-sequence.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._owner-4-central-stream-sequence.jpg",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/._pairs",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/clips/._owner-2-ice-bridge.mp4",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/clips/._owner-3-lava.mp4",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/clips/._owner-4-central-stream.mp4",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/clips/owner-2-ice-bridge.mp4",
+      "archiveSha256": "abaeb84150384c92c28f4d8976c8ff1788de4b569bafe0be0db1e7b7feb05c92",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/clips/owner-3-lava.mp4",
+      "archiveSha256": "b9eb1bbd479fc4018547a0ad3fbcef0f5ec9d06f348b5d8ef14e3ca2a4beeddb",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/clips/owner-4-central-stream.mp4",
+      "archiveSha256": "14d0857ce87fa4dae6573c851675db880b4cc72317770f54702eff8149b4f41c",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/contact-icefalls.jpg",
+      "archiveSha256": "9c9bdc8555be8fd41ef519171cfb28e71d90f1a6a4c80e5e5faee5dcb72cc9bf",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/contact-lavafalls.jpg",
+      "archiveSha256": "cb42e33b98c933aca50f2febabbe25f00249d4eac06fc652c8db3f53b6b169d2",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/contact-streams.jpg",
+      "archiveSha256": "7c1540ad18dd3f7bd32c479ca17ebcf6c9f4937780a61bb28efc960d3a258865",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/offline-render-report.json",
+      "archiveSha256": "dae64e28ce10a07a06dbfb45ccd5e57fc6785272f1adc18a959cf588f5fcb5e2",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/owner-2-ice-bridge-sequence.jpg",
+      "archiveSha256": "613dee3abaa2f5bee0f00248d278e927503c4e3296bdbfe4a5d0a233777ad27a",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/owner-3-lava-sequence.jpg",
+      "archiveSha256": "c3936b9e2aa2fe0fdf93c3077eeb73639da0194d179ee6cf815e44bf63322afc",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/owner-4-central-stream-sequence.jpg",
+      "archiveSha256": "142fb3e17ca065703194ad812bb86c392581dee607353df69b49fb796bd9e6fd",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-central.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-east.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-lower.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-mouth.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-upper.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-center-bridge.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-east-cliff.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-lower-1.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-lower-2.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-lower-3.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-lower-inlet.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-mouth.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-summit.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-upper-right.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._icefall-upper-tree.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-left-bottom.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-lower.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-middle.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-southwest.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-upper.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lava-flat-west.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-bridge.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-lower-step.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-middle.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-mouth.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-upper-left.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-upper-step.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-volcano.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._lavafall-west.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._spirit-river-east.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/._spirit-river-west.webp",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-central.webp",
+      "archiveSha256": "2beb60978836464bcb413f0bccdc8015867a09cb8f6cf11d5ff61d0d6d522c99",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-east.webp",
+      "archiveSha256": "a96ac62a7f07b1f957dad205e1d5ed37e5f71490f34986283cd2f42b2a84425c",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-lower.webp",
+      "archiveSha256": "89eafe0efc9c68ce6073955fb3e3f51bc1db33f3d96c4a05c93bd2b7ee5e46c9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-mouth.webp",
+      "archiveSha256": "eab5ea90ab4a9203c2bf716274b65aa1a8c797f20e6995e65e0c4343cf72626d",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-upper.webp",
+      "archiveSha256": "42478569ab5ea0124b9bebeb7b247ba98f48d241eb700ec1d2d51331a9be5e3a",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-center-bridge.webp",
+      "archiveSha256": "ff083ae767dc1a2649ca8f72c2db72a6d580206f6451a0b5da3654ca3ed3f470",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-east-cliff.webp",
+      "archiveSha256": "1027fe02f402078417f11b5ff95b3f8d4e114db68d12efee6625a1c136a49a7b",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-lower-1.webp",
+      "archiveSha256": "a2738ec10e7d7dd6ac570df5ee0b7a532a364cfc64154c7cd1ce56d6b5b55537",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-lower-2.webp",
+      "archiveSha256": "52c407f7c362b5df4037dfc0d83ee6f8653f7c959839fd89f58e60b2acc7a637",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-lower-3.webp",
+      "archiveSha256": "b96d3918b5a0c133070e485cb34c477d6c6f99c1ee1f7c664c460b41e3f0e588",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-lower-inlet.webp",
+      "archiveSha256": "0898665741f0756f787c8865433fe3cdd7ccc5d77aaf275c904125e58dd5721e",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/icefall-mouth.webp",
+      "archiveSha256": "f6fb3a2ff4eb34c42bc5a9b3bfd163a23b29aec8b8d900efb3803138e8774936",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-summit.webp",
+      "archiveSha256": "0b13c0cd07a82cede73e753ea020d072044caa71f329fe1b428ed5f12b902f02",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-upper-right.webp",
+      "archiveSha256": "9f9edd28f210b4230df0df99193bfca82743d82f74d49e922ba8add1f818a3db",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/icefall-upper-tree.webp",
+      "archiveSha256": "655f718fe49e9aada1927c621354a498ea3b8c216aa8ab731337e76c8ef09cf3",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/lava-flat-left-bottom.webp",
+      "archiveSha256": "99a042ce8c97486ffc4ebe045f9a92f169a0ce209e4293c1f7aae3e89f976a00",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lava-flat-lower.webp",
+      "archiveSha256": "504c2d542d79c67017143912b0adcf7b00dff3d8768f5c5855d953ca1df5dee6",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/lava-flat-middle.webp",
+      "archiveSha256": "f83bbe4f3ddeb767a4be9ed4f3fa8ff4bb7fdbfb710944d3151382c593304323",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lava-flat-southwest.webp",
+      "archiveSha256": "2c83ae1d6bbbc4841c5778aeb860414ad3dd67d93cac0c552c030b56db176b07",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lava-flat-upper.webp",
+      "archiveSha256": "7ff921879182eac0b9304bc5d8011cf7642d7e1af62152d016ac0a2c6ea3a96f",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lava-flat-west.webp",
+      "archiveSha256": "657ac3927b05b1a41e6fa4271a64b743a06ec39fe06b0f219eff3129998023bd",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-bridge.webp",
+      "archiveSha256": "4a02cbae6d8baeb8daad3ada4a6dd7d06f9ef1ed8b16aa2c8220f8eaa867b47a",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-lower-step.webp",
+      "archiveSha256": "474f450c20c9a66a98f24b0d788d802d6c42501997141eaca35b77a3379fd520",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-middle.webp",
+      "archiveSha256": "42dabfdc61b150cbe1850441999a2bb642a3c557693581d7ab3d7c91a612bb6b",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-mouth.webp",
+      "archiveSha256": "808fd4cf4ec6b9cd05741f7d1b736127851e72e12d74f3259b0c1a40b3d2a71d",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-upper-left.webp",
+      "archiveSha256": "ecd422914ee386d34fdcfdd9fcc901f638ab75e9a4e615eef944fdf7d9484e25",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-upper-step.webp",
+      "archiveSha256": "ea634bf1c82dbf575ee4922285e956ea844204507263554e0a7e20a7c0100a74",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-volcano.webp",
+      "archiveSha256": "6d4a74ffcbc480ce60a3dfbc6747e835971108f61e6a5956cf2397f28398aef8",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/lavafall-west.webp",
+      "archiveSha256": "31377f0516c580bb8211542d98d30f2678a99eb48c6f2f7d15ea08663b7e1125",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "review/pairs/spirit-river-east.webp",
+      "archiveSha256": "529551fd0f544adca7cae6e24f72c91ceeaefe603d6575c6db18bee989052a7e",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "review/pairs/spirit-river-west.webp",
+      "archiveSha256": "e77431ede18051da6e571cbd66329d905dfe25a3df2563286b5220182356f7b2",
+      "matchesLatestCopiedOutput": true
+    },
+    {
+      "path": "scripts/._render_offline.py",
+      "archiveSha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "matchesLatestCopiedOutput": false
+    },
+    {
+      "path": "scripts/render_offline.py",
+      "archiveSha256": "0dd697ed530a27343d5d2dfecb2c1db871ea3fe3d69f47bd955c02ad0250aad0",
+      "matchesLatestCopiedOutput": false
+    }
+  ],
+  "method": "Archive physically extracted after copying latest run. Newer continuation outputs retained, including summit registration and this run solid repairs. Distinct hashes are recorded, never overwritten by older archive files."
+}

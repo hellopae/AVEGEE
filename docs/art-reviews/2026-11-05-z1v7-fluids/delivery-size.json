@@ -1,0 +1,14 @@
+{
+  "files": 543,
+  "totalBytesIncludingThisReport": 78891879,
+  "limitBytes": 80000000,
+  "withinLimit": true,
+  "definition": "Sum of regular file sizes in this folder, including manifest, scope check and this report; decimal MB.",
+  "productionMasksModifiedThisContinuation": true,
+  "productionSheetsModifiedThisContinuation": false,
+  "sourceFramesAndTerrainModifiedThisContinuation": false,
+  "changedProductionAssetsComparedToLatestRun": [
+    "masks/lavafall-bridge.webp",
+    "masks/lavafall-west.webp"
+  ]
+}

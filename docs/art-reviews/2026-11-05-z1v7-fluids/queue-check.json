@@ -1,0 +1,32 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "review/20261111T115315Z-copy-receipt.json — คัดลอก 507 ไฟล์จาก worktree 20261111T112241Z-d8cb32ab และตรวจ hash ครบก่อนแก้",
+    "review/run-start-rechecked-liquid-reference-result.json + review/reference-progress.json — baseline วัดซ้ำตรงเดิม ยืนยันขอบเขตบน ≤3% เพิ่ม 12→14/37 masks; bridge 0%, west 1.279341%",
+    "review/ground-reference-groups.json + scripts/continue_ground_references.py — เพิ่ม ground-only 5 กลุ่มจาก v7; รวม reference ที่ใช้ ground ร่วมกันด้วย union และคง unknown",
+    "review/solid-repair-result.json — bridge ตัด 2284 pixels, west ตัด 1052 pixels; ไม่มี pixels เพิ่ม; witness solid 702/135 เหลือ 0/0",
+    "review/current-preservation.json — 12 masks ที่ผ่านเดิมและ reference-support hash คงเดิม; summit mask/sheet/sources และหลักฐาน 528/528 ครบ 8 เฟรมคงเดิม",
+    "review/liquid-reference-result.json — spirit-river upper bound 44.858454→12.421610%; shore-band-spirit 63.407320→41.541488%; ยังไม่ถึง 3%",
+    "review/shore-ground-result.json — ยืนยันระยะ ≤12 world: ice 2367/13960, spirit 8257/676567 pixels; ตัวเลขเท่าชุดล่าสุดที่รับต่อ",
+    "review/particle-coverage-result.json — ตรวจ 12 pieces ×288 samples; ยังมี unknown จึงยังยืนยัน flat-only ทั้งชุดไม่ได้",
+    "review/current-loop-check.json + loop-review.json — 18 falls ×8 effective phases; upper-tree largest/median 3.121828 และ wrap/median 1.909270; ยังไม่ยืนยัน smooth playback",
+    "review/current-render-dependencies.json + review/offline-render-report.json — refresh เฉพาะ 4 pairs, 2 contacts, owner-3 clip; เก็บ 27 pairs, 1 contact, 2 clips hash เดิม",
+    "review/run2-offline-archive-check.json — แตก archive ภายในโฟลเดอร์ส่งออก ตรวจ 42 ไฟล์แล้วลบสำเนาซ้ำ; เก็บหลักฐานล่าสุดที่ผ่านการ refresh",
+    "review/delivery-verification.json + review/run-validation.json — ผลคำสั่งจริงและ full clip decode แยกจาก acceptance; verifier คืน 1 ขณะเกณฑ์ยังไม่ครบ",
+    "README.md + generation-prompts*.json — เอกสารไทยและ prompts รับต่อ; ไม่มี generations ใหม่",
+    "delivery-size.json + delivery-manifest.json + review/scope-check.json — ขนาด byte จริงและขอบเขตไฟล์หลังตรวจรอบสุดท้าย"
+  ],
+  "remaining": [
+    "Reference-incomplete 23/37 masks: ดูรายชื่อและ largestUnknownComponents ใน review/per-mask-handoff.json; ไม่มี reference-missing ในชุดล่าสุดแล้ว แต่การมี reference ไม่ใช่การผ่านเกณฑ์",
+    "Ice-stream-flat central/east/lower/mouth/upper และ aggregate: เติม contours จาก ground-only โดยเฉพาะขอบหน้าผา ต้นไม้ และหินสะท้อนน้ำ",
+    "Summit: รักษาขั้นล่าง 528/528 ครบ 8 เฟรม; reference ของส่วนบนยังไม่ครบ ห้ามวาดขั้นล่างซ้ำ",
+    "Lava-flat upper/west/middle/lower/left-bottom/southwest และ aggregate: แยกผิวราบ ผิวตก และหินเรืองแสงจาก ground-only ให้ครบ; ไม่เติม unknown เป็น liquid ตามสี",
+    "Lavafall volcano/upper-left/mouth: ตรวจ lip, rock silhouettes และ receiving pool; เก็บ bridge/west และ 12 masks ที่ผ่านก่อนหน้าไว้",
+    "Spirit-river east/west/aggregate และ shore-band: ตรวจพื้นที่ระหว่าง envelope ใหม่กับฝั่งจริง รวมพืช หิน และ mist; คง unknown จนมีหลักฐาน",
+    "Shore distance: ยังไม่ยืนยัน ice 11593 และ spirit 668310 pixels ว่าอยู่ในน้ำและห่างฝั่งจริง ≤12 world",
+    "Lava particles: เติม independent flat/falling references ครบ footprints ทั้ง 12 pieces; left-bottom ยังมี 0 visible pixels ใน 288 samples",
+    "สำรวจ coverage น้ำตกที่วาดจริงทั่ว v7 ให้ครบ รวมรูปทรงและละอองฐานทุกจุด และความเข้ากันของลาวาตก HD ทั้ง 8 จุด",
+    "ตรวจ playback ทุกจุดและรอยต่อ 8→1 โดยเฉพาะ upper-tree; ตัวเลข MAE/8 distinct phases ยังพิสูจน์ความลื่นไม่ได้",
+    "เมื่อแก้ production เพิ่ม ให้คำนวณ actual-pixel render dependencies ใหม่ เรนเดอร์เฉพาะหลักฐานที่กระทบ และวัด/decode/hash/size/scope ใหม่"
+  ]
+}
