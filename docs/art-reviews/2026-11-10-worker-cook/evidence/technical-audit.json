@@ -1,0 +1,3702 @@
+{
+  "date": "2026-11-11",
+  "status": "incomplete",
+  "method": "Decode every GIF frame; measure every RGBA atlas cell; compare source hashes. Visual review is recorded separately.",
+  "runtime": {
+    "python": "3.13.3",
+    "pillow": "12.3.0"
+  },
+  "generation": {
+    "priorCalls": 16,
+    "briefLimit": 16,
+    "newCalls": 0,
+    "reason": "Prior evidence records 16/16 calls. Additional quota has not been confirmed."
+  },
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "footMeasurementCaveat": "Lower-band silhouette centre is diagnostic only: walking changes the planted foot and lifting the other foot changes the silhouette. It is not the draw anchor. Exact foot contact against the source is not certified.",
+  "checks": [
+    {
+      "name": "source th 1280x3840",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "source asia 1280x3840",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "source west 1280x3840",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "source cyberhell 1280x3840",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-right GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.3542,
+        1.3545,
+        1.3782,
+        1.3611,
+        1.3621,
+        1.3518,
+        1.3747,
+        1.3628
+      ]
+    },
+    {
+      "name": "th/cook/down-left RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/cook/down-left GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.3542,
+        1.3545,
+        1.3782,
+        1.3611,
+        1.3621,
+        1.3518,
+        1.3747,
+        1.3628
+      ]
+    },
+    {
+      "name": "th/carry/side RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.37,
+        1.3729,
+        1.3608,
+        1.3824,
+        1.3881,
+        1.4235,
+        1.3817,
+        1.3891
+      ]
+    },
+    {
+      "name": "th/carry/side-left RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/side-left GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.37,
+        1.3729,
+        1.3608,
+        1.3824,
+        1.3881,
+        1.4235,
+        1.3817,
+        1.3891
+      ]
+    },
+    {
+      "name": "th/carry/down RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/down GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.4093,
+        1.418,
+        1.4145,
+        1.4534,
+        1.471,
+        1.4642,
+        1.4543,
+        1.5015
+      ]
+    },
+    {
+      "name": "th/carry/up RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "th/carry/up GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.3305,
+        1.3444,
+        1.3188,
+        1.3224,
+        1.3725,
+        1.3751,
+        1.3753,
+        1.3855
+      ]
+    },
+    {
+      "name": "asia/cook/down-right RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-right GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.301,
+        1.3163,
+        1.305,
+        1.3012,
+        1.3083,
+        1.3562,
+        1.3511,
+        1.3245
+      ]
+    },
+    {
+      "name": "asia/cook/down-left RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "asia/cook/down-left GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.301,
+        1.3163,
+        1.305,
+        1.3012,
+        1.3083,
+        1.3562,
+        1.3511,
+        1.3245
+      ]
+    },
+    {
+      "name": "west/cook/down-right RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-right GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.2782,
+        1.3019,
+        1.311,
+        1.2878,
+        1.3203,
+        1.3215,
+        1.3592,
+        1.3212
+      ]
+    },
+    {
+      "name": "west/cook/down-left RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "west/cook/down-left GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.2782,
+        1.3019,
+        1.311,
+        1.2878,
+        1.3203,
+        1.3215,
+        1.3592,
+        1.3212
+      ]
+    },
+    {
+      "name": "cyberhell/cook/down-right RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-right GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.4051,
+        1.3779,
+        1.3966,
+        1.3789,
+        1.401,
+        1.4174,
+        1.4352,
+        1.4072
+      ]
+    },
+    {
+      "name": "cyberhell/cook/down-left RGBA and layout",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left manifest",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left eight distinct frames",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left clear top and side",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left opaque foot baseline y319",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left no detached pixels alpha>40",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left GIF frame count and loop",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left GIF one second",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "cyberhell/cook/down-left GIF matches atlas within quantization",
+      "satisfied": true,
+      "detail": [
+        1.4051,
+        1.3779,
+        1.3966,
+        1.3789,
+        1.401,
+        1.4174,
+        1.4352,
+        1.4072
+      ]
+    },
+    {
+      "name": "preview/worker-asia-cook-down-left.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-asia-cook-down-right.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-cyberhell-cook-down-left.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-cyberhell-cook-down-right.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-carry-down.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-carry-side-left.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-carry-side.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-carry-up.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-cook-down-left.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-th-cook-down-right.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-west-cook-down-left.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "preview/worker-west-cook-down-right.gif artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "worker-asia-cook-v1.webp artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "worker-cyberhell-cook-v1.webp artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "worker-th-carry-v1.webp artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "worker-th-cook-v1.webp artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "worker-west-cook-v1.webp artwork preserved byte-for-byte",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "four cook zones two directions each",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "TH carry direction set",
+      "satisfied": true,
+      "detail": null
+    },
+    {
+      "name": "package below 30 MB before report",
+      "satisfied": true,
+      "detail": null
+    }
+  ],
+  "rows": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46943
+        },
+        {
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46666
+        },
+        {
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 47087
+        },
+        {
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46003
+        },
+        {
+          "alphaBounds": [
+            44,
+            14,
+            283,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45076
+        },
+        {
+          "alphaBounds": [
+            44,
+            14,
+            282,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45003
+        },
+        {
+          "alphaBounds": [
+            40,
+            14,
+            281,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46056
+        },
+        {
+          "alphaBounds": [
+            43,
+            14,
+            284,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46779
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.3739,
+        9.5024,
+        8.082,
+        17.8251,
+        8.958,
+        16.5509,
+        17.066,
+        19.3741
+      ],
+      "seam8to1Difference": 19.3741,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.3542,
+        1.3545,
+        1.3782,
+        1.3611,
+        1.3621,
+        1.3518,
+        1.3747,
+        1.3628
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46943
+        },
+        {
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46666
+        },
+        {
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 47087
+        },
+        {
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46003
+        },
+        {
+          "alphaBounds": [
+            37,
+            14,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45076
+        },
+        {
+          "alphaBounds": [
+            38,
+            14,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45003
+        },
+        {
+          "alphaBounds": [
+            39,
+            14,
+            280,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46056
+        },
+        {
+          "alphaBounds": [
+            36,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46779
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.3739,
+        9.5024,
+        8.082,
+        17.8251,
+        8.958,
+        16.5509,
+        17.066,
+        19.3741
+      ],
+      "seam8to1Difference": 19.3741,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.3542,
+        1.3545,
+        1.3782,
+        1.3611,
+        1.3621,
+        1.3518,
+        1.3747,
+        1.3628
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            69,
+            14,
+            240,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32770
+        },
+        {
+          "alphaBounds": [
+            78,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 151.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32442
+        },
+        {
+          "alphaBounds": [
+            74,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30754
+        },
+        {
+          "alphaBounds": [
+            72,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33635
+        },
+        {
+          "alphaBounds": [
+            68,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33248
+        },
+        {
+          "alphaBounds": [
+            74,
+            14,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34254
+        },
+        {
+          "alphaBounds": [
+            82,
+            14,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 31311
+        },
+        {
+          "alphaBounds": [
+            64,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33189
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        29.6434,
+        18.4786,
+        21.7828,
+        24.5733,
+        28.3831,
+        25.9089,
+        34.5949,
+        17.639
+      ],
+      "seam8to1Difference": 17.639,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.37,
+        1.3729,
+        1.3608,
+        1.3824,
+        1.3881,
+        1.4235,
+        1.3817,
+        1.3891
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            80,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32770
+        },
+        {
+          "alphaBounds": [
+            69,
+            14,
+            242,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 168.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32442
+        },
+        {
+          "alphaBounds": [
+            73,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30754
+        },
+        {
+          "alphaBounds": [
+            73,
+            14,
+            248,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33635
+        },
+        {
+          "alphaBounds": [
+            76,
+            14,
+            252,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33248
+        },
+        {
+          "alphaBounds": [
+            64,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34254
+        },
+        {
+          "alphaBounds": [
+            62,
+            14,
+            238,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 31311
+        },
+        {
+          "alphaBounds": [
+            76,
+            14,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33189
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        29.6434,
+        18.4786,
+        21.7828,
+        24.5733,
+        28.3831,
+        25.9089,
+        34.5949,
+        17.639
+      ],
+      "seam8to1Difference": 17.639,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.37,
+        1.3729,
+        1.3608,
+        1.3824,
+        1.3881,
+        1.4235,
+        1.3817,
+        1.3891
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            82,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 31235
+        },
+        {
+          "alphaBounds": [
+            82,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32633
+        },
+        {
+          "alphaBounds": [
+            74,
+            14,
+            243,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 31799
+        },
+        {
+          "alphaBounds": [
+            70,
+            14,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34885
+        },
+        {
+          "alphaBounds": [
+            78,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32200
+        },
+        {
+          "alphaBounds": [
+            79,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32465
+        },
+        {
+          "alphaBounds": [
+            79,
+            14,
+            243,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 156.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 31531
+        },
+        {
+          "alphaBounds": [
+            73,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 164.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34748
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        15.9717,
+        21.7849,
+        21.8668,
+        19.8267,
+        11.8674,
+        15.4499,
+        22.0433,
+        24.2877
+      ],
+      "seam8to1Difference": 24.2877,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.4093,
+        1.418,
+        1.4145,
+        1.4534,
+        1.471,
+        1.4642,
+        1.4543,
+        1.5015
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            77,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30537
+        },
+        {
+          "alphaBounds": [
+            78,
+            14,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32810
+        },
+        {
+          "alphaBounds": [
+            73,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 165.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30594
+        },
+        {
+          "alphaBounds": [
+            77,
+            14,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 167.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30034
+        },
+        {
+          "alphaBounds": [
+            80,
+            14,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30414
+        },
+        {
+          "alphaBounds": [
+            79,
+            14,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32809
+        },
+        {
+          "alphaBounds": [
+            78,
+            14,
+            248,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30894
+        },
+        {
+          "alphaBounds": [
+            78,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 150.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 30166
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        19.199,
+        23.2123,
+        15.1766,
+        14.8076,
+        19.1866,
+        18.3653,
+        13.9566,
+        11.0808
+      ],
+      "seam8to1Difference": 11.0808,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.3305,
+        1.3444,
+        1.3188,
+        1.3224,
+        1.3725,
+        1.3751,
+        1.3753,
+        1.3855
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 164.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37126
+        },
+        {
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 164.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36900
+        },
+        {
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 164.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36705
+        },
+        {
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 164.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36179
+        },
+        {
+          "alphaBounds": [
+            65,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 165.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36177
+        },
+        {
+          "alphaBounds": [
+            66,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 165.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36293
+        },
+        {
+          "alphaBounds": [
+            66,
+            17,
+            267,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 165.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36647
+        },
+        {
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 165.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37188
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.9215,
+        7.8216,
+        7.277,
+        8.8805,
+        8.6308,
+        10.0187,
+        12.0484,
+        11.0582
+      ],
+      "seam8to1Difference": 11.0582,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.301,
+        1.3163,
+        1.305,
+        1.3012,
+        1.3083,
+        1.3562,
+        1.3511,
+        1.3245
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37126
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36900
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36705
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36179
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36177
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36293
+        },
+        {
+          "alphaBounds": [
+            53,
+            17,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 153.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36647
+        },
+        {
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37188
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.9215,
+        7.8216,
+        7.277,
+        8.8805,
+        8.6308,
+        10.0187,
+        12.0484,
+        11.0582
+      ],
+      "seam8to1Difference": 11.0582,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.301,
+        1.3163,
+        1.305,
+        1.3012,
+        1.3083,
+        1.3562,
+        1.3511,
+        1.3245
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            62,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38389
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38043
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            252,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38891
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37148
+        },
+        {
+          "alphaBounds": [
+            61,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37443
+        },
+        {
+          "alphaBounds": [
+            60,
+            15,
+            235,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37321
+        },
+        {
+          "alphaBounds": [
+            60,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 39374
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            264,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 39680
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.8759,
+        6.8451,
+        8.2826,
+        9.237,
+        9.7928,
+        14.5583,
+        18.5553,
+        14.241
+      ],
+      "seam8to1Difference": 14.241,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.2782,
+        1.3019,
+        1.311,
+        1.2878,
+        1.3203,
+        1.3215,
+        1.3592,
+        1.3212
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            62,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38389
+        },
+        {
+          "alphaBounds": [
+            70,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38043
+        },
+        {
+          "alphaBounds": [
+            68,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 38891
+        },
+        {
+          "alphaBounds": [
+            84,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37148
+        },
+        {
+          "alphaBounds": [
+            84,
+            15,
+            259,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37443
+        },
+        {
+          "alphaBounds": [
+            85,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37321
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 39374
+        },
+        {
+          "alphaBounds": [
+            56,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 39680
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        6.8759,
+        6.8451,
+        8.2826,
+        9.237,
+        9.7928,
+        14.5583,
+        18.5553,
+        14.241
+      ],
+      "seam8to1Difference": 14.241,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.2782,
+        1.3019,
+        1.311,
+        1.2878,
+        1.3203,
+        1.3215,
+        1.3592,
+        1.3212
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            70,
+            15,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33956
+        },
+        {
+          "alphaBounds": [
+            61,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33088
+        },
+        {
+          "alphaBounds": [
+            70,
+            15,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34233
+        },
+        {
+          "alphaBounds": [
+            63,
+            15,
+            237,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32419
+        },
+        {
+          "alphaBounds": [
+            71,
+            15,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32421
+        },
+        {
+          "alphaBounds": [
+            60,
+            15,
+            235,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32555
+        },
+        {
+          "alphaBounds": [
+            70,
+            15,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34545
+        },
+        {
+          "alphaBounds": [
+            62,
+            15,
+            239,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34744
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        19.0607,
+        19.072,
+        16.714,
+        15.9381,
+        19.5641,
+        24.5833,
+        23.8426,
+        21.5151
+      ],
+      "seam8to1Difference": 21.5151,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.4051,
+        1.3779,
+        1.3966,
+        1.3789,
+        1.401,
+        1.4174,
+        1.4352,
+        1.4072
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "alphaBounds": [
+            66,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33956
+        },
+        {
+          "alphaBounds": [
+            84,
+            15,
+            259,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33088
+        },
+        {
+          "alphaBounds": [
+            75,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34233
+        },
+        {
+          "alphaBounds": [
+            83,
+            15,
+            257,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32419
+        },
+        {
+          "alphaBounds": [
+            75,
+            15,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32421
+        },
+        {
+          "alphaBounds": [
+            85,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 32555
+        },
+        {
+          "alphaBounds": [
+            74,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34545
+        },
+        {
+          "alphaBounds": [
+            81,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34744
+        }
+      ],
+      "compositedMeanAbsoluteDifference": [
+        19.0607,
+        19.072,
+        16.714,
+        15.9381,
+        19.5641,
+        24.5833,
+        23.8426,
+        21.5151
+      ],
+      "seam8to1Difference": 21.5151,
+      "gifDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ],
+      "gifPaletteMeanAbsoluteError": [
+        1.4051,
+        1.3779,
+        1.3966,
+        1.3789,
+        1.401,
+        1.4174,
+        1.4352,
+        1.4072
+      ],
+      "note": "Unique frames and difference metrics do not establish anatomical identity or smooth animation."
+    }
+  ],
+  "sourceRows": [
+    {
+      "zone": "th",
+      "dir": "idle",
+      "row": 0,
+      "metrics": [
+        {
+          "alphaBounds": [
+            110,
+            9,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 225.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 49608
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            304,
+            320
+          ],
+          "componentsAlphaAbove40": 2,
+          "detachedComponentPixels": 21,
+          "lowerBandCenterX": 203.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 49135
+        },
+        {
+          "alphaBounds": [
+            34,
+            16,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 178.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 47413
+        },
+        {
+          "alphaBounds": [
+            5,
+            9,
+            270,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 172.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48154
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "dir": "side",
+      "row": 1,
+      "metrics": [
+        {
+          "alphaBounds": [
+            89,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 4,
+          "detachedComponentPixels": 715,
+          "lowerBandCenterX": 225.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 54891
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 6,
+          "detachedComponentPixels": 1308,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 54922
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 4,
+          "detachedComponentPixels": 1708,
+          "lowerBandCenterX": 155.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 56864
+        },
+        {
+          "alphaBounds": [
+            9,
+            0,
+            308,
+            320
+          ],
+          "componentsAlphaAbove40": 3,
+          "detachedComponentPixels": 648,
+          "lowerBandCenterX": 197.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 53935
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "dir": "down",
+      "row": 4,
+      "metrics": [
+        {
+          "alphaBounds": [
+            21,
+            29,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 122.5,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 44152
+        },
+        {
+          "alphaBounds": [
+            28,
+            31,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 128.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41506
+        },
+        {
+          "alphaBounds": [
+            32,
+            28,
+            248,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 133.5,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 43034
+        },
+        {
+          "alphaBounds": [
+            22,
+            31,
+            242,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 133.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 42518
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "dir": "up",
+      "row": 5,
+      "metrics": [
+        {
+          "alphaBounds": [
+            56,
+            45,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 35222
+        },
+        {
+          "alphaBounds": [
+            63,
+            46,
+            265,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 33964
+        },
+        {
+          "alphaBounds": [
+            61,
+            44,
+            264,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34987
+        },
+        {
+          "alphaBounds": [
+            66,
+            45,
+            267,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 34271
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "dir": "idle",
+      "row": 0,
+      "metrics": [
+        {
+          "alphaBounds": [
+            28,
+            15,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 172.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48263
+        },
+        {
+          "alphaBounds": [
+            0,
+            15,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 163.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48515
+        },
+        {
+          "alphaBounds": [
+            1,
+            14,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 154.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48393
+        },
+        {
+          "alphaBounds": [
+            0,
+            14,
+            300,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 155.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46705
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "dir": "side",
+      "row": 1,
+      "metrics": [
+        {
+          "alphaBounds": [
+            79,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 2,
+          "detachedComponentPixels": 33,
+          "lowerBandCenterX": 194.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 56595
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 3,
+          "detachedComponentPixels": 58,
+          "lowerBandCenterX": 202.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 57344
+        },
+        {
+          "alphaBounds": [
+            5,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 2,
+          "detachedComponentPixels": 34,
+          "lowerBandCenterX": 188.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 57086
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            305,
+            320
+          ],
+          "componentsAlphaAbove40": 2,
+          "detachedComponentPixels": 32,
+          "lowerBandCenterX": 183.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 55757
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "dir": "down",
+      "row": 4,
+      "metrics": [
+        {
+          "alphaBounds": [
+            51,
+            8,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 155.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 44854
+        },
+        {
+          "alphaBounds": [
+            41,
+            9,
+            281,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.0,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 44680
+        },
+        {
+          "alphaBounds": [
+            38,
+            8,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 157.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46764
+        },
+        {
+          "alphaBounds": [
+            38,
+            9,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 43918
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "dir": "up",
+      "row": 5,
+      "metrics": [
+        {
+          "alphaBounds": [
+            58,
+            23,
+            271,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 156.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 37360
+        },
+        {
+          "alphaBounds": [
+            48,
+            24,
+            261,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 156.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 35906
+        },
+        {
+          "alphaBounds": [
+            53,
+            23,
+            267,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 36671
+        },
+        {
+          "alphaBounds": [
+            49,
+            24,
+            262,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 156.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 35854
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "dir": "idle",
+      "row": 0,
+      "metrics": [
+        {
+          "alphaBounds": [
+            0,
+            6,
+            298,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 191.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 54239
+        },
+        {
+          "alphaBounds": [
+            5,
+            11,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 177.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 53779
+        },
+        {
+          "alphaBounds": [
+            1,
+            14,
+            312,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 175.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 53294
+        },
+        {
+          "alphaBounds": [
+            1,
+            13,
+            304,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 170.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 53140
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "dir": "side",
+      "row": 1,
+      "metrics": [
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 3,
+          "detachedComponentPixels": 391,
+          "lowerBandCenterX": 218.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 59460
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 4,
+          "detachedComponentPixels": 465,
+          "lowerBandCenterX": 204.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 61153
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 4,
+          "detachedComponentPixels": 421,
+          "lowerBandCenterX": 198.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 60415
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            305,
+            320
+          ],
+          "componentsAlphaAbove40": 4,
+          "detachedComponentPixels": 370,
+          "lowerBandCenterX": 186.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 57746
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "dir": "down",
+      "row": 4,
+      "metrics": [
+        {
+          "alphaBounds": [
+            46,
+            12,
+            284,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 49289
+        },
+        {
+          "alphaBounds": [
+            48,
+            15,
+            286,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48116
+        },
+        {
+          "alphaBounds": [
+            40,
+            12,
+            279,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48973
+        },
+        {
+          "alphaBounds": [
+            35,
+            15,
+            273,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 158.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 48272
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "dir": "up",
+      "row": 5,
+      "metrics": [
+        {
+          "alphaBounds": [
+            41,
+            11,
+            264,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45732
+        },
+        {
+          "alphaBounds": [
+            45,
+            15,
+            281,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.5,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 45947
+        },
+        {
+          "alphaBounds": [
+            43,
+            13,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 318,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 47456
+        },
+        {
+          "alphaBounds": [
+            47,
+            12,
+            274,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 46401
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "dir": "idle",
+      "row": 0,
+      "metrics": [
+        {
+          "alphaBounds": [
+            23,
+            0,
+            318,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 195.5,
+          "bottomOccupiedPixelY": 314,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 52832
+        },
+        {
+          "alphaBounds": [
+            1,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 190.0,
+          "bottomOccupiedPixelY": 314,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 52412
+        },
+        {
+          "alphaBounds": [
+            1,
+            0,
+            312,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 178.0,
+          "bottomOccupiedPixelY": 314,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 53298
+        },
+        {
+          "alphaBounds": [
+            9,
+            7,
+            298,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 168.0,
+          "bottomOccupiedPixelY": 314,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 51244
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "dir": "side",
+      "row": 1,
+      "metrics": [
+        {
+          "alphaBounds": [
+            19,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 214.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 60374
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 212.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 59148
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            320,
+            320
+          ],
+          "componentsAlphaAbove40": 2,
+          "detachedComponentPixels": 149,
+          "lowerBandCenterX": 206.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": false,
+          "semiTransparentPixels": 58115
+        },
+        {
+          "alphaBounds": [
+            0,
+            0,
+            304,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 194.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 59590
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "dir": "down",
+      "row": 4,
+      "metrics": [
+        {
+          "alphaBounds": [
+            48,
+            14,
+            278,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 40950
+        },
+        {
+          "alphaBounds": [
+            63,
+            13,
+            293,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 160.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41297
+        },
+        {
+          "alphaBounds": [
+            45,
+            14,
+            275,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41431
+        },
+        {
+          "alphaBounds": [
+            62,
+            13,
+            292,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 159.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41114
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "dir": "up",
+      "row": 5,
+      "metrics": [
+        {
+          "alphaBounds": [
+            40,
+            23,
+            282,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 162.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 42372
+        },
+        {
+          "alphaBounds": [
+            44,
+            23,
+            286,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 161.5,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41528
+        },
+        {
+          "alphaBounds": [
+            46,
+            22,
+            288,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 163.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 42223
+        },
+        {
+          "alphaBounds": [
+            46,
+            23,
+            287,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "detachedComponentPixels": 0,
+          "lowerBandCenterX": 163.0,
+          "bottomOccupiedPixelY": 319,
+          "topAndSideClear": true,
+          "semiTransparentPixels": 41662
+        }
+      ]
+    }
+  ],
+  "preservation": [
+    {
+      "file": "preview/worker-asia-cook-down-left.gif",
+      "sha256": "816dd4635529b0224c111ac82c956e4bbbcbd8f6af7ff2d9bd5965e35c843222",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-asia-cook-down-right.gif",
+      "sha256": "d118e1de42de84acba6d0f16c85e961bf51f45485292011007a0ac62fd1aa329",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-cyberhell-cook-down-left.gif",
+      "sha256": "4704573c2e2ce2bde6a64f875df80b9d8a97f59b8a57f0a5468e23d14b5ec246",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-cyberhell-cook-down-right.gif",
+      "sha256": "8f173047973b7af4439f98857d77938b7266041b273a576cc36e8947781b8d6d",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-carry-down.gif",
+      "sha256": "6bd6d681f7a72c1b2a562e9e23ef5eb2f8af3baa4af755ed4df2b742d835ddcb",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-carry-side-left.gif",
+      "sha256": "1e5113e7f984c96ed3cffeba2b20f5b69e2c5d04978cde2c4b425aff177e7d56",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-carry-side.gif",
+      "sha256": "c914624031245710fb3fa33156800a1b115b7a36f3446d4ae20b1a803d8bb501",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-carry-up.gif",
+      "sha256": "eed0167c6278bf69b7d2023fc936a17bda1b003a42e8926e335ab57c95179796",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-cook-down-left.gif",
+      "sha256": "8ce4d2069b6e5e73862704e1d4143329f601861a390716e6cd70b6adc061a3ca",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-th-cook-down-right.gif",
+      "sha256": "9e0add456f92dc3f198df5d01f96c7d5544ddc73503f7f8e171775b23c050d31",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-west-cook-down-left.gif",
+      "sha256": "c53ce1616f1edccf9985bb5dca2ce86976fe696fc0e661a4953b929264a8d115",
+      "identicalToPrior": true
+    },
+    {
+      "file": "preview/worker-west-cook-down-right.gif",
+      "sha256": "437cbb15f4d805013c34217fae5cdec67692c7aad6b7f7c791647ae23ab48ad5",
+      "identicalToPrior": true
+    },
+    {
+      "file": "worker-asia-cook-v1.webp",
+      "sha256": "064b34f950570be07b45a9d3cec668bfd91c62d13924f88a5e961dd67a0f3363",
+      "identicalToPrior": true
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "sha256": "dab566d1af3804c823a02b6b41bc6f0b97fe7e9889691603f8acfc5b8ca74d8e",
+      "identicalToPrior": true
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "sha256": "77312b7a5115325c20d350cf3ef5c730eafce95d6514e3a733d17312a5b4bfea",
+      "identicalToPrior": true
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "sha256": "30d47aa59c37eead8ce0bb4c442c8614fc0472ead9b7692f093240dc94cddcc5",
+      "identicalToPrior": true
+    },
+    {
+      "file": "worker-west-cook-v1.webp",
+      "sha256": "9c92dbe0df226a05fa6b3cd940c79abbc68912bf808fbf74c672b1c7d02a571d",
+      "identicalToPrior": true
+    }
+  ],
+  "packageBytesBeforeReport": 15745758,
+  "failedChecks": [],
+  "checkCount": 132
+}

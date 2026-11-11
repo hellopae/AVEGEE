@@ -1,0 +1,20 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-*-cook-v1.webp + worker-cook.json — cook4โซน×2ทิศ×8เฟรม; carryTH4ทิศ×8เฟรม; RGBA320×320ต่อช่อง",
+    "evidence/current-audit.json — 106เงื่อนไขโครงสร้าง; failures=0; ถอด12GIF/96เฟรมจริง",
+    "evidence/repair-identity/identity-foot-check.json — 28เงื่อนไข; failures=0; opaque-head RGB mismatch=0; sole-band X errorสูงสุด0.5px",
+    "evidence/repair-static/repair-report.json + compare-*.jpg + evidence/decoded-*.jpg — เก็บมือ/อุปกรณ์/ขาที่วาดไว้; แก้หัว ฐานเท้า THซ้ายf7 และตราแขนcyberhell",
+    "evidence/visual-review.json + evidence/native-alpha-th-carry-*.jpg — ดูalpha32เฟรมTHบนขาว/ดำ/เขียว ไม่เห็นขอบแดง/เหลืองส่วนเกินชัดเจน; ยังไม่รับรองidentityทั้งตัว/loop",
+    "evidence/playback-access.json — browser host unavailable; Finderไม่อนุมัติการใช้ จึงไม่ได้ดูplaybackจริง",
+    "evidence/repair-static/generation-log.json — repairTotal16/16; รอบนี้0ครั้ง; เก็บgeneration log/promptเดิม",
+    "evidence/package-check.json — รายการไฟล์ ขนาดจริง และgit scope หลังเขียนรายงานครบ"
+  ],
+  "remaining": [
+    "TH cook ซ้ายเฟรม7 แทนสีกระเป๋าด้วยผ้าแล้ว แต่แสงเงา/ขอบผ้าบริเวณสะโพกยังเป็นปื้นและต้องเก็บให้กลืนกับเสื้อก่อนรับรองภาพ",
+    "ยังไม่ได้ดู GIF เล่นต่อเนื่องจริง: browser host unavailable และ native Finder ไม่ได้รับสิทธิ์ จึงยังไม่รับรอง loop 4→5/8→1",
+    "ท่าคืนมือ/ช้อน 8→1 ยังต่าง โดยเฉพาะ asia และตำแหน่งถาด/ช่วงขา carry TH ยังต้องตัดสินความต่อเนื่องจาก playback",
+    "หัวตรง source ในขอบเขต opaque RGB แต่เสื้อ/อุปกรณ์และรูปทรงลำตัวไม่ตรงต้นฉบับทุกจุด เช่น แผงอก cyberhell และตำแหน่งกระเป๋าในบางมุม จึงยังไม่รับรอง identity ทั้งตัว",
+    "ตรวจฐาน alpha และกึ่งกลางแถบรองเท้าแล้ว แต่รูปทรง/จุดสัมผัสเท้าทางกายวิภาคและสัดส่วนทั้งตัวตลอด loop ยังไม่รับรอง"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "reason": "Retain generation logs and prompts locally, prior intermediate images remain at the supplied read-only input delivery.",
+  "images": [
+    {
+      "file": "evidence/repair-th/target-04.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/target-04.webp",
+      "bytes": 305096,
+      "sha256": "da8b2a057e18ac7329543a477d13f1bd5434b0ef846eb517798a374c48178253"
+    },
+    {
+      "file": "evidence/repair-th/target-03.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/target-03.webp",
+      "bytes": 312558,
+      "sha256": "4535dbe1412c0eabd78925286dad61f4a6320fa5a8225a85fa53ddfe7210000e"
+    },
+    {
+      "file": "evidence/repair-th/generated-01.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/generated-01.webp",
+      "bytes": 880394,
+      "sha256": "19477ad6df8ddd10fdfe2cb37457fb58cdaee49d92e34b759692623249bc9bdd"
+    },
+    {
+      "file": "evidence/repair-th/source-th-down-right.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/source-th-down-right.webp",
+      "bytes": 84728,
+      "sha256": "5e4c99dce19e7584014bae66f5f1e6c58a82f0743708473ecdb437f29ade7650"
+    },
+    {
+      "file": "evidence/repair-th/target-02.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/target-02.webp",
+      "bytes": 306698,
+      "sha256": "45c3127a5c04cc827b3891ad43a91864f5875b94430f05351a6fe00d5335a159"
+    },
+    {
+      "file": "evidence/repair-th/target-01.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/target-01.webp",
+      "bytes": 312694,
+      "sha256": "00ca25d12719d844ba072bb4cc99b35ca097289381b8ceb62b19254bcb1089d6"
+    },
+    {
+      "file": "evidence/repair-th/before-after-th.jpg",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/before-after-th.jpg",
+      "bytes": 114395,
+      "sha256": "e799ea06c7de3695f73f7c8fb41fcdc9b2c267f325df4487d1925fda2fac903e"
+    },
+    {
+      "file": "evidence/repair-th/generated-03.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/generated-03.webp",
+      "bytes": 863174,
+      "sha256": "f2e756395675645214cc9477ec2b697d03c796cf97b92a2bfe643e8ccdd74772"
+    },
+    {
+      "file": "evidence/repair-th/generated-02.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/generated-02.webp",
+      "bytes": 857426,
+      "sha256": "ea3ca1ba1e236fca129215167308824ff7d9163eb1eac245c4c84dfe9dfc5498"
+    },
+    {
+      "file": "evidence/repair-th/source-th-down-left.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/source-th-down-left.webp",
+      "bytes": 84928,
+      "sha256": "f14c004d131eeb751a3614573cb1a1c51d4bc0320cf92ddd75b578a8ddcb7903"
+    },
+    {
+      "file": "evidence/repair-th/generated-04.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-th/generated-04.webp",
+      "bytes": 832268,
+      "sha256": "702051435ecf635a369d73b21680224d5cf6d66ee502e998267c4d534cd4c648"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/target-04.png",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/target-04.png",
+      "bytes": 354033,
+      "sha256": "d97dec943ed9f8e88be51fd8d5e6bea6a4ab7ef5f1dbf76e1763241430a075b9"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/target-03.png",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/target-03.png",
+      "bytes": 359978,
+      "sha256": "2ffd0f18de6ac82ca7564350121af868aa071c5ac5eca500a04b1bd8c48bf2c6"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/target-02.png",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/target-02.png",
+      "bytes": 386445,
+      "sha256": "9a83064bedae3aeedeba235e78da01a8e9790662fce23e5cbda7789980075656"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/target-01.png",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/target-01.png",
+      "bytes": 388425,
+      "sha256": "4b4cb8144dfbc0ac410d4748ac04f32ec89f9b5c3febe6ca02fd19f8004e13f2"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/generated-01.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/generated-01.webp",
+      "bytes": 900098,
+      "sha256": "e6b53351909f1829e89767250d23c6cf22fbcf1f09b1cd417aacd973d1ffb433"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/input-worker-cyberhell-cook-v1.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/input-worker-cyberhell-cook-v1.webp",
+      "bytes": 1092360,
+      "sha256": "f89e93a22f804bb14bf4d9912dab5a011ec6ec1a584b1417d67ba3461027d051"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/generated-03.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/generated-03.webp",
+      "bytes": 743138,
+      "sha256": "d2e874e59eba68be276420fd0aca09c20f3b1bc4709e0459caea1de26c4f9383"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/generated-02.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/generated-02.webp",
+      "bytes": 889326,
+      "sha256": "99ce13f7ce0ac3ac93e2ac1eaf9588847a5eb92e28a9f11233cb91cf14bdf2ad"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/before-after.jpg",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/before-after.jpg",
+      "bytes": 148002,
+      "sha256": "dd3771b151bd92b709ec983d617aca6c2661e7ea4aafe81a701d78b1ea0e7aa7"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/generated-04.webp",
+      "externalOriginal": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T065049Z-44a264e5/docs/art-reviews/2026-11-10-worker-cook/evidence/repair-cyberhell-head/generated-04.webp",
+      "bytes": 786752,
+      "sha256": "729d906e38e92bc5a05ec72a2b98decbc8ffa38e7d172a85687e9a7eb1d39baf"
+    }
+  ]
+}

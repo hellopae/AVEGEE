@@ -1,0 +1,36 @@
+{
+  "run": "20261111T162400Z-6a49dc9c",
+  "scope": "Delivery asset verification",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/repair-identity/verify_identity.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"checks\": 28,\n  \"failedChecks\": [],\n  \"headRGBMismatchesAbove0\": 0\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/audit_current.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"atlasCells\": 96,\n  \"gifsDecoded\": 12,\n  \"nativeAlphaPlates\": 12,\n  \"checks\": 106,\n  \"failedChecks\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/repair-current/verify.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"checks\": 302, \"failedChecks\": [], \"generationRepairTotal\": 16}\n",
+      "stderr": ""
+    }
+  ],
+  "allCommandsExitedZero": true,
+  "visualContinuityAccepted": false,
+  "inGameTested": false
+}

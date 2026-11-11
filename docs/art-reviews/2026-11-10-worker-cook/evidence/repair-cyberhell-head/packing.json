@@ -1,0 +1,1025 @@
+{
+  "method": "whole-cell extraction, uniform resize, source sole-band registration",
+  "source": "img/workers/worker-cyberhell-sheet-v2.webp row0 column1 (zero based)",
+  "drawAnchor": [
+    160,
+    320
+  ],
+  "referenceMetrics": [
+    {
+      "bounds": [
+        68,
+        10,
+        298,
+        315
+      ],
+      "bottom": 314,
+      "soleBandMidX": 190.0
+    },
+    {
+      "bounds": [
+        22,
+        10,
+        252,
+        315
+      ],
+      "bottom": 314,
+      "soleBandMidX": 129.0
+    }
+  ],
+  "anatomicalRegistrationCertified": false,
+  "frames": [
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 1,
+      "inputCellBox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          7,
+          266,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 160.0
+      },
+      "uniformScale": 0.9902597402597403,
+      "scaledCellSize": 317,
+      "before": {
+        "bounds": [
+          54,
+          7,
+          264,
+          312
+        ],
+        "bottom": 311,
+        "soleBandMidX": 158.5
+      },
+      "offset": [
+        32,
+        3
+      ],
+      "after": {
+        "bounds": [
+          86,
+          10,
+          296,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 221,
+      "excludedGutterNonzeroPixels": 2,
+      "excludedGutterMaximumAlpha": 1,
+      "sha256RGBA": "28990d7e682ea20ff6f0f29da749835f36d760731faf0c03ff5efa9fb8486df0"
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 2,
+      "inputCellBox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          7,
+          266,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 160.0
+      },
+      "uniformScale": 0.9902597402597403,
+      "scaledCellSize": 317,
+      "before": {
+        "bounds": [
+          54,
+          7,
+          264,
+          312
+        ],
+        "bottom": 311,
+        "soleBandMidX": 158.5
+      },
+      "offset": [
+        32,
+        3
+      ],
+      "after": {
+        "bounds": [
+          86,
+          10,
+          296,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 72,
+      "excludedGutterNonzeroPixels": 7,
+      "excludedGutterMaximumAlpha": 1,
+      "sha256RGBA": "d19ae8811a30f5c0c6b46b2912e7175905508d687f7713e56cb36247c75bf63e"
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 3,
+      "inputCellBox": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          8,
+          266,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 160.0
+      },
+      "uniformScale": 0.993485342019544,
+      "scaledCellSize": 318,
+      "before": {
+        "bounds": [
+          54,
+          8,
+          265,
+          313
+        ],
+        "bottom": 312,
+        "soleBandMidX": 159.0
+      },
+      "offset": [
+        31,
+        2
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          296,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 96,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "ac4c9d7b51277fff3f4a0b258d4f150cda58b3d6f3faa9a1e3f83e89c83d10ee"
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 4,
+      "inputCellBox": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          8,
+          266,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 160.0
+      },
+      "uniformScale": 0.993485342019544,
+      "scaledCellSize": 318,
+      "before": {
+        "bounds": [
+          54,
+          8,
+          264,
+          313
+        ],
+        "bottom": 312,
+        "soleBandMidX": 159.0
+      },
+      "offset": [
+        31,
+        2
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          295,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 48,
+      "excludedGutterNonzeroPixels": 3,
+      "excludedGutterMaximumAlpha": 1,
+      "sha256RGBA": "1c855abe26dd5a81537c37cc001f23aa71733777737a639fe89a7a07e40f50e3"
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 5,
+      "inputCellBox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          6,
+          267,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 159.0
+      },
+      "uniformScale": 0.9870550161812298,
+      "scaledCellSize": 316,
+      "before": {
+        "bounds": [
+          53,
+          6,
+          263,
+          311
+        ],
+        "bottom": 310,
+        "soleBandMidX": 157.5
+      },
+      "offset": [
+        32,
+        4
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          295,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 189.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 1,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "bc6332543215a0fd9c64af726a2e22b3de97b54d434d5ea9b0b0bbfa31d726a8"
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 6,
+      "inputCellBox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          6,
+          267,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 159.0
+      },
+      "uniformScale": 0.9870550161812298,
+      "scaledCellSize": 316,
+      "before": {
+        "bounds": [
+          53,
+          6,
+          263,
+          311
+        ],
+        "bottom": 310,
+        "soleBandMidX": 157.5
+      },
+      "offset": [
+        32,
+        4
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          295,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 189.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 0,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "0c5ce3baa60c018362929e28e903a1f87341d40aba34d87369ce89fb2ed82f23"
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 7,
+      "inputCellBox": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          7,
+          267,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 159.0
+      },
+      "uniformScale": 0.9902597402597403,
+      "scaledCellSize": 317,
+      "before": {
+        "bounds": [
+          53,
+          7,
+          264,
+          312
+        ],
+        "bottom": 311,
+        "soleBandMidX": 157.5
+      },
+      "offset": [
+        32,
+        3
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          296,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 189.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 2,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "1bbed7960370a747941c98d8073c9669f4ccab6ce74735c232fde6bfc497e49a"
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 8,
+      "inputCellBox": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          54,
+          7,
+          267,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 159.0
+      },
+      "uniformScale": 0.9902597402597403,
+      "scaledCellSize": 317,
+      "before": {
+        "bounds": [
+          53,
+          7,
+          264,
+          312
+        ],
+        "bottom": 311,
+        "soleBandMidX": 157.5
+      },
+      "offset": [
+        32,
+        3
+      ],
+      "after": {
+        "bounds": [
+          85,
+          10,
+          296,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 189.5
+      },
+      "reference": {
+        "bounds": [
+          68,
+          10,
+          298,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 190.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 0,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "7d777cacd6647d80b3df31967a4589c98f8fa7794129b93c881eab4ce776bf3b"
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 1,
+      "inputCellBox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          76,
+          13,
+          255,
+          302
+        ],
+        "bottom": 301,
+        "soleBandMidX": 164.0
+      },
+      "uniformScale": 1.055363321799308,
+      "scaledCellSize": 338,
+      "before": {
+        "bounds": [
+          80,
+          13,
+          269,
+          319
+        ],
+        "bottom": 318,
+        "soleBandMidX": 173.5
+      },
+      "offset": [
+        -44,
+        -4
+      ],
+      "after": {
+        "bounds": [
+          36,
+          9,
+          225,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.5
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 21,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "74f47905ec9119dd8d71a4b708f724487fd212ea12ec02915ae75f08964a3a94"
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 2,
+      "inputCellBox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          76,
+          13,
+          255,
+          302
+        ],
+        "bottom": 301,
+        "soleBandMidX": 164.0
+      },
+      "uniformScale": 1.055363321799308,
+      "scaledCellSize": 338,
+      "before": {
+        "bounds": [
+          80,
+          13,
+          269,
+          319
+        ],
+        "bottom": 318,
+        "soleBandMidX": 173.5
+      },
+      "offset": [
+        -44,
+        -4
+      ],
+      "after": {
+        "bounds": [
+          36,
+          9,
+          225,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.5
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 40,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "7d36782ed0c40aa2acf4d9976fb99aeafadafc3d13ac49d664082d3fd57ea682"
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 3,
+      "inputCellBox": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          76,
+          13,
+          255,
+          302
+        ],
+        "bottom": 301,
+        "soleBandMidX": 164.0
+      },
+      "uniformScale": 1.055363321799308,
+      "scaledCellSize": 338,
+      "before": {
+        "bounds": [
+          80,
+          14,
+          269,
+          319
+        ],
+        "bottom": 318,
+        "soleBandMidX": 173.5
+      },
+      "offset": [
+        -44,
+        -4
+      ],
+      "after": {
+        "bounds": [
+          36,
+          10,
+          225,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.5
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 1,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "fda21b13ede2cb68582162a8186e57334ca5d34669489b079f51e964221d0416"
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 4,
+      "inputCellBox": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          76,
+          13,
+          255,
+          302
+        ],
+        "bottom": 301,
+        "soleBandMidX": 164.0
+      },
+      "uniformScale": 1.055363321799308,
+      "scaledCellSize": 338,
+      "before": {
+        "bounds": [
+          80,
+          14,
+          269,
+          319
+        ],
+        "bottom": 318,
+        "soleBandMidX": 173.5
+      },
+      "offset": [
+        -44,
+        -4
+      ],
+      "after": {
+        "bounds": [
+          36,
+          10,
+          225,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.5
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 27,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "97d36a4932aa17f65602742a07f4cb8c0ddb454e4792cf3f67b449c947df3bc4"
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 5,
+      "inputCellBox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          81,
+          18,
+          265,
+          306
+        ],
+        "bottom": 305,
+        "soleBandMidX": 166.0
+      },
+      "uniformScale": 1.0590277777777777,
+      "scaledCellSize": 339,
+      "before": {
+        "bounds": [
+          86,
+          19,
+          281,
+          325
+        ],
+        "bottom": 324,
+        "soleBandMidX": 176.5
+      },
+      "offset": [
+        -48,
+        -10
+      ],
+      "after": {
+        "bounds": [
+          38,
+          9,
+          233,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 128.5
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 23,
+      "excludedGutterNonzeroPixels": 1,
+      "excludedGutterMaximumAlpha": 1,
+      "sha256RGBA": "75f96aa0347f111777ad12afa2f7eae9432ee38ce9e1c3bd31699459fc515759"
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 6,
+      "inputCellBox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "unscaled": {
+        "bounds": [
+          81,
+          18,
+          265,
+          306
+        ],
+        "bottom": 305,
+        "soleBandMidX": 166.0
+      },
+      "uniformScale": 1.0590277777777777,
+      "scaledCellSize": 339,
+      "before": {
+        "bounds": [
+          86,
+          19,
+          281,
+          325
+        ],
+        "bottom": 324,
+        "soleBandMidX": 176.0
+      },
+      "offset": [
+        -47,
+        -10
+      ],
+      "after": {
+        "bounds": [
+          39,
+          9,
+          234,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 89,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "5c328a73188fced126d32ba0bb2b8deb61247483f2b7cc52c7c9411f31cc31e2"
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 7,
+      "inputCellBox": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          81,
+          18,
+          265,
+          306
+        ],
+        "bottom": 305,
+        "soleBandMidX": 166.0
+      },
+      "uniformScale": 1.0590277777777777,
+      "scaledCellSize": 339,
+      "before": {
+        "bounds": [
+          86,
+          19,
+          281,
+          325
+        ],
+        "bottom": 324,
+        "soleBandMidX": 176.0
+      },
+      "offset": [
+        -47,
+        -10
+      ],
+      "after": {
+        "bounds": [
+          39,
+          9,
+          234,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 0,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "a98127455f213b28ee3f4dcffe5bc3e0c12633ab4c735fc49bf1b7493a5f8d16"
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 8,
+      "inputCellBox": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "unscaled": {
+        "bounds": [
+          81,
+          18,
+          265,
+          306
+        ],
+        "bottom": 305,
+        "soleBandMidX": 166.0
+      },
+      "uniformScale": 1.0590277777777777,
+      "scaledCellSize": 339,
+      "before": {
+        "bounds": [
+          86,
+          19,
+          281,
+          325
+        ],
+        "bottom": 324,
+        "soleBandMidX": 176.0
+      },
+      "offset": [
+        -47,
+        -10
+      ],
+      "after": {
+        "bounds": [
+          39,
+          9,
+          234,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "reference": {
+        "bounds": [
+          22,
+          10,
+          252,
+          315
+        ],
+        "bottom": 314,
+        "soleBandMidX": 129.0
+      },
+      "clippedPixelsAlphaAbove40": 0,
+      "clippedNonzeroPixels": 11,
+      "excludedGutterNonzeroPixels": 0,
+      "excludedGutterMaximumAlpha": 0,
+      "sha256RGBA": "7ac0439a829f870f2a693e6a44c4a7f33e0c7bab43f2f1f5c20ed03b4dd2a63f"
+    }
+  ]
+}

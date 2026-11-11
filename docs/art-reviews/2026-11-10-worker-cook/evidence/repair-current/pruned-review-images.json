@@ -1,0 +1,173 @@
+{
+  "reason": "Remove redundant intermediate magnification grids and inherited candidate plates to meet 30 MB. Keep generation logs, current native plates, decoded GIF plates and compare images.",
+  "files": [
+    {
+      "file": "evidence/repair-final/candidate-cyberhell-cook-down-left.jpg",
+      "bytes": 153970
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-carry-up.jpg",
+      "bytes": 136086
+    },
+    {
+      "file": "evidence/repair-final/candidate-west-cook-down-left.jpg",
+      "bytes": 155323
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f8.jpg",
+      "bytes": 89704
+    },
+    {
+      "file": "evidence/repair-final/grid-th-src.jpg",
+      "bytes": 91872
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-cook-down-left.jpg",
+      "bytes": 164977
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-cook-down-right.jpg",
+      "bytes": 173696
+    },
+    {
+      "file": "evidence/repair-final/detail-cyberhell.png",
+      "bytes": 294145
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-carry-side-left.jpg",
+      "bytes": 161949
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f8.jpg",
+      "bytes": 85159
+    },
+    {
+      "file": "evidence/repair-final/candidate-cyberhell-cook-down-right.jpg",
+      "bytes": 156448
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-src.jpg",
+      "bytes": 85834
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f6.jpg",
+      "bytes": 83936
+    },
+    {
+      "file": "evidence/repair-final/candidate-asia-cook-down-right.jpg",
+      "bytes": 155602
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f7.jpg",
+      "bytes": 84908
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f5.jpg",
+      "bytes": 84044
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f4.jpg",
+      "bytes": 84244
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f1.jpg",
+      "bytes": 85628
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f3.jpg",
+      "bytes": 85316
+    },
+    {
+      "file": "evidence/repair-final/grid-cyberhell-f2.jpg",
+      "bytes": 84749
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f4.jpg",
+      "bytes": 88990
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f5.jpg",
+      "bytes": 88191
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f7.jpg",
+      "bytes": 88571
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-carry-down.jpg",
+      "bytes": 165527
+    },
+    {
+      "file": "evidence/repair-final/candidate-th-carry-side.jpg",
+      "bytes": 160305
+    },
+    {
+      "file": "evidence/repair-final/candidate-asia-cook-down-left.jpg",
+      "bytes": 155406
+    },
+    {
+      "file": "evidence/repair-final/candidate-west-cook-down-right.jpg",
+      "bytes": 155848
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f6.jpg",
+      "bytes": 87707
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f2.jpg",
+      "bytes": 90945
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f3.jpg",
+      "bytes": 91368
+    },
+    {
+      "file": "evidence/repair-final/grid-th-f1.jpg",
+      "bytes": 91176
+    },
+    {
+      "file": "evidence/repair-final/detail-th.png",
+      "bytes": 309172
+    },
+    {
+      "file": "evidence/repair-current/grid-source-th-cook-1.jpg",
+      "bytes": 226662
+    },
+    {
+      "file": "evidence/repair-current/grid-th-cook-1.jpg",
+      "bytes": 221232
+    },
+    {
+      "file": "evidence/repair-current/grid-source-th-carry-2.jpg",
+      "bytes": 236802
+    },
+    {
+      "file": "evidence/repair-current/grid-cyberhell-cook-1.jpg",
+      "bytes": 213818
+    },
+    {
+      "file": "evidence/repair-current/grid-source-th-carry-3.jpg",
+      "bytes": 216522
+    },
+    {
+      "file": "evidence/repair-current/grid-source-th-carry-0.jpg",
+      "bytes": 235081
+    },
+    {
+      "file": "evidence/repair-current/grid-source-cyberhell-cook-1.jpg",
+      "bytes": 216993
+    },
+    {
+      "file": "evidence/repair-current/grid-th-carry-0.jpg",
+      "bytes": 223990
+    },
+    {
+      "file": "evidence/repair-current/grid-th-carry-2.jpg",
+      "bytes": 224818
+    },
+    {
+      "file": "evidence/repair-current/grid-th-carry-3.jpg",
+      "bytes": 212266
+    }
+  ]
+}
