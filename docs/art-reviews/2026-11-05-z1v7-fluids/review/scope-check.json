@@ -1,0 +1,11 @@
+{
+  "pythonSyntaxFiles": 4,
+  "newTextTrailingWhitespace": [],
+  "evidenceHtmlLocalLinks": 23,
+  "brokenEvidenceHtmlLinks": [],
+  "changedPaths": 277,
+  "pathsOutsideDelivery": [],
+  "branch": "codex/20261111T014532Z-dfacde20",
+  "gitDiffCheckExit": 0,
+  "warning": "git diff --check does not inspect untracked files; new authored text was checked separately above. No game tests or deployment performed."
+}

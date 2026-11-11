@@ -1,0 +1,79 @@
+{
+  "tool": "built-in image_gen only",
+  "generationCalls": 12,
+  "planned": 12,
+  "layout": "2x2 four painted cells per source except four separate static cloud puffs",
+  "actualOutput": "1254 square for animation sheets, 627 pixels/cell; below requested ~800",
+  "records": [
+    {
+      "id": "lava-surface-a",
+      "prompt": "Use case: stylized-concept. Production game animation texture sheet, 2048x2048 pixels requested, EXACT 2 columns by 2 rows, four equal square edge-to-edge cells, no gutters no labels. Cells are consecutive hand-painted frames 1,2,3,4 of an 8-frame looping molten lava SURFACE texture, overhead isometric game material. Locked camera and locked same network of dark red crust plates with razor sharp thin yellow-orange fissures, small separate rounded lava bubbles, subtle local swelling and changing internal flow between frames. Full bleed opaque lava in every cell, no scenery, no rocks beyond crust texture. Rich orange red yellow, high microdetail, crisp strokes no blur no fog no global bloom. Each cell same composition and color, vary only animation phase slightly; periodic small boiling movement returning by frame 8. Do not shift or fade one image. Need real individually painted distinct frames. Four cells only; maximize native per-cell detail.",
+      "source": "sources/lava-surface-a.webp"
+    },
+    {
+      "id": "lava-surface-b-initial",
+      "prompt": "Use case: stylized-concept. Production game animation texture sheet, 2048x2048 pixels requested, EXACT 2 columns by 2 rows, four equal square edge-to-edge cells, no gutters no labels. Cells are consecutive hand-painted frames 1,2,3,4 of an 8-frame looping molten lava SURFACE texture, overhead isometric game material. Locked camera and locked same network of dark red crust plates with razor sharp thin yellow-orange fissures, small separate rounded lava bubbles, subtle local swelling and changing internal flow between frames. Full bleed opaque lava in every cell, no scenery, no rocks beyond crust texture. Rich orange red yellow, high microdetail, crisp strokes no blur no fog no global bloom. Each cell same composition and color, vary only animation phase slightly; periodic small boiling movement returning by frame 8. Do not shift or fade one image. Need real individually painted distinct frames. Four cells only; maximize native per-cell detail.\nInput image is the LAST FRAME (4) of previous set, exact composition reference. Paint next 4 subtly distinct frames 5,6,7,8, 2x2, same objects/colors/forms, only boiling phase differs (วัตถุ/สี/รูปทรงเดียวกัน ต่างแค่จังหวะ). Keep major fissure network pixel aligned, bubbles change slightly. Frame5 almost matches provided frame4, frame8 approaches initial low bubble state so cyclic boundary is equally small. Do not change pattern, camera, texture scale or palette.",
+      "discarded": true,
+      "reason": "boundary ratios5.62,5.59; replaced by generation12, discarded raster not retained"
+    },
+    {
+      "id": "lavafall-a",
+      "prompt": "Game animation painted spritesheet EXACT 2x2 four equal cells, 2048x2048 requested. Four consecutive phases 1-4 of 8-frame loop of single vertical molten lava waterfall curtain. Similar to reference: flat top lip, narrow tall curtain centered in each cell, bulbous orange lava streams with razor sharp yellow fissures, separate molten droplets and little bottom splash, DARK red interior, NO rocks/scenery/smoke/fog. Locked silhouette and camera, same objects/color/form, phase only changes subtle internal falling threads/bubbles, minimal changes per frame. Detailed crisp isometric fantasy game art. Transparent RGBA background, fully painted curtain from top to bottom of each cell, same position and size all four cells. No grid lines no labels. Not four different waterfalls.",
+      "source": "sources/lavafall-a.webp"
+    },
+    {
+      "id": "ice-stream-a",
+      "prompt": "Game animation painted surface texture spritesheet EXACT 2x2 four equal square edge-to-edge cells no gutters no labels, 2048x2048 requested. Four consecutive hand-painted phases 1-4 of an 8-frame looping CLEAR CYAN STREAM WATER texture. Reference color/style. Overhead isometric. Deep turquoise transparent water with intricate sharply focused white icy caustic ribbons, clear fine current threads, tiny separated white foam flecks. Full bleed opaque water each cell. Same composition/forms/colors in all cells, very subtle internal wave and foam phase movement, NOT different water patterns. Rich turquoise not washed out; white foam crisp, no haze or blur, no scenery no shores no smoke no bloom. Preserve exact scale and camera, individually paint frames.",
+      "source": "sources/ice-stream-a.webp"
+    },
+    {
+      "id": "waterfall-ice-a",
+      "prompt": "Game animation painted spritesheet EXACT 2x2 four equal square cells 2048x2048 requested. Four consecutive phases 1-4 of 8-frame loop single vertical clear cyan WATERFALL curtain as in reference, flat narrow top lip and narrow tall curtain centered per cell and small white bottom splash. Sharp thin white current threads crossing clear turquoise core, discrete crisp white foam bubbles, visible clear water gaps. No haze smoke mist or rocks. Same locked silhouette position camera forms colors, subtly differing internal downward flow phase only, NOT different waterfalls. Fantasy isometric game art highly detailed, sharp painted edges. True transparent RGBA background, no grid no text.",
+      "source": "sources/waterfall-ice-a.webp"
+    },
+    {
+      "id": "cloud-sea-a",
+      "prompt": "Game animation surface spritesheet EXACT 2 columns 2 rows of four equal edge-to-edge square cells. Four successive painted phases 1-4 of an 8-frame seamless looping sea of fluffy rolling white cloud curls seen from isometric above. Soft lavender shadows with warm pale gold rims, clear distinct rounded cloud volumes like white cloud sea around a golden heavenly tree, detailed painted fantasy game texture. Full-bleed opaque clouds, local curls slowly rolling in place, SAME cloud forms positions camera scale palette all four frames, very small phase changes. No global shift no fade no haze overlay. No trees land architecture snow scenery text grid labels. 2048x2048 requested, maximize detail.",
+      "source": "sources/cloud-sea-a.webp"
+    },
+    {
+      "id": "cloud-puffs",
+      "prompt": "Use case: stylized-concept. Production game assets: EXACTLY FOUR SMALL ISOLATED CLOUD PUFFS in 2x2 layout on true transparent RGBA background, with wide empty transparent separation. Each puff a separate rounded curled white cloud with pale lavender underside and delicate pale GOLD highlights. Painted isometric fantasy game art matching heavenly cloud sea, crisp readable soft voluminous lobes, not smoke not fog strips. Slightly different natural silhouettes, each wider than tall, entire object fully visible, NO drop shadow, no text, no ground or scene, no black background. These are individual hand-painted static cloud sprites for slow drifting inside an authored mask. 2048x2048 requested.",
+      "source": "sources/cloud-puffs.webp"
+    },
+    {
+      "id": "lavafall-b",
+      "prompt": "Use case: stylized-concept. Game animation painted spritesheet EXACT 2x2 four equal cells. Input is frame4 of prior batch: lavafall. Paint four subtly different consecutive phases 5,6,7,8 of the SAME animation. วัตถุ/สี/รูปทรงเดียวกัน ต่างแค่จังหวะ. Preserve exact same shapes, alignment, width, positions, scale, palette, no added details. Frame5 must almost match reference4, frames6-8 very subtle internal flow rhythm to continue loop. No shift no fade no global warp. Four individually painted distinct frames, not four alternate objects. Sharp fine detailed current threads and molten separate bubbles, orange-red sharp yellow fissures. Same centered narrow tall curtain from top lip to bottom splash on true transparent RGBA as reference. No scenery labels grid mist blur or bloom. Requested2048x2048.",
+      "source": "sources/lavafall-b.webp",
+      "referenceCell": "A4 bottom-right 627x627"
+    },
+    {
+      "id": "ice-stream-b",
+      "prompt": "Use case: stylized-concept. Game animation painted spritesheet EXACT 2x2 four equal cells. Input is frame4 of prior batch: ice-stream. Paint four subtly different consecutive phases 5,6,7,8 of the SAME animation. วัตถุ/สี/รูปทรงเดียวกัน ต่างแค่จังหวะ. Preserve exact same shapes, alignment, width, positions, scale, palette, no added details. Frame5 must almost match reference4, frames6-8 very subtle internal flow rhythm to continue loop. No shift no fade no global warp. Four individually painted distinct frames, not four alternate objects. Sharp fine detailed current threads and clear turquoise water with crisp fine white caustics or foam. Same full bleed opaque square water texture as reference. No scenery labels grid mist blur or bloom. Requested2048x2048.",
+      "source": "sources/ice-stream-b.webp",
+      "referenceCell": "A4 bottom-right 627x627"
+    },
+    {
+      "id": "waterfall-ice-b",
+      "prompt": "Use case: stylized-concept. Game animation painted spritesheet EXACT 2x2 four equal cells. Input is frame4 of prior batch: waterfall-ice. Paint four subtly different consecutive phases 5,6,7,8 of the SAME animation. วัตถุ/สี/รูปทรงเดียวกัน ต่างแค่จังหวะ. Preserve exact same shapes, alignment, width, positions, scale, palette, no added details. Frame5 must almost match reference4, frames6-8 very subtle internal flow rhythm to continue loop. No shift no fade no global warp. Four individually painted distinct frames, not four alternate objects. Sharp fine detailed current threads and clear turquoise water with crisp fine white caustics or foam. Same centered narrow tall curtain from top lip to bottom splash on true transparent RGBA as reference. No scenery labels grid mist blur or bloom. Requested2048x2048.",
+      "source": "sources/waterfall-ice-b.webp",
+      "referenceCell": "A4 bottom-right 627x627"
+    },
+    {
+      "id": "cloud-sea-b",
+      "prompt": "Game animation surface spritesheet EXACT 2 columns 2 rows of four equal edge-to-edge square cells. Four successive painted phases 1-4 of an 8-frame seamless looping sea of fluffy rolling white cloud curls seen from isometric above. Soft lavender shadows with warm pale gold rims, clear distinct rounded cloud volumes like white cloud sea around a golden heavenly tree, detailed painted fantasy game texture. Full-bleed opaque clouds, local curls slowly rolling in place, SAME cloud forms positions camera scale palette all four frames, very small phase changes. No global shift no fade no haze overlay. No trees land architecture snow scenery text grid labels. 2048x2048 requested, maximize detail.\nInput is last painted frame4. Produce next four phases5,6,7,8 in exactly2x2 layout. วัตถุ/สี/รูปทรงเดียวกัน ต่างแค่จังหวะ. Preserve every large curl's position and silhouette: very slight internal rolling changes, subtle lobe breathing, keep same shadow and gold highlight levels, no shift or fade. Frame5 close to reference4; frame8 returning to reference's earlier curl phase to loop. Crisp cloud volumes, not haze. Keep composition locked. All frames independently painted.",
+      "source": "sources/cloud-sea-b.webp",
+      "referenceCell": "A4 bottom-right 627x627"
+    },
+    {
+      "id": "lava-surface-b-correction",
+      "prompt": "Precise edit of Image1 (four-cell lava sheet) for continuation animation frames5-8. Image2 is exact last frame4. Output MUST retain Image1's exact 2x2 composition, exact same fissure geometry, crust shape, texture frequency, red/orange values, camera and all pixel positions. Change ONLY tiny lava bubbles and a few fine internal yellow flow threads to the next subtle phase in EACH CELL. Keep >98% of the original painting unchanged; do not redraw or reinterpret lava network. The lower-right cell should loop close to original upper-left cell. Need four distinct painted phases, not identical copies. NO new fissures, NO brighter colors, no new framing, NO shifted texture, no labels. Same output1254x1254; spatial texture should correspond exactly to Image1 at each cell. This is a minimal phase edit, not a new illustration.",
+      "source": "sources/lava-surface-b.webp",
+      "references": [
+        "sources/lava-surface-a.webp",
+        "A4 bottom-right627x627"
+      ]
+    }
+  ],
+  "referencePolicy": "For B batches: exact lower-right cell A4 extracted from corresponding source A, supplied as image reference. Lava correction additionally uses full A sheet. Transparent fall/puff alpha preserved."
+}

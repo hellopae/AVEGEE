@@ -1,0 +1,23 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "README.md — ผลตรวจภาษาไทย แหล่งรับต่อ วิธีนับ และ self-check เทียบเกณฑ์ครบทุกข้อ",
+    "review/continuation-provenance.json + review/inherited-assets.json — รับต่อ 75 ไฟล์จากรอบแรกและ overlay จนถึง 20261110T234901Z-bb48e869; production assets 125 ไฟล์ไม่เปลี่ยนจากรอบล่าสุด",
+    "review/independent-exclusions.json + review/boundary/icefall-upper-tree-independent-proof.webp — polygon ระบุพื้นผิวแข็งจากภาพพื้น ไม่ใช้ annotation สร้าง mask; 282/6578 = 4.287017% เป็น lower bound เกิน 3%",
+    "review/shore-witness-result.json + review/boundary/shore-band-ice-independent-proof.webp — 121 พิกเซล shore-band-ice มีระยะต่ำสุดถึงฝั่งมากกว่า 12 world; สูงสุดของ lower bound 14.452243 world",
+    "review/independent-mask-review.json — 37 masks ตรวจขนาด 2x; outsideDrawnLiquidPercent ยัง null เพราะไม่ได้ segment พื้นทั้งหมด",
+    "review/contact-icefalls.jpg + review/contact-lavafalls.jpg + review/contact-streams.jpg + review/pairs/ — เรนเดอร์ซ้ำจาก layout/เฟรมปัจจุบัน ครบ 31 จุด (10 icefalls, 8 lavafalls, 13 flat/river)",
+    "review/clips/owner-2-ice-bridge.mp4 + owner-3-lava.mp4 + owner-4-central-stream.mp4 — ffprobe 12 วินาที 24 fps 960x776; ffmpeg decode ครบ 288 เฟรมทุกไฟล์ ไม่มี decoder error; มุมประมาณตาม landmark",
+    "review/delivery-verification.json — ตรวจมิติ/เฟรม/30 spots/hash/decode; acceptanceComplete=false และ verifier exit 1; ไม่ได้ทดสอบการรวมเข้าเกมหรือรับรอง visual playback",
+    "loop-review.json + generation-prompts.json + generation-prompts-continuation.json — เก็บข้อมูลรอบก่อน; ไม่มี generation ใหม่หรือ temporal synthesis ในรอบนี้",
+    "delivery-size.json — จำนวนไฟล์และ byte budget ไม่เกิน 80,000,000; เปลี่ยนเฉพาะโฟลเดอร์ส่งออก"
+  ],
+  "remaining": [
+    "แก้ mask icefall-upper-tree ที่ทับกิ่งหิมะ/ผิวแข็ง ≥4.287%; ตรวจ summit/east-cliff บริเวณสีฟ้าที่กำกวม แล้วตรวจซ้ำโดยไม่ใช้ annotation ก่อสร้างยืนยันตัวเอง",
+    "ทำ semantic reference จากขอบของเหลวบนพื้นให้ครบทุก mask และรายงาน % นอกจริงหรือ upper bound ≤3%; lower bounds ในรอบนี้ใช้ยืนยันผ่านไม่ได้",
+    "สร้าง shore-band-ice จากฝั่งจริงและตรวจระยะ ≤12 world; ตรวจ shore-band-spirit ด้วยวิธีอิสระเช่นกัน",
+    "สำรวจน้ำตกบนพื้น v7 ทั้งแผนที่เพื่อยืนยัน coverage ทุกจุด และแยกผิวลาวาราบ/ลาวาตกในช่องลาดชันก่อนให้ bubble/steam/embers ใช้",
+    "ตรวจการเล่นวนด้วยตาจริง รวมรอยต่อ 8→1; upper-tree มี transition เปลี่ยนสูงตาม loop-review; ไม่ใช้จำนวน hash แทน loop smoothness",
+    "หลังแก้ assets ให้เรนเดอร์ contact sheet/คลิปสามมุม/รายงานใหม่ แล้วประเมิน queue อีกครั้ง; ห้ามสลับเข้าเกมโดยอ้างว่าชุดนี้ผ่านแล้ว"
+  ]
+}

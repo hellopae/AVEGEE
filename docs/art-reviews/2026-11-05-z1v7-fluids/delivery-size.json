@@ -1,0 +1,8 @@
+{
+  "files": 277,
+  "totalBytesIncludingThisReport": 79348380,
+  "limitBytes": 80000000,
+  "withinLimit": true,
+  "definition": "Sum of regular-file sizes in the delivery folder, including manifest and this report; decimal MB.",
+  "sourceAssetsModified": false
+}
