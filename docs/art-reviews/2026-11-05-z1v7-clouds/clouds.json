@@ -1,0 +1,760 @@
+{
+  "schemaVersion": 1,
+  "fullPx": [
+    9830,
+    6554
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "pixelsPerWorldUnit": [
+    2.5598958333333335,
+    2.56015625
+  ],
+  "chunk": 2048,
+  "rows": 4,
+  "cols": 5,
+  "mask": "cloud-layer-mask.png",
+  "layers": [
+    {
+      "variant": "A",
+      "file": "layer-A/r1-c1.webp",
+      "rectPx2x": [
+        0,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 57632,
+      "sha256": "38bf80b4a55672ccddd99270a04339d636abf2bae7c693dc5972d4073227e536"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r1-c2.webp",
+      "rectPx2x": [
+        2048,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 390288,
+      "sha256": "214d411180dd244ef88fc4354febad596a8d99687816ca14b710b22e6d6b27dc"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r1-c3.webp",
+      "rectPx2x": [
+        4096,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 479184,
+      "sha256": "a327df3cf1e876dc353ebe4db49f7a113bad2af47a1707be9d348b289f76c485"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r1-c4.webp",
+      "rectPx2x": [
+        6144,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 474822,
+      "sha256": "7d02513673308a9e22ba85293c58cb79643320016c97da307e5a16c32630d6a2"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r1-c5.webp",
+      "rectPx2x": [
+        8192,
+        0,
+        1638,
+        2048
+      ],
+      "bytes": 88460,
+      "sha256": "d320a151637e1514b86cb6d6acd478373029431110d533d14700380c85ad29cb"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r2-c1.webp",
+      "rectPx2x": [
+        0,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 197776,
+      "sha256": "20b2f3b7245b8897563497afe7e5759ee25cef41252c20a37d0c09a6b2c7b6d8"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r2-c2.webp",
+      "rectPx2x": [
+        2048,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 7734,
+      "sha256": "436a9ee440fe21e939090805dd5fc7c0be1a043e520938b9cc260ff4cdb4f5a1"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r2-c3.webp",
+      "rectPx2x": [
+        4096,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 62844,
+      "sha256": "98771fefb5d182479a61de0ed3a09d206bc98705845ddcdda19b1f88ee62f0ab"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r2-c4.webp",
+      "rectPx2x": [
+        6144,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 233182,
+      "sha256": "4db331e08411e77ae34dd473f595189df2adb13bdfc29f42196155005c5d845a"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r2-c5.webp",
+      "rectPx2x": [
+        8192,
+        2048,
+        1638,
+        2048
+      ],
+      "bytes": 248470,
+      "sha256": "8ac087f2fe0d2e65cfdc362f5a0bc59efae8dda406de8d8a2145ab17ea94db69"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r3-c1.webp",
+      "rectPx2x": [
+        0,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 256698,
+      "sha256": "9a8d4d4ed4f1b98d1aebdff045fa6937d385093f3ade1742711f5a59c0e66272"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r3-c2.webp",
+      "rectPx2x": [
+        2048,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 7734,
+      "sha256": "436a9ee440fe21e939090805dd5fc7c0be1a043e520938b9cc260ff4cdb4f5a1"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r3-c3.webp",
+      "rectPx2x": [
+        4096,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 40840,
+      "sha256": "d65ed864224d578f89921ae6c74e056b13d86cb7ee9b5f4675c7f669c7de9972"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r3-c4.webp",
+      "rectPx2x": [
+        6144,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 204576,
+      "sha256": "8dc8fc31297f859ea824abcd3e2b403de4a7ed3840f897ec909f2f75e4efb739"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r3-c5.webp",
+      "rectPx2x": [
+        8192,
+        4096,
+        1638,
+        2048
+      ],
+      "bytes": 6244,
+      "sha256": "d81d052d3497ef1886c8b94e4225533177f65a72e859dee0f57658c2ae8b3ddd"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r4-c1.webp",
+      "rectPx2x": [
+        0,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r4-c2.webp",
+      "rectPx2x": [
+        2048,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r4-c3.webp",
+      "rectPx2x": [
+        4096,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r4-c4.webp",
+      "rectPx2x": [
+        6144,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "A",
+      "file": "layer-A/r4-c5.webp",
+      "rectPx2x": [
+        8192,
+        6144,
+        1638,
+        410
+      ],
+      "bytes": 1346,
+      "sha256": "157acdf3c37691fe25dcca0849e95e9c6fd770f8ae9e0e455549ad320f152798"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r1-c1.webp",
+      "rectPx2x": [
+        0,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 64864,
+      "sha256": "00df72355ee238fd0f7d3e60904ee45695a55067f5fbf662d71a018daf7a960b"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r1-c2.webp",
+      "rectPx2x": [
+        2048,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 330266,
+      "sha256": "d1abdee2fa754e44f578e7a089f5accf12e6d99d7e088b6b85b28fd88ce6cb56"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r1-c3.webp",
+      "rectPx2x": [
+        4096,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 433490,
+      "sha256": "d4e62c3a06f268a4af0cd5a1424da49bb1643779eb0fec17a9e4e822b9d70045"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r1-c4.webp",
+      "rectPx2x": [
+        6144,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 420826,
+      "sha256": "7d58a36f05ae3d9a771c6e93da235d6925d1869c3c22648bb5a224266739e35f"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r1-c5.webp",
+      "rectPx2x": [
+        8192,
+        0,
+        1638,
+        2048
+      ],
+      "bytes": 48074,
+      "sha256": "2074a9a613397a8571a78cde63cf51a300b61e74d0293b78e91654040ecab42a"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r2-c1.webp",
+      "rectPx2x": [
+        0,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 208754,
+      "sha256": "77199a5b09bf174d251ba3321236fa29ecd53d6ee453d9c2e34328463afbb08e"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r2-c2.webp",
+      "rectPx2x": [
+        2048,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 7734,
+      "sha256": "436a9ee440fe21e939090805dd5fc7c0be1a043e520938b9cc260ff4cdb4f5a1"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r2-c3.webp",
+      "rectPx2x": [
+        4096,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 55812,
+      "sha256": "d9a34d5d7e9c1bd32ca5b11b18ce40a66c8455728d503dc62e07423fd868f491"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r2-c4.webp",
+      "rectPx2x": [
+        6144,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 214764,
+      "sha256": "9a969a06142bf2b0550b1b504a087dc60f139ba6bb8086d43bea0f0f923d0268"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r2-c5.webp",
+      "rectPx2x": [
+        8192,
+        2048,
+        1638,
+        2048
+      ],
+      "bytes": 247340,
+      "sha256": "b3b75c2d6ad2d034575f7dae4bbef575e94190736bd6b0ce41f6b2ade8d91b48"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r3-c1.webp",
+      "rectPx2x": [
+        0,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 222942,
+      "sha256": "00e8d05ed8ab5505e7352bd43b56b1bc91a722af55f0828da4bc1a1ec331a73d"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r3-c2.webp",
+      "rectPx2x": [
+        2048,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 7734,
+      "sha256": "436a9ee440fe21e939090805dd5fc7c0be1a043e520938b9cc260ff4cdb4f5a1"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r3-c3.webp",
+      "rectPx2x": [
+        4096,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 38718,
+      "sha256": "8f7b9ddefff1e0284c87b75cac8dc653c71cc7667a9d48915d2c1847736c904b"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r3-c4.webp",
+      "rectPx2x": [
+        6144,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 198836,
+      "sha256": "47ddebc496967866fb78efdf92e5510ea122d900c5703b829a93b24d94690f8b"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r3-c5.webp",
+      "rectPx2x": [
+        8192,
+        4096,
+        1638,
+        2048
+      ],
+      "bytes": 6244,
+      "sha256": "d81d052d3497ef1886c8b94e4225533177f65a72e859dee0f57658c2ae8b3ddd"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r4-c1.webp",
+      "rectPx2x": [
+        0,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r4-c2.webp",
+      "rectPx2x": [
+        2048,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r4-c3.webp",
+      "rectPx2x": [
+        4096,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r4-c4.webp",
+      "rectPx2x": [
+        6144,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 1650,
+      "sha256": "5309edf9e8248f67baf407f39ff7369da936fd9bc6982257ad52f21f49480ab9"
+    },
+    {
+      "variant": "B",
+      "file": "layer-B/r4-c5.webp",
+      "rectPx2x": [
+        8192,
+        6144,
+        1638,
+        410
+      ],
+      "bytes": 1346,
+      "sha256": "157acdf3c37691fe25dcca0849e95e9c6fd770f8ae9e0e455549ad320f152798"
+    }
+  ],
+  "puffs": [
+    {
+      "id": "puff-01",
+      "file": "puffs/puff-01.png",
+      "shape": "long-low",
+      "sizePx": [
+        512,
+        494
+      ],
+      "spriteWorld": [
+        100,
+        96.484375
+      ],
+      "pixelsPerWorldUnit": 5.12,
+      "originWorld": [
+        2979.8087487283824,
+        282.014037229173
+      ],
+      "driftWorldPerSecond": [
+        0.8,
+        0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        21,
+        1242,
+        1220
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-02",
+      "file": "puffs/puff-02.png",
+      "shape": "triple-lobe",
+      "sizePx": [
+        512,
+        504
+      ],
+      "spriteWorld": [
+        110,
+        108.28125
+      ],
+      "pixelsPerWorldUnit": 4.654545454545454,
+      "originWorld": [
+        2078.2095625635807,
+        278.88922795239546
+      ],
+      "driftWorldPerSecond": [
+        1.05,
+        -0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        19,
+        1254,
+        1254
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-03",
+      "file": "puffs/puff-03.png",
+      "shape": "split-wisp",
+      "sizePx": [
+        512,
+        485
+      ],
+      "spriteWorld": [
+        120,
+        113.671875
+      ],
+      "pixelsPerWorldUnit": 4.266666666666667,
+      "originWorld": [
+        2833.709053916582,
+        184.36374732987488
+      ],
+      "driftWorldPerSecond": [
+        1.3,
+        0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        31,
+        1214,
+        1182
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-04",
+      "file": "puffs/puff-04.png",
+      "shape": "round-turret",
+      "sizePx": [
+        512,
+        512
+      ],
+      "spriteWorld": [
+        100,
+        100.0
+      ],
+      "pixelsPerWorldUnit": 5.12,
+      "originWorld": [
+        1872.7324516785352,
+        227.32987488556606
+      ],
+      "driftWorldPerSecond": [
+        0.8,
+        -0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        19,
+        1234,
+        1254
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-05",
+      "file": "puffs/puff-05.png",
+      "shape": "swept-crescent",
+      "sizePx": [
+        512,
+        516
+      ],
+      "spriteWorld": [
+        110,
+        110.859375
+      ],
+      "pixelsPerWorldUnit": 4.654545454545454,
+      "originWorld": [
+        1168.797558494405,
+        241.391516631065
+      ],
+      "driftWorldPerSecond": [
+        1.05,
+        0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        17,
+        1228,
+        1254
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-06",
+      "file": "puffs/puff-06.png",
+      "shape": "flat-bank",
+      "sizePx": [
+        512,
+        520
+      ],
+      "spriteWorld": [
+        120,
+        121.875
+      ],
+      "pixelsPerWorldUnit": 4.266666666666667,
+      "originWorld": [
+        3096.2197355035605,
+        267.9523954836741
+      ],
+      "driftWorldPerSecond": [
+        1.3,
+        -0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        33,
+        19,
+        1226,
+        1230
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-07",
+      "file": "puffs/puff-07.png",
+      "shape": "tiny-curl",
+      "sizePx": [
+        512,
+        512
+      ],
+      "spriteWorld": [
+        100,
+        100.0
+      ],
+      "pixelsPerWorldUnit": 5.12,
+      "originWorld": [
+        2147.743641912513,
+        153.11565456209948
+      ],
+      "driftWorldPerSecond": [
+        0.8,
+        0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        0,
+        0,
+        1253,
+        1254
+      ],
+      "clip": "cloud-layer-mask.png"
+    },
+    {
+      "id": "puff-08",
+      "file": "puffs/puff-08.png",
+      "shape": "double-billow",
+      "sizePx": [
+        512,
+        510
+      ],
+      "spriteWorld": [
+        110,
+        109.5703125
+      ],
+      "pixelsPerWorldUnit": 4.654545454545454,
+      "originWorld": [
+        1600.8463886063073,
+        165.61489166920964
+      ],
+      "driftWorldPerSecond": [
+        1.05,
+        -0.08
+      ],
+      "opacity": 0.55,
+      "nativeAlphaCrop": [
+        46,
+        55,
+        1226,
+        1230
+      ],
+      "clip": "cloud-layer-mask.png"
+    }
+  ],
+  "animation": {
+    "periodSeconds": 24,
+    "weightB": "0.5 - 0.5 * cos(2*pi*t/24)",
+    "blend": "premultiplied sRGB numeric RGBA interpolation before source-over; no linear-light conversion",
+    "layerDriftWorldAmplitude": [
+      1.5,
+      0.3
+    ],
+    "layerDriftPeriodSeconds": 48,
+    "driftFormula": "sin(2*pi*t/48) * amplitude; sample continuous global layer before mask",
+    "maskSpace": "fixed world; reapply mask AFTER drift and puff composition",
+    "opacity": 0.78,
+    "cameraParallax": false
+  },
+  "regions": "regions.json",
+  "scope": "asset pack and offline preview only; game code unchanged",
+  "generationCount": 36
+}

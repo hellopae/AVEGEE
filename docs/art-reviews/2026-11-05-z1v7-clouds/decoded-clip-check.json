@@ -1,0 +1,29 @@
+[
+  {
+    "view": "heaven",
+    "decodedFrame0ToLastRGBMAE": 2.240654662845168,
+    "maskSupportPixelsBelowHUD": 200763,
+    "decodedMAEInsideMask": 9.614235026706448,
+    "pixelsWithAnyRGBChangeAbove3": 146526,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": false
+  },
+  {
+    "view": "left-edge",
+    "decodedFrame0ToLastRGBMAE": 0.006787398298816568,
+    "maskSupportPixelsBelowHUD": 0,
+    "decodedMAEInsideMask": null,
+    "pixelsWithAnyRGBChangeAbove3": 22,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": true
+  },
+  {
+    "view": "central-valley",
+    "decodedFrame0ToLastRGBMAE": 1.0132173015285997,
+    "maskSupportPixelsBelowHUD": 115772,
+    "decodedMAEInsideMask": 7.5018858906586505,
+    "pixelsWithAnyRGBChangeAbove3": 75374,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": false
+  }
+]

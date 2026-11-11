@@ -1,0 +1,69 @@
+{
+  "status": "incomplete",
+  "notQAApproval": true,
+  "method": "Visual inspection of exported mask, all-quarter contact, A/B pilot and decoded seam crops using view_image; final decoded clip contact reviewed separately.",
+  "observations": [
+    {
+      "evidence": "previews/regions-contact.jpg",
+      "result": "Legacy support over lower rock, ice-zone stone and purple river edges was found and removed conservatively. Broad cloud banks remain around the upper central and heaven regions. This subtraction does not establish complete cloud coverage or precise separation of every pale mountain edge."
+    },
+    {
+      "evidence": "previews/seams.jpg",
+      "result": "96px spatial overlap reduces abrupt source-pattern transitions. Some cloud contours still follow the traced polygon geometry; new clipping boundaries receive a 48px inward feather. Both A and B require final contour review before visual acceptance."
+    },
+    {
+      "evidence": "previews/pilot-A-B.jpg",
+      "result": "Terrain, A and B show distinct drawn cloud volumes in the same native map2x crop. Terrain still contains baked clouds, reducing perceived motion and sometimes doubling cloud forms; terrain is unchanged."
+    },
+    {
+      "evidence": "previews/left-edge-12s.mp4",
+      "result": "Selected left-edge view has no cloud support after protected deletions and stale-mask removal. It records the protected area but does not demonstrate visible cloud animation on the map edge."
+    },
+    {
+      "evidence": "verification.json: maskCorePixelsWithoutEitherVariant",
+      "result": "3727 pixels with mask >128 have zero alpha in at least one variant. These include source-art transparency; coverage is reported for further silhouette review, not certified by the 19 file checks."
+    }
+  ],
+  "remaining": [
+    "Finish tracing cloud silhouettes against assembled v7, including pale mountain boundaries and all intended cloud banks, while keeping snow and delete12 excluded. Reuse the existing generated art; do not redraw completed sources.",
+    "Resolve an allowed left-edge cloud region and regenerate that proof clip without reintroducing the owner's deleted white lumps. Current left-edge clip cannot satisfy the visibility intent."
+  ],
+  "decodedClipsReviewed": {
+    "evidence": "previews/decoded-clips.jpg",
+    "sampleTimesSeconds": [
+      0,
+      6,
+      11.916667
+    ],
+    "observed": "Viewed the final contact decoded from the actual three MP4s. Heaven and central clouds change shape; selected west edge remains static. Puffy sprites were also viewed in previews/puffs-contact.jpg.",
+    "metrics": [
+      {
+        "view": "heaven",
+        "decodedFrame0ToLastRGBMAE": 2.240654662845168,
+        "maskSupportPixelsBelowHUD": 200763,
+        "decodedMAEInsideMask": 9.614235026706448,
+        "pixelsWithAnyRGBChangeAbove3": 146526,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": false
+      },
+      {
+        "view": "left-edge",
+        "decodedFrame0ToLastRGBMAE": 0.006787398298816568,
+        "maskSupportPixelsBelowHUD": 0,
+        "decodedMAEInsideMask": null,
+        "pixelsWithAnyRGBChangeAbove3": 22,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": true
+      },
+      {
+        "view": "central-valley",
+        "decodedFrame0ToLastRGBMAE": 1.0132173015285997,
+        "maskSupportPixelsBelowHUD": 115772,
+        "decodedMAEInsideMask": 7.5018858906586505,
+        "pixelsWithAnyRGBChangeAbove3": 75374,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": false
+      }
+    ]
+  }
+}

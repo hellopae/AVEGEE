@@ -1,0 +1,629 @@
+{
+  "fullPx": [
+    9830,
+    6554
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "chunk": 2048,
+  "regions": [
+    {
+      "id": "western-ridge-mist",
+      "polygonProxy1500": [
+        [
+          350,
+          73
+        ],
+        [
+          397,
+          55
+        ],
+        [
+          430,
+          65
+        ],
+        [
+          460,
+          54
+        ],
+        [
+          495,
+          66
+        ],
+        [
+          531,
+          56
+        ],
+        [
+          555,
+          77
+        ],
+        [
+          552,
+          102
+        ],
+        [
+          512,
+          110
+        ],
+        [
+          476,
+          97
+        ],
+        [
+          437,
+          116
+        ],
+        [
+          400,
+          97
+        ],
+        [
+          372,
+          122
+        ],
+        [
+          350,
+          104
+        ]
+      ]
+    },
+    {
+      "id": "central-cloud-deck",
+      "polygonProxy1500": [
+        [
+          555,
+          47
+        ],
+        [
+          616,
+          38
+        ],
+        [
+          659,
+          41
+        ],
+        [
+          709,
+          29
+        ],
+        [
+          751,
+          39
+        ],
+        [
+          782,
+          53
+        ],
+        [
+          775,
+          91
+        ],
+        [
+          748,
+          124
+        ],
+        [
+          721,
+          139
+        ],
+        [
+          704,
+          102
+        ],
+        [
+          676,
+          100
+        ],
+        [
+          660,
+          87
+        ],
+        [
+          636,
+          106
+        ],
+        [
+          604,
+          92
+        ],
+        [
+          585,
+          89
+        ]
+      ]
+    },
+    {
+      "id": "heaven-west-valley",
+      "polygonProxy1500": [
+        [
+          748,
+          87
+        ],
+        [
+          787,
+          63
+        ],
+        [
+          819,
+          58
+        ],
+        [
+          850,
+          48
+        ],
+        [
+          871,
+          53
+        ],
+        [
+          858,
+          76
+        ],
+        [
+          841,
+          95
+        ],
+        [
+          831,
+          128
+        ],
+        [
+          846,
+          161
+        ],
+        [
+          871,
+          179
+        ],
+        [
+          872,
+          208
+        ],
+        [
+          894,
+          219
+        ],
+        [
+          896,
+          247
+        ],
+        [
+          870,
+          243
+        ],
+        [
+          843,
+          231
+        ],
+        [
+          825,
+          204
+        ],
+        [
+          811,
+          186
+        ],
+        [
+          797,
+          159
+        ],
+        [
+          790,
+          130
+        ],
+        [
+          769,
+          125
+        ]
+      ]
+    },
+    {
+      "id": "heaven-east-cloud-deck",
+      "polygonProxy1500": [
+        [
+          1004,
+          38
+        ],
+        [
+          1055,
+          34
+        ],
+        [
+          1106,
+          47
+        ],
+        [
+          1148,
+          55
+        ],
+        [
+          1193,
+          69
+        ],
+        [
+          1233,
+          52
+        ],
+        [
+          1254,
+          65
+        ],
+        [
+          1237,
+          107
+        ],
+        [
+          1210,
+          131
+        ],
+        [
+          1190,
+          152
+        ],
+        [
+          1155,
+          142
+        ],
+        [
+          1138,
+          110
+        ],
+        [
+          1104,
+          103
+        ],
+        [
+          1080,
+          90
+        ],
+        [
+          1045,
+          79
+        ]
+      ]
+    },
+    {
+      "id": "central-cliff-hollow",
+      "polygonProxy1500": [
+        [
+          961,
+          260
+        ],
+        [
+          977,
+          254
+        ],
+        [
+          994,
+          270
+        ],
+        [
+          1016,
+          276
+        ],
+        [
+          1026,
+          300
+        ],
+        [
+          1005,
+          312
+        ],
+        [
+          980,
+          307
+        ],
+        [
+          968,
+          287
+        ]
+      ]
+    },
+    {
+      "id": "west-border-upper",
+      "polygonProxy1500": [
+        [
+          0,
+          281
+        ],
+        [
+          22,
+          287
+        ],
+        [
+          37,
+          311
+        ],
+        [
+          51,
+          323
+        ],
+        [
+          41,
+          350
+        ],
+        [
+          16,
+          358
+        ],
+        [
+          0,
+          345
+        ]
+      ]
+    }
+  ],
+  "excludedLumps": [
+    "lump-00",
+    "lump-01",
+    "lump-02",
+    "lump-04",
+    "lump-05",
+    "lump-07",
+    "lump-08",
+    "lump-09",
+    "lump-10",
+    "lump-11",
+    "lump-12",
+    "lump-13"
+  ],
+  "quarters": [
+    {
+      "id": "r1-c2-q1",
+      "rectPx2x": [
+        2048,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        2016,
+        0,
+        3104,
+        1056
+      ],
+      "coveredPixels": 29827,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c2-q2",
+      "rectPx2x": [
+        3072,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        3040,
+        0,
+        4128,
+        1056
+      ],
+      "coveredPixels": 26223,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q1",
+      "rectPx2x": [
+        4096,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        4064,
+        0,
+        5152,
+        1056
+      ],
+      "coveredPixels": 114382,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q2",
+      "rectPx2x": [
+        5120,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        5088,
+        0,
+        6176,
+        1056
+      ],
+      "coveredPixels": 127471,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q4",
+      "rectPx2x": [
+        5120,
+        1024,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        5088,
+        992,
+        6176,
+        2080
+      ],
+      "coveredPixels": 1964,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q1",
+      "rectPx2x": [
+        6144,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        0,
+        7200,
+        1056
+      ],
+      "coveredPixels": 34256,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q2",
+      "rectPx2x": [
+        7168,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        7136,
+        0,
+        8224,
+        1056
+      ],
+      "coveredPixels": 238617,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q3",
+      "rectPx2x": [
+        6144,
+        1024,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        992,
+        7200,
+        2080
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c1-q1",
+      "rectPx2x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        0,
+        2016,
+        1056,
+        3104
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c4-q3",
+      "rectPx2x": [
+        6144,
+        3072,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        3040,
+        7200,
+        4128
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c5-q1",
+      "rectPx2x": [
+        8192,
+        2048,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        8160,
+        2016,
+        9248,
+        3104
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c5-q2",
+      "rectPx2x": [
+        9216,
+        2048,
+        614,
+        1024
+      ],
+      "contextBoxPx2x": [
+        9184,
+        2016,
+        9830,
+        3104
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r3-c1-q1",
+      "rectPx2x": [
+        0,
+        4096,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        0,
+        4064,
+        1056,
+        5152
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r3-c4-q1",
+      "rectPx2x": [
+        6144,
+        4096,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        4064,
+        7200,
+        5152
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    }
+  ],
+  "maskRefinement": {
+    "source": "input/inherited-cloud-layer-mask.png",
+    "activeTracedRegions": [
+      "western-ridge-mist",
+      "central-cloud-deck",
+      "heaven-west-valley",
+      "heaven-east-cloud-deck"
+    ],
+    "inactiveTracedRegions": [
+      "central-cliff-hollow",
+      "west-border-upper"
+    ],
+    "reason": "Visual comparison against v7: lower legacy support lands on rocks, ice-zone stone, and purple river edges. Small isolated pale rock highlights removed conservatively. No new cloud pixels painted.",
+    "removedComponentsBelowArea": 1200,
+    "newRoiInwardFeatherPx2x": 48
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "generation-records.json + generation-prompts.json: 36 distinct recorded ImageGen sources, including 23 inherited sources and 13 generated in this continuation.",
+    "clouds.json: 40 grid chunk entries (A/B x20) and 8 puff entries; outputs built from native sources with no upscaling.",
+    "mask-refinement.json: conservative subtraction of stale legacy support, no new support added.",
+    "visual-review.json + previews/regions-contact.jpg: mask semantics and full coverage remain incomplete; selected left-edge view has no cloud support.",
+    "verification.json: 19/19 file checks OK; decoded sizes and hashes correct, no upscaling, outside-mask alpha 0, delete12 support 0.",
+    "seams.json + previews/seams.jpg: scanned 30 boundaries on both axes; 8 with paired mask support >64, maximum discontinuity/nearby ratio 1.2521. No supported horizontal crossings to measure.",
+    "clip-check.json + decoded-clip-check.json + previews/decoded-clips.jpg: 3 actual decoded MP4s, 12 seconds / 144 frames / 12 fps each; heaven mask RGB MAE 9.6142 and central 7.5019, west-edge support 0.",
+    "checks-run.json: final commands and exit results; delivery-inventory.json records exported file sizes and SHA256 hashes.",
+    "verification.json + visual-review.json: 3727 mask-core pixels have zero alpha in at least one variant; source-art transparency and contour coverage remain visible-review items. Whole output is approximately 40.52 MB (<60 MB), with changes confined to this output folder."
+  ],
+  "remaining": [
+    "Complete precise cloud-mask coverage and protected mountain/snow contours against v7, then rebuild and recheck exports with the existing art.",
+    "Provide visible cloud-motion evidence for an allowed left-edge region without restoring delete12; current left-edge clip is a protected-area diagnostic."
+  ]
+}

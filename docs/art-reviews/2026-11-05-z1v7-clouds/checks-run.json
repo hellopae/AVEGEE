@@ -1,0 +1,46 @@
+{
+  "commands": [
+    {
+      "command": "python3 -m py_compile <output>/scripts/*.py",
+      "exitCode": 0,
+      "result": "9 scripts compiled; cache removed from deliverable"
+    },
+    {
+      "command": "python3 <output>/scripts/refine-mask.py",
+      "exitCode": 0,
+      "result": "625469 -> 572740 nonzero mask pixels, added support 0"
+    },
+    {
+      "command": "python3 <output>/scripts/build.py",
+      "exitCode": 0,
+      "result": "Built 40 chunk layers and 8 puffs"
+    },
+    {
+      "command": "python3 <output>/scripts/render.py",
+      "exitCode": 0,
+      "result": "3 MP4s: each 1280x720, 144 frames, 12 fps, 12.000000 seconds"
+    },
+    {
+      "command": "python3 <output>/scripts/review-assets.py",
+      "exitCode": 0,
+      "result": "30 boundaries scanned on both axes; 8 supported vertical boundaries measured; final exports visually inspected"
+    },
+    {
+      "command": "python3 <output>/scripts/review-clips.py",
+      "exitCode": 0,
+      "result": "Decoded actual MP4 samples at 0, 6 and 11.916667 seconds; contact visually inspected"
+    },
+    {
+      "command": "python3 <output>/scripts/verify.py",
+      "exitCode": 0,
+      "result": "19/19 file checks OK, including actual ffprobe and full ffmpeg decode; first-run case tested with verification.json absent"
+    }
+  ],
+  "resolvedCheckDefect": {
+    "initialExitCode": 1,
+    "cause": "README self-report link was checked before verification.json was created",
+    "fix": "Exclude the current output report from input-link validation. Re-ran successfully after deleting the previous report."
+  },
+  "output": "docs/art-reviews/2026-11-05-z1v7-clouds",
+  "notQAApproval": true
+}

@@ -1,0 +1,298 @@
+{
+  "method": "Decoded premultiplied RGBA; scan both axes at every 1024px boundary, measure paired mask support >64. Ratios are diagnostics, not visual approval.",
+  "scannedBoundaries": [
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 1024,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 2048,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 3072,
+      "supportPixelsAbove64": 36,
+      "anyMaskSupportOnEitherSide": 81
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 4096,
+      "supportPixelsAbove64": 76,
+      "anyMaskSupportOnEitherSide": 122
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 5120,
+      "supportPixelsAbove64": 145,
+      "anyMaskSupportOnEitherSide": 234
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 6144,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 7168,
+      "supportPixelsAbove64": 110,
+      "anyMaskSupportOnEitherSide": 207
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 8192,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 9216,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 1024,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 2048,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 3072,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 4096,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 5120,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "A",
+      "axis": "horizontal",
+      "coordinatePx2x": 6144,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 1024,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 2048,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 3072,
+      "supportPixelsAbove64": 36,
+      "anyMaskSupportOnEitherSide": 81
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 4096,
+      "supportPixelsAbove64": 76,
+      "anyMaskSupportOnEitherSide": 122
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 5120,
+      "supportPixelsAbove64": 145,
+      "anyMaskSupportOnEitherSide": 234
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 6144,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 7168,
+      "supportPixelsAbove64": 110,
+      "anyMaskSupportOnEitherSide": 207
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 8192,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 9216,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 1024,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 2048,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 3072,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 4096,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 5120,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    },
+    {
+      "variant": "B",
+      "axis": "horizontal",
+      "coordinatePx2x": 6144,
+      "supportPixelsAbove64": 0,
+      "anyMaskSupportOnEitherSide": 0
+    }
+  ],
+  "boundaries": [
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 3072,
+      "kind": "quarter",
+      "supportPixels": 36,
+      "premultipliedMAE": 0.017244329676032066,
+      "nearMedian": 0.016279637813568115,
+      "ratio": 1.0592575752305704
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 4096,
+      "kind": "chunk",
+      "supportPixels": 76,
+      "premultipliedMAE": 0.010254405438899994,
+      "nearMedian": 0.008189765736460686,
+      "ratio": 1.2520999707290248
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 5120,
+      "kind": "quarter",
+      "supportPixels": 145,
+      "premultipliedMAE": 0.004745522513985634,
+      "nearMedian": 0.006289397366344929,
+      "ratio": 0.7545273795831865
+    },
+    {
+      "variant": "A",
+      "axis": "vertical",
+      "coordinatePx2x": 7168,
+      "kind": "quarter",
+      "supportPixels": 110,
+      "premultipliedMAE": 0.013194119557738304,
+      "nearMedian": 0.017321448773145676,
+      "ratio": 0.761721477835839
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 3072,
+      "kind": "quarter",
+      "supportPixels": 36,
+      "premultipliedMAE": 0.017080074176192284,
+      "nearMedian": 0.016674356535077095,
+      "ratio": 1.0243318319517576
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 4096,
+      "kind": "chunk",
+      "supportPixels": 76,
+      "premultipliedMAE": 0.008802182041108608,
+      "nearMedian": 0.00848881434649229,
+      "ratio": 1.0369153667197122
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 5120,
+      "kind": "quarter",
+      "supportPixels": 145,
+      "premultipliedMAE": 0.004099696408957243,
+      "nearMedian": 0.005869957618415356,
+      "ratio": 0.6984201037662672
+    },
+    {
+      "variant": "B",
+      "axis": "vertical",
+      "coordinatePx2x": 7168,
+      "kind": "quarter",
+      "supportPixels": 110,
+      "premultipliedMAE": 0.01670808531343937,
+      "nearMedian": 0.019022123888134956,
+      "ratio": 0.8783501470023035
+    }
+  ],
+  "notQAApproval": true
+}

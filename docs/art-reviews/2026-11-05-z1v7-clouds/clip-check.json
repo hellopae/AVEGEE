@@ -1,0 +1,77 @@
+[
+  {
+    "id": "heaven",
+    "rectPx2x": [
+      6900,
+      410,
+      1280,
+      720
+    ],
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "144"
+        }
+      ],
+      "format": {
+        "duration": "12.000000"
+      }
+    },
+    "kind": "offline reference raster compositor, fixed camera, base v7 and clouds sampled at native map2x"
+  },
+  {
+    "id": "left-edge",
+    "rectPx2x": [
+      0,
+      2600,
+      1280,
+      720
+    ],
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "144"
+        }
+      ],
+      "format": {
+        "duration": "12.000000"
+      }
+    },
+    "kind": "offline reference raster compositor, fixed camera, base v7 and clouds sampled at native map2x"
+  },
+  {
+    "id": "central-valley",
+    "rectPx2x": [
+      5100,
+      400,
+      1280,
+      720
+    ],
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "144"
+        }
+      ],
+      "format": {
+        "duration": "12.000000"
+      }
+    },
+    "kind": "offline reference raster compositor, fixed camera, base v7 and clouds sampled at native map2x"
+  }
+]
