@@ -4,8 +4,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
 import { syncSceneZone, CREW, GUARD } from '../src/data.js';
-import { QUESTS, SIDE_QUESTS, KIN_QUESTS, questTarget, questState, questUnlocked, questCharacterHired, questMarkers, questsForActor, advanceQuest, recordQuestVerdict } from '../src/side-quests.js';
+import { QUESTS, SIDE_QUESTS, KIN_QUESTS, questTarget, questState, questUnlocked, questCharacterHired, questHandoffNeed, questMarkers, questsForActor, advanceQuest, recordQuestVerdict } from '../src/side-quests.js';
 import { questJournalHtml, createQuestAction } from '../src/quest-panels.js';
+import { activeQuestEntries } from '../src/quest-journal.js';
 import { QUEST_FIGHT_SYSTEM_TEXT } from '../src/quest-fights.js';
 import { rosterId } from '../src/roster.js';
 import { hireFor } from './helpers/quest-hire.mjs';
@@ -69,13 +70,39 @@ test('a character hired in another branch counts (roster), a character of a diff
   assert.equal(questUnlocked(h, q), false, 'TH Kan is another person');
 });
 
-test('kin quests follow the character at the current step: the recipient in the other zone must be hired too, the quest hides (not deleted) until then', () => {
+test('cross-zone hand-off (11 Nov): a kin quest shows once the giver is hired; only the hand-off waits for the receiver, with a short message, progress kept', () => {
   const g = make(), q = KIN_QUESTS.find(q => q.id === 'kinKan');   // Cypher (cyberhell:kan) → Kan (th:kan)
-  goto(g, q); assert.ok(advanceQuest(g, q.id)); assert.equal(questState(g, q.id).step, 1);
+  enter(g, q.from); assert.equal(questUnlocked(g, q), false, 'giver not hired yet');
+  goto(g, q); assert.ok(questUnlocked(g, q)); assert.equal(questHandoffNeed(g, q), null, 'step 0 is at the giver');
+  assert.ok(advanceQuest(g, q.id)); assert.equal(questState(g, q.id).step, 1);
   assert.equal(questTarget(g, q).zone, 'th');
-  assert.equal(questUnlocked(g, q), false, 'step 1 points at TH Kan, who is not hired');
-  assert.ok(!questJournalHtml(g).includes(q.title)); assert.equal(questState(g, q.id).step, 1, 'progress kept');
-  goto(g, q); assert.ok(questUnlocked(g, q)); assert.ok(advanceQuest(g, q.id, 0)); assert.equal(questState(g, q.id).step, 2);
+  // still visible (journal + tracker entry) but the hand-off is blocked and says who to hire where
+  assert.ok(questUnlocked(g, q), 'no longer hidden midway');
+  assert.ok(questJournalHtml(g).includes(q.title));
+  const need = questHandoffNeed(g, q); assert.ok(need); assert.equal(need.zone, 'th');
+  assert.ok(need.text.startsWith('ต้องจ้าง') && need.text.includes('ก่อนจึงฝากของได้') && need.text.includes(need.zoneName), need.text);
+  assert.ok(activeQuestEntries(g).find(e => e.id === q.id).objective.includes('ก่อนจึงฝากของได้'));
+  // in TH without Kan: no marker, no owner button, the hand-off cannot be done even standing at the home point
+  enter(g, 'th'); Object.assign(g.player, questTarget(g, q));
+  assert.ok(!questMarkers(g).some(m => m.id === q.id)); assert.ok(!questsForActor(g, 'kan', 'th').some(x => x.id === q.id));
+  assert.equal(advanceQuest(g, q.id, 0), false); assert.equal(questState(g, q.id).step, 1, 'progress kept');
+  // hire the receiver → marker, owner button and the hand-off all work
+  hireFor(g, q); Object.assign(g.player, questTarget(g, q));
+  assert.equal(questHandoffNeed(g, q), null); assert.ok(questMarkers(g).some(m => m.id === q.id)); assert.ok(questsForActor(g, 'kan', 'th').some(x => x.id === q.id));
+  assert.ok(advanceQuest(g, q.id, 0)); assert.equal(questState(g, q.id).step, 2);
+});
+
+test('cross-zone hand-off (11 Nov): sqBoon / sqPlerng step 4 goes to the TH receiver, which also waits for the hire without hiding the quest', () => {
+  for (const id of ['sqBoon', 'sqPlerng']) {
+    const g = make(), q = SIDE_QUESTS.find(q => q.id === id);   // both live in the west branch, the reply goes to th
+    goto(g, q); g.sideQuests[id] = { step: 4, choice: 0, caseId: q.caseId, fought: true };
+    assert.equal(questTarget(g, q).zone, 'th'); assert.ok(questUnlocked(g, q), `${id} still shown`);
+    assert.ok(questHandoffNeed(g, q), `${id} waits for the th receiver`); assert.ok(activeQuestEntries(g).some(e => e.id === id));
+    enter(g, 'th'); Object.assign(g.player, questTarget(g, q));
+    assert.equal(advanceQuest(g, id), false); assert.equal(questState(g, id).step, 4, 'progress kept');
+    hireFor(g, q); Object.assign(g.player, questTarget(g, q));
+    assert.equal(questHandoffNeed(g, q), null); assert.ok(advanceQuest(g, id)); assert.equal(questState(g, id).step, 5);
+  }
 });
 
 test('old save: a quest started before the hire rule stays in the save, is hidden until the character is hired, then continues where it was', () => {
@@ -113,4 +140,6 @@ test('UI: the lose window has exactly the two buttons (retry / rest) and the win
   assert.ok(ui.includes('data-quest-fight-retry') && ui.includes('data-quest-fight-rest') && ui.includes('data-quest-fight-next'));
   assert.ok(/outcome==='win'\?`<button[^`]*data-quest-fight-next[^`]*`:`<button[^`]*data-quest-fight-retry[^`]*data-quest-fight-rest/.test(ui), 'win → one button · lose → retry + rest');
   assert.ok(ui.includes("retryFight=fightQuest&&(s.fightLost||"), 'sqBoon shows สู้อีกครั้ง once a fight was lost');
+  assert.ok(/if\(retryNow\)openBattle\(afterQuestFight\(id,owner\)\);else openQuestFightScene/.test(ui), 'retry after a loss skips the pre-fight scene (11 Nov)');
+  assert.ok(ui.includes('handoffNeed.text'), 'quest window shows the hand-off hire message');
 });

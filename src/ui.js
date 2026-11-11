@@ -8,7 +8,7 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
-import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, pendingRetroQuestRewards, ackRetroQuestRewards } from './side-quests.js';
+import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards } from './side-quests.js';
 import { questNeedsFight } from './quest-rewards.js';
 import { QUEST_FIGHTS, QUEST_FIGHT_SYSTEM_TEXT, fightScene } from './quest-fights.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
@@ -3171,9 +3171,10 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
   const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right)&&!retryFight;
   const lines=questDialogue(g,q);
   const ownerConversation=owner===p.npc&&g.zone===p.zone;
+  const handoffNeed=questHandoffNeed(g,q),retryNow=retryFight&&!!s.fightLost;   // retry after a lost fight goes straight back in, no pre-fight scene
   const acceptanceNeedsTalk=s.step===0&&!ownerConversation;
   const art=p.art||artUrl('crew-'+p.npc,'png',p.zone);
-  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?`<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>${questReceiptHtml(s.reward,celebrate)}`:g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:'คุย · เผชิญหน้า'):'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
+  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?`<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>${questReceiptHtml(s.reward,celebrate)}`:handoffNeed?`<p class="quest-handoff-need" role="status">${esc(handoffNeed.text)}</p>`:g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:'คุย · เผชิญหน้า'):'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
     d.querySelector('[data-quest-list]').onclick=()=>openHelp('quests');
     d.querySelector('[data-quest-talk]')?.addEventListener('click',()=>{if(questNear(g,q))openOwnerQuests(p.npc);});
     d.querySelector('[data-walk-quest]')?.addEventListener('click',()=>{d.close();g.walkTo(p.x,p.y);});
@@ -3183,7 +3184,7 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
       if(!advanceOnce(c)){buttons.forEach((b,i)=>b.disabled=disabled[i]);return;}
       const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(accepting)trackedQuestId=id;refresh();
       // a quest fight started: show Rae's scene, then the battle (the result scene brings the player back here)
-      if(g.battle?.kind==='questFight'){openQuestFightScene(id,{owner});return;}
+      if(g.battle?.kind==='questFight'){if(retryNow)openBattle(afterQuestFight(id,owner));else openQuestFightScene(id,{owner});return;}
       const closed=questState(g,id).done;
       openQuests(id,{owner,notice:accepting?'รับภารกิจ “'+q.title+'” แล้ว':closed?'ปิดภารกิจ “'+q.title+'” แล้ว':'',celebrate:closed});
     };

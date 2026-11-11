@@ -1,6 +1,6 @@
 import {actorStanding} from './actor-recovery.js';
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
-import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, crewName } from './data.js';
+import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, ZONES, crewName } from './data.js';
 import { rosterId } from './roster.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
 import { isTownZone } from './zone-skin.js';
@@ -94,15 +94,27 @@ export function questDialogue(g,q){
 }
 /** zone of the character the quest currently points at (same rule as questTarget, without the walk lookup) */
 export const questTargetZone=(g,q)=>{const s=questState(g,q.id);return q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);};
-/** PART-A (10 พ.ย. 2569): a quest tied to a character exists only once that character is hired in the zone the quest points at.
- *  Nira (follows every branch) and the merchant (not hireable) always count as hired; Taan / Nira given at the start of a branch are in `crew` already.
- *  Other branches are read from the roster (owned actors only), the current branch from `crew` / `guard`. Progress is never deleted — a started quest is hidden until the hire. */
-export function questCharacterHired(g,q){
-  if(!q)return false;const npc=q.npc;
+/** zone of the character who gives the quest (the starting point). Hand-off steps point somewhere else: see questTargetZone. */
+export const questOwnerZone=q=>q.kin?q.from:q.zone;
+const npcHiredIn=(g,npc,zone)=>{
   if(npc==='nira'||npc==='merchant')return true;
-  const zone=questTargetZone(g,q);
   if(zone===g.zone)return npc==='guard'?!!g.guard:(g.crew||[]).some(c=>c.k===npc);
   return !!g.roster?.[rosterId(zone,npc)];
+};
+/** PART-A (10 พ.ย. 2569, changed 11 พ.ย. by Khun Pae): a quest exists once the character who GIVES it (starting point) is hired.
+ *  Nira (follows every branch) and the merchant (not hireable) always count as hired; Taan / Nira given at the start of a branch are in `crew` already.
+ *  Other branches are read from the roster (owned actors only), the current branch from `crew` / `guard`. Progress is never deleted. */
+export function questCharacterHired(g,q){
+  return !!q&&npcHiredIn(g,q.npc,questOwnerZone(q));
+}
+/** Cross-zone hand-off (kin quests step 1, sqBoon/sqPlerng step 4): the quest stays visible, but the hand-off only works once the receiver in the
+ *  destination zone is hired. Returns null when nothing blocks, else {name,zone,zoneName,text} for the journal / tracker. */
+export function questHandoffNeed(g,q){
+  if(!q||!questCharacterHired(g,q))return null;
+  const zone=questTargetZone(g,q);
+  if(npcHiredIn(g,q.npc,zone))return null;
+  const name=crewName(CREW.find(c=>c.k===q.npc),zone),zoneName=ZONES.find(z=>z.k===zone)?.name||zone;
+  return {name,zone,zoneName,text:`ต้องจ้าง${name}ที่${zoneName}ก่อนจึงฝากของได้`};
 }
 export function questUnlocked(g,q){
   if(!q)return false;
@@ -127,12 +139,12 @@ export function questTarget(g,q){
 }
 // Current target ownership includes later cross-zone replies; paused quests remain readable.
 export function questsForActor(g,npc,zone=g.zone){
-  return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done).filter(q=>{
+  return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)).filter(q=>{
     const target=questTarget(g,q);return target.npc===npc&&target.zone===zone;
   });
 }
 export const questNear=(g,q)=>{const p=questTarget(g,q);return g.zone===p.zone&&(p.npc!=='merchant'||merchantAvailable(g))&&Math.hypot(g.player.x-p.x,g.player.y-p.y)<=150;};
-export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
+export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
 function award(g,q,s){
   // Claim latch is written before granting anything. Reload and repeated clicks cannot pay twice.
   if(s.done)return false;s.done=true;
@@ -165,7 +177,7 @@ function award(g,q,s){
   g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของรางวัลเพิ่ม':''}`,'good');return true;
 }
 export function advanceQuest(g,id,choice=null){
-  const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
+  const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||questHandoffNeed(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
   const s=g.sideQuests[id] ||= {step:0,choice:null,done:false};if(s.done)return false;
   const accepting=s.step===0;
   const validChoice=[0,1].includes(choice);

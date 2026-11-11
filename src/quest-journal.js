@@ -1,4 +1,4 @@
-import {QUESTS,questState,questTarget,questsPaused,questUnlocked} from './side-quests.js';
+import {QUESTS,questState,questTarget,questsPaused,questUnlocked,questHandoffNeed} from './side-quests.js';
 import {QUEST_CASES} from './quest-cases.js';
 
 function questObjective(q,state,target) {
@@ -18,6 +18,6 @@ export function activeQuestEntries(g){
   return QUESTS.filter(q=>{const s=questState(g,q.id);return s.step>0&&!s.done&&questUnlocked(g,q);}).map(q=>{
     const state=questState(g,q.id),target=questTarget(g,q);
     const {zone,npc,name,x,y}=target;
-    return {id:q.id,title:q.title,zone,npc,name,x,y,objective:questObjective(q,state,target),paused:!q.kin&&paused};
+    return {id:q.id,title:q.title,zone,npc,name,x,y,objective:questHandoffNeed(g,q)?.text||questObjective(q,state,target),paused:!q.kin&&paused};
   });
 }
