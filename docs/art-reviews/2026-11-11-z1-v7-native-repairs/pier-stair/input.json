@@ -1,0 +1,19 @@
+{
+  "id": "pier-stair",
+  "coreRectPx1x": [
+    2770,
+    2120,
+    2960,
+    2240
+  ],
+  "contextRectPx1x": [
+    2722,
+    2072,
+    3008,
+    2288
+  ],
+  "rectangleConvention": "[x0,y0,x1,y1], half-open, master map 4915x3277",
+  "reason": "Pier stair side/rail silhouette changed; correspondence displaced10px.",
+  "referenceSha256": "4ee199f348bed8bd008b8c3c39fad3a12198ced38702ea85437c31f193db77e2",
+  "assembledBeforeSha256": "576d19447a64da88df3c34dbd7c9af7773e300e8dec1dcda8bfed116152d8ebf"
+}

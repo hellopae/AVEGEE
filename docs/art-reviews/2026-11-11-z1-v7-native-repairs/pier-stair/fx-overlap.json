@@ -1,0 +1,84 @@
+{
+  "layout": "img/map-zone1/v5-fx/fx-layout.json",
+  "layoutSha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6",
+  "sourceCodeSha256": "3bd53f358f03028a327d48935d4450ada5ec558cb5e7a1f75d71759ae048c5c7",
+  "pieces": [
+    {
+      "id": "spirit-river--river-east",
+      "group": "river",
+      "kind": "tile",
+      "mask": "img/map-zone1/v5-fx/masks/river-east.webp",
+      "maskSha256": "a90bea65ff3f9e659e61c056a23b632bf2eb841815e329149012f5d34de15281",
+      "maskRectPx1x": [
+        2565,
+        2168,
+        2350,
+        376
+      ],
+      "contextCoveredPixels2x": 15420,
+      "coreCoveredPixels2x": 24
+    },
+    {
+      "id": "bank-foam-spirit--edge",
+      "group": "foam",
+      "kind": "tile",
+      "mask": "img/map-zone1/v5-fx/masks/foam-spirit-edge.webp",
+      "maskSha256": "012649999ca18e9567c868355d7b0cc842cd0f51c070d146addecb14eee51cb5",
+      "maskRectPx1x": [
+        0,
+        2038,
+        4915,
+        595
+      ],
+      "contextCoveredPixels2x": 17348,
+      "coreCoveredPixels2x": 1544
+    },
+    {
+      "id": "bank-foam-ice--edge",
+      "group": "foam",
+      "kind": "tile",
+      "mask": "img/map-zone1/v5-fx/masks/foam-ice-edge.webp",
+      "maskSha256": "ee801314262e87dd3d36a4e081ea78befa6e31eaacb94272a3b1415e20e68277",
+      "maskRectPx1x": [
+        2985,
+        488,
+        1930,
+        1780
+      ],
+      "contextCoveredPixels2x": 0,
+      "coreCoveredPixels2x": 0
+    },
+    {
+      "id": "river-foam--shore",
+      "group": "foam",
+      "kind": "spots",
+      "mask": "img/map-zone1/v5-fx/masks/foam-spirit-edge.webp",
+      "maskSha256": "012649999ca18e9567c868355d7b0cc842cd0f51c070d146addecb14eee51cb5",
+      "maskRectPx1x": [
+        0,
+        2038,
+        4915,
+        595
+      ],
+      "contextCoveredPixels2x": 17348,
+      "coreCoveredPixels2x": 1544
+    },
+    {
+      "id": "water-sparkle--river-east",
+      "group": "sparkle",
+      "kind": "spots",
+      "mask": "img/map-zone1/v5-fx/masks/river-east.webp",
+      "maskSha256": "a90bea65ff3f9e659e61c056a23b632bf2eb841815e329149012f5d34de15281",
+      "maskRectPx1x": [
+        2565,
+        2168,
+        2350,
+        376
+      ],
+      "contextCoveredPixels2x": 15420,
+      "coreCoveredPixels2x": 24
+    }
+  ],
+  "activeCloudRectanglesIntersect": false,
+  "display": "cyan = union of active FX coverage masks, magenta = repair core. Coverage diagnostic includes spot masks, actual animated spots occupy subsets."
+}

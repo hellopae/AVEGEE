@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD terrain repair south-plaza-stair. Input image is the exact 296x246 pixel reference crop of the existing painterly isometric fantasy map. Repaint this exact composition with fresh crisp detail at 1480x1230 native resolution. Preserve every stair tread, the exact landing silhouette, side rail/posts and brass strips, rock and orange plant silhouettes, paving boundaries, viewpoint and colors. The stair deliberately reaches the LEFT image border, keep this partial crop exactly and do not center or expand it. The repair core is reference pixels x48..248,y48..198. Surrounding 48 pixel overlap ring is spatial reference. Preserve full reference framing edge to edge. Only enhance fine stone grain, chips, cracks, subtle painterly shading and plant detail. No layout changes, no extra stair steps, no moved posts or silhouettes, no added objects, no fog or blur, no panels, text, border or watermark. Maintain the existing warm hand-painted game style. Return a single terrain crop, exact aspect and normalized coordinates.",
+  "sourcePath": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7480-a9d7-63787bed3f0c/exec-9f0f9894-a255-4b5a-83e7-e1075930671c.png",
+  "reference": "reference-1x.png",
+  "callCount": 1,
+  "sourceSha256": "1d1d0a58bda4bf0ef6643ab500816cc416d22bfea98863bbc3bcc5cacd57b4f9",
+  "nativeSize": [
+    1375,
+    1144
+  ],
+  "nativeSha256": "b912d6c3b1531ca5c732785f23379a3021eee0b6c9252986f6f8c1d79182a8e6",
+  "decodedPixelIdentity": true
+}

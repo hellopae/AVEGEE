@@ -1,0 +1,19 @@
+{
+  "id": "lava-low-stair",
+  "coreRectPx1x": [
+    700,
+    1960,
+    825,
+    2050
+  ],
+  "contextRectPx1x": [
+    652,
+    1912,
+    873,
+    2098
+  ],
+  "rectangleConvention": "[x0,y0,x1,y1], half-open, master map 4915x3277",
+  "reason": "r2-c1 bottom stair top-left displaced9,5px; inspected width changed.",
+  "referenceSha256": "93f9490241f56a737d4b8eef7fecb37bea765b9ad6c66335d0fddb852064940b",
+  "assembledBeforeSha256": "210ba8e1c774b4f5fe63530b86e7fd1da24cb665d775e2a694af397f87b1157f"
+}
