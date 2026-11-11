@@ -1,0 +1,68 @@
+{
+  "changes": [
+    {
+      "path": "review/boundary/lava-flat-upper-ground-grid.jpg",
+      "originalSource": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T064410Z-b0d6eae2/docs/art-reviews/2026-11-05-z1v7-fluids/review/boundary/lava-flat-upper-ground-grid.jpg",
+      "beforeSha256": "6564ba2139957039616002a781d6adee691b9bdd47d19b4a8f0f2519fe237a62",
+      "beforeBytes": 184111,
+      "afterSha256": "14008bd1e6a56d1dc415ef30f9ba01d24eeb49998c956a4045793eb6cb428d10",
+      "afterBytes": 154005,
+      "retainedDimensions": [
+        1120,
+        620
+      ],
+      "reason": "Secondary diagnostic grid recompressed. Exact native terrain retained. Liquid tracing uses the separately retained ground-map1x grid."
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-ground-grid.jpg",
+      "originalSource": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T064410Z-b0d6eae2/docs/art-reviews/2026-11-05-z1v7-fluids/review/boundary/lava-flat-lower-ground-grid.jpg",
+      "beforeSha256": "f5e5dc91cd1c5067e6f4c997f207c9f6c3ddbee42eabaef1aae5dd3c5bf8333e",
+      "beforeBytes": 208147,
+      "afterSha256": "da27f62ed3fa9c0d87d3097fb70955e37d72c7478c8532379a19045271eb0e9e",
+      "afterBytes": 172637,
+      "retainedDimensions": [
+        846,
+        1000
+      ],
+      "reason": "Secondary diagnostic grid recompressed. Exact native terrain retained. Liquid tracing uses the separately retained ground-map1x grid."
+    },
+    {
+      "path": "review/boundary/lava-flat-west-ground-grid.jpg",
+      "originalSource": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T064410Z-b0d6eae2/docs/art-reviews/2026-11-05-z1v7-fluids/review/boundary/lava-flat-west-ground-grid.jpg",
+      "beforeSha256": "adb613781aaa89577739dd939eec4a2fe69597088b42def925b8db4bcfe94373",
+      "beforeBytes": 217255,
+      "afterSha256": "902b5de732b8530ecbdf34b728649bfd380712489989de180d04c4a3fe6bf434",
+      "afterBytes": 182230,
+      "retainedDimensions": [
+        929,
+        1000
+      ],
+      "reason": "Secondary diagnostic grid recompressed. Exact native terrain retained. Liquid tracing uses the separately retained ground-map1x grid."
+    },
+    {
+      "path": "review/20261111T064410Z-copy-receipt.json",
+      "beforeBytes": 69294,
+      "afterBytes": 55682,
+      "reason": "Whitespace-only JSON compaction; parsed data identical."
+    },
+    {
+      "path": "review/continuation-copy-receipt.json",
+      "beforeBytes": 59537,
+      "afterBytes": 47617,
+      "reason": "Whitespace-only JSON compaction; parsed data identical."
+    },
+    {
+      "path": "review/run-baseline.json",
+      "beforeBytes": 17865,
+      "afterBytes": 14603,
+      "reason": "Whitespace-only JSON compaction; parsed data identical."
+    },
+    {
+      "path": "review/continuation-preservation.json",
+      "beforeBytes": 15057,
+      "afterBytes": 10810,
+      "reason": "Whitespace-only JSON compaction; parsed data identical."
+    }
+  ],
+  "productionAssetsAnd31Pairs3ClipsUnmodifiedByBudgetStep": true
+}

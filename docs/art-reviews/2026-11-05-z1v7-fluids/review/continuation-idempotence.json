@@ -1,0 +1,24 @@
+{
+  "commands": [
+    {
+      "command": [
+        "scripts/extend_ground_references.py"
+      ],
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "scripts/repair_solid_overlap.py",
+        "--masks",
+        "lavafall-lower-step"
+      ],
+      "exitCode": 0,
+      "stderr": ""
+    }
+  ],
+  "checkedFiles": 62,
+  "changedHashesAfterReplay": [],
+  "referenceRegistrationAndTargetedRepairIdempotent": true,
+  "inheritedRepairRecordsRetained": true
+}

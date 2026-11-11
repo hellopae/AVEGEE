@@ -1,0 +1,116 @@
+{
+  "method": "Native 2x masked and opacity-quantized sprite alpha sampled at 24 fps for 12 seconds. Includes drift, rotation, sheet frame timing and external clipping. Labels traced on ground, not inferred from mask names.",
+  "layoutSha256": "30aaf07c8d2a84f5c10b24435d847f23c5953ff2808ada04963c6758d321bf67",
+  "measurements": [
+    {
+      "id": "lava-steam--lava-left-bottom",
+      "mask": "lava-flat-left-bottom",
+      "reference": {
+        "mask": "lava-flat-left-bottom",
+        "polygon": [
+          [
+            159,
+            15
+          ],
+          [
+            242,
+            20
+          ],
+          [
+            248,
+            82
+          ],
+          [
+            224,
+            108
+          ],
+          [
+            182,
+            132
+          ],
+          [
+            152,
+            118
+          ]
+        ],
+        "label": "Vertical glowing cliff with continuous downward lava strands above the small receiving terrace"
+      },
+      "baselineMaximumFallingLavaPixelsInOneSample": 0,
+      "baselineSamplesOnFallingLava": 0,
+      "baselineUniqueFallingLavaPixels": 0,
+      "baselineUniqueVisiblePixels": 0,
+      "baselineSamplesWithAnyVisibleParticle": 0,
+      "currentOff": false,
+      "currentFallingLavaPixels": 0,
+      "evidence": "review/boundary/lava-flat-left-bottom-particle-proof.webp"
+    },
+    {
+      "id": "lava-steam--lava-southwest",
+      "mask": "lava-flat-southwest",
+      "reference": {
+        "mask": "lava-flat-southwest",
+        "polygon": [
+          [
+            365,
+            236
+          ],
+          [
+            385,
+            245
+          ],
+          [
+            390,
+            267
+          ],
+          [
+            414,
+            288
+          ],
+          [
+            446,
+            300
+          ],
+          [
+            451,
+            316
+          ],
+          [
+            416,
+            308
+          ],
+          [
+            390,
+            288
+          ],
+          [
+            375,
+            265
+          ]
+        ],
+        "label": "Short cascade over a rock lip, descending below the upper terrace"
+      },
+      "baselineMaximumFallingLavaPixelsInOneSample": 0,
+      "baselineSamplesOnFallingLava": 0,
+      "baselineUniqueFallingLavaPixels": 0,
+      "baselineUniqueVisiblePixels": 2215,
+      "baselineSamplesWithAnyVisibleParticle": 285,
+      "currentOff": false,
+      "currentFallingLavaPixels": 0,
+      "evidence": "review/boundary/lava-flat-southwest-particle-proof.webp"
+    }
+  ],
+  "remainingParticlePieces": [
+    "lava-bubble--lava-upper",
+    "lava-bubble--lava-left",
+    "lava-bubble--lava-middle",
+    "lava-bubble--lava-lower",
+    "lava-steam--lava-upper",
+    "lava-steam--lava-middle",
+    "lava-steam--lava-lower",
+    "embers--lava-upper",
+    "embers--lava-middle",
+    "embers--lava-lower"
+  ],
+  "allParticleFootprintsVerifiedOnFlatLava": false,
+  "limitation": "Two ground witnesses and finite offline samples; other particle pieces and continuous runtime behaviour remain unverified."
+}

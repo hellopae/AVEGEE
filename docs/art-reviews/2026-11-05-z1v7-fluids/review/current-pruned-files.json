@@ -1,0 +1,50 @@
+[
+  {
+    "path": "review/ice-middle-grid.jpg",
+    "sha256": "6f589adc8fab39034ead7dba4ba36872d20a6578001b30c831f1b90b576d0229",
+    "bytes": 979404,
+    "reason": "Inherited duplicate survey; replaced by current native fall boundaries and 31 ground/effect pairs."
+  },
+  {
+    "path": "review/ice-north-grid.jpg",
+    "sha256": "8df160f3769d8c52705f88f34bb1eb94e051c54a327e24d40d01ec3adbd9ce96",
+    "bytes": 796415,
+    "reason": "Inherited duplicate survey; replaced by current native fall boundaries and 31 ground/effect pairs."
+  },
+  {
+    "path": "review/ice-south-grid.jpg",
+    "sha256": "c6ef0e9744259e493a53d16d44120d3518c38e51208d7f8c6c085ed54108f99f",
+    "bytes": 428991,
+    "reason": "Inherited duplicate survey; replaced by current native fall boundaries and 31 ground/effect pairs."
+  },
+  {
+    "path": "review/lavafall-survey.jpg",
+    "sha256": "9e9d7e1c1ff010b84fa41e60158bfd4d19fc1142bd850fd1028442d5d70a60d8",
+    "bytes": 463961,
+    "reason": "Inherited duplicate survey; replaced by current native fall boundaries and 31 ground/effect pairs."
+  },
+  {
+    "path": "review/waterfall-survey.jpg",
+    "sha256": "ddc5df165d7bc02f81f9d54235a04a8aa387552979fccc30e62b8c5a541e5b7f",
+    "bytes": 666766,
+    "reason": "Inherited duplicate survey; replaced by current native fall boundaries and 31 ground/effect pairs."
+  },
+  {
+    "path": "review/boundary/icefall-east-cliff-ground-grid.png",
+    "bytes": 376377,
+    "sha256": "415aafb4c84c26cb439f12c4ae3f6cfb5fe75875b17308764cbbb139b6c2d92d",
+    "reason": "Diagnostic grid replaced by compact JPEG; exact original ground PNG retained in input."
+  },
+  {
+    "path": "review/boundary/icefall-summit-ground-grid.png",
+    "bytes": 1042593,
+    "sha256": "122bf6663b4b19f1f404e31b06b21423a6800ed7f890b5a22dcedd652ed91932",
+    "reason": "Diagnostic grid replaced by compact JPEG; exact original ground PNG retained in input."
+  },
+  {
+    "path": "review/boundary/icefall-upper-tree-ground-grid.png",
+    "bytes": 339693,
+    "sha256": "b910a31d439b2aa2990b5f19f87ef838963574e3b9b5460ef5e01d621a648ef9",
+    "reason": "Diagnostic grid replaced by compact JPEG; exact original ground PNG retained in input."
+  }
+]

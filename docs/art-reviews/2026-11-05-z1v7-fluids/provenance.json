@@ -1,0 +1,490 @@
+{
+  "previousRun": "20261110T122730Z-bde65eb4",
+  "previousCommit": "96a73fcf",
+  "inheritedFiles": [
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/README.md",
+      "bytes": 4897,
+      "sha256": "ff4922188f909aa56cdaedd4b805e2578b0f433ffb36ca0eb40435de8f196659"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/prompts.json",
+      "bytes": 8851,
+      "sha256": "c2f9b153327585d02dc3839bd96e6cc19116c7acc6c3ce678c742c35e678660d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone1-r1-c1-draft.webp",
+      "bytes": 810262,
+      "sha256": "8fcd107e2d55948da1118b7204daec1eecbd23b08b823acca32dfe28b4ea5bff"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone1-r2-c3-draft.webp",
+      "bytes": 913634,
+      "sha256": "cda8f3dc195c1af0bf0bfd2bea38a7bb6ac8ff694511171a1b8e2e5dbdbe6844"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone2-r1-c1-draft.webp",
+      "bytes": 881804,
+      "sha256": "7092d6957ea40cc8b08dcc22f7dd4d286d3d73b9077747c4a6c111b22e8c9647"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone2-r2-c3-draft.webp",
+      "bytes": 923770,
+      "sha256": "92b6b6821d019da3149d3908193cc365ebba4d52a8c855809d498b86c03a7c2b"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone3-r1-c1-draft.webp",
+      "bytes": 942342,
+      "sha256": "2121166f175a3af8f95aff1a76e7ab2965d635d6e9b3503b3b4546e911687595"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone3-r2-c3-draft.webp",
+      "bytes": 1044514,
+      "sha256": "b0e38036dfc8adbbb9800b557343b47d6f39c1f217180ae8f586256790fc5b4e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone4-r1-c1-draft.webp",
+      "bytes": 809142,
+      "sha256": "3f34e23f13173c914dc580d0f0d24b57af97adf0a6dc117e42abfeb06b50d529"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-03-terrain-detail/zone4-r2-c3-draft.webp",
+      "bytes": 927620,
+      "sha256": "00163b70667c80275c11f8570737213d1b8203b56668eb5a86ec160a203888fc"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/assemble-README.md",
+      "bytes": 14175,
+      "sha256": "88f864d942bd8f363fb26c7c2347fe867f93078b60b01ddd09870d7ee4098999"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/assemble-inventory.json",
+      "bytes": 107140,
+      "sha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/assemble-structure.json",
+      "bytes": 701176,
+      "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/current-fx-layout.json",
+      "bytes": 28457,
+      "sha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/fall-inventory.json",
+      "bytes": 2417,
+      "sha256": "a88d9043f7af725c72a1277959d94b2eeadf2e12943406c180cdf99451bd6e5d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-center-bridge.png",
+      "bytes": 344098,
+      "sha256": "a1c8d2d55a27247aa2a1a3bbf33c911c7fb3101d84a8f600144f226df63f878a"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-east-cliff.png",
+      "bytes": 275587,
+      "sha256": "26b7e3f851ff68dec9ed410218aa018aa5230369be5247444e43b35586703183"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-lower-1.png",
+      "bytes": 269017,
+      "sha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-lower-2.png",
+      "bytes": 241431,
+      "sha256": "683982b4f148a7b4c5d40ae4b014938a020560758b29e33d333b3479a7f92243"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-lower-3.png",
+      "bytes": 378509,
+      "sha256": "705e717cec23725e7a57e0d6744178071e1cca180c99745a9ccdba6ca1102a2d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-lower-inlet.png",
+      "bytes": 184014,
+      "sha256": "e262a5eab704823b975a5819866fe77e3ce598b749c5d7e87e7671ef1c807b28"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-mouth.png",
+      "bytes": 438271,
+      "sha256": "1675abede5e42e6d1f46bd67d0b453e0a4644083c1aae5424b05bfa6d54f3f0a"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-summit.png",
+      "bytes": 753739,
+      "sha256": "134b6cf83d65c70413787b0a331430eaeeab35456ecd71780ee37bd18d48e60f"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-upper-right.png",
+      "bytes": 257730,
+      "sha256": "26170a251a500830f3536d045247618b038193f4327797ad927e244bb81bd7db"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/icefall-upper-tree.png",
+      "bytes": 242862,
+      "sha256": "4c90909dd065af7309df284c0c48e9895ca86ba2d709ee28a5ec20906859d4c1"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-bridge.png",
+      "bytes": 291381,
+      "sha256": "5773b964558db73372aff0a93409d8cb1fc68c08a96f46861abaa324ae2d640c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-lower-step.png",
+      "bytes": 324528,
+      "sha256": "4c1017e20ec9c5da76f4b41f2db93da17684d11aa2f9d0d61067cc15cecfb642"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-middle.png",
+      "bytes": 333748,
+      "sha256": "747083262d2fcceec3290a5c9ab89776c727d4c4f6b039916d889e97ff2840cf"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-mouth.png",
+      "bytes": 262066,
+      "sha256": "e5cfeb220d595023df9b494b1e496e2b48fab578c4f771e735c831a624b66efc"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-upper-left.png",
+      "bytes": 172055,
+      "sha256": "f729807e90cd8e8dfbb38f317619b04c37c0a504a78ebaa2a97a99f436202138"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-upper-step.png",
+      "bytes": 306597,
+      "sha256": "431c1a733a1b4ebe7101022715ce7e0fec079fe20721ba8acfd0e7fbaac73d8b"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-volcano.png",
+      "bytes": 305248,
+      "sha256": "c28d3fafac8e47f38b9a4ab596354a0199d23a2949a71b416e62484ba4c0bca6"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/lavafall-west.png",
+      "bytes": 317348,
+      "sha256": "9e5d0c4b8f9fda8ab11924f5acd8ab636cf124456793f1bee9b0d75ef50e1c57"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/overview.jpg",
+      "bytes": 2390158,
+      "sha256": "e0dc15582d9b5d1df8f640fd26da4d5487a5282569209e6988b55a0722e3cf2e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/manifest.json",
+      "bytes": 8220,
+      "sha256": "c113b6a8d02b1e1ae614c5bf7c862e38be953f1576f8fe7dce955928be9d0b8a"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r1-c1.webp",
+      "bytes": 1615012,
+      "sha256": "4e35a26b15115009f416836e27a28fce4b2399ba7998b1c7ad301e679c249210"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r1-c2.webp",
+      "bytes": 1644956,
+      "sha256": "e09e8c948322b762be95a98a8c4983d9afae17fc869042d3ee468984482a1b1d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r1-c3.webp",
+      "bytes": 1592356,
+      "sha256": "116f1cd3ea1ed2e171bd36f86dbcfec8df8481b8121cfca13f247272b3450f74"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r1-c4.webp",
+      "bytes": 1544944,
+      "sha256": "66d68d81b99b7bad611b541cc2121b8d61c0f54a4e19d8b0fd86261216908160"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r1-c5.webp",
+      "bytes": 1544476,
+      "sha256": "1635280ee976deb6008e646992ed396356f6fe6ece98036b211b7593ee61e3c4"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r2-c1.webp",
+      "bytes": 1512864,
+      "sha256": "e90d4c956a5bb4beae57ce5ae56cccad75a73bb204ec869204cdcd199ac7d97b"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r2-c2.webp",
+      "bytes": 1680102,
+      "sha256": "29f0866e0c59dd321c8c07c865d987a99752f93e00daccfb87cf90724bec77f4"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r2-c3.webp",
+      "bytes": 2021962,
+      "sha256": "542525dd8db7a1edc38e3596322db7cb014cd3beb95408b3741be03637971c59"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r2-c4.webp",
+      "bytes": 1850132,
+      "sha256": "f1caa127d8dc36675d485ecf224d95718c1f6c356029e80e3a96bb5c15de2629"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r2-c5.webp",
+      "bytes": 1538186,
+      "sha256": "a33e531537c70f0313f30b7907dcfcb9a767f3154a9f413de31482966e86ef93"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r3-c1.webp",
+      "bytes": 1432620,
+      "sha256": "52274ebf098ce6b7be0509db5af8fb5dfe3fde6aab35c27c3672df7baa5bae9e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r3-c2.webp",
+      "bytes": 1594060,
+      "sha256": "e5271a97c0179e0c7bdcf9980ae985ff42615a09b4a25843fdf6260a3adfb3ec"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r3-c3.webp",
+      "bytes": 1660182,
+      "sha256": "03b4064a88139e76a807a2f080005af08f0e0ca093769f06ed329dd63b6365f2"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r3-c4.webp",
+      "bytes": 1635444,
+      "sha256": "2532915a6b20b2cd8daa90d6547fc6b86914b7787eec6d4d0fcbad44d1ff1eef"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r3-c5.webp",
+      "bytes": 1387016,
+      "sha256": "ce62f67badd31b948e238c5c849f4eed1425638077a21b549d8fc1ab6c044a8f"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r4-c1.webp",
+      "bytes": 240256,
+      "sha256": "11243a0af05def64b0f000251250da78b087b9d23174ff2bd77a956770570009"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r4-c2.webp",
+      "bytes": 373358,
+      "sha256": "9ac13bcb6a43b1fb0117e9cafbaa56ecfe2cd83a8c8774e08371ae902832e229"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r4-c3.webp",
+      "bytes": 409804,
+      "sha256": "7356c692a63c887c8cd811bf7195fe09f1939f88e2588cfd12f44e12e42b53e9"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r4-c4.webp",
+      "bytes": 365560,
+      "sha256": "704a231199e481d228be57f1113a83f0ddf90802dbabedec90acaae73f18295d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/r4-c5.webp",
+      "bytes": 260056,
+      "sha256": "5a1c2b9c7ebe1c2d6f716a994a2e2aeed494826d39953d4971ca7fe57b191b36"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/v7/zone1-terrain-v7-preview.webp",
+      "bytes": 847696,
+      "sha256": "fda5679bf88f2181dbac7e741fe556aa9ecaaef0b3bd6404bfa559655268445c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-center-bridge.png",
+      "bytes": 302137,
+      "sha256": "89b37a0d26d1a5d437e481d0a01aabd987df25cfbabd6c1e092252132fee2386"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-center-step.png",
+      "bytes": 293911,
+      "sha256": "b5a4f95a0fe1952a42b533ccf9e08f0a304d80ed6f7779d856e55a387220661f"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-east-cliff.png",
+      "bytes": 331048,
+      "sha256": "8643569683e6f5a800a232b25ab9b80cb6b8fcfc1d17ab33b1b20952d47f9dfe"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-lower-1.png",
+      "bytes": 269017,
+      "sha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-lower-2.png",
+      "bytes": 211100,
+      "sha256": "407a14eb51a3dba2030e122e66b857ecef6eb8afd942d96dcdd1851c29626b61"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-lower-3.png",
+      "bytes": 280980,
+      "sha256": "06be3a62a7aa1c38d883a5a47bdfd19f1b5b0ee662dd5459c60b1a11b9febd1e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-mouth.png",
+      "bytes": 281237,
+      "sha256": "1fd1e7f1055d58ddc53928c69f165e86e6538d58a0679f4b19ed29b48bc8897c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-plaza-right.png",
+      "bytes": 217350,
+      "sha256": "a63892b0c03ffee7db5f174aaba6f6019dde850535ed05f5154c624d128e6bd3"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-summit.png",
+      "bytes": 388603,
+      "sha256": "79409570cf27a261f85ea99341d6f5ffe1a5229561b3f30f23ecf3f2073b959c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-upper-bridge.png",
+      "bytes": 165380,
+      "sha256": "f0232360dc2938b5ad961af261c044ac9be68ab505e01e02ae9e6f689062deee"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/input/waterfall-ice-upper-right.png",
+      "bytes": 229915,
+      "sha256": "4208ce51cfa1d61767d979c2fc7a055287059586f0e6796cfb172fe59679072c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/review/ice-middle-grid.jpg",
+      "bytes": 979404,
+      "sha256": "6f589adc8fab39034ead7dba4ba36872d20a6578001b30c831f1b90b576d0229"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/review/ice-north-grid.jpg",
+      "bytes": 796415,
+      "sha256": "8df160f3769d8c52705f88f34bb1eb94e051c54a327e24d40d01ec3adbd9ce96"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/review/ice-south-grid.jpg",
+      "bytes": 428991,
+      "sha256": "c6ef0e9744259e493a53d16d44120d3518c38e51208d7f8c6c085ed54108f99f"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/review/lavafall-survey.jpg",
+      "bytes": 463961,
+      "sha256": "9e9d7e1c1ff010b84fa41e60158bfd4d19fc1142bd850fd1028442d5d70a60d8"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/review/waterfall-survey.jpg",
+      "bytes": 666766,
+      "sha256": "ddc5df165d7bc02f81f9d54235a04a8aa387552979fccc30e62b8c5a541e5b7f"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-lower-1-56.webp",
+      "bytes": 603134,
+      "sha256": "4737ac518ff2175a427359fc54308a9f3948253f16940e9f0122a1a38f94a048"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-lower-1-a.webp",
+      "bytes": 2604024,
+      "sha256": "b39b3209ff48cd94721eccbdb46a10838c0a7cbe0833c83d4f8cf644256caa46"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-summit-12.webp",
+      "bytes": 664034,
+      "sha256": "592d769735699ddf8b286b66d75f804d642291bebb20fcdd04a1e87480a8834a"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-summit-34.webp",
+      "bytes": 625706,
+      "sha256": "23eadc657f023ad00fdfcbb35bc0adb03d3bc61fe34858dbfee51b5ff85e793e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-summit-56.webp",
+      "bytes": 656362,
+      "sha256": "71a2500c1acccd29e9ea858b2c7fafa7700f0bad5c5b61b507d9209eae2db6d0"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-summit-78.webp",
+      "bytes": 615078,
+      "sha256": "24056ca15e7505766690166f5f6ac9779c4b8aa033ef41c022316afc42056ab9"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-right-12.webp",
+      "bytes": 550264,
+      "sha256": "c2a737646d4693a941b3bfb459ab740c8f1db7cada4f8096badbd21e35a02b02"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-right-34.webp",
+      "bytes": 369916,
+      "sha256": "f17353695b44771000bc9387f3e47c3a780af126a3a03225a6bb4c98c433eb9c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-right-56.webp",
+      "bytes": 448582,
+      "sha256": "8d4b97e1050f3c2a3fae27cc5519afdcf9782c6c07660068cd28519a08f0ad6e"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-tree-12.webp",
+      "bytes": 543744,
+      "sha256": "981f8814745ac9ffa9710a914bec13cb39f46af06f151b163f61e3cb2216294c"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-tree-34.webp",
+      "bytes": 588300,
+      "sha256": "eb655e2b4fef04282bb01c9bc3b08fc45e47a3e10e3095ea55322d3bbd91b7ea"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-tree-56.webp",
+      "bytes": 493950,
+      "sha256": "d8af9c8315f93ee486d8a5b45381dba093a45b6ae4da0d7aaf16aa3094fe4d7d"
+    },
+    {
+      "path": "docs/art-reviews/2026-11-05-z1v7-fluids/sources/icefall-upper-tree-78.webp",
+      "bytes": 571306,
+      "sha256": "d2006f4a16ba7f3a422c93613063f448ca4c6129db636b7ffb00105a964b8453"
+    }
+  ],
+  "copiedNewFiles": 75,
+  "alreadyPresentIdenticalFiles": 10,
+  "reusedAssets": [
+    {
+      "output": "sheets/lavafall.webp",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd/sheets/lavafall.webp",
+      "sha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725"
+    },
+    {
+      "output": "sheets/lava-surface.webp",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd/sheets/lava-surface.webp",
+      "sha256": "10741a6bfc16eb7cf5337955b071ba4bb395fc258ac9e5629253947890ce48b4"
+    },
+    {
+      "output": "sheets/ice-stream.webp",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd/sheets/ice-stream.webp",
+      "sha256": "1d67248c69dde9d36076409c240892219731781c52384ae59c368a668ceb6d88"
+    },
+    {
+      "output": "sheets/spirit-river.webp",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd/sheets/spirit-river.webp",
+      "sha256": "9632a240805021bf3502ac61454f0883164384c6ffffd45400ab74262003ac26"
+    },
+    {
+      "output": "sheets/lava-bubble.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/lava-bubble.webp",
+      "sha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68"
+    },
+    {
+      "output": "sheets/lava-steam.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/lava-steam.webp",
+      "sha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568"
+    },
+    {
+      "output": "sheets/embers-ash.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/embers-ash.webp",
+      "sha256": "dc338380b162bdc7f6c32aaa5ea6120da06744f7cccc16c672c3b75e423ee00e"
+    },
+    {
+      "output": "sheets/river-foam.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/river-foam.webp",
+      "sha256": "b4ccfe2c3db36734cdde70153cb2752ca1d6e137802c686c3bf51b5a1af9d5ed"
+    },
+    {
+      "output": "sheets/bank-foam-ice.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/bank-foam-ice.webp",
+      "sha256": "cc4a87058244a983560122b821403af7fc5ee905149b0676eff5645fb0f8a1bd"
+    },
+    {
+      "output": "sheets/bank-foam-spirit.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/bank-foam-spirit.webp",
+      "sha256": "9bd10db1fda3b1b615fb2e96b029e0ec40285d995fa88bd24f7eed9a080a3813"
+    },
+    {
+      "output": "sheets/water-sparkle.webp",
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/z1-v5/img/map-zone1/v5-fx/sheets/water-sparkle.webp",
+      "sha256": "1ca27b001fdc24e4fff06eb84735fda40fc26df56ea0c99989c76819d89da9c3"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "specification": "review/solid-repairs-current.json",
+  "specificationSha256": "fd1b0ad765320507367b4f89c5108fdf978987358a5b026b6ad7b39f01e94c80",
+  "changes": [
+    {
+      "mask": "icefall-east-cliff",
+      "beforePath": "review/before-solid-repair/icefall-east-cliff.webp",
+      "beforeSha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0",
+      "afterSha256": "75fb9ea0caa0e8b2c2bb3084895d1d5c7dfbc9aa9636e89b89de4c24b8638894",
+      "beforePixels": 6507,
+      "afterPixels": 5175,
+      "removedPixels": 1332,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 75,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        176,
+        223,
+        228,
+        296
+      ],
+      "changedRectMap1x": [
+        4658.0,
+        1141.5,
+        26.0,
+        36.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Rock face behind scattered spray, beside the actual falling curtain. Cyan rock and white spray against rock must receive no waterfall layer.",
+      "evidence": "review/boundary/icefall-east-cliff-solid-repair.webp"
+    },
+    {
+      "mask": "lava-flat-lower",
+      "beforePath": "review/before-solid-repair/lava-flat-lower.webp",
+      "beforeSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "afterSha256": "9bfa1cb95549218ef0a4eb1d3c992df770e6221ae6e355a588420eb3eed0d87e",
+      "beforePixels": 117761,
+      "afterPixels": 113301,
+      "removedPixels": 4460,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 257,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        609,
+        276,
+        836,
+        493
+      ],
+      "changedRectMap1x": [
+        1364.5,
+        1563.0,
+        113.5,
+        108.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted orange-lit cliff bank, including the ember witness. Reflected lava colour on solid rock is excluded from the flat-lava layer and particles.",
+      "evidence": "review/boundary/lava-flat-lower-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-lower-step",
+      "beforePath": "review/before-solid-repair/lavafall-lower-step.webp",
+      "beforeSha256": "2be74c5bf40cf7581fbcf199207a919d2c269c5221ef6a366c09305a776c2b39",
+      "afterSha256": "7303a24978799e03df30f2f74ed1caea744b5bbdaef93e704ecbccf7ba5238de",
+      "beforePixels": 47356,
+      "afterPixels": 45111,
+      "removedPixels": 2245,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 683,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        23,
+        199,
+        99,
+        307
+      ],
+      "changedRectMap1x": [
+        1357.5,
+        1780.5,
+        38.0,
+        54.0
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Two faceted rock columns protrude through the bottom-left lava curtain. Ground-context and native grid show their upper silhouettes and rocky interiors. Subtract their silhouette independently of the frozen liquid-reference contours.",
+      "evidence": "review/boundary/lavafall-lower-step-solid-repair.webp"
+    }
+  ],
+  "newGenerations": 0,
+  "lavaAggregate": {
+    "beforeSha256": "a46865a29c561db269ec3c20b4728ba4e695f8656f6a647f4b78b930c5d02274",
+    "afterSha256": "21bdf50bb43203bb010175d0839e8555c0909a9d05d125fed954869837df16bd",
+    "removedPixels": 4460,
+    "equalsComponentUnion": true
+  },
+  "limitation": "Ground-derived repair witnesses are regression checks after repair. Full semantic acceptance still requires separate liquid references and full coverage/playback review."
+}

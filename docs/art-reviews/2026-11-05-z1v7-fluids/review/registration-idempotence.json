@@ -1,0 +1,16 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/register_summit.py",
+  "exitCode": 0,
+  "scriptSha256": "622d1e098f63286e04e26a28bb59e323eca3fdd3fbca565415ab72f7c23006d3",
+  "atomicReplacementExercised": true,
+  "hashesBefore": {
+    "masks/icefall-summit.webp": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+    "sheets/icefall-summit.webp": "290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae"
+  },
+  "hashesAfter": {
+    "masks/icefall-summit.webp": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+    "sheets/icefall-summit.webp": "290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae"
+  },
+  "idempotent": true,
+  "stderr": ""
+}

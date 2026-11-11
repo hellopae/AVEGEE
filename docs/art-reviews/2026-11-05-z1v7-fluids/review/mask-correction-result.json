@@ -1,0 +1,52 @@
+{
+  "method": "Intersection/subtraction of geometric alpha constraints hand-traced on original assembled v7 ground. No artwork generation. Layout and sheets unchanged.",
+  "reference": "review/mask-corrections.json",
+  "changes": [
+    {
+      "mask": "icefall-upper-tree",
+      "beforeSha256": "9ab25a9dabf30a6f6c53ee9646527d7b36cb65108de70a1ff4b7036bd2892eaf",
+      "afterSha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822",
+      "beforePixels": 6578,
+      "afterPixels": 668,
+      "removedPixels": 5910,
+      "addedPixels": 0,
+      "reason": "Retain only falling water behind branches; remove lower blue rock faces and flat pool previously receiving a waterfall rectangle.",
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "mask": "icefall-summit",
+      "beforeSha256": "b79103f95ca6d33829dfe9af2049d004cd601b0592a100780d7264d7d49b3579",
+      "afterSha256": "4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76",
+      "beforePixels": 64208,
+      "afterPixels": 62375,
+      "removedPixels": 1833,
+      "addedPixels": 0,
+      "reason": "Cut whole foreground faceted solid spires around the independent solid-interior counterexamples, with a three-native-pixel guard.",
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "beforeSha256": "a5063df56b4322b45dd4e90856139de0bc130cf44a436c1eef1ad1957b3fbf5b",
+      "afterSha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0",
+      "beforePixels": 7582,
+      "afterPixels": 6507,
+      "removedPixels": 1075,
+      "addedPixels": 0,
+      "reason": "Exclude complete foreground snow-capped blue solid spire rather than treating cyan rock colour as water.",
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "mask": "shore-band-ice",
+      "beforeSha256": "87530b255e66c5d90232f421e61d2e563a460996eed961bbf1fac0d076484e1e",
+      "afterSha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802",
+      "beforePixels": 209521,
+      "afterPixels": 13960,
+      "removedPixels": 195561,
+      "addedPixels": 0,
+      "reason": "Keep inherited water pixels only within 12 native pixels (~4.69 world units) of explicitly reviewed ground bank segments. Remove texture-defined pseudo-banks in mid-channel. This is selective bank coverage, not a trace of every bank.",
+      "fullSemanticAcceptanceVerified": false
+    }
+  ],
+  "shoreAggregateSha256": "ab7fae6133772b2b8f4b8f95ff942c808b30cfdf9da2ca5e520833aa722ef4c4",
+  "limitation": "Repairs known defects only. Regression exclusions and bank polylines do not certify full-map semantic leakage <=3%."
+}

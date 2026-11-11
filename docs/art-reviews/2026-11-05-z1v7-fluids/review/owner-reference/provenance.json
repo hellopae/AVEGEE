@@ -1,0 +1,32 @@
+[
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/2026-11-05-map-redraw/input/owner-1809/2-18.09.37.png",
+    "sourceSha256": "9b2d20a4120aca8c43f1284e059ed10bdf22d78990b45bd29295428a961316e2",
+    "sourceSize": [
+      2360,
+      1904
+    ],
+    "thumbnail": "review/owner-reference/2-18.09.37.jpg",
+    "note": "Reference copied at reduced resolution for landmark comparison only. Original untouched."
+  },
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/2026-11-05-map-redraw/input/owner-1809/3-18.11.44.png",
+    "sourceSha256": "25f1c072e249f3959a4b570c73246b0313cc1f1467ae4788eddc10db58ec07ac",
+    "sourceSize": [
+      2340,
+      1924
+    ],
+    "thumbnail": "review/owner-reference/3-18.11.44.jpg",
+    "note": "Reference copied at reduced resolution for landmark comparison only. Original untouched."
+  },
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/2026-11-05-map-redraw/input/owner-1809/4-18.09.11.png",
+    "sourceSha256": "40195b969f0a92af5fbf30b523accf326eb5e76b37b45cb760e175971e053b66",
+    "sourceSize": [
+      2232,
+      1916
+    ],
+    "thumbnail": "review/owner-reference/4-18.09.11.jpg",
+    "note": "Reference copied at reduced resolution for landmark comparison only. Original untouched."
+  }
+]
