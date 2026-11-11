@@ -1,0 +1,45 @@
+{
+  "groundReference": "input/icefall-summit.png",
+  "coordinatePolicy": "Local native 2x pixels in original v7 ground crop; not construction annotation.",
+  "polygon": [
+    [
+      359,
+      617
+    ],
+    [
+      377,
+      623
+    ],
+    [
+      396,
+      626
+    ],
+    [
+      405,
+      635
+    ],
+    [
+      411,
+      642
+    ],
+    [
+      401,
+      642
+    ],
+    [
+      382,
+      637
+    ],
+    [
+      369,
+      629
+    ]
+  ],
+  "label": "Small sloping waterfall below the summit pool; visible lip, falling strands and base foam.",
+  "witnessPixels": 528,
+  "coveredByAnyCurrentEffectMaskPixels": 0,
+  "uncoveredWitnessPixels": 528,
+  "evidence": "review/boundary/summit-lower-drop-coverage.webp",
+  "status": "confirmed-coverage-gap",
+  "limitation": "One independently inspected witness, not an exhaustive count of all waterfalls. Existing generated full-crop frames were inspected; no unverified extension of their alpha was made."
+}

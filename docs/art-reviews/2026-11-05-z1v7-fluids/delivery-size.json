@@ -1,0 +1,9 @@
+{
+  "files": 313,
+  "totalBytesIncludingThisReport": 79509151,
+  "limitBytes": 80000000,
+  "withinLimit": true,
+  "definition": "Sum of regular file sizes in this folder, including manifest, scope check and this report; decimal MB.",
+  "productionMasksModified": true,
+  "sourceFramesAndTerrainModified": false
+}

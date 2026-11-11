@@ -1,0 +1,24 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "README.md — ผลตรวจภาษาไทยและ self-check แยกทุกเกณฑ์; ไม่อ้าง QA ผ่าน",
+    "review/continuation-provenance.json + review/inherited-assets.json — คัดลอกงานแรก 75 ไฟล์แล้วงานล่าสุด 277 ไฟล์และ archive; เฟรมวาด/layout/source/v7 ไม่เปลี่ยน; 0 generations",
+    "review/mask-correction-result.json + review/boundary/*-repair.webp — ตัด upper-tree 6578→668, summit 64208→62375, east-cliff 7582→6507; ice shore 209521→13960; เก็บ before masks และ hash",
+    "review/independent-mask-review.json + review/shore-witness-result.json — solid labels เดิมเหลือ 0 พิกเซลหลังแก้ทั้งสามจุด; shore counterexample เดิม 121→0; เป็น regression เท่านั้น ไม่ใช่หลักฐาน semantic ≤3% ครบ",
+    "review/coverage-witness-result.json + review/boundary/summit-lower-drop-coverage.webp — ตัวอย่างน้ำตก summit ล่าง 528 พิกเซลจากภาพพื้น; 0 พิกเซลถูก effect mask ใดครอบ จึงขาด coverage จริง",
+    "mask-review.json — 37 masks 2×; outsideDrawnLiquidPercent=null ครบ เพราะ semantic reference ยังไม่ครบ",
+    "review/contact-icefalls.jpg + review/contact-lavafalls.jpg + review/contact-streams.jpg + review/pairs/ — เรนเดอร์ใหม่ครบ 31 คู่ตาม masks ปัจจุบัน",
+    "review/clips/ — 3 มุมตาม landmark โดยประมาณ; 12.000 วินาที 24 fps 960×776 decode 288 เฟรมครบทุกไฟล์ ไม่มี decoder error",
+    "review/offline-render-report.json + review/delivery-verification.json — hash ของ inputs/outputs ตรงปัจจุบัน; verifier exit 1 เพราะ acceptance ไม่ครบ ไม่ได้ทดสอบการรวมเข้าเกม",
+    "loop-review.json — วัด 18 น้ำตก/ลาวาตกจาก effective mask ปัจจุบัน ทุกจุดมี 8 phases; upper-tree largest/median≈3.122 ยังไม่รับรอง loop smoothness",
+    "delivery-size.json + review/scope-check.json — ขนาดรวมและขอบเขตไฟล์จริง; ไฟล์อยู่เฉพาะโฟลเดอร์ส่งออก"
+  ],
+  "remaining": [
+    "ทำ semantic reference ของของเหลวจริงแยกจาก annotation สร้าง mask ให้ครบทุก mask เพื่อรายงาน % นอกจริงหรือขอบเขตบน ≤3%; ไม่ใช้ค่า regression 0 เป็นผลผ่าน",
+    "แก้ coverage น้ำตกขั้นล่าง summit ที่หลักฐานยืนยันว่าไม่ขยับ ตรวจ registration/เฟรมเดิมก่อนตัดสินใจวาดเพิ่มด้วย ImageGen ในตัว และสำรวจน้ำตกทั้ง v7 ที่ยังไม่ครอบคลุม",
+    "ตรวจ shore band ตามขอบฝั่งจริงครบทั้ง ice/spirit; ice band รอบนี้เป็นแนวฝั่งบางช่วงเท่านั้น ห้ามใช้ระยะถึงเส้น trace เป็นผลระยะถึงฝั่งทั้งแผนที่",
+    "จำแนก lava-flat-left-bottom / lava-flat-southwest และตรวจ footprint ของ bubble/steam/embers กับผิวลาวาราบจริง ไม่อาศัยเพียงชื่อ mask",
+    "ตรวจรูปทรง effect/ละอองฐานและการเล่นวนด้วยตา รวมรอยต่อ 8→1 โดยเฉพาะ upper-tree; จำนวน phases ต่างกันไม่ยืนยันความลื่น",
+    "หลังเปลี่ยน assets ต้องเรนเดอร์ภาพเทียบ คลิป และรายงานใหม่ให้ตรงกัน แล้วประเมินเกณฑ์ทุกข้อก่อนเปลี่ยนเป็น ready"
+  ]
+}

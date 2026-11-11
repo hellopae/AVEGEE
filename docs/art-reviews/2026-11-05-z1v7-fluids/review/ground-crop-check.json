@@ -1,0 +1,55 @@
+{
+  "method": "Exact decoded RGB equality of copied fall crops against fresh v7 manifest assembly. Independent labels refer to these unmodified ground crops.",
+  "measurements": [
+    {
+      "mask": "icefall-summit",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "81693e38aed34b1a86a50c5a55794610614fb247e0a6ada909d22be760f3ff26"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "14bda5ea12a1dff0b37b7d3e5ea490e3e0be86ce1a432895381dfac0010945e1"
+    },
+    {
+      "mask": "icefall-upper-right",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "d49bf97beeeafdb03fc93c21a78ad2f8f8f5301690c25ae24b0d2c97ea51e2e5"
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "7d89f5a18668803fbab5eb745367a7f72221407874a50e94ad2b7d6c513ed0c5"
+    },
+    {
+      "mask": "icefall-center-bridge",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "4491181801db2c24261a42b778337e4593575ea6e200d1ab3d1c99ce005f3085"
+    },
+    {
+      "mask": "icefall-lower-inlet",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "adf194a1ba9fc817bc6dd730df40b4818f00738b60ce38153296d581c6dcb69d"
+    },
+    {
+      "mask": "icefall-lower-1",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "1182578150cd42f631e45d89c26cdcdc442ee2a7f05d23f0313dc041b42efaf3"
+    },
+    {
+      "mask": "icefall-lower-2",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "2c3372a94f08f03f6159128049e97edeefa6cbb5ae9383dc0a574e298bf9bc09"
+    },
+    {
+      "mask": "icefall-lower-3",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "dd242000582e16ee16ad7668568aebed4e3ad389c88f88ce11a44dbbdf1ec724"
+    },
+    {
+      "mask": "icefall-mouth",
+      "cropMatchesAssembledV7Exactly": true,
+      "cropSha256DecodedRgb": "4c119ffd04187120fca30248efc126bd1db3ae4a5806836a3525b9f1c844de77"
+    }
+  ]
+}

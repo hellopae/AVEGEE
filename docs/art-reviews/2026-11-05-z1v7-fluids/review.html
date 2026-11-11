@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<title>v7 fluids review</title>
+<style>
+body { margin: 0; background: #15151b; color: #eee; font: 14px system-ui; }
+nav { padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+canvas { display: block; max-width: 100%; height: auto; }
+button, select { font: inherit; }
+</style>
+<nav>
+<a href="./review/index.html" style="color:#99dcff">ผลตรวจปัจจุบัน: incomplete · หลักฐานออฟไลน์</a>
+<select id="view"><option value="0">ภาพคุณเป้ 2 · สะพานน้ำแข็ง</option><option value="1">ภาพคุณเป้ 3 · ลาวา</option><option value="2">ภาพคุณเป้ 4 · ลำธารกลาง</option></select>
+<button id="play">เล่น / หยุด</button><label><input id="effect" type="checkbox" checked> effect</label>
+<span>ภาพตรวจแยกจากเกม · เฟรมวาด 8 fps · ไม่มี HUD หรือ grading</span>
+</nav>
+<canvas id="scene" width="960" height="776"></canvas>
+<script type="module">
+import { drawTownFluidFx, setFluidLayoutForTest, townFluidFxStats } from './scripts/runtime-fluid-snapshot.js';
+
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('2d');
+const layout = await fetch('./fx-layout.json').then(r => r.json());
+const manifest = await fetch('./input/v7/manifest.json').then(r => r.json());
+const views = await fetch('./review/views.json').then(r => r.json());
+const ground = document.createElement('canvas');
+ground.width = manifest.fullPx.w;
+ground.height = manifest.fullPx.h;
+const groundContext = ground.getContext('2d');
+await Promise.all(manifest.files.filter(f => f.rectPx2x).map(async f => {
+  const image = new Image();
+  image.src = './input/v7/' + f.file;
+  await image.decode();
+  groundContext.drawImage(image, f.rectPx2x[0], f.rectPx2x[1]);
+}));
+
+const state = setFluidLayoutForTest(new URL('./', location.href).pathname, layout);
+const worldX = layout.worldSize[0] / layout.masterSize[0];
+const worldY = layout.worldSize[1] / layout.masterSize[1];
+let playing = false;
+let activeView = views[0].rectPx1x;
+let started = 0;
+
+function render(rect, ms = 0, effect = true, width = 960, height = 776) {
+  canvas.width = width;
+  canvas.height = height;
+  context.setTransform(1, 0, 0, 1, 0, 0);
+  context.drawImage(ground, rect[0] * 2, rect[1] * 2, rect[2] * 2, rect[3] * 2, 0, 0, width, height);
+  if (effect) {
+    context.setTransform(width / (rect[2] * worldX), 0, 0, height / (rect[3] * worldY), -rect[0] * width / rect[2], -rect[1] * height / rect[3]);
+    state.clock = ms;
+    state.lastRaw = ms;
+    drawTownFluidFx(context, ms);
+  }
+  return townFluidFxStats();
+}
+
+async function warm() {
+  const expectedSheets = new Set(layout.pieces.map(p => p.sheet)).size;
+  const expectedMasks = new Set(layout.pieces.map(p => p.mask)).size;
+  for (let attempt = 0; attempt < 1200; attempt++) {
+    const stats = render([0, 0, ...layout.masterSize], 0, true, 960, 640);
+    const failed = [...state.sheets.values(), ...state.masks.values()].filter(e => e.state === 'error');
+    if (failed.length) throw new Error('Asset decoding failed ' + JSON.stringify(failed));
+    if (stats.sheetsReady === expectedSheets && stats.masksReady === expectedMasks) return stats;
+    await new Promise(resolve => setTimeout(resolve, 30));
+  }
+  throw new Error('Asset warm-up timed out');
+}
+
+function animate(now) {
+  if (!playing) return;
+  render(activeView, now - started, document.querySelector('#effect').checked);
+  requestAnimationFrame(animate);
+}
+document.querySelector('#play').onclick = () => {
+  playing = !playing;
+  if (playing) { started = performance.now(); requestAnimationFrame(animate); }
+};
+document.querySelector('#view').onchange = event => {
+  activeView = views[Number(event.target.value)].rectPx1x;
+  render(activeView);
+};
+document.querySelector('#effect').onchange = event => render(activeView, 0, event.target.checked);
+window.review = { render, warm, layout, views, stats: townFluidFxStats };
+await warm();
+render(activeView);
+window.review.ready = true;
+</script>
+</html>
