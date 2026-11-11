@@ -1,0 +1,10 @@
+{
+  "mask": "ice-stream-flat-east",
+  "reference": "shore-ice-east-physical-bank",
+  "conflictPixels": 129,
+  "selectedConflictPixels": 0,
+  "evidence": "review/run4-east-reference-conflict.webp",
+  "resolution": "Retracted inherited coarse bank strip (polygon index 2) as unknown; kept passed liquid reference unchanged and retained the two genuine solid interiors.",
+  "productionMaskChanged": false,
+  "liquidReferenceChanged": false
+}

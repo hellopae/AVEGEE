@@ -1,0 +1,17 @@
+{
+  "stage": "measurements",
+  "commands": [
+    {
+      "command": [
+        "measure_shore.py"
+      ],
+      "exitCode": 1,
+      "expectedExitCode": 0,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T162400Z-9a28b146/docs/art-reviews/2026-11-05-z1v7-fluids/scripts/measure_shore.py\", line 98, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T162400Z-9a28b146/docs/art-reviews/2026-11-05-z1v7-fluids/scripts/measure_shore.py\", line 47, in main\n    assert not (solid & water).any()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+  ],
+  "allCommandExitsAsExpected": false,
+  "acceptanceComplete": false,
+  "notHumanQA": true
+}

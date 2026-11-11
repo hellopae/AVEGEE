@@ -1,0 +1,156 @@
+{
+  "reference": "review/shore-ground-reference.json",
+  "referenceSha256": "3cab244c7ceef6c90cefe46fa2f612d60f758aa1aafd9b141d981d1c95f6a59f",
+  "liquidReferenceSha256": "46da37db154029d6be62835a2c299a3748ee2d01c6dd6435af2647ce0ae2f1bc",
+  "worldPerNativePixelXY": [
+    0.3906408952187182,
+    0.39060115959719255
+  ],
+  "patchMeasurements": [
+    {
+      "mask": "shore-band-ice",
+      "patchIndex": 0,
+      "rectMap1x": [
+        3230,
+        980,
+        200,
+        150
+      ],
+      "maskPixelsInPatch": 1472,
+      "confirmedWaterPixels": 1454,
+      "confirmedWaterWithin12World": 1337,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.983062482996614,
+      "evidence": "review/boundary/shore-band-ice-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-spirit",
+      "patchIndex": 1,
+      "rectMap1x": [
+        3900,
+        2200,
+        200,
+        150
+      ],
+      "maskPixelsInPatch": 14600,
+      "confirmedWaterPixels": 1692,
+      "confirmedWaterWithin12World": 800,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.956948134927801,
+      "evidence": "review/boundary/shore-band-spirit-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-ice",
+      "patchIndex": 2,
+      "rectMap1x": [
+        3070,
+        925,
+        630,
+        360
+      ],
+      "maskPixelsInPatch": 3373,
+      "confirmedWaterPixels": 2105,
+      "confirmedWaterWithin12World": 798,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.956948134927801,
+      "evidence": "review/boundary/shore-ice-central-current-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-ice",
+      "patchIndex": 3,
+      "rectMap1x": [
+        4650,
+        1175,
+        265,
+        170
+      ],
+      "maskPixelsInPatch": 1193,
+      "confirmedWaterPixels": 1193,
+      "confirmedWaterWithin12World": 0,
+      "maximumCertifiedBankDistanceUpperBoundWorld": null,
+      "evidence": "review/boundary/shore-ice-east-physical-bank-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-spirit",
+      "patchIndex": 4,
+      "rectMap1x": [
+        2750,
+        2200,
+        250,
+        180
+      ],
+      "maskPixelsInPatch": 35981,
+      "confirmedWaterPixels": 17345,
+      "confirmedWaterWithin12World": 7457,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.983062482996614,
+      "evidence": "review/boundary/shore-spirit-pier-physical-bank-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-ice",
+      "patchIndex": 5,
+      "rectMap1x": [
+        3650,
+        660,
+        650,
+        250
+      ],
+      "maskPixelsInPatch": 8400,
+      "confirmedWaterPixels": 6177,
+      "confirmedWaterWithin12World": 1092,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.982102632914263,
+      "evidence": "review/boundary/run4-shore-upper-pool-boulders-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-ice",
+      "patchIndex": 6,
+      "rectMap1x": [
+        3070,
+        925,
+        630,
+        360
+      ],
+      "maskPixelsInPatch": 3373,
+      "confirmedWaterPixels": 2872,
+      "confirmedWaterWithin12World": 0,
+      "maximumCertifiedBankDistanceUpperBoundWorld": null,
+      "evidence": "review/boundary/run4-shore-central-right-bank-actual-bank-proof.webp"
+    }
+  ],
+  "diskMeasurements": [
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        900,
+        2340
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5,
+      "selectedWaterDiskPixels": 0,
+      "selectedPixelsProvenBeyond12World": 0
+    },
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        4000,
+        2320
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5,
+      "selectedWaterDiskPixels": 95,
+      "selectedPixelsProvenBeyond12World": 0
+    }
+  ],
+  "maskTotals": [
+    {
+      "mask": "shore-band-ice",
+      "selectedPixels": 13960,
+      "certifiedUniquePixels": 2687,
+      "remainingPixelsUnverified": 11273
+    },
+    {
+      "mask": "shore-band-spirit",
+      "selectedPixels": 676567,
+      "certifiedUniquePixels": 8257,
+      "remainingPixelsUnverified": 668310
+    }
+  ],
+  "allShorePixelsVerified": false,
+  "limitation": "Partial physical-bank survey only. No distance to production trace or production mask boundary is used as acceptance evidence."
+}

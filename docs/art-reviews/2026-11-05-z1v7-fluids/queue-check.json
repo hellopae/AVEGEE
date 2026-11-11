@@ -1,0 +1,31 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "review/run4-copy-receipt.json — คัดลอก 568 ไฟล์จากชุดล่าสุดและตรวจ SHA-256 ตรงทุกไฟล์ก่อนแก้",
+    "review/run4-rechecked-baseline.json + review/reference-progress.json — handoff เดิม 14, ฐานจริง 15/37; เพิ่ม ice-stream-flat-central ที่ 2.984928% เป็น 16/37",
+    "review/run4-ground-contours.json + review/liquid-reference-result.json — เพิ่ม 11 ground-only groups; union ตาม ground ร่วมกันและคง unknown; เหลือ reference-incomplete 21 masks ไม่มี reference-missing",
+    "review/solid-repair-result.json — ตัด component pixels 3,285 ใน upper-left/mouth/ice-upper/lava-middle; ไม่มี pixels เพิ่ม; aggregate ice/lava เท่ากับ component union",
+    "review/current-preservation.json — 15 masks/label-supports ที่ผ่านเมื่อเริ่ม, summit mask/sheet/sources และ 528/528 ครบ 8 phases, terrain/sources/sheets/layout/off mapping คงเดิม",
+    "review/run4-east-reference-conflict.json + review/run4-measurements-first-attempt.json — shore assertion พบ labels ทับกัน 129 pixels, selected conflict 0; ตรวจภาพแล้วถอน bank strip ที่พาดเว้าน้ำเป็น unknown ไม่ปิด assertion",
+    "review/shore-ground-result.json — ยืนยัน ≤12 world: ice 2687/13960, spirit 8257/676567 pixels; ยังไม่ครบ",
+    "review/particle-coverage-result.json — ตรวจ 12×288 samples; bubble-left ยืนยัน flat 2728/2728 pixels, 10 pieces ยัง unknown และ left-bottom ไม่ปรากฏ",
+    "review/current-loop-check.json + review/run4-upper-tree-loop-phases.webp — 18 falls ×8 phases; upper-tree 6→7 largest/median 3.121828, wrap/median 1.909270; ยังไม่ยืนยัน smooth playback",
+    "review/current-render-dependencies.json + review/offline-render-report.json — refresh 8 pairs, 3 contacts, 3 clips; 23 pairs ไม่กระทบคง hash เดิม",
+    "review/delivery-verification.json + review/run4-delivery-commands.json — technicalChecks ทุกข้อ true; full decode 3×288 frames/12 sec; verifier คืน 1 เพราะ acceptance ยังไม่ครบ",
+    "review/run4-measurements-commands.json — shore/particles/loop commands คืน 0 หลังแก้ reference conflict ตาม ground",
+    "README.md + generation-prompts*.json — เอกสารไทยและ prompts รับต่อครบ; ไม่มี generation ใหม่ ไม่มีเฟรมจากการเลื่อน/เฟดภาพนิ่ง"
+  ],
+  "remaining": [
+    "Reference-incomplete 21/37 masks: ใช้รายชื่อและ largestUnknownComponents ใน review/per-mask-handoff.json; รักษา 16 ชิ้นที่ยืนยันแล้ว ห้ามเติม unknown จากสีหรือ production alpha",
+    "Ice-stream-flat upper/lower/mouth และ aggregate: ขอบหน้าผา สีสะท้อน cyan, receiving foam, ใบไม้และหินยังต้อง trace ground-only ต่อ; central ยืนยันแล้ว ห้ามวาดซ้ำ",
+    "Summit ส่วนบนยัง reference-incomplete; รักษาขั้นล่าง 528/528 ครบ 8 phases ห้ามวาด/register ซ้ำ",
+    "Lava-flat upper/west/middle/lower/left-bottom/southwest และ aggregate: ผิวราบ/ตก/หินเรืองแสงต้องแยกจาก native ground ให้ครบ; mid/west ดีขึ้นแต่ยังไม่ถึง 3%",
+    "Lavafall upper-left/mouth/volcano: ยังมี unknown เกิน 3%; ตรวจริ้วที่ชนผนังและ receiving pools จาก ground-only; เก็บ masks ที่ยืนยันแล้วชิ้นอื่นไว้",
+    "Spirit-river east/west/aggregate และ shore bands: ตรวจแนวฝั่ง พืช หิน หมอก และ bank recesses; ไม่มี reference ใหม่ของ spirit รอบนี้",
+    "Shore ≤12 world ยังยืนยันไม่ได้ ice 11273 และ spirit 668310 pixels; bank strip east ที่ถอนต้อง trace silhouette จริงใหม่ก่อนนำกลับใช้",
+    "Lava particles: อีก 10 pieces ต้องเติม independent flat/falling labels ให้ครบ footprint; left-bottom มี 0 visible pixels ใน 288 samples ต้องตรวจ placement/visibility; bubble-left ผ่านเฉพาะ finite sampled footprint",
+    "สำรวจน้ำตกที่วาดจริงทั่ว v7 รวมรูปทรง/ละอองฐาน และเทียบลาวาตก HD ทั้ง 8 จุดให้ครบ; 18 layout entries ไม่พิสูจน์ exhaustive coverage",
+    "ตรวจ playback ทุกจุดและ wrap 8→1 โดยเฉพาะ upper-tree 6→7; numeric deltas/phase contacts ยังพิสูจน์ความลื่นไม่ได้",
+    "หากแก้ production เพิ่ม ให้ตั้ง baseline/dependencies ใหม่ เรนเดอร์เฉพาะ output ที่ actual changed pixels กระทบ แล้ววัด/decode/hash/size/scope อีกครั้ง"
+  ]
+}

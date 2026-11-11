@@ -1,0 +1,102 @@
+[
+  {
+    "id": "icefall-summit",
+    "rectPx1x": [
+      4320,
+      160,
+      250,
+      340
+    ],
+    "shape": "multi-level cyan cataract wrapping around pointed snow-capped rock spires, main tall narrow curtain centered, preserve every occluding rock"
+  },
+  {
+    "id": "icefall-upper-tree",
+    "rectPx1x": [
+      4070,
+      485,
+      180,
+      150
+    ],
+    "shape": "small cyan cascades partly hidden behind snowy tree branches, preserve foreground branches as exact occluders"
+  },
+  {
+    "id": "icefall-upper-right",
+    "rectPx1x": [
+      3920,
+      625,
+      180,
+      210
+    ],
+    "shape": "single slanting narrow waterfall from upper right toward lower left, with a pointed rock in front of the base"
+  },
+  {
+    "id": "icefall-east-cliff",
+    "rectPx1x": [
+      4570,
+      1030,
+      160,
+      200
+    ],
+    "shape": "thin vertical cyan water strands descending between cliff spires into a narrow horizontal pool, rocks occlude most of the cliff"
+  },
+  {
+    "id": "icefall-center-bridge",
+    "rectPx1x": [
+      3040,
+      1290,
+      210,
+      200
+    ],
+    "shape": "short curved waterfall below a wooden bridge, two curving strands form a V and converge in white base spray"
+  },
+  {
+    "id": "icefall-lower-inlet",
+    "rectPx1x": [
+      3660,
+      1505,
+      130,
+      160
+    ],
+    "shape": "small narrow cyan vertical waterfall descending from a flat channel, yellow tree occludes its lower right"
+  },
+  {
+    "id": "icefall-lower-1",
+    "rectPx1x": [
+      3805,
+      1554,
+      160,
+      189
+    ],
+    "shape": "single curved upper lip with a straight narrow cyan curtain and white base splashes"
+  },
+  {
+    "id": "icefall-lower-2",
+    "rectPx1x": [
+      3830,
+      1695,
+      170,
+      160
+    ],
+    "shape": "short curved cyan curtain between ledges, slight diagonal rightward bend with white pool at base"
+  },
+  {
+    "id": "icefall-lower-3",
+    "rectPx1x": [
+      3820,
+      1800,
+      230,
+      185
+    ],
+    "shape": "broad curtain split by a central protruding dark mossy stone pillar, separate left and right falling streams, white impact spray"
+  },
+  {
+    "id": "icefall-mouth",
+    "rectPx1x": [
+      4020,
+      2005,
+      265,
+      180
+    ],
+    "shape": "two diagonal waterfall curtains beneath a wooden bridge, left face flows down-right and right face down-left, foreground vegetation and rocks occlude the base"
+  }
+]

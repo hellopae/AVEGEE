@@ -1,0 +1,500 @@
+{
+  "method": "Recomputed after alpha repairs. RGB deltas inside CURRENT external mask AND common sheet alpha; all transitions including 8->1. Original painted source frames held; no shifted/faded frame synthesis.",
+  "frames": [
+    {
+      "id": "icefall-summit",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+      "sheetSha256": "290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae",
+      "currentEffectiveMaskPixelsAtFrameSize": 121764,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        9.610974311828613,
+        24.35276222229004,
+        8.236923217773438,
+        27.13311767578125,
+        14.756101608276367,
+        28.12845802307129,
+        7.997084617614746,
+        27.377708435058594
+      ],
+      "wrapToMedianRatio": 1.4000769009127252,
+      "largestToMedianRatio": 1.4384697108529583,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-upper-tree",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822",
+      "sheetSha256": "1a5fc73e8a2bef640054d98b1862b2f8fd3a83bcf6cd997ed8efee0c1189fc68",
+      "currentEffectiveMaskPixelsAtFrameSize": 3952,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        13.149713516235352,
+        84.71626281738281,
+        9.282304763793945,
+        45.03019714355469,
+        12.916244506835938,
+        90.81385040283203,
+        8.53905200958252,
+        55.54056930541992
+      ],
+      "wrapToMedianRatio": 1.909269666301009,
+      "largestToMedianRatio": 3.121828458413097,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-upper-right",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "74627607e4163915fc91e9deaa1aed3ef052417269c7b84965630954c9583507",
+      "sheetSha256": "81a5563fb987c454d607e8bbacc22a03a1d45cbd83a9c1ef52959862664d01d5",
+      "currentEffectiveMaskPixelsAtFrameSize": 38980,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        23.20077896118164,
+        35.14963912963867,
+        18.27483367919922,
+        35.800350189208984,
+        15.083341598510742,
+        37.403541564941406,
+        31.36551284790039,
+        44.55904769897461
+      ],
+      "wrapToMedianRatio": 1.3398164590835295,
+      "largestToMedianRatio": 1.3398164590835295,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-east-cliff",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "75fb9ea0caa0e8b2c2bb3084895d1d5c7dfbc9aa9636e89b89de4c24b8638894",
+      "sheetSha256": "ed98b40f3643c7824fb9ef0e49bd9b1aea7381c0ea2ea66ccf810f8697bf05fa",
+      "currentEffectiveMaskPixelsAtFrameSize": 25828,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        34.57571792602539,
+        33.47959518432617,
+        30.637331008911133,
+        42.91043472290039,
+        33.414886474609375,
+        45.89430236816406,
+        39.28298568725586,
+        39.59523391723633
+      ],
+      "wrapToMedianRatio": 1.0721887057361328,
+      "largestToMedianRatio": 1.2427594886707805,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-center-bridge",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "1001f7ba63def4480c0d3c89ea697f76dca0195d9831df739fa161fa11235caa",
+      "sheetSha256": "26a3de4eb27ad15be053696cbe40f7bcd109bfda5184a50d79cec7b9fbe72803",
+      "currentEffectiveMaskPixelsAtFrameSize": 113032,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        24.447912216186523,
+        37.18018341064453,
+        33.31166458129883,
+        36.00429153442383,
+        25.164770126342773,
+        35.2303352355957,
+        27.158615112304688,
+        26.72405433654785
+      ],
+      "wrapToMedianRatio": 0.8838740112318249,
+      "largestToMedianRatio": 1.229701056420859,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-inlet",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "ecb75d8f03f4c072747703379bc0a2d15b330e60faf60e59b5a9c014240c0260",
+      "sheetSha256": "d6e332148215e6908a6bef01a85efaf476de49f0b6952133002c3e17075a08a8",
+      "currentEffectiveMaskPixelsAtFrameSize": 31008,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        40.336578369140625,
+        42.903743743896484,
+        28.421159744262695,
+        48.36347579956055,
+        28.303083419799805,
+        48.1370735168457,
+        33.62397766113281,
+        44.62149429321289
+      ],
+      "wrapToMedianRatio": 1.07211248492332,
+      "largestToMedianRatio": 1.1620203904036996,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-1",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "03622302d4fb8c362fb480bf89e793f123781d7864443698b60ef5b1e9b8d61f",
+      "sheetSha256": "b5cfc0d60232233b5479e41d618b8b7a4ec49248d4bfb69c5eac2a3dd978cac5",
+      "currentEffectiveMaskPixelsAtFrameSize": 84631,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        20.55487060546875,
+        63.46551513671875,
+        29.898515701293945,
+        65.38481140136719,
+        15.334558486938477,
+        67.16654968261719,
+        38.96731185913086,
+        62.938411712646484
+      ],
+      "wrapToMedianRatio": 1.235228199293748,
+      "largestToMedianRatio": 1.318209563279503,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-2",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "d35f3c8697e85601593449d942bbc488575f128aca7137a5ebfcfa24b7dd19ce",
+      "sheetSha256": "e51e0f888a89bfd71f9bd223d389eee67708071565edc9f7d5f7fca28f339019",
+      "currentEffectiveMaskPixelsAtFrameSize": 70698,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        25.37974739074707,
+        38.707427978515625,
+        32.40093994140625,
+        34.49708557128906,
+        30.64362907409668,
+        45.16929244995117,
+        37.1686897277832,
+        36.47058868408203
+      ],
+      "wrapToMedianRatio": 1.0278084794732245,
+      "largestToMedianRatio": 1.2729540012094336,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-3",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "bdd703d1c7344437b70c7c439ff5d693dde05062f8181096222df254891821e0",
+      "sheetSha256": "fa98dd1dd09b494fbd42cf7b65cbc9c78a15901022f7355e4ddf3e0c6bc41ec0",
+      "currentEffectiveMaskPixelsAtFrameSize": 98235,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        31.899227142333984,
+        51.12771987915039,
+        19.742111206054688,
+        40.7916374206543,
+        34.58708190917969,
+        37.01823806762695,
+        28.968463897705078,
+        44.26823043823242
+      ],
+      "wrapToMedianRatio": 1.236450879699194,
+      "largestToMedianRatio": 1.4280424944881454,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-mouth",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "maskSha256": "b003a8f4707420849c793634c2c29f49ff3a5d00cde986fabd962c5268b3813c",
+      "sheetSha256": "fdd9557a3a1e1e8de73149cddf87512b8858ea88b1e3452bd82b224ecb0c74f6",
+      "currentEffectiveMaskPixelsAtFrameSize": 66925,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        28.281190872192383,
+        70.27716827392578,
+        33.53838348388672,
+        57.5522346496582,
+        38.08263397216797,
+        60.511512756347656,
+        37.85258102416992,
+        67.42266845703125
+      ],
+      "wrapToMedianRatio": 1.4100018001518702,
+      "largestToMedianRatio": 1.4696975964242993,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-volcano",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "9ea89353b9500746c46221d24359dc1c475f521e85d360e41d7f9a021b59ed84",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 60400,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        17.196958541870117,
+        15.71682071685791,
+        16.664199829101562,
+        12.6838960647583,
+        12.1741943359375,
+        11.28520393371582,
+        11.424315452575684,
+        22.804574966430664
+      ],
+      "wrapToMedianRatio": 1.6059154521897185,
+      "largestToMedianRatio": 1.6059154521897185,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-upper-left",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "e6edf78e3e2671556e18cfc26b90d96707d038118c0d5083ab432964c79beb1c",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 82990,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        14.01351547241211,
+        13.695979118347168,
+        15.736595153808594,
+        10.611434936523438,
+        10.570976257324219,
+        10.075748443603516,
+        11.09074592590332,
+        19.640005111694336
+      ],
+      "wrapToMedianRatio": 1.5847196494601063,
+      "largestToMedianRatio": 1.5847196494601063,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-upper-step",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "96720c28746a756dd2cb5ce8900dfb0ec968d177c63e9d896304f160f06558dd",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 75738,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        15.504009246826172,
+        14.616661071777344,
+        16.95537757873535,
+        12.077957153320312,
+        10.842408180236816,
+        10.88807487487793,
+        11.770713806152344,
+        21.12674903869629
+      ],
+      "wrapToMedianRatio": 1.5828470638200334,
+      "largestToMedianRatio": 1.5828470638200334,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-west",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "9895ad3f2e9205be68ed6900d1c8127c61ac41ef6852115ff3604eea7a33753f",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 71944,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        15.968165397644043,
+        14.515998840332031,
+        16.04852294921875,
+        12.489880561828613,
+        10.833133697509766,
+        10.42259693145752,
+        11.384284973144531,
+        22.135461807250977
+      ],
+      "wrapToMedianRatio": 1.63930686926492,
+      "largestToMedianRatio": 1.63930686926492,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-bridge",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "d6ea3d837121db94af792b18340b850e5def980f49b38c4731f384ebb443642f",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 66780,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        16.760726928710938,
+        15.145233154296875,
+        17.112857818603516,
+        12.172451972961426,
+        12.069177627563477,
+        11.070245742797852,
+        11.262678146362305,
+        23.014495849609375
+      ],
+      "wrapToMedianRatio": 1.6849521284396758,
+      "largestToMedianRatio": 1.6849521284396758,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-middle",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "758980ea46aedb458e6b3f1b56bb40428f219354a3667197ff002ff31baa5044",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 57498,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        16.05016326904297,
+        14.95315170288086,
+        16.598270416259766,
+        12.24840259552002,
+        11.42849063873291,
+        10.580501556396484,
+        11.85406494140625,
+        22.5328426361084
+      ],
+      "wrapToMedianRatio": 1.65673199324739,
+      "largestToMedianRatio": 1.65673199324739,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-lower-step",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "7303a24978799e03df30f2f74ed1caea744b5bbdaef93e704ecbccf7ba5238de",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 82421,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        16.017597198486328,
+        14.936868667602539,
+        16.622344970703125,
+        12.49211597442627,
+        10.936500549316406,
+        10.881599426269531,
+        11.763810157775879,
+        22.384510040283203
+      ],
+      "wrapToMedianRatio": 1.6321792682025806,
+      "largestToMedianRatio": 1.6321792682025806,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-mouth",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "maskSha256": "89511082aecd87b31054347a9a6ec5aea88ecfc636e4afd6b7d67dd118d0d692",
+      "sheetSha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725",
+      "currentEffectiveMaskPixelsAtFrameSize": 62458,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        14.659093856811523,
+        14.362969398498535,
+        15.291897773742676,
+        12.23838996887207,
+        10.219630241394043,
+        10.266958236694336,
+        10.24810791015625,
+        21.53606605529785
+      ],
+      "wrapToMedianRatio": 1.6191703407243259,
+      "largestToMedianRatio": 1.6191703407243259,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    }
+  ],
+  "visualPlaybackReviewed": false,
+  "limitation": "Changed pixels and numeric loop deltas do not establish smooth playback.",
+  "continuationMetricRefresh": {
+    "masks": [
+      "lavafall-upper-left",
+      "lavafall-mouth"
+    ],
+    "reason": "Recorded rock-silhouette alpha subtraction.",
+    "evidence": "review/current-loop-check.json",
+    "visualPlaybackReviewed": false
+  },
+  "continuation20261111T162400Z": {
+    "paintedFramesChanged": 0,
+    "metricsRefreshedFor": [
+      "lavafall-upper-left",
+      "lavafall-mouth"
+    ],
+    "phaseContactInspected": "review/run4-upper-tree-loop-phases.webp",
+    "upperTreeLargestTransition": [
+      6,
+      7
+    ],
+    "upperTreeLargestToMedianRatio": 3.121828458413097,
+    "upperTreeWrapToMedianRatio": 1.909269666301009,
+    "smoothPlaybackVerified": false,
+    "finding": "The eight held-phase contact panels were inspected. Numeric changes flag 6→7 and 8→1 for playback review. These still images do not establish temporal smoothness. No reordering, drifting, fading or synthesized frames were applied."
+  }
+}

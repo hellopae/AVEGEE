@@ -1,0 +1,146 @@
+[
+  {
+    "path": "review/boundary/lavafall-west-reference-grid.jpg",
+    "bytes": 53583,
+    "sha256": "11884c338dc320cab4a3721fd64169fc3e53650adae2fa5918e7407421328c35",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-upper-step-reference-grid.jpg",
+    "bytes": 52513,
+    "sha256": "ba37b73465fe4d9c90db0729e6b3508d80eaefd178fca00f6eefedbce1a367a1",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-volcano-reference-grid.jpg",
+    "bytes": 52596,
+    "sha256": "69966f64dee4ddd459a7ae20b437301af288c5ccb08eac035c1a7d3e01658e84",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-upper-left-reference-grid.jpg",
+    "bytes": 30986,
+    "sha256": "c35bd44ba69282746ee561c6ffd17672dbc3f079b8f9957c121df4a89e5e53d5",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-lower-step-reference-grid.jpg",
+    "bytes": 56285,
+    "sha256": "8236f3ca451868513ddf3e58187e47d0728cac26a5d4ab7fd1dbc6f29029a5f4",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-bridge-reference-grid.jpg",
+    "bytes": 49637,
+    "sha256": "2c5bd6dcec3d1d8fdfef48ae9d7b4cf19586c0b92f51e6a335c82f08ae22dc1f",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-middle-reference-grid.jpg",
+    "bytes": 57755,
+    "sha256": "0dedd63a61ada26b8d5ad2303b34fe4cb8a4dc1c75938a756df661fb2af8d9a1",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lavafall-mouth-reference-grid.jpg",
+    "bytes": 47046,
+    "sha256": "1034783407efecded20e666d5aa9b8ac206cd076b021a3e18e011d021dc625b2",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/spirit-river-east-reference-grid.jpg",
+    "bytes": 1141326,
+    "sha256": "64c175628d474b7f51d3e385458f13cfd3e8ea71b14c248097030569d24672f4",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/spirit-river-west-reference-grid.jpg",
+    "bytes": 1082173,
+    "sha256": "829d3edba424e56f0f99421d05dcc804404012c4e04ea6d6a326ec721670bd01",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-summit-ground-grid.jpg",
+    "bytes": 324104,
+    "sha256": "90db022eb239866af9f491a8661509c54e7ec6f51f3130e6544b9547c70cf4a3",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-upper-tree-ground-grid.jpg",
+    "bytes": 108250,
+    "sha256": "3f0cb92bcc943190914a3d07f14156897c67a50f852dfc96ecdb955ac544eac1",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-east-cliff-ground-grid.jpg",
+    "bytes": 117732,
+    "sha256": "fe0848b61d447acf77e928867897bfd5172b2863cc6629ef9ce609fda0a1cf30",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-summit-independent-proof.webp",
+    "bytes": 493942,
+    "sha256": "80006271694eee5f27546ab1ee41b4280f9bb055fd0cbcea198f5b5008d4d719",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-upper-tree-independent-proof.webp",
+    "bytes": 167290,
+    "sha256": "3f58e4e04a6b294d02694acb9e8dda0d084cbb0c7f8f4c5bde4be2ffbf58e1cb",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/icefall-east-cliff-independent-proof.webp",
+    "bytes": 172640,
+    "sha256": "8382e57740983739f36b92376d4db67566829b702e911f4b992847f27ec5eede",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-upper-bank-grid.jpg",
+    "bytes": 132262,
+    "sha256": "bef164b505572fed90984d116460be7040850a8cce5b0a43d765e2d662f9bae8",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-central-bank-grid.jpg",
+    "bytes": 198958,
+    "sha256": "2661effd46265ae37f6af4f08fbf7702722d3139b59583e9725572a4ccaeb87f",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-lower-bank-grid.jpg",
+    "bytes": 605218,
+    "sha256": "03217765037c33008a3149788dcb42e93cc8c5e2b1e448caf45e8c0c40b65c11",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-east-bank-grid.jpg",
+    "bytes": 45267,
+    "sha256": "794463e82b3c0f134eb2d0b27357f00ea72ac09b1a09c55b00c6f671b77f34e5",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-mouth-bank-grid.jpg",
+    "bytes": 9304,
+    "sha256": "422cb0cbd24a141c4eef2b3c3e7e65fe883870cb62f63525477bdcc0b6a1a9a5",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lava-flat-left-bottom-reference-grid.jpg",
+    "bytes": 86621,
+    "sha256": "ef1e18f1bba5ba2878d257266a86db2849fca4871bb83d07895e70f06927b811",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "review/boundary/lava-flat-southwest-reference-grid.jpg",
+    "bytes": 173875,
+    "sha256": "7947072be4dad63bfe2423b9a037a0e1e7890d188fd177f6a51b6f61912ed174",
+    "reason": "Redundant coordinate grid or superseded proof; exact ground inputs, new frozen references, before masks and current comparisons retained."
+  },
+  {
+    "path": "input/overview.jpg",
+    "sha256": "e0dc15582d9b5d1df8f640fd26da4d5487a5282569209e6988b55a0722e3cf2e",
+    "bytes": 2390158,
+    "reason": "Unused duplicate assembled overview; all exact native v7 tiles, manifest and v7 preview retained."
+  }
+]

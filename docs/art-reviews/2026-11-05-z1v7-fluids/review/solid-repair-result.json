@@ -1,0 +1,263 @@
+{
+  "specification": "review/solid-repairs-current.json",
+  "specificationSha256": "1882e24eb73770ad81cf911f325aefff5aec2f859c2de86f8b2c5c318ee18591",
+  "changes": [
+    {
+      "mask": "icefall-east-cliff",
+      "beforePath": "review/before-solid-repair/icefall-east-cliff.webp",
+      "beforeSha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0",
+      "afterSha256": "75fb9ea0caa0e8b2c2bb3084895d1d5c7dfbc9aa9636e89b89de4c24b8638894",
+      "beforePixels": 6507,
+      "afterPixels": 5175,
+      "removedPixels": 1332,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 75,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        176,
+        223,
+        228,
+        296
+      ],
+      "changedRectMap1x": [
+        4658.0,
+        1141.5,
+        26.0,
+        36.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Rock face behind scattered spray, beside the actual falling curtain. Cyan rock and white spray against rock must receive no waterfall layer.",
+      "evidence": "review/boundary/icefall-east-cliff-solid-repair.webp"
+    },
+    {
+      "mask": "lava-flat-lower",
+      "beforePath": "review/before-solid-repair/lava-flat-lower.webp",
+      "beforeSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "afterSha256": "9bfa1cb95549218ef0a4eb1d3c992df770e6221ae6e355a588420eb3eed0d87e",
+      "beforePixels": 117761,
+      "afterPixels": 113301,
+      "removedPixels": 4460,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 257,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        609,
+        276,
+        836,
+        493
+      ],
+      "changedRectMap1x": [
+        1364.5,
+        1563.0,
+        113.5,
+        108.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted orange-lit cliff bank, including the ember witness. Reflected lava colour on solid rock is excluded from the flat-lava layer and particles.",
+      "evidence": "review/boundary/lava-flat-lower-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-lower-step",
+      "beforePath": "review/before-solid-repair/lavafall-lower-step.webp",
+      "beforeSha256": "2be74c5bf40cf7581fbcf199207a919d2c269c5221ef6a366c09305a776c2b39",
+      "afterSha256": "7303a24978799e03df30f2f74ed1caea744b5bbdaef93e704ecbccf7ba5238de",
+      "beforePixels": 47356,
+      "afterPixels": 45111,
+      "removedPixels": 2245,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 683,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        23,
+        199,
+        99,
+        307
+      ],
+      "changedRectMap1x": [
+        1357.5,
+        1780.5,
+        38.0,
+        54.0
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Two faceted rock columns protrude through the bottom-left lava curtain. Ground-context and native grid show their upper silhouettes and rocky interiors. Subtract their silhouette independently of the frozen liquid-reference contours.",
+      "evidence": "review/boundary/lavafall-lower-step-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-bridge",
+      "beforePath": "review/before-solid-repair/lavafall-bridge.webp",
+      "beforeSha256": "97a127c51fed43f88e6b424df602404b45c8cd9f6aa5ee946adba886c145e777",
+      "afterSha256": "d6ea3d837121db94af792b18340b850e5def980f49b38c4731f384ebb443642f",
+      "beforePixels": 32071,
+      "afterPixels": 29787,
+      "removedPixels": 2284,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 702,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        13,
+        92,
+        199,
+        301
+      ],
+      "changedRectMap1x": [
+        1123.5,
+        911.0,
+        93.0,
+        104.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted cracked upper-left wall, including lava-coloured seams. Reuses the ground-only silhouette in the inherited independent reference; does not subtract unknown pixels globally. Also subtract the two isolated faceted foreground rocks and the connected lower-left rock silhouette, inspected on the same ground-only grid.",
+      "evidence": "review/boundary/lavafall-bridge-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-west",
+      "beforePath": "review/before-solid-repair/lavafall-west.webp",
+      "beforeSha256": "9beeab3c8b1fd9e747203a98c773b0812e40e817ca458eaee1c02b66c16b989d",
+      "afterSha256": "9895ad3f2e9205be68ed6900d1c8127c61ac41ef6852115ff3604eea7a33753f",
+      "beforePixels": 37477,
+      "afterPixels": 36425,
+      "removedPixels": 1052,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 135,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        11,
+        8,
+        84,
+        321
+      ],
+      "changedRectMap1x": [
+        193.5,
+        738.0,
+        36.5,
+        156.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted left wall protruding through the orange curtain. Contour traced on the native ground grid; the adjacent flowing ribbon is labelled separately before measurement. Also subtract the two lower-left foreground rock silhouettes and their lower rocky rim; receiving lava remains outside the exclusions.",
+      "evidence": "review/boundary/lavafall-west-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-upper-left",
+      "beforePath": "review/before-solid-repair/lavafall-upper-left.webp",
+      "beforeSha256": "5af64a1bc68d5929ec181f72efdace686483225ffb49c21d2544098feca78583",
+      "afterSha256": "e6edf78e3e2671556e18cfc26b90d96707d038118c0d5083ab432964c79beb1c",
+      "beforePixels": 12727,
+      "afterPixels": 12433,
+      "removedPixels": 294,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 82,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        55,
+        34,
+        113,
+        178
+      ],
+      "changedRectMap1x": [
+        482.5,
+        263.0,
+        29.0,
+        72.0
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Hard faceted right wall beside the narrow lava ribbon, plus the dark foreground rim below the receiving water. Contours are from ground only, not inverse liquid labels.",
+      "evidence": "review/boundary/lavafall-upper-left-solid-repair.webp"
+    },
+    {
+      "mask": "lavafall-mouth",
+      "beforePath": "review/before-solid-repair/lavafall-mouth.webp",
+      "beforeSha256": "c08464892c51b2173173e6f12802b776c9da5b2208b001e8c5df896623b02d2f",
+      "afterSha256": "89511082aecd87b31054347a9a6ec5aea88ecfc636e4afd6b7d67dd118d0d692",
+      "beforePixels": 21228,
+      "afterPixels": 20974,
+      "removedPixels": 254,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 0,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        142,
+        11,
+        162,
+        258
+      ],
+      "changedRectMap1x": [
+        1274.0,
+        2038.5,
+        10.0,
+        123.5
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted side-wall interiors, including their orange reflection and glowing cracks. Preserve the smooth falling strands and receiving foam.",
+      "evidence": "review/boundary/lavafall-mouth-solid-repair.webp"
+    },
+    {
+      "mask": "ice-stream-flat-upper",
+      "beforePath": "review/before-solid-repair/ice-stream-flat-upper.webp",
+      "beforeSha256": "dd41b11969918f80bcf88a97599e04a938164613d1836eba4f995c1a12a988fd",
+      "afterSha256": "c4f2abca6c05cb36b97b98649ad7f4043e0f7aee32c53a64fa4a4f2bf9398053",
+      "beforePixels": 65663,
+      "afterPixels": 65484,
+      "removedPixels": 179,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 0,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        592,
+        282,
+        653,
+        346
+      ],
+      "changedRectMap1x": [
+        3946.0,
+        801.0,
+        30.5,
+        32.0
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Snow-capped faceted boulder in the receiving pool, with two small isolated rocks. Cyan reflected light and white snow do not make these liquid; the contour is traced from ground-only native grid.",
+      "evidence": "review/boundary/ice-stream-flat-upper-solid-repair.webp"
+    },
+    {
+      "mask": "lava-flat-middle",
+      "beforePath": "review/before-solid-repair/lava-flat-middle.webp",
+      "beforeSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "afterSha256": "7b082bce6526b369b722d1f222520cfb536d430fd39f6da0ac31a0553643592d",
+      "beforePixels": 57010,
+      "afterPixels": 54452,
+      "removedPixels": 2558,
+      "addedPixels": 0,
+      "witnessSolidOverlapBefore": 340,
+      "witnessSolidOverlapAfter": 0,
+      "removedBoundingBoxNative2x": [
+        479,
+        107,
+        724,
+        215
+      ],
+      "changedRectMap1x": [
+        1279.5,
+        1053.5,
+        122.5,
+        54.0
+      ],
+      "unchangedAlphaOutsideRemovedRegion": true,
+      "reason": "Faceted upper-right river wall. The red/orange glow at its toe and the glowing tree-side cliff are hard surfaces, not flat liquid. Ground-only contour excludes the horizontal vein-covered river below.",
+      "evidence": "review/boundary/lava-flat-middle-solid-repair.webp"
+    }
+  ],
+  "newGenerations": 0,
+  "lavaAggregate": {
+    "beforeSha256": "a46865a29c561db269ec3c20b4728ba4e695f8656f6a647f4b78b930c5d02274",
+    "afterSha256": "668e5068e335901c797011b2c39c62370bb03cae8fe82ffd69301ed94ae72a88",
+    "removedPixels": 7018,
+    "equalsComponentUnion": true
+  },
+  "iceAggregate": {
+    "beforeSha256": "6fc3bad98a71a0a7f5e75ac82bbcad7ade99916421352b49d6dd88282ef1273f",
+    "afterSha256": "21b2beaea31409bcde84696b7aaf9ace21c466747f67061ead3ba096a7ae815b",
+    "removedPixels": 179,
+    "equalsComponentUnion": true
+  },
+  "limitation": "Ground-derived repair witnesses are regression checks after repair. Full semantic acceptance still requires separate liquid references and full coverage/playback review."
+}

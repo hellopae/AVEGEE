@@ -1,0 +1,1083 @@
+{
+  "reason": "Keep native terrain, sources, masks, sheets and all clip/pair outputs. Compress diagnostic previews only for the 80 decimal MB delivery limit.",
+  "files": [
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-overview.jpg",
+      "beforeBytes": 19248,
+      "afterBytes": 16819
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-overview.jpg",
+      "beforeBytes": 239800,
+      "afterBytes": 209853
+    },
+    {
+      "path": "review/boundary/lava-flat-west-overview.jpg",
+      "beforeBytes": 348227,
+      "afterBytes": 304726
+    },
+    {
+      "path": "review/boundary/spirit-river-west-overview.jpg",
+      "beforeBytes": 65415,
+      "afterBytes": 56913
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-overview.jpg",
+      "beforeBytes": 137936,
+      "afterBytes": 121477
+    },
+    {
+      "path": "review/boundary/lava-flat-upper-overview.jpg",
+      "beforeBytes": 202958,
+      "afterBytes": 177098
+    },
+    {
+      "path": "review/boundary/lava-flat-middle-overview.jpg",
+      "beforeBytes": 141343,
+      "afterBytes": 123477
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-overview.jpg",
+      "beforeBytes": 222799,
+      "afterBytes": 194864
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-overview.jpg",
+      "beforeBytes": 211369,
+      "afterBytes": 185863
+    },
+    {
+      "path": "review/boundary/spirit-river-east-overview.jpg",
+      "beforeBytes": 72789,
+      "afterBytes": 63345
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-overview.jpg",
+      "beforeBytes": 331963,
+      "afterBytes": 289788
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-overview.jpg",
+      "beforeBytes": 88259,
+      "afterBytes": 77500
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-overview.jpg",
+      "beforeBytes": 125712,
+      "afterBytes": 110314
+    },
+    {
+      "path": "review/boundary/shore-ice-central-current-actual-bank-proof.webp",
+      "beforeBytes": 524872,
+      "afterBytes": 98422
+    }
+  ],
+  "finalDiagnosticCompression": [
+    {
+      "path": "review/boundary/ice-bank-reference-grid.jpg",
+      "beforeBytes": 55133,
+      "afterBytes": 23543,
+      "beforeSha256": "48de34c4ff250d1c429ecaf652f7030e62823ef9d2c8116567cf1765434f90a3",
+      "afterSha256": "7e3c4126871ec287673baf46c15d22117c32a7c1aa7a5b2a3c7d5997a1882f53",
+      "beforeSize": [
+        400,
+        300
+      ],
+      "afterSize": [
+        400,
+        300
+      ]
+    },
+    {
+      "path": "review/boundary/ice-central-pools-ground-labels.webp",
+      "beforeBytes": 123418,
+      "afterBytes": 81034,
+      "beforeSha256": "9ed3c49c7ccd1e3c48a5f71cb8f2ad1b2eb2a9fe9d92c8f7d7772bbd5bd2e2c6",
+      "afterSha256": "1271f2b137aad29be3646f5b8ddf27f831a07bd1e36493b5a63dd7960f5377ab",
+      "beforeSize": [
+        1400,
+        425
+      ],
+      "afterSize": [
+        1200,
+        364
+      ]
+    },
+    {
+      "path": "review/boundary/ice-east-channel-ground-labels.webp",
+      "beforeBytes": 67652,
+      "afterBytes": 62888,
+      "beforeSha256": "af42eba9486bc8c765b330329d948abac68d39b6eac4e8090b768cebf1625522",
+      "afterSha256": "6ff116bb6a8b69b77254d96106fabcebf8542dc4e5133b327d8cfc805267991c",
+      "beforeSize": [
+        1060,
+        365
+      ],
+      "afterSize": [
+        1060,
+        365
+      ]
+    },
+    {
+      "path": "review/boundary/ice-lower-ground-labels.webp",
+      "beforeBytes": 139446,
+      "afterBytes": 90338,
+      "beforeSha256": "2a8bc28a884d128790b8341b35e7ab728baea282f8b0dcd69e7d7bc504455b90",
+      "afterSha256": "79de0ed232dcbb14054da690148136ad95a66a42b24e03525560983f15c306bc",
+      "beforeSize": [
+        1400,
+        384
+      ],
+      "afterSize": [
+        1200,
+        329
+      ]
+    },
+    {
+      "path": "review/boundary/ice-mouth-ground-labels.webp",
+      "beforeBytes": 15642,
+      "afterBytes": 14792,
+      "beforeSha256": "f04069b0f222186657c3577c1b6da828b6e58374537eb49f21f48be59763925c",
+      "afterSha256": "e0c7af6a4b5a710022e1dac3a7d5cc57eb49a7e6c72af14c8aa9faf7c9578fed",
+      "beforeSize": [
+        560,
+        135
+      ],
+      "afterSize": [
+        560,
+        135
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-liquid-reference.webp",
+      "beforeBytes": 80338,
+      "afterBytes": 56630,
+      "beforeSha256": "624081d2e2e0163fd02f43030770833f4e80823399a67a60d10a1a0c60cc0a67",
+      "afterSha256": "a7fae51c96d0caba46a4e674de46761467f9e12ec23ad70b25dd2c48840d99e0",
+      "beforeSize": [
+        1350,
+        281
+      ],
+      "afterSize": [
+        1200,
+        250
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-overview.jpg",
+      "beforeBytes": 185863,
+      "afterBytes": 75328,
+      "beforeSha256": "51db60390eef6a057ba04e42cf296ea093b7259804d8a998a38d5defee29c5eb",
+      "afterSha256": "2cc993a618b9bbfd9d52e41873452eb7eb5bf222a687036de7c113a4feffb53a",
+      "beforeSize": [
+        1800,
+        537
+      ],
+      "afterSize": [
+        1200,
+        358
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-shore-repair.webp",
+      "beforeBytes": 111194,
+      "afterBytes": 55200,
+      "beforeSha256": "f7559ddcf42ecd3a37642344f2f67f407109a7df49c9e7ea2b36585c5949a661",
+      "afterSha256": "aa1fc7ee3fc568d336f9d7c33441b5e1cc404ce8717f435ed0be0d4581aa2bb0",
+      "beforeSize": [
+        1500,
+        322
+      ],
+      "afterSize": [
+        1200,
+        258
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-ground-detail-current.webp",
+      "beforeBytes": 99844,
+      "afterBytes": 68728,
+      "beforeSha256": "7c564983b87041da5f2f890a729d7a3437f93020b805b33c4bd3ba5b5f42100e",
+      "afterSha256": "9657381104712e9f93cce492a9b3e6b02a41aeef9fdb3792672c64351df46500",
+      "beforeSize": [
+        1060,
+        680
+      ],
+      "afterSize": [
+        1060,
+        680
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-liquid-reference.webp",
+      "beforeBytes": 79764,
+      "afterBytes": 57154,
+      "beforeSha256": "ef7dd72ab811abc77c3308c07cd4ff7a46b94c5929aa0b4d69801af13f1419db",
+      "afterSha256": "b3453790b53c86e3083403f5bc90657e45cd012f094add6b492d9d9aeced80d1",
+      "beforeSize": [
+        1350,
+        316
+      ],
+      "afterSize": [
+        1200,
+        281
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-overview.jpg",
+      "beforeBytes": 77500,
+      "afterBytes": 74661,
+      "beforeSha256": "03dbf4bb5850ed75c6c191b7884461f920d082c16aa0d51742f0ef7a9177066a",
+      "afterSha256": "332c1e2d0582db5767e8ffaaba5ac3f00e3298086f8b70916f5540781c8f1a5d",
+      "beforeSize": [
+        1060,
+        372
+      ],
+      "afterSize": [
+        1060,
+        372
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-shore-repair.webp",
+      "beforeBytes": 105550,
+      "afterBytes": 55976,
+      "beforeSha256": "637adef27c37e67d58e425448e91b5a012c7ce0da540527057913a3f1058a310",
+      "afterSha256": "b7fce7befa8b6eee9fe65d5e6281dc9779fe11e6d2dc3db56636c44dcfbb80bb",
+      "beforeSize": [
+        1500,
+        357
+      ],
+      "afterSize": [
+        1200,
+        286
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-liquid-reference.webp",
+      "beforeBytes": 212322,
+      "afterBytes": 66696,
+      "beforeSha256": "c741493c6a891fe17626349b7acae27f5773f5d2776891fbc5aa31b56565a326",
+      "afterSha256": "b3dae8258a11c45d7dc002772596ed6f1850a20fcb49438ae9773b48b6cb117e",
+      "beforeSize": [
+        1800,
+        432
+      ],
+      "afterSize": [
+        1200,
+        288
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-liquid-reference.webp",
+      "beforeBytes": 91788,
+      "afterBytes": 64046,
+      "beforeSha256": "5747e2fc4dbc26eac24e1d3e447ffc017f025e412471686b21aa0fdc0a23fba0",
+      "afterSha256": "178c582313f47cca090187feace5031dfe23f01b34d1c6d70b8d1d7119409a26",
+      "beforeSize": [
+        1350,
+        255
+      ],
+      "afterSize": [
+        1200,
+        227
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-overview.jpg",
+      "beforeBytes": 194864,
+      "afterBytes": 77313,
+      "beforeSha256": "7bf52014c8206aec049c60ee62b9a216c7d6a5d6e6c3efc095a3c5fbf1b11d65",
+      "afterSha256": "9672d5ca7cbe2509262d7c48d2411f2057885bdd49b3aba876f8acb23886c957",
+      "beforeSize": [
+        1800,
+        475
+      ],
+      "afterSize": [
+        1200,
+        317
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-shore-repair.webp",
+      "beforeBytes": 122362,
+      "afterBytes": 59974,
+      "beforeSha256": "f56f8f746a6afad9f9b7c748cd5e5949dcf6cb8b5d738b7a833fbfce2adda1d4",
+      "afterSha256": "aad64277aaf81bcb32da8b9ffeff711068d3a7e7bc40093e0a8c938b22e004b6",
+      "beforeSize": [
+        1500,
+        293
+      ],
+      "afterSize": [
+        1200,
+        234
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-ground-detail-current.webp",
+      "beforeBytes": 20864,
+      "afterBytes": 15236,
+      "beforeSha256": "e256c8c67c75cb1197641e248d3e11cb8058bcccf34d93020bb57b981dc6e660",
+      "afterSha256": "40e80b4c237d3fa30ab11621fb544cdd15ceb404c441d9762ef3616be0ccd91e",
+      "beforeSize": [
+        560,
+        220
+      ],
+      "afterSize": [
+        560,
+        220
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-liquid-reference.webp",
+      "beforeBytes": 22616,
+      "afterBytes": 21130,
+      "beforeSha256": "9d30fa5ae4988358a6ad3fc30409645158f9496ca92c9923df7e28de99d0a525",
+      "afterSha256": "bf9c236613cf6c82c786e302b984663064443b299ff0d82b68eb9d795e2f4e20",
+      "beforeSize": [
+        840,
+        142
+      ],
+      "afterSize": [
+        840,
+        142
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-overview.jpg",
+      "beforeBytes": 16819,
+      "afterBytes": 16144,
+      "beforeSha256": "59417de966591e7472900fb3368ad436081edc66a1e691538bfc0044ffb5e728",
+      "afterSha256": "f81e625206b07d7804afcd0d17144631164ba6ae676ec8830c69174f349776ef",
+      "beforeSize": [
+        560,
+        142
+      ],
+      "afterSize": [
+        560,
+        142
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-shore-repair.webp",
+      "beforeBytes": 26826,
+      "afterBytes": 21312,
+      "beforeSha256": "25a625137084cd1e8c2a81e1415229f11fde4df50c3e113c1b02e4a3c03a8850",
+      "afterSha256": "8ed1e96617d1f91f854eed50d163e86a860cdd5c1cf361067671451ca19cff7a",
+      "beforeSize": [
+        840,
+        146
+      ],
+      "afterSize": [
+        840,
+        146
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-liquid-reference.webp",
+      "beforeBytes": 56364,
+      "afterBytes": 40404,
+      "beforeSha256": "dff872439de854cc9b7f13cfbe18ce5822e967279873f51a3855ac83008c79ed",
+      "afterSha256": "89ffd55abcc9e18c3c12a2475494c948372ae905510feea895f7b3a26aa5fb75",
+      "beforeSize": [
+        1350,
+        197
+      ],
+      "afterSize": [
+        1200,
+        175
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-overview.jpg",
+      "beforeBytes": 121477,
+      "afterBytes": 52795,
+      "beforeSha256": "eeaced5140cf77eaa2924a9ebeff50e36e72d224fd261f7423b2a67f057e0622",
+      "afterSha256": "3e7efcb77375d0fb931f5cbfafe8d9fceb5832a8784f3d98766da539eac72f53",
+      "beforeSize": [
+        1800,
+        368
+      ],
+      "afterSize": [
+        1200,
+        245
+      ]
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-shore-repair.webp",
+      "beforeBytes": 75958,
+      "afterBytes": 39574,
+      "beforeSha256": "c1f9e80d334f8bea21b46dfef067c57d6169e106ea4b156eca21eb80420a63af",
+      "afterSha256": "37eeb7e57b0c286c7ae7fa135b9f8144acedb9d4c412a5a27b3f35d75cf1665e",
+      "beforeSize": [
+        1500,
+        228
+      ],
+      "afterSize": [
+        1200,
+        182
+      ]
+    },
+    {
+      "path": "review/boundary/ice-upper-ground-labels.webp",
+      "beforeBytes": 76694,
+      "afterBytes": 51526,
+      "beforeSha256": "7f7ee7180b1786203147ce1ee390712246815ed58eae78df3f2fcdd97d86e408",
+      "afterSha256": "8e9bf8557556ae7d6577a7fe41e58455787f47578fb098f7fdc57751f18afabe",
+      "beforeSize": [
+        1400,
+        294
+      ],
+      "afterSize": [
+        1200,
+        252
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-ground-grid.jpg",
+      "beforeBytes": 73194,
+      "afterBytes": 53371,
+      "beforeSha256": "1af6f5afd36f4e1497fd31d60a664e464d47e34cedf069978218761e536e6fbf",
+      "afterSha256": "7835e13f7cd5f9e91eeb14a411cd1f943a5331509fd9cb7089df50e07fa1f98c",
+      "beforeSize": [
+        660,
+        440
+      ],
+      "afterSize": [
+        660,
+        440
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-ground-group-map1x.webp",
+      "beforeBytes": 24646,
+      "afterBytes": 18300,
+      "beforeSha256": "14e66621d4f2eedbc0cdac2293997aa10ec3e94559a7b60aa3c5039770c22cc5",
+      "afterSha256": "0575895bd9272b39260e7e9f892fdf2d6dd5a968e05ef90adf9c686fc46db98b",
+      "beforeSize": [
+        330,
+        220
+      ],
+      "afterSize": [
+        330,
+        220
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-liquid-reference.webp",
+      "beforeBytes": 84294,
+      "afterBytes": 59976,
+      "beforeSha256": "d17f87da5a7f72864b48b70bb4e21210278895f4319e29a5075a19745cc51615",
+      "afterSha256": "7f561bc9652c993b738da0624cda5a06583ee04f366228efc9219c6fb03ad622",
+      "beforeSize": [
+        1350,
+        324
+      ],
+      "afterSize": [
+        1200,
+        288
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-overview.jpg",
+      "beforeBytes": 110314,
+      "afterBytes": 82451,
+      "beforeSha256": "43ae32f8991e907913d2fbfc58120f4fd7731e2c540fd99d92363882d9edfb06",
+      "afterSha256": "7d3407c723d794f44c12feaa88eefd2c6e0b49c01103d081d14ea19c2a1816b7",
+      "beforeSize": [
+        1320,
+        472
+      ],
+      "afterSize": [
+        1200,
+        429
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-particle-proof.webp",
+      "beforeBytes": 117434,
+      "afterBytes": 74174,
+      "beforeSha256": "00c1c85711f9919433a6f9fde6a548286a3472512918d2d85fce332a73b46aa5",
+      "afterSha256": "1ba90bf3c1874288bc2a04a3474c2a95239c95d14045b4d7970f027909cef1c6",
+      "beforeSize": [
+        1320,
+        472
+      ],
+      "afterSize": [
+        1200,
+        429
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-liquid-reference.webp",
+      "beforeBytes": 211884,
+      "afterBytes": 66688,
+      "beforeSha256": "8bf9390841ab70d25cda548f6117e75211e39310d9478b0e6eaaf7b5db90a2d3",
+      "afterSha256": "8de6c91663e46159e7234b1572021a1c9763c3e6db91a215c42b46c0777c9853",
+      "beforeSize": [
+        1800,
+        432
+      ],
+      "afterSize": [
+        1200,
+        288
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-ground-detail-current.webp",
+      "beforeBytes": 18234,
+      "afterBytes": 12062,
+      "beforeSha256": "3728a495447c2b853c116b08ae21a2ed9af59ccd42cb85208513a96892e45d29",
+      "afterSha256": "17ef44e2bea23910cc927c66d604c842e3b597247bdbf856ce362720b61aec4d",
+      "beforeSize": [
+        420,
+        480
+      ],
+      "afterSize": [
+        420,
+        480
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-ground-grid.jpg",
+      "beforeBytes": 172637,
+      "afterBytes": 91540,
+      "beforeSha256": "da27f62ed3fa9c0d87d3097fb70955e37d72c7478c8532379a19045271eb0e9e",
+      "afterSha256": "1209871e6da9ec92a289148fad28f3f14e86d027cfeb950e5c89dce2b35feb19",
+      "beforeSize": [
+        846,
+        1000
+      ],
+      "afterSize": [
+        677,
+        800
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-liquid-reference.webp",
+      "beforeBytes": 145714,
+      "afterBytes": 96868,
+      "beforeSha256": "d54a60b40520a48f81bf22646f2508c9aab39ece394c8b43427a633461848059",
+      "afterSha256": "3435b03e525bf239f12dfa6657d3de59a4bbd84ea7dddc5104c23093da78a980",
+      "beforeSize": [
+        1350,
+        543
+      ],
+      "afterSize": [
+        1200,
+        483
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-overview.jpg",
+      "beforeBytes": 289788,
+      "afterBytes": 135405,
+      "beforeSha256": "858db53f02ee51b0500412dde435acea22ba7d51be4497d66592186b43d1befa",
+      "afterSha256": "bb7c52ec041d9356ce4a3712c0cb4f38a21d61a80ec9be8c88935ac9f065531a",
+      "beforeSize": [
+        1658,
+        1000
+      ],
+      "afterSize": [
+        1200,
+        724
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-solid-repair.webp",
+      "beforeBytes": 82648,
+      "afterBytes": 33770,
+      "beforeSha256": "397190e9393b7d70f1f6afbd3f488ec86703798a3bca7b1d4e6915fc062c0b73",
+      "afterSha256": "b1f3084d4b099dd62c5d39115352f4d1ef0564b3db6f7490fab91e79ff32ecd5",
+      "beforeSize": [
+        1722,
+        584
+      ],
+      "afterSize": [
+        1200,
+        407
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-middle-ground-grid.jpg",
+      "beforeBytes": 100177,
+      "afterBytes": 69260,
+      "beforeSha256": "369f7295ceb3fa844145736c2a899cb5eea42e443d2aa5cfdac2af62d0de6d2c",
+      "afterSha256": "654706b1fd75cf1bb0183fd2110b0d45a146d6008a220703063ce7f450d2f4c4",
+      "beforeSize": [
+        1000,
+        440
+      ],
+      "afterSize": [
+        1000,
+        440
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-middle-liquid-reference.webp",
+      "beforeBytes": 55800,
+      "afterBytes": 38212,
+      "beforeSha256": "822e51e1e117f577a1035623d2d22241416c2ab20c839fdaeaeb206714ef8c8d",
+      "afterSha256": "fee72e64a6980108c25900cde378559112b185aa5088b9f42dbaff8b8a3e99ea",
+      "beforeSize": [
+        1350,
+        222
+      ],
+      "afterSize": [
+        1200,
+        197
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-middle-overview.jpg",
+      "beforeBytes": 123477,
+      "afterBytes": 52204,
+      "beforeSha256": "66d65628258be298f5fc40189aaf54bd5343b093903121346cb8e3c86897a61a",
+      "afterSha256": "79c79acf45cfc38084cc039a6f4e2d5cb32830b7a9e11c2ed170ff313f738101",
+      "beforeSize": [
+        1800,
+        425
+      ],
+      "afterSize": [
+        1200,
+        283
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-ground-grid.jpg",
+      "beforeBytes": 143532,
+      "afterBytes": 103783,
+      "beforeSha256": "893c12e6b6f572314637bf0b2657dffb41878c56bab9e3ce02d65f0d9e9c40ad",
+      "afterSha256": "1173a9f61a503c2f6e67afcbdaa8b1fa73f17def00666a3ca6b5968f69abcada",
+      "beforeSize": [
+        810,
+        780
+      ],
+      "afterSize": [
+        810,
+        780
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-liquid-reference.webp",
+      "beforeBytes": 104446,
+      "afterBytes": 69764,
+      "beforeSha256": "c95b9e7c99eb513576197a33ba91bf03e549e4970bf0252f57861e87aaa1cf5f",
+      "afterSha256": "0d5d63b3ba1c61e1f3c5be56ea32a2ab30b013508196d8e8f0ecb620ac87c322",
+      "beforeSize": [
+        1350,
+        451
+      ],
+      "afterSize": [
+        1200,
+        401
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-overview.jpg",
+      "beforeBytes": 209853,
+      "afterBytes": 106623,
+      "beforeSha256": "ddba7faf2b3408b2308983bd8995d0ee21741b6106420f53edc7e467867626ee",
+      "afterSha256": "24c4a55a02560a09b7cf82539a46142b04307e30ac8218c3ebfa2c47f088ed65",
+      "beforeSize": [
+        1620,
+        812
+      ],
+      "afterSize": [
+        1200,
+        601
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-particle-proof.webp",
+      "beforeBytes": 214926,
+      "afterBytes": 95774,
+      "beforeSha256": "40061ddbb7a72ab722dc418a32caa31617a536a309ae59b7334dd857a093f576",
+      "afterSha256": "111f522946a6b202adcf6165e29f923720222fc751d24026a84d9253ccff3f28",
+      "beforeSize": [
+        1620,
+        812
+      ],
+      "afterSize": [
+        1200,
+        601
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-upper-ground-grid.jpg",
+      "beforeBytes": 154005,
+      "afterBytes": 147537,
+      "beforeSha256": "14008bd1e6a56d1dc415ef30f9ba01d24eeb49998c956a4045793eb6cb428d10",
+      "afterSha256": "c1c508408d45ae0644d38d0d5793a6ec5807d74534247c1fc07d8d7bc8b14b14",
+      "beforeSize": [
+        1120,
+        620
+      ],
+      "afterSize": [
+        1120,
+        620
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-upper-liquid-reference.webp",
+      "beforeBytes": 80442,
+      "afterBytes": 53544,
+      "beforeSha256": "4e3a0c24ecc40c8a43943e32f71a82afa34d0a7c846afe7a5b1037b2e66a2565",
+      "afterSha256": "f3d419f54e946289be65759502879c1aea335a13e371ce8887d81f1626a3885c",
+      "beforeSize": [
+        1350,
+        256
+      ],
+      "afterSize": [
+        1200,
+        228
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-upper-overview.jpg",
+      "beforeBytes": 177098,
+      "afterBytes": 69988,
+      "beforeSha256": "a421ad4b94fc440339ff75c260383da839607581848bb14248f1dbc4f36cc429",
+      "afterSha256": "d3df820f120599b835ae3a9ca611e6f7125cd6d63b2f3594205e00ab1c042a00",
+      "beforeSize": [
+        1800,
+        511
+      ],
+      "afterSize": [
+        1200,
+        341
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-west-ground-grid.jpg",
+      "beforeBytes": 182230,
+      "afterBytes": 99733,
+      "beforeSha256": "902b5de732b8530ecbdf34b728649bfd380712489989de180d04c4a3fe6bf434",
+      "afterSha256": "1ee9ecedb9335d6583be9dddfb930902eacb554f04a1def5e0e0e539339cfe74",
+      "beforeSize": [
+        929,
+        1000
+      ],
+      "afterSize": [
+        743,
+        800
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-west-liquid-reference.webp",
+      "beforeBytes": 129700,
+      "afterBytes": 89334,
+      "beforeSha256": "a73e632aec981930f2cd13c0cfb84c8da370ae9b0cb648c3e46d322c90b95262",
+      "afterSha256": "2eae210aa7ad685174ac1200591416f8c1a24be8b0ef9d5a34a19563cb1fa798",
+      "beforeSize": [
+        1350,
+        509
+      ],
+      "afterSize": [
+        1200,
+        452
+      ]
+    },
+    {
+      "path": "review/boundary/lava-flat-west-overview.jpg",
+      "beforeBytes": 304726,
+      "afterBytes": 123921,
+      "beforeSha256": "aff63a347d1d4b52fba81341a0c99ef59f72cb76e0570ba38461d5a6981ac319",
+      "afterSha256": "872dab70269272ef8ea2cbd967809669aea44dd659325c268b18ea78d09cf732",
+      "beforeSize": [
+        1800,
+        997
+      ],
+      "afterSize": [
+        1200,
+        665
+      ]
+    },
+    {
+      "path": "review/boundary/lava-left-bottom-ground-labels.webp",
+      "beforeBytes": 94698,
+      "afterBytes": 71836,
+      "beforeSha256": "37b3a9d769c4e308dd70927c7f9d28db563df20b3ecc6d685c8e2982123cbb57",
+      "afterSha256": "98283bd3f1f37919703259f111f10b1c53276ce3707c016ad265116c9aa2fac8",
+      "beforeSize": [
+        1320,
+        465
+      ],
+      "afterSize": [
+        1200,
+        423
+      ]
+    },
+    {
+      "path": "review/boundary/lava-middle-ground-labels.webp",
+      "beforeBytes": 74026,
+      "afterBytes": 48804,
+      "beforeSha256": "cb5134cf71dfc83d8a82dba63c70afb82417496be1da50bf8f53f1356042d941",
+      "afterSha256": "73a325fc7b62f3639f26ffa8f64c90f809a20f2755d2b02674b2aff1581c4f5a",
+      "beforeSize": [
+        1400,
+        333
+      ],
+      "afterSize": [
+        1200,
+        285
+      ]
+    },
+    {
+      "path": "review/boundary/lava-west-ground-labels.webp",
+      "beforeBytes": 91842,
+      "afterBytes": 84578,
+      "beforeSha256": "641fa763b252981dc4f64fd2e858beb756c1fc1fca127bdd0ede365199fdfd05",
+      "afterSha256": "857b9249d72c8114db05820f7b4f8f6f263fb7d2bfcc057df0a548bfef1d72fc",
+      "beforeSize": [
+        928,
+        525
+      ],
+      "afterSize": [
+        928,
+        525
+      ]
+    },
+    {
+      "path": "review/boundary/river-east-ground-labels.webp",
+      "beforeBytes": 41556,
+      "afterBytes": 27688,
+      "beforeSha256": "4a97c1f0052deeb78be714707bc6dcf68de824b0d19cf58bd2db8340ad0be3a3",
+      "afterSha256": "1c654b2a8c80b616f10253b843db306c6812ca324e6f7bc4fad9375c7a9d9e6a",
+      "beforeSize": [
+        1400,
+        159
+      ],
+      "afterSize": [
+        1200,
+        136
+      ]
+    },
+    {
+      "path": "review/boundary/river-west-ground-labels.webp",
+      "beforeBytes": 36508,
+      "afterBytes": 23684,
+      "beforeSha256": "0dfb2208723d948e5b1e3ebc216dd9c1d7660af4eab23a55bf5efeb6d12e543d",
+      "afterSha256": "9d54b3921404ca91b94a9a732bc2edb7a9641f10332dede9ea3ad7b1345bc643",
+      "beforeSize": [
+        1400,
+        155
+      ],
+      "afterSize": [
+        1200,
+        133
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-ice-actual-bank-proof.webp",
+      "beforeBytes": 60372,
+      "afterBytes": 52258,
+      "beforeSha256": "c884b77e32c8ba560aa5cf377fe5a9e94ee8599de143a35b995b139333b20769",
+      "afterSha256": "8001dfdc520aac8cfd63e7209fbf37f1af62b411d8ea983cafb1b5004c3e173d",
+      "beforeSize": [
+        1200,
+        330
+      ],
+      "afterSize": [
+        1200,
+        330
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-ice-independent-proof.webp",
+      "beforeBytes": 118874,
+      "afterBytes": 57004,
+      "beforeSha256": "3ad2a7c2c557fda85390c873e66ae338bc73ea5402d6c42621e1816bd54af72d",
+      "afterSha256": "0ab19823a04502e858d7815c63e644bd6749d64fd766186b6558d4c6f875508d",
+      "beforeSize": [
+        1120,
+        612
+      ],
+      "afterSize": [
+        1120,
+        612
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-ice-liquid-reference.webp",
+      "beforeBytes": 283082,
+      "afterBytes": 103344,
+      "beforeSha256": "ea3fca56e89dcfa501a50584703b09b967850f80c96657bfd57595b22698fccc",
+      "afterSha256": "67c00adb51746a2fb4d55909a59e2f1be965ca83cd77cac89cc988e47ffcc862",
+      "beforeSize": [
+        1800,
+        515
+      ],
+      "afterSize": [
+        1200,
+        343
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-ice-witness.webp",
+      "beforeBytes": 126816,
+      "afterBytes": 54578,
+      "beforeSha256": "7ce1e4e0acad4fce754ee3b84e8726e31d05ebdaced004ae714527f2425e9e5d",
+      "afterSha256": "d532bfe633634a2013054c1cb5aa2d2d9b66ca0c0e56573c66a8aee60b5ff5a0",
+      "beforeSize": [
+        880,
+        480
+      ],
+      "afterSize": [
+        880,
+        480
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-liquid-reference.webp",
+      "beforeBytes": 211748,
+      "afterBytes": 66730,
+      "beforeSha256": "516b69bccac3f466b10d1e0169e39fa13cb7d3f076e0b487c1e3adcb74940160",
+      "afterSha256": "a14a6273f3589afad8610e943749cccef64f123ba01618f2d027e022556c9e0e",
+      "beforeSize": [
+        1800,
+        432
+      ],
+      "afterSize": [
+        1200,
+        288
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-spirit-actual-bank-proof.webp",
+      "beforeBytes": 58652,
+      "afterBytes": 51324,
+      "beforeSha256": "981a8681ae05a12eefb8107a5d0e51aee69da41cf90f515e3f97c948ecce4fd4",
+      "afterSha256": "3a6258369f9b5ef287c118c8f204db5e8d2df171dea509b4f5aad4f52b2f8111",
+      "beforeSize": [
+        1200,
+        330
+      ],
+      "afterSize": [
+        1200,
+        330
+      ]
+    },
+    {
+      "path": "review/boundary/shore-band-spirit-liquid-reference.webp",
+      "beforeBytes": 23172,
+      "afterBytes": 9434,
+      "beforeSha256": "208e39e2abd1d81f287c1e84f0cf03fc39d4e63cee83e8c03475749926248b45",
+      "afterSha256": "a77b3e23cdcedacf9dd6a40676a72843a8dadbcbdcfa72b9b54f93785b53b742",
+      "beforeSize": [
+        1800,
+        79
+      ],
+      "afterSize": [
+        1200,
+        53
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-east-ground-group-map1x.webp",
+      "beforeBytes": 254082,
+      "afterBytes": 53342,
+      "beforeSha256": "407b49f377cb8b44aca68aa67f65ff64ad4b8d130ddbd4e534516f11e8cc23ef",
+      "afterSha256": "fd1e9270e8d97a1fc96f79e7ab5db2f2e4710123a7af9e053888c1989084dac0",
+      "beforeSize": [
+        2355,
+        450
+      ],
+      "afterSize": [
+        1200,
+        229
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-east-liquid-reference.webp",
+      "beforeBytes": 56708,
+      "afterBytes": 21346,
+      "beforeSha256": "bc3377248f7410807fb9a9d7cb265afa378d19d528df5412de8bf33c0b0131ea",
+      "afterSha256": "91b21804bf91a926d619ff4a90a0d0f36335b65de443f282dc4e17dbf5d51052",
+      "beforeSize": [
+        1800,
+        147
+      ],
+      "afterSize": [
+        1200,
+        98
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-east-overview.jpg",
+      "beforeBytes": 63345,
+      "afterBytes": 25497,
+      "beforeSha256": "8c9a70aa9edc64f938a5b13f6003a2d4d3efb43126c665f2c064cdecf49b2cf9",
+      "afterSha256": "f89a263536d7a2d4ca5ad9e11acfe631693aa7ebe5a1eb688f23d7ee277c4739",
+      "beforeSize": [
+        1800,
+        178
+      ],
+      "afterSize": [
+        1200,
+        119
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-liquid-reference.webp",
+      "beforeBytes": 211832,
+      "afterBytes": 66588,
+      "beforeSha256": "70462f2d4893230e2d2066efc8894546da684e692486a102a06eb911ce7c3fdc",
+      "afterSha256": "728c82ff56d9dc52ffadff5f452c55d44ab3cd2c5f7d8774f09b4a0d176bb209",
+      "beforeSize": [
+        1800,
+        432
+      ],
+      "afterSize": [
+        1200,
+        288
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-west-ground-group-map1x.webp",
+      "beforeBytes": 236228,
+      "afterBytes": 47112,
+      "beforeSha256": "ba6e139775a546c5dc15c9970d48b37ed9cf2f41b880a53f1a7c4854b57f8b42",
+      "afterSha256": "0866fc6cc9ebc041422f32783551e244cc21a820cba0952aced0e156c150ec8a",
+      "beforeSize": [
+        2370,
+        440
+      ],
+      "afterSize": [
+        1200,
+        223
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-west-liquid-reference.webp",
+      "beforeBytes": 48610,
+      "afterBytes": 17806,
+      "beforeSha256": "dfa08428b7c46f1efc7134ed85310b1dc37bee9a19ede65b9c760d100636f8f2",
+      "afterSha256": "6faa599fa42dec77560e90858f2416356e808dd04bc6139eaec630c618b7813a",
+      "beforeSize": [
+        1800,
+        143
+      ],
+      "afterSize": [
+        1200,
+        95
+      ]
+    },
+    {
+      "path": "review/boundary/spirit-river-west-overview.jpg",
+      "beforeBytes": 56913,
+      "afterBytes": 23838,
+      "beforeSha256": "4fac1d3e67441e0b85db32b9c414d45ad7f21bbf097f6f05ff9fd6dc3e5f64ca",
+      "afterSha256": "1d535d2398d3f36b45b64efb2c44f0a12de4acd641b8d49120015e9fb9a59dc9",
+      "beforeSize": [
+        1800,
+        173
+      ],
+      "afterSize": [
+        1200,
+        115
+      ]
+    }
+  ],
+  "nativeMeasurementInputs": "input/v7, input fall PNG, frozen contours, masks and sheets retain their bytes."
+}

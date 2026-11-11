@@ -1,0 +1,13 @@
+{
+  "entryPoint": "measure_shore.main",
+  "fixture": "Two identical partly out-of-bounds patches, overlapping 50 of 399 shore pixels",
+  "rawCertifiedPatchSum": 100,
+  "uniqueCertifiedPixels": 50,
+  "remainingPixels": 349,
+  "negativeOriginClippedCorrectly": true,
+  "distinctProofFiles": true,
+  "assertions": 4,
+  "result": "assertions-satisfied",
+  "testScriptSha256": "3af9cb11b33d19c622252cd6e636ff3bd3beb59f74520985b19b17e498a60e91",
+  "measurementScriptSha256": "753fee712650b5467b3d0b5db1bae28005535a09ce9f9d0cb379235ae18e98f1"
+}

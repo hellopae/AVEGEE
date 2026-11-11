@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/usr/local/bin/python3",
+    "docs/art-reviews/2026-11-05-z1v7-fluids/scripts/render_offline.py",
+    "--pairs",
+    "icefall-upper-right",
+    "lavafall-upper-left",
+    "lavafall-mouth",
+    "lava-flat-upper",
+    "lava-flat-middle",
+    "lava-flat-lower",
+    "ice-stream-flat-upper",
+    "spirit-river-west",
+    "--clips",
+    "owner-2-ice-bridge",
+    "owner-3-lava",
+    "owner-4-central-stream"
+  ],
+  "exitCode": 0,
+  "stdout": "Rendered owner-2-ice-bridge 490910\nRendered owner-3-lava 511607\nRendered owner-4-central-stream 557896\n",
+  "stderr": "",
+  "dependencyPlan": "review/current-render-dependencies.json"
+}

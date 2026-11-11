@@ -1,0 +1,11 @@
+{
+  "assertions": 9,
+  "aPixels": 44,
+  "bPixels": 16,
+  "unionPixels": 60,
+  "duplicateAndNestedUnionStable": true,
+  "negativeOriginClipped": true,
+  "unknownsLocalToTheirSource": true,
+  "cyclicReferenceRejected": true,
+  "productionImagesReadOrChanged": false
+}

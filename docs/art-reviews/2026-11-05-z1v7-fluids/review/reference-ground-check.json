@@ -1,0 +1,189 @@
+{
+  "measurements": [
+    {
+      "mask": "icefall-lower-inlet",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-lower-1",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-lower-2",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-upper-right",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-center-bridge",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-lower-3",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-summit",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-volcano",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-upper-left",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-upper-step",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-west",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-bridge",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-middle",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-lower-step",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lavafall-mouth",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "icefall-mouth",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-middle",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-west",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-southwest",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-upper",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-lower",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat-east",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat-mouth",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat-upper",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat-central",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat-lower",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "spirit-river-west",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "spirit-river-east",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat-left-bottom",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "ice-stream-flat",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "lava-flat",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "spirit-river",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "shore-band-ice",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "shore-band-spirit",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    },
+    {
+      "mask": "shore-band",
+      "matchesLayoutCrop": true,
+      "matchesMeasuredReferenceHash": true
+    }
+  ]
+}

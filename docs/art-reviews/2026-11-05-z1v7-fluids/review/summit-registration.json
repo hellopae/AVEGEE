@@ -1,0 +1,75 @@
+{
+  "coordinatePolicy": "Local native 2x on input/icefall-summit.png. Ground-only visual trace of lip, falling strands and impact foam. Construction geometry; not acceptance reference.",
+  "polygonNative2x": [
+    [
+      335,
+      609
+    ],
+    [
+      356,
+      612
+    ],
+    [
+      378,
+      615
+    ],
+    [
+      396,
+      620
+    ],
+    [
+      415,
+      623
+    ],
+    [
+      431,
+      632
+    ],
+    [
+      445,
+      638
+    ],
+    [
+      456,
+      643
+    ],
+    [
+      450,
+      652
+    ],
+    [
+      432,
+      650
+    ],
+    [
+      414,
+      646
+    ],
+    [
+      396,
+      644
+    ],
+    [
+      380,
+      639
+    ],
+    [
+      366,
+      631
+    ],
+    [
+      349,
+      629
+    ],
+    [
+      337,
+      624
+    ],
+    [
+      330,
+      615
+    ]
+  ],
+  "beforeMaskSha256": "4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76",
+  "beforeSheetSha256": "f3612a0c7a9111655e4fb324045d385019009cd9213771d07a149f58ca83ebd8"
+}
