@@ -1,4 +1,4 @@
-// FLUID-SHADER pilot (?fluid=shader): the opt-in flag, the flow-phase maths, the pilot assets, the fallback to the drawn frames and the default staying unchanged.
+// FLUID-SHADER (default since 12 Nov): the flag, the flow-phase maths, the piece list + flow files, the packing / ground-level helpers, the fallback to the drawn frames.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -7,15 +7,15 @@ import { fileURLToPath } from 'node:url';
 const file = u => fileURLToPath(new URL('../' + u, import.meta.url));
 const SH = await import('../src/fluid-shader.js');
 const FX = 'img/map-zone1/v5-fx/shader/';
-const pilot = JSON.parse(readFileSync(file(FX + 'pilot.json'), 'utf8'));
+const layout = JSON.parse(readFileSync(file(FX + 'fluids.json'), 'utf8'));
+const pngSize = u => { const b = readFileSync(file(u)); assert.equal(b.toString('latin1', 1, 4), 'PNG'); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
 
-test('only ?fluid=shader turns it on; the default is the drawn frames', () => {
-  assert.equal(SH.fluidShaderRequested(''), false);
-  assert.equal(SH.fluidShaderRequested('?fluid=frames'), false);
-  assert.equal(SH.fluidShaderRequested('?fluid='), false);
-  assert.equal(SH.fluidShaderRequested('?mapdpr=1'), false);
+test('the shader is the default; ?fluid=frames (or off) gives the drawn frames back', () => {
+  assert.equal(SH.fluidShaderRequested(''), true);
+  assert.equal(SH.fluidShaderRequested('?mapdpr=1'), true);
   assert.equal(SH.fluidShaderRequested('?fluid=shader'), true);
-  assert.equal(SH.fluidShaderRequested('?a=1&fluid=shader'), true);
+  assert.equal(SH.fluidShaderRequested('?fluid=frames'), false);
+  assert.equal(SH.fluidShaderRequested('?a=1&fluid=off'), false);
 });
 
 test('the two flow phases are half a cycle apart, weights sum to 1 and a phase has no weight when it jumps', () => {
@@ -24,36 +24,46 @@ test('the two flow phases are half a cycle apart, weights sum to 1 and a phase h
     assert.ok(Math.abs(f.w0 + f.w1 - 1) < 1e-12);
     assert.ok(Math.abs(((f.p1 - f.p0) % 1 + 1) % 1 - .5) < 1e-9);
   }
-  // phase 0 wraps at t = 1 (speed 1): weight 0 just before and just after; phase 1 wraps half a cycle later
   assert.ok(SH.fluidFlowPhases(.9999, 1).w0 < 1e-3 && SH.fluidFlowPhases(1.0001, 1).w0 < 1e-3);
   assert.ok(SH.fluidFlowPhases(.4999, 1).w1 < 1e-3 && SH.fluidFlowPhases(.5001, 1).w1 < 1e-3);
-  assert.equal(SH.fluidFlowPhases(-5, 1).p0, 0);   // a negative clock never runs backwards
+  assert.equal(SH.fluidFlowPhases(-5, 1).p0, 0);
 });
 
-test('pilot pieces: world rectangles come from the master rectangles, files exist, parameters are sane', () => {
-  assert.deepEqual(pilot.masterSize, [4915, 3277]); assert.deepEqual(pilot.worldSize, [3840, 2560]);
-  assert.deepEqual(pilot.pieces.map(p => p.id), ['lavafall-bridge', 'lava-flat-middle']);
-  for (const p of pilot.pieces) {
-    assert.ok(existsSync(file(FX + p.flow)) && existsSync(file(FX + p.mask)), p.id);
-    const r = SH.fluidShaderRect(p, pilot);
-    assert.ok(Math.abs(r[2] - p.maskRectPx[2] * 3840 / 4915) < 1e-9);
-    assert.ok(r[0] >= 0 && r[1] >= 0 && r[0] + r[2] <= 3840 && r[1] + r[3] <= 2560);
-    assert.ok(p.speed > 0 && p.speed < 2 && p.cycle > 4 && p.cycle < 40 && p.warp >= 0 && p.warp <= 1 && p.pulse >= 0 && p.pulse <= .5);
-    assert.equal(p.spark.length, 3); assert.equal(p.drift.length, 2);
+test('fluids.json: world rectangles, flow files with the right size, cores inside their padded rectangles, sane parameters', () => {
+  assert.deepEqual(layout.masterSize, [4915, 3277]); assert.deepEqual(layout.worldSize, [3840, 2560]);
+  assert.ok(layout.pieces.length >= 18);
+  const ids = new Set();
+  for (const p of layout.pieces) {
+    assert.ok(!ids.has(p.id), 'unique ' + p.id); ids.add(p.id);
+    assert.ok(['falls', 'flats'].includes(p.group) && ['lava', 'ice', 'spirit'].includes(p.liquid) && ['fall', 'flat'].includes(p.kind), p.id);
+    assert.ok(existsSync(file(FX + p.flow)), p.id + ' flow file');
+    const [w, h] = pngSize(FX + p.flow);
+    assert.equal(w, Math.round(p.rectPx[2] * p.res), p.id + ' width'); assert.equal(h, Math.round(p.rectPx[3] * p.res), p.id + ' height');
+    const r = SH.fluidShaderRect(p.rectPx, layout), c = SH.fluidShaderRect(p.corePx, layout);
+    assert.ok(Math.abs(r[2] - p.rectPx[2] * 3840 / 4915) < 1e-9);
+    assert.ok(c[0] >= r[0] - 1e-9 && c[1] >= r[1] - 1e-9 && c[0] + c[2] <= r[0] + r[2] + 1e-9 && c[1] + c[3] <= r[1] + r[3] + 1e-9, p.id + ' core inside rect');
+    assert.ok(p.speed > 0 && p.speed < 2 && p.cycle > 4 && p.cycle < 40 && p.warp >= 0 && p.warp <= 1 && p.pulse >= 0 && p.pulse <= .5, p.id);
+    assert.equal(p.spark.length, 3); assert.equal(p.drift.length, 2); assert.equal(p.hot.length, 2); assert.ok(p.hot[0] < p.hot[1]);
+    // the padding must cover how far a sample slides (about .68 cycle) so the flow carries on across a cell seam
+    assert.ok((p.corePx[0] - p.rectPx[0]) * 3840 / 4915 >= p.cycle * .68 || p.rectPx[0] === 0 || p.kind === 'fall', p.id + ' padding');
   }
 });
 
-test('the shader store never owns the pieces until it is ready, and failure hands everything back to the drawn frames', () => {
+test('ground texture level only grows with zoom, jobs pack into rows and the ones that do not fit are dropped', () => {
+  assert.deepEqual([.3, .64, .7, .71, 1.4, 1.41, 3].map(SH.groundLevelFor), [0, 0, 0, 1, 1, 2, 2]);
+  assert.deepEqual(SH.GROUND_LEVELS, [.64, 1.28, 2.56]);
+  const k = SH.packJobs([[3000, 100], [2000, 200], [1000, 50]], 4096, 4096);
+  assert.deepEqual(k.slots, [{ x: 0, y: 0 }, { x: 0, y: 100 }, { x: 2000, y: 100 }]); assert.equal(k.w, 3000); assert.equal(k.h, 300);
+  const t = SH.packJobs([[100, 3000], [4000, 3000], [5000, 10]], 4096, 4096);
+  assert.deepEqual(t.slots, [{ x: 0, y: 0 }, null, null]);   // the 4000 px job wraps to a new row that no longer fits under 4096; a job wider than the canvas never fits
+});
+
+test('the shader store owns nothing until it is ready; failure hands everything back to the drawn frames', () => {
   const st = SH.shaderStoreOf('test-dir/');
-  assert.equal(SH.fluidShaderActive(st), false);
+  assert.equal(SH.fluidShaderActive(st), false); assert.equal(SH.fluidShaderPending(st), true);
   assert.equal(SH.fluidShaderActive(null), false);
-  // a layer is only cut when active
-  const ops = []; const g = { drawImage: (...a) => ops.push(a), set globalCompositeOperation(v) { ops.push(v); } };
-  SH.cutShaderHoles(g, st, [0, 0, 100, 100]); assert.equal(ops.length, 0);
-  st.status = 'ready'; st.pieces = [{ rect: [10, 10, 20, 20], mask: 'M1', ground: {} }, { rect: [500, 500, 20, 20], mask: 'M2', ground: {} }, { rect: [30, 30, 20, 20], mask: 'M3', ground: null }];
-  SH.cutShaderHoles(g, st, [0, 0, 100, 100]);
-  assert.deepEqual(ops, ['destination-out', ['M1', 10, 10, 20, 20], 'source-over']);   // only a mask that touches the layer AND whose ground is cut is used (M2 is far away, M3 has no ground yet: its drawn frame keeps playing)
-  st.status = 'failed'; ops.length = 0; SH.cutShaderHoles(g, st, [0, 0, 100, 100]); assert.equal(ops.length, 0);
+  st.status = 'ready'; assert.equal(SH.fluidShaderActive(st), true); assert.equal(SH.fluidShaderPending(st), false);
+  st.status = 'failed'; assert.equal(SH.fluidShaderActive(st), false); assert.equal(SH.fluidShaderPending(st), false);   // failed: the frames play again
 });
 
 test('without document / WebGL (node, old browsers) loading ends quietly and nothing is owned', () => {
@@ -62,10 +72,20 @@ test('without document / WebGL (node, old browsers) loading ends quietly and not
   assert.ok(['idle', 'loading', 'failed'].includes(st.status));
 });
 
-test('the game default is unchanged: town-fluid-fx only asks the shader module when the flag is on', () => {
+test('town-fluid-fx: the shader is asked by default, the drawn frames it replaces are not fetched, spots and clouds still are', async () => {
+  const FXM = await import('../src/town-fluid-fx.js');
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'lava' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'ice' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'river' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'rect', group: 'waterfall' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'rect', group: 'lavafall' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'spots', group: 'lava-bubble' }), false);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'spots', group: 'sparkle' }), false);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'foam' }), false);
   const src = readFileSync(file('src/town-fluid-fx.js'), 'utf8');
   assert.match(src, /st\.shader = shaderWanted\(\) \? ensureFluidShader\(cfg\.dir\) : null;/);
-  assert.match(src, /fluidShaderRequested\(\)/);
+  assert.match(src, /if \(shaderOwns && item\.piece && fluidShaderReplaces\(p\)\) continue;/);
+  assert.ok(!/cutShaderHoles/.test(src));
   const map = JSON.parse(readFileSync(file('index.html'), 'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   assert.match(map['./src/fluid-shader.js'], /fluid-shader\.js\?v=/);
   assert.equal(map['./src/town-fluid-fx.js'], map['./src/town-fluid-fx.js?v=v5fx']);

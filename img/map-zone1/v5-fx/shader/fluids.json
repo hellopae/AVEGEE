@@ -1,0 +1,751 @@
+{
+ "schemaVersion": 2,
+ "masterSize": [
+  4915,
+  3277
+ ],
+ "worldSize": [
+  3840,
+  2560
+ ],
+ "pieces": [
+  {
+   "id": "icefall-center-bridge",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3024,
+    1274,
+    242,
+    232
+   ],
+   "corePx": [
+    3040,
+    1290,
+    210,
+    200
+   ],
+   "res": 2,
+   "flow": "icefall-center-bridge.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-east-cliff",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4554,
+    1014,
+    192,
+    232
+   ],
+   "corePx": [
+    4570,
+    1030,
+    160,
+    200
+   ],
+   "res": 2,
+   "flow": "icefall-east-cliff.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-1",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3789,
+    1538,
+    192,
+    221
+   ],
+   "corePx": [
+    3805,
+    1554,
+    160,
+    189
+   ],
+   "res": 2,
+   "flow": "icefall-lower-1.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-2",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3814,
+    1679,
+    202,
+    192
+   ],
+   "corePx": [
+    3830,
+    1695,
+    170,
+    160
+   ],
+   "res": 2,
+   "flow": "icefall-lower-2.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-3",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3804,
+    1784,
+    262,
+    217
+   ],
+   "corePx": [
+    3820,
+    1800,
+    230,
+    185
+   ],
+   "res": 2,
+   "flow": "icefall-lower-3.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-inlet",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3644,
+    1489,
+    162,
+    192
+   ],
+   "corePx": [
+    3660,
+    1505,
+    130,
+    160
+   ],
+   "res": 2,
+   "flow": "icefall-lower-inlet.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-mouth",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4004,
+    1989,
+    297,
+    212
+   ],
+   "corePx": [
+    4020,
+    2005,
+    265,
+    180
+   ],
+   "res": 2,
+   "flow": "icefall-mouth.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-summit",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4304,
+    144,
+    282,
+    372
+   ],
+   "corePx": [
+    4320,
+    160,
+    250,
+    340
+   ],
+   "res": 2,
+   "flow": "icefall-summit.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-upper-right",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3904,
+    609,
+    212,
+    242
+   ],
+   "corePx": [
+    3920,
+    625,
+    180,
+    210
+   ],
+   "res": 2,
+   "flow": "icefall-upper-right.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-upper-tree",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4054,
+    469,
+    212,
+    182
+   ],
+   "corePx": [
+    4070,
+    485,
+    180,
+    150
+   ],
+   "res": 2,
+   "flow": "icefall-upper-tree.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "lavafall-bridge",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1099,
+    847,
+    150,
+    192
+   ],
+   "corePx": [
+    1117,
+    865,
+    114,
+    156
+   ],
+   "res": 2,
+   "flow": "lavafall-bridge.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-lower-step",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1328,
+    1663,
+    171,
+    195
+   ],
+   "corePx": [
+    1346,
+    1681,
+    135,
+    159
+   ],
+   "res": 2,
+   "flow": "lavafall-lower-step.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-middle",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1082,
+    1264,
+    159,
+    214
+   ],
+   "corePx": [
+    1100,
+    1282,
+    123,
+    178
+   ],
+   "res": 2,
+   "flow": "lavafall-middle.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-mouth",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1185,
+    2015,
+    122,
+    193
+   ],
+   "corePx": [
+    1203,
+    2033,
+    86,
+    157
+   ],
+   "res": 2,
+   "flow": "lavafall-mouth.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-upper-left",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    437,
+    228,
+    96,
+    135
+   ],
+   "corePx": [
+    455,
+    246,
+    60,
+    99
+   ],
+   "res": 2,
+   "flow": "lavafall-upper-left.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-upper-step",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1103,
+    405,
+    140,
+    201
+   ],
+   "corePx": [
+    1121,
+    423,
+    104,
+    165
+   ],
+   "res": 2,
+   "flow": "lavafall-upper-step.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-volcano",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    705,
+    55,
+    136,
+    201
+   ],
+   "corePx": [
+    723,
+    73,
+    100,
+    165
+   ],
+   "res": 2,
+   "flow": "lavafall-volcano.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-west",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    170,
+    716,
+    150,
+    205
+   ],
+   "corePx": [
+    188,
+    734,
+    114,
+    169
+   ],
+   "res": 2,
+   "flow": "lavafall-west.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  }
+ ]
+}

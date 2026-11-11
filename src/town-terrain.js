@@ -117,6 +117,28 @@ export function drawTownGroundRectIfReady(ctx, rect, time=0) {
   for (const {row,col,r,c} of need) drawHellTerrain(ctx,c.image,time,false, r.x, r.y, r.w + (col < G.cols ? eps : 0), r.h + (row < G.rows ? eps : 0));
   return true;
 }
+/** FLUID-SHADER: the ground inside `rect` for a texture the shader keeps.  'detail' = the graded chunks (sharp), 'preview' = the 1536x1024 painting (only until
+ *  the chunks are decoded, and always on the far overview), false = nothing is ready yet.  Draws nothing when false.  Never recolours. */
+export function drawTownGroundRectAny(ctx, rect, time=0, mode='any') {   // mode: 'any' | 'detail' (chunks only) | 'preview' (painting only)
+  if (mode !== 'preview' && drawTownGroundRectIfReady(ctx, rect, time)) return 'detail';
+  if (mode === 'detail') return false;
+  const pv = store().preview?.ready ? store().preview.image : null;
+  if (!pv) return false;
+  ctx.save(); ctx.beginPath(); ctx.rect(rect[0], rect[1], rect[2], rect[3]); ctx.clip();
+  drawHellTerrain(ctx, pv, time, false, 0, 0, TOWN_SIZE.w, TOWN_SIZE.h);
+  ctx.restore();
+  return 'preview';
+}
+/** FLUID-SHADER: ask for the chunks a rectangle needs (the camera only asks for the ones it shows).  Cheap when they are already there. */
+export function requestTownGroundRect(rect) {
+  const G = grid();
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
+    const r = townChunkRect(row,col);
+    if (r.x > rect[0]+rect[2] || r.x + r.w < rect[0] || r.y > rect[1]+rect[3] || r.y + r.h < rect[1]) continue;
+    const c = store().chunks.get(row+','+col);
+    if (!c || c.state === 'idle' || c.state === 'error') request(row,col);
+  }
+}
 /** Test / tool hook: how many chunks are decoded or on their way. */
 export const townTerrainViewStats = () => ({...store().view});
 const recordView=(ctx,view)=>{if(ctx.canvas.width>=300)store().view=view;}; // minimap must not overwrite camera diagnostics
