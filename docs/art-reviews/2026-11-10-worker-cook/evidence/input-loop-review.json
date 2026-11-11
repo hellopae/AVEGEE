@@ -1,0 +1,229 @@
+{
+  "status": "incomplete",
+  "date": "2026-11-11",
+  "priorEvidence": "evidence/prior-loop-review.json",
+  "generation": {
+    "priorCalls": 16,
+    "briefLimit": 16,
+    "newCalls": 0,
+    "reason": "Prior evidence records 16/16 calls. Additional quota has not been confirmed."
+  },
+  "artworkEditedThisRound": false,
+  "preservedArtworkFiles": 17,
+  "reviewMethod": [
+    "Decoded all 12 GIFs into 96 frames and visually inspected chronological plates for all rows",
+    "Compared four original/new comparison cards",
+    "Inspected frames 1,4,8 of all rows on white, black and green at evidence thumbnail scale",
+    "Read heading rows and face mirror logic in src/workers.js"
+  ],
+  "animatedPlaybackReviewed": false,
+  "playbackBlocker": "CUA inventory returned: Browsers: Error: The browser access host is unavailable",
+  "inGameTested": false,
+  "technicalAudit": "evidence/technical-audit.json",
+  "technicalCheckCount": 132,
+  "technicalChecksNotSatisfied": [],
+  "acceptance": [
+    {
+      "criterion": 1,
+      "status": "incomplete",
+      "fourZonesEightFramesTwoRows": true,
+      "identityAndProportionsExact": false,
+      "mirrorSideDetailsCorrect": false,
+      "smoothPlaybackVerified": false
+    },
+    {
+      "criterion": 2,
+      "status": "incomplete",
+      "thDirectionsAndEightFrames": true,
+      "alphaStructuralChecksSatisfied": true,
+      "sampledMultiBackgroundFringeObserved": false,
+      "allFrameNativeResolutionAlphaVerified": false,
+      "identityVerified": false
+    }
+  ],
+  "knownIssues": [
+    "cook ทั้ง 4 โซนยังมีหน้า/สัดส่วนต่างจาก worker-sheet-v2 ต้นฉบับ",
+    "cook down-left กลับภาพและสลับรายละเอียดข้างเดียว",
+    "carry TH ครบทุกทิศแต่ยังต้องแก้ความเหมือนตัวละคร",
+    "ยังไม่ได้ดู GIF playback ต่อเนื่องจริงหรือยืนยันจุดเท้าทางกายวิภาคกับ source",
+    "ขอบ alpha ดูหลายพื้นหลังเฉพาะตัวอย่าง 1,4,8 ยังไม่ตรวจละเอียดทุกเฟรม"
+  ],
+  "optionalCarryOmitted": [
+    "asia",
+    "west",
+    "cyberhell"
+  ],
+  "sourceCodeMapping": {
+    "path": "src/workers.js",
+    "rowMapLine": 294,
+    "side": 1,
+    "down": 4,
+    "up": 5,
+    "flipsByFace": true
+  },
+  "foot": {
+    "manifest": [
+      160,
+      320
+    ],
+    "opaqueBottomPixelY": 319,
+    "exactAnatomicalRegistrationVerified": false,
+    "note": "Lower-band silhouette centre is diagnostic only: walking changes the planted foot and lifting the other foot changes the silhouette. It is not the draw anchor. Exact foot contact against the source is not certified."
+  },
+  "visualFindings": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "frames": "1-8; especially 4->5 and 8->1",
+      "finding": "หัวใหญ่และช่วงตัวสั้นกว่าต้นฉบับ รูปหน้า/มุมหมวกเปลี่ยนช่วงต่อ",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/gif-frames-th-cook-down-right.jpg",
+        "evidence/seam-th-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หน้า ดวงตา สัดส่วนและความเรียบของเส้นยังต่างจากต้นฉบับ",
+      "evidence": [
+        "compare-asia.jpg",
+        "evidence/gif-frames-asia-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หัวเล็ก ช่วงตัว/ขาเด่นกว่าต้นฉบับ และท่ายืนเปลี่ยนช่วงท้าย",
+      "evidence": [
+        "compare-west.jpg",
+        "evidence/gif-frames-west-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หัวเล็ก ตัว/ขายาวกว่าต้นฉบับ หน้าและลำตัวแกว่ง",
+      "evidence": [
+        "compare-cyberhell.jpg",
+        "evidence/gif-frames-cyberhell-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "frames": "all four rows, 1-8",
+      "finding": "มุมครบ ท่าขาเปลี่ยน แต่หน้า/สัดส่วนยังต่างจาก source",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/gif-frames-th-carry-side.jpg",
+        "evidence/gif-frames-th-carry-side-left.jpg",
+        "evidence/gif-frames-th-carry-down.jpg",
+        "evidence/gif-frames-th-carry-up.jpg"
+      ]
+    }
+  ],
+  "seams": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 19.3741,
+      "evidence": "evidence/seam-th-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 19.3741,
+      "evidence": "evidence/seam-th-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "compositedMeanAbsoluteDifference8to1": 17.639,
+      "evidence": "evidence/seam-th-carry-side.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "compositedMeanAbsoluteDifference8to1": 17.639,
+      "evidence": "evidence/seam-th-carry-side-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "compositedMeanAbsoluteDifference8to1": 24.2877,
+      "evidence": "evidence/seam-th-carry-down.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "compositedMeanAbsoluteDifference8to1": 11.0808,
+      "evidence": "evidence/seam-th-carry-up.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 11.0582,
+      "evidence": "evidence/seam-asia-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 11.0582,
+      "evidence": "evidence/seam-asia-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 14.241,
+      "evidence": "evidence/seam-west-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 14.241,
+      "evidence": "evidence/seam-west-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 21.5151,
+      "evidence": "evidence/seam-cyberhell-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 21.5151,
+      "evidence": "evidence/seam-cyberhell-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    }
+  ],
+  "packageLimitBytes": 30000000,
+  "packageReport": "evidence/package-check.json"
+}

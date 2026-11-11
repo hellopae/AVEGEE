@@ -1,0 +1,39 @@
+{
+  "run": "20261111T165435Z-427eb5ef",
+  "atUTC": "2026-11-11T17:05:50.244561+00:00",
+  "results": [
+    {
+      "command": [
+        "/usr/local/bin/python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/repair-sourcebody/verify.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"checks\": 403, \"failedChecks\": [], \"repairTotal\": 16}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/local/bin/python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/audit_current.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"atlasCells\": 96,\n  \"gifsDecoded\": 12,\n  \"nativeAlphaPlates\": 12,\n  \"checks\": 106,\n  \"failedChecks\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/check_package.py"
+      ],
+      "exitCode": 0,
+      "summary": {
+        "totalBytesIncludingReport": 24160579,
+        "underLimit": true,
+        "outsideScope": [],
+        "requiredFilesMissing": []
+      },
+      "note": "Package check is repeated after recording this result to inventory the final log bytes."
+    }
+  ],
+  "note": "Pixel/layout verification only; not realtime animation acceptance or QA."
+}

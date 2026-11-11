@@ -1,0 +1,7 @@
+{
+  "run": "20261111T162400Z-6a49dc9c",
+  "attempted": "cua.createBrowserTab(\"iab\", \"about:blank\", {visible:true})",
+  "result": "The browser access host is unavailable",
+  "observedRealTimeGIFPlayback": false,
+  "gifDecodeEvidence": "evidence/current-audit.json"
+}

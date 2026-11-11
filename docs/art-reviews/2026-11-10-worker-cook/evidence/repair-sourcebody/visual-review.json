@@ -1,0 +1,50 @@
+{
+  "run": "20261111T165435Z-427eb5ef",
+  "date": "2026-11-12",
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "observations": [
+    {
+      "images": [
+        "evidence/repair-sourcebody/before-after-cyberhell.jpg",
+        "evidence/decoded-cyberhell-cook-down-left.jpg"
+      ],
+      "result": "ดูภาพนิ่ง4→5/8→1แล้ว แผงอก/เข็มขัดใช้พิกเซลเดิมตรงทิศ หัวคงเดิม มือและอุปกรณ์ยังเป็นชุดวาดเดิม ช่วงล่างยังเปลี่ยนรูปและต่างจากidle"
+    },
+    {
+      "images": [
+        "evidence/repair-sourcebody/before-after-th.jpg",
+        "compare-th.jpg"
+      ],
+      "result": "ซ้ายเฟรม7มีรายละเอียดกระเป๋าต้นฉบับใต้ข้อมือ โดยไม่แตะมือและอาหาร ยังไม่ถือว่าตำแหน่งกระเป๋าตรงกันครบทั้งloop"
+    },
+    {
+      "images": [
+        "compare-th.jpg",
+        "compare-asia.jpg",
+        "compare-west.jpg",
+        "compare-cyberhell.jpg"
+      ],
+      "result": "เทียบต้นฉบับกับเฟรมใหม่สเกล1ต่อ1แล้ว หัวคงสีและรูปหน้าเดิม ตัว/เสื้อ/ขาบางส่วนยังต่าง จึงยังไม่รับรองตัวเดิมครบสัดส่วน"
+    },
+    {
+      "images": [
+        "evidence/native-alpha-th-carry-side-1-4.jpg",
+        "evidence/native-alpha-th-carry-side-5-8.jpg",
+        "evidence/native-alpha-th-carry-side-left-1-4.jpg",
+        "evidence/native-alpha-th-carry-side-left-5-8.jpg",
+        "evidence/native-alpha-th-carry-down-1-4.jpg",
+        "evidence/native-alpha-th-carry-down-5-8.jpg",
+        "evidence/native-alpha-th-carry-up-1-4.jpg",
+        "evidence/native-alpha-th-carry-up-5-8.jpg"
+      ],
+      "result": "ดูcarry THครบ32เฟรมบนพื้นขาว ดำ เขียว ไม่พบขอบแดงหรือเหลืองแยกจากสีผิว/ลายทอง ขอบalphaส่งออกคงเดิมทุกพิกเซล บริเวณคอ/ไหล่ยังต้องเก็บรายละเอียดตามremaining"
+    }
+  ],
+  "remaining": [
+    "ยังตรวจ GIF เล่นจริงไม่ได้: cua.createBrowserTab ตอบ The browser access host is unavailable จึงยังรับรอง loop 4→5 และ 8→1 รวมมือ ช้อน ข้าวปั้น และจังหวะเดินไม่ได้",
+    "Cyberhell ยังมีสัดส่วนลำตัว/ช่วงขาและสนับเข่าต่างจาก idle รวมการเปลี่ยนทรงช่วง4→5 การแก้ครั้งนี้ซ่อมเฉพาะแผงเสื้อและเข็มขัดภายใน ไม่ได้แก้ silhouette ทั้งตัว",
+    "TH cook กระเป๋าและลายเสื้อยังไม่ตรงด้าน/ตำแหน่งกับ idle ครบทุกเฟรม เฟรมซ้าย7คืนรายละเอียดกระเป๋าต้นฉบับใต้มือแล้ว แต่ต้องเก็บความสอดคล้องกับเฟรมข้างเคียงต่อ",
+    "Carry TH คงภาพล่าสุดทั้ง32เฟรม หัวตรง walk ตรงทิศ แต่คอเสื้อ/ไหล่ สัดส่วนลำตัว และจังหวะก้าวยังต้องเทียบต้นฉบับพร้อม playback; ฐาน alpha ไม่ใช่หลักฐานจุดสัมผัสเท้าทางกายวิภาค"
+  ]
+}

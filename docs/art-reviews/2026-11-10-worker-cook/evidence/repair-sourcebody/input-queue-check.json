@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-cook.json และ atlas 5 ไฟล์ มี cook 4โซน × 2ทิศ × 8เฟรม และ carry TH 4ทิศ × 8เฟรม รวม96ช่อง RGBA 320×320",
+    "evidence/current-audit.json ตรวจ 106 ข้อ ข้อผิดพลาด 0 ถอด GIF12ไฟล์ 96เฟรม เวลา120/130ms สลับกัน loop=0",
+    "evidence/repair-identity/identity-foot-check.json ตรวจ 28 ข้อ ข้อผิดพลาด 0 หัว opaque RGB ตรง source และฐาน cook y319/314",
+    "evidence/repair-current/preservation-check.json ตรวจ 302 ข้อ ข้อผิดพลาด 0 หัวตรง source และ RGBA y192ลงไปคงเดิมทั้ง96เฟรม",
+    "evidence/repair-current/repair-report.json ตรวจ240เงื่อนไขของmask ไม่มีข้อผิดพลาด ซ่อมคอเฉพาะcyberhell/carry ไม่วาดทดแทนมือ อาหาร หรือขา",
+    "evidence/repair-current/generation-log.json นับlog4ชุด ชุดละ4ครั้ง repairTotal=16 รอบนี้0ครั้ง",
+    "evidence/visual-review.json และ compare-*.jpg บันทึกภาพนิ่ง จุดที่ยังต่างจากต้นฉบับ และ alpha บนขาว/ดำ/เขียว",
+    "evidence/playback-access.json browser host unavailable ยังไม่ได้ดูGIFเล่นจริง",
+    "evidence/package-check.json ตรวจไฟล์ที่ต้องมี ขนาดไม่เกิน30000000ไบต์ และ git changes เฉพาะโฟลเดอร์ส่งออก"
+  ],
+  "remaining": [
+    "ยังไม่ได้ดู GIF เล่นต่อเนื่องจริง เครื่องมือ browser ตอบ The browser access host is unavailable จึงยังยืนยันรอยต่อมือ ช้อน ข้าวปั้น และช่วงขา 4→5/8→1 ไม่ได้",
+    "รายละเอียดลำตัวและสัดส่วนยังต่างจาก idle ต้นฉบับบางจุด เช่น เข็มขัด แผงอกและสนับเข่า cyberhell รวมถึงด้าน/ตำแหน่งกระเป๋าของ TH cook ต้องเก็บต่อโดยรักษามือและอุปกรณ์ที่วาดจริง",
+    "ฐาน alpha cook และกึ่งกลางแถบรองเท้าตรงค่าที่วัด แต่ยังต้องยืนยันจุดสัมผัสเท้าทางกายวิภาค และความต่อเนื่องของสัดส่วนตลอด loop จาก playback"
+  ]
+}

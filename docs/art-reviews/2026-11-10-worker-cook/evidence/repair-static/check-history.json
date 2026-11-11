@@ -1,0 +1,34 @@
+{
+  "notes": "Observed intermediate failures, resolved/reviewed before final checks. Not a QA claim.",
+  "observations": [
+    {
+      "stage": "inherited delivery initial verify",
+      "checks": 28,
+      "failedChecks": 15,
+      "headOpaqueRGBMismatchPixels": 21386
+    },
+    {
+      "stage": "exact head stamp before stance registration",
+      "checks": 28,
+      "failedChecks": 7,
+      "headOpaqueRGBMismatchPixels": 0
+    },
+    {
+      "stage": "first local technical audit",
+      "failedRows": [
+        "th-carry-side detached alpha",
+        "th-carry-side-left detached alpha"
+      ],
+      "fix": "largest connected alpha component cleanup"
+    },
+    {
+      "stage": "visual rejected intermediate",
+      "findings": [
+        "TH leather hues were caught by an overbroad skin mask; replaced with hand-contour geometry",
+        "source sleeve badge initially sat outside cyberhell left shoulder; moved inward and old f7 duplicate removed",
+        "collar patch crossed raised rice; protected original rice surface + outline"
+      ],
+      "finalAcceptance": "See current visual-review and queue-check; not ready."
+    }
+  ]
+}

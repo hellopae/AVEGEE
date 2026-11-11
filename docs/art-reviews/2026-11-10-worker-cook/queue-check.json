@@ -1,0 +1,20 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-cook.json: cook4โซน×2ทิศ×8เฟรม และcarryTH4ทิศ×8เฟรม รวม96ช่องRGBA320×320",
+    "evidence/current-audit.json: 106 checks, failures=0; GIF12ไฟล์ decodeครบ96เฟรม 8fps loop=0",
+    "evidence/repair-sourcebody/verification.json: 403 checks, failures=0; head RGBตรงsourceจริง96เฟรม alpha/feetคงเดิม",
+    "evidence/repair-sourcebody/repair-report.json: 9งานประกอบ 52เงื่อนไข failures=0; ภาพเคลื่อนไหวนอกmaskคงเดิม",
+    "evidence/repair-sourcebody/generation-log.json: log4ชุด entries/callsชุดละ4 สะสมrepairTotal=16 รอบนี้0ครั้ง",
+    "evidence/repair-sourcebody/before-after-*.jpg และcompare-*.jpg: รูปก่อน/หลังและเทียบidle/walkตรงทิศสเกล1ต่อ1",
+    "evidence/repair-sourcebody/visual-review.json: ดูcarryTH32เฟรมบนพื้นขาว/ดำ/เขียว ไม่พบขอบสีแปลกแยก แต่สัดส่วนทั้งตัวยังไม่รับรอง",
+    "evidence/repair-sourcebody/playback-access.json: browser host unavailable; ยังไม่ได้ดูGIFเล่นจริง",
+    "evidence/package-check.json: ขนาดจริง ไฟล์บังคับ และขอบเขตgit; integrityเท่านั้น"
+  ],
+  "remaining": [
+    "ยังตรวจ GIF เล่นจริงไม่ได้: cua.createBrowserTab ตอบ The browser access host is unavailable จึงยังรับรอง loop 4→5 และ 8→1 รวมมือ ช้อน ข้าวปั้น และจังหวะเดินไม่ได้",
+    "Cyberhell ยังมีสัดส่วนลำตัว/ช่วงขาและสนับเข่าต่างจาก idle รวมการเปลี่ยนทรงช่วง4→5 การแก้ครั้งนี้ซ่อมเฉพาะแผงเสื้อและเข็มขัดภายใน ไม่ได้แก้ silhouette ทั้งตัว",
+    "TH cook กระเป๋าและลายเสื้อยังไม่ตรงด้าน/ตำแหน่งกับ idle ครบทุกเฟรม เฟรมซ้าย7คืนรายละเอียดกระเป๋าต้นฉบับใต้มือแล้ว แต่ต้องเก็บความสอดคล้องกับเฟรมข้างเคียงต่อ",
+    "Carry TH คงภาพล่าสุดทั้ง32เฟรม หัวตรง walk ตรงทิศ แต่คอเสื้อ/ไหล่ สัดส่วนลำตัว และจังหวะก้าวยังต้องเทียบต้นฉบับพร้อม playback; ฐาน alpha ไม่ใช่หลักฐานจุดสัมผัสเท้าทางกายวิภาค"
+  ]
+}

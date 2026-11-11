@@ -1,0 +1,203 @@
+{
+  "status": "incomplete",
+  "date": "2026-11-11",
+  "reviewRound": "20261111T062023Z-88672152",
+  "inputDelivery": "20261111T023956Z-6e08c441",
+  "artworkEditedThisRound": true,
+  "generationLog": "evidence/revision/generation-log.json",
+  "generation": {
+    "originalCalls": 16,
+    "newRepairCallsThisRun": 4,
+    "repairTotal": 4,
+    "runLimit": 4,
+    "repairLimit": 16,
+    "quotaClarificationPending": false,
+    "tool": "built-in image_gen__imagegen"
+  },
+  "changedArt": [
+    "worker-cyberhell-cook-v1.webp",
+    "preview/worker-cyberhell-cook-down-right.gif",
+    "preview/worker-cyberhell-cook-down-left.gif"
+  ],
+  "preservation": {
+    "unchangedOtherAtlases": 4,
+    "unchangedOtherGIFs": 10,
+    "sha256Evidence": "evidence/current-audit.json#preservation"
+  },
+  "foot": {
+    "drawAnchor": [
+      160,
+      320
+    ],
+    "threshold": 40,
+    "sourceIdleBottomY": 314,
+    "oldCookBottomY": 319,
+    "newCookBottomYAll16Frames": 314,
+    "verticalBaselineDifferenceResolvedPixels": 5,
+    "exactAnatomicalRegistrationAccepted": false,
+    "remaining": "Source idle foot centre drifts between original columns; anatomical X and exact source head proportions are not accepted.",
+    "packingEvidence": "evidence/revision/packing.json",
+    "deliveredMeasurement": "evidence/revision/delivered-registration.json",
+    "comparison": "evidence/revision/baseline-before-after.jpg"
+  },
+  "reviewMethod": [
+    "Decoded all 12 final GIFs: 96 frames, 8 frames per GIF, [120,130]ms x4, infinite loop; compared decoded pixels to final RGBA atlases.",
+    "Viewed all 12 decoded GIF contact sheets and source/renderer-fit cook comparisons for four zones plus carry TH for all four directions.",
+    "Viewed 12 native white/black/green alpha plates: all 16 revised cyberhell cook frames and all 32 TH carry frames. Other cook alpha checked structurally; prior visual evidence retained."
+  ],
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "smoothLoopAccepted": false,
+  "technicalCheckCount": 121,
+  "technicalFailures": [],
+  "technicalAudit": "evidence/current-audit.json",
+  "nativeAlphaReview": {
+    "newlyViewedFrameCount": 48,
+    "newlyViewedPlateCount": 12,
+    "backgrounds": [
+      "white",
+      "black",
+      "green"
+    ],
+    "unexpectedRedOrYellowFringeObserved": false,
+    "limitation": "Offline composited JPEG inspection; not a claim that every red/yellow pixel is a fringe or that game QA passed."
+  },
+  "acceptance": [
+    {
+      "criterion": 1,
+      "status": "incomplete",
+      "fourZonesEightFramesTwoDirections": true,
+      "identityAndProportionsExact": false,
+      "smoothLoopAccepted": false,
+      "cyberhellVerticalBaselineMatched": true
+    },
+    {
+      "criterion": 2,
+      "status": "incomplete",
+      "thAllFourDirectionsEightFrames": true,
+      "alphaStructureSatisfied": true,
+      "thCarryNativeAlphaViewedAll32Frames": true,
+      "unexpectedFringeObserved": false,
+      "followupIdentityRevisionStillPending": true
+    }
+  ],
+  "visualFindings": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "finding": "หัวกว้างและลำตัวสั้นกว่า source; มุมหัว/หมวกเปลี่ยนระหว่าง 4→5; สองทิศยัง mirror เครื่องมือ",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/decoded-th-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "finding": "หน้า ตา และเส้นขอบเรียบกว่าต้นฉบับ; ช้อนคืนท่าช่วง 8→1; รายละเอียดด้านเดียวถูก mirror",
+      "evidence": [
+        "compare-asia.jpg",
+        "evidence/decoded-asia-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "finding": "หัวเล็กและช่วงขาเด่นกว่าต้นฉบับ; stance เปลี่ยนช่วง 7–8; สองทิศยัง mirror กระเป๋า",
+      "evidence": [
+        "compare-west.jpg",
+        "evidence/decoded-west-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "finding": "หน้าเหลี่ยม ตาปรือ และขนาดหัวใกล้ source กว่าเดิม; ทั้ง 16 ช่องแก้ฐาน y314 แล้ว แต่หัวยังไม่เท่าต้นฉบับ/สองทิศ ขนาดหัวและกระเป๋าเปลี่ยนช่วง 4→5; ทิศซ้ายยังคงสัญลักษณ์/กระเป๋าด้านใกล้ผิดจาก prompt; คืนมือ 8→1 ยังต่าง",
+      "evidence": [
+        "compare-cyberhell.jpg",
+        "evidence/revision/baseline-before-after.jpg",
+        "evidence/decoded-cyberhell-cook-down-left.jpg"
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "finding": "ครบ side, side-left, down, up อย่างละ 8 เฟรม ขาเปลี่ยนจริง ถาดถือข้าวปั้นสองก้อน; หน้า/สัดส่วนยังต่างจาก source แม้ใช้ fit ของ renderer แล้ว",
+      "evidence": [
+        "evidence/decoded-th-carry-side.jpg",
+        "evidence/decoded-th-carry-side-left.jpg",
+        "evidence/renderer-fit-th-carry-down.jpg",
+        "evidence/renderer-fit-th-carry-up.jpg"
+      ]
+    }
+  ],
+  "optionalCarryOmitted": [
+    "asia",
+    "west",
+    "cyberhell"
+  ],
+  "seams": [
+    {
+      "row": "th-cook-down-right",
+      "meanRGBDifference8to1": 19.3741,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "meanRGBDifference8to1": 19.3741,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-side",
+      "meanRGBDifference8to1": 17.639,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-side-left",
+      "meanRGBDifference8to1": 17.639,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-down",
+      "meanRGBDifference8to1": 24.2877,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-up",
+      "meanRGBDifference8to1": 11.0808,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "meanRGBDifference8to1": 11.0582,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "meanRGBDifference8to1": 11.0582,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "meanRGBDifference8to1": 14.241,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "meanRGBDifference8to1": 14.241,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "meanRGBDifference8to1": 15.4304,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "meanRGBDifference8to1": 19.9155,
+      "smoothnessAccepted": false
+    }
+  ],
+  "packageReport": "evidence/package-check.json",
+  "historicalEvidence": "prior-*, input-*, previous-round-*, latest-input-* and technical-audit.json record older rounds, not current acceptance."
+}

@@ -1,0 +1,2373 @@
+{
+  "scope": "Decoded current output; no realtime playback by this verifier",
+  "checks": [
+    {
+      "name": "th-cook-down-right f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 alpha exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 outside repair mask RGBA exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 source opaque head RGB exact",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 feet below y280 RGBA exact inherited",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left baseline matches source idle",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left sole band midpoint within 2px of source idle",
+      "satisfied": true
+    },
+    {
+      "name": "repair generation logs sum to 16",
+      "satisfied": true
+    },
+    {
+      "name": "current run called ImageGen zero times",
+      "satisfied": true
+    },
+    {
+      "name": "nine localized operations have passing mask invariants",
+      "satisfied": true
+    }
+  ],
+  "checkCount": 403,
+  "failedChecks": [],
+  "rows": [
+    {
+      "row": "th-cook-down-right",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 204.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5
+        }
+      ]
+    },
+    {
+      "row": "th-cook-down-left",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        900,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        }
+      ]
+    },
+    {
+      "row": "th-carry-side",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": null,
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 193.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 193.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        }
+      ]
+    },
+    {
+      "row": "th-carry-side-left",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": null,
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 123.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 126.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        }
+      ]
+    },
+    {
+      "row": "th-carry-down",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": null,
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 120.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 120.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 116.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 128.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 116.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 130.5
+        }
+      ]
+    },
+    {
+      "row": "th-carry-up",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": null,
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 129.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 129.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 164.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 170.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 170.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 146.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 133.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 132.0
+        }
+      ]
+    },
+    {
+      "row": "asia-cook-down-right",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5
+        }
+      ]
+    },
+    {
+      "row": "asia-cook-down-left",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5
+        }
+      ]
+    },
+    {
+      "row": "west-cook-down-right",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.0
+        }
+      ]
+    },
+    {
+      "row": "west-cook-down-left",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.0
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.0
+        }
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "changedPixelsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5
+        }
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "changedPixelsByFrame": [
+        1652,
+        1678,
+        1408,
+        423,
+        936,
+        937,
+        2016,
+        1996
+      ],
+      "headRGBMismatchPixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceSole": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5
+      },
+      "frameSoles": [
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5
+        }
+      ]
+    }
+  ],
+  "generation": {
+    "run": "20261111T165435Z-427eb5ef",
+    "newRepairCallsThisRun": 0,
+    "repairTotal": 16,
+    "repairLimit": 16,
+    "remainingSharedRepairAllowance": 0,
+    "logs": [
+      {
+        "file": "evidence/revision/generation-log.json",
+        "entries": 4,
+        "sha256": "4d4a261e415129c1d8d6422638b1f23b73849d43bc3e6e58c9d17e3b8d0e6367"
+      },
+      {
+        "file": "evidence/repair-th/generation-log.json",
+        "entries": 4,
+        "sha256": "f41ccc3cd1762eeff36723f2834e7cf1e53f3191d8368ce33f2458c96b506491"
+      },
+      {
+        "file": "evidence/repair-cyberhell-head/generation-log.json",
+        "entries": 4,
+        "sha256": "99399c9153752995ab8b411ee2a523b156333e438bb8ff1bd7096ca0e3c21a29"
+      },
+      {
+        "file": "evidence/repair-identity/generation-log.json",
+        "entries": 4,
+        "sha256": "85b82d9e88ae6c429199d817a0e4aed04980d706889414f16fc42f0045260ffe"
+      }
+    ],
+    "originalCallsDocumentedByInheritedLogs": 16,
+    "shadoUsed": false,
+    "externalAPIUsed": false
+  }
+}

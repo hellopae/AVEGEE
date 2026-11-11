@@ -1,0 +1,218 @@
+{
+  "alphaThreshold": 40,
+  "sourceIdleBottomY": 314,
+  "previousCookBottomY": 319,
+  "all16DeliveredBottomY314": true,
+  "anatomicalXAccepted": false,
+  "headBandIsDiagnosticOnly": true,
+  "frames": [
+    {
+      "dir": "down-right",
+      "frame": 1,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        266,
+        180
+      ],
+      "lower32pxCentreX": 160.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 2,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        266,
+        180
+      ],
+      "lower32pxCentreX": 160.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 3,
+      "bottomY": 314,
+      "heightAbove40": 304,
+      "headBandBoundsY0to179": [
+        53,
+        11,
+        266,
+        180
+      ],
+      "lower32pxCentreX": 160.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 4,
+      "bottomY": 314,
+      "heightAbove40": 304,
+      "headBandBoundsY0to179": [
+        53,
+        11,
+        266,
+        180
+      ],
+      "lower32pxCentreX": 160.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 5,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 159.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 6,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 159.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 7,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 159.5
+    },
+    {
+      "dir": "down-right",
+      "frame": 8,
+      "bottomY": 314,
+      "heightAbove40": 305,
+      "headBandBoundsY0to179": [
+        53,
+        10,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 159.5
+    },
+    {
+      "dir": "down-left",
+      "frame": 1,
+      "bottomY": 314,
+      "heightAbove40": 300,
+      "headBandBoundsY0to179": [
+        73,
+        15,
+        255,
+        180
+      ],
+      "lower32pxCentreX": 164.0
+    },
+    {
+      "dir": "down-left",
+      "frame": 2,
+      "bottomY": 314,
+      "heightAbove40": 300,
+      "headBandBoundsY0to179": [
+        73,
+        15,
+        255,
+        180
+      ],
+      "lower32pxCentreX": 164.0
+    },
+    {
+      "dir": "down-left",
+      "frame": 3,
+      "bottomY": 314,
+      "heightAbove40": 300,
+      "headBandBoundsY0to179": [
+        73,
+        15,
+        255,
+        180
+      ],
+      "lower32pxCentreX": 164.0
+    },
+    {
+      "dir": "down-left",
+      "frame": 4,
+      "bottomY": 314,
+      "heightAbove40": 300,
+      "headBandBoundsY0to179": [
+        73,
+        15,
+        255,
+        180
+      ],
+      "lower32pxCentreX": 164.0
+    },
+    {
+      "dir": "down-left",
+      "frame": 5,
+      "bottomY": 314,
+      "heightAbove40": 298,
+      "headBandBoundsY0to179": [
+        77,
+        17,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 166.5
+    },
+    {
+      "dir": "down-left",
+      "frame": 6,
+      "bottomY": 314,
+      "heightAbove40": 298,
+      "headBandBoundsY0to179": [
+        77,
+        17,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 166.5
+    },
+    {
+      "dir": "down-left",
+      "frame": 7,
+      "bottomY": 314,
+      "heightAbove40": 298,
+      "headBandBoundsY0to179": [
+        77,
+        17,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 166.5
+    },
+    {
+      "dir": "down-left",
+      "frame": 8,
+      "bottomY": 314,
+      "heightAbove40": 298,
+      "headBandBoundsY0to179": [
+        77,
+        17,
+        267,
+        180
+      ],
+      "lower32pxCentreX": 166.5
+    }
+  ]
+}

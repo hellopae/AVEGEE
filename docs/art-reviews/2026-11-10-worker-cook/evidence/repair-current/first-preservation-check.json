@@ -1,0 +1,2680 @@
+{
+  "checks": [
+    {
+      "name": "th-cook-down-right head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-down f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-up f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 moving body/hands/props y192+ unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left head cutout matches original source RGB in opaque mask",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 alpha outside neck y153:192 unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 original opaque head RGB",
+      "satisfied": true
+    },
+    {
+      "name": "four distinct inherited generation batch logs",
+      "satisfied": true
+    },
+    {
+      "name": "16 repair generation calls documented",
+      "satisfied": true
+    }
+  ],
+  "frames": [
+    {
+      "row": "th-cook-down-right",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "d0a18d828839a09b16df672c29b50abe3750369df8eeeb98b9d508c3e59f8b33"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "133c626220ee62ac3ec146769fbf06265fe99ef1f3712a0d60cd78d0fda899f6"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 204.0,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "36fb627f499a6c8a2a18a8194d97582562b0fff9c788a1ed8921284e8d0eaaea"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.0,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "a5419b69921cc1ba08ab9e6860f20f89c626bf1a566c8af4758aeed04c2b3599"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "0449874b8050af928d2d677b3108d4617bca2289e1355c96b9123e26e847ab29"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "bad2d46b09df99adabff2f7b01aa773d5c4a5f7a0c00004bb3d413e8b53668dd"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "59d1bbe40514031e95e80a0794c2625a81aac8b522c4fb49c3bd5f7afe177a85"
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "4557922ebd376c1f05269521876b5a7bdd378516a49ca6c4d57f409d9ed2fe14"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "809db161480235db9c0c873c5fd20ff43962070f0224b8f34f8357ed5c719ce0"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "e05679b7f440c3e7361d623818fa46376058d33f9ec3f4a31269b6ad0ad87a53"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "c6abcb064883915620e2663d4b479c187e4566ee409f7cb9f911838cec117cad"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "093ee36f5b522f0dd712d92c9ebe81f8d9a0902ea53a99f52331584137ef10d0"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "75a6e3d6835adbc4ad8850fdfe5051a9f1fcd4d7b9d86dbc646119ca8d00c43a"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "16535c045027d0a1f9025259f292272a93acb681c3f764c026d3b003009ba8ec"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "172c57cdf87364516cf68864115a69c099b1bba8db7c381a202d6bd4414e1410"
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 12
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "5aa04f165bc83b9debc4336192bc16240b4d3b1612f4512e5abe7257ee4fc4d1"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 195.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 864,
+      "sha256RGBA": "8c26b7111d95a5047ac671b31ddb5314d32d7e42b0279b8ef6b6246eef5b902e"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 192.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 659,
+      "sha256RGBA": "8e6346d12581e78a2d7785613b23c8ec1a47d2f6771cbdb9a9d61c70958c7b39"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 485,
+      "sha256RGBA": "ba470b12eb43f7ea43aa04aff5eff112f29f617a94b68307fc32014bef95d3bf"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 195.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 843,
+      "sha256RGBA": "1b1588fa2aab1e719deaafcf4a01c370af9ae02c3a51b1aa99b3f2c1ec53b735"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 193.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 463,
+      "sha256RGBA": "f3c2c5d93b52b78aafe5da1c617fa228c72b79901dd6d446c8aef47c3370fba7"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 475,
+      "sha256RGBA": "81515803df578bdc6ef92e02fef553cde99a9f2716db27561899138206eee23a"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 193.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 490,
+      "sha256RGBA": "013ad659a8a26f0ae3ac0b5bcb517b8f3bceab22743f1d790b9bea203da501d5"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 596,
+      "sha256RGBA": "f470993a093896b453d112b09bc8fa4b5d3528ba623f8331c6a0258f5fd36f85"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 21288,
+      "sha256RGBA": "ffe358352b08b81a4098e0fb5b04c5239abb79a8026d9b84a4aa38bdaeb2d058"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 126.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 34291,
+      "sha256RGBA": "470737e5c62f9edd4c543744661a21286c9519d8fe4061a449d8649dea30edfb"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 34824,
+      "sha256RGBA": "6cf47de8bf81cf899f93be53ca5b2018ee4010c7ccde229a1282fc87967adf45"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 123.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 26293,
+      "sha256RGBA": "efc1307c9df7297f17c4bf3976b327c29190f4e748ef11414bce7a9f1845a88c"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 126.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 29017,
+      "sha256RGBA": "897211387903bacae528964a78b9786d4677b1465655fc42e46a425d0dd4beee"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 125.0,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 24266,
+      "sha256RGBA": "38e01923186d007063ea2f2f61ad49482f30e3b09ee90ce07963436357151743"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 125.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 11253,
+      "sha256RGBA": "4ee2812798b7b3a23dd0aba13eb14423e6fc91ac2b2c58997e4bec5bf5dc5af4"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 24
+      },
+      "changedPixelsVsLatestInput": 9705,
+      "sha256RGBA": "e748bafd9a8a2b50bf32b1f8d5409c56b621b44872f02f6cbbddde61d7641ac1"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 120.0,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 993,
+      "sha256RGBA": "deda1f9cc822f14a4011a8deca6ccf6cdae8c9c7cc15e73955e2935c0efc3086"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 120.5,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 994,
+      "sha256RGBA": "ef1912e529616ca2e305c6e5436e3f7aeecd9494b37a4c07132d6b454c194f8d"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 116.5,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 890,
+      "sha256RGBA": "798b0e9d47ce7eba14e7f61321839d57c276503af9e911e75e26885534b0daee"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 128.0,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 939,
+      "sha256RGBA": "604615343e4e5fbaf0b2676c73681c6c4649b814fb1aeaa411eed80981c44c64"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.0,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 842,
+      "sha256RGBA": "53451d53ad135e4a7f9e1729e1a7b218d3b015e4b62353b5a574ca10e9d87a84"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 116.5,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 923,
+      "sha256RGBA": "9301333857b7326d336e64c36fb0f6ddf7db150c52e01be00f607a85cb13cbb0"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 827,
+      "sha256RGBA": "b8a84eca4fc90735fd6db6044662fc65a80b4304847c844d14a47a7f3513725a"
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 130.5,
+        "topY": 29
+      },
+      "changedPixelsVsLatestInput": 825,
+      "sha256RGBA": "b5209f6d3ce98fef93cccb08de24725ba146b7f7941630df99dab68fdf504f3d"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 129.5,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 1039,
+      "sha256RGBA": "91fcbb18d335407f3077b68f7e522a9fcbbf8f9e0e6ccdef3c92cc67461c3d2e"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 129.0,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 1486,
+      "sha256RGBA": "1e34e90fe078f49ce4326133b032150ae69f5fb109cb422a6c4c19c55cd28bc7"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 164.0,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 944,
+      "sha256RGBA": "2631c73a70e85ee9a38820c45d6483c745fafeedc0d645e553d8c59aef31141d"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 170.5,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 843,
+      "sha256RGBA": "c43f6d1061ccd3cde6ae68d076831776c82ee43a8006356be614e4f0e40f8be7"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 170.5,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 1008,
+      "sha256RGBA": "035601e98e12019adaa091066c7943e23931b4131f50476e86242253abeb6e01"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 146.0,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 2815,
+      "sha256RGBA": "5011001a5cf99ac5195171250c032f690ee2e8d0a5ddb72195af1f978bb42fca"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 133.0,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 2673,
+      "sha256RGBA": "9bb3e58531482ac65cb8a37e538dfe6b378d9d89c9bc75a71798cd61dd096725"
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 132.0,
+        "topY": 46
+      },
+      "changedPixelsVsLatestInput": 778,
+      "sha256RGBA": "be13f859703ca16e8f6aa6d47d9fe849d272cc9653cc74b2de53b988a3eede47"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "50759f5ce1a5ffb108c53da042545af3edb89501aee0d21dd8e3815103a5966f"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "6f3d71b8c960d7e4cf9c6bf56b5d2fb6ad46519230037cbeb3248aeead610236"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "b63d61e2108389abe70911faf9d5d4e636376d7d6fc57dafe1eed59ac85d5a29"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "0e478e136f47ba49714dd7c8c83eb3d82107a2c5533fe32d9d88d0dba62be2ea"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "d20ae00a5044cd5bf03a9898bd94294f4e56f55caa0a0dd09e9119aae90be429"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "d0bcd81b10bce4bbbbecd4d0ae89508352911a4aeca5d3ca634419c578938377"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "e26146345be966390965f1a1c915cf1db53079df37031351cd2f742cd6a7389b"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "04fff05a559ed706b74d04d298f4e12effeb365877375e9dec10395af086e01b"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "31ed59fab016f9a4c4553f5ff8bba935bbcc6a5ea6c027999f2def153d71c37b"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "b4438fe534e21d05cb3cc5401d984a169390a0567e520a829430921d1059604b"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "0ed996f7ab45f4df07c6f0886791ee90b52614d94705fad7a49c3316d477e653"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "12396d5b592e37df7e491bba24758e8b89fad7e8f7ff5039b1b315e1d69e3f12"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "7c1cd02ec8b0905bf783e8c9ca5b47e70f479315f46fb5a481dcf9aa29f5c00c"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "83f84c15644db2cf86e005caa0149d72d4881c4c1a2906d97ad8def559ab11fd"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "d4dbc550706b8bec156998bec267acf22285f2c6a89c2b4e5c1654ca071668ca"
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "topY": 17
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "72a9214a2eeb751052f409cfba339aca6856ba9265f5495d0bf0a688747161bf"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "510ed0c8a90e1d372f64fec9e059fa39cc8a6ff34b79e01d52dda7aae445d540"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "0531e5173023ca1e8478fec8f8b0a41ae6d07f9583e6737617107b1723c29c11"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "bca152921a33012576ac7f13cde38c8bd767410f4ac7f20356d9ab4aafa28cb9"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "8d9f5834ebe18635f8993f682b6aad79ef6ed6164ecff31728ff3472b9145ac0"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "52dfb7acd85a61a2eb189f920e0a49b66c86ccd7fae3ea200ca0594836de8bcd"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.0,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "7ebb2c0689d70a145a580e7ace68171e85b65974e91f1756cda7936fcde5a8de"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "2cb1ae277b6a9a4e9d1a16f23eaa75fa7241220054e957ecaca9ee796c0af97d"
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 195.0,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "66fdadc336980ac6f64777ff20be851e65ae40976099a01a5afcae3b097ca0bb"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 1,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "fba032ada91ac8e15975609d12aaa36124f1714c405e1800faca11a031b2f5ad"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 2,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "8829a3e6f4c36e6e60b0d7ea2ddcd0f93b190d7d0adf550685e3f0a382c9a380"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 3,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "1ff79d08273f42c5b2b3dfd59becaf57c680395d0cdd110920bf144b1a3f7535"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 4,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "5497515826c19ea6a84573c0739409d9213a05e45ca1fea1367458fd32cd45e9"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 5,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "b68fde23543feaeb7df557f03b7f1d79bff834ca4580cd2c3cdf7b854e7576cc"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 6,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 125.0,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "6a42d12caee0151e10aedce60e5b4a460ea4573c0f0fab72cc918d5a307d5bf9"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 7,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "e0decce16a7219b141db2cdd6529e02cf9a79463160c416bc2d61508e4f6e653"
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 8,
+      "foot": {
+        "bottomY": 319,
+        "soleBandMidX": 124.0,
+        "topY": 14
+      },
+      "changedPixelsVsLatestInput": 0,
+      "sha256RGBA": "5c68989ef9d4658099b793cfbc096662ede6ab4cb566307cf39da888d53e60d0"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 1,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 485,
+      "sha256RGBA": "4ce9938431a5d295fee9daf65914053379ca5aa1cf1da809b385fb71ad109d00"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 2,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 536,
+      "sha256RGBA": "aadde518bddee2752240e3323610d31f018eb05460fccca68bed5800e38b6b43"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 3,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 477,
+      "sha256RGBA": "fc95a0bd11de6bf61c7d5bbca4acdb176e29060f7d1190e60f3ae3abcd145823"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 4,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 485,
+      "sha256RGBA": "05be739e1fd1093216ea0ca0e52bb4d853bf7527e131b43a4bb73645eee72aa9"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 5,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 483,
+      "sha256RGBA": "f7dca75d3758308da185c10d32270a72e25b7bd09bee25d35e8e54c92a95e449"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 6,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 463,
+      "sha256RGBA": "7599feb803b8e2cb5d172c0db6c1d52a9fd340649df574886af1df4d2b487e8f"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 7,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 655,
+      "sha256RGBA": "c2ad57d9648904afeb88f6fa9b20bf2e5f6d1dd33fa733078d7811cef1c97c29"
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 8,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 671,
+      "sha256RGBA": "63a4896aefb2cac2530f76b715ca47bfc2ad66ea812ea8213383670afa73e9d0"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 1,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 10875,
+      "sha256RGBA": "74596c070efe2c98b0a4a202a3cadaf986fd7347210a8f6fe83b725f072e69db"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 2,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 11159,
+      "sha256RGBA": "6a41d99bb762ecc5966ddd08742cb61311e091209874405354c17a28682f83a4"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 3,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 10436,
+      "sha256RGBA": "3b3c14beb31e6805cfc77e64f8ec4a5ad5d7ae6ca3c67e9d16784d30a9b45fb3"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 4,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 11154,
+      "sha256RGBA": "b6affe9c579ca9e318034bc632c224fa726162e955369c9dd28e6cfa1bf552a0"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 5,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 11881,
+      "sha256RGBA": "4c6083832fee3aab927fdf4466758e1b8fffc7a805a83e80f815e26b6f654a0d"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 6,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 10551,
+      "sha256RGBA": "a5d2c0500a6201d37314593ceee98d37ab9b0361ae7b3eebc00c49d0be0e977c"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 7,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 10876,
+      "sha256RGBA": "4e04439ca1bbfb9c11909df969b87d0cf975ec607e7cfbf303ae618b8087628e"
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 8,
+      "foot": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "topY": 10
+      },
+      "changedPixelsVsLatestInput": 10720,
+      "sha256RGBA": "eccbc97f9fb541f9777fc7188b0b241d5d123fd8fbd9dc32827b78854585f74b"
+    }
+  ],
+  "sourceWalkingFeet": [
+    {
+      "row": "th-carry-side",
+      "sourceSheetRow": 1,
+      "originalFourFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "topY": 19
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 176.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 171.5,
+          "topY": 19
+        }
+      ],
+      "deliveredEightFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 192.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 193.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 193.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "topY": 24
+        }
+      ]
+    },
+    {
+      "row": "th-carry-side-left",
+      "sourceSheetRow": 1,
+      "originalFourFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "topY": 19
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 142.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 147.5,
+          "topY": 19
+        }
+      ],
+      "deliveredEightFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 126.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 123.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 126.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.0,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.5,
+          "topY": 24
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "topY": 24
+        }
+      ]
+    },
+    {
+      "row": "th-carry-down",
+      "sourceSheetRow": 4,
+      "originalFourFrames": [
+        {
+          "bottomY": 318,
+          "soleBandMidX": 107.0,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 146.5,
+          "topY": 31
+        },
+        {
+          "bottomY": 318,
+          "soleBandMidX": 156.5,
+          "topY": 28
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 149.0,
+          "topY": 31
+        }
+      ],
+      "deliveredEightFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 120.0,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 120.5,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 116.5,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 128.0,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.0,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 116.5,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "topY": 29
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 130.5,
+          "topY": 29
+        }
+      ]
+    },
+    {
+      "row": "th-carry-up",
+      "sourceSheetRow": 5,
+      "originalFourFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 135.5,
+          "topY": 46
+        },
+        {
+          "bottomY": 318,
+          "soleBandMidX": 141.0,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 170.0,
+          "topY": 44
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 140.5,
+          "topY": 45
+        }
+      ],
+      "deliveredEightFrames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 129.5,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 129.0,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 164.0,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 170.5,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 170.5,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 146.0,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 133.0,
+          "topY": 46
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 132.0,
+          "topY": 46
+        }
+      ]
+    }
+  ],
+  "generation": {
+    "run": "20261111T162400Z-6a49dc9c",
+    "newRepairCallsThisRun": 0,
+    "repairTotal": 16,
+    "originalCallsDocumentedByInheritedLogs": 16,
+    "logs": [
+      {
+        "file": "evidence/revision/generation-log.json",
+        "entries": 4,
+        "sha256": "4d4a261e415129c1d8d6422638b1f23b73849d43bc3e6e58c9d17e3b8d0e6367"
+      },
+      {
+        "file": "evidence/repair-th/generation-log.json",
+        "entries": 4,
+        "sha256": "f41ccc3cd1762eeff36723f2834e7cf1e53f3191d8368ce33f2458c96b506491"
+      },
+      {
+        "file": "evidence/repair-cyberhell-head/generation-log.json",
+        "entries": 4,
+        "sha256": "99399c9153752995ab8b411ee2a523b156333e438bb8ff1bd7096ca0e3c21a29"
+      },
+      {
+        "file": "evidence/repair-identity/generation-log.json",
+        "entries": 4,
+        "sha256": "85b82d9e88ae6c429199d817a0e4aed04980d706889414f16fc42f0045260ffe"
+      }
+    ],
+    "shadoUsed": false,
+    "externalAPIUsed": false
+  },
+  "limitations": [
+    "Static inspection and pixel tests do not establish smooth playback.",
+    "Foot silhouettes are compared in raw 320px cells. Engine fit multipliers are not applied."
+  ],
+  "failedChecks": [
+    {
+      "name": "th-carry-side f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-side-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-down f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "th-carry-up f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 moving body/hands/props y192+ unchanged",
+      "satisfied": false
+    }
+  ]
+}

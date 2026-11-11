@@ -1,0 +1,317 @@
+{
+  "run": "20261111T165435Z-427eb5ef",
+  "input": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T162400Z-6a49dc9c/docs/art-reviews/2026-11-10-worker-cook",
+  "newImageGenCalls": 0,
+  "operations": [
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 1,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          135,
+          186,
+          198,
+          225
+        ],
+        [
+          235,
+          180,
+          300,
+          238
+        ],
+        [
+          187,
+          219,
+          245,
+          253
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f1-mask.png",
+      "selectedPixels": 1764,
+      "changedPixels": 1652,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 2,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          137,
+          174,
+          208,
+          207
+        ],
+        [
+          201,
+          176,
+          260,
+          207
+        ],
+        [
+          233,
+          194,
+          299,
+          226
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f2-mask.png",
+      "selectedPixels": 1696,
+      "changedPixels": 1678,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 3,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          138,
+          183,
+          200,
+          236
+        ],
+        [
+          195,
+          195,
+          244,
+          220
+        ],
+        [
+          240,
+          170,
+          300,
+          230
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f3-mask.png",
+      "selectedPixels": 1520,
+      "changedPixels": 1408,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 4,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          138,
+          176,
+          270,
+          232
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f4-mask.png",
+      "selectedPixels": 460,
+      "changedPixels": 423,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 5,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          138,
+          168,
+          270,
+          222
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f5-mask.png",
+      "selectedPixels": 936,
+      "changedPixels": 936,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 6,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          138,
+          162,
+          235,
+          203
+        ],
+        [
+          201,
+          176,
+          275,
+          232
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f6-mask.png",
+      "selectedPixels": 938,
+      "changedPixels": 937,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 7,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          139,
+          178,
+          181,
+          218
+        ],
+        [
+          160,
+          209,
+          218,
+          271
+        ],
+        [
+          237,
+          176,
+          282,
+          263
+        ],
+        [
+          200,
+          235,
+          252,
+          284
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f7-mask.png",
+      "selectedPixels": 2128,
+      "changedPixels": 2016,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 8,
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "kind": "stationary source torso/belt RGB in exposed interior; reflected with renderer direction",
+      "protectedRectanglesCanonical": [
+        [
+          137,
+          178,
+          193,
+          237
+        ],
+        [
+          172,
+          218,
+          218,
+          257
+        ],
+        [
+          239,
+          171,
+          300,
+          223
+        ]
+      ],
+      "mask": "evidence/repair-sourcebody/cyberhell-left-f8-mask.png",
+      "selectedPixels": 2108,
+      "changedPixels": 1996,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnMotionEnvelopeUnchanged": true,
+        "headAboveY175Unchanged": true,
+        "legsBelowY241Unchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 7,
+      "kind": "original near-side pouch interior below moving hand",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "mask": "evidence/repair-sourcebody/th-left-f7-pouch-mask.png",
+      "selectedPixels": 901,
+      "changedPixels": 900,
+      "checks": {
+        "alphaUnchanged": true,
+        "outsideMaskUnchanged": true,
+        "drawnHandAndFoodUnchanged": true,
+        "sourceRGBExactInMask": true
+      }
+    }
+  ],
+  "checks": 52,
+  "failures": [],
+  "limitations": [
+    "Only localized exposed garment interiors are repaired. Whole-body proportions and real-time loop continuity are not certified."
+  ]
+}

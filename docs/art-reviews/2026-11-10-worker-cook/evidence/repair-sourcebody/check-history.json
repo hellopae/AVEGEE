@@ -1,0 +1,6 @@
+{
+  "firstVerification": "first-verification.json",
+  "firstFailure": "Counter read only calls, missed entries schema in two inherited logs; reported 8 instead of16. Pixel checks had no failures.",
+  "fix": "Read calls or entries arrays, then count the four distinct logs. Rechecked against their cumulative totals 4/8/12/16.",
+  "finalVerification": "verification.json"
+}
