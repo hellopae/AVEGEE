@@ -1,0 +1,12 @@
+{
+  "source_directory": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261110T170237Z-317132f8/docs/art-reviews/2026-11-10-quest-art",
+  "source_readme_sha256": "3e31aaf0adcdf92a4ca54002e3c24bc7dc06ee1933b1c2b9aa41b43bdf71b8eb",
+  "source_generation_statement": "- สร้างด้วย ImageGen ในตัวทั้งหมด 18 ชิ้น และแก้ด้วย ImageGen อีก 5 ครั้ง รวม 23 ครั้ง",
+  "current_run": {
+    "operation": "ตรวจภาพและคัดลอกไฟล์เดิมโดยไม่เปลี่ยนไบต์; เพิ่มเอกสารและหลักฐานตรวจในโฟลเดอร์ส่งออก",
+    "new_imagegen_calls": 0,
+    "assets_reused": 18,
+    "tool_provenance_limit": "ข้อมูลเครื่องมือสร้างภาพมาจาก README และ prompt ที่บันทึกในรอบเดิม รอบนี้ไม่ได้เรียกสร้างซ้ำหรือยืนยันประวัติการเรียกเครื่องมือย้อนหลัง",
+    "game_integration": false
+  }
+}

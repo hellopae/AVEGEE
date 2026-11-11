@@ -1,0 +1,352 @@
+TAP version 13
+# Subtest: Grace replacement assets retain their original dimensions and transparency
+ok 1 - Grace replacement assets retain their original dimensions and transparency
+  ---
+  duration_ms: 309.939394
+  type: 'test'
+  ...
+# (node:8131) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: sqNira: acceptance belongs only to its named regional owner and logs title once
+ok 2 - sqNira: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 58.075763
+  type: 'test'
+  ...
+# Subtest: sqTaan: acceptance belongs only to its named regional owner and logs title once
+ok 3 - sqTaan: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 33.315906
+  type: 'test'
+  ...
+# Subtest: sqPlerng: acceptance belongs only to its named regional owner and logs title once
+ok 4 - sqPlerng: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 15.732319
+  type: 'test'
+  ...
+# Subtest: sqKan: acceptance belongs only to its named regional owner and logs title once
+ok 5 - sqKan: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 29.807406
+  type: 'test'
+  ...
+# Subtest: sqBoon: acceptance belongs only to its named regional owner and logs title once
+ok 6 - sqBoon: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 13.572613
+  type: 'test'
+  ...
+# Subtest: sqDam: acceptance belongs only to its named regional owner and logs title once
+ok 7 - sqDam: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 10.285619
+  type: 'test'
+  ...
+# Subtest: sqMerchant: acceptance belongs only to its named regional owner and logs title once
+ok 8 - sqMerchant: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 29.676054
+  type: 'test'
+  ...
+# Subtest: sqGuard: acceptance belongs only to its named regional owner and logs title once
+ok 9 - sqGuard: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 8.581691
+  type: 'test'
+  ...
+# Subtest: kinTaan: acceptance belongs only to its named regional owner and logs title once
+ok 10 - kinTaan: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 12.982457
+  type: 'test'
+  ...
+# Subtest: kinPlerng: acceptance belongs only to its named regional owner and logs title once
+ok 11 - kinPlerng: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 28.02687
+  type: 'test'
+  ...
+# Subtest: kinKan: acceptance belongs only to its named regional owner and logs title once
+ok 12 - kinKan: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 10.015169
+  type: 'test'
+  ...
+# Subtest: kinBoonCousin: acceptance belongs only to its named regional owner and logs title once
+ok 13 - kinBoonCousin: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 8.535355
+  type: 'test'
+  ...
+# Subtest: kinBoonGrand: acceptance belongs only to its named regional owner and logs title once
+ok 14 - kinBoonGrand: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 27.627541
+  type: 'test'
+  ...
+# Subtest: kinDamBro: acceptance belongs only to its named regional owner and logs title once
+ok 15 - kinDamBro: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 9.889697
+  type: 'test'
+  ...
+# Subtest: kinDamCousin: acceptance belongs only to its named regional owner and logs title once
+ok 16 - kinDamCousin: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 7.995124
+  type: 'test'
+  ...
+# Subtest: kinGuard: acceptance belongs only to its named regional owner and logs title once
+ok 17 - kinGuard: acceptance belongs only to its named regional owner and logs title once
+  ---
+  duration_ms: 27.863125
+  type: 'test'
+  ...
+# Subtest: generic Cyber merchant cannot accept side missions; dedicated merchant quest starts in Asia
+ok 18 - generic Cyber merchant cannot accept side missions; dedicated merchant quest starts in Asia
+  ---
+  duration_ms: 4.695091
+  type: 'test'
+  ...
+# Subtest: journal excludes unaccepted/completed missions, labels pending verdict and follows later TH reply routing without mutation
+ok 19 - journal excludes unaccepted/completed missions, labels pending verdict and follows later TH reply routing without mutation
+  ---
+  duration_ms: 10.882675
+  type: 'test'
+  ...
+# Subtest: kin from-to-from routing stays intact; paused side missions remain readable but kin retain finale availability
+ok 20 - kin from-to-from routing stays intact; paused side missions remain readable but kin retain finale availability
+  ---
+  duration_ms: 31.529819
+  type: 'test'
+  ...
+# Subtest: old saved progress/rewards/choices survive helper reads and real restore, without creating quest save fields
+ok 21 - old saved progress/rewards/choices survive helper reads and real restore, without creating quest save fields
+  ---
+  duration_ms: 9.250007
+  type: 'test'
+  ...
+# Subtest: Nira owner conversation uses her available current map feet, while off-zone/resting fallback stays stable
+ok 22 - Nira owner conversation uses her available current map feet, while off-zone/resting fallback stays stable
+  ---
+  duration_ms: 3.410433
+  type: 'test'
+  ...
+# Subtest: locked owner missions are not offered and pure helper reads never initialize absent state
+ok 23 - locked owner missions are not offered and pure helper reads never initialize absent state
+  ---
+  duration_ms: 1.42515
+  type: 'test'
+  ...
+# (node:8132) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: new game has no invented active tracker or owner quests and journal remains read-only
+ok 24 - new game has no invented active tracker or owner quests and journal remains read-only
+  ---
+  duration_ms: 36.105241
+  type: 'test'
+  ...
+# Subtest: owner dialogue button names only that regional owner mission, not the generic merchant list
+ok 25 - owner dialogue button names only that regional owner mission, not the generic merchant list
+  ---
+  duration_ms: 6.646603
+  type: 'test'
+  ...
+# Subtest: accepted objectives appear in tracker and journal, can select another active mission, and survive JSON restore
+ok 26 - accepted objectives appear in tracker and journal, can select another active mission, and survive JSON restore
+  ---
+  duration_ms: 42.627318
+  type: 'test'
+  ...
+# Subtest: completion removes tracker entry, keeps a readable completed journal, and picks a surviving active objective
+ok 27 - completion removes tracker entry, keeps a readable completed journal, and picks a surviving active objective
+  ---
+  duration_ms: 4.921705
+  type: 'test'
+  ...
+# Subtest: an old acceptance callback cannot skip the next owner conversation or enqueue its case twice
+ok 28 - an old acceptance callback cannot skip the next owner conversation or enqueue its case twice
+  ---
+  duration_ms: 4.906478
+  type: 'test'
+  ...
+# Subtest: a failed far-away click can retry after the player reaches the owner
+ok 29 - a failed far-away click can retry after the player reaches the owner
+  ---
+  duration_ms: 3.498045
+  type: 'test'
+  ...
+# (node:8133) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: every one of the 16 quests has a tier reward; only the three fight quests carry an ultimate
+ok 30 - every one of the 16 quests has a tier reward; only the three fight quests carry an ultimate
+  ---
+  duration_ms: 100.8333
+  type: 'test'
+  ...
+# Subtest: tiers grow: easy < mid < hard < very hard in coin, and easy rewards are only medicine box / rice ball / holy water
+ok 31 - tiers grow: easy < mid < hard < very hard in coin, and easy rewards are only medicine box / rice ball / holy water
+  ---
+  duration_ms: 0.743978
+  type: 'test'
+  ...
+# Subtest: closing a quest pays the receipt exactly once, the receipt is saved, and reload / repeat clicks cannot pay again
+ok 32 - closing a quest pays the receipt exactly once, the receipt is saved, and reload / repeat clicks cannot pay again
+  ---
+  duration_ms: 27.059862
+  type: 'test'
+  ...
+# Subtest: Dam wrong verdict keeps the old failure close: 30 coin, no item, no tier bonus
+ok 33 - Dam wrong verdict keeps the old failure close: 30 coin, no item, no tier bonus
+  ---
+  duration_ms: 3.849329
+  type: 'test'
+  ...
+# Subtest: preview before, "???" for an unlearned move, the move name after; journal and receipt text
+ok 34 - preview before, "???" for an unlearned move, the move name after; journal and receipt text
+  ---
+  duration_ms: 21.408756
+  type: 'test'
+  ...
+# Subtest: a save with quests closed before the reward table gets the tier bonus and the move ONCE; saving and reloading never pays twice; the notice is acknowledged once
+ok 35 - a save with quests closed before the reward table gets the tier bonus and the move ONCE; saving and reloading never pays twice; the notice is acknowledged once
+  ---
+  duration_ms: 16.293363
+  type: 'test'
+  ...
+# Subtest: a brand-new save has no retro notice, and an unfinished quest is not paid on load
+ok 36 - a brand-new save has no retro notice, and an unfinished quest is not paid on load
+  ---
+  duration_ms: 4.549585
+  type: 'test'
+  ...
+# Subtest: sqKan: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+ok 37 - sqKan: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+  ---
+  duration_ms: 44.259675
+  type: 'test'
+  ...
+# Subtest: sqBoon: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+ok 38 - sqBoon: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+  ---
+  duration_ms: 30.850852
+  type: 'test'
+  ...
+# Subtest: sqGuard: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+ok 39 - sqGuard: step 3 opens a quest fight that pays no coin / EXP / loot; losing keeps the quest at step 3; winning moves to step 4 and teaches the move
+  ---
+  duration_ms: 10.029826
+  type: 'test'
+  ...
+# Subtest: sqKan / sqGuard: the choice is saved when the fight starts, so a retry needs no choice buttons; a different valid choice is also accepted
+ok 40 - sqKan / sqGuard: the choice is saved when the fight starts, so a retry needs no choice buttons; a different valid choice is also accepted
+  ---
+  duration_ms: 10.787561
+  type: 'test'
+  ...
+# Subtest: Rae scene text is shown as written: pre by choice, privateOpened extra line for sqKan, shared tail for sqBoon
+ok 41 - Rae scene text is shown as written: pre by choice, privateOpened extra line for sqKan, shared tail for sqBoon
+  ---
+  duration_ms: 0.936038
+  type: 'test'
+  ...
+# Subtest: privateOpened adds one more debt-collector to the sqKan fight
+ok 42 - privateOpened adds one more debt-collector to the sqKan fight
+  ---
+  duration_ms: 2.458749
+  type: 'test'
+  ...
+# Subtest: the owner joins the team when hired and standing, otherwise stands by; the guard joins on his own
+ok 43 - the owner joins the team when hired and standing, otherwise stands by; the guard joins on his own
+  ---
+  duration_ms: 31.475727
+  type: 'test'
+  ...
+# Subtest: the owner is put in the team even when the saved team did not include them, and the team never exceeds the zone limit
+ok 44 - the owner is put in the team even when the saved team did not include them, and the team never exceeds the zone limit
+  ---
+  duration_ms: 1.506473
+  type: 'test'
+  ...
+# Subtest: quest moves belong to ONE roster ID: Satori@Asia has hers, another Kan (or another zone) does not
+ok 45 - quest moves belong to ONE roster ID: Satori@Asia has hers, another Kan (or another zone) does not
+  ---
+  duration_ms: 4.83616
+  type: 'test'
+  ...
+# Subtest: a Kan of another zone cannot cast the move even if its record is forged; the actor must also be unlocked
+ok 46 - a Kan of another zone cannot cast the move even if its record is forged; the actor must also be unlocked
+  ---
+  duration_ms: 3.199234
+  type: 'test'
+  ...
+# Subtest: เนตรรอคำอนุญาต: no damage, the chosen foe turns on itself harder than Satori's normal hypnosis, the whole team gets a thin shield
+ok 47 - เนตรรอคำอนุญาต: no damage, the chosen foe turns on itself harder than Satori's normal hypnosis, the whole team gets a thin shield
+  ---
+  duration_ms: 44.82596
+  type: 'test'
+  ...
+# Subtest: คำฝากถึงมือ: heals every ally, clears rope/gauze, gives a small attack buff, and still works for a sealed Grace
+ok 48 - คำฝากถึงมือ: heals every ally, clears rope/gauze, gives a small attack buff, and still works for a sealed Grace
+  ---
+  duration_ms: 3.165571
+  type: 'test'
+  ...
+# Subtest: ทวารบาลยืนรับแค้น: damages every foe, pulls every attack to the Guard with the defend stance, ends after his next turn
+ok 49 - ทวารบาลยืนรับแค้น: damages every foe, pulls every attack to the Guard with the defend stance, ends after his next turn
+  ---
+  duration_ms: 3.05893
+  type: 'test'
+  ...
+# Subtest: rope / gauze: a hit foe with `seal` blocks the victim special for exactly one of its own turns
+ok 50 - rope / gauze: a hit foe with `seal` blocks the victim special for exactly one of its own turns
+  ---
+  duration_ms: 2.652692
+  type: 'test'
+  ...
+# Subtest: an unsealed fight of an ordinary kind never calls the new target code (random stream unchanged)
+ok 51 - an unsealed fight of an ordinary kind never calls the new target code (random stream unchanged)
+  ---
+  duration_ms: 1.463114
+  type: 'test'
+  ...
+# Subtest: first attempts are winnable but not free: win rate 55-97 % at team sizes 4-7 for all three fights, 3-10 rounds, nobody times out
+ok 52 - first attempts are winnable but not free: win rate 55-97 % at team sizes 4-7 for all three fights, 3-10 rounds, nobody times out
+  ---
+  duration_ms: 3182.803643
+  type: 'test'
+  ...
+# Subtest: the new moves are in the same strength class as the trained ones (replay with the move wins more, but never makes the fight trivial)
+ok 53 - the new moves are in the same strength class as the trained ones (replay with the move wins more, but never makes the fight trivial)
+  ---
+  duration_ms: 3249.463777
+  type: 'test'
+  ...
+# Subtest: every new move has icon + scenes that exist (placeholders point at the same character's existing move art) and never touches the art files
+ok 54 - every new move has icon + scenes that exist (placeholders point at the same character's existing move art) and never touches the art files
+  ---
+  duration_ms: 1.2982
+  type: 'test'
+  ...
+# Subtest: UI: the battle menu lists quest moves next to the trained one and wide moves fire without asking for a target
+ok 55 - UI: the battle menu lists quest moves next to the trained one and wide moves fire without asking for a target
+  ---
+  duration_ms: 5.033711
+  type: 'test'
+  ...
+# Subtest: cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)
+ok 56 - cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)
+  ---
+  duration_ms: 2.712542
+  type: 'test'
+  ...
+1..56
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7581.086434

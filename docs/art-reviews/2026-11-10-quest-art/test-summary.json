@@ -1,0 +1,21 @@
+{
+  "full_suite": {
+    "command": "node --test tests/*.test.mjs",
+    "exit_code": 1,
+    "result": "interrupted",
+    "log": "full-suite.log",
+    "note": "Stopped with Ctrl-C before the final summary; this is not a completed suite result."
+  },
+  "targeted": {
+    "command": "node --test --test-reporter=tap tests/quest-rewards.test.mjs tests/quest-owner.test.mjs tests/quest-panels.test.mjs tests/art-grace.test.mjs",
+    "exit_code": 0,
+    "seconds": 7.897,
+    "log": "targeted-tests.tap",
+    "tests": 56,
+    "pass": 56,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "result": "passed"
+  }
+}

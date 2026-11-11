@@ -1,0 +1,358 @@
+{
+  "result": "passed",
+  "asset_count": 18,
+  "counts": {
+    "enemies": 6,
+    "icons": 3,
+    "cutscenes": 6,
+    "effects": 3
+  },
+  "assets": [
+    {
+      "path": "mob-q-debtor.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 232094,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        25,
+        16,
+        18,
+        19
+      ],
+      "transparent_fraction": 0.655117,
+      "sha256": "e9574c009b81813a3d1b284bf26e7c134d11d1af20974e7a0b6e4e0043a9f1f2",
+      "source_sha256": "e9574c009b81813a3d1b284bf26e7c134d11d1af20974e7a0b6e4e0043a9f1f2"
+    },
+    {
+      "path": "mob-q-collector.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 171419,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        64,
+        17,
+        18,
+        26
+      ],
+      "transparent_fraction": 0.685913,
+      "sha256": "afe6488e4cbf430c440d4353f6fccfb8eaf1433e83e3830c6aae86da9ffd1bdc",
+      "source_sha256": "afe6488e4cbf430c440d4353f6fccfb8eaf1433e83e3830c6aae86da9ffd1bdc"
+    },
+    {
+      "path": "mob-q-gauze-big.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 328808,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        28,
+        26,
+        25,
+        23
+      ],
+      "transparent_fraction": 0.496971,
+      "sha256": "fdf3b5938412e48e14fd1f33424e580305f471b84a143b9d04ab0d395d62c46b",
+      "source_sha256": "fdf3b5938412e48e14fd1f33424e580305f471b84a143b9d04ab0d395d62c46b"
+    },
+    {
+      "path": "mob-q-gauze.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 167506,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        16,
+        29,
+        17,
+        36
+      ],
+      "transparent_fraction": 0.758125,
+      "sha256": "278f9eb0979ccdf9b5bf94a6867a49961229f8c719c70d3736e353ad4db9b215",
+      "source_sha256": "278f9eb0979ccdf9b5bf94a6867a49961229f8c719c70d3736e353ad4db9b215"
+    },
+    {
+      "path": "mob-q-tale-big.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 240771,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        28,
+        16,
+        33,
+        16
+      ],
+      "transparent_fraction": 0.660763,
+      "sha256": "b8d3972a84f94e22f02c63babf6158d25979dbc324e7dc337b7ba009a65268f0",
+      "source_sha256": "b8d3972a84f94e22f02c63babf6158d25979dbc324e7dc337b7ba009a65268f0"
+    },
+    {
+      "path": "mob-q-tale.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 188947,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        16,
+        22,
+        21,
+        24
+      ],
+      "transparent_fraction": 0.687424,
+      "sha256": "2a6c6593097afbe71d958fd02bcaa312c85ba1de03710e92a125bfc3847d827b",
+      "source_sha256": "2a6c6593097afbe71d958fd02bcaa312c85ba1de03710e92a125bfc3847d827b"
+    },
+    {
+      "path": "skills-v1/icons/eyeAwaitingPermission.webp",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 50590,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        13,
+        14,
+        12,
+        14
+      ],
+      "transparent_fraction": 0.39325,
+      "sha256": "67637e385e9f7f51687c8bbb1d7eab6a0a72011a6d76939786eaec80fd521fe5",
+      "source_sha256": "67637e385e9f7f51687c8bbb1d7eab6a0a72011a6d76939786eaec80fd521fe5"
+    },
+    {
+      "path": "skills-v1/fx/kan-eye-reflect-512.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 230850,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        16,
+        17,
+        16,
+        24
+      ],
+      "transparent_fraction": 0.564556,
+      "sha256": "a0a1e38a19973a96e7e69d8f16efee1a35d06979ddd505000bcac19a2b25f7ed",
+      "source_sha256": "a0a1e38a19973a96e7e69d8f16efee1a35d06979ddd505000bcac19a2b25f7ed"
+    },
+    {
+      "path": "skills-v1/th/kan-eyeAwaitingPermission-cut-01.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1740574,
+      "sha256": "8beb3019b701be984c4718237fa6b030fdebcaef8da168dbac2559b080b5725c",
+      "source_sha256": "8beb3019b701be984c4718237fa6b030fdebcaef8da168dbac2559b080b5725c"
+    },
+    {
+      "path": "skills-v1/th/kan-eyeAwaitingPermission-cut-02.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1769060,
+      "sha256": "5e7cfd4a75393c4290ec1f8c729e2ae505751462994987323d0454ec7d983998",
+      "source_sha256": "5e7cfd4a75393c4290ec1f8c729e2ae505751462994987323d0454ec7d983998"
+    },
+    {
+      "path": "skills-v1/icons/letterDelivered.webp",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 35164,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        16,
+        11,
+        17,
+        11
+      ],
+      "transparent_fraction": 0.423477,
+      "sha256": "6791af98c63065598aac6655faf7138479873e30c1ecdbcd8540d26cd31a9b3c",
+      "source_sha256": "6791af98c63065598aac6655faf7138479873e30c1ecdbcd8540d26cd31a9b3c"
+    },
+    {
+      "path": "skills-v1/fx/boon-letter-glow-512.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 184308,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "transparent_fraction": 0.343796,
+      "sha256": "bc37e0be28c4814fd32d465eec00545c4263c247fae01c245e3a0e2db9f3e032",
+      "source_sha256": "bc37e0be28c4814fd32d465eec00545c4263c247fae01c245e3a0e2db9f3e032"
+    },
+    {
+      "path": "skills-v1/th/boon-letterDelivered-cut-01.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1619652,
+      "sha256": "1adb11863d7c7b95a243b8e9791dcd9c939d3d8969bfda0f61e2227bef882e91",
+      "source_sha256": "1adb11863d7c7b95a243b8e9791dcd9c939d3d8969bfda0f61e2227bef882e91"
+    },
+    {
+      "path": "skills-v1/th/boon-letterDelivered-cut-02.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1764164,
+      "sha256": "edc856656e7ea949ff12f6082de49d549aa8c4ef461276ec72ab74b0f492f1c6",
+      "source_sha256": "edc856656e7ea949ff12f6082de49d549aa8c4ef461276ec72ab74b0f492f1c6"
+    },
+    {
+      "path": "skills-v1/icons/gatekeeperStand.webp",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 41796,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        9,
+        11,
+        13,
+        14
+      ],
+      "transparent_fraction": 0.380585,
+      "sha256": "6fed43b2348bae587bfc42ae4385c5eb56031c61b9488527983ae15162c7982f",
+      "source_sha256": "6fed43b2348bae587bfc42ae4385c5eb56031c61b9488527983ae15162c7982f"
+    },
+    {
+      "path": "skills-v1/fx/guard-gate-wave-768.webp",
+      "size": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "bytes": 354436,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_margins_px": [
+        25,
+        24,
+        27,
+        24
+      ],
+      "transparent_fraction": 0.628754,
+      "sha256": "1e5b5a5b0dba09b7a1d9a99e347a204598015b847951aefabf0c9a3b6ab56a6d",
+      "source_sha256": "1e5b5a5b0dba09b7a1d9a99e347a204598015b847951aefabf0c9a3b6ab56a6d"
+    },
+    {
+      "path": "skills-v1/th/guard-gatekeeperStand-cut-01.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1653910,
+      "sha256": "126f6f35f44cc221438b407bbc39ba50915e22cc4e2dc483d5b9344e7f62222f",
+      "source_sha256": "126f6f35f44cc221438b407bbc39ba50915e22cc4e2dc483d5b9344e7f62222f"
+    },
+    {
+      "path": "skills-v1/th/guard-gatekeeperStand-cut-02.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "bytes": 1761112,
+      "sha256": "1eb9eb24bf1aff86559709713c533ec2bb4a293f448a96dfbd9be0a529653c47",
+      "source_sha256": "1eb9eb24bf1aff86559709713c533ec2bb4a293f448a96dfbd9be0a529653c47"
+    }
+  ],
+  "source": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261110T170237Z-317132f8/docs/art-reviews/2026-11-10-quest-art",
+  "copied_assets_identical": 18,
+  "style_prefix_matches": 18,
+  "total_bytes_at_check": 13862732,
+  "limit_bytes": 40000000,
+  "reference_sha256": {
+    "img/Asia/crew-kan-asia-cutscene.jpeg": "c8a63eac5c3b072a8ede69c713fd4efc952afe8da17725531e5343cc13bdc75a",
+    "img/West/crew-boon-west-cutscene-f.jpeg": "b464542607979a37d7e72663995dba75cd8c25af4c111f32903fd90c10109fd4",
+    "img/crew-guard-cutscene.jpeg": "b23e29d0d1921a25ddc789ddc392af1666beb2bc3387b84cce1fe3aaece18746",
+    "img/Asia/mob-kasha-asia.png": "e1e30f4db97f56c0e0f2c306c0f4480693219d492bff0e6acdd9b3b1db581e38",
+    "img/Asia/mob-hitodama-asia.png": "2bf3615e0a8fb621fe95ac17927fb4fcd5440ddd4515783cb5c46646403fe74e",
+    "img/mob-tanee.png": "63096566d9c41020b0a94226b707641702738894ed4dc9ec0102f4b7acefec97",
+    "img/mob-pret2.png": "fc6da205bdcf66efc8cdc3f6dc924bbc01daea1d6cfb621415f91a6f4e2ac3d4",
+    "img/skills-v1/icons/karmaFracture.webp": "2d5f8f37ffc92929d33ade29c2562cf7ce0bcc7d7b08c7468f1c48f1b0cdb728"
+  },
+  "limits": "การตรวจขนาด/alpha/hash ไม่ยืนยันเนื้อหาหรือความเหมือนใบหน้า; ดู visual-review.md ประกอบ"
+}
