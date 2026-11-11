@@ -1,0 +1,168 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "inheritedPromptsAvailable": false,
+  "calls": [
+    {
+      "id": "icefall-upper-right-78",
+      "prompt": "Two square frames 7 and 8, >=800px each, preserve reference scenery and exact waterfall silhouette, alter only water streaks and impact foam. Narrow slanted cyan waterfall around foreground triangular rock. No DOF/parallax/bloom/static translation.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-65d3acc8-a818-4863-a4dd-684dd7f36216.png",
+      "output": "sources/icefall-upper-right-78.webp"
+    },
+    {
+      "id": "icefall-east-cliff-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-east-cliff draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-f37da91b-3f81-4128-a324-cacb7c99b40a.png",
+      "output": "sources/icefall-east-cliff-12.webp"
+    },
+    {
+      "id": "icefall-east-cliff-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-east-cliff draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-4141c7dd-ff5f-4893-8eb3-723629dd996c.png",
+      "output": "sources/icefall-east-cliff-34.webp"
+    },
+    {
+      "id": "icefall-east-cliff-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-east-cliff draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-41cc86d5-4dc5-44af-8a03-5b32fa8feb2d.png",
+      "output": "sources/icefall-east-cliff-56.webp"
+    },
+    {
+      "id": "icefall-east-cliff-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-east-cliff draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-9eda0807-f959-4cca-a03a-92d1b38bbbc4.png",
+      "output": "sources/icefall-east-cliff-78.webp"
+    },
+    {
+      "id": "icefall-center-bridge-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-center-bridge draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-79fabde0-30a3-4a7a-a8f0-9dfe8e5e1282.png",
+      "output": "sources/icefall-center-bridge-12.webp"
+    },
+    {
+      "id": "icefall-center-bridge-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-center-bridge draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-c8ccfe4c-302f-4f05-80bb-ad45f579437a.png",
+      "output": "sources/icefall-center-bridge-34.webp"
+    },
+    {
+      "id": "icefall-center-bridge-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-center-bridge draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-ebdf969c-f94e-4a22-a8f9-b31f70a3ff29.png",
+      "output": "sources/icefall-center-bridge-56.webp"
+    },
+    {
+      "id": "icefall-center-bridge-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-center-bridge draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-647f63b3-d2c8-4e76-a6fa-4ea97b9ca319.png",
+      "output": "sources/icefall-center-bridge-78.webp"
+    },
+    {
+      "id": "icefall-lower-inlet-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-inlet draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-83fd4119-1aea-44fe-b41b-e177b3b109ba.png",
+      "output": "sources/icefall-lower-inlet-12.webp"
+    },
+    {
+      "id": "icefall-lower-inlet-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-inlet draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-66b078c8-45d1-440e-abe4-4e97a5553372.png",
+      "output": "sources/icefall-lower-inlet-34.webp"
+    },
+    {
+      "id": "icefall-lower-inlet-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-inlet draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-dc9e5267-961e-457d-87ad-5665c4f9219f.png",
+      "output": "sources/icefall-lower-inlet-56.webp"
+    },
+    {
+      "id": "icefall-lower-inlet-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-inlet draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-12e10cf7-a87e-48b4-a2af-49ba36a3ddfb.png",
+      "output": "sources/icefall-lower-inlet-78.webp"
+    },
+    {
+      "id": "icefall-lower-2-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-2 draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-0fe6594e-17b7-4dc2-8c98-9616ca8c0230.png",
+      "output": "sources/icefall-lower-2-12.webp"
+    },
+    {
+      "id": "icefall-lower-2-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-2 draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-d7094c09-7672-429b-9f72-3026dc1e2a16.png",
+      "output": "sources/icefall-lower-2-34.webp"
+    },
+    {
+      "id": "icefall-lower-2-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-2 draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-dd4ea823-91ed-4ca8-a3c1-90a72e9a4185.png",
+      "output": "sources/icefall-lower-2-56.webp"
+    },
+    {
+      "id": "icefall-lower-2-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-2 draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-da2d3c58-0dd2-4950-a94a-21f85a91da94.png",
+      "output": "sources/icefall-lower-2-78.webp"
+    },
+    {
+      "id": "icefall-lower-3-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-3 draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-6b7aa39e-cf7c-4c69-94b7-cb73c173510e.png",
+      "output": "sources/icefall-lower-3-12.webp"
+    },
+    {
+      "id": "icefall-lower-3-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-3 draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-95e7ab77-eb3f-4eb6-a3a1-e45878ff740d.png",
+      "output": "sources/icefall-lower-3-34.webp"
+    },
+    {
+      "id": "icefall-lower-3-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-3 draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-1ef007cd-ed0a-48cc-83be-5ea355161cda.png",
+      "output": "sources/icefall-lower-3-56.webp"
+    },
+    {
+      "id": "icefall-lower-3-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-3 draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-4f02a081-ddec-4114-a47e-40209b5f6fd8.png",
+      "output": "sources/icefall-lower-3-78.webp"
+    },
+    {
+      "id": "icefall-mouth-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-mouth draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-46cc220a-1db2-4a09-b332-1bf4275bcca7.png",
+      "output": "sources/icefall-mouth-12.webp"
+    },
+    {
+      "id": "icefall-mouth-12",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-mouth draw temporal frames 1 and 2 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-800b5bf8-a5f8-49c4-8dfc-b839f148907b.png",
+      "output": "sources/icefall-mouth-12.webp"
+    },
+    {
+      "id": "icefall-mouth-34",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-mouth draw temporal frames 3 and 4 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-ed6f2f9e-d581-403c-8a9a-80f572e968a7.png",
+      "output": "sources/icefall-mouth-34.webp"
+    },
+    {
+      "id": "icefall-mouth-56",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-mouth draw temporal frames 5 and 6 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-39bd2280-070b-4b98-b55d-a1380359adb5.png",
+      "output": "sources/icefall-mouth-56.webp"
+    },
+    {
+      "id": "icefall-mouth-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-mouth draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-ed4bbe41-6ac9-4916-a665-0af1084476f9.png",
+      "output": "sources/icefall-mouth-78.webp"
+    },
+    {
+      "id": "icefall-lower-1-78",
+      "prompt": "Use case precise-object-edit. Production hand-painted water animation atlas of TWO equal square cells side by side, total 1774x887, each frame 887x887. Each cell must show the ENTIRE reference view with identical square stretching, camera, composition and every rock/plant/bridge/snow boundary locked. For icefall-lower-1 draw temporal frames 7 and 8 of an 8-frame seamless flowing water loop left then right. Preserve EXACT drawn liquid silhouette and foreground occluders, change ONLY liquid interior streaks, foam filaments, tiny falling droplets and base impact spray into two visibly different flowing patterns. Do not grow water onto stone, snow, vegetation or bridge. Water falls follow reference geometry. Keep flat water horizontal. Blue cyan white water, same fantasy painterly game style. No text, border, gutter, DOF, bloom, parallax, camera shift, static image sliding or fading. No identical panels. Frame8 returns naturally to frame1.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c630-4575-79b3-ad65-6d4121c9e765/exec-63333732-02ca-491b-8ca5-6274df9576cf.png",
+      "output": "sources/icefall-lower-1-78.webp"
+    }
+  ]
+}
