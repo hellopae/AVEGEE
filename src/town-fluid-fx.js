@@ -14,6 +14,7 @@ import { weatherEnabled } from './map-ambient.js?v=mapfx-k1d';
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
 import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
+import { fluidShaderRequested, ensureFluidShader, fluidShaderActive, cutShaderHoles, drawFluidShader } from './fluid-shader.js';   // FLUID-SHADER pilot (?fluid=shader)
 
 export const FLUID_TILE_LEVELS = Object.freeze([2.56, 1.28, .64]);   // pre-scaled tile density, px per world unit
 export const FLUID_MAX_SCALE = 2.56;                                  // the composing layer never exceeds this many px per world unit
@@ -88,19 +89,21 @@ function storeOf(dir) {
   let st = stores.get(dir);
   if (!st) {
     st = { dir, status: 'idle', layout: null, plan: [], sheets: new Map(), masks: new Map(), loading: 0, clock: 0, lastRaw: null, frozen: false,
-      drawn: 0, composites: 0, lastDraw: 0, ms: 0, error: null, layers: new Map(), frameNo: 0, last: new Map() };
+      drawn: 0, composites: 0, lastDraw: 0, ms: 0, error: null, layers: new Map(), frameNo: 0, last: new Map(), shader: null };
     stores.set(dir, st);
   }
   return st;
 }
 const cfgOf = () => activeTownSkin()?.fluidFx || null;
+let shaderFlag;   // ?fluid=shader, read once; the drawn frames stay the default until the owner approves the shader
+const shaderWanted = () => shaderFlag ?? (shaderFlag = fluidShaderRequested());
 /** True while the painted fluid layer is the one animating water / lava (loading or ready, not failed): the old particle flow must stay off. */
 export const townFluidOwnsFlow = () => { const c = cfgOf(); return !!c && storeOf(c.dir).status !== 'failed'; };
 /** True when the painted cloud-sea is actually on screen duty: the old cloud banks over the heaven gate must stay off then. */
 export const townFluidOwnsClouds = (reduced = false) => { const c = cfgOf(); return !!c && !reduced && weatherEnabled() && storeOf(c.dir).status === 'ready'; };
 export const townFluidFxStats = () => { const c = cfgOf(); if (!c) return null; const st = storeOf(c.dir);
   return { status: st.status, clock: st.clock, frozen: st.frozen, ms: Math.round(st.ms * 100) / 100, drawn: st.drawn, composites: st.composites,
-    sheetsReady: [...st.sheets.values()].filter(s => s.state === 'ready').length, masksReady: [...st.masks.values()].filter(s => s.state === 'ready').length }; };
+    shader: st.shader?.status || null, shaderDrawn: st.shader?.composites || 0, sheetsReady: [...st.sheets.values()].filter(s => s.state === 'ready').length, masksReady: [...st.masks.values()].filter(s => s.state === 'ready').length }; };
 export const townFluidFxClock = () => { const c = cfgOf(); return c ? storeOf(c.dir).clock : 0; };
 /** Test hook: install a layout without fetching. */
 export function setFluidLayoutForTest(dir, layout) {
@@ -249,6 +252,7 @@ function drawPiece(st, p, geo, rect, sec) {
   }
   g.setTransform(geo.sx, 0, 0, geo.sy, -geo.wx0 * geo.sx, -geo.wy0 * geo.sy);
   clipToMask(g, st, p, rect);
+  cutShaderHoles(g, st.shader, rect);   // FLUID-SHADER: the shader owns its masks, the drawn frame steps aside there
   return layer;
 }
 function drawSpots(st, p, geo, rect, vis, sec) {
@@ -272,6 +276,7 @@ function drawSpots(st, p, geo, rect, vis, sec) {
   }
   g.setTransform(geo.sx, 0, 0, geo.sy, -geo.wx0 * geo.sx, -geo.wy0 * geo.sy); g.globalAlpha = 1;
   clipToMask(g, st, p, rect);
+  cutShaderHoles(g, st.shader, rect);
   return layer;
 }
 function drawPuffs(st, group, geo, vis, sec) {
@@ -289,6 +294,7 @@ function drawPuffs(st, group, geo, vis, sec) {
     }
   }
   clipToMask(g, st, group.puffs[0], [rx, ry, rw, rh]);
+  cutShaderHoles(g, st.shader, [rx, ry, rw, rh]);
   return layer;
 }
 /** The previous composition of a piece, re-aimed at the camera as it is now, while it is younger than `intervalMs` and the zoom has not changed. */
@@ -336,6 +342,9 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
   st.frameNo++;
   if (!fluidMs && st.last.size) st.last.clear();
   let drawn = 0;
+  // FLUID-SHADER pilot: opt-in, before the drawn layers (so its copy of the ground is clean).  Any failure leaves st.shader.status 'failed' = drawn frames only.
+  st.shader = shaderWanted() ? ensureFluidShader(cfg.dir) : null;
+  if (fluidShaderActive(st.shader)) drawn += drawFluidShader(ctx, st.shader, { m, view, cv, sec, time, geometry: layerGeometry, intersect });
   for (const item of st.plan) {
     const p = item.piece || item.puffs[0], rect = item.rect;
     if (!intersect(rect, loadView)) continue;

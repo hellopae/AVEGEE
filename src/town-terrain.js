@@ -100,6 +100,23 @@ function request(row,col) {
   image.src = townChunkUrl(row,col,zone)+(c.failures?`?recover=${Date.now()}`:'');
   return c;
 }
+/** FLUID-SHADER: draw the part of the graded ground (grade + detail + glow, exactly what the camera shows) inside `rect` (world units) onto `ctx`,
+ *  whose transform maps world -> its pixels.  Only chunks that are ALREADY decoded are used (nothing is requested, no camera state is touched);
+ *  returns false, drawing nothing, when any chunk the rectangle needs is not ready yet. */
+export function drawTownGroundRectIfReady(ctx, rect, time=0) {
+  const G = grid(), st = store(), need = [];
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
+    const r = townChunkRect(row,col);
+    if (r.x > rect[0]+rect[2] || r.x + r.w < rect[0] || r.y > rect[1]+rect[3] || r.y + r.h < rect[1]) continue;
+    const c = st.chunks.get(row+','+col);
+    if (!c || c.state !== 'ready' || !c.image) return false;
+    need.push({row,col,r,c});
+  }
+  if (!need.length) return false;
+  const m = ctx.getTransform(), eps = 1/Math.max(m.a, 1e-6);
+  for (const {row,col,r,c} of need) drawHellTerrain(ctx,c.image,time,false, r.x, r.y, r.w + (col < G.cols ? eps : 0), r.h + (row < G.rows ? eps : 0));
+  return true;
+}
 /** Test / tool hook: how many chunks are decoded or on their way. */
 export const townTerrainViewStats = () => ({...store().view});
 const recordView=(ctx,view)=>{if(ctx.canvas.width>=300)store().view=view;}; // minimap must not overwrite camera diagnostics
