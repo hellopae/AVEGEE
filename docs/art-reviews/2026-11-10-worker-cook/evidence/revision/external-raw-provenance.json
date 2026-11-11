@@ -1,0 +1,14 @@
+{
+  "inputRoot": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T062023Z-88672152/docs/art-reviews/2026-11-10-worker-cook/evidence/revision",
+  "rawFilesRetainedAtInputOnly": [
+    "generated-01.webp",
+    "generated-03.webp",
+    "generated-02.webp",
+    "generated-04.webp",
+    "target-cyberhell-down-right-1-4.webp",
+    "target-cyberhell-down-right-5-8.webp",
+    "target-cyberhell-down-left-5-8.webp",
+    "target-cyberhell-down-left-1-4.webp"
+  ],
+  "reason": "Package size limit; previous cyberhell atlas remains byte-identical."
+}
