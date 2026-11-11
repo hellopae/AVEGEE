@@ -1,0 +1,659 @@
+{
+  "sourceWorktree": "20261111T062023Z-567a72a5",
+  "productionAssets": [
+    {
+      "path": "fx-layout.json",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/manifest.json",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r1-c1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r1-c2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r1-c3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r1-c4.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r1-c5.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r2-c1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r2-c2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r2-c3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r2-c4.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r2-c5.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r3-c1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r3-c2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r3-c3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r3-c4.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r3-c5.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r4-c1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r4-c2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r4-c3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r4-c4.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/r4-c5.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "input/v7/zone1-terrain-v7-preview.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat-central.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat-east.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat-lower.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat-upper.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/ice-stream-flat.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-center-bridge.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-east-cliff.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-lower-1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-lower-2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-lower-3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-lower-inlet.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-summit.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-upper-right.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/icefall-upper-tree.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-left-bottom.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-lower.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-middle.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-southwest.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-upper.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat-west.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lava-flat.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-bridge.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-lower-step.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-middle.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-upper-left.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-upper-step.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-volcano.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/lavafall-west.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/shore-band-ice.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/shore-band-spirit.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/shore-band.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/spirit-river-east.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/spirit-river-west.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "masks/spirit-river.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/bank-foam-ice.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/bank-foam-spirit.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/embers-ash.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/ice-stream-se.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/ice-stream-sw.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/ice-stream.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-center-bridge.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-east-cliff.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-lower-1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-lower-2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-lower-3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-lower-inlet.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-summit.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-upper-right.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/icefall-upper-tree.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/lava-bubble.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/lava-steam.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/lava-surface.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/lavafall.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/river-foam.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/spirit-river.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sheets/water-sparkle.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-center-bridge-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-center-bridge-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-center-bridge-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-center-bridge-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-east-cliff-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-east-cliff-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-east-cliff-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-east-cliff-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-1-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-1-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-1-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-1-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-1-a.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-2-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-2-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-2-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-2-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-3-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-3-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-3-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-3-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-inlet-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-inlet-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-inlet-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-lower-inlet-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-mouth-12-letterbox.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-mouth-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-mouth-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-mouth-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-mouth-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-summit-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-summit-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-summit-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-summit-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-right-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-right-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-right-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-right-78.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-tree-12.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-tree-34.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-tree-56.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "sources/icefall-upper-tree-78.webp",
+      "matchesLatestRun": true
+    }
+  ],
+  "pairsClipsAndContacts": [
+    {
+      "path": "review/clips/owner-2-ice-bridge.mp4",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/clips/owner-3-lava.mp4",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/clips/owner-4-central-stream.mp4",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/contact-icefalls.jpg",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/contact-lavafalls.jpg",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/contact-streams.jpg",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-central.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-east.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-lower.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-upper.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-center-bridge.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-east-cliff.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-lower-1.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-lower-2.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-lower-3.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-lower-inlet.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-summit.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-upper-right.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/icefall-upper-tree.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-left-bottom.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-lower.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-middle.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-southwest.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-upper.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lava-flat-west.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-bridge.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-lower-step.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-middle.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-mouth.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-upper-left.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-upper-step.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-volcano.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/lavafall-west.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/spirit-river-east.webp",
+      "matchesLatestRun": true
+    },
+    {
+      "path": "review/pairs/spirit-river-west.webp",
+      "matchesLatestRun": true
+    }
+  ],
+  "allProductionAssetsMatchLatestRun": true,
+  "all31Pairs3Clips3ContactsMatchLatestRun": true,
+  "generationsThisContinuation": 0,
+  "productionChangesThisContinuation": []
+}

@@ -1,0 +1,354 @@
+{
+  "method": "Every current lava bubble/steam/ember piece, native 2x, 288 masked alpha/opacity-quantized samples at 24 fps for 12 seconds. Includes sheet timing, spot phases, drift and rotation.",
+  "layoutSha256": "30aaf07c8d2a84f5c10b24435d847f23c5953ff2808ada04963c6758d321bf67",
+  "reference": "review/particle-flat-reference.json",
+  "referenceSha256": "0a448bdcfa642e7ef9b899e9b5dfdfa7c1faaccdc2ac33bc07e46f61a0fdaa78",
+  "measurements": [
+    {
+      "id": "lava-bubble--lava-upper",
+      "mask": "lava-flat-upper",
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "maskSha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f",
+      "sheetSha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68",
+      "groundDecodedRgbSha256": "7234a9ecae5bb7cf7153b37ff571a6d3eb02d8d91c8ecac07dac6c7d7d2fe1ce",
+      "samples": 288,
+      "samplesWithVisiblePixels": 226,
+      "maximumVisiblePixelsPerSample": 13519,
+      "uniqueVisiblePixels": 21538,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 21538,
+      "footprintCropNative2x": [
+        208,
+        320,
+        1992,
+        1188
+      ],
+      "evidence": "review/particle-coverage/lava-bubble--lava-upper-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-bubble--lava-left",
+      "mask": "lava-flat-west",
+      "maskRectPx": [
+        30,
+        490,
+        520,
+        560
+      ],
+      "maskSha256": "39560e388ad2f22cf1b105a9e6edf7d3277d2f600c3a543773b576a3d6b004e1",
+      "sheetSha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68",
+      "groundDecodedRgbSha256": "1765b504492055de940b597bab56a37ab9cf81f2df1fefc5f40206fe95d6677b",
+      "samples": 288,
+      "samplesWithVisiblePixels": 112,
+      "maximumVisiblePixelsPerSample": 2567,
+      "uniqueVisiblePixels": 2728,
+      "uniqueConfirmedFlatPixels": 2460,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 268,
+      "footprintCropNative2x": [
+        258,
+        821,
+        389,
+        930
+      ],
+      "evidence": "review/particle-coverage/lava-bubble--lava-left-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-bubble--lava-middle",
+      "mask": "lava-flat-middle",
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "maskSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "sheetSha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68",
+      "groundDecodedRgbSha256": "f6a0abb5e0ae9931900ee0b3bc345de3c0cee6c5ca15b16aeafdfc27a7cc1d99",
+      "samples": 288,
+      "samplesWithVisiblePixels": 250,
+      "maximumVisiblePixelsPerSample": 13506,
+      "uniqueVisiblePixels": 25397,
+      "uniqueConfirmedFlatPixels": 19627,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 5770,
+      "footprintCropNative2x": [
+        166,
+        5,
+        736,
+        405
+      ],
+      "evidence": "review/particle-coverage/lava-bubble--lava-middle-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-bubble--lava-lower",
+      "mask": "lava-flat-lower",
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "maskSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "sheetSha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68",
+      "groundDecodedRgbSha256": "00007bc2e771fbf2deb3ea924af6ebe47824e2503a2422739b5f1aa439c5f53f",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 23091,
+      "uniqueVisiblePixels": 34664,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 34664,
+      "footprintCropNative2x": [
+        536,
+        410,
+        1233,
+        1309
+      ],
+      "evidence": "review/particle-coverage/lava-bubble--lava-lower-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-steam--lava-upper",
+      "mask": "lava-flat-upper",
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "maskSha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f",
+      "sheetSha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568",
+      "groundDecodedRgbSha256": "7234a9ecae5bb7cf7153b37ff571a6d3eb02d8d91c8ecac07dac6c7d7d2fe1ce",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 9271,
+      "uniqueVisiblePixels": 10003,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 10003,
+      "footprintCropNative2x": [
+        1493,
+        335,
+        2212,
+        1173
+      ],
+      "evidence": "review/particle-coverage/lava-steam--lava-upper-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-steam--lava-middle",
+      "mask": "lava-flat-middle",
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "maskSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "sheetSha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568",
+      "groundDecodedRgbSha256": "f6a0abb5e0ae9931900ee0b3bc345de3c0cee6c5ca15b16aeafdfc27a7cc1d99",
+      "samples": 288,
+      "samplesWithVisiblePixels": 285,
+      "maximumVisiblePixelsPerSample": 5465,
+      "uniqueVisiblePixels": 5678,
+      "uniqueConfirmedFlatPixels": 5172,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 506,
+      "footprintCropNative2x": [
+        379,
+        82,
+        525,
+        214
+      ],
+      "evidence": "review/particle-coverage/lava-steam--lava-middle-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-steam--lava-lower",
+      "mask": "lava-flat-lower",
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "maskSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "sheetSha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568",
+      "groundDecodedRgbSha256": "00007bc2e771fbf2deb3ea924af6ebe47824e2503a2422739b5f1aa439c5f53f",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 16141,
+      "uniqueVisiblePixels": 22089,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 22089,
+      "footprintCropNative2x": [
+        601,
+        837,
+        1086,
+        1212
+      ],
+      "evidence": "review/particle-coverage/lava-steam--lava-lower-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "lava-steam--lava-left-bottom",
+      "mask": "lava-flat-left-bottom",
+      "maskRectPx": [
+        160,
+        1180,
+        330,
+        220
+      ],
+      "maskSha256": "7e82e9e1d6e93f33b03f1993c4764fdfbf67c579181d257466ab780535fca4ab",
+      "sheetSha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568",
+      "groundDecodedRgbSha256": "a6226b7ba650e93b162689e9b09a02f46fb714746b0a3d8b2c7f30948784ec80",
+      "samples": 288,
+      "samplesWithVisiblePixels": 0,
+      "maximumVisiblePixelsPerSample": 0,
+      "uniqueVisiblePixels": 0,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 0,
+      "footprintCropNative2x": null,
+      "evidence": null,
+      "status": "no-visible-pixels"
+    },
+    {
+      "id": "lava-steam--lava-southwest",
+      "mask": "lava-flat-southwest",
+      "maskRectPx": [
+        215,
+        1700,
+        405,
+        390
+      ],
+      "maskSha256": "7aa0e04b1e1022d5157f06cab06b5617d01c14f93db5d3184d0c78a93c2b718d",
+      "sheetSha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568",
+      "groundDecodedRgbSha256": "562c74c35b12cc334fd2647d3ae7a6c0ccc13405e6771f13f5624335feec5968",
+      "samples": 288,
+      "samplesWithVisiblePixels": 285,
+      "maximumVisiblePixelsPerSample": 2212,
+      "uniqueVisiblePixels": 2215,
+      "uniqueConfirmedFlatPixels": 1231,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 984,
+      "footprintCropNative2x": [
+        284,
+        140,
+        447,
+        258
+      ],
+      "evidence": "review/particle-coverage/lava-steam--lava-southwest-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "embers--lava-upper",
+      "mask": "lava-flat-upper",
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "maskSha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f",
+      "sheetSha256": "dc338380b162bdc7f6c32aaa5ea6120da06744f7cccc16c672c3b75e423ee00e",
+      "groundDecodedRgbSha256": "7234a9ecae5bb7cf7153b37ff571a6d3eb02d8d91c8ecac07dac6c7d7d2fe1ce",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 22178,
+      "uniqueVisiblePixels": 25216,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 25216,
+      "footprintCropNative2x": [
+        1017,
+        65,
+        1998,
+        1189
+      ],
+      "evidence": "review/particle-coverage/embers--lava-upper-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "embers--lava-middle",
+      "mask": "lava-flat-middle",
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "maskSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "sheetSha256": "dc338380b162bdc7f6c32aaa5ea6120da06744f7cccc16c672c3b75e423ee00e",
+      "groundDecodedRgbSha256": "f6a0abb5e0ae9931900ee0b3bc345de3c0cee6c5ca15b16aeafdfc27a7cc1d99",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 25710,
+      "uniqueVisiblePixels": 31840,
+      "uniqueConfirmedFlatPixels": 25710,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 6130,
+      "footprintCropNative2x": [
+        334,
+        55,
+        742,
+        405
+      ],
+      "evidence": "review/particle-coverage/embers--lava-middle-proof.webp",
+      "status": "ground-reference-incomplete"
+    },
+    {
+      "id": "embers--lava-lower",
+      "mask": "lava-flat-lower",
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "maskSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "sheetSha256": "dc338380b162bdc7f6c32aaa5ea6120da06744f7cccc16c672c3b75e423ee00e",
+      "groundDecodedRgbSha256": "00007bc2e771fbf2deb3ea924af6ebe47824e2503a2422739b5f1aa439c5f53f",
+      "samples": 288,
+      "samplesWithVisiblePixels": 288,
+      "maximumVisiblePixelsPerSample": 27257,
+      "uniqueVisiblePixels": 34470,
+      "uniqueConfirmedFlatPixels": 0,
+      "uniqueConfirmedFallingPixels": 0,
+      "samplesWithConfirmedFallingPixels": 0,
+      "unknownPixels": 34470,
+      "footprintCropNative2x": [
+        540,
+        309,
+        951,
+        1211
+      ],
+      "evidence": "review/particle-coverage/embers--lava-lower-proof.webp",
+      "status": "ground-reference-incomplete"
+    }
+  ],
+  "all12PiecesSampled": true,
+  "allSampledVisibleFootprintsConfirmedFlat": false,
+  "limitation": "Finite offline samples. Same-AI ground tracing. Zero visible pixels gives no positive placement evidence. Continuous game playback is unverified."
+}

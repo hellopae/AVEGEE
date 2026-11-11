@@ -1,0 +1,64 @@
+{
+  "currentRun": "20261111T020211Z-edcef0f8",
+  "currentCopyOrder": [
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261110T122730Z-bde65eb4/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "files": 75
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T014532Z-dfacde20/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "files": 277
+    },
+    {
+      "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/runs/avegee-fluids-offline-review-20261111.tar.gz",
+      "sha256": "83b0d6e172ce69d5a6d40cc13252c129e0d904029168bbf63a6b16c57971d28c",
+      "action": "Extracted ordinary files after latest copy, excluding AppleDouble metadata; renderer rerun after mask repairs."
+    }
+  ],
+  "inheritedHistory": {
+    "copyOrder": [
+      {
+        "source": "/Users/agapae/agapae-work/.codex-worktrees/20261110T122730Z-bde65eb4/docs/art-reviews/2026-11-05-z1v7-fluids",
+        "files": 75,
+        "action": "copied in this order, later versions replace earlier versions only inside delivery folder"
+      },
+      {
+        "source": "/Users/agapae/agapae-work/.codex-worktrees/20261110T160006Z-a5ae8b24/docs/art-reviews/2026-11-05-z1v7-fluids",
+        "files": 203,
+        "action": "copied in this order, later versions replace earlier versions only inside delivery folder"
+      },
+      {
+        "source": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261110T173314Z-b662f4b4/docs/art-reviews/2026-11-05-z1v7-fluids",
+        "files": 216,
+        "action": "copied in this order, later versions replace earlier versions only inside delivery folder"
+      },
+      {
+        "source": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261110T234901Z-bb48e869/docs/art-reviews/2026-11-05-z1v7-fluids",
+        "files": 216,
+        "action": "copied in this order, later versions replace earlier versions only inside delivery folder"
+      },
+      {
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/runs/avegee-fluids-offline-review-20261111.tar.gz",
+        "sha256": "83b0d6e172ce69d5a6d40cc13252c129e0d904029168bbf63a6b16c57971d28c",
+        "action": "extracted after latest copy; corrected renderer and supplied review outputs; renderer then rerun locally"
+      }
+    ],
+    "earliestRunCommit": "96a73fcf",
+    "latestProductionAssetHashes": "review/inherited-assets.json",
+    "redundantDerivedFilesRemoved": "review/pruned-derived-files.json",
+    "generationCallsThisRun": 0,
+    "productionAssetsModified": false
+  },
+  "generationCallsThisRun": 0,
+  "productionMasksModified": [
+    "icefall-upper-tree",
+    "icefall-summit",
+    "icefall-east-cliff",
+    "shore-band-ice",
+    "shore-band"
+  ],
+  "productionFramesAndLayoutModified": false,
+  "correctionEvidence": "review/mask-correction-result.json",
+  "currentPruning": "review/current-pruned-files.json",
+  "derivativeCompression": "review/proof-compression.json"
+}

@@ -1,0 +1,78 @@
+{
+  "reference": "review/shore-ground-reference.json",
+  "referenceSha256": "5735f5a2ce3f5eeae036699f07ffb3bbd71c48adaf9c08701d3c2609e633f444",
+  "worldPerNativePixelXY": [
+    0.3906408952187182,
+    0.39060115959719255
+  ],
+  "patchMeasurements": [
+    {
+      "mask": "shore-band-ice",
+      "rectMap1x": [
+        3230,
+        980,
+        200,
+        150
+      ],
+      "maskPixelsInPatch": 1472,
+      "confirmedWaterPixels": 1454,
+      "confirmedWaterWithin12World": 1337,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.983062482996614,
+      "evidence": "review/boundary/shore-band-ice-actual-bank-proof.webp"
+    },
+    {
+      "mask": "shore-band-spirit",
+      "rectMap1x": [
+        3900,
+        2200,
+        200,
+        150
+      ],
+      "maskPixelsInPatch": 14600,
+      "confirmedWaterPixels": 1692,
+      "confirmedWaterWithin12World": 800,
+      "maximumCertifiedBankDistanceUpperBoundWorld": 11.956948134927801,
+      "evidence": "review/boundary/shore-band-spirit-actual-bank-proof.webp"
+    }
+  ],
+  "diskMeasurements": [
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        900,
+        2340
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5,
+      "selectedWaterDiskPixels": 0,
+      "selectedPixelsProvenBeyond12World": 0
+    },
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        4000,
+        2320
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5,
+      "selectedWaterDiskPixels": 95,
+      "selectedPixelsProvenBeyond12World": 0
+    }
+  ],
+  "maskTotals": [
+    {
+      "mask": "shore-band-ice",
+      "selectedPixels": 13960,
+      "certifiedPixelsInNonoverlappingPatches": 1337,
+      "remainingPixelsUnverified": 12623
+    },
+    {
+      "mask": "shore-band-spirit",
+      "selectedPixels": 676567,
+      "certifiedPixelsInNonoverlappingPatches": 800,
+      "remainingPixelsUnverified": 675767
+    }
+  ],
+  "allShorePixelsVerified": false,
+  "limitation": "Partial physical-bank survey only. No distance to production trace or production mask boundary is used as acceptance evidence."
+}

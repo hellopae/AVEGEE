@@ -1,0 +1,605 @@
+{
+  "removed": [
+    {
+      "path": "review/._pairs",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._contact-icefalls.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._contact-streams.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._contact-lavafalls.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._offline-render-report.json",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._owner-3-lava-sequence.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._clips",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._owner-4-central-stream-sequence.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/._owner-2-ice-bridge-sequence.jpg",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "scripts/._render_offline.py",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/clips/._owner-4-central-stream.mp4",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/clips/._owner-3-lava.mp4",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/clips/._owner-2-ice-bridge.mp4",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-west.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-upper-step.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-upper.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-lower-inlet.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-upper-tree.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._spirit-river-west.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-west.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-lower-3.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-lower-step.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-mouth.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-upper-left.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-upper.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-summit.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-lower-2.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-center-bridge.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-mouth.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-left-bottom.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-lower-1.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-southwest.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-east.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-central.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-mouth.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._ice-stream-flat-lower.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-east-cliff.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-lower.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-volcano.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-middle.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._spirit-river-east.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lava-flat-middle.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._lavafall-bridge.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/pairs/._icefall-upper-right.webp",
+      "bytes": 163,
+      "sha256": "08f082085d366e683112c5b480e36a240c5c44b55612bc6b9181099608e759a9",
+      "reason": "macOS resource metadata, not a media asset"
+    },
+    {
+      "path": "review/masks/icefall-lower-2.webp",
+      "bytes": 36694,
+      "sha256": "ea6fff2206ebd009ee1e18a0149b456467b4f53def76ade58d496ee4a491add9",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-southwest.webp",
+      "bytes": 161992,
+      "sha256": "2f3a43555af4a7507aa6914ae8dad59551222af3108b696545c3dbc92440c0c3",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-west.webp",
+      "bytes": 312170,
+      "sha256": "21e282e4535d9dc7dddd8304300d3b994f2d7b7a6db2da8b66c7e3ba05a139ce",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-lower-3.webp",
+      "bytes": 57676,
+      "sha256": "d163655d49c37ca28bae7e620bd7def507b3a36a1867afba990e9094c60caa1d",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/spirit-river-west.webp",
+      "bytes": 890530,
+      "sha256": "b8b28fd8b6d64190d8759337c522e2f1ac30b4b78f312f53b6e5d4d8c4aa9902",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-middle.webp",
+      "bytes": 108608,
+      "sha256": "64447ab8cead9597002757e8cfcc81726a7e522872ea1b248d654c2ca91712f2",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-mouth.webp",
+      "bytes": 11536,
+      "sha256": "019e3a16feca29dd7d01d42ac29ee35ff634f56e2ceb871046f41f2d01632211",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-east-cliff.webp",
+      "bytes": 40850,
+      "sha256": "694e3b1257567016f2f25f3ba6f0e3953401a1dea0521c747c68a3e0f357c8d0",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/ice-stream-flat-mouth.webp",
+      "bytes": 12370,
+      "sha256": "ac714c4a7515fb17451a0cc97f808120a1ca4670b3a7f71a416bddb0c5154ff6",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-summit.webp",
+      "bytes": 115680,
+      "sha256": "5e1c7c0267df5702bb8a2be4a8f786872c049acce8eda1f0e5b3b5a0389b8c5d",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/ice-stream-flat-lower.webp",
+      "bytes": 833496,
+      "sha256": "9449e5da1e8eca75e2864a24ee64ec3c225690a44a27b89d583d75494ab918fe",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-upper.webp",
+      "bytes": 809182,
+      "sha256": "2eb4b49e614874f6565c33ab442733011397e351bcf7ba760e4b287a920068f7",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-volcano.webp",
+      "bytes": 12904,
+      "sha256": "c2bf75695cb2e5d6d296202f5471cb21e153fb196a3fb2ac85a88689abcc6f16",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-upper-right.webp",
+      "bytes": 28812,
+      "sha256": "84ab0b812156a481f524461f8d53c9ea3b3e70932915ef484241ccc1e264f5a6",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-west.webp",
+      "bytes": 12396,
+      "sha256": "06d59645a5affec8c06351f3e757916d8792962b7e293197082feec67ba45ab4",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-bridge.webp",
+      "bytes": 10324,
+      "sha256": "fdaa6bb7eaea253bd2036f58b480467f9deb095a52f7825fecda35b5065758a5",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-upper-step.webp",
+      "bytes": 12058,
+      "sha256": "2a318afe223e360cfe906347c14997a81ce4a3a39d0f2fd2056d54436b590688",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-lower-inlet.webp",
+      "bytes": 29312,
+      "sha256": "10dc67f9b3b458cae9220997757021159ec14dafc839b5b742fbeb66e8f143f3",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-center-bridge.webp",
+      "bytes": 46942,
+      "sha256": "9ef0f7d0208bd3ca1770c77d22de276bd9bea5868e842f909d255146aefffb31",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-left-bottom.webp",
+      "bytes": 87092,
+      "sha256": "3bea11490e8297e3c4b3ee862d243ec9f77235bf25aa7893de47872db61553c1",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-middle.webp",
+      "bytes": 14152,
+      "sha256": "96d82e8ec5f14c2bca26f91be3568c7822599388dea5f7413e25ccb88a56fab1",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lava-flat-lower.webp",
+      "bytes": 528184,
+      "sha256": "714bd473a917338ecf344a54bff330d9018ff2369d46f35abcbe6a0c3b027012",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/ice-stream-flat-east.webp",
+      "bytes": 60972,
+      "sha256": "97e110f99015be1a23bf53094c4200e05301ff202e89a1bc7e7c77db196267e8",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/ice-stream-flat-upper.webp",
+      "bytes": 156394,
+      "sha256": "49b44a103f93b1f3e28a9cbf6b5c12e3dff3bbe83ed604b4311e0e6426aa9297",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/ice-stream-flat-central.webp",
+      "bytes": 251438,
+      "sha256": "e78f31d295b441a6c459e8eff9108252e5cd6a60f438d22aedb984705f0cadc3",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/spirit-river-east.webp",
+      "bytes": 921876,
+      "sha256": "83e8ae97fcac69b6e63ef0de4781c24d314ca3330a7d6d163fd02ef252a64d44",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-mouth.webp",
+      "bytes": 68016,
+      "sha256": "f5a6fe56d774dc223c595f05b47446f8383bfff2bdf9891ff926d64f310c67ed",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-lower-step.webp",
+      "bytes": 12332,
+      "sha256": "df1d14830f8fd2c822f30b486b01b732053857246c575c45266017e446a452e6",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/lavafall-upper-left.webp",
+      "bytes": 4986,
+      "sha256": "39d7eeb8a751d1a7d54d4b5ed0da15518866e55c868279310097b787c910fa20",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-lower-1.webp",
+      "bytes": 42670,
+      "sha256": "415abef2d7811a496721b67d4e5e7663b2298245f9e4a183f2bcd73123fd5ccc",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/masks/icefall-upper-tree.webp",
+      "bytes": 37006,
+      "sha256": "fe6cb9f37cf58e03982597ed029c93ac641c97adbbc326d24c5b590c7a7cb967",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest.webp",
+      "bytes": 374220,
+      "sha256": "82554dff23a6ce334e61c5e04903d7367c3c9bd619314c0d521182579d601680",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-west.webp",
+      "bytes": 734906,
+      "sha256": "5eb62c86da4c78fac3211f8f51f6b8366be8bc04ca309c2d747e70b90e20b91d",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/spirit-river-west.webp",
+      "bytes": 2165510,
+      "sha256": "21ddd41ab24800ee14256b39b6a3bdd2516a2b3a2576e04c021ba23dd1c0689c",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-middle.webp",
+      "bytes": 255860,
+      "sha256": "a1947108ee1f3fbbe2e99791ae851a8541bed1ba936c4050c1a56df0f03d0a86",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth.webp",
+      "bytes": 28514,
+      "sha256": "ec7c23af4b6dcdfc3b632d0de2d48cd7466dbb497af09e8ad94484e5b2607814",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower.webp",
+      "bytes": 1880468,
+      "sha256": "1aec45b263aac58aad9c7459eda584147d4dba8877b5e471f2745674e4872ede",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-upper.webp",
+      "bytes": 1852064,
+      "sha256": "f87f9b40989e96289c1b81f6401fe6b8685daadaf4df061ac989e6d8b8bb06ab",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom.webp",
+      "bytes": 195606,
+      "sha256": "7ecd977da57418c43471ae55d7ca47e88c3890ae2277b44f686a1dd83ac92aed",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/lava-flat-lower.webp",
+      "bytes": 1237176,
+      "sha256": "c76460935286b0ddd1a53693ed3a70e9abdaebd0543e65d5e496a94f74a22b64",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east.webp",
+      "bytes": 139630,
+      "sha256": "f6df2110759a3d9f82b29e6cb08559320b768552d6f2c2a2caee69cd1c473d93",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper.webp",
+      "bytes": 364358,
+      "sha256": "5a92447e187f2cca91925823998f0ab8c63eb7b827112533920f484e2b4a2b4b",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central.webp",
+      "bytes": 583678,
+      "sha256": "96a5eb5ba00854bdfc3071381cd1c7e34887c7e8ba09be1e3919d59b93d12f43",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/spirit-river-east.webp",
+      "bytes": 2285794,
+      "sha256": "87334bd01cb72ed2b6457ddddf6bb604ae13c98041656d340274e3a400bfea78",
+      "reason": "redundant derived overlay; replaced by boundary ground/mask views and overview JPEGs"
+    },
+    {
+      "path": "review/boundary/shore-candidate-1.jpg",
+      "bytes": 76041,
+      "sha256": "184e61b46e5c85aee0e37261714460230e0db1a8980ea1f6e36723727ef41ae7",
+      "reason": "exploratory evidence superseded by independent shore proof"
+    },
+    {
+      "path": "review/boundary/shore-candidate-0.jpg",
+      "bytes": 76053,
+      "sha256": "4a3dbe58a737c2bc736ade8c875dc7c0aa04ad34b7309e486357e2e2bf26aadd",
+      "reason": "exploratory evidence superseded by independent shore proof"
+    },
+    {
+      "path": "review/boundary/shore-candidate-2.jpg",
+      "bytes": 75857,
+      "sha256": "e4d62d571a2b78239b40631e20c0512bd6967e0019a1605792b91b0691f0e733",
+      "reason": "exploratory evidence superseded by independent shore proof"
+    },
+    {
+      "path": "review/boundary/shore-candidate-3.jpg",
+      "bytes": 75790,
+      "sha256": "a4d675770ba0c235fe5053aa7964e7bcf8f5e9286133b295ea3a15f159c17c30",
+      "reason": "exploratory evidence superseded by independent shore proof"
+    },
+    {
+      "path": "review/ice-middle-grid.jpg",
+      "bytes": 224259,
+      "sha256": "f84f74f6349720e412d25282bd0bf625fbab188f44d7790a495f0fa531afb30b",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/ice-south-grid.jpg",
+      "bytes": 152711,
+      "sha256": "9d4d50750e65aa00837a91b27726773cfefe68d186b6bff2a22ba39c9a5b866c",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/river-grid.jpg",
+      "bytes": 66486,
+      "sha256": "85aee10e62d221976188756813bf42d340c66bcce8e900bd0df6140d187608b2",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/lava-grid.jpg",
+      "bytes": 481598,
+      "sha256": "74e4bfbef8cb0d1619387b07a8cb0ee28823337f47011999c39280b402cbd9b5",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/ice-north-grid.jpg",
+      "bytes": 289461,
+      "sha256": "dcb44da72ca681c78b53418abfe02f7e7e6710b11cf1e1ec2d2c01ce1fb8fcfd",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/lavafall-survey.jpg",
+      "bytes": 463961,
+      "sha256": "9e9d7e1c1ff010b84fa41e60158bfd4d19fc1142bd850fd1028442d5d70a60d8",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "review/waterfall-survey.jpg",
+      "bytes": 666766,
+      "sha256": "ddc5df165d7bc02f81f9d54235a04a8aa387552979fccc30e62b8c5a541e5b7f",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    },
+    {
+      "path": "input/icefall-mouth-square.png",
+      "bytes": 1402319,
+      "sha256": "52e62bfaca990e3c06e7596bc76a6ecd5a8e7c8f33514f924d564e4aa5832d72",
+      "reason": "redundant ground survey/crop; native v7 tiles, fall crops, current contact sheets and boundary views retained"
+    }
+  ],
+  "sourceAssetsOrProductionMasksRemoved": false
+}

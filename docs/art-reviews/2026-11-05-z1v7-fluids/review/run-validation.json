@@ -1,0 +1,63 @@
+{
+  "worktree": "20261111T064410Z-b0d6eae2",
+  "baseline": "review/continuation-copy-receipt.json",
+  "preservation": "review/continuation-preservation.json",
+  "allProductionAssetsMatchLatestRun": true,
+  "all31Pairs3Clips3ContactsMatchLatestRun": true,
+  "commands": [
+    {
+      "command": "register_summit.py",
+      "exitCode": 0,
+      "evidence": "review/summit-registration-result.json"
+    },
+    {
+      "command": "measure_references.py",
+      "exitCode": 0,
+      "evidence": "review/liquid-reference-result.json"
+    },
+    {
+      "command": "measure_shore.py",
+      "exitCode": 0,
+      "evidence": "review/shore-ground-result.json"
+    },
+    {
+      "command": "audit_particle_coverage.py",
+      "exitCode": 0,
+      "evidence": "review/particle-coverage-result.json"
+    },
+    {
+      "command": "verify_delivery.py",
+      "exitCode": 1,
+      "evidence": "review/delivery-verification.json",
+      "stderr": "",
+      "acceptanceComplete": false,
+      "technicalChecksTrue": 23,
+      "technicalChecksTotal": 23
+    },
+    {
+      "command": "check_pack.py",
+      "exitCode": 0,
+      "evidence": "review/scope-check.json + delivery-size.json",
+      "brokenLocalLinks": 0,
+      "pathsOutsideDelivery": [],
+      "withinByteLimit": true
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "acceptanceComplete": false,
+  "generationsThisContinuation": 0,
+  "gameIntegrationTested": false,
+  "visualPlaybackReviewed": false,
+  "verificationMeaning": "Verifier exit 1 records unresolved art acceptance. Technical checks cover dimensions, references, hashes and full clip decode.",
+  "offlineArchiveInheritanceCheck": {
+    "archive": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/runs/avegee-fluids-offline-review-20261111.tar.gz",
+    "regularEntries": 42,
+    "missingEntries": [],
+    "source": "Already included in latest copied worktree; current repaired summit and review outputs retained."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "review/continuation-copy-receipt.json + review/continuation-preservation.json — คัดลอกรอบล่าสุดก่อนทำงาน; production assets และ 31 คู่/3 คลิป/3 contacts hash ตรงกับ 062023Z",
+    "review/summit-registration-result.json — รันซ้ำ exit 0; 528/528 effective pixels ครบ 8 เฟรม; mask/sheet hash ตรงรอบล่าสุด",
+    "review/liquid-reference-result.json + mask-review.json — reference 21/37 masks รวม 18 น้ำตก; 8/37 มี leakage upper bound ≤3%; อีก 29 ยังยืนยันไม่ได้; เก็บ unknown component boxes แยกราย mask",
+    "review/reference-ground-check.json — ตรวจ reference crops และ decoded RGB hash กับ ASSEMBLE v7",
+    "review/shore-ground-result.json — ยืนยัน ice 1337/13960 pixels และ spirit 800/676567 pixels อยู่ในน้ำ ≤12 world จากฝั่งจริง",
+    "review/particle-coverage-result.json — ตรวจครบ 12 pieces ×288 samples; reference flat/falling ยังบางส่วน; left-bottom ไม่มีพิกเซลมองเห็น",
+    "review/delivery-verification.json + review/run-validation.json — คำสั่งและ exit code จริง; verifier คืน 1 ขณะ acceptance ไม่ครบ",
+    "README.md + loop-review.json + generation-prompts*.json — เอกสารและ prompts ที่รับต่อ; 0 generations ใหม่",
+    "delivery-size.json + review/scope-check.json + review/continuation-pruned-legacy-crops.json — ตรวจขนาด/ขอบเขตและรายการ crop เก่า 19 ไฟล์ที่ตัดเพื่อคุมขนาด"
+  ],
+  "remaining": [
+    "ทำ reference ให้ครบ 16 masks ที่ยัง reference-missing และขยายส่วนที่ยัง unknown ในอีก 13 masks; รวม 29/37 ยังยืนยัน leakage ≤3% ทั้งชิ้นไม่ได้ ดู largestUnknownComponents และพิกัดใน liquid-reference-result.json",
+    "สำรวจน้ำตกที่วาดจริงทั่ว v7 และตรวจรูปทรง/ละอองฐานทุกจุด; summit witness 528 pixels แก้ในรอบก่อนแล้วและตรวจซ้ำครบ ไม่ต้องวาดซ้ำ",
+    "วัด shore-band-ice อีก 12623 pixels และ shore-band-spirit อีก 675767 pixels จากผิวน้ำ/ฝั่งจริง",
+    "ทำ flat/falling ground labels ให้ครอบ sampled footprints ทั้ง 12 particle pieces โดยเฉพาะ upper/lower; left-bottom ไม่มีพิกเซลมองเห็นใน 288 samples ที่ตรวจ",
+    "ตรวจ playback/รอยต่อ 8→1 ด้วยตาทุกจุด รวม upper-tree และเทียบรูปทรงลาวาตก HD กับพื้น v7 ให้ครบ",
+    "หากแก้ production masks/assets ให้เรนเดอร์ใหม่เฉพาะหลักฐานที่ได้รับผลกระทบ แล้วรัน verifier/size/scope ใหม่ก่อนพิจารณา ready"
+  ]
+}

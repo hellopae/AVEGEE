@@ -1,0 +1,24 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": [
+    {
+      "id": "icefall-lower-1-12",
+      "prompt": "Use case precise-object-edit. Asset type production animation sprite atlas. Reference image is the supplied icefall-lower-1 full crop. Draw TWO EQUAL SQUARE CELLS side by side at total size at least 1800 by 900 pixels (each cell at least 900 square). Each cell shows the ENTIRE original rectangular scene mapped to a square with identical framing, waterfall position, foreground cliff outlines, paved top bank, plants and pool borders. Frame 1 then frame 2 of a flowing waterfall loop, left to right. Change only cyan water interior streaks, flowing white filaments and impact spray into visibly distinct temporal phases. Keep the narrow curved lip and straight falling curtain exactly registered to the reference. Rocks and scenery must remain fixed. Painterly fantasy isometric terrain style matches reference. No new waterfall geometry, no text, gutters, grid, borders, camera movement, static sliding, fading, bloom, parallax or DOF. Output two independently drawn flowing phases, preserve all original water and rock boundaries. Opaque full scene.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c685-95fb-7f23-baeb-d72db9b48f95/exec-1c358e17-38e7-4540-8994-545fc7b495dd.png",
+      "output": "sources/icefall-lower-1-12.webp"
+    },
+    {
+      "id": "icefall-lower-1-34",
+      "prompt": "Use case precise-object-edit. Asset type production animation sprite atlas. Reference image is the supplied icefall-lower-1 full crop. Draw TWO EQUAL SQUARE CELLS side by side at total size at least 1800 by 900 pixels (each cell at least 900 square). Each cell shows the ENTIRE original rectangular scene mapped to a square with identical framing, waterfall position, foreground cliff outlines, paved top bank, plants and pool borders. Frame 3 then frame 4 of a flowing waterfall loop, left to right. Change only cyan water interior streaks, flowing white filaments and impact spray into visibly distinct temporal phases. Keep the narrow curved lip and straight falling curtain exactly registered to the reference. Rocks and scenery must remain fixed. Painterly fantasy isometric terrain style matches reference. No new waterfall geometry, no text, gutters, grid, borders, camera movement, static sliding, fading, bloom, parallax or DOF. Output two independently drawn flowing phases, preserve all original water and rock boundaries. Opaque full scene.",
+      "source": "/Users/agapae/.codex/generated_images/01a1c685-95fb-7f23-baeb-d72db9b48f95/exec-b252b52e-d451-4f3c-a5c8-90338da3d3b1.png",
+      "output": "sources/icefall-lower-1-34.webp"
+    }
+  ],
+  "latestContinuation": {
+    "worktree": "20261111T064410Z-b0d6eae2",
+    "generations": 0,
+    "sourceFramesUnchanged": true,
+    "evidence": "review/continuation-preservation.json",
+    "visualPlaybackReviewed": false
+  }
+}

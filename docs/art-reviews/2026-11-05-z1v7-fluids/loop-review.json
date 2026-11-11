@@ -1,0 +1,446 @@
+{
+  "method": "Recomputed after alpha repairs. RGB deltas inside CURRENT external mask AND common sheet alpha; all transitions including 8->1. Original painted source frames held; no shifted/faded frame synthesis.",
+  "frames": [
+    {
+      "id": "icefall-summit",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 121764,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        9.610974311828613,
+        24.35276222229004,
+        8.236923217773438,
+        27.13311767578125,
+        14.756101608276367,
+        28.12845802307129,
+        7.997084617614746,
+        27.377708435058594
+      ],
+      "wrapToMedianRatio": 1.4000769009127252,
+      "largestToMedianRatio": 1.4384697108529583,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-upper-tree",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 3952,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        13.149713516235352,
+        84.71626281738281,
+        9.282304763793945,
+        45.03019714355469,
+        12.916244506835938,
+        90.81385040283203,
+        8.53905200958252,
+        55.54056930541992
+      ],
+      "wrapToMedianRatio": 1.909269666301009,
+      "largestToMedianRatio": 3.121828458413097,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-upper-right",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 38980,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        23.20077896118164,
+        35.14963912963867,
+        18.27483367919922,
+        35.800350189208984,
+        15.083341598510742,
+        37.403541564941406,
+        31.36551284790039,
+        44.55904769897461
+      ],
+      "wrapToMedianRatio": 1.3398164590835295,
+      "largestToMedianRatio": 1.3398164590835295,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-east-cliff",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 32480,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        31.90105628967285,
+        32.54063034057617,
+        26.627042770385742,
+        40.98371124267578,
+        32.906803131103516,
+        46.37234115600586,
+        39.97064971923828,
+        41.14546203613281
+      ],
+      "wrapToMedianRatio": 1.129168499360906,
+      "largestToMedianRatio": 1.2726114687689272,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-center-bridge",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 113032,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        24.447912216186523,
+        37.18018341064453,
+        33.31166458129883,
+        36.00429153442383,
+        25.164770126342773,
+        35.2303352355957,
+        27.158615112304688,
+        26.72405433654785
+      ],
+      "wrapToMedianRatio": 0.8838740112318249,
+      "largestToMedianRatio": 1.229701056420859,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-inlet",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 31008,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        40.336578369140625,
+        42.903743743896484,
+        28.421159744262695,
+        48.36347579956055,
+        28.303083419799805,
+        48.1370735168457,
+        33.62397766113281,
+        44.62149429321289
+      ],
+      "wrapToMedianRatio": 1.07211248492332,
+      "largestToMedianRatio": 1.1620203904036996,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-1",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 84631,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        20.55487060546875,
+        63.46551513671875,
+        29.898515701293945,
+        65.38481140136719,
+        15.334558486938477,
+        67.16654968261719,
+        38.96731185913086,
+        62.938411712646484
+      ],
+      "wrapToMedianRatio": 1.235228199293748,
+      "largestToMedianRatio": 1.318209563279503,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-2",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 70698,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        25.37974739074707,
+        38.707427978515625,
+        32.40093994140625,
+        34.49708557128906,
+        30.64362907409668,
+        45.16929244995117,
+        37.1686897277832,
+        36.47058868408203
+      ],
+      "wrapToMedianRatio": 1.0278084794732245,
+      "largestToMedianRatio": 1.2729540012094336,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-lower-3",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 98235,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        31.899227142333984,
+        51.12771987915039,
+        19.742111206054688,
+        40.7916374206543,
+        34.58708190917969,
+        37.01823806762695,
+        28.968463897705078,
+        44.26823043823242
+      ],
+      "wrapToMedianRatio": 1.236450879699194,
+      "largestToMedianRatio": 1.4280424944881454,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "icefall-mouth",
+      "frames": 8,
+      "frameSize": [
+        800,
+        800
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 66925,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        28.281190872192383,
+        70.27716827392578,
+        33.53838348388672,
+        57.5522346496582,
+        38.08263397216797,
+        60.511512756347656,
+        37.85258102416992,
+        67.42266845703125
+      ],
+      "wrapToMedianRatio": 1.4100018001518702,
+      "largestToMedianRatio": 1.4696975964242993,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-volcano",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 60400,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        17.196958541870117,
+        15.71682071685791,
+        16.664199829101562,
+        12.6838960647583,
+        12.1741943359375,
+        11.28520393371582,
+        11.424315452575684,
+        22.804574966430664
+      ],
+      "wrapToMedianRatio": 1.6059154521897185,
+      "largestToMedianRatio": 1.6059154521897185,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-upper-left",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 83341,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        14.0024995803833,
+        13.700423240661621,
+        15.735320091247559,
+        10.621182441711426,
+        10.577454566955566,
+        10.069377899169922,
+        11.078916549682617,
+        19.65418815612793
+      ],
+      "wrapToMedianRatio": 1.586336708114118,
+      "largestToMedianRatio": 1.586336708114118,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-upper-step",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 75738,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        15.504009246826172,
+        14.616661071777344,
+        16.95537757873535,
+        12.077957153320312,
+        10.842408180236816,
+        10.88807487487793,
+        11.770713806152344,
+        21.12674903869629
+      ],
+      "wrapToMedianRatio": 1.5828470638200334,
+      "largestToMedianRatio": 1.5828470638200334,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-west",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 74046,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        15.759523391723633,
+        14.461929321289062,
+        15.974011421203613,
+        12.465841293334961,
+        10.667423248291016,
+        10.449000358581543,
+        11.328790664672852,
+        21.944448471069336
+      ],
+      "wrapToMedianRatio": 1.6298748815954094,
+      "largestToMedianRatio": 1.6298748815954094,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-bridge",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 71794,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        16.408344268798828,
+        15.184560775756836,
+        16.77002716064453,
+        12.148828506469727,
+        11.765765190124512,
+        11.09784984588623,
+        11.180739402770996,
+        22.9588680267334
+      ],
+      "wrapToMedianRatio": 1.6799137340543655,
+      "largestToMedianRatio": 1.6799137340543655,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-middle",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 57498,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        16.05016326904297,
+        14.95315170288086,
+        16.598270416259766,
+        12.24840259552002,
+        11.42849063873291,
+        10.580501556396484,
+        11.85406494140625,
+        22.5328426361084
+      ],
+      "wrapToMedianRatio": 1.65673199324739,
+      "largestToMedianRatio": 1.65673199324739,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-lower-step",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 86755,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        15.766834259033203,
+        14.943753242492676,
+        16.538957595825195,
+        12.423887252807617,
+        10.744237899780273,
+        10.848769187927246,
+        11.650651931762695,
+        22.118375778198242
+      ],
+      "wrapToMedianRatio": 1.6163889453310027,
+      "largestToMedianRatio": 1.6163889453310027,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    },
+    {
+      "id": "lavafall-mouth",
+      "frames": 8,
+      "frameSize": [
+        314,
+        534
+      ],
+      "currentEffectiveMaskPixelsAtFrameSize": 62881,
+      "distinctVisiblePhases": 8,
+      "maskedAdjacentRgbMAEIncludingWrap": [
+        14.630025863647461,
+        14.340754508972168,
+        15.373568534851074,
+        12.26240062713623,
+        10.217341423034668,
+        10.282962799072266,
+        10.287373542785645,
+        21.590829849243164
+      ],
+      "wrapToMedianRatio": 1.6231781334792115,
+      "largestToMedianRatio": 1.6231781334792115,
+      "temporalSynthesis": false,
+      "visualSmoothnessVerified": false
+    }
+  ],
+  "visualPlaybackReviewed": false,
+  "limitation": "Changed pixels and numeric loop deltas do not establish smooth playback.",
+  "latestContinuation": {
+    "worktree": "20261111T064410Z-b0d6eae2",
+    "generations": 0,
+    "sourceFramesUnchanged": true,
+    "evidence": "review/continuation-preservation.json",
+    "visualPlaybackReviewed": false
+  }
+}

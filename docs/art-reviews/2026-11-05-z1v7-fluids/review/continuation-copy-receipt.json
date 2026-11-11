@@ -1,0 +1,1757 @@
+{
+  "sourceDirectory": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+  "sourceWorktree": "20261111T062023Z-567a72a5",
+  "copiedBeforeContinuation": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 19707,
+      "sha256": "37b0da38275ff62692192483f5bc028c32201627508cbb02db30f7d6bcccc37f"
+    },
+    {
+      "path": "delivery-manifest.json",
+      "bytes": 58958,
+      "sha256": "6a495f313d217eedf96d536e2fa63e47b17fa1bd9f3345eadd1bc91b5768d307"
+    },
+    {
+      "path": "delivery-size.json",
+      "bytes": 313,
+      "sha256": "5cf54f4ef2c1e38812cc236c6f724630f1da23efcb2bb39556da579ff48b4b62"
+    },
+    {
+      "path": "fx-layout.json",
+      "bytes": 45508,
+      "sha256": "30aaf07c8d2a84f5c10b24435d847f23c5953ff2808ada04963c6758d321bf67"
+    },
+    {
+      "path": "generation-prompts-continuation.json",
+      "bytes": 2679,
+      "sha256": "279c56f91fb9e5bb05736ad172669a0043288aefc71eadb14d1804ccf1fb1fa8"
+    },
+    {
+      "path": "generation-prompts.json",
+      "bytes": 32093,
+      "sha256": "c1a96c28d98d9c9b123409c0db37cc41baa81bb60bd73170edb76fcdeddb198b"
+    },
+    {
+      "path": "input/assemble-README.md",
+      "bytes": 14175,
+      "sha256": "88f864d942bd8f363fb26c7c2347fe867f93078b60b01ddd09870d7ee4098999"
+    },
+    {
+      "path": "input/assemble-inventory.json",
+      "bytes": 107140,
+      "sha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7"
+    },
+    {
+      "path": "input/assemble-structure.json",
+      "bytes": 701176,
+      "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0"
+    },
+    {
+      "path": "input/current-fx-layout.json",
+      "bytes": 28457,
+      "sha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6"
+    },
+    {
+      "path": "input/fall-inventory.json",
+      "bytes": 2417,
+      "sha256": "a88d9043f7af725c72a1277959d94b2eeadf2e12943406c180cdf99451bd6e5d"
+    },
+    {
+      "path": "input/fluids-hd-generation-prompts.json",
+      "bytes": 12911,
+      "sha256": "b10f36737a9ab6946561d8a336d4f7cfff36fbe1a441b223c83c54133868cfd9"
+    },
+    {
+      "path": "input/icefall-center-bridge.png",
+      "bytes": 344098,
+      "sha256": "a1c8d2d55a27247aa2a1a3bbf33c911c7fb3101d84a8f600144f226df63f878a"
+    },
+    {
+      "path": "input/icefall-east-cliff.png",
+      "bytes": 275587,
+      "sha256": "26b7e3f851ff68dec9ed410218aa018aa5230369be5247444e43b35586703183"
+    },
+    {
+      "path": "input/icefall-lower-1.png",
+      "bytes": 269017,
+      "sha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9"
+    },
+    {
+      "path": "input/icefall-lower-2.png",
+      "bytes": 241431,
+      "sha256": "683982b4f148a7b4c5d40ae4b014938a020560758b29e33d333b3479a7f92243"
+    },
+    {
+      "path": "input/icefall-lower-3.png",
+      "bytes": 378509,
+      "sha256": "705e717cec23725e7a57e0d6744178071e1cca180c99745a9ccdba6ca1102a2d"
+    },
+    {
+      "path": "input/icefall-lower-inlet.png",
+      "bytes": 184014,
+      "sha256": "e262a5eab704823b975a5819866fe77e3ce598b749c5d7e87e7671ef1c807b28"
+    },
+    {
+      "path": "input/icefall-mouth.png",
+      "bytes": 438271,
+      "sha256": "1675abede5e42e6d1f46bd67d0b453e0a4644083c1aae5424b05bfa6d54f3f0a"
+    },
+    {
+      "path": "input/icefall-summit.png",
+      "bytes": 753739,
+      "sha256": "134b6cf83d65c70413787b0a331430eaeeab35456ecd71780ee37bd18d48e60f"
+    },
+    {
+      "path": "input/icefall-upper-right.png",
+      "bytes": 257730,
+      "sha256": "26170a251a500830f3536d045247618b038193f4327797ad927e244bb81bd7db"
+    },
+    {
+      "path": "input/icefall-upper-tree.png",
+      "bytes": 242862,
+      "sha256": "4c90909dd065af7309df284c0c48e9895ca86ba2d709ee28a5ec20906859d4c1"
+    },
+    {
+      "path": "input/lavafall-bridge.png",
+      "bytes": 291381,
+      "sha256": "5773b964558db73372aff0a93409d8cb1fc68c08a96f46861abaa324ae2d640c"
+    },
+    {
+      "path": "input/lavafall-lower-step.png",
+      "bytes": 324528,
+      "sha256": "4c1017e20ec9c5da76f4b41f2db93da17684d11aa2f9d0d61067cc15cecfb642"
+    },
+    {
+      "path": "input/lavafall-middle.png",
+      "bytes": 333748,
+      "sha256": "747083262d2fcceec3290a5c9ab89776c727d4c4f6b039916d889e97ff2840cf"
+    },
+    {
+      "path": "input/lavafall-mouth.png",
+      "bytes": 262066,
+      "sha256": "e5cfeb220d595023df9b494b1e496e2b48fab578c4f771e735c831a624b66efc"
+    },
+    {
+      "path": "input/lavafall-upper-left.png",
+      "bytes": 172055,
+      "sha256": "f729807e90cd8e8dfbb38f317619b04c37c0a504a78ebaa2a97a99f436202138"
+    },
+    {
+      "path": "input/lavafall-upper-step.png",
+      "bytes": 306597,
+      "sha256": "431c1a733a1b4ebe7101022715ce7e0fec079fe20721ba8acfd0e7fbaac73d8b"
+    },
+    {
+      "path": "input/lavafall-volcano.png",
+      "bytes": 305248,
+      "sha256": "c28d3fafac8e47f38b9a4ab596354a0199d23a2949a71b416e62484ba4c0bca6"
+    },
+    {
+      "path": "input/lavafall-west.png",
+      "bytes": 317348,
+      "sha256": "9e5d0c4b8f9fda8ab11924f5acd8ab636cf124456793f1bee9b0d75ef50e1c57"
+    },
+    {
+      "path": "input/v7/manifest.json",
+      "bytes": 8220,
+      "sha256": "c113b6a8d02b1e1ae614c5bf7c862e38be953f1576f8fe7dce955928be9d0b8a"
+    },
+    {
+      "path": "input/v7/r1-c1.webp",
+      "bytes": 1615012,
+      "sha256": "4e35a26b15115009f416836e27a28fce4b2399ba7998b1c7ad301e679c249210"
+    },
+    {
+      "path": "input/v7/r1-c2.webp",
+      "bytes": 1644956,
+      "sha256": "e09e8c948322b762be95a98a8c4983d9afae17fc869042d3ee468984482a1b1d"
+    },
+    {
+      "path": "input/v7/r1-c3.webp",
+      "bytes": 1592356,
+      "sha256": "116f1cd3ea1ed2e171bd36f86dbcfec8df8481b8121cfca13f247272b3450f74"
+    },
+    {
+      "path": "input/v7/r1-c4.webp",
+      "bytes": 1544944,
+      "sha256": "66d68d81b99b7bad611b541cc2121b8d61c0f54a4e19d8b0fd86261216908160"
+    },
+    {
+      "path": "input/v7/r1-c5.webp",
+      "bytes": 1544476,
+      "sha256": "1635280ee976deb6008e646992ed396356f6fe6ece98036b211b7593ee61e3c4"
+    },
+    {
+      "path": "input/v7/r2-c1.webp",
+      "bytes": 1512864,
+      "sha256": "e90d4c956a5bb4beae57ce5ae56cccad75a73bb204ec869204cdcd199ac7d97b"
+    },
+    {
+      "path": "input/v7/r2-c2.webp",
+      "bytes": 1680102,
+      "sha256": "29f0866e0c59dd321c8c07c865d987a99752f93e00daccfb87cf90724bec77f4"
+    },
+    {
+      "path": "input/v7/r2-c3.webp",
+      "bytes": 2021962,
+      "sha256": "542525dd8db7a1edc38e3596322db7cb014cd3beb95408b3741be03637971c59"
+    },
+    {
+      "path": "input/v7/r2-c4.webp",
+      "bytes": 1850132,
+      "sha256": "f1caa127d8dc36675d485ecf224d95718c1f6c356029e80e3a96bb5c15de2629"
+    },
+    {
+      "path": "input/v7/r2-c5.webp",
+      "bytes": 1538186,
+      "sha256": "a33e531537c70f0313f30b7907dcfcb9a767f3154a9f413de31482966e86ef93"
+    },
+    {
+      "path": "input/v7/r3-c1.webp",
+      "bytes": 1432620,
+      "sha256": "52274ebf098ce6b7be0509db5af8fb5dfe3fde6aab35c27c3672df7baa5bae9e"
+    },
+    {
+      "path": "input/v7/r3-c2.webp",
+      "bytes": 1594060,
+      "sha256": "e5271a97c0179e0c7bdcf9980ae985ff42615a09b4a25843fdf6260a3adfb3ec"
+    },
+    {
+      "path": "input/v7/r3-c3.webp",
+      "bytes": 1660182,
+      "sha256": "03b4064a88139e76a807a2f080005af08f0e0ca093769f06ed329dd63b6365f2"
+    },
+    {
+      "path": "input/v7/r3-c4.webp",
+      "bytes": 1635444,
+      "sha256": "2532915a6b20b2cd8daa90d6547fc6b86914b7787eec6d4d0fcbad44d1ff1eef"
+    },
+    {
+      "path": "input/v7/r3-c5.webp",
+      "bytes": 1387016,
+      "sha256": "ce62f67badd31b948e238c5c849f4eed1425638077a21b549d8fc1ab6c044a8f"
+    },
+    {
+      "path": "input/v7/r4-c1.webp",
+      "bytes": 240256,
+      "sha256": "11243a0af05def64b0f000251250da78b087b9d23174ff2bd77a956770570009"
+    },
+    {
+      "path": "input/v7/r4-c2.webp",
+      "bytes": 373358,
+      "sha256": "9ac13bcb6a43b1fb0117e9cafbaa56ecfe2cd83a8c8774e08371ae902832e229"
+    },
+    {
+      "path": "input/v7/r4-c3.webp",
+      "bytes": 409804,
+      "sha256": "7356c692a63c887c8cd811bf7195fe09f1939f88e2588cfd12f44e12e42b53e9"
+    },
+    {
+      "path": "input/v7/r4-c4.webp",
+      "bytes": 365560,
+      "sha256": "704a231199e481d228be57f1113a83f0ddf90802dbabedec90acaae73f18295d"
+    },
+    {
+      "path": "input/v7/r4-c5.webp",
+      "bytes": 260056,
+      "sha256": "5a1c2b9c7ebe1c2d6f716a994a2e2aeed494826d39953d4971ca7fe57b191b36"
+    },
+    {
+      "path": "input/v7/zone1-terrain-v7-preview.webp",
+      "bytes": 847696,
+      "sha256": "fda5679bf88f2181dbac7e741fe556aa9ecaaef0b3bd6404bfa559655268445c"
+    },
+    {
+      "path": "input/waterfall-ice-center-bridge.png",
+      "bytes": 302137,
+      "sha256": "89b37a0d26d1a5d437e481d0a01aabd987df25cfbabd6c1e092252132fee2386"
+    },
+    {
+      "path": "input/waterfall-ice-center-step.png",
+      "bytes": 293911,
+      "sha256": "b5a4f95a0fe1952a42b533ccf9e08f0a304d80ed6f7779d856e55a387220661f"
+    },
+    {
+      "path": "input/waterfall-ice-east-cliff.png",
+      "bytes": 331048,
+      "sha256": "8643569683e6f5a800a232b25ab9b80cb6b8fcfc1d17ab33b1b20952d47f9dfe"
+    },
+    {
+      "path": "input/waterfall-ice-lower-1.png",
+      "bytes": 269017,
+      "sha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9"
+    },
+    {
+      "path": "input/waterfall-ice-lower-2.png",
+      "bytes": 211100,
+      "sha256": "407a14eb51a3dba2030e122e66b857ecef6eb8afd942d96dcdd1851c29626b61"
+    },
+    {
+      "path": "input/waterfall-ice-lower-3.png",
+      "bytes": 280980,
+      "sha256": "06be3a62a7aa1c38d883a5a47bdfd19f1b5b0ee662dd5459c60b1a11b9febd1e"
+    },
+    {
+      "path": "input/waterfall-ice-mouth.png",
+      "bytes": 281237,
+      "sha256": "1fd1e7f1055d58ddc53928c69f165e86e6538d58a0679f4b19ed29b48bc8897c"
+    },
+    {
+      "path": "input/waterfall-ice-plaza-right.png",
+      "bytes": 217350,
+      "sha256": "a63892b0c03ffee7db5f174aaba6f6019dde850535ed05f5154c624d128e6bd3"
+    },
+    {
+      "path": "input/waterfall-ice-summit.png",
+      "bytes": 388603,
+      "sha256": "79409570cf27a261f85ea99341d6f5ffe1a5229561b3f30f23ecf3f2073b959c"
+    },
+    {
+      "path": "input/waterfall-ice-upper-bridge.png",
+      "bytes": 165380,
+      "sha256": "f0232360dc2938b5ad961af261c044ac9be68ab505e01e02ae9e6f689062deee"
+    },
+    {
+      "path": "input/waterfall-ice-upper-right.png",
+      "bytes": 229915,
+      "sha256": "4208ce51cfa1d61767d979c2fc7a055287059586f0e6796cfb172fe59679072c"
+    },
+    {
+      "path": "loop-review.json",
+      "bytes": 12062,
+      "sha256": "abf6ff254ecb512aabd81f1766462b934bf015ecd596257d62a72590bd67bbd3"
+    },
+    {
+      "path": "mask-annotations.json",
+      "bytes": 43425,
+      "sha256": "0978963f11ab6ca317fff68f702c2ef2c854db3201a4be2f64540d6bea43fa3e"
+    },
+    {
+      "path": "mask-review.json",
+      "bytes": 17391,
+      "sha256": "94ff25efd5a2f0b5c9c95ceb6f0c4943f7d915f18c9ee78b04f4bfbef01a8aca"
+    },
+    {
+      "path": "masks/ice-stream-flat-central.webp",
+      "bytes": 2766,
+      "sha256": "504bc793b6368b88f4da28e83562acea36c2a49cc6d6f90989ae4d0f889b2821"
+    },
+    {
+      "path": "masks/ice-stream-flat-east.webp",
+      "bytes": 902,
+      "sha256": "3f3022dd6907a3d173edced93afcb4b03ee4c20616d275736923d9ed8f3b73e4"
+    },
+    {
+      "path": "masks/ice-stream-flat-lower.webp",
+      "bytes": 3180,
+      "sha256": "f48142d9f2d159f44fed55e5896b1f4af0bb858a3a5d3684c5583ef16cd0eb19"
+    },
+    {
+      "path": "masks/ice-stream-flat-mouth.webp",
+      "bytes": 390,
+      "sha256": "dfe48c93ef2473ba3d8f144b05d4ae481b047233831719f84036bc99b3daf364"
+    },
+    {
+      "path": "masks/ice-stream-flat-upper.webp",
+      "bytes": 2396,
+      "sha256": "dd41b11969918f80bcf88a97599e04a938164613d1836eba4f995c1a12a988fd"
+    },
+    {
+      "path": "masks/ice-stream-flat.webp",
+      "bytes": 11790,
+      "sha256": "6fc3bad98a71a0a7f5e75ac82bbcad7ade99916421352b49d6dd88282ef1273f"
+    },
+    {
+      "path": "masks/icefall-center-bridge.webp",
+      "bytes": 1140,
+      "sha256": "1001f7ba63def4480c0d3c89ea697f76dca0195d9831df739fa161fa11235caa"
+    },
+    {
+      "path": "masks/icefall-east-cliff.webp",
+      "bytes": 448,
+      "sha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0"
+    },
+    {
+      "path": "masks/icefall-lower-1.webp",
+      "bytes": 684,
+      "sha256": "03622302d4fb8c362fb480bf89e793f123781d7864443698b60ef5b1e9b8d61f"
+    },
+    {
+      "path": "masks/icefall-lower-2.webp",
+      "bytes": 550,
+      "sha256": "d35f3c8697e85601593449d942bbc488575f128aca7137a5ebfcfa24b7dd19ce"
+    },
+    {
+      "path": "masks/icefall-lower-3.webp",
+      "bytes": 1244,
+      "sha256": "bdd703d1c7344437b70c7c439ff5d693dde05062f8181096222df254891821e0"
+    },
+    {
+      "path": "masks/icefall-lower-inlet.webp",
+      "bytes": 470,
+      "sha256": "ecb75d8f03f4c072747703379bc0a2d15b330e60faf60e59b5a9c014240c0260"
+    },
+    {
+      "path": "masks/icefall-mouth.webp",
+      "bytes": 1552,
+      "sha256": "b003a8f4707420849c793634c2c29f49ff3a5d00cde986fabd962c5268b3813c"
+    },
+    {
+      "path": "masks/icefall-summit.webp",
+      "bytes": 3782,
+      "sha256": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e"
+    },
+    {
+      "path": "masks/icefall-upper-right.webp",
+      "bytes": 378,
+      "sha256": "74627607e4163915fc91e9deaa1aed3ef052417269c7b84965630954c9583507"
+    },
+    {
+      "path": "masks/icefall-upper-tree.webp",
+      "bytes": 210,
+      "sha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822"
+    },
+    {
+      "path": "masks/lava-flat-left-bottom.webp",
+      "bytes": 806,
+      "sha256": "7e82e9e1d6e93f33b03f1993c4764fdfbf67c579181d257466ab780535fca4ab"
+    },
+    {
+      "path": "masks/lava-flat-lower.webp",
+      "bytes": 8126,
+      "sha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce"
+    },
+    {
+      "path": "masks/lava-flat-middle.webp",
+      "bytes": 3418,
+      "sha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310"
+    },
+    {
+      "path": "masks/lava-flat-southwest.webp",
+      "bytes": 1930,
+      "sha256": "7aa0e04b1e1022d5157f06cab06b5617d01c14f93db5d3184d0c78a93c2b718d"
+    },
+    {
+      "path": "masks/lava-flat-upper.webp",
+      "bytes": 7582,
+      "sha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f"
+    },
+    {
+      "path": "masks/lava-flat-west.webp",
+      "bytes": 2924,
+      "sha256": "39560e388ad2f22cf1b105a9e6edf7d3277d2f600c3a543773b576a3d6b004e1"
+    },
+    {
+      "path": "masks/lava-flat.webp",
+      "bytes": 26962,
+      "sha256": "a46865a29c561db269ec3c20b4728ba4e695f8656f6a647f4b78b930c5d02274"
+    },
+    {
+      "path": "masks/lavafall-bridge.webp",
+      "bytes": 892,
+      "sha256": "97a127c51fed43f88e6b424df602404b45c8cd9f6aa5ee946adba886c145e777"
+    },
+    {
+      "path": "masks/lavafall-lower-step.webp",
+      "bytes": 1390,
+      "sha256": "2be74c5bf40cf7581fbcf199207a919d2c269c5221ef6a366c09305a776c2b39"
+    },
+    {
+      "path": "masks/lavafall-middle.webp",
+      "bytes": 1410,
+      "sha256": "758980ea46aedb458e6b3f1b56bb40428f219354a3667197ff002ff31baa5044"
+    },
+    {
+      "path": "masks/lavafall-mouth.webp",
+      "bytes": 1156,
+      "sha256": "c08464892c51b2173173e6f12802b776c9da5b2208b001e8c5df896623b02d2f"
+    },
+    {
+      "path": "masks/lavafall-upper-left.webp",
+      "bytes": 548,
+      "sha256": "5af64a1bc68d5929ec181f72efdace686483225ffb49c21d2544098feca78583"
+    },
+    {
+      "path": "masks/lavafall-upper-step.webp",
+      "bytes": 1046,
+      "sha256": "96720c28746a756dd2cb5ce8900dfb0ec968d177c63e9d896304f160f06558dd"
+    },
+    {
+      "path": "masks/lavafall-volcano.webp",
+      "bytes": 1192,
+      "sha256": "9ea89353b9500746c46221d24359dc1c475f521e85d360e41d7f9a021b59ed84"
+    },
+    {
+      "path": "masks/lavafall-west.webp",
+      "bytes": 1210,
+      "sha256": "9beeab3c8b1fd9e747203a98c773b0812e40e817ca458eaee1c02b66c16b989d"
+    },
+    {
+      "path": "masks/shore-band-ice.webp",
+      "bytes": 2754,
+      "sha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802"
+    },
+    {
+      "path": "masks/shore-band-spirit.webp",
+      "bytes": 39776,
+      "sha256": "04a3fae76f5ede5a903dfabe7783b3291e009eb6db761a3b410a08f964a9f5a4"
+    },
+    {
+      "path": "masks/shore-band.webp",
+      "bytes": 44518,
+      "sha256": "ab7fae6133772b2b8f4b8f95ff942c808b30cfdf9da2ca5e520833aa722ef4c4"
+    },
+    {
+      "path": "masks/spirit-river-east.webp",
+      "bytes": 26640,
+      "sha256": "fa45b52ed5cc8e3e75874bd028ec58a2a5fbf696dd3354cbaada05aabf0fdb89"
+    },
+    {
+      "path": "masks/spirit-river-west.webp",
+      "bytes": 44736,
+      "sha256": "7611bd0c81fc73b8944a1e118a89c6506323dba7a9a9b5767c241c62dcf126de"
+    },
+    {
+      "path": "masks/spirit-river.webp",
+      "bytes": 73646,
+      "sha256": "b15d58c2ad4cdaccfac47a600a57df92ecb96db99bd1bf0e52451dc4c4b9eeb8"
+    },
+    {
+      "path": "off-replacements.json",
+      "bytes": 676,
+      "sha256": "f837af0d12db136d24919edbf893f8904f0f482c45a271abb97194d2477f494d"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 20395,
+      "sha256": "515de3a3d883078382e1c58a9d105a8a98f797b02f172c3a41c44fe639cafc11"
+    },
+    {
+      "path": "queue-check.json",
+      "bytes": 3639,
+      "sha256": "f2e78fe6a1df7ffd85aa32b8f0b4b2618d6ddef0e8d3d0a248fc00e1e95c9f08"
+    },
+    {
+      "path": "review/before-construction-mask-review.json",
+      "bytes": 14887,
+      "sha256": "62442654646510aac8130f116d86ff03f3b2dd7820fabda07a38143b54ee4ccd"
+    },
+    {
+      "path": "review/before-mask-review.json",
+      "bytes": 26150,
+      "sha256": "12df81cabc9d00958bb827546a7785119cc6627ad57f7aa4bb5cf8ea3c725b36"
+    },
+    {
+      "path": "review/before-masks/icefall-east-cliff.webp",
+      "bytes": 450,
+      "sha256": "a5063df56b4322b45dd4e90856139de0bc130cf44a436c1eef1ad1957b3fbf5b"
+    },
+    {
+      "path": "review/before-masks/icefall-summit.webp",
+      "bytes": 3842,
+      "sha256": "b79103f95ca6d33829dfe9af2049d004cd601b0592a100780d7264d7d49b3579"
+    },
+    {
+      "path": "review/before-masks/icefall-upper-tree.webp",
+      "bytes": 898,
+      "sha256": "9ab25a9dabf30a6f6c53ee9646527d7b36cb65108de70a1ff4b7036bd2892eaf"
+    },
+    {
+      "path": "review/before-masks/shore-band-ice.webp",
+      "bytes": 11522,
+      "sha256": "87530b255e66c5d90232f421e61d2e563a460996eed961bbf1fac0d076484e1e"
+    },
+    {
+      "path": "review/before-masks/shore-band.webp",
+      "bytes": 53158,
+      "sha256": "b49e720f0b83f1496b01ada0e7e1fdaf3daac92c9fb815de9a53b754d383aa4a"
+    },
+    {
+      "path": "review/before-registration/layout.json",
+      "bytes": 45508,
+      "sha256": "30aaf07c8d2a84f5c10b24435d847f23c5953ff2808ada04963c6758d321bf67"
+    },
+    {
+      "path": "review/before-registration/mask.webp",
+      "bytes": 3656,
+      "sha256": "4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76"
+    },
+    {
+      "path": "review/before-registration/sheet.webp",
+      "bytes": 330532,
+      "sha256": "f3612a0c7a9111655e4fb324045d385019009cd9213771d07a149f58ca83ebd8"
+    },
+    {
+      "path": "review/before-shore-witness-result.json",
+      "bytes": 806,
+      "sha256": "f4e450e9a5754622bce934fa2f9052e85cfc3fa5d1def106c417fc089218c341"
+    },
+    {
+      "path": "review/boundary/ice-bank-reference-grid.jpg",
+      "bytes": 55133,
+      "sha256": "48de34c4ff250d1c429ecaf652f7030e62823ef9d2c8116567cf1765434f90a3"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-overview.jpg",
+      "bytes": 211369,
+      "sha256": "c32735c98754e4d2aed878af78077c428a82160f87a14bc874814b729617a010"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-central-shore-repair.webp",
+      "bytes": 111194,
+      "sha256": "f7559ddcf42ecd3a37642344f2f67f407109a7df49c9e7ea2b36585c5949a661"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-overview.jpg",
+      "bytes": 88259,
+      "sha256": "45a39fcf642872a1f482bfa7edb106b317000206b7c39f409ea369654a7076e7"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-east-shore-repair.webp",
+      "bytes": 105550,
+      "sha256": "637adef27c37e67d58e425448e91b5a012c7ce0da540527057913a3f1058a310"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-overview.jpg",
+      "bytes": 222799,
+      "sha256": "7b24f011643f1d04d32d604f36bba1fa5b3ff62207216a5e5f15209ca392a0a8"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-lower-shore-repair.webp",
+      "bytes": 122362,
+      "sha256": "f56f8f746a6afad9f9b7c748cd5e5949dcf6cb8b5d738b7a833fbfce2adda1d4"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-overview.jpg",
+      "bytes": 19248,
+      "sha256": "b61816d09cbc90e9f51dab16dc648730a658d401df70da19b30576dc8a6c2aa2"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-mouth-shore-repair.webp",
+      "bytes": 26826,
+      "sha256": "25a625137084cd1e8c2a81e1415229f11fde4df50c3e113c1b02e4a3c03a8850"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-overview.jpg",
+      "bytes": 137936,
+      "sha256": "ecf41f40c22fb646152b4ee50b3a3db97de662743b34179f3c9aae0f9fb1e544"
+    },
+    {
+      "path": "review/boundary/ice-stream-flat-upper-shore-repair.webp",
+      "bytes": 75958,
+      "sha256": "c1f9e80d334f8bea21b46dfef067c57d6169e106ea4b156eca21eb80420a63af"
+    },
+    {
+      "path": "review/boundary/icefall-center-bridge-liquid-reference.webp",
+      "bytes": 93950,
+      "sha256": "24996ab457d2b374eb5f126fa922d14ba681bbe3ee40c372c0269d0ca6835b20"
+    },
+    {
+      "path": "review/boundary/icefall-center-bridge-reference-grid.jpg",
+      "bytes": 59889,
+      "sha256": "29d12a968609c2511a817ad83a7039bbb9f5445f966d3890b84388c5bac10d80"
+    },
+    {
+      "path": "review/boundary/icefall-center-bridge.webp",
+      "bytes": 109636,
+      "sha256": "8ec0ef7a7ab3a8b879eda98128f3ba6b8ff08d9204edef6775d2b2d1955c85fe"
+    },
+    {
+      "path": "review/boundary/icefall-east-cliff-detail-0.jpg",
+      "bytes": 94983,
+      "sha256": "93d9f37152d9e5673e127f71bfe541c671ac27a1646744f0c720af72270dbe65"
+    },
+    {
+      "path": "review/boundary/icefall-east-cliff-liquid-reference.webp",
+      "bytes": 82852,
+      "sha256": "eb28227bade04ded738960f3303924b2badf94e39fba68608927dcde797feb82"
+    },
+    {
+      "path": "review/boundary/icefall-east-cliff-reference-grid.jpg",
+      "bytes": 57059,
+      "sha256": "c8ac90cf9f3ddb018815cb9ba3bf6154fc1680508209d312d90cc736023ee9e6"
+    },
+    {
+      "path": "review/boundary/icefall-east-cliff-repair.webp",
+      "bytes": 83424,
+      "sha256": "73cbd10c94fa550684cfe1ec40ccbab9e1f05ef12bd0b301dab6fe133bf12670"
+    },
+    {
+      "path": "review/boundary/icefall-east-cliff.webp",
+      "bytes": 56266,
+      "sha256": "1e341de1590701dac44deaf38df496397b8dd472364c9aecd710efa7f41a7176"
+    },
+    {
+      "path": "review/boundary/icefall-lower-1-liquid-reference.webp",
+      "bytes": 88698,
+      "sha256": "df8ebfa944be6c6d3d440745df38779689d6b71edcf9d81a7d67435a5b005095"
+    },
+    {
+      "path": "review/boundary/icefall-lower-1-reference-grid.jpg",
+      "bytes": 48996,
+      "sha256": "89411f6e508c6cda2bbbb5e69f5ee180bf0485bf897c5ba88b9991032b0213cb"
+    },
+    {
+      "path": "review/boundary/icefall-lower-1.webp",
+      "bytes": 96162,
+      "sha256": "4b689d3dd0eced5cd99f7a1ec4bd8cd375be4f8ddac5c2ccbe7e912da63498ee"
+    },
+    {
+      "path": "review/boundary/icefall-lower-2-liquid-reference.webp",
+      "bytes": 76952,
+      "sha256": "3dc4595e2d55efe2101f41dfd6b8ac9f8abecba7b01f8a4c777a0d6d605ef166"
+    },
+    {
+      "path": "review/boundary/icefall-lower-2-reference-grid.jpg",
+      "bytes": 43896,
+      "sha256": "c330eee28ed1cd4bcb4c4a284863a94be1554f28c2dc80fb05b848c664c4d6f7"
+    },
+    {
+      "path": "review/boundary/icefall-lower-2.webp",
+      "bytes": 84338,
+      "sha256": "112070cf6c43de9017423b3ab0e3c4e99c0354d1786bac81c2691040dfcc2e26"
+    },
+    {
+      "path": "review/boundary/icefall-lower-3-liquid-reference.webp",
+      "bytes": 119418,
+      "sha256": "33dbf9f0a12701682c33994ec5a40249ce478c95b23005a07d96cadb629a17e7"
+    },
+    {
+      "path": "review/boundary/icefall-lower-3-reference-grid.jpg",
+      "bytes": 68442,
+      "sha256": "7bd2602af0f115123d2f9cacd674b2157dad6763338e785568b0b6719e12245a"
+    },
+    {
+      "path": "review/boundary/icefall-lower-3.webp",
+      "bytes": 133538,
+      "sha256": "09db753f21add95f0f9a8dd1c3db2dd157f786c9efb1585d5dbc7645f7f5471f"
+    },
+    {
+      "path": "review/boundary/icefall-lower-inlet-liquid-reference.webp",
+      "bytes": 60260,
+      "sha256": "b2645603e28582267877136b5ac7a507a21bdfdeea64083f9fbbf7580d25827a"
+    },
+    {
+      "path": "review/boundary/icefall-lower-inlet-reference-grid.jpg",
+      "bytes": 33865,
+      "sha256": "2728455463f12fa99a75e7a90c5e8efa578c2d788d31dc355c99093adcd45197"
+    },
+    {
+      "path": "review/boundary/icefall-lower-inlet.webp",
+      "bytes": 65986,
+      "sha256": "4b466720ddb65cacebaee2e99607ad6b883f1420f09ec08944d0752ca9be9845"
+    },
+    {
+      "path": "review/boundary/icefall-mouth-reference-grid.jpg",
+      "bytes": 77637,
+      "sha256": "c7a440c3334b820ce3480d4db0935fdc1fc3ce54d3b626bc224e4ab435653389"
+    },
+    {
+      "path": "review/boundary/icefall-mouth.webp",
+      "bytes": 153818,
+      "sha256": "a2d9502cc3bfd702db6c5305a980ec5d70c96606c4c68c6d1a72617914c22d88"
+    },
+    {
+      "path": "review/boundary/icefall-summit-detail-0.jpg",
+      "bytes": 96494,
+      "sha256": "ff2128b12173bb97f2efcf21a87d790599af3414e5bc20e7810c150dca4e3ce9"
+    },
+    {
+      "path": "review/boundary/icefall-summit-detail-1.jpg",
+      "bytes": 126344,
+      "sha256": "3c10f6ec54da5e13aa9fb4888d6500b6589314885b9f2e7fb55e96b2c2a42831"
+    },
+    {
+      "path": "review/boundary/icefall-summit-liquid-reference.webp",
+      "bytes": 234252,
+      "sha256": "a04a4d5d836c01dca84c6131220905520d030a9a5a4e6b4989d9de0db2195879"
+    },
+    {
+      "path": "review/boundary/icefall-summit-reference-grid.jpg",
+      "bytes": 155331,
+      "sha256": "91582e4f5f4931ceea559d95ec260e5e4d3cede2b74d72c76e94cfe958f0cffc"
+    },
+    {
+      "path": "review/boundary/icefall-summit-repair.webp",
+      "bytes": 233620,
+      "sha256": "50b297a1a93d59cddb754976614d3e02a9a97ee604fea78d810f45838ef3b737"
+    },
+    {
+      "path": "review/boundary/icefall-summit.webp",
+      "bytes": 156684,
+      "sha256": "2a99ae3d6d5fd191d047c1c9081e56782ae679705c20351fbeebf96b9e75823d"
+    },
+    {
+      "path": "review/boundary/icefall-upper-right-liquid-reference.webp",
+      "bytes": 58862,
+      "sha256": "724f23af970e663a632f82350988ea1d1120d870651bc39da0c03d398c243e2a"
+    },
+    {
+      "path": "review/boundary/icefall-upper-right-reference-grid.jpg",
+      "bytes": 44927,
+      "sha256": "a6a22a655664feab52b8cf720de1fac109c66532b53e4bcbc76c5b6392e1afbb"
+    },
+    {
+      "path": "review/boundary/icefall-upper-right.webp",
+      "bytes": 69558,
+      "sha256": "aea5de733f40c5d245bb0ecbc5ffbe9976970a3efc506b76bfabf478d17a7bcf"
+    },
+    {
+      "path": "review/boundary/icefall-upper-tree-detail-0.jpg",
+      "bytes": 133219,
+      "sha256": "388ac602d9b21dd71e1ed112bf5744eada1eafdbcf1f3f6f5e7ca80f25027e3f"
+    },
+    {
+      "path": "review/boundary/icefall-upper-tree-liquid-reference.webp",
+      "bytes": 76854,
+      "sha256": "f647f2e59ff0e21459137c3e63a9890dd78469acd9dc6b671be9529863973aeb"
+    },
+    {
+      "path": "review/boundary/icefall-upper-tree-reference-grid.jpg",
+      "bytes": 52139,
+      "sha256": "6892192fe5b43ac57de0b33f487144ed2b2293f1202eecfeee59dfe549970ffa"
+    },
+    {
+      "path": "review/boundary/icefall-upper-tree-repair.webp",
+      "bytes": 76792,
+      "sha256": "ccbff658d8fbb6f0b2dccf2324401156f0886a306c7f3722a8bc37690765d8bb"
+    },
+    {
+      "path": "review/boundary/icefall-upper-tree.webp",
+      "bytes": 52064,
+      "sha256": "ffa8056101ebb821c964e20bcd1622ae23247deb4a2cfeea3d6d836643ff94f8"
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-overview.jpg",
+      "bytes": 125712,
+      "sha256": "9acc10f29f92f77bbdb3387a6bc03a1b0b1ca1a7d333d26a719afad6c77f4727"
+    },
+    {
+      "path": "review/boundary/lava-flat-left-bottom-particle-proof.webp",
+      "bytes": 117434,
+      "sha256": "00c1c85711f9919433a6f9fde6a548286a3472512918d2d85fce332a73b46aa5"
+    },
+    {
+      "path": "review/boundary/lava-flat-lower-overview.jpg",
+      "bytes": 331963,
+      "sha256": "ce91d393e2da9ee39676547eb8d0e3707c131d374938c816ebb25f4cd8b5d378"
+    },
+    {
+      "path": "review/boundary/lava-flat-middle-overview.jpg",
+      "bytes": 141343,
+      "sha256": "c7d11bbf9c5947874d3730ac11ef442cc9223597ac2007e990586aa8a4318851"
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-overview.jpg",
+      "bytes": 239800,
+      "sha256": "71e03bf25b8166ea28093945f1b4c2c575f978fce71e55f4592e507d494a0f44"
+    },
+    {
+      "path": "review/boundary/lava-flat-southwest-particle-proof.webp",
+      "bytes": 214926,
+      "sha256": "40061ddbb7a72ab722dc418a32caa31617a536a309ae59b7334dd857a093f576"
+    },
+    {
+      "path": "review/boundary/lava-flat-upper-overview.jpg",
+      "bytes": 202958,
+      "sha256": "7b5ce8c7678dcd7eaaba73930270d2b882b0f5a8a88b2150dd047651f4b8eb50"
+    },
+    {
+      "path": "review/boundary/lava-flat-west-overview.jpg",
+      "bytes": 348227,
+      "sha256": "0eb5375a6c4f092818fb0463b109229260924156c83d8f2baaf7e317a6bfd685"
+    },
+    {
+      "path": "review/boundary/lavafall-bridge.webp",
+      "bytes": 28746,
+      "sha256": "c03971a1744f58b0dc64f2b181d65199182984a700d3d03e91a59697dbabdf83"
+    },
+    {
+      "path": "review/boundary/lavafall-lower-step.webp",
+      "bytes": 34606,
+      "sha256": "97fb29d85ced4af0eaf2a89b3886f6d7eedd93122e6352506d38bd20f1710315"
+    },
+    {
+      "path": "review/boundary/lavafall-middle.webp",
+      "bytes": 36814,
+      "sha256": "7b1376f60c74cab70f556afee7de4acb9b62a594b0d251b2ddfd3a53c480ed61"
+    },
+    {
+      "path": "review/boundary/lavafall-mouth.webp",
+      "bytes": 30300,
+      "sha256": "95fcb0984a5bf956a6d879989c68cfb7e3728567a03240ea06b01059afae6c5b"
+    },
+    {
+      "path": "review/boundary/lavafall-upper-left.webp",
+      "bytes": 14516,
+      "sha256": "aeb198567e8dcaad66a3b8f079e10ad9fef31e790e7487dd36a84b21b66623da"
+    },
+    {
+      "path": "review/boundary/lavafall-upper-step.webp",
+      "bytes": 32790,
+      "sha256": "c57b98fd38f0cd34fec2ec50d5fdd594b7501a91232289d4c3c9983919c84eca"
+    },
+    {
+      "path": "review/boundary/lavafall-volcano.webp",
+      "bytes": 33496,
+      "sha256": "711e9e4af62c3361b8013d022a5bdd65a4375bf2fba98179762671ffc788c809"
+    },
+    {
+      "path": "review/boundary/lavafall-west.webp",
+      "bytes": 33554,
+      "sha256": "34f5a3a5e47f32522b354365fa511a74c1c34a3c52a087c0fe1fcd67c1f6f1d5"
+    },
+    {
+      "path": "review/boundary/shore-band-ice-actual-bank-proof.webp",
+      "bytes": 68458,
+      "sha256": "0292e8fd87c2d3bad59dc41cc495124651906e9816503dca9348da81e3e4b1d6"
+    },
+    {
+      "path": "review/boundary/shore-band-ice-independent-proof.webp",
+      "bytes": 118874,
+      "sha256": "3ad2a7c2c557fda85390c873e66ae338bc73ea5402d6c42621e1816bd54af72d"
+    },
+    {
+      "path": "review/boundary/shore-band-ice-witness.webp",
+      "bytes": 126816,
+      "sha256": "7ce1e4e0acad4fce754ee3b84e8726e31d05ebdaced004ae714527f2425e9e5d"
+    },
+    {
+      "path": "review/boundary/shore-band-spirit-actual-bank-proof.webp",
+      "bytes": 65572,
+      "sha256": "4cdb955157fdea83128f9223333604046bf1e99fdfbaec2a25a155913fbf7a9e"
+    },
+    {
+      "path": "review/boundary/spirit-bank-reference-grid.jpg",
+      "bytes": 55232,
+      "sha256": "e602ea027c9283c52926fb26af1740530099686e55a38913e5b7578eb8529ea0"
+    },
+    {
+      "path": "review/boundary/spirit-river-east-overview.jpg",
+      "bytes": 72789,
+      "sha256": "b4d7a47707669bff559a4cfb26b66ee531f3731d5fcbfc5199729c7e611f7c5e"
+    },
+    {
+      "path": "review/boundary/spirit-river-west-overview.jpg",
+      "bytes": 65415,
+      "sha256": "289a05d6275c0acee05f61d6c75933ac36dd1d2dbd5e555fb2b91728c1d9db6d"
+    },
+    {
+      "path": "review/boundary/spirit-water-only-ground.jpg",
+      "bytes": 75545,
+      "sha256": "ca76d391766e36150b979cd7a47d4ff7efd4892c825df760f0339453227f9f4b"
+    },
+    {
+      "path": "review/boundary/summit-lower-drop-coverage.webp",
+      "bytes": 39120,
+      "sha256": "5104777f039c0465405b8b1cd15cefa4cdd97b0503d76d1fbbacb25a9c67f9aa"
+    },
+    {
+      "path": "review/boundary/summit-lower-drop-survey.jpg",
+      "bytes": 110809,
+      "sha256": "f87192fd1652343d83d8a82a2565858c8f5e6c97d192feecc893e07e374572eb"
+    },
+    {
+      "path": "review/boundary/summit-lower-eight-phases.jpg",
+      "bytes": 113706,
+      "sha256": "8cf771fbf1dd676d2bbb21d8a5ffc2a376a77094b90da3a91d221cd0cf005f12"
+    },
+    {
+      "path": "review/boundary/summit-lower-registration-before.jpg",
+      "bytes": 94975,
+      "sha256": "e28dc326fab7864ec669613ce72adfe5cde90a41b5e6f6f22977b9495872894f"
+    },
+    {
+      "path": "review/boundary/summit-lower-registration-current.webp",
+      "bytes": 48772,
+      "sha256": "b155a389efe266b65efdef72ab18d79c52e1511fcb0e66c749c96da60391cf05"
+    },
+    {
+      "path": "review/capture-report.json",
+      "bytes": 670,
+      "sha256": "753c048ad83ccbc5b29f06cec7aa36dd3fb3fba9b1fa649b3f028abf948d78a0"
+    },
+    {
+      "path": "review/clips/owner-2-ice-bridge.mp4",
+      "bytes": 491167,
+      "sha256": "002f0bbfdfe546a0cd4464d5b5059f7acb124a3b9d6fc4de4923a2b131111d00"
+    },
+    {
+      "path": "review/clips/owner-3-lava.mp4",
+      "bytes": 512477,
+      "sha256": "b9eb1bbd479fc4018547a0ad3fbcef0f5ec9d06f348b5d8ef14e3ca2a4beeddb"
+    },
+    {
+      "path": "review/clips/owner-4-central-stream.mp4",
+      "bytes": 558208,
+      "sha256": "dbe9dc2d167f7ce630d4154e723f661dfcefa6e79b19e4504a1e14030aa6179a"
+    },
+    {
+      "path": "review/contact-icefalls.jpg",
+      "bytes": 817273,
+      "sha256": "6349eb2ae73afa802c7efe96f5a8c091b71cc1e5e5e59be4c9bc286f4a5867ac"
+    },
+    {
+      "path": "review/contact-lavafalls.jpg",
+      "bytes": 513527,
+      "sha256": "cb42e33b98c933aca50f2febabbe25f00249d4eac06fc652c8db3f53b6b169d2"
+    },
+    {
+      "path": "review/contact-streams.jpg",
+      "bytes": 718133,
+      "sha256": "d98bbef9d7d3897abb06e52fffcffdf5ae1595c9bd29e0692e246cb1c13152ec"
+    },
+    {
+      "path": "review/continuation-provenance.json",
+      "bytes": 2989,
+      "sha256": "ffe8f7747dfa22f6d750548bb0db12c4488d58800def8d89499ee514ed015870"
+    },
+    {
+      "path": "review/continuation-pruned-files.json",
+      "bytes": 7933,
+      "sha256": "fa29478b673e97d1ff9cdb24f54caa0795e57e5112ac215db8079fb2a6097dfd"
+    },
+    {
+      "path": "review/coverage-witness-result.json",
+      "bytes": 1010,
+      "sha256": "25e850ea039051e309579e0d9f394f60d726061288b61175ca0c1d907a970a41"
+    },
+    {
+      "path": "review/current-pruned-files.json",
+      "bytes": 2187,
+      "sha256": "ad884a4fc9a8b28c9c94697f493a3012eb5efd283f55612a8067da84f0202ce5"
+    },
+    {
+      "path": "review/delivery-verification.json",
+      "bytes": 97450,
+      "sha256": "52985cb794de21abeda74fae5f7c6772714c5bf77fa79ee02c9c27ef7658e6d6"
+    },
+    {
+      "path": "review/ground-crop-check.json",
+      "bytes": 2082,
+      "sha256": "be2424bb37c8af862baab8904c9ddf8a6bcbdd068bbc66dd02ec6a72d07a0e80"
+    },
+    {
+      "path": "review/idempotence-check.json",
+      "bytes": 1261,
+      "sha256": "ba9cf881e0d95a3103a6c744802ffba58379b203a2a7d92bbbaa57b7d2141415"
+    },
+    {
+      "path": "review/independent-exclusions.json",
+      "bytes": 2947,
+      "sha256": "94d5f3b07eccfe95189644e8636e9f296fa7ff4ed218954746605bc12478486a"
+    },
+    {
+      "path": "review/independent-mask-review.json",
+      "bytes": 25952,
+      "sha256": "0689641594f79af2e5a857ddc89723484acc9a750b8d5f229aaa98879a8aafab"
+    },
+    {
+      "path": "review/index.html",
+      "bytes": 6516,
+      "sha256": "cb3f43cea8220211cc371b9f8c114b45b5cd4457612427e6807c3243b5e3bbd5"
+    },
+    {
+      "path": "review/inherited-assets.json",
+      "bytes": 20724,
+      "sha256": "d32222e50484ce2d81a25e157949a16285b11713cb2a0721f5947ead277024d2"
+    },
+    {
+      "path": "review/liquid-reference-result.json",
+      "bytes": 15291,
+      "sha256": "477c23b00a92b82f50c6ad3e7afacc57069fbff42b6533a4b1e6c143c1bb5734"
+    },
+    {
+      "path": "review/liquid-reference.json",
+      "bytes": 12456,
+      "sha256": "1e198772906379f6d27789a61de077da47e52ac351e2e2a151ced9d0b182044b"
+    },
+    {
+      "path": "review/mask-correction-result.json",
+      "bytes": 2667,
+      "sha256": "3186bc4aa05bf365e3424c1da0ab0a784a16ecd652bc667a289271d692e2dc8f"
+    },
+    {
+      "path": "review/mask-corrections.json",
+      "bytes": 13323,
+      "sha256": "d911bb7e4f9769170a6ec36224292ddaa482d219f0f7cacc7a78481f0ac6be47"
+    },
+    {
+      "path": "review/offline-render-report.json",
+      "bytes": 89712,
+      "sha256": "46ed515a937a09db516cd8958c741555a0f3d985bd9807a47499781165bcd60f"
+    },
+    {
+      "path": "review/owner-2-ice-bridge-sequence.jpg",
+      "bytes": 239174,
+      "sha256": "1265a4d92fc3b663b1ec170396775a6212587cebac0c2e743c52fe58e3b97d06"
+    },
+    {
+      "path": "review/owner-3-lava-sequence.jpg",
+      "bytes": 210106,
+      "sha256": "c3936b9e2aa2fe0fdf93c3077eeb73639da0194d179ee6cf815e44bf63322afc"
+    },
+    {
+      "path": "review/owner-4-central-stream-sequence.jpg",
+      "bytes": 227875,
+      "sha256": "9226485649a0724c2c48f4c537867e54aff1081b75f2fe06627171fab93160db"
+    },
+    {
+      "path": "review/owner-reference/2-18.09.37.jpg",
+      "bytes": 84452,
+      "sha256": "5665872529c343b0e2be0825293e58b7132583662d0e0bfcfb5cf9f1d4222842"
+    },
+    {
+      "path": "review/owner-reference/3-18.11.44.jpg",
+      "bytes": 86330,
+      "sha256": "f251e1d22695c8261dc7e0df6b1d614e6529b32074123ff26c805850bc80b4bf"
+    },
+    {
+      "path": "review/owner-reference/4-18.09.11.jpg",
+      "bytes": 96653,
+      "sha256": "f4754d4d4f617d671f5725c82fc6db3e87ef2efcc8e9cee617da214c9bca12d0"
+    },
+    {
+      "path": "review/owner-reference/provenance.json",
+      "bytes": 1341,
+      "sha256": "6be69e514350bc93f7de575e403abac89c0c037d8d8cf4cdd224f9cd43b449f6"
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-central.webp",
+      "bytes": 121612,
+      "sha256": "049be178a031bb5b494c1eb1aa463ecf78ae12464126b362a078e9afaa4bf50b"
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-east.webp",
+      "bytes": 90922,
+      "sha256": "5b7275e99cc55a7c9deb88fcaf935ad20c2b1dd9de2b7d02c5a6b9141f358b4b"
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-lower.webp",
+      "bytes": 134144,
+      "sha256": "1965a3f1e3d4ec6b6ab5089af4668cbcdce4dc1eee68327d479477836f814fea"
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-mouth.webp",
+      "bytes": 20362,
+      "sha256": "8fa73ebf7bdc00ee193e93ad978373139ad235aacada711a0617a2ac4f6dddf7"
+    },
+    {
+      "path": "review/pairs/ice-stream-flat-upper.webp",
+      "bytes": 77360,
+      "sha256": "c0d3cb197bf207aabf0c06d0846767fba49fefddc2dab06e13fb790401037f9c"
+    },
+    {
+      "path": "review/pairs/icefall-center-bridge.webp",
+      "bytes": 71596,
+      "sha256": "95ec6e5d633d1cb9d92db5084f87b03bf2f14ff06c71148bf64b41c74147badc"
+    },
+    {
+      "path": "review/pairs/icefall-east-cliff.webp",
+      "bytes": 60284,
+      "sha256": "98282dfb53d9179b8681521844709ef2f441c228ffb796dee36f7d5ad5efe266"
+    },
+    {
+      "path": "review/pairs/icefall-lower-1.webp",
+      "bytes": 65524,
+      "sha256": "d897b0771563cda8da6da2b01df9bfee413dc5e893c07a4000cd3d3e3dbd2cfc"
+    },
+    {
+      "path": "review/pairs/icefall-lower-2.webp",
+      "bytes": 57518,
+      "sha256": "d0f85cf65a4c8944aba9eae0998ab2d85d2040f21ccf9888a66bfbb7df526fb7"
+    },
+    {
+      "path": "review/pairs/icefall-lower-3.webp",
+      "bytes": 89386,
+      "sha256": "266dd5db1889a6c3e285607fd4901138d4031e7b07dd30619f93810394310369"
+    },
+    {
+      "path": "review/pairs/icefall-lower-inlet.webp",
+      "bytes": 45120,
+      "sha256": "0898665741f0756f787c8865433fe3cdd7ccc5d77aaf275c904125e58dd5721e"
+    },
+    {
+      "path": "review/pairs/icefall-mouth.webp",
+      "bytes": 102950,
+      "sha256": "1309b442fb44f83ad78b1fb87124ea4e692734ccdc6463df9102807cefa1634e"
+    },
+    {
+      "path": "review/pairs/icefall-summit.webp",
+      "bytes": 138464,
+      "sha256": "6a95151b53f70362e5f4eeae739c8c9683eaadf9ec7033779bf28e072f73fce8"
+    },
+    {
+      "path": "review/pairs/icefall-upper-right.webp",
+      "bytes": 42350,
+      "sha256": "0e822f458c98098accdfe4941b9ff5771368e4726b180f49e67e8a7e30a6720a"
+    },
+    {
+      "path": "review/pairs/icefall-upper-tree.webp",
+      "bytes": 56602,
+      "sha256": "362d341b869b593c1c73a446bc4a4d9ea0e624f19aa374fce28c5287d29aac6d"
+    },
+    {
+      "path": "review/pairs/lava-flat-left-bottom.webp",
+      "bytes": 109098,
+      "sha256": "99a042ce8c97486ffc4ebe045f9a92f169a0ce209e4293c1f7aae3e89f976a00"
+    },
+    {
+      "path": "review/pairs/lava-flat-lower.webp",
+      "bytes": 165972,
+      "sha256": "504c2d542d79c67017143912b0adcf7b00dff3d8768f5c5855d953ca1df5dee6"
+    },
+    {
+      "path": "review/pairs/lava-flat-middle.webp",
+      "bytes": 79152,
+      "sha256": "f83bbe4f3ddeb767a4be9ed4f3fa8ff4bb7fdbfb710944d3151382c593304323"
+    },
+    {
+      "path": "review/pairs/lava-flat-southwest.webp",
+      "bytes": 149684,
+      "sha256": "2c83ae1d6bbbc4841c5778aeb860414ad3dd67d93cac0c552c030b56db176b07"
+    },
+    {
+      "path": "review/pairs/lava-flat-upper.webp",
+      "bytes": 121072,
+      "sha256": "7ff921879182eac0b9304bc5d8011cf7642d7e1af62152d016ac0a2c6ea3a96f"
+    },
+    {
+      "path": "review/pairs/lava-flat-west.webp",
+      "bytes": 171118,
+      "sha256": "657ac3927b05b1a41e6fa4271a64b743a06ec39fe06b0f219eff3129998023bd"
+    },
+    {
+      "path": "review/pairs/lavafall-bridge.webp",
+      "bytes": 18002,
+      "sha256": "4a02cbae6d8baeb8daad3ada4a6dd7d06f9ef1ed8b16aa2c8220f8eaa867b47a"
+    },
+    {
+      "path": "review/pairs/lavafall-lower-step.webp",
+      "bytes": 22450,
+      "sha256": "474f450c20c9a66a98f24b0d788d802d6c42501997141eaca35b77a3379fd520"
+    },
+    {
+      "path": "review/pairs/lavafall-middle.webp",
+      "bytes": 23526,
+      "sha256": "42dabfdc61b150cbe1850441999a2bb642a3c557693581d7ab3d7c91a612bb6b"
+    },
+    {
+      "path": "review/pairs/lavafall-mouth.webp",
+      "bytes": 20108,
+      "sha256": "808fd4cf4ec6b9cd05741f7d1b736127851e72e12d74f3259b0c1a40b3d2a71d"
+    },
+    {
+      "path": "review/pairs/lavafall-upper-left.webp",
+      "bytes": 9922,
+      "sha256": "ecd422914ee386d34fdcfdd9fcc901f638ab75e9a4e615eef944fdf7d9484e25"
+    },
+    {
+      "path": "review/pairs/lavafall-upper-step.webp",
+      "bytes": 21284,
+      "sha256": "ea634bf1c82dbf575ee4922285e956ea844204507263554e0a7e20a7c0100a74"
+    },
+    {
+      "path": "review/pairs/lavafall-volcano.webp",
+      "bytes": 22008,
+      "sha256": "6d4a74ffcbc480ce60a3dfbc6747e835971108f61e6a5956cf2397f28398aef8"
+    },
+    {
+      "path": "review/pairs/lavafall-west.webp",
+      "bytes": 21580,
+      "sha256": "31377f0516c580bb8211542d98d30f2678a99eb48c6f2f7d15ea08663b7e1125"
+    },
+    {
+      "path": "review/pairs/spirit-river-east.webp",
+      "bytes": 43746,
+      "sha256": "1a8cd4d19d2ca4dd585226669b0e1c557c399c5ae9ec05c910019770bb9a0741"
+    },
+    {
+      "path": "review/pairs/spirit-river-west.webp",
+      "bytes": 38550,
+      "sha256": "e77431ede18051da6e571cbd66329d905dfe25a3df2563286b5220182356f7b2"
+    },
+    {
+      "path": "review/particle-footprint-result.json",
+      "bytes": 3065,
+      "sha256": "64301cd3043d4ce47ef5b554c1909e0980a77a4a64c1011acbf97737cd00c66c"
+    },
+    {
+      "path": "review/particle-ground-reference.json",
+      "bytes": 1266,
+      "sha256": "7d5d2d4e3b79e349d090ecf0f3912b42cd64b3fb1a66088e3b00559ea67893f9"
+    },
+    {
+      "path": "review/previous-run-README.md",
+      "bytes": 19465,
+      "sha256": "3f34e45f6c1b147caff7f1ef43573788c89cbb048220f8262a8491053dc6ca21"
+    },
+    {
+      "path": "review/proof-compression.json",
+      "bytes": 6289,
+      "sha256": "ad598736f1659d06b3503e15fd89ff49a6f7f7a93460a75f4d469863b5994f64"
+    },
+    {
+      "path": "review/pruned-derived-files.json",
+      "bytes": 25783,
+      "sha256": "af7afdd6f2350e6622a7b5fc1e3932fd6a18a0bdfa9db1c99cadabc6d3cacad4"
+    },
+    {
+      "path": "review/registration-idempotence.json",
+      "bytes": 712,
+      "sha256": "f94e38eac8c5871e5b76f68e01bd44ae5fa9852694d09da80e17773af59d57a9"
+    },
+    {
+      "path": "review/renderer-provenance.json",
+      "bytes": 890,
+      "sha256": "7da6aa28eedd57813d4d1072fc42c1b70ba013b3b16b8369fd0b4a2b590fd783"
+    },
+    {
+      "path": "review/repair-review.json",
+      "bytes": 729,
+      "sha256": "d47f51516830a4066883e4de9d9102662cbad03d127df2dc649cead8799bbf70"
+    },
+    {
+      "path": "review/run-baseline.json",
+      "bytes": 17865,
+      "sha256": "e887e80989ad362a713c9ada786f6b4682f733c83d53d0c09d725f49aa5af2e3"
+    },
+    {
+      "path": "review/run-validation.json",
+      "bytes": 4075,
+      "sha256": "3bfadae982218e5be9eb5b061e57d64573657fd331a982d67d2b24d6f5dacef6"
+    },
+    {
+      "path": "review/scope-check.json",
+      "bytes": 513,
+      "sha256": "6a30446a1bae653b6db78a2f544d49537dfb7791abfac61b380802c6765cd081"
+    },
+    {
+      "path": "review/shore-ground-reference.json",
+      "bytes": 3079,
+      "sha256": "0148ce367f388cf3a66ba787c820dd261b9251ff4dc847fd706e8f292b1137e4"
+    },
+    {
+      "path": "review/shore-ground-result.json",
+      "bytes": 2073,
+      "sha256": "0c4576febe0dd66d20bc12bed9f3d3b3c157d97af9f352a81cd33c6ee176e4dc"
+    },
+    {
+      "path": "review/shore-witness-result.json",
+      "bytes": 821,
+      "sha256": "6fcbc0135160e634e1545c8ce73cf579dc83286b645a5e2f8479b15a6c81067f"
+    },
+    {
+      "path": "review/shore-witness.json",
+      "bytes": 614,
+      "sha256": "14b396d23e437922885a08bd1c0758592b24839430ef6bb9456b9b5f1c1f3348"
+    },
+    {
+      "path": "review/summit-registration-result.json",
+      "bytes": 2742,
+      "sha256": "b549520e233841bbbf2acbdc716e93da6667fc3fa4f1c7c9239f1882ac2fefe3"
+    },
+    {
+      "path": "review/summit-registration.json",
+      "bytes": 974,
+      "sha256": "844f13d7822ab739ee2dbf1a51e02e3c578966650692ac16f70c191fe548efda"
+    },
+    {
+      "path": "review/views.json",
+      "bytes": 848,
+      "sha256": "fabc5564254c2291b6199888675775e9247780cc127036e538d4b36e08095342"
+    },
+    {
+      "path": "review.html",
+      "bytes": 4178,
+      "sha256": "f9fba575120b5a0ac1b574164752071454fe235e31ed69902a3f108ea278e53d"
+    },
+    {
+      "path": "scripts/audit_particles.py",
+      "bytes": 4427,
+      "sha256": "25d51e011df39193c838c88b64d22d7c7e7ac81e6a8c776d6c96564cee9c94a8"
+    },
+    {
+      "path": "scripts/build_assets.py",
+      "bytes": 28841,
+      "sha256": "f2005c89e200cf3f01250c593e598bf6d1d68954b9a19d19e9ada032156514e7"
+    },
+    {
+      "path": "scripts/capture_review.py",
+      "bytes": 7018,
+      "sha256": "a24bcc86bb3d07fe78035dd1a0661052ce8bda8db1c12fc3527bcbad1552a74d"
+    },
+    {
+      "path": "scripts/check_pack.py",
+      "bytes": 4712,
+      "sha256": "173939b7b4e8a5ecf6d98b20d362fe3e007d4d36b7dea320ffc3dcd6929779fd"
+    },
+    {
+      "path": "scripts/correct_masks.py",
+      "bytes": 4267,
+      "sha256": "524b040673a0121a6e31fde2fe66841f51784d56ebb52850e1022df081f78fc7"
+    },
+    {
+      "path": "scripts/measure_references.py",
+      "bytes": 4138,
+      "sha256": "33e4ee767a3f34107474bb28289b621cfe563d1f5754cafe9077741ead9695e8"
+    },
+    {
+      "path": "scripts/measure_shore.py",
+      "bytes": 4756,
+      "sha256": "9065f384c1854f8716c04332cbb6521bcbd6df7a6e266c22cabee758db955553"
+    },
+    {
+      "path": "scripts/register_summit.py",
+      "bytes": 6652,
+      "sha256": "622d1e098f63286e04e26a28bb59e323eca3fdd3fbca565415ab72f7c23006d3"
+    },
+    {
+      "path": "scripts/render_offline.py",
+      "bytes": 14085,
+      "sha256": "c8e3a10aa64e5510c24ea18730e9653c7008a6c1829191233284b4b8c624d9c1"
+    },
+    {
+      "path": "scripts/review_repairs.py",
+      "bytes": 7324,
+      "sha256": "0aa18d55ed67d662b1f236651322df94f3b38544442a1560f1c8501a954e75a8"
+    },
+    {
+      "path": "scripts/runtime-fluid-snapshot.js",
+      "bytes": 22791,
+      "sha256": "60613a0885ee7cde681f1385efe3fef76e33dda5b7de1286728e0ab7da4cb957"
+    },
+    {
+      "path": "scripts/verify_delivery.py",
+      "bytes": 20300,
+      "sha256": "7792c0d5147d2b028c33819a696fb2ae74bb1826bfc5baef18b49e0fc0bfb70f"
+    },
+    {
+      "path": "sheets/bank-foam-ice.webp",
+      "bytes": 344314,
+      "sha256": "cc4a87058244a983560122b821403af7fc5ee905149b0676eff5645fb0f8a1bd"
+    },
+    {
+      "path": "sheets/bank-foam-spirit.webp",
+      "bytes": 433768,
+      "sha256": "9bd10db1fda3b1b615fb2e96b029e0ec40285d995fa88bd24f7eed9a080a3813"
+    },
+    {
+      "path": "sheets/embers-ash.webp",
+      "bytes": 74778,
+      "sha256": "dc338380b162bdc7f6c32aaa5ea6120da06744f7cccc16c672c3b75e423ee00e"
+    },
+    {
+      "path": "sheets/ice-stream-se.webp",
+      "bytes": 314916,
+      "sha256": "f446b81c224725dc45288ee07d677cad8dd068771b63e6e5447598b280d20a94"
+    },
+    {
+      "path": "sheets/ice-stream-sw.webp",
+      "bytes": 354448,
+      "sha256": "8a419b37eca5bd0abb2518b76454971275f201a84c0adc199bf58df59c3e638c"
+    },
+    {
+      "path": "sheets/ice-stream.webp",
+      "bytes": 649868,
+      "sha256": "1d67248c69dde9d36076409c240892219731781c52384ae59c368a668ceb6d88"
+    },
+    {
+      "path": "sheets/icefall-center-bridge.webp",
+      "bytes": 283434,
+      "sha256": "26a3de4eb27ad15be053696cbe40f7bcd109bfda5184a50d79cec7b9fbe72803"
+    },
+    {
+      "path": "sheets/icefall-east-cliff.webp",
+      "bytes": 122050,
+      "sha256": "ed98b40f3643c7824fb9ef0e49bd9b1aea7381c0ea2ea66ccf810f8697bf05fa"
+    },
+    {
+      "path": "sheets/icefall-lower-1.webp",
+      "bytes": 212778,
+      "sha256": "b5cfc0d60232233b5479e41d618b8b7a4ec49248d4bfb69c5eac2a3dd978cac5"
+    },
+    {
+      "path": "sheets/icefall-lower-2.webp",
+      "bytes": 180016,
+      "sha256": "e51e0f888a89bfd71f9bd223d389eee67708071565edc9f7d5f7fca28f339019"
+    },
+    {
+      "path": "sheets/icefall-lower-3.webp",
+      "bytes": 264450,
+      "sha256": "fa98dd1dd09b494fbd42cf7b65cbc9c78a15901022f7355e4ddf3e0c6bc41ec0"
+    },
+    {
+      "path": "sheets/icefall-lower-inlet.webp",
+      "bytes": 112782,
+      "sha256": "d6e332148215e6908a6bef01a85efaf476de49f0b6952133002c3e17075a08a8"
+    },
+    {
+      "path": "sheets/icefall-mouth.webp",
+      "bytes": 214580,
+      "sha256": "fdd9557a3a1e1e8de73149cddf87512b8858ea88b1e3452bd82b224ecb0c74f6"
+    },
+    {
+      "path": "sheets/icefall-summit.webp",
+      "bytes": 1658972,
+      "sha256": "290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae"
+    },
+    {
+      "path": "sheets/icefall-upper-right.webp",
+      "bytes": 103724,
+      "sha256": "81a5563fb987c454d607e8bbacc22a03a1d45cbd83a9c1ef52959862664d01d5"
+    },
+    {
+      "path": "sheets/icefall-upper-tree.webp",
+      "bytes": 156436,
+      "sha256": "1a5fc73e8a2bef640054d98b1862b2f8fd3a83bcf6cd997ed8efee0c1189fc68"
+    },
+    {
+      "path": "sheets/lava-bubble.webp",
+      "bytes": 116724,
+      "sha256": "92bf34dae5b84d415022ab63f729f581ad06839174fe264e50217d136a5bbb68"
+    },
+    {
+      "path": "sheets/lava-steam.webp",
+      "bytes": 98458,
+      "sha256": "4a312c9a627a5dfdb8615d6a67ea1679ba900b2651abf0453cb13510d779e568"
+    },
+    {
+      "path": "sheets/lava-surface.webp",
+      "bytes": 1365828,
+      "sha256": "10741a6bfc16eb7cf5337955b071ba4bb395fc258ac9e5629253947890ce48b4"
+    },
+    {
+      "path": "sheets/lavafall.webp",
+      "bytes": 564540,
+      "sha256": "e57eba2ce72db82ce33755c061fe80e80182e9a34ef0355c3c94f2bb640b0725"
+    },
+    {
+      "path": "sheets/river-foam.webp",
+      "bytes": 300158,
+      "sha256": "b4ccfe2c3db36734cdde70153cb2752ca1d6e137802c686c3bf51b5a1af9d5ed"
+    },
+    {
+      "path": "sheets/spirit-river.webp",
+      "bytes": 497890,
+      "sha256": "9632a240805021bf3502ac61454f0883164384c6ffffd45400ab74262003ac26"
+    },
+    {
+      "path": "sheets/water-sparkle.webp",
+      "bytes": 66586,
+      "sha256": "1ca27b001fdc24e4fff06eb84735fda40fc26df56ea0c99989c76819d89da9c3"
+    },
+    {
+      "path": "sources/icefall-center-bridge-12.webp",
+      "bytes": 306208,
+      "sha256": "a1ef68c0348bfa2db8bef278d9a0e2d9a16fd9c82b82458a35b567019cc2bd01"
+    },
+    {
+      "path": "sources/icefall-center-bridge-34.webp",
+      "bytes": 289732,
+      "sha256": "c1f9d6fec44c6d53d06d574fc3b8f220d214a355f7f0992627390c34f517e45b"
+    },
+    {
+      "path": "sources/icefall-center-bridge-56.webp",
+      "bytes": 270950,
+      "sha256": "b3940b7489e3fe552d75fa256d5a4effd05e04c5e7e77fd27cb5204fafa1cb0d"
+    },
+    {
+      "path": "sources/icefall-center-bridge-78.webp",
+      "bytes": 275210,
+      "sha256": "f39220d10c695d836a5898bb0bbc864c6caff0ca89477b6e28a4c6f1bf960df2"
+    },
+    {
+      "path": "sources/icefall-east-cliff-12.webp",
+      "bytes": 267656,
+      "sha256": "264db4dfa00942e66dc06e93720e560a925d308c79263acf751228bc22cacd68"
+    },
+    {
+      "path": "sources/icefall-east-cliff-34.webp",
+      "bytes": 246700,
+      "sha256": "146b9e3c94c51b10f3932dca56c8b60b3898b9d1d4672d60cfbb4fd45507248a"
+    },
+    {
+      "path": "sources/icefall-east-cliff-56.webp",
+      "bytes": 293846,
+      "sha256": "b28c57837be0b745c8d476e6e1596e9076c4746f507dfebc5c2594d654f7656c"
+    },
+    {
+      "path": "sources/icefall-east-cliff-78.webp",
+      "bytes": 293598,
+      "sha256": "ff468922d0ba1d5f12824b0a9cfaecf6936c07319ffe30d472db39a31810fc71"
+    },
+    {
+      "path": "sources/icefall-lower-1-12.webp",
+      "bytes": 449320,
+      "sha256": "ea5b7cf649ae5b2657917ca1d863cba80428a3aaac309b6b573142002f524e99"
+    },
+    {
+      "path": "sources/icefall-lower-1-34.webp",
+      "bytes": 447500,
+      "sha256": "acbcb9a8a43cd2c94fe6e1f8a4802b6f584399118e609f0f463f6002825580cb"
+    },
+    {
+      "path": "sources/icefall-lower-1-56.webp",
+      "bytes": 603134,
+      "sha256": "4737ac518ff2175a427359fc54308a9f3948253f16940e9f0122a1a38f94a048"
+    },
+    {
+      "path": "sources/icefall-lower-1-78.webp",
+      "bytes": 316716,
+      "sha256": "9081b112d6dab36b3397064281aeb98ea618aecc3be5a39cfc4037d80de7d596"
+    },
+    {
+      "path": "sources/icefall-lower-1-a.webp",
+      "bytes": 2604024,
+      "sha256": "b39b3209ff48cd94721eccbdb46a10838c0a7cbe0833c83d4f8cf644256caa46"
+    },
+    {
+      "path": "sources/icefall-lower-2-12.webp",
+      "bytes": 298146,
+      "sha256": "e45d11c44e93ac6a818189d1e0581864ac124b6b78886274d436926e358d2b94"
+    },
+    {
+      "path": "sources/icefall-lower-2-34.webp",
+      "bytes": 306078,
+      "sha256": "2bb2e4e44707a8859499cedbbd0b5ae8b669b9825ece9114101d102efff350a0"
+    },
+    {
+      "path": "sources/icefall-lower-2-56.webp",
+      "bytes": 274144,
+      "sha256": "942a1a71e511f8781c9898377bb13ff53ad545a68cb1bf07fd5af1138f31d853"
+    },
+    {
+      "path": "sources/icefall-lower-2-78.webp",
+      "bytes": 275380,
+      "sha256": "22ca772b9fdc16f2d89dccbba96357478774e4dfd1274ea92cf2dde840e1faeb"
+    },
+    {
+      "path": "sources/icefall-lower-3-12.webp",
+      "bytes": 332080,
+      "sha256": "1094769509ac8e23a9535fbb7df7b4aec6ad2b3e7304a033a5bba48598cd5e45"
+    },
+    {
+      "path": "sources/icefall-lower-3-34.webp",
+      "bytes": 309990,
+      "sha256": "880890a282b12302f0980ac954c04e6e4313e3c139cfd1c5b095602eefe4a612"
+    },
+    {
+      "path": "sources/icefall-lower-3-56.webp",
+      "bytes": 336918,
+      "sha256": "35a05fc8509805952572d03d1227366bd8efe9be8bbd9d41de8cbc3f38dd36cb"
+    },
+    {
+      "path": "sources/icefall-lower-3-78.webp",
+      "bytes": 317014,
+      "sha256": "9ca2dd197c9488e414620fca73bd3eeb909bf41dd659d3339b39ba091b9004a9"
+    },
+    {
+      "path": "sources/icefall-lower-inlet-12.webp",
+      "bytes": 263850,
+      "sha256": "7c65c9eaa691ad60d4343081d23cb3af349d2cdea77c2278ee11d3d19abd3697"
+    },
+    {
+      "path": "sources/icefall-lower-inlet-34.webp",
+      "bytes": 254254,
+      "sha256": "8cc83638c20cbb49c5d7f0b5d22ff2d40aac40447688c41485efae5a57f284ff"
+    },
+    {
+      "path": "sources/icefall-lower-inlet-56.webp",
+      "bytes": 247454,
+      "sha256": "042012898bafa0b8b4653dcd9f40b1330eb56dae93aae303208cf04014a384d8"
+    },
+    {
+      "path": "sources/icefall-lower-inlet-78.webp",
+      "bytes": 239166,
+      "sha256": "0bdf54c499a148164c3f4076dd8f9e502ca255b3d4fabd2ae0dc2de2d9375275"
+    },
+    {
+      "path": "sources/icefall-mouth-12-letterbox.webp",
+      "bytes": 518478,
+      "sha256": "4e0ac7152c2da90afae16d422c565ee34b08fd2f5e2507672fb3fe9af2d571d9"
+    },
+    {
+      "path": "sources/icefall-mouth-12.webp",
+      "bytes": 262146,
+      "sha256": "fe76605072dcd9033e46d0ff7b20a2463e4985166cea5af18e6ce996a4c4b83e"
+    },
+    {
+      "path": "sources/icefall-mouth-34.webp",
+      "bytes": 362812,
+      "sha256": "f4b34c76e772c67af603aa47af016298106d647fe5d468e6fc4612f85991cb54"
+    },
+    {
+      "path": "sources/icefall-mouth-56.webp",
+      "bytes": 353520,
+      "sha256": "434df639c23e9fd9b69e43a4a0f29cd1d6cbf9c3773dd28fd7a85fb2aa7e2162"
+    },
+    {
+      "path": "sources/icefall-mouth-78.webp",
+      "bytes": 367096,
+      "sha256": "52b1cb3fbc7ecc6bdc357bd862257186562e8c970948c0029062aa92a1701c15"
+    },
+    {
+      "path": "sources/icefall-summit-12.webp",
+      "bytes": 664034,
+      "sha256": "592d769735699ddf8b286b66d75f804d642291bebb20fcdd04a1e87480a8834a"
+    },
+    {
+      "path": "sources/icefall-summit-34.webp",
+      "bytes": 625706,
+      "sha256": "23eadc657f023ad00fdfcbb35bc0adb03d3bc61fe34858dbfee51b5ff85e793e"
+    },
+    {
+      "path": "sources/icefall-summit-56.webp",
+      "bytes": 656362,
+      "sha256": "71a2500c1acccd29e9ea858b2c7fafa7700f0bad5c5b61b507d9209eae2db6d0"
+    },
+    {
+      "path": "sources/icefall-summit-78.webp",
+      "bytes": 615078,
+      "sha256": "24056ca15e7505766690166f5f6ac9779c4b8aa033ef41c022316afc42056ab9"
+    },
+    {
+      "path": "sources/icefall-upper-right-12.webp",
+      "bytes": 550264,
+      "sha256": "c2a737646d4693a941b3bfb459ab740c8f1db7cada4f8096badbd21e35a02b02"
+    },
+    {
+      "path": "sources/icefall-upper-right-34.webp",
+      "bytes": 369916,
+      "sha256": "f17353695b44771000bc9387f3e47c3a780af126a3a03225a6bb4c98c433eb9c"
+    },
+    {
+      "path": "sources/icefall-upper-right-56.webp",
+      "bytes": 448582,
+      "sha256": "8d4b97e1050f3c2a3fae27cc5519afdcf9782c6c07660068cd28519a08f0ad6e"
+    },
+    {
+      "path": "sources/icefall-upper-right-78.webp",
+      "bytes": 181986,
+      "sha256": "63eab9f84954d6bb75dc6578cc792dc8986effaf1556072b924e7ba83739339b"
+    },
+    {
+      "path": "sources/icefall-upper-tree-12.webp",
+      "bytes": 543744,
+      "sha256": "981f8814745ac9ffa9710a914bec13cb39f46af06f151b163f61e3cb2216294c"
+    },
+    {
+      "path": "sources/icefall-upper-tree-34.webp",
+      "bytes": 588300,
+      "sha256": "eb655e2b4fef04282bb01c9bc3b08fc45e47a3e10e3095ea55322d3bbd91b7ea"
+    },
+    {
+      "path": "sources/icefall-upper-tree-56.webp",
+      "bytes": 493950,
+      "sha256": "d8af9c8315f93ee486d8a5b45381dba093a45b6ae4da0d7aaf16aa3094fe4d7d"
+    },
+    {
+      "path": "sources/icefall-upper-tree-78.webp",
+      "bytes": 571306,
+      "sha256": "d2006f4a16ba7f3a422c93613063f448ca4c6129db636b7ffb00105a964b8453"
+    }
+  ]
+}
