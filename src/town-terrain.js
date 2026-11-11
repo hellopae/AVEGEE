@@ -126,7 +126,7 @@ export const townTerrainStats = () => {
   const st = store();
   return {...s, bake:townLightingBakeStats(), preview:!!st.preview?.ready, evicted:st.evicted||0, cap:st.cap||0, bakedMB:Math.round([...st.chunks.values()].reduce((n,c)=>n+(c.state==='ready'&&c.image?townLightingBakedPixels(c.image)*4:0),0)/1048576)};
 };
-/** FX3: memory the graded chunks may hold (bytes).  A 2048 px chunk keeps one 16.8 MB canvas (+ a cropped glow layer on lava chunks), so 120 MB = 7 chunks; the 1024 px tiles of v7-partial (4.2 MB) get 28; v5 never reaches it. */
+/** FX3: memory the graded chunks may hold (bytes).  A 2048 px chunk keeps one 16.8 MB canvas (+ a cropped glow layer on lava chunks), so 120 MB = 7 chunks; the 1024 px tiles of v7 (4.2 MB) get 28; v5 never reaches it. */
 export const TERRAIN_MEMORY_BUDGET = 120e6;
 const EVICT_AFTER_FRAMES = 30;   // a chunk is only dropped after it has been off screen this long (a quick step back never reloads)
 export const townTerrainCap = G => Math.floor(TERRAIN_MEMORY_BUDGET / (G.chunk * G.chunk * 4));

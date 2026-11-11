@@ -89,21 +89,22 @@ const terrain = (folder, name) => ({
   fullPx:{ w:4915, h:3277 }, chunk:1024, repairs:false,
 });
 
-// Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only (v7 = Codex 2x redraw of v5, same 5x4 grid of 2048 px chunks;
-// the repairs of v5 are painted for v5 pixels, so v7 turns them off).  Everything else (chunk grid, preview, minimap, fluid masks) reads this.
-const V7_DIR = 'img/map-zone1/v7/';
-// v7-partial (Z1-V5-FX2): 5 chunks are Codex's HD redraws, the other 15 are v5 + repairs enlarged 2x; served as 1024 px tiles (FX3: 10 x 7, so the camera keeps few of them in memory); `sprites` = the trees / beds / rocks / bridge rails / pier
-// that were painted out of those HD chunks, cut from v5 and drawn again as depth-sorted sprites (src/town-ground-sprites.js).
-const V7P_DIR = 'img/map-zone1/v7-partial/';
+// Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only; everything else (tile grid, preview, minimap, fluid masks, sprites) reads the set.
+//   v5   the 1x ground (4915 x 3277, 1024 px chunks) with the old runtime repairs.
+//   v7   Codex's 2x ground (Z1-HD-ASSEMBLE, 9830 x 6554): 13 parts are HD redraws, 7 spots are still v5 + repairs enlarged 2x (stairs, heaven bridge, one forest strip).
+//        Served as 1024 px tiles (10 x 7, cut by scripts/install-z1-ground.py): the camera at phone zoom keeps few decoded tiles in memory (FX3: 2048 px chunks 100-130 MB, tiles 35-50 MB).
+//        The repairs of v5 are painted for v5 pixels, so v7 turns them off.  `sprites` = the rails drawn over the central bridge / pier (src/town-ground-sprites.js).
+//   v7r  the same pack after Codex repaired those 7 spots (Z1-HD-REPAIR + new assemble).  The folder does not exist until `scripts/install-z1-ground.py <pack> --name v7r --activate` runs.
+// Folders are built from the name on purpose: a set that is not installed yet must not leave a literal URL to a missing file.
+const hd2x = name => { const dir = `img/map-zone1/${name}/`; return Object.freeze({ dir, preview:dir + 'zone1-terrain-v7-preview.webp',
+  fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, sprites:dir + 'sprites.json' }); };
 export const ZONE1_GROUND = Object.freeze({
   v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
                       fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
-  v7: Object.freeze({ dir:V7_DIR, preview:V7_DIR + 'zone1-terrain-v7-preview.webp',   // built from parts: the folder arrives with Codex's 2x redraw, until then no literal URL may point at it
-                      fullPx:Object.freeze({ w:9830, h:6554 }), chunk:2048, repairs:false }),
-  'v7-partial': Object.freeze({ dir:V7P_DIR, preview:V7P_DIR + 'zone1-terrain-v7-preview.webp',
-                      fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, sprites:V7P_DIR + 'sprites.json' }),
+  v7: hd2x('v7'),
+  v7r: hd2x('v7r'),
 });
-export const ZONE1_GROUND_SET = 'v7-partial';
+export const ZONE1_GROUND_SET = 'v7';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {

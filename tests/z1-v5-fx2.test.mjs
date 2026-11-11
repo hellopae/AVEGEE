@@ -1,4 +1,4 @@
-// Z1-V5-FX2 — canteen picture reaches the player, foam only on the shore, placed lava / glint sprites, partial 2x ground (v7-partial) + its sprites.
+// Z1-V5-FX2 — canteen picture reaches the player, foam only on the shore, placed lava / glint sprites, 2x ground (v7) + its sprites.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const file = u => fileURLToPath(new URL('../' + u, import.meta.url));
-const FX = 'img/map-zone1/v5-fx/', GD = 'img/map-zone1/v7-partial/';
+const FX = 'img/map-zone1/v5-fx/', GD = 'img/map-zone1/v7/';
 const layout = JSON.parse(readFileSync(file(FX + 'fx-layout.json'), 'utf8'));
 const py = (code, ...args) => JSON.parse(execFileSync('python3', ['-c', code, ...args], { encoding: 'utf8', maxBuffer: 1 << 27 }));
 const fx = await import('../src/town-fluid-fx.js?v=v5fx');
@@ -88,9 +88,9 @@ test('spot state: swell breathes and drifts to the shore, once plays the drawn f
   assert.ok(fx.fluidSpotState(rise, rs, 0.001).alpha < .05 && fx.fluidSpotState(rise, rs, 9.999).alpha < .05, 'and fades in / out');
 });
 
-test('ground set v7-partial: 70 tiles of 1024 px (10 x 7; last col 614, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
-  const g = skin.ZONE1_GROUND['v7-partial'];
-  assert.equal(skin.ZONE1_GROUND_SET, 'v7-partial'); assert.strictEqual(skin.ZONE_SKIN.th.terrain, g);
+test('ground set v7: 70 tiles of 1024 px (10 x 7; last col 614, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
+  const g = skin.ZONE1_GROUND.v7;
+  assert.equal(skin.ZONE1_GROUND_SET, 'v7'); assert.strictEqual(skin.ZONE_SKIN.th.terrain, g);
   assert.equal(g.chunk, 1024); assert.deepEqual({ ...g.fullPx }, { w: 9830, h: 6554 }); assert.equal(g.repairs, false);
   const sizes = py('import sys,json\nfrom PIL import Image\nprint(json.dumps({f:Image.open(sys.argv[1]+f).size for f in sys.argv[2:]}))', file(GD),
     ...Array.from({ length: 70 }, (_, i) => `r${Math.floor(i / 10) + 1}-c${i % 10 + 1}.webp`), 'zone1-terrain-v7-preview.webp');
@@ -100,7 +100,8 @@ test('ground set v7-partial: 70 tiles of 1024 px (10 x 7; last col 614, last row
   const total = readdirSync(file(GD), { recursive: true }).filter(f => statSync(file(GD + f)).isFile()).reduce((s, f) => s + statSync(file(GD + f)).size, 0);
   assert.ok(total <= 40e6, 'ground folder ' + (total / 1e6).toFixed(1) + ' MB');
   const man = JSON.parse(readFileSync(file(GD + 'manifest.json'), 'utf8'));
-  assert.deepEqual(man.hdChunks.sort(), ['r2-c2', 'r2-c3', 'r2-c4', 'r3-c2', 'r3-c3']);
+  assert.equal(man.tiles, 70); assert.equal(man.tilePx, 1024); assert.ok(man.quality >= 85, 'tiles are cut at a quality that keeps the painted detail');
+  assert.ok(existsSync(file(GD + 'pack-manifest.json')), 'the Codex pack manifest travels with the tiles');
   assert.match(readFileSync(file('src/asset-preload.js'), 'utf8'), /v\[2-9\]\(\?:-partial\)\?/, 'preload tier knows the partial preview');
   // the walk mask is not derived from the ground set: its file and the code that builds it are untouched by this branch
   const diff = execFileSync('git', ['diff', '--name-only', '812152d2', 'HEAD'], { cwd: file('.'), encoding: 'utf8' });

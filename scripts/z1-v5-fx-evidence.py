@@ -49,10 +49,10 @@ def boot(p, w=390, h=844, dpr=1, mobile=False, video=None, vsize=None):
         for name in ('town-terrain.js', 'town-lighting.js'):
             body = subprocess.check_output(['git', 'show', f"{os.environ.get('OLD_REF', '454dc5b6')}:src/{name}"], cwd=Path(__file__).resolve().parent.parent, text=True)
             ctx.route(f'**/src/{name}*', (lambda b: (lambda route, request=None: route.fulfill(status=200, content_type='text/javascript', body=b)))(body))
-    if os.environ.get('GROUND'):    # A/B: serve zone-skin.js with another ground set (v5 | v7-partial) without touching the file
+    if os.environ.get('GROUND'):    # A/B: serve zone-skin.js with another ground set (v5 | v7) without touching the file
         def swap(route):
             r = route.fetch(); body = r.text()
-            route.fulfill(response=r, body=body.replace("ZONE1_GROUND_SET = 'v7-partial'", f"ZONE1_GROUND_SET = '{os.environ['GROUND']}'"))
+            route.fulfill(response=r, body=body.replace("ZONE1_GROUND_SET = 'v7'", f"ZONE1_GROUND_SET = '{os.environ['GROUND']}'"))
         ctx.route('**/src/zone-skin.js*', swap)
     pg.on('pageerror', lambda e: errs.append('pageerror: ' + str(e)))
     pg.on('console', lambda m: errs.append('console.error: ' + m.text) if m.type == 'error' else None)

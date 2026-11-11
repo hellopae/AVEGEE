@@ -1,5 +1,5 @@
 // Z1-V5-FX2: sprites for the objects that were painted OUT of the HD ground chunks (trees, flower beds, rocks, the central bridge rails, the pier, stair posts).
-// The pictures are the originals cut from v5 by the Codex pilot run (img/map-zone1/v7-partial/sprites/*.webp); this file only places them.
+// The pictures are the originals cut from v5 by the Codex pilot run (img/map-zone1/<ground set>/sprites/*.webp); this file only places them.
 //  layer 'sort'  = depth-sorted with the characters by its foot (walk behind a tree, in front of it when below its foot)
 //  layer 'back'  = under every character · layer 'front' = over every character (the rail on the near side of the bridge deck)
 // List = sprites.json of the active ground set (terrain.sprites); a ground set without one (v5) adds nothing.
@@ -17,7 +17,8 @@ export function groundSpriteVisible(s, view, pad = 80) {
 // Hidden by flag (sprites.json and the pictures stay). 'rails' = the bridge rails / pier posts (layers back / front), shown unless an id is listed in hideIds.
 export const GROUND_SPRITE_SHOW = { sort: false, rails: true, hideIds: new Set(['lava-lower-back', 'lava-lower-front']) };   // the left lava bridge rails floated off the deck (owner 23:36): removed; the central bridge + pier rails sit on their decks (checked)
 export const setGroundSpriteShow = v => Object.assign(GROUND_SPRITE_SHOW, v);
-export const groundSpriteShown = s => (s.layer === 'sort' ? GROUND_SPRITE_SHOW.sort : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
+// `off` in sprites.json (a reason string) = this ground set already has the object painted in at that spot (e.g. a v5 fallback patch), so drawing the sprite would double it.
+export const groundSpriteShown = s => !s.off && (s.layer === 'sort' ? GROUND_SPRITE_SHOW.sort : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
 const urlOf = () => activeTownSkin()?.terrain?.sprites || null;
 function storeOf(url) {
   let st = stores.get(url);

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""FX5: the whole zone-1 ground (v7-partial tiles) as ONE picture with a world grid, for the owner to mark where trees / bushes / lamp posts go.
+"""FX5: the whole zone-1 ground (v7 tiles) as ONE picture with a world grid, for the owner to mark where trees / bushes / lamp posts go.
   python3 scripts/build-placement-sheet.py <out.jpg>
 Scale: 0.625 sheet px per world unit (world 3840x2560 -> 2400x1600). Thin line every 100 world units, bold line + number every 500, small labels every 200 on both edges
 so a mark can be read back as world = (px - 40) / 0.625.  A 40 px margin on every side carries the numbers. Pure measuring aid: nothing is drawn on the map itself."""
@@ -13,7 +13,7 @@ W, H = 3840, 2560
 G = Image.new('RGB', (W, H))
 for r in range(1, 8):
     for c in range(1, 11):
-        t = Image.open(ROOT / f'img/map-zone1/v7-partial/r{r}-c{c}.webp').convert('RGB')
+        t = Image.open(ROOT / f'img/map-zone1/v7/r{r}-c{c}.webp').convert('RGB')
         x0, y0 = round((c - 1) * 1024 * W / 9830), round((r - 1) * 1024 * H / 6554)
         w, h = round(t.width * W / 9830), round(t.height * H / 6554)
         G.paste(t.resize((w, h), Image.LANCZOS), (x0, y0))

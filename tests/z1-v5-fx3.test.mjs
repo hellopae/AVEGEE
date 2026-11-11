@@ -116,7 +116,7 @@ test('ground loader: far tiles are released (LRU, memory cap), visible ones neve
   const f = await terrainFixture();
   try {
     const { module: t, images } = f;
-    const g = f.zone.ZONE1_GROUND['v7-partial'];
+    const g = f.zone.ZONE1_GROUND.v7;
     assert.equal(t.townTerrainCap({ chunk: g.chunk }), 28, '1024 px tiles: 120 MB / 4.2 MB');
     assert.ok(t.townTerrainCap({ chunk: 1024 }) > 20 && t.townTerrainCap({ chunk: 2048 }) === 7);
     const finish = async () => { for (let pass = 0; pass < 4; pass++) { for (const im of images.filter(i => i.onload && !i.done)) { im.done = true; await im.onload(); } await flush(); } };
@@ -143,7 +143,7 @@ test('ground loader: wiring - grading runs in a worker with a main-thread fallba
   assert.match(light, /new Worker\(new URL\('\.\/terrain-bake-worker\.js\?v=20261110-perf'/); assert.match(light, /workerFailed=true/); assert.match(light, /if\(!art\.fire\)return;/);
   assert.match(light, /GLOW_DIV=4/); assert.match(worker, /gradeStrip/); assert.match(readFileSync(file('src/town-grade.js'), 'utf8'), /export function gradeStrip/);
   assert.match(terrain, /function evictFar/); assert.match(terrain, /TERRAIN_MEMORY_BUDGET = 120e6/); assert.match(terrain, /prepareTownLighting\(ready,\[r\.x,r\.y,r\.w,r\.h\],bakeBudget\)/);
-  assert.match(readFileSync(file('src/zone-skin.js'), 'utf8'), /chunk:1024, repairs:false, sprites:V7P_DIR/);
+  assert.match(readFileSync(file('src/zone-skin.js'), 'utf8'), /chunk:1024, repairs:false, sprites:dir \+ 'sprites\.json'/);
 });
 test('ground grade: the shared strip grader equals the old per-pixel formulas (hellColor / fireStrength unchanged)', async () => {
   const g = await import('../src/town-grade.js'), l = await import('../src/town-lighting.js');

@@ -237,16 +237,17 @@ test('canteen: the new picture is cleaned, cropped, and the foundation is the bo
   if (art?.artUrl) assert.equal(art.artUrl('st-canteen'), 'img/food-art/canteen-th.webp');
 });
 
-test('ground swap: v7 (2x redraw of v5) is one switch in zone-skin.js and the loader copes with 2048 px chunks', async () => {
-  assert.equal(skin.ZONE1_GROUND_SET, 'v7-partial', 'this branch plays the partial 2x ground (5 HD chunks + 15 enlarged v5)');
-  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND['v7-partial']);
+test('ground swap: v7 (2x redraw of v5, served as 1024 px tiles) is one switch in zone-skin.js and the loader still copes with 2048 px chunks', async () => {
+  assert.equal(skin.ZONE1_GROUND_SET, 'v7', 'this branch plays the 2x ground');
+  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND.v7);
   assert.deepEqual({ ...skin.ZONE1_GROUND.v7, fullPx: { ...skin.ZONE1_GROUND.v7.fullPx } },
-    { dir: 'img/map-zone1/v7/', preview: 'img/map-zone1/v7/zone1-terrain-v7-preview.webp', fullPx: { w: 9830, h: 6554 }, chunk: 2048, repairs: false });
+    { dir: 'img/map-zone1/v7/', preview: 'img/map-zone1/v7/zone1-terrain-v7-preview.webp', fullPx: { w: 9830, h: 6554 }, chunk: 1024, repairs: false, sprites: 'img/map-zone1/v7/sprites.json' });
+  assert.equal(skin.ZONE1_GROUND.v7r.dir, 'img/map-zone1/v7r/', 'the repaired set is registered, one switch away');
   const t = await import('../src/town-terrain.js?v=k1d');
   const { TOWN_SIZE } = await import('../src/town-layout.js?v=k1d');
   const real = skin.ZONE_SKIN.th.terrain;
   try {
-    skin.ZONE_SKIN.th.terrain = skin.ZONE1_GROUND.v7;
+    skin.ZONE_SKIN.th.terrain = { ...skin.ZONE1_GROUND.v7, chunk: 2048 };   // Codex's own 2048 px chunk grid (the loader keeps supporting it)
     const G = t.townTerrainGrid('th');
     assert.deepEqual([G.chunk, G.cols, G.rows], [2048, 5, 4]);
     assert.ok(Math.abs(G.unitX - 3840 / 9830) < 1e-12 && Math.abs(G.unitY - 2560 / 6554) < 1e-12);

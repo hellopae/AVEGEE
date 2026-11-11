@@ -2,7 +2,7 @@
 """Z1-V5-FX4: trim the fluid masks to the water / lava that is really PAINTED in the ground, and switch off pieces that have none.
 
   python3 scripts/build-v5-fx4-trim.py <codex fluids-hd dir>  <ground world png 3840x2560>  [report.json]
-      e.g. .../.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd   and the v7-partial ground resampled to 3840x2560
+      e.g. .../.codex-worktrees/20261105T025249Z-3596dfe4/docs/art-reviews/2026-11-05-z1-v5-fluids-hd   and the v7 ground resampled to 3840x2560
 Run AFTER build-v5-fx-assets.py and build-v5-fx2-assets.py (it reads the Codex masks again, so running it twice gives the same result).
 
 Why (owner 5 Nov 18:10): the Codex masks of the waterfalls / lava falls / streams are generous rectangles.  The effect sheets are drawn through them, so horizontal

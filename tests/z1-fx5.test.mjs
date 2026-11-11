@@ -21,15 +21,16 @@ test('FX5-1: scene cloud shadows are clearly stronger than the map (map stays .3
   assert.equal(fx.emberState({ mode: 'once', frames: 8, win: .42 }, [0, 0, 30, 30, 0, 0, 3, 0, 0], 2.5).alpha, 0, 'a bubble rests between pops');
 });
 
-test('FX5-2/3: the 51 pilot ground sprites are hidden by flag, the left lava bridge rails are removed, the central bridge + pier rails stay', async () => {
+test('FX5-2/3: the 51 pilot ground sprites are hidden by flag, the left lava bridge rails are removed, the central bridge rails stay, the pier rails are off (v5 fallback patch)', async () => {
   const gs = await import('../src/town-ground-sprites.js');
-  const list = JSON.parse(read('img/map-zone1/v7-partial/sprites.json'));
+  const list = JSON.parse(read('img/map-zone1/v7/sprites.json'));
   assert.equal(list.length, 51, 'files + json kept');
   const shown = list.filter(gs.groundSpriteShown);
   assert.ok(!shown.some(s => s.layer === 'sort'), 'no tree / bush / lamp post drawn');
-  assert.deepEqual(shown.map(s => s.id).sort(), ['pier-back', 'pier-front', 'river-back', 'river-front']);
+  assert.deepEqual(shown.map(s => s.id).sort(), ['river-back', 'river-front'], 'the pier rails are off in v7: that stair is the v5 fallback with its rails already painted in');
+  assert.ok(list.filter(s => s.id.startsWith('pier-')).every(s => s.off), 'off carries the reason');
   assert.ok(!list.filter(s => s.id.startsWith('lava-')).some(gs.groundSpriteShown));
-  gs.setGroundSpriteShow({ sort: true }); assert.ok(list.filter(gs.groundSpriteShown).length >= 49, 'flag brings them back'); gs.setGroundSpriteShow({ sort: false });
+  gs.setGroundSpriteShow({ sort: true }); assert.ok(list.filter(gs.groundSpriteShown).length >= 47, "flag brings them back (51 - 2 left lava rails - 2 pier rails that are off)"); gs.setGroundSpriteShow({ sort: false });
   assert.ok(existsSync(file('Output/Toby/2026-11-06-placement-sheet.jpg')) || true);
 });
 
@@ -64,7 +65,7 @@ test('FX5-6: KO phases fall -> down (held) -> rise; a figure already down when t
 
 test('FX5: import map has a new ?v= for every module changed this round', () => {
   const html = read('index.html'); const map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const m of ['map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5$/, m);
+  for (const m of ['map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=(20261106-fx5|20261112-z1v7)$/, m);
   assert.match(map['./src/scene.js'], /\?v=(20261106-fx5|20261110-(perf(-fbui)?|gfx))$/);
   assert.match(map['./src/ui.js'], /\?v=(20261106-(fx5|kocrew-home-slots)|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))$/); assert.match(html, /<script type="module" src="src\/ui\.js\?v=(20261106-kocrew-home-slots|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))">/); assert.match(html, /battle-turns\.css\?v=20261106-kocrew-home-slots/);
 });
