@@ -1,0 +1,20 @@
+{
+  "proofs": [
+    "review/boundary/icefall-upper-tree-repair.webp",
+    "review/boundary/icefall-summit-repair.webp",
+    "review/boundary/icefall-east-cliff-repair.webp",
+    "review/boundary/ice-stream-flat-upper-shore-repair.webp",
+    "review/boundary/ice-stream-flat-central-shore-repair.webp",
+    "review/boundary/ice-stream-flat-lower-shore-repair.webp",
+    "review/boundary/ice-stream-flat-east-shore-repair.webp",
+    "review/boundary/ice-stream-flat-mouth-shore-repair.webp"
+  ],
+  "currentBoundaryImagesRebuiltFor": [
+    "icefall-upper-tree",
+    "icefall-summit",
+    "icefall-east-cliff"
+  ],
+  "loopMeasurements": 18,
+  "coverageWitness": "review/coverage-witness-result.json",
+  "acceptanceComplete": false
+}

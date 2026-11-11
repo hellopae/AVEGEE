@@ -1,0 +1,69 @@
+{
+  "method": "Ground-only solid-interior witnesses frozen before mask subtraction. Texture, faceted planes and continuous cliff silhouettes establish hard surface. Local native 2x coordinates. Same AI reviewer. These witnesses will serve as regression evidence after a repair.",
+  "masks": {
+    "icefall-east-cliff": [
+      [
+        [
+          180,
+          210
+        ],
+        [
+          232,
+          210
+        ],
+        [
+          232,
+          266
+        ],
+        [
+          219,
+          271
+        ],
+        [
+          202,
+          262
+        ],
+        [
+          190,
+          247
+        ],
+        [
+          182,
+          232
+        ]
+      ]
+    ],
+    "lava-flat-lower": [
+      [
+        [
+          641,
+          310
+        ],
+        [
+          680,
+          310
+        ],
+        [
+          690,
+          375
+        ],
+        [
+          675,
+          395
+        ],
+        [
+          640,
+          384
+        ],
+        [
+          625,
+          370
+        ],
+        [
+          627,
+          350
+        ]
+      ]
+    ]
+  }
+}

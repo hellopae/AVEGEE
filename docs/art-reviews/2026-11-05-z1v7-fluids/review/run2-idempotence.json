@@ -1,0 +1,17 @@
+{
+  "commands": [
+    {
+      "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/continue_ground_references.py",
+      "exitCode": 0
+    },
+    {
+      "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/repair_solid_overlap.py --masks lavafall-bridge lavafall-west",
+      "exitCode": 0
+    }
+  ],
+  "checkedFiles": 104,
+  "allHashesStableAfterRepeat": true,
+  "summitNotRegeneratedOrRegistered": true,
+  "paintedFramesCreated": 0,
+  "humanQA": false
+}

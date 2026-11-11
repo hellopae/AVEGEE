@@ -1,0 +1,77 @@
+{
+  "coordinatePolicy": "Local native2x in named ground crop; actual vertical/sloped lava face, not mask construction geometry. Same AI reviewer.",
+  "regions": [
+    {
+      "mask": "lava-flat-left-bottom",
+      "polygon": [
+        [
+          159,
+          15
+        ],
+        [
+          242,
+          20
+        ],
+        [
+          248,
+          82
+        ],
+        [
+          224,
+          108
+        ],
+        [
+          182,
+          132
+        ],
+        [
+          152,
+          118
+        ]
+      ],
+      "label": "Vertical glowing cliff with continuous downward lava strands above the small receiving terrace"
+    },
+    {
+      "mask": "lava-flat-southwest",
+      "polygon": [
+        [
+          365,
+          236
+        ],
+        [
+          385,
+          245
+        ],
+        [
+          390,
+          267
+        ],
+        [
+          414,
+          288
+        ],
+        [
+          446,
+          300
+        ],
+        [
+          451,
+          316
+        ],
+        [
+          416,
+          308
+        ],
+        [
+          390,
+          288
+        ],
+        [
+          375,
+          265
+        ]
+      ],
+      "label": "Short cascade over a rock lip, descending below the upper terrace"
+    }
+  ]
+}

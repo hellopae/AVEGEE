@@ -1,0 +1,14 @@
+[
+  {
+    "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/check_loop_metrics.py",
+    "exitCode": 0
+  },
+  {
+    "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/audit_current_continuation.py",
+    "exitCode": 0
+  },
+  {
+    "command": "/usr/local/bin/python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/verify_delivery.py",
+    "exitCode": 1
+  }
+]

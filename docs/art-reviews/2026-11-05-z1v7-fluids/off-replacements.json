@@ -1,0 +1,27 @@
+[
+  {
+    "old": "waterfall-ice-upper-bridge",
+    "replacement": "ice-stream-flat-upper",
+    "type": "flat water only; sky under bridge excluded"
+  },
+  {
+    "old": "waterfall-ice-center-step",
+    "replacement": "ice-stream-flat-central",
+    "type": "flat channel"
+  },
+  {
+    "old": "waterfall-ice-plaza-right",
+    "replacement": null,
+    "type": "rock face in v7, keep off"
+  },
+  {
+    "old": "waterfall-ice-east-cliff",
+    "replacement": "icefall-east-cliff",
+    "type": "new narrow face west of old misplaced box"
+  },
+  {
+    "old": "waterfall-ice-mouth",
+    "replacement": "icefall-mouth",
+    "type": "v7 has twin sloping falls beneath wooden bridge"
+  }
+]

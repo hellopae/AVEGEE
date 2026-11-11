@@ -1,0 +1,18 @@
+{
+  "mask": "shore-band-ice",
+  "maskSha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802",
+  "viewRectMap1x": [
+    3285,
+    955,
+    140,
+    140
+  ],
+  "nativeMaskCropBox": [
+    400,
+    502,
+    680,
+    782
+  ],
+  "selectedCropPixels": 540,
+  "evidence": "review/boundary/shore-band-ice-independent-proof.webp"
+}

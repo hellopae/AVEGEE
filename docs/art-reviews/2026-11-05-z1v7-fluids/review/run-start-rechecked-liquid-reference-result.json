@@ -1,0 +1,2982 @@
+{
+  "method": "Mask support intersected with separately frozen ground-only definite-liquid interiors. All unlabelled selected pixels count as potentially outside, giving a conservative upper bound. No palette-only classification; no construction annotation imported.",
+  "reference": "review/run-start-liquid-reference.json",
+  "referenceSha256": "18bd12c540926cf2f982815982fed52b2c9335658b3b3cc365ba956a8ba98cc3",
+  "sameAiReviewer": true,
+  "notHumanQA": true,
+  "allMasksWithin3Percent": false,
+  "measurements": [
+    {
+      "mask": "ice-stream-flat-central",
+      "maskSha256": "504bc793b6368b88f4da28e83562acea36c2a49cc6d6f90989ae4d0f889b2821",
+      "selectedPixels": 111661,
+      "definiteLiquidPixels": 101544,
+      "unknownPixels": 10117,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 9.06045978452638,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 3950,
+          "boxNative2x": [
+            1005,
+            178,
+            1078,
+            281
+          ]
+        },
+        {
+          "pixels": 1461,
+          "boxNative2x": [
+            758,
+            40,
+            873,
+            103
+          ]
+        },
+        {
+          "pixels": 1361,
+          "boxNative2x": [
+            781,
+            103,
+            823,
+            162
+          ]
+        },
+        {
+          "pixels": 811,
+          "boxNative2x": [
+            1104,
+            196,
+            1147,
+            273
+          ]
+        },
+        {
+          "pixels": 537,
+          "boxNative2x": [
+            341,
+            566,
+            386,
+            657
+          ]
+        },
+        {
+          "pixels": 365,
+          "boxNative2x": [
+            720,
+            287,
+            745,
+            316
+          ]
+        },
+        {
+          "pixels": 358,
+          "boxNative2x": [
+            951,
+            23,
+            969,
+            62
+          ]
+        },
+        {
+          "pixels": 349,
+          "boxNative2x": [
+            502,
+            312,
+            534,
+            384
+          ]
+        }
+      ],
+      "unknownComponentCount": 61,
+      "evidence": "review/boundary/ice-stream-flat-central-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "171f8cfb3f72e3cacc10ccd1dcb8aadd9e503b300cae76bef3f6204b8c8374dc",
+      "labelSupportSha256": "ce5ecf14514402e9cbaf4c4e2ad3eacd7bb09a3ea42eb13de2cd3f615acf9f07"
+    },
+    {
+      "mask": "ice-stream-flat-east",
+      "maskSha256": "3f3022dd6907a3d173edced93afcb4b03ee4c20616d275736923d9ed8f3b73e4",
+      "selectedPixels": 17462,
+      "definiteLiquidPixels": 16416,
+      "unknownPixels": 1046,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 5.990150040087046,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 349,
+          "boxNative2x": [
+            405,
+            148,
+            492,
+            181
+          ]
+        },
+        {
+          "pixels": 316,
+          "boxNative2x": [
+            67,
+            52,
+            98,
+            92
+          ]
+        },
+        {
+          "pixels": 131,
+          "boxNative2x": [
+            486,
+            196,
+            503,
+            237
+          ]
+        },
+        {
+          "pixels": 109,
+          "boxNative2x": [
+            516,
+            220,
+            526,
+            243
+          ]
+        },
+        {
+          "pixels": 37,
+          "boxNative2x": [
+            184,
+            106,
+            200,
+            123
+          ]
+        },
+        {
+          "pixels": 29,
+          "boxNative2x": [
+            355,
+            135,
+            373,
+            140
+          ]
+        },
+        {
+          "pixels": 25,
+          "boxNative2x": [
+            386,
+            141,
+            397,
+            147
+          ]
+        },
+        {
+          "pixels": 13,
+          "boxNative2x": [
+            375,
+            138,
+            381,
+            142
+          ]
+        }
+      ],
+      "unknownComponentCount": 27,
+      "evidence": "review/boundary/ice-stream-flat-east-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "bd58029b5ebadf82579ea8b59b4e2544f228e4cbb928c16e8a2de3857ed7bae9",
+      "labelSupportSha256": "f6c9ea7a25c3decb04ba919cf54fcd573876fb0e29ec903c25f119c408406b48"
+    },
+    {
+      "mask": "ice-stream-flat-lower",
+      "maskSha256": "f48142d9f2d159f44fed55e5896b1f4af0bb858a3a5d3684c5583ef16cd0eb19",
+      "selectedPixels": 76598,
+      "definiteLiquidPixels": 56204,
+      "unknownPixels": 20394,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 26.624716050027416,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 6451,
+          "boxNative2x": [
+            1744,
+            991,
+            2130,
+            1082
+          ]
+        },
+        {
+          "pixels": 2383,
+          "boxNative2x": [
+            1684,
+            548,
+            1862,
+            605
+          ]
+        },
+        {
+          "pixels": 2057,
+          "boxNative2x": [
+            1780,
+            1074,
+            2054,
+            1119
+          ]
+        },
+        {
+          "pixels": 1858,
+          "boxNative2x": [
+            219,
+            30,
+            387,
+            76
+          ]
+        },
+        {
+          "pixels": 1290,
+          "boxNative2x": [
+            1816,
+            745,
+            1938,
+            783
+          ]
+        },
+        {
+          "pixels": 1175,
+          "boxNative2x": [
+            396,
+            98,
+            461,
+            156
+          ]
+        },
+        {
+          "pixels": 1026,
+          "boxNative2x": [
+            1650,
+            491,
+            1686,
+            547
+          ]
+        },
+        {
+          "pixels": 890,
+          "boxNative2x": [
+            1639,
+            258,
+            1739,
+            283
+          ]
+        }
+      ],
+      "unknownComponentCount": 81,
+      "evidence": "review/boundary/ice-stream-flat-lower-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "975393f95e04c09e6b8eeabe96e471bc2065ed535cee76cd34fac4077fe174f7",
+      "labelSupportSha256": "b7494e6b912617221a7061e2f6e2eba6bff94e0d18f7b452005f4ac7cae0d730"
+    },
+    {
+      "mask": "ice-stream-flat-mouth",
+      "maskSha256": "dfe48c93ef2473ba3d8f144b05d4ae481b047233831719f84036bc99b3daf364",
+      "selectedPixels": 3586,
+      "definiteLiquidPixels": 2014,
+      "unknownPixels": 1572,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 43.83714445064138,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 903,
+          "boxNative2x": [
+            85,
+            30,
+            164,
+            76
+          ]
+        },
+        {
+          "pixels": 575,
+          "boxNative2x": [
+            14,
+            11,
+            60,
+            40
+          ]
+        },
+        {
+          "pixels": 53,
+          "boxNative2x": [
+            186,
+            74,
+            203,
+            79
+          ]
+        },
+        {
+          "pixels": 22,
+          "boxNative2x": [
+            196,
+            52,
+            202,
+            58
+          ]
+        },
+        {
+          "pixels": 12,
+          "boxNative2x": [
+            187,
+            50,
+            192,
+            54
+          ]
+        },
+        {
+          "pixels": 6,
+          "boxNative2x": [
+            179,
+            76,
+            184,
+            78
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            165,
+            71,
+            166,
+            72
+          ]
+        }
+      ],
+      "unknownComponentCount": 7,
+      "evidence": "review/boundary/ice-stream-flat-mouth-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "4ae227fbc57ee532c1eb0b30f52df4365a02bd8e392603dd634955dac1ddb33a",
+      "labelSupportSha256": "d3b3b4fe2585d9f19110bfe19f23d1368e0794ecbf751cdd25532cadd95e24b4"
+    },
+    {
+      "mask": "ice-stream-flat-upper",
+      "maskSha256": "dd41b11969918f80bcf88a97599e04a938164613d1836eba4f995c1a12a988fd",
+      "selectedPixels": 65663,
+      "definiteLiquidPixels": 58051,
+      "unknownPixels": 7612,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 11.592525470965384,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 4546,
+          "boxNative2x": [
+            607,
+            264,
+            786,
+            380
+          ]
+        },
+        {
+          "pixels": 815,
+          "boxNative2x": [
+            849,
+            437,
+            925,
+            473
+          ]
+        },
+        {
+          "pixels": 396,
+          "boxNative2x": [
+            529,
+            227,
+            577,
+            245
+          ]
+        },
+        {
+          "pixels": 284,
+          "boxNative2x": [
+            223,
+            100,
+            255,
+            115
+          ]
+        },
+        {
+          "pixels": 233,
+          "boxNative2x": [
+            793,
+            351,
+            827,
+            376
+          ]
+        },
+        {
+          "pixels": 213,
+          "boxNative2x": [
+            900,
+            406,
+            924,
+            424
+          ]
+        },
+        {
+          "pixels": 127,
+          "boxNative2x": [
+            578,
+            234,
+            608,
+            247
+          ]
+        },
+        {
+          "pixels": 119,
+          "boxNative2x": [
+            397,
+            192,
+            420,
+            207
+          ]
+        }
+      ],
+      "unknownComponentCount": 51,
+      "evidence": "review/boundary/ice-stream-flat-upper-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "1acb3cbc202e22ca6cddfbe61dec0d41bd98f80266db9dcffda8ab57296a66ad",
+      "labelSupportSha256": "dcc93f502b11c584bdfaa3609f4efad009ed9baa3e91dcc7b10cd52a756692fe"
+    },
+    {
+      "mask": "ice-stream-flat",
+      "maskSha256": "6fc3bad98a71a0a7f5e75ac82bbcad7ade99916421352b49d6dd88282ef1273f",
+      "selectedPixels": 274970,
+      "definiteLiquidPixels": 234229,
+      "unknownPixels": 40741,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 14.816525439138815,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 6451,
+          "boxNative2x": [
+            7784,
+            3871,
+            8170,
+            3962
+          ]
+        },
+        {
+          "pixels": 4546,
+          "boxNative2x": [
+            7907,
+            1584,
+            8086,
+            1700
+          ]
+        },
+        {
+          "pixels": 3950,
+          "boxNative2x": [
+            7145,
+            2028,
+            7218,
+            2131
+          ]
+        },
+        {
+          "pixels": 2383,
+          "boxNative2x": [
+            7724,
+            3428,
+            7902,
+            3485
+          ]
+        },
+        {
+          "pixels": 2057,
+          "boxNative2x": [
+            7820,
+            3954,
+            8094,
+            3999
+          ]
+        },
+        {
+          "pixels": 1858,
+          "boxNative2x": [
+            6259,
+            2910,
+            6427,
+            2956
+          ]
+        },
+        {
+          "pixels": 1461,
+          "boxNative2x": [
+            6898,
+            1890,
+            7013,
+            1953
+          ]
+        },
+        {
+          "pixels": 1361,
+          "boxNative2x": [
+            6921,
+            1953,
+            6963,
+            2012
+          ]
+        }
+      ],
+      "unknownComponentCount": 227,
+      "evidence": "review/boundary/ice-stream-flat-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "525b7c8e8964af4c066d93e62437c0098233d845420fc8488aa4c091ba50b59f",
+      "labelSupportSha256": "8db20e7b5bfe43f762ca21a6c649181bc9bc715f4d458e3ce959b303f6faabd6"
+    },
+    {
+      "mask": "icefall-center-bridge",
+      "maskSha256": "1001f7ba63def4480c0d3c89ea697f76dca0195d9831df739fa161fa11235caa",
+      "selectedPixels": 29675,
+      "definiteLiquidPixels": 29552,
+      "unknownPixels": 123,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.4144903117101938,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 53,
+          "boxNative2x": [
+            384,
+            96,
+            388,
+            113
+          ]
+        },
+        {
+          "pixels": 30,
+          "boxNative2x": [
+            174,
+            78,
+            177,
+            90
+          ]
+        },
+        {
+          "pixels": 12,
+          "boxNative2x": [
+            175,
+            91,
+            177,
+            98
+          ]
+        },
+        {
+          "pixels": 6,
+          "boxNative2x": [
+            345,
+            89,
+            351,
+            90
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            354,
+            308,
+            355,
+            313
+          ]
+        },
+        {
+          "pixels": 4,
+          "boxNative2x": [
+            353,
+            90,
+            357,
+            91
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            359,
+            91,
+            362,
+            92
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            365,
+            92,
+            368,
+            93
+          ]
+        }
+      ],
+      "unknownComponentCount": 13,
+      "evidence": "review/boundary/icefall-center-bridge-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "4491181801db2c24261a42b778337e4593575ea6e200d1ab3d1c99ce005f3085",
+      "labelSupportSha256": "5593e33e20fa4e913e6bb06c0c41eab810e1ba3c7b28d42a4664be551bb26881"
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "maskSha256": "75fb9ea0caa0e8b2c2bb3084895d1d5c7dfbc9aa9636e89b89de4c24b8638894",
+      "selectedPixels": 5175,
+      "definiteLiquidPixels": 5149,
+      "unknownPixels": 26,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.5024154589371981,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 23,
+          "boxNative2x": [
+            211,
+            294,
+            221,
+            299
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            175,
+            249,
+            176,
+            252
+          ]
+        }
+      ],
+      "unknownComponentCount": 2,
+      "evidence": "review/boundary/icefall-east-cliff-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "7d89f5a18668803fbab5eb745367a7f72221407874a50e94ad2b7d6c513ed0c5",
+      "labelSupportSha256": "dfe18fad268d8b0401149bead284a919f6bf31ce892cd4017c158595e2d2e5d4"
+    },
+    {
+      "mask": "icefall-lower-1",
+      "maskSha256": "03622302d4fb8c362fb480bf89e793f123781d7864443698b60ef5b1e9b8d61f",
+      "selectedPixels": 16003,
+      "definiteLiquidPixels": 15994,
+      "unknownPixels": 9,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.056239455102168344,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 8,
+          "boxNative2x": [
+            209,
+            102,
+            211,
+            108
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            135,
+            95,
+            136,
+            96
+          ]
+        }
+      ],
+      "unknownComponentCount": 2,
+      "evidence": "review/boundary/icefall-lower-1-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "1182578150cd42f631e45d89c26cdcdc442ee2a7f05d23f0313dc041b42efaf3",
+      "labelSupportSha256": "9e46c060d2c79bb6be1a84b507d9e594a1d237184bc3a69c716c69c2a4e1a385"
+    },
+    {
+      "mask": "icefall-lower-2",
+      "maskSha256": "d35f3c8697e85601593449d942bbc488575f128aca7137a5ebfcfa24b7dd19ce",
+      "selectedPixels": 12018,
+      "definiteLiquidPixels": 12010,
+      "unknownPixels": 8,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.06656681644200366,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 6,
+          "boxNative2x": [
+            190,
+            93,
+            194,
+            96
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            194,
+            96,
+            195,
+            97
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            195,
+            97,
+            196,
+            98
+          ]
+        }
+      ],
+      "unknownComponentCount": 3,
+      "evidence": "review/boundary/icefall-lower-2-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "2c3372a94f08f03f6159128049e97edeefa6cbb5ae9383dc0a574e298bf9bc09",
+      "labelSupportSha256": "6e28e320a0859510488ded69056b63e02c0053c225a805d7c8d6213e2008668a"
+    },
+    {
+      "mask": "icefall-lower-3",
+      "maskSha256": "bdd703d1c7344437b70c7c439ff5d693dde05062f8181096222df254891821e0",
+      "selectedPixels": 26113,
+      "definiteLiquidPixels": 25540,
+      "unknownPixels": 573,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.194309347834412,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 374,
+          "boxNative2x": [
+            113,
+            77,
+            190,
+            84
+          ]
+        },
+        {
+          "pixels": 124,
+          "boxNative2x": [
+            231,
+            71,
+            288,
+            83
+          ]
+        },
+        {
+          "pixels": 28,
+          "boxNative2x": [
+            222,
+            175,
+            225,
+            190
+          ]
+        },
+        {
+          "pixels": 16,
+          "boxNative2x": [
+            226,
+            137,
+            228,
+            152
+          ]
+        },
+        {
+          "pixels": 8,
+          "boxNative2x": [
+            228,
+            127,
+            229,
+            135
+          ]
+        },
+        {
+          "pixels": 8,
+          "boxNative2x": [
+            225,
+            156,
+            227,
+            161
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            218,
+            201,
+            219,
+            206
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            310,
+            153,
+            311,
+            155
+          ]
+        }
+      ],
+      "unknownComponentCount": 15,
+      "evidence": "review/boundary/icefall-lower-3-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "dd242000582e16ee16ad7668568aebed4e3ad389c88f88ce11a44dbbdf1ec724",
+      "labelSupportSha256": "a01d30bad894f0aa81672fdae2d098de169707359ce9ea4ac1bc5c00410d33b9"
+    },
+    {
+      "mask": "icefall-lower-inlet",
+      "maskSha256": "ecb75d8f03f4c072747703379bc0a2d15b330e60faf60e59b5a9c014240c0260",
+      "selectedPixels": 4044,
+      "definiteLiquidPixels": 3968,
+      "unknownPixels": 76,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 1.8793273986152323,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 24,
+          "boxNative2x": [
+            110,
+            240,
+            117,
+            249
+          ]
+        },
+        {
+          "pixels": 24,
+          "boxNative2x": [
+            77,
+            248,
+            84,
+            253
+          ]
+        },
+        {
+          "pixels": 21,
+          "boxNative2x": [
+            152,
+            80,
+            156,
+            88
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            87,
+            224,
+            89,
+            227
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            99,
+            246,
+            100,
+            247
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            84,
+            248,
+            85,
+            249
+          ]
+        }
+      ],
+      "unknownComponentCount": 6,
+      "evidence": "review/boundary/icefall-lower-inlet-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "adf194a1ba9fc817bc6dd730df40b4818f00738b60ce38153296d581c6dcb69d",
+      "labelSupportSha256": "07c149e0ed91d16854c3a68b23691661bf9c9b47bbe188d3c6850f814014e3c3"
+    },
+    {
+      "mask": "icefall-mouth",
+      "maskSha256": "b003a8f4707420849c793634c2c29f49ff3a5d00cde986fabd962c5268b3813c",
+      "selectedPixels": 19940,
+      "definiteLiquidPixels": 19878,
+      "unknownPixels": 62,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.31093279839518556,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 28,
+          "boxNative2x": [
+            329,
+            187,
+            337,
+            199
+          ]
+        },
+        {
+          "pixels": 12,
+          "boxNative2x": [
+            305,
+            184,
+            311,
+            190
+          ]
+        },
+        {
+          "pixels": 7,
+          "boxNative2x": [
+            302,
+            98,
+            305,
+            102
+          ]
+        },
+        {
+          "pixels": 7,
+          "boxNative2x": [
+            345,
+            182,
+            351,
+            184
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            300,
+            113,
+            301,
+            115
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            379,
+            213,
+            380,
+            215
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            302,
+            109,
+            303,
+            110
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            301,
+            110,
+            302,
+            111
+          ]
+        }
+      ],
+      "unknownComponentCount": 10,
+      "evidence": "review/boundary/icefall-mouth-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "4c119ffd04187120fca30248efc126bd1db3ae4a5806836a3525b9f1c844de77",
+      "labelSupportSha256": "89bdfccb903e5053decceae1b325508e8fd373362f6008ea86c7cd556f0e1f12"
+    },
+    {
+      "mask": "icefall-summit",
+      "maskSha256": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+      "selectedPixels": 64735,
+      "definiteLiquidPixels": 33661,
+      "unknownPixels": 31074,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 48.00185371128447,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 17358,
+          "boxNative2x": [
+            114,
+            4,
+            283,
+            297
+          ]
+        },
+        {
+          "pixels": 4312,
+          "boxNative2x": [
+            340,
+            123,
+            430,
+            286
+          ]
+        },
+        {
+          "pixels": 3420,
+          "boxNative2x": [
+            141,
+            324,
+            229,
+            473
+          ]
+        },
+        {
+          "pixels": 2046,
+          "boxNative2x": [
+            207,
+            370,
+            317,
+            521
+          ]
+        },
+        {
+          "pixels": 1307,
+          "boxNative2x": [
+            344,
+            82,
+            443,
+            118
+          ]
+        },
+        {
+          "pixels": 730,
+          "boxNative2x": [
+            263,
+            269,
+            284,
+            332
+          ]
+        },
+        {
+          "pixels": 621,
+          "boxNative2x": [
+            189,
+            224,
+            222,
+            278
+          ]
+        },
+        {
+          "pixels": 212,
+          "boxNative2x": [
+            280,
+            83,
+            286,
+            159
+          ]
+        }
+      ],
+      "unknownComponentCount": 67,
+      "evidence": "review/boundary/icefall-summit-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "81693e38aed34b1a86a50c5a55794610614fb247e0a6ada909d22be760f3ff26",
+      "labelSupportSha256": "2a10be730a7e567cf7b1a7bb99a2199df98b54046d84d3ac2bc2d8b15a1a260a",
+      "registrationAddedRegion": {
+        "pixels": 2360,
+        "unknownPixels": 7,
+        "outsidePercentUpperBound": 0.2966101694915254
+      }
+    },
+    {
+      "mask": "icefall-upper-right",
+      "maskSha256": "74627607e4163915fc91e9deaa1aed3ef052417269c7b84965630954c9583507",
+      "selectedPixels": 9217,
+      "definiteLiquidPixels": 8947,
+      "unknownPixels": 270,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.9293696430508844,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 168,
+          "boxNative2x": [
+            213,
+            195,
+            230,
+            269
+          ]
+        },
+        {
+          "pixels": 49,
+          "boxNative2x": [
+            244,
+            128,
+            251,
+            146
+          ]
+        },
+        {
+          "pixels": 29,
+          "boxNative2x": [
+            148,
+            287,
+            154,
+            304
+          ]
+        },
+        {
+          "pixels": 6,
+          "boxNative2x": [
+            240,
+            157,
+            243,
+            161
+          ]
+        },
+        {
+          "pixels": 4,
+          "boxNative2x": [
+            212,
+            269,
+            213,
+            273
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            242,
+            152,
+            243,
+            155
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            243,
+            148,
+            244,
+            150
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            211,
+            274,
+            212,
+            276
+          ]
+        }
+      ],
+      "unknownComponentCount": 14,
+      "evidence": "review/boundary/icefall-upper-right-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "d49bf97beeeafdb03fc93c21a78ad2f8f8f5301690c25ae24b0d2c97ea51e2e5",
+      "labelSupportSha256": "c5046c246fed5361da4040521a0d05def4ff3eae262cbb449dcbaed1ce216f62"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "maskSha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822",
+      "selectedPixels": 668,
+      "definiteLiquidPixels": 664,
+      "unknownPixels": 4,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.5988023952095808,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            94,
+            39,
+            95,
+            40
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            168,
+            47,
+            169,
+            48
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            169,
+            48,
+            170,
+            49
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            88,
+            58,
+            89,
+            59
+          ]
+        }
+      ],
+      "unknownComponentCount": 4,
+      "evidence": "review/boundary/icefall-upper-tree-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "14bda5ea12a1dff0b37b7d3e5ea490e3e0be86ce1a432895381dfac0010945e1",
+      "labelSupportSha256": "57440b61f94058311a82a314ce9e65ff02040201bffaa07092c05516cf374eac"
+    },
+    {
+      "mask": "lava-flat-left-bottom",
+      "maskSha256": "7e82e9e1d6e93f33b03f1993c4764fdfbf67c579181d257466ab780535fca4ab",
+      "selectedPixels": 10318,
+      "definiteLiquidPixels": 2930,
+      "unknownPixels": 7388,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 71.60302384182981,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 6873,
+          "boxNative2x": [
+            114,
+            156,
+            357,
+            262
+          ]
+        },
+        {
+          "pixels": 251,
+          "boxNative2x": [
+            138,
+            117,
+            170,
+            133
+          ]
+        },
+        {
+          "pixels": 200,
+          "boxNative2x": [
+            292,
+            295,
+            316,
+            315
+          ]
+        },
+        {
+          "pixels": 51,
+          "boxNative2x": [
+            278,
+            277,
+            289,
+            290
+          ]
+        },
+        {
+          "pixels": 4,
+          "boxNative2x": [
+            163,
+            159,
+            166,
+            161
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            274,
+            282,
+            276,
+            284
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            119,
+            151,
+            120,
+            152
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            120,
+            152,
+            121,
+            153
+          ]
+        }
+      ],
+      "unknownComponentCount": 12,
+      "evidence": "review/boundary/lava-flat-left-bottom-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "a6226b7ba650e93b162689e9b09a02f46fb714746b0a3d8b2c7f30948784ec80",
+      "labelSupportSha256": "b0c6f9c3e64866a375e4b43e153eabd9699b2362e2e3f3ef1c7c8b70dcf1ef4b"
+    },
+    {
+      "mask": "lava-flat-lower",
+      "maskSha256": "9bfa1cb95549218ef0a4eb1d3c992df770e6221ae6e355a588420eb3eed0d87e",
+      "selectedPixels": 113301,
+      "definiteLiquidPixels": 84799,
+      "unknownPixels": 28502,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 25.156000388346087,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 5483,
+          "boxNative2x": [
+            945,
+            1002,
+            1064,
+            1154
+          ]
+        },
+        {
+          "pixels": 3886,
+          "boxNative2x": [
+            346,
+            1124,
+            456,
+            1224
+          ]
+        },
+        {
+          "pixels": 2979,
+          "boxNative2x": [
+            745,
+            1078,
+            854,
+            1165
+          ]
+        },
+        {
+          "pixels": 2290,
+          "boxNative2x": [
+            717,
+            491,
+            838,
+            549
+          ]
+        },
+        {
+          "pixels": 2264,
+          "boxNative2x": [
+            306,
+            1149,
+            350,
+            1224
+          ]
+        },
+        {
+          "pixels": 2037,
+          "boxNative2x": [
+            587,
+            1056,
+            686,
+            1122
+          ]
+        },
+        {
+          "pixels": 1865,
+          "boxNative2x": [
+            795,
+            934,
+            867,
+            987
+          ]
+        },
+        {
+          "pixels": 1116,
+          "boxNative2x": [
+            1139,
+            1153,
+            1259,
+            1212
+          ]
+        }
+      ],
+      "unknownComponentCount": 122,
+      "evidence": "review/boundary/lava-flat-lower-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "00007bc2e771fbf2deb3ea924af6ebe47824e2503a2422739b5f1aa439c5f53f",
+      "labelSupportSha256": "5774ad65a276aae154591698d85d659b969ec08ba2f28e7a62cb48d9e40185b2"
+    },
+    {
+      "mask": "lava-flat-middle",
+      "maskSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "selectedPixels": 57010,
+      "definiteLiquidPixels": 43748,
+      "unknownPixels": 13262,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 23.262585511313805,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 3849,
+          "boxNative2x": [
+            624,
+            276,
+            778,
+            377
+          ]
+        },
+        {
+          "pixels": 2397,
+          "boxNative2x": [
+            208,
+            29,
+            316,
+            70
+          ]
+        },
+        {
+          "pixels": 2128,
+          "boxNative2x": [
+            547,
+            130,
+            635,
+            202
+          ]
+        },
+        {
+          "pixels": 1391,
+          "boxNative2x": [
+            640,
+            164,
+            732,
+            223
+          ]
+        },
+        {
+          "pixels": 1008,
+          "boxNative2x": [
+            466,
+            111,
+            533,
+            161
+          ]
+        },
+        {
+          "pixels": 921,
+          "boxNative2x": [
+            767,
+            203,
+            816,
+            257
+          ]
+        },
+        {
+          "pixels": 653,
+          "boxNative2x": [
+            244,
+            70,
+            282,
+            117
+          ]
+        },
+        {
+          "pixels": 269,
+          "boxNative2x": [
+            185,
+            48,
+            205,
+            70
+          ]
+        }
+      ],
+      "unknownComponentCount": 53,
+      "evidence": "review/boundary/lava-flat-middle-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "f6a0abb5e0ae9931900ee0b3bc345de3c0cee6c5ca15b16aeafdfc27a7cc1d99",
+      "labelSupportSha256": "0267b6f486c5b0bc4b6aa7a4adfba8ac5c648730cc93b6d5eee5717f8c1efad5"
+    },
+    {
+      "mask": "lava-flat-southwest",
+      "maskSha256": "7aa0e04b1e1022d5157f06cab06b5617d01c14f93db5d3184d0c78a93c2b718d",
+      "selectedPixels": 15081,
+      "definiteLiquidPixels": 2325,
+      "unknownPixels": 12756,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 84.58325044758305,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 5462,
+          "boxNative2x": [
+            416,
+            230,
+            555,
+            334
+          ]
+        },
+        {
+          "pixels": 2631,
+          "boxNative2x": [
+            128,
+            82,
+            244,
+            182
+          ]
+        },
+        {
+          "pixels": 1517,
+          "boxNative2x": [
+            627,
+            556,
+            713,
+            629
+          ]
+        },
+        {
+          "pixels": 1124,
+          "boxNative2x": [
+            541,
+            392,
+            595,
+            433
+          ]
+        },
+        {
+          "pixels": 668,
+          "boxNative2x": [
+            359,
+            177,
+            387,
+            234
+          ]
+        },
+        {
+          "pixels": 445,
+          "boxNative2x": [
+            552,
+            475,
+            617,
+            495
+          ]
+        },
+        {
+          "pixels": 352,
+          "boxNative2x": [
+            668,
+            523,
+            718,
+            545
+          ]
+        },
+        {
+          "pixels": 307,
+          "boxNative2x": [
+            297,
+            164,
+            370,
+            178
+          ]
+        }
+      ],
+      "unknownComponentCount": 55,
+      "evidence": "review/boundary/lava-flat-southwest-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "562c74c35b12cc334fd2647d3ae7a6c0ccc13405e6771f13f5624335feec5968",
+      "labelSupportSha256": "a01b632308e61907bc4b891444af7b986dc6ccd31171795467c95c0ae0aea3bc"
+    },
+    {
+      "mask": "lava-flat-upper",
+      "maskSha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f",
+      "selectedPixels": 92199,
+      "definiteLiquidPixels": 24271,
+      "unknownPixels": 67928,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 73.67541947309624,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 22721,
+          "boxNative2x": [
+            1210,
+            102,
+            1672,
+            421
+          ]
+        },
+        {
+          "pixels": 9986,
+          "boxNative2x": [
+            150,
+            310,
+            399,
+            389
+          ]
+        },
+        {
+          "pixels": 8076,
+          "boxNative2x": [
+            1041,
+            88,
+            1181,
+            198
+          ]
+        },
+        {
+          "pixels": 5226,
+          "boxNative2x": [
+            1670,
+            165,
+            1828,
+            268
+          ]
+        },
+        {
+          "pixels": 4607,
+          "boxNative2x": [
+            1920,
+            1069,
+            2051,
+            1162
+          ]
+        },
+        {
+          "pixels": 4509,
+          "boxNative2x": [
+            2089,
+            864,
+            2188,
+            971
+          ]
+        },
+        {
+          "pixels": 3082,
+          "boxNative2x": [
+            1668,
+            477,
+            1898,
+            539
+          ]
+        },
+        {
+          "pixels": 2883,
+          "boxNative2x": [
+            2021,
+            816,
+            2123,
+            877
+          ]
+        }
+      ],
+      "unknownComponentCount": 194,
+      "evidence": "review/boundary/lava-flat-upper-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "7234a9ecae5bb7cf7153b37ff571a6d3eb02d8d91c8ecac07dac6c7d7d2fe1ce",
+      "labelSupportSha256": "277299a777dd2dae5917c92ea90320d892330c66863da64d5d431a5e4d7e7a36"
+    },
+    {
+      "mask": "lava-flat-west",
+      "maskSha256": "39560e388ad2f22cf1b105a9e6edf7d3277d2f600c3a543773b576a3d6b004e1",
+      "selectedPixels": 44021,
+      "definiteLiquidPixels": 6189,
+      "unknownPixels": 37832,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 85.94080098134981,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 15647,
+          "boxNative2x": [
+            208,
+            329,
+            516,
+            492
+          ]
+        },
+        {
+          "pixels": 14165,
+          "boxNative2x": [
+            102,
+            836,
+            268,
+            1035
+          ]
+        },
+        {
+          "pixels": 2554,
+          "boxNative2x": [
+            429,
+            834,
+            491,
+            940
+          ]
+        },
+        {
+          "pixels": 1847,
+          "boxNative2x": [
+            775,
+            940,
+            882,
+            994
+          ]
+        },
+        {
+          "pixels": 1515,
+          "boxNative2x": [
+            283,
+            903,
+            335,
+            972
+          ]
+        },
+        {
+          "pixels": 1318,
+          "boxNative2x": [
+            14,
+            1046,
+            126,
+            1094
+          ]
+        },
+        {
+          "pixels": 289,
+          "boxNative2x": [
+            538,
+            978,
+            572,
+            996
+          ]
+        },
+        {
+          "pixels": 255,
+          "boxNative2x": [
+            330,
+            851,
+            363,
+            900
+          ]
+        }
+      ],
+      "unknownComponentCount": 62,
+      "evidence": "review/boundary/lava-flat-west-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "1765b504492055de940b597bab56a37ab9cf81f2df1fefc5f40206fe95d6677b",
+      "labelSupportSha256": "d358370a5d8eaef0b5cbb163b9e5cca6a16ae921318e0927e025ee957b59e326"
+    },
+    {
+      "mask": "lava-flat",
+      "maskSha256": "21bdf50bb43203bb010175d0839e8555c0909a9d05d125fed954869837df16bd",
+      "selectedPixels": 331930,
+      "definiteLiquidPixels": 164262,
+      "unknownPixels": 167668,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 50.513059982526435,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 22721,
+          "boxNative2x": [
+            1770,
+            412,
+            2232,
+            731
+          ]
+        },
+        {
+          "pixels": 15647,
+          "boxNative2x": [
+            268,
+            1309,
+            576,
+            1472
+          ]
+        },
+        {
+          "pixels": 14165,
+          "boxNative2x": [
+            162,
+            1816,
+            328,
+            2015
+          ]
+        },
+        {
+          "pixels": 9986,
+          "boxNative2x": [
+            710,
+            620,
+            959,
+            699
+          ]
+        },
+        {
+          "pixels": 8076,
+          "boxNative2x": [
+            1601,
+            398,
+            1741,
+            508
+          ]
+        },
+        {
+          "pixels": 6873,
+          "boxNative2x": [
+            434,
+            2516,
+            677,
+            2622
+          ]
+        },
+        {
+          "pixels": 5483,
+          "boxNative2x": [
+            3065,
+            3852,
+            3184,
+            4004
+          ]
+        },
+        {
+          "pixels": 5462,
+          "boxNative2x": [
+            846,
+            3630,
+            985,
+            3734
+          ]
+        }
+      ],
+      "unknownComponentCount": 498,
+      "evidence": "review/boundary/lava-flat-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "525b7c8e8964af4c066d93e62437c0098233d845420fc8488aa4c091ba50b59f",
+      "labelSupportSha256": "55be772a9d79c3ff6295854baa11546d625dba71cc7794a3118ecd4f0341cafa"
+    },
+    {
+      "mask": "lavafall-bridge",
+      "maskSha256": "97a127c51fed43f88e6b424df602404b45c8cd9f6aa5ee946adba886c145e777",
+      "selectedPixels": 32071,
+      "definiteLiquidPixels": 29880,
+      "unknownPixels": 2191,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 6.831717127623087,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 896,
+          "boxNative2x": [
+            151,
+            247,
+            199,
+            294
+          ]
+        },
+        {
+          "pixels": 818,
+          "boxNative2x": [
+            72,
+            250,
+            114,
+            285
+          ]
+        },
+        {
+          "pixels": 194,
+          "boxNative2x": [
+            38,
+            146,
+            55,
+            171
+          ]
+        },
+        {
+          "pixels": 96,
+          "boxNative2x": [
+            13,
+            92,
+            23,
+            117
+          ]
+        },
+        {
+          "pixels": 47,
+          "boxNative2x": [
+            47,
+            288,
+            56,
+            301
+          ]
+        },
+        {
+          "pixels": 46,
+          "boxNative2x": [
+            17,
+            200,
+            32,
+            213
+          ]
+        },
+        {
+          "pixels": 37,
+          "boxNative2x": [
+            28,
+            177,
+            38,
+            190
+          ]
+        },
+        {
+          "pixels": 17,
+          "boxNative2x": [
+            38,
+            243,
+            43,
+            249
+          ]
+        }
+      ],
+      "unknownComponentCount": 18,
+      "evidence": "review/boundary/lavafall-bridge-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "5b806d56b5569ef814f76aa9dd48cd7c3ec315838f39a8a82ba03208aea2bd09",
+      "labelSupportSha256": "20e82dcbe221a028324feb9df3a37dc4dbea6e1fe2bb8307616eef9b3d43bd68"
+    },
+    {
+      "mask": "lavafall-lower-step",
+      "maskSha256": "7303a24978799e03df30f2f74ed1caea744b5bbdaef93e704ecbccf7ba5238de",
+      "selectedPixels": 45111,
+      "definiteLiquidPixels": 45111,
+      "unknownPixels": 0,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.0,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [],
+      "unknownComponentCount": 0,
+      "evidence": "review/boundary/lavafall-lower-step-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "28784ff10da6d4249ec087800d54490ea81fc891c2fd1b3ff25721348f41029b",
+      "labelSupportSha256": "3cbbe9cc3b502de0183d4e19435dba963a8b239fe11cb91952b723dcac5a640c"
+    },
+    {
+      "mask": "lavafall-middle",
+      "maskSha256": "758980ea46aedb458e6b3f1b56bb40428f219354a3667197ff002ff31baa5044",
+      "selectedPixels": 31406,
+      "definiteLiquidPixels": 30621,
+      "unknownPixels": 785,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.499522384257785,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 693,
+          "boxNative2x": [
+            127,
+            270,
+            148,
+            344
+          ]
+        },
+        {
+          "pixels": 65,
+          "boxNative2x": [
+            220,
+            128,
+            229,
+            143
+          ]
+        },
+        {
+          "pixels": 16,
+          "boxNative2x": [
+            225,
+            114,
+            228,
+            122
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            128,
+            256,
+            129,
+            259
+          ]
+        },
+        {
+          "pixels": 3,
+          "boxNative2x": [
+            129,
+            259,
+            130,
+            262
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            227,
+            106,
+            228,
+            107
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            219,
+            143,
+            220,
+            144
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            130,
+            262,
+            131,
+            263
+          ]
+        }
+      ],
+      "unknownComponentCount": 10,
+      "evidence": "review/boundary/lavafall-middle-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "2199fe3b677b6a234a8e54a8f57769253b0f2c76200e186a077133432cd8d451",
+      "labelSupportSha256": "a6d97911f6d2dd17ae762600d90863bbf19295dbd0a28cdc4994d0d0af5d53ac"
+    },
+    {
+      "mask": "lavafall-mouth",
+      "maskSha256": "c08464892c51b2173173e6f12802b776c9da5b2208b001e8c5df896623b02d2f",
+      "selectedPixels": 21228,
+      "definiteLiquidPixels": 18814,
+      "unknownPixels": 2414,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 11.371773129828528,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1628,
+          "boxNative2x": [
+            105,
+            82,
+            155,
+            261
+          ]
+        },
+        {
+          "pixels": 568,
+          "boxNative2x": [
+            85,
+            246,
+            156,
+            276
+          ]
+        },
+        {
+          "pixels": 146,
+          "boxNative2x": [
+            64,
+            230,
+            74,
+            258
+          ]
+        },
+        {
+          "pixels": 24,
+          "boxNative2x": [
+            24,
+            273,
+            36,
+            277
+          ]
+        },
+        {
+          "pixels": 23,
+          "boxNative2x": [
+            144,
+            69,
+            147,
+            81
+          ]
+        },
+        {
+          "pixels": 11,
+          "boxNative2x": [
+            148,
+            10,
+            151,
+            16
+          ]
+        },
+        {
+          "pixels": 10,
+          "boxNative2x": [
+            76,
+            274,
+            83,
+            276
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            146,
+            31,
+            147,
+            33
+          ]
+        }
+      ],
+      "unknownComponentCount": 10,
+      "evidence": "review/boundary/lavafall-mouth-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "be8a6e45437099075bb0f06bb1df6ecc7a324d05c4f0ba8da9fe9e0c2a0a4541",
+      "labelSupportSha256": "0f6b04555d5e7791b8ba5d59b34ca6d5a56b6f5639ab39eb9895b9b713ff101b"
+    },
+    {
+      "mask": "lavafall-upper-left",
+      "maskSha256": "5af64a1bc68d5929ec181f72efdace686483225ffb49c21d2544098feca78583",
+      "selectedPixels": 12727,
+      "definiteLiquidPixels": 11059,
+      "unknownPixels": 1668,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 13.105995128467038,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1253,
+          "boxNative2x": [
+            79,
+            66,
+            113,
+            146
+          ]
+        },
+        {
+          "pixels": 94,
+          "boxNative2x": [
+            10,
+            138,
+            33,
+            148
+          ]
+        },
+        {
+          "pixels": 82,
+          "boxNative2x": [
+            101,
+            33,
+            109,
+            56
+          ]
+        },
+        {
+          "pixels": 75,
+          "boxNative2x": [
+            17,
+            178,
+            35,
+            191
+          ]
+        },
+        {
+          "pixels": 65,
+          "boxNative2x": [
+            59,
+            164,
+            80,
+            170
+          ]
+        },
+        {
+          "pixels": 37,
+          "boxNative2x": [
+            9,
+            57,
+            12,
+            86
+          ]
+        },
+        {
+          "pixels": 14,
+          "boxNative2x": [
+            50,
+            171,
+            56,
+            177
+          ]
+        },
+        {
+          "pixels": 12,
+          "boxNative2x": [
+            100,
+            58,
+            103,
+            65
+          ]
+        }
+      ],
+      "unknownComponentCount": 17,
+      "evidence": "review/boundary/lavafall-upper-left-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "25273c47ea6b713b4329f455248eaf23baccc17097d0107846705911b6ffb805",
+      "labelSupportSha256": "2e1160672e3c24b58ad1336d9a6c011a0acb69235e80f35d4f8978fafc2dd813"
+    },
+    {
+      "mask": "lavafall-upper-step",
+      "maskSha256": "96720c28746a756dd2cb5ce8900dfb0ec968d177c63e9d896304f160f06558dd",
+      "selectedPixels": 33190,
+      "definiteLiquidPixels": 32282,
+      "unknownPixels": 908,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.735763784272371,
+      "status": "upper-bound-within-3-percent",
+      "largestUnknownComponents": [
+        {
+          "pixels": 854,
+          "boxNative2x": [
+            25,
+            272,
+            79,
+            316
+          ]
+        },
+        {
+          "pixels": 13,
+          "boxNative2x": [
+            118,
+            290,
+            122,
+            298
+          ]
+        },
+        {
+          "pixels": 13,
+          "boxNative2x": [
+            116,
+            298,
+            120,
+            305
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            20,
+            214,
+            22,
+            217
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            45,
+            257,
+            48,
+            260
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            125,
+            274,
+            127,
+            278
+          ]
+        },
+        {
+          "pixels": 4,
+          "boxNative2x": [
+            186,
+            266,
+            188,
+            269
+          ]
+        },
+        {
+          "pixels": 2,
+          "boxNative2x": [
+            128,
+            270,
+            129,
+            272
+          ]
+        }
+      ],
+      "unknownComponentCount": 14,
+      "evidence": "review/boundary/lavafall-upper-step-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "921650ad3bb500be547c3890e4bf538abbc57fdb1a8eae7accebb346d2a9dbd0",
+      "labelSupportSha256": "ffa68319e63b89f9dfadb67688856a313d2e105dc0afa405989984fa3136f60b"
+    },
+    {
+      "mask": "lavafall-volcano",
+      "maskSha256": "9ea89353b9500746c46221d24359dc1c475f521e85d360e41d7f9a021b59ed84",
+      "selectedPixels": 24655,
+      "definiteLiquidPixels": 20607,
+      "unknownPixels": 4048,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 16.418576353680795,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1938,
+          "boxNative2x": [
+            87,
+            22,
+            185,
+            169
+          ]
+        },
+        {
+          "pixels": 873,
+          "boxNative2x": [
+            84,
+            238,
+            107,
+            319
+          ]
+        },
+        {
+          "pixels": 674,
+          "boxNative2x": [
+            12,
+            93,
+            28,
+            192
+          ]
+        },
+        {
+          "pixels": 291,
+          "boxNative2x": [
+            10,
+            12,
+            75,
+            26
+          ]
+        },
+        {
+          "pixels": 135,
+          "boxNative2x": [
+            153,
+            8,
+            171,
+            25
+          ]
+        },
+        {
+          "pixels": 38,
+          "boxNative2x": [
+            60,
+            222,
+            66,
+            239
+          ]
+        },
+        {
+          "pixels": 26,
+          "boxNative2x": [
+            24,
+            210,
+            32,
+            217
+          ]
+        },
+        {
+          "pixels": 24,
+          "boxNative2x": [
+            64,
+            240,
+            68,
+            253
+          ]
+        }
+      ],
+      "unknownComponentCount": 24,
+      "evidence": "review/boundary/lavafall-volcano-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "c13b6767f615cc413bf867b4a77730066699a6f51cb11be3774192e80b87cd14",
+      "labelSupportSha256": "15dabd6740700e028d7fd32763873392b57f58ae8e158d54bcfaa4a55e09d282"
+    },
+    {
+      "mask": "lavafall-west",
+      "maskSha256": "9beeab3c8b1fd9e747203a98c773b0812e40e817ca458eaee1c02b66c16b989d",
+      "selectedPixels": 37477,
+      "definiteLiquidPixels": 35005,
+      "unknownPixels": 2472,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 6.5960455746191,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1310,
+          "boxNative2x": [
+            13,
+            57,
+            42,
+            189
+          ]
+        },
+        {
+          "pixels": 674,
+          "boxNative2x": [
+            41,
+            262,
+            83,
+            316
+          ]
+        },
+        {
+          "pixels": 299,
+          "boxNative2x": [
+            11,
+            8,
+            32,
+            57
+          ]
+        },
+        {
+          "pixels": 138,
+          "boxNative2x": [
+            27,
+            298,
+            40,
+            319
+          ]
+        },
+        {
+          "pixels": 32,
+          "boxNative2x": [
+            46,
+            221,
+            59,
+            230
+          ]
+        },
+        {
+          "pixels": 10,
+          "boxNative2x": [
+            203,
+            268,
+            207,
+            272
+          ]
+        },
+        {
+          "pixels": 5,
+          "boxNative2x": [
+            195,
+            271,
+            198,
+            274
+          ]
+        },
+        {
+          "pixels": 1,
+          "boxNative2x": [
+            45,
+            224,
+            46,
+            225
+          ]
+        }
+      ],
+      "unknownComponentCount": 11,
+      "evidence": "review/boundary/lavafall-west-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "487c735434f19c24edcc443014833dbe61c6bed8ecc8035b69d662565ef3ff54",
+      "labelSupportSha256": "b6c670eb60947864403bb07b88c9c78bbafe25f76a29eb9518eda63237206929"
+    },
+    {
+      "mask": "shore-band-ice",
+      "maskSha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802",
+      "selectedPixels": 13960,
+      "definiteLiquidPixels": 8552,
+      "unknownPixels": 5408,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 38.739255014326645,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 1349,
+          "boxNative2x": [
+            1758,
+            231,
+            1895,
+            283
+          ]
+        },
+        {
+          "pixels": 1007,
+          "boxNative2x": [
+            728,
+            482,
+            843,
+            545
+          ]
+        },
+        {
+          "pixels": 630,
+          "boxNative2x": [
+            268,
+            1570,
+            328,
+            1612
+          ]
+        },
+        {
+          "pixels": 396,
+          "boxNative2x": [
+            1659,
+            139,
+            1707,
+            157
+          ]
+        },
+        {
+          "pixels": 349,
+          "boxNative2x": [
+            3535,
+            1090,
+            3622,
+            1123
+          ]
+        },
+        {
+          "pixels": 217,
+          "boxNative2x": [
+            1926,
+            266,
+            1957,
+            288
+          ]
+        },
+        {
+          "pixels": 217,
+          "boxNative2x": [
+            618,
+            788,
+            635,
+            845
+          ]
+        },
+        {
+          "pixels": 213,
+          "boxNative2x": [
+            2030,
+            318,
+            2054,
+            336
+          ]
+        }
+      ],
+      "unknownComponentCount": 69,
+      "evidence": "review/boundary/shore-band-ice-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "16ab86ca965083dd67e475dba246f1a57e09a5f477f990b8c0b175aa9ec5da44",
+      "labelSupportSha256": "a2a78dbf03696883f81d1cb605d7fd80942dcd815265b423d510eddcab7fb4cd"
+    },
+    {
+      "mask": "shore-band-spirit",
+      "maskSha256": "04a3fae76f5ede5a903dfabe7783b3291e009eb6db761a3b410a08f964a9f5a4",
+      "selectedPixels": 676567,
+      "definiteLiquidPixels": 247574,
+      "unknownPixels": 428993,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 63.4073196002761,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 157553,
+          "boxNative2x": [
+            0,
+            503,
+            4711,
+            745
+          ]
+        },
+        {
+          "pixels": 153745,
+          "boxNative2x": [
+            5142,
+            513,
+            9822,
+            763
+          ]
+        },
+        {
+          "pixels": 13923,
+          "boxNative2x": [
+            8345,
+            72,
+            8820,
+            212
+          ]
+        },
+        {
+          "pixels": 13653,
+          "boxNative2x": [
+            3719,
+            159,
+            4397,
+            266
+          ]
+        },
+        {
+          "pixels": 13469,
+          "boxNative2x": [
+            9049,
+            196,
+            9579,
+            258
+          ]
+        },
+        {
+          "pixels": 5755,
+          "boxNative2x": [
+            1283,
+            230,
+            1731,
+            264
+          ]
+        },
+        {
+          "pixels": 5003,
+          "boxNative2x": [
+            188,
+            227,
+            495,
+            294
+          ]
+        },
+        {
+          "pixels": 4828,
+          "boxNative2x": [
+            3448,
+            0,
+            3697,
+            83
+          ]
+        }
+      ],
+      "unknownComponentCount": 445,
+      "evidence": "review/boundary/shore-band-spirit-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "3ed7a0b0cdd1df14e983970fae6c20d8924ea525dedfe20cbc1ae4d29dd61427",
+      "labelSupportSha256": "0e7f43563920e5c6eac0d1bced0560838c513a091b8aaecb6ffa5db7e2477734"
+    },
+    {
+      "mask": "shore-band",
+      "maskSha256": "ab7fae6133772b2b8f4b8f95ff942c808b30cfdf9da2ca5e520833aa722ef4c4",
+      "selectedPixels": 690527,
+      "definiteLiquidPixels": 256427,
+      "unknownPixels": 434100,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 62.86502917337048,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 157553,
+          "boxNative2x": [
+            4,
+            4761,
+            4715,
+            5003
+          ]
+        },
+        {
+          "pixels": 153745,
+          "boxNative2x": [
+            5146,
+            4771,
+            9826,
+            5021
+          ]
+        },
+        {
+          "pixels": 13653,
+          "boxNative2x": [
+            3723,
+            4417,
+            4401,
+            4524
+          ]
+        },
+        {
+          "pixels": 13628,
+          "boxNative2x": [
+            8349,
+            4335,
+            8824,
+            4470
+          ]
+        },
+        {
+          "pixels": 13469,
+          "boxNative2x": [
+            9053,
+            4454,
+            9583,
+            4516
+          ]
+        },
+        {
+          "pixels": 5755,
+          "boxNative2x": [
+            1287,
+            4488,
+            1735,
+            4522
+          ]
+        },
+        {
+          "pixels": 5003,
+          "boxNative2x": [
+            192,
+            4485,
+            499,
+            4552
+          ]
+        },
+        {
+          "pixels": 4828,
+          "boxNative2x": [
+            3452,
+            4258,
+            3701,
+            4341
+          ]
+        }
+      ],
+      "unknownComponentCount": 508,
+      "evidence": "review/boundary/shore-band-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "525b7c8e8964af4c066d93e62437c0098233d845420fc8488aa4c091ba50b59f",
+      "labelSupportSha256": "88407bdf6728b007c55c37d3f8e8948d13ddfebb62af661a417b2a8404cf55d4"
+    },
+    {
+      "mask": "spirit-river-east",
+      "maskSha256": "fa45b52ed5cc8e3e75874bd028ec58a2a5fbf696dd3354cbaada05aabf0fdb89",
+      "selectedPixels": 1969096,
+      "definiteLiquidPixels": 1073646,
+      "unknownPixels": 895450,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 45.47518252030373,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 801899,
+          "boxNative2x": [
+            26,
+            551,
+            4706,
+            801
+          ]
+        },
+        {
+          "pixels": 29259,
+          "boxNative2x": [
+            3229,
+            110,
+            3704,
+            250
+          ]
+        },
+        {
+          "pixels": 18057,
+          "boxNative2x": [
+            3933,
+            234,
+            4463,
+            298
+          ]
+        },
+        {
+          "pixels": 6331,
+          "boxNative2x": [
+            600,
+            272,
+            748,
+            377
+          ]
+        },
+        {
+          "pixels": 4827,
+          "boxNative2x": [
+            3709,
+            198,
+            3930,
+            286
+          ]
+        },
+        {
+          "pixels": 4818,
+          "boxNative2x": [
+            2204,
+            290,
+            2502,
+            340
+          ]
+        },
+        {
+          "pixels": 4602,
+          "boxNative2x": [
+            2737,
+            231,
+            2855,
+            313
+          ]
+        },
+        {
+          "pixels": 4364,
+          "boxNative2x": [
+            465,
+            323,
+            663,
+            377
+          ]
+        }
+      ],
+      "unknownComponentCount": 262,
+      "evidence": "review/boundary/spirit-river-east-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "e5b713e8e9b17ef94c0de51cca46bc81df6a262397d6826597a0bb23f30f9009",
+      "labelSupportSha256": "947ac35d985a720cdb8f379826ab8c9a9f68a01d02c59eb3aaf7b57d5b3af363"
+    },
+    {
+      "mask": "spirit-river-west",
+      "maskSha256": "7611bd0c81fc73b8944a1e118a89c6506323dba7a9a9b5767c241c62dcf126de",
+      "selectedPixels": 1804030,
+      "definiteLiquidPixels": 1006914,
+      "unknownPixels": 797116,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 44.185296253388245,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 745601,
+          "boxNative2x": [
+            4,
+            541,
+            4715,
+            783
+          ]
+        },
+        {
+          "pixels": 16381,
+          "boxNative2x": [
+            3723,
+            197,
+            4401,
+            310
+          ]
+        },
+        {
+          "pixels": 5755,
+          "boxNative2x": [
+            1287,
+            268,
+            1735,
+            302
+          ]
+        },
+        {
+          "pixels": 5102,
+          "boxNative2x": [
+            192,
+            265,
+            499,
+            332
+          ]
+        },
+        {
+          "pixels": 5008,
+          "boxNative2x": [
+            3452,
+            38,
+            3701,
+            121
+          ]
+        },
+        {
+          "pixels": 3215,
+          "boxNative2x": [
+            4394,
+            262,
+            4552,
+            301
+          ]
+        },
+        {
+          "pixels": 3133,
+          "boxNative2x": [
+            1075,
+            248,
+            1273,
+            290
+          ]
+        },
+        {
+          "pixels": 3016,
+          "boxNative2x": [
+            897,
+            215,
+            1075,
+            286
+          ]
+        }
+      ],
+      "unknownComponentCount": 226,
+      "evidence": "review/boundary/spirit-river-west-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "d1094fa564292ea049d0ec4db6661fdb8fcee869944df39b3d82b9fc3e85bad6",
+      "labelSupportSha256": "118e3a1c3401e727c6199c34dae7d4db0f412ac6fd6db647a3e47428a2b56904"
+    },
+    {
+      "mask": "spirit-river",
+      "maskSha256": "b15d58c2ad4cdaccfac47a600a57df92ecb96db99bd1bf0e52451dc4c4b9eeb8",
+      "selectedPixels": 3773126,
+      "definiteLiquidPixels": 2080560,
+      "unknownPixels": 1692566,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 44.858454236619714,
+      "status": "reference-incomplete",
+      "largestUnknownComponents": [
+        {
+          "pixels": 801899,
+          "boxNative2x": [
+            5146,
+            4771,
+            9826,
+            5021
+          ]
+        },
+        {
+          "pixels": 745601,
+          "boxNative2x": [
+            4,
+            4761,
+            4715,
+            5003
+          ]
+        },
+        {
+          "pixels": 29259,
+          "boxNative2x": [
+            8349,
+            4330,
+            8824,
+            4470
+          ]
+        },
+        {
+          "pixels": 18057,
+          "boxNative2x": [
+            9053,
+            4454,
+            9583,
+            4518
+          ]
+        },
+        {
+          "pixels": 16381,
+          "boxNative2x": [
+            3723,
+            4417,
+            4401,
+            4530
+          ]
+        },
+        {
+          "pixels": 6331,
+          "boxNative2x": [
+            5720,
+            4492,
+            5868,
+            4597
+          ]
+        },
+        {
+          "pixels": 5755,
+          "boxNative2x": [
+            1287,
+            4488,
+            1735,
+            4522
+          ]
+        },
+        {
+          "pixels": 5102,
+          "boxNative2x": [
+            192,
+            4485,
+            499,
+            4552
+          ]
+        }
+      ],
+      "unknownComponentCount": 488,
+      "evidence": "review/boundary/spirit-river-liquid-reference.webp",
+      "referenceGroundDecodedRgbSha256": "525b7c8e8964af4c066d93e62437c0098233d845420fc8488aa4c091ba50b59f",
+      "labelSupportSha256": "a92706dd634ff558e01adcfb720ca7f88f1b35ce4f53027ddaf053dab24bc05e"
+    }
+  ]
+}

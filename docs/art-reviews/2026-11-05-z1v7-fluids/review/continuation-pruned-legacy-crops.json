@@ -1,0 +1,138 @@
+{
+  "removedFiles": [
+    {
+      "path": "input/lavafall-bridge.png",
+      "bytes": 291381,
+      "sha256": "5773b964558db73372aff0a93409d8cb1fc68c08a96f46861abaa324ae2d640c",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-lower-step.png",
+      "bytes": 324528,
+      "sha256": "4c1017e20ec9c5da76f4b41f2db93da17684d11aa2f9d0d61067cc15cecfb642",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-middle.png",
+      "bytes": 333748,
+      "sha256": "747083262d2fcceec3290a5c9ab89776c727d4c4f6b039916d889e97ff2840cf",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-mouth.png",
+      "bytes": 262066,
+      "sha256": "e5cfeb220d595023df9b494b1e496e2b48fab578c4f771e735c831a624b66efc",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-upper-left.png",
+      "bytes": 172055,
+      "sha256": "f729807e90cd8e8dfbb38f317619b04c37c0a504a78ebaa2a97a99f436202138",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-upper-step.png",
+      "bytes": 306597,
+      "sha256": "431c1a733a1b4ebe7101022715ce7e0fec079fe20721ba8acfd0e7fbaac73d8b",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-volcano.png",
+      "bytes": 305248,
+      "sha256": "c28d3fafac8e47f38b9a4ab596354a0199d23a2949a71b416e62484ba4c0bca6",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/lavafall-west.png",
+      "bytes": 317348,
+      "sha256": "9e5d0c4b8f9fda8ab11924f5acd8ab636cf124456793f1bee9b0d75ef50e1c57",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-center-bridge.png",
+      "bytes": 302137,
+      "sha256": "89b37a0d26d1a5d437e481d0a01aabd987df25cfbabd6c1e092252132fee2386",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-center-step.png",
+      "bytes": 293911,
+      "sha256": "b5a4f95a0fe1952a42b533ccf9e08f0a304d80ed6f7779d856e55a387220661f",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-east-cliff.png",
+      "bytes": 331048,
+      "sha256": "8643569683e6f5a800a232b25ab9b80cb6b8fcfc1d17ab33b1b20952d47f9dfe",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-lower-1.png",
+      "bytes": 269017,
+      "sha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-lower-2.png",
+      "bytes": 211100,
+      "sha256": "407a14eb51a3dba2030e122e66b857ecef6eb8afd942d96dcdd1851c29626b61",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-lower-3.png",
+      "bytes": 280980,
+      "sha256": "06be3a62a7aa1c38d883a5a47bdfd19f1b5b0ee662dd5459c60b1a11b9febd1e",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-mouth.png",
+      "bytes": 281237,
+      "sha256": "1fd1e7f1055d58ddc53928c69f165e86e6538d58a0679f4b19ed29b48bc8897c",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-plaza-right.png",
+      "bytes": 217350,
+      "sha256": "a63892b0c03ffee7db5f174aaba6f6019dde850535ed05f5154c624d128e6bd3",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-summit.png",
+      "bytes": 388603,
+      "sha256": "79409570cf27a261f85ea99341d6f5ffe1a5229561b3f30f23ecf3f2073b959c",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-upper-bridge.png",
+      "bytes": 165380,
+      "sha256": "f0232360dc2938b5ad961af261c044ac9be68ab505e01e02ae9e6f689062deee",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    },
+    {
+      "path": "input/waterfall-ice-upper-right.png",
+      "bytes": 229915,
+      "sha256": "4208ce51cfa1d61767d979c2fc7a055287059586f0e6796cfb172fe59679072c",
+      "sourceDirectory": "20261111T062023Z-567a72a5/docs/art-reviews/2026-11-05-z1v7-fluids",
+      "reason": "Unused legacy margin crops; exact v7 terrain tiles, ten current ice fall crops, source frames, all masks and 31 comparison pairs/3 clips retained."
+    }
+  ],
+  "removedBytes": 5283649
+}
