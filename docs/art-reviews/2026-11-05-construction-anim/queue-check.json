@@ -1,0 +1,14 @@
+{
+  "status": "ready",
+  "evidence": [
+    "stage-1.webp, stage-2.webp, stage-3.webp + construction.json: RGBA single-row 5632x704, 8 unique drawn cels/stage, 704x704/frame, 8 fps, foot [352,640], worldWidth 256; decoded and verified in current worktree.",
+    "loop-review.json + alignment-review.jpg: lower-base edge drift before 9/4/5 px, after 0/0/0 px; lower-base silhouette IoU 1.0 for all 24 cels; all static RGBA pixels fixed, all original motion-core pixels preserved.",
+    "preview/stage-1.gif, preview/stage-2.gif, preview/stage-3.gif: decoded all 8 frames each, loop=0, total 1000 ms; maximum RGB MAE vs atlas 0.60875 / 0.70453 / 0.69171.",
+    "gif-frame-strip.jpg + gif-review.jpg: visually inspected all decoded GIF cels and 7→8→1→2 seams; workers/tools/loads change poses, base stays fixed; no roof, wall, or gable. Frame/timing inspection, not real-time playback or runtime game QA.",
+    "style-compare.jpg: visually compared warm red timber, sandstone and lighting with inherited owner canteen/HD terrain reference; inspected white/dark/warm backgrounds. loop-review.json: saturated red/yellow alpha-edge screen 0 pixels in all 24 cels.",
+    "sources/stage-*-{a,b}.webp + tests-run.txt: six source sheets byte-identical to latest authorized handoff; no new generation, no pose interpolation/translation/fade.",
+    "export.py + verify.py + tests-run.txt: export and verification exit 0; in-memory changed-base negative regression rejected with static scene drift. Bundle below 30,000,000 bytes.",
+    "README.md: Thai delivery notes, specs, acceptance self-check and limitations; changes confined to docs/art-reviews/2026-11-05-construction-anim/."
+  ],
+  "remaining": []
+}

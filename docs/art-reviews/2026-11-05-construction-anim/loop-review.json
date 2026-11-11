@@ -1,0 +1,1930 @@
+{
+  "method": "8 original ImageGen-drawn cels per stage, chronological order. Normalize width to 600px and register foot. Keep cel 1 outside fixed motion masks; retain each original cel inside masks with a fixed 3px transition. Cull alpha <=8 fringe. No temporal interpolation, translated poses or duplicated cels. MAE is descriptive, not artistic acceptance.",
+  "continuation": {
+    "sourceWorktree": "20261110T173314Z-939c0586",
+    "verificationWorktree": "20261111T005000Z-6ecec939",
+    "change": "Preserve 24 drawn cels; replace static scene pixels with cel 1 outside fixed motion masks.",
+    "newImageGenCalls": 0,
+    "runtimeQA": "not run"
+  },
+  "stages": {
+    "1": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "56e5a9fe7bcf0cccd640e195cf5a40fc87fb9e5c22f24787f0085e891d396d0c",
+        "7178a5e28b04da421511a116d44d9ef26dba1eaf69427dd40e4c7661fac90aff",
+        "6eeda6634d910165b9f06109f445b601ad2a8b2fc8018e1388f222b807339bde",
+        "a404d6808748a5d7f644d7e89eb06a1c1a3c1aa9b9a1df95743ec45adb043e3e",
+        "12b24f61c44e20a349bc3855e4e73eca1dc8924c33fe2201aa22f96aa050a03a",
+        "5d083f6cd608ff9be86c95ed62403afb5b49ae04054638d871d901a32538497b",
+        "d979c3b3136a8ec1e1bee9600309c8f7243821eed99e6ee5a585add2bdd66fa4",
+        "7a6e4db50320da63a5d89d65c8ad0835a5c307e65a25b1d05deb75c133bb29c6"
+      ],
+      "visibleSHA256": [
+        "56e5a9fe7bcf0cccd640e195cf5a40fc87fb9e5c22f24787f0085e891d396d0c",
+        "7178a5e28b04da421511a116d44d9ef26dba1eaf69427dd40e4c7661fac90aff",
+        "6eeda6634d910165b9f06109f445b601ad2a8b2fc8018e1388f222b807339bde",
+        "a404d6808748a5d7f644d7e89eb06a1c1a3c1aa9b9a1df95743ec45adb043e3e",
+        "12b24f61c44e20a349bc3855e4e73eca1dc8924c33fe2201aa22f96aa050a03a",
+        "5d083f6cd608ff9be86c95ed62403afb5b49ae04054638d871d901a32538497b",
+        "d979c3b3136a8ec1e1bee9600309c8f7243821eed99e6ee5a585add2bdd66fa4",
+        "7a6e4db50320da63a5d89d65c8ad0835a5c307e65a25b1d05deb75c133bb29c6"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            570
+          ],
+          "integerOffset": [
+            43,
+            70
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            615,
+            575
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            9,
+            310,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            568
+          ],
+          "integerOffset": [
+            43,
+            72
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            569
+          ],
+          "integerOffset": [
+            43,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 607,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            569
+          ],
+          "integerOffset": [
+            42,
+            71
+          ],
+          "groundWidth": 600,
+          "scale": 0.988836,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            616,
+            576
+          ],
+          "nativeGroundWidth": 608,
+          "resampledGroundBox": [
+            9,
+            309,
+            608,
+            568
+          ],
+          "integerOffset": [
+            43,
+            72
+          ],
+          "groundWidth": 600,
+          "scale": 0.987241,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        1.66789,
+        1.21224,
+        1.24427,
+        1.69825,
+        1.47999,
+        1.13389,
+        1.13809,
+        1.80599
+      ],
+      "wrapToMedianInternalDelta": 1.4514,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.7071,
+          "partialAlphaPixels": 9038
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70688,
+          "partialAlphaPixels": 9182
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70731,
+          "partialAlphaPixels": 8954
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.7071,
+          "partialAlphaPixels": 9056
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70693,
+          "partialAlphaPixels": 9204
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70683,
+          "partialAlphaPixels": 9182
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70718,
+          "partialAlphaPixels": 8986
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.70691,
+          "partialAlphaPixels": 9165
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ],
+        [
+          [
+            232,
+            444
+          ],
+          [
+            278,
+            405
+          ],
+          [
+            328,
+            357
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 0,
+      "beforeStaticLayer": {
+        "lowerGroundSilhouetteIoUVersusFirst": [
+          1.0,
+          0.95741,
+          0.9579,
+          0.95548,
+          0.94717,
+          0.97555,
+          0.95011,
+          0.95081
+        ],
+        "lowerGroundEdgeSpansAtY600620635": [
+          [
+            [
+              232,
+              444
+            ],
+            [
+              278,
+              405
+            ],
+            [
+              328,
+              357
+            ]
+          ],
+          [
+            [
+              231,
+              446
+            ],
+            [
+              278,
+              407
+            ],
+            [
+              327,
+              358
+            ]
+          ],
+          [
+            [
+              230,
+              447
+            ],
+            [
+              277,
+              406
+            ],
+            [
+              327,
+              358
+            ]
+          ],
+          [
+            [
+              231,
+              447
+            ],
+            [
+              277,
+              406
+            ],
+            [
+              325,
+              358
+            ]
+          ],
+          [
+            [
+              232,
+              446
+            ],
+            [
+              274,
+              407
+            ],
+            [
+              325,
+              358
+            ]
+          ],
+          [
+            [
+              232,
+              444
+            ],
+            [
+              276,
+              406
+            ],
+            [
+              325,
+              356
+            ]
+          ],
+          [
+            [
+              232,
+              444
+            ],
+            [
+              269,
+              405
+            ],
+            [
+              325,
+              357
+            ]
+          ],
+          [
+            [
+              232,
+              444
+            ],
+            [
+              273,
+              406
+            ],
+            [
+              323,
+              358
+            ]
+          ]
+        ],
+        "maxLowerGroundEdgeSpanDriftPx": 9
+      },
+      "staticLayer": {
+        "referenceCel": 1,
+        "mask": "sources/motion-mask-stage-1.png",
+        "maskSHA256": "440aaccf4ed262d462d8b9982536f9c2ca63a5ea06ccdc4f38ec602cbe7c8fb1",
+        "staticPixelCount": 449401,
+        "staticPixelsChangedVersusReference": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "motionCorePixelCount": 35511,
+        "motionCorePixelsChangedVersusOriginalCel": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "paleBlueWhitePixelScreenOutsideCore": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "originalCelSHA256": [
+          "56e5a9fe7bcf0cccd640e195cf5a40fc87fb9e5c22f24787f0085e891d396d0c",
+          "9bef40b5aba65ff3088e7f1718826b466169037899c161fe059a4cbd75df8e11",
+          "a1bc47e2b124dcd6d60322dc136128c3c9032f24db9b9bc8eacd0e488df9a386",
+          "987528702ba4fff3868ada2ba061bbb1a1bacbc0ba25d89a206e957336164e69",
+          "6e6eb5ca6562cdd0969896f3321f2b3ab97817a808609192e9f02ca0aaf4f27c",
+          "7ac38be735e1f9ae9a3538beffbfedf566cbb363b18ab8254bac8965a141f05a",
+          "2b879262303e20d38b1b6a1ab044432f8986c9824ba217027bed501f15bdf5ee",
+          "178b125a91431ba26cd13494a4fdb11f416bbb0d04b095a3927c6b9fa4a17ae8"
+        ],
+        "motionCoreSHA256": [
+          "3af164ce20cbab8f9708c4c22d4e3339b950c98799dd823bc11d84eeab5d98bd",
+          "8db9679d87f4008f0388b88971b83db154c361ad5875f68349ac5ed640febbd0",
+          "f63ff4d09b56ae96e9ed4e1342483a13d2afb230cd9c4616f856f7a14616359b",
+          "3ea87ed475b8142c1a1daf75e917ad615090d9222466948792b4c6df4481af4e",
+          "b11c616041bda5a5de660f255a2155b2f26d5a15cb98c05b1a4c70369d7eeee5",
+          "380cfdae5391dbd4818815905034ffde4826544abc586fd4101e782ddd414e69",
+          "aef876671391b3ab3e8d4de6bf9308400e92cc289fd8261120d09509e9255a7b",
+          "69ee18a1d86eb551581ba4aef7279c6ae432fc348a124573b8892a440b09c7c6"
+        ]
+      },
+      "nativeGroundPixelsPerWorldUnit": [
+        2.7821,
+        2.7821,
+        2.7821,
+        2.7821,
+        2.7867,
+        2.7867,
+        2.7821,
+        2.7867
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    },
+    "2": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "31be6d58cda5eb72bf702f113fca7c60c8ea3a96c5c9245009c29ad6769cf5a2",
+        "708acf23b11ee831fb547b2ca7e36c2202b5cc38d5952dd53a4ccf292b7fb048",
+        "29e2f915f38f8ce525acde6ee1998d618895b25d18b398e2b3bfeda0a353d439",
+        "4ea6e191dd2d142c42bbad21dd378458aba999f25b03b1ec37a48f4fa4586b01",
+        "cb0b530039cd8469c3a35aa4653da250d1d72d06f47da6eb54ac85a6b126bd1e",
+        "ccfaf559025a57bde92a0a6daa276043e2fce1784d99b12cd7410e3395516e2e",
+        "2d103b771d79c296624e4606b28c9203f9b6c96dc1ed340b78bd954cf7564274",
+        "044656279c319e4b06e6cc9bd31675b0c50bde88f121459a324ebf91bec4f0d2"
+      ],
+      "visibleSHA256": [
+        "31be6d58cda5eb72bf702f113fca7c60c8ea3a96c5c9245009c29ad6769cf5a2",
+        "708acf23b11ee831fb547b2ca7e36c2202b5cc38d5952dd53a4ccf292b7fb048",
+        "29e2f915f38f8ce525acde6ee1998d618895b25d18b398e2b3bfeda0a353d439",
+        "4ea6e191dd2d142c42bbad21dd378458aba999f25b03b1ec37a48f4fa4586b01",
+        "cb0b530039cd8469c3a35aa4653da250d1d72d06f47da6eb54ac85a6b126bd1e",
+        "ccfaf559025a57bde92a0a6daa276043e2fce1784d99b12cd7410e3395516e2e",
+        "2d103b771d79c296624e4606b28c9203f9b6c96dc1ed340b78bd954cf7564274",
+        "044656279c319e4b06e6cc9bd31675b0c50bde88f121459a324ebf91bec4f0d2"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            566
+          ],
+          "integerOffset": [
+            41,
+            74
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            12,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 602,
+          "resampledGroundBox": [
+            12,
+            312,
+            611,
+            566
+          ],
+          "integerOffset": [
+            40,
+            74
+          ],
+          "groundWidth": 600,
+          "scale": 0.99681,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            565
+          ],
+          "integerOffset": [
+            41,
+            75
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            613,
+            568
+          ],
+          "nativeGroundWidth": 603,
+          "resampledGroundBox": [
+            11,
+            312,
+            610,
+            565
+          ],
+          "integerOffset": [
+            41,
+            75
+          ],
+          "groundWidth": 600,
+          "scale": 0.995215,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            11,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 605,
+          "resampledGroundBox": [
+            11,
+            311,
+            610,
+            564
+          ],
+          "integerOffset": [
+            41,
+            76
+          ],
+          "groundWidth": 600,
+          "scale": 0.992026,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            10,
+            313,
+            615,
+            569
+          ],
+          "nativeGroundWidth": 606,
+          "resampledGroundBox": [
+            10,
+            310,
+            609,
+            563
+          ],
+          "integerOffset": [
+            42,
+            77
+          ],
+          "groundWidth": 600,
+          "scale": 0.990431,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        1.76073,
+        1.30073,
+        1.64358,
+        1.7686,
+        1.43113,
+        1.41685,
+        1.64205,
+        1.95387
+      ],
+      "wrapToMedianInternalDelta": 1.1899,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69174,
+          "partialAlphaPixels": 13039
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69185,
+          "partialAlphaPixels": 13002
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69217,
+          "partialAlphaPixels": 12827
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69222,
+          "partialAlphaPixels": 12837
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69079,
+          "partialAlphaPixels": 12908
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69075,
+          "partialAlphaPixels": 12881
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69103,
+          "partialAlphaPixels": 12856
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.69076,
+          "partialAlphaPixels": 12968
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ],
+        [
+          [
+            229,
+            454
+          ],
+          [
+            274,
+            412
+          ],
+          [
+            324,
+            362
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 0,
+      "beforeStaticLayer": {
+        "lowerGroundSilhouetteIoUVersusFirst": [
+          1.0,
+          0.96211,
+          0.96182,
+          0.96049,
+          0.9574,
+          0.95927,
+          0.96408,
+          0.95973
+        ],
+        "lowerGroundEdgeSpansAtY600620635": [
+          [
+            [
+              229,
+              454
+            ],
+            [
+              274,
+              412
+            ],
+            [
+              324,
+              362
+            ]
+          ],
+          [
+            [
+              226,
+              455
+            ],
+            [
+              273,
+              414
+            ],
+            [
+              322,
+              364
+            ]
+          ],
+          [
+            [
+              225,
+              455
+            ],
+            [
+              272,
+              414
+            ],
+            [
+              322,
+              364
+            ]
+          ],
+          [
+            [
+              226,
+              455
+            ],
+            [
+              273,
+              414
+            ],
+            [
+              322,
+              364
+            ]
+          ],
+          [
+            [
+              227,
+              455
+            ],
+            [
+              273,
+              413
+            ],
+            [
+              326,
+              363
+            ]
+          ],
+          [
+            [
+              226,
+              455
+            ],
+            [
+              274,
+              413
+            ],
+            [
+              326,
+              363
+            ]
+          ],
+          [
+            [
+              226,
+              455
+            ],
+            [
+              274,
+              412
+            ],
+            [
+              326,
+              362
+            ]
+          ],
+          [
+            [
+              226,
+              455
+            ],
+            [
+              273,
+              413
+            ],
+            [
+              326,
+              362
+            ]
+          ]
+        ],
+        "maxLowerGroundEdgeSpanDriftPx": 4
+      },
+      "staticLayer": {
+        "referenceCel": 1,
+        "mask": "sources/motion-mask-stage-2.png",
+        "maskSHA256": "3329ee3dee281782e909fbd1ec81dda723616d4825fac7156102ce9a6efe3390",
+        "staticPixelCount": 434440,
+        "staticPixelsChangedVersusReference": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "motionCorePixelCount": 48953,
+        "motionCorePixelsChangedVersusOriginalCel": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "paleBlueWhitePixelScreenOutsideCore": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "originalCelSHA256": [
+          "31be6d58cda5eb72bf702f113fca7c60c8ea3a96c5c9245009c29ad6769cf5a2",
+          "2cbaf2403318a41bade8f26b7b0b36ea27ff713f8f382d8579681699b445f800",
+          "3fe314a42003c1bb3f34b91f447644611f7c54c6685479131552e4dea71f1600",
+          "36a7ee014456c042885a3990d23e99e1e4351eaf3b7beaf623eb3d6ca7bb6ba7",
+          "d66ba17e28fab365b68aa1638a03c6686f395a8518deb1843c73296209d8f64d",
+          "4f3067b5584cca83b983c7ca73d9a7b93cc3af62aa4695dcade46d963e9ff59c",
+          "a43560c6312eaf65da445abac02bb5738edff6db66e78ee1737c5b5588036297",
+          "e0d056a93c6a9b04cc8f0fd1a0fcf44e8e08e72a6e905bd31d23db3dd1c1629b"
+        ],
+        "motionCoreSHA256": [
+          "fc29b6dd74bb2171a09e349403bec290fc79aad312d773fc873a4adf094b235f",
+          "f5373a739356a80f565d448560ec957c8b91bc1b0bab6bcf90fccf2f92a25cc6",
+          "b96553ed5ad5f32e5080c702e969a0ea9c7f287b7f052a1e0fb6a58b18298a03",
+          "5c6a906a312cb808bb3241836cccafc24aa28f34db5a5ab3ce193b84f9aa862a",
+          "ea83d670a9b9fcd80b47e2006b4688dd10a1a33f644c6c58335f1f0bc3f8bfb3",
+          "fa79743c64a039e4e1919f5ba0a6233c1a8713f2a17551be4e1d42d9ffdb06a9",
+          "1555bc5932c08efffc86223cf5ce292bc7807045a90ec39c6e14235caafebbcd",
+          "1257dce7a512ce6bfbc12fcb2d934e4d4aee33a7ce32378d5eb2b273025af47c"
+        ]
+      },
+      "nativeGroundPixelsPerWorldUnit": [
+        2.7637,
+        2.7592,
+        2.7637,
+        2.7637,
+        2.7775,
+        2.7775,
+        2.7729,
+        2.7775
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    },
+    "3": {
+      "uniqueDrawnCels": 8,
+      "sha256": [
+        "4073a1665556cdfc2c08669fca61817e505a9d2bbd99b7ef69dc6c669a4cd5f0",
+        "ac45eb39836359df372ced88e433eda38a19a318f617d1bffad133da9b6e45f4",
+        "b2494fa1acfbc1560089480cd664e95a319a41680ef2f376a83c251e4a28149e",
+        "8d324f600399d6d9d80f5a9699dc85dbc7f4a237f4613218067cc5cdb6a0a1a2",
+        "e24e214b9f49a1ee069b365ea3657ecc8ad00b43dff167689f8d3875c7d5ccd8",
+        "d372ba7b9f3e0f79d9e2d6e38c9659a4d362118a14dabb337b35d98785326895",
+        "41cebc29551fb4080ff517ca01a557167a0130199c0428693b9b8bd28438ef73",
+        "f60ebe7860a2c2415922d3ff914fd3c4c3695f98cace808d40815d5723e2d61d"
+      ],
+      "visibleSHA256": [
+        "4073a1665556cdfc2c08669fca61817e505a9d2bbd99b7ef69dc6c669a4cd5f0",
+        "ac45eb39836359df372ced88e433eda38a19a318f617d1bffad133da9b6e45f4",
+        "b2494fa1acfbc1560089480cd664e95a319a41680ef2f376a83c251e4a28149e",
+        "8d324f600399d6d9d80f5a9699dc85dbc7f4a237f4613218067cc5cdb6a0a1a2",
+        "e24e214b9f49a1ee069b365ea3657ecc8ad00b43dff167689f8d3875c7d5ccd8",
+        "d372ba7b9f3e0f79d9e2d6e38c9659a4d362118a14dabb337b35d98785326895",
+        "41cebc29551fb4080ff517ca01a557167a0130199c0428693b9b8bd28438ef73",
+        "f60ebe7860a2c2415922d3ff914fd3c4c3695f98cace808d40815d5723e2d61d"
+      ],
+      "packing": [
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            569
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            559
+          ],
+          "integerOffset": [
+            43,
+            81
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            569
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            559
+          ],
+          "integerOffset": [
+            44,
+            81
+          ],
+          "groundWidth": 600,
+          "scale": 0.980861,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            570
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            560
+          ],
+          "integerOffset": [
+            43,
+            80
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            618,
+            570
+          ],
+          "nativeGroundWidth": 610,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            561
+          ],
+          "integerOffset": [
+            43,
+            79
+          ],
+          "groundWidth": 600,
+          "scale": 0.984051,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 612,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            8,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 613,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            619,
+            571
+          ],
+          "nativeGroundWidth": 611,
+          "resampledGroundBox": [
+            9,
+            308,
+            608,
+            561
+          ],
+          "integerOffset": [
+            43,
+            79
+          ],
+          "groundWidth": 600,
+          "scale": 0.982456,
+          "foot": [
+            352,
+            640
+          ]
+        },
+        {
+          "sourceSize": [
+            627,
+            627
+          ],
+          "sourceGroundBox": [
+            9,
+            313,
+            620,
+            570
+          ],
+          "nativeGroundWidth": 612,
+          "resampledGroundBox": [
+            8,
+            307,
+            607,
+            558
+          ],
+          "integerOffset": [
+            44,
+            82
+          ],
+          "groundWidth": 600,
+          "scale": 0.979266,
+          "foot": [
+            352,
+            640
+          ]
+        }
+      ],
+      "adjacentCompositeMAEIncludingWrap": [
+        1.50529,
+        1.24382,
+        1.98846,
+        1.84931,
+        1.18234,
+        1.5826,
+        1.793,
+        1.50463
+      ],
+      "wrapToMedianInternalDelta": 0.9507,
+      "edgeScreen": [
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66401,
+          "partialAlphaPixels": 15655
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66388,
+          "partialAlphaPixels": 15981
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66357,
+          "partialAlphaPixels": 16340
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66348,
+          "partialAlphaPixels": 15794
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66194,
+          "partialAlphaPixels": 15904
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.6621,
+          "partialAlphaPixels": 15564
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.6616,
+          "partialAlphaPixels": 15679
+        },
+        {
+          "saturatedRedEdgePixels": 0,
+          "saturatedYellowEdgePixels": 0,
+          "transparentFraction": 0.66221,
+          "partialAlphaPixels": 15718
+        }
+      ],
+      "lowerGroundSilhouetteIoUVersusFirst": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lowerGroundEdgeSpansAtY600620635": [
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ],
+        [
+          [
+            222,
+            455
+          ],
+          [
+            269,
+            412
+          ],
+          [
+            320,
+            362
+          ]
+        ]
+      ],
+      "maxLowerGroundEdgeSpanDriftPx": 0,
+      "beforeStaticLayer": {
+        "lowerGroundSilhouetteIoUVersusFirst": [
+          1.0,
+          0.96454,
+          0.95443,
+          0.95132,
+          0.98183,
+          0.97692,
+          0.95919,
+          0.97795
+        ],
+        "lowerGroundEdgeSpansAtY600620635": [
+          [
+            [
+              222,
+              455
+            ],
+            [
+              269,
+              412
+            ],
+            [
+              320,
+              362
+            ]
+          ],
+          [
+            [
+              224,
+              452
+            ],
+            [
+              271,
+              411
+            ],
+            [
+              325,
+              360
+            ]
+          ],
+          [
+            [
+              223,
+              452
+            ],
+            [
+              272,
+              411
+            ],
+            [
+              322,
+              359
+            ]
+          ],
+          [
+            [
+              224,
+              452
+            ],
+            [
+              271,
+              410
+            ],
+            [
+              323,
+              359
+            ]
+          ],
+          [
+            [
+              223,
+              454
+            ],
+            [
+              268,
+              412
+            ],
+            [
+              320,
+              361
+            ]
+          ],
+          [
+            [
+              222,
+              452
+            ],
+            [
+              268,
+              413
+            ],
+            [
+              322,
+              360
+            ]
+          ],
+          [
+            [
+              224,
+              452
+            ],
+            [
+              271,
+              411
+            ],
+            [
+              324,
+              359
+            ]
+          ],
+          [
+            [
+              222,
+              454
+            ],
+            [
+              267,
+              412
+            ],
+            [
+              321,
+              360
+            ]
+          ]
+        ],
+        "maxLowerGroundEdgeSpanDriftPx": 5
+      },
+      "staticLayer": {
+        "referenceCel": 1,
+        "mask": "sources/motion-mask-stage-3.png",
+        "maskSHA256": "31adcc7529ce3b946216818d84c06efcd755b1221da5002d0f9eed3fd34d7847",
+        "staticPixelCount": 433189,
+        "staticPixelsChangedVersusReference": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "motionCorePixelCount": 49398,
+        "motionCorePixelsChangedVersusOriginalCel": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "paleBlueWhitePixelScreenOutsideCore": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "originalCelSHA256": [
+          "4073a1665556cdfc2c08669fca61817e505a9d2bbd99b7ef69dc6c669a4cd5f0",
+          "fabe507f735f2c476ae417503a21d8b2824db62a39b5f4f8e014574c96503d9b",
+          "be5d3a7b583233fdfab6da790c2f2fb5076e1431cb30923409cc7f71e906d76a",
+          "df88c0361abb358a09aa5925d25af30842da9cab1d4d848c6435ffb6ad6e7bdc",
+          "3f97b7c704270a6f368492f71fe0461528c884c6cb5d33d1d36a52865d930bce",
+          "b280c297df636be7f577bb874aa08d7f8bcababb808fb08b99fa981168b87a0c",
+          "1ea226ff1d1b147fe39f5547d9361f230498916652bea6fcb1294d849c71eb53",
+          "979b7ebf2b5fa3138cf034bd266a890effd8b7751bd4725775e2e83e187acf4c"
+        ],
+        "motionCoreSHA256": [
+          "ecb73dcae00517c351bffc0304887a627512efe381408b803c72c347168a1ddb",
+          "307d9f8181a9505cdbb4f7408457255acda2a06efb59b6edc3a881d82a168d99",
+          "27dce51c999b3f8d8ea5fce3b11f8a364b9d85750bfa080c4a89617abc7941c7",
+          "2be642dd80ba13223c1e4a3236165f6ef445ffdc83c1ebc3cd8659b625a2676e",
+          "a219bcf321a7029989c08ef888f3cade20e4e4677d5d89e82aca6458ed91c2ee",
+          "24bb812fa067abf2c1e963f2c045a8fb2828603e04d7bc3ad70990e9c06c75fb",
+          "9117d34dc9df2eab1949894e990e93527e9505680605a5ad517b88c8bf960350",
+          "c41ad8e0720f849f9816f958ab0ab0192d8ccf4efc45998e563e197d63c88060"
+        ]
+      },
+      "nativeGroundPixelsPerWorldUnit": [
+        2.8004,
+        2.8004,
+        2.8004,
+        2.7958,
+        2.805,
+        2.8096,
+        2.8004,
+        2.805
+      ],
+      "exportGroundPixelsPerWorldUnit": 2.75
+    }
+  },
+  "visualReview": {
+    "evidence": "See README.md for the visual inspection and acceptance self-check. This report contains reproducible pixel/container checks.",
+    "limitation": "Textures inside motion regions remain part of original drawn cels; no runtime map placement test."
+  }
+}
