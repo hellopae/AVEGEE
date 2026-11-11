@@ -1,0 +1,1080 @@
+{
+  "method": "Independent named semantic landmarks, 21x21 DoG .8/3 NCC search +/-12 map1x px, confidence >= .6. All probes retained. Visual outline review supplements these local translation samples.",
+  "thresholdPx1x": 4,
+  "semanticProbes": [
+    {
+      "id": "stair-upper-left-post",
+      "contextPx1x": [
+        117,
+        54
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        639,
+        806
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9048148393630981,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9048148393630981,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "stair-upper-right-post",
+      "contextPx1x": [
+        207,
+        57
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        729,
+        809
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8760286569595337,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8760286569595337,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "stair-lower-right-post",
+      "contextPx1x": [
+        179,
+        162
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        701,
+        914
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.7890312075614929,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7572047710418701,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "stair-lower-left-post",
+      "contextPx1x": [
+        79,
+        157
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        601,
+        909
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.641575038433075,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.5904256701469421,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "stair-left-rail-mid",
+      "contextPx1x": [
+        94,
+        106
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        616,
+        858
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.9203369617462158,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8929219841957092,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "stair-right-rail-mid",
+      "contextPx1x": [
+        193,
+        108
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        715,
+        860
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9392511248588562,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9392511248588562,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "path-east-corner",
+      "contextPx1x": [
+        182,
+        184
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        704,
+        936
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.876122772693634,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.876122772693634,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "foreground-path-rim",
+      "contextPx1x": [
+        224,
+        174
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        746,
+        926
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.897986114025116,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.897986114025116,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "path-west-edge",
+      "contextPx1x": [
+        45,
+        205
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        567,
+        957
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8417516946792603,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8417516946792603,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "path-lower-east-edge",
+      "contextPx1x": [
+        122,
+        209
+      ],
+      "kind": "semantic-landmark",
+      "masterPx1x": [
+        644,
+        961
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8117135167121887,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8117135167121887,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    }
+  ],
+  "inheritedProbes": [
+    {
+      "id": "r1-c1/plaza-south-rim",
+      "sourceProbeIndex": 15,
+      "contextPx1x": [
+        66,
+        69
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        552,
+        785
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.717710554599762,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.717710554599762,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-stair-top-left",
+      "sourceProbeIndex": 16,
+      "contextPx1x": [
+        161,
+        100
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        647,
+        816
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.9640856385231018,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9627189040184021,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-stair-top-right",
+      "sourceProbeIndex": 17,
+      "contextPx1x": [
+        234,
+        110
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        720,
+        826
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9461233019828796,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9461233019828796,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-stair-foot-left",
+      "sourceProbeIndex": 18,
+      "contextPx1x": [
+        114,
+        186
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        600,
+        902
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.7170894145965576,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.6322826147079468,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-stair-foot-right",
+      "sourceProbeIndex": 19,
+      "contextPx1x": [
+        196,
+        198
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        682,
+        914
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8929696679115295,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8929696679115295,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-path-west",
+      "sourceProbeIndex": 20,
+      "contextPx1x": [
+        88,
+        234
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        574,
+        950
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8681578636169434,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8681578636169434,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "r1-c1/lower-path-east",
+      "sourceProbeIndex": 21,
+      "contextPx1x": [
+        199,
+        240
+      ],
+      "kind": "source-landmark",
+      "masterPx1x": [
+        685,
+        956
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9287523031234741,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9287523031234741,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-8-0",
+      "sourceProbeIndex": 610,
+      "contextPx1x": [
+        293,
+        64
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        779,
+        780
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.886288583278656,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7807737588882446,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-8-67",
+      "sourceProbeIndex": 677,
+      "contextPx1x": [
+        180,
+        262
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        666,
+        978
+      ],
+      "displacementPx1x": [
+        8,
+        10
+      ],
+      "distancePx1x": 12.806248474865697,
+      "ncc": 0.4670217037200928,
+      "reliable": false,
+      "nccAtZeroDisplacement": 0.41353610157966614,
+      "templateSizePx1x": 21,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-8-68",
+      "sourceProbeIndex": 678,
+      "contextPx1x": [
+        211,
+        210
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        697,
+        926
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.774572491645813,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7346850037574768,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-8-69",
+      "sourceProbeIndex": 679,
+      "contextPx1x": [
+        228,
+        145
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        714,
+        861
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9447522759437561,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9447522759437561,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-8-70",
+      "sourceProbeIndex": 680,
+      "contextPx1x": [
+        260,
+        94
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        746,
+        810
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.8850926756858826,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8761332035064697,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-9-0",
+      "sourceProbeIndex": 681,
+      "contextPx1x": [
+        292,
+        62
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        778,
+        778
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.8503509163856506,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7529231905937195,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-9-1",
+      "sourceProbeIndex": 682,
+      "contextPx1x": [
+        249,
+        103
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        735,
+        819
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.8109940886497498,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7775136232376099,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-9-2",
+      "sourceProbeIndex": 683,
+      "contextPx1x": [
+        220,
+        156
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        706,
+        872
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.9233304262161255,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.9233304262161255,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-9-3",
+      "sourceProbeIndex": 684,
+      "contextPx1x": [
+        208,
+        226
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        694,
+        942
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8240503668785095,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8240503668785095,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-9-4",
+      "sourceProbeIndex": 685,
+      "contextPx1x": [
+        169,
+        270
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        655,
+        986
+      ],
+      "displacementPx1x": [
+        0,
+        2
+      ],
+      "distancePx1x": 2.0,
+      "ncc": 0.7207221984863281,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.6658481955528259,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-79",
+      "sourceProbeIndex": 945,
+      "contextPx1x": [
+        60,
+        53
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        546,
+        769
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.7626955509185791,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7626955509185791,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-80",
+      "sourceProbeIndex": 946,
+      "contextPx1x": [
+        131,
+        63
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        617,
+        779
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.8938252925872803,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8554807305335999,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-81",
+      "sourceProbeIndex": 947,
+      "contextPx1x": [
+        138,
+        119
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        624,
+        835
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "ncc": 0.9401437640190125,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8885490894317627,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-82",
+      "sourceProbeIndex": 948,
+      "contextPx1x": [
+        128,
+        190
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        614,
+        906
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.8219695091247559,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8049392104148865,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-83",
+      "sourceProbeIndex": 949,
+      "contextPx1x": [
+        87,
+        232
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        573,
+        948
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8684966564178467,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8684966564178467,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-308",
+      "sourceProbeIndex": 1173,
+      "contextPx1x": [
+        78,
+        250
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        564,
+        966
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.8527522087097168,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.8527522087097168,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-309",
+      "sourceProbeIndex": 1174,
+      "contextPx1x": [
+        118,
+        206
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        604,
+        922
+      ],
+      "displacementPx1x": [
+        -2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "ncc": 0.6503332853317261,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.6117117404937744,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-310",
+      "sourceProbeIndex": 1175,
+      "contextPx1x": [
+        138,
+        145
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        624,
+        861
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "ncc": 0.9352855682373047,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.920687198638916,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-311",
+      "sourceProbeIndex": 1176,
+      "contextPx1x": [
+        149,
+        75
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        635,
+        791
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.878462553024292,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.878462553024292,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    },
+    {
+      "id": "walkmask-12-312",
+      "sourceProbeIndex": 1177,
+      "contextPx1x": [
+        81,
+        62
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        567,
+        778
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "ncc": 0.7981539964675903,
+      "reliable": true,
+      "nccAtZeroDisplacement": 0.7981539964675903,
+      "templateSizePx1x": 21,
+      "within4px": true,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    }
+  ],
+  "semanticProbeCount": 10,
+  "reliableSemanticProbeCount": 10,
+  "semanticMaxDistancePx1x": 1.0,
+  "semanticAllWithin4px": true,
+  "reviewedSemanticAllWithin4px": true,
+  "reviewedSemanticMaxDistancePx1x": 1.0,
+  "inheritedExceptions": [
+    {
+      "id": "walkmask-8-67",
+      "sourceProbeIndex": 677,
+      "contextPx1x": [
+        180,
+        262
+      ],
+      "kind": "walkmask-boundary",
+      "masterPx1x": [
+        666,
+        978
+      ],
+      "displacementPx1x": [
+        8,
+        10
+      ],
+      "distancePx1x": 12.806248474865697,
+      "ncc": 0.4670217037200928,
+      "reliable": false,
+      "nccAtZeroDisplacement": 0.41353610157966614,
+      "templateSizePx1x": 21,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "result": "measured"
+    }
+  ],
+  "unresolvedInheritedExceptions": [],
+  "correspondenceReviews": [
+    {
+      "id": "walkmask-8-67",
+      "probeSet": "inherited",
+      "evidence": "inherited-probe-review.jpg",
+      "reason": "The 21x21 point [666,978] has low correlation on repainted paving beside the lower post. Retain its raw [8,10] result. A 49x49 window includes the path corner and post, with a separate V5/existing-v7/new comparison.",
+      "measurement49x49": {
+        "id": "walkmask-8-67",
+        "sourceProbeIndex": 677,
+        "contextPx1x": [
+          180,
+          262
+        ],
+        "kind": "walkmask-boundary",
+        "masterPx1x": [
+          666,
+          978
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "ncc": 0.6351476907730103,
+        "reliable": true,
+        "nccAtZeroDisplacement": 0.6351476907730103,
+        "templateSizePx1x": 49,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "result": "measured"
+      }
+    }
+  ],
+  "stairProfiles": [
+    {
+      "id": "north-interior-risers",
+      "start": [
+        158,
+        64
+      ],
+      "end": [
+        130,
+        155
+      ],
+      "treadSlope": 0.055,
+      "referenceRiserCentresPx1x": [
+        [
+          156.89473684210526,
+          67.59210526315789
+        ],
+        [
+          153.13684210526316,
+          79.80526315789473
+        ],
+        [
+          149.37894736842105,
+          92.01842105263158
+        ],
+        [
+          145.62105263157895,
+          104.23157894736842
+        ],
+        [
+          141.78947368421052,
+          116.6842105263158
+        ],
+        [
+          137.81052631578947,
+          129.61578947368423
+        ],
+        [
+          133.97894736842105,
+          142.06842105263158
+        ]
+      ],
+      "registeredRiserCentresPx1x": [
+        [
+          156.89473684210526,
+          67.59210526315789
+        ],
+        [
+          153.06315789473683,
+          80.04473684210527
+        ],
+        [
+          149.30526315789473,
+          92.2578947368421
+        ],
+        [
+          145.62105263157895,
+          104.23157894736842
+        ],
+        [
+          141.6421052631579,
+          117.16315789473686
+        ],
+        [
+          137.73684210526315,
+          129.85526315789474
+        ],
+        [
+          133.83157894736843,
+          142.54736842105262
+        ]
+      ],
+      "sameInteriorRiserCount": true,
+      "maxPairedDisplacementPx1x": 0.5011068082165727
+    }
+  ],
+  "profileMethod": "Average 29 samples across +/-14 map px, 4 samples/map px along stated interval, Gaussian sigma .5 map px, dark-riser peaks prominence10 grayscale, minimum spacing6 map px. Intervals cover interior risers only.",
+  "registrationResidualDiagnosticOnly": {
+    "matches": 85,
+    "inliers": 57,
+    "medianPx1x": 0.7134447607232278,
+    "maxPx1x": 1.7511298171844702
+  },
+  "coreCoveredByNative": true,
+  "localPreviewExteriorPixelsIdentical": true,
+  "limitations": [
+    "Sampled image correspondence does not certify every semantic contour pixel.",
+    "Walkmask grid is about 10.24 map px and cannot resolve a 4px art tolerance.",
+    "The local seam preview uses a diagnostic feather. Final min-cost joining and runtime review belong to the later assembly/integration."
+  ]
+}

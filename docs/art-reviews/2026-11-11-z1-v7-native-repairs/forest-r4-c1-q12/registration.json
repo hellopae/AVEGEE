@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "forest-r4-c1-q12",
+  "coordinates": "master1x [x,y,w,h], 4915x3277, pixel-index affine convention matching original assembly",
+  "corePx1x": [
+    512,
+    3072,
+    512,
+    205
+  ],
+  "contextPx1x": [
+    448,
+    3008,
+    640,
+    269
+  ],
+  "nativeFile": "native.webp",
+  "nativeSize": [
+    1935,
+    812
+  ],
+  "nativeSha256": "30cf3f315b40bc59d5f7649eab3a109e058fdcf53846b5282999f77a3d1d0d3a",
+  "referenceSha256": "afab3d79ac9833d994c7dfb77c34157c63f72c7bb849e41a3f4b60d2965cdf6c",
+  "nativeToContextPx1x": [
+    [
+      0.330769106136689,
+      -0.0008391078447079192,
+      0.3633425842069836
+    ],
+    [
+      -0.0002387730097502519,
+      0.3311518522563352,
+      1.174391786203632
+    ]
+  ],
+  "nativeToMasterPx1x": [
+    [
+      0.330769106136689,
+      -0.0008391078447079192,
+      448.363342584207
+    ],
+    [
+      -0.0002387730097502519,
+      0.3311518522563352,
+      3009.1743917862036
+    ]
+  ],
+  "nativeToContextPx2x": [
+    [
+      0.661538212273378,
+      -0.0016782156894158385,
+      0.7266851684139672
+    ],
+    [
+      -0.0004775460195005038,
+      0.6623037045126704,
+      2.348783572407264
+    ]
+  ],
+  "registeredFile": "registered-2x.webp",
+  "registeredSha256": "037acbfad8d574165efb04677493935b1d785add3fc8e96913c5fcb19d10c3e9",
+  "generation": {
+    "tool": "built-in image_gen.imagegen",
+    "calls": 1,
+    "useCase": "precise-object-edit",
+    "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop for an existing hand-painted isometric RPG map, forest-r4-c1-q12. Input image is the exact v5 reference crop, map1x context [448,3008,640,269], core [512,3072,512,205] in the full 4915x3277 map. Redraw the entire supplied crop as genuinely detailed native high-resolution painted art, output 1920x807 or closest matching exact 640:269 aspect. Preserve the composition and coordinates extremely tightly, including every tree trunk, red/orange/magenta leaf canopy silhouette, charcoal pointed rock silhouette, the winding ochre ground opening and its boundaries. Keep the bottom dense red forest fully present. Maintain the original hand-painted fantasy game style, palette, lighting and isometric camera. Add crisp small brush-painted leaves, bark fissures, stone facets and soil grains inside the existing shapes. Preserve the outer overlap, 64 map pixels left/right and 64 at top, for registration. Do not redesign, crop, reframe, shift the route, move tree trunks, remove forest, add structures, characters, UI, text or watermarks. This is a texture/detail redraw with locked geometry. Return only the single clean crop.",
+    "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-259fec74-2ca1-4935-8c91-9e97a6a20be2.png",
+    "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+    "generatedSourceSha256": "54ddb667a37964d20914924763b554667edd2d62a19f6bcac1393257817133a7",
+    "generatedSize": [
+      1935,
+      812
+    ],
+    "nativeSha256": "30cf3f315b40bc59d5f7649eab3a109e058fdcf53846b5282999f77a3d1d0d3a"
+  },
+  "sourceCandidateSha256": "ebb467b46c469411b02f3c7c14c527fc332a7cf332a11d2314b8fbb6edf8860c",
+  "sourceChunkInputs": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r3-c1.webp",
+      "sha256": "52274ebf098ce6b7be0509db5af8fb5dfe3fde6aab35c27c3672df7baa5bae9e"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r3-c2.webp",
+      "sha256": "e5271a97c0179e0c7bdcf9980ae985ff42615a09b4a25843fdf6260a3adfb3ec"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r4-c1.webp",
+      "sha256": "11243a0af05def64b0f000251250da78b087b9d23174ff2bd77a956770570009"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r4-c2.webp",
+      "sha256": "9ac13bcb6a43b1fb0117e9cafbaa56ecfe2cd83a8c8774e08371ae902832e229"
+    }
+  ],
+  "sourceAssemblyInventorySha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7",
+  "shapeMetricsFile": "shape-metrics.json",
+  "shapeMetricsSha256": "fbd63c40604dc10778729007a38dc3b581689912d27b8ab0c3221c8f5efbae80",
+  "coreCoveredByNative": true,
+  "resampling": "Direct native to 2x using Lanczos4, lossless WebP. Border reflect101 only at context rim. Native source preserved byte-for-byte. No sharpening or local deformation.",
+  "integration": {
+    "master1x": [
+      4915,
+      3277
+    ],
+    "fullPx": [
+      9830,
+      6554
+    ],
+    "chunk": 2048,
+    "worldSize": [
+      3840,
+      2560
+    ],
+    "repairs": false,
+    "repairsBakedInReference": true,
+    "mapPx1xToWorld": [
+      0.7812817904374364,
+      0.7812023191943851
+    ],
+    "walkmaskSha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a",
+    "allowedEditRectPx1x": [
+      448,
+      3008,
+      640,
+      269
+    ],
+    "join": "Join within overlap only. Keep existing native exterior. Local seam preview is diagnostic."
+  }
+}

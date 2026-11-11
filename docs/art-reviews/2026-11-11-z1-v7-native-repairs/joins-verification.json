@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "id": "forest-r4-c1-q12",
+      "nativeUnchanged": true,
+      "corePixelsIdenticalToRegistered": true,
+      "exteriorPixelsIdentical": true,
+      "allInheritedProbesRetained": 21,
+      "rawExceptionsByTrial": {
+        "full-overlap": 0,
+        "outer-16-map-px": 0
+      },
+      "candidateUnresolvedAfterWiderWindow": [],
+      "localSeamAccepted": false
+    },
+    {
+      "id": "heaven-bridge",
+      "nativeUnchanged": true,
+      "corePixelsIdenticalToRegistered": true,
+      "exteriorPixelsIdentical": true,
+      "allInheritedProbesRetained": 44,
+      "rawExceptionsByTrial": {
+        "full-overlap": 8,
+        "outer-16-map-px": 1
+      },
+      "candidateUnresolvedAfterWiderWindow": [
+        "walkmask-12-741"
+      ],
+      "localSeamAccepted": false
+    },
+    {
+      "id": "lava-north-stair",
+      "nativeUnchanged": true,
+      "corePixelsIdenticalToRegistered": true,
+      "exteriorPixelsIdentical": true,
+      "allInheritedProbesRetained": 27,
+      "rawExceptionsByTrial": {
+        "full-overlap": 4,
+        "outer-16-map-px": 1
+      },
+      "candidateUnresolvedAfterWiderWindow": [],
+      "localSeamAccepted": false
+    },
+    {
+      "id": "lava-mid-stairs",
+      "nativeUnchanged": true,
+      "corePixelsIdenticalToRegistered": true,
+      "exteriorPixelsIdentical": true,
+      "allInheritedProbesRetained": 32,
+      "rawExceptionsByTrial": {
+        "full-overlap": 1,
+        "outer-16-map-px": 0
+      },
+      "candidateUnresolvedAfterWiderWindow": [],
+      "localSeamAccepted": false
+    }
+  ],
+  "readyForIntegration": false,
+  "fullMapAssembled": false,
+  "inGameTested": false,
+  "nativeCropChecksComplete": true,
+  "nativeFilesChanged": 0,
+  "imageGenCallsThisRound": 0
+}

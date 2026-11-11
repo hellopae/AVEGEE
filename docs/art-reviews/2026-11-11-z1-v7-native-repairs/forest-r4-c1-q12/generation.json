@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 1,
+  "useCase": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop for an existing hand-painted isometric RPG map, forest-r4-c1-q12. Input image is the exact v5 reference crop, map1x context [448,3008,640,269], core [512,3072,512,205] in the full 4915x3277 map. Redraw the entire supplied crop as genuinely detailed native high-resolution painted art, output 1920x807 or closest matching exact 640:269 aspect. Preserve the composition and coordinates extremely tightly, including every tree trunk, red/orange/magenta leaf canopy silhouette, charcoal pointed rock silhouette, the winding ochre ground opening and its boundaries. Keep the bottom dense red forest fully present. Maintain the original hand-painted fantasy game style, palette, lighting and isometric camera. Add crisp small brush-painted leaves, bark fissures, stone facets and soil grains inside the existing shapes. Preserve the outer overlap, 64 map pixels left/right and 64 at top, for registration. Do not redesign, crop, reframe, shift the route, move tree trunks, remove forest, add structures, characters, UI, text or watermarks. This is a texture/detail redraw with locked geometry. Return only the single clean crop.",
+  "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-259fec74-2ca1-4935-8c91-9e97a6a20be2.png",
+  "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+  "generatedSourceSha256": "54ddb667a37964d20914924763b554667edd2d62a19f6bcac1393257817133a7",
+  "generatedSize": [
+    1935,
+    812
+  ],
+  "nativeSha256": "30cf3f315b40bc59d5f7649eab3a109e058fdcf53846b5282999f77a3d1d0d3a"
+}

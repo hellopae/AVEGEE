@@ -1,0 +1,66 @@
+{
+  "environment": "3.13.3 (v3.13.3:6280bb54784, Apr  8 2025, 10:47:54) [Clang 15.0.0 (clang-1500.3.9.4)]",
+  "worktree": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T214451Z-8741fd14",
+  "tests": [
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --self-test",
+      "exitCode": 0,
+      "stdout": "3 measurement oracles completed: signed translation, >4px detection, retained insufficient-context probe.\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/check-local-joins.py --self-test",
+      "exitCode": 0,
+      "stdout": "2 seam-mask oracles completed, each at full and narrow overlap. Exact core, zero rim, map edge and path continuity checked.\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --acceptance",
+      "exitCode": 0,
+      "stdout": "forest-r4-c1-q12 semantic= 14 reviewed_max_px= 1.4142 inherited= 21 raw_inherited_exceptions= 0 unresolved_inherited= 0\nheaven-bridge semantic= 19 reviewed_max_px= 1.4142 inherited= 44 raw_inherited_exceptions= 0 unresolved_inherited= 0\nlava-north-stair semantic= 10 reviewed_max_px= 1.0 inherited= 27 raw_inherited_exceptions= 1 unresolved_inherited= 0\nlava-mid-stairs semantic= 11 reviewed_max_px= 1.4142 inherited= 32 raw_inherited_exceptions= 0 unresolved_inherited= 0\nFour-crop offline acceptance assertions completed.\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/check-local-joins.py --require-ready",
+      "exitCode": 1,
+      "stdout": "forest-r4-c1-q12 full-overlap probes= 21 raw_exceptions= 0\nforest-r4-c1-q12 outer-16-map-px probes= 21 raw_exceptions= 0\nheaven-bridge full-overlap probes= 44 raw_exceptions= 8\nheaven-bridge outer-16-map-px probes= 44 raw_exceptions= 1\nlava-north-stair full-overlap probes= 27 raw_exceptions= 4\nlava-north-stair outer-16-map-px probes= 27 raw_exceptions= 1\nlava-mid-stairs full-overlap probes= 32 raw_exceptions= 1\nlava-mid-stairs outer-16-map-px probes= 32 raw_exceptions= 0\nLocal join readiness = False\n",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T214451Z-8741fd14/docs/art-reviews/2026-11-11-z1-v7-native-repairs/check-local-joins.py\", line 206, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T214451Z-8741fd14/docs/art-reviews/2026-11-11-z1-v7-native-repairs/check-local-joins.py\", line 185, in main\n    assert ready, 'Local visual seam review remains incomplete. See join-review.json and context-boundary-review.jpg.'\n           ^^^^^\nAssertionError: Local visual seam review remains incomplete. See join-review.json and context-boundary-review.jpg.\n"
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --acceptance",
+      "exitCode": 0,
+      "stdout": "forest-r4-c1-q12 semantic= 14 reviewed_max_px= 1.4142 inherited= 21 raw_inherited_exceptions= 0 unresolved_inherited= 0\nheaven-bridge semantic= 19 reviewed_max_px= 1.4142 inherited= 44 raw_inherited_exceptions= 0 unresolved_inherited= 0\nlava-north-stair semantic= 10 reviewed_max_px= 1.0 inherited= 27 raw_inherited_exceptions= 1 unresolved_inherited= 0\nlava-mid-stairs semantic= 11 reviewed_max_px= 1.4142 inherited= 32 raw_inherited_exceptions= 0 unresolved_inherited= 0\nFour-crop offline acceptance assertions completed.\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --check-manifest",
+      "exitCode": 0,
+      "stdout": "Decoded sizes and SHA256 verified for 117 delivery files.\n",
+      "stderr": ""
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "Direct AST / JSON parse and trailing-whitespace inspection of all delivery .py/.json/.md files",
+      "exitCode": 0,
+      "filesChecked": 42
+    },
+    {
+      "command": "git status --porcelain --untracked-files=all and git branch --show-current",
+      "exitCode": 0,
+      "branch": "codex/20261111T214451Z-8741fd14",
+      "changedFiles": 119,
+      "allWithinDeliveryFolder": true
+    }
+  ],
+  "nativeSource": "Built-in ImageGen outputs inherited from 20261111T174550Z-ddecd613 through 20261111T212700Z-a8d3cba7; 0 new generations",
+  "visualEvidence": "Viewed all four review.jpg and review-game-zoom.jpg pairs, both local-join approaches, bridge FX overlay, and context-boundary-review.jpg.",
+  "nativeCropAcceptance": "4 native crops and registrations satisfy the offline sampled-shape/file assertions",
+  "localJoinReadiness": "incomplete; --require-ready returns 1 and records actual remaining issues",
+  "fullMapAssembled": false,
+  "inGameTested": false
+}

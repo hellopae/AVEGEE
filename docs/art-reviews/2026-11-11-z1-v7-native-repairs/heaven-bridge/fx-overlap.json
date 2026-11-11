@@ -1,0 +1,191 @@
+{
+  "layout": "img/map-zone1/v5-fx/fx-layout.json",
+  "layoutSha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6",
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "pieces": [
+    {
+      "id": "ice-stream--ice-upper",
+      "group": "water",
+      "kind": "tile",
+      "maskRectPx1x": [
+        3673,
+        577,
+        586,
+        342
+      ],
+      "intersectionPx1x": [
+        3673,
+        577,
+        440,
+        216
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/ice-upper.webp",
+      "maskSha256": "285a00da84d85e9db1a607e6f6617f25cf890bfd343e6347d120baa490bb7033",
+      "nonzeroIntersectionPixels": 11677,
+      "opacity": 0.58,
+      "blend": "overlay"
+    },
+    {
+      "id": "waterfall-ice-upper-right--waterfall-ice-upper-right",
+      "group": "water",
+      "kind": "rect",
+      "maskRectPx1x": [
+        3955,
+        688,
+        89,
+        139
+      ],
+      "intersectionPx1x": [
+        3955,
+        688,
+        89,
+        105
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/waterfall-ice-upper-right.webp",
+      "maskSha256": "a56d8b75fb84eef595632ff80a96ba151436e01dca6565b5400f524a96a886e0",
+      "nonzeroIntersectionPixels": 4999,
+      "opacity": 0.7,
+      "blend": "overlay"
+    },
+    {
+      "id": "bank-foam-ice--edge",
+      "group": "water",
+      "kind": "tile",
+      "maskRectPx1x": [
+        2985,
+        488,
+        1930,
+        1780
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        541,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/foam-ice-edge.webp",
+      "maskSha256": "ee801314262e87dd3d36a4e081ea78befa6e31eaacb94272a3b1415e20e68277",
+      "nonzeroIntersectionPixels": 26220,
+      "opacity": 0.6,
+      "blend": "screen"
+    },
+    {
+      "id": "cloud-sea-curls",
+      "group": "cloud",
+      "kind": "tile",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        312,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/cloud-sea.webp",
+      "maskSha256": "6e24455f98bb94d2af110b97d4a9e5ba93842dffe03c324a547b567b9b46f24a",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.38,
+      "blend": "normal"
+    },
+    {
+      "id": "cloud-puff-1",
+      "group": "cloud",
+      "kind": "puff",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        312,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/cloud-sea.webp",
+      "maskSha256": "6e24455f98bb94d2af110b97d4a9e5ba93842dffe03c324a547b567b9b46f24a",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.52,
+      "blend": "normal"
+    },
+    {
+      "id": "cloud-puff-2",
+      "group": "cloud",
+      "kind": "puff",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        312,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/cloud-sea.webp",
+      "maskSha256": "6e24455f98bb94d2af110b97d4a9e5ba93842dffe03c324a547b567b9b46f24a",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.52,
+      "blend": "normal"
+    },
+    {
+      "id": "cloud-puff-3",
+      "group": "cloud",
+      "kind": "puff",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        312,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/cloud-sea.webp",
+      "maskSha256": "6e24455f98bb94d2af110b97d4a9e5ba93842dffe03c324a547b567b9b46f24a",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.52,
+      "blend": "normal"
+    },
+    {
+      "id": "cloud-puff-4",
+      "group": "cloud",
+      "kind": "puff",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "intersectionPx1x": [
+        3572,
+        497,
+        312,
+        296
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/cloud-sea.webp",
+      "maskSha256": "6e24455f98bb94d2af110b97d4a9e5ba93842dffe03c324a547b567b9b46f24a",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.52,
+      "blend": "normal"
+    }
+  ],
+  "method": "Actual coverage masks in master1x coordinates, resampled nearest to 2x. Cyan water, pink cloud, gold lava. Diagnostic mask placement only. Puff masks show the allowed drift region."
+}

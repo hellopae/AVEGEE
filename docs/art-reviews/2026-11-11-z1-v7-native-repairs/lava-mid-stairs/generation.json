@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 1,
+  "useCase": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop lava-mid-stairs for an existing hand-painted isometric RPG terrain atlas. The attached reference.png is the exact composition and layout to redraw. Context map1x [572,1372,296,296], core [620,1420,200,200]. Output a square 1184x1184 or larger native HD painting of precisely the SAME crop. Preserve normalized pixel coordinates to within 4 original pixels. Keep TWO stair flights: upper flight running from upper-left landing down toward the central cobbled landing, and lower flight at bottom-right continuing out of frame. Preserve every tread position/count, both flights' thin dark side rails and end posts, exact cobbled landing width, rim, corners and angle, every purple cliff and boulder silhouette, red foliage mass, tiny left lava slit and right plateau boundaries. Add fine newly painted stone grain, fine cracks, leaf brush detail inside the existing shapes only. Match warm orange lighting, charcoal-purple stone and vivid red/orange bushes, original painterly game style. Preserve 48 original pixels of overlap context all around. No redesign, shifted or widened stairs, removed rails, new openings, crop, camera or framing change, characters, UI, text or watermark. Return only one clean square terrain crop.",
+  "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-11603f35-c068-4776-b70c-bae8d6886024.png",
+  "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+  "generatedSourceSha256": "e70040affbe8484d1ae2c0af171f67a94b9eb5d1df29b6713bc428a222645637",
+  "generatedSize": [
+    1254,
+    1254
+  ],
+  "nativeSha256": "a87faeadc0b4ed594494221588bce7471cc3610f385ff00b38b1be912c666e51"
+}

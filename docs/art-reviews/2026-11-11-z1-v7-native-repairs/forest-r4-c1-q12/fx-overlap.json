@@ -1,0 +1,14 @@
+{
+  "layout": "img/map-zone1/v5-fx/fx-layout.json",
+  "layoutSha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6",
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "pieces": [],
+  "method": "Actual coverage masks in master1x coordinates, resampled nearest to 2x. Cyan water, pink cloud, gold lava. Diagnostic mask placement only. Puff masks show the allowed drift region."
+}

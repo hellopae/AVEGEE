@@ -1,0 +1,59 @@
+{
+  "forest-r4-c1-q12": {
+    "points": [
+      ["left-trunk-fork", [45,109]], ["ground-opening-west", [117,80]],
+      ["ground-rock", [154,95]], ["ground-opening-north", [188,65]],
+      ["cliff-apex-west", [226,25]], ["cliff-foot-west", [270,67]],
+      ["canopy-ground-edge", [307,117]], ["central-trunk-fork", [376,107]],
+      ["canopy-notch", [409,93]], ["right-rock-foot", [530,81]],
+      ["right-rock-apex", [553,60]], ["right-canopy-ground-edge", [575,108]],
+      ["lower-right-forest-trunk", [430,183]], ["lower-central-forest-trunk", [325,225]]
+    ]
+  },
+  "heaven-bridge": {
+    "points": [
+      ["west-railing-post", [137,40]], ["west-central-railing-post", [226,39]],
+      ["east-central-railing-post", [302,40]], ["east-railing-end", [382,51]],
+      ["west-underdeck-bracket", [181,65]], ["central-underdeck-west", [231,60]],
+      ["central-underdeck-east", [302,59]], ["east-underdeck-support", [344,66]],
+      ["west-pillar-edge", [171,173]], ["west-pillar-foot", [190,213]],
+      ["east-pillar-edge", [300,173]], ["east-pillar-rock-top", [285,188]],
+      ["central-rock-apex", [258,196]], ["central-rock-waterline", [240,231]],
+      ["central-rock-foot-east", [294,246]], ["east-rock-apex", [367,116]],
+      ["waterfall-lip-west", [424,166]], ["waterfall-lip-east", [473,157]],
+      ["waterfall-side", [442,185]]
+    ]
+  },
+  "lava-north-stair": {
+    "points": [
+      ["stair-upper-left-post", [117,54]], ["stair-upper-right-post", [207,57]],
+      ["stair-lower-right-post", [179,162]], ["stair-lower-left-post", [79,157]],
+      ["stair-left-rail-mid", [94,106]], ["stair-right-rail-mid", [193,108]],
+      ["path-east-corner", [182,184]], ["foreground-path-rim", [224,174]],
+      ["path-west-edge", [45,205]], ["path-lower-east-edge", [122,209]]
+    ],
+    "correspondenceReviews": [
+      {"id":"walkmask-8-67", "probeSet":"inherited", "evidence":"inherited-probe-review.jpg", "reason":"The 21x21 point [666,978] has low correlation on repainted paving beside the lower post. Retain its raw [8,10] result. A 49x49 window includes the path corner and post, with a separate V5/existing-v7/new comparison."}
+    ],
+    "stairProfiles": [
+      {"id":"north-interior-risers", "start":[158,64], "end":[130,155], "treadSlope":0.055}
+    ]
+  },
+  "lava-mid-stairs": {
+    "points": [
+      ["upper-left-rail-mid", [29,101]], ["upper-right-post", [139,63]],
+      ["upper-lower-right-post", [176,153]], ["upper-lower-left-post", [55,161]],
+      ["lower-upper-left-post", [170,219]], ["lower-upper-right-post", [253,215]],
+      ["lower-right-rail-mid", [270,255]], ["lower-left-rail-mid", [185,258]],
+      ["landing-east-rim", [229,191]], ["landing-west-rim", [117,188]],
+      ["west-cliff-tip", [28,201]]
+    ],
+    "correspondenceReviews": [
+      {"id":"lower-left-rail-mid", "probeSet":"semantic", "evidence":"tread-alias-review.jpg", "reason":"The initial name is imprecise. [757,1630] lies on a repeating tread beside the left rail. The 21x21 NCC maximum shifts [11,-1] along the tread and the zero-shift score is nearly equal. Retain the raw result and inspect 49x49 including the rail silhouette. Interior riser profiles independently check tread spacing."}
+    ],
+    "stairProfiles": [
+      {"id":"mid-upper-interior-risers", "start":[79,76], "end":[112,155], "treadSlope":-0.10},
+      {"id":"mid-lower-interior-risers", "start":[216,228], "end":[241,293], "treadSlope":-0.06}
+    ]
+  }
+}

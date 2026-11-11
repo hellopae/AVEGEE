@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "lava-north-stair",
+  "coordinates": "master1x [x,y,w,h], 4915x3277, pixel-index affine convention matching original assembly",
+  "corePx1x": [
+    570,
+    800,
+    180,
+    140
+  ],
+  "contextPx1x": [
+    522,
+    752,
+    276,
+    236
+  ],
+  "nativeFile": "native.webp",
+  "nativeSize": [
+    1356,
+    1159
+  ],
+  "nativeSha256": "82652896f0effcf818e012c8967c143191771c9ec7fcfe30d6ee097a2b6d3ef8",
+  "referenceSha256": "2f4436c1bbfa18fb85221e705155942185257ccb4d766765507a814189cb4ab6",
+  "nativeToContextPx1x": [
+    [
+      0.20306977751942754,
+      -0.000389232925575359,
+      0.6325069813021558
+    ],
+    [
+      -9.276109823817754e-05,
+      0.20416788837357622,
+      -0.27609220948322544
+    ]
+  ],
+  "nativeToMasterPx1x": [
+    [
+      0.20306977751942754,
+      -0.000389232925575359,
+      522.6325069813022
+    ],
+    [
+      -9.276109823817754e-05,
+      0.20416788837357622,
+      751.7239077905168
+    ]
+  ],
+  "nativeToContextPx2x": [
+    [
+      0.40613955503885507,
+      -0.000778465851150718,
+      1.2650139626043115
+    ],
+    [
+      -0.00018552219647635507,
+      0.40833577674715243,
+      -0.5521844189664509
+    ]
+  ],
+  "registeredFile": "registered-2x.webp",
+  "registeredSha256": "2092d51b2c76716d4955453df1c227228923f3f6656b89fb49e533fdf89910b5",
+  "generation": {
+    "tool": "built-in image_gen.imagegen",
+    "calls": 1,
+    "useCase": "precise-object-edit",
+    "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop lava-north-stair for existing hand-painted isometric RPG terrain. Attached reference.png is the exact edit target. Repaint the SAME composition at 1104x944 pixels (276:236 aspect), using newly painted native detail. Context map1x [522,752,276,236], core [570,800,180,140]. Lock every architecture contour at its exact proportional image position, within 4 original pixels. Preserve the two thin dark stone stair-side rails and their end posts, the number and spacing of treads, the diagonal stair side edges, upper landing, lower cobbled walkway, its width and corners, the foreground cut-off path on right, pointed purple cliff faces, red shrubs and narrow lava sliver on left. Add crisp small painted surface detail within existing shapes, stone chips, paving cracks, fine leaf brushwork. Same warm orange light, purple rock palette, hand-painted game illustration style. Preserve 48 original pixels of perimeter context for registration. No redesign, cropping, camera change, reframing, widened staircase, removed side rails, added stairs, characters, labels or watermark. Return only the clean rectangular crop.",
+    "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-1fdf3d1c-d852-4586-adec-1df49c4b93fc.png",
+    "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+    "generatedSourceSha256": "ec8b6313292c52e10a078d28371fd14d29993a7ebe15ff0d10377afff2f34923",
+    "generatedSize": [
+      1356,
+      1159
+    ],
+    "nativeSha256": "82652896f0effcf818e012c8967c143191771c9ec7fcfe30d6ee097a2b6d3ef8"
+  },
+  "sourceCandidateSha256": "6a094969294a83049b135902f9ca82ac23f94a65227b66e01eee133a8fa9f16e",
+  "sourceChunkInputs": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r1-c1.webp",
+      "sha256": "4e35a26b15115009f416836e27a28fce4b2399ba7998b1c7ad301e679c249210"
+    }
+  ],
+  "sourceAssemblyInventorySha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7",
+  "shapeMetricsFile": "shape-metrics.json",
+  "shapeMetricsSha256": "cb0c707f0f0c3982e14ae00977411f2ee781b72726901dc316811c10dff62978",
+  "coreCoveredByNative": true,
+  "resampling": "Direct native to 2x using Lanczos4, lossless WebP. Border reflect101 only at context rim. Native source preserved byte-for-byte. No sharpening or local deformation.",
+  "integration": {
+    "master1x": [
+      4915,
+      3277
+    ],
+    "fullPx": [
+      9830,
+      6554
+    ],
+    "chunk": 2048,
+    "worldSize": [
+      3840,
+      2560
+    ],
+    "repairs": false,
+    "repairsBakedInReference": true,
+    "mapPx1xToWorld": [
+      0.7812817904374364,
+      0.7812023191943851
+    ],
+    "walkmaskSha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a",
+    "allowedEditRectPx1x": [
+      522,
+      752,
+      276,
+      236
+    ],
+    "join": "Join within overlap only. Keep existing native exterior. Local seam preview is diagnostic."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "native.webp + registration.json + review.jpg ครบทั้ง 4 โฟลเดอร์; verification.json ตรวจต้นฉบับ ImageGen PNG ตรงพิกเซลทุกชิ้น และ core coverage ครบ",
+    "provenance.json ตรวจ SHA256 native ตรงชุด 20261111T212700Z-a8d3cba7 ทั้ง 4 ชิ้น; เรียก ImageGen เพิ่ม 0 ครั้ง",
+    "shape-metrics.json ทุกจุด เก็บครบ 54 semantic และ 124 inherited probes; หลังตรวจคู่เทียบ semantic คลาดสูงสุด 1.414 map px; stair profiles 7/6/5 จุด คลาดสูงสุด 0.502 map px",
+    "fx-overlay.jpg + fx-overlap.json ทุกจุด ใช้ mask alpha และพิกัด layout จริง; heaven-bridge มี water/foam coverage; cloud alpha ในบริเวณซ้อนเป็น 0",
+    "seam-trials.json ทุกจุด เก็บผล 2 trial และ inherited probes ทุกจุด; mincost-preview.webp decode lossless ตรงพิกเซล; core และ exterior ตรงต้นทางทุกชิ้น",
+    "joins-verification.json nativeCropChecksComplete=True; readyForIntegration=False",
+    "heaven-bridge/context-boundary-review.jpg เส้น y497 แสดงปลายเสาราวที่ยื่นเหนือ context และรอยต่อที่ยังขาด; seam-trials.json เก็บจุด [3582,542] NCC 21x21 ประมาณ .597 และ 49x49 ประมาณ .589 ที่ displacement [0,0]",
+    "join-review.json localSeamAccepted=false ทั้ง 4 จุด; original-structure-open-points.json เก็บจุดเดิมเกิน4pxครบ7จุด และ verify.py ตรวจแล้วว่าอยู่นอก context รอบนี้",
+    "test-results.json บันทึกผลการตรวจจริง; --require-ready exit1 เพราะรอยต่อยังตรวจรับไม่ครบ"
+  ],
+  "remaining": [
+    "ตรวจรับรอยต่อกับ native รอบนอกของทั้งสี่ crop โดยใช้หลักฐาน trial และรักษา native core",
+    "สะพานต้องมี overlap ที่ครอบปลายเสาราวก่อนตรวจรับแนวต่อด้านบน",
+    "Toby ตรวจ foam ที่แตะหินใต้สะพานขณะรวม FX แล้วให้ Dale รีวิวผลรวม"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "scope": "ตรวจภาพลองต่อราย crop ด้วย min-cost ใน overlap ของชุด native 4 จุด",
+  "reviewMethod": "เทียบ mincost-overlap-review.jpg ที่ map2x, แสดงตำแหน่ง blend ใน mincost-seam-overlay.jpg และตรวจราวสะพานกับ v5 พร้อม repairs ใน context-boundary-review.jpg",
+  "items": {
+    "forest-r4-c1-q12": {
+      "localSeamAccepted": false,
+      "observations": ["native core แสดงใบไม้และลำต้นคมชัด", "ด้านบนและซ้ายยังมีการเปลี่ยนระดับรายละเอียดและสีใบไม้บริเวณต่อกับ native รอบนอก"],
+      "evidence": ["forest-r4-c1-q12/mincost-overlap-review.jpg", "forest-r4-c1-q12/mincost-seam-overlay.jpg", "forest-r4-c1-q12/seam-trials.json"]
+    },
+    "heaven-bridge": {
+      "localSeamAccepted": false,
+      "observations": ["เสารองรับและราวด้านหน้าภายใน core คงแนวตาม reference", "คู่ภาพ context-boundary-review แสดงปลายเสาราวด้านหลังที่ยื่นเหนือ y497 ใน reference ส่วนภาพลองต่อยังมีปลายราวขาดหรือเปลี่ยนเนื้อภาพที่เส้น context", "จุดเดิม walkmask-12-741 ที่ [3582,542] ได้ [0,0] แต่ NCC 21x21 ประมาณ .597 และ 49x49 ประมาณ .589 จึงเก็บเป็นจุด confidence ต่ำ"],
+      "evidence": ["heaven-bridge/context-boundary-review.jpg", "heaven-bridge/mincost-overlap-review.jpg", "heaven-bridge/seam-trials.json"],
+      "neededForSeamAcceptance": "ทบทวนขอบเขต overlap ด้านบนให้ครอบปลายเสาราวตาม v5 พร้อม native รอบนอกที่เชื่อมกันได้ เก็บ native core ที่ตรวจแล้วไว้"
+    },
+    "lava-north-stair": {
+      "localSeamAccepted": false,
+      "observations": ["ตัวบันไดและหัวเสาใน core คมชัด", "รอยแบ่งพื้นด้านล่างขวาปรากฏทั้ง reference และ native เดิม จึงเก็บรูปทรงเดิมตามใบงาน", "ที่ overlap ด้านบนและด้านขวายังเห็นสีและรายละเอียดหินเปลี่ยนช่วง", "จุด confidence ต่ำเดิม walkmask-8-67 ยังเก็บผล 21x21 และ 49x49 ใน seam-trials.json"],
+      "evidence": ["lava-north-stair/review.jpg", "lava-north-stair/mincost-overlap-review.jpg", "lava-north-stair/seam-trials.json"]
+    },
+    "lava-mid-stairs": {
+      "localSeamAccepted": false,
+      "observations": ["บันไดทั้งสองช่วงและชานเชื่อมใน native core คงตำแหน่ง", "ด้านล่าง crop มีเนื้อหินและพุ่มไม้เปลี่ยนช่วงเมื่อเข้ากับ native รอบนอก"],
+      "evidence": ["lava-mid-stairs/mincost-overlap-review.jpg", "lava-mid-stairs/mincost-seam-overlay.jpg", "lava-mid-stairs/seam-trials.json"]
+    }
+  },
+  "nativeRedrawRequiredByThisReview": false,
+  "inGameTested": false,
+  "remaining": ["ตรวจรับรอยต่อกับ native รอบนอกของทั้งสี่ crop โดยใช้หลักฐาน trial และรักษา native core", "สะพานต้องมี overlap ที่ครอบปลายเสาราวก่อนตรวจรับแนวต่อด้านบน", "Toby ตรวจ foam ที่แตะหินใต้สะพานขณะรวม FX แล้วให้ Dale รีวิวผลรวม"]
+}

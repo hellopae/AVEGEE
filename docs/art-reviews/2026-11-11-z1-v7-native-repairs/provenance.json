@@ -1,0 +1,98 @@
+{
+  "copiedFrom": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs",
+  "sourceFiles": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/README.md",
+      "sha256": "88f864d942bd8f363fb26c7c2347fe867f93078b60b01ddd09870d7ee4098999"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/inventory.json",
+      "sha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/structure.json",
+      "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/manifest.json",
+      "sha256": "c113b6a8d02b1e1ae614c5bf7c862e38be953f1576f8fe7dce955928be9d0b8a"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/assemble.py",
+      "sha256": "45c3bdc3f126a6ef63b661e71ca5389063547de818adbaaf419f6458a501dc33"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/verify.py",
+      "sha256": "b7dba966d3225c669f2d1ba8fad1ff8916520392fc6bd38c12ac541b3e2e4ac3"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/check-composition.py",
+      "sha256": "2444c022261525b7e23f9b931a4e3ff513c6e3b8a76138874b05d55e11fda9e8"
+    },
+    {
+      "path": "src/zone-skin.js",
+      "sha256": "0812ae61dbd151573aa383e8cb03703a5d2bafdc7862782e7593e75ccebc8a1f"
+    },
+    {
+      "path": "src/town-fluid-fx.js",
+      "sha256": "3bd53f358f03028a327d48935d4450ada5ec558cb5e7a1f75d71759ae048c5c7"
+    },
+    {
+      "path": "img/map-zone1/v5-fx/fx-layout.json",
+      "sha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/manifest.json",
+      "sha256": "57619ecfd9a4798583cb0bf358cf37ac95b532eb610c99974d488df6efde90ea"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py",
+      "sha256": "5b4b58b34271fa6e1c83c86d13df9a5c071c5249076636d1f5bf9e693d1b706b"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/queue-check.json",
+      "sha256": "6731fb7695fc695c56642a155d62f77f8eef6f0aa5a882f19d401a7b36710af1"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/visual-review.json",
+      "sha256": "9b698b6cdb03f697526bdcbb9f93f759885bfc807622a05083d95dac23284605"
+    }
+  ],
+  "nativeCopies": [
+    {
+      "id": "forest-r4-c1-q12",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/forest-r4-c1-q12/native.webp",
+      "sha256": "30cf3f315b40bc59d5f7649eab3a109e058fdcf53846b5282999f77a3d1d0d3a",
+      "byteIdenticalToPreviousRun": true,
+      "originalGenerationNative": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/forest-r4-c1-q12/native.webp"
+    },
+    {
+      "id": "heaven-bridge",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/heaven-bridge/native.webp",
+      "sha256": "13d358700b4a8bbe4268cf3365da81b3401f6d44d9aeae4f19af375d702f8aa7",
+      "byteIdenticalToPreviousRun": true,
+      "originalGenerationNative": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/heaven-bridge/native.webp"
+    },
+    {
+      "id": "lava-north-stair",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-north-stair/native.webp",
+      "sha256": "82652896f0effcf818e012c8967c143191771c9ec7fcfe30d6ee097a2b6d3ef8",
+      "byteIdenticalToPreviousRun": true,
+      "originalGenerationNative": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-north-stair/native.webp"
+    },
+    {
+      "id": "lava-mid-stairs",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T212700Z-a8d3cba7/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-mid-stairs/native.webp",
+      "sha256": "a87faeadc0b4ed594494221588bce7471cc3610f385ff00b38b1be912c666e51",
+      "byteIdenticalToPreviousRun": true,
+      "originalGenerationNative": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-mid-stairs/native.webp"
+    }
+  ],
+  "algorithmReuse": "Original assemble.py baseline() reused for native crop verification. Original seam() reused by check-local-joins.py for two separate local trials per crop. Accepted native and registered exports stay unchanged. Candidate core and exterior pixels are checked exactly; candidate visual acceptance remains incomplete.",
+  "imageGenCallsThisRound": 0,
+  "imageGenCallsInherited": 4,
+  "writeScope": "docs/art-reviews/2026-11-11-z1-v7-native-repairs/",
+  "originalGenerationWorktree": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs",
+  "deliveryWorktree": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T214451Z-8741fd14",
+  "sourceManifestSha256": "57619ecfd9a4798583cb0bf358cf37ac95b532eb610c99974d488df6efde90ea"
+}

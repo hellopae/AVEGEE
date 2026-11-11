@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 1,
+  "useCase": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop heaven-bridge in a hand-painted isometric RPG terrain atlas. The attached reference.png is the exact composition to preserve. Map1x context [3572,497,541,296], core [3620,545,445,200]. Redraw this exact crop at 1623x888 native resolution or closest matching 541:296 aspect, with finely painted crisp native stone, wood and snow detail. Preserve the exact curved bridge deck, BLACK RAILINGS ON BOTH SIDES and every upright post, both tall bridge support columns, underside support brackets, all cliff contours and the central foreground rock silhouettes. Keep each point at its same normalized coordinate within 4 map1x pixels. Preserve turquoise water outline, waterfall lip, snowbanks, sky/cloud gaps and tiny golden plants. Maintain the existing painterly fantasy game style, lighting and palette. The perimeter 48 map1x pixels is overlap for coordinate registration, preserve its layout. Add high-resolution surface detail inside locked forms only. Do not remove or redesign railings, turn wood into stone, shift supports, widen the bridge, invent rocks, crop, extend, reframe, add characters, UI, letters or watermark. Output only the clean rectangular map crop.",
+  "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-4ad31fa8-b484-40ba-aa0b-090b0651c8e1.png",
+  "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+  "generatedSourceSha256": "fbc9705f386c55c206cb5bba4bd74c1a9dfefcc41304f35f58381cfb8deb4ea6",
+  "generatedSize": [
+    1579,
+    996
+  ],
+  "nativeSha256": "13d358700b4a8bbe4268cf3365da81b3401f6d44d9aeae4f19af375d702f8aa7"
+}
