@@ -1,0 +1,169 @@
+{
+  "sourceAssembly": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble",
+  "sourceInventorySha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7",
+  "sourceStructureSha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0",
+  "baselineInputs": [
+    {
+      "path": "img/map-zone1/v5/r1-c1.webp",
+      "sha256": "c4a328be0efefebbc86476b834257edc7d13c7ecfe16250e4b19696a8473406f"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c2.webp",
+      "sha256": "771bbadc742645409a9bbb45da87e74794fcea8e561c806e350732b8e30217c8"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c3.webp",
+      "sha256": "799864341ce7ad8683b3b0ecb3c4f94e2125097c2f428707dcb3abce2cb9eee9"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c4.webp",
+      "sha256": "1507d02063b86ad416551924e25483531ff40f8b405470ec782aa6b094afffd3"
+    },
+    {
+      "path": "img/map-zone1/v5/r1-c5.webp",
+      "sha256": "81e2f47e6891a7d8691b176f1cd6f2027c72cbdf5d17b2b6e8c2895bf9ecf079"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c1.webp",
+      "sha256": "4a4f2463ffccb9ea950111bef50be899e89889a626fa152f809415d1013fb172"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c2.webp",
+      "sha256": "587b94844db18e1f7675761bcf84cf34233cc5ca5e42d5cca7a771dbb22236cb"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c3.webp",
+      "sha256": "cc1341bc2abede40b96834875d355ee09f0f77779897b7d4e785a57744e70d01"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c4.webp",
+      "sha256": "1797af543dad58ed0121a80484dc05d06e88543666815542b7e3496b2e3aca78"
+    },
+    {
+      "path": "img/map-zone1/v5/r2-c5.webp",
+      "sha256": "b9f8e328060996f8b02afbdd58ad0f44d52403cd3bfc67932b0cd833c53f2703"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c1.webp",
+      "sha256": "37057f96f804273ed4ee60746d89d20478f7f8f742f141265cf144af8291e253"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c2.webp",
+      "sha256": "23c1a4028b319d08d75314ff505148c64d4f3e35b7a867f1cce6642656be28f6"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c3.webp",
+      "sha256": "b8ae72e5271e6b10d141b52b6502fd91b8011e4341653646789ba3c5e3ee8a57"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c4.webp",
+      "sha256": "6af7a984a5a4a36a577f2d8d05866504bed648d09de7a5e399f6724ff0fc2604"
+    },
+    {
+      "path": "img/map-zone1/v5/r3-c5.webp",
+      "sha256": "9259597d6798f43578f9b2408368ad5f704bfc454fbfcb5947260334f2380e56"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c1.webp",
+      "sha256": "47c563cb2d43dad149679fe9560ebbde06a7570d89652e04c33a9afcae48c16c"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c2.webp",
+      "sha256": "da0899e652b7d8ae1c3e717d4045011d3243a63f732820ed9d4b0672566eabbb"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c3.webp",
+      "sha256": "e7754f1b206138c04d946727e74c2ab600ee2e176f8f4f45b7b1a50cb8eed2e5"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c4.webp",
+      "sha256": "7dcfc683b73a6b6f690bcb03e1d104e8416968b42d7fa1bc8ee9817dde38cb51"
+    },
+    {
+      "path": "img/map-zone1/v5/r4-c5.webp",
+      "sha256": "23d1f210a9fca9301e70b0a27cd1708a2a4a6b559c1e9bd0b2980dfb2f1fec6e"
+    },
+    {
+      "path": "img/map-zone1/repairs/r1-c3-v1.webp",
+      "sha256": "aad81d7f0b3448435e95b2104cefdf1e4bca3ec9b224e96e46785e8ec50f7685"
+    },
+    {
+      "path": "img/map-zone1/repairs/r2-c3-v1.webp",
+      "sha256": "15fe46a968e8efa84a2c6624b663bd2be6023e1df92bce3b0455b5c7dc98887d"
+    },
+    {
+      "path": "img/map-zone1/repairs/r3-c3-pier-v1.webp",
+      "sha256": "b0cf8beb0ebb8c8ac77903cf3217a020938fa30e4c727e99b3b02a4b7154d76e"
+    },
+    {
+      "path": "src/town-terrain-repair.js",
+      "sha256": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+    },
+    {
+      "path": "src/town-walkmask.js",
+      "sha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a"
+    }
+  ],
+  "items": [
+    {
+      "id": "forest-r4-c1-q12",
+      "core": [
+        512,
+        3072,
+        512,
+        205
+      ],
+      "context": [
+        448,
+        3008,
+        640,
+        269
+      ]
+    },
+    {
+      "id": "heaven-bridge",
+      "core": [
+        3620,
+        545,
+        445,
+        200
+      ],
+      "context": [
+        3572,
+        497,
+        541,
+        296
+      ]
+    },
+    {
+      "id": "lava-north-stair",
+      "core": [
+        570,
+        800,
+        180,
+        140
+      ],
+      "context": [
+        522,
+        752,
+        276,
+        236
+      ]
+    },
+    {
+      "id": "lava-mid-stairs",
+      "core": [
+        620,
+        1420,
+        200,
+        200
+      ],
+      "context": [
+        572,
+        1372,
+        296,
+        296
+      ]
+    }
+  ]
+}
