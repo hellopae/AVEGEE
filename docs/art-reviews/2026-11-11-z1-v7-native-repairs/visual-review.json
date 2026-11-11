@@ -1,0 +1,32 @@
+{
+  "scope": "รีวิวภาพ offline เฉพาะ native 4 crop และ registration ตามงานต่อรอบนี้",
+  "reviewMethod": "ดู review.jpg ที่ map 2x, review-game-zoom.jpg ที่ 2.8 device px/world, overlap-review.jpg และภาพขยายจุดกำกวม เทียบกับ reference ที่ตรวจพิกเซลตรง v5 พร้อม repairs",
+  "items": {
+    "forest-r4-c1-q12": {
+      "acceptedForCropHandoff": true,
+      "evidence": ["review.jpg", "review-game-zoom.jpg", "landmark-walkmask.jpg", "overlap-review.jpg"],
+      "observations": ["ป่าล่างยังหนาแน่น ตำแหน่งลำต้น ยอดหิน และช่องพื้นสีดินสอดคล้อง reference", "รายละเอียดใบไม้ เปลือกไม้ และหน้าหินแยกชัดที่ 2x", "ใบไม้ใน crop ใหม่มีความอิ่มสีต่างจาก native รอบนอก โดยเฉพาะ overlap ด้านบนและด้านซ้าย ต้องเลือกแนวต่อในการประกอบรอบถัดไป"],
+      "finalSeamAccepted": false
+    },
+    "heaven-bridge": {
+      "acceptedForCropHandoff": true,
+      "evidence": ["review.jpg", "review-game-zoom.jpg", "landmark-walkmask.jpg", "overlap-review.jpg", "fx-overlay.jpg"],
+      "observations": ["ราวทั้งสองด้าน เสารองรับ และขอบใต้สะพานยังอยู่ในแนวเดิม", "ยอดหินกลางน้ำ ขอบหน้าผา และริมธารน้ำตกสอดคล้อง reference", "ImageGen ให้ภาพสูงเกิน context ส่วนล่างที่อยู่นอก affine crop ถูกตัดออกจาก registered export", "coverage ของ foam เดิมแตะหินบริเวณล่าง crop ให้ Toby ตรวจขณะเปิด FX ในเกม", "cloud mask มีกรอบคร่อม context แต่ alpha ในบริเวณซ้อนเป็นศูนย์"],
+      "finalSeamAccepted": false
+    },
+    "lava-north-stair": {
+      "acceptedForCropHandoff": true,
+      "evidence": ["review.jpg", "review-game-zoom.jpg", "landmark-walkmask.jpg", "overlap-review.jpg", "inherited-probe-review.jpg"],
+      "observations": ["ราวซ้ายขวา หัวเสา แนวลูกนอน และมุมทางเดินคงตำแหน่ง", "profile ของช่วงลูกตั้งที่เลือกพบ 7 จุดทั้งก่อนและหลัง คลาดสูงสุดประมาณ 0.501 map px", "เก็บผล raw ของ walkmask-8-67 ที่ [666,978] ซึ่ง NCC ต่ำไว้ด้วย ภาพเทียบสามทางและหน้าต่าง 49x49 ที่รวมมุมทางเดินให้ displacement [0,0], NCC 0.635", "รายละเอียดพื้นและพุ่มไม้ใน overlap ต่างจาก native ข้างเคียง เห็นการเปลี่ยนเนื้อภาพใน local feather preview"],
+      "finalSeamAccepted": false
+    },
+    "lava-mid-stairs": {
+      "acceptedForCropHandoff": true,
+      "evidence": ["review.jpg", "review-game-zoom.jpg", "landmark-walkmask.jpg", "overlap-review.jpg", "tread-alias-review.jpg"],
+      "observations": ["บันไดสองช่วง ราว หัวเสา และชานเชื่อมอยู่ตามผังเดิม", "profile ช่วงลูกตั้งภายในพบ 6 และ 5 จุดทั้งก่อนและหลัง คลาดสูงสุดประมาณ 0.502 map px", "ชื่อจุด lower-left-rail-mid ตั้งคลาดจากตำแหน่งจริง จุด [757,1630] อยู่บนลูกนอนลายซ้ำใกล้ราว ผล 21x21 เลื่อนไปตามแนวลูกนอน [11,-1] จึงเก็บทั้งผล raw และคู่เทียบที่เห็นราวในหน้าต่าง 49x49 ซึ่งได้ [0,0], NCC 0.960", "ผิวหินและ foliage เปลี่ยนเนื้อบริเวณ overlap ด้านล่าง ต้องเลือกแนวต่อกับ native รอบนอกในการประกอบ"],
+      "finalSeamAccepted": false
+    }
+  },
+  "inGameTested": false,
+  "handoffMeaning": "native และพิกัดพร้อมเป็น input ของงานประกอบเฉพาะ 4 crop การรับรอยต่อของแผนที่รวมและการทดสอบ FX ในเกมยังอยู่ในรอบประกอบและบูรณาการ"
+}

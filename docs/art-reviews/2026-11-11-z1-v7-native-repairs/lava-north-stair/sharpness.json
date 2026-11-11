@@ -1,0 +1,25 @@
+{
+  "method": "Laplacian variance on four equal decoded 2x context quadrants. Diagnostic values depend on texture and contrast. Visual evidence in review.jpg and review-game-zoom.jpg.",
+  "quadrants": [
+    {
+      "quadrant": 1,
+      "referenceLaplacianVariance": 52.94711996593406,
+      "registeredLaplacianVariance": 4462.81826023939
+    },
+    {
+      "quadrant": 2,
+      "referenceLaplacianVariance": 63.44144117753495,
+      "registeredLaplacianVariance": 4714.991494642375
+    },
+    {
+      "quadrant": 3,
+      "referenceLaplacianVariance": 50.16316093463927,
+      "registeredLaplacianVariance": 4398.101456492467
+    },
+    {
+      "quadrant": 4,
+      "referenceLaplacianVariance": 37.04421359570491,
+      "registeredLaplacianVariance": 3702.5465199768937
+    }
+  ]
+}

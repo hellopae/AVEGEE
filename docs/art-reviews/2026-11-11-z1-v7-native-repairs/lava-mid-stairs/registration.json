@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "lava-mid-stairs",
+  "coordinates": "master1x [x,y,w,h], 4915x3277, pixel-index affine convention matching original assembly",
+  "corePx1x": [
+    620,
+    1420,
+    200,
+    200
+  ],
+  "contextPx1x": [
+    572,
+    1372,
+    296,
+    296
+  ],
+  "nativeFile": "native.webp",
+  "nativeSize": [
+    1254,
+    1254
+  ],
+  "nativeSha256": "a87faeadc0b4ed594494221588bce7471cc3610f385ff00b38b1be912c666e51",
+  "referenceSha256": "c96690efa9f8b526d61120e86f22d0efa1faf3181d5fb68d491c73b61b297362",
+  "nativeToContextPx1x": [
+    [
+      0.23563326109883523,
+      -0.0011973324517966834,
+      0.6192587554889726
+    ],
+    [
+      -5.7835933439893696e-05,
+      0.23689732034918878,
+      0.23001657920468305
+    ]
+  ],
+  "nativeToMasterPx1x": [
+    [
+      0.23563326109883523,
+      -0.0011973324517966834,
+      572.619258755489
+    ],
+    [
+      -5.7835933439893696e-05,
+      0.23689732034918878,
+      1372.2300165792046
+    ]
+  ],
+  "nativeToContextPx2x": [
+    [
+      0.47126652219767046,
+      -0.0023946649035933667,
+      1.2385175109779452
+    ],
+    [
+      -0.00011567186687978739,
+      0.47379464069837757,
+      0.4600331584093661
+    ]
+  ],
+  "registeredFile": "registered-2x.webp",
+  "registeredSha256": "af1ac5a15353210558f565b702f5bb99874813dbedb757ca5315182576058e9e",
+  "generation": {
+    "tool": "built-in image_gen.imagegen",
+    "calls": 1,
+    "useCase": "precise-object-edit",
+    "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop lava-mid-stairs for an existing hand-painted isometric RPG terrain atlas. The attached reference.png is the exact composition and layout to redraw. Context map1x [572,1372,296,296], core [620,1420,200,200]. Output a square 1184x1184 or larger native HD painting of precisely the SAME crop. Preserve normalized pixel coordinates to within 4 original pixels. Keep TWO stair flights: upper flight running from upper-left landing down toward the central cobbled landing, and lower flight at bottom-right continuing out of frame. Preserve every tread position/count, both flights' thin dark side rails and end posts, exact cobbled landing width, rim, corners and angle, every purple cliff and boulder silhouette, red foliage mass, tiny left lava slit and right plateau boundaries. Add fine newly painted stone grain, fine cracks, leaf brush detail inside the existing shapes only. Match warm orange lighting, charcoal-purple stone and vivid red/orange bushes, original painterly game style. Preserve 48 original pixels of overlap context all around. No redesign, shifted or widened stairs, removed rails, new openings, crop, camera or framing change, characters, UI, text or watermark. Return only one clean square terrain crop.",
+    "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-11603f35-c068-4776-b70c-bae8d6886024.png",
+    "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+    "generatedSourceSha256": "e70040affbe8484d1ae2c0af171f67a94b9eb5d1df29b6713bc428a222645637",
+    "generatedSize": [
+      1254,
+      1254
+    ],
+    "nativeSha256": "a87faeadc0b4ed594494221588bce7471cc3610f385ff00b38b1be912c666e51"
+  },
+  "sourceCandidateSha256": "c5a6e7991b11d3e745d7161b9e0b1217d15587501b6a7a336161ef4242fbae06",
+  "sourceChunkInputs": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r2-c1.webp",
+      "sha256": "e90d4c956a5bb4beae57ce5ae56cccad75a73bb204ec869204cdcd199ac7d97b"
+    }
+  ],
+  "sourceAssemblyInventorySha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7",
+  "shapeMetricsFile": "shape-metrics.json",
+  "shapeMetricsSha256": "7db270ea2c465d5091a1a627d782dad132c7720879560426b7755e0316195f31",
+  "coreCoveredByNative": true,
+  "resampling": "Direct native to 2x using Lanczos4, lossless WebP. Border reflect101 only at context rim. Native source preserved byte-for-byte. No sharpening or local deformation.",
+  "integration": {
+    "master1x": [
+      4915,
+      3277
+    ],
+    "fullPx": [
+      9830,
+      6554
+    ],
+    "chunk": 2048,
+    "worldSize": [
+      3840,
+      2560
+    ],
+    "repairs": false,
+    "repairsBakedInReference": true,
+    "mapPx1xToWorld": [
+      0.7812817904374364,
+      0.7812023191943851
+    ],
+    "walkmaskSha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a",
+    "allowedEditRectPx1x": [
+      572,
+      1372,
+      296,
+      296
+    ],
+    "join": "Join within overlap only. Keep existing native exterior. Local seam preview is diagnostic."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 1,
+  "useCase": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop lava-north-stair for existing hand-painted isometric RPG terrain. Attached reference.png is the exact edit target. Repaint the SAME composition at 1104x944 pixels (276:236 aspect), using newly painted native detail. Context map1x [522,752,276,236], core [570,800,180,140]. Lock every architecture contour at its exact proportional image position, within 4 original pixels. Preserve the two thin dark stone stair-side rails and their end posts, the number and spacing of treads, the diagonal stair side edges, upper landing, lower cobbled walkway, its width and corners, the foreground cut-off path on right, pointed purple cliff faces, red shrubs and narrow lava sliver on left. Add crisp small painted surface detail within existing shapes, stone chips, paving cracks, fine leaf brushwork. Same warm orange light, purple rock palette, hand-painted game illustration style. Preserve 48 original pixels of perimeter context for registration. No redesign, cropping, camera change, reframing, widened staircase, removed side rails, added stairs, characters, labels or watermark. Return only the clean rectangular crop.",
+  "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-1fdf3d1c-d852-4586-adec-1df49c4b93fc.png",
+  "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+  "generatedSourceSha256": "ec8b6313292c52e10a078d28371fd14d29993a7ebe15ff0d10377afff2f34923",
+  "generatedSize": [
+    1356,
+    1159
+  ],
+  "nativeSha256": "82652896f0effcf818e012c8967c143191771c9ec7fcfe30d6ee097a2b6d3ef8"
+}

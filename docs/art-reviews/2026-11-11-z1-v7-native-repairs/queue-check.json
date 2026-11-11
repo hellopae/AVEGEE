@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "forest-r4-c1-q12/native.webp + registration.json + review.jpg — ครบ; native 1935x812, 14 semantic probes, คลาดสูงสุด 1.414 map px",
+    "heaven-bridge/native.webp + registration.json + review.jpg — ครบ; native 1579x996, 19 semantic probes, คลาดสูงสุด 1.414 map px",
+    "lava-north-stair/native.webp + registration.json + review.jpg — ครบ; native 1356x1159, 10 semantic probes, คลาดสูงสุด 1 map px; จุด NCC ต่ำเดิมเก็บคู่เทียบและผล 49x49 ไว้ครบ",
+    "lava-mid-stairs/native.webp + registration.json + review.jpg — ครบ; native 1254x1254, 11 semantic probes; เก็บ raw alias [11,-1] พร้อมภาพราวและผล 49x49 [0,0]; คลาดสูงสุดหลังตรวจคู่เทียบ 1.414 map px",
+    "provenance.json + verification.json — native ทั้ง4 ตรงไบต์ชุดก่อนและตรงพิกเซล PNG ImageGen; ตรวจ 25 baseline inputs และแพ็กต้นทาง20 chunks+previewครบ; เรียก ImageGen เพิ่ม0ครั้ง",
+    "shape-metrics.json ทุกจุด — เก็บครบ54 semantic และ124 inherited probes; profilesลูกตั้งภายใน7/6/5จุดตรงกัน คลาดสูงสุด0.502 map px",
+    "fx-overlay.jpg + fx-overlap.json ทุกจุด — ใช้ mask alpha และพิกัด layout จริง; น้ำ/foam ซ้อนสะพาน, cloud alpha เป็น0ในส่วนซ้อน; coverage foam เดิมแตะหินด้านล่างcrop",
+    "test-results.json — --self-test, --acceptance และ --check-manifest exit0; ตรวจเฉพาะไฟล์ การวัด และ crop handoff",
+    "visual-review.json + overlap-review.jpg ทุกจุด — nativeรับช่วงได้; ภาพลองต่อยังเห็นความต่างเนื้อภาพในoverlap โดยเฉพาะป่าและลาวากลาง; finalSeamAccepted=false",
+    "original-structure-open-points.json — เก็บจุดเดิมเกิน4pxครบ7จุด ทุกจุดอยู่นอกcontextของสี่cropรอบนี้"
+  ],
+  "remaining": [
+    "เลือกแนวต่อ min-cost ภายใน overlap และตรวจรับรอยต่อจริงกับ native รอบนอกของทั้ง4cropในรอบประกอบถัดไป โดยเก็บ native ที่ตรวจแล้วทั้ง4ชิ้นไว้ใช้ต่อ",
+    "ให้ Toby ตรวจ coverage foam ที่แตะหินบริเวณล่าง heaven-bridge เมื่อเชื่อม asset และเปิด FX ในเกม แล้วให้ Dale รีวิวผลรวม"
+  ]
+}

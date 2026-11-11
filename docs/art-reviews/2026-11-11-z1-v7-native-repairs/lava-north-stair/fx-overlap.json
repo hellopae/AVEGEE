@@ -1,0 +1,37 @@
+{
+  "layout": "img/map-zone1/v5-fx/fx-layout.json",
+  "layoutSha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6",
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "pieces": [
+    {
+      "id": "lava-surface--lava-upper",
+      "group": "lava",
+      "kind": "tile",
+      "maskRectPx1x": [
+        316,
+        165,
+        1077,
+        610
+      ],
+      "intersectionPx1x": [
+        522,
+        752,
+        276,
+        23
+      ],
+      "mask": "img/map-zone1/v5-fx/masks/lava-upper.webp",
+      "maskSha256": "b9314b86e967f34d3f354fc556b2e7ece326bb9a2be120136a3c22738ad5f3a7",
+      "nonzeroIntersectionPixels": 0,
+      "opacity": 0.68,
+      "blend": "overlay"
+    }
+  ],
+  "method": "Actual coverage masks in master1x coordinates, resampled nearest to 2x. Cyan water, pink cloud, gold lava. Diagnostic mask placement only. Puff masks show the allowed drift region."
+}

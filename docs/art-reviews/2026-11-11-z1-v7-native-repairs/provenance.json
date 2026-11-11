@@ -1,0 +1,75 @@
+{
+  "copiedFrom": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs",
+  "sourceFiles": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/README.md",
+      "sha256": "88f864d942bd8f363fb26c7c2347fe867f93078b60b01ddd09870d7ee4098999"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/inventory.json",
+      "sha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/structure.json",
+      "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/manifest.json",
+      "sha256": "c113b6a8d02b1e1ae614c5bf7c862e38be953f1576f8fe7dce955928be9d0b8a"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/assemble.py",
+      "sha256": "45c3bdc3f126a6ef63b661e71ca5389063547de818adbaaf419f6458a501dc33"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/verify.py",
+      "sha256": "b7dba966d3225c669f2d1ba8fad1ff8916520392fc6bd38c12ac541b3e2e4ac3"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/scripts/check-composition.py",
+      "sha256": "2444c022261525b7e23f9b931a4e3ff513c6e3b8a76138874b05d55e11fda9e8"
+    },
+    {
+      "path": "src/zone-skin.js",
+      "sha256": "0812ae61dbd151573aa383e8cb03703a5d2bafdc7862782e7593e75ccebc8a1f"
+    },
+    {
+      "path": "src/town-fluid-fx.js",
+      "sha256": "3bd53f358f03028a327d48935d4450ada5ec558cb5e7a1f75d71759ae048c5c7"
+    },
+    {
+      "path": "img/map-zone1/v5-fx/fx-layout.json",
+      "sha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6"
+    }
+  ],
+  "nativeCopies": [
+    {
+      "id": "forest-r4-c1-q12",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/forest-r4-c1-q12/native.webp",
+      "sha256": "30cf3f315b40bc59d5f7649eab3a109e058fdcf53846b5282999f77a3d1d0d3a",
+      "byteIdenticalToPreviousRun": true
+    },
+    {
+      "id": "heaven-bridge",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/heaven-bridge/native.webp",
+      "sha256": "13d358700b4a8bbe4268cf3365da81b3401f6d44d9aeae4f19af375d702f8aa7",
+      "byteIdenticalToPreviousRun": true
+    },
+    {
+      "id": "lava-north-stair",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-north-stair/native.webp",
+      "sha256": "82652896f0effcf818e012c8967c143191771c9ec7fcfe30d6ee097a2b6d3ef8",
+      "byteIdenticalToPreviousRun": true
+    },
+    {
+      "id": "lava-mid-stairs",
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T174550Z-ddecd613/docs/art-reviews/2026-11-11-z1-v7-native-repairs/lava-mid-stairs/native.webp",
+      "sha256": "a87faeadc0b4ed594494221588bce7471cc3610f385ff00b38b1be912c666e51",
+      "byteIdenticalToPreviousRun": true
+    }
+  ],
+  "algorithmReuse": "Original assemble.py baseline() called in memory after input hash checks. Read-only crop extraction from original v7 shipping chunks; candidate affines retained.",
+  "imageGenCallsThisRound": 0,
+  "imageGenCallsInherited": 4,
+  "writeScope": "docs/art-reviews/2026-11-11-z1-v7-native-repairs/"
+}

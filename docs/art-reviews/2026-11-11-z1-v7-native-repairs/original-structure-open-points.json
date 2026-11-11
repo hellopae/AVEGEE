@@ -1,0 +1,140 @@
+{
+  "source": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/structure.json",
+  "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0",
+  "points": [
+    {
+      "id": "walkmask-12-20",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2490,
+        880
+      ],
+      "displacementPx1x": [
+        2,
+        -4
+      ],
+      "distancePx1x": 4.47213595499958,
+      "normalizedCorrelation": 0.7127728462219238,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-21",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2438,
+        849
+      ],
+      "displacementPx1x": [
+        4,
+        -3
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.6204298734664917,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-284",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        578,
+        2007
+      ],
+      "displacementPx1x": [
+        3,
+        -3
+      ],
+      "distancePx1x": 4.242640687119285,
+      "normalizedCorrelation": 0.7356759905815125,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-371",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2477,
+        869
+      ],
+      "displacementPx1x": [
+        1,
+        -4
+      ],
+      "distancePx1x": 4.123105625617661,
+      "normalizedCorrelation": 0.7636334896087646,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-560",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2867,
+        2855
+      ],
+      "displacementPx1x": [
+        5,
+        0
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.6370976567268372,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-580",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2878,
+        2847
+      ],
+      "displacementPx1x": [
+        5,
+        0
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.639514148235321,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "walkmask-12-721",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        4670,
+        701
+      ],
+      "displacementPx1x": [
+        4,
+        2
+      ],
+      "distancePx1x": 4.47213595499958,
+      "normalizedCorrelation": 0.6674549579620361,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    }
+  ],
+  "scope": "All seven original >4px points are outside these four repair contexts and remain pending for the later full-assembly round."
+}

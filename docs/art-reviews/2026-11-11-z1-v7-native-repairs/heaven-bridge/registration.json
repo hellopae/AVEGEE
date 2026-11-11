@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "heaven-bridge",
+  "coordinates": "master1x [x,y,w,h], 4915x3277, pixel-index affine convention matching original assembly",
+  "corePx1x": [
+    3620,
+    545,
+    445,
+    200
+  ],
+  "contextPx1x": [
+    3572,
+    497,
+    541,
+    296
+  ],
+  "nativeFile": "native.webp",
+  "nativeSize": [
+    1579,
+    996
+  ],
+  "nativeSha256": "13d358700b4a8bbe4268cf3365da81b3401f6d44d9aeae4f19af375d702f8aa7",
+  "referenceSha256": "5488307917b080406795a867b2e465563272384fa5f894ba442a319147af7b51",
+  "nativeToContextPx1x": [
+    [
+      0.34248791063592765,
+      -0.0005210413824731703,
+      0.005275291472423134
+    ],
+    [
+      -0.00026058711483622246,
+      0.34206137375463225,
+      0.21029039981315154
+    ]
+  ],
+  "nativeToMasterPx1x": [
+    [
+      0.34248791063592765,
+      -0.0005210413824731703,
+      3572.0052752914726
+    ],
+    [
+      -0.00026058711483622246,
+      0.34206137375463225,
+      497.2102903998132
+    ]
+  ],
+  "nativeToContextPx2x": [
+    [
+      0.6849758212718553,
+      -0.0010420827649463406,
+      0.010550582944846268
+    ],
+    [
+      -0.0005211742296724449,
+      0.6841227475092645,
+      0.42058079962630307
+    ]
+  ],
+  "registeredFile": "registered-2x.webp",
+  "registeredSha256": "5e353c742820d0fb7adfd09f51f7be09475b5425d5b95e441fb7cd4ad86c4857",
+  "generation": {
+    "tool": "built-in image_gen.imagegen",
+    "calls": 1,
+    "useCase": "precise-object-edit",
+    "prompt": "Use case: precise-object-edit. Asset type: native HD repair crop heaven-bridge in a hand-painted isometric RPG terrain atlas. The attached reference.png is the exact composition to preserve. Map1x context [3572,497,541,296], core [3620,545,445,200]. Redraw this exact crop at 1623x888 native resolution or closest matching 541:296 aspect, with finely painted crisp native stone, wood and snow detail. Preserve the exact curved bridge deck, BLACK RAILINGS ON BOTH SIDES and every upright post, both tall bridge support columns, underside support brackets, all cliff contours and the central foreground rock silhouettes. Keep each point at its same normalized coordinate within 4 map1x pixels. Preserve turquoise water outline, waterfall lip, snowbanks, sky/cloud gaps and tiny golden plants. Maintain the existing painterly fantasy game style, lighting and palette. The perimeter 48 map1x pixels is overlap for coordinate registration, preserve its layout. Add high-resolution surface detail inside locked forms only. Do not remove or redesign railings, turn wood into stone, shift supports, widen the bridge, invent rocks, crop, extend, reframe, add characters, UI, letters or watermark. Output only the clean rectangular map crop.",
+    "generatedSource": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7aa3-8296-38bc1c3bb696/exec-4ad31fa8-b484-40ba-aa0b-090b0651c8e1.png",
+    "postprocess": "Lossless WebP encoding, original generated dimensions, no resizing or sharpening.",
+    "generatedSourceSha256": "fbc9705f386c55c206cb5bba4bd74c1a9dfefcc41304f35f58381cfb8deb4ea6",
+    "generatedSize": [
+      1579,
+      996
+    ],
+    "nativeSha256": "13d358700b4a8bbe4268cf3365da81b3401f6d44d9aeae4f19af375d702f8aa7"
+  },
+  "sourceCandidateSha256": "e2ae84eeb77cce1460e3f00f1f80f80f81501bfd2edf034e6bed8bb7ae100eb6",
+  "sourceChunkInputs": [
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r1-c4.webp",
+      "sha256": "66d68d81b99b7bad611b541cc2121b8d61c0f54a4e19d8b0fd86261216908160"
+    },
+    {
+      "path": "/Users/agapae/agapae-work/.codex-worktrees/20261110T115811Z-6ad6e037/docs/art-reviews/2026-11-05-z1-v5-hd-assemble/v7/r1-c5.webp",
+      "sha256": "1635280ee976deb6008e646992ed396356f6fe6ece98036b211b7593ee61e3c4"
+    }
+  ],
+  "sourceAssemblyInventorySha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7",
+  "shapeMetricsFile": "shape-metrics.json",
+  "shapeMetricsSha256": "1985d44162063def7f7bbe82608738a1c6da11dd082393ff029b6c34ec2cd1bd",
+  "coreCoveredByNative": true,
+  "resampling": "Direct native to 2x using Lanczos4, lossless WebP. Border reflect101 only at context rim. Native source preserved byte-for-byte. No sharpening or local deformation.",
+  "integration": {
+    "master1x": [
+      4915,
+      3277
+    ],
+    "fullPx": [
+      9830,
+      6554
+    ],
+    "chunk": 2048,
+    "worldSize": [
+      3840,
+      2560
+    ],
+    "repairs": false,
+    "repairsBakedInReference": true,
+    "mapPx1xToWorld": [
+      0.7812817904374364,
+      0.7812023191943851
+    ],
+    "walkmaskSha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a",
+    "allowedEditRectPx1x": [
+      3572,
+      497,
+      541,
+      296
+    ],
+    "join": "Join within overlap only. Keep existing native exterior. Local seam preview is diagnostic."
+  }
+}

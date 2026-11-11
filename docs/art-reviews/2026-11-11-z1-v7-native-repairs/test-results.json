@@ -1,0 +1,28 @@
+{
+  "environment": "Python 3 with Pillow, numpy, scipy and OpenCV in the provided worktree",
+  "tests": [
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --self-test",
+      "exitCode": 0,
+      "result": "3 measurement oracles completed. Known signed translation [2,-3], rejection of [6,0] against the 4px criterion, and retention of an insufficient-context probe."
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --acceptance",
+      "exitCode": 0,
+      "result": "4 native crops, original PNG equivalence, 25 baseline input hashes, 21 original pack images including 20 chunks, core coverage, decoded lossless equality, exact local-preview exterior pixels, 54 named landmarks with 2 documented correspondence reviews across semantic/inherited sets, all 124 inherited probes retained, and 3 interior riser profiles checked."
+    },
+    {
+      "command": "python3 -B docs/art-reviews/2026-11-11-z1-v7-native-repairs/verify.py --check-manifest",
+      "exitCode": 0,
+      "result": "All enumerated delivery file sizes and SHA256 hashes matched. Every enumerated image decoded at the recorded dimensions."
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "Empty output. The delivery directory consists of new untracked files at this wrapper stage."
+    }
+  ],
+  "visualEvidence": "Reviewed each crop at map2x and 2.8 device px/world, all local overlap comparisons, the bridge FX coverage overlay, and both expanded correspondence review pairs.",
+  "inGameTested": false,
+  "finalAssemblySeamReview": "Pending in the later assembly round. Local diagnostic previews retain visible texture transitions as documented in visual-review.json."
+}

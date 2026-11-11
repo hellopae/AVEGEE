@@ -1,0 +1,290 @@
+{
+  "fileChecks": "completed",
+  "imageGenCallsThisRound": 0,
+  "inheritedImageGenCalls": 4,
+  "originalGeneratedPngHashesVerified": true,
+  "sourceInventoryAndStructureHashesVerified": true,
+  "baselineInputHashesVerified": 25,
+  "sourcePackFilesVerified": 21,
+  "baselineReferencePixelsIdentical": true,
+  "items": [
+    {
+      "id": "forest-r4-c1-q12",
+      "nativeSize": [
+        1935,
+        812
+      ],
+      "semanticProbes": 14,
+      "semanticMaxDistancePx1x": 1.4142135623730951,
+      "semanticAllWithin4px": true,
+      "reviewedSemanticAllWithin4px": true,
+      "reviewedSemanticMaxDistancePx1x": 1.4142135623730951,
+      "inheritedProbes": 21,
+      "inheritedExceptions": 0,
+      "unresolvedInheritedExceptions": 0,
+      "stairProfiles": [],
+      "sourcePngDecodedEqualToNative": true,
+      "coreCoveredByNative": true,
+      "exteriorPixelsIdentical": true
+    },
+    {
+      "id": "heaven-bridge",
+      "nativeSize": [
+        1579,
+        996
+      ],
+      "semanticProbes": 19,
+      "semanticMaxDistancePx1x": 1.4142135623730951,
+      "semanticAllWithin4px": true,
+      "reviewedSemanticAllWithin4px": true,
+      "reviewedSemanticMaxDistancePx1x": 1.4142135623730951,
+      "inheritedProbes": 44,
+      "inheritedExceptions": 0,
+      "unresolvedInheritedExceptions": 0,
+      "stairProfiles": [],
+      "sourcePngDecodedEqualToNative": true,
+      "coreCoveredByNative": true,
+      "exteriorPixelsIdentical": true
+    },
+    {
+      "id": "lava-north-stair",
+      "nativeSize": [
+        1356,
+        1159
+      ],
+      "semanticProbes": 10,
+      "semanticMaxDistancePx1x": 1.0,
+      "semanticAllWithin4px": true,
+      "reviewedSemanticAllWithin4px": true,
+      "reviewedSemanticMaxDistancePx1x": 1.0,
+      "inheritedProbes": 27,
+      "inheritedExceptions": 1,
+      "unresolvedInheritedExceptions": 0,
+      "stairProfiles": [
+        {
+          "id": "north-interior-risers",
+          "start": [
+            158,
+            64
+          ],
+          "end": [
+            130,
+            155
+          ],
+          "treadSlope": 0.055,
+          "referenceRiserCentresPx1x": [
+            [
+              156.89473684210526,
+              67.59210526315789
+            ],
+            [
+              153.13684210526316,
+              79.80526315789473
+            ],
+            [
+              149.37894736842105,
+              92.01842105263158
+            ],
+            [
+              145.62105263157895,
+              104.23157894736842
+            ],
+            [
+              141.78947368421052,
+              116.6842105263158
+            ],
+            [
+              137.81052631578947,
+              129.61578947368423
+            ],
+            [
+              133.97894736842105,
+              142.06842105263158
+            ]
+          ],
+          "registeredRiserCentresPx1x": [
+            [
+              156.89473684210526,
+              67.59210526315789
+            ],
+            [
+              153.06315789473683,
+              80.04473684210527
+            ],
+            [
+              149.30526315789473,
+              92.2578947368421
+            ],
+            [
+              145.62105263157895,
+              104.23157894736842
+            ],
+            [
+              141.6421052631579,
+              117.16315789473686
+            ],
+            [
+              137.73684210526315,
+              129.85526315789474
+            ],
+            [
+              133.83157894736843,
+              142.54736842105262
+            ]
+          ],
+          "sameInteriorRiserCount": true,
+          "maxPairedDisplacementPx1x": 0.5011068082165727
+        }
+      ],
+      "sourcePngDecodedEqualToNative": true,
+      "coreCoveredByNative": true,
+      "exteriorPixelsIdentical": true
+    },
+    {
+      "id": "lava-mid-stairs",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "semanticProbes": 11,
+      "semanticMaxDistancePx1x": 11.045361017187261,
+      "semanticAllWithin4px": false,
+      "reviewedSemanticAllWithin4px": true,
+      "reviewedSemanticMaxDistancePx1x": 1.4142135623730951,
+      "inheritedProbes": 32,
+      "inheritedExceptions": 0,
+      "unresolvedInheritedExceptions": 0,
+      "stairProfiles": [
+        {
+          "id": "mid-upper-interior-risers",
+          "start": [
+            79,
+            76
+          ],
+          "end": [
+            112,
+            155
+          ],
+          "treadSlope": -0.1,
+          "referenceRiserCentresPx1x": [
+            [
+              79.7741935483871,
+              77.8533724340176
+            ],
+            [
+              85.19354838709677,
+              90.82697947214076
+            ],
+            [
+              90.51612903225806,
+              103.56891495601172
+            ],
+            [
+              95.93548387096774,
+              116.54252199413489
+            ],
+            [
+              101.25806451612902,
+              129.28445747800586
+            ],
+            [
+              106.58064516129032,
+              142.02639296187684
+            ]
+          ],
+          "registeredRiserCentresPx1x": [
+            [
+              79.7741935483871,
+              77.8533724340176
+            ],
+            [
+              85.0,
+              90.36363636363636
+            ],
+            [
+              90.41935483870968,
+              103.33724340175954
+            ],
+            [
+              95.74193548387098,
+              116.0791788856305
+            ],
+            [
+              101.16129032258064,
+              129.05278592375367
+            ],
+            [
+              106.58064516129032,
+              142.02639296187684
+            ]
+          ],
+          "sameInteriorRiserCount": true,
+          "maxPairedDisplacementPx1x": 0.5021432209502428
+        },
+        {
+          "id": "mid-lower-interior-risers",
+          "start": [
+            216,
+            228
+          ],
+          "end": [
+            241,
+            293
+          ],
+          "treadSlope": -0.06,
+          "referenceRiserCentresPx1x": [
+            [
+              218.96762589928056,
+              235.7158273381295
+            ],
+            [
+              224.00359712230215,
+              248.80935251798562
+            ],
+            [
+              229.21942446043167,
+              262.3705035971223
+            ],
+            [
+              234.25539568345323,
+              275.4640287769784
+            ],
+            [
+              239.38129496402877,
+              288.7913669064748
+            ]
+          ],
+          "registeredRiserCentresPx1x": [
+            [
+              219.05755395683454,
+              235.9496402877698
+            ],
+            [
+              224.00359712230215,
+              248.80935251798562
+            ],
+            [
+              229.03956834532374,
+              261.90287769784175
+            ],
+            [
+              234.25539568345323,
+              275.4640287769784
+            ],
+            [
+              239.47122302158274,
+              289.02517985611513
+            ]
+          ],
+          "sameInteriorRiserCount": true,
+          "maxPairedDisplacementPx1x": 0.5010211610497803
+        }
+      ],
+      "sourcePngDecodedEqualToNative": true,
+      "coreCoveredByNative": true,
+      "exteriorPixelsIdentical": true
+    }
+  ],
+  "fullMapAssembledThisRound": false,
+  "inGameTested": false
+}
