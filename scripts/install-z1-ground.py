@@ -12,7 +12,7 @@ What it does (nothing is drawn or edited - pixels are only re-cut):
   * stitches the 20 chunks into one 9830x6554 picture, cuts it again into 1024 px tiles (10 x 7 = 70 files: the camera at phone zoom then keeps few
     decoded tiles in memory - FX3 measured 2048 px chunks at 100-130 MB, 1024 px at 35-50 MB);
   * copies the preview (1536x1024) and the pack's manifest/structure notes next to the tiles (pack-manifest.json);
-  * keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier), or copies them from --sprites-from;
+  * keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier); a new name gets v7's (or --sprites-from);
   * refuses a pack that is not exactly 20 chunks of the right size, so a half-finished export never reaches the game.
 Then:  node --test tests/*.test.mjs   and look at the map (390 px wide) before committing.
 """
@@ -75,8 +75,9 @@ if pm.exists():
     'note': 'built by scripts/install-z1-ground.py', 'source': str(pack), 'tilePx': TILE, 'quality': a.quality,
     'fullPx': {'w': FULL[0], 'h': FULL[1]}, 'tiles': len(files), 'bytes': files, 'totalTileBytes': total}, indent=1))
 
-if a.sprites_from:
-    src = Path(a.sprites_from).expanduser()
+spr = a.sprites_from or (None if (out / 'sprites.json').exists() else str(ROOT / 'img/map-zone1/v7'))   # a new set starts from v7's sprite list
+if spr and Path(spr).expanduser().resolve() != out.resolve():
+    src = Path(spr).expanduser()
     shutil.copyfile(src / 'sprites.json', out / 'sprites.json')
     (out / 'sprites').mkdir(exist_ok=True)
     for f in (src / 'sprites').glob('*.webp'):
