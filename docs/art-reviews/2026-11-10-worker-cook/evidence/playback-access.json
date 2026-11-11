@@ -1,0 +1,7 @@
+{
+  "method": "cua.getState()",
+  "browsers": [],
+  "error": "Browsers: Error: The browser access host is unavailable",
+  "animatedPlaybackObserved": false,
+  "scope": "Read-only browser availability check in this round"
+}

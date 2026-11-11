@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/current-audit.json — ตรวจ 96 ช่อง / 12 GIF / 119 เงื่อนไขโครงสร้าง ไม่พบข้อผิดพลาด; ไม่ใช่การรับรองภาพหรือ QA",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/current-audit.json#preservation — WebP 5 และ GIF 12 ไฟล์ตรง SHA-256 กับชุดล่าสุดทุกไฟล์",
+    "docs/art-reviews/2026-11-10-worker-cook/compare-{th,asia,west,cyberhell}.jpg — เทียบ source crop จริงขนาด 320×320 พร้อมชื่อแถว/คอลัมน์และเส้น anchor; หน้าและสัดส่วนยังต่าง",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/native-alpha-*.jpg — ดูครบ 96 เฟรมบนขาว/ดำ/เขียวขนาดจริง ไม่เห็นขอบแดง/เหลืองแปลกปลอมในภาพตรวจ",
+    "docs/art-reviews/2026-11-10-worker-cook/loop-review.json — cook ซ้ายทั้ง 4 โซนเป็น mirror ที่สลับรายละเอียดข้างเดียว; carry TH คงครบ 4 ทิศ; จุดเท้าทางกายวิภาคและ playback ยังไม่รับรอง",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/prior-loop-review.json — บันทึก ImageGen เดิม 16/16; รอบนี้ 0 ครั้ง รอคำตอบเรื่องโควตารอบแก้",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/package-check.json — ตรวจรายการไฟล์ ขอบเขตการเขียน และขนาดจริงต่ำกว่า 30 MB"
+  ],
+  "remaining": [
+    "ยืนยันว่าอนุญาตโควตา ImageGen รอบแก้แยกจาก 16 ครั้งเดิมหรือไม่; ยังไม่มีคำตอบ",
+    "แก้หน้าและสัดส่วน cook ทั้ง 4 โซนด้วย ImageGen ตามต้นแบบ ครั้งละ 2–4 เฟรมโดยใช้เฟรมก่อนหน้าเป็น reference",
+    "วาด cook อีกทิศให้รักษารายละเอียดประจำด้าน แทน mirror ทั้ง 4 โซน",
+    "แก้หน้าและสัดส่วน carry TH รักษาครบ side, side-left, down, up อย่างละ 8 เฟรม",
+    "ตรวจจุดเท้าทางกายวิภาคเทียบ source และ fit ของ renderer รวมถึง loop playback จริง 8→1 หลังแก้ภาพ"
+  ]
+}

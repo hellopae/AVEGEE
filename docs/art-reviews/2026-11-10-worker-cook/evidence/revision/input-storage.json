@@ -1,0 +1,30 @@
+[
+  {
+    "toolInputFileName": "target-cyberhell-down-left-1-4.png",
+    "storedFile": "target-cyberhell-down-left-1-4.webp",
+    "inputSha256": "b31176ae32c7267e0da4154bd70ca860d30dee20ec3e3739905525f5479de5d2",
+    "rgbaSha256": "08717c422a675e77952abe16964d3c3c6d6d59b50f1999e3f6cba91ab3e9f915",
+    "pixelExact": true
+  },
+  {
+    "toolInputFileName": "target-cyberhell-down-left-5-8.png",
+    "storedFile": "target-cyberhell-down-left-5-8.webp",
+    "inputSha256": "f16c9a7c9e0b70f9772f06419f17963b783dbc2cd4d8aff25b5a2e33811e7e47",
+    "rgbaSha256": "f3b7c13b8d18b86ab8b76def93aeeb70fd80a4c23472e1a44bf585a278f8b11d",
+    "pixelExact": true
+  },
+  {
+    "toolInputFileName": "target-cyberhell-down-right-1-4.png",
+    "storedFile": "target-cyberhell-down-right-1-4.webp",
+    "inputSha256": "15c3b2cdc731c23cd1e7610e2555528053a6f2f61ee9df5090670be35cf8f505",
+    "rgbaSha256": "48d51178841c3614cfef752c0ae37075d0b5417b7ead1585530cefc9c16026cc",
+    "pixelExact": true
+  },
+  {
+    "toolInputFileName": "target-cyberhell-down-right-5-8.png",
+    "storedFile": "target-cyberhell-down-right-5-8.webp",
+    "inputSha256": "853be277fb038f4c4d06f70836f3ebb096b25f2449964c6036389b2011ce3783",
+    "rgbaSha256": "1c970fcd308b2ed9c559ff61d93ea46269e6577c878b25232ddb94bdd8871043",
+    "pixelExact": true
+  }
+]

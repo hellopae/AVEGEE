@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "status": "needs_revision",
+  "mirrorsReverseOneSidedDetails": true,
+  "layout": "8 columns; one direction per row; zero-based rows",
+  "coordinateSystem": "top-left pixel coordinates; foot is cell-bottom draw anchor",
+  "animations": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "down-right"
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "side"
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 2,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 3,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-asia-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-asia-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "down-right"
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-west-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-west-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "down-right"
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "2026-11-11 built-in ImageGen; separately drawn direction"
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "2026-11-11 built-in ImageGen; separately drawn direction"
+    }
+  ],
+  "omitted": [
+    {
+      "zone": "asia",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    },
+    {
+      "zone": "west",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    }
+  ],
+  "revisionNotes": "Cyberhell redrawn in both directions. Other rows retain previous artwork. Left-side details and identity still need review; not ready for integration."
+}
