@@ -1,0 +1,22 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "review/summit-registration-result.json — เพิ่ม 2,360 พิกเซลจาก source เดิม; witness 528/528 effective pixels ครบ 8 เฟรม; visible pixels/alpha นอกส่วนเพิ่มคงเดิม",
+    "review/registration-idempotence.json — รัน registration ซ้ำ exit 0; hash mask/sheet ตรงเดิม",
+    "review/liquid-reference-result.json + mask-review.json — reference 9 masks; 5/37 มี leakage upper bound ≤3%; ส่วนเพิ่ม summit มี unknown 7/2360 = 0.29661%; ไม่ใช้ annotation containment ยืนยันตัวเอง",
+    "review/shore-ground-result.json — ระยะจากฝั่งจริงยืนยัน spirit 800 pixels ≤12 world; ice patch ยืนยันเพิ่ม 0; ไม่อ้างครอบทั้ง band",
+    "review/particle-footprint-result.json — 288 samples ต่อจุด: left-bottom ไม่ visible, southwest visible union 2215 pixels; ไม่ทับ fall witness ทั้งสอง; ยังไม่ยืนยัน flat-only ทั้งชุด",
+    "review/pairs/ + review/contact-*.jpg + review/clips/ — เก็บ 31 คู่/3 คลิป; เรนเดอร์ใหม่เฉพาะ summit pair, icefall contact และ owner-2 clip",
+    "review/delivery-verification.json + review/run-validation.json — ผล decode/hash/มิติ/phases และคำสั่งตรวจจริง; ไม่ได้ทดสอบ integration เกม",
+    "README.md + loop-review.json + generation-prompts*.json — บันทึกภาษาไทย, ข้อจำกัด loop และ prompts ที่รับต่อ; 0 generations ใหม่",
+    "delivery-size.json + review/scope-check.json — ขนาดแพ็กและขอบเขตไฟล์ตามที่ตรวจจริง"
+  ],
+  "remaining": [
+    "ทำ ground-only liquid reference ให้ครบอีก 28 masks และเพิ่ม labels ที่ยัง unknown ใน summit, upper-tree, east-cliff, lower-inlet; อีก 32/37 masks ยังยืนยัน leakage ≤3% ทั้งชิ้นไม่ได้",
+    "สำรวจน้ำตกที่วาดจริงทั่วพื้น v7 และตรวจรูปทรง/ละอองฐานทุกจุด; summit witness ที่ขาดได้รับ registration แล้ว ไม่ต้องวาดซ้ำ",
+    "ตรวจ shore-band-ice อีก 13960 pixels และ shore-band-spirit อีก 675767 pixels จากผิวน้ำ/ฝั่งจริง; ตัวอย่างที่ตรวจไม่ใช่ full survey",
+    "ตรวจ footprint particles อีก 10 pieces และ definite-flat labels ครอบ footprint southwest; left-bottom ไม่ปรากฏหลัง clipping จึงยังไม่ใช่ positive flat-placement proof",
+    "ตรวจ playback และรอยต่อ 8→1 ด้วยตาทุกจุด โดยเฉพาะ upper-tree; ค่าความต่าง/8 phases ไม่ยืนยัน loop ลื่น",
+    "หากแก้ masks/assets เพิ่ม ให้เรนเดอร์ใหม่เฉพาะภาพและคลิปที่ได้รับผลกระทบ แล้วรัน verifier/size/scope ใหม่ก่อนพิจารณา ready"
+  ]
+}

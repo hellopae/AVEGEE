@@ -1,0 +1,80 @@
+{
+  "method": "Same full-crop spatial registration as inherited sheet; restore original eight painted source cells only inside omitted lower-cascade geometry. No per-frame shift/fade or temporal synthesis.",
+  "specification": "review/summit-registration.json",
+  "beforeMaskSha256": "4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76",
+  "beforeSheetSha256": "f3612a0c7a9111655e4fb324045d385019009cd9213771d07a149f58ca83ebd8",
+  "afterMaskSha256": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+  "afterSheetSha256": "290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae",
+  "maskPixelsBefore": 62375,
+  "maskPixelsAfter": 64735,
+  "addedMaskPixels": 2360,
+  "unchangedVisibleSheetPixelsOutsideExtension": true,
+  "unchangedSheetAlphaOutsideExtension": true,
+  "encodingNote": "Lossless WebP preserves visible RGBA exactly; RGB under fully transparent pixels may be discarded.",
+  "sourceCells": [
+    {
+      "path": "sources/icefall-summit-12.webp",
+      "sha256": "592d769735699ddf8b286b66d75f804d642291bebb20fcdd04a1e87480a8834a",
+      "cell": 0
+    },
+    {
+      "path": "sources/icefall-summit-12.webp",
+      "sha256": "592d769735699ddf8b286b66d75f804d642291bebb20fcdd04a1e87480a8834a",
+      "cell": 1
+    },
+    {
+      "path": "sources/icefall-summit-34.webp",
+      "sha256": "23eadc657f023ad00fdfcbb35bc0adb03d3bc61fe34858dbfee51b5ff85e793e",
+      "cell": 0
+    },
+    {
+      "path": "sources/icefall-summit-34.webp",
+      "sha256": "23eadc657f023ad00fdfcbb35bc0adb03d3bc61fe34858dbfee51b5ff85e793e",
+      "cell": 1
+    },
+    {
+      "path": "sources/icefall-summit-56.webp",
+      "sha256": "71a2500c1acccd29e9ea858b2c7fafa7700f0bad5c5b61b507d9209eae2db6d0",
+      "cell": 0
+    },
+    {
+      "path": "sources/icefall-summit-56.webp",
+      "sha256": "71a2500c1acccd29e9ea858b2c7fafa7700f0bad5c5b61b507d9209eae2db6d0",
+      "cell": 1
+    },
+    {
+      "path": "sources/icefall-summit-78.webp",
+      "sha256": "24056ca15e7505766690166f5f6ac9779c4b8aa033ef41c022316afc42056ab9",
+      "cell": 0
+    },
+    {
+      "path": "sources/icefall-summit-78.webp",
+      "sha256": "24056ca15e7505766690166f5f6ac9779c4b8aa033ef41c022316afc42056ab9",
+      "cell": 1
+    }
+  ],
+  "generationsThisRun": 0,
+  "visualSmoothnessVerified": false,
+  "lowerWitnessEffectiveCoveragePixelsByPhase": [
+    528,
+    528,
+    528,
+    528,
+    528,
+    528,
+    528,
+    528
+  ],
+  "lowerWitnessPixels": 528,
+  "lowerWitnessDistinctPaintedRgbPhases": 8,
+  "lowerWitnessAdjacentRgbMAEIncludingWrap": [
+    10.220959663391113,
+    24.099746704101562,
+    9.550504684448242,
+    21.91035270690918,
+    8.130681991577148,
+    27.560606002807617,
+    7.092171669006348,
+    25.08270263671875
+  ]
+}

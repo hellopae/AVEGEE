@@ -1,0 +1,403 @@
+{
+  "method": "Mask support intersected with separately frozen ground-only definite-liquid interiors. All unlabelled selected pixels count as potentially outside, giving a conservative upper bound. No palette-only classification; no construction annotation imported.",
+  "reference": "review/liquid-reference.json",
+  "referenceSha256": "1e198772906379f6d27789a61de077da47e52ac351e2e2a151ced9d0b182044b",
+  "sameAiReviewer": true,
+  "notHumanQA": true,
+  "allMasksWithin3Percent": false,
+  "measurements": [
+    {
+      "mask": "ice-stream-flat-central",
+      "maskSha256": "504bc793b6368b88f4da28e83562acea36c2a49cc6d6f90989ae4d0f889b2821",
+      "selectedPixels": 111661,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 111661,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "ice-stream-flat-east",
+      "maskSha256": "3f3022dd6907a3d173edced93afcb4b03ee4c20616d275736923d9ed8f3b73e4",
+      "selectedPixels": 17462,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 17462,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "ice-stream-flat-lower",
+      "maskSha256": "f48142d9f2d159f44fed55e5896b1f4af0bb858a3a5d3684c5583ef16cd0eb19",
+      "selectedPixels": 76598,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 76598,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "ice-stream-flat-mouth",
+      "maskSha256": "dfe48c93ef2473ba3d8f144b05d4ae481b047233831719f84036bc99b3daf364",
+      "selectedPixels": 3586,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 3586,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "ice-stream-flat-upper",
+      "maskSha256": "dd41b11969918f80bcf88a97599e04a938164613d1836eba4f995c1a12a988fd",
+      "selectedPixels": 65663,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 65663,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "ice-stream-flat",
+      "maskSha256": "6fc3bad98a71a0a7f5e75ac82bbcad7ade99916421352b49d6dd88282ef1273f",
+      "selectedPixels": 274970,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 274970,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "icefall-center-bridge",
+      "maskSha256": "1001f7ba63def4480c0d3c89ea697f76dca0195d9831df739fa161fa11235caa",
+      "selectedPixels": 29675,
+      "definiteLiquidPixels": 29552,
+      "unknownPixels": 123,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.4144903117101938,
+      "status": "upper-bound-within-3-percent",
+      "evidence": "review/boundary/icefall-center-bridge-liquid-reference.webp",
+      "referenceGroundSha256": "a1c8d2d55a27247aa2a1a3bbf33c911c7fb3101d84a8f600144f226df63f878a"
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "maskSha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0",
+      "selectedPixels": 6507,
+      "definiteLiquidPixels": 5666,
+      "unknownPixels": 841,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 12.924542800061472,
+      "status": "reference-incomplete",
+      "evidence": "review/boundary/icefall-east-cliff-liquid-reference.webp",
+      "referenceGroundSha256": "26b7e3f851ff68dec9ed410218aa018aa5230369be5247444e43b35586703183"
+    },
+    {
+      "mask": "icefall-lower-1",
+      "maskSha256": "03622302d4fb8c362fb480bf89e793f123781d7864443698b60ef5b1e9b8d61f",
+      "selectedPixels": 16003,
+      "definiteLiquidPixels": 15994,
+      "unknownPixels": 9,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.056239455102168344,
+      "status": "upper-bound-within-3-percent",
+      "evidence": "review/boundary/icefall-lower-1-liquid-reference.webp",
+      "referenceGroundSha256": "052597c1f2e4269fe0311507543c2f8ee110e4dc4da8f77fd3aca202a7a804d9"
+    },
+    {
+      "mask": "icefall-lower-2",
+      "maskSha256": "d35f3c8697e85601593449d942bbc488575f128aca7137a5ebfcfa24b7dd19ce",
+      "selectedPixels": 12018,
+      "definiteLiquidPixels": 12010,
+      "unknownPixels": 8,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 0.06656681644200366,
+      "status": "upper-bound-within-3-percent",
+      "evidence": "review/boundary/icefall-lower-2-liquid-reference.webp",
+      "referenceGroundSha256": "683982b4f148a7b4c5d40ae4b014938a020560758b29e33d333b3479a7f92243"
+    },
+    {
+      "mask": "icefall-lower-3",
+      "maskSha256": "bdd703d1c7344437b70c7c439ff5d693dde05062f8181096222df254891821e0",
+      "selectedPixels": 26113,
+      "definiteLiquidPixels": 25540,
+      "unknownPixels": 573,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.194309347834412,
+      "status": "upper-bound-within-3-percent",
+      "evidence": "review/boundary/icefall-lower-3-liquid-reference.webp",
+      "referenceGroundSha256": "705e717cec23725e7a57e0d6744178071e1cca180c99745a9ccdba6ca1102a2d"
+    },
+    {
+      "mask": "icefall-lower-inlet",
+      "maskSha256": "ecb75d8f03f4c072747703379bc0a2d15b330e60faf60e59b5a9c014240c0260",
+      "selectedPixels": 4044,
+      "definiteLiquidPixels": 3905,
+      "unknownPixels": 139,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 3.437190900098912,
+      "status": "reference-incomplete",
+      "evidence": "review/boundary/icefall-lower-inlet-liquid-reference.webp",
+      "referenceGroundSha256": "e262a5eab704823b975a5819866fe77e3ce598b749c5d7e87e7671ef1c807b28"
+    },
+    {
+      "mask": "icefall-mouth",
+      "maskSha256": "b003a8f4707420849c793634c2c29f49ff3a5d00cde986fabd962c5268b3813c",
+      "selectedPixels": 19940,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 19940,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "icefall-summit",
+      "maskSha256": "ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e",
+      "selectedPixels": 64735,
+      "definiteLiquidPixels": 2353,
+      "unknownPixels": 62382,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 96.36518112304009,
+      "status": "reference-incomplete",
+      "evidence": "review/boundary/icefall-summit-liquid-reference.webp",
+      "referenceGroundSha256": "134b6cf83d65c70413787b0a331430eaeeab35456ecd71780ee37bd18d48e60f",
+      "registrationAddedRegion": {
+        "pixels": 2360,
+        "unknownPixels": 7,
+        "outsidePercentUpperBound": 0.2966101694915254
+      }
+    },
+    {
+      "mask": "icefall-upper-right",
+      "maskSha256": "74627607e4163915fc91e9deaa1aed3ef052417269c7b84965630954c9583507",
+      "selectedPixels": 9217,
+      "definiteLiquidPixels": 8947,
+      "unknownPixels": 270,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 2.9293696430508844,
+      "status": "upper-bound-within-3-percent",
+      "evidence": "review/boundary/icefall-upper-right-liquid-reference.webp",
+      "referenceGroundSha256": "26170a251a500830f3536d045247618b038193f4327797ad927e244bb81bd7db"
+    },
+    {
+      "mask": "icefall-upper-tree",
+      "maskSha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822",
+      "selectedPixels": 668,
+      "definiteLiquidPixels": 630,
+      "unknownPixels": 38,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": 5.688622754491018,
+      "status": "reference-incomplete",
+      "evidence": "review/boundary/icefall-upper-tree-liquid-reference.webp",
+      "referenceGroundSha256": "4c90909dd065af7309df284c0c48e9895ca86ba2d709ee28a5ec20906859d4c1"
+    },
+    {
+      "mask": "lava-flat-left-bottom",
+      "maskSha256": "7e82e9e1d6e93f33b03f1993c4764fdfbf67c579181d257466ab780535fca4ab",
+      "selectedPixels": 10318,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 10318,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat-lower",
+      "maskSha256": "0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce",
+      "selectedPixels": 117761,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 117761,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat-middle",
+      "maskSha256": "b5a18c406197d83ba71b35ee991b9ecddd4d26197fcc4c96f7d1205d02e7b310",
+      "selectedPixels": 57010,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 57010,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat-southwest",
+      "maskSha256": "7aa0e04b1e1022d5157f06cab06b5617d01c14f93db5d3184d0c78a93c2b718d",
+      "selectedPixels": 15081,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 15081,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat-upper",
+      "maskSha256": "2e0a53b4b93489c94cefe2062ca35a618965588d21e85f811ac252eaa989332f",
+      "selectedPixels": 92199,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 92199,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat-west",
+      "maskSha256": "39560e388ad2f22cf1b105a9e6edf7d3277d2f600c3a543773b576a3d6b004e1",
+      "selectedPixels": 44021,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 44021,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lava-flat",
+      "maskSha256": "a46865a29c561db269ec3c20b4728ba4e695f8656f6a647f4b78b930c5d02274",
+      "selectedPixels": 336390,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 336390,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-bridge",
+      "maskSha256": "97a127c51fed43f88e6b424df602404b45c8cd9f6aa5ee946adba886c145e777",
+      "selectedPixels": 32071,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 32071,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-lower-step",
+      "maskSha256": "2be74c5bf40cf7581fbcf199207a919d2c269c5221ef6a366c09305a776c2b39",
+      "selectedPixels": 47356,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 47356,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-middle",
+      "maskSha256": "758980ea46aedb458e6b3f1b56bb40428f219354a3667197ff002ff31baa5044",
+      "selectedPixels": 31406,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 31406,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-mouth",
+      "maskSha256": "c08464892c51b2173173e6f12802b776c9da5b2208b001e8c5df896623b02d2f",
+      "selectedPixels": 21228,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 21228,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-upper-left",
+      "maskSha256": "5af64a1bc68d5929ec181f72efdace686483225ffb49c21d2544098feca78583",
+      "selectedPixels": 12727,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 12727,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-upper-step",
+      "maskSha256": "96720c28746a756dd2cb5ce8900dfb0ec968d177c63e9d896304f160f06558dd",
+      "selectedPixels": 33190,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 33190,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-volcano",
+      "maskSha256": "9ea89353b9500746c46221d24359dc1c475f521e85d360e41d7f9a021b59ed84",
+      "selectedPixels": 24655,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 24655,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "lavafall-west",
+      "maskSha256": "9beeab3c8b1fd9e747203a98c773b0812e40e817ca458eaee1c02b66c16b989d",
+      "selectedPixels": 37477,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 37477,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "shore-band-ice",
+      "maskSha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802",
+      "selectedPixels": 13960,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 13960,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "shore-band-spirit",
+      "maskSha256": "04a3fae76f5ede5a903dfabe7783b3291e009eb6db761a3b410a08f964a9f5a4",
+      "selectedPixels": 676567,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 676567,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "shore-band",
+      "maskSha256": "ab7fae6133772b2b8f4b8f95ff942c808b30cfdf9da2ca5e520833aa722ef4c4",
+      "selectedPixels": 690527,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 690527,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "spirit-river-east",
+      "maskSha256": "fa45b52ed5cc8e3e75874bd028ec58a2a5fbf696dd3354cbaada05aabf0fdb89",
+      "selectedPixels": 1969096,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 1969096,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "spirit-river-west",
+      "maskSha256": "7611bd0c81fc73b8944a1e118a89c6506323dba7a9a9b5767c241c62dcf126de",
+      "selectedPixels": 1804030,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 1804030,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    },
+    {
+      "mask": "spirit-river",
+      "maskSha256": "b15d58c2ad4cdaccfac47a600a57df92ecb96db99bd1bf0e52451dc4c4b9eeb8",
+      "selectedPixels": 3773126,
+      "definiteLiquidPixels": 0,
+      "unknownPixels": 3773126,
+      "outsideDrawnLiquidPercent": null,
+      "outsidePercentUpperBound": null,
+      "status": "reference-missing"
+    }
+  ]
+}

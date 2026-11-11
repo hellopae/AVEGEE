@@ -1,0 +1,130 @@
+[
+  {
+    "path": "review/boundary/icefall-east-cliff-independent-proof.webp",
+    "beforeBytes": 315682,
+    "afterBytes": 172640,
+    "beforeSha256": "0fb7d8e10037cee4ff90d7254fd1b877cdd22773cbdaa64ce26773438b31add0",
+    "afterSha256": "8382e57740983739f36b92376d4db67566829b702e911f4b992847f27ec5eede",
+    "reason": "Historical diagnostic image recompressed only; native ground PNG and before mask retained for exact pixel recheck."
+  },
+  {
+    "path": "review/boundary/icefall-summit-independent-proof.webp",
+    "beforeBytes": 900440,
+    "afterBytes": 493942,
+    "beforeSha256": "517829e0989a2f175abe000ccb32978e88b598f39496ad77400941d05df3476e",
+    "afterSha256": "80006271694eee5f27546ab1ee41b4280f9bb055fd0cbcea198f5b5008d4d719",
+    "reason": "Historical diagnostic image recompressed only; native ground PNG and before mask retained for exact pixel recheck."
+  },
+  {
+    "path": "review/boundary/icefall-upper-tree-independent-proof.webp",
+    "beforeBytes": 297392,
+    "afterBytes": 167290,
+    "beforeSha256": "3a64ec3f5739f6eecc98b95d7d9360be74cf9abca0f21c87ff82f5d4e5501824",
+    "afterSha256": "3f58e4e04a6b294d02694acb9e8dda0d084cbb0c7f8f4c5bde4be2ffbf58e1cb",
+    "reason": "Historical diagnostic image recompressed only; native ground PNG and before mask retained for exact pixel recheck."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-central-overview.jpg",
+    "beforeBytes": 364612,
+    "afterBytes": 211369,
+    "beforeSha256": "d58b1d644022d0dc67eb269b83175a4a0481c8eb4e4b127e2ab1d8a8c1a6c8e1",
+    "afterSha256": "c32735c98754e4d2aed878af78077c428a82160f87a14bc874814b729617a010",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-east-overview.jpg",
+    "beforeBytes": 149466,
+    "afterBytes": 88259,
+    "beforeSha256": "95026bb51314574c2b6cfa8fa4430a5f3355aefc6f78da0a8e3e67afafa9ba78",
+    "afterSha256": "45a39fcf642872a1f482bfa7edb106b317000206b7c39f409ea369654a7076e7",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-lower-overview.jpg",
+    "beforeBytes": 397483,
+    "afterBytes": 222799,
+    "beforeSha256": "d8933753f969dea715f849c8873662aee63d65098a4e3702b3e213ea3f79fb98",
+    "afterSha256": "7b24f011643f1d04d32d604f36bba1fa5b3ff62207216a5e5f15209ca392a0a8",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-mouth-overview.jpg",
+    "beforeBytes": 31757,
+    "afterBytes": 19248,
+    "beforeSha256": "31519e716eab99af8575b5291f4715c232c006663e9a5a134df9a875a84e8138",
+    "afterSha256": "b61816d09cbc90e9f51dab16dc648730a658d401df70da19b30576dc8a6c2aa2",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/ice-stream-flat-upper-overview.jpg",
+    "beforeBytes": 233031,
+    "afterBytes": 137936,
+    "beforeSha256": "ca83e43ad541d67b7ebaa54a19d849d44e33571ae4c77d87d5e4388061df5ab6",
+    "afterSha256": "ecf41f40c22fb646152b4ee50b3a3db97de662743b34179f3c9aae0f9fb1e544",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-left-bottom-overview.jpg",
+    "beforeBytes": 211953,
+    "afterBytes": 125712,
+    "beforeSha256": "a578f1a3754bf6177eaf439657f08730fae27eea3af5afdcc2f8242fd3ff1f62",
+    "afterSha256": "9acc10f29f92f77bbdb3387a6bc03a1b0b1ca1a7d333d26a719afad6c77f4727",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-lower-overview.jpg",
+    "beforeBytes": 600906,
+    "afterBytes": 331963,
+    "beforeSha256": "f267cf02351d9a2a160b4a7eb3f54055682fae7933dcf51222c0434a49341ae7",
+    "afterSha256": "ce91d393e2da9ee39676547eb8d0e3707c131d374938c816ebb25f4cd8b5d378",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-middle-overview.jpg",
+    "beforeBytes": 241745,
+    "afterBytes": 141343,
+    "beforeSha256": "412da80cede0bcc7d8c9f37d05306fb3b30d66e1dc33678df6b47204dbcd39e3",
+    "afterSha256": "c7d11bbf9c5947874d3730ac11ef442cc9223597ac2007e990586aa8a4318851",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-southwest-overview.jpg",
+    "beforeBytes": 412889,
+    "afterBytes": 239800,
+    "beforeSha256": "842edca59c4e083aeb929bcb3ad366659dab618288c6fa69c78117d929dc25f3",
+    "afterSha256": "71e03bf25b8166ea28093945f1b4c2c575f978fce71e55f4592e507d494a0f44",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-upper-overview.jpg",
+    "beforeBytes": 372076,
+    "afterBytes": 202958,
+    "beforeSha256": "0ced47f4bef1982b917a0295c9ad0fa98b13c64d7d2ff1671c8d6231367acf52",
+    "afterSha256": "7b5ce8c7678dcd7eaaba73930270d2b882b0f5a8a88b2150dd047651f4b8eb50",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/lava-flat-west-overview.jpg",
+    "beforeBytes": 603662,
+    "afterBytes": 348227,
+    "beforeSha256": "88b8eb0827433aa75aea173feff90a72aead5a3d07153623ef03f34acc639713",
+    "afterSha256": "0eb5375a6c4f092818fb0463b109229260924156c83d8f2baaf7e317a6bfd685",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/spirit-river-east-overview.jpg",
+    "beforeBytes": 131393,
+    "afterBytes": 72789,
+    "beforeSha256": "f060d12f8c87a96088e0de97a876a291b76c0e4c11f014f4ec3701bbf1a34c55",
+    "afterSha256": "b4d7a47707669bff559a4cfb26b66ee531f3731d5fcbfc5199729c7e611f7c5e",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  },
+  {
+    "path": "review/boundary/spirit-river-west-overview.jpg",
+    "beforeBytes": 118627,
+    "afterBytes": 65415,
+    "beforeSha256": "6c7b89115d8bf848af437c4efdc25950c55b02bbb842b2281269ee99b878e926",
+    "afterSha256": "289a05d6275c0acee05f61d6c75933ac36dd1d2dbd5e555fb2b91728c1d9db6d",
+    "reason": "Compact diagnostic JPEG only; full-resolution input/v7 unchanged."
+  }
+]

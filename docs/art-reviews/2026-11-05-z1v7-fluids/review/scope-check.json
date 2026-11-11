@@ -1,0 +1,14 @@
+{
+  "pythonSyntaxFiles": 11,
+  "jsonFilesParsed": 55,
+  "textTrailingWhitespace": [],
+  "localLinksChecked": 69,
+  "brokenLocalLinks": [],
+  "changedPaths": 350,
+  "pathsOutsideDelivery": [],
+  "branch": "codex/20261111T062023Z-567a72a5",
+  "gitDiffCheckExit": 0,
+  "gitDiffCheckOutput": "",
+  "queueMatchesUnresolvedAcceptance": true,
+  "limitation": "File/schema checks only. git diff --check does not inspect untracked files; their text whitespace is checked above. No game tests/deploy/visual playback QA."
+}

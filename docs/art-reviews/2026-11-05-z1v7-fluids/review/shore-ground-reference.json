@@ -1,0 +1,185 @@
+{
+  "method": "Ground-only separate visual labels. Definite solid interiors and definite liquid patches near a real visible bank; no production bank tracing imported. Distance to a confirmed solid interior is an UPPER bound on distance to the nearest real bank when the starting pixel is confirmed water. Unreviewed pixels remain unknown.",
+  "patches": [
+    {
+      "mask": "shore-band-ice",
+      "groundRectMap1x": [
+        3230,
+        980,
+        200,
+        150
+      ],
+      "grid": "review/boundary/ice-bank-reference-grid.jpg",
+      "solidPolygons": [
+        [
+          [
+            106,
+            15
+          ],
+          [
+            180,
+            12
+          ],
+          [
+            220,
+            4
+          ],
+          [
+            222,
+            36
+          ],
+          [
+            177,
+            51
+          ],
+          [
+            145,
+            61
+          ],
+          [
+            106,
+            72
+          ]
+        ]
+      ],
+      "liquidPolygons": [
+        [
+          [
+            105,
+            88
+          ],
+          [
+            150,
+            75
+          ],
+          [
+            180,
+            66
+          ],
+          [
+            225,
+            53
+          ],
+          [
+            264,
+            46
+          ],
+          [
+            280,
+            47
+          ],
+          [
+            279,
+            130
+          ],
+          [
+            115,
+            137
+          ]
+        ]
+      ]
+    },
+    {
+      "mask": "shore-band-spirit",
+      "groundRectMap1x": [
+        3900,
+        2200,
+        200,
+        150
+      ],
+      "grid": "review/boundary/spirit-bank-reference-grid.jpg",
+      "solidPolygons": [
+        [
+          [
+            20,
+            55
+          ],
+          [
+            45,
+            47
+          ],
+          [
+            69,
+            58
+          ],
+          [
+            80,
+            95
+          ],
+          [
+            86,
+            113
+          ],
+          [
+            81,
+            121
+          ],
+          [
+            53,
+            122
+          ],
+          [
+            27,
+            116
+          ],
+          [
+            15,
+            107
+          ]
+        ]
+      ],
+      "liquidPolygons": [
+        [
+          [
+            22,
+            139
+          ],
+          [
+            51,
+            143
+          ],
+          [
+            79,
+            138
+          ],
+          [
+            97,
+            134
+          ],
+          [
+            103,
+            145
+          ],
+          [
+            104,
+            180
+          ],
+          [
+            20,
+            180
+          ]
+        ]
+      ]
+    }
+  ],
+  "waterOnlyDisks": [
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        900,
+        2340
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5
+    },
+    {
+      "mask": "shore-band-spirit",
+      "centerMap1x": [
+        4000,
+        2320
+      ],
+      "radiusNative2x": 80,
+      "guardNative2x": 5
+    }
+  ]
+}
