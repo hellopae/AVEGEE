@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/technical-audit.json — ตรวจ 96 ช่อง / 12 GIF / 132 เงื่อนไขโครงสร้าง ไม่พบข้อผิดพลาด; ไม่ใช่ผลรับรองภาพ",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/technical-audit.json#preservation — WebP 5 และ GIF 12 ไฟล์ตรง SHA-256 กับชุดก่อนทั้งหมด",
+    "docs/art-reviews/2026-11-10-worker-cook/loop-review.json — หน้า/สัดส่วนทั้ง 4 โซนยังไม่ตรงต้นแบบ; cook mirror สลับรายละเอียดข้างเดียว",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/gif-frames-*.jpg — ตรวจทุกเฟรมจาก GIF จริง; ไม่ได้ดู playback ต่อเนื่องเพราะ browser host unavailable",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/alpha-*.jpg — ตัวอย่างเฟรม 1,4,8 บนขาว/ดำ/เขียวไม่เห็นขอบแดง/เหลืองแปลกปลอมที่ขนาดหลักฐาน; ตรวจละเอียดทุกเฟรมยังค้าง",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/prior-loop-review.json — ใช้ ImageGen เดิมครบ 16/16; รอบนี้ 0 ครั้ง",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/package-check.json — ขนาดชุดจริงต่ำกว่า 30 MB และบันทึกขอบเขตไฟล์"
+  ],
+  "remaining": [
+    "ยืนยันโควตาเพิ่มก่อนเรียก ImageGen เกิน 16 ครั้งเดิม",
+    "แก้หน้าและสัดส่วน cook ทั้ง 4 โซนด้วย ImageGen พร้อมรักษา 8 เฟรม จุดเท้า และผังเดิม",
+    "วาด cook อีกทิศโดยรักษารายละเอียดข้างเดียว ไม่ใช้ mirror ที่สลับรายละเอียด",
+    "แก้ความเหมือนหน้า/สัดส่วน carry TH โดยคงทุกทิศและ 8 เฟรม/ทิศ",
+    "ตรวจ playback loop จริง รอยต่อ 8→1 จุดเท้าตรง source และ alpha ทุกเฟรมที่ขนาดจริง"
+  ]
+}
