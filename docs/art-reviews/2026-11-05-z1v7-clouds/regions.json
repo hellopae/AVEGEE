@@ -1,0 +1,793 @@
+{
+  "fullPx": [
+    9830,
+    6554
+  ],
+  "worldSize": [
+    3840,
+    2560
+  ],
+  "chunk": 2048,
+  "regions": [
+    {
+      "id": "western-ridge-mist",
+      "polygonProxy1500": [
+        [
+          350,
+          76
+        ],
+        [
+          375,
+          65
+        ],
+        [
+          397,
+          61
+        ],
+        [
+          420,
+          73
+        ],
+        [
+          440,
+          62
+        ],
+        [
+          462,
+          76
+        ],
+        [
+          486,
+          66
+        ],
+        [
+          510,
+          74
+        ],
+        [
+          536,
+          70
+        ],
+        [
+          552,
+          82
+        ],
+        [
+          546,
+          97
+        ],
+        [
+          524,
+          101
+        ],
+        [
+          500,
+          94
+        ],
+        [
+          480,
+          104
+        ],
+        [
+          461,
+          97
+        ],
+        [
+          438,
+          110
+        ],
+        [
+          415,
+          96
+        ],
+        [
+          399,
+          101
+        ],
+        [
+          380,
+          94
+        ],
+        [
+          365,
+          96
+        ],
+        [
+          352,
+          88
+        ]
+      ]
+    },
+    {
+      "id": "central-cloud-deck",
+      "polygonProxy1500": [
+        [
+          588,
+          61
+        ],
+        [
+          613,
+          54
+        ],
+        [
+          635,
+          61
+        ],
+        [
+          651,
+          54
+        ],
+        [
+          676,
+          67
+        ],
+        [
+          698,
+          62
+        ],
+        [
+          715,
+          74
+        ],
+        [
+          736,
+          65
+        ],
+        [
+          752,
+          74
+        ],
+        [
+          771,
+          70
+        ],
+        [
+          792,
+          81
+        ],
+        [
+          809,
+          75
+        ],
+        [
+          824,
+          85
+        ],
+        [
+          844,
+          80
+        ],
+        [
+          862,
+          90
+        ],
+        [
+          862,
+          110
+        ],
+        [
+          849,
+          122
+        ],
+        [
+          831,
+          128
+        ],
+        [
+          815,
+          134
+        ],
+        [
+          799,
+          126
+        ],
+        [
+          781,
+          126
+        ],
+        [
+          765,
+          116
+        ],
+        [
+          750,
+          120
+        ],
+        [
+          734,
+          109
+        ],
+        [
+          719,
+          109
+        ],
+        [
+          704,
+          97
+        ],
+        [
+          686,
+          102
+        ],
+        [
+          674,
+          91
+        ],
+        [
+          659,
+          90
+        ],
+        [
+          640,
+          97
+        ],
+        [
+          622,
+          85
+        ],
+        [
+          605,
+          91
+        ],
+        [
+          591,
+          80
+        ]
+      ]
+    },
+    {
+      "id": "heaven-west-valley",
+      "polygonProxy1500": [
+        [
+          818,
+          80
+        ],
+        [
+          838,
+          70
+        ],
+        [
+          853,
+          72
+        ],
+        [
+          870,
+          64
+        ],
+        [
+          890,
+          67
+        ],
+        [
+          912,
+          59
+        ],
+        [
+          936,
+          57
+        ],
+        [
+          958,
+          63
+        ],
+        [
+          982,
+          59
+        ],
+        [
+          999,
+          65
+        ],
+        [
+          1004,
+          80
+        ],
+        [
+          987,
+          88
+        ],
+        [
+          969,
+          86
+        ],
+        [
+          950,
+          80
+        ],
+        [
+          930,
+          86
+        ],
+        [
+          912,
+          81
+        ],
+        [
+          897,
+          94
+        ],
+        [
+          880,
+          102
+        ],
+        [
+          866,
+          116
+        ],
+        [
+          851,
+          120
+        ],
+        [
+          841,
+          138
+        ],
+        [
+          827,
+          139
+        ],
+        [
+          814,
+          124
+        ],
+        [
+          816,
+          106
+        ]
+      ]
+    },
+    {
+      "id": "heaven-east-cloud-deck",
+      "polygonProxy1500": [
+        [
+          1034,
+          59
+        ],
+        [
+          1055,
+          53
+        ],
+        [
+          1074,
+          59
+        ],
+        [
+          1088,
+          53
+        ],
+        [
+          1104,
+          62
+        ],
+        [
+          1121,
+          57
+        ],
+        [
+          1140,
+          70
+        ],
+        [
+          1154,
+          64
+        ],
+        [
+          1167,
+          80
+        ],
+        [
+          1181,
+          75
+        ],
+        [
+          1196,
+          90
+        ],
+        [
+          1212,
+          85
+        ],
+        [
+          1230,
+          100
+        ],
+        [
+          1228,
+          117
+        ],
+        [
+          1216,
+          131
+        ],
+        [
+          1204,
+          145
+        ],
+        [
+          1186,
+          147
+        ],
+        [
+          1174,
+          134
+        ],
+        [
+          1162,
+          141
+        ],
+        [
+          1149,
+          130
+        ],
+        [
+          1140,
+          111
+        ],
+        [
+          1120,
+          104
+        ],
+        [
+          1105,
+          108
+        ],
+        [
+          1091,
+          96
+        ],
+        [
+          1074,
+          99
+        ],
+        [
+          1057,
+          88
+        ],
+        [
+          1044,
+          88
+        ]
+      ]
+    },
+    {
+      "id": "west-border-mist",
+      "polygonProxy1500": [
+        [
+          0,
+          250
+        ],
+        [
+          8,
+          254
+        ],
+        [
+          13,
+          267
+        ],
+        [
+          21,
+          278
+        ],
+        [
+          28,
+          290
+        ],
+        [
+          35,
+          304
+        ],
+        [
+          30,
+          314
+        ],
+        [
+          18,
+          318
+        ],
+        [
+          7,
+          312
+        ],
+        [
+          0,
+          317
+        ]
+      ]
+    }
+  ],
+  "excludedLumps": [
+    "lump-00",
+    "lump-01",
+    "lump-02",
+    "lump-04",
+    "lump-05",
+    "lump-07",
+    "lump-08",
+    "lump-09",
+    "lump-10",
+    "lump-11",
+    "lump-12",
+    "lump-13"
+  ],
+  "quarters": [
+    {
+      "id": "r1-c2-q1",
+      "rectPx2x": [
+        2048,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        2016,
+        0,
+        3104,
+        1056
+      ],
+      "coveredPixels": 28076,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c2-q2",
+      "rectPx2x": [
+        3072,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        3040,
+        0,
+        4128,
+        1056
+      ],
+      "coveredPixels": 24698,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q1",
+      "rectPx2x": [
+        4096,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        4064,
+        0,
+        5152,
+        1056
+      ],
+      "coveredPixels": 96379,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q2",
+      "rectPx2x": [
+        5120,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        5088,
+        0,
+        6176,
+        1056
+      ],
+      "coveredPixels": 165700,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c3-q4",
+      "rectPx2x": [
+        5120,
+        1024,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        5088,
+        992,
+        6176,
+        2080
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q1",
+      "rectPx2x": [
+        6144,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        0,
+        7200,
+        1056
+      ],
+      "coveredPixels": 26440,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q2",
+      "rectPx2x": [
+        7168,
+        0,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        7136,
+        0,
+        8224,
+        1056
+      ],
+      "coveredPixels": 183614,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c4-q3",
+      "rectPx2x": [
+        6144,
+        1024,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        992,
+        7200,
+        2080
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c1-q1",
+      "rectPx2x": [
+        0,
+        2048,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        0,
+        2016,
+        1056,
+        3104
+      ],
+      "coveredPixels": 506,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c4-q3",
+      "rectPx2x": [
+        6144,
+        3072,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        3040,
+        7200,
+        4128
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c5-q1",
+      "rectPx2x": [
+        8192,
+        2048,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        8160,
+        2016,
+        9248,
+        3104
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r2-c5-q2",
+      "rectPx2x": [
+        9216,
+        2048,
+        614,
+        1024
+      ],
+      "contextBoxPx2x": [
+        9184,
+        2016,
+        9830,
+        3104
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r3-c1-q1",
+      "rectPx2x": [
+        0,
+        4096,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        0,
+        4064,
+        1056,
+        5152
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r3-c4-q1",
+      "rectPx2x": [
+        6144,
+        4096,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        6112,
+        4064,
+        7200,
+        5152
+      ],
+      "coveredPixels": 0,
+      "retainedSourceForRegistration": true
+    },
+    {
+      "id": "r1-c1-q3",
+      "rectPx2x": [
+        0,
+        1024,
+        1024,
+        1024
+      ],
+      "contextBoxPx2x": [
+        0,
+        992,
+        1056,
+        2080
+      ],
+      "coveredPixels": 39810,
+      "retainedSourceForRegistration": true
+    }
+  ],
+  "maskRefinement": {
+    "source": "native input/terrain + scripts/mask-traces.json",
+    "inwardFeatherPx2x": 26,
+    "deleteGuardPx2x": 16,
+    "method": "Reviewed envelopes, native colour/texture gate, small-hole close, inward smoothstep feather; delete12 applied last."
+  },
+  "regionsNotRetained": [
+    {
+      "id": "central-cliff-hollow",
+      "reason": "Bare v7 rock; legacy fog overlaps delete05. Do not restore."
+    },
+    {
+      "id": "west-border-lower",
+      "reason": "delete11 and delete13 contain the old lower edge banks; no cloud restored there."
+    },
+    {
+      "id": "east-border-lower",
+      "reason": "Legacy banks overlap delete07-10 or pale ice-zone stone; preserve water, snow and stone."
+    },
+    {
+      "id": "southern-hollows",
+      "reason": "delete12 and pale river-edge rocks; no white sea mist in assembled v7."
+    }
+  ]
+}

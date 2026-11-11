@@ -1,0 +1,72 @@
+[
+  {
+    "id": "fog-bank-west-upper",
+    "referenceBoxPx1x": [
+      1363,
+      217,
+      247,
+      240
+    ],
+    "finalMaskPixelsInReferenceBox2x": 51769
+  },
+  {
+    "id": "fog-bank-west-middle",
+    "referenceBoxPx1x": [
+      0,
+      1422,
+      300,
+      226
+    ],
+    "finalMaskPixelsInReferenceBox2x": 122
+  },
+  {
+    "id": "fog-bank-west-mouth",
+    "referenceBoxPx1x": [
+      28,
+      2035,
+      336,
+      182
+    ],
+    "finalMaskPixelsInReferenceBox2x": 4535
+  },
+  {
+    "id": "fog-bank-gold-upper",
+    "referenceBoxPx1x": [
+      2640,
+      482,
+      362,
+      357
+    ],
+    "finalMaskPixelsInReferenceBox2x": 7720
+  },
+  {
+    "id": "fog-bank-gold-lower",
+    "referenceBoxPx1x": [
+      3140,
+      847,
+      174,
+      174
+    ],
+    "finalMaskPixelsInReferenceBox2x": 11628
+  },
+  {
+    "id": "fog-bank-east-valley",
+    "referenceBoxPx1x": [
+      4444,
+      1360,
+      179,
+      156
+    ],
+    "finalMaskPixelsInReferenceBox2x": 8598
+  },
+  {
+    "id": "fog-bank-south-center",
+    "referenceBoxPx1x": [
+      3202,
+      1990,
+      213,
+      144
+    ],
+    "finalMaskPixelsInReferenceBox2x": 5367
+  }
+]

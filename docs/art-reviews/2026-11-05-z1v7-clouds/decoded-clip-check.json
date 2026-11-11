@@ -1,0 +1,32 @@
+[
+  {
+    "view": "heaven",
+    "decodedFrame0ToLastRGBMAE": 2.2117129715236685,
+    "maskSupportPixelsBelowHUD": 170626,
+    "decodedMAEInsideMask": 11.15678149871649,
+    "pixelsWithAnyRGBChangeAbove3": 132293,
+    "staticBackgroundMAEOutsideMaskGuard12px": 0.009824950788051736,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": false
+  },
+  {
+    "view": "left-edge",
+    "decodedFrame0ToLastRGBMAE": 0.6047560712524654,
+    "maskSupportPixelsBelowHUD": 40316,
+    "decodedMAEInsideMask": 12.782774415451268,
+    "pixelsWithAnyRGBChangeAbove3": 32583,
+    "staticBackgroundMAEOutsideMaskGuard12px": 0.00829416120191253,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": false
+  },
+  {
+    "view": "central-valley",
+    "decodedFrame0ToLastRGBMAE": 1.7034963634122289,
+    "maskSupportPixelsBelowHUD": 160851,
+    "decodedMAEInsideMask": 9.1067716913997,
+    "pixelsWithAnyRGBChangeAbove3": 120507,
+    "staticBackgroundMAEOutsideMaskGuard12px": 0.008767710652187765,
+    "hudExcluded": true,
+    "leftEdgeHasNoCloudSupport": false
+  }
+]

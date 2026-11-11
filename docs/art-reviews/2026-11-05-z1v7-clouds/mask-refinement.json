@@ -1,0 +1,30 @@
+{
+  "beforeSupportPixels": 625469,
+  "afterSupportPixels": 565223,
+  "addedSupportPixels": 160331,
+  "delete12SupportPixels": 0,
+  "regions": [
+    {
+      "id": "western-ridge-mist",
+      "selectedPixelsBeforeExclusion": 46768
+    },
+    {
+      "id": "central-cloud-deck",
+      "selectedPixelsBeforeExclusion": 224446
+    },
+    {
+      "id": "heaven-west-valley",
+      "selectedPixelsBeforeExclusion": 124102
+    },
+    {
+      "id": "heaven-east-cloud-deck",
+      "selectedPixelsBeforeExclusion": 218137
+    },
+    {
+      "id": "west-border-mist",
+      "selectedPixelsBeforeExclusion": 40316
+    }
+  ],
+  "traceSpec": "scripts/mask-traces.json",
+  "notQAApproval": true
+}

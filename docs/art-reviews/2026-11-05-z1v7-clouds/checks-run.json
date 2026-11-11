@@ -1,0 +1,133 @@
+{
+  "run": "20261111T024557Z-ac27b779",
+  "commands": [
+    {
+      "command": "python3 scripts/refine-mask.py",
+      "exitCode": 0,
+      "result": {
+        "beforeSupportPixels": 625469,
+        "afterSupportPixels": 565223,
+        "addedSupportPixels": 160331,
+        "delete12SupportPixels": 0,
+        "regions": [
+          {
+            "id": "western-ridge-mist",
+            "selectedPixelsBeforeExclusion": 46768
+          },
+          {
+            "id": "central-cloud-deck",
+            "selectedPixelsBeforeExclusion": 224446
+          },
+          {
+            "id": "heaven-west-valley",
+            "selectedPixelsBeforeExclusion": 124102
+          },
+          {
+            "id": "heaven-east-cloud-deck",
+            "selectedPixelsBeforeExclusion": 218137
+          },
+          {
+            "id": "west-border-mist",
+            "selectedPixelsBeforeExclusion": 40316
+          }
+        ],
+        "traceSpec": "scripts/mask-traces.json",
+        "notQAApproval": true
+      }
+    },
+    {
+      "command": "python3 scripts/build.py",
+      "exitCode": 0,
+      "result": "Built 40 chunk layers and 8 puffs (final build completed after protected-terrain subtraction)."
+    },
+    {
+      "command": "python3 py_compile: all output scripts",
+      "exitCode": 0,
+      "result": "Compiled scripts; bytecode written outside delivery folder."
+    },
+    {
+      "command": "python3 scripts/review-assets.py",
+      "exitCode": 0,
+      "elapsedSeconds": 12.77,
+      "stdout": "{\n  \"seamsWithPairedSupportAbove64\": 12,\n  \"axesScanned\": [\n    \"horizontal\",\n    \"vertical\"\n  ],\n  \"preview\": \"previews/pilot-A-B.jpg\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/render.py",
+      "exitCode": 0,
+      "elapsedSeconds": 103.97,
+      "stdout": "heaven {'programs': [], 'stream_groups': [], 'streams': [{'width': 1280, 'height': 720, 'r_frame_rate': '12/1', 'nb_read_frames': '144'}], 'format': {'duration': '12.000000'}}\nleft-edge {'programs': [], 'stream_groups': [], 'streams': [{'width': 1280, 'height': 720, 'r_frame_rate': '12/1', 'nb_read_frames': '144'}], 'format': {'duration': '12.000000'}}\ncentral-valley {'programs': [], 'stream_groups': [], 'streams': [{'width': 1280, 'height': 720, 'r_frame_rate': '12/1', 'nb_read_frames': '144'}], 'format': {'duration': '12.000000'}}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/review-clips.py",
+      "exitCode": 0,
+      "elapsedSeconds": 4.3,
+      "stdout": "[\n  {\n    \"view\": \"heaven\",\n    \"decodedFrame0ToLastRGBMAE\": 2.2117129715236685,\n    \"maskSupportPixelsBelowHUD\": 170626,\n    \"decodedMAEInsideMask\": 11.15678149871649,\n    \"pixelsWithAnyRGBChangeAbove3\": 132293,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.009824950788051736,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  },\n  {\n    \"view\": \"left-edge\",\n    \"decodedFrame0ToLastRGBMAE\": 0.42530317739151874,\n    \"maskSupportPixelsBelowHUD\": 40316,\n    \"decodedMAEInsideMask\": 8.993220226874358,\n    \"pixelsWithAnyRGBChangeAbove3\": 23173,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.005350129092083216,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  },\n  {\n    \"view\": \"central-valley\",\n    \"decodedFrame0ToLastRGBMAE\": 1.7034963634122289,\n    \"maskSupportPixelsBelowHUD\": 160851,\n    \"decodedMAEInsideMask\": 9.1067716913997,\n    \"pixelsWithAnyRGBChangeAbove3\": 120507,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.008767710652187765,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 py_compile: final 9 scripts",
+      "exitCode": 0,
+      "result": "Includes updated fixed-camera decoded-clip check."
+    },
+    {
+      "command": "python3 scripts/verify.py",
+      "exitCode": 0,
+      "elapsedSeconds": 7.95,
+      "stdout": "OK mask2x: [6554, 9830]\nOK delete12: ['lump-00', 'lump-01', 'lump-02', 'lump-04', 'lump-05', 'lump-07', 'lump-08', 'lump-09', 'lump-10', 'lump-11', 'lump-12', 'lump-13']\nOK generation38: 38\nOK nativeRGBA: native alpha, all records\nOK sourcePixels: {'uniqueDecodedSourceFiles': 38, 'records': 38}\nOK noUpscaling: {'mappedQuarters': 30, 'largestScale': 1.0}\nOK grid40: 40\nOK decodeDimensionsAndHash: {'bounds': True, 'hashes': True}\nOK maskNoLeak: {'outsideMaskPixels': 0, 'softAlphaPixels': 1091714}\nOK ABDifferent: [{'chunk': 'r1-c1', 'overlapPixels': 14187, 'rgbaMAE': 45.968421794600694, 'differentPixels': 23724}, {'chunk': 'r1-c2', 'overlapPixels': 23520, 'rgbaMAE': 14.301031037414965, 'differentPixels': 23510}, {'chunk': 'r1-c3', 'overlapPixels': 170226, 'rgbaMAE': 16.54655722392584, 'differentPixels': 173940}, {'chunk': 'r1-c4', 'overlapPixels': 140127, 'rgbaMAE': 16.240690587823902, 'differentPixels': 140109}, {'chunk': 'r2-c1', 'overlapPixels': 3, 'rgbaMAE': 91.08333333333333, 'differentPixels': 51}]\nOK puffs8HD: [{'id': 'puff-01', 'size': [512, 494], 'pxPerWorld': 5.12}, {'id': 'puff-02', 'size': [512, 504], 'pxPerWorld': 4.654545454545454}, {'id': 'puff-03', 'size': [512, 485], 'pxPerWorld': 4.266666666666667}, {'id': 'puff-04', 'size': [512, 512], 'pxPerWorld': 5.12}, {'id': 'puff-05', 'size': [512, 516], 'pxPerWorld': 4.654545454545454}, {'id': 'puff-06', 'size': [512, 520], 'pxPerWorld': 4.266666666666667}, {'id': 'puff-07', 'size': [512, 512], 'pxPerWorld': 5.12}, {'id': 'puff-08', 'size': [512, 510], 'pxPerWorld': 4.654545454545454}]\nOK puffDecodedAlphaAndScale: Read all exported PNGs, both world axes >=2.56 px/unit\nOK clips3x12s: ['heaven', 'left-edge', 'central-valley']\nOK readmeLocalLinks: {'links': 32, 'missing': [], 'selfReport': 'verification.json is written after checks; excluded from input-link validation'}\nOK inputProvenance: {'files': 38, 'mismatches': []}\nOK bothSeamAxes: {'boundariesScanned': 30, 'boundariesWithPairedMaskAbove64': 12}\nOK protectedSnowAndRock: {'supportPixels': 0}\nOK registeredMaskCoverage: {'unregisteredSupportPixels': 0}\nOK motionVisibleInAllThreeViews: [{'view': 'heaven', 'decodedFrame0ToLastRGBMAE': 2.2117129715236685, 'maskSupportPixelsBelowHUD': 170626, 'decodedMAEInsideMask': 11.15678149871649, 'pixelsWithAnyRGBChangeAbove3': 132293, 'staticBackgroundMAEOutsideMaskGuard12px': 0.009824950788051736, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}, {'view': 'left-edge', 'decodedFrame0ToLastRGBMAE': 0.42530317739151874, 'maskSupportPixelsBelowHUD': 40316, 'decodedMAEInsideMask': 8.993220226874358, 'pixelsWithAnyRGBChangeAbove3': 23173, 'staticBackgroundMAEOutsideMaskGuard12px': 0.005350129092083216, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}, {'view': 'central-valley', 'decodedFrame0ToLastRGBMAE': 1.7034963634122289, 'maskSupportPixelsBelowHUD': 160851, 'decodedMAEInsideMask': 9.1067716913997, 'pixelsWithAnyRGBChangeAbove3': 120507, 'staticBackgroundMAEOutsideMaskGuard12px': 0.008767710652187765, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}]\nOK fixedCameraBackground: [{'view': 'heaven', 'staticBackgroundMAE': 0.009824950788051736}, {'view': 'left-edge', 'staticBackgroundMAE': 0.005350129092083216}, {'view': 'central-valley', 'staticBackgroundMAE': 0.008767710652187765}]\nOK inheritedArtUnchanged: {'preservedSourceFiles': 36, 'newImageGenCalls': 2}\nOK premultipliedOracle: {'rgb': [1.0, 0.0, 0.0], 'alpha': 0.5}\nOK size60MB: {'bytesBeforeThisReport': 53643764, 'limit': 60000000}\nOK scope: {'changedFiles': 174}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/build.py (final west native-margin registration)",
+      "exitCode": 0,
+      "elapsedSeconds": 35.4,
+      "stdout": "Built 40 chunk layers and 8 puffs\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/review-assets.py ",
+      "exitCode": 0,
+      "elapsedSeconds": 12.99,
+      "stdout": "{\n  \"seamsWithPairedSupportAbove64\": 12,\n  \"axesScanned\": [\n    \"horizontal\",\n    \"vertical\"\n  ],\n  \"preview\": \"previews/pilot-A-B.jpg\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/render.py --view left-edge",
+      "exitCode": 0,
+      "elapsedSeconds": 26.07,
+      "stdout": "left-edge {'programs': [], 'stream_groups': [], 'streams': [{'width': 1280, 'height': 720, 'r_frame_rate': '12/1', 'nb_read_frames': '144'}], 'format': {'duration': '12.000000'}}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 py_compile: final 10 scripts",
+      "exitCode": 0,
+      "result": "All final output scripts compiled."
+    },
+    {
+      "command": "python3 scripts/review-clips.py",
+      "exitCode": 0,
+      "elapsedSeconds": 4.27,
+      "stdout": "[\n  {\n    \"view\": \"heaven\",\n    \"decodedFrame0ToLastRGBMAE\": 2.2117129715236685,\n    \"maskSupportPixelsBelowHUD\": 170626,\n    \"decodedMAEInsideMask\": 11.15678149871649,\n    \"pixelsWithAnyRGBChangeAbove3\": 132293,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.009824950788051736,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  },\n  {\n    \"view\": \"left-edge\",\n    \"decodedFrame0ToLastRGBMAE\": 0.6047560712524654,\n    \"maskSupportPixelsBelowHUD\": 40316,\n    \"decodedMAEInsideMask\": 12.782774415451268,\n    \"pixelsWithAnyRGBChangeAbove3\": 32583,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.00829416120191253,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  },\n  {\n    \"view\": \"central-valley\",\n    \"decodedFrame0ToLastRGBMAE\": 1.7034963634122289,\n    \"maskSupportPixelsBelowHUD\": 160851,\n    \"decodedMAEInsideMask\": 9.1067716913997,\n    \"pixelsWithAnyRGBChangeAbove3\": 120507,\n    \"staticBackgroundMAEOutsideMaskGuard12px\": 0.008767710652187765,\n    \"hudExcluded\": true,\n    \"leftEdgeHasNoCloudSupport\": false\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/verify.py",
+      "exitCode": 0,
+      "elapsedSeconds": 7.93,
+      "stdout": "OK mask2x: [6554, 9830]\nOK delete12: ['lump-00', 'lump-01', 'lump-02', 'lump-04', 'lump-05', 'lump-07', 'lump-08', 'lump-09', 'lump-10', 'lump-11', 'lump-12', 'lump-13']\nOK generation38: 38\nOK nativeRGBA: native alpha, all records\nOK sourcePixels: {'uniqueDecodedSourceFiles': 38, 'records': 38}\nOK noUpscaling: {'mappedQuarters': 30, 'largestScale': 1.0}\nOK grid40: 40\nOK decodeDimensionsAndHash: {'bounds': True, 'hashes': True}\nOK maskNoLeak: {'outsideMaskPixels': 0, 'softAlphaPixels': 1116897}\nOK ABDifferent: [{'chunk': 'r1-c1', 'overlapPixels': 26470, 'rgbaMAE': 32.29401208915753, 'differentPixels': 26524}, {'chunk': 'r1-c2', 'overlapPixels': 23520, 'rgbaMAE': 14.301031037414965, 'differentPixels': 23510}, {'chunk': 'r1-c3', 'overlapPixels': 170226, 'rgbaMAE': 16.54655722392584, 'differentPixels': 173940}, {'chunk': 'r1-c4', 'overlapPixels': 140127, 'rgbaMAE': 16.240690587823902, 'differentPixels': 140109}, {'chunk': 'r2-c1', 'overlapPixels': 51, 'rgbaMAE': 34.96568627450981, 'differentPixels': 51}]\nOK puffs8HD: [{'id': 'puff-01', 'size': [512, 494], 'pxPerWorld': 5.12}, {'id': 'puff-02', 'size': [512, 504], 'pxPerWorld': 4.654545454545454}, {'id': 'puff-03', 'size': [512, 485], 'pxPerWorld': 4.266666666666667}, {'id': 'puff-04', 'size': [512, 512], 'pxPerWorld': 5.12}, {'id': 'puff-05', 'size': [512, 516], 'pxPerWorld': 4.654545454545454}, {'id': 'puff-06', 'size': [512, 520], 'pxPerWorld': 4.266666666666667}, {'id': 'puff-07', 'size': [512, 512], 'pxPerWorld': 5.12}, {'id': 'puff-08', 'size': [512, 510], 'pxPerWorld': 4.654545454545454}]\nOK puffDecodedAlphaAndScale: Read all exported PNGs, both world axes >=2.56 px/unit\nOK clips3x12s: ['heaven', 'left-edge', 'central-valley']\nOK readmeLocalLinks: {'links': 32, 'missing': [], 'selfReport': 'verification.json is written after checks; excluded from input-link validation'}\nOK inputProvenance: {'files': 38, 'mismatches': []}\nOK bothSeamAxes: {'boundariesScanned': 30, 'boundariesWithPairedMaskAbove64': 12}\nOK protectedSnowAndRock: {'supportPixels': 0}\nOK registeredMaskCoverage: {'unregisteredSupportPixels': 0}\nOK motionVisibleInAllThreeViews: [{'view': 'heaven', 'decodedFrame0ToLastRGBMAE': 2.2117129715236685, 'maskSupportPixelsBelowHUD': 170626, 'decodedMAEInsideMask': 11.15678149871649, 'pixelsWithAnyRGBChangeAbove3': 132293, 'staticBackgroundMAEOutsideMaskGuard12px': 0.009824950788051736, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}, {'view': 'left-edge', 'decodedFrame0ToLastRGBMAE': 0.6047560712524654, 'maskSupportPixelsBelowHUD': 40316, 'decodedMAEInsideMask': 12.782774415451268, 'pixelsWithAnyRGBChangeAbove3': 32583, 'staticBackgroundMAEOutsideMaskGuard12px': 0.00829416120191253, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}, {'view': 'central-valley', 'decodedFrame0ToLastRGBMAE': 1.7034963634122289, 'maskSupportPixelsBelowHUD': 160851, 'decodedMAEInsideMask': 9.1067716913997, 'pixelsWithAnyRGBChangeAbove3': 120507, 'staticBackgroundMAEOutsideMaskGuard12px': 0.008767710652187765, 'hudExcluded': True, 'leftEdgeHasNoCloudSupport': False}]\nOK fixedCameraBackground: [{'view': 'heaven', 'staticBackgroundMAE': 0.009824950788051736}, {'view': 'left-edge', 'staticBackgroundMAE': 0.00829416120191253}, {'view': 'central-valley', 'staticBackgroundMAE': 0.008767710652187765}]\nOK inheritedArtUnchanged: {'preservedSourceFiles': 36, 'newImageGenCalls': 2}\nOK premultipliedOracle: {'rgb': [1.0, 0.0, 0.0], 'alpha': 0.5}\nOK size60MB: {'bytesBeforeThisReport': 52519040, 'limit': 60000000}\nOK scope: {'changedFiles': 174}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 scripts/review-map.py",
+      "exitCode": 0,
+      "result": "Rebuilt full-map A/B, protected-area preview, legacy/deletion coverage and terrain handoff from final exports."
+    },
+    {
+      "command": "git diff --check; git status --short; git branch --show-current (read-only checks)",
+      "exitCode": 0,
+      "result": "Only output folder untracked; branch remains codex/20261111T024557Z-ac27b779. diff --check excludes untracked file contents."
+    }
+  ],
+  "notQAApproval": true
+}

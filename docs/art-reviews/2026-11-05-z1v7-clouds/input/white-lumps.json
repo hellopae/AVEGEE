@@ -1,0 +1,390 @@
+{
+ "note": "white / lavender fog lumps painted into v5 (owner: delete). masterPx = 4915x3277 v5 pixels, worldRect = 3840x2560 world units, v7Px2x = same box in 9830x6554.",
+ "method": "S<95, V>135, local std<26 (21px), sky band y<440 ignored, open15 close31, area>=4500 master px, mean V>=165 (drops grey stone plazas)",
+ "count": 14,
+ "toDelete": 12,
+ "lumps": [
+  {
+   "id": "lump-00",
+   "masterPx": [
+    1519,
+    440,
+    140,
+    71
+   ],
+   "worldRect": [
+    1187,
+    344,
+    109,
+    55
+   ],
+   "areaWorld": 2840,
+   "meanBrightness": 208,
+   "v7Px2x": [
+    3038,
+    880,
+    280,
+    142
+   ],
+   "chunks": [
+    "r1-c2"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-01",
+   "masterPx": [
+    2697,
+    440,
+    351,
+    432
+   ],
+   "worldRect": [
+    2107,
+    344,
+    274,
+    338
+   ],
+   "areaWorld": 25931,
+   "meanBrightness": 211,
+   "v7Px2x": [
+    5394,
+    880,
+    702,
+    864
+   ],
+   "chunks": [
+    "r1-c3"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-02",
+   "masterPx": [
+    3799,
+    440,
+    173,
+    52
+   ],
+   "worldRect": [
+    2968,
+    344,
+    135,
+    41
+   ],
+   "areaWorld": 4326,
+   "meanBrightness": 233,
+   "v7Px2x": [
+    7598,
+    880,
+    346,
+    104
+   ],
+   "chunks": [
+    "r1-c4"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-03",
+   "masterPx": [
+    4251,
+    523,
+    440,
+    205
+   ],
+   "worldRect": [
+    3321,
+    409,
+    344,
+    160
+   ],
+   "areaWorld": 19353,
+   "meanBrightness": 202,
+   "v7Px2x": [
+    8502,
+    1046,
+    880,
+    410
+   ],
+   "chunks": [
+    "r1-c5"
+   ],
+   "review": "false positive - pale stone plaza of the ice zone (keep)"
+  },
+  {
+   "id": "lump-04",
+   "masterPx": [
+    3558,
+    708,
+    159,
+    139
+   ],
+   "worldRect": [
+    2780,
+    553,
+    124,
+    109
+   ],
+   "areaWorld": 5774,
+   "meanBrightness": 228,
+   "v7Px2x": [
+    7116,
+    1416,
+    318,
+    278
+   ],
+   "chunks": [
+    "r1-c4"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-05",
+   "masterPx": [
+    3213,
+    893,
+    246,
+    120
+   ],
+   "worldRect": [
+    2510,
+    698,
+    192,
+    94
+   ],
+   "areaWorld": 10847,
+   "meanBrightness": 202,
+   "v7Px2x": [
+    6426,
+    1786,
+    492,
+    240
+   ],
+   "chunks": [
+    "r1-c4"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-06",
+   "masterPx": [
+    4102,
+    1003,
+    301,
+    117
+   ],
+   "worldRect": [
+    3205,
+    784,
+    235,
+    91
+   ],
+   "areaWorld": 7249,
+   "meanBrightness": 174,
+   "v7Px2x": [
+    8204,
+    2006,
+    602,
+    234
+   ],
+   "chunks": [
+    "r1-c5",
+    "r2-c5"
+   ],
+   "review": "false positive - grey stone plaza of the ice zone (keep)"
+  },
+  {
+   "id": "lump-07",
+   "masterPx": [
+    4208,
+    1150,
+    124,
+    70
+   ],
+   "worldRect": [
+    3288,
+    898,
+    97,
+    55
+   ],
+   "areaWorld": 2908,
+   "meanBrightness": 185,
+   "v7Px2x": [
+    8416,
+    2300,
+    248,
+    140
+   ],
+   "chunks": [
+    "r2-c5"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-08",
+   "masterPx": [
+    3992,
+    1161,
+    180,
+    75
+   ],
+   "worldRect": [
+    3119,
+    907,
+    141,
+    59
+   ],
+   "areaWorld": 3468,
+   "meanBrightness": 180,
+   "v7Px2x": [
+    7984,
+    2322,
+    360,
+    150
+   ],
+   "chunks": [
+    "r2-c4",
+    "r2-c5"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-09",
+   "masterPx": [
+    4629,
+    1326,
+    159,
+    148
+   ],
+   "worldRect": [
+    3617,
+    1036,
+    124,
+    116
+   ],
+   "areaWorld": 6582,
+   "meanBrightness": 196,
+   "v7Px2x": [
+    9258,
+    2652,
+    318,
+    296
+   ],
+   "chunks": [
+    "r2-c5"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-10",
+   "masterPx": [
+    4475,
+    1383,
+    103,
+    119
+   ],
+   "worldRect": [
+    3496,
+    1081,
+    80,
+    93
+   ],
+   "areaWorld": 3803,
+   "meanBrightness": 215,
+   "v7Px2x": [
+    8950,
+    2766,
+    206,
+    238
+   ],
+   "chunks": [
+    "r2-c5"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-11",
+   "masterPx": [
+    0,
+    1434,
+    294,
+    224
+   ],
+   "worldRect": [
+    0,
+    1120,
+    230,
+    175
+   ],
+   "areaWorld": 10354,
+   "meanBrightness": 201,
+   "v7Px2x": [
+    0,
+    2868,
+    588,
+    448
+   ],
+   "chunks": [
+    "r2-c1"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-12",
+   "masterPx": [
+    3258,
+    2027,
+    143,
+    74
+   ],
+   "worldRect": [
+    2545,
+    1584,
+    112,
+    58
+   ],
+   "areaWorld": 3027,
+   "meanBrightness": 194,
+   "v7Px2x": [
+    6516,
+    4054,
+    286,
+    148
+   ],
+   "chunks": [
+    "r2-c4",
+    "r3-c4"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  },
+  {
+   "id": "lump-13",
+   "masterPx": [
+    37,
+    2032,
+    275,
+    153
+   ],
+   "worldRect": [
+    29,
+    1588,
+    215,
+    120
+   ],
+   "areaWorld": 9502,
+   "meanBrightness": 170,
+   "v7Px2x": [
+    74,
+    4064,
+    550,
+    306
+   ],
+   "chunks": [
+    "r2-c1",
+    "r3-c1"
+   ],
+   "review": "fog lump - delete when the ground is repainted"
+  }
+ ]
+}

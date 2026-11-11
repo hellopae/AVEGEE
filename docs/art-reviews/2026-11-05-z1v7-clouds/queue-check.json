@@ -1,0 +1,15 @@
+{
+  "status": "ready",
+  "evidence": [
+    "cloud-layer-mask.png + regions.json + coverage-review.json: mask9830x6554 มี support565223พิกเซล ใน5บริเวณ; ตรวจภาพเทียบv7 ทุกquarterและเทียบlegacy7bank มีรายการเหตุผลของพื้นที่ที่ไม่คืนเมฆ",
+    "protected-terrain-mask.png + input/exclusion-mask.png + verification.json: supportบนพื้นที่กันหิมะ/ยอดเขา0พิกเซล; owner delete12 ทั้ง12กรอบและguardไม่มีsupport; alphaนอกmask0พิกเซล",
+    "generation-records.json + input/current-run-inheritance.json: ต้นทางImageGen38ภาพ วาดแยก30ภาพเมฆA/Bและ8puff; รักษา36ต้นทางเดิมbyteตรงกัน วาดเพิ่มเฉพาะquarterขอบซ้าย2ภาพด้วยImageGenในตัว",
+    "clouds.json + registration.json + verification.json: export40chunk RGBAบนgrid2048, source registration30รายการ scaleสูงสุด1.0 ไม่มีupscale; puff8PNG RGBAมี4.27–5.12px/หน่วย",
+    "seams.json + previews/seams.jpg + visual-review.json: สแกน30ขอบทั้งสองแกน 12ขอบมีsupportคู่>64; ratioสูงสุด1.2792 ตรวจภาพcropแล้ว",
+    "clip-check.json + decoded-clip-check.json + previews/decoded-clips.jpg: MP4จริง3มุมยาว12.000000วินาที/144เฟรม/12fps/1280x720 full decodeไม่พบerror; motion MAEในmask ประตู11.1568 ขอบซ้าย12.7828 หุบกลาง9.1068; พื้นนอกmaskพร้อมguard12px MAEไม่เกิน0.00983",
+    "previews/overview-A.jpg + previews/overview-B.jpg + previews/puffs-contact.jpg + README.md: previewครบ พร้อมREADMEภาษาไทยและข้อจำกัดoffline; terrain-handoff.json มี5บริเวณให้runพื้นโดยไม่แก้พื้นเอง",
+    "verification.json + checks-run.json: ผลตรวจไฟล์24/24 OK; core3819พิกเซลมีalpha0ในอย่างน้อยหนึ่งvariantจากภาพวาดโปร่งใส (บันทึกไว้ ไม่ทาสีปิด); ไม่ใช่การรับรองQAเกม",
+    "delivery-inventory.json + final-audit.json: บันทึกขนาดทั้งโฟลเดอร์และSHA256ของไฟล์ส่ง ตรวจขนาดต่ำกว่า60000000bytes และgit scopeเฉพาะdocs/art-reviews/2026-11-05-z1v7-clouds/ ไม่มีการแก้เกมหรือgit metadata"
+  ],
+  "remaining": []
+}

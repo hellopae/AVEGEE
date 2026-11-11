@@ -1,0 +1,20 @@
+{
+  "run": "20261111T024557Z-ac27b779",
+  "branch": "codex/20261111T024557Z-ac27b779",
+  "scope": "docs/art-reviews/2026-11-05-z1v7-clouds/",
+  "allChangesInsideScope": true,
+  "scriptCompileCount": 10,
+  "jsonParsedCount": 30,
+  "readmeLinksExist": 32,
+  "allFileChecks": true,
+  "fileCheckCount": 24,
+  "symlinks": 0,
+  "sizeBelow60000000Bytes": true,
+  "sizeEvidence": "delivery-inventory.json totalBytes includes inventory itself",
+  "notQAApproval": true,
+  "limitations": [
+    "Offline composites, no runtime/gameplay test.",
+    "Owner art acceptance is separate.",
+    "Terrain-handoff delivered; baked terrain clouds remain unchanged."
+  ]
+}

@@ -1,0 +1,366 @@
+{
+  "fileChecks": [
+    {
+      "name": "mask2x",
+      "ok": true,
+      "detail": [
+        6554,
+        9830
+      ]
+    },
+    {
+      "name": "delete12",
+      "ok": true,
+      "detail": [
+        "lump-00",
+        "lump-01",
+        "lump-02",
+        "lump-04",
+        "lump-05",
+        "lump-07",
+        "lump-08",
+        "lump-09",
+        "lump-10",
+        "lump-11",
+        "lump-12",
+        "lump-13"
+      ]
+    },
+    {
+      "name": "generation38",
+      "ok": true,
+      "detail": 38
+    },
+    {
+      "name": "nativeRGBA",
+      "ok": true,
+      "detail": "native alpha, all records"
+    },
+    {
+      "name": "sourcePixels",
+      "ok": true,
+      "detail": {
+        "uniqueDecodedSourceFiles": 38,
+        "records": 38
+      }
+    },
+    {
+      "name": "noUpscaling",
+      "ok": true,
+      "detail": {
+        "mappedQuarters": 30,
+        "largestScale": 1.0
+      }
+    },
+    {
+      "name": "grid40",
+      "ok": true,
+      "detail": 40
+    },
+    {
+      "name": "decodeDimensionsAndHash",
+      "ok": true,
+      "detail": {
+        "bounds": true,
+        "hashes": true
+      }
+    },
+    {
+      "name": "maskNoLeak",
+      "ok": true,
+      "detail": {
+        "outsideMaskPixels": 0,
+        "softAlphaPixels": 1116897
+      }
+    },
+    {
+      "name": "ABDifferent",
+      "ok": true,
+      "detail": [
+        {
+          "chunk": "r1-c1",
+          "overlapPixels": 26470,
+          "rgbaMAE": 32.29401208915753,
+          "differentPixels": 26524
+        },
+        {
+          "chunk": "r1-c2",
+          "overlapPixels": 23520,
+          "rgbaMAE": 14.301031037414965,
+          "differentPixels": 23510
+        },
+        {
+          "chunk": "r1-c3",
+          "overlapPixels": 170226,
+          "rgbaMAE": 16.54655722392584,
+          "differentPixels": 173940
+        },
+        {
+          "chunk": "r1-c4",
+          "overlapPixels": 140127,
+          "rgbaMAE": 16.240690587823902,
+          "differentPixels": 140109
+        },
+        {
+          "chunk": "r2-c1",
+          "overlapPixels": 51,
+          "rgbaMAE": 34.96568627450981,
+          "differentPixels": 51
+        }
+      ]
+    },
+    {
+      "name": "puffs8HD",
+      "ok": true,
+      "detail": [
+        {
+          "id": "puff-01",
+          "size": [
+            512,
+            494
+          ],
+          "pxPerWorld": 5.12
+        },
+        {
+          "id": "puff-02",
+          "size": [
+            512,
+            504
+          ],
+          "pxPerWorld": 4.654545454545454
+        },
+        {
+          "id": "puff-03",
+          "size": [
+            512,
+            485
+          ],
+          "pxPerWorld": 4.266666666666667
+        },
+        {
+          "id": "puff-04",
+          "size": [
+            512,
+            512
+          ],
+          "pxPerWorld": 5.12
+        },
+        {
+          "id": "puff-05",
+          "size": [
+            512,
+            516
+          ],
+          "pxPerWorld": 4.654545454545454
+        },
+        {
+          "id": "puff-06",
+          "size": [
+            512,
+            520
+          ],
+          "pxPerWorld": 4.266666666666667
+        },
+        {
+          "id": "puff-07",
+          "size": [
+            512,
+            512
+          ],
+          "pxPerWorld": 5.12
+        },
+        {
+          "id": "puff-08",
+          "size": [
+            512,
+            510
+          ],
+          "pxPerWorld": 4.654545454545454
+        }
+      ]
+    },
+    {
+      "name": "puffDecodedAlphaAndScale",
+      "ok": true,
+      "detail": "Read all exported PNGs, both world axes >=2.56 px/unit"
+    },
+    {
+      "name": "clips3x12s",
+      "ok": true,
+      "detail": [
+        "heaven",
+        "left-edge",
+        "central-valley"
+      ]
+    },
+    {
+      "name": "readmeLocalLinks",
+      "ok": true,
+      "detail": {
+        "links": 32,
+        "missing": [],
+        "selfReport": "verification.json is written after checks; excluded from input-link validation"
+      }
+    },
+    {
+      "name": "inputProvenance",
+      "ok": true,
+      "detail": {
+        "files": 38,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "bothSeamAxes",
+      "ok": true,
+      "detail": {
+        "boundariesScanned": 30,
+        "boundariesWithPairedMaskAbove64": 12
+      }
+    },
+    {
+      "name": "protectedSnowAndRock",
+      "ok": true,
+      "detail": {
+        "supportPixels": 0
+      }
+    },
+    {
+      "name": "registeredMaskCoverage",
+      "ok": true,
+      "detail": {
+        "unregisteredSupportPixels": 0
+      }
+    },
+    {
+      "name": "motionVisibleInAllThreeViews",
+      "ok": true,
+      "detail": [
+        {
+          "view": "heaven",
+          "decodedFrame0ToLastRGBMAE": 2.2117129715236685,
+          "maskSupportPixelsBelowHUD": 170626,
+          "decodedMAEInsideMask": 11.15678149871649,
+          "pixelsWithAnyRGBChangeAbove3": 132293,
+          "staticBackgroundMAEOutsideMaskGuard12px": 0.009824950788051736,
+          "hudExcluded": true,
+          "leftEdgeHasNoCloudSupport": false
+        },
+        {
+          "view": "left-edge",
+          "decodedFrame0ToLastRGBMAE": 0.6047560712524654,
+          "maskSupportPixelsBelowHUD": 40316,
+          "decodedMAEInsideMask": 12.782774415451268,
+          "pixelsWithAnyRGBChangeAbove3": 32583,
+          "staticBackgroundMAEOutsideMaskGuard12px": 0.00829416120191253,
+          "hudExcluded": true,
+          "leftEdgeHasNoCloudSupport": false
+        },
+        {
+          "view": "central-valley",
+          "decodedFrame0ToLastRGBMAE": 1.7034963634122289,
+          "maskSupportPixelsBelowHUD": 160851,
+          "decodedMAEInsideMask": 9.1067716913997,
+          "pixelsWithAnyRGBChangeAbove3": 120507,
+          "staticBackgroundMAEOutsideMaskGuard12px": 0.008767710652187765,
+          "hudExcluded": true,
+          "leftEdgeHasNoCloudSupport": false
+        }
+      ]
+    },
+    {
+      "name": "fixedCameraBackground",
+      "ok": true,
+      "detail": [
+        {
+          "view": "heaven",
+          "staticBackgroundMAE": 0.009824950788051736
+        },
+        {
+          "view": "left-edge",
+          "staticBackgroundMAE": 0.00829416120191253
+        },
+        {
+          "view": "central-valley",
+          "staticBackgroundMAE": 0.008767710652187765
+        }
+      ]
+    },
+    {
+      "name": "inheritedArtUnchanged",
+      "ok": true,
+      "detail": {
+        "preservedSourceFiles": 36,
+        "newImageGenCalls": 2
+      }
+    },
+    {
+      "name": "premultipliedOracle",
+      "ok": true,
+      "detail": {
+        "rgb": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "alpha": 0.5
+      }
+    },
+    {
+      "name": "size60MB",
+      "ok": true,
+      "detail": {
+        "bytesBeforeThisReport": 52519040,
+        "limit": 60000000
+      }
+    },
+    {
+      "name": "scope",
+      "ok": true,
+      "detail": {
+        "changedFiles": 174
+      }
+    }
+  ],
+  "allFileChecks": true,
+  "maskCorePixelsWithoutEitherVariant": 3819,
+  "ABMeasurements": [
+    {
+      "chunk": "r1-c1",
+      "overlapPixels": 26470,
+      "rgbaMAE": 32.29401208915753,
+      "differentPixels": 26524
+    },
+    {
+      "chunk": "r1-c2",
+      "overlapPixels": 23520,
+      "rgbaMAE": 14.301031037414965,
+      "differentPixels": 23510
+    },
+    {
+      "chunk": "r1-c3",
+      "overlapPixels": 170226,
+      "rgbaMAE": 16.54655722392584,
+      "differentPixels": 173940
+    },
+    {
+      "chunk": "r1-c4",
+      "overlapPixels": 140127,
+      "rgbaMAE": 16.240690587823902,
+      "differentPixels": 140109
+    },
+    {
+      "chunk": "r2-c1",
+      "overlapPixels": 51,
+      "rgbaMAE": 34.96568627450981,
+      "differentPixels": 51
+    }
+  ],
+  "notQAApproval": true,
+  "limitations": [
+    "Cloud envelopes were inspected visually against supplied v7; file checks do not establish owner art approval.",
+    "Three clips are offline composites, not runtime recordings. Preview terrain crops and cloud overlays both use map2x samples.",
+    "12s clips cover A to B half-cycle; 24s full loop follows a periodic analytic weight.",
+    "No game integration performed; baked clouds remain in unchanged terrain."
+  ]
+}

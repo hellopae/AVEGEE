@@ -1,0 +1,186 @@
+{
+  "sourceRun": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T022059Z-93a53985/docs/art-reviews/2026-11-05-z1v7-clouds",
+  "files": [
+    {
+      "file": "sources/puff-01.webp",
+      "sha256": "85437b0d3577756fa4589b2a84f962f59b7c788e6660ae2f0211fa81c4b1251d",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-02.webp",
+      "sha256": "f7de3738fc32d86c45ed844b71a744cd6315a50f3d24d8f0151b16d8771e8f96",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-03.webp",
+      "sha256": "08a11e890eaf8a136335bb297516242773e03b58070b40e7cac284b361de9101",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-04.webp",
+      "sha256": "ddadc78223c6507c65b5849afc5075bb6e939044f9a973f3bae9f149d689473e",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-05.webp",
+      "sha256": "1772e2663b4b8c8e2a52029011b21616221923b8bd103fe028ab6530ad3c669b",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-06.webp",
+      "sha256": "db22bcd067494d04e774824a939ee2dfcfe82f6eb2abcb056ffbd3d298728a0e",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-07.webp",
+      "sha256": "a2663c395507aa471971beed58dd2c7313e4a7ef876786c7a52fd13e554651e0",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/puff-08.webp",
+      "sha256": "d6ae28b08cd6a1c5515d148192266dec6c0d0304fa3d728f5f71224c17143a90",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c2-q1-A.webp",
+      "sha256": "881b76399a94d53c6c8583e3b7bd485864fc9e4946d435f63d7478ac1f15b88b",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c2-q1-B.webp",
+      "sha256": "0edb34de0f939a119a44d11f386a0782f8ac9e866c17edc9e4f24aec991dba50",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c2-q2-A.webp",
+      "sha256": "7ff81100f2045e0a6443d582d1989576154228fa4b6b338560cdc7ae3faac10a",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c2-q2-B.webp",
+      "sha256": "b91460747d38f904717f64fe6721b4a8d17e48efc657aefeedee4d8f2461481d",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q1-A.webp",
+      "sha256": "81353525f149c8d2881d4d6061ef1c4ad4b9245b42b77cf282ef542e9dc6c446",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q1-B.webp",
+      "sha256": "f234446f8c4a7a32d1d7b49679aa10a9941bfe011c8542fd2fdc5336d7d5b87d",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q2-A.webp",
+      "sha256": "acff385ccdfdf824812e6246e6bb1323e0d322348d0b76fdf8bf233c0e4648fe",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q2-B.webp",
+      "sha256": "24a089f73b8e2d6abfbeca6728856b0f9ee8483efb3b8f09225ab5e3d12dd5d9",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q4-A.webp",
+      "sha256": "453873ae6cf441120e62a8ffe50ec65f1839f1da80ae9a336aa595f4714f76e5",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c3-q4-B.webp",
+      "sha256": "6230e3ee56b88c614361e951e994a17982ef7580ad9f7e28d225f57f7eb3c4b1",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q1-A.webp",
+      "sha256": "b8e0cb039e66635d75a699688394adc4aa4e15ec32139722044b344894432cf1",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q1-B.webp",
+      "sha256": "f247ff5ebf3989eaf15a236a874a8c3096583cfca7adf97f36dce31180676bc7",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q2-A.webp",
+      "sha256": "b8571f51ab5f0ba7e4023adbf8d37f537b7c763d1a217683328e003898bf76fa",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q2-B.webp",
+      "sha256": "3a5a959f0c4f2156c4b7e77dcfcfecc9c31c74c2e570c8aefec7af4660e4a604",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q3-A.webp",
+      "sha256": "94955debc916598e12b983b77af4a81d68cb64a493f625a3cce2c93aa0fd77bb",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r1-c4-q3-B.webp",
+      "sha256": "b88403fd224d2bb9affaf75b7ba35306dad59b571708e572436447c66d48328e",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c1-q1-A.webp",
+      "sha256": "fadea81e50f37787f119a5c67f2669154ee8699fc15414126e00aee796c694d0",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c1-q1-B.webp",
+      "sha256": "a501fb03343f7d75f8f149fc2cc8ab6d6ca717cef23ba84a0512b25e1dd5d3b6",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c4-q3-A.webp",
+      "sha256": "930329b026da669b5ecf169ca8611fa94e169e1078980b69b8e205233239d199",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c4-q3-B.webp",
+      "sha256": "cbda9b13249099514ccd3da5fb7f63069dcd207a6bc969c771f10848f3b29b39",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c5-q1-A.webp",
+      "sha256": "6b825e7b7db11d98780416a782d0061b9e38ec9a71fdef2c996ff7ff0daef482",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c5-q1-B.webp",
+      "sha256": "8bf78717d1a0554c419ecde09839d76414b4d6b8b7e9d84bd30b131c88594c4c",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c5-q2-A.webp",
+      "sha256": "759ae2a5f75f15393af64edc6a18db92c4e2de91e8f36e91719c6e6aa310d14a",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r2-c5-q2-B.webp",
+      "sha256": "4d23372e1465b05e86bcf2cf28f56ce1875cfb8f50cec235a033e38474ab9887",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r3-c1-q1-A.webp",
+      "sha256": "f21a03d0c99c5a334f804c5b5e8a20591b921d84a49419c052a8b4f97b9c221d",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r3-c1-q1-B.webp",
+      "sha256": "56784083f64a4ccdc4102ad65200b9fa564233919fb096d90695e876a05f8f90",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r3-c4-q1-A.webp",
+      "sha256": "af24c497b454fd55fdadd985006fae19db3eabec4a3d07a5c34cd2ec2dd7566f",
+      "sameBytes": true
+    },
+    {
+      "file": "sources/r3-c4-q1-B.webp",
+      "sha256": "728e23475298493a3415429e27adcbedd558af0aaa92eb9d9b6dbfb4c4ea6129",
+      "sameBytes": true
+    }
+  ],
+  "newImageGenCalls": 2
+}

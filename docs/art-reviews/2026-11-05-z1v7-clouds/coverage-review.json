@@ -1,0 +1,166 @@
+{
+  "method": "Manual review against supplied assembled v7, all-quarter contact and whole-map overview; measured support against every legacy reference box and owner deletion rectangle.",
+  "legacyBanks": [
+    {
+      "id": "fog-bank-west-upper",
+      "referenceBoxPx1x": [
+        1363,
+        217,
+        247,
+        240
+      ],
+      "finalMaskPixelsInReferenceBox2x": 51769,
+      "currentSupportPixelsInBox2x": 39932,
+      "decision": "Retained as western ridge cloud bank, with revised native tracing."
+    },
+    {
+      "id": "fog-bank-west-middle",
+      "referenceBoxPx1x": [
+        0,
+        1422,
+        300,
+        226
+      ],
+      "finalMaskPixelsInReferenceBox2x": 122,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank intersects delete11; bare lava canyon in v7. Upper edge mist is a separate retained region above this box."
+    },
+    {
+      "id": "fog-bank-west-mouth",
+      "referenceBoxPx1x": [
+        28,
+        2035,
+        336,
+        182
+      ],
+      "finalMaskPixelsInReferenceBox2x": 4535,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank intersects delete13; remaining highlights are purple river-edge rocks, no retained cloud."
+    },
+    {
+      "id": "fog-bank-gold-upper",
+      "referenceBoxPx1x": [
+        2640,
+        482,
+        362,
+        357
+      ],
+      "finalMaskPixelsInReferenceBox2x": 7720,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank intersects delete01; protected bare cliff below the retained upper sea."
+    },
+    {
+      "id": "fog-bank-gold-lower",
+      "referenceBoxPx1x": [
+        3140,
+        847,
+        174,
+        174
+      ],
+      "finalMaskPixelsInReferenceBox2x": 11628,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank intersects delete05; bare gold-zone cliff and trees."
+    },
+    {
+      "id": "fog-bank-east-valley",
+      "referenceBoxPx1x": [
+        4444,
+        1360,
+        179,
+        156
+      ],
+      "finalMaskPixelsInReferenceBox2x": 8598,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank overlaps delete09/10 or ice-zone rock/water."
+    },
+    {
+      "id": "fog-bank-south-center",
+      "referenceBoxPx1x": [
+        3202,
+        1990,
+        213,
+        144
+      ],
+      "finalMaskPixelsInReferenceBox2x": 5367,
+      "currentSupportPixelsInBox2x": 0,
+      "decision": "Old bank overlaps delete12; bare southern river-edge rocks."
+    }
+  ],
+  "ownerDeletions": [
+    {
+      "id": "lump-00",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-01",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-02",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-04",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-05",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-07",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-08",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-09",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-10",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-11",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-12",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    },
+    {
+      "id": "lump-13",
+      "supportPixelsInOwnerBox": 0,
+      "guardPx2x": 16
+    }
+  ],
+  "retainedRegions": [
+    "western-ridge-mist",
+    "central-cloud-deck",
+    "heaven-west-valley",
+    "heaven-east-cloud-deck",
+    "west-border-mist"
+  ],
+  "evidence": [
+    "previews/regions-contact.jpg",
+    "previews/mask-review.jpg",
+    "previews/protected-review.jpg",
+    "previews/overview-A.jpg",
+    "previews/overview-B.jpg"
+  ],
+  "notQAApproval": true
+}

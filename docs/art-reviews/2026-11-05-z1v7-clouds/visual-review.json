@@ -1,0 +1,73 @@
+{
+  "status": "reviewed-for-asset-delivery",
+  "notQAApproval": true,
+  "method": "Inspected current full-map A overlay, protected-mask review, all-quarter contact, A/B pilot, puff contact, seam crops and final decoded-MP4 contact via view_image. Samples in decoded contact are 0, 6 and 11.916667 seconds.",
+  "observations": [
+    {
+      "evidence": "previews/regions-contact.jpg + previews/protected-review.jpg",
+      "result": "ตรวจขอบเขต 5 บริเวณที่คงไว้เทียบพื้น v7 ทุก quarter; เศษ mask บนยอดหิมะสีทองถูกกันออกด้วย protected-terrain-mask จุด legacy ด้านล่างเป็นหิน น้ำ หรืออยู่ใน delete12 จึงไม่เติมกลับ รายการตัดสินอยู่ใน coverage-review.json"
+    },
+    {
+      "evidence": "previews/overview-A.jpg + previews/overview-B.jpg + previews/pilot-A-B.jpg",
+      "result": "คงผังเดิมและขนาด map2x เมฆเป็นชั้น RGBA แยก A/B เปลี่ยนรูปก้อนจริง ไม่เพิ่มพื้นหรือ parallax; ยังเห็นเมฆ baked บนพื้นเดิมตามข้อจำกัดของงานส่งชั้นแยก"
+    },
+    {
+      "evidence": "previews/seams.jpg + seams.json",
+      "result": "ดู crop ข้ามเส้นทั้ง quarter และ chunk ไม่พบเส้นตัดแข็งตาม grid ในบริเวณที่วัดได้; สแกน 30 เส้นรวม A/B, 12 เส้นมี mask คู่ >64, ratio สูงสุด 1.2792 การ feather ขอบ mask เข้าด้านในทำให้ขอบนุ่ม แต่บาง contour ยังคงรูป envelope ที่ trace ตามภูมิประเทศ"
+    },
+    {
+      "evidence": "previews/puffs-contact.jpg",
+      "result": "เห็นรูปทรงแยก 8 ก้อน ได้แก่ bank ยาว billow สูง wisp crescent curl และก้อนคู่ ขอบโปร่งใส ไม่มีพื้นติดอยู่"
+    },
+    {
+      "evidence": "previews/decoded-clips.jpg + decoded-clip-check.json",
+      "result": "ตรวจ contact ที่ decode จาก MP4 สุดท้ายจริง เมฆเปลี่ยนรูปครบประตูสวรรค์ ขอบซ้ายช่วงบน และหุบกลาง กล้องและภูมิประเทศคงที่ ขอบซ้ายมีเมฆให้ตรวจแล้ว ไม่คืนก้อนที่สั่งลบ"
+    }
+  ],
+  "quantitativeEvidence": {
+    "fileChecksOK": 24,
+    "maskSupportPixels": 565223,
+    "outsideMaskAlphaPixels": 0,
+    "protectedTerrainSupportPixels": 0,
+    "ownerDelete12SupportPixels": 0,
+    "maskCorePixelsWithoutEitherVariant": 3819,
+    "coreTransparencyInterpretation": "ช่อง alpha ของภาพวาดต้นทางยังโปร่งใสได้ในพื้นที่ที่ mask อนุญาต ไม่ทาสีปิด ไม่อ้างว่า core ทุก pixel ต้องทึบ แก้ขอบโปร่งใสของต้นทางขอบซ้ายด้วย nativeCrop โดยไม่ upscale",
+    "decodedClips": [
+      {
+        "view": "heaven",
+        "decodedFrame0ToLastRGBMAE": 2.2117129715236685,
+        "maskSupportPixelsBelowHUD": 170626,
+        "decodedMAEInsideMask": 11.15678149871649,
+        "pixelsWithAnyRGBChangeAbove3": 132293,
+        "staticBackgroundMAEOutsideMaskGuard12px": 0.009824950788051736,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": false
+      },
+      {
+        "view": "left-edge",
+        "decodedFrame0ToLastRGBMAE": 0.6047560712524654,
+        "maskSupportPixelsBelowHUD": 40316,
+        "decodedMAEInsideMask": 12.782774415451268,
+        "pixelsWithAnyRGBChangeAbove3": 32583,
+        "staticBackgroundMAEOutsideMaskGuard12px": 0.00829416120191253,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": false
+      },
+      {
+        "view": "central-valley",
+        "decodedFrame0ToLastRGBMAE": 1.7034963634122289,
+        "maskSupportPixelsBelowHUD": 160851,
+        "decodedMAEInsideMask": 9.1067716913997,
+        "pixelsWithAnyRGBChangeAbove3": 120507,
+        "staticBackgroundMAEOutsideMaskGuard12px": 0.008767710652187765,
+        "hudExcluded": true,
+        "leftEdgeHasNoCloudSupport": false
+      }
+    ]
+  },
+  "limitations": [
+    "เป็นการตรวจ asset และ offline composite เท่านั้น ไม่ทดสอบ renderer หรือ gameplay และไม่ใช่ owner art approval",
+    "พื้น v7 ยังมีเมฆ baked; ส่ง terrain-handoff ให้พิจารณาพื้นหุบใต้ mask โดยไม่แก้พื้นเอง",
+    "ครึ่งรอบ A→B ในคลิป 12 วินาที; สูตร crossfade เต็มรอบ 24 วินาทีอยู่ใน clouds.json"
+  ]
+}

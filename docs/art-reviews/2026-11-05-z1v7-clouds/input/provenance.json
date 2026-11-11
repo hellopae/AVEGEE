@@ -1,0 +1,199 @@
+[
+  {
+    "file": "input/assemble-README.md",
+    "bytes": 14175,
+    "sha256": "88f864d942bd8f363fb26c7c2347fe867f93078b60b01ddd09870d7ee4098999"
+  },
+  {
+    "file": "input/assemble-inventory.json",
+    "bytes": 107140,
+    "sha256": "ecad5a0901977827eee380316aacbb2d91a3bebeed5b02d3284be53387d6e1e7"
+  },
+  {
+    "file": "input/assemble-structure.json",
+    "bytes": 701176,
+    "sha256": "fdae9c8941b92bfbc6f5e9e43b9e60f8d568ac8b9e52df2d20eb851ef485e4b0"
+  },
+  {
+    "file": "input/central-valley-base.webp",
+    "bytes": 385400,
+    "sha256": "58f68ed9ca2bbd939d1f1d12675dd505e1d2dca3525b52fff34770b0715bd495"
+  },
+  {
+    "file": "input/exclusion-mask.png",
+    "bytes": 68178,
+    "sha256": "888944a069b333417f1d647e78b737832fc630f1c6431ec2fec0d5875913a637"
+  },
+  {
+    "file": "input/heaven-base.webp",
+    "bytes": 380904,
+    "sha256": "54c57b99e2121e9f826d550b99099d0d2889e240fe53045d3534a35130170204"
+  },
+  {
+    "file": "input/inherited-cloud-layer-mask.png",
+    "bytes": 296300,
+    "sha256": "48f36fc66924b9c421e29535b72c2a58f780053757cfd7c303b22e57c0db02ff"
+  },
+  {
+    "file": "input/left-edge-base.webp",
+    "bytes": 343828,
+    "sha256": "fdd29a9c592bbb9f73ef91bf0793082ba5f01f404563f211018528e61c3bb558",
+    "note": "Current run: native v7 map crop [0,1540,1280,720], moved above delete11."
+  },
+  {
+    "file": "input/legacy-cloud-sea-1x.png",
+    "bytes": 37461,
+    "sha256": "34d1423747bbb85b243180dad0377f7ed517ce3690bcdcdbdb90bdaaaa8c6517"
+  },
+  {
+    "file": "input/legacy-fog-1x.png",
+    "bytes": 27930,
+    "sha256": "58790fb15b6204ee74a5c26e65736e028dc1c56cd2950cc0b1c3fe866ff55ea7"
+  },
+  {
+    "file": "input/legacy-region-inventory.json",
+    "bytes": 1147,
+    "sha256": "4f6601a14b1921cba2600e1e4ba95353f8e5d8be1270b1f015bc3750fef808b5"
+  },
+  {
+    "file": "input/owner-reference-contact.jpg",
+    "bytes": 526029,
+    "sha256": "b1a44cad87b3beb3e136a2ba798e79d8b83893ccd8bb5fadb5abb6db0ddcf330"
+  },
+  {
+    "file": "input/prior-run-copy-check.json",
+    "bytes": 11570,
+    "sha256": "b075f62d6e2266204589ed6a6dcc7c53c4fdfb5f369c8244ccace591b3175a52"
+  },
+  {
+    "file": "input/prior-run-input-provenance.json",
+    "bytes": 4146,
+    "sha256": "caba9163453d3bd9382dd8ef1a3df22746b87ad93cd068233beea0def297b8ec"
+  },
+  {
+    "file": "input/r1-c2-q1-reference.jpg",
+    "bytes": 396560,
+    "sha256": "2e126b308d1231f8afb7436f7ce4500e53af9b320c71d6eea66e9b8af7115fd0"
+  },
+  {
+    "file": "input/r1-c2-q2-reference.jpg",
+    "bytes": 432294,
+    "sha256": "c6ca9c30805488b7653f07ddf19346d5f5d51a20029da1d4d57d8488d0a82602"
+  },
+  {
+    "file": "input/r1-c3-q1-reference.jpg",
+    "bytes": 396948,
+    "sha256": "0f1cf5d978e7ce9ab1da77ad173dcbb306b1252a78fc78c3329cff077504fd16"
+  },
+  {
+    "file": "input/r1-c3-q2-reference.jpg",
+    "bytes": 346317,
+    "sha256": "853fbfe6fd4025860e8a7598ca83bf889555dbf81fb5a2ba949c7fe2e0178161"
+  },
+  {
+    "file": "input/r1-c3-q4-reference.jpg",
+    "bytes": 471268,
+    "sha256": "79d128caad584e74de07f3b2843a662a9e048b411505c6a04f7cca655724c9bb"
+  },
+  {
+    "file": "input/r1-c4-q1-reference.jpg",
+    "bytes": 451132,
+    "sha256": "1142fdcd07ba87918f5c37ede348fcb8b04201215a287862c10817fd95bcbff3"
+  },
+  {
+    "file": "input/r1-c4-q2-reference.jpg",
+    "bytes": 365408,
+    "sha256": "168f339657859f445b10f6aab165b24a2e8270b4753d53f8b87285898a2dc37d"
+  },
+  {
+    "file": "input/r1-c4-q3-reference.jpg",
+    "bytes": 530063,
+    "sha256": "1f25fa9b1a47ba71badeab0af6c2b344e0c0824b4f64ec3cb2931df0f4e28132"
+  },
+  {
+    "file": "input/r2-c1-q1-reference.jpg",
+    "bytes": 422518,
+    "sha256": "ef1f9b7d6e928ef9831e2c0d47f6cd0fbdcc2bfc395d0c50f211bf30586a43f3"
+  },
+  {
+    "file": "input/r2-c4-q3-reference.jpg",
+    "bytes": 496734,
+    "sha256": "549701e178d1bbc9180e68877137965f71b72c848c7c54216d2f02a7487bf571"
+  },
+  {
+    "file": "input/r2-c5-q1-reference.jpg",
+    "bytes": 532624,
+    "sha256": "dc9ad4de03ec486d6eb59fa008bc724671caafee5fd9c581dedff1d82c2f634a"
+  },
+  {
+    "file": "input/r2-c5-q2-reference.jpg",
+    "bytes": 300479,
+    "sha256": "6174937502c444c5a621063ceee326410d3a8310fea3f8e6b3dd06c5f236d671"
+  },
+  {
+    "file": "input/r3-c1-q1-reference.jpg",
+    "bytes": 359596,
+    "sha256": "32c7eec71b1bce80bd17b8b7c64b54cb1c0bc506b6457bff7d92f32d52209f01"
+  },
+  {
+    "file": "input/r3-c4-q1-reference.jpg",
+    "bytes": 401750,
+    "sha256": "07b1121a1e49c392577e1b629066453ca8ceef535ccb2840f8a8208d9bf05d21"
+  },
+  {
+    "file": "input/toby-fx-report.md",
+    "bytes": 63359,
+    "sha256": "a31898f5861821cc30b543a2a0300a8fc7d99d07c7427596345c6aab7247f6d5"
+  },
+  {
+    "file": "input/v7-manifest.json",
+    "bytes": 8220,
+    "sha256": "c113b6a8d02b1e1ae614c5bf7c862e38be953f1576f8fe7dce955928be9d0b8a"
+  },
+  {
+    "file": "input/v7-overview.jpg",
+    "bytes": 2390158,
+    "sha256": "e0dc15582d9b5d1df8f640fd26da4d5487a5282569209e6988b55a0722e3cf2e"
+  },
+  {
+    "file": "input/white-lumps.json",
+    "bytes": 5309,
+    "sha256": "40135fcfcfd3fbd6276d411ebd69ef0b0b764eedbd8f913b7ea0604114036e2f"
+  },
+  {
+    "file": "input/terrain/r1-c1.webp",
+    "bytes": 1615012,
+    "sha256": "4e35a26b15115009f416836e27a28fce4b2399ba7998b1c7ad301e679c249210",
+    "source": "assembled v7 provided in brief"
+  },
+  {
+    "file": "input/terrain/r1-c2.webp",
+    "bytes": 1644956,
+    "sha256": "e09e8c948322b762be95a98a8c4983d9afae17fc869042d3ee468984482a1b1d",
+    "source": "assembled v7 provided in brief"
+  },
+  {
+    "file": "input/terrain/r1-c3.webp",
+    "bytes": 1592356,
+    "sha256": "116f1cd3ea1ed2e171bd36f86dbcfec8df8481b8121cfca13f247272b3450f74",
+    "source": "assembled v7 provided in brief"
+  },
+  {
+    "file": "input/terrain/r1-c4.webp",
+    "bytes": 1544944,
+    "sha256": "66d68d81b99b7bad611b541cc2121b8d61c0f54a4e19d8b0fd86261216908160",
+    "source": "assembled v7 provided in brief"
+  },
+  {
+    "file": "input/terrain/r2-c1.webp",
+    "bytes": 1512864,
+    "sha256": "e90d4c956a5bb4beae57ce5ae56cccad75a73bb204ec869204cdcd199ac7d97b",
+    "source": "assembled v7 provided in brief"
+  },
+  {
+    "file": "input/r1-c1-q3-reference.jpg",
+    "bytes": 587965,
+    "sha256": "6aaae8c06544fb8e11e92f773c3bf17780706ea32268add2acf9c086569ab548",
+    "source": "native r1-c1 crop [0,992,1056,2048]"
+  }
+]
