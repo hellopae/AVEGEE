@@ -14,7 +14,7 @@ import { weatherEnabled } from './map-ambient.js?v=mapfx-k1d';
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
 import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
-import { fluidShaderRequested, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
+import { fluidMode, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
 
 export const FLUID_TILE_LEVELS = Object.freeze([2.56, 1.28, .64]);   // pre-scaled tile density, px per world unit
 export const FLUID_MAX_SCALE = 2.56;                                  // the composing layer never exceeds this many px per world unit
@@ -70,7 +70,7 @@ export function fluidSpotState(piece, spot, sec) {
   if (piece.mode === 'rise') return { alpha: Math.sin(Math.PI * f) ** 1.2, ...fr, ox: spot[7] * f, oy: spot[8] * f };
   return { alpha: Math.sin(Math.PI * f) ** 1.5, ...fr, ox: spot[7] * (f - .5), oy: spot[8] * (f - .5) };   // swell
 }
-/** FLUID-SHADER: the drawn frames the shader replaces (lava / ice / river surfaces and every fall).  Spots (bubbles, steam, embers, sparkle, foam) and clouds are not among them. */
+/** FLUID-SHADER: the drawn frames the shader replaces (lava / ice / river surfaces and every fall).  Spots (bubbles, steam, embers, sparkle), the bank foam and the clouds are not among them. */
 export const fluidShaderReplaces = p => (p.kind === 'tile' && (p.group === 'lava' || p.group === 'ice' || p.group === 'river')) || p.kind === 'rect';
 /** Per piece: same-mask puffs are drawn together in one layer so the 4 drifting clouds cost one composite. */
 export function fluidDrawPlan(layout) {
@@ -97,8 +97,6 @@ function storeOf(dir) {
   return st;
 }
 const cfgOf = () => activeTownSkin()?.fluidFx || null;
-let shaderFlag;   // ?fluid=frames turns the shader off (read once); the shader is the default since 12 Nov
-const shaderWanted = () => shaderFlag ?? (shaderFlag = fluidShaderRequested());
 /** True while the painted fluid layer is the one animating water / lava (loading or ready, not failed): the old particle flow must stay off. */
 export const townFluidOwnsFlow = () => { const c = cfgOf(); return !!c && storeOf(c.dir).status !== 'failed'; };
 /** True when the painted cloud-sea is actually on screen duty: the old cloud banks over the heaven gate must stay off then. */
@@ -342,12 +340,12 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
   if (!fluidMs && st.last.size) st.last.clear();
   let drawn = 0;
   // FLUID-SHADER: the default, before the drawn layers (so its copy of the ground is clean).  Any failure leaves st.shader.status 'failed' = drawn frames only.
-  st.shader = shaderWanted() ? ensureFluidShader(cfg.dir) : null;
+  st.shader = fluidMode() === 'shader' ? ensureFluidShader(cfg.dir) : null;
   if (fluidShaderActive(st.shader)) drawn += drawFluidShader(ctx, st.shader, { m, view, cv, sec, time, geometry: layerGeometry, intersect });
-  const shaderOwns = fluidShaderActive(st.shader) || fluidShaderPending(st.shader);   // loading: the painted ground holds the liquid for the moment - no frames, no flip
+  const shaderOwns = fluidMode() === 'none' || fluidShaderActive(st.shader) || fluidShaderPending(st.shader);   // loading: the painted ground holds the liquid for the moment - no frames, no flip
   for (const item of st.plan) {
     const p = item.piece || item.puffs[0], rect = item.rect;
-    if (shaderOwns && item.piece && fluidShaderReplaces(p)) continue;   // not even fetched while the shader plays it
+    if (shaderOwns && fluidShaderReplaces(p)) continue;   // not even fetched while the shader plays it (p = the piece, or the first puff of a puff group)
     if (!intersect(rect, loadView)) continue;
     const ready = (item.piece ? [p] : item.puffs).every(q => pieceReady(st, q, true));
     const vis = intersect(rect, view);

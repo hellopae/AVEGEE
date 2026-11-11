@@ -18,8 +18,16 @@ import { drawTownGroundRectAny, requestTownGroundRect } from './town-terrain.js?
 // ------------------------------------------------------------------------------------------------ pure helpers (unit tested)
 /** The shader is the default.  `?fluid=frames` (or `fluid=off`) gives the drawn frames back; anything else = shader. */
 export function fluidShaderRequested(search) {
-  try { const v = new URLSearchParams(search ?? globalThis.location?.search ?? '').get('fluid'); return v !== 'frames' && v !== 'off'; } catch { return true; }
+  try { const v = new URLSearchParams(search ?? globalThis.location?.search ?? '').get('fluid'); return v !== 'frames' && v !== 'off' && v !== 'none'; } catch { return true; }
 }
+/** Runtime mode: 'shader' (default) | 'frames' (the drawn frames) | 'none' (neither: the painted ground alone - a diagnostic for A/B captures, ?fluid=none). */
+let mode = null;
+export function fluidMode() {
+  if (mode) return mode;
+  try { const v = new URLSearchParams(globalThis.location?.search ?? '').get('fluid'); mode = v === 'none' ? 'none' : fluidShaderRequested() ? 'shader' : 'frames'; } catch { mode = 'shader'; }
+  return mode;
+}
+export function setFluidMode(m) { if (['shader', 'frames', 'none'].includes(m)) mode = m; return fluidMode(); }
 /** The two flow phases (half a cycle apart) and their blend weights at time `sec`; weights sum to 1 and a phase has weight 0 at its jump. */
 export function fluidFlowPhases(sec, speed) {
   const t = Math.max(0, sec) * speed, p0 = t - Math.floor(t), q = t + .5, p1 = q - Math.floor(q);
@@ -72,6 +80,7 @@ uniform float uWarp;         // direction / speed bend by noise, 0..1
 uniform float uPulse;        // glow pulse of the bright pixels, 0..1
 uniform vec2  uHot;          // luminance range that counts as "bright"
 uniform float uSparkLum;     // sparks only sit on pixels at least this bright
+uniform float uShimmer;      // brightness streaks that ride the flow (so flat-coloured liquid still visibly moves), 0..1
 uniform vec3  uSpark;        // spark colour
 uniform float uCell;         // spark grid cell, world units
 uniform float uDensity;      // fraction of cells that hold a spark
@@ -104,6 +113,10 @@ void main(){
   vec3 c0 = mix(base, groundAt(w0p), smoothstep(.45, .85, flowAt(w0p).b));
   vec3 c1 = mix(base, groundAt(w1p), smoothstep(.45, .85, flowAt(w1p).b));
   vec3 col = mix(c1, c0, w0);
+  // streaks of light and shade carried by the same two phases, stretched along the flow: even a smooth-coloured stretch of liquid visibly runs
+  vec2 dn = normalize(dir + vec2(1e-4)), pn = vec2(-dn.y, dn.x);
+  float s0 = vnoise(vec2(dot(w0p, dn) / 9., dot(w0p, pn) / 3.2) + 11.7), s1 = vnoise(vec2(dot(w1p, dn) / 9., dot(w1p, pn) / 3.2) + 5.3);
+  col *= 1. + uShimmer * (mix(s1, s0, w0) - .5) * 2.;
   // bright pixels breathe (their own colour, brighter - no tint)
   float lum = dot(col, vec3(.299, .587, .114));
   float hot = smoothstep(uHot.x, uHot.y, lum);
@@ -160,7 +173,7 @@ function initGL(st) {
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aPos = gl.getAttribLocation(prog, 'aPos'); gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-  const loc = {}; for (const n of ['uGround', 'uFlow', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
+  const loc = {}; for (const n of ['uGround', 'uFlow', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uShimmer', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
   gl.disable(gl.BLEND); gl.disable(gl.DEPTH_TEST);
   gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
   gl.uniform1i(loc.uGround, 0); gl.uniform1i(loc.uFlow, 1);
@@ -284,7 +297,7 @@ export function drawFluidShader(ctx, st, h) {
       gl.uniform4f(L.uRect, sp.rect[0], sp.rect[1], sp.rect[2], sp.rect[3]);
       gl.uniform4f(L.uCore, sp.core[0] - 1.2, sp.core[1] - 1.2, sp.core[2] + 2.4, sp.core[3] + 2.4);   // a hair of overlap with the neighbouring cell: no seam
       gl.uniform1f(L.uTime, sec); gl.uniform1f(L.uSpeed, p.speed); gl.uniform1f(L.uCycle, p.cycle); gl.uniform1f(L.uWarp, p.warp); gl.uniform1f(L.uPulse, p.pulse);
-      gl.uniform2f(L.uHot, p.hot[0], p.hot[1]); gl.uniform1f(L.uSparkLum, p.sparkLum);
+      gl.uniform2f(L.uHot, p.hot[0], p.hot[1]); gl.uniform1f(L.uSparkLum, p.sparkLum); gl.uniform1f(L.uShimmer, p.shimmer);
       gl.uniform3f(L.uSpark, p.spark[0], p.spark[1], p.spark[2]); gl.uniform1f(L.uCell, p.sparkCell); gl.uniform1f(L.uDensity, p.sparkDensity); gl.uniform1f(L.uSparkR, p.sparkSize);
       gl.uniform2f(L.uDrift, p.drift[0], p.drift[1]);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
