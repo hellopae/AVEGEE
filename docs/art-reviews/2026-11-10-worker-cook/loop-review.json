@@ -1,0 +1,154 @@
+{
+  "status": "incomplete",
+  "date": "2026-11-11",
+  "reviewRound": "20261111T115315Z-ccb558be",
+  "inputDelivery": "20261111T112241Z-92b49ab0",
+  "artworkEditedThisRound": true,
+  "generation": {
+    "run": "20261111T115315Z-ccb558be",
+    "tool": "built-in ImageGen inherited only",
+    "originalCalls": 16,
+    "repairCallsBeforeRun": 16,
+    "newRepairCallsThisRun": 0,
+    "repairTotal": 16,
+    "repairLimit": 16,
+    "remainingSharedRepairAllowance": 0,
+    "shadoUsed": false,
+    "externalAPIUsed": false
+  },
+  "generationLog": "evidence/repair-static/generation-log.json",
+  "changedArt": [
+    "preview/worker-cyberhell-cook-down-left.gif",
+    "preview/worker-cyberhell-cook-down-right.gif",
+    "preview/worker-th-carry-side-left.gif",
+    "preview/worker-th-carry-side.gif",
+    "preview/worker-th-cook-down-left.gif",
+    "preview/worker-west-cook-down-left.gif",
+    "preview/worker-west-cook-down-right.gif",
+    "worker-asia-cook-v1.webp",
+    "worker-cyberhell-cook-v1.webp",
+    "worker-th-carry-v1.webp",
+    "worker-th-cook-v1.webp",
+    "worker-west-cook-v1.webp"
+  ],
+  "technicalCheckCount": 106,
+  "technicalFailures": [],
+  "technicalAudit": "evidence/current-audit.json",
+  "identityFootCheckCount": 28,
+  "identityFootFailures": [],
+  "headOpaqueRGBMismatchPixels": 0,
+  "foot": {
+    "drawAnchor": [
+      160,
+      320
+    ],
+    "method": "alpha>40 bottom eight pixel rows, not anatomical contact",
+    "maximumSoleBandMidpointErrorPx": 0.5,
+    "sourceBaselineY": {
+      "th": 319,
+      "asia": 319,
+      "west": 319,
+      "cyberhell": 314
+    },
+    "anatomicalRegistrationCertified": false,
+    "evidence": "evidence/repair-identity/identity-foot-check.json"
+  },
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "smoothLoopAccepted": false,
+  "visualReview": "evidence/visual-review.json",
+  "acceptance": [
+    {
+      "criterion": 1,
+      "status": "incomplete",
+      "fourZonesEightFramesTwoDirections": true,
+      "opaqueSourceHeadRGBExactAll96Frames": true,
+      "bodyIdentityAndProportionsExact": false,
+      "smoothLoopAccepted": false
+    },
+    {
+      "criterion": 2,
+      "status": "incomplete",
+      "thAllFourDirectionsEightFrames": true,
+      "thCarryAlphaViewedAll32Frames": true,
+      "unexpectedRedYellowFringeObserved": false,
+      "fullBodyAndContinuityCertified": false
+    }
+  ],
+  "seams": [
+    {
+      "row": "th-cook-down-right",
+      "meanRGBDifference8to1": 12.6703,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "meanRGBDifference8to1": 11.981,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-side",
+      "meanRGBDifference8to1": 15.3283,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-side-left",
+      "meanRGBDifference8to1": 15.3283,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-down",
+      "meanRGBDifference8to1": 12.1738,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "th-carry-up",
+      "meanRGBDifference8to1": 6.4336,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "meanRGBDifference8to1": 7.8139,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "meanRGBDifference8to1": 7.8139,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "meanRGBDifference8to1": 8.468,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "meanRGBDifference8to1": 8.468,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "meanRGBDifference8to1": 8.8564,
+      "smoothnessAccepted": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "meanRGBDifference8to1": 9.4222,
+      "smoothnessAccepted": false
+    }
+  ],
+  "remaining": [
+    "TH cook ซ้ายเฟรม7 แทนสีกระเป๋าด้วยผ้าแล้ว แต่แสงเงา/ขอบผ้าบริเวณสะโพกยังเป็นปื้นและต้องเก็บให้กลืนกับเสื้อก่อนรับรองภาพ",
+    "ยังไม่ได้ดู GIF เล่นต่อเนื่องจริง: browser host unavailable และ native Finder ไม่ได้รับสิทธิ์ จึงยังไม่รับรอง loop 4→5/8→1",
+    "ท่าคืนมือ/ช้อน 8→1 ยังต่าง โดยเฉพาะ asia และตำแหน่งถาด/ช่วงขา carry TH ยังต้องตัดสินความต่อเนื่องจาก playback",
+    "หัวตรง source ในขอบเขต opaque RGB แต่เสื้อ/อุปกรณ์และรูปทรงลำตัวไม่ตรงต้นฉบับทุกจุด เช่น แผงอก cyberhell และตำแหน่งกระเป๋าในบางมุม จึงยังไม่รับรอง identity ทั้งตัว",
+    "ตรวจฐาน alpha และกึ่งกลางแถบรองเท้าแล้ว แต่รูปทรง/จุดสัมผัสเท้าทางกายวิภาคและสัดส่วนทั้งตัวตลอด loop ยังไม่รับรอง"
+  ],
+  "optionalCarryOmitted": [
+    "asia",
+    "west",
+    "cyberhell"
+  ],
+  "packageReport": "evidence/package-check.json",
+  "testResults": "evidence/repair-static/test-results.json"
+}

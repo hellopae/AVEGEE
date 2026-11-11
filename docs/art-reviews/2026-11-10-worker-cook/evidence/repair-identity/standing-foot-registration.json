@@ -1,0 +1,434 @@
+[
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 1,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 44.5,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 2,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 3,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 45.5,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 4,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 44.5,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 5,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 6,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 7,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 0,
+    "frame": 8,
+    "soleMidpointSource": 203.5,
+    "bodyShearAtBottom": 46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 1,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -45.5,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 2,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 3,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 4,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 5,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 6,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 7,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -45.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "th",
+    "row": 1,
+    "frame": 8,
+    "soleMidpointSource": 115.5,
+    "bodyShearAtBottom": -46.0,
+    "shearTop": 180,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 1,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 2,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 3,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 4,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 5,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 6,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 15.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 7,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 15.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 0,
+    "frame": 8,
+    "soleMidpointSource": 180.5,
+    "bodyShearAtBottom": 16.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 1,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 2,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 3,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 4,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 5,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 6,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -15.5,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 7,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -15.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "asia",
+    "row": 1,
+    "frame": 8,
+    "soleMidpointSource": 138.5,
+    "bodyShearAtBottom": -16.0,
+    "shearTop": 182,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 1,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 41.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 2,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 41.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 3,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 4,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 5,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 39.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 6,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 7,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 42.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 0,
+    "frame": 8,
+    "soleMidpointSource": 194.5,
+    "bodyShearAtBottom": 40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 1,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -41.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 2,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -41.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 3,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 4,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 5,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -39.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 6,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 7,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -42.0,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  },
+  {
+    "zone": "west",
+    "row": 1,
+    "frame": 8,
+    "soleMidpointSource": 124.5,
+    "bodyShearAtBottom": -40.5,
+    "shearTop": 193,
+    "stationarySourceSoles": false
+  }
+]

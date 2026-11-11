@@ -1,0 +1,18 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/current-audit.json — รันใหม่ 119 เงื่อนไขโครงสร้าง / 96 ช่อง / 12 GIF ไม่พบข้อผิดพลาด; ไม่ใช่ผลรับรองภาพ",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/registration-review.json — วัด source 64 ช่องและภาพส่งมอบ 96 ช่อง ใช้ inset/fit ตาม renderer; cyberhell idle opaque bottom y=314 ต่างจาก cook y=319 ที่ความสูง 320px",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/renderer-fit-*.jpg — ตรวจภาพเทียบใหม่ 8 แผ่น; หน้า/สัดส่วน cook ทั้งสี่โซนและ carry TH ยังต่างจากตัวเดิม",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/current-audit.json#preservation — WebP 5 และ GIF 12 ไฟล์คง SHA-256 ตรงกับชุด 20261111T022930Z-b006be7f; TH carry คงครบ side, side-left, down, up",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/playback-access.json — browser host ใช้งานไม่ได้ จึงยังไม่ตรวจ playback ต่อเนื่อง",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/prior-loop-review.json — ImageGen เดิม 16/16; รอบนี้ 0 ครั้ง รอคำตอบโควตาแก้รอบใหม่",
+    "docs/art-reviews/2026-11-10-worker-cook/evidence/package-check.json — ผลตรวจไฟล์บังคับ ขอบเขตการเปลี่ยน และขนาด ≤30MB"
+  ],
+  "remaining": [
+    "ต้องทราบว่าโควตา ImageGen รอบแก้แยกจาก 16 ครั้งเดิมหรือไม่ ก่อนสร้างเพิ่ม; คำถามรอบนี้ยังไม่มีคำตอบ ณ เวลารายงาน",
+    "แก้หน้าและสัดส่วน cook ทั้ง 4 โซนด้วย ImageGen ครั้งละ 2–4 เฟรม อ้างอิงเฟรมก่อนหน้า; รักษารายละเอียดประจำด้านของทั้งสองทิศ",
+    "แก้หน้า/สัดส่วน carry TH โดยรักษาทุกทิศและจำนวนเฟรม; carry โซนอื่นตามโควตาที่เหลือ",
+    "แก้และตรวจตำแหน่งเท้าเทียบต้นฉบับ รวมกรณี cyberhell ต่าง 5px; ตรวจ loop playback ต่อเนื่องก่อน ready"
+  ]
+}

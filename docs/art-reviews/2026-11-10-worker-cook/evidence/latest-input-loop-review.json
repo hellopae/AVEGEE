@@ -1,0 +1,278 @@
+{
+  "status": "incomplete",
+  "date": "2026-11-11",
+  "priorEvidence": "evidence/previous-round-loop-review.json",
+  "generation": {
+    "priorCalls": 16,
+    "briefLimit": 16,
+    "newCalls": 0,
+    "quotaClarificationRequested": true,
+    "quotaReplyReceived": false,
+    "reason": "Prior built-in ImageGen log records 16 of the brief limit 16. A fresh allowance was requested in this round; no reply received at report time. New calls remain zero.",
+    "toolRequired": "built-in image_gen__imagegen only; not used this round"
+  },
+  "artworkEditedThisRound": false,
+  "preservedArtworkFiles": 17,
+  "reviewMethod": [
+    "Re-ran audit_current.py: 96 atlas cells, 12 GIFs, 119 structural checks; zero failed checks.",
+    "Inspected four original-source comparison images, eight new renderer-fit plates and four inherited decoded cook down-left GIF strips.",
+    "review_registration.py samples 64 source frames and 96 delivered frames with original inset/fit/face math at height=320; diagnostic composites only, no artwork edited.",
+    "Current CUA browser inventory returned browsers=[] and browser access host unavailable; continuous animated playback not observed."
+  ],
+  "animatedPlaybackReviewed": false,
+  "playbackBlocker": "Fresh CUA inventory returned browsers=[] and Browsers: Error: The browser access host is unavailable. No playback was observed.",
+  "inGameTested": false,
+  "technicalAudit": "evidence/current-audit.json",
+  "technicalCheckCount": 119,
+  "technicalChecksNotSatisfied": [],
+  "acceptance": [
+    {
+      "criterion": 1,
+      "status": "incomplete",
+      "fourZonesEightFramesTwoRows": true,
+      "identityAndProportionsExact": false,
+      "mirrorSideDetailsCorrect": false,
+      "smoothPlaybackVerified": false
+    },
+    {
+      "criterion": 2,
+      "status": "incomplete",
+      "thDirectionsAndEightFrames": true,
+      "alphaStructuralChecksSatisfied": true,
+      "allFrameNativeResolutionAlphaVerified": false,
+      "identityVerified": false,
+      "alphaVerificationScope": "Structural alpha checks rerun over all 96 frames; prior native white/black/green visual evidence retained. No new in-game alpha validation.",
+      "priorRoundNativeAlphaInspection": "evidence/previous-round-loop-review.json#nativeAlphaReview"
+    }
+  ],
+  "knownIssues": [
+    "cook TH: head wider/larger relative to original; shorter torso/legs; identity and proportion jump around frame 4 to 5.",
+    "cook asia: face/eyes and outline texture differ from source; spoon position resets between frames 8 and 1.",
+    "cook west: head smaller and body/legs longer than source, feet and body posture change around frames 7-8.",
+    "cook cyberhell: head smaller and legs longer than source; face/body shift through the row.",
+    "All four cook down-left rows are exact mirrors, moving the one-sided pouch/rope/emblem to the opposite side.",
+    "TH carry retains all four rows / 32 frames, but face and proportions still differ from the original worker.",
+    "Loop smoothness is not certified: only decoded frames and seams were inspected, not continuous playback.",
+    "Source cyberhell idle has opaque bottom 5px above delivered cook at common renderer height. Anatomical foot registration remains unresolved in all zones."
+  ],
+  "optionalCarryOmitted": [
+    "asia",
+    "west",
+    "cyberhell"
+  ],
+  "sourceCodeMapping": {
+    "path": "src/workers.js",
+    "rowMapLine": 294,
+    "side": 1,
+    "down": 4,
+    "up": 5,
+    "flipsByFace": true
+  },
+  "foot": {
+    "manifest": [
+      160,
+      320
+    ],
+    "opaqueBottomPixelY": 319,
+    "exactAnatomicalRegistrationVerified": false,
+    "note": "Original inset/fit/face math applied in offline padded review images. This exposes baseline differences; exact anatomical registration is not certified. No source or delivered sprite pixels were changed.",
+    "diagnosticRendererFitAppliedThisRound": true
+  },
+  "visualFindings": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "frames": "1-8; especially 4->5 and 8->1",
+      "finding": "หัวใหญ่และช่วงตัวสั้นกว่าต้นฉบับ รูปหน้า/มุมหมวกเปลี่ยนช่วงต่อ",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/gif-frames-th-cook-down-right.jpg",
+        "evidence/seam-th-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หน้า ดวงตา สัดส่วนและความเรียบของเส้นยังต่างจากต้นฉบับ",
+      "evidence": [
+        "compare-asia.jpg",
+        "evidence/gif-frames-asia-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หัวเล็ก ช่วงตัว/ขาเด่นกว่าต้นฉบับ และท่ายืนเปลี่ยนช่วงท้าย",
+      "evidence": [
+        "compare-west.jpg",
+        "evidence/gif-frames-west-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "frames": "1-8",
+      "finding": "หัวเล็ก ตัว/ขายาวกว่าต้นฉบับ หน้าและลำตัวแกว่ง",
+      "evidence": [
+        "compare-cyberhell.jpg",
+        "evidence/gif-frames-cyberhell-cook-down-right.jpg"
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "frames": "all four rows, 1-8",
+      "finding": "มุมครบ ท่าขาเปลี่ยน แต่หน้า/สัดส่วนยังต่างจาก source",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/gif-frames-th-carry-side.jpg",
+        "evidence/gif-frames-th-carry-side-left.jpg",
+        "evidence/gif-frames-th-carry-down.jpg",
+        "evidence/gif-frames-th-carry-up.jpg"
+      ]
+    }
+  ],
+  "seams": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 19.3741,
+      "evidence": "evidence/seam-th-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 19.3741,
+      "evidence": "evidence/seam-th-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "compositedMeanAbsoluteDifference8to1": 17.639,
+      "evidence": "evidence/seam-th-carry-side.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "compositedMeanAbsoluteDifference8to1": 17.639,
+      "evidence": "evidence/seam-th-carry-side-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "compositedMeanAbsoluteDifference8to1": 24.2877,
+      "evidence": "evidence/seam-th-carry-down.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "compositedMeanAbsoluteDifference8to1": 11.0808,
+      "evidence": "evidence/seam-th-carry-up.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 11.0582,
+      "evidence": "evidence/seam-asia-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 11.0582,
+      "evidence": "evidence/seam-asia-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 14.241,
+      "evidence": "evidence/seam-west-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 14.241,
+      "evidence": "evidence/seam-west-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "compositedMeanAbsoluteDifference8to1": 21.5151,
+      "evidence": "evidence/seam-cyberhell-cook-down-right.jpg",
+      "smoothnessAccepted": false
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "compositedMeanAbsoluteDifference8to1": 21.5151,
+      "evidence": "evidence/seam-cyberhell-cook-down-left.jpg",
+      "smoothnessAccepted": false
+    }
+  ],
+  "packageLimitBytes": 30000000,
+  "packageReport": "evidence/package-check.json",
+  "reviewRound": "20261111T023956Z-6e08c441",
+  "inputDelivery": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T022930Z-b006be7f/docs/art-reviews/2026-11-10-worker-cook",
+  "nativeAlphaReview": {
+    "reviewedAtlasCells": 96,
+    "backgrounds": [
+      "white",
+      "black",
+      "green"
+    ],
+    "nativeFrameSize": [
+      320,
+      320
+    ],
+    "plates": 24,
+    "unexpectedRedOrYellowFringeObserved": false,
+    "evidenceGlob": "evidence/native-alpha-*.jpg",
+    "caveat": "Visual inspection of native-size composited JPEG plates; legitimate red skin and yellow/gold trim are present. No claim of pixel-exact absence or in-game validation.",
+    "scope": "Inherited visual inspection from previous review; current script re-generated all 24 plates and repeated structural checks. This round visually inspected renderer-fit plates and comparison cards, not all 24 alpha plates again."
+  },
+  "registrationEvidence": "evidence/registration-review.json",
+  "registrationPlates": "evidence/renderer-fit-*.jpg",
+  "newFindings": [
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "finding": "At renderer height 320, source idle opaque bottom y=314; delivered cook opaque bottom y=319 (alpha>40). Shared foot anchor does not preserve this source baseline. Source idle c2 lower-band silhouette is also offset right of the nominal anchor; no automatic correction applied.",
+      "evidence": [
+        "evidence/registration-review.json",
+        "evidence/renderer-fit-cyberhell-cook.jpg"
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "finding": "Compared source down using scale=1.063 dx=27 and up scale=1.122 dx=13, rather than raw uncorrected cells. Delivered face/head/body proportions still differ; all four rows retained.",
+      "evidence": [
+        "evidence/renderer-fit-th-carry-down.jpg",
+        "evidence/renderer-fit-th-carry-up.jpg"
+      ]
+    }
+  ]
+}

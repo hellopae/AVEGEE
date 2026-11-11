@@ -1,0 +1,19 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-cyberhell-cook-v1.webp + evidence/revision/generation-log.json — วาดแก้จริงด้วย ImageGen ในตัว 4 ครั้ง ครั้งละ 4 เฟรม ครบ 2 ทิศ × 8 เฟรม; ไม่ใช้ Shado",
+    "evidence/revision/delivered-registration.json — อ่าน WebP ส่งมอบใหม่ ยืนยัน alpha>40 bottom y314 ครบ 16 ช่อง เทียบ source y314 และชุดก่อน y319; ยังไม่รับรอง anatomical X",
+    "evidence/current-audit.json — ตรวจโครงสร้าง 121 เงื่อนไข / 96 ช่อง / 12 GIF ไม่พบข้อผิดพลาด; atlas อื่น 4 ไฟล์และ GIF อื่น 10 ไฟล์ตรง SHA-256 ชุดล่าสุด",
+    "evidence/decoded-*.jpg + compare-*.jpg + evidence/renderer-fit-*.jpg — ตรวจภาพเรียง GIF ทุกแถวและสัดส่วน cook 4 โซน/carry TH ทุกทิศ; พบหน้า สัดส่วน และรอยต่อยังค้าง",
+    "evidence/native-alpha-th-carry-*.jpg + evidence/native-alpha-cyberhell-*.jpg — ดูครบ 48 เฟรมบนขาว/ดำ/เขียว ไม่เห็นขอบแดงหรือเหลืองผิดปกติ; ยังไม่ได้ดู playback ต่อเนื่องหรือทดสอบในเกม",
+    "evidence/package-check.json — ผลขนาดจริง ขอบเขตเปลี่ยน และไฟล์บังคับ ตรวจหลังเขียนรายงาน"
+  ],
+  "remaining": [
+    "แก้หัว/หน้า/สัดส่วน cook ทั้ง 4 โซนให้เท่าต้นฉบับทุกเฟรม โดยเฉพาะรอยต่อชุด 4→5 และคืนท่า 8→1; cyberhell ดีขึ้นแต่ยังไม่ตรงทั้งหมด",
+    "รักษารายละเอียดประจำด้าน: cook TH/asia/west ยัง mirror; cyberhell ซ้ายวาดแยกแล้วแต่กระเป๋า/สัญลักษณ์ยังอยู่ด้านใกล้และเปลี่ยนระหว่างชุด",
+    "ตรวจ anatomical X และจุดสัมผัสเท้ากับ source ให้ตรง ไม่อาศัย manifest anchor หรือ silhouette bottom อย่างเดียว",
+    "carry TH ครบและตรวจขอบแล้ว แต่หน้า/สัดส่วนยังต้องแก้ตามคำสั่งต่อรอบนี้",
+    "ตรวจ playback ต่อเนื่องจริงก่อนรับรอง loop; รอบนี้ดูเฟรมที่ถอดจาก GIF และเวลาของไฟล์แล้วเท่านั้น",
+    "รอบนี้ใช้โควตา 4/4 แล้ว; มีโควตารอบแก้ใหม่เหลือ 12/16 สำหรับ run ถัดไปตาม log; carry โซนอื่นเป็นทางเลือก"
+  ]
+}

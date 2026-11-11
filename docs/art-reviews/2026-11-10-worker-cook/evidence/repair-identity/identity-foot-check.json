@@ -1,0 +1,976 @@
+{
+  "scope": "Final decoded delivery atlases",
+  "heads": [
+    {
+      "row": "th-cook-down-right",
+      "comparedSourcePixelsAlphaAtLeast250": 21283,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "th-cook-down-left",
+      "comparedSourcePixelsAlphaAtLeast250": 21283,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "th-carry-side",
+      "comparedSourcePixelsAlphaAtLeast250": 19531,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "th-carry-side-left",
+      "comparedSourcePixelsAlphaAtLeast250": 19531,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "th-carry-down",
+      "comparedSourcePixelsAlphaAtLeast250": 19294,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "th-carry-up",
+      "comparedSourcePixelsAlphaAtLeast250": 15667,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "asia-cook-down-right",
+      "comparedSourcePixelsAlphaAtLeast250": 21149,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "asia-cook-down-left",
+      "comparedSourcePixelsAlphaAtLeast250": 21149,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "west-cook-down-right",
+      "comparedSourcePixelsAlphaAtLeast250": 22815,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "west-cook-down-left",
+      "comparedSourcePixelsAlphaAtLeast250": 22815,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "comparedSourcePixelsAlphaAtLeast250": 22753,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "comparedSourcePixelsAlphaAtLeast250": 22753,
+      "sourceRGBMismatchAbove0PixelCountsByFrame": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "headRGBChangesAbove0AtEachTransitionIncluding8to1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "cookingFeet": [
+    {
+      "row": "th-cook-down-right",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 203.5,
+        "silhouetteTop": 12,
+        "silhouetteHeight": 308
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 204.0,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.0,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 203.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.5,
+        -0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "row": "th-cook-down-left",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 115.5,
+        "silhouetteTop": 12,
+        "silhouetteHeight": 308
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 115.5,
+          "silhouetteTop": 12,
+          "silhouetteHeight": 308
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "row": "asia-cook-down-right",
+      "sourceIdleColumn": 0,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 180.5,
+        "silhouetteTop": 17,
+        "silhouetteHeight": 303
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 180.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "row": "asia-cook-down-left",
+      "sourceIdleColumn": 0,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 138.5,
+        "silhouetteTop": 17,
+        "silhouetteHeight": 303
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 138.5,
+          "silhouetteTop": 17,
+          "silhouetteHeight": 303
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "row": "west-cook-down-right",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 194.5,
+        "silhouetteTop": 14,
+        "silhouetteHeight": 306
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.0,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 194.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 195.0,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.5,
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "row": "west-cook-down-left",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 319,
+        "soleBandMidX": 124.5,
+        "silhouetteTop": 14,
+        "silhouetteHeight": 306
+      },
+      "frames": [
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 125.0,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.5,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        },
+        {
+          "bottomY": 319,
+          "soleBandMidX": 124.0,
+          "silhouetteTop": 14,
+          "silhouetteHeight": 306
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.0,
+        -0.5
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 314,
+        "soleBandMidX": 192.5,
+        "silhouetteTop": 10,
+        "silhouetteHeight": 305
+      },
+      "frames": [
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 192.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "sourceIdleColumn": 1,
+      "source": {
+        "bottomY": 314,
+        "soleBandMidX": 126.5,
+        "silhouetteTop": 10,
+        "silhouetteHeight": 305
+      },
+      "frames": [
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        },
+        {
+          "bottomY": 314,
+          "soleBandMidX": 126.5,
+          "silhouetteTop": 10,
+          "silhouetteHeight": 305
+        }
+      ],
+      "soleBandMidpointErrorsPx": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "th-cook-down-right source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right sole-band X within 2px of source",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left source-head RGB exact RGB and temporal consistency",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left original alpha baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left sole-band X within 2px of source",
+      "satisfied": true
+    }
+  ],
+  "headRGBTolerance": 0,
+  "headSourceAlphaMinimum": 250,
+  "limitations": [
+    "A static contact sheet and numerical seam metrics cannot establish real-time animation continuity.",
+    "Sole-band registration measures alpha geometry, without certifying anatomical contact or complete body proportions."
+  ],
+  "failedChecks": []
+}
