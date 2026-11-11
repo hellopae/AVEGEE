@@ -1,0 +1,15 @@
+{
+  "files": 441,
+  "totalBytesIncludingThisReport": 79661948,
+  "limitBytes": 80000000,
+  "withinLimit": true,
+  "definition": "Sum of regular file sizes in this folder, including manifest, scope check and this report; decimal MB.",
+  "productionMasksModifiedThisContinuation": true,
+  "productionSheetsModifiedThisContinuation": false,
+  "sourceFramesAndTerrainModifiedThisContinuation": false,
+  "changedProductionAssetsComparedToLatestRun": [
+    "masks/icefall-east-cliff.webp",
+    "masks/lava-flat-lower.webp",
+    "masks/lava-flat.webp"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "baseline": "review/run-baseline.json",
+  "changedProductionAssets": [
+    "masks/icefall-summit.webp",
+    "sheets/icefall-summit.webp"
+  ],
+  "missingProductionAssets": [],
+  "onlySummitMaskAndSheetChanged": true,
+  "unchangedPairsAndClipsComparedToLatest": [
+    "review/pairs/ice-stream-flat-central.webp",
+    "review/pairs/ice-stream-flat-east.webp",
+    "review/pairs/ice-stream-flat-lower.webp",
+    "review/pairs/ice-stream-flat-mouth.webp",
+    "review/pairs/ice-stream-flat-upper.webp",
+    "review/pairs/icefall-center-bridge.webp",
+    "review/pairs/icefall-east-cliff.webp",
+    "review/pairs/icefall-lower-1.webp",
+    "review/pairs/icefall-lower-2.webp",
+    "review/pairs/icefall-lower-3.webp",
+    "review/pairs/icefall-lower-inlet.webp",
+    "review/pairs/icefall-mouth.webp",
+    "review/pairs/icefall-upper-right.webp",
+    "review/pairs/icefall-upper-tree.webp",
+    "review/pairs/lava-flat-left-bottom.webp",
+    "review/pairs/lava-flat-lower.webp",
+    "review/pairs/lava-flat-middle.webp",
+    "review/pairs/lava-flat-southwest.webp",
+    "review/pairs/lava-flat-upper.webp",
+    "review/pairs/lava-flat-west.webp",
+    "review/pairs/lavafall-bridge.webp",
+    "review/pairs/lavafall-lower-step.webp",
+    "review/pairs/lavafall-middle.webp",
+    "review/pairs/lavafall-mouth.webp",
+    "review/pairs/lavafall-upper-left.webp",
+    "review/pairs/lavafall-upper-step.webp",
+    "review/pairs/lavafall-volcano.webp",
+    "review/pairs/lavafall-west.webp",
+    "review/pairs/spirit-river-east.webp",
+    "review/pairs/spirit-river-west.webp",
+    "review/clips/owner-3-lava.mp4",
+    "review/clips/owner-4-central-stream.mp4"
+  ],
+  "changedPairsAndClipsComparedToLatest": [
+    "review/pairs/icefall-summit.webp",
+    "review/clips/owner-2-ice-bridge.mp4"
+  ],
+  "commands": [
+    {
+      "command": "register_summit.py",
+      "exitCode": 0,
+      "evidence": "review/summit-registration-result.json"
+    },
+    {
+      "command": "register_summit.py (repeat)",
+      "exitCode": 0,
+      "evidence": "review/registration-idempotence.json"
+    },
+    {
+      "command": "review_repairs.py",
+      "exitCode": 0,
+      "evidence": "review/repair-review.json"
+    },
+    {
+      "command": "measure_references.py",
+      "exitCode": 0,
+      "evidence": "review/liquid-reference-result.json"
+    },
+    {
+      "command": "measure_shore.py",
+      "exitCode": 0,
+      "evidence": "review/shore-ground-result.json"
+    },
+    {
+      "command": "audit_particles.py",
+      "exitCode": 0,
+      "evidence": "review/particle-footprint-result.json"
+    },
+    {
+      "command": "render_offline.py --pairs icefall-summit --clips owner-2-ice-bridge (final sequential run)",
+      "exitCode": 0,
+      "evidence": "review/offline-render-report.json"
+    },
+    {
+      "command": "verify_delivery.py",
+      "exitCode": 1,
+      "reason": "Acceptance still incomplete; inspect technicalChecks separately",
+      "evidence": "review/delivery-verification.json"
+    },
+    {
+      "command": "check_pack.py",
+      "exitCode": 0,
+      "evidence": "review/scope-check.json; delivery-size.json",
+      "limitation": "syntax, links, byte budget and scope only"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "limitation": "untracked text additionally checked by check_pack.py"
+    }
+  ],
+  "encounteredAndCorrectedIssues": [
+    {
+      "command": "register_summit.py initial attempt",
+      "issue": "Lossless WebP discards RGB under alpha=0; an assertion comparing invisible RGB failed. Corrected assertion checks all visible RGBA and alpha outside extension, and records the encoding limitation."
+    },
+    {
+      "command": "render_offline.py intermediate run",
+      "issue": "UnidentifiedImageError reading a sheet while registration was writing it. Added atomic file replacement to registration; stopped concurrent asset writes, then sequential render completed with exit 0."
+    }
+  ],
+  "allTechnicalChecks": true,
+  "acceptanceComplete": false,
+  "gameIntegrationTested": false,
+  "visualPlaybackQAClaimed": false
+}

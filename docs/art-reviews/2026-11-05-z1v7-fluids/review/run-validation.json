@@ -1,0 +1,130 @@
+{
+  "worktree": "20261111T071117Z-519bba7d",
+  "baseline": "review/20261111T064410Z-copy-receipt.json",
+  "preservation": "review/current-preservation.json",
+  "commands": [
+    {
+      "command": "register_summit.py",
+      "exitCode": 0,
+      "durationSeconds": 3.67,
+      "evidence": "review/summit-registration-result.json",
+      "stdout": "{\n  \"method\": \"Same full-crop spatial registration as inherited sheet; restore original eight painted source cells only inside omitted lower-cascade geometry. No per-frame shift/fade or temporal synthesis.\",\n  \"specification\": \"review/summit-registration.json\",\n  \"beforeMaskSha256\": \"4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76\",\n  \"beforeSheetSha256\": \"f3612a0c7a9111655e4fb324045d385019009cd9213771d07a149f58ca83ebd8\",\n  \"afterMaskSha256\": \"ca7907ea2bb1fdeb6b469093923b0dc93e7e407d42bb8b40debc4d7377dbe40e\",\n  \"afterSheetSha256\": \"290d38dab47874e79e3fe242c4ef4ecc7e9e3552ff2d20fd26fc981b4703b3ae\",\n  \"maskPixelsBefore\": 62375,\n  \"maskPixelsAfter\": 64735,\n  \"addedMaskPixels\": 2360,\n  \"unchangedVisibleSheetPixelsOutsideExtension\": true,\n  \"unchangedSheetAlphaOutsideExtension\": true,\n  \"encodingNote\": \"Lossless WebP preserves visible RGBA exactly; RGB under fully transparent pixels may be discarded.\",\n  \"generationsThisRun\": 0,\n  \"visualSmoothnessVerified\": false,\n  \"lowerWitnessEffectiveCoveragePixelsByPhase\": [\n    528,\n    528,\n    528,\n    528,\n    528,\n    528,\n    528,\n    528\n  ],\n  \"lowerWitnessPixels\": 528,\n  \"lowerWitnessDistinctPaintedRgbPhases\": 8,\n  \"lowerWitnessAdjacentRgbMAEIncludingWrap\": [\n    10.220959663391113,\n    24.099746704101562,\n    9.550504684448242,\n    21.91035270690918,\n    8.130681991577148,\n    27.560606002807617,\n    7.092171669006348,\n    25.08270263671875\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "add_ground_references.py",
+      "exitCode": 0,
+      "durationSeconds": 0.049,
+      "evidence": "review/ground-reference-additions.json",
+      "stdout": "{\"registeredGroundReferences\": [\"lava-flat-upper\", \"lava-flat-lower\", \"ice-stream-flat-east\", \"ice-stream-flat-mouth\", \"ice-stream-flat-upper\", \"ice-stream-flat-central\", \"ice-stream-flat-lower\"], \"productionMasksReadOrChanged\": false}\n",
+      "stderr": ""
+    },
+    {
+      "command": "repair_solid_overlap.py",
+      "exitCode": 0,
+      "durationSeconds": 5.013,
+      "evidence": "review/solid-repair-result.json",
+      "stdout": "{\n  \"specification\": \"review/solid-repairs-current.json\",\n  \"specificationSha256\": \"ad8a861d7c81117165bdaed39669749e43979f8e8e8f80748e92931712e8c617\",\n  \"changes\": [\n    {\n      \"mask\": \"icefall-east-cliff\",\n      \"beforePath\": \"review/before-solid-repair/icefall-east-cliff.webp\",\n      \"beforeSha256\": \"c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0\",\n      \"afterSha256\": \"75fb9ea0caa0e8b2c2bb3084895d1d5c7dfbc9aa9636e89b89de4c24b8638894\",\n      \"beforePixels\": 6507,\n      \"afterPixels\": 5175,\n      \"removedPixels\": 1332,\n      \"addedPixels\": 0,\n      \"witnessSolidOverlapBefore\": 75,\n      \"witnessSolidOverlapAfter\": 0,\n      \"removedBoundingBoxNative2x\": [\n        176,\n        223,\n        228,\n        296\n      ],\n      \"changedRectMap1x\": [\n        4658.0,\n        1141.5,\n        26.0,\n        36.5\n      ],\n      \"unchangedAlphaOutsideRemovedRegion\": true,\n      \"reason\": \"Rock face behind scattered spray, beside the actual falling curtain. Cyan rock and white spray against rock must receive no waterfall layer.\",\n      \"evidence\": \"review/boundary/icefall-east-cliff-solid-repair.webp\"\n    },\n    {\n      \"mask\": \"lava-flat-lower\",\n      \"beforePath\": \"review/before-solid-repair/lava-flat-lower.webp\",\n      \"beforeSha256\": \"0327143f17865aefcfaa1a44a9486279ceec006292ad65a20b17255744c816ce\",\n      \"afterSha256\": \"9bfa1cb95549218ef0a4eb1d3c992df770e6221ae6e355a588420eb3eed0d87e\",\n      \"beforePixels\": 117761,\n      \"afterPixels\": 113301,\n      \"removedPixels\": 4460,\n      \"addedPixels\": 0,\n      \"witnessSolidOverlapBefore\": 257,\n      \"witnessSolidOverlapAfter\": 0,\n      \"removedBoundingBoxNative2x\": [\n        609,\n        276,\n        836,\n        493\n      ],\n      \"changedRectMap1x\": [\n        1364.5,\n        1563.0,\n        113.5,\n        108.5\n      ],\n      \"unchangedAlphaOutsideRemovedRegion\": true,\n      \"reason\": \"Faceted orange-lit cliff bank, including the ember witness. Reflected lava colour on solid rock is excluded from the flat-lava layer and particles.\",\n      \"evidence\": \"review/boundary/lava-flat-lower-solid-repair.webp\"\n    }\n  ],\n  \"newGenerations\": 0,\n  \"lavaAggregate\": {\n    \"beforeSha256\": \"a46865a29c561db269ec3c20b4728ba4e695f8656f6a647f4b78b930c5d02274\",\n    \"afterSha256\": \"21bdf50bb43203bb010175d0839e8555c0909a9d05d125fed954869837df16bd\",\n    \"removedPixels\": 4460,\n    \"equalsComponentUnion\": true\n  },\n  \"limitation\": \"Ground-derived repair witnesses are regression checks after repair. Full semantic acceptance still requires separate liquid references and full coverage/playback review.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "measure_references.py",
+      "exitCode": 0,
+      "durationSeconds": 11.294,
+      "evidence": "review/liquid-reference-result.json",
+      "stdout": "{\n  \"ice-stream-flat-central\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 16.440834310994887\n  },\n  \"ice-stream-flat-east\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 18.38277402359409\n  },\n  \"ice-stream-flat-lower\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 86.67980887229432\n  },\n  \"ice-stream-flat-mouth\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 59.648633575013946\n  },\n  \"ice-stream-flat-upper\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 23.85209326409089\n  },\n  \"icefall-center-bridge\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 0.4144903117101938\n  },\n  \"icefall-east-cliff\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 0.5024154589371981\n  },\n  \"icefall-lower-1\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 0.056239455102168344\n  },\n  \"icefall-lower-2\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 0.06656681644200366\n  },\n  \"icefall-lower-3\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 2.194309347834412\n  },\n  \"icefall-lower-inlet\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 3.437190900098912\n  },\n  \"icefall-mouth\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 0.31093279839518556\n  },\n  \"icefall-summit\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 48.00185371128447\n  },\n  \"icefall-upper-right\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 2.9293696430508844\n  },\n  \"icefall-upper-tree\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 3.7425149700598803\n  },\n  \"lava-flat-lower\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 25.156000388346087\n  },\n  \"lava-flat-middle\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 23.262585511313805\n  },\n  \"lava-flat-southwest\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 84.58325044758305\n  },\n  \"lava-flat-upper\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 73.67541947309624\n  },\n  \"lava-flat-west\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 90.02294359510233\n  },\n  \"lavafall-bridge\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 6.831717127623087\n  },\n  \"lavafall-lower-step\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 3.917138271813498\n  },\n  \"lavafall-middle\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 2.499522384257785\n  },\n  \"lavafall-mouth\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 15.875259091765592\n  },\n  \"lavafall-upper-left\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 17.60037715093895\n  },\n  \"lavafall-upper-step\": {\n    \"status\": \"upper-bound-within-3-percent\",\n    \"upperBound\": 2.735763784272371\n  },\n  \"lavafall-volcano\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 20.158182924356115\n  },\n  \"lavafall-west\": {\n    \"status\": \"reference-incomplete\",\n    \"upperBound\": 6.5960455746191\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "measure_shore.py",
+      "exitCode": 0,
+      "durationSeconds": 4.575,
+      "evidence": "review/shore-ground-result.json",
+      "stdout": "{\n  \"reference\": \"review/shore-ground-reference.json\",\n  \"referenceSha256\": \"ad01692ba78cb61739b29c90f45f2a483dc00b5bf97cece570f57daf606cb057\",\n  \"worldPerNativePixelXY\": [\n    0.3906408952187182,\n    0.39060115959719255\n  ],\n  \"patchMeasurements\": [\n    {\n      \"mask\": \"shore-band-ice\",\n      \"patchIndex\": 0,\n      \"rectMap1x\": [\n        3230,\n        980,\n        200,\n        150\n      ],\n      \"maskPixelsInPatch\": 1472,\n      \"confirmedWaterPixels\": 1454,\n      \"confirmedWaterWithin12World\": 1337,\n      \"maximumCertifiedBankDistanceUpperBoundWorld\": 11.983062482996614,\n      \"evidence\": \"review/boundary/shore-band-ice-actual-bank-proof.webp\"\n    },\n    {\n      \"mask\": \"shore-band-spirit\",\n      \"patchIndex\": 1,\n      \"rectMap1x\": [\n        3900,\n        2200,\n        200,\n        150\n      ],\n      \"maskPixelsInPatch\": 14600,\n      \"confirmedWaterPixels\": 1692,\n      \"confirmedWaterWithin12World\": 800,\n      \"maximumCertifiedBankDistanceUpperBoundWorld\": 11.956948134927801,\n      \"evidence\": \"review/boundary/shore-band-spirit-actual-bank-proof.webp\"\n    },\n    {\n      \"mask\": \"shore-band-ice\",\n      \"patchIndex\": 2,\n      \"rectMap1x\": [\n        3070,\n        925,\n        630,\n        360\n      ],\n      \"maskPixelsInPatch\": 3373,\n      \"confirmedWaterPixels\": 2105,\n      \"confirmedWaterWithin12World\": 798,\n      \"maximumCertifiedBankDistanceUpperBoundWorld\": 11.956948134927801,\n      \"evidence\": \"review/boundary/shore-ice-central-current-actual-bank-proof.webp\"\n    }\n  ],\n  \"diskMeasurements\": [\n    {\n      \"mask\": \"shore-band-spirit\",\n      \"centerMap1x\": [\n        900,\n        2340\n      ],\n      \"radiusNative2x\": 80,\n      \"guardNative2x\": 5,\n      \"selectedWaterDiskPixels\": 0,\n      \"selectedPixelsProvenBeyond12World\": 0\n    },\n    {\n      \"mask\": \"shore-band-spirit\",\n      \"centerMap1x\": [\n        4000,\n        2320\n      ],\n      \"radiusNative2x\": 80,\n      \"guardNative2x\": 5,\n      \"selectedWaterDiskPixels\": 95,\n      \"selectedPixelsProvenBeyond12World\": 0\n    }\n  ],\n  \"maskTotals\": [\n    {\n      \"mask\": \"shore-band-ice\",\n      \"selectedPixels\": 13960,\n      \"certifiedUniquePixels\": 1595,\n      \"remainingPixelsUnverified\": 12365\n    },\n    {\n      \"mask\": \"shore-band-spirit\",\n      \"selectedPixels\": 676567,\n      \"certifiedUniquePixels\": 800,\n      \"remainingPixelsUnverified\": 675767\n    }\n  ],\n  \"allShorePixelsVerified\": false,\n  \"limitation\": \"Partial physical-bank survey only. No distance to production trace or production mask boundary is used as acceptance evidence.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "audit_particle_coverage.py",
+      "exitCode": 0,
+      "durationSeconds": 41.213,
+      "evidence": "review/particle-coverage-result.json",
+      "stdout": "[\n  {\n    \"id\": \"lava-bubble--lava-upper\",\n    \"uniqueVisiblePixels\": 21538,\n    \"uniqueConfirmedFlatPixels\": 13024,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 8514,\n    \"footprintCropNative2x\": [\n      208,\n      320,\n      1992,\n      1188\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-bubble--lava-left\",\n    \"uniqueVisiblePixels\": 2728,\n    \"uniqueConfirmedFlatPixels\": 2460,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 268,\n    \"footprintCropNative2x\": [\n      258,\n      821,\n      389,\n      930\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-bubble--lava-middle\",\n    \"uniqueVisiblePixels\": 25397,\n    \"uniqueConfirmedFlatPixels\": 19627,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 5770,\n    \"footprintCropNative2x\": [\n      166,\n      5,\n      736,\n      405\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-bubble--lava-lower\",\n    \"uniqueVisiblePixels\": 34664,\n    \"uniqueConfirmedFlatPixels\": 29424,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 5240,\n    \"footprintCropNative2x\": [\n      536,\n      410,\n      1233,\n      1309\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-steam--lava-upper\",\n    \"uniqueVisiblePixels\": 10003,\n    \"uniqueConfirmedFlatPixels\": 6400,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 3603,\n    \"footprintCropNative2x\": [\n      1493,\n      335,\n      2212,\n      1173\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-steam--lava-middle\",\n    \"uniqueVisiblePixels\": 5678,\n    \"uniqueConfirmedFlatPixels\": 5172,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 506,\n    \"footprintCropNative2x\": [\n      379,\n      82,\n      525,\n      214\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-steam--lava-lower\",\n    \"uniqueVisiblePixels\": 22089,\n    \"uniqueConfirmedFlatPixels\": 14972,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 7117,\n    \"footprintCropNative2x\": [\n      601,\n      837,\n      1086,\n      1212\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"lava-steam--lava-left-bottom\",\n    \"uniqueVisiblePixels\": 0,\n    \"uniqueConfirmedFlatPixels\": 0,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 0,\n    \"footprintCropNative2x\": null,\n    \"status\": \"no-visible-pixels\"\n  },\n  {\n    \"id\": \"lava-steam--lava-southwest\",\n    \"uniqueVisiblePixels\": 2215,\n    \"uniqueConfirmedFlatPixels\": 1231,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 984,\n    \"footprintCropNative2x\": [\n      284,\n      140,\n      447,\n      258\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"embers--lava-upper\",\n    \"uniqueVisiblePixels\": 25216,\n    \"uniqueConfirmedFlatPixels\": 12991,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 12225,\n    \"footprintCropNative2x\": [\n      1017,\n      65,\n      1998,\n      1189\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"embers--lava-middle\",\n    \"uniqueVisiblePixels\": 31840,\n    \"uniqueConfirmedFlatPixels\": 25710,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 6130,\n    \"footprintCropNative2x\": [\n      334,\n      55,\n      742,\n      405\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  },\n  {\n    \"id\": \"embers--lava-lower\",\n    \"uniqueVisiblePixels\": 34206,\n    \"uniqueConfirmedFlatPixels\": 30447,\n    \"uniqueConfirmedFallingPixels\": 0,\n    \"unknownPixels\": 3759,\n    \"footprintCropNative2x\": [\n      540,\n      387,\n      951,\n      1211\n    ],\n    \"status\": \"ground-reference-incomplete\"\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": "review_repairs.py",
+      "exitCode": 0,
+      "durationSeconds": 7.264,
+      "evidence": "loop-review.json",
+      "stdout": "Rebuilt 8 repair comparisons; measured 18 fall loops; uncovered witness pixels 0\n",
+      "stderr": ""
+    },
+    {
+      "command": "verify_delivery.py",
+      "exitCode": 1,
+      "durationSeconds": 22.859,
+      "evidence": "review/delivery-verification.json",
+      "stdout": "{\n  \"technicalChecks\": {\n    \"all37Masks2xAndNonempty\": true,\n    \"all21ReferencedSheetsConsistent\": true,\n    \"all21SheetsHaveDistinctVisiblePhases\": true,\n    \"allThreeClipsDecode288Frames12Seconds\": true,\n    \"all31ComparisonPairsPresent\": true,\n    \"all31BoundaryViewsPresent\": true,\n    \"all10GroundCropsMatchAssembledV7\": true,\n    \"allLabelledReferencesMatchAssembledV7\": true,\n    \"all18FallMasksHaveGroundReferences\": true,\n    \"all10IceFallsEightDistinct800Frames\": true,\n    \"approved30FoamSpotsUnchanged\": true,\n    \"lavaSpotsReferenceOnlyFlatMasks\": true,\n    \"iceFlatPiecesAreTilesWithFlowDir\": true,\n    \"uncorrectedAssetsMatchInheritedHashes\": true,\n    \"correctedMasksMatchRecordedHashes\": true,\n    \"currentSolidRepairsMatchRecordedInputs\": true,\n    \"summitRegistrationMatchesRecordedAssets\": true,\n    \"summitLowerWitnessHasEightEffectivePhases\": true,\n    \"semanticMeasurementsMatchCurrentMasks\": true,\n    \"all12ParticleSamplesMatchCurrentInputs\": true,\n    \"renderInputsMatchCurrentAssets\": true,\n    \"all18FallMasksHaveEightEffectivePhases\": true,\n    \"shoreAggregateEqualsComponentUnion\": true,\n    \"renderOutputsMatchRecordedHashes\": true\n  },\n  \"knownMaskFailures\": [],\n  \"shoreWitness\": {\n    \"method\": \"A visually inspected, solid-free water disk on original v7 ground gives a conservative distance LOWER BOUND to any real bank. Production mask and construction annotation do not define this disk.\",\n    \"mask\": \"shore-band-ice\",\n    \"centerMap1x\": [\n      3355,\n      1025\n    ],\n    \"radiusNative2x\": 38,\n    \"edgeSafetyNative2x\": 1,\n    \"limitWorld\": 12,\n    \"evidence\": \"review/boundary/shore-band-ice-independent-proof.webp\",\n    \"limitation\": \"Manual visual interpretation of painted ground; circle is entirely on water including white surface foam. This proves a counterexample, not a full-bank distance survey.\",\n    \"selectedPixelsProvenBeyond12World\": 0,\n    \"maximumBankDistanceLowerBoundWorld\": null,\n    \"worldPerNativePixelConservative\": 0.39060115959719255,\n    \"status\": \"counterexample-removed-full-survey-unverified\"\n  },\n  \"acceptanceComplete\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "check_shore_regression.py",
+      "exitCode": 0,
+      "evidence": "review/shore-regression-check.json",
+      "assertions": 4
+    },
+    {
+      "command": "inline per-mask handoff synchronization assertions",
+      "exitCode": 0,
+      "evidence": "review/per-mask-handoff.json",
+      "maskRowsCompared": 37
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "check_pack.py",
+      "exitCode": 0,
+      "stderr": "",
+      "evidence": "review/scope-check.json + delivery-size.json"
+    }
+  ],
+  "generationsThisContinuation": 0,
+  "gameIntegrationTested": false,
+  "visualPlaybackReviewed": false,
+  "acceptanceComplete": false,
+  "otherCommandsExecutedThisContinuation": [
+    {
+      "command": "render_offline.py --pairs icefall-east-cliff ice-stream-flat-east lava-flat-lower --clips owner-2-ice-bridge",
+      "exitCode": 0,
+      "evidence": "review/offline-render-report.json"
+    },
+    {
+      "command": "inline regression fixture calling measure_shore.main",
+      "exitCode": 0,
+      "evidence": "review/shore-regression-check.json"
+    }
+  ],
+  "recoveredDevelopmentFailures": [
+    {
+      "command": "measure_shore.py",
+      "failure": "9 pixels labelled both water and solid; assertion stopped report publication",
+      "resolution": "Re-read ground and inset the bank label before final measurement"
+    },
+    {
+      "command": "measure_shore.py",
+      "failure": "negative patch origin caused zero-width NumPy slice",
+      "resolution": "Clip the patch with Pillow paste before pixel union; fixture covers negative origin and duplicate patches"
+    },
+    {
+      "command": "inline fixture first attempt",
+      "failure": "fully opaque WebP fixture encoded as RGB; alpha accessor rejected it",
+      "resolution": "Use a mixed-alpha WebP mask fixture consistent with production masks"
+    }
+  ],
+  "technicalChecksTrue": 24,
+  "technicalChecksTotal": 24
+}

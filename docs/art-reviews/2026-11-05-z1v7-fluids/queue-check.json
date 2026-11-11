@@ -1,0 +1,24 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "review/20261111T064410Z-copy-receipt.json + review/current-preservation.json — รับต่อ 400 ไฟล์จากรอบล่าสุด 3 production masks เปลี่ยนตามรายงาน repair เฟรมวาดและ native v7 hash ตรงเดิม",
+    "review/summit-registration-result.json — รันซ้ำ exit 0 คง 528/528 effective pixels ทั้ง 8 เฟรมและ hash เดิม",
+    "review/solid-repair-result.json — east-cliff ตัด 1332 pixels lava-flat-lower ตัด 4460 pixels พร้อม aggregate witness solid 75/257 เหลือ 0/0",
+    "review/liquid-reference-result.json + mask-review.json — มี reference 28/37 masks ขอบเขตบน ≤3% ได้ 9/37 east-cliff 0.5024% อีก 28 ยังยืนยันไม่ได้",
+    "review/shore-ground-result.json + review/shore-regression-check.json — ice ยืนยัน 1595/13960 pixels spirit 800/676567 นับ union รองรับ overlap/negative origin fixture 50 unique จากผลรวม 100",
+    "review/particle-coverage-result.json — 12 pieces ×288 samples embers--lava-lower visible union ลดจาก 34470 เป็น 34206 flat-only ทั้งชุดยังยืนยันไม่ได้",
+    "review/current-render-dependencies.json + review/offline-render-report.json — อัปเดต 3 pairs 2 contacts และ owner-2 clip เก็บ 28 pairs 1 contact 2 clips hash เดิม",
+    "review/delivery-verification.json + review/run-validation.json — ผลคำสั่งจริง verifier exit 1 เนื่องจาก acceptance ยังไม่ครบ ตรวจเทคนิค/hash/decode แยกไว้",
+    "README.md + loop-review.json + generation-prompts*.json — เอกสารไทยและ prompts ครบ 0 generations ใหม่ ใช้เฟรม ImageGen เดิม",
+    "delivery-size.json + review/scope-check.json — จำนวน bytes และขอบเขตจริงหลังตรวจแพ็ก"
+  ],
+  "remaining": [
+    "ทำ reference สำหรับ 9 masks ที่ยัง reference-missing ได้แก่ ice-stream-flat, lava-flat-left-bottom, lava-flat, shore-band-ice, shore-band-spirit, shore-band, spirit-river-east, spirit-river-west, spirit-river",
+    "ขยาย reference ในอีก 19 masks ที่ยังมี unknown เกิน 3% ดู largestUnknownComponents และ nextAction รายชิ้นใน review/per-mask-handoff.json",
+    "สำรวจน้ำตกที่วาดจริงทั่ว v7 และตรวจรูปทรง/ละอองฐานทุกจุด summit ขั้นล่าง 528/528 ครบ 8 phases ตรวจซ้ำแล้ว เก็บชิ้นนี้ไว้",
+    "วัด shore-band-ice อีก 12365 pixels และ shore-band-spirit อีก 675767 pixels จากผิวน้ำและฝั่งจริง เก็บการนับแบบ union เพื่อรองรับ patches ซ้อน/เกินขอบ",
+    "เติม flat/falling labels ให้ครอบ footprints ของ lava particles ทั้ง 12 pieces โดยเฉพาะ unknown ของ upper/lower left-bottom ไม่มีพิกเซลมองเห็นใน 288 samples",
+    "ตรวจ playback รอยต่อ 8→1 ทุกจุด รวม upper-tree และเทียบรูปทรงลาวาตก HD กับพื้น v7 ให้ครบ",
+    "หากแก้ production assets เพิ่ม ให้คำนวณ dependencies จากพิกเซลที่เปลี่ยน เรนเดอร์เฉพาะหลักฐานที่กระทบ แล้วตรวจ hashes/decode/size/scope ใหม่"
+  ]
+}

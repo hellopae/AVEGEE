@@ -1,0 +1,865 @@
+{
+  "method": "Prior ground-only exclusion labels rechecked after targeted mask repairs. These now serve as regression witnesses, not a new independent full-liquid segmentation.",
+  "reference": "review/independent-exclusions.json",
+  "resolution": "2x",
+  "measurements": [
+    {
+      "id": "icefall-summit",
+      "maskRectPx": [
+        4320,
+        160,
+        250,
+        340
+      ],
+      "size": [
+        500,
+        680
+      ],
+      "resolution2x": true,
+      "selectedPixels": 64735,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 2,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-summit.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-upper-tree",
+      "maskRectPx": [
+        4070,
+        485,
+        180,
+        150
+      ],
+      "size": [
+        360,
+        300
+      ],
+      "resolution2x": true,
+      "selectedPixels": 668,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 4,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-upper-tree.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-upper-right",
+      "maskRectPx": [
+        3920,
+        625,
+        180,
+        210
+      ],
+      "size": [
+        360,
+        420
+      ],
+      "resolution2x": true,
+      "selectedPixels": 9217,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-upper-right.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-east-cliff",
+      "maskRectPx": [
+        4570,
+        1030,
+        160,
+        200
+      ],
+      "size": [
+        320,
+        400
+      ],
+      "resolution2x": true,
+      "selectedPixels": 5175,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 1,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-east-cliff.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-center-bridge",
+      "maskRectPx": [
+        3040,
+        1290,
+        210,
+        200
+      ],
+      "size": [
+        420,
+        400
+      ],
+      "resolution2x": true,
+      "selectedPixels": 29675,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-center-bridge.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-lower-inlet",
+      "maskRectPx": [
+        3660,
+        1505,
+        130,
+        160
+      ],
+      "size": [
+        260,
+        320
+      ],
+      "resolution2x": true,
+      "selectedPixels": 4044,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-lower-inlet.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-lower-1",
+      "maskRectPx": [
+        3805,
+        1554,
+        160,
+        189
+      ],
+      "size": [
+        320,
+        378
+      ],
+      "resolution2x": true,
+      "selectedPixels": 16003,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-lower-1.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-lower-2",
+      "maskRectPx": [
+        3830,
+        1695,
+        170,
+        160
+      ],
+      "size": [
+        340,
+        320
+      ],
+      "resolution2x": true,
+      "selectedPixels": 12018,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-lower-2.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-lower-3",
+      "maskRectPx": [
+        3820,
+        1800,
+        230,
+        185
+      ],
+      "size": [
+        460,
+        370
+      ],
+      "resolution2x": true,
+      "selectedPixels": 26113,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-lower-3.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "icefall-mouth",
+      "maskRectPx": [
+        4020,
+        2005,
+        265,
+        180
+      ],
+      "size": [
+        530,
+        360
+      ],
+      "resolution2x": true,
+      "selectedPixels": 19940,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/icefall-mouth.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-volcano",
+      "maskRectPx": [
+        723,
+        73,
+        100,
+        165
+      ],
+      "size": [
+        200,
+        330
+      ],
+      "resolution2x": true,
+      "selectedPixels": 24655,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-volcano.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-upper-left",
+      "maskRectPx": [
+        455,
+        246,
+        60,
+        99
+      ],
+      "size": [
+        120,
+        198
+      ],
+      "resolution2x": true,
+      "selectedPixels": 12727,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-upper-left.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-upper-step",
+      "maskRectPx": [
+        1121,
+        423,
+        104,
+        165
+      ],
+      "size": [
+        208,
+        330
+      ],
+      "resolution2x": true,
+      "selectedPixels": 33190,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-upper-step.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-west",
+      "maskRectPx": [
+        188,
+        734,
+        114,
+        169
+      ],
+      "size": [
+        228,
+        338
+      ],
+      "resolution2x": true,
+      "selectedPixels": 37477,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-west.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-bridge",
+      "maskRectPx": [
+        1117,
+        865,
+        114,
+        156
+      ],
+      "size": [
+        228,
+        312
+      ],
+      "resolution2x": true,
+      "selectedPixels": 32071,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-bridge.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-middle",
+      "maskRectPx": [
+        1100,
+        1282,
+        123,
+        178
+      ],
+      "size": [
+        246,
+        356
+      ],
+      "resolution2x": true,
+      "selectedPixels": 31406,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-middle.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-lower-step",
+      "maskRectPx": [
+        1346,
+        1681,
+        135,
+        159
+      ],
+      "size": [
+        270,
+        318
+      ],
+      "resolution2x": true,
+      "selectedPixels": 47356,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-lower-step.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lavafall-mouth",
+      "maskRectPx": [
+        1203,
+        2033,
+        86,
+        157
+      ],
+      "size": [
+        172,
+        314
+      ],
+      "resolution2x": true,
+      "selectedPixels": 21228,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lavafall-mouth.webp",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-upper",
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "size": [
+        2240,
+        1240
+      ],
+      "resolution2x": true,
+      "selectedPixels": 92199,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-upper-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-west",
+      "maskRectPx": [
+        30,
+        490,
+        520,
+        560
+      ],
+      "size": [
+        1040,
+        1120
+      ],
+      "resolution2x": true,
+      "selectedPixels": 44021,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-west-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-middle",
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "size": [
+        1000,
+        440
+      ],
+      "resolution2x": true,
+      "selectedPixels": 57010,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-middle-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-lower",
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "size": [
+        1320,
+        1560
+      ],
+      "resolution2x": true,
+      "selectedPixels": 113301,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-lower-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-left-bottom",
+      "maskRectPx": [
+        160,
+        1180,
+        330,
+        220
+      ],
+      "size": [
+        660,
+        440
+      ],
+      "resolution2x": true,
+      "selectedPixels": 10318,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-left-bottom-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat-southwest",
+      "maskRectPx": [
+        215,
+        1700,
+        405,
+        390
+      ],
+      "size": [
+        810,
+        780
+      ],
+      "resolution2x": true,
+      "selectedPixels": 15081,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/lava-flat-southwest-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat-upper",
+      "maskRectPx": [
+        3650,
+        660,
+        650,
+        250
+      ],
+      "size": [
+        1300,
+        500
+      ],
+      "resolution2x": true,
+      "selectedPixels": 65663,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/ice-stream-flat-upper-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat-central",
+      "maskRectPx": [
+        3070,
+        925,
+        630,
+        360
+      ],
+      "size": [
+        1260,
+        720
+      ],
+      "resolution2x": true,
+      "selectedPixels": 111661,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/ice-stream-flat-central-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat-lower",
+      "maskRectPx": [
+        3020,
+        1440,
+        1110,
+        570
+      ],
+      "size": [
+        2220,
+        1140
+      ],
+      "resolution2x": true,
+      "selectedPixels": 76598,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/ice-stream-flat-lower-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat-east",
+      "maskRectPx": [
+        4650,
+        1175,
+        265,
+        170
+      ],
+      "size": [
+        530,
+        340
+      ],
+      "resolution2x": true,
+      "selectedPixels": 17462,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/ice-stream-flat-east-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat-mouth",
+      "maskRectPx": [
+        4140,
+        2135,
+        140,
+        55
+      ],
+      "size": [
+        280,
+        110
+      ],
+      "resolution2x": true,
+      "selectedPixels": 3586,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/ice-stream-flat-mouth-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "spirit-river-west",
+      "maskRectPx": [
+        0,
+        2110,
+        2370,
+        440
+      ],
+      "size": [
+        4740,
+        880
+      ],
+      "resolution2x": true,
+      "selectedPixels": 1804030,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/spirit-river-west-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "spirit-river-east",
+      "maskRectPx": [
+        2560,
+        2110,
+        2355,
+        450
+      ],
+      "size": [
+        4710,
+        900
+      ],
+      "resolution2x": true,
+      "selectedPixels": 1969096,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": "review/boundary/spirit-river-east-overview.jpg",
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "shore-band-ice",
+      "maskRectPx": [
+        3085,
+        704,
+        1828,
+        1471
+      ],
+      "size": [
+        3656,
+        2942
+      ],
+      "resolution2x": true,
+      "selectedPixels": 13960,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "shore-band-spirit",
+      "maskRectPx": [
+        2,
+        2129,
+        4911,
+        382
+      ],
+      "size": [
+        9822,
+        764
+      ],
+      "resolution2x": true,
+      "selectedPixels": 676567,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "lava-flat",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "size": [
+        9830,
+        6554
+      ],
+      "resolution2x": true,
+      "selectedPixels": 331930,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "ice-stream-flat",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "size": [
+        9830,
+        6554
+      ],
+      "resolution2x": true,
+      "selectedPixels": 274970,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "spirit-river",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "size": [
+        9830,
+        6554
+      ],
+      "resolution2x": true,
+      "selectedPixels": 3773126,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    },
+    {
+      "id": "shore-band",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "size": [
+        9830,
+        6554
+      ],
+      "resolution2x": true,
+      "selectedPixels": 690527,
+      "nonBinaryAlphaPixels": 0,
+      "independentlyLabelledSolidRegions": 0,
+      "confirmedOutsidePixels": 0,
+      "outsideDrawnLiquidPercentLowerBound": 0.0,
+      "outsideDrawnLiquidPercent": null,
+      "status": "unverified",
+      "visualEvidence": null,
+      "limitation": "Partial independent solid-interior labels only. Unlabelled pixels remain unknown. A lower bound below 3% is not acceptance."
+    }
+  ],
+  "semanticOutsidePercentVerifiedForAllMasks": false,
+  "knownFailures": [],
+  "limitations": [
+    "Painted blue ice and water can be ambiguous. Labels deliberately avoid boundary pixels, foam and spray.",
+    "An unlabelled pixel is not asserted to be liquid. Zero counted exclusions does not establish zero leakage.",
+    "This is a second visual review by the current agent, not an independent human review."
+  ]
+}

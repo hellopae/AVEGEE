@@ -1,0 +1,27 @@
+{
+  "method": "Intersect actual removed-pixel bounding rectangles with every pair/view rectangle. Conservatively refresh any touching evidence. The aggregate lava-flat mask is not consumed by layout pieces.",
+  "changedProductionPixelRectsMap1x": [
+    [
+      4658.0,
+      1141.5,
+      26.0,
+      36.5
+    ],
+    [
+      1364.5,
+      1563.0,
+      113.5,
+      108.5
+    ]
+  ],
+  "affectedPairs": [
+    "icefall-east-cliff",
+    "lava-flat-lower",
+    "ice-stream-flat-east"
+  ],
+  "affectedClips": [
+    "owner-2-ice-bridge"
+  ],
+  "preservedPairs": 28,
+  "preservedClips": 2
+}

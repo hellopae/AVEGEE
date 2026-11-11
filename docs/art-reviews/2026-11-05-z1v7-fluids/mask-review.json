@@ -1,0 +1,713 @@
+{
+  "maskResolution": "2x",
+  "measurements": [
+    {
+      "id": "icefall-summit",
+      "maskRectPx": [
+        4320,
+        160,
+        250,
+        340
+      ],
+      "maskSizePx": [
+        500,
+        680
+      ],
+      "maskPixels": 64735,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 48.00185371128447,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-upper-tree",
+      "maskRectPx": [
+        4070,
+        485,
+        180,
+        150
+      ],
+      "maskSizePx": [
+        360,
+        300
+      ],
+      "maskPixels": 668,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 3.7425149700598803,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-upper-right",
+      "maskRectPx": [
+        3920,
+        625,
+        180,
+        210
+      ],
+      "maskSizePx": [
+        360,
+        420
+      ],
+      "maskPixels": 9217,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 2.9293696430508844,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-east-cliff",
+      "maskRectPx": [
+        4570,
+        1030,
+        160,
+        200
+      ],
+      "maskSizePx": [
+        320,
+        400
+      ],
+      "maskPixels": 5175,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 0.5024154589371981,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-center-bridge",
+      "maskRectPx": [
+        3040,
+        1290,
+        210,
+        200
+      ],
+      "maskSizePx": [
+        420,
+        400
+      ],
+      "maskPixels": 29675,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 0.4144903117101938,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-lower-inlet",
+      "maskRectPx": [
+        3660,
+        1505,
+        130,
+        160
+      ],
+      "maskSizePx": [
+        260,
+        320
+      ],
+      "maskPixels": 4044,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 3.437190900098912,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-lower-1",
+      "maskRectPx": [
+        3805,
+        1554,
+        160,
+        189
+      ],
+      "maskSizePx": [
+        320,
+        378
+      ],
+      "maskPixels": 16003,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 0.056239455102168344,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-lower-2",
+      "maskRectPx": [
+        3830,
+        1695,
+        170,
+        160
+      ],
+      "maskSizePx": [
+        340,
+        320
+      ],
+      "maskPixels": 12018,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 0.06656681644200366,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-lower-3",
+      "maskRectPx": [
+        3820,
+        1800,
+        230,
+        185
+      ],
+      "maskSizePx": [
+        460,
+        370
+      ],
+      "maskPixels": 26113,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 2.194309347834412,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "icefall-mouth",
+      "maskRectPx": [
+        4020,
+        2005,
+        265,
+        180
+      ],
+      "maskSizePx": [
+        530,
+        360
+      ],
+      "maskPixels": 19940,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 0.31093279839518556,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-volcano",
+      "maskRectPx": [
+        723,
+        73,
+        100,
+        165
+      ],
+      "maskSizePx": [
+        200,
+        330
+      ],
+      "maskPixels": 24655,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 20.158182924356115,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-upper-left",
+      "maskRectPx": [
+        455,
+        246,
+        60,
+        99
+      ],
+      "maskSizePx": [
+        120,
+        198
+      ],
+      "maskPixels": 12727,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 17.60037715093895,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-upper-step",
+      "maskRectPx": [
+        1121,
+        423,
+        104,
+        165
+      ],
+      "maskSizePx": [
+        208,
+        330
+      ],
+      "maskPixels": 33190,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 2.735763784272371,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-west",
+      "maskRectPx": [
+        188,
+        734,
+        114,
+        169
+      ],
+      "maskSizePx": [
+        228,
+        338
+      ],
+      "maskPixels": 37477,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 6.5960455746191,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-bridge",
+      "maskRectPx": [
+        1117,
+        865,
+        114,
+        156
+      ],
+      "maskSizePx": [
+        228,
+        312
+      ],
+      "maskPixels": 32071,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 6.831717127623087,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-middle",
+      "maskRectPx": [
+        1100,
+        1282,
+        123,
+        178
+      ],
+      "maskSizePx": [
+        246,
+        356
+      ],
+      "maskPixels": 31406,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 2.499522384257785,
+      "liquidReferenceStatus": "upper-bound-within-3-percent",
+      "leakageUpperBoundWithin3Percent": true,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-lower-step",
+      "maskRectPx": [
+        1346,
+        1681,
+        135,
+        159
+      ],
+      "maskSizePx": [
+        270,
+        318
+      ],
+      "maskPixels": 47356,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 3.917138271813498,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lavafall-mouth",
+      "maskRectPx": [
+        1203,
+        2033,
+        86,
+        157
+      ],
+      "maskSizePx": [
+        172,
+        314
+      ],
+      "maskPixels": 21228,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 15.875259091765592,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-upper",
+      "maskRectPx": [
+        280,
+        155,
+        1120,
+        620
+      ],
+      "maskSizePx": [
+        2240,
+        1240
+      ],
+      "maskPixels": 92199,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 73.67541947309624,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-west",
+      "maskRectPx": [
+        30,
+        490,
+        520,
+        560
+      ],
+      "maskSizePx": [
+        1040,
+        1120
+      ],
+      "maskPixels": 44021,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 90.02294359510233,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-middle",
+      "maskRectPx": [
+        1040,
+        1000,
+        500,
+        220
+      ],
+      "maskSizePx": [
+        1000,
+        440
+      ],
+      "maskPixels": 57010,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 23.262585511313805,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-lower",
+      "maskRectPx": [
+        1060,
+        1425,
+        660,
+        780
+      ],
+      "maskSizePx": [
+        1320,
+        1560
+      ],
+      "maskPixels": 113301,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 25.156000388346087,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-left-bottom",
+      "maskRectPx": [
+        160,
+        1180,
+        330,
+        220
+      ],
+      "maskSizePx": [
+        660,
+        440
+      ],
+      "maskPixels": 10318,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat-southwest",
+      "maskRectPx": [
+        215,
+        1700,
+        405,
+        390
+      ],
+      "maskSizePx": [
+        810,
+        780
+      ],
+      "maskPixels": 15081,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 84.58325044758305,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat-upper",
+      "maskRectPx": [
+        3650,
+        660,
+        650,
+        250
+      ],
+      "maskSizePx": [
+        1300,
+        500
+      ],
+      "maskPixels": 65663,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 23.85209326409089,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat-central",
+      "maskRectPx": [
+        3070,
+        925,
+        630,
+        360
+      ],
+      "maskSizePx": [
+        1260,
+        720
+      ],
+      "maskPixels": 111661,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 16.440834310994887,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat-lower",
+      "maskRectPx": [
+        3020,
+        1440,
+        1110,
+        570
+      ],
+      "maskSizePx": [
+        2220,
+        1140
+      ],
+      "maskPixels": 76598,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 86.67980887229432,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat-east",
+      "maskRectPx": [
+        4650,
+        1175,
+        265,
+        170
+      ],
+      "maskSizePx": [
+        530,
+        340
+      ],
+      "maskPixels": 17462,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 18.38277402359409,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat-mouth",
+      "maskRectPx": [
+        4140,
+        2135,
+        140,
+        55
+      ],
+      "maskSizePx": [
+        280,
+        110
+      ],
+      "maskPixels": 3586,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": 59.648633575013946,
+      "liquidReferenceStatus": "reference-incomplete",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "spirit-river-west",
+      "maskRectPx": [
+        0,
+        2110,
+        2370,
+        440
+      ],
+      "maskSizePx": [
+        4740,
+        880
+      ],
+      "maskPixels": 1804030,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "spirit-river-east",
+      "maskRectPx": [
+        2560,
+        2110,
+        2355,
+        450
+      ],
+      "maskSizePx": [
+        4710,
+        900
+      ],
+      "maskPixels": 1969096,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "shore-band-ice",
+      "maskRectPx": [
+        3085,
+        704,
+        1828,
+        1471
+      ],
+      "maskSizePx": [
+        3656,
+        2942
+      ],
+      "maskPixels": 13960,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "shore-band-spirit",
+      "maskRectPx": [
+        2,
+        2129,
+        4911,
+        382
+      ],
+      "maskSizePx": [
+        9822,
+        764
+      ],
+      "maskPixels": 676567,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "lava-flat",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "maskSizePx": [
+        9830,
+        6554
+      ],
+      "maskPixels": 331930,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "ice-stream-flat",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "maskSizePx": [
+        9830,
+        6554
+      ],
+      "maskPixels": 274970,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "spirit-river",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "maskSizePx": [
+        9830,
+        6554
+      ],
+      "maskPixels": 3773126,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    },
+    {
+      "id": "shore-band",
+      "maskRectPx": [
+        0,
+        0,
+        4915,
+        3277
+      ],
+      "maskSizePx": [
+        9830,
+        6554
+      ],
+      "maskPixels": 690527,
+      "outsideDrawnLiquidPercent": null,
+      "outsideDrawnLiquidPercentUpperBound": null,
+      "liquidReferenceStatus": "reference-missing",
+      "leakageUpperBoundWithin3Percent": false,
+      "fullSemanticAcceptanceVerified": false
+    }
+  ],
+  "semanticOutsidePercentVerified": false,
+  "explanation": "Current counts after inherited repairs and summit registration. 9 masks have conservative <=3% upper bounds from separate ground-only liquid labels. Remaining support is unknown; full pack acceptance remains incomplete.",
+  "liquidReferenceEvidence": "review/liquid-reference-result.json",
+  "regressionEvidence": "review/independent-mask-review.json",
+  "knownCoverageGap": "review/coverage-witness-result.json"
+}

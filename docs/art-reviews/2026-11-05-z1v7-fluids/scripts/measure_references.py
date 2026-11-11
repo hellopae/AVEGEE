@@ -1,0 +1,93 @@
+"""Measure frozen ground-only labels without altering masks or filling unknowns."""
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+from PIL import Image, ImageDraw
+from scipy import ndimage
+
+from build_assets import crop, terrain
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    reference_path = ROOT / 'review/liquid-reference.json'
+    reference = json.loads(reference_path.read_text())
+    ground_map = terrain()
+    results = []
+    for path in sorted((ROOT / 'masks').glob('*.webp')):
+        name = path.stem
+        alpha = np.array(Image.open(path).getchannel('A')) > 0
+        total = int(alpha.sum())
+        item = reference['masks'].get(name)
+        result = {'mask': name, 'maskSha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                  'selectedPixels': total, 'definiteLiquidPixels': 0, 'unknownPixels': total,
+                  'outsideDrawnLiquidPercent': None, 'outsidePercentUpperBound': None,
+                  'status': 'reference-missing'}
+        if item:
+            labelled = Image.new('L', (alpha.shape[1], alpha.shape[0]))
+            for poly in item['definiteLiquidPolygons']:
+                ImageDraw.Draw(labelled).polygon([tuple(p) for p in poly], fill=255)
+            for poly in item.get('unlabelledPolygons', []):
+                ImageDraw.Draw(labelled).polygon([tuple(p) for p in poly], fill=0)
+            liquid = np.array(labelled) > 0
+            known = int((alpha & liquid).sum())
+            unknown = total - known
+            upper = 100 * unknown / total if total else None
+            result.update(definiteLiquidPixels=known, unknownPixels=unknown,
+                          outsidePercentUpperBound=upper,
+                          status='upper-bound-within-3-percent' if upper is not None and upper <= 3 else 'reference-incomplete')
+            components, count = ndimage.label(alpha & ~liquid)
+            sizes = np.bincount(components.ravel())
+            boxes = ndimage.find_objects(components)
+            largest = sorted(range(1, count + 1), key=lambda index: int(sizes[index]), reverse=True)[:8]
+            result['largestUnknownComponents'] = [
+                {'pixels': int(sizes[index]),
+                 'boxNative2x': [boxes[index - 1][1].start, boxes[index - 1][0].start,
+                                 boxes[index - 1][1].stop, boxes[index - 1][0].stop]}
+                for index in largest
+            ]
+            result['unknownComponentCount'] = count
+            if 'groundRectMap1x' in item:
+                ground = crop(ground_map, item['groundRectMap1x'])
+            else:
+                ground = Image.open(ROOT / item['ground']).convert('RGB')
+            assert ground.size == labelled.size, name
+            panels = []
+            for region, color in [(liquid, (40, 230, 80)), (alpha & ~liquid, (255, 40, 180))]:
+                tint = Image.new('RGBA', ground.size, (*color, 0))
+                tint.putalpha(Image.fromarray(region.astype('uint8') * 115))
+                panels.append(Image.alpha_composite(ground.convert('RGBA'), tint).convert('RGB'))
+            proof = Image.new('RGB', (ground.width * 3, ground.height + 32), '#17171e')
+            for i, im in enumerate([ground, *panels]):
+                proof.paste(im, (i * ground.width, 32))
+            # Large flat-water crops remain reproducible at native resolution
+            # from the terrain and polygons. Bound only the diagnostic preview.
+            flat_preview = name.startswith(('lava-flat-', 'ice-stream-flat-'))
+            proof.thumbnail((1350, 1350) if flat_preview else (1800, 1800), Image.Resampling.LANCZOS)
+            ImageDraw.Draw(proof).text((4, 6), f'{name} | ground | frozen liquid reference (green) | mask unknown (pink)', fill='white')
+            dest = ROOT / 'review/boundary' / (name + '-liquid-reference.webp')
+            proof.save(dest, quality=48 if flat_preview else 65, method=6)
+            result['evidence'] = str(dest.relative_to(ROOT))
+            result['referenceGroundDecodedRgbSha256'] = hashlib.sha256(ground.tobytes()).hexdigest()
+            if name == 'icefall-summit':
+                before = np.array(Image.open(ROOT / 'review/before-registration/mask.webp').getchannel('A')) > 0
+                added = alpha & ~before
+                unknown_added = int((added & ~liquid).sum())
+                result['registrationAddedRegion'] = {'pixels': int(added.sum()), 'unknownPixels': unknown_added,
+                    'outsidePercentUpperBound': 100 * unknown_added / int(added.sum()) if added.any() else None}
+        results.append(result)
+    report = {'method': 'Mask support intersected with separately frozen ground-only definite-liquid interiors. All unlabelled selected pixels count as potentially outside, giving a conservative upper bound. No palette-only classification; no construction annotation imported.',
+              'reference': str(reference_path.relative_to(ROOT)),
+              'referenceSha256': hashlib.sha256(reference_path.read_bytes()).hexdigest(),
+              'sameAiReviewer': True, 'notHumanQA': True,
+              'allMasksWithin3Percent': all(r['status'] == 'upper-bound-within-3-percent' for r in results),
+              'measurements': results}
+    (ROOT / 'review/liquid-reference-result.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps({r['mask']: {'status': r['status'], 'upperBound': r['outsidePercentUpperBound']} for r in results if r['status'] != 'reference-missing'}, indent=2))
+
+
+if __name__ == '__main__':
+    main()

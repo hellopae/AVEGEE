@@ -1,0 +1,37 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 docs/art-reviews/2026-11-05-z1v7-fluids/scripts/correct_masks.py",
+  "exitCode": 0,
+  "results": [
+    {
+      "mask": "icefall-upper-tree",
+      "sha256": "b0c0c0e3c8202d5e87b98a5b8126c9ec71f77f2acba05288b2b55f7526b0c822",
+      "identicalAfterSecondRun": true,
+      "pixelsAddedOutsideInheritedSupport": 0
+    },
+    {
+      "mask": "icefall-summit",
+      "sha256": "4c47d296ec24dbaac2328760d9a8665206352c7e596e79146aec733b65ae3c76",
+      "identicalAfterSecondRun": true,
+      "pixelsAddedOutsideInheritedSupport": 0
+    },
+    {
+      "mask": "icefall-east-cliff",
+      "sha256": "c9f9dbeb6ab8091a70471d00666c320f68516ef9975eceafb133caa6a415eca0",
+      "identicalAfterSecondRun": true,
+      "pixelsAddedOutsideInheritedSupport": 0
+    },
+    {
+      "mask": "shore-band-ice",
+      "sha256": "041350aa87904bdedc771381a1ee9107ccc4d9ceea502772d04af07b5e88e802",
+      "identicalAfterSecondRun": true,
+      "pixelsAddedOutsideInheritedSupport": 0
+    },
+    {
+      "mask": "shore-band",
+      "sha256": "ab7fae6133772b2b8f4b8f95ff942c808b30cfdf9da2ca5e520833aa722ef4c4",
+      "identicalAfterSecondRun": true,
+      "pixelsAddedOutsideInheritedSupport": 0
+    }
+  ],
+  "allIdenticalAndSubset": true
+}
