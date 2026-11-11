@@ -1,0 +1,65 @@
+{
+  "status": "incomplete",
+  "reviewRound": "20261111T065049Z-44a264e5",
+  "method": "Viewed four current compare plates, current before/after plate, all 12 decoded GIF contact sheets (96 frames), and 12 native alpha plates (48 frames on white/black/green).",
+  "animatedPlaybackObserved": false,
+  "inGameTested": false,
+  "nativeAlphaFramesViewed": 48,
+  "unexpectedRedOrYellowFringeObserved": false,
+  "findings": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "finding": "คง atlas ล่าสุด: หัวและตาเปลี่ยนช่วง 4→5 และ 8→1; ทิศซ้ายเฟรม7 กระเป๋ากลับมาอยู่ด้านใกล้",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/decoded-th-cook-down-right.jpg",
+        "evidence/decoded-th-cook-down-left.jpg"
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "finding": "หน้าและตาเรียบ/กลมกว่าต้นฉบับ; ทิศซ้ายยังเป็น mirror ซึ่งกลับรายละเอียดด้านเดียว; คืนช้อน 8→1 ยังต้องแก้",
+      "evidence": [
+        "compare-asia.jpg",
+        "evidence/decoded-asia-cook-down-right.jpg",
+        "evidence/decoded-asia-cook-down-left.jpg"
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "finding": "หัวเล็กและช่วงขาเด่นกว่าต้นฉบับ; stance เปลี่ยนปลายแถว; ทิศซ้ายยังเป็น mirror กระเป๋า",
+      "evidence": [
+        "compare-west.jpg",
+        "evidence/decoded-west-cook-down-right.jpg",
+        "evidence/decoded-west-cook-down-left.jpg"
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "finding": "แก้ภาพ16เฟรมจริงแล้ว หน้าเหลี่ยม/ปากนิ่งขึ้น แต่หัวยังแคบและใบหน้าไม่ตรง source โดยเฉพาะทิศซ้าย; ซ้าย4→5 สัญลักษณ์ไหล่กลับมาและกระเป๋าหาย; ท่าคืนมือ8→1ยังต่าง. จัดฐานy314ทุกช่อง และกึ่งกลางแถบรองเท้าตรงsourceภายใน0.5px; ยังไม่ใช่การรับรองจุดสัมผัสเท้าทางกายวิภาค",
+      "evidence": [
+        "compare-cyberhell.jpg",
+        "evidence/repair-cyberhell-head/before-after.jpg",
+        "evidence/repair-cyberhell-head/packing.json",
+        "evidence/decoded-cyberhell-cook-down-left.jpg"
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "finding": "ครบside/side-left/down/up อย่างละ8เฟรม ท่าขาเปลี่ยนและถือถาดข้าวปั้น2ก้อน; หน้าและสัดส่วนยังต่างsource; side-leftยังmirrorกระเป๋า. ตรวจalphaครบ32เฟรมบนขาว/ดำ/เขียว ไม่เห็นขอบแดงหรือเหลืองส่วนเกินชัดเจนในภาพที่ตรวจ",
+      "evidence": [
+        "compare-th.jpg",
+        "evidence/decoded-th-carry-side.jpg",
+        "evidence/decoded-th-carry-side-left.jpg",
+        "evidence/decoded-th-carry-down.jpg",
+        "evidence/decoded-th-carry-up.jpg"
+      ]
+    }
+  ],
+  "limitation": "Static decoded frames and pixel measurements do not certify continuous playback, anatomical registration or exact character identity. Left identity reference is renderer mirror, not independent canonical art."
+}

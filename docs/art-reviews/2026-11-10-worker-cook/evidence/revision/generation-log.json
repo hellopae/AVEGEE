@@ -1,0 +1,144 @@
+{
+  "originalBudget": {
+    "calls": 16,
+    "status": "exhausted; separate from new repair allowance"
+  },
+  "repairAllowance": {
+    "documentedCallsBeforeRun": 0,
+    "callsThisRun": 4,
+    "runLimit": 4,
+    "repairTotal": 4,
+    "repairLimit": 16,
+    "remainingForThisRun": 0,
+    "remainingSharedRepairAllowance": 12
+  },
+  "builtInOnly": true,
+  "shadoUsed": false,
+  "externalAPIUsed": false,
+  "entries": [
+    {
+      "call": 1,
+      "tool": "image_gen__imagegen",
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "promptFile": "prompt-01.txt",
+      "references": [
+        {
+          "role": "edit target preserving hand poses",
+          "file": "target-cyberhell-down-right-1-4.webp"
+        },
+        {
+          "role": "authoritative source head identity; left is renderer mirror",
+          "file": "source-cyberhell-down-right.png"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c943-e528-7003-a61a-22537f70fe12/exec-06e94b6c-73e5-4e52-9c3d-5951f59fe4f5.png",
+      "savedLosslessOutput": "generated-01.webp",
+      "sha256": "ee1a2c405c4b4fb7fc0c7cb797a5686c0665f5c898d060589d83be981882076d"
+    },
+    {
+      "call": 2,
+      "tool": "image_gen__imagegen",
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "promptFile": "prompt-02.txt",
+      "references": [
+        {
+          "role": "edit target preserving hand poses",
+          "file": "target-cyberhell-down-right-5-8.webp"
+        },
+        {
+          "role": "authoritative source head identity; left is renderer mirror",
+          "file": "source-cyberhell-down-right.png"
+        },
+        {
+          "role": "previous generated frames for continuity",
+          "file": "generated-01.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c943-e528-7003-a61a-22537f70fe12/exec-76554a20-10da-41f7-9bd0-e404d48a08d5.png",
+      "savedLosslessOutput": "generated-02.webp",
+      "sha256": "cdf4bdda99e1dbaeb5bc44f964d884c9d299ee6539f9d05bf63072fd8cfc563e"
+    },
+    {
+      "call": 3,
+      "tool": "image_gen__imagegen",
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "promptFile": "prompt-03.txt",
+      "references": [
+        {
+          "role": "edit target preserving hand poses",
+          "file": "target-cyberhell-down-left-1-4.webp"
+        },
+        {
+          "role": "authoritative source head identity; left is renderer mirror",
+          "file": "source-cyberhell-down-left.png"
+        },
+        {
+          "role": "opposite direction rendering reference",
+          "file": "generated-01.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c943-e528-7003-a61a-22537f70fe12/exec-3a878f0e-6a4b-4c3d-9dcf-67399fb7bf06.png",
+      "savedLosslessOutput": "generated-03.webp",
+      "sha256": "ee24f5ed0f89bee6f6d19880af867181934f5046f923d4eb26dbcfcdfc64446d"
+    },
+    {
+      "call": 4,
+      "tool": "image_gen__imagegen",
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "promptFile": "prompt-04.txt",
+      "references": [
+        {
+          "role": "edit target preserving hand poses",
+          "file": "target-cyberhell-down-left-5-8.webp"
+        },
+        {
+          "role": "authoritative source head identity; left is renderer mirror",
+          "file": "source-cyberhell-down-left.png"
+        },
+        {
+          "role": "previous generated frames for continuity",
+          "file": "generated-03.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c943-e528-7003-a61a-22537f70fe12/exec-91baa82a-bcdc-4806-9ebb-6734b89c91ff.png",
+      "savedLosslessOutput": "generated-04.webp",
+      "sha256": "540ef5b666a3788a1925791189ab92abc2b8d837c1cfa00f7ebcce2963db773e"
+    }
+  ]
+}
