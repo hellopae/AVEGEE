@@ -70,8 +70,8 @@ export function fluidSpotState(piece, spot, sec) {
   if (piece.mode === 'rise') return { alpha: Math.sin(Math.PI * f) ** 1.2, ...fr, ox: spot[7] * f, oy: spot[8] * f };
   return { alpha: Math.sin(Math.PI * f) ** 1.5, ...fr, ox: spot[7] * (f - .5), oy: spot[8] * (f - .5) };   // swell
 }
-/** FLUID-SHADER: the drawn frames the shader replaces (lava / ice / river surfaces and every fall).  Spots (bubbles, steam, embers, sparkle), the bank foam and the clouds are not among them. */
-export const fluidShaderReplaces = p => (p.kind === 'tile' && (p.group === 'lava' || p.group === 'ice' || p.group === 'river')) || p.kind === 'rect';
+/** FLUID-SHADER: the drawn frames the shader replaces (lava / ice / river surfaces, every fall, the cloud sea and its puffs).  Spots (bubbles, steam, embers, sparkle) and the bank foam are not among them. */
+export const fluidShaderReplaces = p => (p.kind === 'tile' && (p.group === 'lava' || p.group === 'ice' || p.group === 'river' || p.group === 'cloud')) || p.kind === 'rect' || p.kind === 'puff';
 /** Per piece: same-mask puffs are drawn together in one layer so the 4 drifting clouds cost one composite. */
 export function fluidDrawPlan(layout) {
   const plan = [];

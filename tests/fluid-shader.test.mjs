@@ -42,7 +42,7 @@ test('fluids.json: world rectangles, flow files with the right size, cores insid
   const ids = new Set();
   for (const p of layout.pieces) {
     assert.ok(!ids.has(p.id), 'unique ' + p.id); ids.add(p.id);
-    assert.ok(['falls', 'flats'].includes(p.group) && ['lava', 'ice', 'spirit'].includes(p.liquid) && ['fall', 'flat'].includes(p.kind), p.id);
+    assert.ok(['falls', 'flats', 'clouds'].includes(p.group) && ['lava', 'ice', 'spirit', 'cloud'].includes(p.liquid) && ['fall', 'flat'].includes(p.kind), p.id);
     assert.ok(existsSync(file(FX + p.flow)), p.id + ' flow file');
     const [w, h] = pngSize(FX + p.flow);
     assert.equal(w, Math.round(p.rectPx[2] * p.res), p.id + ' width'); assert.equal(h, Math.round(p.rectPx[3] * p.res), p.id + ' height');
@@ -86,6 +86,8 @@ test('town-fluid-fx: the shader is asked by default, the drawn frames it replace
   assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'river' }), true);
   assert.equal(FXM.fluidShaderReplaces({ kind: 'rect', group: 'waterfall' }), true);
   assert.equal(FXM.fluidShaderReplaces({ kind: 'rect', group: 'lavafall' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'cloud' }), true);
+  assert.equal(FXM.fluidShaderReplaces({ kind: 'puff', group: 'cloud' }), true);
   assert.equal(FXM.fluidShaderReplaces({ kind: 'spots', group: 'lava-bubble' }), false);
   assert.equal(FXM.fluidShaderReplaces({ kind: 'spots', group: 'sparkle' }), false);
   assert.equal(FXM.fluidShaderReplaces({ kind: 'tile', group: 'foam' }), false);

@@ -10,6 +10,426 @@
  ],
  "pieces": [
   {
+   "id": "cloud-flat-10-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3802,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3840,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-10-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-10-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3802,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    3840,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-10-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-6-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2266,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    2304,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-6-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-6-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2266,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    2304,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-6-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-7-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2650,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    2688,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-7-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-7-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2650,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    2688,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-7-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-8-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3034,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3072,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-8-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-2",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    730,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-2.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
    "id": "spirit-flat-0-5",
    "group": "flats",
    "liquid": "spirit",
