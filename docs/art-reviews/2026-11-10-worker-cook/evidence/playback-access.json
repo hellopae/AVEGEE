@@ -1,0 +1,9 @@
+{
+  "run": "20261111T115315Z-ccb558be",
+  "method": "cua.getState; cua.getApp(com.apple.finder)",
+  "browserError": "Browsers: Error: The browser access host is unavailable",
+  "nativeAttempt": "Computer Use was not approved to use Finder",
+  "animatedPlaybackObserved": false,
+  "decodedGifFramesInspected": true,
+  "offlineReviewPage": "preview/index.html"
+}

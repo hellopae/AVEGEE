@@ -1,0 +1,93 @@
+{
+  "tool": "built-in image_gen__imagegen",
+  "originalCalls": 16,
+  "repairCallsBeforeRun": 12,
+  "repairTotal": 16,
+  "runLimit": 4,
+  "calls": [
+    {
+      "call": 1,
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "output": "generated-01.webp",
+      "originalOutput": "/Users/agapae/.codex/generated_images/01a1ca58-bb45-7ca3-b366-3dd98c0e4b9a/exec-1c6fa263-0e72-4a99-8f0c-b0bf22de4532.png",
+      "promptFile": "prompt-01.txt",
+      "outputSha256": "9a775be5f73ab7d8a75a21e4f2cec84e509c04562f15dd776a387197de94bf52",
+      "transparentBackgroundRequested": true,
+      "target": "cyberhell-left-1-4-target.png"
+    },
+    {
+      "call": 2,
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "output": "generated-02.webp",
+      "originalOutput": "/Users/agapae/.codex/generated_images/01a1ca58-bb45-7ca3-b366-3dd98c0e4b9a/exec-c5e750df-d613-4547-b478-88a6726b49a6.png",
+      "continuityReference": "generated-01.webp",
+      "promptFile": "prompt-02.txt",
+      "outputSha256": "aabd6d1ef1cdb255c158560a3811437e5e814decb41cf6ac7a6f14d1fade7ed9",
+      "transparentBackgroundRequested": true,
+      "target": "cyberhell-left-5-8-target.png"
+    },
+    {
+      "call": 3,
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "output": "generated-03.webp",
+      "originalOutput": "/Users/agapae/.codex/generated_images/01a1ca58-bb45-7ca3-b366-3dd98c0e4b9a/exec-c3c56fac-674f-4a3f-a256-12ddc47f8334.png",
+      "promptFile": "prompt-03.txt",
+      "outputSha256": "4a303cf4486c3bfeb5a3af0e4a74525314471ddaa667078244393681c9a5239d",
+      "transparentBackgroundRequested": true,
+      "target": "th-carry-side-1-4-target.png"
+    },
+    {
+      "call": 4,
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "output": "generated-04.webp",
+      "originalOutput": "/Users/agapae/.codex/generated_images/01a1ca58-bb45-7ca3-b366-3dd98c0e4b9a/exec-e31362d7-d40c-46a7-a142-9f975086485a.png",
+      "continuityReference": "generated-03.webp",
+      "promptFile": "prompt-04.txt",
+      "outputSha256": "e148790340f178b37259df9ca47af77339efe0272cf7889bb550875b0eed1c52",
+      "transparentBackgroundRequested": true,
+      "target": "th-carry-side-5-8-target.png"
+    }
+  ],
+  "newRepairCalls": 4,
+  "repairLimit": 16,
+  "remainingShared": 0,
+  "priorLogs": [
+    "../revision/generation-log.json",
+    "../repair-th/generation-log.json",
+    "../repair-cyberhell-head/generation-log.json"
+  ],
+  "shadoUsed": false,
+  "externalAPIUsed": false
+}

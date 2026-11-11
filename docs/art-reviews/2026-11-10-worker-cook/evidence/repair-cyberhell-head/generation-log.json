@@ -1,0 +1,78 @@
+{
+  "tool": "built-in image_gen__imagegen",
+  "originalCalls": 16,
+  "repairCallsBeforeRun": 8,
+  "newRepairCalls": 4,
+  "repairTotal": 12,
+  "repairLimit": 16,
+  "remainingThisRun": 0,
+  "remainingShared": 4,
+  "transparent_background": true,
+  "shadoUsed": false,
+  "calls": [
+    {
+      "call": 1,
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "dir": "down-right",
+      "promptFile": "prompt-01.txt",
+      "target": "target-01.png",
+      "identityReference": "../revision/source-cyberhell-down-right.png",
+      "continuityReference": null,
+      "output": "generated-01.webp",
+      "originalOutputHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563 as /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563/exec-8493fc11-7d93-47d9-b389-0e47021faba1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "call": 2,
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "dir": "down-right",
+      "promptFile": "prompt-02.txt",
+      "target": "target-02.png",
+      "identityReference": "../revision/source-cyberhell-down-right.png",
+      "continuityReference": "generated-01.webp",
+      "output": "generated-02.webp",
+      "originalOutputHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563 as /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563/exec-999bb2b5-5839-4002-bfda-7b35608bb5b8.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "call": 3,
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "dir": "down-left",
+      "promptFile": "prompt-03.txt",
+      "target": "target-03.png",
+      "identityReference": "../revision/source-cyberhell-down-left.png",
+      "continuityReference": "generated-01.webp",
+      "output": "generated-03.webp",
+      "originalOutputHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563 as /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563/exec-ac21830d-b637-4548-a196-57866aa480bc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "call": 4,
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "dir": "down-left",
+      "promptFile": "prompt-04.txt",
+      "target": "target-04.png",
+      "identityReference": "../revision/source-cyberhell-down-left.png",
+      "continuityReference": "generated-03.webp",
+      "output": "generated-04.webp",
+      "originalOutputHint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563 as /Users/agapae/.codex/generated_images/01a1c95f-adbf-7580-98bb-7a50e1f3d563/exec-84f42864-b0ae-409e-9ed1-aca3f904f0fc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "method": "uniform scale to original standing height, silhouette foot-band centre at x160, bottom y319; not anatomical proof",
+  "frames": [
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 1,
+      "scaleFromToolCell": 0.5365853658536586,
+      "offset": [
+        -8,
+        0
+      ],
+      "boundsAlphaAbove40": [
+        70,
+        12,
+        268,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 168.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 9,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 2,
+      "scaleFromToolCell": 0.5365853658536586,
+      "offset": [
+        -4,
+        0
+      ],
+      "boundsAlphaAbove40": [
+        65,
+        12,
+        263,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 164.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 40,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 3,
+      "scaleFromToolCell": 0.5283018867924528,
+      "offset": [
+        -6,
+        4
+      ],
+      "boundsAlphaAbove40": [
+        72,
+        12,
+        266,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 166.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 9,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 1,
+      "row": 0,
+      "frame": 4,
+      "scaleFromToolCell": 0.5292096219931272,
+      "offset": [
+        -2,
+        3
+      ],
+      "boundsAlphaAbove40": [
+        67,
+        11,
+        266,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 161.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 24,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 5,
+      "scaleFromToolCell": 0.5347222222222222,
+      "offset": [
+        -19,
+        3
+      ],
+      "boundsAlphaAbove40": [
+        58,
+        12,
+        254,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 179.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 5,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 6,
+      "scaleFromToolCell": 0.5356521739130434,
+      "offset": [
+        -6,
+        2
+      ],
+      "boundsAlphaAbove40": [
+        59,
+        11,
+        255,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 166.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 56,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 7,
+      "scaleFromToolCell": 0.5365853658536586,
+      "offset": [
+        -18,
+        2
+      ],
+      "boundsAlphaAbove40": [
+        61,
+        12,
+        256,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 178.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 14,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 2,
+      "row": 0,
+      "frame": 8,
+      "scaleFromToolCell": 0.5365853658536586,
+      "offset": [
+        -6,
+        2
+      ],
+      "boundsAlphaAbove40": [
+        59,
+        12,
+        255,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 166.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 39,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 1,
+      "scaleFromToolCell": 0.5255972696245734,
+      "offset": [
+        -18,
+        1
+      ],
+      "boundsAlphaAbove40": [
+        64,
+        12,
+        261,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 178.0,
+      "excludedTopSideGutterMaxAlpha": 0,
+      "excludedTopSideGutterNonzeroPixels": 0,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 2,
+      "scaleFromToolCell": 0.5264957264957265,
+      "offset": [
+        -5,
+        1
+      ],
+      "boundsAlphaAbove40": [
+        63,
+        12,
+        260,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 165.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 4,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 3,
+      "scaleFromToolCell": 0.5273972602739726,
+      "offset": [
+        -18,
+        0
+      ],
+      "boundsAlphaAbove40": [
+        64,
+        11,
+        262,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 178.5,
+      "excludedTopSideGutterMaxAlpha": 0,
+      "excludedTopSideGutterNonzeroPixels": 0,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 3,
+      "row": 1,
+      "frame": 4,
+      "scaleFromToolCell": 0.5273972602739726,
+      "offset": [
+        -6,
+        0
+      ],
+      "boundsAlphaAbove40": [
+        62,
+        11,
+        260,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 165.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 5,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 5,
+      "scaleFromToolCell": 0.5229202037351444,
+      "offset": [
+        -16,
+        -1
+      ],
+      "boundsAlphaAbove40": [
+        68,
+        12,
+        253,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 175.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 1,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 6,
+      "scaleFromToolCell": 0.5238095238095238,
+      "offset": [
+        -15,
+        -1
+      ],
+      "boundsAlphaAbove40": [
+        69,
+        12,
+        254,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 175.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 17,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 7,
+      "scaleFromToolCell": 0.5238095238095238,
+      "offset": [
+        -16,
+        -1
+      ],
+      "boundsAlphaAbove40": [
+        68,
+        12,
+        253,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 175.5,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 3,
+      "anatomicalRegistrationAccepted": false
+    },
+    {
+      "call": 4,
+      "row": 1,
+      "frame": 8,
+      "scaleFromToolCell": 0.5238095238095238,
+      "offset": [
+        -15,
+        -1
+      ],
+      "boundsAlphaAbove40": [
+        66,
+        12,
+        254,
+        320
+      ],
+      "sourceStandingHeight": 308,
+      "footBandCentreXBeforeOffset": 175.0,
+      "excludedTopSideGutterMaxAlpha": 1,
+      "excludedTopSideGutterNonzeroPixels": 1,
+      "anatomicalRegistrationAccepted": false
+    }
+  ]
+}

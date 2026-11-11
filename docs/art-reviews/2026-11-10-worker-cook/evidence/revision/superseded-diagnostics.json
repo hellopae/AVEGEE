@@ -1,0 +1,33 @@
+{
+  "removedCopiedDiagnostics": [
+    "alpha-west.jpg",
+    "alpha-th.jpg",
+    "alpha-cyberhell.jpg",
+    "alpha-asia.jpg",
+    "gif-frames-west-cook-down-right.jpg",
+    "gif-frames-west-cook-down-left.jpg",
+    "gif-frames-th-carry-side-left.jpg",
+    "gif-frames-th-cook-down-left.jpg",
+    "gif-frames-cyberhell-cook-down-left.jpg",
+    "gif-frames-asia-cook-down-right.jpg",
+    "gif-frames-th-cook-down-right.jpg",
+    "gif-frames-th-carry-up.jpg",
+    "gif-frames-asia-cook-down-left.jpg",
+    "gif-frames-cyberhell-cook-down-right.jpg",
+    "gif-frames-th-carry-down.jpg",
+    "gif-frames-th-carry-side.jpg",
+    "seam-th-cook-down-right.jpg",
+    "seam-th-cook-down-left.jpg",
+    "seam-asia-cook-down-left.jpg",
+    "seam-th-carry-side-left.jpg",
+    "seam-cyberhell-cook-down-right.jpg",
+    "seam-cyberhell-cook-down-left.jpg",
+    "seam-west-cook-down-right.jpg",
+    "seam-th-carry-up.jpg",
+    "seam-th-carry-down.jpg",
+    "seam-th-carry-side.jpg",
+    "seam-west-cook-down-left.jpg",
+    "seam-asia-cook-down-right.jpg"
+  ],
+  "reason": "Superseded by current native-alpha plates and decoded GIF strips; original copies remain in latest input delivery."
+}

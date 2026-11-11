@@ -1,0 +1,18 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-cyberhell-cook-v1.webp + evidence/repair-cyberhell-head/generation-log.json — แก้ภาพจริง16เฟรมด้วยImageGenในตัว4ครั้ง; รวมรอบแก้12/16",
+    "evidence/repair-cyberhell-head/packing.json — ฐานy314ครบ16; แถบรองเท้าXขวา190/ซ้าย129คลาดไม่เกิน0.5px; ความสูง305–306px; ไม่มีalpha>40ถูกตัด",
+    "evidence/current-audit.json — ตรวจ123เงื่อนไขล่าสุด ไม่พบtechnical failure; ถอด12GIF/96เฟรม; atlasอื่น4และGIFอื่น10ตรงSHA256ชุดล่าสุด",
+    "evidence/visual-review.json + compare-*.jpg + evidence/decoded-*.jpg — ดูcook4โซนและcarryTH4ทิศครบ พบข้อค้างเรื่องหัว/รายละเอียด/รอยต่อ จึงไม่รับรองloop",
+    "evidence/native-alpha-*.jpg — ดู48เฟรม (cyberhell16 + carryTH32) บนขาว/ดำ/เขียว ไม่เห็นขอบแดง/เหลืองส่วนเกินชัดเจน",
+    "evidence/package-check.json — ผลตรวจรายการไฟล์ ขนาดรวม และขอบเขตgitจริง"
+  ],
+  "remaining": [
+    "หัว/ใบหน้า/สัดส่วนยังไม่ตรงต้นฉบับทุกเฟรมทั้ง4โซน และTHcarry; cyberhellซ้ายยังหัวแคบ",
+    "แก้รายละเอียดประจำด้านและรอยต่อ: cyberhellซ้าย4→5 สัญลักษณ์ไหล่กลับมา/กระเป๋าหาย; THซ้ายเฟรม7; asia/west และTHcarryยังmirrorรายละเอียดด้านเดียว",
+    "แก้รอยต่อ4→5/8→1 และตรวจplaybackต่อเนื่องก่อนรับรองloop; ยังไม่ได้ทดสอบในเกม",
+    "กึ่งกลางแถบรองเท้าและsilhouette bottomเป็นตัวช่วยจัดช่อง ยังต้องตรวจจุดสัมผัสเท้าทางกายวิภาคเทียบsource",
+    "ใช้โควตารอบนี้ครบ4/4 รวมรอบแก้12/16 เหลือร่วม4; carryโซนอื่นเป็นทางเลือก"
+  ]
+}
