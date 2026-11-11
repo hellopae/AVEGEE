@@ -1,0 +1,76 @@
+{
+  "lava-low-stair": [],
+  "south-plaza-stair": [
+    {
+      "id": "left-stair-side-y130",
+      "measurement": {
+        "seedContextPx1x": [
+          14,
+          130
+        ],
+        "operator": "dark-groove",
+        "searchRadiusPx1x": 4
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "left-stair-side-y150",
+      "measurement": {
+        "seedContextPx1x": [
+          13,
+          150
+        ],
+        "operator": "dark-groove",
+        "searchRadiusPx1x": 4
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "right-stair-side-y150",
+      "measurement": {
+        "seedContextPx1x": [
+          155,
+          150
+        ],
+        "operator": "dark-groove",
+        "searchRadiusPx1x": 4
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "right-ball-top",
+      "measurement": {
+        "polarity": 1
+      },
+      "diagnosis": "Initial negative gradient follows different internal highlights and the paving behind the sphere. Positive entry from the thin dark top outline into the sphere surface identifies the same visible upper silhouette.",
+      "evidence": "ambiguous-edge-pair.png; geometry-resolved-review.jpg"
+    }
+  ],
+  "pier-stair": [
+    {
+      "id": "left-stair-side-y150",
+      "measurement": {
+        "seedContextPx1x": [
+          76,
+          150
+        ],
+        "operator": "dark-groove",
+        "searchRadiusPx1x": 4
+      },
+      "diagnosis": "Initial maximum gradient selected the bright inner collar of the left post. The dark structural groove at the stair/post junction is visible at x76 in both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "shore-x278",
+      "measurement": {
+        "operator": "first-threshold",
+        "threshold": 40
+      },
+      "diagnosis": "Initial blue-minus-green gradient in the reference selected a ripple below the bank. The first blue-minus-green crossing of 40 follows the bank foam entry in both images.",
+      "evidence": "ambiguous-edge-pair.png; geometry-resolved-review.jpg"
+    }
+  ]
+}

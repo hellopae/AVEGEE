@@ -1,0 +1,281 @@
+{
+  "initialEvidence": "geometry.json",
+  "decisions": [
+    {
+      "id": "left-stair-side-y130",
+      "initialMeasurementIndex": 30,
+      "original": {
+        "id": "left-stair-side-y130",
+        "feature": "left-stair-side-y130",
+        "seedContextPx1x": [
+          14.0,
+          130
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            7.0,
+            130
+          ],
+          "responseValue": 37.802555084228516,
+          "searchBoundaryHit": true
+        },
+        "exported": {
+          "contextPx1x": [
+            8.5,
+            130
+          ],
+          "responseValue": 35.17741775512695,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 1.5,
+        "result": "unresolved"
+      },
+      "corrected": {
+        "id": "left-stair-side-y130",
+        "feature": "left-stair-side-y130",
+        "seedContextPx1x": [
+          14,
+          130
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 4,
+        "reference": {
+          "contextPx1x": [
+            14.0,
+            130
+          ],
+          "responseValue": -31.097959518432617,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            13.5,
+            130
+          ],
+          "responseValue": -28.925373077392578,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.5,
+        "result": "within4px",
+        "operator": "dark-groove"
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "left-stair-side-y150",
+      "initialMeasurementIndex": 33,
+      "original": {
+        "id": "left-stair-side-y150",
+        "feature": "left-stair-side-y150",
+        "seedContextPx1x": [
+          12.4,
+          150
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            5.5,
+            150
+          ],
+          "responseValue": 21.358760833740234,
+          "searchBoundaryHit": true
+        },
+        "exported": {
+          "contextPx1x": [
+            6.0,
+            150
+          ],
+          "responseValue": 19.91405487060547,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.5,
+        "result": "unresolved"
+      },
+      "corrected": {
+        "id": "left-stair-side-y150",
+        "feature": "left-stair-side-y150",
+        "seedContextPx1x": [
+          13,
+          150
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 4,
+        "reference": {
+          "contextPx1x": [
+            12.5,
+            150
+          ],
+          "responseValue": -26.71303939819336,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            13.0,
+            150
+          ],
+          "responseValue": -24.146560668945312,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.5,
+        "result": "within4px",
+        "operator": "dark-groove"
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "right-stair-side-y150",
+      "initialMeasurementIndex": 34,
+      "original": {
+        "id": "right-stair-side-y150",
+        "feature": "right-stair-side-y150",
+        "seedContextPx1x": [
+          155,
+          150
+        ],
+        "normal": "x",
+        "polarity": -1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            162.0,
+            150
+          ],
+          "responseValue": 18.713722229003906,
+          "searchBoundaryHit": true
+        },
+        "exported": {
+          "contextPx1x": [
+            162.0,
+            150
+          ],
+          "responseValue": 24.879165649414062,
+          "searchBoundaryHit": true
+        },
+        "distancePx1x": 0.0,
+        "result": "unresolved"
+      },
+      "corrected": {
+        "id": "right-stair-side-y150",
+        "feature": "right-stair-side-y150",
+        "seedContextPx1x": [
+          155,
+          150
+        ],
+        "normal": "x",
+        "polarity": -1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 4,
+        "reference": {
+          "contextPx1x": [
+            155.5,
+            150
+          ],
+          "responseValue": -19.9307804107666,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            155.5,
+            150
+          ],
+          "responseValue": -22.986083984375,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.0,
+        "result": "within4px",
+        "operator": "dark-groove"
+      },
+      "diagnosis": "Initial maximum-gradient sample selected the adjacent brass highlight or reached its search boundary. Compare the dark structural groove between brass and stair with the same minimum-luminance operator on both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "right-ball-top",
+      "initialMeasurementIndex": 39,
+      "original": {
+        "id": "right-ball-top",
+        "feature": "right-ball-top",
+        "seedContextPx1x": [
+          168,
+          93
+        ],
+        "normal": "y",
+        "polarity": -1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            168,
+            97.5
+          ],
+          "responseValue": 15.579963684082031,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            168,
+            88.5
+          ],
+          "responseValue": 22.149150848388672,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 9.0,
+        "result": "over4px"
+      },
+      "corrected": {
+        "id": "right-ball-top",
+        "feature": "right-ball-top",
+        "seedContextPx1x": [
+          168,
+          93
+        ],
+        "normal": "y",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            168,
+            92.0
+          ],
+          "responseValue": 35.39339065551758,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            168,
+            92.0
+          ],
+          "responseValue": 45.30408477783203,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.0,
+        "result": "within4px"
+      },
+      "diagnosis": "Initial negative gradient follows different internal highlights and the paving behind the sphere. Positive entry from the thin dark top outline into the sphere surface identifies the same visible upper silhouette.",
+      "evidence": "ambiguous-edge-pair.png; geometry-resolved-review.jpg"
+    }
+  ],
+  "measurementCount": 41,
+  "counts": {
+    "within4px": 41,
+    "over4px": 0,
+    "unresolved": 0
+  },
+  "maxDistancePx1x": 2.0,
+  "contourReview": "Named front edges, side grooves, rails/posts and pier bank reviewed against geometry-review.jpg and geometry-resolved-review.jpg. Five treads and upper landing in each crop.",
+  "limitation": "Finite architectural cross-sections with visual review. Search intervals separate repeated steps. Does not establish every contour pixel or future composition seams."
+}

@@ -1,0 +1,60 @@
+{
+  "layout": "img/map-zone1/v5-fx/fx-layout.json",
+  "layoutSha256": "003afd348bcb1a5ee0355376a4dfcfd5c64162bf86dd371ed73f09ce17978bf6",
+  "sourceCodeSha256": "3bd53f358f03028a327d48935d4450ada5ec558cb5e7a1f75d71759ae048c5c7",
+  "pieces": [],
+  "activeCloudRectanglesIntersect": false,
+  "activeCloudRectangles": [
+    {
+      "id": "cloud-sea-curls",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "contextIntersects": false
+    },
+    {
+      "id": "cloud-puff-1",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "contextIntersects": false
+    },
+    {
+      "id": "cloud-puff-2",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "contextIntersects": false
+    },
+    {
+      "id": "cloud-puff-3",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "contextIntersects": false
+    },
+    {
+      "id": "cloud-puff-4",
+      "maskRectPx1x": [
+        2612,
+        262,
+        1272,
+        730
+      ],
+      "contextIntersects": false
+    }
+  ],
+  "display": "cyan = union of active FX coverage masks, magenta = repair core. Coverage diagnostic includes spot masks, actual animated spots occupy subsets."
+}

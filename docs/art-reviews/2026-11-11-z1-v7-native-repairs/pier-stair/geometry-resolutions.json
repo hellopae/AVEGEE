@@ -1,0 +1,151 @@
+{
+  "initialEvidence": "geometry.json",
+  "decisions": [
+    {
+      "id": "left-stair-side-y150",
+      "initialMeasurementIndex": 34,
+      "original": {
+        "id": "left-stair-side-y150",
+        "feature": "left-stair-side-y150",
+        "seedContextPx1x": [
+          78,
+          150
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 7,
+        "reference": {
+          "contextPx1x": [
+            78.0,
+            150
+          ],
+          "responseValue": 16.85040855407715,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            71.0,
+            150
+          ],
+          "responseValue": 17.571107864379883,
+          "searchBoundaryHit": true
+        },
+        "distancePx1x": 7.0,
+        "result": "unresolved"
+      },
+      "corrected": {
+        "id": "left-stair-side-y150",
+        "feature": "left-stair-side-y150",
+        "seedContextPx1x": [
+          76,
+          150
+        ],
+        "normal": "x",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 4,
+        "reference": {
+          "contextPx1x": [
+            76.5,
+            150
+          ],
+          "responseValue": -17.93812370300293,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            76.0,
+            150
+          ],
+          "responseValue": -26.00358772277832,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.5,
+        "result": "within4px",
+        "operator": "dark-groove"
+      },
+      "diagnosis": "Initial maximum gradient selected the bright inner collar of the left post. The dark structural groove at the stair/post junction is visible at x76 in both images.",
+      "evidence": "geometry-grid.jpg; geometry-review.jpg; geometry-resolved-review.jpg"
+    },
+    {
+      "id": "shore-x278",
+      "initialMeasurementIndex": 49,
+      "original": {
+        "id": "shore-x278",
+        "feature": "purple-water-bank",
+        "seedContextPx1x": [
+          278,
+          161
+        ],
+        "normal": "y",
+        "channel": "purple",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 8,
+        "reference": {
+          "contextPx1x": [
+            278,
+            168.0
+          ],
+          "responseValue": 13.7269287109375,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            278,
+            162.5
+          ],
+          "responseValue": 32.37638854980469,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 5.5,
+        "result": "over4px"
+      },
+      "corrected": {
+        "id": "shore-x278",
+        "feature": "purple-water-bank",
+        "seedContextPx1x": [
+          278,
+          161
+        ],
+        "normal": "y",
+        "channel": "purple",
+        "polarity": 1,
+        "tangentHalfWidthPx1x": 2,
+        "searchRadiusPx1x": 8,
+        "reference": {
+          "contextPx1x": [
+            278,
+            162.0
+          ],
+          "responseValue": 13.209941864013672,
+          "searchBoundaryHit": false
+        },
+        "exported": {
+          "contextPx1x": [
+            278,
+            162.5
+          ],
+          "responseValue": 32.37638854980469,
+          "searchBoundaryHit": false
+        },
+        "distancePx1x": 0.5,
+        "result": "within4px",
+        "operator": "first-threshold",
+        "threshold": 40
+      },
+      "diagnosis": "Initial blue-minus-green gradient in the reference selected a ripple below the bank. The first blue-minus-green crossing of 40 follows the bank foam entry in both images.",
+      "evidence": "ambiguous-edge-pair.png; geometry-resolved-review.jpg"
+    }
+  ],
+  "measurementCount": 50,
+  "counts": {
+    "within4px": 50,
+    "over4px": 0,
+    "unresolved": 0
+  },
+  "maxDistancePx1x": 3.5,
+  "contourReview": "Named front edges, side grooves, rails/posts and pier bank reviewed against geometry-review.jpg and geometry-resolved-review.jpg. Five treads and upper landing in each crop.",
+  "limitation": "Finite architectural cross-sections with visual review. Search intervals separate repeated steps. Does not establish every contour pixel or future composition seams."
+}

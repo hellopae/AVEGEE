@@ -1,0 +1,426 @@
+{
+  "schemaVersion": 1,
+  "fullPx": [
+    9830,
+    6554
+  ],
+  "chunk": 2048,
+  "coordinateSystem": "master map1x 4915x3277, rectangles [x0,y0,x1,y1] half-open",
+  "assets": [
+    {
+      "id": "lava-low-stair",
+      "nativeFile": "lava-low-stair/native.webp",
+      "registration": "lava-low-stair/registration.json",
+      "review": "lava-low-stair/review.jpg"
+    },
+    {
+      "id": "south-plaza-stair",
+      "nativeFile": "south-plaza-stair/native.webp",
+      "registration": "south-plaza-stair/registration.json",
+      "review": "south-plaza-stair/review.jpg"
+    },
+    {
+      "id": "pier-stair",
+      "nativeFile": "pier-stair/native.webp",
+      "registration": "pier-stair/registration.json",
+      "review": "pier-stair/review.jpg"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 13661,
+      "sha256": "158d583a0657fe48b457f1c6016cb54e8635bf13b7567cf1cefdecce10d43847"
+    },
+    {
+      "path": "geometry-resolution-spec.json",
+      "bytes": 3006,
+      "sha256": "d0cf88bb3e69d84b96ef340786ecfba9a5af29a8528388dbb0f78952ff4903d1"
+    },
+    {
+      "path": "geometry-spec.json",
+      "bytes": 38512,
+      "sha256": "27fb79cee4cae7d43df63636e7818d77121804b86fd200050df186ed05ad8189"
+    },
+    {
+      "path": "lava-low-stair/alignment-overlay.jpg",
+      "bytes": 125549,
+      "sha256": "ba1fdb12345e9d592ab64f0ebc31598c41c3041fbc82a8c0b1930a4757f3a5b8"
+    },
+    {
+      "path": "lava-low-stair/assembled-before.webp",
+      "bytes": 207514,
+      "sha256": "210ba8e1c774b4f5fe63530b86e7fd1da24cb665d775e2a694af397f87b1157f"
+    },
+    {
+      "path": "lava-low-stair/fallback-before-comparison.jpg",
+      "bytes": 128812,
+      "sha256": "4b4139275b5d9486423d2aaa8faefca2530b0e81f64573ba28eeb5d5dbdd9906"
+    },
+    {
+      "path": "lava-low-stair/fallback-final-comparison.jpg",
+      "bytes": 217541,
+      "sha256": "b25d455ec14629f83115ad009f0cd88889bdbbcf77b54a50dc3faae4469f3d16"
+    },
+    {
+      "path": "lava-low-stair/fx-coverage.png",
+      "bytes": 240,
+      "sha256": "5626e063a78167dfc2277aabc2a771bfbb39f2e2f1b8cc1b5b20cc61917bdc16"
+    },
+    {
+      "path": "lava-low-stair/fx-overlap.json",
+      "bytes": 2080,
+      "sha256": "2451bc44a8246576852f8bee91d1f131ca3d680b9b7456b5c8d998577d5ea0b8"
+    },
+    {
+      "path": "lava-low-stair/fx-overlay.jpg",
+      "bytes": 170774,
+      "sha256": "644518a68c86818477c5eca3e43dd65bfc90a4a6af6d4238d42b7d3a23667f53"
+    },
+    {
+      "path": "lava-low-stair/generation.json",
+      "bytes": 1498,
+      "sha256": "d11ff1fda4f183dbc121598f5e677c557dce85a1ca0a65791d5560cf80379a90"
+    },
+    {
+      "path": "lava-low-stair/geometry-grid.jpg",
+      "bytes": 560431,
+      "sha256": "c83058fd3478745ab1d0b39a894ffe78534bd4eb6e2cadcdc3e24608f2cfc5d3"
+    },
+    {
+      "path": "lava-low-stair/geometry-resolutions.json",
+      "bytes": 571,
+      "sha256": "3703a1815d4a5aad13376d63acf940a372ffa30a419ad2eaa2a8204953b1e0ea"
+    },
+    {
+      "path": "lava-low-stair/geometry-resolved-review.jpg",
+      "bytes": 654485,
+      "sha256": "cded707e313cf537ecf249ee972febc5abf327c6cf9dccd861a22160d7924ac5"
+    },
+    {
+      "path": "lava-low-stair/geometry-review.jpg",
+      "bytes": 654485,
+      "sha256": "cded707e313cf537ecf249ee972febc5abf327c6cf9dccd861a22160d7924ac5"
+    },
+    {
+      "path": "lava-low-stair/geometry.json",
+      "bytes": 25415,
+      "sha256": "683db58a61987be32085aafd4bf41bb1a9c5893f05d89d6bf4e859b4b0fc16e5"
+    },
+    {
+      "path": "lava-low-stair/input.json",
+      "bytes": 499,
+      "sha256": "65b1381cdaadbb42406ee55a26e58252519b69392280df55643f024a5c5a9327"
+    },
+    {
+      "path": "lava-low-stair/native.webp",
+      "bytes": 2064440,
+      "sha256": "b76e520f63786ba2b10b4b879f525eb119f2d9c289cfcbb56a90a1259ec1a1e1"
+    },
+    {
+      "path": "lava-low-stair/reference-1x.png",
+      "bytes": 81279,
+      "sha256": "93f9490241f56a737d4b8eef7fecb37bea765b9ad6c66335d0fddb852064940b"
+    },
+    {
+      "path": "lava-low-stair/reference-grid.jpg",
+      "bytes": 322075,
+      "sha256": "3e9052e6c2256a1e8485be52d3f372a9078672e699f533ac3917b5495c3a0428"
+    },
+    {
+      "path": "lava-low-stair/registered-2x.webp",
+      "bytes": 282734,
+      "sha256": "c4c370701f71c73e85995e190294d8410ffc6c52898c18939f4b2b2c90031e3c"
+    },
+    {
+      "path": "lava-low-stair/registration.json",
+      "bytes": 65484,
+      "sha256": "54544f8d45ad4ae586b0c3f247fbace8c766a2679c96d2ce5a8eb841f2fd1753"
+    },
+    {
+      "path": "lava-low-stair/review.jpg",
+      "bytes": 376959,
+      "sha256": "881c3947de5566d48eae44c1381a52a9821ba1b1c290e693e2f5dc3943291162"
+    },
+    {
+      "path": "lava-low-stair/structure.json",
+      "bytes": 2070,
+      "sha256": "edc63ffdb3c0d5a6a52f17c7c1529eb86fec1fa6dc591b8968a0a73c3946901d"
+    },
+    {
+      "path": "lava-low-stair/valid-coverage.png",
+      "bytes": 933,
+      "sha256": "fa97902b6957986a5f1058a4d43046b92a1bdf79c4d8e07cf7132a7caf272398"
+    },
+    {
+      "path": "pier-stair/alignment-overlay.jpg",
+      "bytes": 195984,
+      "sha256": "378b12c68605bb0047377b10ad43df19201ccded9c082012f94d5f364580b348"
+    },
+    {
+      "path": "pier-stair/ambiguous-edge-pair.png",
+      "bytes": 8962,
+      "sha256": "08950216910d74200a19980afa73d52a6f3310017e396eadc85a01b4fc0caa6a"
+    },
+    {
+      "path": "pier-stair/assembled-before.webp",
+      "bytes": 325686,
+      "sha256": "576d19447a64da88df3c34dbd7c9af7773e300e8dec1dcda8bfed116152d8ebf"
+    },
+    {
+      "path": "pier-stair/fallback-before-comparison.jpg",
+      "bytes": 214673,
+      "sha256": "13ddf7439a20bb4c4f7c88c2656c9e9cd0adade14700d1ccd3082b06b97e628b"
+    },
+    {
+      "path": "pier-stair/fallback-final-comparison.jpg",
+      "bytes": 332009,
+      "sha256": "54ef2a6bb4a098c777377a1b21e30adf79c041b0ad807bb3564a1748c97080f3"
+    },
+    {
+      "path": "pier-stair/fx-coverage.png",
+      "bytes": 3132,
+      "sha256": "1c0ca9c5b8e393fcd5a8c5aea466279d6dbd42c486f17b2ff1a2bffcdfa684b3"
+    },
+    {
+      "path": "pier-stair/fx-overlap.json",
+      "bytes": 3302,
+      "sha256": "d53b521113fb48d5d9a859a5375514b0c9903f5edf7fac92d34b816bbe9be42c"
+    },
+    {
+      "path": "pier-stair/fx-overlay.jpg",
+      "bytes": 263757,
+      "sha256": "6601b2ecdefbdd5be09785e31db02dcb5420834494f3c36eb9b81a5bac8fcae2"
+    },
+    {
+      "path": "pier-stair/generation.json",
+      "bytes": 1483,
+      "sha256": "ee8d1eb61a6fc068e630c2d8d82f565a15e048356390000127f35a9fe3f1a79b"
+    },
+    {
+      "path": "pier-stair/geometry-grid.jpg",
+      "bytes": 855689,
+      "sha256": "cbdc74ce65191f607506fc765cc2961cdd4e587ef5cae0e6ba700242add8d711"
+    },
+    {
+      "path": "pier-stair/geometry-resolutions.json",
+      "bytes": 4337,
+      "sha256": "e26082057bb369e337b33ddefc6ab7dfe8cbab3bf85f4a5e7164778cd22c5974"
+    },
+    {
+      "path": "pier-stair/geometry-resolved-review.jpg",
+      "bytes": 1001974,
+      "sha256": "d53fca81dc2bbbd616f3cd0886c9e0fa5b5b085e0cc2966115c2793dd555aed6"
+    },
+    {
+      "path": "pier-stair/geometry-review.jpg",
+      "bytes": 1001301,
+      "sha256": "218092ae45128ed5b42cb0bc82d54e7caa3359241f89dfba839813e3aa3f49be"
+    },
+    {
+      "path": "pier-stair/geometry.json",
+      "bytes": 33292,
+      "sha256": "a45e0befe19ba0dabd0cf886a04ccdac250888bcbfaf3d338d3b5f387bf48301"
+    },
+    {
+      "path": "pier-stair/input.json",
+      "bytes": 501,
+      "sha256": "5b4697d9cea4d7913ed059471c613dccc3c600bb5a61a320940a00cb0866e9e9"
+    },
+    {
+      "path": "pier-stair/native.webp",
+      "bytes": 2324566,
+      "sha256": "f5f91580d479c77221049bc1f1c242e5ed87758694a43744eb7125eb9be761b2"
+    },
+    {
+      "path": "pier-stair/reference-1x.png",
+      "bytes": 114838,
+      "sha256": "4ee199f348bed8bd008b8c3c39fad3a12198ced38702ea85437c31f193db77e2"
+    },
+    {
+      "path": "pier-stair/reference-grid.jpg",
+      "bytes": 469791,
+      "sha256": "226becba3602b33550f5ca986a855a722439d501da1e94d672e9cb3b499a14f3"
+    },
+    {
+      "path": "pier-stair/registered-2x.webp",
+      "bytes": 444376,
+      "sha256": "7a72c5e80624b9edcca64983eb585352054c25b751c8ab54f7dc9e52c4c5fcc8"
+    },
+    {
+      "path": "pier-stair/registration.json",
+      "bytes": 50692,
+      "sha256": "9b9b8af6ca8031081e3429ad487b7ad7eda157a6efce91719cdda200742f687a"
+    },
+    {
+      "path": "pier-stair/review.jpg",
+      "bytes": 581154,
+      "sha256": "029e9fa4289c5c7de8d2d24bf5e03ec9f204384197b2e885e88cc0d180aabacf"
+    },
+    {
+      "path": "pier-stair/structure.json",
+      "bytes": 12791,
+      "sha256": "03cdde6b0372700ea32c7021e90cae33b75f07d5d7e87831eb3b68ddb28898e0"
+    },
+    {
+      "path": "pier-stair/valid-coverage.png",
+      "bytes": 1118,
+      "sha256": "456999b4da8e952cef19f561e09136f3969fc6fad642c864037e8b2780e37bd1"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 13998,
+      "sha256": "bd5ccabac03c80752536bcec869984701c0760e56c2281e6b9b061f8f5de331f"
+    },
+    {
+      "path": "queue-check.json",
+      "bytes": 3035,
+      "sha256": "ed013bcdbd19ef79d7e78d370ad9605d8965a9c40b854b487bee08d3a306c771"
+    },
+    {
+      "path": "scripts/measure-geometry.py",
+      "bytes": 7537,
+      "sha256": "79625ee18fc41228a25b9f8e64e4bb3c59c3505892f8f85d502e442eda94252a"
+    },
+    {
+      "path": "scripts/prepare.py",
+      "bytes": 2882,
+      "sha256": "856ec56d9d373169187457541005770577c18694d71223fb36efae3111be7283"
+    },
+    {
+      "path": "scripts/register.py",
+      "bytes": 9913,
+      "sha256": "bc079619e704e1ccf1e915d703bac2cba272ef699d894d2cf3e14ac3d6f7850c"
+    },
+    {
+      "path": "scripts/verify.py",
+      "bytes": 14387,
+      "sha256": "f0a2241f57a0d8893f1965077bd7bad49d1922be339a8343ab33f70275d4e132"
+    },
+    {
+      "path": "south-plaza-stair/alignment-overlay.jpg",
+      "bytes": 242970,
+      "sha256": "c5db0fa2b12d8efb4179b193faaba40f0f1c79fa0413f4c1f3a4dee432448f23"
+    },
+    {
+      "path": "south-plaza-stair/ambiguous-edge-pair.png",
+      "bytes": 11047,
+      "sha256": "0de9556ee7311b8cca00066213f0564cc6f5374ff89a043d9c3d1b94ea5a3767"
+    },
+    {
+      "path": "south-plaza-stair/assembled-before.webp",
+      "bytes": 372956,
+      "sha256": "7a1dc0caa34c628f51dc50003362cba944f1e4d8cd321537b9aaa62cd9438a04"
+    },
+    {
+      "path": "south-plaza-stair/fallback-before-comparison.jpg",
+      "bytes": 136406,
+      "sha256": "523681e3085515a1972cd51de9e91fd239b15225a658f76ea73149f356220478"
+    },
+    {
+      "path": "south-plaza-stair/fallback-final-comparison.jpg",
+      "bytes": 376742,
+      "sha256": "eb8346969ce904e6d8c92690963312ff24c066165bb7563129e6a225b27837a7"
+    },
+    {
+      "path": "south-plaza-stair/fx-coverage.png",
+      "bytes": 362,
+      "sha256": "3e9c4f64753da0e30d2e489fd90236984fe7b292ac64e2bba5731829fe0c5dc4"
+    },
+    {
+      "path": "south-plaza-stair/fx-overlap.json",
+      "bytes": 1284,
+      "sha256": "7efa01bda5d0dc9a4bc94e6c58bca02d063b9faea3b20c6aa4a9660d314d35c5"
+    },
+    {
+      "path": "south-plaza-stair/fx-overlay.jpg",
+      "bytes": 332294,
+      "sha256": "2582797e2cafbe2f1e72b740601baa9f276009f0b686b99b1ec14e910a959abb"
+    },
+    {
+      "path": "south-plaza-stair/generation.json",
+      "bytes": 1564,
+      "sha256": "6b3efb10a81e074f7b48609bb61a718839fa7f751eed1b8a48928295d3073071"
+    },
+    {
+      "path": "south-plaza-stair/geometry-grid.jpg",
+      "bytes": 1046780,
+      "sha256": "6bdbb05be68ebccac4340fd6a72d0738fc1e96fc1d393253e87d66c4dfc69975"
+    },
+    {
+      "path": "south-plaza-stair/geometry-resolutions.json",
+      "bytes": 8156,
+      "sha256": "9371d7a5cc41fdc3aa6881db8d033d83818db801cc8376fdc193ae87a5afa80e"
+    },
+    {
+      "path": "south-plaza-stair/geometry-resolved-review.jpg",
+      "bytes": 1203696,
+      "sha256": "d38244666783d66b2eed59612a16029d4db916e938a19623bc8a24b5a3fad6a2"
+    },
+    {
+      "path": "south-plaza-stair/geometry-review.jpg",
+      "bytes": 1202235,
+      "sha256": "22305fcad72340a02eec088cdddc1d776106b13d933d99b46cc5897086708d4c"
+    },
+    {
+      "path": "south-plaza-stair/geometry.json",
+      "bytes": 27268,
+      "sha256": "775f14b4cd64b0838e89dd7f257362acea930bdffcd3a7b145055112e37bfcfc"
+    },
+    {
+      "path": "south-plaza-stair/input.json",
+      "bytes": 501,
+      "sha256": "c83921cc706214851511ba383d7af47dba267f6646808ddbf867fae8debdedb7"
+    },
+    {
+      "path": "south-plaza-stair/native.webp",
+      "bytes": 2439622,
+      "sha256": "b912d6c3b1531ca5c732785f23379a3021eee0b6c9252986f6f8c1d79182a8e6"
+    },
+    {
+      "path": "south-plaza-stair/reference-1x.png",
+      "bytes": 143834,
+      "sha256": "0bfb994defdba5a6ee03bd9f603e25d0bd2bcf99aa0f135c208873db1cc1ef95"
+    },
+    {
+      "path": "south-plaza-stair/reference-grid.jpg",
+      "bytes": 571372,
+      "sha256": "75f908ac677aa8f879e9ecddb85e3fe70795b9bbc7fb2d4adb66002b95272db5"
+    },
+    {
+      "path": "south-plaza-stair/registered-2x.webp",
+      "bytes": 541882,
+      "sha256": "afbedfe9b8b2bb5d576924f499768c1693926a858109115c0c51e90a3a8bfc0d"
+    },
+    {
+      "path": "south-plaza-stair/registration.json",
+      "bytes": 62256,
+      "sha256": "ba8ffd7bfcd0fc9000792ca0c6b01fe496aa8ab5c68819ad9d9c8ba3769d431c"
+    },
+    {
+      "path": "south-plaza-stair/review.jpg",
+      "bytes": 688083,
+      "sha256": "3b1e6acf98d7ec245bb88eb230cdba4a215661fd38a31f30a11a934eeed5944c"
+    },
+    {
+      "path": "south-plaza-stair/structure.json",
+      "bytes": 12655,
+      "sha256": "69a87ae6392179bdd722a31423eaa2b01cd0cdd111ea2fce07cf065cc8730dca"
+    },
+    {
+      "path": "south-plaza-stair/valid-coverage.png",
+      "bytes": 1328,
+      "sha256": "b2ec171e279aa9a9b41e0329a5e7807514c05d1ee615a806e0e89b59a3f8e16f"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 13385,
+      "sha256": "0ea74c80d552fe5e2dcaa52445e44b009d006221b1cffe5be95924a8e218bd83"
+    },
+    {
+      "path": "visual-review.json",
+      "bytes": 3101,
+      "sha256": "308d3d5d88fce3c2161c8a13cab648cb0a1dd3247b84fb16179ee717beff0e93"
+    }
+  ]
+}

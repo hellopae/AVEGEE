@@ -1,0 +1,1520 @@
+{
+  "id": "pier-stair",
+  "thresholdPx1x": 4,
+  "method": "Signed gradient maximum of a tangent-averaged profile, Gaussian sigma0.5 map px, sampled at 0.5 map px. Independent reference/export edge locations, guided by geometry-spec.json. All samples retained.",
+  "limitation": "Finite architectural cross-sections with visual review. Search intervals separate repeated steps. Does not establish every contour pixel or future composition seams.",
+  "visibleTreadCount": 5,
+  "frontEdgeCount": 6,
+  "counts": {
+    "within4px": 48,
+    "over4px": 1,
+    "unresolved": 1
+  },
+  "maxDistancePx1x": 7.0,
+  "measurements": [
+    {
+      "id": "front-0-x95",
+      "feature": "top-landing-front",
+      "seedContextPx1x": [
+        95,
+        99
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          100.5
+        ],
+        "responseValue": 26.449317932128906,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          100.5
+        ],
+        "responseValue": 51.522640228271484,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-0-x120",
+      "feature": "top-landing-front",
+      "seedContextPx1x": [
+        120,
+        99
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          101.0
+        ],
+        "responseValue": 29.992328643798828,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          100.5
+        ],
+        "responseValue": 41.115989685058594,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-0-x145",
+      "feature": "top-landing-front",
+      "seedContextPx1x": [
+        145,
+        99
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          101.0
+        ],
+        "responseValue": 37.200321197509766,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          100.5
+        ],
+        "responseValue": 46.17559814453125,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-0-x170",
+      "feature": "top-landing-front",
+      "seedContextPx1x": [
+        170,
+        99
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          99.0
+        ],
+        "responseValue": 23.947399139404297,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          100.5
+        ],
+        "responseValue": 22.904396057128906,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-0-x195",
+      "feature": "top-landing-front",
+      "seedContextPx1x": [
+        195,
+        99
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          99.5
+        ],
+        "responseValue": 31.834789276123047,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          100.5
+        ],
+        "responseValue": 36.76912307739258,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-1-x95",
+      "feature": "tread-1-front",
+      "seedContextPx1x": [
+        95,
+        113
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          112.0
+        ],
+        "responseValue": 46.64210510253906,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          112.5
+        ],
+        "responseValue": 47.71307373046875,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-1-x120",
+      "feature": "tread-1-front",
+      "seedContextPx1x": [
+        120,
+        113
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          112.5
+        ],
+        "responseValue": 44.24791717529297,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          112.5
+        ],
+        "responseValue": 59.19792556762695,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-1-x145",
+      "feature": "tread-1-front",
+      "seedContextPx1x": [
+        145,
+        113
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          112.5
+        ],
+        "responseValue": 39.901737213134766,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          112.5
+        ],
+        "responseValue": 53.99785614013672,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-1-x170",
+      "feature": "tread-1-front",
+      "seedContextPx1x": [
+        170,
+        113
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          112.0
+        ],
+        "responseValue": 41.3474235534668,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          112.5
+        ],
+        "responseValue": 49.49087142944336,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-1-x195",
+      "feature": "tread-1-front",
+      "seedContextPx1x": [
+        195,
+        113
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          111.5
+        ],
+        "responseValue": 35.67815399169922,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          112.5
+        ],
+        "responseValue": 38.90280532836914,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-2-x95",
+      "feature": "tread-2-front",
+      "seedContextPx1x": [
+        95,
+        126
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          125.5
+        ],
+        "responseValue": 41.37672424316406,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          126.0
+        ],
+        "responseValue": 42.8543586730957,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-2-x120",
+      "feature": "tread-2-front",
+      "seedContextPx1x": [
+        120,
+        126
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          125.0
+        ],
+        "responseValue": 40.21190643310547,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          126.0
+        ],
+        "responseValue": 40.567588806152344,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-2-x145",
+      "feature": "tread-2-front",
+      "seedContextPx1x": [
+        145,
+        126
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          126.0
+        ],
+        "responseValue": 42.32017135620117,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          126.0
+        ],
+        "responseValue": 52.23922348022461,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-2-x170",
+      "feature": "tread-2-front",
+      "seedContextPx1x": [
+        170,
+        126
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          125.0
+        ],
+        "responseValue": 38.19561004638672,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          126.0
+        ],
+        "responseValue": 42.03500747680664,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-2-x195",
+      "feature": "tread-2-front",
+      "seedContextPx1x": [
+        195,
+        126
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          124.0
+        ],
+        "responseValue": 37.28506851196289,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          125.5
+        ],
+        "responseValue": 44.97394561767578,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-3-x95",
+      "feature": "tread-3-front",
+      "seedContextPx1x": [
+        95,
+        140
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          139.0
+        ],
+        "responseValue": 46.65218734741211,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          139.5
+        ],
+        "responseValue": 47.044898986816406,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-3-x120",
+      "feature": "tread-3-front",
+      "seedContextPx1x": [
+        120,
+        140
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          139.0
+        ],
+        "responseValue": 48.115684509277344,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          139.5
+        ],
+        "responseValue": 39.34150314331055,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-3-x145",
+      "feature": "tread-3-front",
+      "seedContextPx1x": [
+        145,
+        140
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          139.0
+        ],
+        "responseValue": 47.00818634033203,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          139.5
+        ],
+        "responseValue": 47.99565124511719,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-3-x170",
+      "feature": "tread-3-front",
+      "seedContextPx1x": [
+        170,
+        140
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          139.0
+        ],
+        "responseValue": 47.19423294067383,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          139.5
+        ],
+        "responseValue": 45.865196228027344,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-3-x195",
+      "feature": "tread-3-front",
+      "seedContextPx1x": [
+        195,
+        140
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          139.0
+        ],
+        "responseValue": 47.85030746459961,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          139.5
+        ],
+        "responseValue": 49.31044387817383,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-4-x95",
+      "feature": "tread-4-front",
+      "seedContextPx1x": [
+        95,
+        154
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          154.0
+        ],
+        "responseValue": 54.30340576171875,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          154.0
+        ],
+        "responseValue": 47.86334228515625,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-4-x120",
+      "feature": "tread-4-front",
+      "seedContextPx1x": [
+        120,
+        154
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          153.5
+        ],
+        "responseValue": 48.81050491333008,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          153.5
+        ],
+        "responseValue": 49.781776428222656,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-4-x145",
+      "feature": "tread-4-front",
+      "seedContextPx1x": [
+        145,
+        154
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          154.0
+        ],
+        "responseValue": 48.423858642578125,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          154.0
+        ],
+        "responseValue": 56.35602951049805,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-4-x170",
+      "feature": "tread-4-front",
+      "seedContextPx1x": [
+        170,
+        154
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          154.0
+        ],
+        "responseValue": 54.29426193237305,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          153.5
+        ],
+        "responseValue": 54.133968353271484,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-4-x195",
+      "feature": "tread-4-front",
+      "seedContextPx1x": [
+        195,
+        154
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          153.0
+        ],
+        "responseValue": 44.8042106628418,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          153.5
+        ],
+        "responseValue": 50.101009368896484,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "front-5-x95",
+      "feature": "tread-5-front",
+      "seedContextPx1x": [
+        95,
+        168
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          95,
+          166.0
+        ],
+        "responseValue": 49.472904205322266,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          95,
+          166.0
+        ],
+        "responseValue": 46.42110824584961,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-5-x120",
+      "feature": "tread-5-front",
+      "seedContextPx1x": [
+        120,
+        168
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          120,
+          166.0
+        ],
+        "responseValue": 46.9776496887207,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          120,
+          166.0
+        ],
+        "responseValue": 40.795806884765625,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-5-x145",
+      "feature": "tread-5-front",
+      "seedContextPx1x": [
+        145,
+        168
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          145,
+          166.0
+        ],
+        "responseValue": 52.682456970214844,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          145,
+          166.0
+        ],
+        "responseValue": 58.519264221191406,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-5-x170",
+      "feature": "tread-5-front",
+      "seedContextPx1x": [
+        170,
+        168
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          170,
+          166.0
+        ],
+        "responseValue": 47.69966125488281,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          170,
+          166.0
+        ],
+        "responseValue": 45.117576599121094,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "front-5-x195",
+      "feature": "tread-5-front",
+      "seedContextPx1x": [
+        195,
+        168
+      ],
+      "normal": "y",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 4,
+      "searchRadiusPx1x": 6,
+      "reference": {
+        "contextPx1x": [
+          195,
+          165.0
+        ],
+        "responseValue": 41.98331832885742,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          195,
+          166.0
+        ],
+        "responseValue": 52.255218505859375,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "left-stair-side-y110",
+      "feature": "left-stair-side-y110",
+      "seedContextPx1x": [
+        78,
+        110
+      ],
+      "normal": "x",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          78.5,
+          110
+        ],
+        "responseValue": 17.40064239501953,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          81.0,
+          110
+        ],
+        "responseValue": 11.849231719970703,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 2.5,
+      "result": "within4px"
+    },
+    {
+      "id": "right-stair-side-y110",
+      "feature": "right-stair-side-y110",
+      "seedContextPx1x": [
+        212,
+        110
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          209.0,
+          110
+        ],
+        "responseValue": 16.236448287963867,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          212.5,
+          110
+        ],
+        "responseValue": 11.78849983215332,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 3.5,
+      "result": "within4px"
+    },
+    {
+      "id": "left-stair-side-y130",
+      "feature": "left-stair-side-y130",
+      "seedContextPx1x": [
+        78,
+        130
+      ],
+      "normal": "x",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          73.0,
+          130
+        ],
+        "responseValue": 12.424903869628906,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          72.0,
+          130
+        ],
+        "responseValue": 9.003005981445312,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "right-stair-side-y130",
+      "feature": "right-stair-side-y130",
+      "seedContextPx1x": [
+        212,
+        130
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          214.5,
+          130
+        ],
+        "responseValue": 12.442108154296875,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          218.0,
+          130
+        ],
+        "responseValue": 6.283563613891602,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 3.5,
+      "result": "within4px"
+    },
+    {
+      "id": "left-stair-side-y150",
+      "feature": "left-stair-side-y150",
+      "seedContextPx1x": [
+        78,
+        150
+      ],
+      "normal": "x",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          78.0,
+          150
+        ],
+        "responseValue": 16.85040855407715,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          71.0,
+          150
+        ],
+        "responseValue": 17.571107864379883,
+        "searchBoundaryHit": true
+      },
+      "distancePx1x": 7.0,
+      "result": "unresolved"
+    },
+    {
+      "id": "right-stair-side-y150",
+      "feature": "right-stair-side-y150",
+      "seedContextPx1x": [
+        212,
+        150
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          216.5,
+          150
+        ],
+        "responseValue": 14.311599731445312,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          215.0,
+          150
+        ],
+        "responseValue": 11.252120971679688,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.5,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x62-right-y115",
+      "feature": "brass-x62-right-y115",
+      "seedContextPx1x": [
+        67,
+        115
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          66.5,
+          115
+        ],
+        "responseValue": 40.30788040161133,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          65.5,
+          115
+        ],
+        "responseValue": 44.912261962890625,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x62-right-y135",
+      "feature": "brass-x62-right-y135",
+      "seedContextPx1x": [
+        67,
+        135
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          66.0,
+          135
+        ],
+        "responseValue": 53.0567626953125,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          65.0,
+          135
+        ],
+        "responseValue": 36.78031539916992,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x62-right-y180",
+      "feature": "brass-x62-right-y180",
+      "seedContextPx1x": [
+        67,
+        180
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          65.0,
+          180
+        ],
+        "responseValue": 37.77104568481445,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          63.5,
+          180
+        ],
+        "responseValue": 30.810501098632812,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.5,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x223-right-y115",
+      "feature": "brass-x223-right-y115",
+      "seedContextPx1x": [
+        228,
+        115
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          228.0,
+          115
+        ],
+        "responseValue": 37.217872619628906,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          227.5,
+          115
+        ],
+        "responseValue": 41.528587341308594,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x223-right-y135",
+      "feature": "brass-x223-right-y135",
+      "seedContextPx1x": [
+        228,
+        135
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          228.5,
+          135
+        ],
+        "responseValue": 45.98603820800781,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          228.5,
+          135
+        ],
+        "responseValue": 44.555721282958984,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "brass-x223-right-y180",
+      "feature": "brass-x223-right-y180",
+      "seedContextPx1x": [
+        228,
+        180
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 5,
+      "reference": {
+        "contextPx1x": [
+          230.5,
+          180
+        ],
+        "responseValue": 36.81401062011719,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          230.0,
+          180
+        ],
+        "responseValue": 38.46731185913086,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "capital-x62-left",
+      "feature": "capital-x62-left",
+      "seedContextPx1x": [
+        45,
+        87
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 1,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          51.0,
+          87
+        ],
+        "responseValue": 34.255428314208984,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          51.0,
+          87
+        ],
+        "responseValue": 30.510982513427734,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.0,
+      "result": "within4px"
+    },
+    {
+      "id": "capital-x62-right",
+      "feature": "capital-x62-right",
+      "seedContextPx1x": [
+        80,
+        87
+      ],
+      "normal": "x",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 1,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          75.5,
+          87
+        ],
+        "responseValue": 32.333614349365234,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          76.5,
+          87
+        ],
+        "responseValue": 21.482940673828125,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "capital-x223-left",
+      "feature": "capital-x223-left",
+      "seedContextPx1x": [
+        206,
+        87
+      ],
+      "normal": "x",
+      "polarity": -1,
+      "tangentHalfWidthPx1x": 1,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          212.0,
+          87
+        ],
+        "responseValue": 32.549102783203125,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          212.5,
+          87
+        ],
+        "responseValue": 38.09321212768555,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 0.5,
+      "result": "within4px"
+    },
+    {
+      "id": "capital-x223-right",
+      "feature": "capital-x223-right",
+      "seedContextPx1x": [
+        241,
+        87
+      ],
+      "normal": "x",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 1,
+      "searchRadiusPx1x": 7,
+      "reference": {
+        "contextPx1x": [
+          236.5,
+          87
+        ],
+        "responseValue": 34.255428314208984,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          237.5,
+          87
+        ],
+        "responseValue": 20.220317840576172,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "shore-x10",
+      "feature": "purple-water-bank",
+      "seedContextPx1x": [
+        10,
+        168
+      ],
+      "normal": "y",
+      "channel": "purple",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 8,
+      "reference": {
+        "contextPx1x": [
+          10,
+          167.5
+        ],
+        "responseValue": 10.534138679504395,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          10,
+          166.5
+        ],
+        "responseValue": 19.438899993896484,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.0,
+      "result": "within4px"
+    },
+    {
+      "id": "shore-x30",
+      "feature": "purple-water-bank",
+      "seedContextPx1x": [
+        30,
+        167
+      ],
+      "normal": "y",
+      "channel": "purple",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 8,
+      "reference": {
+        "contextPx1x": [
+          30,
+          173.0
+        ],
+        "responseValue": 17.54571533203125,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          30,
+          170.5
+        ],
+        "responseValue": 23.46758270263672,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 2.5,
+      "result": "within4px"
+    },
+    {
+      "id": "shore-x260",
+      "feature": "purple-water-bank",
+      "seedContextPx1x": [
+        260,
+        160
+      ],
+      "normal": "y",
+      "channel": "purple",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 8,
+      "reference": {
+        "contextPx1x": [
+          260,
+          160.5
+        ],
+        "responseValue": 7.480157852172852,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          260,
+          162.0
+        ],
+        "responseValue": 26.455331802368164,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 1.5,
+      "result": "within4px"
+    },
+    {
+      "id": "shore-x278",
+      "feature": "purple-water-bank",
+      "seedContextPx1x": [
+        278,
+        161
+      ],
+      "normal": "y",
+      "channel": "purple",
+      "polarity": 1,
+      "tangentHalfWidthPx1x": 2,
+      "searchRadiusPx1x": 8,
+      "reference": {
+        "contextPx1x": [
+          278,
+          168.0
+        ],
+        "responseValue": 13.7269287109375,
+        "searchBoundaryHit": false
+      },
+      "exported": {
+        "contextPx1x": [
+          278,
+          162.5
+        ],
+        "responseValue": 32.37638854980469,
+        "searchBoundaryHit": false
+      },
+      "distancePx1x": 5.5,
+      "result": "over4px"
+    }
+  ]
+}

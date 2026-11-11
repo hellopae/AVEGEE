@@ -1,0 +1,521 @@
+{
+  "method": "49x49 DoG sigma1.5/6 templates on repaired v5; NCC search +/-12 map1x px in decoded registered native reduced to 1x; confidence>=0.6. All upstream probes in this context retained.",
+  "thresholdPx1x": 4,
+  "probes": [
+    {
+      "id": "r3-c3/plaza-ring-south",
+      "sourcePx1x": [
+        2463,
+        2950
+      ],
+      "upstreamMeasurement": {
+        "id": "r3-c3/plaza-ring-south",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          2463,
+          2950
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999696016311646,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 75.45903015136719
+      },
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9464839100837708,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "r3-c3/plaza-inner-south",
+      "sourcePx1x": [
+        2490,
+        2899
+      ],
+      "upstreamMeasurement": {
+        "id": "r3-c3/plaza-inner-south",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          2490,
+          2899
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9853304624557495,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 81.74373626708984
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9123898148536682,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "r3-c3/south-stair-top",
+      "sourcePx1x": [
+        2463,
+        2983
+      ],
+      "upstreamMeasurement": {
+        "id": "r3-c3/south-stair-top",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          2463,
+          2983
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999906420707703,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 63.030059814453125
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.980579674243927,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "r3-c3/south-stair-middle",
+      "sourcePx1x": [
+        2463,
+        3022
+      ],
+      "upstreamMeasurement": {
+        "id": "r3-c3/south-stair-middle",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          2463,
+          3022
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999904036521912,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 63.030059814453125
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9878029227256775,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "r3-c3/south-cliff-east",
+      "sourcePx1x": [
+        2666,
+        2978
+      ],
+      "upstreamMeasurement": {
+        "id": "r3-c3/south-cliff-east",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          2666,
+          2978
+        ],
+        "displacementPx1x": [
+          12,
+          12
+        ],
+        "distancePx1x": 16.97056274847714,
+        "normalizedCorrelation": 0.15818122029304504,
+        "reliable": false,
+        "within4px": false,
+        "searchBoundaryHit": true,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 36.290008544921875
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    },
+    {
+      "id": "walkmask-12-192",
+      "sourcePx1x": [
+        2375,
+        3028
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-192",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2375,
+          3028
+        ],
+        "displacementPx1x": [
+          -1,
+          0
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.48473265767097473,
+        "reliable": false,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    },
+    {
+      "id": "walkmask-12-193",
+      "sourcePx1x": [
+        2375,
+        3090
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-193",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2375,
+          3090
+        ],
+        "displacementPx1x": [
+          5,
+          0
+        ],
+        "distancePx1x": 5.0,
+        "normalizedCorrelation": 0.4864875078201294,
+        "reliable": false,
+        "within4px": false,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    },
+    {
+      "id": "walkmask-12-199",
+      "sourcePx1x": [
+        2373,
+        3052
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-199",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2373,
+          3052
+        ],
+        "displacementPx1x": [
+          0,
+          1
+        ],
+        "distancePx1x": 1.0,
+        "normalizedCorrelation": 0.5278513431549072,
+        "reliable": false,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    },
+    {
+      "id": "walkmask-12-564",
+      "sourcePx1x": [
+        2622,
+        2939
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-564",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2622,
+          2939
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.8329112529754639,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9471697211265564,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-565",
+      "sourcePx1x": [
+        2560,
+        2959
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-565",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2560,
+          2959
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999786615371704,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9703822135925293,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-566",
+      "sourcePx1x": [
+        2529,
+        3010
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-566",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2529,
+          3010
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999871850013733,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9768871068954468,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-567",
+      "sourcePx1x": [
+        2548,
+        3072
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-567",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2548,
+          3072
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.8653901219367981,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    },
+    {
+      "id": "walkmask-12-573",
+      "sourcePx1x": [
+        2550,
+        3055
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-573",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2550,
+          3055
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9709551930427551,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9535225629806519,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-574",
+      "sourcePx1x": [
+        2530,
+        2993
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-574",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2530,
+          2993
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999889731407166,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.978710949420929,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-575",
+      "sourcePx1x": [
+        2580,
+        2960
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-575",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2580,
+          2960
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999725222587585,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9670113325119019,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "walkmask-12-576",
+      "sourcePx1x": [
+        2642,
+        2940
+      ],
+      "upstreamMeasurement": {
+        "id": "walkmask-12-576",
+        "kind": "walkmask-boundary",
+        "sourcePx1x": [
+          2642,
+          2940
+        ],
+        "displacementPx1x": [
+          1,
+          1
+        ],
+        "distancePx1x": 1.4142135623730951,
+        "normalizedCorrelation": 0.6633372902870178,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": false,
+        "distanceToWalkmaskBoundaryPx1x": 0.0
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    }
+  ],
+  "counts": {
+    "within4px": 10,
+    "over4px": 0,
+    "unresolved": 6
+  },
+  "semanticContoursVerified": false,
+  "limitation": "NCC measures local image correspondence. Rail, tread and shoreline contours require visual review. All upstream probes retained, including context-edge probes."
+}

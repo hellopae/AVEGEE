@@ -1,0 +1,13 @@
+{
+  "initialEvidence": "geometry.json",
+  "decisions": [],
+  "measurementCount": 38,
+  "counts": {
+    "within4px": 38,
+    "over4px": 0,
+    "unresolved": 0
+  },
+  "maxDistancePx1x": 1.0,
+  "contourReview": "Named front edges, side grooves, rails/posts and pier bank reviewed against geometry-review.jpg and geometry-resolved-review.jpg. Five treads and upper landing in each crop.",
+  "limitation": "Finite architectural cross-sections with visual review. Search intervals separate repeated steps. Does not establish every contour pixel or future composition seams."
+}

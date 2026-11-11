@@ -1,0 +1,19 @@
+{
+  "id": "south-plaza-stair",
+  "coreRectPx1x": [
+    2420,
+    2910,
+    2620,
+    3060
+  ],
+  "contextRectPx1x": [
+    2372,
+    2862,
+    2668,
+    3108
+  ],
+  "rectangleConvention": "[x0,y0,x1,y1], half-open, master map 4915x3277",
+  "reason": "South plaza stair side moved7px and railing silhouette changed.",
+  "referenceSha256": "0bfb994defdba5a6ee03bd9f603e25d0bd2bcf99aa0f135c208873db1cc1ef95",
+  "assembledBeforeSha256": "7a1dc0caa34c628f51dc50003362cba944f1e4d8cd321537b9aaa62cd9438a04"
+}

@@ -1,0 +1,1577 @@
+{
+  "method": "Visually selected architectural cross-sections. Same signed edge operator is applied independently to the repaired reference and decoded registered export. Search radii separate adjacent treads. All selected samples are retained.",
+  "coordinateSystem": "context map1x pixels",
+  "thresholdPx1x": 4,
+  "assets": {
+    "lava-low-stair": {
+      "visibleTreadCount": 5,
+      "frontEdgeCount": 6,
+      "features": [
+        {
+          "id": "front-0-x105",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            105,
+            82.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x120",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            120,
+            83.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x135",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            135,
+            84.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x150",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            150,
+            85.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x165",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            165,
+            86.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x105",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            105,
+            96.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x120",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            120,
+            97.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x135",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            135,
+            98.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x150",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            150,
+            99.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x165",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            165,
+            100.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x105",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            105,
+            109.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x120",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            120,
+            110.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x135",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            135,
+            111.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x150",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            150,
+            112.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x165",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            165,
+            113.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x105",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            105,
+            123.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x120",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            120,
+            124.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x135",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            135,
+            125.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x150",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            150,
+            126.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x165",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            165,
+            127.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x105",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            105,
+            136.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x120",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            120,
+            137.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x135",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            135,
+            138.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x150",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            150,
+            139.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x165",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            165,
+            140.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x105",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            105,
+            150.5
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x120",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            120,
+            151.4
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x135",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            135,
+            152.3
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x150",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            150,
+            153.2
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x165",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            165,
+            154.1
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "left-stair-side-y100",
+          "feature": "left-stair-side-y100",
+          "seedContextPx1x": [
+            91.01,
+            100
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y100",
+          "feature": "right-stair-side-y100",
+          "seedContextPx1x": [
+            193.0,
+            100
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "left-stair-side-y120",
+          "feature": "left-stair-side-y120",
+          "seedContextPx1x": [
+            81.61,
+            120
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y120",
+          "feature": "right-stair-side-y120",
+          "seedContextPx1x": [
+            187.0,
+            120
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "left-stair-side-y140",
+          "feature": "left-stair-side-y140",
+          "seedContextPx1x": [
+            72.21000000000001,
+            140
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y140",
+          "feature": "right-stair-side-y140",
+          "seedContextPx1x": [
+            181.0,
+            140
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "left-rock-post-top",
+          "feature": "left-rock-post-top",
+          "seedContextPx1x": [
+            75,
+            47
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-rock-post-top",
+          "feature": "right-rock-post-top",
+          "seedContextPx1x": [
+            213,
+            60
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        }
+      ]
+    },
+    "south-plaza-stair": {
+      "visibleTreadCount": 5,
+      "frontEdgeCount": 6,
+      "features": [
+        {
+          "id": "front-0-x40",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            40,
+            116
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x65",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            65,
+            116
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x90",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            90,
+            116
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x115",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            115,
+            116
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x140",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            140,
+            116
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x40",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            40,
+            133
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x65",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            65,
+            133
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x90",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            90,
+            133
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x115",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            115,
+            133
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x140",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            140,
+            133
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x40",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            40,
+            150
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x65",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            65,
+            150
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x90",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            90,
+            150
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x115",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            115,
+            150
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x140",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            140,
+            150
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x40",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            40,
+            167
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x65",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            65,
+            167
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x90",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            90,
+            167
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x115",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            115,
+            167
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x140",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            140,
+            167
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x40",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            40,
+            184
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x65",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            65,
+            184
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x90",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            90,
+            184
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x115",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            115,
+            184
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x140",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            140,
+            184
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x40",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            40,
+            201
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x65",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            65,
+            201
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x90",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            90,
+            201
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x115",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            115,
+            201
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x140",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            140,
+            201
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "left-stair-side-y130",
+          "feature": "left-stair-side-y130",
+          "seedContextPx1x": [
+            14.0,
+            130
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y130",
+          "feature": "right-stair-side-y130",
+          "seedContextPx1x": [
+            155,
+            130
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "brass-right-edge-y130",
+          "feature": "brass-right-edge-y130",
+          "seedContextPx1x": [
+            163,
+            130
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "left-stair-side-y150",
+          "feature": "left-stair-side-y150",
+          "seedContextPx1x": [
+            12.4,
+            150
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y150",
+          "feature": "right-stair-side-y150",
+          "seedContextPx1x": [
+            155,
+            150
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "brass-right-edge-y150",
+          "feature": "brass-right-edge-y150",
+          "seedContextPx1x": [
+            163,
+            150
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "left-stair-side-y180",
+          "feature": "left-stair-side-y180",
+          "seedContextPx1x": [
+            10.0,
+            180
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y180",
+          "feature": "right-stair-side-y180",
+          "seedContextPx1x": [
+            155,
+            180
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "brass-right-edge-y180",
+          "feature": "brass-right-edge-y180",
+          "seedContextPx1x": [
+            163,
+            180
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "right-ball-top",
+          "feature": "right-ball-top",
+          "seedContextPx1x": [
+            168,
+            93
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-rock-top",
+          "feature": "right-rock-top",
+          "seedContextPx1x": [
+            233,
+            76
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        }
+      ]
+    },
+    "pier-stair": {
+      "visibleTreadCount": 5,
+      "frontEdgeCount": 6,
+      "features": [
+        {
+          "id": "front-0-x95",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            95,
+            99
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x120",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            120,
+            99
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x145",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            145,
+            99
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x170",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            170,
+            99
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-0-x195",
+          "feature": "top-landing-front",
+          "seedContextPx1x": [
+            195,
+            99
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x95",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            95,
+            113
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x120",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            120,
+            113
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x145",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            145,
+            113
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x170",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            170,
+            113
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-1-x195",
+          "feature": "tread-1-front",
+          "seedContextPx1x": [
+            195,
+            113
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x95",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            95,
+            126
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x120",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            120,
+            126
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x145",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            145,
+            126
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x170",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            170,
+            126
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-2-x195",
+          "feature": "tread-2-front",
+          "seedContextPx1x": [
+            195,
+            126
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x95",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            95,
+            140
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x120",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            120,
+            140
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x145",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            145,
+            140
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x170",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            170,
+            140
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-3-x195",
+          "feature": "tread-3-front",
+          "seedContextPx1x": [
+            195,
+            140
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x95",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            95,
+            154
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x120",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            120,
+            154
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x145",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            145,
+            154
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x170",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            170,
+            154
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-4-x195",
+          "feature": "tread-4-front",
+          "seedContextPx1x": [
+            195,
+            154
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x95",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            95,
+            168
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x120",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            120,
+            168
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x145",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            145,
+            168
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x170",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            170,
+            168
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "front-5-x195",
+          "feature": "tread-5-front",
+          "seedContextPx1x": [
+            195,
+            168
+          ],
+          "normal": "y",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 4,
+          "searchRadiusPx1x": 6
+        },
+        {
+          "id": "left-stair-side-y110",
+          "feature": "left-stair-side-y110",
+          "seedContextPx1x": [
+            78,
+            110
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y110",
+          "feature": "right-stair-side-y110",
+          "seedContextPx1x": [
+            212,
+            110
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "left-stair-side-y130",
+          "feature": "left-stair-side-y130",
+          "seedContextPx1x": [
+            78,
+            130
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y130",
+          "feature": "right-stair-side-y130",
+          "seedContextPx1x": [
+            212,
+            130
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "left-stair-side-y150",
+          "feature": "left-stair-side-y150",
+          "seedContextPx1x": [
+            78,
+            150
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "right-stair-side-y150",
+          "feature": "right-stair-side-y150",
+          "seedContextPx1x": [
+            212,
+            150
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "brass-x62-right-y115",
+          "feature": "brass-x62-right-y115",
+          "seedContextPx1x": [
+            67,
+            115
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "brass-x62-right-y135",
+          "feature": "brass-x62-right-y135",
+          "seedContextPx1x": [
+            67,
+            135
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "brass-x62-right-y180",
+          "feature": "brass-x62-right-y180",
+          "seedContextPx1x": [
+            67,
+            180
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "brass-x223-right-y115",
+          "feature": "brass-x223-right-y115",
+          "seedContextPx1x": [
+            228,
+            115
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "brass-x223-right-y135",
+          "feature": "brass-x223-right-y135",
+          "seedContextPx1x": [
+            228,
+            135
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "brass-x223-right-y180",
+          "feature": "brass-x223-right-y180",
+          "seedContextPx1x": [
+            228,
+            180
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 5
+        },
+        {
+          "id": "capital-x62-left",
+          "feature": "capital-x62-left",
+          "seedContextPx1x": [
+            45,
+            87
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "capital-x62-right",
+          "feature": "capital-x62-right",
+          "seedContextPx1x": [
+            80,
+            87
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "capital-x223-left",
+          "feature": "capital-x223-left",
+          "seedContextPx1x": [
+            206,
+            87
+          ],
+          "normal": "x",
+          "polarity": -1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "capital-x223-right",
+          "feature": "capital-x223-right",
+          "seedContextPx1x": [
+            241,
+            87
+          ],
+          "normal": "x",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 1,
+          "searchRadiusPx1x": 7
+        },
+        {
+          "id": "shore-x10",
+          "feature": "purple-water-bank",
+          "seedContextPx1x": [
+            10,
+            168
+          ],
+          "normal": "y",
+          "channel": "purple",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 8
+        },
+        {
+          "id": "shore-x30",
+          "feature": "purple-water-bank",
+          "seedContextPx1x": [
+            30,
+            167
+          ],
+          "normal": "y",
+          "channel": "purple",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 8
+        },
+        {
+          "id": "shore-x260",
+          "feature": "purple-water-bank",
+          "seedContextPx1x": [
+            260,
+            160
+          ],
+          "normal": "y",
+          "channel": "purple",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 8
+        },
+        {
+          "id": "shore-x278",
+          "feature": "purple-water-bank",
+          "seedContextPx1x": [
+            278,
+            161
+          ],
+          "normal": "y",
+          "channel": "purple",
+          "polarity": 1,
+          "tangentHalfWidthPx1x": 2,
+          "searchRadiusPx1x": 8
+        }
+      ]
+    }
+  }
+}

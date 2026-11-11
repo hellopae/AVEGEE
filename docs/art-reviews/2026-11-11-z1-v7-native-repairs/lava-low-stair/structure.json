@@ -1,0 +1,75 @@
+{
+  "method": "49x49 DoG sigma1.5/6 templates on repaired v5; NCC search +/-12 map1x px in decoded registered native reduced to 1x; confidence>=0.6. All upstream probes in this context retained.",
+  "thresholdPx1x": 4,
+  "probes": [
+    {
+      "id": "r2-c1/bottom-stair-top-left",
+      "sourcePx1x": [
+        765,
+        1998
+      ],
+      "upstreamMeasurement": {
+        "id": "r2-c1/bottom-stair-top-left",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          765,
+          1998
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.9999858140945435,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 160.67156982421875
+      },
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9661281108856201,
+      "searchBoundaryHit": false,
+      "result": "within4px"
+    },
+    {
+      "id": "r2-c1/bottom-stair-top-right",
+      "sourcePx1x": [
+        840,
+        2004
+      ],
+      "upstreamMeasurement": {
+        "id": "r2-c1/bottom-stair-top-right",
+        "kind": "source-landmark",
+        "sourcePx1x": [
+          840,
+          2004
+        ],
+        "displacementPx1x": [
+          0,
+          0
+        ],
+        "distancePx1x": 0.0,
+        "normalizedCorrelation": 0.7802315354347229,
+        "reliable": true,
+        "within4px": true,
+        "searchBoundaryHit": false,
+        "walkable": true,
+        "distanceToWalkmaskBoundaryPx1x": 147.16818237304688
+      },
+      "result": "unresolved",
+      "reason": "49px template plus 12px search exceeds context"
+    }
+  ],
+  "counts": {
+    "within4px": 1,
+    "over4px": 0,
+    "unresolved": 1
+  },
+  "semanticContoursVerified": false,
+  "limitation": "NCC measures local image correspondence. Rail, tread and shoreline contours require visual review. All upstream probes retained, including context-edge probes."
+}

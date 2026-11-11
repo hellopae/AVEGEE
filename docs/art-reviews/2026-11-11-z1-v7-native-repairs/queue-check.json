@@ -1,0 +1,14 @@
+{
+  "status": "ready",
+  "evidence": [
+    "README.md — ขอบเขต native repair และ registration เฉพาะ lava-low-stair, south-plaza-stair, pier-stair พร้อมวิธีเชื่อมและข้อจำกัดของหลักฐาน offline",
+    "provenance.json; verification.json — ใช้ ImageGen ในตัวเดิม 3 ภาพ เรียกวาดเพิ่ม 0 ครั้ง ตรวจ native.webp ตรงกับ byte ต้นทางและพิกเซล PNG ครบทั้ง 3 ภาพ ตรวจ baseline hashes 25 รายการและ assembly source hashes 5 รายการตรง",
+    "lava-low-stair/native.webp; lava-low-stair/registration.json; lava-low-stair/review.jpg; lava-low-stair/geometry-resolutions.json — native 1367×1150, affine ตรวจ warp จาก export ตรงทุกพิกเซล, core valid 45000/45000 output px, รูปทรง 38 ตัวอย่างคลาดสูงสุด 1.0 map px",
+    "south-plaza-stair/native.webp; south-plaza-stair/registration.json; south-plaza-stair/review.jpg; south-plaza-stair/geometry-resolutions.json — native 1375×1144, affine ตรวจ warp จาก export ตรงทุกพิกเซล, core valid 120000/120000 output px, รูปทรง 41 ตัวอย่างคลาดสูงสุด 2.0 map px รวมหลักฐานการวัดขอบซ้ำ 4 จุด",
+    "pier-stair/native.webp; pier-stair/registration.json; pier-stair/review.jpg; pier-stair/geometry-resolutions.json — native 1444×1089, affine ตรวจ warp จาก export ตรงทุกพิกเซล, core valid 91200/91200 output px, รูปทรง 50 ตัวอย่างคลาดสูงสุด 3.5 map px รวมหลักฐานการวัดขอบซ้ำ 2 จุด",
+    "*/structure.json; verification.json — เก็บ NCC เดิม 34 จุดครบ จับคู่ได้ 23 จุด อีก 11 จุดล้น context อยู่นอก core เก็บผลทั้งหมดพร้อมจุดเกิน 4 px เดิมของแผนที่ทั้ง 7 จุดที่อยู่นอกขอบเขตสาม crop",
+    "*/fx-overlay.jpg; */fx-overlap.json; verification.json — ตรวจ masks ตามตำแหน่งจริง pier-stair ทับ river 24 และ foam 1544 core output px, lava/south ทับ 0 px, กรอบเมฆเปิดใช้งาน 5 รายการตัดกับ context 0 รายการ",
+    "verification.json; manifest.json — decode ภาพส่งออกครบ 47 ภาพ ตรวจรูปทรง 129 ตัวอย่างและ oracle เลื่อนขอบ 5 px ครบ 3 วิธี พร้อม SHA256 และขนาดไฟล์ส่งออก"
+  ],
+  "remaining": []
+}

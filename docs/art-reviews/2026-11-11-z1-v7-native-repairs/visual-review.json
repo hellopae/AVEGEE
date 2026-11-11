@@ -1,0 +1,67 @@
+{
+  "assets": {
+    "lava-low-stair": {
+      "reviewed": true,
+      "evidence": [
+        "native.webp",
+        "review.jpg",
+        "fallback-before-comparison.jpg",
+        "alignment-overlay.jpg",
+        "geometry-grid.jpg",
+        "geometry-review.jpg",
+        "geometry-resolved-review.jpg",
+        "fx-overlay.jpg"
+      ],
+      "observations": "คงบันได 5 ขั้นและขอบชานบน แนวหินข้างบันไดและพุ่มสีส้มอยู่ตำแหน่งเดิม รายละเอียดหินมีเนื้อสีวาดใหม่",
+      "viewing": {
+        "native": "native pixels",
+        "review": "2 output pixels per map1x pixel",
+        "geometry": "4 display pixels per map1x pixel"
+      },
+      "scope": "Visual inspection of the local context crop and its exported diagnostic views"
+    },
+    "south-plaza-stair": {
+      "reviewed": true,
+      "evidence": [
+        "native.webp",
+        "review.jpg",
+        "fallback-before-comparison.jpg",
+        "alignment-overlay.jpg",
+        "geometry-grid.jpg",
+        "geometry-review.jpg",
+        "geometry-resolved-review.jpg",
+        "fx-overlay.jpg"
+      ],
+      "observations": "คงบันได 5 ขั้น ชานบน เสาหัวกลม ราวทอง พุ่มส้มและแนวหินด้านขวา เก็บการวัดไฮไลต์หัวเสาที่จับผิดไว้เทียบคู่",
+      "viewing": {
+        "native": "native pixels",
+        "review": "2 output pixels per map1x pixel",
+        "geometry": "4 display pixels per map1x pixel"
+      },
+      "scope": "Visual inspection of the local context crop and its exported diagnostic views"
+    },
+    "pier-stair": {
+      "reviewed": true,
+      "evidence": [
+        "native.webp",
+        "review.jpg",
+        "fallback-before-comparison.jpg",
+        "alignment-overlay.jpg",
+        "geometry-grid.jpg",
+        "geometry-review.jpg",
+        "geometry-resolved-review.jpg",
+        "fx-overlay.jpg"
+      ],
+      "observations": "คงบันได 5 ขั้น ชานบน เสาทองและคอเสา ขอบท่าและน้ำสีม่วง เก็บจุดที่วัดระลอกน้ำแทนขอบฝั่งไว้พร้อมการวัดขอบจริง",
+      "viewing": {
+        "native": "native pixels",
+        "review": "2 output pixels per map1x pixel",
+        "geometry": "4 display pixels per map1x pixel"
+      },
+      "scope": "Visual inspection of the local context crop and its exported diagnostic views"
+    }
+  },
+  "reviewType": "offline exported-artifact inspection",
+  "nccContextEdgeNotes": "All 11 unresolved NCC probes remain in structure.json outside the supplied cores. Architectural cross-sections are separate measurements.",
+  "futureWork": "Full atlas seam and runtime integration review follows the scoped native repair delivery."
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Use case: precise-object-edit. Asset type: native HD map terrain repair pier-stair. Image 1 is the exact existing 286x216 map pixel crop, including baked runtime pier repair. Redraw the SAME entire crop at native 1430x1080 with fresh sharp painterly stone, brass and river detail. Preserve the original normalized coordinates precisely. Lock the exact number and widths of stair treads, top and bottom landing edges, four post capitals and their silhouettes, rail positions and gold inlays, dark rocks, purple shoreline and water edges, and all paving contours. Keep the same overhead isometric camera, warm ochre stone, dark charcoal rocks, brass rails and purple water. The repair core is reference x48..238,y48..168 with surrounding 48px overlap. Retain full framing edge to edge. Only improve surface microdetail, chips, grain and highlights. No recentering or redesign, no extra steps, no new props, no plants, no actors, text, labels, border, mist or blur. Return one clean terrain crop.",
+  "sourcePath": "/Users/agapae/.codex/generated_images/01a1cbb7-abc7-7480-a9d7-63787bed3f0c/exec-86b4b514-2c77-4d93-8392-042d7d72c9af.png",
+  "reference": "reference-1x.png",
+  "callCount": 1,
+  "sourceSha256": "1c4b59595d6104882df1233050f433373d24885f1243da2be7e731df5d176c53",
+  "nativeSize": [
+    1444,
+    1089
+  ],
+  "nativeSha256": "f5f91580d479c77221049bc1f1c242e5ed87758694a43744eb7125eb9be761b2",
+  "decodedPixelIdentity": true
+}

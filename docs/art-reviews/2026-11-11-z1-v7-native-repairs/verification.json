@@ -1,0 +1,670 @@
+{
+  "scope": [
+    "lava-low-stair",
+    "south-plaza-stair",
+    "pier-stair"
+  ],
+  "checks": "completed",
+  "baselineInputHashesChecked": 25,
+  "assemblySourceHashesChecked": 5,
+  "importedSourceHashesChecked": 51,
+  "newGenerationsThisRound": 0,
+  "reusedBuiltInGenerations": 3,
+  "measurementOracles": [
+    {
+      "operator": "gradient",
+      "knownShiftPx1x": 5,
+      "measuredShiftPx1x": 5.0,
+      "exceeds4px": true
+    },
+    {
+      "operator": "dark-groove",
+      "knownShiftPx1x": 5,
+      "measuredShiftPx1x": 5.0,
+      "exceeds4px": true
+    },
+    {
+      "operator": "first-threshold",
+      "knownShiftPx1x": 5,
+      "measuredShiftPx1x": 5.0,
+      "exceeds4px": true
+    }
+  ],
+  "assets": [
+    {
+      "id": "lava-low-stair",
+      "nativeSize": [
+        1367,
+        1150
+      ],
+      "sourcePngDecodedIdentity": true,
+      "sourceWebpByteIdentity": true,
+      "referenceRebuiltWithRuntimeRepairs": true,
+      "affineAndDecodedWarpExact": true,
+      "coreValidPixels2x": 45000,
+      "structureCounts": {
+        "within4px": 1,
+        "over4px": 0,
+        "unresolved": 1
+      },
+      "allUpstreamContextProbesRetained": true,
+      "unresolvedNccOutsideCore": 1,
+      "geometry": {
+        "rawCounts": {
+          "within4px": 38,
+          "over4px": 0,
+          "unresolved": 0
+        },
+        "reviewedCounts": {
+          "within4px": 38,
+          "over4px": 0,
+          "unresolved": 0
+        },
+        "retainedCorrections": 0,
+        "maxDistancePx1x": 1.0
+      },
+      "fx": {
+        "contextUnionPixels2x": 0,
+        "coreUnionPixels2x": 0,
+        "activeCloudIntersections": 0
+      }
+    },
+    {
+      "id": "south-plaza-stair",
+      "nativeSize": [
+        1375,
+        1144
+      ],
+      "sourcePngDecodedIdentity": true,
+      "sourceWebpByteIdentity": true,
+      "referenceRebuiltWithRuntimeRepairs": true,
+      "affineAndDecodedWarpExact": true,
+      "coreValidPixels2x": 120000,
+      "structureCounts": {
+        "within4px": 10,
+        "over4px": 0,
+        "unresolved": 6
+      },
+      "allUpstreamContextProbesRetained": true,
+      "unresolvedNccOutsideCore": 6,
+      "geometry": {
+        "rawCounts": {
+          "within4px": 37,
+          "over4px": 1,
+          "unresolved": 3
+        },
+        "reviewedCounts": {
+          "within4px": 41,
+          "over4px": 0,
+          "unresolved": 0
+        },
+        "retainedCorrections": 4,
+        "maxDistancePx1x": 2.0
+      },
+      "fx": {
+        "contextUnionPixels2x": 0,
+        "coreUnionPixels2x": 0,
+        "activeCloudIntersections": 0
+      }
+    },
+    {
+      "id": "pier-stair",
+      "nativeSize": [
+        1444,
+        1089
+      ],
+      "sourcePngDecodedIdentity": true,
+      "sourceWebpByteIdentity": true,
+      "referenceRebuiltWithRuntimeRepairs": true,
+      "affineAndDecodedWarpExact": true,
+      "coreValidPixels2x": 91200,
+      "structureCounts": {
+        "within4px": 12,
+        "over4px": 0,
+        "unresolved": 4
+      },
+      "allUpstreamContextProbesRetained": true,
+      "unresolvedNccOutsideCore": 4,
+      "geometry": {
+        "rawCounts": {
+          "within4px": 48,
+          "over4px": 1,
+          "unresolved": 1
+        },
+        "reviewedCounts": {
+          "within4px": 50,
+          "over4px": 0,
+          "unresolved": 0
+        },
+        "retainedCorrections": 2,
+        "maxDistancePx1x": 3.5
+      },
+      "fx": {
+        "contextUnionPixels2x": 25896,
+        "coreUnionPixels2x": 1544,
+        "activeCloudIntersections": 0
+      }
+    }
+  ],
+  "decodedImages": [
+    {
+      "path": "lava-low-stair/alignment-overlay.jpg",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/assembled-before.webp",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/fallback-before-comparison.jpg",
+      "size": [
+        830,
+        370
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/fallback-final-comparison.jpg",
+      "size": [
+        990,
+        451
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/fx-coverage.png",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "L"
+    },
+    {
+      "path": "lava-low-stair/fx-overlay.jpg",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/geometry-grid.jpg",
+      "size": [
+        1768,
+        768
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/geometry-resolved-review.jpg",
+      "size": [
+        1768,
+        772
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/geometry-review.jpg",
+      "size": [
+        1768,
+        772
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/native.webp",
+      "size": [
+        1367,
+        1150
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/reference-1x.png",
+      "size": [
+        221,
+        186
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/reference-grid.jpg",
+      "size": [
+        884,
+        744
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/registered-2x.webp",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/review.jpg",
+      "size": [
+        1326,
+        414
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "lava-low-stair/valid-coverage.png",
+      "size": [
+        442,
+        372
+      ],
+      "mode": "L"
+    },
+    {
+      "path": "pier-stair/alignment-overlay.jpg",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/ambiguous-edge-pair.png",
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/assembled-before.webp",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/fallback-before-comparison.jpg",
+      "size": [
+        1190,
+        390
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/fallback-final-comparison.jpg",
+      "size": [
+        1276,
+        516
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/fx-coverage.png",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "L"
+    },
+    {
+      "path": "pier-stair/fx-overlay.jpg",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/geometry-grid.jpg",
+      "size": [
+        2288,
+        888
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/geometry-resolved-review.jpg",
+      "size": [
+        2288,
+        892
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/geometry-review.jpg",
+      "size": [
+        2288,
+        892
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/native.webp",
+      "size": [
+        1444,
+        1089
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/reference-1x.png",
+      "size": [
+        286,
+        216
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/reference-grid.jpg",
+      "size": [
+        1144,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/registered-2x.webp",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/review.jpg",
+      "size": [
+        1716,
+        474
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "pier-stair/valid-coverage.png",
+      "size": [
+        572,
+        432
+      ],
+      "mode": "L"
+    },
+    {
+      "path": "south-plaza-stair/alignment-overlay.jpg",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/ambiguous-edge-pair.png",
+      "size": [
+        768,
+        288
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/assembled-before.webp",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/fallback-before-comparison.jpg",
+      "size": [
+        870,
+        350
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/fallback-final-comparison.jpg",
+      "size": [
+        1320,
+        582
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/fx-coverage.png",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "L"
+    },
+    {
+      "path": "south-plaza-stair/fx-overlay.jpg",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/geometry-grid.jpg",
+      "size": [
+        2368,
+        1008
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/geometry-resolved-review.jpg",
+      "size": [
+        2368,
+        1012
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/geometry-review.jpg",
+      "size": [
+        2368,
+        1012
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/native.webp",
+      "size": [
+        1375,
+        1144
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/reference-1x.png",
+      "size": [
+        296,
+        246
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/reference-grid.jpg",
+      "size": [
+        1184,
+        984
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/registered-2x.webp",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/review.jpg",
+      "size": [
+        1776,
+        534
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "south-plaza-stair/valid-coverage.png",
+      "size": [
+        592,
+        492
+      ],
+      "mode": "L"
+    }
+  ],
+  "upstreamOver4px": [
+    {
+      "id": "walkmask-12-20",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2490,
+        880
+      ],
+      "displacementPx1x": [
+        2,
+        -4
+      ],
+      "distancePx1x": 4.47213595499958,
+      "normalizedCorrelation": 0.7127728462219238,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-21",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2438,
+        849
+      ],
+      "displacementPx1x": [
+        4,
+        -3
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.6204298734664917,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-284",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        578,
+        2007
+      ],
+      "displacementPx1x": [
+        3,
+        -3
+      ],
+      "distancePx1x": 4.242640687119285,
+      "normalizedCorrelation": 0.7356759905815125,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-371",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2477,
+        869
+      ],
+      "displacementPx1x": [
+        1,
+        -4
+      ],
+      "distancePx1x": 4.123105625617661,
+      "normalizedCorrelation": 0.7636334896087646,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-560",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2867,
+        2855
+      ],
+      "displacementPx1x": [
+        5,
+        0
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.6370976567268372,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-580",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        2878,
+        2847
+      ],
+      "displacementPx1x": [
+        5,
+        0
+      ],
+      "distancePx1x": 5.0,
+      "normalizedCorrelation": 0.639514148235321,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    },
+    {
+      "id": "walkmask-12-721",
+      "kind": "walkmask-boundary",
+      "sourcePx1x": [
+        4670,
+        701
+      ],
+      "displacementPx1x": [
+        4,
+        2
+      ],
+      "distancePx1x": 4.47213595499958,
+      "normalizedCorrelation": 0.6674549579620361,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0,
+      "requestedContextIds": []
+    }
+  ],
+  "acceptanceScope": "Three native repair crops and coordinate registration for later composition and integration. Offline file and sampled geometry evidence."
+}
