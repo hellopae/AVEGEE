@@ -1,0 +1,2275 @@
+{
+  "run": "20261111T170902Z-d171c309",
+  "input": "/Users/agapae/agapae-work/.codex-worktrees/.codex-worktrees/20261111T165435Z-427eb5ef/docs/art-reviews/2026-11-10-worker-cook",
+  "newImageGenCalls": 0,
+  "operations": [
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 1,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f1-mask.png",
+      "selectedPixels": 461,
+      "changedPixels": 453,
+      "alphaChangedPixels": 281,
+      "filledAlphaAbove40Pixels": 1,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 2,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f2-mask.png",
+      "selectedPixels": 350,
+      "changedPixels": 344,
+      "alphaChangedPixels": 278,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 3,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f3-mask.png",
+      "selectedPixels": 483,
+      "changedPixels": 477,
+      "alphaChangedPixels": 336,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 4,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f4-mask.png",
+      "selectedPixels": 372,
+      "changedPixels": 366,
+      "alphaChangedPixels": 251,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 5,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f5-mask.png",
+      "selectedPixels": 392,
+      "changedPixels": 382,
+      "alphaChangedPixels": 299,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 6,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f6-mask.png",
+      "selectedPixels": 186,
+      "changedPixels": 177,
+      "alphaChangedPixels": 167,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 7,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f7-mask.png",
+      "selectedPixels": 401,
+      "changedPixels": 394,
+      "alphaChangedPixels": 361,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "frame": 8,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r0-f8-mask.png",
+      "selectedPixels": 424,
+      "changedPixels": 420,
+      "alphaChangedPixels": 372,
+      "filledAlphaAbove40Pixels": 20,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 1,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f1-mask.png",
+      "selectedPixels": 303,
+      "changedPixels": 300,
+      "alphaChangedPixels": 249,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 2,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f2-mask.png",
+      "selectedPixels": 265,
+      "changedPixels": 265,
+      "alphaChangedPixels": 254,
+      "filledAlphaAbove40Pixels": 14,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 3,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f3-mask.png",
+      "selectedPixels": 306,
+      "changedPixels": 306,
+      "alphaChangedPixels": 285,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 4,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f4-mask.png",
+      "selectedPixels": 324,
+      "changedPixels": 322,
+      "alphaChangedPixels": 285,
+      "filledAlphaAbove40Pixels": 12,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 5,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f5-mask.png",
+      "selectedPixels": 371,
+      "changedPixels": 365,
+      "alphaChangedPixels": 304,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 6,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f6-mask.png",
+      "selectedPixels": 106,
+      "changedPixels": 106,
+      "alphaChangedPixels": 99,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 7,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f7-mask.png",
+      "selectedPixels": 458,
+      "changedPixels": 452,
+      "alphaChangedPixels": 324,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "frame": 8,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          132,
+          156
+        ],
+        [
+          237,
+          156
+        ],
+        [
+          247,
+          173
+        ],
+        [
+          232,
+          181
+        ],
+        [
+          208,
+          179
+        ],
+        [
+          180,
+          180
+        ],
+        [
+          151,
+          178
+        ],
+        [
+          132,
+          173
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-cook-r1-f8-mask.png",
+      "selectedPixels": 419,
+      "changedPixels": 413,
+      "alphaChangedPixels": 304,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 1,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f1-mask.png",
+      "selectedPixels": 183,
+      "changedPixels": 43,
+      "alphaChangedPixels": 29,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 2,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f2-mask.png",
+      "selectedPixels": 183,
+      "changedPixels": 78,
+      "alphaChangedPixels": 32,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 3,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f3-mask.png",
+      "selectedPixels": 183,
+      "changedPixels": 44,
+      "alphaChangedPixels": 30,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 4,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f4-mask.png",
+      "selectedPixels": 183,
+      "changedPixels": 71,
+      "alphaChangedPixels": 30,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 5,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f5-mask.png",
+      "selectedPixels": 183,
+      "changedPixels": 78,
+      "alphaChangedPixels": 30,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 6,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f6-mask.png",
+      "selectedPixels": 186,
+      "changedPixels": 81,
+      "alphaChangedPixels": 33,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 7,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f7-mask.png",
+      "selectedPixels": 188,
+      "changedPixels": 49,
+      "alphaChangedPixels": 35,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "frame": 8,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "sourceRow": 0,
+      "sourceColumn": 1,
+      "polygon": [
+        [
+          154,
+          156
+        ],
+        [
+          251,
+          156
+        ],
+        [
+          252,
+          174
+        ],
+        [
+          234,
+          179
+        ],
+        [
+          188,
+          178
+        ],
+        [
+          171,
+          174
+        ],
+        [
+          154,
+          171
+        ]
+      ],
+      "mask": "evidence/repair-neck/cyberhell-cook-r1-f8-mask.png",
+      "selectedPixels": 188,
+      "changedPixels": 53,
+      "alphaChangedPixels": 35,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 1,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f1-mask.png",
+      "selectedPixels": 214,
+      "changedPixels": 117,
+      "alphaChangedPixels": 90,
+      "filledAlphaAbove40Pixels": 35,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 2,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f2-mask.png",
+      "selectedPixels": 189,
+      "changedPixels": 94,
+      "alphaChangedPixels": 94,
+      "filledAlphaAbove40Pixels": 78,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 3,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f3-mask.png",
+      "selectedPixels": 195,
+      "changedPixels": 99,
+      "alphaChangedPixels": 61,
+      "filledAlphaAbove40Pixels": 21,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 4,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f4-mask.png",
+      "selectedPixels": 192,
+      "changedPixels": 97,
+      "alphaChangedPixels": 95,
+      "filledAlphaAbove40Pixels": 59,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 5,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f5-mask.png",
+      "selectedPixels": 115,
+      "changedPixels": 36,
+      "alphaChangedPixels": 33,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 6,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f6-mask.png",
+      "selectedPixels": 95,
+      "changedPixels": 31,
+      "alphaChangedPixels": 31,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 7,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f7-mask.png",
+      "selectedPixels": 116,
+      "changedPixels": 37,
+      "alphaChangedPixels": 37,
+      "filledAlphaAbove40Pixels": 37,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "frame": 8,
+      "mirroredCanonicalCoordinates": false,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r0-f8-mask.png",
+      "selectedPixels": 116,
+      "changedPixels": 36,
+      "alphaChangedPixels": 29,
+      "filledAlphaAbove40Pixels": 17,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 1,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f1-mask.png",
+      "selectedPixels": 214,
+      "changedPixels": 117,
+      "alphaChangedPixels": 90,
+      "filledAlphaAbove40Pixels": 35,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 2,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f2-mask.png",
+      "selectedPixels": 189,
+      "changedPixels": 94,
+      "alphaChangedPixels": 94,
+      "filledAlphaAbove40Pixels": 78,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 3,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f3-mask.png",
+      "selectedPixels": 195,
+      "changedPixels": 99,
+      "alphaChangedPixels": 61,
+      "filledAlphaAbove40Pixels": 21,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 4,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f4-mask.png",
+      "selectedPixels": 192,
+      "changedPixels": 97,
+      "alphaChangedPixels": 95,
+      "filledAlphaAbove40Pixels": 59,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 5,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f5-mask.png",
+      "selectedPixels": 115,
+      "changedPixels": 36,
+      "alphaChangedPixels": 33,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 6,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f6-mask.png",
+      "selectedPixels": 95,
+      "changedPixels": 31,
+      "alphaChangedPixels": 31,
+      "filledAlphaAbove40Pixels": 0,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 7,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f7-mask.png",
+      "selectedPixels": 116,
+      "changedPixels": 37,
+      "alphaChangedPixels": 37,
+      "filledAlphaAbove40Pixels": 37,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "frame": 8,
+      "mirroredCanonicalCoordinates": true,
+      "source": "img/workers/worker-th-sheet-v2.webp",
+      "sourceRow": 1,
+      "sourceColumn": 2,
+      "polygon": [
+        [
+          148,
+          154
+        ],
+        [
+          248,
+          154
+        ],
+        [
+          255,
+          172
+        ],
+        [
+          239,
+          181
+        ],
+        [
+          204,
+          179
+        ],
+        [
+          181,
+          181
+        ],
+        [
+          165,
+          175
+        ],
+        [
+          148,
+          170
+        ]
+      ],
+      "mask": "evidence/repair-neck/th-carry-r1-f8-mask.png",
+      "selectedPixels": 116,
+      "changedPixels": 36,
+      "alphaChangedPixels": 29,
+      "filledAlphaAbove40Pixels": 17,
+      "removedAlphaAbove40Pixels": 0,
+      "checks": {
+        "outsideMaskUnchanged": true,
+        "noRemovedOpaqueSilhouette": true,
+        "originalHeadUnchanged": true,
+        "foregroundWithInkMarginUnchanged": true,
+        "drawnMotionBelowY182Unchanged": true,
+        "sourceRGBAExactForVisiblePixels": true
+      }
+    }
+  ],
+  "method": "Native original collar/upper shoulder RGBA cutouts; exact source-head support protected; no resampling, translation, frame substitution, or generation.",
+  "retainedAtlases": [
+    "worker-asia-cook-v1.webp",
+    "worker-west-cook-v1.webp"
+  ],
+  "limitations": [
+    "This localized repair does not certify whole-body proportions or real-time loop continuity."
+  ],
+  "inputHashes": {
+    "worker-th-cook-v1.webp": "4c4f837f6dfda9dbda25a71c5ee78c1aff6b7351a7ac0bda5aa3f4b84ea7a57b",
+    "worker-cyberhell-cook-v1.webp": "3e5cd479abeb8b84d0957c2bb277f2aacff8ff1559b2b20dadaf6901317b6fbf",
+    "worker-th-carry-v1.webp": "e4c5c9107c019261aa470f1f535493a27a616412d5f4537d86d8a7b22a110550"
+  },
+  "outputHashes": {
+    "worker-th-cook-v1.webp": "419bb77ee03c1ff126baa26f0c4f93fb3261c34b1a5e8f43c9d3e8dee0cc7415",
+    "worker-cyberhell-cook-v1.webp": "c78c9c6f7899df71d77033456e9a2ac269cde6b34b8c97d886794f3247301d10",
+    "worker-th-carry-v1.webp": "f643a9ec9be5ebe9ed299c0d3e2c6c0eaca44e78cc1a448f14cf623f10f99ddf"
+  },
+  "checks": 240,
+  "failures": []
+}

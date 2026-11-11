@@ -1,0 +1,1257 @@
+{
+  "input": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T115315Z-ccb558be/docs/art-reviews/2026-11-10-worker-cook",
+  "applied": false,
+  "newImageGenCalls": 0,
+  "operations": [
+    {
+      "row": "th-cook-down-right",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 42
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 43
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 23
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 23
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 39
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 48
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 37
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 43
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 38
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 41
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 43
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 35
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 21
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 23
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 23
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 7,
+      "operation": "Same-coordinate cloth from f6 instead of enlarged dark sample; keep target alpha and arm/food pixels",
+      "pixels": 1292,
+      "skinAndInkPixelsProtected": 21
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 142
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 146
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 55
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 8
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 21
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 22
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 142
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 146
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 55
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 8
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 21
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 22
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 64
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 49
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 73
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 128
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 67
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 60
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 72
+    },
+    {
+      "row": "th-carry-down",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 133
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 59
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 63
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 90
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 86
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 64
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 75
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 90
+    },
+    {
+      "row": "th-carry-up",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 82
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 18
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 13
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 10
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 8
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 12
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 18
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 13
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 10
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 8
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 6
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 12
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 9
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 1,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 2,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 3,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 4,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 5,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 6,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 7,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 8,
+      "operation": "Original direction-matched neck/shoulder pixels in transparent gaps only",
+      "pixels": 24
+    }
+  ],
+  "checks": [
+    {
+      "name": "th-cook-down-right f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-right f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "TH f7 garment repair preserves alpha",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-cook-down-left f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-side-left f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-down f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "th-carry-up f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-right f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "asia-cook-down-left f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-right f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "west-cook-down-left f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-right f8 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f1 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f2 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f3 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f4 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f5 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f6 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f7 drawn lower motion unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 head RGBA unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell-cook-down-left f8 drawn lower motion unchanged",
+      "satisfied": true
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "file": "evidence/renderer-fit-asia-cook.jpg",
+    "bytes": 338139,
+    "sha256": "86ad1d251b04b3d90241c59308f805e5434a4978125d3da76fb55cda66e75c86",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-th-cook.jpg",
+    "bytes": 392985,
+    "sha256": "02026c2bf7c26e4d30e3c6164d9da6801c72b6725baf366a304cb10dda7057d6",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-cyberhell-cook.jpg",
+    "bytes": 347051,
+    "sha256": "45a1e49295df94fd3042964e27e9c9a28ff41dcde20d641025d3419ba233bc67",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-th-carry-side-left.jpg",
+    "bytes": 385210,
+    "sha256": "0dffe65264728272a05e8d7cc2048bbf0392a27be0634547a6d0a70e53f36ae7",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-th-carry-side.jpg",
+    "bytes": 383220,
+    "sha256": "3b229f5b934b247b372a6a6518e3b9b8f48258015ac35eef20e209d178e2a98c",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-th-carry-down.jpg",
+    "bytes": 398900,
+    "sha256": "5134b16dc8e8b6302a1bd4b5792334bb9e927821017b0bbf57ed916e1d05ff2b",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-west-cook.jpg",
+    "bytes": 346734,
+    "sha256": "0e4be8fdb15736cf00d6723b5a63377a88ed1d565a074799a150defadbd1a180",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  },
+  {
+    "file": "evidence/renderer-fit-th-carry-up.jpg",
+    "bytes": 344697,
+    "sha256": "a4375f6aae2ba01b29c5a72d66f39d0cdbebcab88549c7afea8f8f826fae438e",
+    "reason": "Superseded inherited diagnostics; current native comparisons and decoded GIF plates retained."
+  }
+]

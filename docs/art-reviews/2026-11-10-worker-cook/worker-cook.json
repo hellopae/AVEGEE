@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "status": "incomplete",
+  "mirrorsReverseOneSidedDetails": true,
+  "layout": "8 columns; one direction per row; zero-based rows",
+  "coordinateSystem": "top-left pixel coordinates; foot is cell-bottom draw anchor",
+  "animations": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: native original collar cutout; preserve head, drawn hands/food/utensils/legs",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: native original collar cutout; preserve head, drawn hands/food/utensils/legs",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: native original collar cutout; preserve head, drawn hands/food/utensils/legs",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "side",
+      "revision": "20261111T170902Z-d171c309: native original collar cutout; preserve head, drawn hands/food/utensils/legs",
+      "registrationEvidence": "evidence/repair-neck/verification.json",
+      "directionReference": "Source renderer also reflects side/idle with face=-1. This does not certify body details of generated art."
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 2,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-th-carry-v1.webp",
+      "row": 3,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-asia-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-asia-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "down-right",
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json",
+      "directionReference": "Source renderer also reflects side/idle with face=-1. This does not certify body details of generated art."
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-west-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-west-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": "down-right",
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json",
+      "directionReference": "Source renderer also reflects side/idle with face=-1. This does not certify body details of generated art."
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 0,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: retained decoded RGBA from latest 165435 delivery",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": 8,
+      "frameW": 320,
+      "frameH": 320,
+      "fps": 8,
+      "foot": [
+        160,
+        320
+      ],
+      "file": "worker-cyberhell-cook-v1.webp",
+      "row": 1,
+      "columns": 8,
+      "mirroredFrom": null,
+      "revision": "20261111T170902Z-d171c309: native original collar cutout; preserve head, drawn hands/food/utensils/legs",
+      "registrationEvidence": "evidence/repair-neck/verification.json"
+    }
+  ],
+  "omitted": [
+    {
+      "zone": "asia",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    },
+    {
+      "zone": "west",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "carry",
+      "reason": "generation budget prioritizes four cook zones and complete th carry"
+    }
+  ],
+  "revisionNotes": "Cook 4 zones x 2 directions x 8 and TH carry 4 x 8 preserved. Source opaque-head RGB exact and cook alpha sole-band registered. Real-time playback and complete anatomical/body/detail equivalence remain unaccepted.",
+  "referenceLimitations": [
+    "Down-left/side-left source identity follows the original renderer reflection. There is no independently drawn canonical left source.",
+    "foot [160,320] is the unchanged renderer anchor; measured sole-band coordinates are separately recorded.",
+    "Static source heads and sleeve/garment cutouts preserve the existing drawn body/arm/leg motions. No synthetic sliding/fading frames."
+  ],
+  "reviewRound": "20261111T165435Z-427eb5ef",
+  "mirrorSemantics": "mirroredFrom records direction provenance; independent repairs can change pixels afterward"
+}

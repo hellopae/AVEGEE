@@ -1,0 +1,3552 @@
+{
+  "status": "needs_revision",
+  "date": "2026-11-10",
+  "generator": "built-in image_gen",
+  "generationCalls": 16,
+  "generationLimit": 16,
+  "generatedFrames": 64,
+  "selectedDrawnFrames": 56,
+  "atlasFramesIncludingMirrors": 96,
+  "technicalChecks": [
+    {
+      "name": "four cook zones",
+      "satisfied": true
+    },
+    {
+      "name": "th carry canonical directions",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-right distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-right.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-right.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-right.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/cook/down-left distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-left.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-left.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-cook-down-left.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/side-left distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side-left.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side-left.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-side-left.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/down distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-down.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-down.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-down.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "th/carry/up distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-up.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-up.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-th-carry-up.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-right distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-right.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-right.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-right.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "asia/cook/down-left distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-left.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-left.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-asia-cook-down-left.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-right distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-right.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-right.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-right.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "west/cook/down-left distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-left.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-left.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-west-cook-down-left.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-right distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-right.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-right.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-right.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-v1.webp RGBA",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-v1.webp sheet dimensions",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/0 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/0 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/0 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/0 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/1 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/1 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/1 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/1 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/2 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/2 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/2 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/2 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/3 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/3 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/3 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/3 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/4 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/4 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/4 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/4 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/5 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/5 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/5 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/5 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/6 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/6 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/6 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/6 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/7 nonempty",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/7 clear top and side cell boundaries",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/7 pixel foot baseline",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left/7 no detached alpha component above40",
+      "satisfied": true
+    },
+    {
+      "name": "cyberhell/cook/down-left distinct frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-left.gif 8 frames",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-left.gif one second loop",
+      "satisfied": true
+    },
+    {
+      "name": "worker-cyberhell-cook-down-left.gif infinite loop",
+      "satisfied": true
+    },
+    {
+      "name": "tracked files unchanged",
+      "satisfied": true
+    },
+    {
+      "name": "all changed paths within requested output folder",
+      "satisfied": true
+    },
+    {
+      "name": "delivery size under 30 MB",
+      "satisfied": true
+    }
+  ],
+  "technicalCheckCount": 461,
+  "technicalChecksNotSatisfied": [],
+  "reviewMethod": [
+    "Inspected original references and four native-size comparison cards",
+    "Inspected chronological contact sheets of cook and carry",
+    "Inspected corrected Thai cook comparison",
+    "Inspected final Thai cook chronological strip and Thai alpha on white, black, green and cyan",
+    "Decoded every GIF and measured each exported atlas frame"
+  ],
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "acceptance": [
+    {
+      "criterion": 1,
+      "status": "needs_revision",
+      "countComplete": true,
+      "loopVisualAcceptance": "pending",
+      "identityAndProportionsExact": false,
+      "mirrorSideDetailsCorrect": false
+    },
+    {
+      "criterion": 2,
+      "directionAndFrameCount": "complete",
+      "alphaStructuralChecks": "see technicalChecks",
+      "identityAndColoredEdgeVisualAcceptance": "pending"
+    }
+  ],
+  "knownIssues": [
+    "Exact original head/body proportions and face details are not retained across all zones/frames.",
+    "Corrected th cook has a larger head and shorter body than original; th carry uses earlier proportions.",
+    "Mirrored directions reverse pouch, tools, and one-sided sleeve details; brief mirror condition remains unmet.",
+    "Actual animated playback, loop smoothness, foot contact and colored edges on game backgrounds remain unreviewed.",
+    "Carry assets for asia, west, cyberhell are omitted under the generation budget."
+  ],
+  "coordinateNotes": {
+    "foot": [
+      160,
+      320
+    ],
+    "opaqueBottomPixel": 319,
+    "targetHeights": {
+      "th": 306,
+      "asia": 303,
+      "west": 305,
+      "cyberhell": 305
+    },
+    "sourceHeights": "mean largest connected idle component, source sheet row0",
+    "sourceHeadingRows": {
+      "side": 1,
+      "down": 4,
+      "up": 5
+    }
+  },
+  "rows": [
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            43,
+            14,
+            289,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            44,
+            14,
+            283,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            44,
+            14,
+            282,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            40,
+            14,
+            281,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            43,
+            14,
+            284,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.5393,
+        6.4822,
+        5.6195,
+        11.2488,
+        6.029,
+        10.808,
+        10.9915,
+        12.1408
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 12.1408,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            31,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            37,
+            14,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            38,
+            14,
+            276,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            39,
+            14,
+            280,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            36,
+            14,
+            277,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.5393,
+        6.4822,
+        5.6195,
+        11.2488,
+        6.029,
+        10.808,
+        10.9915,
+        12.1408
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 12.1408,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            69,
+            14,
+            240,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            78,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 162.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            74,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            72,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            68,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            74,
+            14,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            82,
+            14,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            64,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        20.4704,
+        12.2709,
+        14.8306,
+        16.1977,
+        19.8301,
+        18.4671,
+        25.9592,
+        11.4673
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 11.4673,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "side-left",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            80,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            69,
+            14,
+            242,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 158.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            73,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            73,
+            14,
+            248,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            76,
+            14,
+            252,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            64,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            62,
+            14,
+            238,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            76,
+            14,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        20.4704,
+        12.2709,
+        14.8306,
+        16.1977,
+        19.8301,
+        18.4671,
+        25.9592,
+        11.4673
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 11.4673,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "down",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            82,
+            14,
+            247,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            82,
+            14,
+            251,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            74,
+            14,
+            243,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            70,
+            14,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 161.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            78,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            79,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 157.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            79,
+            14,
+            243,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 157.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            73,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 161.0
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        10.6763,
+        14.9485,
+        14.706,
+        13.1687,
+        7.828,
+        10.5529,
+        15.0357,
+        17.5751
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 17.5751,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "th",
+      "anim": "carry",
+      "dir": "up",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            77,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            78,
+            14,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            73,
+            14,
+            244,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            77,
+            14,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            80,
+            14,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            79,
+            14,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            78,
+            14,
+            248,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            78,
+            14,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        13.1751,
+        18.1111,
+        10.3411,
+        10.2609,
+        13.9959,
+        13.017,
+        9.5698,
+        7.633
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 7.633,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            65,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            66,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            66,
+            17,
+            267,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            64,
+            17,
+            266,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.9442,
+        5.5948,
+        5.0495,
+        6.0922,
+        5.9711,
+        7.329,
+        8.8173,
+        7.5918
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 7.5918,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "asia",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            54,
+            17,
+            255,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            54,
+            17,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            53,
+            17,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            54,
+            17,
+            256,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.9442,
+        5.5948,
+        5.0495,
+        6.0922,
+        5.9711,
+        7.329,
+        8.8173,
+        7.5918
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 7.5918,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            62,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            62,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            62,
+            15,
+            252,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            62,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            61,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            60,
+            15,
+            235,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            60,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            62,
+            15,
+            264,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.8087,
+        5.302,
+        6.3518,
+        6.3908,
+        6.7455,
+        10.047,
+        12.4742,
+        9.2554
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 9.2554,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "west",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            62,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            70,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            68,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            84,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            84,
+            15,
+            259,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            85,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            62,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            56,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        4.8087,
+        5.302,
+        6.3518,
+        6.3908,
+        6.7455,
+        10.047,
+        12.4742,
+        9.2554
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 9.2554,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-right",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            70,
+            15,
+            254,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            61,
+            15,
+            236,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            70,
+            15,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            63,
+            15,
+            237,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            71,
+            15,
+            245,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            60,
+            15,
+            235,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 159.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            70,
+            15,
+            246,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 163.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            62,
+            15,
+            239,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        13.1782,
+        13.082,
+        11.523,
+        10.5977,
+        13.2802,
+        17.1415,
+        16.0264,
+        14.8073
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 14.8073,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "anim": "cook",
+      "dir": "down-left",
+      "frameMetrics": [
+        {
+          "column": 0,
+          "alphaBounds": [
+            66,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 1,
+          "alphaBounds": [
+            84,
+            15,
+            259,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 2,
+          "alphaBounds": [
+            75,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 3,
+          "alphaBounds": [
+            83,
+            15,
+            257,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 4,
+          "alphaBounds": [
+            75,
+            15,
+            249,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        },
+        {
+          "column": 5,
+          "alphaBounds": [
+            85,
+            15,
+            260,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.5
+        },
+        {
+          "column": 6,
+          "alphaBounds": [
+            74,
+            15,
+            250,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 156.5
+        },
+        {
+          "column": 7,
+          "alphaBounds": [
+            81,
+            15,
+            258,
+            320
+          ],
+          "componentsAlphaAbove40": 1,
+          "lowerBandCenterX": 160.0
+        }
+      ],
+      "successiveRgbaMeanAbsoluteDifference": [
+        13.1782,
+        13.082,
+        11.523,
+        10.5977,
+        13.2802,
+        17.1415,
+        16.0264,
+        14.8073
+      ],
+      "loopSeamRgbaMeanAbsoluteDifference": 14.8073,
+      "gifFrameDurationsMs": [
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130
+      ]
+    }
+  ],
+  "generations": [
+    {
+      "call": 1,
+      "id": "th-cook-a",
+      "sourceFilename": "exec-240faf89-9443-47c2-a65b-be62c1628488.png",
+      "sourceSha256": "98d83cc29512b0976523cb2413abc145a3bc4f4b617ff101a8828f71f0641194",
+      "prompt": "Use case: identity-preserve. Create animation keyframes for the EXACT Thai worker in reference image 1, not a redesign. Image 1 is identity/costume/camera reference (rows idle, side walk, front walk, back walk). Image 2 is food shape reference. Create exactly FOUR full-body sequential hand-drawn cook animation frames in a precise 2x2 equal grid on a 1024x1024 transparent canvas, each cell 512x512. No text, no grid lines. Each figure feet planted, foot anchor at local (256,490), crown top at y30, consistent head/body size in every frame. Three-quarter isometric facing screen lower-right. Red skin, golden eyes, broad pointed ears, brown gold-seamed horned cap, gold-tipped horns, charcoal short-sleeve wrap uniform with intricate gold edging, shorts, bare red feet and small leather utility pouch EXACTLY as original. Keep original painterly pixel-textured dark outlines. No chef hat/apron, no table, scenery, bowl, floor, rope, cast shadow. Arms move at waist height over an imaginary counter. Reading order four distinct actual poses, frames 1-4 of an eight-frame loop: (1) right hand reaching down-forward with a small wooden rice paddle, left palm ready; (2) paddle raised with white rice over left palm; (3) rice lowered to left palm and paddle moved aside; (4) both hands gently cupping white rice at chest-waist height. Rice should be a small white triangular onigiri with dark seaweed when finished, per image 2. Preserve head, feet and pelvis positions, draw real different arm and hand poses. Isolated sprites with genuine clean transparent alpha, no red/yellow outline fringe. Four sprites only, ample gutter, no overlap.",
+      "selected": false
+    },
+    {
+      "call": 2,
+      "id": "th-cook-b",
+      "sourceFilename": "exec-88d6e537-f0c6-459d-a585-48b1334cd373.png",
+      "sourceSha256": "545d001a68eec66bec5efbca8c705a64a17f1d586c2d08a144f9f8306add0c2f",
+      "prompt": "Use case: identity-preserve. Continue EXACTLY the Thai worker cook animation from image 1, which is the previous four animation frames. Image 2 is the original worker identity/costume reference. Produce the NEXT FOUR distinct hand-drawn frames (5,6,7,8) in the same precise 2x2 grid, same transparent square canvas, same scale, planted feet, head size and placement as image 1. Three-quarter lower-right view. No text, scenery, table, chef clothes or shadow. Preserve the original red skin, golden eyes, horned brown cap, charcoal gold-edged short uniform, bare feet and utility pouch. Reading order: (5) both palms compress the white rice into a clear triangle at waist height, small dark seaweed square facing camera; (6) right fingertips finish pressing top triangle and left palm supports bottom; (7) lean arms slightly forward and down to place the completed onigiri on the INVISIBLE counter, show the onigiri just below the fingertips; (8) empty left palm opens while right hand retrieves the rice paddle down beside the thigh, nearly the start pose in image 1 top-left so 8 loops naturally into 1. No extra food remaining floating in frame 8. Real hand/arm articulation for every frame, not translated duplicates. Keep legs, face, cap, palette, proportions stable. Clean genuine transparent alpha, no colored matte fringe. Four full bodies only with clear gutters.",
+      "selected": false
+    },
+    {
+      "call": 3,
+      "id": "th-carry-side-a",
+      "sourceFilename": "exec-b4c6be3c-4d91-46e5-9b13-ebc7e161730d.png",
+      "sourceSha256": "c76cd929abab9644cc468a53a25e3a0eba9eec9d5fca53d8dc95a37a584d1bc6",
+      "prompt": "Use case: identity-preserve. Make frames 1-4 of an eight-frame walk cycle carrying food for EXACT red Thai worker from image 1 (original identity, rows idle/side/down/up). Image 2 is onigiri appearance. Four sequential full-body sprites in exact 2x2 grid on transparent square canvas. Three-quarter facing screen right, camera identical to row 2 of image 1. Preserve face, golden eyes, horned brown/gold cap, red skin, big pointed ears, charcoal gold-trim wrap uniform/shorts, utility pouch, bare red feet, original painterly textured dark outlines. Remove rope from hands. Both hands steady at waist height hold a small plain brown wooden serving tray with TWO small white triangular rice balls with dark seaweed squares. No new costume. Distinct actual walking poses in reading order: 1 left leg forward heel contact/right leg back toe; 2 left knee flexes weight settles, right heel lifts; 3 right leg passes under hips, left leg supports; 4 right knee swings forward raised, left heel starts lifting. Head/tray shift only a tiny natural bounce. Same body size across all frames, crown at local y30 feet near y490 on each 512 square, foot-ground center x256. No table, scenery, labels, floor or shadow. Clean genuine transparent alpha, no red/yellow fringe, four complete isolated figures no overlap.",
+      "selected": true
+    },
+    {
+      "call": 4,
+      "id": "th-carry-side-b",
+      "sourceFilename": "exec-09d4a827-14e6-4df3-b0c3-7432992930d9.png",
+      "sourceSha256": "a2fc068204794f47ef89279837c187c68511809f50e1a7ef24a41e520728281d",
+      "prompt": "Use case: identity-preserve. Continue image 1 EXACTLY as frames 5-8 of the same eight-frame Thai food-serving walk cycle. 2x2 equal grid transparent square canvas, four FULL BODY sprites, same size and placement as image 1. Preserve red worker identity, costume details, face, cap, gold horns/trim, utility pouch, and both hands holding the same steady brown tray with TWO onigiri. Three-quarter facing screen right. Draw opposite leg phases to preceding four frames. Reading order: 5 right leg forward contact, left leg back toe push; 6 right knee bends to accept weight, left heel lifts; 7 left leg passes beneath hips while right supports; 8 left knee swings forward, right heel lifts, transitioning smoothly to image1 top-left. Maintain pelvis/head/tray size and camera. Actual leg articulation, not shifted images, do not repeat first four poses. No rope, furniture, scenery, labels, floor, shadows or colored matte fringe. Genuine transparent alpha with clean dark outlines. Match exact style and four-cell spacing of image1.",
+      "selected": true
+    },
+    {
+      "call": 5,
+      "id": "th-carry-down-a",
+      "sourceFilename": "exec-bc9fe9aa-e647-4816-85d9-0cd17fc5ad3a.png",
+      "sourceSha256": "4f22b664d4cd1c3327226c42112418c9f5ce1e80fae077b0fda620f50c232d35",
+      "prompt": "Use case: identity-preserve. Create frames 1-4 of an 8-frame front/down-view walk carrying food, exact Thai worker. Image1 original sheet row3 is front walk camera reference. Image2 is completed side-view carry style/food reference. Change camera to FRONT FACING SCREEN DOWN, slightly elevated isometric same as original row3. Red skin golden eyes pointed ears brown gold horned cap charcoal gold-edged wrap shorts utility pouch bare feet. Both hands hold small brown tray at waist with TWO white triangular onigiri dark seaweed. No rope. 2x2 equal-cell square canvas, four full-body distinct sprites on clean transparent alpha. Consistent proportions and placement, top y30 bottom near490 in each 512px cell, ground center x256. Reading order four real sequential leg poses: (1) left leg toward viewer contact and right behind; (2) left knee bent weight acceptance right heel lifting; (3) right leg passes through beneath body with bent knee while left supports; (4) right knee forward lifted ready for contact. Tray stable, natural tiny bob, head and uniform size constant. Match original character texture and dark outline precisely. No scenery/table/shadow/labels/grid lines/fringe. All four face directly down, no side views.",
+      "selected": true
+    },
+    {
+      "call": 6,
+      "id": "th-carry-down-b",
+      "sourceFilename": "exec-0d3795ef-60d2-4dd7-a349-bc5d2296876b.png",
+      "sourceSha256": "06beb6ea85362a98a7882c65661206d05a101abaadbdbb773fae9b75966d62bc",
+      "prompt": "Use case: identity-preserve. Continue EXACT image1 front-facing Thai worker food-carry animation with frames 5,6,7,8 of its 8-frame walk cycle. Same 2x2 grid square transparent canvas, same character size and positions, full bodies. Keep FRONT VIEW walking toward screen down, original red worker face and costume, brown/gold horned cap, gold eyes, pointed ears, black-gold shorts wrap, pouch, bare feet, both hands gripping same brown tray with TWO onigiri white triangles and seaweed squares. Opposite-leg phases to image1: frame5 right leg toward viewer heel contact/left back; frame6 right leg flexes accepting weight left heel lifting; frame7 left leg bent passing under pelvis while right supports; frame8 left knee swung forward ready to plant, transitions to image1 frame1. Distinct leg articulation, tiny natural bob only, stable tray and head proportions. Four separate hand-drawn poses, not translated duplicates. Genuine clean alpha, no matte halo. No rope, labels, scenery, furniture, shadows, grid lines. Preserve exact textured illustration style.",
+      "selected": true
+    },
+    {
+      "call": 7,
+      "id": "th-carry-up-a",
+      "sourceFilename": "exec-5ef363e1-aefb-40db-8620-3c364cc7d4dd.png",
+      "sourceSha256": "d3161eb0ec12cc57cfb2e2752b695d2b052f05ae21a622c0c85e393bec7380de",
+      "prompt": "Use case: identity-preserve. Create first FOUR frames of an eight-frame food-carry walk in BACK VIEW facing screen UP. Image1 original Thai worker reference bottom row establishes back camera and costume, image2 shows carry tray reference. Exact worker, red skin ears gold-tipped horns brown gold-seamed cap charcoal-gold wrap shorts small brown tool pouch bare feet. BACK ONLY, face hidden, see back of hat/head/uniform. Both arms flex forward at waist holding small brown tray in front of torso with TWO white triangle onigiri; from rear tray edges and tops of rice are partially visible to sides, respect occlusion, do not put tray on back. Rope removed. Four full-body distinct real poses in 2x2 equal-cell transparent square. Same size head/feet/hips, crown y30 ground near490 each 512 cell, ground center256. Reading order: 1 left leg forward away from viewer/right leg back showing sole; 2 left knee bends weight acceptance, right lifts; 3 right leg passes under hips left supports; 4 right knee swings away forward, left heel lifts. Natural tiny bob, tray steady, no duplicates. Match original painterly textured dark-outline chibi sprite. No scenery floor shadow text grid or colored fringe. Genuine clean alpha.",
+      "selected": true
+    },
+    {
+      "call": 8,
+      "id": "th-carry-up-b",
+      "sourceFilename": "exec-2b6e163a-d17c-4743-a65e-b47da79a45c5.png",
+      "sourceSha256": "f06d7ba42f13b67fca578b24953c013b082f86eb89ae60b7f4491e5d057cae57",
+      "prompt": "Use case: identity-preserve. Continue image1 EXACTLY, frames5-8 of Thai worker back-view food-serving walk. Four full-body sprites 2x2 equal grid transparent square, same size head, body, costume, camera and placement. BACK VIEW only facing away toward screen up. Red skin pointed ears brown gold horned cap charcoal wrap gold-trim shorts red bare feet and small tool pouch. Arms bent forward supporting same brown tray with two white seaweed onigiri, partially visible at sides, same occlusion as image1. Opposite leg phases: frame5 right leg forward away from viewer/left foot back showing sole; frame6 right knee weight acceptance left heel lifts; frame7 left leg passes beneath hips while right supports; frame8 left knee swings forward away while right pushes off. Real distinct hand-drawn poses, natural tiny bounce, tray steady, no image shifting. Frame8 should loop naturally to image1 frame1. No rope table scenery text floor shadow colored alpha fringe. Match exact original textured dark-outlined style, preserve all identity details.",
+      "selected": true
+    },
+    {
+      "call": 9,
+      "id": "asia-cook-a",
+      "sourceFilename": "exec-6fe8fb84-b45d-42a2-9818-17d5e2ed9c31.png",
+      "sourceSha256": "997682ee58176c7fcf9afe38843aa671b78388151b9235b38235e3b79bd4c5c2",
+      "prompt": "Use case: identity-preserve. Image1 is the EXACT Asia worker character, image2 food reference. Create frames1-4 of eight-frame cook loop, exactly four full-body sprites in 2x2 equal grid on transparent square canvas. Preserve image1 worker identity precisely: jade green skin, gold eyes, single ivory forehead horn, big pointed green ears, woven tan conical straw hat with dark chin straps, indigo short-sleeved wrap tunic with light gray lapels/cuffs, red waist sash, dark pants, straw-laced dark green sandals, small brown tool pouch at hip. No redesign, no chef costume. Same original chibi painterly pixel-textured dark outlines and elevated three-quarter screen-lower-right view. Feet planted constant, same head size, crown y30 ground490 and foot center256 each 512 cell. No rope in hands. Reading order actual hand poses (1) right hand reaching down-forward holding small wooden rice paddle left palm ready; (2) paddle lifts white rice above left palm; (3) deposit rice into left palm paddle moves aside; (4) both hands cup and start shaping small white triangle rice ball at waist. Onigiri appearance white rice triangle and dark seaweed square per image2. No table scenery bowl floor shadows text grid, no overlapping cells, no colored matte halo. Clean genuine transparent alpha. Lock feet/head/pelvis positions, animate hands and elbows.",
+      "selected": true
+    },
+    {
+      "call": 10,
+      "id": "asia-cook-b",
+      "sourceFilename": "exec-3bd6a7d9-79d8-44db-88b1-a7d553ff6e81.png",
+      "sourceSha256": "e08b5285b772cc1383119e4406e7e8dd7191067246e1d8b3a4a9a974c0e5498a",
+      "prompt": "Use case: identity-preserve. Continue EXACT Asia worker cook image1 with frames5-8 of same eight-frame loop. Image2 original identity reference. Four full-body sprites in exact same 2x2 transparent square layout, same scale head/costume/feet planted in each cell, three-quarter screen lower-right. Preserve green skin gold eyes single ivory horn tan woven conical hat dark chin straps indigo wrap tunic gray cuffs/lapels red sash dark trousers laced green sandals brown utility pouch. Same painterly textured dark outline. Reading order: frame5 both palms compress rice into white triangle at waist, dark seaweed square toward viewer; frame6 right fingertips press top point while left palm supports triangle; frame7 both arms extend down-forward placing the completed onigiri on INVISIBLE counter, show food at fingertips; frame8 empty left palm open, right hand holding wooden rice paddle low near thigh like image1 first frame ready to scoop again. No food left floating in frame8. Only hands/elbows animate, legs/head/pelvis steady. No scenery table floor bowl shadow text grid chef clothes or colored matte fringe. Four distinct real drawings, genuine clean alpha.",
+      "selected": true
+    },
+    {
+      "call": 11,
+      "id": "west-cook-a",
+      "sourceFilename": "exec-1132197b-22c4-4674-8adb-415eca2f4884.png",
+      "sourceSha256": "0f9c2301d40a7a625112064bbc8b6e54056b9ce10b8e0c1787f7fd2f6b687eaf",
+      "prompt": "Use case: identity-preserve. Image1 is original WEST worker identity. Image2 food reference. Create frames1-4 of an eight-frame cook animation, four FULL BODY distinct actual poses arranged 2x2 equal-cell transparent square. Same exact blue-slate skin, half-lidded gold eyes, long pointed ears with muted red inner ears, gray-brown horned cap with bronze buttons and dark curved horns, cream fur shoulder collar, brown leather worker apron/overalls with brass buckles and belt, dark pants and brown boots, brown gloves, leather tool pouch. Preserve original character face/expression, outfit, chibi body proportions, painterly textured dark outlines, elevated three-quarter screen-lower-right camera. Feet firmly planted, head/pelvis constant, same scale crown30 ground490 center256 in each512 cell. Empty hands except cook props, no held rope. Reading order:1 right gloved hand holding wooden paddle low reaching toward invisible rice tub left palm open;2 paddle lifts a small scoop white rice above left palm;3 left palm receives rice right moves paddle aside;4 both palms cup rice into small triangle at waist. White rice triangular onigiri with dark seaweed per image2. No chef hat or extra costume, no table floor scenery bowl shadow labels grid or halo. Genuine clean transparent alpha, no overlapping cells, exactly four isolated figures.",
+      "selected": true
+    },
+    {
+      "call": 12,
+      "id": "west-cook-b",
+      "sourceFilename": "exec-2b047e11-6099-40a1-b60d-2dc687ea64c8.png",
+      "sourceSha256": "7543fe847af5847cabf378d09b0edd3ad054e075cc1f076ceedb4c526baad87b",
+      "prompt": "Use case: identity-preserve. Continue EXACT WEST worker cook animation from image1, next four full-body actual drawn poses (frames5-8) in same equal 2x2 grid transparent square canvas. Image2 original identity. Lock character scale, blue-slate face half-lidded gold eyes, gray-brown bronze-riveted horned cap dark horns, cream fur shoulders, brown apron/overall belt/buckles, brown gloves and boots, small tool pouch, dark pants, same painterly textured outline and three-quarter lower-right camera. Feet head pelvis steady same placement. Reading order frame5 both palms press rice into white triangle seaweed square forward at waist; frame6 right fingertips press upper point left palm supports; frame7 arms extend down-forward placing finished triangle on invisible counter just below hands; frame8 left palm empty and open right hand retrieves wooden paddle near thigh to loop smoothly to image1 first frame. No floating rice in frame8. Four distinct elbow/hand poses, no shifted duplicates. No chef additions, no furniture table bowl scenery text grid floor shadow halo. Preserve all original costume details and body proportions. Genuine clean alpha.",
+      "selected": true
+    },
+    {
+      "call": 13,
+      "id": "cyberhell-cook-a",
+      "sourceFilename": "exec-5772f841-3c68-43d0-a6b7-db3dad02485f.png",
+      "sourceSha256": "f35fe96939a149393f3a525cbf908a1428ec307d355fbed33609718ac74db833",
+      "prompt": "Use case: identity-preserve. Image1 original CYBERHELL worker identity, image2 food reference. Draw frames1-4 of eight-frame cook loop as four full-body sprites in exact 2x2 equal grid transparent square canvas. Same exact worker: muted charcoal-purple skin, half-lidded gold eyes, pointed purple ears, black horned industrial helmet with cyan center stripe and square amber headlamp/brass fasteners, dark fitted short-sleeve work suit with cyan sleeve circuit and small cyan chest patch, bronze harness/belt buckles and knee plates, black gloves/boots, small tool pouch. Preserve original face, body proportions, painterly textured outlines, elevated three-quarter lower-right camera. No chef costume, no held rope. Feet planted constant head and pelvis, crown30 ground490 center256 each512 cell. Real distinct hand/arm poses reading order:1 right glove holds wooden rice paddle low reaching forward left palm ready;2 scoop white rice raised above left palm;3 rice received in left palm paddle moves aside;4 both hands cup forming a small triangular rice ball at waist. Food is white triangle with dark seaweed square matching image2. No futuristic food design. No table bowl scenery floor shadow text grid lines or colored matte fringe. Genuine clean transparent alpha, four complete isolated bodies, no cell overlaps.",
+      "selected": true
+    },
+    {
+      "call": 14,
+      "id": "cyberhell-cook-b",
+      "sourceFilename": "exec-d9f12216-da21-4a15-ada7-e7c81664a0da.png",
+      "sourceSha256": "4a78dcb19520897da9ec506bb144c0774b71de3321adc224ae484d899b61d9de",
+      "prompt": "Use case: identity-preserve. Continue EXACT Cyberhell worker cooking animation from image1 as frames5-8, four full-body distinct drawings in same 2x2 equal grid transparent square canvas. Image2 original character identity. Preserve charcoal purple skin half-lidded gold eyes big ears, black horned helmet cyan stripe amber headlamp bronze fasteners, dark work suit cyan sleeve/chest details bronze harness buckles knee plates black gloves boots tool pouch. Same face body head sizes feet planted head/pelvis fixed, same painterly textured dark outlines, three-quarter lower-right camera. Reading order frame5 both gloves compress white rice triangle at waist dark seaweed square facing viewer; frame6 right fingertips finish triangle top left supports base; frame7 hands lower and extend forward depositing completed onigiri onto INVISIBLE counter show food just below fingertips; frame8 left palm opens empty right hand retrieves wooden rice paddle low near thigh, ready to loop into image1 top-left. No rice floating in frame8. Animate elbows/hands with real different poses, no translated duplicates. No chef costume extra furniture table bowl scenery floor shadows text grid or colored fringe. Clean genuine transparent alpha, all bodies complete no overlap.",
+      "selected": true
+    },
+    {
+      "call": 15,
+      "id": "th-cook-corrected-a",
+      "sourceFilename": "exec-e3f7d76c-5f45-44c3-89a0-3ddf5705801f.png",
+      "sourceSha256": "5c03fa58c245aecd17c0d04dea87072b4702282465b5031ca2936b0cb59b1ddf",
+      "prompt": "Use case: identity-preserve. Correct four cooking animation frames with STRICT proportions from image1 ORIGINAL worker. Image2 is edit target, four existing cook poses. Keep four poses/props from image2 but REPLACE proportions, face shape, head/body scale with image1 EXACT original model. Original has a VERY LARGE broad round head/cap/ears, short compact body and short stubby legs, unlike image2's slender taller body. Head including hat occupies 55 percent of total character height, head including ears width approximately 210 pixels when full body height308px; body/legs together only45 percent. Keep original face looking horizontally toward lower-right, avoid downward tilting enlarged cute eyes. Red skin, gold eyes original eyelids, brown horned cap gold seams/tipped horns, dark gold-edged wrap shorts, pouch and bare red feet. Draw EXACTLY FOUR full-body sprites in 2x2 equal cells transparent square, identical scale and planted feet each cell. Preserve same cook poses reading order1 wooden paddle low right hand left palm ready,2 paddle scoop white rice above left palm,3 rice in left palm paddle aside,4 both hands cup rice triangular onigiri dark seaweed. No furniture scenery labels shadows. Original pixel-textured painterly style and dark outline. Genuine clean alpha. This is a proportion/identity correction, not new design. Make hands and food appropriate small scale compared to original large head. Crown y30 feet y490 each512cell, all bodies same height, make head BROADER and BIGGER relative to body than edit target.",
+      "selected": true
+    },
+    {
+      "call": 16,
+      "id": "th-cook-corrected-b",
+      "sourceFilename": "exec-8b257c2d-eb85-41c7-badd-22db2c6e1b5a.png",
+      "sourceSha256": "e641a1483e42f78e16b03666ffe87d0cee9ac9c35f748c1165c0cd447f8dda6a",
+      "prompt": "Use case: identity-preserve. Continue image1 corrected Thai cook animation with NEXT FOUR frames5-8. Image2 is original worker identity. EXACTLY match image1 new corrected very broad large head, short compact torso and stubby legs, same face/horned brown gold cap/eyes/red skin/black gold wrap/utility pouch/bare feet, same pixel-textured dark outlines, same planted feet and head position. Four full-body figures 2x2 equal grid transparent square canvas same size and spacing. Camera three-quarter facing lower-right. Reading order frame5 both hands compress white rice into triangle with dark seaweed at waist;6 right fingertips press upper point left supports;7 arms lower forward depositing completed onigiri on INVISIBLE counter directly below fingertips;8 empty left palm open right hand retrieves wooden paddle low, returns toward image1 first pose. No rice floating in8. Keep exact cap/face/head/foot scale identical to image1, all frames true articulated hand poses, no translation trick. Match original compact chibi identity, no chef clothes table scenery text floor shadow grid colored fringe. Clean genuine transparent alpha.",
+      "selected": true
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "README.md",
+      "bytes": 10652,
+      "sha256": "3851484a2155a4370589c0b30e00017b1245ac0e128d44b6fe7d1bf4ee8eb059"
+    },
+    {
+      "file": "compare-asia.jpg",
+      "bytes": 199690,
+      "sha256": "6e36c264dafb784f0beca0e885c178e1c24479f69b433af5db82b32d90e3f386"
+    },
+    {
+      "file": "compare-cyberhell.jpg",
+      "bytes": 193151,
+      "sha256": "01e073644d9a48ecf24011cb153eec128ea8789acd7aebef21716ea28d90188f"
+    },
+    {
+      "file": "compare-th.jpg",
+      "bytes": 220494,
+      "sha256": "7afc8be16392b27efd7d16c54d096a1161bedb40c146bcb9125018a97a5bbb4f"
+    },
+    {
+      "file": "compare-west.jpg",
+      "bytes": 200269,
+      "sha256": "03af7d33dae066483498f43208221d6347f7c760d125ce40e137923321266697"
+    },
+    {
+      "file": "preview/worker-asia-cook-down-left.gif",
+      "bytes": 288417,
+      "sha256": "816dd4635529b0224c111ac82c956e4bbbcbd8f6af7ff2d9bd5965e35c843222"
+    },
+    {
+      "file": "preview/worker-asia-cook-down-right.gif",
+      "bytes": 288359,
+      "sha256": "d118e1de42de84acba6d0f16c85e961bf51f45485292011007a0ac62fd1aa329"
+    },
+    {
+      "file": "preview/worker-cyberhell-cook-down-left.gif",
+      "bytes": 295990,
+      "sha256": "4704573c2e2ce2bde6a64f875df80b9d8a97f59b8a57f0a5468e23d14b5ec246"
+    },
+    {
+      "file": "preview/worker-cyberhell-cook-down-right.gif",
+      "bytes": 296017,
+      "sha256": "8f173047973b7af4439f98857d77938b7266041b273a576cc36e8947781b8d6d"
+    },
+    {
+      "file": "preview/worker-th-carry-down.gif",
+      "bytes": 277174,
+      "sha256": "6bd6d681f7a72c1b2a562e9e23ef5eb2f8af3baa4af755ed4df2b742d835ddcb"
+    },
+    {
+      "file": "preview/worker-th-carry-side-left.gif",
+      "bytes": 282012,
+      "sha256": "1e5113e7f984c96ed3cffeba2b20f5b69e2c5d04978cde2c4b425aff177e7d56"
+    },
+    {
+      "file": "preview/worker-th-carry-side.gif",
+      "bytes": 281979,
+      "sha256": "c914624031245710fb3fa33156800a1b115b7a36f3446d4ae20b1a803d8bb501"
+    },
+    {
+      "file": "preview/worker-th-carry-up.gif",
+      "bytes": 252893,
+      "sha256": "eed0167c6278bf69b7d2023fc936a17bda1b003a42e8926e335ab57c95179796"
+    },
+    {
+      "file": "preview/worker-th-cook-down-left.gif",
+      "bytes": 356009,
+      "sha256": "8ce4d2069b6e5e73862704e1d4143329f601861a390716e6cd70b6adc061a3ca"
+    },
+    {
+      "file": "preview/worker-th-cook-down-right.gif",
+      "bytes": 356168,
+      "sha256": "9e0add456f92dc3f198df5d01f96c7d5544ddc73503f7f8e171775b23c050d31"
+    },
+    {
+      "file": "preview/worker-west-cook-down-left.gif",
+      "bytes": 303646,
+      "sha256": "c53ce1616f1edccf9985bb5dca2ce86976fe696fc0e661a4953b929264a8d115"
+    },
+    {
+      "file": "preview/worker-west-cook-down-right.gif",
+      "bytes": 303684,
+      "sha256": "437cbb15f4d805013c34217fae5cdec67692c7aad6b7f7c791647ae23ab48ad5"
+    },
+    {
+      "file": "worker-asia-cook-v1.webp",
+      "bytes": 1002534,
+      "sha256": "064b34f950570be07b45a9d3cec668bfd91c62d13924f88a5e961dd67a0f3363"
+    },
+    {
+      "file": "worker-cook.json",
+      "bytes": 4523,
+      "sha256": "b6a8c85b7a8797dd65478047ed507d7a5868da2a0abf76a7ff711ae6107f5c7d"
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "bytes": 992324,
+      "sha256": "dab566d1af3804c823a02b6b41bc6f0b97fe7e9889691603f8acfc5b8ca74d8e"
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "bytes": 2048828,
+      "sha256": "77312b7a5115325c20d350cf3ef5c730eafce95d6514e3a733d17312a5b4bfea"
+    },
+    {
+      "file": "worker-th-cook-v1.webp",
+      "bytes": 1246506,
+      "sha256": "30d47aa59c37eead8ce0bb4c442c8614fc0472ead9b7692f093240dc94cddcc5"
+    },
+    {
+      "file": "worker-west-cook-v1.webp",
+      "bytes": 1073454,
+      "sha256": "9c92dbe0df226a05fa6b3cd940c79abbc68912bf808fbf74c672b1c7d02a571d"
+    }
+  ],
+  "packageBytes": 10878308,
+  "packageLimitBytes": 30000000
+}

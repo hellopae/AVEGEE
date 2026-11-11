@@ -1,0 +1,54 @@
+{
+  "run": "20261111T170902Z-d171c309",
+  "date": "2026-11-12",
+  "animatedPlaybackReviewed": false,
+  "inGameTested": false,
+  "method": "Static native-size decoded GIF plates, original-vs-new comparisons and alpha composites; not animated playback.",
+  "observations": [
+    {
+      "files": [
+        "evidence/decoded-cyberhell-cook-down-left.jpg"
+      ],
+      "result": "หัวคงเดิมตรงทิศ; คอเสื้อใช้ต้นฉบับเฉพาะmask; ทรงตัว4→5กับช่วงขา/สนับเข่ายังต่างจากidle ไม่รับรองตัวเดิมทั้งสัดส่วน"
+    },
+    {
+      "files": [
+        "evidence/decoded-th-cook-down-left.jpg",
+        "evidence/repair-neck/th-pouch-inspection.jpg"
+      ],
+      "result": "รอยต่อคอ/ไหล่ต่อกับหัวมากขึ้นโดยคงมือกับข้าว; เฟรม7ยังมีกระเป๋าใกล้ตัวแต่เฟรมอื่นเป็นกระเป๋าฝั่งไกล จึงยังไม่รับรองรายละเอียดประจำด้าน"
+    },
+    {
+      "files": [
+        "evidence/decoded-th-carry-side.jpg",
+        "evidence/native-alpha-th-carry-side-1-4.jpg",
+        "evidence/native-alpha-th-carry-side-5-8.jpg"
+      ],
+      "result": "ดูsideครบ8เฟรมบนพื้นขาวดำเขียว ไม่พบขอบแดง/เหลืองใหม่จากการประกอบ; แขน/ถาดเปลี่ยนระดับที่4→5 ยังไม่รับรองความต่อเนื่องจากภาพนิ่ง"
+    },
+    {
+      "files": [
+        "evidence/native-alpha-cyberhell-cook-down-left-5-8.jpg"
+      ],
+      "result": "ดูขอบเฟรม5–8บนขาวดำเขียว ไม่พบขอบแดง/เหลืองใหม่; ช่องโปร่งใสตามขอบส่วนหัวกับแขนยังต้องพิจารณาร่วมกับสัดส่วนจริง"
+    }
+  ],
+  "supportingStaticFiles": [
+    "evidence/repair-neck/before-after-cyberhell-cook-r1.jpg",
+    "evidence/repair-neck/before-after-th-cook-r1.jpg",
+    "evidence/repair-neck/before-after-th-carry-r0.jpg",
+    "evidence/repair-neck/th-pouch-inspection.jpg",
+    "evidence/decoded-th-cook-down-left.jpg",
+    "evidence/decoded-cyberhell-cook-down-left.jpg",
+    "evidence/decoded-th-carry-side.jpg",
+    "evidence/native-alpha-th-carry-side-1-4.jpg",
+    "evidence/native-alpha-th-carry-side-5-8.jpg",
+    "evidence/native-alpha-cyberhell-cook-down-left-5-8.jpg"
+  ],
+  "remaining": [
+    "ยังไม่ได้ดู GIF เล่นจริง: browser ตอบ The browser access host is unavailable จึงยังรับรองรอยต่อ4→5/8→1 และจังหวะตัก ปั้น วาง หรือก้าวเดินไม่ได้",
+    "Cyberhell cook ซ้ายยังมีช่วงขา/สนับเข่าและสัดส่วนลำตัวต่างจาก idle; ทรงตัวและแขนเปลี่ยนที่4→5 การประกอบครั้งนี้แก้เฉพาะคอเสื้อ ไม่ได้แก้ silhouette ทั้งตัว",
+    "TH cook ซ้าย กระเป๋าใกล้ตัวในเฟรม7ยังต่างด้านกับกระเป๋าเล็กในเฟรมอื่น; การคืนรายละเอียดเฉพาะเฟรม7จากรอบก่อนยังไม่แก้ความสอดคล้องตลอด loop",
+    "Carry TH side ช่วง4→5แขนและถาดเปลี่ยนระดับ ยังต้องตรวจ playback/สัดส่วน และการวางแทน walk down/up ซึ่งเดิมมี renderer fit scale/dx; งานนี้ไม่ได้แก้จุดเสียบเกม"
+  ]
+}

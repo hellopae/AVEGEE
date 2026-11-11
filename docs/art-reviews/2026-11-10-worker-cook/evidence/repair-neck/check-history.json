@@ -1,0 +1,25 @@
+{
+  "firstRun": {
+    "evidence": [
+      "first-test-results.json",
+      "first-audit.json"
+    ],
+    "pixelChecks": 597,
+    "pixelFailures": 0,
+    "atlasAuditChecks": 106,
+    "atlasAuditFailures": [
+      "th-cook-down-right no detached alpha>40 pixels",
+      "th-cook-down-left no detached alpha>40 pixels",
+      "th-carry-side no detached alpha>40 pixels",
+      "th-carry-side-left no detached alpha>40 pixels"
+    ]
+  },
+  "correction": "Do not replace existing silhouette with transparent source pixels. Reject disconnected source additions at localized mask boundary; protect hands/rice with 3px ink margin. Re-run repair from unmodified latest input, then regenerate changed GIFs and re-run checks.",
+  "final": {
+    "pixelChecks": 693,
+    "pixelFailures": 0,
+    "atlasAuditChecks": 106,
+    "atlasAuditFailures": 0
+  },
+  "newImageGenCalls": 0
+}

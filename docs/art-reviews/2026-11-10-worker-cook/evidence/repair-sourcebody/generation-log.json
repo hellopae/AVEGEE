@@ -1,0 +1,32 @@
+{
+  "run": "20261111T165435Z-427eb5ef",
+  "newRepairCallsThisRun": 0,
+  "repairTotal": 16,
+  "repairLimit": 16,
+  "remainingSharedRepairAllowance": 0,
+  "logs": [
+    {
+      "file": "evidence/revision/generation-log.json",
+      "entries": 4,
+      "sha256": "4d4a261e415129c1d8d6422638b1f23b73849d43bc3e6e58c9d17e3b8d0e6367"
+    },
+    {
+      "file": "evidence/repair-th/generation-log.json",
+      "entries": 4,
+      "sha256": "f41ccc3cd1762eeff36723f2834e7cf1e53f3191d8368ce33f2458c96b506491"
+    },
+    {
+      "file": "evidence/repair-cyberhell-head/generation-log.json",
+      "entries": 4,
+      "sha256": "99399c9153752995ab8b411ee2a523b156333e438bb8ff1bd7096ca0e3c21a29"
+    },
+    {
+      "file": "evidence/repair-identity/generation-log.json",
+      "entries": 4,
+      "sha256": "85b82d9e88ae6c429199d817a0e4aed04980d706889414f16fc42f0045260ffe"
+    }
+  ],
+  "originalCallsDocumentedByInheritedLogs": 16,
+  "shadoUsed": false,
+  "externalAPIUsed": false
+}

@@ -1,0 +1,20 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "worker-{th,asia,west,cyberhell}-cook-v1.webp: cook4โซน สองทิศ ทิศละ8เฟรม RGBA320×320ต่อช่อง",
+    "worker-th-carry-v1.webp และ worker-cook.json: side/side-left/down/up ทิศละ8เฟรม",
+    "evidence/repair-neck/verification.json: 693 checks, 0 failures; หัวตรงsheetต้นฉบับทั้ง96ช่อง เท้าและmotion y182ลงไปคงRGBAเดิม",
+    "evidence/current-audit.json: 106 checks, 0 failures; decode GIF12ไฟล์ครบ96เฟรมตรงatlas, alphaไม่หลุด",
+    "evidence/repair-neck/repair-report.json: 40ช่อง, 7,133พิกเซลเปลี่ยนเฉพาะmask, ไม่ลบsilhouette alpha>40เดิม; นอกmaskคงเดิม",
+    "evidence/repair-neck/generation-log.json: งบแก้จริง16/16, รอบนี้0ครั้ง; เก็บlogต้นทางทั้ง4ชุด",
+    "evidence/repair-neck/visual-review.json: ตรวจภาพนิ่งแล้ว ยังพบสัดส่วนCyberhellและกระเป๋าTHไม่สอดคล้อง",
+    "evidence/repair-neck/playback-access.json: browserไม่พร้อมใช้งาน ยังไม่ได้ดูGIFเล่นจริง",
+    "evidence/package-check.json: ดูขนาดรวม/ไฟล์บังคับ/git scopeจากผลตรวจแพ็กจริง"
+  ],
+  "remaining": [
+    "ยังไม่ได้ดู GIF เล่นจริง: browser ตอบ The browser access host is unavailable จึงยังรับรองรอยต่อ4→5/8→1 และจังหวะตัก ปั้น วาง หรือก้าวเดินไม่ได้",
+    "Cyberhell cook ซ้ายยังมีช่วงขา/สนับเข่าและสัดส่วนลำตัวต่างจาก idle; ทรงตัวและแขนเปลี่ยนที่4→5 การประกอบครั้งนี้แก้เฉพาะคอเสื้อ ไม่ได้แก้ silhouette ทั้งตัว",
+    "TH cook ซ้าย กระเป๋าใกล้ตัวในเฟรม7ยังต่างด้านกับกระเป๋าเล็กในเฟรมอื่น; การคืนรายละเอียดเฉพาะเฟรม7จากรอบก่อนยังไม่แก้ความสอดคล้องตลอด loop",
+    "Carry TH side ช่วง4→5แขนและถาดเปลี่ยนระดับ ยังต้องตรวจ playback/สัดส่วน และการวางแทน walk down/up ซึ่งเดิมมี renderer fit scale/dx; งานนี้ไม่ได้แก้จุดเสียบเกม"
+  ]
+}

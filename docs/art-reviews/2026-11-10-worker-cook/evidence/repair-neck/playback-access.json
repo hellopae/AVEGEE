@@ -1,0 +1,8 @@
+{
+  "run": "20261111T170902Z-d171c309",
+  "tool": "mcp__cua_repl.js",
+  "action": "cua.createBrowserTab(\"iab\", \"about:blank\", { visible: false })",
+  "observedResult": "The browser access host is unavailable",
+  "animatedPlaybackReviewed": false,
+  "fallback": "Decoded actual GIF frames for static inspection only; no playback acceptance."
+}

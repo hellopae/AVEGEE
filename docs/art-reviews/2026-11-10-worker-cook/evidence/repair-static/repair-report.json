@@ -1,0 +1,1309 @@
+{
+  "input": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T112241Z-92b49ab0/docs/art-reviews/2026-11-10-worker-cook",
+  "newImageGenCalls": 0,
+  "repairs": [
+    {
+      "row": "th-cook-down-right",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 44.5,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 45.0,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 45.5,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        204.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 44.5,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 46.0,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 46.0,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 45.0,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-right",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 46.0,
+      "sourceSole": [
+        203.5,
+        319
+      ],
+      "resultSole": [
+        203.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -45.5,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -45.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -46.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -45.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -45.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -46.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 7,
+      "operation": "Replace pouch RGB with stationary interior cloth cutout from f6, keep moving hand and original alpha/hem/leg silhouette",
+      "replacedPixels": 1545,
+      "alphaPreservedByGarmentPatch": true
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -45.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-cook-down-left",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -46.0,
+      "sourceSole": [
+        115.5,
+        319
+      ],
+      "resultSole": [
+        115.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 1,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 2,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 3,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 4,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 5,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 6,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 7,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side",
+      "frame": 8,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 1,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 2,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 3,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 4,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 5,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 6,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 7,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "th-carry-side-left",
+      "frame": 8,
+      "operation": "Direction-matched original stationary neckline; leave tray, hands and walking legs intact"
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.5,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.5,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.5,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.5,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.0,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 15.5,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 15.0,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-right",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": 16.0,
+      "sourceSole": [
+        180.5,
+        319
+      ],
+      "resultSole": [
+        180.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.5,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.5,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.5,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.5,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.0,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -15.5,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -15.0,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "asia-cook-down-left",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 182,
+      "bottomShiftX": -16.0,
+      "sourceSole": [
+        138.5,
+        319
+      ],
+      "resultSole": [
+        138.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 41.0,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 41.0,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 40.5,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 40.5,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 39.0,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 40.5,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 42.0,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        194.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-right",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": 40.5,
+      "sourceSole": [
+        194.5,
+        319
+      ],
+      "resultSole": [
+        195.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -41.0,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -41.0,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -40.5,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -40.5,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -39.0,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -40.5,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        125.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -42.0,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.5,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "west-cook-down-left",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 193,
+      "bottomShiftX": -40.5,
+      "sourceSole": [
+        124.5,
+        319
+      ],
+      "resultSole": [
+        124.0,
+        319
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 1,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 1.5,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 2,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 1.5,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 3,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.0,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 4,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.0,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 5,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.5,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 6,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.5,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 7,
+      "operation": "Remove old duplicate emblem with stationary sleeve fabric from f1 before applying source emblem",
+      "rectangle": [
+        166,
+        166,
+        185,
+        194
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 7,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.0,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 8,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        6,
+        -7
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-right",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": 2.0,
+      "sourceSole": [
+        192.5,
+        314
+      ],
+      "resultSole": [
+        192.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 1,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 1,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 2,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 2,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 3,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 3,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 4,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 4,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 5,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 5,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -1.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 6,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 6,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 7,
+      "operation": "Remove old duplicate emblem with stationary sleeve fabric from f1 before applying source emblem",
+      "rectangle": [
+        145,
+        165,
+        168,
+        194
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 7,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 7,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 8,
+      "operation": "Original sleeve emblem/fabric cutout, reflected only for renderer left direction",
+      "offset": [
+        0,
+        -6
+      ]
+    },
+    {
+      "row": "cyberhell-cook-down-left",
+      "frame": 8,
+      "operation": "Register drawn lower body to source stance, taper from original head to sole band",
+      "shearStartY": 180,
+      "bottomShiftX": -2.0,
+      "sourceSole": [
+        126.5,
+        314
+      ],
+      "resultSole": [
+        126.5,
+        314
+      ],
+      "upperPixelsUnchanged": false
+    }
+  ],
+  "limitations": [
+    "Body registration retains existing drawn motions; it does not certify a smooth loop.",
+    "Source down-left is reflected according to drawWorker, not an independently authored left view."
+  ],
+  "outputs": [
+    {
+      "file": "worker-th-cook-v1.webp",
+      "sha256": "4b565d8b561fc818ecef79d107a54d133983eae4ad0afcfead01f9a907862962"
+    },
+    {
+      "file": "worker-th-carry-v1.webp",
+      "sha256": "ea9529b850b8ca02ba5ab3310509ed1bece139fdc02bafa38b55cc8ff28c680c"
+    },
+    {
+      "file": "worker-asia-cook-v1.webp",
+      "sha256": "198e3200637aa11fa3b7baa566ea6baa0280b7b8ad884ee7b034fe9228cf5b25"
+    },
+    {
+      "file": "worker-west-cook-v1.webp",
+      "sha256": "196bad2b243355ba6f9faa7dce07bbb104dbb71c3e6fcfb8e9c50fed178a7eca"
+    },
+    {
+      "file": "worker-cyberhell-cook-v1.webp",
+      "sha256": "9ff2a79ba70f6696e38ff66bd7698454394723d8812460dc2b580877743e19bf"
+    }
+  ]
+}

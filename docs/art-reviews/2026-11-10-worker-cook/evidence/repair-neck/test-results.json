@@ -1,0 +1,25 @@
+{
+  "run": "20261111T170902Z-d171c309",
+  "atUTC": "2026-11-11T17:18:09.201910+00:00",
+  "results": [
+    {
+      "command": [
+        "/usr/local/bin/python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/repair-neck/verify.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"checks\": 693, \"failedChecks\": [], \"repairTotal\": 16}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/local/bin/python3",
+        "docs/art-reviews/2026-11-10-worker-cook/evidence/audit_current.py"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"atlasCells\": 96,\n  \"gifsDecoded\": 12,\n  \"nativeAlphaPlates\": 12,\n  \"checks\": 106,\n  \"failedChecks\": []\n}\n",
+      "stderr": ""
+    }
+  ],
+  "note": "Pixel/layout checks only; no real-time playback or QA acceptance."
+}

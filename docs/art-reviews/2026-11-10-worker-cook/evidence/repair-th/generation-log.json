@@ -1,0 +1,143 @@
+{
+  "run": "20261111T063649Z-a40c6428",
+  "inputDelivery": "/Users/agapae/agapae-work/.toby-worktrees/.codex-worktrees/20261111T062023Z-88672152/docs/art-reviews/2026-11-10-worker-cook",
+  "originalCalls": 16,
+  "repairCallsBeforeThisRun": 4,
+  "callsThisRun": 4,
+  "runLimit": 4,
+  "repairTotal": 8,
+  "repairLimit": 16,
+  "remainingThisRun": 0,
+  "remainingSharedRepairAllowance": 8,
+  "builtInOnly": true,
+  "shadoUsed": false,
+  "entries": [
+    {
+      "call": 1,
+      "tool": "built-in image_gen__imagegen",
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "promptFile": "prompt-01.txt",
+      "references": [
+        {
+          "role": "edit target; four existing hand poses",
+          "file": "target-01.webp"
+        },
+        {
+          "role": "original same-direction identity; left is renderer mirror",
+          "file": "source-th-down-right.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c952-f4a9-7850-b94d-b2ecea364819/exec-994b8e76-23e9-443e-ab42-fa4f3b58cf4d.png",
+      "savedLosslessOutput": "generated-01.webp",
+      "sha256": "19477ad6df8ddd10fdfe2cb37457fb58cdaee49d92e34b759692623249bc9bdd"
+    },
+    {
+      "call": 2,
+      "tool": "built-in image_gen__imagegen",
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-right",
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "promptFile": "prompt-02.txt",
+      "references": [
+        {
+          "role": "edit target; four existing hand poses",
+          "file": "target-02.webp"
+        },
+        {
+          "role": "original same-direction identity; left is renderer mirror",
+          "file": "source-th-down-right.webp"
+        },
+        {
+          "role": "continuity reference; opposite direction for call3",
+          "file": "generated-01.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c952-f4a9-7850-b94d-b2ecea364819/exec-066b552b-17e4-4ac8-a675-8fe73459a223.png",
+      "savedLosslessOutput": "generated-02.webp",
+      "sha256": "ea3ca1ba1e236fca129215167308824ff7d9163eb1eac245c4c84dfe9dfc5498"
+    },
+    {
+      "call": 3,
+      "tool": "built-in image_gen__imagegen",
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "promptFile": "prompt-03.txt",
+      "references": [
+        {
+          "role": "edit target; four existing hand poses",
+          "file": "target-03.webp"
+        },
+        {
+          "role": "original same-direction identity; left is renderer mirror",
+          "file": "source-th-down-left.webp"
+        },
+        {
+          "role": "continuity reference; opposite direction for call3",
+          "file": "generated-01.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c952-f4a9-7850-b94d-b2ecea364819/exec-bea701e8-a029-48db-8a74-99cda296ef7f.png",
+      "savedLosslessOutput": "generated-03.webp",
+      "sha256": "f2e756395675645214cc9477ec2b697d03c796cf97b92a2bfe643e8ccdd74772"
+    },
+    {
+      "call": 4,
+      "tool": "built-in image_gen__imagegen",
+      "zone": "th",
+      "anim": "cook",
+      "dir": "down-left",
+      "frames": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "promptFile": "prompt-04.txt",
+      "references": [
+        {
+          "role": "edit target; four existing hand poses",
+          "file": "target-04.webp"
+        },
+        {
+          "role": "original same-direction identity; left is renderer mirror",
+          "file": "source-th-down-left.webp"
+        },
+        {
+          "role": "continuity reference; opposite direction for call3",
+          "file": "generated-03.webp"
+        }
+      ],
+      "transparentBackgroundRequested": true,
+      "originalToolOutput": "/Users/agapae/.codex/generated_images/01a1c952-f4a9-7850-b94d-b2ecea364819/exec-cee61747-ff4a-4dfe-9266-548f75ccfb65.png",
+      "savedLosslessOutput": "generated-04.webp",
+      "sha256": "702051435ecf635a369d73b21680224d5cf6d66ee502e998267c4d534cd4c648"
+    }
+  ],
+  "losslessInputMapping": "storage.json",
+  "packing": "pack_th.py",
+  "priorRepairLog": "../revision/generation-log.json"
+}

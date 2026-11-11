@@ -1,0 +1,18 @@
+{
+  "status": "incomplete",
+  "evidence": [
+    "evidence/repair-th/generation-log.json — ImageGen ในตัว 4 ครั้ง ครั้งละ4เฟรม แก้ TH cook จริง16เฟรม; รวมรอบแก้8/16",
+    "worker-th-cook-v1.webp + evidence/repair-th/packing.json — RGBA 2560x640/16ช่อง สูง308–309px ฐานy319; ย่อทั้งตัวและจัดฐาน ไม่สร้าง motion จากภาพนิ่ง",
+    "evidence/current-audit.json — 121เงื่อนไข 96ช่อง/12GIF ไม่พบข้อผิดพลาด; cyberhell y314 ทั้ง16เฟรม คงผลแก้5px; atlasอื่น4และGIFอื่น10ตรง SHA256 ชุดล่าสุด",
+    "compare-*.jpg + evidence/decoded-*.jpg + evidence/renderer-fit-*.jpg — ดู source/cook4โซนและcarry TH4ทิศ พบหัว สัดส่วน รายละเอียดด้านเดียวและรอยต่อยังค้าง",
+    "evidence/native-alpha-th-*.jpg — ดูครบ TH cook16และcarry32เฟรมบนขาว/ดำ/เขียว ไม่เห็นขอบแดง/เหลืองผิดปกติในภาพที่ตรวจ",
+    "evidence/package-check.json — ขนาดไฟล์จริง รายการไฟล์บังคับ และขอบเขตเปลี่ยน"
+  ],
+  "remaining": [
+    "รักษาหัว/ใบหน้า/สัดส่วนให้ตรง source ทุกเฟรม: TH cook ยังเปลี่ยนข้ามชุด; asia/west/cyberhell และ TH carry ยังมีข้อค้างตาม loop-review.json",
+    "แก้รายละเอียดประจำด้าน: TH cookซ้ายเฟรม7กระเป๋าผิดข้าง; asia/westยังmirror และcyberhellยังมีสัญลักษณ์/กระเป๋าผิดข้าง",
+    "ตรวจและแก้จุดสัมผัสเท้าทางกายวิภาค/แกนXให้ตรง source ไม่ใช้ manifest anchorหรือsilhouette bottomเป็นหลักฐานเพียงอย่างเดียว",
+    "แก้รอยต่อ4→5/8→1และดู playbackต่อเนื่องก่อนรับรอง loop; TH seamตัวเลขรอบนี้สูงขึ้นจึงไม่รับรองว่าดีขึ้น",
+    "ใช้โควตารอบนี้ครบ4/4แล้ว รวมรอบแก้8/16 เหลือร่วม8สำหรับrunถัดไป; carryโซนอื่นเป็นทางเลือก"
+  ]
+}
