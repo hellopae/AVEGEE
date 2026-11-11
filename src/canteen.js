@@ -15,11 +15,16 @@ export function restoreMeal(c){
  c.hunger=Math.min(100,(c.hunger??100)+40);c.morale=Math.min(100,(c.morale??100)+(c.stamina!=null?35:20));
  if(c.stamina!=null){c.stamina=Math.min(100,c.stamina+35);c.supplyRest=false;c.reason='';}
 }
-export const foodAvailable=g=>canteenBuilt(g)?(canteenActive(g)?canteenState(g).meals:0):(g.food||0);
+// Khun Pae 11 Nov: the give button uses the kitchen's ready meals first, and falls back to the central stock (merchant rice) when the kitchen is empty.
+const fromKitchen=g=>canteenActive(g)&&canteenState(g).meals>=1;
+export const foodAvailable=g=>fromKitchen(g)?canteenState(g).meals:(g.food||0);
 export const canFeedActor=(g,id)=>!g.battle&&!g.over&&hungry(mealRecipient(g,id))&&foodAvailable(g)>=1;
+export function takeFood(g,n=1){
+ if(fromKitchen(g)&&canteenState(g).meals>=n){canteenState(g).meals-=n;canteenState(g).served+=n;return true;}
+ if((g.food||0)>=n){g.food-=n;return true;}return false;
+}
 export function feedActor(g,id){
- if(!canFeedActor(g,id))return false;
- if(canteenBuilt(g)){canteenState(g).meals--;canteenState(g).served++;}else g.food--;
+ if(!canFeedActor(g,id)||!takeFood(g,1))return false;
  restoreMeal(mealRecipient(g,id));return true;
 }
 // Old crew cooking API is deliberately closed; unfinished paid queues are refunded on load.

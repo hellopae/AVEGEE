@@ -9,7 +9,7 @@ import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffec
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
-import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,canteenBuilt} from './canteen.js';
+import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
@@ -4863,8 +4863,7 @@ const API = {
    *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
   feedCrew(k) {
     const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);
-    if (!actorStanding(c) || this.battle || foodAvailable(this) < BAL.feedFoodCost) return false;
-    if(canteenBuilt(this))canteenState(this).meals-=BAL.feedFoodCost;else this.food -= BAL.feedFoodCost;
+    if (!actorStanding(c) || this.battle || foodAvailable(this) < BAL.feedFoodCost || !takeFood(this, BAL.feedFoodCost)) return false;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
     c.morale = Math.min(100, c.morale + Math.round(100 * ITEMS.food.hpRatio));
     this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
@@ -4986,7 +4985,7 @@ const API = {
   cancelRice(key) {return cancelRice(this,key);},
   workers() { return zoneWorkers(this); },
   workerHireWhy() { return workerHireWhy(this); },
-  hireWorker() { const result=hireWorker(this);if(result){this.save();this.onChange();}return result; },
+  hireWorker(mode) { const result=hireWorker(this,mode);if(result){this.save();this.onChange();}return result; },
   setWorkerMode(id,mode) { const ok=setWorkerMode(this,id,mode);if(ok){this.save();this.onChange();}return ok; },
   feedWorker(id) {const ok=feedWorker(this,id);if(ok){this.save();this.onChange();}return ok;},
   restWorkerAtTea(id) {const ok=restWorkerAtTea(this,id);if(ok){this.save();this.onChange();}return ok;},
