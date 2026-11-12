@@ -76,6 +76,6 @@ test('KO-CREW: the scene draws the fallen lying in their old slot, greyed card, 
   assert.match(ui, /g\.battleFallen\(\)\) if \(!squadMembers\.some/); assert.match(ui, /b\.squadOrder/); assert.match(ui, /is-fallen/); assert.match(ui, /\.\.\.g\.battleActors\(\), \.\.\.g\.battleFallen\(\)/);
   assert.match(css, /\.battle-squad \.is-fallen[^{]*\{pointer-events:none/); assert.match(css, /\.battle-portrait\.is-fallen\{opacity:\.55/);
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const k of Object.keys(map).filter(k => /\.\/src\/(game|ui)\.js/.test(k))) assert.match(map[k], /\?v=(20261106-kocrew(-guard)?-home-slots|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))(-w1112)?(-cook1)?$/, k);
+  for (const k of Object.keys(map).filter(k => /\.\/src\/(game|ui)\.js/.test(k))) assert.match(map[k], /\?v=(20261106-kocrew(-guard)?-home-slots|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))(-w1112)?(-cook1)?(-poses)?$/, k);
   assert.match(html, /src\/ui\.js\?v=(20261106-kocrew-home-slots|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))/); assert.match(html, /battle-turns\.css\?v=20261106-kocrew-home-slots/);
 });

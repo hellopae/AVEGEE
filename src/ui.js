@@ -15,7 +15,7 @@ import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor, questSkillsForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
-import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
+import { soulPoseForPress, soulPoseForScare, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
@@ -2508,7 +2508,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const neutralCast = usingAtk && powerVisual(fx?.action || fx?.key)?.cast === 'neutral';
   const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) || neutralCast ? heroFace() : heroAtk())
     : showRage ? (rageArtSrc(g.outfit || g.zone) || ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
-  const foeSrc = storyFoeArt(foe.sp);
+  // a soul that has just lost its fight: the "scared" drawing when one exists for this original (else the standing picture)
+  const foeBase = storyFoeArt(foe.sp), beatenSoul = g.battle?.kind === 'soul' && g.battle.over === 'win' && !(hp?.foes?.length > 1) ? g.queue.find(x => x.id === g.battle.soulId) : null;
+  const foeSrc = beatenSoul && soulPoseForScare(beatenSoul, foeBase) || foeBase;
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
   const bg = hp ? battleBackground(g.zone, hp, g.player) : artUrl('BG-Turn-Base', 'webp');
@@ -2671,6 +2673,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
 //   บน = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
 //   ล่างซ้าย = โปรไฟล์ยมบาทน้อย + ของ · ล่างขวา = โปรไฟล์วิญญาณ
 // เปิดได้จากแท่นพิพากษาเท่านั้น (ดู drawDeck) — แท็บ "ไต่สวน" เดิมถูกถอดออกแล้ว
+const POWER_POSE_AFTER_MS = 1500;   // mirror / hypnosis: how long the scared drawing stays after the cutscene
 const FEAR_BEAT_MS = 1100, FEAR_AFTER_MS = 650;   // P2: close-in + fright before the confession lands · then the camera stays a beat and relaxes
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
@@ -2690,7 +2693,7 @@ function openTrial(initialError = '') {
   trialCmd = 'ask';
   let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false, reaction = 'fear', trialClosed = false;
   const reactionTimers=[];
-  let activeSoulPose = null;
+  let activeSoulPose = null, powerPose = null, powerPoseUntil = 0, powerPoseTimer = 0;   // powerPose: the "scared" drawing held while mirror / hypnosis plays
   const baseSoulSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.webp` : `img/spirit${s.sp || 7}.webp`;
   soulPoseAssets(baseSoulSrc).forEach(src => { const im = new Image(); im.src = src; });
   // P2: the three-page "read the name colour" lesson, once per save (after the first-warrant lesson)
@@ -2845,7 +2848,8 @@ function openTrial(initialError = '') {
         >${roarHint === l.i && !l.used ? '💢 ' : ''}${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
     }).join('');
 
-    const foeSrc = Date.now() < fearUntil && activeSoulPose || baseSoulSrc;
+    const foePose = Date.now() < fearUntil && activeSoulPose || Date.now() < powerPoseUntil && powerPose || null;
+    const foeSrc = foePose || baseSoulSrc;
     // P2: a menu click repaints the whole room — carry Yama's live idle <img> across so the sprite never falls back to the painting
     const keepYama = dlg.querySelector('.trial-hud .hud-stage .fig.you img[data-yama-idle]');
     dlg.innerHTML = `
@@ -2854,10 +2858,10 @@ function openTrial(initialError = '') {
         <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
-        <div class="fig foe${activeSoulPose && Date.now() < fearUntil ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+        <div class="fig foe${foePose ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
                onerror="this.onerror=null;this.src='img/spirit7.webp'">
           ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
-          <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div><span class="relief-label" role="status">น้ำตาแห่งความโล่งใจ · มีผู้รับฟังความจริงแล้ว</span>
+          <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div>
           <div class="soul-fear" aria-hidden="true"><i class="fear-gloom"></i><i class="fear-burst"></i><i class="fear-sweat s1"></i><i class="fear-sweat s2"></i><i class="fear-sweat s3"></i><i class="fear-tremble l"></i><i class="fear-tremble r"></i></div></div>
       </div></div>
       <div class="hud-scrim"></div>
@@ -2985,7 +2989,7 @@ function openTrial(initialError = '') {
       if (!r) return;
       if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
       // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
-      fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS;
+      fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS; powerPoseUntil = 0;
       activeSoulPose = revealed ? nextSoulPose : null;
       const soulFig = dlg.querySelector('.fig.foe');
       soulFig?.classList.toggle('has-soul-pose', !!activeSoulPose);
@@ -3024,6 +3028,17 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
+      if (k === 'mirror' || k === 'hypno') {   // the spirit is shown what it hid: "scared" drawing from the cutscene until a beat after the effect
+        const pose = soulPoseForScare(s, baseSoulSrc);
+        if (pose) {
+          powerPose = pose; powerPoseUntil = Date.now() + ACTION_CUT_MS + POWER_POSE_AFTER_MS;
+          clearTimeout(powerPoseTimer);
+          powerPoseTimer = setTimeout(() => { powerPose = null; powerPoseUntil = 0;
+            if (trialClosed || !dlg.open || Date.now() < fearUntil) return;
+            const fig = dlg.querySelector('.fig.foe'); fig?.classList.remove('has-soul-pose'); const im = fig?.querySelector('img'); if (im) im.src = baseSoulSrc; }, ACTION_CUT_MS + POWER_POSE_AFTER_MS);
+          reactionTimers.push(powerPoseTimer);
+        }
+      }
       if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k); trialFx(k);
       camera.cue('interrogate-reveal', { targets:'suspect', action:k });   // M1: hypnosis / mirror / roar = the big lean-in
     });
