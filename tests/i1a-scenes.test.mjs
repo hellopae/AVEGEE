@@ -114,6 +114,7 @@ test('I1-A after waking, Yama stands at the wake point and can walk immediately'
   const room=makeRoom(canvas,g,tea,cfg,cfg.image||'img/x.webp',null);
   room.start();await new Promise(r=>setImmediate(r));room.tick(0);
   assert.equal(room.setSleep(),true,z+': can sleep from the wake point');
+  await new Promise(r=>setImmediate(r));room.tick(0);   // FB2-13: the sleep clock waits for the lying picture to load (the stub loads in a microtask)
   for(let i=0;i<70;i++)room.tick(100);
   assert.equal(room.sleeping(),false,z+': awake');
   const [px,py,tx,ty]=room.pos();
