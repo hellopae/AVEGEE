@@ -81,7 +81,7 @@
 .st-hud .canteen-buttons .btn-gold:disabled{opacity:.5}
 .st-hud .canteen-panel small{font-size:12px;color:#ffb4a0;min-height:0}
 .st-hud .canteen-panel .canteen-hire{display:flex;flex-wrap:wrap;gap:6px}
-.st-hud .canteen-panel .canteen-hire button{flex:1 1 128px;min-height:44px;white-space:normal;line-height:1.6}
+.st-hud .canteen-panel .canteen-hire button{flex:1 1 220px;min-height:44px;white-space:normal;line-height:1.6}
 .st-hud .canteen-panel .canteen-hire small{flex:1 1 100%}
 .st-hud .canteen-panel .worker-service-card{padding:10px;gap:6px}
 .st-hud .canteen-panel .serve-targets{display:flex;flex-direction:column;gap:2px;margin:0;padding:6px 8px;min-width:0;max-height:150px;overflow:auto;border:1px solid rgba(232,182,94,.35);border-radius:8px}
