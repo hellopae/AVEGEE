@@ -23,6 +23,13 @@ export const TEAM_DRAWN_FACING_RIGHT = new Set([
 /** ภาพศัตรูที่วาดหันขวามา → พลิกให้หันซ้ายเข้าหาทีมเรา */
 export const FOE_DRAWN_FACING_RIGHT = new Set([
   'mob-gaki-asia', 'mob-pret', 'mob-pret2',
+  // FB2-9 (คุณเป้ 13 พ.ย. "ในหน้าต่อสู้ วิญญาณหันหน้าไปทางอื่น"): วิญญาณ spirit-<ชนิด>-<โซน> ที่วาดหน้าหันขวา (3/4 เห็นหูซ้าย ตามองไปขวา)
+  // ฉากสู้วิญญาณอยู่ขวา ทีมเราอยู่ซ้าย → ต้องพลิกให้หันซ้าย · ตัดสินจากภาพจริงทีละไฟล์ (ใบที่หันตรง/หันซ้ายอยู่แล้วไม่ขึ้นทะเบียน)
+  // วาดใหม่ให้หันทิศอื่น → ลบบรรทัดนั้น · ภาพใหม่ที่หันขวา → เพิ่มชื่อ (ไม่ต้องใส่ -v2/-v3 และนามสกุล)
+  'spirit-clerk-th', 'spirit-woman-th', 'spirit-elder-woman-th', 'spirit-boy-th',
+  'spirit-clerk-asia', 'spirit-elder-woman-asia', 'spirit-boy-asia',
+  'spirit-clerk-west', 'spirit-elder-woman-west',
+  'spirit-clerk-cyberhell', 'spirit-girl-cyberhell', 'spirit-elder-woman-cyberhell',
 ]);
 
 /** ชื่อฐานของไฟล์ภาพ: ตัด path, query, นามสกุล และ -v2 */
@@ -33,7 +40,13 @@ export function spriteKey(src) {
 /** ทีมเรา: ต้องพลิกกระจกไหม (true = พลิกตามธรรมเนียมเดิม) */
 export const teamNeedsMirror = src => !TEAM_DRAWN_FACING_RIGHT.has(spriteKey(src));
 /** ศัตรู: ต้องพลิกกระจกไหม */
-export const foeNeedsMirror = src => FOE_DRAWN_FACING_RIGHT.has(spriteKey(src));
+export const foeNeedsMirror = src => FOE_DRAWN_FACING_RIGHT.has(spriteKey(src)) || FOE_DRAWN_FACING_RIGHT.has(soulPoseBaseKey(src));
+/** ท่าตกใจ/ร้องไห้ของวิญญาณ (img/soul-poses/<ชนิด>-<โซน>-<ท่า>-vN) เป็นภาพวาดคนละใบ แต่เป็นตัวเดียวกับภาพยืน → หันทิศเดียวกับ spirit-<ชนิด>-<โซน>
+ *  (ไม่งั้นพอแพ้ศึกวิญญาณจะหมุนกลับไปอีกทาง) · ไม่ใช่ไฟล์ท่า → '' */
+export const soulPoseBaseKey = src => {
+  const m = /\/soul-poses\/([a-z-]+?)-(th|asia|west|cyberhell)-(?:scared|cry|caught-lie|necessity)-v\d+\.[a-z0-9]+$/i.exec(String(src || '').split('?')[0]);
+  return m ? `spirit-${m[1]}-${m[2]}` : '';
+};
 
 /** class ที่ใส่ให้ <img> — CSS: .face-native = ไม่พลิก (ฝั่งเรา) · .face-flip = พลิก (ศัตรู) */
 export const teamFaceClass = src => teamNeedsMirror(src) ? '' : 'face-native';
