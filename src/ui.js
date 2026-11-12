@@ -4460,7 +4460,9 @@ function openBattle(after) {
         // full sprite-safe gutter so the menu never covers Yama/Nira.
         const left0=Math.min(Math.max(8,area.width-naturalW-8),Math.max(8,rect.r-area.left+44));
         let left=left0;
-        const bounds={l:6,t:6,r:area.width-6,b:area.height-12};
+        // BATTLE-LABEL-390: the squad cards are not an obstacle sprite; on a phone with one foe the last row ("หนี") used to hang over the top of the cards. Stop above them.
+        const hudEl=stage.querySelector('.battle-team-hud'),hudTop=hudEl?hudEl.getBoundingClientRect().top-area.top-6:Infinity;
+        const bounds={l:6,t:6,r:area.width-6,b:Math.max(area.height*.5,Math.min(area.height-12,hudTop))};
         const maxY=Math.max(12,area.height*.83-menuHeight);
         const top0=Math.max(Math.min(area.height*.36,maxY),Math.min(maxY,rect.t-area.top+12));
         // K5: the stepped rows reach ~36px past the column width. Keep them clear of enemy sprites/plates/HP bars:

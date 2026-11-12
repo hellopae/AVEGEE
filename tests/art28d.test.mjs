@@ -69,7 +69,7 @@ with tempfile.TemporaryDirectory() as tmp:
     im = Image.new('RGB', (1200,700), 'black')
     im.paste((10,80,120), (0,90,1200,610)); im.save(src)
     assert p.prep(str(src), 'story-fixture-v3', tmp) == (1200,700)
-    out = Image.open(pathlib.Path(tmp)/'story-fixture-v3.png').convert('RGB')
+    out = Image.open(pathlib.Path(tmp)/'story-fixture-v3.webp').convert('RGB')
     assert out.getpixel((600,0)) == (0,0,0)
     assert out.getpixel((600,699)) == (0,0,0)
     assert out.getpixel((600,350)) == (10,80,120)

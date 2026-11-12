@@ -102,7 +102,7 @@ test('ground set v7r (v7 + the 7 repaired spots): 70 tiles of 1024 px (10 x 7; l
   const man = JSON.parse(readFileSync(file(GD + 'manifest.json'), 'utf8'));
   assert.equal(man.tiles, 70); assert.equal(man.tilePx, 1024); assert.ok(man.quality >= 85, 'tiles are cut at a quality that keeps the painted detail');
   assert.ok(existsSync(file(GD + 'pack-manifest.json')), 'the Codex pack manifest travels with the tiles');
-  assert.match(readFileSync(file('src/asset-preload.js'), 'utf8'), /v\[2-9\]\(\?:-partial\)\?/, 'preload tier knows the partial preview');
+  assert.match(readFileSync(file('src/asset-preload.js'), 'utf8'), /v\[2-9\]r\?\(\?:-partial\)\?/, 'preload tier knows the partial preview');
   // the walk mask is not derived from the ground set: its file and the code that builds it are untouched by this branch
   const diff = execFileSync('git', ['diff', '--name-only', '812152d2', 'HEAD'], { cwd: file('.'), encoding: 'utf8' });
   assert.ok(!/walk/i.test(diff.split('\n').filter(f => /^(art-src|src\/walk|img\/.*walk)/.test(f) && !/-walk(-[^/]*)?\.(png|webp)$/.test(f)).join('\n')), 'no walkmask file changed');

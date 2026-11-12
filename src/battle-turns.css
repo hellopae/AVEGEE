@@ -221,3 +221,16 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 /* KO-CREW (owner 6 Nov): a fallen teammate lies in the scene until the battle is over - not clickable, card greyed. */
 .arena.combat-arena .battle-squad .is-fallen,.arena.combat-arena .fig.you.ko-down{pointer-events:none}
 .battle-team-hud .battle-portrait.is-fallen{opacity:.55;pointer-events:none}
+
+/* BATTLE-LABEL-390 (12 Nov 2569, Dale): three foes on a phone shared 48 % of the width (59 px per plate): 9 px names cut in the middle of the name, "กำลังใจ 94 / 94" fell on
+   three lines, and the last command row ("หนี") overlapped the foe's talk box.  Portrait only; desktop rules above are untouched. */
+@media screen and (max-width:700px){
+ .arena.combat-arena .foe-group{width:76%;right:2%;gap:3px}
+ .arena.combat-arena .foe-group .fig.foe .plate{padding:2px 1px;width:100%;min-width:0;box-sizing:border-box}
+ .arena.combat-arena .foe-group .fig.foe .plate b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;text-overflow:ellipsis;white-space:normal;font-size:10.5px;line-height:1.3;text-align:center}
+ .arena.combat-arena .foe-group .fig.foe .plate .hpn{display:block;white-space:nowrap;font-size:9.5px;line-height:1.3;text-align:center}
+ .battle9-arena.combat-arena .battle-boss-hud{width:33%}
+ .battle9-arena.combat-arena .battle-boss-status b{display:block;font-size:10.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .battle9-arena.combat-arena .battle-boss-status small{white-space:nowrap}
+ .battle9-arena.combat-arena .battle-scene-talk{top:77%;bottom:auto;max-height:14%;overflow:hidden}
+}
