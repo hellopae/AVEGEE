@@ -22,13 +22,12 @@ const bars=(s)=>`<span class="team-meter hp" role="meter" aria-label="HP" aria-v
 // Q3: คนงานหนึ่งแถว · ยมทูต(+ผู้เฝ้า)อีกแถว — เดิมเรียง 5 คอลัมน์ต่อกันเป็นสายเดียว คนงานคนที่ 6 ล้นลงไปแถวยมทูตและแถวสุดท้ายถูกตัดทิ้ง
 export function teamHudRows(g){const all=teamMembers(g);return [all.filter(m=>m.worker),all.filter(m=>!m.worker)];}
 export function teamHudHtml(g,art){
- const members=teamMembers(g),hungry=members.some(({a,worker})=>teamStatus(g,a,worker).starved);
  const rows=teamHudRows(g),cols=Math.max(5,...rows.map(r=>r.length));
  const member=({a,worker})=>{
  const s=teamStatus(g,a,worker);
  return `<button type="button" class="team-member${s.busy?' is-busy':''}${s.starved?' is-starved':''}" data-team-actor="${esc(a.id)}" aria-label="${esc(a.name)} · HP ${s.hp}/100 · ความอิ่ม ${s.hunger}/100 · ${esc(s.duty)}" title="${esc(a.name+' · '+s.duty)}">${portrait(a,worker,art)}<b>${esc(a.name)}</b>${bars(s)}<small>${esc(s.duty)}</small></button>`;
  };
- return `<div class="team-hud-tools"><button type="button" data-team-food aria-label="เสบียงกลาง ${Math.round(g.food)} ห่อ"><img src="img/item-food.webp" alt=""><b>${Math.round(g.food)}</b></button><button type="button" data-team-manage>จัดทีม</button></div>${g.food<=0||hungry?'<button type="button" class="team-alert" data-team-manage>เสบียงหมด / หิว · ให้ข้าวปั้นหรือพักศาลาน้ำชา</button>':''}<div class="team-hud-roster" role="group" aria-label="ทีมประจำโซน" style="--cols:${cols};--cols-sm:${Math.min(cols,6)}">${rows.map(row=>row.length?`<div class="team-hud-row">${row.map(member).join('')}</div>`:'').join('')}</div>`;
+ return `<div class="team-hud-tools"><button type="button" data-team-food aria-label="เสบียงกลาง ${Math.round(g.food)} ห่อ"><img src="img/item-food.webp" alt=""><b>${Math.round(g.food)}</b></button><button type="button" data-team-manage>จัดทีม</button></div><div class="team-hud-roster" role="group" aria-label="ทีมประจำโซน" style="--cols:${cols};--cols-sm:${Math.min(cols,6)}">${rows.map(row=>row.length?`<div class="team-hud-row">${row.map(member).join('')}</div>`:'').join('')}</div>`;
 }
 export function teamManageHtml(g,art,selected=''){
  const members=teamMembers(g),tea=g.stations.some(s=>s.def.k==='tea'&&!s.build&&!s.repair),final=g.finalTeamSelection?.(),party=(final?g.party?.finalMembers:g.party?.members)||[],max=g.partyMax();
