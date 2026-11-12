@@ -1,5 +1,5 @@
 # Deploy to GitHub Pages from an allowlist: only what the game loads.
-# (tests/, scripts/, docs/, output/, art-src/ and the *.md notes stay in the repo but are not deployed.
+# (version.json is generated here, not committed.  tests/, scripts/, docs/, output/, art-src/ and the *.md notes stay in the repo but are not deployed.
 #  Before 12 Nov 2569 Pages served the whole branch: 1,145 MB, over the 1 GB limit.)
 name: Deploy Pages
 
@@ -30,6 +30,10 @@ jobs:
           mkdir _site
           cp index.html .nojekyll _site/
           cp -r src img audio _site/
+          # deploy id: short commit sha -> <meta name="avegee-deploy"> in _site/index.html + _site/version.json
+          # (src/version-check.js compares them so an old open tab can offer "new version available").
+          node scripts/stamp-build.mjs _site "${GITHUB_SHA::8}"
+          cat _site/version.json
           du -sm _site
           echo "files: $(find _site -type f | wc -l)"
           SIZE=$(du -sb _site | cut -f1)
