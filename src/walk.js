@@ -317,6 +317,34 @@ function stepClear(p, x, y) {
   return true;
 }
 
+/** FB2-3: how wide is the walkable corridor at (x,y)?  Smallest over four axes of (free run one way + free run the other way), capped at CORRIDOR_CAP.
+ *  A bridge, a stair or a lane is under NARROW_WIDTH; a plaza is the cap.  A character who stands still on a narrow spot closes the route for Yama
+ *  (the stand-still disc is 60 x 40), so idle / stalled assistants must never wait on one.  Cached per 8-unit cell, cleared when the walk map changes. */
+export const NARROW_WIDTH = 110, CORRIDOR_CAP = 130;
+const AXES = [[1, 0], [0, 1], [Math.SQRT1_2, Math.SQRT1_2], [Math.SQRT1_2, -Math.SQRT1_2]];
+let corridorCache = new Map(), corridorVersion = -1;
+export function corridorWidth(x, y) {
+  if (corridorVersion !== version) { corridorCache = new Map(); corridorVersion = version; }
+  const key = (Math.round(x / 8) * 8) + ',' + (Math.round(y / 8) * 8);
+  let w = corridorCache.get(key);
+  if (w !== undefined) return w;
+  const cx = Math.round(x / 8) * 8, cy = Math.round(y / 8) * 8;
+  if (!canWalk(cx, cy)) w = 0;
+  else {
+    w = CORRIDOR_CAP;
+    for (const [dx, dy] of AXES) {
+      let a = 0, b = 0;
+      while (a < CORRIDOR_CAP && canWalk(cx + dx * (a + 6), cy + dy * (a + 6))) a += 6;
+      while (b < CORRIDOR_CAP && canWalk(cx - dx * (b + 6), cy - dy * (b + 6))) b += 6;
+      w = Math.min(w, a + b);
+      if (w < NARROW_WIDTH) break;
+    }
+  }
+  corridorCache.set(key, w);
+  return w;
+}
+export const isNarrowSpot = (x, y) => corridorWidth(x, y) < NARROW_WIDTH;
+
 /** จุดที่เดินได้ที่ใกล้ (x,y) ที่สุด — ใช้ตอนคลิกสั่งเดินลงลาวา/ลงน้ำ
  *  extra = เงื่อนไขเพิ่มที่จุดนั้นต้องผ่านด้วย (เช่น "ต้องไม่ถูกอาคารบัง" ของยมทูต) */
 export function nearestWalk(x, y, extra, avoid = false) {

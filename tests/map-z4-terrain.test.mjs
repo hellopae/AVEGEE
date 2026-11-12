@@ -99,6 +99,11 @@ test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 
         assert.equal(source.split(change.after).length,2,'dais snippet occurs exactly once');
         source=source.replace(change.after,()=>change.before);
       }
+      // FB2-3 (13 Nov): corridorWidth / isNarrowSpot added next to nearestWalk (read-only measure for idle workers); no existing walking rule is touched.
+      for(const change of JSON.parse(readFileSync(new URL('./fixtures/fb2-a-walk-changes.json',import.meta.url)))){
+        assert.equal(source.split(change.after).length,2,'FB2-3 snippet occurs exactly once');
+        source=source.replace(change.after,()=>change.before);
+      }
       bytes=Buffer.from(source);
     }
     if(path==='src/route-geometry.js'){

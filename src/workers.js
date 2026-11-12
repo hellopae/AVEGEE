@@ -1,12 +1,12 @@
 import {planWorkerEscort,workerDropoff} from './worker-escort-spacing.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenActive,canteenPoint,canteenState,mealRecipients,needsMeal,mealRecipient,serveMeal,feedActor,advanceCanteenDiner} from './canteen.js';
-import {canWalk,nearestWalk,findPath,stepTo} from './walk.js?v=k1d';
+import {canWalk,nearestWalk,findPath,stepTo,isNarrowSpot} from './walk.js?v=k1d';
 import {SPOTS,MOB,MERCHANT,BAL} from './data.js';
 import {actorStanding} from './actor-recovery.js';
 import {escortCrewPosition,pathLength,ESCORT_PICKUP_SPEED} from './escort.js';
 
-export const WORKER_RULES=Object.freeze({capacity:6,hireBase:180,hireExtra:60,wage:2,wageEvery:30,food:.03,supervise:.2,repair:.2,perStation:2});
+export const WORKER_RULES=Object.freeze({capacity:6,hireBase:180,hireExtra:60,wage:2,wageEvery:30,food:.01,supervise:.2,repair:.2,perStation:2});
 export const WORKER_MODES=Object.freeze({auto:'ช่วยขนส่งและสร้าง/ซ่อม',gather:'เก็บวัสดุขาย',cook:'พ่อครัว',serve:'คนเสิร์ฟ',rest:'นั่งพัก'});
 const zones=['th','asia','west','cyberhell'];
 const names={th:'อสูรผู้ช่วย',asia:'โอนิผู้ช่วย',west:'อิมป์ผู้ช่วย',cyberhell:'ไซเบอร์อสูร'};
@@ -35,7 +35,7 @@ const state=g=>g.workerState ||= normalizeWorkers();
 // FB-UI 4 (owner 10 Nov): an assistant with nothing to do used to stay wherever his last job ended, and new hires were put 80-115 units
 // south of the bench - that is the great staircase (a worker stood across it for ever). Idle assistants now wait on the flat plaza west of the central road
 // in the middle of the map (open floor in all four zones, outside the tree canopies, clear of the soul queue and the stairs).
-export const WORKER_STANDBY=Object.freeze([[1650,1300],[1690,1300],[1650,1340],[1690,1340],[1650,1380],[1690,1380]]);   // world points on the open west-central plaza (checked open to 24 units, clear of tree canopies and the queue, in all four zones)
+export const WORKER_STANDBY=Object.freeze([[1690,1310],[1730,1310],[1690,1350],[1730,1350],[1690,1385],[1730,1385]]);   // FB2-3: moved 40 east / 5 south: the old bottom-left spot was a 96-108 unit lane in zones 2-4, a standing assistant there shut the way (corridor >= 130 at every point, all four zones)   // world points on the open west-central plaza (checked open to 24 units, clear of tree canopies and the queue, in all four zones)
 export function workerStandbyPoint(i) {
   const [dx,dy]=WORKER_STANDBY[((i%WORKER_STANDBY.length)+WORKER_STANDBY.length)%WORKER_STANDBY.length];
   return nearestWalk(dx,dy);
@@ -205,16 +205,22 @@ export function advanceWorkers(g,dt,now=Date.now()) {
     if(w.teaRest===true){w.teaRest=null;restWorkerAtTea(g,w.id,now);} // legacy boolean order: travel, then a full minute
     if(w.teaRest){advanceTeaRest(g,w,now);w.moving=w.teaRest?.phase==='travel';w.sitting=w.teaRest?.phase==='rest';continue;}
     if(!canWalk(w.x,w.y)){const safe=nearestWalk(w.x,w.y);if(safe){[w.x,w.y]=safe;w.path=null;}}
-    if(!w.job&&!w.cargo&&!w.resting&&w.mode!=='rest') {          // idle: walk to the standby plaza (no wage, no food, no job)
-      const spot=idleSpot(g,w);if(!spot)continue;
+    const toStandby=()=>{
+      const spot=idleSpot(g,w);if(!spot)return;
       w.arrived=Math.hypot(w.x-spot[0],w.y-spot[1])<24;
       if(!w.arrived) {
         if((!w.path?.length||w.target?.[0]!==spot[0]||w.target?.[1]!==spot[1])&&!w.pathRetry&&paths>0){paths--;w.path=findPath(w.x,w.y,...spot);w.target=spot;w.pathRetry=600;}
         if(w.path?.length){const next=w.path[0],dx=next[0]-w.x,dy=next[1]-w.y,d=Math.hypot(dx,dy);
           if(d<2)w.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);w.moving=stepTo(w,dx/d*speed,dy/d*speed);w.face=dx<0?-1:1;w.heading=workerHeading(dx,dy);if(!w.moving)w.path=null;}}
       }
+    };
+    if(!w.job&&!w.cargo&&!w.resting&&w.mode!=='rest') {          // idle: walk to the standby plaza (no wage, no food, no job)
+      toStandby();
       continue;
     }
+    // FB2-3: a worker whose job is stalled (no wage / no food / escort waiting) used to freeze wherever he was - on a bridge or a stair he shut the route for Yama.
+    // Stalled on a narrow spot = walk to the standby plaza first; the job resumes (and walks back) when it is funded again.
+    if(w.job&&!w.funded&&!w.resting&&w.mode!=='rest'){if(w.evacuate||isNarrowSpot(w.x,w.y)){w.evacuate=true;toStandby();if(w.arrived)w.evacuate=false;continue;}}else w.evacuate=false;
     if((!w.funded||!w.job||w.job.kind==='escort')&&!w.resting&&w.mode!=='rest')continue;
     const goal=target(g,w);if(!goal)continue;
     w.arrived=Math.hypot(w.x-goal[0],w.y-goal[1])<24;
@@ -283,7 +289,8 @@ export function releaseWorkerEscort(g,walk) {
   if(completed)state(g).ledger.escortsDone++;
   return true;
 }
-export const workerDiscs=g=>zoneWorkers(g).filter(w=>!w.moving&&w.mode!=='rest').map(w=>[w.x,w.y]);
+// FB2-3: a worker standing still on a bridge / stair / lane (corridor < NARROW_WIDTH) is not an obstacle for Yama - he would close the only way through
+export const workerDiscs=g=>zoneWorkers(g).filter(w=>!w.moving&&w.mode!=='rest'&&!isNarrowSpot(w.x,w.y)).map(w=>[w.x,w.y]);
 // Frame-local atlas guards measured against all 64 shipped cells. Insets only
 // remove disconnected neighbouring-cell fragments; the character/tool component
 // has at least 3 source pixels of clearance. Never shift the original foot anchor.
