@@ -638,6 +638,17 @@ dialog.save-slots-modal{width:min(720px,94vw);max-height:90dvh;padding:clamp(14p
 .save-slot-portraits{display:flex;flex-wrap:wrap;gap:7px}.save-slot-portrait{display:block;width:54px;height:54px;border:1px solid #c69b57;border-radius:10px;background:#1c1219;overflow:hidden;flex:none}.save-slot-portrait img{display:block;width:100%;height:100%;object-fit:cover}.save-slot-portrait.is-scene-crop img{transform:scale(2.1);transform-origin:48% 35%}.save-slot-portrait.is-scene-crop img[data-crew-zone="cyberhell"]{transform-origin:5% 38%}dialog#dlg.save-slots-modal>.modal-corner-close{display:none}
 @media(max-width:480px){dialog.save-slots-modal{padding:14px;max-height:92dvh}.save-slot-card{padding:13px}.save-slot-stats{gap:10px;font-size:.85rem}.save-slot-card.is-empty{gap:12px;min-height:86px}}
 @media(prefers-reduced-motion:reduce){.save-slot-card{transition:none}}
+/* FB2-17: trash button per occupied slot (a sibling of the card, never nested in it) + the confirmation. Placeholder picture img/ui/icon-trash.webp: a real drawing overwrites the file, no code change. */
+.save-slot-item{position:relative}.save-slot-trash{position:absolute;top:8px;right:48px;width:44px;height:44px;padding:6px;display:grid;place-items:center;border:1px solid #b98e4966;border-radius:10px;background:#1c1219cc;cursor:pointer;z-index:2}
+.save-slot-trash img{width:26px;height:26px;object-fit:contain;display:block}.save-slot-trash:hover,.save-slot-trash:focus-visible{border-color:var(--destructive);background:rgba(224,74,47,.22);outline:none}.save-slot-trash:focus-visible{box-shadow:0 0 0 3px #ffe5ab}
+.save-slot-confirm{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:#000a}
+.save-slot-confirm-box{width:min(420px,100%);box-sizing:border-box;padding:22px 22px 18px;border:2px solid #b98e49;border-radius:16px;background:linear-gradient(145deg,#2f1a16,#130d14);box-shadow:0 18px 60px #000c;color:#f9ead8;text-align:center}
+.save-slot-confirm-box h3{margin:0 0 8px;color:#f4d39b;font-size:1.15rem}.save-slot-confirm-box p{margin:6px 0}.save-slot-confirm-slot b{font-size:1.3rem;color:#f4cf8c;letter-spacing:.06em}.save-slot-confirm-detail{font-size:.85rem;color:#e3cbb8;line-height:1.6}
+.save-slot-confirm-warn{font-weight:700;color:#ff9c86}
+.save-slot-confirm-actions{display:flex;gap:10px;margin-top:16px}.save-slot-confirm-actions button{flex:1 1 0;min-height:48px;padding:8px 12px;border-radius:10px;font-size:1rem;cursor:pointer;white-space:normal}
+.save-slot-cancel{border:2px solid #edc67c;background:#4a2f22;color:#fff2d8;font-weight:700}.save-slot-cancel:focus-visible{outline:3px solid #ffe5ab;outline-offset:2px}
+.save-slot-danger{border:1px solid var(--destructive);background:var(--destructive);color:#fff}.save-slot-danger:hover{filter:brightness(1.1)}.save-slot-danger:focus-visible{outline:3px solid #ffe5ab;outline-offset:2px}
+
 
 /* เมนู/โลโก้ซ่อนไว้จนสแปลชหายแล้ว (ui.js ใส่ .ready ใน settleCover) แล้วค่อยๆ โผล่ — ทุกเส้นทางข้าม/error/reduced-motion จบที่ .ready */
 #title .title-menu{opacity:0;visibility:hidden;transform:translateY(18px);pointer-events:none;

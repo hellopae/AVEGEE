@@ -24,7 +24,7 @@ export function readSaveSlot(id, supplied) {
 export function listSaveSlots(supplied) { return Array.from({length:SAVE_SLOT_COUNT},(_,i)=>readSaveSlot(i+1,supplied)); }
 export function writeSaveSlot(id, data, supplied) {
   if (!validSlot(id) || !supportedSave(data)) return false;
-  try { const storage=storageOf(supplied);if(!storage || !['empty','occupied'].includes(readSaveSlot(id,storage).status))return false;storage.setItem(slotKey(id),JSON.stringify(data));return true; } catch { return false; }
+  try { const storage=storageOf(supplied);if(!storage || !['empty','occupied'].includes(readSaveSlot(id,storage).status))return false;storage.setItem(slotKey(id),JSON.stringify({...data,savedAt:Date.now()}));return true; } catch { return false; }
 }
 export function readActiveSlot(supplied) {
   try { const value=storageOf(supplied)?.getItem(ACTIVE_SLOT_KEY);const id=value===null||value===undefined?null:Number(value);return validSlot(id)?id:null; } catch { return null; }
@@ -67,7 +67,7 @@ export function saveSlotSummary(data) {
   for(const actor of Object.values(data.roster||{}))add(actor,data.zone||'th');
   for(const actor of data.crew)add(actor,data.zone||'th');if(data.guard)add({...data.guard,k:'guard'},data.zone||'th');
   for(const [zone,branch] of Object.entries(data.zoneSave||{}))if(zone!==(data.zone||'th')){for(const actor of branch.crew||[])add(actor,zone);if(branch.guard)add({...branch.guard,k:'guard'},zone);}
-  return {playTimeMs:Number.isFinite(data.playTimeMs)?Math.max(0,data.playTimeMs):0,
+  return {savedAt:Number.isFinite(data.savedAt)&&data.savedAt>0?data.savedAt:null,playTimeMs:Number.isFinite(data.playTimeMs)?Math.max(0,data.playTimeMs):0,
     playTimePartial:!Number.isFinite(data.playTimeMs)||!!data.playTimePartial,coin:data.coin,order:data.order,karma:data.karma,
     zone:data.zone||'th',actors:[...actors.values()]};
 }

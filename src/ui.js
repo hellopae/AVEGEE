@@ -2,8 +2,8 @@ import {foodAvailable,canFeedActor} from './canteen.js';
 import {storyPowerHint} from './story-progression.js';
 import {questOwnerButtonHtml,questTrackerHtml,questJournalHtml,createQuestAction} from './quest-panels.js';
 import {mountSceneAtmosphere} from './scene-atmosphere.js';
-import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
-import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
+import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot,clearSaveSlot} from './save-slots.js';
+import {saveSlotMenuHtml,slotMenuError,saveSlotConfirmHtml,slotDeletedNote} from './save-slot-menu.js';
 import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishment.js';
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
@@ -6948,6 +6948,22 @@ function openSaveSlots(message='') {
       if(!enterSaveSlot(Number(button.dataset.saveSlot))){
         d.querySelector('.save-slot-message').textContent=slotMenuError(getLang());
       }
+    });
+    // FB2-17: trash button -> confirmation (slot, what is in it, "cannot be recovered") -> delete. Cancel has the focus; Esc cancels only the confirmation.
+    const closeConfirm=()=>{const box=d.querySelector('.save-slot-confirm');if(!box)return false;const id=box.dataset.slot;box.remove();d.querySelector(`[data-slot-delete="${id}"]`)?.focus();return true;};
+    d.addEventListener('cancel',e=>{if(closeConfirm())e.preventDefault();});
+    d.querySelectorAll('[data-slot-delete]').forEach(button=>button.onclick=()=>{
+      const id=Number(button.dataset.slotDelete),slot=readSaveSlot(id);
+      if(slot.status!=='occupied'||d.querySelector('.save-slot-confirm'))return;
+      d.insertAdjacentHTML('beforeend',saveSlotConfirmHtml(slot,{lang:getLang()}));
+      const box=d.querySelector('.save-slot-confirm');box.dataset.slot=String(id);
+      box.querySelector('[data-slot-cancel]').onclick=closeConfirm;
+      box.addEventListener('click',e=>{if(e.target===box)closeConfirm();});
+      box.querySelector('[data-slot-confirm]').onclick=()=>{
+        if(clearSaveSlot(id))openSaveSlots(slotDeletedNote(id,getLang()));
+        else{closeConfirm();d.querySelector('.save-slot-message').textContent=slotMenuError(getLang());}
+      };
+      box.querySelector('[data-slot-cancel]').focus();
     });
   },'save-slots-modal');
 }
