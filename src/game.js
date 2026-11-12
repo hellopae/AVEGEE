@@ -12,7 +12,7 @@ import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
-import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
+import {PLERNG_WARRANT_FOOD,spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
@@ -1090,7 +1090,7 @@ const API = {
   keeperTrialInfo(soul,c,stationKey) {
     const role=keeperRole(c?.k),trait=spiritTrait(soul);
     let why=!actorStanding(c)?'กำลังพักฟื้น':c.buildK?'กำลังสร้างหรือซ่อมอาคาร':c.escort?'กำลังนำส่งวิญญาณ':c.at&&c.at!==stationKey?'กำลังคุมงานที่สถานีอื่น':'';
-    if(!why&&c?.k==='plerng'&&this.food<2)why='เสบียงไม่พอ · เพลิงใช้เพิ่ม 2 หน่วยต่อหมาย';
+    if(!why&&c?.k==='plerng'&&this.food<PLERNG_WARRANT_FOOD)why=`เสบียงไม่พอ · เพลิงใช้เพิ่ม ${PLERNG_WARRANT_FOOD} หน่วยต่อหมาย`;
     const support=zoneWorkers(this).filter(w=>w.mode!=='rest'&&w.stamina>0&&!w.recovering);
     const stationed=support.filter(w=>w.funded&&w.arrived&&w.job?.kind==='supervise'&&w.job.station===stationKey).length;
     const workerNote=c?.k==='dam'?` · คนงานถึงสถานีที่เลือก ${stationed} คน; ว่าง ${support.filter(w=>!w.job).length} คน` : '';

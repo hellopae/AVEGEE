@@ -26,7 +26,7 @@ import {pendingBossGuideGrant,acknowledgeBossGuideGrant,bossPierRetired} from '.
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSupplyBlocked,bindWorkersPanel,canteenPanelHtml} from './worker-ui.js';
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
-import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
+import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperBlockLabel,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { koTrackOf, koPhase, koClass, koSince, hasKoPose } from './battle-ko.js';
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
@@ -2793,9 +2793,9 @@ function openTrial(initialError = '') {
       const why = blockedCrew ? blockText(blockedCrew) : '';
       const suit=traitForKeeper(c.k);
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${suit?`style="--trait-color:${suit.color}"`:''} ${blockedCrew ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-        title="${esc(c.name+' · '+keeperSuitText(c)+' · '+(blockedCrew?'ไม่ว่าง':'ว่าง')+(why?' · '+why:''))}">
+        title="${esc(c.name+' · '+keeperSuitText(c)+' · '+keeperState+(why&&why!==keeperState?' · '+why:''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${esc(c.name)}</b><small>${esc(keeperSuitText(c))}<br>${blockedCrew?'ไม่ว่าง':'ว่าง'}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        <b>${esc(c.name)}</b><small>${esc(keeperSuitText(c))}<br>${esc(keeperState)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
@@ -2803,6 +2803,7 @@ function openTrial(initialError = '') {
     const forceChoices = answer?.intensity === 0
       ? `<button class="orb-choice is-revealed" disabled title="${esc(t('trial.noPunishment'))}"><span class="force-none">🕊️</span><b>${esc(t('trial.noPunishment'))}</b><span class="reveal-mark" aria-hidden="true">✓</span></button>`
       : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
+      const keeperState=blockedCrew?keeperBlockLabel(g,c,{role,stationKeeper:keeper,why}):'ว่าง';   // FB2-v3: the real reason, not a bare "ไม่ว่าง"
       const revealed = i === answer?.intensity;
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
         title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b><small style="color:${punishmentLevel(i).color}">${punishmentTimeLabel(i)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;

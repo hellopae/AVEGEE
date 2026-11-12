@@ -24,6 +24,16 @@ export function keeperCurrentJob(game,keeper){
   return 'ว่าง · รอรับเวร';
 }
 
+/** FB2-v3: why a keeper card in the warrant picker is greyed out. It used to say a bare "ไม่ว่าง" even when the team page said the same person was
+ *  "ว่าง" (Plerng needs 2 food per warrant, and a station that already holds souls only takes its own keeper) — now it names the real reason.
+ *  `role` = game.keeperTrialInfo(...), `stationKeeper` = the keeper tied to the chosen station (null when it is empty), `why` = the full blocking text. */
+export function keeperBlockLabel(game,c,{role=null,stationKeeper=null,why=''}={}){
+  if(role?.available===false)return String(role.why||why||'รับหมายนี้ไม่ได้').split(' · ')[0];
+  if(stationKeeper&&stationKeeper.k!==c.k)return `สถานีนี้ต้องใช้ ${stationKeeper.name}`;
+  const job=keeperCurrentJob(game,c);
+  return job.startsWith('ว่าง')?String(why||'รับหมายนี้ไม่ได้').split(' · ')[0]:job;
+}
+
 /** Public suitability only: colour describes behaviour, never guilt. */
 export function keeperSuitText(keeper){
   const suit=traitForKeeper(keeper.k),color={concealing:'ม่วง',resisting:'แดง',accepting:'เขียว'}[suit?.key];

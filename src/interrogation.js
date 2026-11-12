@@ -6,6 +6,8 @@ const traits=Object.freeze({
 });
 /** Which colour a keeper is suited to (taan / dam are deliberately not tied to a colour). */
 export const traitForKeeper=k=>Object.values(traits).find(t=>t.keeper===(k==='pleng'?'plerng':k))||null;
+/** Plerng burns 2 food per warrant — below that he cannot take one (FB2-v3: the team page now says so too). */
+export const PLERNG_WARRANT_FOOD=2;
 export const KAN_SUPPORT=Object.freeze({mpCost:4,moraleCost:4,cooldownMs:30_000});
 const roles=Object.freeze({
   taan:Object.freeze({key:'taan',name:'ทัณฑ์ · คุมงานเป็นระเบียบ',

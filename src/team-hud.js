@@ -2,6 +2,7 @@ import {canteenBuilt,canteenState,canFeedActor,canOrderCanteenMeal} from './cant
 import {GUARD} from './data.js';
 import {actorStanding} from './actor-recovery.js';
 import {WORKER_MODES,workerSheet} from './workers.js';
+import {PLERNG_WARRANT_FOOD} from './interrogation.js';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pct=v=>Math.max(0,Math.min(100,Math.round(v??100)));
 export function teamStatus(g,a,worker=false){
@@ -12,7 +13,7 @@ export function teamStatus(g,a,worker=false){
   duty=a.eatOrder?'ไปกินที่โรงอาหาร':a.teaRest?'พักศาลาน้ำชา':a.supplyRest?'รอข้าวปั้น':a.mode==='rest'||a.resting||a.recovering?'นั่งพัก':j?.kind==='escort'?'รับส่งวิญญาณ':j?.kind==='cook'?'พ่อครัว':j?.kind==='food'?(j.phase==='pickup'?'รับอาหาร':'แจกอาหาร'):j?.kind==='gather'?(j.phase==='sell'?'นำของไปขาย':j.material==='dabShards'?'เก็บเศษดาบ':'เก็บกิ่งงิ้ว'):j?.kind==='build'?'ช่วยสร้างอาคาร':j?.kind==='repair'?'ช่วยซ่อมอาคาร':'รอรับงาน';
  }else{
   const st=g.stations.find(s=>s.def.k===(a.buildK||a.at));
-  duty=a.eatOrder?'ไปกินที่โรงอาหาร':a.teaRest?'พักศาลาน้ำชา':!actorStanding(a)?'พักฟื้น':a.escort?'รับส่งวิญญาณ':a.buildK?(st?.repair?'ซ่อม/ตรวจงาน':'สร้าง/ตรวจงาน'):a.at?'คุม '+(st?.def.name||'สถานี'):a.cook?'พ่อครัวโรงอาหาร':a.reader?'ดูแลสำนวน':a.k==='guard'?'เฝ้าประตู':'ว่าง';
+  duty=a.eatOrder?'ไปกินที่โรงอาหาร':a.teaRest?'พักศาลาน้ำชา':!actorStanding(a)?'พักฟื้น':a.escort?'รับส่งวิญญาณ':a.buildK?(st?.repair?'ซ่อม/ตรวจงาน':'สร้าง/ตรวจงาน'):a.at?'คุม '+(st?.def.name||'สถานี'):a.cook?'พ่อครัวโรงอาหาร':a.reader?'ดูแลสำนวน':a.k==='guard'?'เฝ้าประตู':a.k==='plerng'&&g.food<PLERNG_WARRANT_FOOD?'ว่าง · รอเสบียง':'ว่าง';   // FB2-v3: same rule the warrant picker uses (Plerng needs 2 food per warrant)
  }
  return {hp,hunger,duty,starved:hunger===0,busy:worker?!!(a.eatOrder||a.job||a.resting||a.mode==='rest'||a.supplyRest||a.teaRest):!!(a.eatOrder||!actorStanding(a)||a.at||a.buildK||a.escort||a.cook)};
 }
