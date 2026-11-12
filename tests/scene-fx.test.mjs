@@ -143,7 +143,8 @@ test('cloud shadows stay at the map strength and never cover plates, hit points 
   assert.equal(amb.cloudOpacityForZone('th'), .32);
   const src = readFileSync(file('src/scene-atmosphere.js'), 'utf8');
   for (const sel of ['.plate', '.dmg', '.battle-move-name', '.hpbar', '.nm']) assert.ok(atm.SCENE_CLEAR_SELECTOR.includes(sel), sel);
-  assert.match(src, /globalCompositeOperation='destination-out'[\s\S]{0,80}holes/, 'the sky canvas is cut open over them');
+  assert.match(src, /globalCompositeOperation='destination-out'[\s\S]{0,700}for\(const h of holes\)/, 'the sky canvas is cut open over them');
+  assert.match(src, /shadowBlur=12\*kk/, 'FB2-v2: the cut is feathered (shadow of an off-canvas copy), never a hard pale rectangle behind the plate');
   assert.match(src, /data-context=battle\]:not\(\.scene-atmosphere-ground\)\{z-index:30\}/, 'battle sky sits above the figures but under the fx layer (z 50)');
   const cam = readFileSync(file('src/battle-camera.css'), 'utf8'); assert.match(cam, /\.cam-world>\.cam-layer\{[^}]*z-index:50/);
 });

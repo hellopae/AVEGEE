@@ -4216,7 +4216,7 @@ function openBattle(after) {
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, dash?.poseAt || phaseAt, g.weapons?.equipped);
-    else if (!phase && !b.over) mountBattleSwordIdle(stage, g.outfit || g.zone);
+    else mountBattleSwordIdle(stage, g.outfit || g.zone);   // FB2-v2: was `!phase && !b.over` — while a teammate acted / the enemy struck / the fight was over, Yama fell back to the small standing-with-book picture
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');

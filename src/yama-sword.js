@@ -95,7 +95,8 @@ export function mountBattleSword(stage, style, startedAt, weapon = null) {
   Object.assign(canvas.style, { position:'absolute', pointerEvents:'none', maxWidth:'none', zIndex:'1' });
   actor.append(canvas);
   const ctx = canvas.getContext('2d');
-  const finish = () => { standing.style.visibility = ''; canvas.remove(); };
+  if (swordImage(style, weapon).naturalWidth) standing.style.visibility = 'hidden';   // FB2-v2: no 1-3 frame flash of the book picture before the first slash frame is drawn
+  const finish = () => { const live = canvas.isConnected; standing.style.visibility = ''; canvas.remove(); if (live && swordIdleDrawn && actor.isConnected) mountBattleSwordIdle(stage, style); };   // FB2-v2: hand over to the sword idle at once (the next repaint used to leave 1-3 frames of the book picture)
   const render = () => {
     const elapsed = Date.now() - startedAt;
     if (!canvas.isConnected || elapsed >= SWORD_DURATION_MS) { finish(); return; }
@@ -119,6 +120,7 @@ export function mountBattleSword(stage, style, startedAt, weapon = null) {
   render();
 }
 
+let swordIdleDrawn=false;
 /** Resting battle pose uses the same standing image only as a size/feet reference. */
 export function mountBattleSwordIdle(stage, style) {
   const actor=stage?.querySelector('.fig.you'),standing=actor?.querySelector('img:not(.fx)');
@@ -126,6 +128,9 @@ export function mountBattleSwordIdle(stage, style) {
   const canvas=document.createElement('canvas');canvas.className='yama-sword-idle';canvas.setAttribute('aria-hidden','true');
   Object.assign(canvas.style,{position:'absolute',pointerEvents:'none',maxWidth:'none',zIndex:'1'});
   actor.append(canvas);const ctx=canvas.getContext('2d');
+  // FB2-v2: every repaint builds a fresh canvas that is only drawn on the next frame — in that gap the standing-with-book picture showed for 1-2 frames
+  // (the "Yama flips to the small book pose" flicker). Once the sword idle has drawn once, hide the reference picture at mount time.
+  if(swordIdleDrawn)standing.style.visibility='hidden';
   const render=()=>{
     if(!canvas.isConnected)return;
     if(standing.complete && standing.naturalWidth){
@@ -141,7 +146,7 @@ export function mountBattleSwordIdle(stage, style) {
       Object.assign(canvas.style,{left:`${x0-w}px`,top:`${y0-h}px`,width:`${w*3}px`,height:`${h*2}px`});
       const flipped=getComputedStyle(standing).transform.startsWith('matrix(-1');
       if(drawYamaSwordIdle(ctx,style,w*(1+(flipped?1-box.center:box.center)),h*(1+box.bottom),h*(box.bottom-box.top))){
-        standing.style.visibility='hidden';canvas.dataset.animated='true';
+        standing.style.visibility='hidden';canvas.dataset.animated='true';swordIdleDrawn=true;
       }
     }
     requestAnimationFrame(render);

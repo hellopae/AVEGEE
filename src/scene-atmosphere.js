@@ -102,7 +102,7 @@ export function mountSceneAtmosphere(stage,{zone='th',context='battle',paused=()
    world.prepend(c);g={canvas:c,ctx:c.getContext('2d')};groups.set(b,g);sizeGroup(g);g.fresh=true;}
   return g.ctx;
  };
- const ctx=canvas.getContext('2d'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let width=1,height=1,dpr=1,fluidDpr=1,frame=0,last=0,drawAt=-Infinity,disposed=false,clearAt=0,holes=[],heldDrawn=false;
+ const ctx=canvas.getContext('2d'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let width=1,height=1,dpr=1,fluidDpr=1,frame=0,last=0,drawAt=-Infinity,disposed=false,clearAt=0,holes=[],holeK=1,heldDrawn=false;
  const sizeGroup=g=>{g.canvas.width=Math.max(1,Math.floor(width*fluidDpr));g.canvas.height=Math.max(1,Math.floor(height*fluidDpr));};
  function resize(){width=Math.max(1,world.clientWidth);height=Math.max(1,world.clientHeight);
   dpr=Math.min(globalThis.devicePixelRatio||1,1.5,Math.sqrt(ATMOSPHERE.maxCanvasPixels/(width*height*(ground?2:1))));
@@ -115,7 +115,7 @@ export function mountSceneAtmosphere(stage,{zone='th',context='battle',paused=()
  if(!settled&&bgKey)loadSceneFxLayout().then(l=>{settled=true;scene=sceneFxFor(l,bgKey);if(scene&&groundCtx){groundCtx.setTransform(1,0,0,1,0,0);groundCtx.clearRect(0,0,ground.width,ground.height);}});
  /** CSS-px rectangles (world space) of the things that must stay clean; measured through the canvas' own box so the camera zoom does not matter. */
  function measureHoles(){
-  const cb=canvas.getBoundingClientRect(),k=cb.width>0?width/cb.width:1;holes=[];
+  const cb=canvas.getBoundingClientRect(),k=cb.width>0?width/cb.width:1;holes=[];holeK=k;
   for(const el of world.querySelectorAll(SCENE_CLEAR_SELECTOR)){
    const r=el.getBoundingClientRect();if(!(r.width>0&&r.height>0))continue;
    holes.push([(r.left-cb.left)*k-4,(r.top-cb.top)*k-4,r.width*k+8,r.height*k+8]);
@@ -152,7 +152,11 @@ export function mountSceneAtmosphere(stage,{zone='th',context='battle',paused=()
    // the interrogation world is taller than the screen (the panels scroll over it): weather and shadows live in the part that can be seen
    const sky=context==='trial'?Math.max(160,Math.min(height,stage.clientHeight||height)):height;
    const stats=drawSceneAtmosphere(ctx,zone,elapsed,width,sky,{reduced:reduced.matches,paused:hold,clouds:!indoor,leaves:!indoor,quiet:hold});
-   if(holes.length){ctx.save();ctx.globalCompositeOperation='destination-out';ctx.fillStyle='#000';for(const h of holes)ctx.fillRect(h[0],h[1],h[2],h[3]);ctx.restore();}
+   if(holes.length){ctx.save();ctx.globalCompositeOperation='destination-out';ctx.fillStyle='#000';
+    // FB2-v2: a hard rectangle cut showed up as a pale box behind every name plate (the cloud shadow stops dead at its edge). Feather it: only the SHADOW of an
+    // off-canvas copy is cut (Gaussian, sigma 6 css px), the copy is inflated 12 px so the plate itself stays fully clear and the edge fades away smoothly.
+    const kk=holeK,OFF=100000;ctx.shadowColor='#000';ctx.shadowBlur=12*kk;ctx.shadowOffsetX=OFF;ctx.shadowOffsetY=0;
+    for(const h of holes)ctx.fillRect(h[0]-OFF-12*kk,h[1]-12*kk,h[2]+24*kk,h[3]+24*kk);ctx.restore();}
    canvas.dataset.holes=String(holes.length);canvas.dataset.particles=String(stats.particles);canvas.dataset.elapsed=String(Math.round(elapsed));canvas.dataset.indoor=String(indoor);}
   frame=requestAnimationFrame(tick);
  }

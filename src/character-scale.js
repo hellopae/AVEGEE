@@ -21,8 +21,12 @@ export const mapWorkerHeight = (adultHeight=82) => mapActorHeight('yama', adultH
  * footprint: shrinking to the horizontal slot gap would make phone parties unreadable.
  */
 export function fitAllySizes(referenceHeight, actors, slots, bounds) {
+  // FB2-v2 (Pae 13 Nov: "บุญตัวใหญ่ไปนิด ปรับลงให้เท่าเพลิง"): the perspective slots gave the teammate nearer the camera +3 % (.94 -> 1.0 over the
+  // row), so two same-size crew looked different. Every teammate now uses the smallest teammate slot scale; Yama keeps his own slot.
+  const crewScale=Math.min(...slots.filter((_,i)=>actors[i]?.key!=='yama').map(s=>s.scale));
+  const slotScale=i=>actors[i].key==='yama'||!Number.isFinite(crewScale)?slots[i].scale:crewScale;
   const sizes=actors.map((a,i)=>{
-    const h=referenceHeight*characterScale(a.key)*slots[i].scale/a.box.h;
+    const h=referenceHeight*characterScale(a.key)*slotScale(i)/a.box.h;
     return {h,w:h*a.aspect};
   });
   let fit=Math.min(1,...actors.map(a=>.96/characterScale(a.key)));
