@@ -151,3 +151,12 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 .sword-keys button::before,.sword-keys button::after{content:'◆';font-size:10px;opacity:.65;color:var(--sword-edge,#d6ab65);margin:0 8px}
 .sword-keys button:active{filter:brightness(1.35)}
 .g5-round-message{display:block;margin-top:10px;color:#eed4a5;text-align:center;font-size:13px}
+
+/* FB2-14/16: คู่มือนรก — การ์ดเรียงเป็นคอลัมน์แบบไม่เว้นช่อง (เดิมเป็นกริดแถวละ 3 ใบ ใบสูงทำให้ช่องข้าง ๆ ว่างเปล่า) · ตาราง กรรม/สถานที่ลงทัณฑ์ เป็นการ์ดท้ายสุด (คอลัมน์ขวา) · การ์ดยมทูตเรียง 2 คอลัมน์ ไม่ใช่ใบเดียวเต็มความกว้าง */
+.court-guide .guide-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;align-items:start}
+.court-guide .guide-col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.court-guide .guide-col>.guide-card{margin:0}
+.court-guide .guide-sins table{margin-top:0}
+.court-guide .guide-crew-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;margin-top:12px}
+.court-guide .guide-crew-grid>.guide-card.guide-crew{margin-top:0}
+.close-glyph{display:grid;place-items:center;width:100%;height:100%;box-sizing:border-box;border:1px solid #d1ac65;border-radius:8px;background:#3a2530;color:#f5d58f;font-size:24px;line-height:1}

@@ -1114,6 +1114,8 @@ function goTrial() {
 }
 
 // ---------- โมดัล ----------
+// FB2-14: if the close picture cannot load (a deploy in progress, a lost file) the button still shows a visible X
+const CLOSE_IMG = `<img src="img/ui/icon-close.webp" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'close-glyph',textContent:'\u2715'}))">`;
 const dlg = $('#dlg');
 // Keep the active scene and its listeners intact while the player is away.
 const pauseDlg = document.createElement('dialog');
@@ -1131,7 +1133,7 @@ new MutationObserver(() => {
   const close = document.createElement('button');
   close.className = 'modal-corner-close';
   close.setAttribute('aria-label', t('common.close'));
-  close.innerHTML = '<img src="img/ui/icon-close.webp" alt="">';
+  close.innerHTML = CLOSE_IMG;
   close.onclick = () => dlg.close();
   dlg.append(close);
 }).observe(dlg, {childList:true, subtree:false, attributes:true, attributeFilter:['open']});
@@ -2884,7 +2886,7 @@ function openTrial(initialError = '') {
         <button class="trial-pause" data-trial-pause aria-label="${esc(t('trial.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>
         <button class="icon-settings-mini" data-arena-settings title="${esc(t('trial.settings'))}"><img src="img/ui/icon-setting2.webp" alt=""></button>
       </div>
-      <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.webp" alt=""></button>
+      <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}">${CLOSE_IMG}</button>
 
       ${!g.taught.includes('trial-calculation') ? `<div class="trial-first-lesson" role="dialog" aria-label="วิธีออกหมายครั้งแรก">${firstTrialLesson}<button class="gold" data-lesson-done>เข้าใจแล้ว เริ่มสอบสวน</button></div>`
         : !g.taught.includes('interrogation-traits') ? traitLessonHtml(traitLessonPage) : ''}
@@ -2968,13 +2970,11 @@ function openTrial(initialError = '') {
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
-      guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.webp" alt=""></button><h2>คู่มือนรก</h2>
+      guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}">${CLOSE_IMG}</button><h2>คู่มือนรก</h2>
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
-        <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
-        <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
-        ${clockUnlocked() ? `<div class="guide-card-grid">${guideCards(clockGuide)}</div>` : ''}
+        ${guideColumns()}
         ${keeperCaseGuideHtml(g,s,pick.st,shownCrew,c=>crewArt(c))}
-        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
+        <div class="guide-crew-grid">${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}</div>
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       guide.insertAdjacentHTML('beforeend',historyHtml());
       dlg.append(guide); guide.showModal();
@@ -3176,6 +3176,17 @@ document.addEventListener('keydown', e => {
 }, true);
 
 const plainQuest = text => String(text || '').replace(/\*\*|`/g,'').replace(/\*\([^)]*\)\*/g,'').replace(/ · ผล:.*/g,'');
+/** FB2-14/16: the court guide cards in three stacked columns that all end at about the same height (no empty cell beside a tall card):
+ *  A = the numbered steps in reading order · B = the two colour cards · C = team effects, the clock card (when owned) and the karma -> place table. */
+function guideColumns() {
+  const cards = sentencingChapters.map(html => ({ html, title: html.match(/<h3>(.*?)<\/h3>/s)?.[1] || '' }));
+  const steps = cards.filter(c => /^\d+\./.test(c.title)), colour = cards.filter(c => !/^\d+\./.test(c.title) && c.title.includes('สี'));
+  const rest = cards.filter(c => !steps.includes(c) && !colour.includes(c));
+  const table = `<section class="guide-card guide-sins"><h3>กรรมและสถานที่ลงทัณฑ์</h3><table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table></section>`;
+  const col = (list, extra = '') => `<div class="guide-col">${list.map(c => guideCards(c.html)).join('')}${extra}</div>`;
+  return `<div class="guide-cols">${col(steps)}${col(colour)}${col(rest, (clockUnlocked() ? guideCards(clockGuide) : '') + table)}</div>`;
+}
+
 function historyHtml(){
   const cards=openHistoryCards(g);
   const note=showFamilyNote(g)?'<h3>วงศ์เดียวกัน คนละยุค เวลาในนรกไม่เรียงตามปี</h3><p>ยมทูตแต่ละโซนเป็นคนละคน พ่อค้าควันทองเป็นคนเดียวกันทุกโซน</p>':'';
@@ -5943,6 +5954,8 @@ function openStation(k, emergency = false) {
     // แถบบารมี/ดาวยศใน HUD ล่างซ้าย
     const hpf = dlg.querySelector('#st-hud-hp');
     if (hpf) hpf.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
+    const mpf = dlg.querySelector('#st-hud-mp');
+    if (mpf) mpf.style.width = `${Math.max(0, Math.min(100, 100 * g.mp / (g.mpMax || 1)))}%`;
     const lv = Math.min(3, Math.max(0, g.level || 1));
     dlg.querySelectorAll('#st-stars .rk-star').forEach(el => el.classList.toggle('on', Number(el.dataset.lv) <= lv));
   };
@@ -5954,8 +5967,6 @@ function openStation(k, emergency = false) {
     const box=dlg.querySelector('#st-arch'),hud=dlg.querySelector('.st-hud');if(!box)return;
     box.hidden=!on;hud?.classList.toggle('archive-open',on);R?.lock(on);
     // Remove obscured HUD controls from keyboard navigation while the modal owns focus.
-    const mpf = dlg.querySelector('#st-hud-mp');
-    if (mpf) mpf.style.width = `${Math.max(0, Math.min(100, 100 * g.mp / (g.mpMax || 1)))}%`;
     const covered=dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls');
     covered.forEach(el=>el.inert=on);
     if(!on){archiveFocus?.focus();return;}
@@ -6202,6 +6213,7 @@ function openStation(k, emergency = false) {
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
+  if (k === 'tea') { img('hero-yama-unconscious'); img('hero-yama-tea-clean'); }   // FB2-13: warm the lying/sitting poses while the player walks to the bed
   R.onAct = () => {
     if (k === 'krata') { openKrata(false); return; }
     if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
@@ -6213,7 +6225,6 @@ function openStation(k, emergency = false) {
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
   R.onCollect = () => { panels(); refresh(); };
-  if (k === 'tea') { img('hero-yama-unconscious'); img('hero-yama-tea-clean'); }   // FB2-13: warm the lying/sitting poses while the player walks to the bed
   if (k === 'tarang' || k === 'sawan') {
     // P4 ใบวินิจฉัยวิญญาณ — ปุ่มหลักเรียกฟังก์ชันเดิมทั้งหมด (release / inspectPrison / moveFromPrison / inspectGate / resolveGate)
     // พร้อมแอนิเมชันห้องเดิม · เปิดใบ = พักเกม (ปล่อยคืนตอนปิดใบ ผ่าน userPaused เหมือนกล่องอื่น)
@@ -6957,7 +6968,7 @@ function openSettings() {
   modal(`<div class="settings-head">
       <img class="settings-gear" src="img/ui/icon-setting2.webp" alt="">
       <span class="settings-title-pill" data-t="settings.title"></span>
-      <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.webp" alt=""></button>
+      <button class="settings-close" data-close aria-label="close">${CLOSE_IMG}</button>
     </div>
 
     <div class="settings-row" data-off="${AUDIO.bgmOn === false}">
