@@ -83,13 +83,30 @@
 .st-hud .canteen-panel .canteen-hire{display:flex;flex-wrap:wrap;gap:6px}
 .st-hud .canteen-panel .canteen-hire button{flex:1 1 220px;min-height:44px;white-space:normal;line-height:1.6}
 .st-hud .canteen-panel .canteen-hire small{flex:1 1 100%}
-.st-hud .canteen-panel .worker-service-card{padding:10px;gap:6px}
-.st-hud .canteen-panel .serve-targets{display:flex;flex-direction:column;gap:2px;margin:0;padding:6px 8px;min-width:0;max-height:150px;overflow:auto;border:1px solid rgba(232,182,94,.35);border-radius:8px}
-.st-hud .canteen-panel .serve-targets label{display:flex;align-items:center;gap:8px;min-height:36px;line-height:1.6}
-.st-hud .canteen-panel .serve-targets input{width:20px;height:20px;flex:none}
+/* FB2-11: โรงอาหารเป็นการ์ด — สถานะ 2 ช่อง (ไอคอนคนงาน / ไอคอนข้าวปั้น) · การ์ดคนงานรูป+หน้าที่+ผู้รับ · ทั้งแผงเลื่อนได้ มีแถบเลื่อนทอง (เดิมยาวทะลุขอบจอและไม่มีแถบเลื่อน) */
+.st-hud .st-card:has(.canteen-panel){overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#e8b65e rgba(0,0,0,.4)}
+.st-hud .st-card:has(.canteen-panel)::-webkit-scrollbar{width:8px}
+.st-hud .st-card:has(.canteen-panel)::-webkit-scrollbar-track{background:rgba(0,0,0,.4);border-radius:8px}
+.st-hud .st-card:has(.canteen-panel)::-webkit-scrollbar-thumb{background:#e8b65e;border-radius:8px}
+.st-hud .canteen-panel .canteen-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.st-hud .canteen-panel .canteen-stat{display:flex;align-items:center;gap:7px;min-width:0;padding:6px 8px;border:1px solid rgba(232,182,94,.4);border-radius:10px;background:rgba(0,0,0,.28);font-size:12px;line-height:1.3;color:#f2e6d6}
+.st-hud .canteen-panel .canteen-stat b{display:block;color:#ffe2a0;font-size:14px}
+.st-hud .canteen-panel .canteen-face{width:36px;height:36px;aspect-ratio:auto;flex:none;border-radius:8px}
+.st-hud .canteen-panel .canteen-food-icon{width:34px;height:34px;object-fit:contain;flex:none}
+.st-hud .canteen-panel .canteen-help{font-size:12px;line-height:1.5;color:#d8c9b8}
+.st-hud .canteen-panel .canteen-workers{display:flex;flex-direction:column;gap:8px}
+.st-hud .canteen-panel .canteen-worker{flex-direction:row;align-items:flex-start;gap:10px;padding:8px 10px}
+.st-hud .canteen-panel .canteen-worker .canteen-face{width:46px;height:46px;border-radius:10px}
+.st-hud .canteen-panel .canteen-worker-body{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1 1 auto}
+.st-hud .canteen-panel .canteen-duty{display:flex;align-items:center;gap:6px;font-size:13px}
+.st-hud .canteen-panel .canteen-duty select{flex:1 1 auto;min-width:0;min-height:34px;font:inherit;font-size:13px;color:#20111a;background:#fff4dc;border:1px solid var(--gold,#c9a14a);border-radius:6px;padding:2px 6px}
+.st-hud .canteen-panel .serve-targets{display:flex;flex-wrap:wrap;gap:5px;margin:0;padding:6px 8px 8px;min-width:0;border:1px solid rgba(232,182,94,.35);border-radius:8px}
+.st-hud .canteen-panel .serve-targets legend{font-size:12px;padding:0 4px}
+.st-hud .canteen-panel .serve-targets label{display:flex;align-items:center;gap:6px;min-height:34px;padding:0 10px 0 6px;border:1px solid rgba(232,182,94,.35);border-radius:999px;background:rgba(0,0,0,.25);font-size:13px;line-height:1.3}
+.st-hud .canteen-panel .serve-targets label.serve-queue{flex:1 1 100%;border-radius:10px}
+.st-hud .canteen-panel .serve-targets input{width:18px;height:18px;flex:none}
 @media (min-width:1101px){
-  .st-hud .st-card:has(.canteen-panel){max-width:24cqw}
-  .st-hud .canteen-panel .canteen-status{font-size:max(12px,1cqw)}
+  .st-hud .st-card:has(.canteen-panel){width:26cqw;max-width:26cqw;max-height:38cqw}   /* สูงไม่เกินเหนือรูปยามา/หนังสือ/กระเป๋า แล้วเลื่อนเอา */
   .st-hud .canteen-form label{font-size:max(12px,1cqw)}
   .st-hud .canteen-form :is(select,input){font-size:max(12px,1cqw);min-height:max(30px,2.6cqw)}
   .st-hud .canteen-buttons .btn-gold{font-size:max(12px,1.05cqw);min-height:max(34px,2.8cqw)}
