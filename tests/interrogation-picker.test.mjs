@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml} from '../src/interrogation-ui.js';
+import {keeperCurrentJob,keeperBlockLabel,keeperSuitText,keeperCaseGuideHtml} from '../src/interrogation-ui.js';
 import {traitForKeeper} from '../src/interrogation.js';
 import {SINS,STATIONS} from '../src/data.js';
 const source=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
@@ -13,13 +13,13 @@ function choices(){
  const g={crew:actors,keeperTrialInfo:()=>({available:true,benefit:'ผลดีเฉพาะคดี',cost:'เสบียง 2 ห่อ'}),assignBlock:()=>null,stFree:()=>3,stations:[]};
  const dests=['krata','ngiw','tarang','sawan'].map(k=>({def:STATIONS.find(x=>x.k===k),slots:[]}));
  return vm.runInNewContext(render+'\n({crewChoices,destinationChoices});',{g,s:{id:1},dests,answer:null,pick:{cr:'kan'},available:actors.filter(c=>c.k!=='dam'),heaven:false,
-  keeperCurrentJob,keeperSuitText,traitForKeeper,SINS,INTENSITY:{},punishmentLevel,punishmentTimeLabel,t:x=>x,esc:x=>String(x??''),blockText:b=>b?.text||'',stBg:()=>'/station.webp',artUrl:()=>'/profile.webp',orbImg:(src,alt)=>`<img src="${src}" alt="${alt}">`});
+  keeper:null,keeperCurrentJob,keeperBlockLabel,keeperSuitText,traitForKeeper,SINS,INTENSITY:{},punishmentLevel,punishmentTimeLabel,t:x=>x,esc:x=>String(x??''),blockText:b=>b?.text||'',stBg:()=>'/station.webp',artUrl:()=>'/profile.webp',orbImg:(src,alt)=>`<img src="${src}" alt="${alt}">`});
 }
 test('keeper choices show complete profile sources, suitability and availability without stats or costs',()=>{
  const {crewChoices:html}=choices();
  for(const color of ['ม่วง','แดง','เขียว'])assert.match(html,new RegExp('วิญญาณสี'+color));
  assert.match(html,/ไม่ผูกกับสีวิญญาณ/);assert.match(html,/data-k="kan"[^>]*aria-pressed="true"/);
- assert.match(html,/data-k="dam"[^>]*disabled/);assert.match(html,/ไม่ว่าง/);
+ assert.match(html,/data-k="dam"[^>]*disabled/);assert.match(html,/ว่าง · รอรับเวร|ติดภารกิจอื่น|รับหมายนี้ไม่ได้/,'FB2-v3: a blocked keeper names a reason instead of a bare ไม่ว่าง');
  assert.match(html,/<img src="\/profile.webp"/);assert.doesNotMatch(html,/แรง|ระเบียบ|ปัญญา|เมตตา|ภาระ|เสบียง|ผลดีเฉพาะคดี/);
 });
 test('destination karma names follow public station tags and are present even without a revealed answer',()=>{
@@ -32,7 +32,7 @@ test('the handbook holds current keeper attributes, role benefit and cost with e
  const c={...actors[0],name:'<กาญ>'};const g={keeperTrialInfo:()=>({benefit:'ช่วย <คดี>',cost:'เสบียง 2 & เวลา'})};
  const before=JSON.stringify(c),html=keeperCaseGuideHtml(g,{},'krata',[c]);
  assert.match(html,/พลังและต้นทุนผู้คุม/);assert.match(html,/แรง 8 · ระเบียบ 6 · ปัญญา 4 · เมตตา 2/);assert.match(html,/เสบียง 2 &amp; เวลา/);assert.match(html,/&lt;กาญ&gt;/);assert.match(html,/ช่วย &lt;คดี&gt;/);assert.equal(JSON.stringify(c),before);
- assert.match(source,/keeperCaseGuideHtml\(g,s,pick.st,shownCrew\)/);assert.doesNotMatch(source,/choices:crewChoices\+`<details class="keeper-menu-info"/);
+ assert.match(source,/keeperCaseGuideHtml\(g,s,pick.st,shownCrew,c=>crewArt\(c\)\)/);assert.doesNotMatch(source,/choices:crewChoices\+`<details class="keeper-menu-info"/);
 });
 test('choosing a destination or keeper closes its flyout and keeps the next command reachable',()=>{
  const start=source.indexOf("dlg.querySelectorAll('[data-pickkey]')"),body=source.slice(source.indexOf('      pick[',start),source.indexOf('\n    });',start));

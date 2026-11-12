@@ -129,9 +129,11 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const webpOnly=JSON.parse(readFileSync(new URL('./fixtures/webp-1112-asset-ext-changes.json',import.meta.url)));
   // FB2-A (13 Nov): the central-stock eating rate per working reaper (BAL.foodEatRate 0.5 -> 0.17); economy only, no damage / HP / cooldown number is touched. Reversible snippet, same method.
   const fb2Only=JSON.parse(readFileSync(new URL('./fixtures/fb2-a-noncombat-changes.json',import.meta.url)));
+  // FB2-B (13 Nov): the warrant picker's Plerng food rule moved into one shared constant (PLERNG_WARRANT_FOOD, same value 2) so the team page can show it; text/label only. Reversible snippets, same method.
+  const fb2bOnly=JSON.parse(readFileSync(new URL('./fixtures/fb2-b-noncombat-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

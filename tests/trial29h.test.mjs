@@ -7,7 +7,7 @@ import { createGame, primarySinOf } from '../src/game.js';
 import { ALL_CASES, isPure } from '../src/cases.js';
 import { SINS, STATIONS, INTENSITY_NAME as INTENSITY } from '../src/data.js';
 import {traitForKeeper} from '../src/interrogation.js';
-import {keeperCurrentJob,keeperSuitText} from '../src/interrogation-ui.js';
+import {keeperCurrentJob,keeperBlockLabel,keeperSuitText} from '../src/interrogation-ui.js';
 import { t } from '../src/i18n.js';
 
 globalThis.Image = class {};
@@ -16,7 +16,7 @@ const css = readFileSync(new URL('../src/command-wheel.css', import.meta.url), '
 const renderSource = ui.slice(ui.indexOf('    const destinationChoices ='), ui.indexOf('    const crewNow ='));
 const renderChoices = (g,s) => vm.runInNewContext(`${renderSource}\n({destinationChoices,crewChoices,forceChoices});`, {
   g,s,dests:g.trialDestinations(),answer:g.trialAnswer(s),available:g.freeCrew(),pick:{},heaven:false,
-  traitForKeeper,keeperCurrentJob,keeperSuitText,SINS,t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,punishmentLevel,punishmentTimeLabel,
+  keeper:null,traitForKeeper,keeperCurrentJob,keeperBlockLabel,keeperSuitText,SINS,t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,punishmentLevel,punishmentTimeLabel,
 });
 function courtSoul(g, sin = 'kong') {
   const s = g.queue[0];

@@ -1,0 +1,12 @@
+{
+ "game": [
+  {
+   "before": "import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';",
+   "after": "import {PLERNG_WARRANT_FOOD,spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';"
+  },
+  {
+   "before": "if(!why&&c?.k==='plerng'&&this.food<2)why='เสบียงไม่พอ · เพลิงใช้เพิ่ม 2 หน่วยต่อหมาย';",
+   "after": "if(!why&&c?.k==='plerng'&&this.food<PLERNG_WARRANT_FOOD)why=`เสบียงไม่พอ · เพลิงใช้เพิ่ม ${PLERNG_WARRANT_FOOD} หน่วยต่อหมาย`;"
+  }
+ ]
+}
