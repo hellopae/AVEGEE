@@ -2225,8 +2225,9 @@ function openVerdictScene() {
   prepareComicImages(dlg);
   // FB2-8: when the zone head's cutscene fails to load (seen on Pae's phone-side deploy) the old fallback dropped the 512x512 throne sprite into the
   // 16:9 frame at full size ("wrong picture, wrong ratio"). Retry once with a cache-buster, then show that same sprite at its own ratio, contained.
-  { const img = dlg.querySelector('.verdict-scene .intro-comic-frame > img'), base = img?.getAttribute('src'); let tried = 0;
-    if (img) img.addEventListener('error', () => {
+  { const img = dlg.querySelector('.verdict-scene .intro-comic-frame > img'); let tried = 0;
+    if (typeof img?.addEventListener === 'function') img.addEventListener('error', () => {
+      const base = img.getAttribute('src') || '';
       if (tried++ === 0) { img.src = `${base}${base.includes('?') ? '&' : '?'}retry=${Date.now()}`; return; }
       if (img.dataset.fallback) return;
       img.dataset.fallback = '1'; img.parentElement.classList.add('is-fallback'); img.src = artUrl('hero-boss');
