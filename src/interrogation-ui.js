@@ -39,11 +39,12 @@ export function keeperSuitText(keeper){
   const suit=traitForKeeper(keeper.k),color={concealing:'ม่วง',resisting:'แดง',accepting:'เขียว'}[suit?.key];
   return color?`วิญญาณสี${color}`:'ไม่ผูกกับสีวิญญาณ';
 }
-export function keeperCaseGuideHtml(game,soul,stationKey,actors){
-  return `<section class="guide-card keeper-case-guide"><h3>พลังและต้นทุนผู้คุม</h3>${actors.map(c=>{
-    const role=game.keeperTrialInfo?.(soul,c,stationKey);
-    return `<article><h4>${esc(c.name||c.k)}</h4><p>${esc(keeperSuitText(c))}<br>แรง ${esc(c.raeng)} · ระเบียบ ${esc(c.rabiab)} · ปัญญา ${esc(c.panya)} · เมตตา ${esc(c.metta)}</p><p>ผลดี: ${esc(role?.benefit||'คุมงานตามปกติ')}<br>ต้นทุน: ${esc(role?.cost||'ไม่มี')}</p></article>`;
-  }).join('')}</section>`;
+export function keeperCaseGuideHtml(game,soul,stationKey,actors,artOf=()=>''){
+  // FB2-15: one card per keeper with his portrait, laid out in a wrapping grid so the wide handbook page has no empty right half
+  return `<section class="guide-card keeper-case-guide"><h3>พลังและต้นทุนผู้คุม</h3><div class="keeper-guide-grid">${actors.map(c=>{
+    const role=game.keeperTrialInfo?.(soul,c,stationKey),art=artOf(c);
+    return `<article>${art?`<img class="keeper-guide-portrait" src="${esc(art)}" alt="" loading="lazy" onerror="this.remove()">`:''}<div><h4>${esc(c.name||c.k)}</h4><p>${esc(keeperSuitText(c))}<br>แรง ${esc(c.raeng)} · ระเบียบ ${esc(c.rabiab)} · ปัญญา ${esc(c.panya)} · เมตตา ${esc(c.metta)}</p><p>ผลดี: ${esc(role?.benefit||'คุมงานตามปกติ')}<br>ต้นทุน: ${esc(role?.cost||'ไม่มี')}</p></div></article>`;
+  }).join('')}</div></section>`;
 }
 
 /** Compact keeper picker for the interrogation page (the long explanations live in the handbook: keeperTeamGuide). */

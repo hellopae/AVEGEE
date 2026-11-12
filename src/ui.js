@@ -2210,7 +2210,7 @@ function openVerdictScene() {
   const stars = '★'.repeat(sc.stars) + '☆'.repeat(Math.max(0, 5 - sc.stars));
   dlg.innerHTML = `<div class="intro-comic zone-arrival verdict-scene is-${sc.kind}" role="region" aria-label="${esc(sc.title)}">
     <div class="intro-comic-frame">
-      <img src="${esc(verdictSceneImage(sc.zone, sc.kind))}" alt="${esc(sc.speaker)}" onerror="this.onerror=null;this.src='${artUrl('hero-boss')}'">
+      <img src="${esc(verdictSceneImage(sc.zone, sc.kind))}" alt="${esc(sc.speaker)}">
       <div class="intro-comic-head"><span>${esc(sc.title)}</span></div>
     </div>
     <div class="zone-arrival-band">
@@ -2223,6 +2223,14 @@ function openVerdictScene() {
   </div>`;
   openDlg('intro-comic-dialog verdict-dialog');
   prepareComicImages(dlg);
+  // FB2-8: when the zone head's cutscene fails to load (seen on Pae's phone-side deploy) the old fallback dropped the 512x512 throne sprite into the
+  // 16:9 frame at full size ("wrong picture, wrong ratio"). Retry once with a cache-buster, then show that same sprite at its own ratio, contained.
+  { const img = dlg.querySelector('.verdict-scene .intro-comic-frame > img'), base = img?.getAttribute('src'); let tried = 0;
+    if (img) img.addEventListener('error', () => {
+      if (tried++ === 0) { img.src = `${base}${base.includes('?') ? '&' : '?'}retry=${Date.now()}`; return; }
+      if (img.dataset.fallback) return;
+      img.dataset.fallback = '1'; img.parentElement.classList.add('is-fallback'); img.src = artUrl('hero-boss');
+    }); }
   dlg.querySelector('[data-verdict-scene-done]').onclick = () => dlg.close();
   onDlgClose(() => g.onChange());
 }
@@ -2325,7 +2333,7 @@ function openHelp(initialTab = 'guide') {
           พ่อครัวใช้เสบียงปั้นข้าวและซื้อเสบียงเพิ่มอัตโนมัติเมื่อใกล้หมด (ต้องมีเบี้ยกรรม) คนเสิร์ฟเดินส่งให้คนที่หิวที่สุดก่อน หรือเลือกส่งเฉพาะคน · หลายคนส่งได้เร็วขึ้น
           หลังสร้างโรงอาหารแล้ว ปุ่มให้ข้าวใช้คลังพร้อมเสิร์ฟ หรือสั่งเดินไปกินได้จากจัดทีม พร้อมดู HP ความอิ่ม จัดทีมต่อสู้ กำหนดหน้าที่ และสั่งพักศาลาน้ำชา
           นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · ดำและเพลิงไม่ปรุงอาหารแล้ว</li>
-      ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}<li>${clockGuide}</li>
+      ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}${clockUnlocked() ? `<li>${clockGuide}</li>` : ''}
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
     <div class="help-reader"></div>`, d => {
@@ -2414,6 +2422,8 @@ function onDlgClose(fn) {
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
 const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
+/** FB2-15: the time-rewind clock is only described once the player owns it (same test the battle item menu uses) */
+const clockUnlocked = () => !!(g.abilities?.cooldownClock || g.inventory?.cooldownClock);
 const crewArt = (c, pose = '') => c.k==='guide'
   ? artUrl('zone-boss','png',c.homeZone)
   : artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
@@ -2753,7 +2763,8 @@ function openTrial(initialError = '') {
     const powerImg = { roar:'img/icon-fang.webp', mirror:'img/item-mirror.webp', hypno:'img/fx-hypno.webp' };
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่เปลี่ยนเป็นคูลดาวน์เวลาจริง (p.realtime) ไม่ใช้ ammo/item อีกแล้ว
     // แยกป้ายกำกับปุ่มเป็นสองแบบ: roar โชว์เวลานับถอยหลัง mm:ss · มิเรอร์/สะกดจิตยังโชว์จำนวนที่เหลือแบบเดิม
-    const powerChoices = powerDefs.map(p => {
+    // FB2-10: a power that is still locked is not shown at all (it used to sit there greyed out with ×0) — it appears once it is unlocked
+    const powerChoices = powerDefs.filter(p => !g.powerLocked(p)).map(p => {
       const pw = g.powerOf(p.k), noIssue = p.k === 'roar' && g.roarWhy(s), ok = g.powerReady(p.k) && !noIssue;
       const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
@@ -2792,6 +2803,7 @@ function openTrial(initialError = '') {
       const blockedCrew=unavailable||(!available.some(x=>x.k===c.k)&&{text:keeperCurrentJob(g,c)});
       const why = blockedCrew ? blockText(blockedCrew) : '';
       const suit=traitForKeeper(c.k);
+      const keeperState=blockedCrew?keeperBlockLabel(g,c,{role,stationKeeper:keeper,why}):'ว่าง';   // FB2-v3: the real reason, not a bare "ไม่ว่าง"
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${suit?`style="--trait-color:${suit.color}"`:''} ${blockedCrew ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
         title="${esc(c.name+' · '+keeperSuitText(c)+' · '+keeperState+(why&&why!==keeperState?' · '+why:''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
@@ -2803,7 +2815,6 @@ function openTrial(initialError = '') {
     const forceChoices = answer?.intensity === 0
       ? `<button class="orb-choice is-revealed" disabled title="${esc(t('trial.noPunishment'))}"><span class="force-none">🕊️</span><b>${esc(t('trial.noPunishment'))}</b><span class="reveal-mark" aria-hidden="true">✓</span></button>`
       : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
-      const keeperState=blockedCrew?keeperBlockLabel(g,c,{role,stationKeeper:keeper,why}):'ว่าง';   // FB2-v3: the real reason, not a bare "ไม่ว่าง"
       const revealed = i === answer?.intensity;
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
         title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b><small style="color:${punishmentLevel(i).color}">${punishmentTimeLabel(i)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
@@ -2960,8 +2971,8 @@ function openTrial(initialError = '') {
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
         <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
-        <div class="guide-card-grid">${guideCards(clockGuide)}</div>
-        ${keeperCaseGuideHtml(g,s,pick.st,shownCrew)}
+        ${clockUnlocked() ? `<div class="guide-card-grid">${guideCards(clockGuide)}</div>` : ''}
+        ${keeperCaseGuideHtml(g,s,pick.st,shownCrew,c=>crewArt(c))}
         ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       guide.insertAdjacentHTML('beforeend',historyHtml());

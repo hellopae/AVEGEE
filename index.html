@@ -1734,6 +1734,9 @@ dialog.intro-comic-dialog.verdict-dialog{width:min(96vw,1000px,max(420px,calc((9
 .verdict-scene .verdict-reason{margin-top:6px;color:var(--muted-foreground);font-size:var(--text-sm);line-height:1.6}
 .verdict-scene .verdict-reward{margin-top:6px;color:var(--gold);font-size:var(--text-sm);font-weight:600}
 .verdict-scene.is-blame .intro-comic-head span:first-child{color:var(--destructive)}
+/* FB2-8: the stand-in throne sprite (cutscene failed to load) keeps its own ratio inside the 16:9 frame */
+.verdict-scene .intro-comic-frame.is-fallback{aspect-ratio:16/9!important}
+.verdict-scene .intro-comic-frame.is-fallback>img{top:0!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;background:#1a1016}
 .ending-thumbnail{position:relative;width:150px;height:150px;flex:none;overflow:hidden;
   border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
 .final-ending .ending-thumbnail img{position:absolute;left:0;top:0;width:100%;height:100%;

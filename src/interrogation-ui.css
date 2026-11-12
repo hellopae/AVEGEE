@@ -88,7 +88,12 @@
 .trial-comment8 .court-options[data-court-options=where] .orb-choice>b{grid-area:auto;white-space:normal!important;min-width:0;transform:none!important;color:#fff1d2!important;text-shadow:0 1px 3px #000!important}
 .trial-comment8 .court-options[data-court-options=where] .orb-choice>small{display:block!important;grid-column:1;white-space:normal;overflow-wrap:anywhere;font-size:11px;line-height:1.5;transform:none!important;color:#fff1d2!important;text-shadow:0 1px 3px #000}
 .trial-comment8 .court-options[data-court-options=where] .orb-choice[aria-pressed=true]{box-shadow:inset 0 0 0 2px #ffe4a6!important}
-.keeper-case-guide article{padding:8px 0;border-top:1px solid var(--border)}
+.keeper-case-guide .keeper-guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.keeper-case-guide article{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:#ffffff06}
+.keeper-case-guide article:not(:has(.keeper-guide-portrait)){grid-template-columns:minmax(0,1fr)}
+.keeper-case-guide h4{margin:0 0 4px}.keeper-case-guide p{margin:0 0 6px}
+.keeper-guide-portrait{width:72px;height:72px;object-fit:contain;object-position:center bottom;border-radius:10px;background:#201720;border:1px solid #98713d}
+@media(max-width:520px){.keeper-case-guide article{grid-template-columns:56px minmax(0,1fr)}.keeper-guide-portrait{width:56px;height:56px}}
 @media(max-width:700px){.trial-comment8 .court-options[data-court-options=where]{width:min(260px,70vw)}}
 /* An open list must cover the portrait HUD rather than sit underneath it. */
 .trial-comment8 .comment8-menu:has(.court-options.is-open){z-index:50}
