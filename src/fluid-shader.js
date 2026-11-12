@@ -64,6 +64,7 @@ precision mediump float;
 #endif
 uniform sampler2D uGround;   // graded ground around the piece (mip-mapped)
 uniform sampler2D uFlow;     // rg = flow direction * speed, b = liquid mask (feathered)
+uniform sampler2D uNoise;    // 128x128 random RGBA, repeating, bilinear: the smooth value noise of the direction wander and the light streaks (one fetch instead of 4 hashes)
 uniform vec2  uSize;         // size of the area drawn, layer px
 uniform vec2  uView;         // where this piece sits in the shared GL canvas (px from the left / bottom)
 uniform vec2  uCapSize;      // size of the ground texture, px
@@ -87,8 +88,8 @@ uniform float uDensity;      // fraction of cells that hold a spark
 uniform float uSparkR;       // spark radius, world units
 uniform vec2  uDrift;        // sparks drift, world units / s
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
-float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
-  return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y); }
+float vnoise(vec2 p){ return texture2D(uNoise, p / 128.).r; }
+float vnoiseG(vec2 p){ return texture2D(uNoise, p / 128.).g; }
 vec4 flowAt(vec2 world){ vec2 uv = (world - uRect.xy) / uRect.zw;
   if (uv.x < 0. || uv.y < 0. || uv.x > 1. || uv.y > 1.) return vec4(.5, .5, 0., 0.);
   return texture2D(uFlow, uv); }
@@ -103,7 +104,7 @@ void main(){
   vec3 base = groundAt(world);
   vec2 dir = (fl.rg - .5) * 2.;
   // the direction and the speed wander slowly in space and time
-  float n1 = vnoise(world * .045 + vec2(uTime * .05, -uTime * .035)), n2 = vnoise(world * .09 + vec2(7.3, uTime * .06));
+  float n1 = vnoise(world * .045 + vec2(uTime * .05, -uTime * .035)), n2 = vnoiseG(world * .09 + vec2(7.3, uTime * .06));
   float ang = (n1 - .5) * 1.1 * uWarp, cs = cos(ang), sn = sin(ang);
   dir = vec2(cs * dir.x - sn * dir.y, sn * dir.x + cs * dir.y) * (1. + (n2 - .5) * .7 * uWarp);
   float t = uTime * uSpeed, p0 = fract(t), p1 = fract(t + .5), w0 = 1. - abs(2. * p0 - 1.);
@@ -115,7 +116,7 @@ void main(){
   vec3 col = mix(c1, c0, w0);
   // streaks of light and shade carried by the same two phases, stretched along the flow: even a smooth-coloured stretch of liquid visibly runs
   vec2 dn = normalize(dir + vec2(1e-4)), pn = vec2(-dn.y, dn.x);
-  float s0 = vnoise(vec2(dot(w0p, dn) / 9., dot(w0p, pn) / 3.2) + 11.7), s1 = vnoise(vec2(dot(w1p, dn) / 9., dot(w1p, pn) / 3.2) + 5.3);
+  float s0 = vnoise(vec2(dot(w0p, dn) / 9., dot(w0p, pn) / 3.2) + 11.7), s1 = vnoiseG(vec2(dot(w1p, dn) / 9., dot(w1p, pn) / 3.2) + 5.3);
   col *= 1. + uShimmer * (mix(s1, s0, w0) - .5) * 2.;
   // bright pixels breathe (their own colour, brighter - no tint)
   float lum = dot(col, vec3(.299, .587, .114));
@@ -124,6 +125,7 @@ void main(){
   col *= 1. + uPulse * hot * (pulse - .35) * .5;
   // small sparks / glints riding the flow
   vec2 gp = (world - uDrift * uTime) / uCell, id = floor(gp), fr = fract(gp);
+  if (uDensity > 0.) {
   float h = hash(id), h2 = hash(id + 7.3);
   if (h < uDensity && lum > uSparkLum) {
     float life = fract(uTime * (.22 + .2 * h2) + h * 3.7);
@@ -131,6 +133,7 @@ void main(){
     float d = length((fr - c) * uCell), r = uSparkR * (.6 + .6 * h);
     float a = smoothstep(r, r * .25, d) * pow(sin(3.14159 * life), 2.);
     col += uSpark * a * .85;
+  }
   }
   gl_FragColor = vec4(col * mask, mask);
 }`;
@@ -173,10 +176,17 @@ function initGL(st) {
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aPos = gl.getAttribLocation(prog, 'aPos'); gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-  const loc = {}; for (const n of ['uGround', 'uFlow', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uShimmer', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
+  const loc = {}; for (const n of ['uGround', 'uFlow', 'uNoise', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uShimmer', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
   gl.disable(gl.BLEND); gl.disable(gl.DEPTH_TEST);
   gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
-  gl.uniform1i(loc.uGround, 0); gl.uniform1i(loc.uFlow, 1);
+  gl.uniform1i(loc.uGround, 0); gl.uniform1i(loc.uFlow, 1); gl.uniform1i(loc.uNoise, 2);
+  // the noise texture: deterministic (a tiny LCG), 128 x 128, 4 channels
+  const nz = new Uint8Array(128 * 128 * 4); let seed = 20261112; for (let i = 0; i < nz.length; i++) { seed = (seed * 1664525 + 1013904223) >>> 0; nz[i] = seed >>> 24; }
+  const nt = gl.createTexture(); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, nt);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 128, 128, 0, gl.RGBA, gl.UNSIGNED_BYTE, nz);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+  gl.activeTexture(gl.TEXTURE0);
   cv.addEventListener('webglcontextlost', e => { e.preventDefault(); st.status = 'failed'; st.error = 'context lost'; });
   st.glCanvas = cv; st.gl = gl; st.prog = prog; st.loc = loc;
 }
@@ -212,6 +222,10 @@ function ensurePieceTexture(st, sp) {
   }).catch(() => { sp.state = 'error'; sp.failedAt = performance.now(); }).finally(() => { st.loading--; });
 }
 
+/** The shader layer is rendered at no more than this many px per world unit and then stretched (bilinear) onto the map: liquid is smooth paint, and it halves the fragments at the sharpest zoom.
+ *  (The drawn-frames layer used 2.56.)  Measured: fps in the river / pan scenes. */
+export const SHADER_MAX_SCALE = 1.7;
+export const SHADER_MAX_SCALE_PERFORMANCE = 1.28;   // Performance graphics: lower again
 const rawDraw = typeof CanvasRenderingContext2D !== 'undefined' ? CanvasRenderingContext2D.prototype.drawImage : null;
 const pow2 = n => 2 ** Math.ceil(Math.log2(Math.max(2, n)));
 /** Cut the graded ground around a piece into a power-of-two texture (mip-mapped, so it never shimmers when zoomed out).  `level` = GROUND_LEVELS index.
@@ -272,12 +286,12 @@ export function drawFluidShader(ctx, st, h) {
     if (!sp.ground) continue;
     const id = 'shader:' + sp.p.id;
     if (fluidMs) {   // Performance graphics: re-run the shader at most every fluidMs; in between the last result is blitted again at the camera's new place
-      const prev = st.last.get(id), layer = st.layers.get(id);
-      if (prev && layer && time >= prev.at && time - prev.at < fluidMs && Math.abs(m.a - prev.a) < 1e-6 && Math.abs(m.d - prev.d) < 1e-6) {
-        blit(ctx, layer.canvas, 0, 0, prev.geo, prev.geo.dx0 + (m.e - prev.e), prev.geo.dy0 + (m.f - prev.f)); drawn++; continue;
+      const prev = st.last.get(id);
+      if (prev && st.shared && prev.shot === st.shot && time >= prev.at && time - prev.at < fluidMs && Math.abs(m.a - prev.a) < 1e-6 && Math.abs(m.d - prev.d) < 1e-6) {
+        blit(ctx, st.shared.canvas, prev.sx, prev.sy, prev.geo, prev.geo.dx0 + (m.e - prev.e), prev.geo.dy0 + (m.f - prev.f)); drawn++; continue;
       }
     }
-    const geo = h.geometry(m, vis, cv.width, cv.height);
+    const geo = h.geometry(m, vis, cv.width, cv.height, fluidMs ? SHADER_MAX_SCALE_PERFORMANCE : SHADER_MAX_SCALE);
     if (!geo) continue;
     jobs.push({ sp, id, geo }); sizes.push([geo.lw, geo.lh]);
   }
@@ -302,22 +316,27 @@ export function drawFluidShader(ctx, st, h) {
       gl.uniform2f(L.uDrift, p.drift[0], p.drift[1]);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     });
+    // Performance graphics: ONE copy of the packed GL canvas serves every piece until the next shader run (N copies were measured slower than the drawn frames in the overview / pan scenes)
+    let shared = null;
+    if (fluidMs) {
+      st.shot = (st.shot || 0) + 1;
+      shared = st.shared || (st.shared = { canvas: mk(gc.width, gc.height) });
+      if (shared.canvas.width < gc.width || shared.canvas.height < gc.height) { shared.canvas.width = Math.max(shared.canvas.width, gc.width); shared.canvas.height = Math.max(shared.canvas.height, gc.height); }
+      const sg = shared.ctx || (shared.ctx = shared.canvas.getContext('2d'));
+      sg.globalCompositeOperation = 'copy'; sg.drawImage(gc, 0, 0); sg.globalCompositeOperation = 'source-over';
+      shared.gh = gc.height;
+    }
     for (const { sp, id, geo, slot } of jobs) {
       if (!slot) continue;
       const srcY = gc.height - slot.y - geo.lh;
       if (fluidMs) {
-        let layer = st.layers.get(id);
-        if (!layer) { const canvas = mk(geo.lw, geo.lh); layer = { canvas, ctx: canvas.getContext('2d') }; st.layers.set(id, layer); }
-        if (layer.canvas.width < geo.lw || layer.canvas.height < geo.lh) { layer.canvas.width = Math.max(layer.canvas.width, geo.lw); layer.canvas.height = Math.max(layer.canvas.height, geo.lh); }
-        layer.ctx.globalCompositeOperation = 'copy'; layer.ctx.drawImage(gc, slot.x, srcY, geo.lw, geo.lh, 0, 0, geo.lw, geo.lh); layer.ctx.globalCompositeOperation = 'source-over';
-        st.last.set(id, { geo, at: time, e: m.e, f: m.f, a: m.a, d: m.d });
-        blit(ctx, layer.canvas, 0, 0, geo, geo.dx0, geo.dy0);
+        st.last.set(id, { geo, at: time, e: m.e, f: m.f, a: m.a, d: m.d, sx: slot.x, sy: srcY, shot: st.shot });
+        blit(ctx, shared.canvas, slot.x, srcY, geo, geo.dx0, geo.dy0);
       } else blit(ctx, gc, slot.x, srcY, geo, geo.dx0, geo.dy0);
       drawn++;
     }
   }
   if (!fluidMs && st.last.size) { st.last.clear(); }
-  if (st.frame % 300 === 0) for (const [id, layer] of st.layers) if (!jobs.some(j => j.id === id)) { layer.canvas.width = layer.canvas.height = 1; st.layers.delete(id); }
   sweep(st, time);
   st.composites += drawn;
   return drawn;

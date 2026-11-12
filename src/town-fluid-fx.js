@@ -230,11 +230,11 @@ function clipToMask(g, st, p, rect) {
 const rawDraw = typeof CanvasRenderingContext2D !== 'undefined' ? CanvasRenderingContext2D.prototype.drawImage : null;
 
 /** Layer geometry for the visible part `vis` (world rect) of something, in the main canvas device pixels. */
-function layerGeometry(m, vis, cw, ch) {
+function layerGeometry(m, vis, cw, ch, maxScale = FLUID_MAX_SCALE) {
   const dx0 = Math.max(0, Math.floor(m.e + vis[0] * m.a)), dy0 = Math.max(0, Math.floor(m.f + vis[1] * m.d));
   const dx1 = Math.min(cw, Math.ceil(m.e + (vis[0] + vis[2]) * m.a)), dy1 = Math.min(ch, Math.ceil(m.f + (vis[1] + vis[3]) * m.d));
   if (dx1 <= dx0 || dy1 <= dy0) return null;
-  const ratio = Math.min(1, FLUID_MAX_SCALE / Math.max(m.a, m.d));
+  const ratio = Math.min(1, maxScale / Math.max(m.a, m.d));
   const sx = m.a * ratio, sy = m.d * ratio, wx0 = (dx0 - m.e) / m.a, wy0 = (dy0 - m.f) / m.d;
   return { dx0, dy0, dw: dx1 - dx0, dh: dy1 - dy0, lw: Math.max(1, Math.ceil((dx1 - dx0) * ratio)), lh: Math.max(1, Math.ceil((dy1 - dy0) * ratio)), sx, sy, wx0, wy0 };
 }
