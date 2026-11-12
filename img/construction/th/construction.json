@@ -1,0 +1,12 @@
+{
+  "frameW": 704,
+  "frameH": 704,
+  "foot": [352, 640],
+  "worldWidth": 256,
+  "source": "Codex 20261111T005000Z-6ecec939 (docs/art-reviews/2026-11-05-construction-anim): 3 stages x 8 frames, 8 fps, lossless RGBA, crane + posts + scaffold only (no building)",
+  "stages": [
+    { "sheet": "stage-1.webp", "frames": 8, "fps": 8 },
+    { "sheet": "stage-2.webp", "frames": 8, "fps": 8 },
+    { "sheet": "stage-3.webp", "frames": 8, "fps": 8 }
+  ]
+}

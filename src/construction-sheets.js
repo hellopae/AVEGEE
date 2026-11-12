@@ -3,6 +3,7 @@
 // Art spec (what Codex / Kittanate draw, nothing else is needed):  img/construction/<zone>/   zone = th | asia | west | cyberhell
 //   construction.json   { "frameW": 512, "frameH": 512, "foot": [256, 500], "widthK": 1,
 //                         "stages": [ {"sheet":"stage-1.webp","frames":8,"fps":6}, {"sheet":"stage-2.webp",...}, {"sheet":"stage-3.webp",...} ],
+//                         "worldWidth": 256   (optional: draw every station's frame exactly this wide in world units, instead of def.bw * widthK)
 //                         "byStation": { "<station key>": { "foot":[x,y], "widthK":1.2 } }   (optional per-station tweaks) }
 //   stage-1.webp  stage-2.webp  stage-3.webp   one horizontal strip per stage: `frames` frames of frameW x frameH, transparent background
 // The sheets show NO building (owner 5 Nov): only the crane, the rising posts and the scaffold, in 3 stages (0-33 %, 33-66 %, 66-100 % of the build time),
@@ -82,7 +83,7 @@ export function drawConstruction(ctx, def, p, t, zone = activeTownZone()) {
   const sg = constructionStage(p), stages = sg.a === sg.b ? [[sg.a, 1]] : [[sg.a, 1 - sg.mix], [sg.b, sg.mix]];
   const recs = stages.map(([s]) => sheetOf(zone, st, s));
   if (recs.some(r => r.state !== 'ready')) return false;               // a sheet still loading or broken: the still picture stays until all are there
-  const w = (def.bw || 200) * widthK, k = w / m.frameW, h = m.frameH * k, x = def.bx - foot[0] * k, y = def.by - foot[1] * k;
+  const w = !over.widthK && m.worldWidth > 0 ? m.worldWidth : (def.bw || 200) * widthK, k = w / m.frameW, h = m.frameH * k, x = def.bx - foot[0] * k, y = def.by - foot[1] * k;
   const prevAlpha = ctx.globalAlpha;
   stages.forEach(([s, weight], n) => {
     const cfg = m.stages[s], fr = constructionFrame(cfg.frames, cfg.fps || m.fps, t), el = recs[n].el;
