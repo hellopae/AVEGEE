@@ -1,4 +1,4 @@
-import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y} from './canteen-art-layout.js';
+import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y,CANTEEN_ART_FLIP,CANTEEN_ART_SCALE_BY_ZONE,CANTEEN_ART_DY} from './canteen-art-layout.js';
 import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
@@ -210,13 +210,14 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
  *  รักษาขนาดเนื้อภาพและสัดส่วนเดิม ยึดกึ่งกลางเนื้อภาพกับขอบล่างที่ (bx,by)
  *  ภาพโซนอื่นกว้างไม่เกินโซน 1 และสูงไม่เกิน 1.5 เท่า เพื่อไม่ทับทางเดิน */
 const TALLER = 1.5;
-export function stationBox(def) {
+/** physical = the footprint used for walk blocking / depth (footOf, bodyBoxOf, blockRectsOf): it ignores the purely visual canteen offset CANTEEN_ART_DY. */
+export function stationBox(def, physical = false) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
   if(def.k==='canteen'){
-    const zone=zoneOf(),w=def.bw*CANTEEN_ART_SCALE,h=w*im.naturalHeight/im.naturalWidth;
-    return {im,x:def.bx-w/2,y:def.by-h*(CANTEEN_ART_FOOT_Y[zone]??1),w,h,flip:['th','asia','cyberhell'].includes(zone)};
+    const zone=zoneOf(),w=def.bw*(CANTEEN_ART_SCALE_BY_ZONE[zone]??CANTEEN_ART_SCALE),h=w*im.naturalHeight/im.naturalWidth;
+    return {im,x:def.bx-w/2,y:def.by-h*(CANTEEN_ART_FOOT_Y[zone]??1)+(physical?0:CANTEEN_ART_DY[zone]??0),w,h,flip:CANTEEN_ART_FLIP[zone]??['th','asia','cyberhell'].includes(zone)};
   }
   if (artUrl(key).includes('/map-v5/')) return reviewStationBox(def, im, zoneOf());
   if (def.k === 'frontier')
@@ -252,7 +253,7 @@ export function stationBox(def) {
 const footCache = new Map();
 export function footOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   // คนละโซนคนละรูป และกรอบอาจเปลี่ยนตอน manifest มาถึงทีหลัง — จำแยกตามทั้งสองอย่าง
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
@@ -289,7 +290,7 @@ export function footOf(def) {
 const bodyCache = new Map();
 export function bodyBoxOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (bodyCache.has(ck)) return bodyCache.get(ck);
@@ -326,7 +327,7 @@ const BLOCK_ROWS = 3;
 const blockCache = new Map();
 export function blockRectsOf(def) {
   if (def.bx == null) return null;
-  const box = stationBox(def);
+  const box = stationBox(def, true);
   if (!box || !box.im.naturalWidth) return null;
   const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (blockCache.has(ck)) return blockCache.get(ck);
@@ -687,7 +688,67 @@ export function drawEmbers(ctx, w, h, t) {
   }
 }
 
+// PERF-1110: the vignette is the same smooth gradient every frame; it is baked once into a small canvas per (w,h) and stretched over the rect
+// (a gradient shader pass over the rect cost ~1.5 ms/frame on an iGPU at DPR 2).  Skipped when the rect is off screen.
+const vignetteBake = new Map();
+function vignetteCanvas(w, h) {
+  const key = w + 'x' + h; let cv = vignetteBake.get(key);
+  if (cv === undefined) {
+    cv = null;
+    if (typeof document !== 'undefined') {
+      const bw = Math.max(2, Math.round(w / 2)), bh = Math.max(2, Math.round(h / 2)); cv = document.createElement('canvas'); cv.width = bw; cv.height = bh;
+      const q = cv.getContext('2d');
+      const g = q?.createRadialGradient?.(bw / 2, bh / 2, bh * 0.34, bw / 2, bh / 2, bh * 1.05);
+      if (g) {
+        g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)');
+        q.fillStyle = g; q.fillRect(0, 0, bw, bh);
+      } else cv = null;   // stub 2d context (tests): keep the direct gradient path
+    }
+    vignetteBake.set(key, cv);
+  }
+  return cv;
+}
+// FB-UI 7 (owner OK 10 Nov): in the town zones the world is 3840x2560 but the vignette used the old 1678x937 scene size, so it sat as a
+// rectangle in the top-left corner of the world.  The town vignette is now a screen-space overlay pinned to the camera: same gradient formula
+// (inner .34 / outer 1.05 of the height, max alpha .52) applied to the visible canvas, baked once at half size and rebuilt only when the canvas size changes.
+let screenVignette = null;   // {key, cv}
+export function screenVignetteCanvas(cw, ch) {
+  const key = cw + 'x' + ch;
+  if (screenVignette && screenVignette.key === key) return screenVignette.cv;
+  let cv = null;
+  if (typeof document !== 'undefined') {
+    const bw = Math.max(2, Math.round(cw / 2)), bh = Math.max(2, Math.round(ch / 2));
+    cv = document.createElement('canvas'); cv.width = bw; cv.height = bh;
+    const q = cv.getContext('2d');
+    const g = q?.createRadialGradient?.(bw / 2, bh / 2, bh * 0.34, bw / 2, bh / 2, bh * 1.05);
+    if (g) { g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)'); q.fillStyle = g; q.fillRect(0, 0, bw, bh); }
+    else cv = null;
+  }
+  screenVignette = { key, cv };
+  return cv;
+}
+/** Draw with an identity transform: covers exactly the canvas (= the screen), whatever the camera. */
+export function drawScreenVignette(ctx) {
+  const cw = ctx.canvas?.width, ch = ctx.canvas?.height;
+  if (!cw || !ch) return;
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const bake = screenVignetteCanvas(cw, ch);
+  if (bake) ctx.drawImage(bake, 0, 0, cw, ch);
+  else {
+    const g = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.34, cw / 2, ch / 2, ch * 1.05);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(8,3,6,.52)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, cw, ch);
+  }
+  ctx.restore();
+}
 export function drawVignette(ctx, w, h) {
+  const m = ctx.getTransform?.();
+  if (m && !m.b && !m.c && m.a > 0 && m.d > 0 && ctx.canvas) {
+    const x0 = -m.e / m.a, y0 = -m.f / m.d, x1 = x0 + ctx.canvas.width / m.a, y1 = y0 + ctx.canvas.height / m.d;
+    if (x1 <= 0 || y1 <= 0 || x0 >= w || y0 >= h) return;   // rect is entirely off screen: nothing to paint
+  }
+  const bake = vignetteCanvas(w, h);
+  if (bake) { ctx.drawImage(bake, 0, 0, w, h); return; }
   const g = ctx.createRadialGradient(w / 2, h / 2, h * 0.34, w / 2, h / 2, h * 1.05);
   g.addColorStop(0, 'rgba(0,0,0,0)');
   g.addColorStop(1, 'rgba(8,3,6,.52)');

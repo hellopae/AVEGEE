@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {mapActorHeight,mapWorkerHeight,WORKER_MAP_FILL,CHARACTER_SCALE} from '../src/character-scale.js';
+import {mapActorHeight,mapWorkerHeight,WORKER_MAP_FILL,WORKER_HEIGHT_VS_YAMA,CHARACTER_SCALE} from '../src/character-scale.js';
 import {teamHudHtml,teamHudRows} from '../src/team-hud.js';
 
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
@@ -19,17 +19,18 @@ test('Q3 ultimate sits last in the power list, no ready caption, no native toolt
 });
 
 test('Q3 canteen form lives in the card, not in the full-stage #st-actions layer', () => {
-  const i=ui.indexOf("if(k==='canteen'){\n      // Q3"),j=ui.indexOf('if(Rg)Rg.hidden=true;return;',i);
+  const i=ui.indexOf("if(k==='canteen'){"),j=ui.indexOf('if(Rg)Rg.hidden=true;return;',i);
   const block=ui.slice(i,j);
-  assert.match(block,/canteen-panel/);
+  assert.match(block,/canteenPanelHtml/);
   assert.match(block,/put\(L,/);
   assert.doesNotMatch(block,/put\(A, `<div class="st-pane">/);
-  assert.match(block,/keepCook/,'chosen cook/count survive a redraw');
+  assert.match(block,/bindWorkersPanel/,'worker role and recipient selections are stored in game state');
 });
 
-test('Q3 map workers are as tall as Yama; the crew-hierarchy scale is untouched', () => {
+test('map workers are 90% of Yama (Pae 10 Nov, was 100% in Q3); the crew-hierarchy scale is untouched', () => {
   const yama=mapActorHeight('yama');
-  assert.ok(Math.abs(mapWorkerHeight()*WORKER_MAP_FILL-yama)<1e-9);
+  assert.equal(WORKER_HEIGHT_VS_YAMA,.9);
+  assert.ok(Math.abs(mapWorkerHeight()*WORKER_MAP_FILL-yama*.9)<1e-9);
   assert.ok(mapWorkerHeight()<mapActorHeight('worker'),'smaller than the old 82px worker');
   assert.equal(CHARACTER_SCALE.worker,1);
 });

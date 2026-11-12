@@ -1,10 +1,10 @@
 import {repairTownTerrain} from './town-terrain-repair.js';
 // Zone 1 ground = the painted map img/map-zone1/v5 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
-// cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
+// cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview. (v7: same grid at 2x, see zone-skin.js)
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.38 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
-import {drawHellTerrain,prepareTownLighting} from './town-lighting.js?v=fire-v2';
+import {drawHellTerrain,prepareTownLighting,releaseTownLighting,townLightingBakedPixels,townLightingBakeStats} from './town-lighting.js?v=fire-v2';
 import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
 
 // Zone 1 constants stay exported (preload, tests); every function below reads the ACTIVE zone skin (zone-skin.js)
@@ -12,8 +12,10 @@ import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js
 export const TOWN_TERRAIN_DIR = ZONE_SKIN.th.terrain.dir;
 export const TOWN_TERRAIN_PREVIEW = ZONE_SKIN.th.terrain.preview;
 export const TOWN_TERRAIN_FULL_PX = ZONE_SKIN.th.terrain.fullPx;
-export const TOWN_TERRAIN_CHUNK_PX = 1024;
-export const TOWN_TERRAIN_COLS = 5, TOWN_TERRAIN_ROWS = 4;
+// Chunk size and grid come from the zone-1 ground set in zone-skin.js (ZONE1_GROUND_SET): v5 = 1024 px chunks of 4915x3277,
+// v7 = 2048 px chunks of 9830x6554. Both are a 5 x 4 grid, so nothing below is tied to one resolution.
+export const TOWN_TERRAIN_CHUNK_PX = ZONE_SKIN.th.terrain.chunk;
+export const TOWN_TERRAIN_COLS = Math.ceil(TOWN_TERRAIN_FULL_PX.w / TOWN_TERRAIN_CHUNK_PX), TOWN_TERRAIN_ROWS = Math.ceil(TOWN_TERRAIN_FULL_PX.h / TOWN_TERRAIN_CHUNK_PX);
 const grid = (t=activeTownSkin().terrain) => {
   const c = t.chunk || TOWN_TERRAIN_CHUNK_PX;
   return {chunk:c, cols:Math.ceil(t.fullPx.w/c), rows:Math.ceil(t.fullPx.h/c), full:t.fullPx,
@@ -40,6 +42,9 @@ const store = (zone=activeTownZone()) => {
   return st;
 };
 let loading = 0, frame = 0;
+// A chunk the camera is already waiting for (the sharp view is held back on the overview until every visible chunk is ready) is graded with a bigger slice
+// per frame than one that is only being prefetched.
+const bakeBudget = () => store().urgent ? 10 : 4;
 export function preloadTownTerrainPreview(timeoutMs=30000,zone=activeTownZone()) {
   const st = store(zone), url = (townSkinOf(zone)||ZONE_SKIN.th).terrain.preview, repairs = !!(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs;
   if(st.preview?.ready)return Promise.resolve(st.preview.image);
@@ -86,7 +91,7 @@ function request(row,col) {
       const ready=(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs?await repairTownTerrain(image,{row,col}):image;
       // LOAD-01b: grade the chunk in small slices before it counts as ready, so the first drawn frame never pays for it.
       const r=townChunkRect(row,col,zone);
-      await prepareTownLighting(ready,[r.x,r.y,r.w,r.h]);
+      await prepareTownLighting(ready,[r.x,r.y,r.w,r.h],bakeBudget);
       if(!current())return;
       done(true,ready);
     } catch {done(false);}
@@ -95,14 +100,71 @@ function request(row,col) {
   image.src = townChunkUrl(row,col,zone)+(c.failures?`?recover=${Date.now()}`:'');
   return c;
 }
+/** FLUID-SHADER: draw the part of the graded ground (grade + detail + glow, exactly what the camera shows) inside `rect` (world units) onto `ctx`,
+ *  whose transform maps world -> its pixels.  Only chunks that are ALREADY decoded are used (nothing is requested, no camera state is touched);
+ *  returns false, drawing nothing, when any chunk the rectangle needs is not ready yet. */
+export function drawTownGroundRectIfReady(ctx, rect, time=0) {
+  const G = grid(), st = store(), need = [];
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
+    const r = townChunkRect(row,col);
+    if (r.x > rect[0]+rect[2] || r.x + r.w < rect[0] || r.y > rect[1]+rect[3] || r.y + r.h < rect[1]) continue;
+    const c = st.chunks.get(row+','+col);
+    if (!c || c.state !== 'ready' || !c.image) return false;
+    need.push({row,col,r,c});
+  }
+  if (!need.length) return false;
+  const m = ctx.getTransform(), eps = 1/Math.max(m.a, 1e-6);
+  for (const {row,col,r,c} of need) drawHellTerrain(ctx,c.image,time,false, r.x, r.y, r.w + (col < G.cols ? eps : 0), r.h + (row < G.rows ? eps : 0));
+  return true;
+}
+/** FLUID-SHADER: the ground inside `rect` for a texture the shader keeps.  'detail' = the graded chunks (sharp), 'preview' = the 1536x1024 painting (only until
+ *  the chunks are decoded, and always on the far overview), false = nothing is ready yet.  Draws nothing when false.  Never recolours. */
+export function drawTownGroundRectAny(ctx, rect, time=0, mode='any') {   // mode: 'any' | 'detail' (chunks only) | 'preview' (painting only)
+  if (mode !== 'preview' && drawTownGroundRectIfReady(ctx, rect, time)) return 'detail';
+  if (mode === 'detail') return false;
+  const pv = store().preview?.ready ? store().preview.image : null;
+  if (!pv) return false;
+  ctx.save(); ctx.beginPath(); ctx.rect(rect[0], rect[1], rect[2], rect[3]); ctx.clip();
+  drawHellTerrain(ctx, pv, time, false, 0, 0, TOWN_SIZE.w, TOWN_SIZE.h);
+  ctx.restore();
+  return 'preview';
+}
+/** FLUID-SHADER: ask for the chunks a rectangle needs (the camera only asks for the ones it shows).  Cheap when they are already there. */
+export function requestTownGroundRect(rect) {
+  const G = grid();
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
+    const r = townChunkRect(row,col);
+    if (r.x > rect[0]+rect[2] || r.x + r.w < rect[0] || r.y > rect[1]+rect[3] || r.y + r.h < rect[1]) continue;
+    const c = store().chunks.get(row+','+col);
+    if (!c || c.state === 'idle' || c.state === 'error') request(row,col);
+  }
+}
 /** Test / tool hook: how many chunks are decoded or on their way. */
 export const townTerrainViewStats = () => ({...store().view});
 const recordView=(ctx,view)=>{if(ctx.canvas.width>=300)store().view=view;}; // minimap must not overwrite camera diagnostics
 export const townTerrainStats = () => {
   const s = {idle:0, loading:0, ready:0, error:0};
   for (const c of store().chunks.values()) s[c.state]++;
-  return {...s, preview:!!store().preview?.ready};
+  const st = store();
+  return {...s, bake:townLightingBakeStats(), preview:!!st.preview?.ready, evicted:st.evicted||0, cap:st.cap||0, bakedMB:Math.round([...st.chunks.values()].reduce((n,c)=>n+(c.state==='ready'&&c.image?townLightingBakedPixels(c.image)*4:0),0)/1048576)};
 };
+/** FX3: memory the graded chunks may hold (bytes).  A 2048 px chunk keeps one 16.8 MB canvas (+ a cropped glow layer on lava chunks), so 120 MB = 7 chunks; the 1024 px tiles of v7 (4.2 MB) get 28; v5 never reaches it. */
+export const TERRAIN_MEMORY_BUDGET = 120e6;
+const EVICT_AFTER_FRAMES = 30;   // a chunk is only dropped after it has been off screen this long (a quick step back never reloads)
+export const townTerrainCap = G => Math.floor(TERRAIN_MEMORY_BUDGET / (G.chunk * G.chunk * 4));
+function release(c) { if (c.image) releaseTownLighting(c.image); c.image = null; c.state = 'idle'; c.generation++; }
+/** Drop least-recently-drawn chunks beyond the cap.  Visible chunks are never dropped (a very large window may hold more than the cap). */
+function evictFar(G, visibleKeys) {
+  const st = store(), cap = Math.max(townTerrainCap(G), visibleKeys.size + 1);
+  const ready = [...st.chunks.entries()].filter(([, c]) => c.state === 'ready');
+  let over = ready.length - cap;
+  if (over <= 0) return;
+  for (const [key, c] of ready.sort((a, b) => a[1].at - b[1].at)) {
+    if (over <= 0) break;
+    if (visibleKeys.has(key) || frame - c.at < EVICT_AFTER_FRAMES) continue;
+    release(c); st.evicted = (st.evicted || 0) + 1; over--;
+  }
+}
 
 /** Draw the visible part of the painted ground. `resolve` and `time` are accepted for the old call sites. */
 export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
@@ -137,7 +199,8 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   // resolutions used to expose 1024px rectangles under buildings and trees while streaming.
   // The preview is a complete clean painting, so keep it until every visible chunk is ready,
   // then switch the whole camera footprint to sharp art at once.
-  if(!visible.every(v=>v.c.state==='ready')) {
+  store().urgent = !visible.every(v=>v.c.state==='ready');
+  if(store().urgent) {
     recordView(ctx,{mode:'loading-detail',visible:visible.length});
     if(pv)drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
     ctx.restore();
@@ -150,13 +213,41 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
     c.at = frame;
     drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < G.cols ? eps : 0), r.h + (row < G.rows ? eps : 0));
   }
-  // Prefetch the ring around the camera so walking never reveals a blurry patch.
-  const padX = 400, padY = 300;
+  // Prefetch ahead of the walk: the ring around the camera is shifted toward where the camera is going (smoothed motion), nearest chunk first, so the
+  // next chunk is decoded + graded (in 4 ms slices) before it enters the screen.  Nothing is requested once the memory cap is reached.
+  const st = store(), cx = (vx0 + vx1) / 2, cy = (vy0 + vy1) / 2;
+  if (st.lastCam) { st.trend.x = st.trend.x * .9 + (cx - st.lastCam.x) * .1; st.trend.y = st.trend.y * .9 + (cy - st.lastCam.y) * .1; }
+  else st.trend = {x:0, y:0};
+  st.lastCam = {x:cx, y:cy};
+  const leadX = Math.max(-900, Math.min(900, st.trend.x * 180)), leadY = Math.max(-700, Math.min(700, st.trend.y * 180));
+  const padX = 400, padY = 300, ring = [];
   for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
     const r = townChunkRect(row,col);
-    if (r.x > vx1+padX || r.x + r.w < vx0-padX || r.y > vy1+padY || r.y + r.h < vy0-padY) continue;
-    if (loading >= MAX_LOADING) break;
+    if (r.x > vx1+padX+Math.max(0,leadX) || r.x + r.w < vx0-padX+Math.min(0,leadX) || r.y > vy1+padY+Math.max(0,leadY) || r.y + r.h < vy0-padY+Math.min(0,leadY)) continue;
+    ring.push({row,col,d:Math.hypot(r.x + r.w/2 - (cx + leadX), r.y + r.h/2 - (cy + leadY))});
+  }
+  st.cap = Math.max(townTerrainCap(G), visible.length + 1);
+  const inMemory = () => [...st.chunks.values()].filter(c => c.state === 'ready' || c.state === 'loading').length;
+  const visibleKeys = new Set(visible.map(v => v.row+','+v.col));
+  let room = Math.max(0, st.cap - visible.length);   // only this many ring tiles are wanted (and protected from eviction): the nearest ones along the walk
+  for (const {row,col,d} of ring.sort((a, b) => a.d - b.d)) {
+    if (room-- <= 0) break;
+    const c = st.chunks.get(row+','+col);
+    if (c && c.state !== 'idle' && c.state !== 'error') { if (c.state === 'ready') c.at = Math.max(c.at, frame - EVICT_AFTER_FRAMES + 1); continue; }
+    if (loading >= MAX_LOADING) continue;
+    if (inMemory() >= st.cap) {
+      // at the cap: drop the ready, off-screen chunk that is farthest from where the camera is heading - if it is farther than this one
+      let victim = null, vd = -1;
+      for (const [key, v] of st.chunks) {
+        if (v.state !== 'ready' || visibleKeys.has(key)) continue;
+        const [vr, vc] = key.split(',').map(Number), vr_ = townChunkRect(vr, vc), dd = Math.hypot(vr_.x + vr_.w/2 - (cx + leadX), vr_.y + vr_.h/2 - (cy + leadY));
+        if (dd > vd) { vd = dd; victim = v; }
+      }
+      if (!victim || vd <= d) break;
+      release(victim); st.evicted = (st.evicted || 0) + 1;
+    }
     request(row,col);
   }
+  evictFar(G, visibleKeys);
   ctx.restore();
 }

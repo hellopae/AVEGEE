@@ -99,6 +99,11 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 
 /* ---------- ชั้นซ้อนบนฉาก: บับเบิลคำพูด + เมนูพลัง ----------
    ทุกตำแหน่งคิดเป็น % ของภาพฉาก จึงเลื่อนตามขนาดจอเองโดยไม่ต้องคำนวณใหม่ */
+/* FB-UI 7: town-zone vignette = one CSS radial gradient pinned to the map box (same stops as art.js: clear to .34 of the height, .52 dark at 1.05; ui.js gives it the canvas's rectangle and --vig-h whenever that changes) -
+   composited by the GPU, nothing is repainted per frame (a full-screen canvas blit cost 6-10 fps on the walk test). */
+#map-vignette{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;display:none;
+  background:radial-gradient(circle at 50% 50%,rgba(0,0,0,0) calc(var(--vig-h,900px)*.34),rgba(8,3,6,.52) calc(var(--vig-h,900px)*1.05))}
+.stage.town-view #map-vignette{display:block}
 #ov{position:absolute;inset:0;pointer-events:none;font-size:var(--text-xs)}
 #ov>*{position:absolute}
 
@@ -610,9 +615,13 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   gap:clamp(10px,2vh,18px);text-align:right;padding-right:clamp(30px,5vw,50px)}
 #title .agewarn,#title .disclaimer{margin-top:auto}
 #title .disclaimer{margin-top:2px}
+/* FB-UI 1: the START button sits on the logo's centre line (was hugging the right edge); the two notices follow it */
+#title .title-menu{align-items:center;text-align:center}
+#title .agewarn{flex-direction:row;justify-content:center}
+#title .disclaimer{text-align:center}
 
 /* HOME-SLOTS: one launch action, followed by three isolated save cards. */
-#title #t-start{min-height:48px;justify-content:center;align-self:flex-end;width:76%;padding:8px 16px;border:1px solid #bd934c;border-radius:12px;background:linear-gradient(180deg,rgba(67,35,24,.94),rgba(23,11,13,.96));box-shadow:0 6px 22px #0008}
+#title #t-start{min-height:48px;justify-content:center;align-self:center;width:76%;padding:8px 16px;border:1px solid #bd934c;border-radius:12px;background:linear-gradient(180deg,rgba(67,35,24,.94),rgba(23,11,13,.96));box-shadow:0 6px 22px #0008}
 #title #t-start .label{align-items:center}#title #t-start b{font-size:clamp(1.15rem,2.3vw,1.65rem);letter-spacing:.10em}
 #title #t-start:focus-visible{outline:3px solid #ffe5ab;outline-offset:5px}
 dialog.save-slots-modal{width:min(720px,94vw);max-height:90dvh;padding:clamp(14px,3vw,26px);border:2px solid #b98e49;border-radius:18px;background:linear-gradient(145deg,#281714,#100c12);box-shadow:0 24px 90px #000b;overflow:auto}
@@ -762,6 +771,16 @@ dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
   border:2px solid #e8c67a;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.5)}
 .settings-row-body input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);border:2px solid #e8c67a;cursor:pointer}
+/* GFX-1110: graphics mode, two pill buttons in the existing gold/dark style */
+.settings-gfx{margin:6px 0 0}
+.settings-gfx-label{display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:8px}
+.settings-gfx-options{display:flex;gap:8px}
+.settings-gfx-opt{all:unset;box-sizing:border-box;flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;
+  padding:6px 10px;border:2px solid #6b5230;border-radius:var(--radius);background:#120a0e;color:var(--muted-foreground);font-size:var(--text-sm);font-weight:600}
+.settings-gfx-opt:hover:not(:disabled){border-color:#e8c67a;background:#2a1620}
+.settings-gfx-opt[aria-checked="true"],.settings-gfx-opt[aria-checked="true"]:hover:not(:disabled){border-color:#e8c67a;background:linear-gradient(180deg,#f3ce80,#c8933f);color:#2a1608}
+.settings-gfx-opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.settings-gfx-hint{min-height:1.6em;margin:6px 0 var(--space-3)}
 .settings-lang{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 var(--space-4)}
 .settings-lang label{font-size:var(--text-sm);font-weight:600}
 .lang-toggle{all:unset;cursor:pointer;display:block;min-height:40px}
@@ -926,6 +945,32 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
 @media(prefers-reduced-motion:reduce){.action-cutscene,.action-cutscene img,.action-cutscene:before,.action-cutscene:after,.action-cutscene .cutscene-title,.action-cutscene .cutscene-sweep{animation:none}.action-cutscene .cutscene-fx{display:none}.action-cutscene .cutscene-title{opacity:1;transform:none}}
 .action-cutscene.cutscene-reduced,.action-cutscene.cutscene-reduced img,.action-cutscene.cutscene-reduced:before,.action-cutscene.cutscene-reduced:after,.action-cutscene.cutscene-reduced .cutscene-title,.action-cutscene.cutscene-reduced .cutscene-sweep{animation:none}
 .action-cutscene.cutscene-reduced .cutscene-fx,.action-cutscene.cutscene-reduced:before,.action-cutscene.cutscene-reduced .cutscene-sweep{display:none}.action-cutscene.cutscene-reduced .cutscene-title{opacity:1;transform:none}
+/* BATTLE-FX (10 Nov): the boss's cutscene move — screen goes dark with a vignette, speed lines rush in from the edges, the picture shakes and a flash lands
+   on the hit; the move name is big and punches in.  Pure CSS (opacity / transform / translate only).  .calm = camera effects off or reduced motion: dark + big
+   name stay, shake / speed lines / flashes are dropped. */
+.action-cutscene.boss-cut{--cut-a:#ff4a5a;--cut-b:#ffd9a0;background:#050104}
+.action-cutscene.boss-cut .cut-dim,.action-cutscene.boss-cut .cut-speed,.action-cutscene.boss-cut .cut-flash{position:absolute;pointer-events:none}
+.action-cutscene.boss-cut .cut-dim{inset:0;z-index:3;background:radial-gradient(ellipse at 50% 55%,rgba(0,0,0,0) 26%,rgba(12,0,6,.55) 62%,rgba(6,0,3,.92) 100%);animation:bossDim 1.3s ease both}
+.action-cutscene.boss-cut .cut-speed{inset:-25%;z-index:3;mix-blend-mode:screen;opacity:0;
+  background:repeating-conic-gradient(from 0deg at 50% 54%,rgba(255,255,255,0) 0 3deg,rgba(255,232,214,.7) 3.3deg 3.7deg,rgba(255,255,255,0) 4deg 7.5deg,rgba(255,200,190,.4) 8.3deg 8.5deg,rgba(255,255,255,0) 8.8deg 13deg);
+  -webkit-mask-image:radial-gradient(circle at 50% 54%,transparent 24%,#000 64%);mask-image:radial-gradient(circle at 50% 54%,transparent 24%,#000 64%);animation:bossSpeed 1.3s cubic-bezier(.2,.7,.2,1) both}
+.action-cutscene.boss-cut .cut-flash{inset:0;z-index:6;background:#fff3ec;opacity:0;animation:bossFlash 1.3s linear both}
+.action-cutscene.boss-cut img{animation:actionRushEnemy 1.3s cubic-bezier(.16,.8,.25,1) both,bossShake 1.3s linear both}
+.action-cutscene.boss-cut .cutscene-title{left:50%;right:auto;bottom:clamp(26px,13%,110px);width:max-content;max-width:94%;padding:6px 26px 10px;text-align:center;border-left:0;
+  background:linear-gradient(90deg,transparent,rgba(24,0,8,.82) 18%,rgba(24,0,8,.82) 82%,transparent);font-size:clamp(34px,10.5vw,86px);line-height:1;letter-spacing:.02em;
+  color:#fff1d6;-webkit-text-stroke:2px #2a0510;paint-order:stroke fill;text-shadow:0 0 22px var(--cut-a),0 4px 0 #1a0309;
+  transform:translateX(-50%);animation:bossTitle 1.3s cubic-bezier(.2,.8,.2,1) both}
+.action-cutscene.boss-cut .cutscene-title small{margin-bottom:6px;font-size:clamp(13px,3.6vw,22px);color:#ffd9a0;-webkit-text-stroke:0;text-shadow:0 2px 0 #1a0309}
+@keyframes bossDim{0%{opacity:0}10%,86%{opacity:1}100%{opacity:0}}
+@keyframes bossSpeed{0%{opacity:0;transform:scale(1.35)}8%{opacity:.95}58%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(.94)}}
+@keyframes bossFlash{0%{opacity:0}3%{opacity:.85}12%{opacity:0}44%{opacity:0}48%{opacity:.7}60%{opacity:0}100%{opacity:0}}
+@keyframes bossShake{0%,100%{translate:0 0}5%{translate:-10px 6px}10%{translate:9px -6px}15%{translate:-6px 4px}20%{translate:3px -2px}25%,44%{translate:0 0}
+  47%{translate:-16px 9px}52%{translate:14px -9px}58%{translate:-9px 5px}64%{translate:5px -3px}72%{translate:0 0}}
+@keyframes bossTitle{0%,8%{opacity:0;transform:translateX(-50%) scale(2.3)}20%{opacity:1;transform:translateX(-50%) scale(.95)}27%,84%{opacity:1;transform:translateX(-50%) scale(1)}100%{opacity:0;transform:translateX(-50%) scale(1.05)}}
+.action-cutscene.boss-cut.calm .cut-speed,.action-cutscene.boss-cut.calm .cut-flash{display:none}
+.action-cutscene.boss-cut.calm img{animation:actionRushEnemy 1.3s cubic-bezier(.16,.8,.25,1) both}
+@media(max-width:520px){.action-cutscene.boss-cut .cutscene-title{left:50%;bottom:clamp(26px,13%,90px);width:max-content;max-width:96%;padding:6px 14px 9px;font-size:clamp(30px,10.5vw,52px)}}
+@media(prefers-reduced-motion:reduce){.action-cutscene.boss-cut .cut-dim,.action-cutscene.boss-cut .cut-speed,.action-cutscene.boss-cut .cut-flash,.action-cutscene.boss-cut img{animation:none}.action-cutscene.boss-cut .cut-speed,.action-cutscene.boss-cut .cut-flash{display:none}.action-cutscene.boss-cut .cutscene-title{animation:none;opacity:1;transform:translateX(-50%)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
   border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
@@ -2125,15 +2170,31 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .quest-tracker-heading{display:flex;justify-content:space-between;gap:8px;color:#efd29c}.quest-tracker button{display:block;width:100%;padding:5px 0;background:transparent;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer}.quest-tracker button strong,.quest-tracker button span,.quest-tracker button small{display:block}.quest-tracker button strong{color:#ffe2a4}.quest-tracker button small{color:#c7b298}.quest-tracker.is-compact [data-tracker-entry]>span,.quest-tracker.is-compact [data-tracker-entry]>small{display:none}.quest-tracker [data-tracker-journal]{border-top:1px solid #b98e4944;color:#eac77c}
 .quest-help-tabs{display:flex;gap:8px;position:sticky;top:0;background:#21131b;z-index:2;padding:8px 0;margin-bottom:16px}.quest-help-tabs button{min-height:44px;padding:8px 18px}.quest-help-tabs [aria-selected="true"]{border-color:#efd29c;color:#ffe2a4;background:#513826}
 .quest-journal-card{padding:14px;border:1px solid #b98e4955;border-radius:10px;background:#2b1b23;margin:10px 0;overflow-wrap:anywhere}.quest-journal-card h3{margin:0 0 8px;color:#f4d39b}.quest-journal-card p{line-height:1.6}.quest-owner-button{margin-top:8px;max-width:100%;white-space:normal}.quest-accepted{padding:12px;border:1px solid #7ab58c;border-radius:8px;color:#a7e2b5;background:#20382a}
+/* QUEST-REWARDS: "ได้รับ:" receipt in the quest window · reward line in the journal · fight scene text */
+.quest-receipt{margin:12px 0;padding:10px;border:1px solid #b98e49;border-radius:10px;background:#251823}.quest-receipt h3{margin:0 0 8px;color:#f4d39b;font-size:15px}
+.quest-receipt .reward-list{display:grid;gap:7px}.quest-receipt .reward-row{min-width:0;margin:0}.quest-receipt .reward-row small{display:block;color:#dfd1c0;font-size:12px}
+.quest-receipt.celebrate .reward-row{animation:questRewardPop .42s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i,0)*110ms)}
+.quest-receipt.celebrate .reward-row.power{animation-name:questRewardPop,questRewardGlow;animation-duration:.42s,1.6s;animation-delay:calc(var(--i,0)*110ms),calc(var(--i,0)*110ms + .4s);animation-iteration-count:1,2}
+@keyframes questRewardPop{from{opacity:0;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes questRewardGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 14px 2px #e8c870aa}}
+.quest-reward-line{font-size:13px;color:#e8c98f}.quest-fight-scene p{line-height:1.7;margin:.5em 0}.quest-fight-standby{padding:8px 10px;border-left:3px solid #8a7ab5;color:#cfc2e6;font-size:13px}
+@media(prefers-reduced-motion:reduce){.quest-receipt.celebrate .reward-row{animation:none}}
+/* FB-UI 6: handbook tab bar is flush with the top edge of the box (solid, full width) so no text shows above it; cards keep their own height and pack into columns */
+dialog.help-modal[open]{--help-pad-top:34px;--help-pad-x:42px}
+dialog.help-modal[open] .quest-help-tabs{top:calc(-1*var(--help-pad-top));margin:calc(-1*var(--help-pad-top)) calc(-1*var(--help-pad-x)) 16px;padding:14px var(--help-pad-x) 10px;background:#21131b;border-bottom:1px solid #b98e4955;position:sticky;z-index:5}
+dialog.help-modal[open] .guide-card-grid{display:block;column-width:280px;column-gap:16px}
+dialog.help-modal[open] .guide-card-grid>.guide-card{break-inside:avoid;margin:0 0 16px;display:block}
+dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
+@media(max-width:600px){dialog.help-modal[open]{--help-pad-top:65px;--help-pad-x:20px}dialog.help-modal[open] .quest-help-tabs{position:sticky;padding-right:70px}}
 @media(max-width:600px){.quest-tracker{font-size:10px;padding:7px;max-height:145px}.quest-tracker button span{max-height:3em;overflow:hidden}.quest-help-tabs{position:static}.quest-help-tabs button{flex:1;padding:8px}.quest-journal-card{padding:10px}}
 
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=20261029-c1-v2-q3">
-<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3">
+<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3-m1112">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4-map-ui-review"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
-<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261031-q3"><link rel="stylesheet" href="src/battle-result.css?v=20261029-ui-jw"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
+<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots"><link rel="stylesheet" href="src/battle-result.css?v=20261029-ui-jw"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2207,6 +2268,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     <button id="town-action" class="town-action" hidden></button>
     <div class="scene-box">
       <canvas id="cv" width="1527" height="704"></canvas>
+      <div id="map-vignette" aria-hidden="true"></div>
       <div id="ov"></div>
       <!-- ปุ่มลอยทับฉาก — บนมือถือไม่มีคีย์บอร์ด กดเว้นวรรคไม่ได้เลย (เจ้าของเจอ 8 ก.ย. 2569) -->
       <div class="fabs">
@@ -2337,20 +2399,30 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <script type="importmap">
 {
   "imports": {
+    "./src/quest-fights.js": "./src/quest-fights.js?v=20261112-m1112",
+    "./src/quest-rewards.js": "./src/quest-rewards.js?v=20261112-m1112",
+    "./src/talk-lines.js": "./src/talk-lines.js?v=20261112-m1112",
+    "./src/town-fluid-fx.js?v=v5fx": "./src/town-fluid-fx.js?v=20261112-fluidfull2",
+    "./src/town-fluid-fx.js": "./src/town-fluid-fx.js?v=20261112-fluidfull2",
+    "./src/fluid-shader.js": "./src/fluid-shader.js?v=20261112-fluidfull2",
+    "./src/town-ground-sprites.js": "./src/town-ground-sprites.js?v=20261112-z1v7",
+    "./src/construction-sheets.js": "./src/construction-sheets.js?v=20261105-z1v5-fx4",
+    "./src/town-grade.js": "./src/town-grade.js?v=20261105-z1v5-fx4",
+    "./src/canteen-art-layout.js": "./src/canteen-art-layout.js?v=20261105-z1v5-fx4",
     "./src/z4-poles.js?v=z4-poles": "./src/z4-poles.js?v=20261103-electric-polish",
     "./src/z4-poles.js": "./src/z4-poles.js?v=20261103-electric-polish",
     "./src/electric-fx.js": "./src/electric-fx.js?v=20261103-electric-polish",
     "./src/z4-pole-art.js": "./src/z4-pole-art.js?v=20261103-electric-polish",
     "./src/enemy-walk-assets.js": "./src/enemy-walk-assets.js?v=20261101-art-mob-walk-th-asia-west-cyber",
     "./src/deva-map.js": "./src/deva-map.js?v=20261030-z4-town-a",
-    "./src/town-cyberhell-layout.js": "./src/town-cyberhell-layout.js?v=20261101-tweak-dais-navigation",
+    "./src/town-cyberhell-layout.js": "./src/town-cyberhell-layout.js?v=20261101-tweak-dais-navigation-fbui",
     "./src/route-occlusion.js": "./src/route-occlusion.js?v=20261101-b23-redraw-b34-redraw",
-    "./src/character-scale.js": "./src/character-scale.js?v=20261031-q3",
+    "./src/character-scale.js": "./src/character-scale.js?v=20261110-wscale",
     "./src/worker-escort-spacing.js": "./src/worker-escort-spacing.js?v=20261025-a4",
     "./src/escort.js": "./src/escort.js?v=20261025-a4",
     "./src/tea-staff-rest.js": "./src/tea-staff-rest.js?v=20261028-walk-to-seat-grace-f-recovery-120",
-    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3",
-    "./src/zone-skin.js": "./src/zone-skin.js?v=20261030-z4-town-a",
+    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3-m1112",
+    "./src/zone-skin.js": "./src/zone-skin.js?v=20261112-z1v7r",
     "./src/dungeon-navigation.js": "./src/dungeon-navigation.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia.js": "./src/frontier-walkmask-th-asia.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia-b12.js": "./src/frontier-walkmask-th-asia-b12.js?v=20261030-map-b12-v3",
@@ -2362,22 +2434,22 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-west-trees.js": "./src/town-west-trees.js?v=20261024-z3-west",
     "./src/town-owner-walkmask-west.js": "./src/town-owner-walkmask-west.js?v=m2-z3-west-20261027",
     "./src/town-owner-walkmask-cyberhell.js": "./src/town-owner-walkmask-cyberhell.js?v=20261030-z4-town-a",
-    "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a",
+    "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a-m1112",
     "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1",
-    "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8",
+    "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8-fbui",
     "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles",
-    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261103-map-detail-cloud",
+    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261112-fluidfull2",
     "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
     "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-m2-boss-justice-workers-v1",
-    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261030-z4-town-a-art-dais2-map-ui-review-dais-navigation",
+    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261030-z4-town-a-art-dais2-map-ui-review-dais-navigation-fbui",
     "./src/yama-fit.js": "./src/yama-fit.js?v=20261025-a7",
     "./src/yama-animation.js?v=20261015-live-v1": "./src/yama-animation.js?v=20261015-live-v1-a7",
     "./src/town-startup.js": "./src/town-startup.js?v=20261027-m2-startup-ready-food-art-painted-pole",
-    "./src/art.js": "./src/art.js?v=20261101-tweak-art-canteen-sentence-time",
-    "./src/i18n.js": "./src/i18n.js?v=20261031-q2-hist-sentence-time",
+    "./src/art.js": "./src/art.js?v=20261110-perf-fbui",
+    "./src/i18n.js": "./src/i18n.js?v=20261110-questrewards",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
-    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f",
-    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
+    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
+    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
     "./src/pot-souls.js": "./src/pot-souls.js?v=20261022-p6",
     "./src/minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
@@ -2386,21 +2458,21 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/town-dais-geometry.js": "./src/town-dais-geometry.js?v=20261102-dais-navigation",
-    "./src/town-layout.js": "./src/town-layout.js?v=20261030-z4-town-a-art-dais2-map-ui-review-dais-navigation",
+    "./src/town-layout.js": "./src/town-layout.js?v=20261030-z4-town-a-art-dais2-map-ui-review-dais-navigation-fbui",
     "./src/battle-facing.js": "./src/battle-facing.js?v=20261029-art-atk2",
     "./src/battle-facing.js?v=i1b-westhit-skillatk-j1": "./src/battle-facing.js?v=20261029-art-atk2",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/cyberhell-terrain.js": "./src/cyberhell-terrain.js?v=20261030-z4-town-a",
-    "./src/scene.js": "./src/scene.js?v=20261103-map-detail-cloud",
+    "./src/scene.js": "./src/scene.js?v=20261110-gfx",
     "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-flames-ground-r2-p5b",
-    "./src/town-terrain.js": "./src/town-terrain.js?v=20261103-map-detail-cloud",
+    "./src/town-terrain.js": "./src/town-terrain.js?v=20261112-fluidfull2",
     "./src/proximity.js": "./src/proximity.js?v=20261030-e1-v2",
-    "./src/town-shade.js": "./src/town-shade.js?v=20261030-z4-town-a",
-    "./src/terrain-detail.js": "./src/terrain-detail.js?v=20261103-map-detail-cloud",
-    "./src/town-lighting.js": "./src/town-lighting.js?v=20261103-map-detail-cloud",
+    "./src/town-shade.js": "./src/town-shade.js?v=20261110-perf",
+    "./src/terrain-detail.js": "./src/terrain-detail.js?v=20261110-perf",
+    "./src/town-lighting.js": "./src/town-lighting.js?v=20261110-perf",
     "./src/battle-formation.js": "./src/battle-formation.js?v=20261021-town-repairs",
     "./src/town-scenery.js": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
-    "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261027-m2-biome-weather",
+    "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/interrogation.js": "./src/interrogation.js?v=20261022-p2",
     "./src/interrogation-ui.js": "./src/interrogation-ui.js?v=20261029-s1-soul-poses",
     "./src/sentencing-guide.js": "./src/sentencing-guide.js?v=20261022-p2-p7-p8-sentence-time",
@@ -2408,33 +2480,34 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/soul-poses.js": "./src/soul-poses.js?v=20261030-e1-v2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261031-q2-hist-home-slots-sentence-time-recovery-120-w4-foundation",
-    "./src/preload.js": "./src/preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f",
-    "./src/asset-preload.js": "./src/asset-preload.js?v=20261029-r2-battle-fx-s1-soul-poses-art-atk2",
-    "./src/battle-result.js": "./src/battle-result.js?v=20261028-target-weapon",
-    "./src/sfx.js": "./src/sfx.js?v=20261029-clean-404",
-    "./src/ui.js": "./src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food-quest-owner-w4-foundation-map-ui-review-actor-review",
-    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261029-r2-battle-fx-s1-soul-poses-art-atk2",
+    "./src/game.js": "./src/game.js?v=20261110-questrewards",
+    "./src/preload.js": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
+    "./src/asset-preload.js": "./src/asset-preload.js?v=20261105-z1v5-fx4",
+    "./src/battle-result.js": "./src/battle-result.js?v=20261110-questrewards",
+    "./src/sfx.js": "./src/sfx.js?v=20261110-battlefx",
+    "./src/graphics-setting.js": "./src/graphics-setting.js?v=20261110-gfx",
+    "./src/ui.js": "./src/ui.js?v=20261110-questrewards",
+    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261031-q2-hist-home-slots-sentence-time-recovery-120-w4-foundation",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261103-map-detail-cloud",
-    "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261027-m2-biome-weather",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-questrewards",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-gfx",
+    "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
-    "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261030-z4-town-a",
-    "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261103-map-detail-cloud",
+    "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261110-perf",
+    "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261110-perf",
     "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261021-town-repairs",
     "./src/frontier-view-metrics.js": "./src/frontier-view-metrics.js?v=20261021-worker-supplies-o1-r3-scale-zone-atmosphere",
     "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere",
     "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere",
-    "./src/data.js": "./src/data.js?v=20261031-q3-w4-foundation-dais-navigation",
-    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261031-q3-w4-foundation-dais-navigation",
+    "./src/data.js": "./src/data.js?v=20261110-battlefx",
+    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261110-battlefx",
     "./src/cases.js": "./src/cases.js?v=20261030-e1-v2",
     "./src/cases-asia.js": "./src/cases-asia.js?v=n3b",
     "./src/battle-dash.js": "./src/battle-dash.js?v=20261101-tweak",
-    "./src/battle-turns.js": "./src/battle-turns.js?v=20261029-c1-v2",
+    "./src/battle-turns.js": "./src/battle-turns.js?v=20261110-questrewards",
     "./src/battle-background.js": "./src/battle-background.js?v=20261016-boss-justice-workers-v1",
     "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261020-m2-frontier-scale",
-    "./src/frontier.js": "./src/frontier.js?v=20261031-q5-fx2",
+    "./src/frontier.js": "./src/frontier.js?v=20261110-battlefx",
     "./src/exit-marker.js": "./src/exit-marker.js?v=20261028-r1-map-ui",
     "./src/zone-introductions.js": "./src/zone-introductions.js?v=20261029-grace-f",
     "./src/zone-travel.js": "./src/zone-travel.js?v=20261021-m2-b5bz2-c6-interrogation-roles-wft",
@@ -2443,66 +2516,68 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/verdict-scene.js": "./src/verdict-scene.js?v=p9-a5",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1-w4-foundation",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading-w4-foundation",
-    "./src/workers.js": "./src/workers.js?v=20261029-ui-jw-p5b-p5c-p9",
-    "./src/worker-ui.js": "./src/worker-ui.js?v=20261029-food-a",
+    "./src/workers.js": "./src/workers.js?v=20261029-ui-jw-p5b-p5c-p9-fbui",
+    "./src/worker-ui.js": "./src/worker-ui.js?v=20261029-food-a-m1112",
     "./src/story.js": "./src/story.js?v=20261030-e1-v2-w4-foundation",
     "./src/weapons.js": "./src/weapons.js?v=20261028-target-weapon",
     "./src/weapons.js?v=i1b": "./src/weapons.js?v=20261028-target-weapon",
     "./src/final-event.js": "./src/final-event.js?v=20261030-z4-town-a",
-    "./src/map-ambient.js": "./src/map-ambient.js?v=20261103-cloud-organic-detail",
-    "./src/map-ambient.js?v=mapfx-k1d": "./src/map-ambient.js?v=20261103-cloud-organic-detail",
+    "./src/map-ambient.js": "./src/map-ambient.js?v=20261106-fx5",
+    "./src/map-ambient.js?v=mapfx-k1d": "./src/map-ambient.js?v=20261106-fx5",
     "./src/map-fx-h3.js?v=mapfx": "./src/map-fx-h3.js?v=20261029-weather-b",
     "./src/map-fx-h3.js": "./src/map-fx-h3.js?v=20261029-weather-b",
-    "./src/town-flow.js": "./src/town-flow.js?v=20261029-weather-b",
-    "./src/town-flow.js?v=n4": "./src/town-flow.js?v=20261029-weather-b",
+    "./src/town-flow.js": "./src/town-flow.js?v=20261105-z1v5-fx4",
+    "./src/town-flow.js?v=n4": "./src/town-flow.js?v=20261105-z1v5-fx4",
     "./src/battle-scale.js": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
     "./src/battle-fx-tex.js": "./src/battle-fx-tex.js?v=20261029-c1-v2",
     "./src/battle-fx-tex.js?v=m2": "./src/battle-fx-tex.js?v=20261029-c1-v2",
     "./src/frontier-ambient.js": "./src/frontier-ambient.js?v=20261031-q5-fx3-zone-atmosphere",
     "./src/training.js": "./src/training.js?v=20261029-c1-v2",
     "./src/training.js?v=minigame-review-20261011": "./src/training.js?v=20261029-c1-v2",
-    "./src/canteen.js": "./src/canteen.js?v=20261029-food-a-onboard-food",
+    "./src/canteen.js": "./src/canteen.js?v=20261029-food-a-onboard-food-m1112",
     "./src/ferry-geometry.js": "./src/ferry-geometry.js?v=20261030-z4-town-a",
     "./src/map-travel.js": "./src/map-travel.js?v=20261103-boat-deck-fit",
-    "./src/battle-fx.js": "./src/battle-fx.js?v=20261029-c1-v2-grace-f",
-    "./src/battle-fx.js?v=m2": "./src/battle-fx.js?v=20261029-c1-v2-grace-f",
-    "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261029-c1-v2",
-    "./src/battle-fx-map.js?v=m2": "./src/battle-fx-map.js?v=20261029-c1-v2",
+    "./src/battle-fx.js": "./src/battle-fx.js?v=20261110-battlefx",
+    "./src/battle-fx.js?v=m2": "./src/battle-fx.js?v=20261110-battlefx",
+    "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261110-questrewards",
+    "./src/battle-fx-map.js?v=m2": "./src/battle-fx-map.js?v=20261110-questrewards",
     "./src/cutscene-presentation.js": "./src/cutscene-presentation.js?v=20261029-r2-battle-fx",
     "./src/actor-recovery.js": "./src/actor-recovery.js?v=20261029-c1-v2-recovery-120",
     "./src/krata-control.js": "./src/krata-control.js?v=20261029-c1-v2",
     "./src/minigames/krata-qte.js": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
     "./src/progression.js": "./src/progression.js?v=20261029-c1-v2",
-    "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120",
-    "./src/combat-skills.js": "./src/combat-skills.js?v=20261030-balance2",
-    "./src/combat-skill-assets.js": "./src/combat-skill-assets.js?v=20261029-c1-v2",
-    "./src/encounter-balance.js": "./src/encounter-balance.js?v=20261030-balance2",
-    "./src/party-balance.js": "./src/party-balance.js?v=20261030-balance2",
+    "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120-m1112",
+    "./src/combat-skills.js": "./src/combat-skills.js?v=20261110-questrewards",
+    "./src/combat-skill-assets.js": "./src/combat-skill-assets.js?v=20261110-questrewards",
+    "./src/encounter-balance.js": "./src/encounter-balance.js?v=20261110-battlefx",
+    "./src/party-balance.js": "./src/party-balance.js?v=20261110-battlefx",
     "./src/breach-approach.js": "./src/breach-approach.js?v=20261030-e1-v2",
-    "./src/e1-content.js": "./src/e1-content.js?v=20261031-q2-hist-quest-owner",
+    "./src/e1-content.js": "./src/e1-content.js?v=20261110-questrewards",
     "./src/quest-cases.js": "./src/quest-cases.js?v=20261030-e1-v2",
     "./src/remorse.js": "./src/remorse.js?v=20261030-e1-v2-sentence-time",
-    "./src/side-quests.js": "./src/side-quests.js?v=20261030-z4-town-a-quest-owner",
+    "./src/side-quests.js": "./src/side-quests.js?v=20261110-questrewards",
     "./src/signal-arc.js": "./src/signal-arc.js?v=20261030-e1-v2",
-    "./src/talk.js": "./src/talk.js?v=20261030-e1-v2",
+    "./src/talk.js": "./src/talk.js?v=20261030-e1-v2-m1112",
     "./src/history-unlock.js": "./src/history-unlock.js?v=20261031-q2-hist",
     "./src/save-slots.js": "./src/save-slots.js?v=20261101-home-slots",
     "./src/save-slot-menu.js": "./src/save-slot-menu.js?v=20261102-save-visual",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261031-q2-hist-home-slots-sentence-time-recovery-120-w4-foundation",
-    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-questrewards",
+    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
     "./src/diagnosis.js": "./src/diagnosis.js?v=20261101-sentence-time",
-    "./src/scene-atmosphere.js": "./src/scene-atmosphere.js?v=20261101-zone-atmosphere-dialog-lava-cloud-rays",
+    "./src/battle-ko.js": "./src/battle-ko.js?v=20261106-fx5",
+    "./src/scene-fluid-fx.js": "./src/scene-fluid-fx.js?v=20261106-fx5",
+    "./src/scene-atmosphere.js": "./src/scene-atmosphere.js?v=20261106-fx5",
     "./src/snow-footprints.js": "./src/snow-footprints.js?v=20261101-zone-atmosphere",
     "./src/onboarding.js": "./src/onboarding.js?v=20261102-onboard-food",
     "./src/sun-shafts.js": "./src/sun-shafts.js?v=20261102-cloud-rays",
-    "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner",
-    "./src/quest-panels.js": "./src/quest-panels.js?v=20261102-quest-owner",
+    "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner-m1112",
+    "./src/quest-panels.js": "./src/quest-panels.js?v=20261110-questrewards",
     "./src/story-progression.js": "./src/story-progression.js?v=20261102-w4-foundation"
   }
 }
 </script>
-<script type="module" src="src/preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f"></script>
+<script type="module" src="src/preload.js?v=20261105-z1v5-fx3-tiles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food-quest-owner-w4-foundation-map-ui-review-actor-review"></script>
+<script type="module" src="src/ui.js?v=20261110-questrewards"></script>
 </body>
 </html>

@@ -20,14 +20,15 @@ test('J3 bag rejects other recipients; Nira food restores hunger only and medici
  }
  g.hp=1;g.inventory.health=1;assert.ok(g.useBag('health'));assert.ok(g.hp>1);
 });
-test('J3 fallen guard stays out of current battle, returns to map/reload at HP 1 without auto healing',()=>{
+test('J3 fallen guard (owner 6 Nov: like every teammate) lies down out of the current battle, rests at the tea house 120 s after it, then returns on duty',()=>{
  const g=game();g.startBattle({id:99,who:'test',deserved:4,resist:true});g.guard.morale=1;
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});
  const random=Math.random;Math.random=()=>.99;
  try { assert.ok(g.battleAct('atk')); } finally {Math.random=random;}
- assert.equal(g.guard.morale,1);assert.equal(g.enemyGuard(),null);assert.equal(g.guardActive(),false);assert.equal(g.battleAct('guard'),false);
- g.battle.over='win';g.endBattle();assert.equal(g.guard.morale,1);assert.ok(g.guardActive());
- const copy=reload(g);copy.updateActorRecovery(Date.now()+300000);assert.equal(copy.guard.morale,1);assert.ok(copy.guardActive());
+ assert.equal(g.guard.morale,0);assert.equal(g.enemyGuard(),null);assert.equal(g.guardActive(),false);assert.equal(g.battleAct('guard'),false);assert.ok(g.battle.fallen.includes(g.guard.id));
+ g.battle.over='win';g.endBattle();assert.ok(g.guard.teaRest?.recovery);assert.equal(g.guardActive(),false,'off the gate while he rests');
+ const until=g.guard.recoverUntil;assert.ok(until>Date.now()+110000);
+ const copy=reload(g);copy.updateActorRecovery(until-1);assert.equal(copy.guardActive(),false);copy.updateActorRecovery(until+1);assert.equal(copy.guard.morale,50);assert.ok(copy.guardActive());
 });
 test('J3 guard travels on map, rests exactly 120 s across saves, resumes original post and automatic combat slot',()=>{
  const g=game();tea(g);g.guard.morale=99;g.guard.at='patrol';g.guard.path=[[1,2]];g.guard.target=[1,2];
@@ -44,10 +45,10 @@ test('J3 guard travels on map, rests exactly 120 s across saves, resumes origina
  copy.startBattle({id:101,who:'after',deserved:4,resist:true});assert.equal(copy.enemyGuard(),copy.guard);
  const offline=reload(g);offline.updateActorRecovery(now+300000);assert.equal(offline.guard.morale,100);assert.equal(offline.guard.teaRest,null);
 });
-test('J3 UI exposes per actor bag-stock controls and current zone guard, without old bag or Nira bulk controls',()=>{
+test('J3 UI moves individual food/rest controls to team management and retains current-zone guard status',()=>{
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
  assert.doesNotMatch(ui,/data-bag-target|data-gift-nira|ส่งข้าวปั้นให้นิราแจกทีม/);
- assert.match(ui,/niraItemWidget\(c\) \+ guardRestWidget\(c\)/);assert.match(ui,/niraItemWidget\(g\.guard\)/);
- assert.match(ui,/g\.giveCrewItem\(b\.dataset\.niraItem, b\.dataset\.actorId\)/);
+ const team=readFileSync(new URL('../src/team-hud.js',import.meta.url),'utf8');assert.match(team,/data-team-feed/);assert.match(team,/data-team-rest/);assert.doesNotMatch(ui,/niraItemWidget/);
+ assert.match(ui,/g\.feedActor\(b\.dataset\.teamFeed\)/);
  assert.match(ui,/rest\.until-Date\.now\(\)/);assert.match(ui,/พักฟื้น — ไม่ร่วมต่อสู้/);
 });

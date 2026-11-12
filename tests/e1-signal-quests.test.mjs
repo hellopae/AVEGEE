@@ -11,12 +11,14 @@ import {SIGNAL_STORIES,CHARACTER_HISTORY,CROSS_ZONE_LINES} from '../src/e1-conte
 import {breachApproachActors} from '../src/breach-approach.js';
 import {releasedFrontierBoss} from '../src/frontier.js';
 import {calcRemorse} from '../src/remorse.js';
+import {QUEST_REWARDS} from '../src/quest-rewards.js';
 globalThis.Image=class {};
 import {harbourTravel} from './helpers/travel.mjs';
 const reload=g=>{const h=createGame();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);return h;};
 function zone(g,z){g.zone=z;syncSceneZone(z);g.pendingZone=null;g.refreshZoneEvents();}
 function unlock(g){g.zoneTravel.visited={th:true,asia:true,west:true,cyberhell:true};g.zoneEvents.cyberhell={cyberRescue:'cleared',cyberBreach:'cleared'};zone(g,'cyberhell');g.merchantJourney={asia:{arrived:true},west:{arrived:true},cyberhell:{arrived:true}};}
-function meet(g,q){const p=questTarget(g,q);zone(g,p.zone);Object.assign(g.player,questTarget(g,q));}
+import {hireFor,hireAll} from './helpers/quest-hire.mjs';
+function meet(g,q){const p=questTarget(g,q);zone(g,p.zone);hireFor(g,q);Object.assign(g.player,questTarget(g,q));}
 function win(g){
  for(let n=0;g.battle&&!g.battle.over&&n<70;n++){
   if(g.battle.pendingWave){assert.equal(g.advanceZoneEventWave(),true);continue;}
@@ -25,6 +27,9 @@ function win(g){
  }
  assert.equal(g.battle?.over,'win');g.endBattle();g.pendingReward=null;
 }
+// QUEST-REWARDS: sqKan / sqBoon / sqGuard open a fight at step 3 instead of moving straight to step 4; winning it (endBattle) moves the quest on
+const FIGHT_QUESTS=['sqKan','sqBoon','sqGuard'];
+function afterStep3(g,q){if(FIGHT_QUESTS.includes(q.id)){assert.equal(g.battle?.kind,'questFight',q.id);assert.equal(questState(g,q.id).step,3);win(g);}assert.equal(questState(g,q.id).step,4,q.id);}
 function verdict(g,q,right=true){
  const soul=g.queue.find(s=>s.case===q.caseId);assert.ok(soul);
  g.applyVerdict({right,heaven:soul.pure&&right,score:75,stars:3,tham:100,ked:75,over:0,short:0,karma:0},soul,'ทดสอบคำตัดสิน');
@@ -80,7 +85,7 @@ for(const choice of [0,1])test(`all eight side quests: real enqueue/verdict, bra
   const soul=g.queue.find(s=>s.case===q.caseId);assert.ok(soul);assert.equal(g.enqueueQuestCase(q.caseId),false);
   if(q.id==='sqBoon')assert.equal(soul.remorseBonus||0,choice===0?15:0);
   g=reload(g);assert.ok(g.queue.some(s=>s.case===q.caseId));verdict(g,q);meet(g,q);
-  assert.equal(advanceQuest(g,q.id,choice),true);meet(g,q);assert.equal(advanceQuest(g,q.id),true);
+  assert.equal(advanceQuest(g,q.id,choice),true);afterStep3(g,q);meet(g,q);assert.equal(advanceQuest(g,q.id),true);
   assert.equal(questState(g,q.id).done,true);const coin=g.coin,inv=structuredClone(g.inventory),exp=g.exp;
   assert.equal(advanceQuest(g,q.id,choice),false);g=reload(g);meet(g,q);assert.equal(advanceQuest(g,q.id,choice),false);assert.equal(g.coin,coin);assert.deepEqual(g.inventory,inv);assert.equal(g.exp,exp);
  }
@@ -207,8 +212,10 @@ test('W2 exact branch rewards, including optional helper EXP replaced by two foo
     const g=createGame();unlock(g);meet(g,q);advanceQuest(g,q.id);meet(g,q);
     assert.ok(advanceQuest(g,q.id,q.id==='sqBoon'?choice:null));verdict(g,q);meet(g,q);
     g.coin=1000;g.order=20;g.inventory={};g.exp=0;g.level=1;
-    assert.ok(advanceQuest(g,q.id,choice));meet(g,q);assert.ok(advanceQuest(g,q.id));
-    const [coin,order,items]=expected[q.id][choice];
+    assert.ok(advanceQuest(g,q.id,choice));afterStep3(g,q);meet(g,q);assert.ok(advanceQuest(g,q.id));
+    // QUEST-REWARDS: the original branch reward above is unchanged; the tier bonus (quest-rewards.js, literal table in quest-rewards.test.mjs) rides on top
+    const [baseCoin,order,baseItems]=expected[q.id][choice],bonus=QUEST_REWARDS[q.id];
+    const coin=baseCoin+bonus.coin,items={...baseItems};for(const[k,n]of Object.entries(bonus.items))items[k]=(items[k]||0)+n;
     assert.equal(g.coin,1000+coin,`${q.id}/${choice} coin`);
     assert.equal(g.order,20+order,`${q.id}/${choice} order`);
     assert.equal(g.exp,30,`${q.id}/${choice} exp`);assert.deepEqual(g.inventory,items,`${q.id}/${choice} items`);
@@ -220,12 +227,13 @@ test('W3 kin choices pay exact rewards through real harbour travel, persist, and
     for(let step=0;step<3;step++){
       const p=questTarget(g,q);
       if(g.zone!==p.zone){assert.equal(harbourTravel(g,p.zone),true);g.pendingZone=null;}
-      Object.assign(g.player,questTarget(g,q));
+      hireFor(g,q);Object.assign(g.player,questTarget(g,q));
       if(step===2){g.coin=1000;g.order=20;g.inventory={};g.exp=0;g.level=1;}
       assert.ok(advanceQuest(g,q.id,choice),q.id);g=reload(g);
     }
-    const plain=q.id==='kinDamCousin',coin=plain?70:choice===0?100:60;
+    const plain=q.id==='kinDamCousin',bonus=QUEST_REWARDS[q.id],coin=(plain?70:choice===0?100:60)+bonus.coin;
     const items=plain?{food:3,tea:1}:choice===0?{food:2}:{food:2,[q.item]:q.item==='food'?4:1};
+    for(const[k,n]of Object.entries(bonus.items))items[k]=(items[k]||0)+n;   // QUEST-REWARDS tier bonus
     assert.equal(g.coin,1000+coin,q.id);assert.equal(g.order,20+(!plain&&choice===0?8:0),q.id);
     assert.equal(g.exp,30,q.id);assert.deepEqual(g.inventory,{...items,cooldownClock:1},q.id); // Rescue already awards the reusable clock on restore.
     const before=g.snapshot();assert.equal(advanceQuest(g,q.id,choice),false);assert.equal(g.coin,before.coin);

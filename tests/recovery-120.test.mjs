@@ -9,7 +9,7 @@ globalThis.Image??=class{};
 const make=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=100000;g.level=5;g.bossCleared={th:true,asia:true,west:true};g.zoneEvents.th={frontierBreach:'cleared'};return g;};
 test('a downed reaper occupies a real cushion for exactly 120 seconds; no battle re-entry',()=>{
  const g=make(),c=g.crewOf('taan'),now=Date.now();g.party.members=['taan'];g.startBattle({id:44,who:'test',deserved:4,resist:true});
- assert.equal(RECOVERY_MS,120000);assert.ok(g.downActor(c,now));assert.equal(actorStanding(c),false);
+ assert.equal(RECOVERY_MS,120000);const open=g.battle;g.battle=null;assert.ok(g.downActor(c,now));g.battle=open;(open.absentActors||=[]).push(c.id);   // KO-CREW: in an open battle the rest waits for its end (tests/ko-crew.test.mjs); here the fall is taken to be just after it, as before the clock was deferredassert.equal(actorStanding(c),false);
  assert.equal(teaRoomStaff(g).find(s=>s.actor===c).seat,c.teaRest.seat);assert.equal(c.teaRest.zone,'th');
  g.updateActorRecovery(now+119999);assert.equal(c.morale,0);assert.ok(c.teaRest);
  g.updateActorRecovery(now+120000);assert.equal(c.morale,50);assert.equal(c.recoverUntil,0);assert.equal(c.teaRest,null);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { BAL, BATTLE, BOSS_ULTIMATE, bossUltimate, LEVELS, MERCHANT, ZONES, ZONE_EVENTS, SPOTS } from '../src/data.js';
+import { BAL, BATTLE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimate, bossUltimateDue, LEVELS, MERCHANT, ZONES, ZONE_EVENTS, SPOTS } from '../src/data.js';
 import { clearFrontierSession, frontierSession, nearFrontierGate, nearFrontierNira } from '../src/frontier.js';
 
 test('ราคาห่อเสบียงลดครึ่งทั้งร้านและแท็บก่อสร้าง', () => {
@@ -33,14 +33,22 @@ test('ครบ KPI หรือบอสสาขาเก่ายังไม
   assert.equal(loaded.over, null);
 });
 
-test('ท่าไม้ตายออกครั้งแรกหลังเลือดต่ำกว่าครึ่ง แล้วเว้นอย่างน้อย 4 เทิร์น', () => {
+// BATTLE-FX (10 Nov): the zone boss's cutscene move no longer waits for half HP — it comes on the boss's 2nd, 4th, 6th ... attack, never twice in a row,
+// and a little softer per hit (BOSS_ULTIMATE_RHYTHM.damage) because it is used about twice as often.
+test('ท่าไม้ตายบอสออกที่การโจมตีครั้งที่ 2, 4, 6 ... ไม่ติดกัน ไม่ผูกกับเลือด', () => {
   for (const z of ZONES) {
-    const b = { zone:z.k, foeHp:99, foeMax:200, turn:4, ultimateUsed:false };
-    assert.equal(bossUltimate({ ...b, foeHp:100 }, 20), null);
-    assert.equal(bossUltimate(b, 20).damage, 34);
-    assert.equal(bossUltimate({ ...b, ultimateUsed:true, ultimateLastTurn:4, turn:7 }, 20), null);
-    assert.equal(bossUltimate({ ...b, ultimateUsed:true, ultimateLastTurn:4, turn:8 }, 20)?.name, BOSS_ULTIMATE[z.k].name);
+    const b = { zone:z.k, foeHp:199, foeMax:200, turn:4 };
+    assert.equal(bossUltimate({ ...b, bossAct:1 }, 20), null);
+    assert.equal(bossUltimate({ ...b, bossAct:2 }, 20).damage, Math.round(20 * BOSS_ULTIMATE_RHYTHM.damage));
+    assert.equal(bossUltimate({ ...b, bossAct:2, foeHp:10 }, 20).name, BOSS_ULTIMATE[z.k].name);
+    assert.equal(bossUltimate({ ...b, bossAct:3 }, 20), null);
+    assert.equal(bossUltimate({ ...b, bossAct:4 }, 20)?.name, BOSS_ULTIMATE[z.k].name);
+    assert.equal(bossUltimate({ ...b, bossAct:5 }, 20), null);
+    assert.equal(bossUltimate(b, 20), null, 'no attack counter = no ultimate');
   }
+  const due = Array.from({ length:12 }, (_, i) => i + 1).filter(bossUltimateDue);
+  assert.deepEqual(due, [2, 4, 6, 8, 10, 12]);
+  assert.ok(due.every((n, i) => i === 0 || n - due[i - 1] >= 2), 'never on consecutive attacks');
 });
 
 test('ทีมยมบาทน้อย ทัณฑ์ เพลิง ใช้ MP และยาจากกระเป๋าชนะบอสทั้ง 4 โซน', () => {

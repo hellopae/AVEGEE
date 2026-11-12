@@ -154,6 +154,7 @@ export function powerSfx(k, abilities = {}) {
 // pitch ต่างกันตามท่า: ไฟ/ลมกลาง · น้ำแข็งแหลม · คำรามต่ำ — โครงเสียงเดียวกัน
 export const ULTIMATE_POWERS = Object.freeze({
   flameCharge:1, windFan:1.25, rage:0.7, valkyrieSpear:1.15, ice:1.6, hypno:1.1,
+  boss:0.55,   // BATTLE-FX: the boss's cutscene move — same charge-and-boom as the player's, pitched low (played by playActionCutscene)
 });
 export const isUltimatePower = k => Object.prototype.hasOwnProperty.call(ULTIMATE_POWERS, k);
 /** เสียงพากย์ ("ย๊าก"/ชื่อท่า) — เพิ่มทีหลังได้โดยไม่แตะโค้ดอื่น: วางไฟล์ในโฟลเดอร์ audio/voice/ แล้วเติมหนึ่งบรรทัดที่นี่

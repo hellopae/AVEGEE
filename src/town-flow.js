@@ -10,6 +10,7 @@ import {weatherEnabled,biomeBudget} from './map-ambient.js?v=mapfx-k1d';
 // shadowBlur, no per-frame pixel work. Reduced motion draws nothing (the painting stays still).
 import { TOWN_SIZE, townFloorAt } from './town-layout.js?v=k1d';
 import { ZONE_SKIN, activeTownSkin, activeTownZone } from './zone-skin.js';
+import { townFluidOwnsFlow } from './town-fluid-fx.js?v=v5fx';
 
 export const TOWN_FLOW_URL = ZONE_SKIN.th.flowUrl;   // Zone 1; other zones: zone-skin.js flowUrl (null = no flowing surface)
 export const FLOW_W = 1536, FLOW_H = 1024;
@@ -333,6 +334,7 @@ export const townFlowEngine = () => slot(activeTownZone()).engine;
 /** Call once per frame with the world transform active (after the terrain, before characters). */
 export function drawTownFlow(ctx, time, reduced = false) {
   if (reduced || !weatherEnabled()) return;
+  if (townFluidOwnsFlow()) return;       // Z1-V5-FX: the painted fluid frames animate water / lava now, never two layers on top of each other
   const url = activeTownSkin().flowUrl;
   if (!url) return;
   load(activeTownZone(), url);

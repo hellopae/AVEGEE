@@ -1,0 +1,173 @@
+[
+ {
+  "mask": "waterfall-ice-summit",
+  "group": "waterfall",
+  "areaBefore": 7673,
+  "areaAfter": 5704,
+  "kept": 0.743,
+  "vertical": 1.7,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-upper-bridge",
+  "group": "waterfall",
+  "areaBefore": 3726,
+  "areaAfter": 2262,
+  "kept": 0.607,
+  "vertical": 0.77,
+  "off": true
+ },
+ {
+  "mask": "waterfall-ice-upper-right",
+  "group": "waterfall",
+  "areaBefore": 4132,
+  "areaAfter": 2742,
+  "kept": 0.664,
+  "vertical": 1.37,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-plaza-right",
+  "group": "waterfall",
+  "areaBefore": 1690,
+  "areaAfter": 253,
+  "kept": 0.15,
+  "vertical": 0.57,
+  "off": true
+ },
+ {
+  "mask": "waterfall-ice-center-step",
+  "group": "waterfall",
+  "areaBefore": 5000,
+  "areaAfter": 4106,
+  "kept": 0.821,
+  "vertical": 0.6,
+  "off": true
+ },
+ {
+  "mask": "waterfall-ice-center-bridge",
+  "group": "waterfall",
+  "areaBefore": 4390,
+  "areaAfter": 2992,
+  "kept": 0.682,
+  "vertical": 1.0,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-lower-1",
+  "group": "waterfall",
+  "areaBefore": 3557,
+  "areaAfter": 2826,
+  "kept": 0.794,
+  "vertical": 1.23,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-lower-2",
+  "group": "waterfall",
+  "areaBefore": 2541,
+  "areaAfter": 2078,
+  "kept": 0.818,
+  "vertical": 0.95,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-lower-3",
+  "group": "waterfall",
+  "areaBefore": 5081,
+  "areaAfter": 4137,
+  "kept": 0.814,
+  "vertical": 1.49,
+  "off": false
+ },
+ {
+  "mask": "waterfall-ice-mouth",
+  "group": "waterfall",
+  "areaBefore": 4056,
+  "areaAfter": 3226,
+  "kept": 0.795,
+  "vertical": 0.6,
+  "off": true
+ },
+ {
+  "mask": "waterfall-ice-east-cliff",
+  "group": "waterfall",
+  "areaBefore": 4412,
+  "areaAfter": 249,
+  "kept": 0.056,
+  "vertical": 0.46,
+  "off": true
+ },
+ {
+  "mask": "lavafall-volcano",
+  "group": "lavafall",
+  "areaBefore": 3083,
+  "areaAfter": 2025,
+  "kept": 0.657,
+  "vertical": 2.55,
+  "off": false
+ },
+ {
+  "mask": "lavafall-upper-left",
+  "group": "lavafall",
+  "areaBefore": 1431,
+  "areaAfter": 941,
+  "kept": 0.658,
+  "vertical": 1.11,
+  "off": false
+ },
+ {
+  "mask": "lavafall-upper-step",
+  "group": "lavafall",
+  "areaBefore": 4516,
+  "areaAfter": 3475,
+  "kept": 0.769,
+  "vertical": 2.11,
+  "off": false
+ },
+ {
+  "mask": "lavafall-west",
+  "group": "lavafall",
+  "areaBefore": 4329,
+  "areaAfter": 3059,
+  "kept": 0.707,
+  "vertical": 2.23,
+  "off": false
+ },
+ {
+  "mask": "lavafall-bridge",
+  "group": "lavafall",
+  "areaBefore": 4602,
+  "areaAfter": 3525,
+  "kept": 0.766,
+  "vertical": 2.36,
+  "off": false
+ },
+ {
+  "mask": "lavafall-middle",
+  "group": "lavafall",
+  "areaBefore": 3982,
+  "areaAfter": 2350,
+  "kept": 0.59,
+  "vertical": 2.51,
+  "off": false
+ },
+ {
+  "mask": "lavafall-lower-step",
+  "group": "lavafall",
+  "areaBefore": 5070,
+  "areaAfter": 3519,
+  "kept": 0.694,
+  "vertical": 1.9,
+  "off": false
+ },
+ {
+  "mask": "lavafall-mouth",
+  "group": "lavafall",
+  "areaBefore": 2283,
+  "areaAfter": 980,
+  "kept": 0.429,
+  "vertical": 1.98,
+  "off": false
+ }
+]

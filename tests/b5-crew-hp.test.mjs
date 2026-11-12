@@ -17,20 +17,21 @@ test('weights are exactly Guard 3 / Yama 2 / each crew 1; recovery cannot be tar
  assert.deepEqual(counts, {you:200,'th:taan':100,'th:guard':300});
  c.recoverUntil=1;guard.morale=0;assert.equal(weightedTarget([c],guard,()=>.99).id,'you');
 });
-test('actual counters hit crew and Guard, down excludes actions; crew disappears until recovery, guard retains 1 map HP',()=>{
+test('actual counters hit crew and Guard, down excludes actions; crew and guard lie down in the scene, both rest at the tea house when the battle is over (owner 6 Nov: no 1-HP special case)',()=>{
  for(const [random,key] of [[.4,'taan'],[.99,'guard']]){
  const g=battle(), actor=key==='guard'?g.guard:g.crewOf(key);actor.morale=5;
  const original=Math.random;Math.random=()=>random;
  try { assert.equal(g.battleAct('atk'),true); } finally {Math.random=original;}
- assert.equal(g.battle.dmg.targetActorId,actor.id);assert.equal(actor.morale,key === 'guard' ? 1 : 0);assert.ok(key === 'guard' ? !actor.recoverUntil : actor.recoverUntil>Date.now());
+ assert.equal(g.battle.dmg.targetActorId,actor.id);assert.equal(actor.morale,0);assert.ok(!actor.recoverUntil && g.battle.fallen.includes(actor.id), 'KO-CREW: lies in the scene, the rest starts when the battle is over');
  assert.equal(g.battleAct(key==='guard'?'guard':'crew:taan'),false);
  assert.ok(!g.battleCrew().includes(actor));if (key !== 'guard') assert.ok(!standPoints(g).some(p=>p[0]===actor.x&&p[1]===actor.y));
  if (key !== 'guard') assert.equal(g.feedCrew(key),false);
  actor.x=500;actor.y=800;if (key !== 'guard') assert.notDeepEqual(hitActor(g,500,800),{kind:key==='guard'?'guard':'crew',key:key==='guard'?0:key});
+ g.endBattle();assert.ok(actor.recoverUntil>Date.now(),'rest starts at the end of the battle');assert.ok(actor.teaRest?.recovery,key+' rests at the tea house');if(key==='guard')assert.equal(g.guardActive(),false);
  }
 });
-test('crew recovers after 120 real seconds including reload; fallen guard retains 1 HP without regeneration',()=>{
- const g=battle(), c=g.crewOf('taan');const now=Date.now();g.downActor(c,now);g.food=10;
+test('crew recovers after 120 real seconds including reload; the fallen guard rests the same 120 s and returns to his post',async()=>{
+ const g=battle(), c=g.crewOf('taan');const now=Date.now();const open=g.battle;g.battle=null;g.downActor(c,now);g.battle=open;g.food=10;   // KO-CREW: the clock starts when the battle is over; here the fall is taken to be after it
  const copy=game();copy.restore(g.snapshot());const actor=copy.roster[c.id];
  copy.updateActorRecovery(now+119999);assert.equal(actor.morale,0);assert.equal(copy.feedCrew('taan'),false);
  copy.step();assert.equal(actor.morale,0);
@@ -39,9 +40,10 @@ test('crew recovers after 120 real seconds including reload; fallen guard retain
  // Battle itself is deliberately not persisted by the existing save schema.
  g.updateActorRecovery(now+120000);assert.equal(c.morale,50);assert.ok(!g.battleCrew().includes(c));
  g.battle=null;g.startBattle({id:100,who:'next',deserved:4,resist:true});assert.ok(g.battleCrew().includes(c));
- const guard=g.guard;g.downActor(guard,now);const saved=game();saved.restore(g.snapshot());
- saved.updateActorRecovery(now+119999);assert.equal(saved.guard.morale,1);assert.equal(saved.hireGuard(),false);
- saved.updateActorRecovery(now+120000);assert.equal(saved.guard.morale,1);
+ const guard=g.guard;g.battle=null;g.downActor(guard,now);assert.equal(guard.morale,0);assert.ok(guard.teaRest?.recovery);assert.equal(guard.recoverUntil,now+120000);const saved=game();saved.restore(g.snapshot());
+ saved.updateActorRecovery(now+119999);assert.equal(saved.guard.morale,0);assert.equal(saved.guardActive(),false);assert.equal(saved.hireGuard(),false);
+ saved.updateActorRecovery(now+120000);assert.equal(saved.guard.morale,50);assert.equal(saved.guard.recoverUntil,0);assert.equal(saved.guard.teaRest,null);assert.equal(saved.guardActive(),true);
+ {const {GUARD_POST}=await import('../src/data.js');assert.ok(Math.hypot(saved.guard.x-GUARD_POST[0],saved.guard.y-GUARD_POST[1])<80,'back at the gate post');}
  saved.guard.morale=47;saved.updateActorRecovery(now+150000);assert.equal(saved.guard.morale,47);
 });
 test('Yama loss stages persist through return, sleep, Nira wake; spare heart precedes loss',()=>{
@@ -71,5 +73,5 @@ test('down worker stops station progress and movement; last special action still
  assert.equal(st.slots[0].progress,0);assert.equal(g.workingCrew.has('taan'),false);
  const x=c.x,y=c.y;g.stepWorld(100);assert.equal(c.x,x);assert.equal(c.y,y);
  const h=battle(), last=h.crewOf('taan');last.morale=6;h.battle.foes[0].atk=[0,0];
- assert.equal(h.battleAct('crew:taan'),true);assert.ok(h.battle.dmg.foe>0);assert.ok(last.recoverUntil);assert.equal(last.morale,0);
+ assert.equal(h.battleAct('crew:taan'),true);assert.ok(h.battle.dmg.foe>0);assert.ok(h.battle.fallen.includes(last.id));h.endBattle();assert.ok(last.recoverUntil);assert.equal(last.morale,0);
 });

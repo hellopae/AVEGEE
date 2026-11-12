@@ -279,9 +279,11 @@ export function createBattleCamera() {
   }
   const reset = (opts = {}) => { dim(false, { ms:opts.ms }); return moveTo({ z:1, fx:.5, fy:.5 }, opts.ms ?? CAMERA_TIMING.recoverMs, opts.ease || 'inOut'); };
 
-  function doShake(power = 1) {
+  // BATTLE-FX: boost = extra shake power on top of the clamped 1..3 (lords / bosses hit harder); still gated by motionOn() = the "camera effects" setting + reduced-motion
+  function doShake(power = 1, boost = 0) {
     if (!motionOn()) return;
     const spec = shakeSpec(power), now = vnow();
+    if (boost > 0) { spec.amp += boost; spec.ms += 50 * boost; }
     if (shake) { const left = shake.spec.ms - (now - shake.t0); if (left > 0 && shake.spec.amp >= spec.amp && left > spec.ms) return; }
     shake = { spec:{ amp:spec.amp, ms:dur(spec.ms) }, t0:now }; kick();
   }
@@ -396,7 +398,7 @@ export function createBattleCamera() {
         if (s.reset) reset(typeof s.reset === 'object' ? s.reset : {});
         if (s.dim !== undefined) { const d = s.dim; dim(!!d, typeof d === 'object' ? d : {}); }
         if (s.focus) { const f = s.focus; if (f && typeof f === 'object' && 'target' in f) focus(f.target, f); else focus(f, {}); }
-        if (s.shake) doShake(s.shake);
+        if (s.shake) doShake(s.shake, s.shakeBoost || 0);
         if (s.hitStop) hitStop(s.hitStop === true ? 75 : s.hitStop);
         if (s.flash) flash(typeof s.flash === 'object' ? s.flash : {});
         if (s.punch) punch(s.punch === true ? .04 : s.punch);
@@ -413,8 +415,9 @@ export function createBattleCamera() {
   function cue(kind, ctx = {}) {
     const T = CAMERA_TIMING, info = { user:ctx.user, targets:ctx.targets, action:ctx.action, power:ctx.power || 1, crit:!!ctx.crit, scope:ctx.scope || 'single' };
     const power = clamp(ctx.power || 1, 1, 3);
-    const stop = power >= 3 ? T.hitStop.crit : power >= 2 ? T.hitStop.heavy : T.hitStop.light;
-    const impactFx = { shake:power, hitStop:stop || undefined, flash:ctx.flash || power >= 3 ? { alpha:.55 } : undefined, emit:'impact', info };
+    // ctx.hitStop / ctx.shakeBoost: enemy hits of a given rank (battle-fx-map FOE_RANK_FX) — at least that long a freeze, and extra shake
+    const stop = Math.max(power >= 3 ? T.hitStop.crit : power >= 2 ? T.hitStop.heavy : T.hitStop.light, ctx.hitStop || 0);
+    const impactFx = { shake:power, shakeBoost:ctx.shakeBoost || 0, hitStop:stop || undefined, flash:ctx.flash || power >= 3 ? { alpha:.55 } : undefined, emit:'impact', info };
     if (kind === 'idle') { const r = play([{ at:0, reset:true }]); cueKey = 'idle'; return { ...r, impactAt:0 }; }
     if (kind === 'select') {
       const key = `select:${JSON.stringify(ctx.user)}`;
@@ -491,6 +494,8 @@ export function createBattleCamera() {
     },
     get enabled() { return enabled; },
     get reduced() { return reducedMotion(); },
+    /** BATTLE-FX: true when shake / zoom / hit-stop may play (camera-effects setting on and no reduced-motion preference) — other screen motion (recoil, cutscene shake) follows it */
+    get motion() { return motionOn(); },
     get currentCue() { return cueKey; },
     state: () => ({ zoom:st.z, cx:st.fx * (size.w || 0), cy:st.fy * (size.h || 0), dim:dimAlpha, moving:!!tween, enabled, reduced:reducedMotion(), pending:timers.length, running:!!loopId || inFrame }),
     /** test/debug: the transform actually written to the world right now */

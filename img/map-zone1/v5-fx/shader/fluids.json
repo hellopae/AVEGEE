@@ -1,0 +1,3961 @@
+{
+ "schemaVersion": 2,
+ "masterSize": [
+  4915,
+  3277
+ ],
+ "worldSize": [
+  3840,
+  2560
+ ],
+ "pieces": [
+  {
+   "id": "cloud-flat-10-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3802,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3840,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-10-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-10-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3802,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    3840,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-10-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-6-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2266,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    2304,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-6-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-6-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2266,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    2304,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-6-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-7-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2650,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    2688,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-7-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-7-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    2650,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    2688,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-7-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-8-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3034,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3072,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-8-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-0",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    -38,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-0.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-1",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    346,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-1.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "cloud-flat-9-2",
+   "group": "clouds",
+   "liquid": "cloud",
+   "kind": "flat",
+   "rectPx": [
+    3418,
+    730,
+    460,
+    460
+   ],
+   "corePx": [
+    3456,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "cloud-flat-9-2.flow.png",
+   "speed": 0.16,
+   "cycle": 34,
+   "warp": 0.6,
+   "pulse": 0.0,
+   "hot": [
+    0.9,
+    1.0
+   ],
+   "shimmer": 0.05,
+   "spark": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "sparkCell": 20,
+   "sparkDensity": 0.0,
+   "sparkSize": 1.0,
+   "sparkLum": 0.99,
+   "drift": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "spirit-flat-0-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    -19,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    0,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-0-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-0-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    -19,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    0,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-0-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-1-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    365,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    384,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-1-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-1-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    365,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    384,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-1-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-10-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3821,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    3840,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-10-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-10-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3821,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    3840,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-10-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-11-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    4205,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    4224,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-11-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-11-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    4205,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    4224,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-11-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-12-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    4589,
+    2071,
+    345,
+    252
+   ],
+   "corePx": [
+    4608,
+    2090,
+    307,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-12-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-12-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    4589,
+    2285,
+    345,
+    344
+   ],
+   "corePx": [
+    4608,
+    2304,
+    307,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-12-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-2-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    749,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    768,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-2-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-2-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    749,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    768,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-2-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-3-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1133,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    1152,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-3-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-3-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1133,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    1152,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-3-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-4-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1517,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    1536,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-4-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-4-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1517,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    1536,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-4-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-5-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1901,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    1920,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-5-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-5-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    1901,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    1920,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-5-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-6-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    2285,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    2304,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-6-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-6-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    2285,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    2304,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-6-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-7-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    2669,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    2688,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-7-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-7-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    2669,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    2688,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-7-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-8-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3053,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    3072,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-8-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-8-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3053,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    3072,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-8-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-9-5",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3437,
+    2071,
+    422,
+    252
+   ],
+   "corePx": [
+    3456,
+    2090,
+    384,
+    214
+   ],
+   "res": 1,
+   "flow": "spirit-flat-9-5.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "spirit-flat-9-6",
+   "group": "flats",
+   "liquid": "spirit",
+   "kind": "flat",
+   "rectPx": [
+    3437,
+    2285,
+    422,
+    344
+   ],
+   "corePx": [
+    3456,
+    2304,
+    384,
+    306
+   ],
+   "res": 1,
+   "flow": "spirit-flat-9-6.flow.png",
+   "speed": 0.4,
+   "cycle": 15,
+   "warp": 0.5,
+   "pulse": 0.2,
+   "hot": [
+    0.45,
+    0.85
+   ],
+   "shimmer": 0.22,
+   "spark": [
+    0.95,
+    0.8,
+    1.0
+   ],
+   "sparkCell": 13,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.5,
+   "sparkLum": 0.3,
+   "drift": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "ice-flat-10-1",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3822,
+    366,
+    420,
+    420
+   ],
+   "corePx": [
+    3840,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-10-1.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-10-2",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3822,
+    750,
+    420,
+    420
+   ],
+   "corePx": [
+    3840,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-10-2.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-10-4",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3822,
+    1518,
+    420,
+    420
+   ],
+   "corePx": [
+    3840,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-10-4.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-10-5",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3822,
+    1902,
+    420,
+    416
+   ],
+   "corePx": [
+    3840,
+    1920,
+    384,
+    380
+   ],
+   "res": 1,
+   "flow": "ice-flat-10-5.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-11-0",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4206,
+    132,
+    420,
+    270
+   ],
+   "corePx": [
+    4224,
+    150,
+    384,
+    234
+   ],
+   "res": 1,
+   "flow": "ice-flat-11-0.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-11-1",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4206,
+    366,
+    420,
+    420
+   ],
+   "corePx": [
+    4224,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-11-1.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-12-0",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4590,
+    132,
+    343,
+    270
+   ],
+   "corePx": [
+    4608,
+    150,
+    307,
+    234
+   ],
+   "res": 1,
+   "flow": "ice-flat-12-0.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-12-1",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4590,
+    366,
+    343,
+    420
+   ],
+   "corePx": [
+    4608,
+    384,
+    307,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-12-1.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-12-2",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4590,
+    750,
+    343,
+    420
+   ],
+   "corePx": [
+    4608,
+    768,
+    307,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-12-2.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-12-3",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    4590,
+    1134,
+    343,
+    420
+   ],
+   "corePx": [
+    4608,
+    1152,
+    307,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-12-3.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-8-2",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3054,
+    750,
+    420,
+    420
+   ],
+   "corePx": [
+    3072,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-8-2.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-8-3",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3054,
+    1134,
+    420,
+    420
+   ],
+   "corePx": [
+    3072,
+    1152,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-8-3.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-8-4",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3054,
+    1518,
+    420,
+    420
+   ],
+   "corePx": [
+    3072,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-8-4.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-9-1",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3438,
+    366,
+    420,
+    420
+   ],
+   "corePx": [
+    3456,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-9-1.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-9-2",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3438,
+    750,
+    420,
+    420
+   ],
+   "corePx": [
+    3456,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-9-2.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "ice-flat-9-4",
+   "group": "flats",
+   "liquid": "ice",
+   "kind": "flat",
+   "rectPx": [
+    3438,
+    1518,
+    420,
+    420
+   ],
+   "corePx": [
+    3456,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "ice-flat-9-4.flow.png",
+   "speed": 0.6,
+   "cycle": 14,
+   "warp": 0.65,
+   "pulse": 0.12,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 12,
+   "sparkDensity": 0.28,
+   "sparkSize": 1.3,
+   "sparkLum": 0.45,
+   "drift": [
+    6,
+    3
+   ]
+  },
+  {
+   "id": "lava-flat-0-0",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    -20,
+    -20,
+    424,
+    424
+   ],
+   "corePx": [
+    0,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-0-0.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-0-1",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    -20,
+    364,
+    424,
+    424
+   ],
+   "corePx": [
+    0,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-0-1.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-0-2",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    -20,
+    748,
+    424,
+    424
+   ],
+   "corePx": [
+    0,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-0-2.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-0-3",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    -20,
+    1132,
+    424,
+    424
+   ],
+   "corePx": [
+    0,
+    1152,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-0-3.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-0-4",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    -20,
+    1516,
+    424,
+    424
+   ],
+   "corePx": [
+    0,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-0-4.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-1-0",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    364,
+    -20,
+    424,
+    424
+   ],
+   "corePx": [
+    384,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-1-0.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-1-1",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    364,
+    364,
+    424,
+    424
+   ],
+   "corePx": [
+    384,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-1-1.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-1-2",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    364,
+    748,
+    424,
+    424
+   ],
+   "corePx": [
+    384,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-1-2.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-1-4",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    364,
+    1516,
+    424,
+    424
+   ],
+   "corePx": [
+    384,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-1-4.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-1-5",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    364,
+    1900,
+    424,
+    424
+   ],
+   "corePx": [
+    384,
+    1920,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-1-5.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-2-0",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    748,
+    -20,
+    424,
+    424
+   ],
+   "corePx": [
+    768,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-2-0.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-2-1",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    748,
+    364,
+    424,
+    424
+   ],
+   "corePx": [
+    768,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-2-1.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-2-2",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    748,
+    748,
+    424,
+    424
+   ],
+   "corePx": [
+    768,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-2-2.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-2-3",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    748,
+    1132,
+    424,
+    424
+   ],
+   "corePx": [
+    768,
+    1152,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-2-3.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-2-5",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    748,
+    1900,
+    424,
+    424
+   ],
+   "corePx": [
+    768,
+    1920,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-2-5.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-0",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    -20,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    0,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-0.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-1",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    364,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    384,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-1.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-2",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    748,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    768,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-2.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-3",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    1132,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    1152,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-3.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-4",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    1516,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    1536,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-4.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-3-5",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1132,
+    1900,
+    424,
+    424
+   ],
+   "corePx": [
+    1152,
+    1920,
+    384,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-3-5.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-4-3",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1516,
+    1132,
+    264,
+    424
+   ],
+   "corePx": [
+    1536,
+    1152,
+    224,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-4-3.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-4-4",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1516,
+    1516,
+    264,
+    424
+   ],
+   "corePx": [
+    1536,
+    1536,
+    224,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-4-4.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "lava-flat-4-5",
+   "group": "flats",
+   "liquid": "lava",
+   "kind": "flat",
+   "rectPx": [
+    1516,
+    1900,
+    264,
+    424
+   ],
+   "corePx": [
+    1536,
+    1920,
+    224,
+    384
+   ],
+   "res": 1,
+   "flow": "lava-flat-4-5.flow.png",
+   "speed": 0.55,
+   "cycle": 16,
+   "warp": 0.7,
+   "pulse": 0.25,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.8,
+    0.45
+   ],
+   "sparkCell": 11,
+   "sparkDensity": 0.3,
+   "sparkSize": 1.6,
+   "sparkLum": 0.35,
+   "drift": [
+    7,
+    4
+   ]
+  },
+  {
+   "id": "icefall-center-bridge",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3024,
+    1274,
+    242,
+    232
+   ],
+   "corePx": [
+    3040,
+    1290,
+    210,
+    200
+   ],
+   "res": 2,
+   "flow": "icefall-center-bridge.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-east-cliff",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4554,
+    1014,
+    192,
+    232
+   ],
+   "corePx": [
+    4570,
+    1030,
+    160,
+    200
+   ],
+   "res": 2,
+   "flow": "icefall-east-cliff.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-1",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3789,
+    1538,
+    192,
+    221
+   ],
+   "corePx": [
+    3805,
+    1554,
+    160,
+    189
+   ],
+   "res": 2,
+   "flow": "icefall-lower-1.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-2",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3814,
+    1679,
+    202,
+    192
+   ],
+   "corePx": [
+    3830,
+    1695,
+    170,
+    160
+   ],
+   "res": 2,
+   "flow": "icefall-lower-2.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-3",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3804,
+    1784,
+    262,
+    217
+   ],
+   "corePx": [
+    3820,
+    1800,
+    230,
+    185
+   ],
+   "res": 2,
+   "flow": "icefall-lower-3.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-lower-inlet",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3644,
+    1489,
+    162,
+    192
+   ],
+   "corePx": [
+    3660,
+    1505,
+    130,
+    160
+   ],
+   "res": 2,
+   "flow": "icefall-lower-inlet.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-mouth",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4004,
+    1989,
+    297,
+    212
+   ],
+   "corePx": [
+    4020,
+    2005,
+    265,
+    180
+   ],
+   "res": 2,
+   "flow": "icefall-mouth.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-summit",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4304,
+    144,
+    282,
+    372
+   ],
+   "corePx": [
+    4320,
+    160,
+    250,
+    340
+   ],
+   "res": 2,
+   "flow": "icefall-summit.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-upper-right",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    3904,
+    609,
+    212,
+    242
+   ],
+   "corePx": [
+    3920,
+    625,
+    180,
+    210
+   ],
+   "res": 2,
+   "flow": "icefall-upper-right.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "icefall-upper-tree",
+   "group": "falls",
+   "liquid": "ice",
+   "kind": "fall",
+   "rectPx": [
+    4054,
+    469,
+    212,
+    182
+   ],
+   "corePx": [
+    4070,
+    485,
+    180,
+    150
+   ],
+   "res": 2,
+   "flow": "icefall-upper-tree.flow.png",
+   "speed": 1.0,
+   "cycle": 12,
+   "warp": 0.4,
+   "pulse": 0.14,
+   "hot": [
+    0.62,
+    0.95
+   ],
+   "shimmer": 0.1,
+   "spark": [
+    0.85,
+    0.97,
+    1.0
+   ],
+   "sparkCell": 8,
+   "sparkDensity": 0.35,
+   "sparkSize": 1.1,
+   "sparkLum": 0.45,
+   "drift": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "lavafall-bridge",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1099,
+    847,
+    150,
+    192
+   ],
+   "corePx": [
+    1117,
+    865,
+    114,
+    156
+   ],
+   "res": 2,
+   "flow": "lavafall-bridge.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-lower-step",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1328,
+    1663,
+    171,
+    195
+   ],
+   "corePx": [
+    1346,
+    1681,
+    135,
+    159
+   ],
+   "res": 2,
+   "flow": "lavafall-lower-step.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-middle",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1082,
+    1264,
+    159,
+    214
+   ],
+   "corePx": [
+    1100,
+    1282,
+    123,
+    178
+   ],
+   "res": 2,
+   "flow": "lavafall-middle.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-mouth",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1185,
+    2015,
+    122,
+    193
+   ],
+   "corePx": [
+    1203,
+    2033,
+    86,
+    157
+   ],
+   "res": 2,
+   "flow": "lavafall-mouth.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-upper-left",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    437,
+    228,
+    96,
+    135
+   ],
+   "corePx": [
+    455,
+    246,
+    60,
+    99
+   ],
+   "res": 2,
+   "flow": "lavafall-upper-left.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-upper-step",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    1103,
+    405,
+    140,
+    201
+   ],
+   "corePx": [
+    1121,
+    423,
+    104,
+    165
+   ],
+   "res": 2,
+   "flow": "lavafall-upper-step.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-volcano",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    705,
+    55,
+    136,
+    201
+   ],
+   "corePx": [
+    723,
+    73,
+    100,
+    165
+   ],
+   "res": 2,
+   "flow": "lavafall-volcano.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  },
+  {
+   "id": "lavafall-west",
+   "group": "falls",
+   "liquid": "lava",
+   "kind": "fall",
+   "rectPx": [
+    170,
+    716,
+    150,
+    205
+   ],
+   "corePx": [
+    188,
+    734,
+    114,
+    169
+   ],
+   "res": 2,
+   "flow": "lavafall-west.flow.png",
+   "speed": 0.9,
+   "cycle": 14,
+   "warp": 0.55,
+   "pulse": 0.22,
+   "hot": [
+    0.5,
+    0.92
+   ],
+   "shimmer": 0.12,
+   "spark": [
+    1.0,
+    0.86,
+    0.55
+   ],
+   "sparkCell": 7,
+   "sparkDensity": 0.45,
+   "sparkSize": 1.25,
+   "sparkLum": 0.35,
+   "drift": [
+    0,
+    14
+   ]
+  }
+ ]
+}

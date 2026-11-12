@@ -29,11 +29,13 @@ test('ordinary encounters keep one foe; Zone 2 boss arrives with two demons', ()
   const check = (start, count = 1) => {
     const g = createGame();
     start(g);
+    // BATTLE-FX: a border fight rolls 1-3 demons (count === 'frontier'); every other ordinary fight keeps its own number
+    if (count === 'frontier') { assert.ok(g.battle.frontierCount >= 1 && g.battle.frontierCount <= 3); count = g.battle.frontierCount; }
     assert.equal(g.battle?.foes.length, count);
     assert.equal(g.battle.foes[0].hp, g.battle.foeHp);
   };
   check(g => { g.mobs.push({ id:900, kind:0 }); g.startMobBattle(0); });
-  check(g => { g.setFrontierTeam('taan'); g.startFrontierBattle(); });
+  check(g => { g.setFrontierTeam('taan'); g.startFrontierBattle(); }, 'frontier');
   check(g => { g.zone = 'asia'; g.zoneCases.asia = 10;
     g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
     g.startZoneBoss(); }, 3);

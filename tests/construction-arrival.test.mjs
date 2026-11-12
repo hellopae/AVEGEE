@@ -48,7 +48,7 @@ const { buildWalk, canWalk, findPath, nearestWalk, resetWalk, setBlocks } = awai
 await new Promise(resolve => setImmediate(resolve));
 
 function setup(zone = 'th') {
-  const g = createGame();
+  const g = createGame();g.bossCleared.th=true;
   g.zone = zone; syncSceneZone(zone); bindZone(() => g.zone); resetWalk(); setBlocks([], []);
   g.coin = 100000; g.level = 5;
   // Satisfy story gates so this fixture exercises construction, not progression.

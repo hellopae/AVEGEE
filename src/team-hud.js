@@ -1,3 +1,4 @@
+import {canteenBuilt,canteenState,canFeedActor,canOrderCanteenMeal} from './canteen.js';
 import {GUARD} from './data.js';
 import {actorStanding} from './actor-recovery.js';
 import {WORKER_MODES,workerSheet} from './workers.js';
@@ -8,12 +9,12 @@ export function teamStatus(g,a,worker=false){
  let duty='ว่าง';
  if(worker){
   const j=a.job;
-  duty=a.teaRest?'พักศาลาน้ำชา':a.supplyRest?'รอข้าวปั้น':a.mode==='rest'||a.resting||a.recovering?'นั่งพัก':j?.kind==='escort'?'รับส่งวิญญาณ':j?.kind==='food'?(j.phase==='pickup'?'รับอาหาร':'แจกอาหาร'):j?.kind==='gather'?(j.phase==='sell'?'นำของไปขาย':j.material==='dabShards'?'เก็บเศษดาบ':'เก็บกิ่งงิ้ว'):j?.kind==='build'?'ช่วยสร้างอาคาร':j?.kind==='repair'?'ช่วยซ่อมอาคาร':'รอรับงาน';
+  duty=a.eatOrder?'ไปกินที่โรงอาหาร':a.teaRest?'พักศาลาน้ำชา':a.supplyRest?'รอข้าวปั้น':a.mode==='rest'||a.resting||a.recovering?'นั่งพัก':j?.kind==='escort'?'รับส่งวิญญาณ':j?.kind==='cook'?'พ่อครัว':j?.kind==='food'?(j.phase==='pickup'?'รับอาหาร':'แจกอาหาร'):j?.kind==='gather'?(j.phase==='sell'?'นำของไปขาย':j.material==='dabShards'?'เก็บเศษดาบ':'เก็บกิ่งงิ้ว'):j?.kind==='build'?'ช่วยสร้างอาคาร':j?.kind==='repair'?'ช่วยซ่อมอาคาร':'รอรับงาน';
  }else{
   const st=g.stations.find(s=>s.def.k===(a.buildK||a.at));
-  duty=a.teaRest?'พักศาลาน้ำชา':!actorStanding(a)?'พักฟื้น':a.escort?'รับส่งวิญญาณ':a.buildK?(st?.repair?'ซ่อม/ตรวจงาน':'สร้าง/ตรวจงาน'):a.at?'คุม '+(st?.def.name||'สถานี'):a.cook?'พ่อครัวโรงอาหาร':a.reader?'ดูแลสำนวน':a.k==='guard'?'เฝ้าประตู':'ว่าง';
+  duty=a.eatOrder?'ไปกินที่โรงอาหาร':a.teaRest?'พักศาลาน้ำชา':!actorStanding(a)?'พักฟื้น':a.escort?'รับส่งวิญญาณ':a.buildK?(st?.repair?'ซ่อม/ตรวจงาน':'สร้าง/ตรวจงาน'):a.at?'คุม '+(st?.def.name||'สถานี'):a.cook?'พ่อครัวโรงอาหาร':a.reader?'ดูแลสำนวน':a.k==='guard'?'เฝ้าประตู':'ว่าง';
  }
- return {hp,hunger,duty,starved:hunger===0,busy:worker?!!(a.job||a.resting||a.mode==='rest'||a.supplyRest||a.teaRest):!!(!actorStanding(a)||a.at||a.buildK||a.escort||a.cook)};
+ return {hp,hunger,duty,starved:hunger===0,busy:worker?!!(a.eatOrder||a.job||a.resting||a.mode==='rest'||a.supplyRest||a.teaRest):!!(a.eatOrder||!actorStanding(a)||a.at||a.buildK||a.escort||a.cook)};
 }
 export function teamMembers(g){return [...(g.workers?.()||[]).map(a=>({a,worker:true})),...g.crew.filter(a=>!a.self).map(a=>({a,worker:false})),...(g.guard?[{a:{...g.guard,name:g.guard.name||GUARD.name},worker:false}]:[])];}
 const portrait=(a,worker,art)=>worker?`<span class="team-face worker-face" style="background-image:url('${esc(workerSheet(a.homeZone))}')"></span>`:`<img class="team-face" src="${esc(art(a))}" alt="">`;
@@ -31,10 +32,9 @@ export function teamHudHtml(g,art){
 }
 export function teamManageHtml(g,art,selected=''){
  const members=teamMembers(g),tea=g.stations.some(s=>s.def.k==='tea'&&!s.build&&!s.repair),final=g.finalTeamSelection?.(),party=(final?g.party?.finalMembers:g.party?.members)||[],max=g.partyMax();
- return `<h2>จัดทีมประจำโซน</h2><p class="hint">ทีมต่อสู้ ${party.length}/${max} คน · จ้างบุคลากรเพิ่มได้ที่นิรา</p><div class="team-manage-grid">${members.map(({a,worker})=>{
- const s=teamStatus(g,a,worker),food=Object.keys(g.inventory).find(k=>/^food(Z[234])?$/.test(k)&&g.inventory[k]>0)||'food';
- const canFeed=worker?(g.inventory.food||0)>0&&(s.hunger<100||a.supplyRest||a.stamina<100||s.hp<100):!a.reader&&actorStanding(a)&&(g.inventory[food]||0)>0&&s.hunger<100;
+ return `<h2>จัดทีมประจำโซน</h2><p class="hint">ทีมต่อสู้ ${party.length}/${max} คน · จ้างบุคลากรเพิ่มได้ที่นิรา · ${canteenBuilt(g)?'อาหารพร้อมเสิร์ฟ '+canteenState(g).meals+' ชุด · เสบียงกลาง '+Math.floor(g.food)+' ห่อ':'เสบียงกลาง '+Math.floor(g.food)+' ห่อ'}</p><div class="team-manage-grid">${members.map(({a,worker})=>{
+ const s=teamStatus(g,a,worker),canFeed=canFeedActor(g,a.id);
  const canRest=worker?tea&&!a.teaRest:tea&&!a.reader&&actorStanding(a)&&(s.hp<100||s.hunger<100);
- return `<article class="team-manage-card${a.id===selected?' is-selected':''}" data-team-card="${esc(a.id)}">${portrait(a,worker,art)}<div><h3>${esc(a.name)}</h3><p>${esc(s.duty)}</p>${bars(s)}<small>HP ${s.hp}/100 · ความอิ่ม ${s.hunger}/100</small></div><div class="team-member-actions"><button data-team-feed="${esc(a.id)}" data-food="${worker?'food':food}" ${canFeed?'':'disabled'}>ให้ข้าวปั้น</button><button data-team-rest="${esc(a.id)}" ${canRest?'':'disabled'}>พักศาลาน้ำชา</button>${worker?`<label>หน้าที่ <select data-team-mode="${esc(a.id)}">${Object.entries(WORKER_MODES).map(([k,v])=>`<option value="${k}" ${k===a.mode?'selected':''}>${esc(v)}</option>`).join('')}</select></label>`:a.k!=='guard'?`<button data-team-party="${esc(final?a.id:a.k)}" aria-pressed="${party.includes(final?a.id:a.k)}">${party.includes(final?a.id:a.k)?'ออกจากทีมต่อสู้':'เข้าทีมต่อสู้'}</button>`:''}</div></article>`;
- }).join('')}</div><p class="hint">ให้ข้าวปั้นใช้ของในกระเป๋า · ความอิ่มเต็มจึงไม่ต้องให้อีก · ผู้ที่กำลังทำงานแสดงรูปจาง</p><button class="gold" data-close>เสร็จแล้ว</button>`;
+ return `<article class="team-manage-card${a.id===selected?' is-selected':''}" data-team-card="${esc(a.id)}">${portrait(a,worker,art)}<div><h3>${esc(a.name)}</h3><p>${esc(s.duty)}</p>${bars(s)}<small>HP ${s.hp}/100 · ความอิ่ม ${s.hunger}/100</small></div><div class="team-member-actions"><button data-team-feed="${esc(a.id)}" ${canFeed?'':'disabled'}>ให้ข้าวปั้น</button><button data-team-eat="${esc(a.id)}" ${canOrderCanteenMeal(g,a.id)?'':'disabled'}>ไปกินที่โรงอาหาร</button><button data-team-rest="${esc(a.id)}" ${canRest?'':'disabled'}>พักศาลาน้ำชา</button>${worker?`<label>หน้าที่ <select data-team-mode="${esc(a.id)}">${Object.entries(WORKER_MODES).map(([k,v])=>`<option value="${k}" ${k===a.mode?'selected':''}>${esc(v)}</option>`).join('')}</select></label><button data-team-dismiss="${esc(a.id)}">เลิกจ้าง</button>`:a.k!=='guard'?`<button data-team-party="${esc(final?a.id:a.k)}" aria-pressed="${party.includes(final?a.id:a.k)}">${party.includes(final?a.id:a.k)?'ออกจากทีมต่อสู้':'เข้าทีมต่อสู้'}</button>`:''}</div></article>`;
+ }).join('')}</div><p class="hint">ก่อนมีโรงอาหาร ให้ข้าวปั้นใช้เสบียงกลางจากพ่อค้า · หลังสร้างแล้วใช้อาหารพร้อมเสิร์ฟ (ครัวว่างจะใช้เสบียงกลาง) หรือสั่งเดินไปกิน · ผู้ที่กำลังทำงานแสดงรูปจาง</p><button class="gold" data-close>เสร็จแล้ว</button>`;
 }

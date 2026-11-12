@@ -103,11 +103,15 @@ export function simulate(options) {
   try {
     const g=setup(options),b=g.battle;
     const initial=b.foes.map(({hp,atk,boss})=>({hp,atk,boss:!!boss}));
-    let actions=0,round=1,completedRounds=0,healing=0,absorbed=0;
+    let actions=0,round=1,completedRounds=0,healing=0,absorbed=0,ultimates=0,lastUlt=b.ultimateLastTurn;
     while(!b.over&&actions<1000) {
       const turn=g.beginBattleTurns();if(!turn)throw Error('no active turn');
       round=b.turnQueue.round;
-      if(turn.side==='foe') {if(!g.runEnemyTurn())throw Error('enemy rejected');}
+      if(turn.side==='foe') {
+        if(!g.runEnemyTurn())throw Error('enemy rejected');
+        // BATTLE-FX: boss attack counter + cutscene counter (an ultimate sets b.ultimate and moves ultimateLastTurn)
+        if(b.ultimate&&b.ultimateLastTurn!==lastUlt){ultimates++;lastUlt=b.ultimateLastTurn;}
+      }
       else {
         const [action,recipient]=choose(g,options.moves);
         const target=b.foes.find(f=>f.boss&&f.hp>0)||b.foes.find(f=>f.hp>0);if(target)g.selectFoe(target.id);
@@ -124,7 +128,7 @@ export function simulate(options) {
         if(b.storyInterlude==='west-hypnosis')g.completeBattleInterlude();
       }
     }
-    return {...options,result:b.over||'timeout',rounds:completedRounds+round,bossRounds:round,actions,healing,absorbed,heroHp:b.youHp,
+    return {...options,result:b.over||'timeout',rounds:completedRounds+round,bossRounds:round,actions,healing,absorbed,heroHp:b.youHp,ultimates,firstUltAct:b.ultimateActs?.[0]||0,bossActs:Math.max(0,...b.foes.filter(f=>f.boss).map(f=>f.attacks||0)),
       fallen:(b.absentActors||[]).length,initial};
   } finally {Math.random=random;Date.now=now;}
 }

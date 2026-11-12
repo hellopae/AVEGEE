@@ -46,11 +46,13 @@ export function selectedLivingFoeId(battle) {
   const living = (battle?.foes || []).filter(f => f.hp > 0);
   return (living.find(f => f.id === battle.selectedFoeId) || living[0])?.id ?? null;
 }
-export function battleStatuses(actor, { defending = false, rage = 0 } = {}) {
+export function battleStatuses(actor, { defending = false, rage = 0, sealed = null, taunt = false } = {}) {
   if (!actor || actor.hp <= 0 || actor.morale <= 0) return [];
   const list = [];
   for (const key of ['stun','confuse']) if (actor[key] > 0) list.push({key,n:actor[key]});
   if (actor.burn?.turns > 0) list.push({key:'burn',n:actor.burn.turns});
+  if (sealed) list.push({key:sealed === 'rope' ? 'sealRope' : 'sealGauze',n:1});
+  if (taunt) list.push({key:'taunt',n:1});
   if (defending) list.push({key:'defend',n:1});
   if (rage > 0) list.push({key:'rage',n:rage});
   return list;

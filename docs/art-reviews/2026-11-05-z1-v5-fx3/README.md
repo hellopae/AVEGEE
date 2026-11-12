@@ -1,0 +1,9 @@
+# Z1-V5-FX3 evidence (5 Nov 2569)
+- 09-bridge-river-foam.mp4 / 10-canteen.mp4 / 11-fast-walk-across-map.mp4 - 390x844, 12-13 s, real game (`scripts/z1-v5-fx-evidence.py clips3`)
+- canteen-mirrored-lowered.png - canteen mirrored again, base down on the plaza (screenshot from the live game)
+- cloud-sea-ON-left-OFF-right.png, cloud-sea-ON-390.png, cloud-sea-OFF-390.png, cloud-sea-location-map.jpg - where the cloud sea is (yellow outline = the cloud-sea mask, green = what one phone screen shows around the heaven gate)
+- foam-contact-sheet-before-0-23.jpg (first 24 of 85, before) and foam-contact-sheet-36-final.jpg (all 36 kept)
+- walk-before-loader*.json / walk-after-loader*.json - same route, same machine, RSS + tile counts + stalls (`scripts/z1-v5-fx3-walk.py`)
+- construction-fallback-top-vs-test-sheets-bottom.png - build bar at 15/33/50/85 %: top = no sheets (old still picture), bottom = a throw-away test fixture of 3 stage sheets (NOT art, never committed to img/)
+
+> 5 พ.ย. 2569: คุณเป้อนุญาตให้ลบภาพ/คลิปหลักฐาน (mp4/png/jpg) ก่อน merge — เหลือ README + json · ภาพเดิมอยู่ใน git history ของ branch นี้ (ก่อน commit นี้)

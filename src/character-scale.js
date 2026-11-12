@@ -11,7 +11,10 @@ export const mapActorHeight = (key, adultHeight=82) => adultHeight*characterScal
 /** Q3: คนงานบนแผนที่ต้องสูง (ที่ตามองเห็น) เท่ายามา — ภาพคนงานเต็มช่อง ~95% ของความสูงช่อง (วัดจาก alpha ของ sheet ทั้ง 4 โซน)
  *  ส่วนยามาถูก fit ให้ความสูงที่เห็น = ความสูงที่วาดพอดี · CHARACTER_SCALE.worker ไม่แตะ (ใช้ลำดับขนาดของทีม/ห้อง) */
 export const WORKER_MAP_FILL = .95;
-export const mapWorkerHeight = (adultHeight=82) => mapActorHeight('yama', adultHeight)/WORKER_MAP_FILL;
+/** Pae 10 Nov: the worker's height WITHOUT the hat should equal Yama's height without the crown, or else 90% of Yama.  The hat + horns cover the whole head in all four
+ *  worker sheets, so the head line cannot be measured: the allowed fallback is used, worker visible height = 90% of Yama's visible height (all 4 zones). */
+export const WORKER_HEIGHT_VS_YAMA = .90;
+export const mapWorkerHeight = (adultHeight=82) => mapActorHeight('yama', adultHeight)*WORKER_HEIGHT_VS_YAMA/WORKER_MAP_FILL;
 
 /** One uniform fit preserves hierarchy and the existing perspective formation's envelope.
  * The previous largest companion was .96 of the hero reference. Never enlarge that

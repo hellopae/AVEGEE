@@ -43,7 +43,7 @@ test('latest owner lava screenshot: the old lower-road patch cannot open the wat
 
 test('owner arrows flip the requested Zone 1 facades and reserve the waterfall event clearing',()=>{
   syncSceneZone('th');
-  assert.deepEqual(STATIONS.filter(s=>s.flip).map(s=>s.k),['krata','dab','lokan','tarang']);
+  assert.deepEqual(STATIONS.filter(s=>s.flip).map(s=>s.k),['krata','dab','lokan','tea','tarang']);
   assert.equal(TOWN_HOUSE_SITES.length,10);   // Q4-8: the house the canteen replaced is gone
   assert.equal(TOWN_HOUSE_SITES.some(h=>Math.hypot(h.x-3016,h.y-1607)<4),false,'waterfall residence removed');
   for(const [x,y] of [[1551,1661],[2283,1588]])   // (1536,960) was the old canteen slot; Q4-8 moved the slot

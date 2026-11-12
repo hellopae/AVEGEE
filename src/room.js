@@ -536,13 +536,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
     if (def.k === 'canteen') {
-      for(const c of g.crew){
+      for(const c of zoneWorkers(g)){
         const pose=canteenCookPose(g,c);if(!pose)continue;
-        const [x,y]=pose.point;acts.push({y,fn:()=>{
-          const h=U*CREW_H*characterScale(c.k),base='crew-'+c.k;
-          if(pose.moving){if(!drawCrewWalk(ctx,base,px(x),py(y),h,pose.distance*U,pose.face))drawStandee(ctx,base,px(x),py(y),h,t,'',pose.face);}
-          else drawStandee(ctx,g.zone==='th'&&img(base+'-cook')?base+'-cook':base,px(x),py(y),h,t,'',pose.face);
-        }});
+        const [x,y]=pose.point;acts.push({y,fn:()=>drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false},t,U*CREW_H*characterScale('worker'))});
       }
     }
     if (def.k === 'tea') {

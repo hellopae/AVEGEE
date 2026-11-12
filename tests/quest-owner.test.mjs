@@ -3,10 +3,12 @@ import {createGame} from '../src/game.js';import {MERCHANT,syncSceneZone} from '
 import {QUESTS,SIDE_QUESTS,KIN_QUESTS,questTarget,questState,questsForActor,advanceQuest,recordQuestVerdict} from '../src/side-quests.js';import {activeQuestEntries} from '../src/quest-journal.js';
 globalThis.Image??=class{};
 const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.gameCompleted=true;g.zoneTravel.visited={th:true,asia:true,west:true,cyberhell:true};g.zoneTravel.ports={th:true,asia:true,west:true,cyberhell:true};g.merchantJourney={asia:{arrived:true},west:{arrived:true},cyberhell:{arrived:true}};return g;};
-const meet=(g,q)=>{const p=questTarget(g,q);g.zone=p.zone;syncSceneZone(p.zone);Object.assign(g.player,questTarget(g,q));};
+import {hireFor,hireAll} from './helpers/quest-hire.mjs';
+const meet=(g,q)=>{const p=questTarget(g,q);g.zone=p.zone;syncSceneZone(p.zone);hireFor(g,q);Object.assign(g.player,questTarget(g,q));};
 const reload=g=>{const h=game();assert.ok(h.restore(JSON.parse(JSON.stringify(g.snapshot()))));h.save=()=>true;h.onChange=()=>{};return h;};
 for(const q of QUESTS)test(`${q.id}: acceptance belongs only to its named regional owner and logs title once`,()=>{
  const g=game(),target=questTarget(g,q),zone=q.kin?q.from:q.zone;assert.equal(target.zone,zone);assert.equal(target.npc,q.npc);
+ assert.ok(!questsForActor(g,q.npc,zone).some(x=>x.id===q.id)||['nira','merchant'].includes(q.npc)||q.npc==='taan'&&zone==='th','PART-A: hidden until the character is hired');g.zone=zone;syncSceneZone(zone);hireFor(g,q);g.zone='th';syncSceneZone('th');
  assert.ok(questsForActor(g,q.npc,zone).some(x=>x.id===q.id));for(const wrong of ['th','asia','west','cyberhell'].filter(z=>z!==zone))assert.ok(!questsForActor(g,q.npc,wrong).some(x=>x.id===q.id));
  if(q.npc!=='merchant')assert.ok(!questsForActor(g,'merchant',zone).some(x=>x.id===q.id));
  g.zone=zone==='th'?'asia':'th';syncSceneZone(g.zone);g.player.x=target.x;g.player.y=target.y;const untouched=JSON.stringify(g.sideQuests);assert.equal(advanceQuest(g,q.id),false);assert.equal(JSON.stringify(g.sideQuests),untouched);
@@ -19,7 +21,7 @@ test('generic Cyber merchant cannot accept side missions; dedicated merchant que
  const own=SIDE_QUESTS.find(q=>q.id==='sqMerchant');meet(g,own);assert.deepEqual(questsForActor(g,'merchant').map(q=>q.id),['sqMerchant']);assert.ok(advanceQuest(g,own.id));
 });
 test('journal excludes unaccepted/completed missions, labels pending verdict and follows later TH reply routing without mutation',()=>{
- const g=game();assert.deepEqual(activeQuestEntries(g),[]);
+ const g=game();assert.deepEqual(activeQuestEntries(g),[]);hireAll(g);
  for(const q of SIDE_QUESTS){g.sideQuests[q.id]={step:2,done:false,caseId:q.caseId};}
  const before=JSON.stringify(g),entries=activeQuestEntries(g);assert.equal(entries.length,8);assert.ok(entries.every(e=>e.title&&!e.title.includes(e.id)&&e.objective.includes('ออกหมาย')&&e.objective.includes(e.name)));assert.equal(JSON.stringify(g),before);
  for(const q of SIDE_QUESTS){meet(g,q);assert.equal(advanceQuest(g,q.id,0),false);recordQuestVerdict(g,{case:q.caseId},{right:true});assert.equal(questState(g,q.id).step,3);}
@@ -28,13 +30,13 @@ test('journal excludes unaccepted/completed missions, labels pending verdict and
 });
 test('kin from-to-from routing stays intact; paused side missions remain readable but kin retain finale availability',()=>{
  const g=game();g.gameCompleted=false;g.zoneEvents.cyberhell={cyberBreach:'cleared',cyberRescue:'cleared',cyberFinal:'pending'};g.finalEventState().phase='ready';
- for(const q of QUESTS)g.sideQuests[q.id]={step:1,done:false};const entries=activeQuestEntries(g);assert.equal(entries.length,16);
+ hireAll(g);for(const q of QUESTS)g.sideQuests[q.id]={step:1,done:false};const entries=activeQuestEntries(g);assert.equal(entries.length,16);
  for(const q of QUESTS){const e=entries.find(x=>x.id===q.id);assert.equal(e.paused,!q.kin);assert.ok(questsForActor(g,q.npc,e.zone).some(x=>x.id===q.id));}
  for(const q of SIDE_QUESTS){meet(g,q);assert.equal(advanceQuest(g,q.id,0),false);}
  for(const q of KIN_QUESTS){for(const [step,z]of [[0,q.from],[1,q.to],[2,q.from]]){g.sideQuests[q.id].step=step;assert.equal(questTarget(g,q).zone,z);}g.sideQuests[q.id].step=0;meet(g,q);assert.ok(advanceQuest(g,q.id));}
 });
 test('old saved progress/rewards/choices survive helper reads and real restore, without creating quest save fields',()=>{
- const g=game();for(const [i,q]of QUESTS.entries())g.sideQuests[q.id]={step:q.kin?2:3,choice:i%2,done:false,caseId:q.caseId||null,verdict:{right:true,heaven:false,privateOpened:false}};
+ const g=game();hireAll(g);for(const [i,q]of QUESTS.entries())g.sideQuests[q.id]={step:q.kin?2:3,choice:i%2,done:false,caseId:q.caseId||null,verdict:{right:true,heaven:false,privateOpened:false}};
  const saved=g.snapshot(),before=JSON.stringify(saved.sideQuests);const h=reload(g);activeQuestEntries(h);for(const npc of ['nira','taan','plerng','kan','boon','dam','guard','merchant'])questsForActor(h,npc);assert.equal(JSON.stringify(h.snapshot().sideQuests),before);assert.deepEqual(Object.keys(h.snapshot().sideQuests[QUESTS[0].id]).sort(),Object.keys(saved.sideQuests[QUESTS[0].id]).sort());
 });
 

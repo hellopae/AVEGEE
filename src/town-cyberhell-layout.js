@@ -23,9 +23,9 @@ export const CYBERHELL_LAYOUT = {
     bossPier:spot(898,713),ferry:{from:point(898,713),to:point(1040,713)}},
   // The central reserved stripe is only 70x6 source pixels; see placement report.
   dais:{...spot(742,425),w:307},   // centre of the big judgement circle
-  crew:{nira:point(772.4,382.2),taan:point(1280,382),dam:point(210,441),
+  crew:{nira:point(772.4,382.2),taan:[1662,1052],dam:point(210,441),
     plerng:point(235,230),kan:point(850,565),boon:point(1040,190)},
-  crewStage:{nira:[1915,948,1945,974]},
+  crewStage:{nira:[1915,948,1945,974],taan:[1650,1040,1668,1054]},
   merchant:spot(704,636),   // Q4-7 (owner arrow, 16.09.28): from beside the library to the lower-left plaza west of the central stairs (world ~1760,1590)
   guard:point(745,848),challenge:point(810,857),
   frontier:{...site(768,1018,60,768,986,.8),reach:105},

@@ -17,11 +17,11 @@ test('TEAM current-zone actors have real vitals and duties; no other zone roster
  const manage=teamManageHtml(g,()=>'/portrait.png');assert.doesNotMatch(manage,/data-hire|data-power-hire/);assert.match(manage,/data-team-party/);assert.match(manage,/data-team-mode/);
  assert.ok(teamMembers(g).some(x=>x.a.id===g.guard.id));assert.ok(teamMembers(g).some(x=>x.a.k==='nira'));
 });
-test('TEAM starvation stays visible after kitchen refills; manual rice clears only selected worker and uses inventory once',()=>{
+test('TEAM starvation stays visible after kitchen refills; manual rice clears only selected worker and uses central stock once',()=>{
  const g=game();g.coin=50000;g.bossCleared.th=true;g.hireWorker();g.hireWorker();g.food=0;g.inventory.food=2;
  for(const w of g.workers()){w.supplyRest=true;w.hunger=0;w.job=null;}
  g.food=10;assert.equal(teamStatus(g,g.workers()[0],true).starved,true);assert.match(teamHudHtml(g,()=>''),/is-starved/);
- assert.equal(g.feedWorker(g.workers()[0].id),true);assert.equal(g.inventory.food,1);assert.equal(g.workers()[0].supplyRest,false);assert.equal(g.workers()[1].supplyRest,true);
+ assert.equal(g.feedWorker(g.workers()[0].id),true);assert.equal(g.inventory.food,2);assert.equal(g.food,9);assert.equal(g.workers()[0].supplyRest,false);assert.equal(g.workers()[1].supplyRest,true);
  assert.equal(teamStatus(g,g.workers()[0],true).hunger,40);assert.equal(teamStatus(g,g.workers()[1],true).hunger,0);
 });
 test('TEAM crew rice follows inventory API and cannot feed a full actor or a reader',()=>{

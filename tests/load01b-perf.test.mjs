@@ -25,7 +25,7 @@ test('LOAD-01b: bounding-box reject in townFloorAt never changes which points ar
 
 test('LOAD-01b: terrain chunks and preview are graded in time slices before they count as ready',()=>{
   const terrain=read('src/town-terrain.js'),light=read('src/town-lighting.js');
-  assert.match(terrain,/await prepareTownLighting\(ready,\[r\.x,r\.y,r\.w,r\.h\]\);\s*if\(!current\(\)\)return;\s*done\(true,ready\)/);
+  assert.match(terrain,/await prepareTownLighting\(ready,\[r\.x,r\.y,r\.w,r\.h\],bakeBudget\);\s*if\(!current\(\)\)return;\s*done\(true,ready\)/);
   assert.match(terrain,/await prepareTownLighting\(ready,\[0,0,TOWN_SIZE\.w,TOWN_SIZE\.h\]\);finish\(null,ready\)/);
   assert.match(light,/export async function prepareTownLighting/);
   assert.match(light,/job\.run\(Infinity\)/,'drawHellTerrain still falls back to a synchronous bake, so nothing can ever be missing');
@@ -34,6 +34,6 @@ test('LOAD-01b: terrain chunks and preview are graded in time slices before they
 test('LOAD-01b: full-bleed opaque dialogs throttle the hidden map, other dialogs do not',()=>{
   const ui=read('src/ui.js');
   assert.match(ui,/function render\(c, game, now, \.\.\.rest\) \{ if \(mapDrawDue\(now\)\) renderMap\(c, game, now, \.\.\.rest\); \}/);
-  assert.match(ui,/w \* h < c\.width \* c\.height \* 0\.95\) return false/,'partial dialogs keep the map drawing every frame');
+  assert.match(ui,/w \* h < c\.width \* c\.height \* OCCLUDE_MIN_COVER\) return false/,'partial dialogs keep the map drawing every frame');
   assert.match(ui,/Number\(parts\[3\]\) >= 1/,'translucent dialogs keep the map drawing every frame');
 });

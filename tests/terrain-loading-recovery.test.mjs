@@ -1,3 +1,4 @@
+import './helpers/zone1-ground-v5.mjs';   // this file tests the v5 ground set (see the helper)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 

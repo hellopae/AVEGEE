@@ -1,4 +1,4 @@
-import { ENCOUNTER_BALANCE, encounterBalanceKey } from './encounter-balance.js';
+import { ENCOUNTER_BALANCE, encounterBalanceKey, frontierSplit } from './encounter-balance.js';
 // C1: caps refer to the whole team, including Yama and the automatic Guard.
 export function partyCap(game) {
   const zones = ['th','asia','west','cyberhell'];
@@ -10,7 +10,8 @@ export const selectablePartyMax = game => partyCap(game) - 1 - (game.guard ? 1 :
 const interpolate = (n, a, b, c) => n <= 5 ? a + (b-a) * (n-3)/2 : b + (c-b) * (n-5)/2;
 export function encounterProfile(battle, count) {
   const n = Math.max(3, Math.min(7, count));
-  if (battle.kind === 'frontier') return { hp:1, adds:Math.floor((n-3)/2), kind:'frontier' };
+  // BATTLE-FX: a frontier fight rolls its own 1-3 demons (battle.frontierCount, built in startFrontierBattle) so nothing is added by party size; an older saved fight without the field keeps the old rule
+  if (battle.kind === 'frontier') return { hp:1, adds:battle.frontierCount ? 0 : Math.floor((n-3)/2), kind:'frontier' };
   const breach = battle.kind === 'frontierBreach' || /Breach$/.test(battle.eventKey || '');
   if (breach) return { hp:interpolate(n,1,1.35,1.7), adds:Math.floor((n-3)/2), kind:'breach' };
   if (battle.eventKey === 'thBorderBoss') return { hp:interpolate(n,1,1.25,1.55), adds:n >= 7 ? 1 : 0, kind:'boss' };
@@ -31,15 +32,18 @@ export function scaleEncounter(battle, count) {
   if (source) for (let i=0;i<adds;i++) battle.foes.push({ ...source, id:`c1-${wave}-${i}`, stun:0, confuse:0, speed:Math.min(8,source.speed || 8) });
   // Keep approach waves intact; hypnosis is its own solo-Yama enemy group.
   const tuning = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)]?.[count];
+  const split = battle.kind === 'frontier' && battle.frontierCount ? frontierSplit(count, battle.frontierCount) : null;   // share the tuned total out among the rolled demons
   if (tuning) for (const foe of battle.foes) {
     // Preserve existing pre-damage (e.g. evidence prep) while tuning full HP.
     const preparedDamage = foe.maxHp - foe.hp;
-    foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp));
+    // BATTLE-FX: optional bossHp / addsHp split — a boss that lives long enough to use its cutscene move twice (see BOSS_ULTIMATE_RHYTHM in data.js)
+    // while the attendants die sooner, so the whole fight keeps about the same total HP and length.
+    foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp * (split?.hp ?? 1) * (foe.boss ? tuning.bossHp ?? 1 : tuning.addsHp ?? 1)));
     foe.hp = Math.max(1, foe.maxHp - preparedDamage);
     const attackRange = [tuning.atkLow ?? tuning.atk, tuning.atkHigh ?? tuning.atk];
     // Zone-boss rematch foes carry no atk of their own (game.js falls back to [14, 22 + zoneIndex*3]); scale that same base.
     const baseAtk = foe.atk || (battle.kind === 'zoneBoss' ? [14, 22 + ['th','asia','west','cyberhell'].indexOf(battle.zone) * 3] : battle.foeAtk);
-    if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index])));
+    if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index] * (split?.atk ?? 1))));
   }
   battle.balance = { version:1, wave, partySize:count, ...profile, adds };
 }

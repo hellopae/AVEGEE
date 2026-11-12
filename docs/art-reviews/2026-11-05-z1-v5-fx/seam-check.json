@@ -1,0 +1,9 @@
+{
+  "samples": 839,
+  "median_mid_frame": 0.05939407149084568,
+  "median_around_frame_changes": 0.05904896832316187,
+  "median_around_batch_seams": 0.05892182505085731,
+  "max_all": 0.11653589072943912,
+  "p95_all": 0.07077157802964254,
+  "ratio_seam_to_mid": 0.9920489296636086
+}

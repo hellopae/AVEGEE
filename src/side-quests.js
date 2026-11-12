@@ -1,8 +1,12 @@
 import {actorStanding} from './actor-recovery.js';
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
-import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, crewName } from './data.js';
+import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, ZONES, crewName } from './data.js';
+import { rosterId } from './roster.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
 import { isTownZone } from './zone-skin.js';
+import { questBonus, questSkillOf, questNeedsFight } from './quest-rewards.js';
+import { unlockQuestSkill } from './combat-skills.js';
+import { QUEST_FIGHTS } from './quest-fights.js';
 const sideRules = [
  ['sqNira','th','nira','swapdoc','cyberBreach'],['sqTaan','asia','taan','chainhand','cyberBreach'],
  ['sqPlerng','west','plerng','hirefire','cyberBreach'],['sqKan','asia','kan','silentman','cyberBreach'],
@@ -18,11 +22,14 @@ const kinRules = [
 export const SIDE_QUESTS=sideRules.map(([id,zone,npc,caseId,requires])=>({...SIDE_CONTENT.find(c=>c.id===id),id,zone,npc,caseId,requires}));
 export const KIN_QUESTS=kinRules.map(([id,from,to,npc,item])=>({...KIN_CONTENT.find(c=>c.id===id),id,from,to,npc,item,kin:true}));
 export const QUESTS=[...SIDE_QUESTS,...KIN_QUESTS];
+function addItems(g,items){for(const[k,n]of Object.entries(items||{}))g.inventory[k]=(g.inventory[k]||0)+n;}
 export function initializeQuests(g,saved={}) {
   g.sideQuests={};
   for(const q of QUESTS){const s=saved.sideQuests?.[q.id];if(s&&typeof s==='object')g.sideQuests[q.id]={
     step:Math.max(0,Math.min(q.kin?3:5,Math.trunc(s.step)||0)),choice:[0,1].includes(s.choice)?s.choice:null,
-    done:!!s.done,caseId:s.caseId||null,verdict:s.verdict?structuredClone(s.verdict):null};}
+    done:!!s.done,caseId:s.caseId||null,verdict:s.verdict?structuredClone(s.verdict):null,
+    // QUEST-REWARDS: fought = the end-of-quest fight was won · reward = what the closing paid (null on saves made before the reward table)
+    ...(s.fought?{fought:true}:{}),...(s.fightLost&&!s.fought?{fightLost:true}:{}),...(s.reward&&typeof s.reward==='object'?{reward:structuredClone(s.reward)}:{})};}
   g.merchantJourney=structuredClone(saved.merchantJourney||{asia:{elapsed:0,arrived:false}});
   // Existing saves already showed the shop. Do not revoke it from a legacy visit.
   if(!saved.e1Version && saved.zone && g.zoneTravel?.visited?.asia)g.merchantJourney.asia={elapsed:90000,arrived:true};
@@ -32,6 +39,27 @@ export function initializeQuests(g,saved={}) {
   g.questPortsOpened=!!saved.questPortsOpened;
   g.signalChoices={...saved.signalChoices};
   unlockQuestPorts(g);
+  grantRetroQuestRewards(g);
+}
+// QUEST-REWARDS: a quest closed before the reward table existed gets the tier bonus (and the quest's ultimate, if it has one) ONCE when the save loads.
+// `reward` is the latch: restoring the same save again, or saving and reloading, never pays twice.
+function grantRetroQuestRewards(g){
+  for(const q of QUESTS){
+    const s=g.sideQuests?.[q.id];
+    if(!s?.done||s.reward)continue;
+    const bonus=questBonus(q,s),skill=questSkillOf(q.id);
+    g.coin+=bonus.coin;addItems(g,bonus.items);
+    if(skill)unlockQuestSkill(g,skill);
+    s.reward={coin:bonus.coin,order:0,exp:0,items:{...bonus.items},skill:skill||null,retro:true,seen:false};
+    if(skill)s.fought=true;
+    g.log(`🎁 รางวัลย้อนหลังของภารกิจ “${q.title}”`,'good');
+  }
+}
+/** retro rewards the player has not been told about yet (the UI shows one notice window, then calls ackRetroQuestRewards) */
+export const pendingRetroQuestRewards=g=>QUESTS.filter(q=>g.sideQuests?.[q.id]?.reward?.retro&&!g.sideQuests[q.id].reward.seen);
+export function ackRetroQuestRewards(g){
+  let n=0;for(const q of pendingRetroQuestRewards(g)){g.sideQuests[q.id].reward.seen=true;n++;}
+  if(n){g.save();g.onChange();}return n;
 }
 export function unlockQuestPorts(g){
   if(g.questPortsOpened||!(g.gameCompleted||g.zoneEvents?.cyberhell?.cyberRescue==='cleared')||!g.zoneTravel)return;
@@ -43,9 +71,9 @@ export const questState=(g,id)=>g.sideQuests?.[id]||{step:0,choice:null,done:fal
 export function questDialogue(g,q){
   const s=questState(g,q.id);
   if(!q.kin){
-    if(q.id==='sqDam'&&s.step>=3&&s.verdict&&!s.verdict.right)return ['ดำ: "ผมไม่ได้โทษท่านครับ ... บอกเฉย ๆ"'];
+    if(q.id==='sqDam'&&s.step>=3&&s.verdict&&!s.verdict.right)return ['ดำ: "ผมไม่ได้โทษท่านครับ แค่อยากบอกให้ท่านรู้ว่า ลุงคนนั้นไม่ได้ทำอะไรผิดเลย"'];
     const lines=[...(q.dialogue[String(Math.min(s.step+1,5))]||[])];
-    if(q.id==='sqKan'&&s.step===3&&s.verdict?.privateOpened)lines.unshift('ซาโตริ: "เรื่องนี้เขายังไม่ได้อนุญาตให้ใครรู้"');
+    if(q.id==='sqKan'&&s.step===3&&s.verdict?.privateOpened)lines.unshift('ซาโตริ: "ท่านเปิดเรื่องที่เขายังไม่ได้อนุญาตให้ใครรู้ไปแล้วนะครับ"');
     const reply=q.id==='sqBoon'?(s.choice===0&&s.step===2||s.choice===1&&s.step===3):s.step>=4;
     return reply?[...(q.responses?.[s.choice]||[]),...lines]:lines;
   }
@@ -64,8 +92,33 @@ export function questDialogue(g,q){
   }
   return lines;
 }
+/** zone of the character the quest currently points at (same rule as questTarget, without the walk lookup) */
+export const questTargetZone=(g,q)=>{const s=questState(g,q.id);return q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);};
+/** zone of the character who gives the quest (the starting point). Hand-off steps point somewhere else: see questTargetZone. */
+export const questOwnerZone=q=>q.kin?q.from:q.zone;
+const npcHiredIn=(g,npc,zone)=>{
+  if(npc==='nira'||npc==='merchant')return true;
+  if(zone===g.zone)return npc==='guard'?!!g.guard:(g.crew||[]).some(c=>c.k===npc);
+  return !!g.roster?.[rosterId(zone,npc)];
+};
+/** PART-A (10 พ.ย. 2569, changed 11 พ.ย. by Khun Pae): a quest exists once the character who GIVES it (starting point) is hired.
+ *  Nira (follows every branch) and the merchant (not hireable) always count as hired; Taan / Nira given at the start of a branch are in `crew` already.
+ *  Other branches are read from the roster (owned actors only), the current branch from `crew` / `guard`. Progress is never deleted. */
+export function questCharacterHired(g,q){
+  return !!q&&npcHiredIn(g,q.npc,questOwnerZone(q));
+}
+/** Cross-zone hand-off (kin quests step 1, sqBoon/sqPlerng step 4): the quest stays visible, but the hand-off only works once the receiver in the
+ *  destination zone is hired. Returns null when nothing blocks, else {name,zone,zoneName,text} for the journal / tracker. */
+export function questHandoffNeed(g,q){
+  if(!q||!questCharacterHired(g,q))return null;
+  const zone=questTargetZone(g,q);
+  if(npcHiredIn(g,q.npc,zone))return null;
+  const name=crewName(CREW.find(c=>c.k===q.npc),zone),zoneName=ZONES.find(z=>z.k===zone)?.name||zone;
+  return {name,zone,zoneName,text:`ต้องจ้าง${name}ที่${zoneName}ก่อนจึงฝากของได้`};
+}
 export function questUnlocked(g,q){
   if(!q)return false;
+  if(!questCharacterHired(g,q))return false;
   if(q.kin)return (g.gameCompleted||g.zoneEvents?.cyberhell?.cyberBreach==='cleared')&&[q.from,q.to].every(z=>g.zoneTravel?.visited?.[z]&&g.zoneTravel?.ports?.[z]);
   return g.gameCompleted||g.zoneEvents?.cyberhell?.[q.requires]==='cleared';
 }
@@ -74,7 +127,7 @@ export function questsPaused(g){
   return !g.gameCompleted && ((phase&&!['locked','completed'].includes(phase))||['pending','active'].includes(g.zoneEvents?.cyberhell?.cyberFinal));
 }
 export function questTarget(g,q){
-  const s=questState(g,q.id),zone=q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);
+  const zone=questTargetZone(g,q);
   const npc=q.npc;
   const actor=npc==='guard'?g.guard:(g.crew||[]).find(c=>c.k===npc);
   const def=CREW.find(c=>c.k===npc);
@@ -86,13 +139,12 @@ export function questTarget(g,q){
 }
 // Current target ownership includes later cross-zone replies; paused quests remain readable.
 export function questsForActor(g,npc,zone=g.zone){
-  return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done).filter(q=>{
+  return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)).filter(q=>{
     const target=questTarget(g,q);return target.npc===npc&&target.zone===zone;
   });
 }
 export const questNear=(g,q)=>{const p=questTarget(g,q);return g.zone===p.zone&&(p.npc!=='merchant'||merchantAvailable(g))&&Math.hypot(g.player.x-p.x,g.player.y-p.y)<=150;};
-export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
-const addItems=(g,items)=>{for(const[k,n]of Object.entries(items||{}))g.inventory[k]=(g.inventory[k]||0)+n;};
+export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
 function award(g,q,s){
   // Claim latch is written before granting anything. Reload and repeated clicks cannot pay twice.
   if(s.done)return false;s.done=true;
@@ -115,11 +167,17 @@ function award(g,q,s){
   const helperExp=q.kin || ['sqTaan','sqPlerng','sqKan','sqBoon'].includes(q.id) ||
     (q.id==='sqDam'&&s.verdict?.right&&a) || (q.id==='sqGuard'&&a);
   if(helperExp)addItems(g,{food:2});
-  g.coin+=coin;g.order=Math.min(100,g.order+order);addItems(g,items);g.gainExp(30,'ภารกิจ');
-  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30`,'good');return true;
+  // QUEST-REWARDS: tier bonus on top of the reward above (table in quest-rewards.js) · the receipt is kept so the closing window and the journal can show it
+  const bonus=questBonus(q,s),given={...items};
+  if(helperExp)given.food=(given.food||0)+2;
+  for(const[k,n]of Object.entries(bonus.items))given[k]=(given[k]||0)+n;
+  coin+=bonus.coin;
+  g.coin+=coin;g.order=Math.min(100,g.order+order);addItems(g,items);addItems(g,bonus.items);g.gainExp(30,'ภารกิจ');
+  s.reward={coin,order,exp:30,items:given,skill:questSkillOf(q.id)&&s.fought?questSkillOf(q.id):null,retro:false};
+  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของรางวัลเพิ่ม':''}`,'good');return true;
 }
 export function advanceQuest(g,id,choice=null){
-  const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
+  const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||questHandoffNeed(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
   const s=g.sideQuests[id] ||= {step:0,choice:null,done:false};if(s.done)return false;
   const accepting=s.step===0;
   const validChoice=[0,1].includes(choice);
@@ -138,14 +196,32 @@ export function advanceQuest(g,id,choice=null){
   else if(s.step===3){
     if(q.id==='sqDam'&&!s.verdict?.right){s.step=5;award(g,q,s);}
     else{
-      if(q.id!=='sqBoon'&&!validChoice)return false;
-      if(q.id!=='sqBoon')s.choice=choice;
+      // QUEST-REWARDS: the three hard quests end in a fight. The fight start keeps step 3; winning (endBattle -> finishQuestFight) moves to step 4.
+      // A lost fight keeps the saved choice, so the retry needs no new choice.
+      const fight=questNeedsFight(q.id)&&!s.fought,retry=fight&&q.id!=='sqBoon'&&!validChoice&&[0,1].includes(s.choice);
+      if(q.id!=='sqBoon'&&!validChoice&&!retry)return false;
+      if(fight&&g.battle)return false;
+      const before=s.choice;
+      if(q.id!=='sqBoon'&&!retry)s.choice=choice;
       if(q.id==='sqMerchant'&&choice===1){if(g.coin<60)return false;g.coin-=60;}
-      s.step=4;
+      if(fight){if(!g.startQuestFight(q.id)){s.choice=before;return false;}}
+      else s.step=4;
     }
   }else if(s.step===4){s.step=5;award(g,q,s);}
   if(accepting)g.log(`รับภารกิจ: ${q.title}`,'act');
   g.save();g.onChange();return true;
+}
+/** Called by endBattle() for a questFight. Win: step 3 -> 4 and the quest's ultimate is learned. Lose / flee: nothing is lost, the quest stays at step 3. */
+export function finishQuestFight(g,B){
+  const q=QUESTS.find(x=>x.id===B.questId),s=g.sideQuests?.[B.questId];
+  if(!q||!s||s.done||s.step!==3)return false;
+  // PART-A: a lost / fled fight is remembered (the quest window then offers "สู้อีกครั้ง" instead of the first-time talk button) — the choice and step stay
+  if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังอยู่ — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');g.save();return false;}
+  s.fought=true;s.step=4;delete s.fightLost;
+  const skill=questSkillOf(q.id);
+  g.log(`⚔️ ชนะ${QUEST_FIGHTS[q.id]?.title||'ศัตรู'}`,'good');
+  if(skill&&unlockQuestSkill(g,skill))g.log(QUEST_FIGHTS[q.id].unlockLog,'good');
+  g.save();return true;
 }
 export function recordQuestVerdict(g,soul,r){
   const q=SIDE_QUESTS.find(q=>q.caseId===soul.case),s=q&&g.sideQuests[q.id];

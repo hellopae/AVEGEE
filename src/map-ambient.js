@@ -25,6 +25,15 @@ export const MAP_FX = Object.freeze({
     tint: Object.freeze({ th:'0,0,0', asia:'0,0,0', west:'0,0,0', cyberhell:'0,0,0' }),
     fallbackTint: '0,0,0',
     peakByZone:Object.freeze({th:.32,asia:.20,west:.20,cyberhell:.20}),
+    // Z1-V5-FX (owner 5 Nov): Thai shadows keep their strength (peakByZone.th = .32) but take the shape of real clouds and cover more ground.
+    // Their silhouettes are cut from the painted clouds (img/map-zone1/v5-fx/cloud-shadow-N.webp, scripts/build-cloud-shadows.py).
+    // Sizes follow sqrt(visible w x h) so a phone and a desktop window show about the same share of shadow. Other zones keep the values above.
+    th:Object.freeze({
+      cell:[.6,.5],                 // denser lattice than the gradient blobs (.72 x .62)
+      fit:.82,                      // patch width = fit x sqrt(view.w x view.h) x spread; height follows the cloud's own aspect
+      spread:[.8,1.25], jitter:.22, oddFill:.5, tallness:[.85,1.2],
+      art:Object.freeze({dir:'img/map-zone1/v5-fx/',files:Object.freeze(['cloud-shadow-1.webp','cloud-shadow-2.webp','cloud-shadow-3.webp','cloud-shadow-4.webp','cloud-shadow-5.webp'])}),
+    }),
   }),
   snow: Object.freeze({
     max: 1100,                      // particle ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
@@ -284,14 +293,14 @@ export function ambientParticles(zone, time, W, H, limit = null) {
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
  *  Snow (zone 3) is laid out over the VISIBLE part of the area in CSS pixels, so its density and flake size are the
  *  same at any zoom; the embers and dust of zones 1-2 keep their original world-space layout. */
-export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null) {
+export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null, { quiet = false } = {}) {
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
   const viewZone=zone==='west'||zone==='cyberhell',view=viewZone?viewMetrics(ctx,aw,ah):null;
   if(viewZone){
     if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H,maxParticles);
-    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles);
+    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles,quiet);
   }else{
     const count=biomeBudget(ctx,W,H,MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
     for(const p of ambientParticles(zone,time,aw,ah,count)){
@@ -326,7 +335,7 @@ function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null){
 }
 
 /** Zone 4: heavy slanted rain over the visible area, plus lightning: a jagged bolt and a faint whole-screen flash. */
-function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
+function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null,quiet=false){
   const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,R.max)));
   const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
   ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;
@@ -340,7 +349,7 @@ function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
     ctx.stroke();
   }
   ctx.globalAlpha=1;
-  const strike=stormStrike(time),flash=stormFlash(time);
+  const strike=quiet?null:stormStrike(time),flash=quiet?0:stormFlash(time);   // quiet = paused scene: the rain holds, but a flash never freezes on screen
   if(flash){ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(view.x,view.y,view.w,view.h);}
   if(strike&&strike.age<MAP_FX.storm.boltMs){
     const bx=view.x+view.w*strike.x,bottom=view.y+view.h*(.5+.25*seed(strike.n+3.1));
@@ -362,6 +371,9 @@ export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
 }
 let weatherSprites;
 const cloudLayers=new WeakMap();
+/** FX5 (owner 23:47): in the battle / interrogation scenes the Thai cloud shadows must be plainly visible (the painted backdrops are dark and busy):
+ *  stronger peak, bigger patches that cover ~40% of the picture, a faster drift (one pass in ~13 s). The MAP keeps MAP_FX.cloud.th untouched. */
+export const SCENE_CLOUD = Object.freeze({ th: Object.freeze({ peak: .55, fit: 1.3, cell: [.62, .52], oddFill: .7, spread: [.85, 1.3], speed: 1.35 }) });
 export const cloudOpacityForZone=zone=>MAP_FX.cloud.peakByZone[zone]??MAP_FX.cloud.peak;
 const weatherClocks=new WeakMap();
 const driftClocks=new WeakMap();
@@ -378,6 +390,35 @@ const SHADOW_SHAPES=[
   [[.10,.40,.09,.08],[.24,.45,.18,.17],[.38,.35,.18,.22],[.50,.48,.18,.19],[.66,.61,.23,.25],[.82,.59,.14,.16],[.91,.70,.07,.08],[.56,.79,.12,.10],[.30,.16,.10,.07]],
   [[.10,.67,.09,.08],[.24,.62,.17,.16],[.39,.65,.20,.23],[.50,.48,.18,.18],[.63,.34,.20,.24],[.78,.37,.16,.16],[.91,.29,.08,.07],[.34,.85,.11,.08],[.66,.12,.11,.07]],
 ];
+// Real-cloud shadow textures for the Thai town (see MAP_FX.cloud.th). null = still loading, false = unavailable (old gradient blobs are used).
+let townShadow={state:'idle',sprites:null};
+function townShadowSprites(){
+  const art=MAP_FX.cloud.th.art;
+  if(townShadow.state==='ready')return townShadow.sprites;
+  if(townShadow.state==='failed')return false;
+  if(townShadow.state==='loading')return null;
+  if(typeof Image==='undefined'||typeof document==='undefined'){townShadow.state='failed';return false;}
+  townShadow.state='loading';
+  Promise.all(art.files.map(f=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('cloud shadow '+f));im.src=art.dir+f;}))).then(images=>{
+    const out=[];
+    for(const im of images)for(const flip of [false,true]){
+      // Every texture twice (mirrored copy baked once) so neighbouring patches never repeat the same silhouette.
+      const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const g=c.getContext('2d');
+      if(!g)throw new Error('canvas');
+      if(flip){g.translate(c.width,0);g.scale(-1,1);}
+      g.drawImage(im,0,0);c.aspect=c.width/c.height;out.push(c);
+    }
+    townShadow={state:'ready',sprites:out};
+  }).catch(()=>{townShadow={state:'failed',sprites:null};});
+  return null;
+}
+/** State of the real-cloud shadow textures: 'idle' | 'loading' | 'ready' | 'failed' (test / evidence hook). */
+export const townCloudShadowState=()=>townShadow.state;
+/** Patch size (world units) of a textured shadow: width from the visible area, height from the cloud's own proportions. */
+export function cloudPatchSize(spec,view,aspect,widthFactor,tallFactor,breath=1){
+  const pw=Math.sqrt(view.w*view.h)*spec.fit*widthFactor*breath;
+  return [pw,pw/aspect*tallFactor];
+}
 const sprites=new Map();
 function blobSprites(rgb,kind='shadow'){
   const key=kind+'|'+rgb;
@@ -436,11 +477,12 @@ function drawPatchField(ctx,view,spec,off,t,bankAt){
   const j0=Math.floor((view.y-off.y)/ch)-1,j1=Math.ceil((view.y+view.h-off.y)/ch)+1;
   for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){
     if(mod(i+j,2)&&cellHash(i,j,1)>spec.oddFill)continue;
-    const bank=bankAt((i+.5)*cw+off.x),sprite=bank?.[Math.floor(cellHash(i,j,2)*3)%3];
+    const bank=bankAt((i+.5)*cw+off.x),sprite=bank?.[Math.floor(cellHash(i,j,2)*bank.length)%bank.length];
     if(!sprite)continue;
     const cx=off.x+(i+.5+(cellHash(i,j,3)-.5)*2*spec.jitter)*cw,cy=off.y+(j+.5+(cellHash(i,j,4)-.5)*2*spec.jitter)*ch;
     const f=spec.spread[0]+cellHash(i,j,5)*(spec.spread[1]-spec.spread[0]),breath=1+spec.breathe*Math.sin(t*.07+cellHash(i,j,6)*6.28);
-    const pw=view.w*spec.size[0]*f*breath,ph=view.h*spec.size[1]*(spec.spread[0]+cellHash(i,j,7)*(spec.spread[1]-spec.spread[0]))*breath;
+    const [pw,ph]=spec.fit?cloudPatchSize(spec,view,sprite.aspect||2,f,spec.tallness[0]+cellHash(i,j,7)*(spec.tallness[1]-spec.tallness[0]),breath)
+      :[view.w*spec.size[0]*f*breath,view.h*spec.size[1]*(spec.spread[0]+cellHash(i,j,7)*(spec.spread[1]-spec.spread[0]))*breath];
     if(cx+pw/2<view.x||cx-pw/2>view.x+view.w||cy+ph/2<view.y||cy-ph/2>view.y+view.h)continue;
     ctx.globalAlpha=spec.peak*(.88+.12*cellHash(i,j,8));
     ctx.drawImage(sprite,cx-pw/2,cy-ph/2,pw,ph);
@@ -483,7 +525,7 @@ export function weatherLabelBounds(rects){
   }return out;
 }
 export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
-  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled()}={}) {
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true,sceneClouds=false}={}) {
   if(!enabled||!(W>0&&H>0))return;
   const art=weatherArt();if(!art)return;
   let clock=weatherClocks.get(ctx);
@@ -498,11 +540,17 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   const halves=regions||[{zone,from:0,to:1}];
   // Cloud shadows come last in the actor pass, so floor, buildings and characters darken together;
   // Text retains its dark outline; HUD buttons are DOM layers above this canvas.
-  const view=viewMetrics(ctx,W,H),cloud=MAP_FX.cloud;
+  const view=viewMetrics(ctx,W,H),base=MAP_FX.cloud;
+  // Z1-V5-FX: a map that is only Thai ground uses real-cloud shadows once their textures are loaded (none drawn while they load;
+  // old gradient blobs if they cannot load). Frontier halves that mix zones, and every other zone, keep the old blobs and values.
+  const thaiOnly=halves.every(r=>r.zone==='th'),real=thaiOnly?townShadowSprites():false;
+  const sceneTh=sceneClouds&&real&&thaiOnly?SCENE_CLOUD.th:null;
+  const cloud=real?{...base,...base.th,...(sceneTh||{})}:base;
   let cloudLayer=null;
-  if(view){
-    const off=driftOffset(ctx,'cloud',time,[cloud.drift[0]*view.w*cloud.cell[0],cloud.drift[1]*view.h*cloud.cell[1]],!reduced&&!paused);
-    const bankAt=cx=>blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
+  if(view&&real!==null&&clouds){
+    // Wind speed keeps the old lattice so the drift is the same for every zone.
+    const off=driftOffset(ctx,'cloud',time,[base.drift[0]*view.w*base.cell[0]*(sceneTh?.speed||1),base.drift[1]*view.h*base.cell[1]*(sceneTh?.speed||1)],!reduced&&!paused);
+    const bankAt=cx=>real||blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
     cloudLayer=composedClouds(ctx,view,cloud,off,t,bankAt);
     if(!cloudLayer)drawPatchField(ctx,view,{...cloud,peak:Math.min(...halves.map(r=>cloudOpacityForZone(r.zone)))},off,t,bankAt);
     ctx.globalAlpha=1;
@@ -511,7 +559,7 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
     const style=WEATHER_ZONES[region.zone];if(!style)continue;
     const left=region.from*W,rw=(region.to-region.from)*W;
     ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
-    if(cloudLayer&&view){ctx.globalAlpha=cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
+    if(cloudLayer&&view){ctx.globalAlpha=sceneTh&&region.zone==='th'?sceneTh.peak:cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
       // Soft textured shafts follow visible scene coordinates and remain clipped to this biome.

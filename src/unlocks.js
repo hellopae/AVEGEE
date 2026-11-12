@@ -27,6 +27,7 @@ export const buildUnlockLv = k => LV[k] ?? 1;
 /** ล็อกอยู่ไหม — สร้างแล้วถือว่าไม่ล็อก (เซฟเก่าที่สร้างไปก่อน level ถึงต้องใช้ได้ต่อ) */
 export function buildLocked(g, k) {
   if (g.stations.some(s => s.def.k === k)) return false;
+  if(k==='canteen'&&!(g.zoneEvents?.th?.frontierBreach==='cleared'||g.bossCleared?.th))return true;
   return (g.level || 1) < buildUnlockLv(k);
 }
 

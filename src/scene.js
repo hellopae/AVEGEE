@@ -12,8 +12,13 @@ import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
+import { DAIS_GEOMETRY, daisWorldPoint } from './town-dais-geometry.js';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
+import { drawTownFluidFx } from './town-fluid-fx.js?v=v5fx';
+import { mapDprCap } from './graphics-setting.js';   // GFX-1110
+import { addGroundSpriteLayers } from './town-ground-sprites.js';
+import { drawConstruction } from './construction-sheets.js';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
@@ -29,7 +34,7 @@ import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
+         drawFire, drawVignette, drawScreenVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk,canWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
@@ -74,9 +79,11 @@ export function mapViewport(width, height, bw, bh, camera) {
 }
 
 /** Resize only when viewport or DPR changes, never once per animation frame. */
+// Backing-store density of the map canvas comes from the Graphics setting (High = 2, Performance = 1.5); ?mapdpr=1..2 in the URL still wins (see graphics-setting.js).
+// Measured on an Intel UHD 630 at a 1792x958 window: DPR 2 = 6.9 MP per full-screen pass, 1.5 = 3.9 MP.
 export function prepareMapCanvas(ctx) {
   const cv = ctx.canvas, view = mapViews.get(cv);
-  const dpr = Math.min(2, globalThis.devicePixelRatio || 1);
+  const dpr = Math.min(mapDprCap(), globalThis.devicePixelRatio || 1);
   const width = view ? Math.max(1, Math.round(view.width * dpr)) : SCENE.w;
   const height = view ? Math.max(1, Math.round(view.height * dpr)) : SCENE.h;
   if (cv.width !== width) cv.width = width;
@@ -272,13 +279,15 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
-  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
+  if(town&&townTerrainImage())drawTownFluidFx(ctx,t,{reduced,paused:!!g.paused});   // Z1-V5-FX: painted lava / river / fall / cloud-sea frames
+  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground (off while the painted frames own them)
   drawTownGround(ctx, g, t);
   if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
+  let drawDais=null;   // FB-UI 5: the dais joins the y-sorted layer (see below) instead of lying under every actor
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
     const dais=newDais||img('prop-throne-platform-v1');
-    if(dais) {
+    if(dais) drawDais=()=>{
       ctx.save();ctx.imageSmoothingEnabled=true;
       if(newDais){
         // K1d: the dais is placed by the owner's drawing (foot centre + width), not by the old throne spot.
@@ -347,6 +356,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  // FB-UI 5 (owner 10 Nov): the judgement dais is sorted by its BACK edge (top of the back rail) - anyone walking on the ring road
+  // behind the platform is drawn first and is covered by the dais; anyone on the platform, the stairs or in front is drawn after it.
+  if(drawDais)at(daisDepthY(g.zone),drawDais);
   if(town&&g.zone==='th'){
     const lamp=img('town-prop-lamp-gold');
     if(lamp?.naturalWidth)for(const site of TH_ATMOS_LAMPS)at(site.y,()=>{
@@ -362,6 +374,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
+  if(town&&g.zone==='th')addGroundSpriteLayers(at,ctx);   // Z1-V5-FX2: trees / beds / rocks / bridge rails painted out of the HD chunks, drawn again as sprites
   if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
@@ -465,7 +478,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     }));
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
-    if(worker.teaRest&&worker.teaRest.phase!=='travel')continue;
+    if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
     at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
   }
@@ -789,7 +802,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (spot) buildPrompt(ctx, spot, t, g);
 
   if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
-  drawVignette(ctx, SCENE.w, SCENE.h);
+  // FB-UI 7: the town vignette is pinned to the screen (a CSS gradient over the canvas; canvas blit only when that element is absent), not a rectangle in the world's corner
+  if (isTownZone(g.zone)) { if (!vignetteOverlay(ctx.canvas)) drawScreenVignette(ctx); }
+  else drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
@@ -801,6 +816,16 @@ function drawStationAO(ctx, def) {
   drawContactAO(ctx, (f[0] + f[2]) / 2 + 4, f[3] - 2, rx, Math.max(10, rx * .22));
 }
 
+// Town vignette: a CSS overlay (#map-vignette in index.html, geometry kept in sync by ui.js) owns it in the browser; the canvas blit is only the fallback
+// when that element does not exist (tests / other hosts).
+const vignetteOverlay = cv => !!cv?.parentElement?.querySelector?.(':scope > #map-vignette');
+
+/** Depth (world y) at which the judgement dais is drawn in the actor layer: the back rail line of its traced geometry. */
+export function daisDepthY(zone) {
+  const rail=DAIS_GEOMETRY[zone]?.rail;
+  return daisWorldPoint([768,rail?Math.min(...rail.map(p=>p[1])):245],TOWN_DAIS)[1];
+}
+
 /** อาคารหนึ่งหลังบนแผนที่ — รวมนั่งร้านตอนกำลังสร้าง และไฟไหม้ตอนผีมาเผา */
 function drawStation(ctx, g, st, t) {
   const d = st.def;
@@ -808,7 +833,8 @@ function drawStation(ctx, g, st, t) {
     const left = st.workerWork?st.workerWork.remaining:Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
-    if (im) {
+    if (drawConstruction(ctx, d, p, t, g.zone)) { /* Z1-V5-FX3: animated crane + posts + scaffold sheets (img/construction/<zone>/) */ }
+    else if (im) {
       const bh = bw * im.naturalHeight / im.naturalWidth;
       ctx.drawImage(im, d.bx - bw / 2, d.by - bh, bw, bh);
     }
@@ -816,14 +842,12 @@ function drawStation(ctx, g, st, t) {
     const W = 120 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 10;
     ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12 * UI_SCALE_MAP, 6); ctx.fill();
     ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12 * UI_SCALE_MAP, 6); ctx.fill();
-    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร หาตัวจริงที่กำลังสร้างหลังนี้อยู่
-    // (buildK ตรงกับ d.k) แล้วใช้ชื่อของเขา (ตามโซนผ่าน crewName แล้ว) แทนพิมพ์ "ทัณฑ์" ตรง ๆ
-    const builder = g.crew.find(c => c.buildK === d.k);
-    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ คนงานกำลังสร้าง ${Math.round(p*100)}%`):st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
+    // FB-UI 2 (owner 10 Nov): small sign, and while nobody has reached the site yet it just says "กำลังก่อสร้าง" (no waiting-for-name text)
+    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ กำลังก่อสร้าง ${Math.round(p*100)}%`):st.buildWait ? '🏗️ กำลังก่อสร้าง' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 10, 10, '#ffe7c4', 4);
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
-  if(d.k==='canteen')mapName(ctx,'🍙 โรงอาหาร',d.bx,d.by+14,'#ffe7c4');
+  // FX5 (owner 23:40): the canteen carries no map label (the painted building says what it is); its button / interaction are unchanged
   if (d.k === 'tarang' && prisonEventBurning(g)) {
     // flames climb from the base to the roofline (smaller sprites so the building stays readable)
     const bw = d.bw || 180, top = topOf(d) ?? d.by - bw, mid = (d.by + top) / 2;
@@ -1063,7 +1087,7 @@ export function hitActor(g, sx, sy) {
   for (const c of g.crew)
     if (actorStanding(c) && !canteenCookPose(g,c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
   if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
-  for (const w of zoneWorkers(g).filter(w=>!w.teaRest||w.teaRest.phase==='travel')) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
+  for (const w of zoneWorkers(g).filter(w=>!canteenCookPose(g,w)&&(!w.teaRest||w.teaRest.phase==='travel'))) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
   if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;

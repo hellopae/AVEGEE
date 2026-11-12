@@ -6,6 +6,7 @@ import {createGame} from '../src/game.js';
 import {questOwnerButtonHtml} from '../src/quest-panels.js';
 import {CREW, GUARD, BATTLE, ZONES, TUTOR} from '../src/data.js';
 import {COMBAT_SKILLS} from '../src/combat-skills.js';
+import {teamManageHtml} from '../src/team-hud.js';
 import {recommendedHire, hireRank} from '../src/unlocks.js';
 import {ABILITY_REWARDS} from '../src/story.js';
 import {ENCOUNTER_BALANCE} from '../src/encounter-balance.js';
@@ -17,27 +18,16 @@ function functionSource(name) {
   const start=ui.indexOf(`function ${name}(`),end=ui.indexOf('\n}\n',start)+2;
   assert.ok(start>=0&&end>start);return ui.slice(start,end);
 }
-test('BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors',()=>{
-  const g=createGame();g.save=()=>true;g.onChange=noOp;
-  assert.deepEqual(g.party.members,['taan','nira']);assert.equal(g.partyCap(),3);
-  const positions=g.crew.map(({id,x,y,follow})=>({id,x,y,follow}));
-  let buttons=[];
-  const dlg={open:true,html:'',set innerHTML(html){this.html=html;buttons=[...html.matchAll(/<button data-party="([^"]+)"([^>]*)>/g)].map(([,key,attrs])=>({dataset:{party:key},disabled:/disabled/.test(attrs)}));},get innerHTML(){return this.html;},
-    querySelectorAll(selector){return selector==='[data-party]'?buttons:[];},querySelector(selector){return selector==='[data-quests]'?{}:null;}};
-  const context=vm.createContext({g,dlg,CREW,GUARD,BATTLE,ZONES,dlgGen:1,afterPowerSheet:null,
-    artUrl:()=>'',pauseForDlg:noOp,greetLine:()=>'',esc:String,crewArt:()=>'',powerBadgeHtml:()=>'',crewName:d=>d.name,
-    recommendedHire,hireRank,t:()=>'',crewAbility:()=>'',niraItemWidget:()=>'',guardRestWidget:()=>'',
-    workersPanelHtml:()=>'',bindWorkersPanel:noOp,bindHungerWidgets:noOp,questOwnerButtonHtml,bindOwnerQuestButtons:noOp,refresh:noOp,sfx:noOp,openDlg:noOp,
-    setInterval:()=>1,clearInterval:noOp});
-  vm.runInContext(functionSource('openNiraOffice')+'\nopenNiraOffice();',context);
-  for(const kind of ['taan','nira']) {
-    const button=buttons.find(b=>b.dataset.party===kind);assert.ok(button);assert.equal(button.disabled,false);button.onclick();
-    assert.equal(g.party.members.includes(kind),false);
-    const add=buttons.find(b=>b.dataset.party===kind);assert.equal(add.disabled,false);add.onclick();
-    assert.equal(g.party.members.includes(kind),true);
-  }
-  assert.deepEqual(g.crew.map(({id,x,y,follow})=>({id,x,y,follow})),positions);
-  assert.equal(g.crewOf('nira').follow,true);assert.ok(!g.crewOf('taan').follow);
+test('BALANCE-2 team-management buttons remove and restore taan+nira without moving map actors',()=>{
+ const g=createGame();g.save=()=>true;g.onChange=noOp;
+ assert.deepEqual(g.party.members,['taan','nira']);const positions=g.crew.map(({id,x,y,follow})=>({id,x,y,follow}));
+ for(const kind of ['taan','nira']){
+  assert.match(teamManageHtml(g,()=>''),new RegExp('data-team-party="'+kind+'" aria-pressed="true"'));
+  assert.equal(g.toggleParty(kind),true);assert.equal(g.party.members.includes(kind),false);
+  assert.match(teamManageHtml(g,()=>''),new RegExp('data-team-party="'+kind+'" aria-pressed="false"'));
+  assert.equal(g.toggleParty(kind),true);assert.equal(g.party.members.includes(kind),true);
+ }
+ assert.deepEqual(g.crew.map(({id,x,y,follow})=>({id,x,y,follow})),positions);assert.equal(g.crewOf('nira').follow,true);assert.ok(!g.crewOf('taan').follow);
 });
 test('BALANCE-2 tutor keeps the exact approved sentence; intro and help disclose back-line support',()=>{
   assert.equal(TUTOR.find(t=>t.k==='read').text,'"ทางซ้ายมือเจ้าคือนิรา หน้าที่ของเธอคืออ่านสำนวนให้เจ้าฟัง และคอยช่วยอยู่ด้านหลังเวลาออกศึก เธอไม่ลงทัณฑ์ให้ใครทั้งนั้น ส่วนทัณฑ์ที่ยืนอยู่ตรงกระทะนั่นคือคนเดียวที่รับเวรได้ตอนนี้ — เจ้ามีคนสองคน จำไว้"');
@@ -121,18 +111,35 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   // historical inputs after undoing these exact reviewed snippets; BALANCE-W4 remains pending.
   const storyOnly=JSON.parse(readFileSync(new URL('./fixtures/w4-story-progression-changes.json',import.meta.url)));
   const daisOnly=JSON.parse(readFileSync(new URL('./fixtures/dais-navigation-noncombat-changes.json',import.meta.url)));
+  // KO-CREW (6 Nov): only WHEN a fallen teammate's tea-house rest starts (battle end instead of the fall); no damage / HP / morale / cooldown number is touched.
+  const koOnly=JSON.parse(readFileSync(new URL('./fixtures/ko-crew-runtime-changes.json',import.meta.url)));
+  // FB-UI (10 Nov): zone-1 tea pavilion drawn mirrored (STATION_FLIP table entry, render orientation only).
+  const flipOnly=JSON.parse(readFileSync(new URL('./fixtures/fb-ui-1110-noncombat-changes.json',import.meta.url)));
+  // BATTLE-FX (10 Nov): the zone boss's cutscene move comes every 2nd attack (data.js, game.js), the boss rows of encounter-balance.js get a bossHp/addsHp/ATK correction
+  // (re-fitted to the same win rates, output/coordination/2026-11-10-battle-fx/) and a border fight rolls 1-3 demons.  This IS a deliberate combat change, so the
+  // exact reversible snippets are kept in a fixture and the 32,000-trial evidence above stays untouched; the new numbers live in the battle-fx folder.
+  const fxOnly=JSON.parse(readFileSync(new URL('./fixtures/battle-fx-runtime-changes.json',import.meta.url)));
+  // QUEST-REWARDS (10 Nov): three end-of-quest fights (own battle kind 'questFight', foes of its own), three roster-bound quest moves, rope/gauze/taunt.  None of it is reachable from the fights the
+  // 32,000 trials measured (ordinary kinds never set `aim` / `seal` / `taunt`; no random draw was added to them) — the new fights have their own simulation: scripts/sim-quest-fights.mjs,
+  // output/coordination/2026-11-10-quest-rewards/.  Reversible snippets, same method as above.
+  const questOnly=JSON.parse(readFileSync(new URL('./fixtures/quest-rewards-runtime-changes.json',import.meta.url)));
+  // FOOD-SYSTEM changes only map food/rest/save plumbing, with separate regression tests.
+  const foodOnly=JSON.parse(readFileSync(new URL('./fixtures/food-system-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);
     }
     assert.equal(createHash('sha256').update(source).digest('hex'),hash,name);
   }
-  // Re-run the original failing small-team scenario with production commands.
+  // Re-run the original failing small-team scenario with production commands.  BATTLE-FX changed the boss's move rhythm on purpose, so the number of wins is no
+  // longer the historical one: it has to stay within 15 percentage points of it (the fitted rows land within about 10), and the run must still be deterministic.
   const scenario={zone:'th',size:3,kind:'boss',moves:true};
   const fresh=Array.from({length:200},(_,i)=>simulate({...scenario,seed:30000+i}));
+  const again=Array.from({length:20},(_,i)=>simulate({...scenario,seed:30000+i}));
   const row=after.rows.find(r=>id(r)===id(scenario));
-  assert.equal(fresh.filter(r=>r.result==='win').length,row.wins);
+  assert.ok(Math.abs(fresh.filter(r=>r.result==='win').length-row.wins)<=30,`wins ${fresh.filter(r=>r.result==='win').length} vs historical ${row.wins}`);
+  assert.deepEqual(again.map(r=>r.result),fresh.slice(0,20).map(r=>r.result));
 });

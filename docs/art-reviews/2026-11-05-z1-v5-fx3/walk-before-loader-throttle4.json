@@ -1,0 +1,42 @@
+{
+ "old_loader": true,
+ "throttle": "4",
+ "walk_seconds": 60.3,
+ "rss_MB_start": {
+  "renderer": 120,
+  "GPU": 284
+ },
+ "rss_MB_peak": {
+  "GPU": 361,
+  "renderer": 120
+ },
+ "rss_MB_final": {
+  "renderer": 114,
+  "GPU": 361
+ },
+ "terrain": {
+  "idle": 0,
+  "loading": 0,
+  "ready": 70,
+  "error": 0,
+  "preview": true
+ },
+ "view_modes_sampled_every_0.5s": {
+  "detail": 87,
+  "loading-detail": 1
+ },
+ "worst_frame_ms": 417,
+ "frames_over_100ms": 39,
+ "frames": 3156,
+ "blur_samples_at_xy_mode_visible_ready_loading": [
+  [
+   763,
+   770,
+   "loading-detail",
+   15,
+   45,
+   2
+  ]
+ ],
+ "errors": []
+}

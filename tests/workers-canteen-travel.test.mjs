@@ -14,7 +14,7 @@ test('new hiring is gated by the invading demon victory, existing workers surviv
  const g=game(false),before=g.coin;assert.equal(g.hireWorker(),false);assert.match(g.workerHireWhy(),/ชายแดน/);assert.equal(g.coin,before);
  (g.zoneEvents.th||={}).frontierBreach='active';assert.equal(g.hireWorker(),false);(g.zoneEvents.th||={}).frontierBreach='cleared';assert.ok(g.hireWorker());
  const raw={version:2,workers:[{id:'worker:7',homeZone:'th',mode:'supervise',stamina:55}]};const migrated=normalizeWorkers(raw);assert.equal(migrated.workers[0].mode,'auto');assert.equal(migrated.workers[0].stamina,55);assert.equal(migrated.nextId,8);
- assert.deepEqual(Object.keys(WORKER_MODES),['auto','gather','food','rest']);
+ assert.deepEqual(Object.keys(WORKER_MODES),['auto','gather','cook','serve','rest']);
 });
 for(const kind of ['build','repair'])test(`workers ${kind} without Taan and cannot open the building before physical inspection`,()=>{
  const g=game(),w=g.hireWorker(),taan=g.crewOf('taan');taan.at='krata';
@@ -35,11 +35,11 @@ test('gathering requires a real built resource station and sells exactly the col
  place(w,nearestWalk(def.x,def.y));for(let i=0;i<20&&!w.cargo;i++)advanceWorkers(g,120);assert.equal(w.cargo,'ngiwWood');const coin=g.coin;assert.equal(g.workerState.ledger.sales,0);
  place(w,nearestWalk(MERCHANT.x,MERCHANT.y));for(let i=0;i<20&&!g.workerState.ledger.sales;i++)advanceWorkers(g,120);assert.equal(g.coin,coin+5);assert.equal(w.cargo,null);assert.equal(g.workerState.ledger.sales,1);
 });
-test('cooks physically reach canteen, make food, courier picks up and delivers it without consuming inventory rice',()=>{
- const g=game(),w=g.hireWorker();g.hire('dam');g.hire('plerng');g.inventory.food=9;g.stations.push({def:STATIONS.find(d=>d.k==='canteen'),build:0,slots:[]});assert.equal(g.orderRice('dam',1),true);prepareCooks(g);const at=canteenPoint(g);
- for(const c of g.crew.filter(c=>c.cook))place(c,[at[0],at[1]]);
- for(let i=0;i<30;i++)stepCanteen(g,120);assert.equal(canteenState(g).meals,1);
- const taan=g.crewOf('taan');taan.hunger=15;taan.morale=35;g.setWorkerMode(w.id,'food');stepWorkers(g);assert.equal(w.job.kind,'food');assert.equal(taan.hunger,15);
+test('worker cook makes food after arrival and server delivers without consuming bag rice',()=>{
+ const g=game(),cook=g.hireWorker(),w=g.hireWorker();g.inventory.food=9;g.stations.push({def:STATIONS.find(d=>d.k==='canteen'),build:0,slots:[]});
+ g.setWorkerMode(cook.id,'cook');stepWorkers(g);const at=canteenPoint(g);place(cook,at);advanceWorkers(g,120);
+ for(let i=0;i<25;i++)stepCanteen(g,120);assert.equal(canteenState(g).meals,1);
+ const taan=g.crewOf('taan');taan.hunger=15;taan.morale=35;g.setWorkerMode(w.id,'serve');stepWorkers(g);assert.equal(w.job.kind,'food');assert.equal(taan.hunger,15);
  place(w,at);advanceWorkers(g,120);assert.equal(w.meal,true);assert.equal(taan.hunger,15);
  place(w,nearestWalk(taan.x??taan.hx,taan.y??taan.hy));advanceWorkers(g,120);assert.equal(taan.hunger,55);assert.equal(taan.morale,55);assert.equal(w.meal,false);assert.equal(g.inventory.food,9);assert.equal(canteenState(g).served,1);
 });
@@ -60,7 +60,7 @@ test('cancel before departure preserves source, skip travels once, reduced motio
 test('empty supplies seat workers and require a player rice gift or tea-rest order even after kitchen refills',()=>{
  const g=game(),w=g.hireWorker();g.setWorkerMode(w.id,'gather');g.stations.push({def:STATIONS.find(d=>d.k==='ngiw'),build:0,repair:0,slots:[]});
  g.food=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(w.hunger,0);assert.equal(w.funded,false);g.food=30;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(w.job,null);
- assert.equal(g.feedWorker(w.id),false);g.inventory.food=1;assert.equal(g.feedWorker(w.id),true);assert.equal(g.inventory.food,undefined);assert.equal(w.supplyRest,false);stepWorkers(g);assert.equal(w.funded,true);
+ const stock=g.food;assert.equal(g.feedWorker(w.id),true);assert.equal(g.food,stock-1);assert.equal(w.supplyRest,false);stepWorkers(g);assert.equal(w.funded,true);
  g.food=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(g.restWorkerAtTea(w.id),false);const def=STATIONS.find(d=>d.k==='tea');g.stations.push({def,build:0,repair:0,slots:[]});assert.equal(g.restWorkerAtTea(w.id),true);
  place(w,w.teaRest.dest);w.teaRest.path=[];advanceWorkers(g,120);assert.equal(w.teaRest.phase,'enter');assert.equal(w.sitting,false);advanceWorkers(g,120,w.teaRest.enteredAt+w.teaRest.entryMs);assert.equal(w.sitting,true);const started=w.teaRest.startedAt;g.food=20;for(let i=0;i<6;i++)stepWorkers(g);assert.equal(w.supplyRest,true);g.updateActorRecovery(started+119999);assert.equal(w.mode,'rest');g.updateActorRecovery(started+120000);assert.equal(w.supplyRest,false);assert.equal(w.mode,'gather');
 });

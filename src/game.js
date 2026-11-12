@@ -3,15 +3,17 @@ import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recor
 import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
-import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
-import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
+import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant, finishQuestFight } from './side-quests.js';
+import { QUEST_FIGHTS, questFightFoes } from './quest-fights.js';
+import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
+import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
-import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
+import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
-import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
+import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
@@ -31,7 +33,7 @@ import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTrainin
 import { isFrontierDuoBattle } from './nira-combat.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=minigame-review-20261011';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
+import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
@@ -61,7 +63,7 @@ import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
 export const DEFEND_DAMAGE_RATIO = 0.5;
 /** L2: battle kinds the team may run away from (everything else is a boss / story / event fight). One list, used by battleAct and the UI. */
-export const FLEEABLE_KINDS = ['soul', 'mob', 'frontier'];
+export const FLEEABLE_KINDS = ['soul', 'mob', 'frontier', 'questFight'];
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const LOTUS_BOON_CUT = 8;   // ดอกบัวหนึ่งดอกที่มอบให้บุญลดกรรมของยมบาทน้อย (ค่าเดิมของ offerLotusBoon)
@@ -592,9 +594,11 @@ const API = {
       if (this.teamJudgmentRemaining()) return `อีก ${this.teamJudgmentRemaining()} เทิร์นยามา`;
       return this.mp < def.mp ? 'พลังเวทไม่พอ' : '';
     }
-    if (def.actor !== actor.k || !skillUnlocked(this, actor, skill)) return 'ฝึกเฉพาะตัว 2 ครั้ง ≥60 และมีครั้ง ≥80';
+    if (!skillBelongsTo(skill, actor) || !skillUnlocked(this, actor, skill)) return def.quest ? 'ได้จากการสู้ท้ายภารกิจ' : 'ฝึกเฉพาะตัว 2 ครั้ง ≥60 และมีครั้ง ≥80';
     if ((actor.morale || 0) < def.morale) return 'กำลังใจไม่พอ';
-    return actor.k === 'guard' ? this.guardHelpWhy() : this.crewHelpWhy(actor);
+    const why = actor.k === 'guard' ? this.guardHelpWhy() : this.crewHelpWhy(actor);
+    // คำฝากถึงมือ is the cure for rope/gauze, so it can still be cast by an ally who is sealed (otherwise Grace could be silenced out of her own answer)
+    return def.cleanse && why && why === this.sealWhy(actor) ? '' : why;
   },
   teamJudgmentRemaining() { const b = this.battle; return Math.max(0, (b?.teamReadyTurn || 0) - (b?.actorTurns?.you || 0)); },
   guardActive() { return !isFrontierDuoBattle(this.battle) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
@@ -603,27 +607,65 @@ const API = {
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
   },
   enemyTarget() { return weightedTarget(this.battleCrew(), this.enemyGuard()); },
+  /** QUEST-REWARDS: who this foe hits. Taunt (ทวารบาลยืนรับแค้น) pulls everything to its caster; a foe with `aim` prefers the guard / the support line.
+   *  Foes without `aim` and fights without taunt fall through to enemyTarget() untouched (no extra random draw, so older fights replay identically). */
+  foeTarget(foe) {
+    const b = this.battle, taunt = b?.taunt && this.battleActors().find(a => a.id === b.taunt.id);
+    if (taunt) return taunt.id === 'you' ? { id:'you' } : { id:taunt.id, actor:taunt };
+    if (foe?.aim && Math.random() < (foe.aimChance ?? .7)) {
+      const pool = this.battleActors().filter(a => a.id !== 'you' && (foe.aim === 'guard' ? a.k === 'guard' : ['boon', 'nira', 'kan'].includes(a.k)));
+      if (pool.length) { const a = pool[Math.floor(Math.random() * pool.length)]; return { id:a.id, actor:a }; }
+    }
+    return this.enemyTarget();
+  },
   /** B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ทำให้ยมบาทรอดง่ายขึ้น — ชดเชยด้วย TEAM_PRESSURE (data.js) */
   teamPressure(B) {
     const pick = table => table[B.encounter] ?? table[B.eventKey] ?? table[B.kind] ?? table.default;
     return Math.min(pick(TEAM_PRESSURE.max), 1 + pick(TEAM_PRESSURE.share) * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1));
   },
+  /** KO-CREW (owner 6 Nov): is this teammate on the field of the battle that is open right now? (Then a fall keeps them in the scene, lying down.) */
+  battleParticipant(actor) {
+    const b = this.battle; if (!b || !actor) return false;
+    if (actor.k === 'guard') return !isFrontierDuoBattle(b) && b.eventKey !== 'westHypnotized';
+    if (actor.k === 'nira' && isFrontierDuoBattle(b)) return true;
+    const keys = b.team || this.party?.members || [];
+    if (this.isFinalBattle(b)) return teamIds(keys, this.roster, this.zone).includes(actor.id);
+    return keys.includes(actor.k);
+  },
+  /** Teammates who fell in the open battle: not in battleActors() (no turn, no target, not hit) but still drawn - lying down - until the battle is over. */
+  battleFallen() {
+    const b = this.battle; if (!b?.fallen?.length) return [];
+    return b.fallen.map(id => id === this.guard?.id ? this.guard : this.roster[id]).filter(Boolean);
+  },
+  /** Recovery rest at the tea house (same startRecoveryTeaRest + RECOVERY_MS for everyone). The Guard walks back to his gate post when it is over. */
+  startActorRecoveryRest(actor, now) {
+    actor.recoveryVersion = 2;
+    const rest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+    if (actor.k === 'guard') rest.returnAt = [...(nearestWalk(GUARD_POST[0], GUARD_POST[1]) || GUARD_POST)];
+    return actor.teaRest = rest;
+  },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
-    // Guard retains 1 map HP; absentActors keeps it knocked out for the rest of this battle.
-    const fallenGuard = actor.k === 'guard' && this.battle;
-    actor.morale = fallenGuard ? 1 : 0; actor.recoverUntil = fallenGuard ? 0 : now + RECOVERY_MS;
-    if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
-    this.releaseActorFromWork(actor);
-    if (!fallenGuard && actor.k !== 'guard') {
-      actor.recoveryVersion = 2;
-      actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+    // KO-CREW: a teammate who falls DURING a battle stays in the scene lying down. The tea-house rest (same RECOVERY_MS, same startRecoveryTeaRest)
+    // starts when the battle is over: updateActorRecovery meets morale 0 with no battle open and comes back through here.
+    // The Guard is a teammate like the others (owner 6 Nov): 0 HP, lies down, rests at the tea house afterwards, then returns to his post.
+    if (this.battle && this.battleParticipant(actor)) {
+      if ((this.battle.fallen ||= []).includes(actor.id)) return false;
+      actor.morale = 0;
+      this.battle.fallen.push(actor.id);
+      if (!(this.battle.absentActors ||= []).includes(actor.id)) this.battle.absentActors.push(actor.id);
+      this.releaseActorFromWork(actor);
+      return true;
     }
+    actor.morale = 0; actor.recoverUntil = now + RECOVERY_MS;
+    if (this.battle && !(this.battle.absentActors ||= []).includes(actor.id)) this.battle.absentActors.push(actor.id);
+    this.releaseActorFromWork(actor);
+    this.startActorRecoveryRest(actor, now);
     return true;
   },
   /** ปล่อยตัวละครออกจากงานที่ทำอยู่ (สถานี/พาวิญญาณ/ก่อสร้าง) — ใช้ทั้งตอนล้มและตอนไปพักศาลา */
   releaseActorFromWork(actor) {
-    actor.at = null; actor.path = null; actor.escort = null;
+    actor.at = null; actor.eatOrder=null; actor.path = null; actor.escort = null;
     for (const walk of this.afterlifeWalks) if (walk.escort?.k === actor.k) walk.escort = null;
     for (const transit of this.transits) if (transit.crew === actor.k) { transit.crew = null; transit.crewName = ''; }
 
@@ -666,13 +708,16 @@ const API = {
     syncRoster(this);
     let changed = false;
     for (const actor of Object.values(this.roster)) {
-      if (actor.recoverUntil && actor.k !== 'guard' && !actor.teaRest) {
-        actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+      if (actor.recoverUntil && !actor.teaRest) {
+        this.startActorRecoveryRest(actor, now);
         changed = true;
       }
       if (actor.teaRest) {
         if (actor.teaRest.recovery && this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
         changed = this.updateGuardRest(actor, now) || changed; continue;
+      }
+      if (this.battle?.fallen?.includes(actor.id) && actor.morale > 0) {      // revived in the middle of the battle: back on its feet and in the fight
+        this.battle.fallen = this.battle.fallen.filter(id => id !== actor.id); this.battle.absentActors = (this.battle.absentActors || []).filter(id => id !== actor.id); changed = true;
       }
       if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;
       if (actor.recoverUntil && now >= actor.recoverUntil) {
@@ -1092,7 +1137,7 @@ const API = {
     const c = this.crewOf(st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK);
     if (!actorStanding(c) || c.self || c.reader) return { key: 'crewMissing' };
     if (c.escort && !(st.slots.length && st.crewK === c.k && c.at === stKey)) return { key: 'crewEscort' };
-    if (c.buildK || canteenState(this).orders.some(o=>o.cook===c.k)) return { key: 'crewBuilding' };
+    if (c.buildK || c.eatOrder || canteenState(this).orders.some(o=>o.cook===c.k)) return { key: 'crewBuilding' };
     if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
     if(c.k==='plerng'&&this.food<2)return {key:'keeperCost',text:'เพลิงต้องใช้เสบียงเพิ่ม 2 หน่วยก่อนรับหมาย'};
     return null;
@@ -1389,7 +1434,7 @@ const API = {
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
     const reader=walk.destination==='arrival'?this.niraCourtCourier():null;
     if(walk.destination==='arrival'&&!reader)return false;
-    const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !canteenState(this).orders.some(o=>o.cook===c.k) && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
+    const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k) && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
     for (const c of ranked) {
       if(walk.destination==='station'&&c.k!==keeperK)continue;
@@ -2028,9 +2073,10 @@ const API = {
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       if (!actorStanding(c)) continue;
+      if(advanceCanteenDiner(this,c,dt))continue;
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
-      const post = c.cook ? {x:c.cookX,y:c.cookY} : rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
+      const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
         : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===(c.k==='dam'?'ngiw':'krata')):null);
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
@@ -2638,6 +2684,28 @@ const API = {
     return this.battle;
   },
 
+  /** QUEST-REWARDS (10 Nov 2026): the end-of-quest fight of sqKan / sqBoon / sqGuard (src/quest-fights.js · script by Rae).
+   *  Uses the normal battle loop but with its own kind 'questFight': no coin / EXP / loot (the quest pays on closing), flee allowed, a defeat costs nothing.
+   *  The quest owner joins the team when he or she is hired and standing (the Guard joins on his own as always); otherwise the owner stands by (battle.ownerJoined=false). */
+  startQuestFight(id) {
+    const def = QUEST_FIGHTS[id];
+    if (!def || this.battle || this.over || bossJusticeActive(this)) return null;
+    const ownerCrew = def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);
+    const ownerJoined = def.owner === 'guard' ? this.guardActive() : !!ownerCrew;
+    const members = (this.party?.members || []).filter(k => k !== def.owner);
+    const team = [...(ownerCrew ? [def.owner] : []), ...members].slice(0, this.partyMax());
+    this.fights++;
+    this.battle = { kind:'questFight', questId:id, zone:this.zone, title:def.title, team, ownerJoined,
+      foes:[], who:def.title, sub:'', sp:'mob-hitodama',
+      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax, turn:1, over:null, log:[], dmg:null,
+      talk:'', ownerName:def.ownerName };
+    const foes = questFightFoes(this, id, this.battleActors().filter(a => !a.guestGuide).length);
+    Object.assign(this.battle, { foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp, talk:foes[0].who });
+    prepareBattle(this.battle);
+    this.prepareEncounter();
+    return this.battle;
+  },
+
   /** เลือกยมทูตเข้าทีมชายแดน (สูงสุดสองคน) */
   setFrontierTeam(k) {
     const c = this.crew.find(x => x.k === k && !x.self);
@@ -2670,16 +2738,22 @@ const API = {
       kind = pick(pool);
     }
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
+    // BATTLE-FX (10 พ.ย. 2569, คุณเป้) — ปีศาจชายแดนสุ่ม 1–3 ตัวต่อการต่อสู้ (30/45/25 %) · ตัวแรกคือตัวที่ผู้เล่นเดินไปชน ที่เหลือสุ่มจากปีศาจของโซน
+    const frontierCount = rollFrontierFoeCount();
+    const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
+    const kinds = [kind, ...Array.from({ length:frontierCount - 1 }, () => pick(pool.length ? pool : [kind]))];
+    const foeAtk = scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]);
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'),
+      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'), frontierCount,
+      foes:kinds.map((k, i) => ({ id:`foe-${i + 1}`, who:k.nameKey ? t(k.nameKey) : k.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:k.img, hp, maxHp:hp, atk:[...foeAtk], stun:0, confuse:0 })),
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
-      foeAtk:scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]),
+      foeAtk,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null,
-      talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
+      talk:frontierCount > 1 ? `${kind.name}กับพวกอีก ${frontierCount - 1} ตนฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim() : `${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
     };
     prepareBattle(this.battle, hp);
     this.prepareEncounter(); this.onChange();
@@ -3341,7 +3415,7 @@ const API = {
     const remaining = this.crewCooldown(c);
     if (remaining) return `รออีก ${remaining} วินาที`;
     if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
-    return '';
+    return this.sealWhy(c);   // last: คำฝากถึงมือ may still be cast when this is the only thing in the way
   },
 
   /** ยักษ์ทวารบาล (ข้อ C คุณเป้ 25 ก.ย. 2569) — เข้าช่วยฉากต่อสู้เองอัตโนมัติถ้าจ้างไว้แล้ว
@@ -3349,12 +3423,17 @@ const API = {
   guardCooldown(now = Date.now()) {
     return Math.ceil((this.guard?.helpRemainingMs || 0) / 1000);
   },
+  /** QUEST-REWARDS: a foe's rope / gauze stops an ally's special for one of its own turns (cleared early by คำฝากถึงมือ) */
+  sealWhy(actor) {
+    const seal = actor && this.battle?.sealed?.[actor.id];
+    return seal ? (seal.by === 'rope' ? 'ถูกเชือกรัด ใช้ท่าพิเศษไม่ได้' : 'ถูกผ้าปิดปาก ใช้ท่าพิเศษไม่ได้') : '';
+  },
   guardHelpWhy() {
     if (!this.guardActive() || (this.battle?.absentActors || []).includes(this.guard.id)) return 'พักฟื้น / Recovering';
     if (this.guard.morale < GUARD.helpMorale) return 'กำลังใจไม่พอ / Low morale';
     const remaining = this.guardCooldown();
     if (remaining) return `รออีก ${remaining} วินาที`;
-    return '';
+    return this.sealWhy(this.guard);
   },
 
   battleActors() {
@@ -3504,11 +3583,32 @@ const API = {
     } else if (newSkill) {
       const c = skillActor, effect = skillEffect(this, c, what);
       const receiver = recipient || { id:'you' };
-      if (newSkill.heal && !this.battleActors().some(a => a.id === receiver.id)) return false;
+      if (newSkill.heal && !newSkill.team && !this.battleActors().some(a => a.id === receiver.id)) return false;
       c.helpReadyAt = 0; c.helpRemainingMs = 120000; c.helpCooldownSeconds = 120;
       c.morale = Math.max(0, c.morale - newSkill.morale);
       B.helper = { ...c, at:Date.now(), lunge:!!newSkill.damage && c.k !== 'plerng', pose:newSkill.heal ? 'heal' : undefined };
-      if (newSkill.heal) {
+      if (newSkill.quest) {
+        // QUEST-REWARDS ultimates (combat-skills.js, `quest:`): team-wide support / reflect / taunt built from the existing shield, confuse, defend and area-damage rules
+        const team = this.battleActors();
+        if (newSkill.heal) {
+          let total = 0;
+          for (const a of team) {
+            const room = a.id === 'you' ? B.youMax - B.youHp : 100 - a.morale, gain = Math.max(0, Math.min(effect.heal, room));
+            if (a.id === 'you') B.youHp += gain; else a.morale += gain;
+            total += gain;
+          }
+          B.dmg.healActorId = 'you'; B.dmg.healAmount = total;
+        }
+        if (newSkill.shield || newSkill.buff) for (const a of team) grantProtection(B, a.id, effect);
+        if (newSkill.cleanse) B.sealed = {};
+        if (newSkill.reflect) confuseFoe = 1;
+        if (newSkill.taunt) {
+          B.taunt = { id:c.id, until:(B.actorTurns?.[c.id] || 0) + 2 };
+          (B.defending ||= {})[c.id] = true;
+        }
+        if (newSkill.damage) dmg = effect.damage;
+        say(`${c.name || 'ยมทูต'}ใช้ ${newSkill.name}`);
+      } else if (newSkill.heal) {
         const heal = Math.max(0, Math.min(effect.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale));
         if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
         grantProtection(B, receiver.id, effect);
@@ -3665,7 +3765,7 @@ const API = {
 
     if (YAMA_SKILL_SECONDS[what])
       (B.skillRemainingMs ||= {})[what] = YAMA_SKILL_SECONDS[what] * 1000;
-    if (what !== 'defend' && actor && B.defending) delete B.defending[actor.id];
+    if (what !== 'defend' && actor && B.defending && !newSkill?.taunt) delete B.defending[actor.id];
 
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
@@ -3684,14 +3784,15 @@ const API = {
       if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
-    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what);
+    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area;
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
       if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
       if (confuseFoe) {
         foe.confuse = (foe.confuse || 0) + confuseFoe;
-        if (what !== 'crew:kan') foe.confuseMultiplier = 1;
+        if (newSkill?.reflect) foe.confuseMultiplier = newSkill.reflect;   // เนตรรอคำอนุญาต: the foe's next attack comes back at it, harder
+        else if (what !== 'crew:kan') foe.confuseMultiplier = 1;
         if(what==='hypno'&&B.initiativeAction)foe.confuseKind='group';
       }
     }
@@ -3804,8 +3905,12 @@ const API = {
         B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
         say(B.talk);
         this.bossPending = this.bossReady();
+      } else if (B.kind === 'questFight') {
+        // QUEST-REWARDS: no coin / EXP / loot here — the quest pays when it is closed; endBattle() -> finishQuestFight() moves the quest on and teaches the move
+        B.talk = `ชนะ${B.title}`;
+        say(B.talk);
       } else if (B.kind === 'frontier') {
-        const coin = 32 + B.wave * 10;
+        const coin = Math.round((32 + B.wave * 10) * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1));   // BATTLE-FX: more demons, more reward
         const item = pick(FRONTIER.drops);
         this.coin += coin;
         this.inventory[item] = (this.inventory[item] || 0) + 1;
@@ -3839,10 +3944,10 @@ const API = {
       grantStoryBattleAbilities(this,B);
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : 20;
+      const expGain = B.kind === 'questFight' ? 0 : this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : B.kind === 'frontier' ? Math.round(20 * (FRONTIER_REWARD_SCALE[B.frontierCount] ?? 1)) : 20;
       // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
       // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
-      if (B.kind !== 'soul') {
+      if (B.kind !== 'soul' && B.kind !== 'questFight') {
         // G3b — ของที่ได้ระหว่างระลอก (เบี้ยกรรม/น้ำมนต์ที่จุดพัก) จ่ายไปก่อนแล้ว บวกกลับให้สรุปครั้งเดียวตอนจบ · อาวุธใหม่แยกแถว
         const gain = B.waveGain || { coin:0, items:{} };
         const items = Object.keys(this.inventory).filter(k => (this.inventory[k] || 0) > (before.inv[k] || 0))
@@ -3991,15 +4096,19 @@ const API = {
     }
     else {
       const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
+      const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
       // A group strike must not apply the single-target team-pressure bonus to every ally.
       const groupBase = Math.round(normal / this.teamPressure(B));
       let ultimate = B.kind === 'zoneBoss' && counter.boss
-        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp}, groupBase) : null;
+        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp,bossAct}, groupBase) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.
+      // BATTLE-FX: the new rhythm (2nd, 4th, 6th ... attack) is for the zone-ending bosses only: Thai border boss and the final boss; Asia/West bosses use it through
+      // bossUltimate() above.  Border lords, deva tests, possessed rulers ... keep the old rule (HP under half, 4 turns apart) so their balance does not move.
+      const zoneBossRhythm = B.eventKey === 'thBorderBoss' || (B.eventKey === 'cyberFinal' && B.encounter === 'boss');
       if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
-          counter.hp <= counter.maxHp / 2 &&
-          (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4)) {
+          (zoneBossRhythm ? bossUltimateDue(bossAct)
+            : counter.hp <= counter.maxHp / 2 && (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4))) {
         const z = B.zone || this.zone;
         const folder = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' }[z] || '';
         const tester = B.kind === 'devaTest' || /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
@@ -4021,17 +4130,19 @@ const API = {
         const special = bossScenes[counter.sp]
           || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);
         ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
-          image:special, damage:Math.round(groupBase * 1.7) };
+          image:special, damage:Math.round(groupBase * (zoneBossRhythm ? BOSS_ULTIMATE_RHYTHM.damage : 1.7)) };
       }
       const d = ultimate ? ultimate.damage : normal;
       if (ultimate) {
+        ultimate.by = counter.who;   // the cutscene shows who is attacking
         B.ultimate = ultimate;
         B.ultimateUsed = true;
         B.ultimateLastTurn = B.turn;
+        (B.ultimateActs ||= []).push(bossAct);
       }
       const victims = ultimate
         ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you').map(actor => ({id:actor.id,actor}))]
-        : [this.enemyTarget()];
+        : [B.kind === 'questFight' ? this.foeTarget(counter) : this.enemyTarget()];
       B.dmg.enemyHits = [];
       B.dmg.hitActors = [];
       for (const victim of victims) {
@@ -4047,6 +4158,12 @@ const API = {
       }
       B.dmg.targetActorId = victims[0].id;
       B.dmg.hitActor = B.dmg.hitActors[0];
+      // QUEST-REWARDS: rope / gauze — the victim's special is blocked for one of its own turns (sealWhy · cleared by completeCombatTurn or by คำฝากถึงมือ)
+      if (counter.seal && !ultimate && victims[0].actor && !B.sealed?.[victims[0].id]) {
+        (B.sealed ||= {})[victims[0].id] = { by:counter.seal, until:(B.actorTurns?.[victims[0].id] || 0) + 1 };
+        B.dmg.sealedId = victims[0].id;
+        say(`${victims[0].actor.name || 'ยมทูต'}${counter.seal === 'rope' ? 'ถูกเชือกรัด' : 'ถูกผ้าปิดปาก'} — ใช้ท่าพิเศษไม่ได้หนึ่งตา`);
+      }
       if (victims.some(v => v.actor)) this.save();
       const dealt = B.dmg.enemyHits[0]?.damage ?? d;     // L2: the number after the defend stance, not before
       say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);
@@ -4087,6 +4204,8 @@ const API = {
         this.hp = 1;
         B.talk = `${ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey)?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;
         say(B.talk);
+      } else if (B.kind === 'questFight') {
+        say('ทีมถอยมาตั้งหลัก — ไม่เสียความคืบหน้าของภารกิจ กลับไปคุยเพื่อสู้ใหม่ได้');
       } else if (B.kind === 'frontier') {
         this.hp = Math.max(1, this.hp - 8);
         say('ทีมถอยกลับเข้าประตู — ชายแดนยังไม่แตก แต่บารมีท่านหาย 8');
@@ -4114,11 +4233,19 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
+    this.updateActorRecovery();      // KO-CREW: teammates who fell in this battle walk to the tea house now (win, lose or flee), not at the moment they fell
     if(B.dungeonToken){
       resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);
       // L5: the single hook for "fled / lost a route fight": step back from the enemy and give it a short rest from chasing.
       if(B.over!=='win')this.retreatFromDungeonFoe(B.dungeonRetreatProgress);
       this.save();
+    }
+    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no tea-house recovery, no penalty)
+    if (B.kind === 'questFight') {
+      if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+      finishQuestFight(this, B);
+      this.pendingReward = null;
+      this.save(); this.onChange(); return B;
     }
     if (B.over === 'lose') {
       this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };
@@ -4736,8 +4863,7 @@ const API = {
    *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
   feedCrew(k) {
     const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);
-    if (!actorStanding(c) || this.food < BAL.feedFoodCost) return false;
-    this.food -= BAL.feedFoodCost;
+    if (!actorStanding(c) || this.battle || foodAvailable(this) < BAL.feedFoodCost || !takeFood(this, BAL.feedFoodCost)) return false;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
     c.morale = Math.min(100, c.morale + Math.round(100 * ITEMS.food.hpRatio));
     this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
@@ -4852,18 +4978,21 @@ const API = {
     return true;
   },
 
+  feedActor(id) {const ok=feedActor(this,id);if(ok){this.save();this.onChange();}return ok;},
+  eatAtCanteen(id) {const ok=orderCanteenMeal(this,id);if(ok){this.save();this.onChange();}return ok;},
+  setWorkerServeTarget(id,target) {const ok=setWorkerServeTarget(this,id,target);if(ok){this.save();this.onChange();}return ok;},
   orderRice(key,n) {return orderRice(this,key,n);},
   cancelRice(key) {return cancelRice(this,key);},
   workers() { return zoneWorkers(this); },
   workerHireWhy() { return workerHireWhy(this); },
-  hireWorker() { const result=hireWorker(this);if(result){this.save();this.onChange();}return result; },
+  hireWorker(mode) { const result=hireWorker(this,mode);if(result){this.save();this.onChange();}return result; },
   setWorkerMode(id,mode) { const ok=setWorkerMode(this,id,mode);if(ok){this.save();this.onChange();}return ok; },
   feedWorker(id) {const ok=feedWorker(this,id);if(ok){this.save();this.onChange();}return ok;},
   restWorkerAtTea(id) {const ok=restWorkerAtTea(this,id);if(ok){this.save();this.onChange();}return ok;},
   dismissWorker(id) { const ok=dismissWorker(this,id);if(ok){this.save();this.onChange();}return ok; },
 
   builders() {
-    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !canteenState(this).orders.some(o=>o.cook===c.k));
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
   },
 
   availableBuilder() {
@@ -4935,7 +5064,7 @@ API.snapshot = function (withEntry = true) {
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     playTimeMs:Math.max(0,Number(this.playTimeMs)||0),playTimePartial:!!this.playTimePartial,
-    canteenVersion:1,workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
+    canteenVersion:1,foodSystemVersion:1,workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
     interrogationSupport:structuredClone(this.interrogationSupport),
     teamReports:structuredClone(this.teamReports), nextTeamReportId:this.nextTeamReportId,
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -5072,7 +5201,13 @@ API.restore = function (d) {
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
   this.workerState = normalizeWorkers(d.workerState);this.canteenState=structuredClone(d.canteenState||{});
-  for(const v of Object.values(this.canteenState)){v.meals=Math.max(0,Math.min(6,Number(v.meals)||0));v.orders=(v.orders||[]).filter(o=>['dam','plerng'].includes(o.cook)&&Number.isInteger(o.remaining)&&o.remaining>0&&o.remaining<=6);}
+  let foodRefund=0;
+  for(const v of Object.values(this.canteenState)){
+    v.meals=Math.max(0,Number(v.meals)||0);v.served=Math.max(0,Number(v.served)||0);
+    if(!d.foodSystemVersion)for(const o of v.orders||[])if(['dam','plerng'].includes(o.cook)&&Number.isInteger(o.remaining)&&o.remaining>0&&o.remaining<=6)foodRefund+=o.remaining*2;
+    v.orders=[];
+  }
+  for(const c of Object.values(this.roster)){c.cook=false;delete c.cookX;delete c.cookY;}
   // Legacy kitchens were implicit in every visited branch once workers unlocked.
   if(!d.canteenVersion&&(d.zoneEvents?.th?.frontierBreach==='cleared'||d.bossCleared?.th||this.workerState.workers.length)){
     for(const list of [d.stations,...Object.values(d.zoneSave||{}).map(z=>z.stations)])if(list&&!list.some(s=>s.k==='canteen'))list.push({k:'canteen',build:0,slots:[]});
@@ -5117,6 +5252,7 @@ API.restore = function (d) {
   for (const k of ['coin', 'order', 'karma', 'scoreSum']) {
     this[k] = Number.isFinite(d[k]) ? d[k] : k === 'coin' ? BAL.startCoin : k === 'order' ? 72 : 0;
   }
+  this.coin+=foodRefund;
   this.courtClosed = !!d.courtClosed;
   this.courtArrivals=(d.courtArrivals||[]).filter(a=>a&&Number.isFinite(a.soulId))
     .map(a=>({...a,zone:a.zone||d.zone||'th',phase:['queued','ferry','dock','escort'].includes(a.phase)?a.phase:'dock',elapsed:Math.max(0,a.elapsed||0),duration:Math.max(1,a.duration||3600)}));
