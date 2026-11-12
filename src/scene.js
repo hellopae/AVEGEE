@@ -6,7 +6,7 @@ import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.j
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
-import {zoneWorkers,drawWorker} from './workers.js';
+import {zoneWorkers,drawWorker,workerCarryReady} from './workers.js';
 import {bossGuideDismissed,bossPierRetired} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
@@ -480,7 +480,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
   }
 
   // The destination roster is filled only after the walk completes in game.js.

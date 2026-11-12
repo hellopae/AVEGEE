@@ -343,20 +343,39 @@ export function workerRow(w,v2=false) {
   return R.idle;
 }
 export const workerCookAssets=zone=>({image:`img/workers/worker-${zones.includes(zone)?zone:'th'}-cook-v1.webp`,metadata:`img/workers/worker-${zones.includes(zone)?zone:'th'}-cook-v1.json`});
-const cookAssets=new Map();
-function cookArt(zone){
- if(!cookAssets.has(zone)){
-  cookAssets.set(zone,null);
-  if(typeof fetch==='function')fetch(workerCookAssets(zone).metadata).then(r=>r.ok?r.json():null).then(meta=>{
+// Only the TH server has a carry-the-rice walk (side / side-left / down / up); other zones keep their own walk rows and the 🍙 marker.
+export const workerCarryAssets=zone=>zone==='th'?{image:'img/workers/worker-th-carry-v1.webp',metadata:'img/workers/worker-th-carry-v1.json'}:null;
+// Strip art loaded from <name>.json: {enabled,frames,frameMs,rows:[{row,scale?}]}; each row is one facing, frames side by side, feet registered to the cell centre bottom.
+const stripAssets=new Map();
+function stripArt(key,files){
+ if(!files)return null;
+ if(!stripAssets.has(key)){
+  stripAssets.set(key,null);
+  if(typeof fetch==='function')fetch(files.metadata).then(r=>r.ok?r.json():null).then(meta=>{
    if(!meta?.enabled||!Number.isInteger(meta.frames)||meta.frames<1||meta.frames>16)return;
-   const im=new Image();im.src=workerCookAssets(zone).image;cookAssets.set(zone,{im,frames:meta.frames,frameMs:Math.max(50,Number(meta.frameMs)||160)});
+   const rows=Array.isArray(meta.rows)&&meta.rows.length?meta.rows.map(r=>({dir:String(r.dir||''),scale:Number(r.scale)>0?Number(r.scale):1})):[{dir:'right',scale:1}];
+   const im=new Image();im.src=files.image;stripAssets.set(key,{im,frames:meta.frames,frameMs:Math.max(50,Number(meta.frameMs)||160),rows});
   }).catch(()=>{});
  }
- return cookAssets.get(zone);
+ return stripAssets.get(key);
+}
+const cookArt=zone=>stripArt('cook:'+zone,workerCookAssets(zone));
+const carryArt=zone=>stripArt('carry:'+zone,workerCarryAssets(zone));
+/** The strip art is drawn only once its image has decoded; until then callers fall back to the old poses. */
+export const workerCarryReady=zone=>{const a=carryArt(zone);return !!(a?.im.complete&&a.im.naturalWidth);};
+/** Row of a cook strip (0 right, 1 left) and of the TH carry strip (0 side, 1 side-left, 2 down, 3 up) for a worker's current facing. */
+export const cookRow=w=>w.face===-1&&(cookArt(w.homeZone)?.rows.length||1)>1?1:0;
+export const carryRow=w=>w.heading==='down'?2:w.heading==='up'?3:w.face===-1?1:0;
+function drawStrip(ctx,art,row,time,w,height){
+ const fw=art.im.naturalWidth/art.frames,fh=art.im.naturalHeight/art.rows.length,r=Math.min(row,art.rows.length-1),col=Math.floor(Math.max(0,time)/art.frameMs)%art.frames;
+ const dh=height*art.rows[r].scale,dw=dh*fw/fh;
+ ctx.save();ctx.fillStyle='rgba(14,8,18,.28)';ctx.beginPath();ctx.ellipse(w.x,w.y-2,height*.22,height*.065,0,0,Math.PI*2);ctx.fill();ctx.restore();
+ ctx.drawImage(art.im,col*fw,r*fh,fw,fh,w.x-dw/2,w.y-dh,dw,dh);
 }
 const sheets=new Map();
 export function drawWorker(ctx,w,time,height=48) {
-  if(w.job?.kind==='cook'&&w.arrived&&!w.moving){const art=cookArt(w.homeZone);if(art?.im.complete&&art.im.naturalWidth){const fw=art.im.naturalWidth/art.frames,fh=art.im.naturalHeight,col=Math.floor(time/art.frameMs)%art.frames;ctx.drawImage(art.im,col*fw,0,fw,fh,w.x-height*fw/fh/2,w.y-height,height*fw/fh,height);return;}}
+  if(w.job?.kind==='cook'&&w.arrived&&!w.moving){const art=cookArt(w.homeZone);if(art?.im.complete&&art.im.naturalWidth){drawStrip(ctx,art,cookRow(w),time,w,height);return;}}
+  if(w.meal&&!w.sitting){const art=carryArt(w.homeZone);if(art?.im.complete&&art.im.naturalWidth){drawStrip(ctx,art,carryRow(w),w.moving?time:0,w,height);return;}}
   const v2=WORKER_SHEETS_V2[w.homeZone],source=v2?workerSheetV2(w.homeZone):workerSheet(w.homeZone);let image=sheets.get(source);
   if(!image&&typeof Image!=='undefined'){image=new Image();image.src=source;sheets.set(source,image);}
   if(w.sitting){let rest=sheets.get('rest:'+w.homeZone);if(!rest&&typeof Image!=='undefined'){rest=new Image();rest.src=`img/workers/worker-${w.homeZone}-rest-v1.webp`;sheets.set('rest:'+w.homeZone,rest);}if(rest?.complete&&rest.naturalWidth){ctx.drawImage(rest,w.x-height*.39,w.y-height*.78,height*.78,height*.78);return;}}

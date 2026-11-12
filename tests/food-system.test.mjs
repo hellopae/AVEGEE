@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {createGame} from '../src/game.js';
 import {STATIONS,BAL} from '../src/data.js';
 import {resetWalk,setBlocks,setNpcDiscs,nearestWalk} from '../src/walk.js?v=k1d';
-import {stepWorkers,advanceWorkers,normalizeWorkers,workerRow,workerCookAssets,workerHireCost} from '../src/workers.js';
+import {stepWorkers,advanceWorkers,normalizeWorkers,workerRow,workerCookAssets,workerCarryAssets,carryRow,workerCarryReady,workerHireCost} from '../src/workers.js';
 import {canteenActive,canteenPoint,canteenState,stepCanteen,canteenCookPose} from '../src/canteen.js';
 import {canteenPanelHtml,workersPanelHtml} from '../src/worker-ui.js';
 import {teamManageHtml} from '../src/team-hud.js';
@@ -77,8 +77,17 @@ test('Nira has hire controls only; canteen exposes persistent worker modes and r
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');const start=ui.indexOf('function openNiraOffice()'),officeUi=ui.slice(start,ui.indexOf('\nfunction ',start+1));assert.doesNotMatch(officeUi,/niraItemWidget|data-nira-item|data-buy-supply/);
  const merchant=ui.slice(ui.indexOf('function openMerchant()'),ui.indexOf('/** G3b'));assert.match(merchant,/foodSupplyCard/);assert.doesNotMatch(merchant,/data-team-feed|hungerWidget/);
 });
-test('every zone has a disabled optional cook-art metadata hook and the existing work animation fallback',()=>{
- for(const zone of ['th','asia','west','cyberhell']){const files=workerCookAssets(zone);assert.equal(files.image,`img/workers/worker-${zone}-cook-v1.webp`);const meta=JSON.parse(readFileSync(new URL('../'+files.metadata,import.meta.url),'utf8'));assert.equal(meta.enabled,false);assert.equal(meta.frames,4);}
+test('every zone ships the registered cook strip (2 rows x 8 frames of 320 px, feet on x=160) and TH ships the carry strip',async()=>{
+ for(const zone of ['th','asia','west','cyberhell']){const files=workerCookAssets(zone);assert.equal(files.image,`img/workers/worker-${zone}-cook-v1.webp`);const meta=JSON.parse(readFileSync(new URL('../'+files.metadata,import.meta.url),'utf8'));
+  assert.equal(meta.enabled,true);assert.equal(meta.frames,8);assert.equal(meta.cell,320);assert.deepEqual(meta.foot,[160,320]);assert.deepEqual(meta.rows.map(r=>r.dir),['right','left']);
+  for(const r of meta.rows)assert.equal(r.order.length,8);
+  const buf=readFileSync(new URL('../'+files.image,import.meta.url));assert.equal(buf.toString('ascii',0,4),'RIFF');assert.equal(buf.toString('ascii',8,12),'WEBP');}
+ const carry=workerCarryAssets('th');assert.equal(carry.image,'img/workers/worker-th-carry-v1.webp');assert.equal(workerCarryAssets('asia'),null);
+ const meta=JSON.parse(readFileSync(new URL('../'+carry.metadata,import.meta.url),'utf8'));assert.deepEqual(meta.rows.map(r=>r.dir),['side','side-left','down','up']);for(const r of meta.rows)assert.ok(r.scale>=1&&r.scale<1.2);
+});
+test('cook strip picks the facing row; the TH carry strip follows heading then face',()=>{
+ assert.equal(carryRow({heading:'down',face:-1}),2);assert.equal(carryRow({heading:'up',face:1}),3);assert.equal(carryRow({heading:'side',face:1}),0);assert.equal(carryRow({heading:'side',face:-1}),1);assert.equal(carryRow({face:1}),0);
+ assert.equal(workerCarryReady('asia'),false);
 });
 test('cook and server resume automatically after supplies run dry; a lone server can collect its own meal',()=>{
  const g=game();kitchen(g);const w=g.hireWorker(),c=g.hireWorker();g.setWorkerMode(w.id,'serve');g.setWorkerMode(c.id,'cook');

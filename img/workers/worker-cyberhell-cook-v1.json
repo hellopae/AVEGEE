@@ -1,8 +1,46 @@
 {
-  "enabled": false,
-  "image": "worker-cyberhell-cook-v1.webp",
-  "frames": 4,
-  "frameMs": 160,
-  "layout": "horizontal strip, transparent background, feet at bottom centre",
-  "fallback": "worker sheet build row"
+ "enabled": true,
+ "image": "worker-cyberhell-cook-v1.webp",
+ "frames": 8,
+ "frameMs": 125,
+ "cell": 320,
+ "foot": [
+  160,
+  320
+ ],
+ "layout": "row 0 faces right, row 1 faces left; 8 frames per row; sole midpoint registered to x=160; height = shipped standing height",
+ "rows": [
+  {
+   "dir": "right",
+   "row": 0,
+   "dx": -32,
+   "order": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "dir": "left",
+   "row": 1,
+   "dx": 34,
+   "order": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  }
+ ],
+ "source": "Codex 20261111T170902Z-d171c309 (docs/art-reviews/2026-11-10-worker-cook), registered by scripts/build-worker-cook.py",
+ "fallback": "worker sheet build row"
 }

@@ -538,7 +538,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'canteen') {
       for(const c of zoneWorkers(g)){
         const pose=canteenCookPose(g,c);if(!pose)continue;
-        const [x,y]=pose.point;acts.push({y,fn:()=>drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false},t,U*CREW_H*characterScale('worker'))});
+        const [x,y]=pose.point;acts.push({y,fn:()=>drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false,face:pose.face},t,U*CREW_H*characterScale('worker'))});
       }
     }
     if (def.k === 'tea') {
