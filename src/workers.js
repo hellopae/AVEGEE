@@ -35,7 +35,7 @@ const state=g=>g.workerState ||= normalizeWorkers();
 // FB-UI 4 (owner 10 Nov): an assistant with nothing to do used to stay wherever his last job ended, and new hires were put 80-115 units
 // south of the bench - that is the great staircase (a worker stood across it for ever). Idle assistants now wait on the flat plaza west of the central road
 // in the middle of the map (open floor in all four zones, outside the tree canopies, clear of the soul queue and the stairs).
-export const WORKER_STANDBY=Object.freeze([[1690,1310],[1730,1310],[1690,1350],[1730,1350],[1690,1385],[1730,1385]]);   // FB2-3: moved 40 east / 5 south: the old bottom-left spot was a 96-108 unit lane in zones 2-4, a standing assistant there shut the way (corridor >= 130 at every point, all four zones)   // world points on the open west-central plaza (checked open to 24 units, clear of tree canopies and the queue, in all four zones)
+export const WORKER_STANDBY=Object.freeze([[1650,1300],[1690,1300],[1650,1340],[1690,1340],[1730,1330],[1690,1380]]);   // FB2-3: the fifth slot (was 1650,1380) is a 96-108 unit lane in zones 2-4 - an assistant standing there shut the way; moved to open ground (corridor >= 110 at all six, all four zones)
 export function workerStandbyPoint(i) {
   const [dx,dy]=WORKER_STANDBY[((i%WORKER_STANDBY.length)+WORKER_STANDBY.length)%WORKER_STANDBY.length];
   return nearestWalk(dx,dy);

@@ -105,7 +105,8 @@ test('ground set v7r (v7 + the 7 repaired spots): 70 tiles of 1024 px (10 x 7; l
   assert.match(readFileSync(file('src/asset-preload.js'), 'utf8'), /v\[2-9\]r\?\(\?:-partial\)\?/, 'preload tier knows the partial preview');
   // the walk mask is not derived from the ground set: its file and the code that builds it are untouched by this branch
   const diff = execFileSync('git', ['diff', '--name-only', '812152d2', 'HEAD'], { cwd: file('.'), encoding: 'utf8' });
-  assert.ok(!/walk/i.test(diff.split('\n').filter(f => /^(art-src|src\/walk|img\/.*walk)/.test(f) && !/-walk(-[^/]*)?\.(png|webp)$/.test(f)).join('\n')), 'no walkmask file changed');
+  // 13 Nov: src/walk.js got a read-only corridorWidth() measure (FB2-3, authenticated by tests/fixtures/fb2-a-walk-changes.json); art-src/z1-foam-mask is a fluid-mask backup, not a walk file
+  assert.ok(!/walk/i.test(diff.split('\n').filter(f => /^(art-src|src\/walk|img\/.*walk)/.test(f) && !/-walk(-[^/]*)?\.(png|webp)$/.test(f) && f !== 'src/walk.js' && !/^art-src\/z1-foam-mask\//.test(f)).join('\n')), 'no walkmask file changed');
 });
 
 test('ground set v7r: pack manifest lists the 7 repaired spots, no v5 fallback left, the pier rails stay off because the repaired stair has them painted in', () => {
