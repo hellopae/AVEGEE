@@ -36,12 +36,12 @@ const bboxOf = (ctx, w, h) => {
 /** Whole-pixel shift (dx,dy) that lays `cur` onto `ref` (RGBA, w*h, premultiplied by alpha) with the least colour difference inside `box`;
  *  rows above `box.headY` (crown/face) count double so the face is what stays still. Pure — exported for tests. */
 export function bestShift(ref, cur, w, h, box, range = ALIGN_RANGE) {
-  const diff = (dx, dy) => {
+  const diff = (dx, dy, st) => {
     let sum = 0;
-    for (let y = box.y0; y < box.y1; y++) {
-      const sy = y - dy; if (sy < 0 || sy >= h) { sum += 255 * 3 * w; continue; }
+    for (let y = box.y0; y < box.y1; y += st) {
+      const sy = y - dy; if (sy < 0 || sy >= h) { sum += 255 * 3 * w / st; continue; }
       const wgt = y < box.headY ? 2 : 1;
-      for (let x = box.x0; x < box.x1; x++) {
+      for (let x = box.x0; x < box.x1; x += st) {
         const sx = x - dx, i = (y * w + x) * 4, j = (sy * w + sx) * 4;
         if (sx < 0 || sx >= w) { sum += 255 * 3 * wgt; continue; }
         const a = ref[i + 3] / 255, b = cur[j + 3] / 255;
@@ -50,12 +50,18 @@ export function bestShift(ref, cur, w, h, box, range = ALIGN_RANGE) {
     }
     return sum;
   };
-  let best = { d: diff(0, 0), dx: 0, dy: 0 };
+  // coarse pass on every 2nd pixel (4x cheaper — this runs once per outfit on the main thread, phones included), then an exact pass around the winner
+  let best = { d: diff(0, 0, 2), dx: 0, dy: 0 };
   for (let dy = -range; dy <= range; dy++) for (let dx = -range; dx <= range; dx++) {
     if (!dx && !dy) continue;
-    const d = diff(dx, dy); if (d < best.d * 0.98) best = { d, dx, dy };   // need a real improvement (>2%) to move a pose off its drawn place
+    const d = diff(dx, dy, 2); if (d < best.d * 0.98) best = { d, dx, dy };   // need a real improvement (>2%) to move a pose off its drawn place
   }
-  return { dx: best.dx, dy: best.dy };
+  let fine = { d: diff(best.dx, best.dy, 1), dx: best.dx, dy: best.dy };
+  for (let dy = best.dy - 1; dy <= best.dy + 1; dy++) for (let dx = best.dx - 1; dx <= best.dx + 1; dx++) {
+    const d = diff(dx, dy, 1); if (d < fine.d) fine = { d, dx, dy };
+  }
+  const zero = diff(0, 0, 1);
+  return zero <= fine.d * 1.02 ? { dx: 0, dy: 0 } : { dx: fine.dx, dy: fine.dy };
 }
 const toUrl = canvas => new Promise(res => canvas.toBlob(b => res(b ? URL.createObjectURL(b) : null), 'image/png'));
 
