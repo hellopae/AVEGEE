@@ -10,13 +10,28 @@ const FRONT = 1e7, BACK = -1e7;
 export function groundSpriteLayerDepth(s) { return s.layer === 'back' ? BACK : s.layer === 'front' ? FRONT : s.footWorld[1]; }
 /** Is `s` (world rect) touching the camera view [x,y,w,h] (+pad)? */
 export function groundSpriteVisible(s, view, pad = 80) {
-  const [x, y, w, h] = s.rectWorld;
+  const [x, y, w, h] = groundSpriteDrawRect(s);
   return !(x + w < view[0] - pad || x > view[0] + view[2] + pad || y + h < view[1] - pad || y > view[1] + view[3] + pad);
 }
 // FX5 (owner 5-6 Nov): the 51 pilot sprites of trees / beds / rocks / lamp posts were placed wrongly and at the wrong size; the owner will place them himself.
 // Hidden by flag (sprites.json and the pictures stay). 'rails' = the bridge rails / pier posts (layers back / front), shown unless an id is listed in hideIds.
 export const GROUND_SPRITE_SHOW = { sort: false, rails: true, hideIds: new Set(['lava-lower-back', 'lava-lower-front']) };   // the left lava bridge rails floated off the deck (owner 23:36): removed; the central bridge + pier rails sit on their decks (checked)
 export const setGroundSpriteShow = v => Object.assign(GROUND_SPRITE_SHOW, v);
+// FB2-5 (owner 13 Nov: "the bridge posts look squeezed narrow"): the two central-bridge rail sprites were exported with their width squeezed.  Measured against the
+// painted end posts of the same bridge in the v7r ground (same height per post segment, 207 vs 220 px): the sprite's stone block is 21 px wide where the painted one is 75 px
+// (x3.6), its ring 21 vs 55 (x2.6), its rod 4-5 vs 8-9 (x2).  The sprite is drawn x3.5 wider around the centre of its opaque part (xPivot = that centre as a fraction of the width),
+// so the posts match the painted end posts.  Nothing is recoloured or filtered.  When Kittanate / Codex re-export these two at the true proportion (see the FB2-A note), delete the entries.
+export const GROUND_SPRITE_X_FIX = Object.freeze({
+  'river-back':  Object.freeze({ k: 3.5, pivot: .358 }),
+  'river-front': Object.freeze({ k: 3.5, pivot: .594 }),
+});
+/** World rect [x, y, w, h] a sprite is drawn into: its own rectWorld, widened around its pivot when it has an entry in GROUND_SPRITE_X_FIX. */
+export function groundSpriteDrawRect(s) {
+  const [x, y, w, h] = s.rectWorld, fix = GROUND_SPRITE_X_FIX[s.id];
+  if (!fix) return [x, y, w, h];
+  const pv = x + fix.pivot * w;
+  return [pv - (pv - x) * fix.k, y, w * fix.k, h];
+}
 // `off` in sprites.json (a reason string) = this ground set already has the object painted in at that spot (e.g. a v5 fallback patch), so drawing the sprite would double it.
 export const groundSpriteShown = s => !s.off && (s.layer === 'sort' ? GROUND_SPRITE_SHOW.sort : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
 const urlOf = () => activeTownSkin()?.terrain?.sprites || null;
@@ -55,7 +70,7 @@ export function addGroundSpriteLayers(at, ctx) {
     at(groundSpriteLayerDepth(s), () => {
       const el = imageOf(st, s);
       if (!el) return;
-      const [x, y, w, h] = s.rectWorld;
+      const [x, y, w, h] = groundSpriteDrawRect(s);
       ctx.save(); ctx.imageSmoothingEnabled = true; ctx.drawImage(el, x, y, w, h); ctx.restore();
     });
   }
