@@ -37,12 +37,15 @@ test('chunk pixel sizes match the world scale (1.28 painted px per unit) and the
   assert.ok(bytes < 6 * 1048576, 'all chunks together stay under 6 MB');
 });
 
-test('old tile terrain and removed scenery art are no longer preloaded; the preview is', () => {
+test('old tile terrain and removed scenery art are no longer preloaded; the preview is', async () => {
   const catalog = JSON.parse(readFileSync(file('img/preload-catalog.json'), 'utf8'));
   const th = catalog.zones.th.join('\n');
   assert.doesNotMatch(th, /map-zone1\/terrain-/);
   assert.doesNotMatch(th, /map-zone1\/prop-(bush|ice-ridge|mountain-ridge|volcano|waterfall)/);
-  assert.match(th, /map-zone1\/v5\/zone1-terrain-v5-preview\.webp/);
+  assert.match(th, /map-zone1\/v7r\/zone1-terrain-v7-preview\.webp/, 'the active ground set (v7r) preview is preloaded');
+  assert.doesNotMatch(th, /zone1-terrain-v5-preview/, 'the v5 preview (0.96 MB) is not used by the game any more');
+  const { assetTier } = await import('../src/asset-preload.js');
+  assert.equal(assetTier('img/map-zone1/v7r/zone1-terrain-v7-preview.webp').tier, 0, 'the v7r preview is a critical (tier 0) asset like the v5 one was');
   assert.doesNotMatch(th, /map-zone1\/v5\/r\d-c\d\.webp/, 'sharp chunks stream lazily, never preloaded');
 });
 
