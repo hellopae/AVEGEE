@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, mkdtempSync, copyFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { readBuildId, fetchLatestBuild, createVersionWatch, PLACEHOLDER, POLL_MS, ASSET_CHECK_GAP_MS } from '../src/version-check.js';
+import { readBuildId, fetchLatestBuild, createVersionWatch, isUpdatePreview, mountVersionCheck, PLACEHOLDER, POLL_MS, ASSET_CHECK_GAP_MS } from '../src/version-check.js';
 import { stamp } from '../scripts/stamp-build.mjs';
 
 const html = readFileSync('index.html', 'utf8');
@@ -120,4 +120,70 @@ test('texts: both languages say what the brief says', () => {
   const src = readFileSync('src/version-check.js', 'utf8');
   assert.ok(src.includes('มีเวอร์ชันใหม่ แตะเพื่อโหลดใหม่'));
   assert.ok(src.includes('New version available — tap to reload'));
+});
+
+test('preview flag: only ?update=preview turns it on, nothing else (no other value, no hash, no storage)', () => {
+  assert.equal(isUpdatePreview('?update=preview'), true);
+  assert.equal(isUpdatePreview('?x=1&update=preview'), true);
+  for (const s of ['', '?', '?update=1', '?update=', '?update=Preview', '?updates=preview', '#update=preview', null, undefined]) assert.equal(isUpdatePreview(s), false, String(s));
+});
+
+// A tiny DOM: just enough of what mountVersionCheck touches.
+function fakeWin({ build, search = '', title = 'home', latest = build }) {
+  const mk = tag => { const el = { tag, hidden: false, children: [], dataset: {}, listeners: {}, classList: { toggle() {}, contains: c => el._cls?.has(c) }, _cls: new Set(),
+    set innerHTML(v) { el._html = v; }, setAttribute() {}, addEventListener(t, f) { el.listeners[t] = f; }, appendChild(c) { el.children.push(c); },
+    querySelector: () => ({ textContent: '' }) }; return el; };
+  const titleEl = mk('div'); if (title === 'gone') titleEl._cls.add('gone');
+  const byId = { title: titleEl };
+  const doc = { baseURI: 'https://x.test/AVEGEE/index.html', documentElement: { dataset: {}, lang: 'th' }, body: mk('body'),
+    querySelector: sel => sel === 'meta[name="avegee-deploy"]' && build ? { getAttribute: () => build } : null,
+    getElementById: id => byId[id] ?? null, createElement: mk, addEventListener() {} };
+  let reloads = 0, fetches = 0;
+  const win = { document: doc, location: { search, reload: () => { reloads++; } }, setInterval: () => 0, addEventListener() {},
+    fetch: async () => { fetches++; return { ok: true, json: async () => ({ build: latest }) }; }, G: { save: () => true } };
+  return { win, doc, counts: () => ({ reloads, fetches }),
+    visible: () => { const [banner, chip] = [titleEl.children[0], doc.body.children[0]]; return { banner: !banner.hidden, chip: !chip.hidden }; },
+    tapBanner: () => titleEl.children[0].listeners.click(), tapChip: () => doc.body.children[0].listeners.click() };
+}
+
+test('preview on a stamped build whose version matches: banner on Home, icon in play, no latch, no reload on tap', async () => {
+  const home = fakeWin({ build: 'abc12345', search: '?update=preview' });
+  const m = mountVersionCheck(home.win);
+  await m.watch.check();
+  assert.equal(m.watch.stale, false);                                    // the preview never pretends the server said "newer"
+  assert.deepEqual(home.visible(), { banner: true, chip: false });
+  home.tapBanner();
+  assert.equal(home.counts().reloads, 0);
+  assert.equal(home.doc.documentElement.dataset.updateAvailable, '');
+  assert.equal(home.doc.documentElement.dataset.updatePreview, '1');
+  const play = fakeWin({ build: 'abc12345', search: '?update=preview', title: 'gone' });
+  mountVersionCheck(play.win);
+  assert.deepEqual(play.visible(), { banner: false, chip: true });
+  play.tapChip();
+  assert.equal(play.counts().reloads, 0);
+});
+
+test('preview also works on an unstamped dev build (nothing to compare, but the strip draws)', () => {
+  const dev = fakeWin({ build: null, search: '?update=preview' });
+  assert.ok(mountVersionCheck(dev.win));
+  assert.deepEqual(dev.visible(), { banner: true, chip: false });
+  assert.equal(dev.counts().fetches, 0);
+});
+
+test('no flag = unchanged behaviour: matching build shows nothing, unstamped dev mounts nothing, a real newer build still shows and reloads', async () => {
+  const same = fakeWin({ build: 'abc12345' });
+  const m = mountVersionCheck(same.win); await m.watch.check();
+  assert.deepEqual(same.visible(), { banner: false, chip: false });
+  assert.equal(same.doc.documentElement.dataset.updatePreview, '');
+  assert.equal(mountVersionCheck(fakeWin({ build: null }).win), null);
+  const newer = fakeWin({ build: 'abc12345', latest: 'def67890', search: '?update=preview' });   // preview + really stale: the real path wins, tap reloads
+  const n = mountVersionCheck(newer.win); await n.watch.check();
+  assert.equal(n.watch.stale, true);
+  newer.tapBanner();
+  assert.equal(newer.counts().reloads, 1);
+  const real = fakeWin({ build: 'abc12345', latest: 'def67890' });
+  const r = mountVersionCheck(real.win); await r.watch.check();
+  assert.deepEqual(real.visible(), { banner: true, chip: false });
+  real.tapBanner();
+  assert.equal(real.counts().reloads, 1);
 });

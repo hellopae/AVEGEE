@@ -58,7 +58,7 @@ test('zone transition pauses before opening arrival and repeated change events d
   const end = ui.indexOf("dlg.addEventListener('close', () => setTimeout(drawCoach", start);
   let finish; const calls = [];
   const g = { pendingZone:{k:'asia',name:'บูรพา'},outfit:'th',paused:false,zoneIntroSeen:{} };
-  const ctx = { g, preloadZone:(...args) => { calls.push(args); return new Promise(r => { finish = r; }); },
+  const ctx = { g, started:true, preloadZone:(...args) => { calls.push(args); return new Promise(r => { finish = r; }); },
     refresh:()=>calls.push('refresh'), openZoneArrival:z => calls.push(z.k), zoneIntroduction:()=>true,
     bossModal:()=>calls.push('return'), setTimeout(){} };
   vm.createContext(ctx); vm.runInContext(ui.slice(start,end), ctx);

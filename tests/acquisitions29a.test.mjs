@@ -84,7 +84,7 @@ test('discovery queue covers pickups, shops, levels, abilities and survives save
 test('discovery modal waits for reward and existing dialogs, shows one entry, and acknowledges only on close', () => {
   const g=createGame(); g.discoveryQueue=['item:lotus','ability:bigFire'];
   const listeners=new Set(), renders=[];
-  const ctx={g,ITEMS,POWERS,ABILITY_REWARDS,esc:String,pauseForDlg(){},sfx(){},itemImg:k=>`<img data-item="${k}">`,placeholderSrc:()=>'',
+  const ctx={g,started:true,ITEMS,POWERS,ABILITY_REWARDS,esc:String,pauseForDlg(){},sfx(){},itemImg:k=>`<img data-item="${k}">`,placeholderSrc:()=>'',
     dlg:{open:false,addEventListener:(_,f)=>listeners.add(f),removeEventListener:(_,f)=>listeners.delete(f)},
     itemText:(k,field)=>ITEMS[k][field],itemName:k=>ITEMS[k].name,dlgGen:0,rewardOpen:false,setTimeout:()=>{}, modal(html){renders.push(html);ctx.dlg.open=true;ctx.dlgGen++;}};
   vm.createContext(ctx); vm.runInContext(extract('openDiscovery','// ---------- เหตุการณ์เด้ง'),ctx);
@@ -138,7 +138,7 @@ test('outfit cards use the same ownership rule as equipping, show a visible lock
 test('ordinary close dispatch preserves reward and level priority before explanations', () => {
   const g=createGame(), calls=[];
   g.discoveryQueue=['item:lotus']; g.syncDiscoveries=()=>{};
-  const ctx={g,pendingBossGuideGrant,refresh(){},storyPlaying:false,storyScheduled:false,rewardOpen:false,
+  const ctx={g,started:true,pendingBossGuideGrant,refresh(){},storyPlaying:false,storyScheduled:false,rewardOpen:false,
     dlg:{open:false},openBattleReward:()=>calls.push('reward'),openDiscovery:()=>calls.push('discovery'),
     openLevelUp:()=>calls.push('level'),drawCoach(){},setTimeout(){}};
   vm.createContext(ctx);

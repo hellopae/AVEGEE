@@ -60,7 +60,13 @@ const TEXT = {
   th: { banner: 'มีเวอร์ชันใหม่ แตะเพื่อโหลดใหม่', chip: 'มีเวอร์ชันใหม่ แตะเพื่อโหลดใหม่' },
   en: { banner: 'New version available — tap to reload', chip: 'New version available — tap to reload' },
 };
-const lang = () => (document.documentElement.lang === 'en' ? 'en' : 'th');
+const langOf = doc => (doc.documentElement.lang === 'en' ? 'en' : 'th');
+
+/** `?update=preview` in the page URL = show the banner / icon for looks only (Khun Pae's preview).  Read once at mount, never stored,
+ *  never touches the watch: no fetch result changes, no `stale` latch, no reload on tap. */
+export function isUpdatePreview(search = globalThis.location?.search) {
+  try { return new URLSearchParams(search || '').get('update') === 'preview'; } catch { return false; }
+}
 
 /** Save (only when a game is running) then reload.  g.save() is a no-op returning false when no slot is selected (Home). */
 export function reloadNow({ win = globalThis.window, started } = {}) {
@@ -71,7 +77,8 @@ export function reloadNow({ win = globalThis.window, started } = {}) {
 export function mountVersionCheck(win = globalThis.window) {
   const doc = win.document;
   const current = readBuildId(doc);
-  if (!current) return null;                                   // unstamped (dev/tests): nothing to compare, stay out of the way
+  const preview = isUpdatePreview(win.location?.search);
+  if (!current && !preview) return null;                       // unstamped (dev/tests): nothing to compare, stay out of the way (preview still draws the strip)
 
   const title = doc.getElementById('title');
   const playing = () => !title || title.classList.contains('gone');
@@ -94,9 +101,10 @@ export function mountVersionCheck(win = globalThis.window) {
   });
 
   function render() {
-    const T = TEXT[lang()];
-    const showBanner = watch.stale && !playing();
-    const showChip = watch.stale && playing();
+    const T = TEXT[langOf(doc)];
+    const shown = watch.stale || preview;                      // preview = looks only; watch.stale itself is never set by it
+    const showBanner = shown && !playing();
+    const showChip = shown && playing();
     banner.hidden = !showBanner;
     banner.querySelector('.ub-text').textContent = T.banner;
     chip.hidden = !showChip;
@@ -105,8 +113,9 @@ export function mountVersionCheck(win = globalThis.window) {
     chip.setAttribute('aria-label', T.chip);
     chip.title = T.chip; banner.setAttribute('aria-label', T.banner);
     doc.documentElement.dataset.updateAvailable = watch.stale ? '1' : '';
+    doc.documentElement.dataset.updatePreview = preview ? '1' : '';
   }
-  const tap = () => reloadNow({ win, started: playing() });
+  const tap = () => { if (preview && !watch.stale) return; reloadNow({ win, started: playing() }); };   // preview: nothing to reload to
   banner.addEventListener('click', tap);
   chip.addEventListener('click', tap);
 

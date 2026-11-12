@@ -6570,7 +6570,7 @@ function showPendingStory() {
 
 function openDiscovery() {
   const id = g.discoveryQueue[0];
-  if (!id || dlg.open || g.battle || g.pendingReward || rewardOpen) return;
+  if (!started || !id || dlg.open || g.battle || g.pendingReward || rewardOpen) return;
   const [kind, k] = id.split(':');
   const def = kind === 'item' ? ITEMS[k] : kind === 'power' ? POWERS.find(p => p.k === k) : ABILITY_REWARDS[k];
   if (!def) { g.acknowledgeDiscovery(id); return; }
@@ -6615,6 +6615,10 @@ function openDefeatRecovery() {
 
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
+  // Home (before START / a slot) is not play: g is a throw-away fresh game there, and every dialog that closes on Home (settings, save slots,
+  // the language box ...) lands here through the 'close' listener.  Without this guard syncDiscoveries() queues the starter powers and the
+  // "ได้พลังใหม่ · ตวาดข่มขู่" box pops up over the settings / cover (found 12 Nov 2569).  Notifications wait until startPlay().
+  if (!started) return;
   if(g.mapTravel)return;
   if (g.assetsLoading) return;
   // Hold the world before story/boss handlers can show any art from the new branch.
