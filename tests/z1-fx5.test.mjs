@@ -65,7 +65,7 @@ test('FX5-6: KO phases fall -> down (held) -> rise; a figure already down when t
 
 test('FX5: import map has a new ?v= for every module changed this round', () => {
   const html = read('index.html'); const map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const m of ['map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=(20261106-fx5|20261112-z1v7)(-w1112)?$/, m);
+  for (const m of ['map-ambient', 'scene-atmosphere', 'scene-fluid-fx', 'town-ground-sprites', 'battle-ko']) assert.match(map[`./src/${m}.js`], /\?v=(20261106-fx5|20261112-z1v7|20261113-rails)(-w1112)?$/, m);
   assert.match(map['./src/scene.js'], /\?v=(20261106-fx5|20261110-(perf(-fbui)?|gfx))(-w1112)?(-cook1)?(-poses)?(-homegate)?$/);
   assert.match(map['./src/ui.js'], /\?v=(20261106-(fx5|kocrew-home-slots)|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))(-w1112)?(-cook1)?(-poses)?(-homegate)?$/); assert.match(html, /<script type="module" src="src\/ui\.js\?v=(20261106-kocrew-home-slots|20261110-(perf(-fbui)?|gfx|battlefx|questrewards))(-w1112)?(-cook1)?(-poses)?(-homegate)?">/); assert.match(html, /battle-turns\.css\?v=20261106-kocrew-home-slots/);
 });

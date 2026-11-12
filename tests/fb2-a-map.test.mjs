@@ -10,7 +10,8 @@ import { WORKER_STANDBY, WORKER_RULES, workerStandbyPoint, advanceWorkers, stepW
 import { teamHudHtml } from '../src/team-hud.js';
 import { TH_ATMOS_LAMPS } from '../src/scene-atmosphere.js';
 import { TOWN_PROP_SITES } from '../src/town-layout.js?v=k1d';
-import { groundSpriteDrawRect, GROUND_SPRITE_X_FIX } from '../src/town-ground-sprites.js';
+import * as GS from '../src/town-ground-sprites.js';
+import { groundSpriteDrawRect } from '../src/town-ground-sprites.js';
 globalThis.Image ??= class {};
 const read = u => readFileSync(fileURLToPath(new URL('../' + u, import.meta.url)), 'utf8');
 const ZONES = ['th', 'asia', 'west', 'cyberhell'];
@@ -135,12 +136,18 @@ test('FB2-4: every ambient crew line uses one bubble size (.74, Nira\'s size), c
 });
 
 // ---- item 5: bridge rails ---------------------------------------------------------------------------------------------------------------------
-test('FB2-5: the two bridge-rail sprites are drawn x3.5 wider about the centre of their opaque part; any other sprite is untouched', () => {
-  const back = { id: 'river-back', rectWorld: [1844.55, 1479.97, 50.4, 513.55] };
-  const r = groundSpriteDrawRect(back), fix = GROUND_SPRITE_X_FIX['river-back'];
-  assert.ok(Math.abs(r[2] - 50.4 * 3.5) < 1e-9 && r[1] === back.rectWorld[1] && r[3] === back.rectWorld[3], 'only X changes');
-  assert.ok(Math.abs((r[0] + fix.pivot * r[2]) - (back.rectWorld[0] + fix.pivot * 50.4)) < 1e-9, 'the pivot stays where it was');
+test('FB2-5: the two bridge-rail sprites are cut at the true proportion (no x-stretch workaround any more); a sprite is drawn at its own rectWorld', () => {
+  assert.equal(GS.GROUND_SPRITE_X_FIX, undefined, 'the x-stretch table is gone');
+  const list = JSON.parse(readFileSync(new URL('../img/map-zone1/v7r/sprites.json', import.meta.url), 'utf8'));
+  for (const id of ['river-back', 'river-front']) {
+    const s = list.find(e => e.id === id), r = groundSpriteDrawRect(s);
+    assert.deepEqual(r, s.rectWorld);
+    const buf = readFileSync(new URL('../img/map-zone1/v7r/' + s.src, import.meta.url));   // webp VP8X: canvas size at bytes 24..29
+    const w = 1 + buf.readUIntLE(24, 3), h = 1 + buf.readUIntLE(27, 3);
+    assert.equal(h, 1315, id + ' keeps its 1315 px height');
+    assert.ok(Math.abs(r[2] / r[3] - w / h) < 0.002, `${id} world rect ${r[2].toFixed(1)}x${r[3].toFixed(1)} has the same ratio as the picture ${w}x${h} (no squeeze)`);
+    assert.ok(w >= 90, id + ' is not the old 130 px sliver squeezed from a 704 px canvas');
+  }
   const other = { id: 'city-tree-08', rectWorld: [2376.14, 775.21, 103.2, 69.25] };
   assert.deepEqual(groundSpriteDrawRect(other), other.rectWorld);
-  assert.deepEqual(Object.keys(GROUND_SPRITE_X_FIX).sort(), ['river-back', 'river-front']);
 });
