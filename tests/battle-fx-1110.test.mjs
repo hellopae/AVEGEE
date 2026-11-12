@@ -164,7 +164,7 @@ test('cache-busting: the changed modules moved to a new release string', () => {
   for (const m of ['data', 'sfx', 'frontier', 'battle-fx', 'encounter-balance', 'party-balance'])
     assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx(-w1112)?"`), m);
   for (const m of ['game', 'ui', 'battle-fx-map'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?"`), m);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?"`), m);
   assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?"/);
   assert.match(read('src/ui.js'), /battle-camera\.js\?v=20261110-battlefx/);
 });

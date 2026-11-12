@@ -7,7 +7,7 @@ import { QUESTS, SIDE_QUESTS, KIN_QUESTS, questTarget, questState, advanceQuest,
 import { QUEST_REWARDS, QUEST_TIER_LABEL, questRewardPreview } from '../src/quest-rewards.js';
 import { COMBAT_SKILLS, skillBelongsTo, questSkillsForActor, skillForActor, skillUnlocked, unlockQuestSkill } from '../src/combat-skills.js';
 import { QUEST_FIGHTS, fightScene, questFightFoes } from '../src/quest-fights.js';
-import { SKILL_ICONS, skillScenes } from '../src/combat-skill-assets.js';
+import { SKILL_ICONS, SKILL_FX, skillScenes } from '../src/combat-skill-assets.js';
 import { questJournalHtml, questRewardText, questReceiptText } from '../src/quest-panels.js';
 import { simulate, setup } from '../scripts/sim-quest-fights.mjs';
 globalThis.Image ??= class {};
@@ -273,10 +273,13 @@ test('the new moves are in the same strength class as the trained ones (replay w
     assert.ok(trained - first <= 35);
   }
 });
-test('every new move has icon + scenes that exist (placeholders point at the same character\'s existing move art) and never touches the art files', () => {
+test('every new move has its own icon + 2 cutscene frames + effect that exist (QUEST-ART) and never touches the art files', () => {
   for (const skill of ['eyeAwaitingPermission', 'letterDelivered', 'gatekeeperStand'])
     for (const zone of ['th', 'asia', 'west', 'cyberhell']) { for (const src of [...skillScenes(skill, zone), SKILL_ICONS[skill]]) assert.ok(existsSync(new URL('../' + src, import.meta.url)), src); }
-  assert.deepEqual(skillScenes('eyeAwaitingPermission', 'asia'), skillScenes('karmaFracture', 'asia'));
+  assert.deepEqual(skillScenes('eyeAwaitingPermission', 'asia').map(s => s.split('/').pop()), ['kan-eyeAwaitingPermission-cut-01.webp', 'kan-eyeAwaitingPermission-cut-02.webp']);
+  for (const skill of ['eyeAwaitingPermission', 'letterDelivered', 'gatekeeperStand']) { assert.equal(skillScenes(skill).length, 2); assert.ok(existsSync(new URL(`../img/skills-v1/fx/${SKILL_FX[skill].impact}.webp`, import.meta.url))); }
+  for (const f of ['debtor', 'collector', 'gauze-big', 'gauze', 'tale-big', 'tale']) assert.ok(existsSync(new URL(`../img/mob-q-${f}.webp`, import.meta.url)), f);
+  for (const id of ['sqKan', 'sqBoon', 'sqGuard']) for (const foe of QUEST_FIGHTS[id].foes(false)) assert.match(foe.sp, /^mob-q-/, foe.who);
   const css = readFileSync(new URL('../src/combat-skill-assets.js', import.meta.url), 'utf8'); assert.doesNotMatch(css, /hue-rotate|brightness\(|saturate\(|tint\s*:/i);
 });
 test('UI: the battle menu lists quest moves next to the trained one and wide moves fire without asking for a target', () => {
@@ -288,7 +291,7 @@ test('UI: the battle menu lists quest moves next to the trained one and wide mov
 test('cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const m of ['game', 'ui', 'battle-fx-map', 'battle-turns', 'battle-result', 'combat-skills', 'combat-skill-assets', 'side-quests', 'quest-panels', 'e1-content', 'i18n'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?"`), m);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?"`), m);
   assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?"/);
   assert.ok(!/src\/(game|ui)\.js\?v=20261110-battlefx/.test(html), 'no stale game/ui release left');
 });
