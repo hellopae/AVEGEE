@@ -127,7 +127,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
     const m = key.match(POSE);
     if (m && map[zoneStem(key.slice(0, -m[0].length), z)]) return null;
   }
-  return `img/${key === 'crew-guard' && ext === 'png' ? 'crew-guard-v2' : key}.${ext === 'png' ? 'webp' : ext}`;   // 12 พ.ย.: ไฟล์ png/jpeg ทั้งหมดแปลงเป็น webp แล้ว — 'png' ยังเป็นชื่อเรียกเดิมของผู้เรียก
+  return `img/${key === 'crew-guard' && ext === 'png' ? 'crew-guard-v2' : key}.${/^(png|jpe?g)$/i.test(ext) ? 'webp' : ext}`;   // 12 พ.ย.: ไฟล์ png/jpeg ทั้งหมดแปลงเป็น webp แล้ว — 'png' ยังเป็นชื่อเรียกเดิมของผู้เรียก
 }
 
 function load(src) {
