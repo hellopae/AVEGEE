@@ -1,7 +1,7 @@
 // Native RGBA strips; equal frame bounds and scale preserve the standing foot anchor.
 const SHEETS = {
   "th:nira": {
-    "src": "img/crew-nira-walk-v2.png",
+    "src": "img/crew-nira-walk-v2.webp",
     "frameSize": {
       "w": 406,
       "h": 692
@@ -45,7 +45,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:taan": {
-    "src": "img/crew-taan-walk-v2.png",
+    "src": "img/crew-taan-walk-v2.webp",
     "frameSize": {
       "w": 543,
       "h": 667
@@ -89,7 +89,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:plerng": {
-    "src": "img/crew-plerng-walk-v2.png",
+    "src": "img/crew-plerng-walk-v2.webp",
     "frameSize": {
       "w": 448,
       "h": 704
@@ -133,7 +133,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:dam": {
-    "src": "img/crew-dam-walk-v2.png",
+    "src": "img/crew-dam-walk-v2.webp",
     "frameSize": {
       "w": 486,
       "h": 621
@@ -177,7 +177,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:kan": {
-    "src": "img/crew-kan-walk-v2.png",
+    "src": "img/crew-kan-walk-v2.webp",
     "frameSize": {
       "w": 417,
       "h": 643
@@ -221,7 +221,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:boon": {
-    "src": "img/crew-boon-walk-v2.png",
+    "src": "img/crew-boon-walk-v2.webp",
     "frameSize": {
       "w": 327,
       "h": 589
@@ -265,7 +265,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "th:guard": {
-    "src": "img/crew-guard-walk-v2.png",
+    "src": "img/crew-guard-walk-v2.webp",
     "frameSize": {
       "w": 469,
       "h": 698
@@ -309,7 +309,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:nira": {
-    "src": "img/Asia/crew-nira-asia-walk-v2.png",
+    "src": "img/Asia/crew-nira-asia-walk-v2.webp",
     "frameSize": {
       "w": 414,
       "h": 711
@@ -353,7 +353,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:taan": {
-    "src": "img/Asia/crew-taan-asia-walk-v2.png",
+    "src": "img/Asia/crew-taan-asia-walk-v2.webp",
     "frameSize": {
       "w": 543,
       "h": 634
@@ -397,7 +397,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:plerng": {
-    "src": "img/Asia/crew-plerng-asia-walk-v2.png",
+    "src": "img/Asia/crew-plerng-asia-walk-v2.webp",
     "frameSize": {
       "w": 543,
       "h": 671
@@ -441,7 +441,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:dam": {
-    "src": "img/Asia/crew-dam-asia-walk-v2.png",
+    "src": "img/Asia/crew-dam-asia-walk-v2.webp",
     "frameSize": {
       "w": 502,
       "h": 614
@@ -485,7 +485,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:kan": {
-    "src": "img/Asia/crew-kan-asia-walk-v2.png",
+    "src": "img/Asia/crew-kan-asia-walk-v2.webp",
     "frameSize": {
       "w": 387,
       "h": 681
@@ -529,7 +529,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:boon": {
-    "src": "img/Asia/crew-boon-asia-walk-v2.png",
+    "src": "img/Asia/crew-boon-asia-walk-v2.webp",
     "frameSize": {
       "w": 543,
       "h": 638
@@ -573,7 +573,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "asia:guard": {
-    "src": "img/Asia/crew-guard-asia-walk-v2.png",
+    "src": "img/Asia/crew-guard-asia-walk-v2.webp",
     "frameSize": {
       "w": 454,
       "h": 700
@@ -617,7 +617,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:nira": {
-    "src": "img/West/crew-nira-west-walk-v2.png",
+    "src": "img/West/crew-nira-west-walk-v2.webp",
     "frameSize": {
       "w": 467,
       "h": 698
@@ -661,7 +661,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:taan": {
-    "src": "img/West/crew-taan-west-walk-v2.png",
+    "src": "img/West/crew-taan-west-walk-v2.webp",
     "frameSize": {
       "w": 500,
       "h": 666
@@ -705,7 +705,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:plerng": {
-    "src": "img/West/crew-plerng-west-walk-v2.png",
+    "src": "img/West/crew-plerng-west-walk-v2.webp",
     "frameSize": {
       "w": 527,
       "h": 668
@@ -749,7 +749,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:dam": {
-    "src": "img/West/crew-dam-west-walk-v2.png",
+    "src": "img/West/crew-dam-west-walk-v2.webp",
     "frameSize": {
       "w": 469,
       "h": 660
@@ -793,7 +793,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:kan": {
-    "src": "img/West/crew-kan-west-walk-v2.png",
+    "src": "img/West/crew-kan-west-walk-v2.webp",
     "frameSize": {
       "w": 529,
       "h": 682
@@ -837,7 +837,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:boon": {
-    "src": "img/West/crew-boon-west-walk-v2.png",
+    "src": "img/West/crew-boon-west-walk-v2.webp",
     "frameSize": {
       "w": 536,
       "h": 700
@@ -881,7 +881,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "west:guard": {
-    "src": "img/West/crew-guard-west-walk-v2.png",
+    "src": "img/West/crew-guard-west-walk-v2.webp",
     "frameSize": {
       "w": 526,
       "h": 687
@@ -925,7 +925,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:nira": {
-    "src": "img/CyberHell/crew-nira-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-nira-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 381,
       "h": 690
@@ -969,7 +969,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:taan": {
-    "src": "img/CyberHell/crew-taan-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-taan-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 538,
       "h": 525
@@ -1013,7 +1013,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:plerng": {
-    "src": "img/CyberHell/crew-plerng-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-plerng-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 384,
       "h": 689
@@ -1057,7 +1057,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:dam": {
-    "src": "img/CyberHell/crew-dam-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-dam-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 498,
       "h": 670
@@ -1101,7 +1101,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:kan": {
-    "src": "img/CyberHell/crew-kan-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-kan-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 432,
       "h": 676
@@ -1145,7 +1145,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:boon": {
-    "src": "img/CyberHell/crew-boon-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-boon-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 519,
       "h": 672
@@ -1189,7 +1189,7 @@ const SHEETS = {
     "footOffset": 0.0
   },
   "cyberhell:guard": {
-    "src": "img/CyberHell/crew-guard-cyberhell-walk-v2.png",
+    "src": "img/CyberHell/crew-guard-cyberhell-walk-v2.webp",
     "frameSize": {
       "w": 493,
       "h": 667

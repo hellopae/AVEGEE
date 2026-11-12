@@ -23,11 +23,11 @@ test('remembered enemy stays unmarked at rest; attacks and AOE ask for confirmat
 test('weapon HUD collapses to sword + effect icon; actual cooldown and notes remain available on request',()=>{
  for(const [id,glyph] of [['fang','🔥'],['chain','✦'],['cane','🩸'],['trojan','↻']]){
   const b={weaponCd:3,weaponNote:{k:'drain',n:4}},before=JSON.stringify(b),html=battleWeaponHudHtml(b,id);
-  assert.match(html,/<details class="battle-weapon-hud cooling" data-weapon-cd="3">/);assert.match(html,new RegExp(`weapon-icon-${id}\\.png`));assert.ok(html.includes(glyph));
+  assert.match(html,/<details class="battle-weapon-hud cooling" data-weapon-cd="3">/);assert.match(html,new RegExp(`weapon-icon-${id}\\.webp`));assert.ok(html.includes(glyph));
   assert.match(html,/<summary title=/);assert.match(html,/weapon-hud-details/);assert.doesNotMatch(html,/battle-buff|<details[^>]* open/);assert.equal(JSON.stringify(b),before);
   assert.doesNotMatch(battleWeaponHudHtml({weaponCd:0},id),/class="battle-weapon-hud cooling"/);assert.match(battleWeaponHudHtml({weaponCd:0},id),/data-weapon-cd="0"/);
  }
- assert.match(battleWeaponHudHtml({},null),/weapon-icon-base.png/);assert.doesNotMatch(battleWeaponHudHtml({},null),/class="weapon-effect-icon"/);assert.equal(battleWeaponHudHtml({over:'win'},'fang'),'');
+ assert.match(battleWeaponHudHtml({},null),/weapon-icon-base.webp/);assert.doesNotMatch(battleWeaponHudHtml({},null),/class="weapon-effect-icon"/);assert.equal(battleWeaponHudHtml({over:'win'},'fang'),'');
 });
 test('weapon details retain translated names and quantities',()=>{
  const oldDocument=globalThis.document;globalThis.document={documentElement:{}};

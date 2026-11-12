@@ -139,8 +139,8 @@ test('รายชื่อไฟล์ภาพที่ต้องวาด: 
   const all = [...WEAPON_ART_FILES.sprites, ...WEAPON_ART_FILES.icons, ...WEAPON_ART_FILES.cutscenes];
   assert.equal(new Set(all).size, 24);
   assert.equal(weaponSpriteSrc('cane', 'west'), 'img/yama-sword-weapons/hero-yama-west-sword-cane.webp');
-  assert.equal(weaponIconSrc('fang'), 'img/weapons/weapon-icon-fang.png');
-  assert.equal(weaponCutsceneSrc('trojan'), 'img/weapons/weapon-cutscene-trojan.jpeg');
+  assert.equal(weaponIconSrc('fang'), 'img/weapons/weapon-icon-fang.webp');
+  assert.equal(weaponCutsceneSrc('trojan'), 'img/weapons/weapon-cutscene-trojan.webp');
 });
 
 // ---------------------------------------------------------------- เปิดการประลอง
@@ -242,7 +242,7 @@ test('รอบแรก: 10 wave → จุดพัก wave 5 บันทึ�
   const waves7to9 = [14, 14, 16].reduce((a, c) => a + c, 0);          // wave 6 จ่ายไปแล้วในรอบที่แพ้ — ไม่จ่ายซ้ำ
   assert.equal(g.coin - coin1, winCoin + waves7to9);
   assert.ok(g.storyQueue.some(s => s.key === 'weapon-fang'), 'คัตซีนรับอาวุธเข้าคิว');
-  assert.ok(storyOf('weapon-fang').pages[0].image.endsWith('weapon-cutscene-fang.jpeg'));
+  assert.ok(storyOf('weapon-fang').pages[0].image.endsWith('weapon-cutscene-fang.webp'));
   assert.equal(STORY['weapon-fang'], undefined, 'แยกจาก STORY หลัก');
   assert.match(WEAPON_STORY['weapon-fang'].pages[0].line, /ฮ่าฮ่า ตัวเล็กแต่เขี้ยวคม/);
   assert.equal(g.pendingReward.weapons[0], 'fang');

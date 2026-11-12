@@ -64,7 +64,7 @@ test('case 3 freezes all walkers and management until vampire win; thaw resumes 
 test('vampire approach uses zone art and existing intro; two minion waves, hypnotized party wave, then vampire reward',()=>{
  const actors=breachApproachActors('west','westVampireBreach');assert.equal(actors.length,3);
  assert.equal(actors[0].art,'boss-frontier');
- assert.equal(frontierIntroduction('west','en').image,'img/frontier-west-intro-v1.png');
+ assert.equal(frontierIntroduction('west','en').image,'img/frontier-west-intro-v1.webp');
  const ev=ZONE_EVENTS.west[1];assert.equal(ev.waves.length,4);assert.equal(ev.waves[2][0].crew,'taan');assert.equal(ev.waves[3][0].sp,'boss-frontier-west');assert.equal(ev.reward.ability,'hypno');
 });
 test('case 7: run from bottom → saved intro with five bilingual lines → move right → wait → fight → spear once',()=>{
@@ -73,7 +73,7 @@ test('case 7: run from bottom → saved intro with five bilingual lines → move
  g.advanceWestDeva(WEST_DEVA_RUN_MS/2);assert.ok(devaMapActors(g)[0].y<850);
  g=reload(g);g.advanceWestDeva(WEST_DEVA_RUN_MS/2);assert.equal(g.devaVisits.west.phase,'intro');
  assert.equal(g.storyQueue[0].key,'deva-west');assert.equal(devaMapActors(g)[0].y,480);
- assert.equal(STORY['deva-west'].pages[0].image,'img/deva-intro/deva-intro-west-v1.png');
+ assert.equal(STORY['deva-west'].pages[0].image,'img/deva-intro/deva-intro-west-v1.webp');
  for(const lang of ['th','en']) {setLang(lang);const line=STORY['deva-west'].pages[0].line;assert.equal(line.split('\n').length,5);assert.ok(!line.includes('deva.west.arrival'));assert.ok(!t('build.westBlocked').includes('hypnotized'));}
  setLang('th');g=reload(g);g.completeStory();assert.equal(g.devaVisits.west.phase,'descending');
  g.advanceWestDeva(WEST_DEVA_EXIT_MS);assert.equal(g.devaVisits.west.phase,'waiting');
@@ -91,7 +91,7 @@ test('old cleared rescue save is never replayed; interrupted deva battle retries
 });
 test('west intro preloads in west only; new cache token and rescue proximity UI are wired',()=>{
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
- const path='img/deva-intro/deva-intro-west-v1.png';assert.ok(catalog.zones.west.includes(path));assert.ok(!catalog.shared.includes(path));
+ const path='img/deva-intro/deva-intro-west-v1.webp';assert.ok(catalog.zones.west.includes(path));assert.ok(!catalog.shared.includes(path));
  for(const z of ['th','asia','cyberhell']) assert.ok(!catalog.zones[z].includes(path));
  const preload=readFileSync(new URL('../src/preload.js',import.meta.url),'utf8');assert.ok(preload.includes('20261008-zone3-hypnosis-ui'));
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');assert.ok(ui.includes("g.startZoneEvent('westHypnotized')"));assert.ok(ui.includes('white-space:pre-line'));

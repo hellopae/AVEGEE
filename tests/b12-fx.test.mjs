@@ -28,7 +28,7 @@ test('B12 zoom fits complete image at desktop/390 and max camera keeps hero in v
 });
 test('B12 removes overlay trees/falls and pins new flow to v6 without changing other route FX',()=>{
  const a=ROUTE_GEOMETRY['th:asia'].ambient;assert.deepEqual(a.trees,[]);assert.deepEqual(a.waterfalls,[]);assert.equal(a.leafArea,null);
- assert.equal(a.flowUrl,'img/frontier-route/zone1-2-v6-flow.png');
+ assert.equal(a.flowUrl,'img/frontier-route/zone1-2-v6-flow.webp');
  const trace=JSON.parse(readFileSync('output/coordination/2026-10-30-b12-fx/flow-trace.json'));
  assert.equal(trace.sha256,createHash('sha256').update(readFileSync(trace.source)).digest('hex'),'flow trace belongs to the shipped painting');
  for(const k of [2,3,4,5])assert.ok(trace.kindCells[k]>100,`surface ${k} exists`);

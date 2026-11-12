@@ -222,6 +222,6 @@ test('E1 supersedes 30D orientations; zone round trips restore geometry', () => 
   assert.deepEqual(pos(), thPos, 'การเปลี่ยนโซนวนกลับต้องได้ตำแหน่งเดิม ไม่ค้าง flip');
   assert.equal(STATIONS.find(s => s.k === 'lokan').flip, true);
   // ไฟล์ภาพจริงอยู่ครบ (flip ตอนวาด ไม่แตะไฟล์ของ Kittanate)
-  for (const f of ['img/Asia/st-lokan-asia.png', 'img/map-v5/st-sala-west.webp'])
+  for (const f of ['img/Asia/st-lokan-asia.webp', 'img/map-v5/st-sala-west.webp'])
     assert.ok(readFileSync(new URL('../' + f, import.meta.url)).length > 1000, f);
 });

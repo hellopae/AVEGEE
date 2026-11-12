@@ -48,8 +48,8 @@ test('ground bake: the tile URL goes to the worker (fetch + decode off the main 
 
 test('index.html: the changed modules carry the PERF-1110 cache-bust id', () => {
   const html = read('index.html'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const k of ['terrain-detail', 'art', 'town-shade', 'town-lighting', 'ui', 'scene']) assert.match(map[`./src/${k}.js`], /\?v=20261110-(perf(-fbui)?|gfx|battlefx|questrewards)$/, k);
-  assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261110-(perf(-fbui)?|gfx|battlefx|questrewards)">/);
+  for (const k of ['terrain-detail', 'art', 'town-shade', 'town-lighting', 'ui', 'scene']) assert.match(map[`./src/${k}.js`], /\?v=20261110-(perf(-fbui)?|gfx|battlefx|questrewards)(-w1112)?$/, k);
+  assert.match(html, /<script type="module" src="src\/ui\.js\?v=20261110-(perf(-fbui)?|gfx|battlefx|questrewards)(-w1112)?">/);
 });
 
 test('map canvas density: scene.js asks graphics-setting for the cap (High = 2 by default, ?mapdpr=1..2 still wins)', () => {

@@ -274,7 +274,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const enhanced=!!routeRow(routeId).ambient.flowUrl;
   if(enhanced){
     root.classList.add('b12-fx');
-    root.querySelector('.dungeon-stage').insertAdjacentHTML('beforeend',`<div class="dungeon-zoom town-camera-controls"><button type="button" data-zoom="less" aria-label="ซูมออก / Zoom out">−</button><button type="button" data-zoom="overview">ทั้งแผนที่</button><button type="button" data-zoom="more" aria-label="ซูมเข้า / Zoom in">+</button></div><nav class="dungeon-hud-left" aria-label="ผู้เล่น"><button type="button" data-hud="profile" aria-label="โปรไฟล์"><img src="img/hero-yama-profile.png" alt=""></button><button type="button" data-hud="manual" aria-label="คู่มือ"><img src="img/ui/icon-book.png" alt=""></button><button type="button" data-hud="bag" aria-label="กระเป๋า"><img src="img/ui/icon-bag.png" alt=""></button></nav><nav class="dungeon-hud-right" aria-label="เมนู"><button type="button" data-hud="pause" aria-label="พัก"><img src="img/ui/icon-pause.png" alt=""></button><button type="button" data-hud="settings" aria-label="ตั้งค่า"><img src="img/ui/icon-setting2.png" alt=""></button></nav>`);
+    root.querySelector('.dungeon-stage').insertAdjacentHTML('beforeend',`<div class="dungeon-zoom town-camera-controls"><button type="button" data-zoom="less" aria-label="ซูมออก / Zoom out">−</button><button type="button" data-zoom="overview">ทั้งแผนที่</button><button type="button" data-zoom="more" aria-label="ซูมเข้า / Zoom in">+</button></div><nav class="dungeon-hud-left" aria-label="ผู้เล่น"><button type="button" data-hud="profile" aria-label="โปรไฟล์"><img src="img/hero-yama-profile.webp" alt=""></button><button type="button" data-hud="manual" aria-label="คู่มือ"><img src="img/ui/icon-book.webp" alt=""></button><button type="button" data-hud="bag" aria-label="กระเป๋า"><img src="img/ui/icon-bag.webp" alt=""></button></nav><nav class="dungeon-hud-right" aria-label="เมนู"><button type="button" data-hud="pause" aria-label="พัก"><img src="img/ui/icon-pause.webp" alt=""></button><button type="button" data-hud="settings" aria-label="ตั้งค่า"><img src="img/ui/icon-setting2.webp" alt=""></button></nav>`);
   }
   const canvas=root.querySelector('.dungeon-stage > canvas'),mini=root.querySelector('.dungeon-minimap');
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),loading=root.querySelector('.dungeon-load');
@@ -529,7 +529,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
   const frontierTree=new Image();frontierTree.src='img/theme-v4/town-tree-th-v1.webp';
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
-  const alertArt=new Image();alertArt.src='img/ui/alert-mark.png';
+  const alertArt=new Image();alertArt.src='img/ui/alert-mark.webp';
   let cooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0,chase=null,chaseCheckpoint=-1,cut=0,cutFired=false,alertAt=-1;g.dungeonChaseCooldown=false;
   let guideDispatched=false;
   let destroyed=false,frame=0,last=0,progress=0,target=null,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;

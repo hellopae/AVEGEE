@@ -41,7 +41,7 @@ test('Asia: two kills → saved descent → intro → deva defeats third → wai
  g=reload(g);assert.equal(g.zoneEventStatus('asiaPrisonFire'),'active');g.devaDescentStartedAt=1000;
  assert.ok(devaMapActors(g,1000)[0].y < devaMapActors(g,1000+DEVA_DESCENT_MS/2)[0].y);
  assert.equal(g.finishDevaDescent(),true);assert.equal(g.storyQueue[0].key,'deva-asia');
- assert.equal(STORY['deva-asia'].pages[0].image,'img/deva-intro/deva-intro-asia-v1.png');
+ assert.equal(STORY['deva-asia'].pages[0].image,'img/deva-intro/deva-intro-asia-v1.webp');
  g=reload(g);g.completeStory();assert.equal(g.zoneEventStatus('asiaPrisonFire'),'cleared');assert.equal(g.coin-coin,90);
  assert.equal(prisonEventBurning(g),false);assert.equal(g.abilities.windFan,undefined);
  const actor=devaMapActors(g)[0];assert.equal(actor.enabled,true);g.player={x:actor.x,y:actor.y};
@@ -98,7 +98,7 @@ test('breach actors stand on navigable ground with a reachable boss; UI waits fo
 test('both deva intro images preload only in their zones and cache version changed',()=>{
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  for(const zone of ['th','asia']) {
-  const image = zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.png`;
+  const image = zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.webp`;
   assert.ok(catalog.zones[zone].includes(image));
   assert.ok(Object.values(STORY).some(story=>story.pages?.some(page=>page.image===image)));
  }

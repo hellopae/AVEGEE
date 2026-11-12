@@ -10,10 +10,10 @@ test('prune-missing preserves curated tiers, zone names, walking metadata and or
  try {
   fs.mkdirSync(path.join(root,'scripts'));fs.mkdirSync(path.join(root,'img'));
   for(const name of ['make-manifest.py','make-preload-catalog.mjs']) fs.copyFileSync(new URL('../scripts/'+name,import.meta.url),path.join(root,'scripts',name));
-  fs.writeFileSync(path.join(root,'img','live.png'),'fixture');
-  fs.writeFileSync(path.join(root,'img','excluded.png'),'fixture');
-  const manifest={critical:['live.png','missing.png'],rest:[],zones:{th:['live.png','missing.png']},boxes:{live:[0,0,1,1],missing:[0,0,1,1]},stationSizes:{live:[2,2],missing:[2,2]},crewWalks:{th:['live.png']},heroWalks:{th:'live.png'}};
-  const catalog={shared:['missing.png','img/live.png','img/missing.png'],zones:{th:['img/live.png','img/missing.png']}};
+  fs.writeFileSync(path.join(root,'img','live.webp'),'fixture');
+  fs.writeFileSync(path.join(root,'img','excluded.webp'),'fixture');
+  const manifest={critical:['live.webp','missing.webp'],rest:[],zones:{th:['live.webp','missing.webp']},boxes:{live:[0,0,1,1],missing:[0,0,1,1]},stationSizes:{live:[2,2],missing:[2,2]},crewWalks:{th:['live.webp']},heroWalks:{th:'live.webp'}};
+  const catalog={shared:['missing.webp','img/live.webp','img/missing.webp'],zones:{th:['img/live.webp','img/missing.webp']}};
   fs.writeFileSync(path.join(root,'img','manifest.json'),JSON.stringify(manifest));
   fs.writeFileSync(path.join(root,'img','preload-catalog.json'),JSON.stringify(catalog));
   const run=()=>{
@@ -22,7 +22,7 @@ test('prune-missing preserves curated tiers, zone names, walking metadata and or
    return ['manifest.json','preload-catalog.json'].map(p=>fs.readFileSync(path.join(root,'img',p),'utf8'));
   };
   const first=run();assert.deepEqual(run(),first);
-  const m=JSON.parse(first[0]);assert.deepEqual(m,{...manifest,critical:['live.png'],zones:{th:['live.png']},boxes:{live:[0,0,1,1]},stationSizes:{live:[2,2]}});
-  assert.deepEqual(JSON.parse(first[1]),{shared:['img/live.png'],zones:{th:['img/live.png']}});
+  const m=JSON.parse(first[0]);assert.deepEqual(m,{...manifest,critical:['live.webp'],zones:{th:['live.webp']},boxes:{live:[0,0,1,1]},stationSizes:{live:[2,2]}});
+  assert.deepEqual(JSON.parse(first[1]),{shared:['img/live.webp'],zones:{th:['img/live.webp']}});
  } finally {fs.rmSync(root,{recursive:true,force:true});}
 });

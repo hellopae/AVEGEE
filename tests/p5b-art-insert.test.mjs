@@ -7,6 +7,7 @@ import {weaponCutsceneSrc,WEAPON_ART_FILES} from '../src/weapons.js';
 import {storyOf} from '../src/story.js';
 import {TOWN_TERRAIN_REPAIRS} from '../src/town-terrain-repair.js';
 import {WORKER_SHEETS_V2,WORKER_ROW_V2,workerSheet,workerSheetV2,workerRow,workerHeading,workerFrameRect,drawWorker} from '../src/workers.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 const html=readFileSync('index.html','utf8'),catalog=JSON.parse(readFileSync('img/preload-catalog.json','utf8'));
 const allCatalogFiles=Object.values(catalog).flatMap(function walk(v){return Array.isArray(v)?v:v&&typeof v==='object'?Object.values(v).flatMap(walk):[];});
@@ -17,20 +18,16 @@ function webpSize(file){
   if(kind==='VP8L'){const v=b.readUInt32LE(21);return [1+(v&0x3fff),1+((v>>14)&0x3fff)];}
   throw new Error('unexpected webp chunk '+kind);
 }
-function jpegSize(file){
-  const b=readFileSync(file);let i=2;
-  while(i<b.length){if(b[i]!==0xff){i++;continue;}const m=b[i+1];if(m>=0xc0&&m<=0xc3)return [b.readUInt16BE(i+7),b.readUInt16BE(i+5)];i+=2+b.readUInt16BE(i+2);}
-  throw new Error('no SOF');
-}
+function jpegSize(file){const m=imageMeta(file);return [m.width,m.height];}   // name kept; the art is WebP since 12 Nov
 
 test('P5b boss zone 3: cane cutscene points at the v2 art, other zones unchanged, file is 1375x768',()=>{
-  assert.equal(weaponCutsceneSrc('cane'),'img/weapons/weapon-cutscene-cane-v2.jpeg');
-  for(const w of ['fang','chain','trojan'])assert.equal(weaponCutsceneSrc(w),`img/weapons/weapon-cutscene-${w}.jpeg`);
-  assert.ok(storyOf('weapon-cane').pages[0].image.endsWith('weapon-cutscene-cane-v2.jpeg'),'story page asks for v2');
-  assert.ok(WEAPON_ART_FILES.cutscenes.includes('img/weapons/weapon-cutscene-cane-v2.jpeg'));
-  assert.deepEqual(jpegSize('img/weapons/weapon-cutscene-cane-v2.jpeg'),[1375,768]);
-  assert.ok(existsSync('img/weapons/weapon-cutscene-cane.jpeg'),'v1 file stays (nothing overwritten)');
-  assert.ok(allCatalogFiles.includes('img/weapons/weapon-cutscene-cane-v2.jpeg'),'preloaded');
+  assert.equal(weaponCutsceneSrc('cane'),'img/weapons/weapon-cutscene-cane-v2.webp');
+  for(const w of ['fang','chain','trojan'])assert.equal(weaponCutsceneSrc(w),`img/weapons/weapon-cutscene-${w}.webp`);
+  assert.ok(storyOf('weapon-cane').pages[0].image.endsWith('weapon-cutscene-cane-v2.webp'),'story page asks for v2');
+  assert.ok(WEAPON_ART_FILES.cutscenes.includes('img/weapons/weapon-cutscene-cane-v2.webp'));
+  assert.deepEqual(jpegSize('img/weapons/weapon-cutscene-cane-v2.webp'),[1375,768]);
+  assert.ok(existsSync('img/weapons/weapon-cutscene-cane.webp'),'v1 file stays (nothing overwritten)');
+  assert.ok(allCatalogFiles.includes('img/weapons/weapon-cutscene-cane-v2.webp'),'preloaded');
   assertVersionedImports(html, ['weapons.js']);
   const imports = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   assert.equal(imports['./src/weapons.js?v=i1b'], imports['./src/weapons.js']);

@@ -25,7 +25,7 @@ test('four opening waves use existing CyberHell minions and assets', () => {
   const zone=ZONES.find(z=>z.k==='cyberhell'), g=finalGame();
   for (const [i,kind] of [14,15,16,16].entries()) {
     assert.ok(g.startFinalEncounter(`minion:${i+1}`)); assert.ok(zone.mobs.includes(kind));
-    const name=MOB.kinds[kind].img, path=`CyberHell/${name}-cyberhell.png`;
+    const name=MOB.kinds[kind].img, path=`CyberHell/${name}-cyberhell.webp`;
     assert.ok(manifest.zones.cyberhell.includes(path)); assert.ok(existsSync(new URL('../img/'+path,import.meta.url)));
     assert.deepEqual(g.battle.foes.map(f=>f.sp),[name,name]);
     assert.ok(g.battle.foes.every(f=>f.hp>0 && f.maxHp>0));
@@ -54,12 +54,12 @@ test('reinforcements follow wave four rewards; independent ruler fights preserve
 test('all four rulers have separate identities and final combat assets', () => {
   for (const z of ZONES) {
     assert.notEqual(authorityOf(z.k).full, z.bossName);
-    const sprite = `leader-${z.k}-possessed.png`;
+    const sprite = `leader-${z.k}-possessed.webp`;
     assert.ok(existsSync(new URL('../img/' + sprite, import.meta.url)));
     assert.ok(manifest.rest.includes(sprite));
   }
   for (const [z,folder] of [['west','West'],['cyberhell','CyberHell']]) {
-    const sprite = `${folder}/hero-boss-${z}.png`;
+    const sprite = `${folder}/hero-boss-${z}.webp`;
     assert.ok(existsSync(new URL('../img/' + sprite, import.meta.url)));
     assert.ok(manifest.zones[z].includes(sprite));
   }

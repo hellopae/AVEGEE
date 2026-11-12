@@ -7,7 +7,7 @@ import { figYouAtkClass, standingFacesRight, ragePoseSrc } from '../src/battle-f
 import { isYamaSwordAttack } from '../src/yama-sword.js';
 
 const STANDING = {
-  th:'img/hero-yama.png', asia:'img/Asia/hero-yama-asia.png', west:'img/West/hero-yama-west.png', cyberhell:'img/CyberHell/hero-yama-cyberhell.png',
+  th:'img/hero-yama.webp', asia:'img/Asia/hero-yama-asia.webp', west:'img/West/hero-yama-west.webp', cyberhell:'img/CyberHell/hero-yama-cyberhell.webp',
 };
 const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 

@@ -55,8 +55,8 @@ test('N1-5 krajok room: adjustable-mirror stand is always in the room; magic mir
   assert.match(room, /if \(def\.k === 'krajok' && mirrorObstacle\(P\.x,P\.y\)\)/, 'stand is solid from the start');
   // "ปรับองศา" disabled until placed (and until Yama stands next to the stand)
   assert.match(ui, /\['room\.krajok\.adjust', null, \(\) => mirrorCharge\?\.adjust\(\), !mirrorCharge\?\.placed\(\) \|\| !nearMirror/);
-  assert.ok(fs.existsSync(new URL('../img/krajok-magic-mirror.png', import.meta.url)), 'N1b magic-mirror art exists');
-  assert.match(room, /img\/krajok-magic-mirror\.png\?v=20261018-n1b/, 'N1b mirror art is cache-busted');
+  assert.ok(fs.existsSync(new URL('../img/krajok-magic-mirror.webp', import.meta.url)), 'N1b magic-mirror art exists');
+  assert.match(room, /img\/krajok-magic-mirror\.webp\?v=20261018-n1b/, 'N1b mirror art is cache-busted');
   const art = read('src/room-art-assets.js');
   for (const zone of ['th','asia','cyberhell']) assert.match(art, new RegExp(`img/rooms-wide/${zone}-krajok\\.webp\\?v=20261018-n1b`));
 });

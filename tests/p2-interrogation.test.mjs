@@ -84,8 +84,8 @@ test('P2 keeper plan and recommendation use the locked colour, not what the play
 
 test('P2 Kan icon appears only once Kan is hired and keeps the original reasons for a disabled state',()=>{
  const g=game(),soul=g.queue[0];g.cancelCourtArrival(soul.id);
- assert.equal(kanOrbHtml(g,soul,'img/crew-kan-profile.png'),'');
- g.hire('kan');g.mp=g.mpMax;const html=kanOrbHtml(g,soul,'img/crew-kan-profile.png');
+ assert.equal(kanOrbHtml(g,soul,'img/crew-kan-profile.webp'),'');
+ g.hire('kan');g.mp=g.mpMax;const html=kanOrbHtml(g,soul,'img/crew-kan-profile.webp');
  assert.match(html,/ช่วยเปิดความจริง/);assert.match(html,/data-kan-clue/);
  g.mp=0;assert.match(kanOrbHtml(g,soul,'x'),/พลังเวทไม่พอ|data-kan-clue disabled/);
  assert.doesNotMatch(read('src/game.js'),/กานต์ต้องมีบารมี|บารมีกานต์ −/,'Kan morale is always "กำลังใจ"');
@@ -116,7 +116,7 @@ test('P2 handbook: trait page + keeper-team page exist, carry five keeper profil
  assert.ok(sentencingChapters.includes(soulTraitGuide));assert.ok(sentencingChapters.includes(keeperTeamGuide));
  assert.ok(sentencingChapters.indexOf(soulTraitGuide)>sentencingChapters.findIndex(c=>c.includes('3. เลือกผู้คุมคนไหน')));
  for(const k of ['taan','boon','plerng','dam','kan'])assert.ok(keeperTeamGuide.includes(`data-profile-slot="${k}"`),k);
- for(const k of ['taan','boon','plerng','dam','kan'])assert.ok(existsSync(new URL(`../img/crew-${k}-profile.png`,import.meta.url)),k);
+ for(const k of ['taan','boon','plerng','dam','kan'])assert.ok(existsSync(new URL(`../img/crew-${k}-profile.webp`,import.meta.url)),k);
  assert.match(keeperTeamGuide,/สถานีเดียวกัน/);assert.match(soulTraitGuide,/สถานีเดียวกัน/);
  const chapter3=sentencingChapters.find(c=>c.includes('3. เลือกผู้คุมคนไหน'));assert.doesNotMatch(chapter3,/มีโอกาสเพิ่มกรรมของเราเอง/);
  assert.match(keeperTeamGuide,/ไม่มีการสุ่มบวกโทษหรือกรรม/);assert.doesNotMatch(read('src/game.js'),/Math\.random\(\)[^\n]*karma|karma[^\n]*Math\.random\(\)/,'no random karma mechanism exists');

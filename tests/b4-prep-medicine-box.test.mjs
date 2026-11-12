@@ -15,7 +15,7 @@ function fixture(g, context) {
   const fill = {addEventListener:(_, fn) => { fill.click = fn; }};
   const root = {querySelectorAll:() => Object.values(buttons), querySelector:() => fill};
   const scope = vm.createContext({g, ITEMS, medicineResult, esc:String,
-    itemName:k => k, itemText:k => k, itemImg:k => `<img src="${ITEMS[k].img}.png">`,
+    itemName:k => k, itemText:k => k, itemImg:k => `<img src="${ITEMS[k].img}.webp">`,
     t:() => 'เติมบารมีให้เต็ม ก่อนเข้าไปต่อสู้', sfx:() => {}});
   vm.runInContext(helpers, scope);
   scope.bindPrepItems(root, context, () => { repaints++; });

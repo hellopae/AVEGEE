@@ -38,7 +38,7 @@ test('BALANCE-2 every new move renders an unclipped-name row, ultimate chip shor
   const start=ui.indexOf('    const battleChoice = '),end=ui.indexOf('    const battleItem = ',start);
   const choice=vm.runInNewContext(ui.slice(start,end)+'\nbattleChoice;',{COMBAT_SKILLS,b:{},yamaSkillRemaining:()=>0,esc:String});
   for(const [key,def] of Object.entries(COMBAT_SKILLS)) {
-    const html=choice(key,'img/icon.png',def.name,true,'ready');
+    const html=choice(key,'img/icon.webp',def.name,true,'ready');
     assert.match(html,/class="orb-choice combat-skill-choice"/);
     const text=html.match(/<b>(.*?)<\/b>/)[1].replace(/<[^>]+>/g,'');
     assert.equal(text,def.shortName||def.name);assert.equal(def.chipParts.join(''),text);
@@ -125,9 +125,11 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const questOnly=JSON.parse(readFileSync(new URL('./fixtures/quest-rewards-runtime-changes.json',import.meta.url)));
   // FOOD-SYSTEM changes only map food/rest/save plumbing, with separate regression tests.
   const foodOnly=JSON.parse(readFileSync(new URL('./fixtures/food-system-runtime-changes.json',import.meta.url)));
+  // WEBP (12 Nov): PNG/JPEG art shipped as WebP to shrink the deploy; only the file-extension of image paths in data.js / game.js changed. Reversible snippets, same method.
+  const webpOnly=JSON.parse(readFileSync(new URL('./fixtures/webp-1112-asset-ext-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[])].reverse()){
+    for(const change of [...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

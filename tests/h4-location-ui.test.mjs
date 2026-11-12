@@ -22,8 +22,8 @@ test('archive cards expose portrait, name, stars, score, deserved/given, verdict
  for(const [over,short,verdict] of [[0,0,'correct'],[2,0,'heavy'],[0,2,'light']]){
   const record=archiveRecord({id:8,who:'worker',stars:4,score:83,deserved:5,over,short,tham:40,tick:9},soul);
   assert.equal(record.verdict,verdict);assert.equal(record.given,5+over-short);
-  const html=archiveCard(record,0,'img/spirit-worker.png');
-  for(const text of ['img/spirit-worker.png','Soul &lt;A&gt;','★★★★☆','83','5','Fraud &lt;script&gt;','data-archive-card="0"'])assert.ok(html.includes(text));
+  const html=archiveCard(record,0,'img/spirit-worker.webp');
+  for(const text of ['img/spirit-worker.webp','Soul &lt;A&gt;','★★★★☆','83','5','Fraud &lt;script&gt;','data-archive-card="0"'])assert.ok(html.includes(text));
   assert.ok(!html.includes('<script>'));assert.ok(html.includes(`class="arch-soul-card ${verdict}"`));
  }
  assert.equal(archiveRecord({who:'old',deserved:3,tham:10},null).verdict,'wrong');
@@ -89,7 +89,7 @@ test('scan, rebirth, sky and floating −N draw on canvas; departures fade and s
  assert.ok(gateEffectPose('sky',700).rise>0);assert.ok(gateEffectPose('reborn',800).alpha<1);assert.ok(gateEffectPose('reborn',800).scale<1);
 });
 test('new rainbow asset exists, is background-only, replaces every rendered gold book, and UI strings have TH+EN',()=>{
- const asset='minigames/sala-book-rainbow-h4-v1.png',catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
+ const asset='minigames/sala-book-rainbow-h4-v1.webp',catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  assert.ok(manifest.rest.includes(asset));assert.ok(!manifest.critical.includes(asset));assert.ok(catalog.shared.includes('img/'+asset));assert.equal(assetTier('img/'+asset).tier,1);assert.ok(existsSync(new URL('../img/'+asset,import.meta.url)));
  const puzzle=readFileSync(new URL('../src/minigames/sala.js',import.meta.url),'utf8');assert.ok(puzzle.includes(asset));assert.ok(!puzzle.includes('book-gold'));assert.equal((puzzle.match(/bookArt\('rainbow'\)/g)||[]).length,2);
  const strings=readFileSync(new URL('../src/i18n.js',import.meta.url),'utf8');for(const key of ['totalKarma','mirrorNear','archive','father','given','deserved','details'])assert.equal((strings.match(new RegExp("'h4\\."+key+"'",'g'))||[]).length,2);

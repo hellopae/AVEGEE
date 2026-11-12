@@ -7,7 +7,7 @@ test('F3 transparent sprite files are included in shared manifest/preload',()=>{
  const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  for(const part of ['base','pane']){
-  const name=`mirror-charge-${part}.png`;
+  const name=`mirror-charge-${part}.webp`;
   assert.ok(manifest.critical.includes(name));assert.ok(catalog.shared.includes(`img/${name}`));
   assert.ok(existsSync(new URL('../img/'+name,import.meta.url)));
  }

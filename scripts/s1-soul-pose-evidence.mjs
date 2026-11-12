@@ -18,7 +18,7 @@ const rows = ALL_CASES.map(c => {
  const type = CASE_POSE_TYPES[c.k];
  const claim = c.claims.find(l => l.kind === (type === 'necessity' ? 'plea' : 'deny')) || c.claims[0];
  const reason = exceptions[c.k] || (type === 'caught_lie' ? 'ปฏิเสธแล้วเปิดข้อเท็จจริงขัดคำอ้าง' : type === 'necessity' ? 'ยอมรับการกระทำและเปิดเหตุบรรเทา/ไม่มีทางช่วยเหลือ (ไม่ใช่การตัดสินว่ายกเว้นความผิด)' : 'ไม่มีคำให้การเท็จหรือเหตุจำเป็นที่เปิดด้วยการจี้');
- const art = c.k === 'devaMonk' ? 'img/soul-deva.png' : soulArchetype({case:c.k}) === 'recruit' ? 'img/Thai/spirit-recruit-th-v3.png' : soulArchetype({case:c.k}) === 'graduate' ? 'img/West/spirit-graduate-west-v3.png' : 'img/' + regionalSpiritAliases(c.zone || 'th')[`spirit-${soulArchetype({case:c.k})}-${c.zone || 'th'}`];
+ const art = c.k === 'devaMonk' ? 'img/soul-deva.webp' : soulArchetype({case:c.k}) === 'recruit' ? 'img/Thai/spirit-recruit-th-v3.webp' : soulArchetype({case:c.k}) === 'graduate' ? 'img/West/spirit-graduate-west-v3.webp' : 'img/' + regionalSpiritAliases(c.zone || 'th')[`spirit-${soulArchetype({case:c.k})}-${c.zone || 'th'}`];
  const evidence = `คำให้การ: “${claim.t}”${claim.reveal ? ` → “${claim.reveal}”` : ''}${type === 'necessity' ? `; เหตุบรรเทา: ${(c.hidden || []).map(d=>d.t).join(' / ')}` : ''}`;
  return `| ${c.zone || 'th'} | ${c.k} | ${c.name} | ${type} | ${reason}; ${evidence} ([สำนวน](../../../${file}#L${line})) | ${art} | ${soulPoseAssets(art).length && type === 'caught_lie' ? 'พร้อม: officer caught_lie (ใช้ซ้ำต่อภาพ)' : type === 'other' ? 'คงเดิม' : 'ค้างวาด'} |`;
 });

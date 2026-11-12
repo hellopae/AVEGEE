@@ -125,7 +125,7 @@ export function diagnosisHtml(m, { pos, total, portraitSrc, escorting = false, m
     </header>
     <div class="diag-body">
       <section class="diag-who">
-        <div class="diag-portrait"><img src="${esc(portraitSrc)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'"></div>
+        <div class="diag-portrait"><img src="${esc(portraitSrc)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.webp'"></div>
         <h2>${esc(m.name)}</h2>${m.name !== m.who ? `<p class="diag-job">${esc(m.who)}</p>` : ''}
         <div class="diag-banner tone-${b.tone}" role="status">${seal ? `<img src="${seal}" alt="" width="40" height="40">` : `<span class="diag-mark" aria-hidden="true">${TONE_MARK[b.tone] || '…'}</span>`}<span>${esc(bannerText)}</span></div>
       </section>

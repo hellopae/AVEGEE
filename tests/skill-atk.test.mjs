@@ -12,10 +12,10 @@ const read = readReleaseFile;
 const manifest = JSON.parse(read('img/manifest.json'));
 const catalog = JSON.parse(read('img/preload-catalog.json'));
 const poses = {
-  th: 'img/hero-yama-atk.png',
-  asia: 'img/Asia/hero-yama-asia-atk-v2.png',
-  west: 'img/West/hero-yama-west-atk.png',
-  cyberhell: 'img/CyberHell/hero-yama-cyberhell-atk.png',
+  th: 'img/hero-yama-atk.webp',
+  asia: 'img/Asia/hero-yama-asia-atk-v2.webp',
+  west: 'img/West/hero-yama-west-atk.webp',
+  cyberhell: 'img/CyberHell/hero-yama-cyberhell-atk.webp',
 };
 
 test('skill atk: new sprites decode as 512x512 RGBA with transparent corners', () => {
@@ -24,14 +24,14 @@ from PIL import Image
 for path in ${JSON.stringify([poses.west, poses.cyberhell])}:
     im = Image.open(path)
     im.load()
-    assert im.format == 'PNG', path
+    assert im.format == 'WEBP', path
     assert im.size == (512, 512), path
     assert im.mode == 'RGBA', path
     alpha = im.getchannel('A')
     assert alpha.getextrema() == (0, 255), path
     assert all(alpha.getpixel(p) == 0 for p in [(0,0),(511,0),(0,511),(511,511)]), path
     # Match the Thai pose's horizontal padding and foot baseline, within 2px at the top.
-    reference = Image.open('img/hero-yama-atk.png').getchannel('A').getbbox()
+    reference = Image.open('img/hero-yama-atk.webp').getchannel('A').getbbox()
     box = alpha.getbbox()
     assert box[0] == reference[0] and box[2:] == reference[2:], (path, box)
     assert abs(box[1] - reference[1]) <= 2, (path, box)
@@ -50,7 +50,7 @@ test('skill atk: manifest, catalog and preload tier cover all four outfits', () 
 test('ART-ATK2: Asia revision preserves canvas, character height and foot baseline', () => {
   execFileSync('python3', ['-c', `
 from PIL import Image
-old = Image.open('img/Asia/hero-yama-asia-atk.png').convert('RGBA')
+old = Image.open('img/Asia/hero-yama-asia-atk.webp').convert('RGBA')
 new = Image.open('${poses.asia}')
 assert new.size == old.size == (512, 512)
 assert new.mode == 'RGBA'

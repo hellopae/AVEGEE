@@ -40,8 +40,8 @@ export function setup(zone) {
   const g=createGame();g.zone=zone;syncSceneZone(zone);g.player.x=SPOTS.bench.x+60;g.player.y=SPOTS.bench.y;art.bindZone(()=>zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
-  const bg={src:'img/'+g.zoneDef().scene+'.png',naturalWidth:1678,naturalHeight:937};
-  walk.buildWalk(bg,zone==='west'?{...bg,src:'img/scene-v2-opt.png'}:bg);
+  const bg={src:'img/'+g.zoneDef().scene+'.webp',naturalWidth:1678,naturalHeight:937};
+  walk.buildWalk(bg,zone==='west'?{...bg,src:'img/scene-v2-opt.webp'}:bg);
   const terrainWidth=SCENE.w,terrainHeight=SCENE.h;
   // The town uses continuous corridor polygons, not a painted pixel mask.
   // Rounding a legal foot position down can put the sampled pixel outside a

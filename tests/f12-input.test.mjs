@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
 let failReplacement=false;
-globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;if(v==='img/frontier-route/zone1-2-v6-flow.png'){this.naturalWidth=1;this.naturalHeight=1;}if(v==='img/frontier-route/zone1-2-v6.webp'){this.naturalWidth=3344;this.naturalHeight=1882;}queueMicrotask(()=>failReplacement&&v.startsWith('img/frontier-route/tree-')?this.onerror?.():this.onload?.());}get src(){return this._src;}};
+globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;if(v==='img/frontier-route/zone1-2-v6-flow.webp'){this.naturalWidth=1;this.naturalHeight=1;}if(v==='img/frontier-route/zone1-2-v6.webp'){this.naturalWidth=3344;this.naturalHeight=1882;}queueMicrotask(()=>failReplacement&&v.startsWith('img/frontier-route/tree-')?this.onerror?.():this.onload?.());}get src(){return this._src;}};
 const drawn=[];let captureDraw=false;
 const ctx=new Proxy({getImageData:()=>({data:new Uint8ClampedArray(4)}),drawImage(...args){if(captureDraw)drawn.push(args);},createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})}, {get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const node=()=>({getContext:()=>ctx,handlers:{},addEventListener(k,f){this.handlers[k]=f;},removeEventListener(){},focus(){},setPointerCapture(){},remove(){}});

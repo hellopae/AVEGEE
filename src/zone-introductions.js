@@ -9,16 +9,16 @@ const AREAS = {
 export function zoneIntroduction(zone) {
   const area = AREAS[zone];
   if (!area) return null;
-  return { image:`img/${area.folder}/intro-head-${zone}-v2.png`, speaker:authorityOf(zone).full,
+  return { image:`img/${area.folder}/intro-head-${zone}-v2.webp`, speaker:authorityOf(zone).full,
     welcome:area.welcome, guidance:area.guidance };
 }
 
 /** Crew belong to the current branch; Yama's chosen outfit is independent. */
 export function regionalCrewCutscene(key, zone) {
   const area = AREAS[zone];
-  if (zone === 'west' && key === 'boon') return { src:'img/West/crew-boon-west-cutscene-f.jpeg', regional:true };
-  return area ? { src:`img/${area.folder}/crew-${key}-${zone}-cutscene.jpeg`, regional:true }
-    : { src:`img/crew-${key}-cutscene.jpeg`, regional:false };
+  if (zone === 'west' && key === 'boon') return { src:'img/West/crew-boon-west-cutscene-f.webp', regional:true };
+  return area ? { src:`img/${area.folder}/crew-${key}-${zone}-cutscene.webp`, regional:true }
+    : { src:`img/crew-${key}-cutscene.webp`, regional:false };
 }
 
 /** Arc length follows the image's aspect ratio, so turns do not change speed. */

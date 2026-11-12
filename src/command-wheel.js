@@ -51,7 +51,7 @@ const petals = {
     "clip": "polygon(76.889% 17.364%,60.556% 35.091%,63.000% 37.455%,65.778% 41.455%,67.000% 44.182%,67.889% 47.727%,68.111% 50.636%,67.667% 54.545%,66.444% 58.273%,64.556% 61.727%,84.444% 77.091%,87.667% 73.091%,89.889% 69.636%,91.778% 66.000%,93.222% 62.273%,94.889% 54.636%,94.889% 46.364%,94.222% 42.455%,92.778% 37.545%,90.667% 32.818%,88.444% 29.091%,83.111% 22.545%,79.111% 18.909%)"
   }
 };
-export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.png'}) {
+export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.webp'}) {
   if (battle && segments) {
     const label = text => {
       const parts = String(text).split(' / ');
@@ -85,10 +85,10 @@ export function commandWheel({battle=false, ready=true, busy=false, groups=[], s
   return `<div class="command-wheel ${battle?'combat-wheel':'court-wheel'} ${busy?'busy':''}" aria-label="${battle?'คำสั่งต่อสู้':'คำสั่งออกหมาย'}">
     ${groups.map((g,i)=>`<button class="command-segment segment-${i}" style="clip-path:${sector(...slices[i])}"
       ${g.action?`data-act="${g.action}"`:`data-command="${i}" aria-expanded="false"`} ${g.disabled||busy?'disabled':''}
-      aria-label="${esc(labels[i])}"><img src="img/ui/Button${first+i}.png" alt=""></button>`).join('')}
+      aria-label="${esc(labels[i])}"><img src="img/ui/Button${first+i}.webp" alt=""></button>`).join('')}
     ${groups.map((g,i)=>`<span class="command-label label-${i}" aria-hidden="true">${esc(labels[i])}</span>`).join('')}
-    ${battle?`<div class="command-center"><img src="img/ui/Button6.png" alt=""></div>`:
-      `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?esc(t('trial.warrant')):'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}" aria-label="${esc(t('trial.warrant'))}"><img src="img/ui/Button1.png" alt=""></button>`}
+    ${battle?`<div class="command-center"><img src="img/ui/Button6.webp" alt=""></div>`:
+      `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?esc(t('trial.warrant')):'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}" aria-label="${esc(t('trial.warrant'))}"><img src="img/ui/Button1.webp" alt=""></button>`}
     <span class="command-center-label" aria-hidden="true">${battle?'ยมบาทน้อย':esc(t('trial.warrant'))}</span>
     ${groups.map((g,i)=>g.choices?`<div class="command-options options-${i}" data-options="${i}" inert aria-label="${labels[i]}">${g.choices}</div>`:'').join('')}
     ${selected}

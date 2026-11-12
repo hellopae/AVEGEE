@@ -9,10 +9,10 @@ import { figYouAtkClass, heroPoseFacesRight, teamNeedsMirror, TEAM_DRAWN_FACING_
 
 const read = readReleaseFile;
 const STYLES = {
-  th:        { stand:'img/hero-yama.png',                        atk:'img/hero-yama-atk.png',                         cry:'img/hero-yama-cry.png' },
-  asia:      { stand:'img/Asia/hero-yama-asia.png',              atk:'img/Asia/hero-yama-asia-atk-v2.png',               cry:'img/Asia/hero-yama-asia-cry.png' },
-  west:      { stand:'img/West/hero-yama-west.png',              atk:'img/West/hero-yama-west-atk-R.png',             cry:'img/West/hero-yama-west-cry.png' },
-  cyberhell: { stand:'img/CyberHell/hero-yama-cyberhell.png',    atk:'img/CyberHell/hero-yama-cyberhell-atk-R.png',   cry:'img/CyberHell/hero-yama-cyberhell-cry.png' },
+  th:        { stand:'img/hero-yama.webp',                        atk:'img/hero-yama-atk.webp',                         cry:'img/hero-yama-cry.webp' },
+  asia:      { stand:'img/Asia/hero-yama-asia.webp',              atk:'img/Asia/hero-yama-asia-atk-v2.webp',               cry:'img/Asia/hero-yama-asia-cry.webp' },
+  west:      { stand:'img/West/hero-yama-west.webp',              atk:'img/West/hero-yama-west-atk-R.webp',             cry:'img/West/hero-yama-west-cry.webp' },
+  cyberhell: { stand:'img/CyberHell/hero-yama-cyberhell.webp',    atk:'img/CyberHell/hero-yama-cyberhell-atk-R.webp',   cry:'img/CyberHell/hero-yama-cyberhell-cry.webp' },
 };
 
 test('west-hit: ท่าโดนตี (cry) หันขวาทุกชุด รวมชุดปัจฉิม — cry ทุกชุดวาดหันซ้าย ต้องถูกพลิก (ไม่ใช่ face-native)', () => {

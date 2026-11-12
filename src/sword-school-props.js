@@ -2,7 +2,7 @@ import { drawPlantedSwords } from './asipatta-swords.js?v=l4a';
 let thornImage;
 function loadedThorns() {
   if(typeof Image==='undefined')return null;
-  if(!thornImage){thornImage=new Image();thornImage.src=new URL('../img/minigames/thorn-platform-v2.png?v=j2',import.meta.url).href;}
+  if(!thornImage){thornImage=new Image();thornImage.src=new URL('../img/minigames/thorn-platform-v2.webp?v=j2',import.meta.url).href;}
   return thornImage.complete && thornImage.naturalWidth>0 ? thornImage : null;
 }
 // Props share the room foot anchors; ngiw is raised and sorted in front of souls.

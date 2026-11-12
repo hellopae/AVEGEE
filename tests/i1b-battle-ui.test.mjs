@@ -7,6 +7,7 @@ import { BATTLE } from '../src/data.js';
 import { baseSwordAttack, baseSwordIconSrc } from '../src/weapons.js';
 import { t, setLang } from '../src/i18n.js';
 import { placeWheel, placeFinButton, WHEEL_ART } from '../src/wheel-place.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 
@@ -22,9 +23,9 @@ test('I1-B-1: ชื่อ/ข้อความการ์ดดาบเด�
   setLang('th');
 });
 test('I1-B-1: ไอคอนเป็นไฟล์ดาบจริง 512×512 และการ์ดใช้ไอคอนนั้น (ไม่ใช่รูปยมฯ)', () => {
-  assert.equal(baseSwordIconSrc, 'img/weapons/weapon-icon-base.png');
+  assert.equal(baseSwordIconSrc, 'img/weapons/weapon-icon-base.webp');
   const png = readFileSync(new URL('../' + baseSwordIconSrc, import.meta.url));
-  assert.equal(png.readUInt32BE(16), 512); assert.equal(png.readUInt32BE(20), 512);
+  assert.equal(imageMeta(png).width, 512); assert.equal(imageMeta(png).height, 512);
   assert.ok(statSync(new URL('../' + baseSwordIconSrc, import.meta.url)).size > 5000);
   const ui = read('src/ui.js');
   assert.match(ui, /<img src="\$\{baseSwordIconSrc\}"/);

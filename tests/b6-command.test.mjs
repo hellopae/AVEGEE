@@ -47,10 +47,10 @@ test('one successful command schedules exactly one enemy counter',()=>{
  g.finishBattleCommand();assert.equal(g.confirmBattleCommand('atk'),true);assert.equal(g.battle.counterIndex,0);assert.equal(g.battle.dmg.counterFoeId,'second');
 });
 test('data-driven petals carry actor identity; court retains old four segments and warrant',()=>{
- for(const n of [2,3]){const html=commandWheel({segments:Array.from({length:n},(_,i)=>({id:`s${i}`,label:`L${i}`,icon:'old.png',choices:'choice'})),actorName:'Guard',portrait:'guard.png'});
- assert.equal((html.match(/class="actor-segment/g)||[]).length,n);assert.match(html,/guard.png/);assert.match(html,/Guard/);}
+ for(const n of [2,3]){const html=commandWheel({segments:Array.from({length:n},(_,i)=>({id:`s${i}`,label:`L${i}`,icon:'old.webp',choices:'choice'})),actorName:'Guard',portrait:'guard.webp'});
+ assert.equal((html.match(/class="actor-segment/g)||[]).length,n);assert.match(html,/guard.webp/);assert.match(html,/Guard/);}
  const court=commandWheel({groups:Array.from({length:4},()=>({choices:'old'}))});
- assert.equal((court.match(/class="command-segment/g)||[]).length,4);assert.match(court,/id="t-go"/);assert.match(court,/Button1.png/);
+ assert.equal((court.match(/class="command-segment/g)||[]).length,4);assert.match(court,/id="t-go"/);assert.match(court,/Button1.webp/);
 });
 test('actor ownership is rechecked; down recipient and actor cannot execute',()=>{
  const g=setup(),c=g.crewOf('taan');

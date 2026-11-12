@@ -65,8 +65,8 @@ test('HP increases during sleep without a blackout; western standing art faces r
  assert.equal(TEA_BLACKOUT_MS,0);assert.equal(teaRecoveredHp(20,100,0),20);
  assert.equal(teaRecoveredHp(20,100,TEA_SLEEP_MS/2),60);
  assert.equal(teaRecoveredHp(20,100,TEA_SLEEP_MS),100);
- assert.equal(teamNeedsMirror('img/West/hero-yama-west.png'),false);
- assert.equal(teamNeedsMirror('img/West/hero-yama-west-atk-R.png'),false);
+ assert.equal(teamNeedsMirror('img/West/hero-yama-west.webp'),false);
+ assert.equal(teamNeedsMirror('img/West/hero-yama-west-atk-R.webp'),false);
 });
 test('ready queue identifies only missing assets, including after a failed download',async()=>{
  let calls=0;const q=createAssetQueue(async url=>{calls++;if(url==='bad')throw Error();});

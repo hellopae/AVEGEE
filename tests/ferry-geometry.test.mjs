@@ -42,7 +42,7 @@ test('committing between town ports resets berth and boarding height to destinat
  assert.equal(g.zone,'cyberhell');assert.equal(g.mapTravel.boardingHop,8);assert.equal(g.mapTravel.waterY,g.harbourPoint().y+60);
 });
 
-// Independently traced from the visible floor of img/prop-boat.png (512px).
+// Independently traced from the visible floor of img/prop-boat.webp (512px).
 // Project world feet back through drawBoat's 132-unit, mirrored texture.
 test('both passengers stand inside the painted boat deck through boarding and sailing',()=>{
  const floor=[[115,357],[205,378],[320,417],[343,438],[258,420],[148,387]];

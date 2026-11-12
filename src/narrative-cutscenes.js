@@ -2,11 +2,11 @@ import { BOSS_NAMES } from './data.js';
 // The seated regional heads and the hostile frontier bosses are separate people.
 export function authorityPunishmentCutscene(zone) {
   return ({
-    th:'img/hero-boss-cutscene.jpeg',
-    asia:'img/head-asia-punish-cutscene-v1.png',
-    west:'img/head-west-punish-cutscene-v1.png',
-    cyberhell:'img/head-cyberhell-punish-cutscene-v1.png',
-  })[zone] || 'img/hero-boss-cutscene.jpeg';
+    th:'img/hero-boss-cutscene.webp',
+    asia:'img/head-asia-punish-cutscene-v1.webp',
+    west:'img/head-west-punish-cutscene-v1.webp',
+    cyberhell:'img/head-cyberhell-punish-cutscene-v1.webp',
+  })[zone] || 'img/hero-boss-cutscene.webp';
 }
 
 const FRONTIER_INTROS = {
@@ -35,7 +35,7 @@ const FRONTIER_INTROS = {
 export function frontierIntroduction(zone, lang = 'th') {
   const scene = FRONTIER_INTROS[zone];
   if (!scene) return null;
-  return { image:`img/frontier-${zone}-intro-v1.png`,
+  return { image:`img/frontier-${zone}-intro-v1.webp`,
     speaker:lang === 'th' ? `${BOSS_NAMES[zone].frontier} · ${scene.speaker.th}` : scene.speaker[lang] || scene.speaker.th,
     line:scene.line[lang] || scene.line.th };
 }

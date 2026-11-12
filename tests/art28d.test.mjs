@@ -9,15 +9,15 @@ const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.
 
 test('28D revisions and MP icon exist and are preloaded by their consumers', () => {
   for (const [story, path] of [
-    ['cyber-control', 'img/story-cyberhell-02-v3.png'],
-    ['cyber-duel', 'img/story-cyberhell-03-v4.png'],
+    ['cyber-control', 'img/story-cyberhell-02-v3.webp'],
+    ['cyber-duel', 'img/story-cyberhell-03-v4.webp'],
   ]) {
     assert.equal(STORY[story].pages[0].image, path);
     assert.ok(existsSync(new URL('../' + path, import.meta.url)));
     assert.ok(manifest.rest.includes(path.slice(4)));
   }
   assert.ok(Object.values(ITEMS).some(i => i.img === 'item-holywater'));
-  assert.ok(manifest.rest.includes('item-holywater.png'));
+  assert.ok(manifest.rest.includes('item-holywater.webp'));
 });
 
 test('ruler lookup selects v2 in both zones, with an old-manifest fallback', async () => {
@@ -27,22 +27,22 @@ test('ruler lookup selects v2 in both zones, with an old-manifest fallback', asy
     for (const revised of [true, false]) {
       const zones = structuredClone(manifest.zones);
       if (!revised) for (const z of ['west', 'cyberhell']) {
-        zones[z] = zones[z].filter(p => !p.endsWith(`hero-boss-${z}-v2.png`));
+        zones[z] = zones[z].filter(p => !p.endsWith(`hero-boss-${z}-v2.webp`));
       }
       globalThis.fetch = async () => ({ ok:true, json:async () => ({ ...manifest, zones }) });
       const art = await import(`../src/art.js?28d=${revised}`);
       await new Promise(resolve => setImmediate(resolve));
       for (const [z, folder] of [['west', 'West'], ['cyberhell', 'CyberHell']]) {
         art.bindZone(() => z);
-        const path = `img/${folder}/hero-boss-${z}${revised ? '-v2' : ''}.png`;
+        const path = `img/${folder}/hero-boss-${z}${revised ? '-v2' : ''}.webp`;
         assert.equal(art.artUrl('hero-boss'), path);
         assert.ok(existsSync(new URL('../' + path, import.meta.url)));
       }
       for (const [z, path] of [
-        ['th','img/crew-guard-v2.png'],
-        ['asia','img/Asia/crew-guard-asia-v2.png'],
-        ['west','img/West/crew-guard-west.png'],
-        ['cyberhell','img/CyberHell/crew-guard-cyberhell-v2.png'],
+        ['th','img/crew-guard-v2.webp'],
+        ['asia','img/Asia/crew-guard-asia-v2.webp'],
+        ['west','img/West/crew-guard-west.webp'],
+        ['cyberhell','img/CyberHell/crew-guard-cyberhell-v2.webp'],
       ]) {
         art.bindZone(() => z);
         assert.equal(art.artUrl('crew-guard'), path, `Guard must match ${z}`);
@@ -73,7 +73,7 @@ with tempfile.TemporaryDirectory() as tmp:
     assert out.getpixel((600,0)) == (0,0,0)
     assert out.getpixel((600,699)) == (0,0,0)
     assert out.getpixel((600,350)) == (10,80,120)
-for rel in ['item-holywater.png','West/hero-boss-west-v2.png','CyberHell/hero-boss-cyberhell-v2.png']:
+for rel in ['item-holywater.webp','West/hero-boss-west-v2.webp','CyberHell/hero-boss-cyberhell-v2.webp']:
     im = Image.open(root/'img'/rel)
     assert im.size == (512,512), rel
     assert im.mode == 'RGBA', rel
@@ -81,7 +81,7 @@ for rel in ['item-holywater.png','West/hero-boss-west-v2.png','CyberHell/hero-bo
     assert alpha.getextrema() == (0,255), rel
     assert all(alpha.getpixel(pt) == 0 for pt in [(0,0),(511,0),(0,511),(511,511)]), rel
 assert Image.open(root/'img/BG-Tea.webp').size == (1024,576)
-for rel in ['story-cyberhell-02-v3.png','story-cyberhell-03-v4.png']:
+for rel in ['story-cyberhell-02-v3.webp','story-cyberhell-03-v4.webp']:
     im = Image.open(root/'img'/rel).convert('RGB')
     assert im.width == 1280 and im.width/im.height > 1.7, rel
     assert max(im.getpixel((im.width//2,0))) <= 8, rel

@@ -46,7 +46,7 @@ test('construction sheets: stage selection and the cross-fades never jump', asyn
   assert.deepEqual(c.constructionFrame(1, 6, 5000), { i: 0, j: 0, mix: 0 });
 });
 
-test('construction sheets: no files / bad json / a sheet that fails = not drawn, so the still img/st-building.png stays (and the page never breaks)', async () => {
+test('construction sheets: no files / bad json / a sheet that fails = not drawn, so the still img/st-building.webp stays (and the page never breaks)', async () => {
   const c = await import('../src/construction-sheets.js');
   const calls = []; const ctx = { globalAlpha: 1, drawImage: (...a) => calls.push(a) };
   const def = { k: 'sala', bx: 500, by: 800, bw: 200 };
@@ -71,7 +71,7 @@ test('construction sheets: no files / bad json / a sheet that fails = not drawn,
   } finally { globalThis.fetch = oldFetch; if (oldImage) globalThis.Image = oldImage; else delete globalThis.Image; c.resetConstructionForTest(); }
   const scene = readFileSync(file('src/scene.js'), 'utf8');
   assert.match(scene, /if \(drawConstruction\(ctx, d, p, t, g\.zone\)\)/); assert.match(scene, /else if \(im\) \{\s*const bh = bw \* im\.naturalHeight/, 'the old still picture is the fallback');
-  assert.ok(existsSync(file('img/st-building.png')), 'the fallback picture exists');
+  assert.ok(existsSync(file('img/st-building.webp')), 'the fallback picture exists');
 });
 
 test('construction sheets: ready sheets are drawn foot-on-foot, the frame mix and the stage cross-fade add up to full strength', async () => {

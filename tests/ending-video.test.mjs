@@ -27,7 +27,7 @@ test('ending video navigation pauses outgoing clips, keeps manual completion, an
   const first=r.querySelector('video');
   assert.equal(r.querySelector('.intro-comic-frame').style.aspectRatio,String(1280/544));
   r.querySelector('[data-story-next]').onclick();assert.equal(first.pauses,1);assert.equal(done,0);
-  const second=r.querySelector('video');second.onerror();assert.match(second.outerHTML,/story-ending-03-v1.png/);
+  const second=r.querySelector('video');second.onerror();assert.match(second.outerHTML,/story-ending-03-v1.webp/);
   r.querySelector('[data-story-back]').onclick();assert.equal(second.pauses,1);
   const replay=r.querySelector('video');r.close();assert.equal(replay.pauses,1);
   r.querySelector('[data-story-skip]').onclick();r.querySelector('[data-story-skip]').onclick();assert.equal(done,1);
@@ -39,6 +39,6 @@ test('only the post-zone4 ending uses video; boss and deva stories have shipped 
     else { assert.equal(p.video,undefined,key); assert.equal(p.videoAspect,undefined,key); }
   }
   const r=root();let done=0;render(r,STORY['cyber-duel'],()=>done++);
-  assert.match(r.innerHTML,/<img src="img\/story-cyberhell-03-v4.png"/);
+  assert.match(r.innerHTML,/<img src="img\/story-cyberhell-03-v4.webp"/);
   assert.doesNotMatch(r.innerHTML,/<video/);r.querySelector('[data-story-next]').onclick();assert.equal(done,1);
 });

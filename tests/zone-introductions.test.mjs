@@ -9,7 +9,7 @@ test('arrival introductions name the friendly ruler, separate from hostile inspe
     const intro = zoneIntroduction(zone);
     assert.equal(intro.speaker, authorityOf(zone).full);
     assert.notEqual(intro.speaker, ZONES.find(z => z.k === zone).bossName);
-    assert.match(intro.image, new RegExp(`/intro-head-${zone}-v2\\.png$`));
+    assert.match(intro.image, new RegExp(`/intro-head-${zone}-v2\\.webp$`));
     assert.ok(intro.welcome.length && intro.guidance.length);
   }
   assert.equal(zoneIntroduction('th'), null);
@@ -20,10 +20,10 @@ test('every crew power resolves the current branch JPEG; Thai keeps its existing
   for (const key of ['taan', 'plerng', 'dam', 'kan', 'boon', 'guard']) {
     for (const [zone, folder] of Object.entries(folders)) {
       assert.deepEqual(regionalCrewCutscene(key, zone), {
-        src:`img/${folder}/crew-${key}-${zone}-cutscene${zone === 'west' && key === 'boon' ? '-f' : ''}.jpeg`, regional:true,
+        src:`img/${folder}/crew-${key}-${zone}-cutscene${zone === 'west' && key === 'boon' ? '-f' : ''}.webp`, regional:true,
       });
     }
-    assert.equal(regionalCrewCutscene(key, 'th').src, `img/crew-${key}-cutscene.jpeg`);
+    assert.equal(regionalCrewCutscene(key, 'th').src, `img/crew-${key}-cutscene.webp`);
   }
 });
 

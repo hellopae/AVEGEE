@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import {ROUTE_GEOMETRY} from '../src/route-geometry.js';
 import {drawFrontierAmbient,drawFrontierTree} from '../src/frontier-ambient.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 test('frontier tree contact remains at the authored root, under the canopy at every world scale',()=>{
   for(const scale of [1,2,3])for(const big of [false,true])for(const anchor of [[.5,1],[.56,.98]]){
     const tree={x:.45,y:.63,big},ellipses=[],images=[],transforms=[];
@@ -23,7 +24,7 @@ test('approved 1-2 and 3-4 routes select their own tree art',()=>{
   assert.deepEqual(Object.keys(art).sort(),['green','lightgreen','red']);
   for(const file of Object.values(art)){
     assert.ok(existsSync(file));const png=readFileSync(file);
-    assert.equal(png.toString('hex',0,8),'89504e470d0a1a0a');assert.equal(png[25],6,'PNG keeps RGBA transparency');
+    assert.ok(imageMeta(png).hasAlpha,'keeps RGBA transparency');
   }
   assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.treeArt,undefined);
   assert.deepEqual(Object.keys(ROUTE_GEOMETRY['west:cyberhell'].ambient.treeArt).sort(),['purple','teal','white']);

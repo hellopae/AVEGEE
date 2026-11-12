@@ -45,15 +45,15 @@ export const mirrorBox = box => box ? { ...box, l:1 - (box.l + box.w) } : box;
 /** ท่าชาร์จ/โจมตีของยมบาทที่หันขวามาแต่ต้น (ชุด 30B ข้อ 4 — พลังบ้าคลั่ง Rage แสดงที่ตัวยมบาท ไม่ใช่ที่ศัตรู)
  *  โซน 1–2 มี hero-yama[-asia]-atk · โซน 3–4 มีเฉพาะ atk-R (atk-L คือภาพกระจกหันซ้าย) · ไม่รู้จักชุด → null (ผู้เรียกถอยไปท่าเดิม) */
 export function rageArtSrc(style) {
-  return ({ th:'img/hero-yama-rage.png', asia:'img/Asia/hero-yama-asia-rage.png',
-    west:'img/West/hero-yama-west-rage.png', cyberhell:'img/CyberHell/hero-yama-cyberhell-rage.png' })[style] || null;
+  return ({ th:'img/hero-yama-rage.webp', asia:'img/Asia/hero-yama-asia-rage.webp',
+    west:'img/West/hero-yama-west-rage.webp', cyberhell:'img/CyberHell/hero-yama-cyberhell-rage.webp' })[style] || null;
 }
 export function ragePoseSrc(style) {
   switch (style) {
-    case 'th': return 'img/hero-yama-atk.png';
-    case 'asia': return 'img/Asia/hero-yama-asia-atk-v2.png';
-    case 'west': return 'img/West/hero-yama-west-atk-R.png';
-    case 'cyberhell': return 'img/CyberHell/hero-yama-cyberhell-atk-R.png';
+    case 'th': return 'img/hero-yama-atk.webp';
+    case 'asia': return 'img/Asia/hero-yama-asia-atk-v2.webp';
+    case 'west': return 'img/West/hero-yama-west-atk-R.webp';
+    case 'cyberhell': return 'img/CyberHell/hero-yama-cyberhell-atk-R.webp';
     default: return null;
   }
 }

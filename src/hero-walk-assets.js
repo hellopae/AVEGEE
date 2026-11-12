@@ -1,7 +1,7 @@
 // Four real camera directions, with four native walking frames each.
 const SHEETS = {
   "th": {
-    "src": "img/hero-yama-walk-4dir-v2.png",
+    "src": "img/hero-yama-walk-4dir-v2.webp",
     "frameSize": {
       "w": 144,
       "h": 306
@@ -148,7 +148,7 @@ const SHEETS = {
     }
   },
   "asia": {
-    "src": "img/Asia/hero-yama-asia-walk-4dir-v2.png",
+    "src": "img/Asia/hero-yama-asia-walk-4dir-v2.webp",
     "frameSize": {
       "w": 152,
       "h": 299
@@ -295,7 +295,7 @@ const SHEETS = {
     }
   },
   "west": {
-    "src": "img/West/hero-yama-west-walk-4dir-v2.png",
+    "src": "img/West/hero-yama-west-walk-4dir-v2.webp",
     "frameSize": {
       "w": 174,
       "h": 303
@@ -442,7 +442,7 @@ const SHEETS = {
     }
   },
   "cyberhell": {
-    "src": "img/CyberHell/hero-yama-cyberhell-walk-4dir-v2.png",
+    "src": "img/CyberHell/hero-yama-cyberhell-walk-4dir-v2.webp",
     "frameSize": {
       "w": 157,
       "h": 303

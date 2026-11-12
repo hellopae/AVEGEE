@@ -43,7 +43,7 @@ function setup(zone){
   const g=createGame();g.zone=zone;syncSceneZone(zone);art.bindZone(()=>zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
-  walk.buildWalk({src:zone==='west'?'img/scene-v2-opt.png':'img/'+g.zoneDef().scene+'.png',naturalWidth:1678,naturalHeight:937});
+  walk.buildWalk({src:zone==='west'?'img/scene-v2-opt.webp':'img/'+g.zoneDef().scene+'.webp',naturalWidth:1678,naturalHeight:937});
   g.syncBlocks(true);
   return g;
 }

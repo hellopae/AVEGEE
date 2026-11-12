@@ -135,7 +135,7 @@ export function questTarget(g,q){
     npc==='nira'?[STATIONS.find(st=>st.k==='sala').x,STATIONS.find(st=>st.k==='sala').y]:[def?.hx||300,def?.hy||380];
   if(zone===g.zone&&actor&&(npc!=='nira'||actorStanding(actor)&&!g.niraRest&&Number.isFinite(actor.x)&&Number.isFinite(actor.y)))point=[actor.x??actor.hx??point[0],actor.y??actor.hy??point[1]];
   if(zone===g.zone)point=nearestWalk(...point)||point;
-  return {zone,npc,x:point[0],y:point[1],name:npc==='merchant'?'พ่อค้าควันทอง':npc==='guard'?'ยักษ์ทวารบาล':npc==='nira'?'นิรา':crewName(def,zone),art:npc==='merchant'?'img/merchant.png':null};
+  return {zone,npc,x:point[0],y:point[1],name:npc==='merchant'?'พ่อค้าควันทอง':npc==='guard'?'ยักษ์ทวารบาล':npc==='nira'?'นิรา':crewName(def,zone),art:npc==='merchant'?'img/merchant.webp':null};
 }
 // Current target ownership includes later cross-zone replies; paused quests remain readable.
 export function questsForActor(g,npc,zone=g.zone){

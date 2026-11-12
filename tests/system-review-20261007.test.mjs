@@ -28,7 +28,7 @@ test('every regional boss ultimate hits Yama, both companions and Guard; ordinar
   B.kind='zoneBoss';B.zone=zone;B.foes=[{id:'boss',who:'boss',sp:'zone-boss',boss:true,hp:400,maxHp:1000,atk:[10,10],stun:0,confuse:0,attacks:1}]/* BATTLE-FX: the next attack is its 2nd = cutscene move */;B.selectedFoeId='boss';
   const actors=g.battleActors();assert.equal(actors.length,4);const before=new Map(actors.map(a=>[a.id,a.morale]));
   g.battleAct('atk');assert.ok(B.ultimate);assert.deepEqual(B.dmg.enemyHits.map(h=>h.id).sort(),actors.map(a=>a.id).sort());
-  if(zone==='th')assert.equal(B.ultimate.image,'img/zone-boss-cutscene.jpeg');
+  if(zone==='th')assert.equal(B.ultimate.image,'img/zone-boss-cutscene.webp');
   for(const c of actors.filter(a=>a.id!=='you'))assert.equal(c.morale,before.get(c.id)-B.ultimate.damage);
   B.foes[0].hp=900;B.ultimate=null;g.battleAct('atk');assert.equal(B.ultimate,null);assert.equal(B.dmg.enemyHits.length,1);
  }
@@ -36,7 +36,7 @@ test('every regional boss ultimate hits Yama, both companions and Guard; ordinar
 test('zone-one event boss uses its own cutscene rather than frontier artwork',()=>{
  const g=game();g.startBattle({id:99,who:'test',deserved:4});const B=g.battle;B.kind='zoneEvent';B.zone='th';B.eventKey='test';
  B.foes[0].sp='zone-boss';B.foes[0].boss=true;B.foes[0].maxHp=1000;B.foes[0].hp=400;B.foes[0].atk=[10,10];
- g.battleAct('atk');assert.equal(B.ultimate.image,'img/zone-boss-cutscene.jpeg');
+ g.battleAct('atk');assert.equal(B.ultimate.image,'img/zone-boss-cutscene.webp');
 });
 test('confession stays tied to temple-land/drug claim and does not reveal unrelated supplement fraud',()=>{
  const g=game();const unrelated={s:'kong',w:4,t:'ขายอาหารเสริมปลอม อ้างว่ารักษามะเร็ง',known:false};

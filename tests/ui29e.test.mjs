@@ -75,7 +75,7 @@ test('29E: event alert has one close action, no pause/X; close dismisses and sta
       onDlgClose: cb => { afterClose = cb; },
     });
     vm.runInContext(`${modalSource}\n${alertSource}`, context);
-    context.openEventAlert('prisonBreak', 'Event', 'Description', 'foe.png', 'Start', () => { started++; }, true);
+    context.openEventAlert('prisonBreak', 'Event', 'Description', 'foe.webp', 'Start', () => { started++; }, true);
     assert.equal(dlg.className, 'event-alert');
     assert.equal((dlg.innerHTML.match(/data-close/g) || []).length, 1);
     assert.ok(dlg.innerHTML.includes(`data-close>${t('common.close')}</button>`));
@@ -96,7 +96,7 @@ test('29E: event alert has one close action, no pause/X; close dismisses and sta
       close() { this.open = false; afterClose(); }};
     const context = vm.createContext({g, dlg, t, esc, artUrl:k => k, ITEMS:{health:{img:'health'}}, itemName:k => k, itemText:k => k, itemImg:k => `<img alt="${k}">`, medicineResult:() => null, pauseForDlg:() => {}, openDlg:() => { dlg.open = true; }, onDlgClose:cb => { afterClose = cb; }});
     vm.runInContext(`${modalSource}\n${alertSource}`, context);
-    context.openEventAlert('x', 'Event', 'Description', 'foe.png', 'Ack', () => dlg.close(), false, true);
+    context.openEventAlert('x', 'Event', 'Description', 'foe.webp', 'Ack', () => dlg.close(), false, true);
     assert.equal((dlg.innerHTML.match(/data-close/g) || []).length, 1);
     assert.doesNotMatch(dlg.innerHTML, new RegExp(`data-close>${t('common.close')}</button>`));
     ack.onclick();

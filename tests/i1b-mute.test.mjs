@@ -10,10 +10,10 @@ test('I1-B-5: ไม่มีปุ่มข้อความ Mute — ปุ�
   const ui = read('src/ui.js'), html = read('index.html');
   assert.doesNotMatch(ui, /id="s-mute"/); assert.doesNotMatch(ui, /#s-mute/);
   assert.doesNotMatch(ui, /🔊 ปิดเสียง|🔇 เปิดเสียง|🔊 เสียง|🔇 ปิดเสียงอยู่/);
-  assert.match(html, /<button id="mute"[^>]*><img src="img\/ui\/icon-sound\.png" alt=""><\/button>/);
+  assert.match(html, /<button id="mute"[^>]*><img src="img\/ui\/icon-sound\.webp" alt=""><\/button>/);
   assert.doesNotMatch(html, /🔊 เสียง/);
   assert.match(ui, /icon-sound-close/);
-  for (const f of ['icon-sound', 'icon-sound-close', 'icon-music', 'icon-music-close']) assert.ok(statSync(new URL(`../img/ui/${f}.png`, import.meta.url)).size > 500, f);
+  for (const f of ['icon-sound', 'icon-sound-close', 'icon-music', 'icon-music-close']) assert.ok(statSync(new URL(`../img/ui/${f}.webp`, import.meta.url)).size > 500, f);
 });
 test('I1-B-5: ปุ่มด่วน + ไอคอนในหน้าตั้งค่า + AUDIO สถานะตรงกัน (ไม่มีกรณีปิดรวมแต่ไอคอนเปิด)', () => {
   const ui = read('src/ui.js');
@@ -22,5 +22,5 @@ test('I1-B-5: ปุ่มด่วน + ไอคอนในหน้าตั
   assert.match(ui, /const allMuted = \(\) => AUDIO\.bgmOn === false && AUDIO\.sfxOn === false;/);
   assert.match(ui, /AUDIO\.on = true; AUDIO\.bgmOn = turnOn; AUDIO\.sfxOn = turnOn;/);
   // ไอคอนในหน้าตั้งค่ากดแล้วสลับรูป + ปุ่มด่วนวาดซ้ำ
-  assert.match(ui, /img\.src = `img\/ui\/\$\{off \? offIcon : onIcon\}\.png`;[^]*syncBgm\(\); saveAudio\(\); drawMute\(\);/);
+  assert.match(ui, /img\.src = `img\/ui\/\$\{off \? offIcon : onIcon\}\.webp`;[^]*syncBgm\(\); saveAudio\(\); drawMute\(\);/);
 });

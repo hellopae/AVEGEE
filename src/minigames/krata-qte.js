@@ -25,8 +25,8 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
     if (!session) { close(); return; }
     elapsed=0; last=performance.now();
     const zone=['th','asia','west','cyberhell'].includes(g.zone)?g.zone:'th';
-    const portrait=actor==='yama'?(zone==='th'?'img/krata-minigame/yama-cutscene.jpeg':`img/hero-yama-${zone}-fire-cutscene-v3.png`):(zone==='th'?'img/krata-minigame/plerng-cutscene.jpeg':`img/krata-minigame/plerng-${zone}-training-v2.png`);
-    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.png" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button><small class="g5-round-message" role="status">${t('g5.hintIdle')}</small>`
+    const portrait=actor==='yama'?(zone==='th'?'img/krata-minigame/yama-cutscene.webp':`img/hero-yama-${zone}-fire-cutscene-v3.webp`):(zone==='th'?'img/krata-minigame/plerng-cutscene.webp':`img/krata-minigame/plerng-${zone}-training-v2.webp`);
+    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.webp" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button><small class="g5-round-message" role="status">${t('g5.hintIdle')}</small>`
       : `<p>${t('g5.approach')}</p><div class="g5-bar"><i class="g5-zone"></i><i class="g5-needle"></i></div><button class="btn-gold" data-fire type="button" disabled>${t('g5.fire')}</button>`;
     if (!training) room.walkTo(...stApproach());
     let ready=training;

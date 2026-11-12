@@ -20,7 +20,7 @@ for (const path of files) {
   if (path === 'img/cover-v4-full.png') continue;
   // Only preload the corrected animation; authoring sources stay outside the catalog.
   if (path.startsWith('img/yama-sword-v1/') || path === 'img/yama-sword-v2/hero-yama-th-sword.webp') continue;
-  if (/hero-yama-.*-roar-cutscene-v3\.png$/.test(path)) continue;
+  if (/hero-yama-.*-roar-cutscene-v3\.webp$/.test(path)) continue;
   // Annotated map review replaces nine station sprites in every zone.
   if (/^img\/theme-v4\/st-(dab|ngiw|krata|frontier|sawan|tarang|lan|krajok|sala)-(th|asia|west|cyberhell)\.webp$/.test(path)) continue;
   if (!/\.(png|jpe?g|webp)$/i.test(path) || path.startsWith('img/raw/')) continue;

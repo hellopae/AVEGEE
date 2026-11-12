@@ -2801,7 +2801,7 @@ const API = {
       kind: 'zoneBoss', zone: z.k, who: z.bossName, sub: z.bossSub,
       // 17 ก.ย. 2569: เดิมต่อ -<zone> เองตรงนี้ แต่ artUrl()/zoneStem() ต่อให้อยู่แล้วทุกคีย์
       // (เหมือน sp:'hero-boss' ด้านล่าง) — ต่อซ้อนสองรอบ เลยหาไฟล์ไม่เจอ บอสโซน 2-4 เลยตกไปใช้
-      // spirit7.png (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว
+      // spirit7.webp (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว
       sp: 'zone-boss',
       // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติแล้ว (ผูกกับเนื้อเรื่องจริง
       // คือภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก) ตัด "ยมทูตคุ้มกัน" (แทนด้วยปุ่มนิรา — จัดทีมจริงดีกว่าโบนัส
@@ -4113,22 +4113,22 @@ const API = {
         const folder = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' }[z] || '';
         const tester = B.kind === 'devaTest' || /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
         const bossScenes = {
-          'hero-boss':'img/hero-boss-cutscene.jpeg',
-          'zone-boss':'img/zone-boss-cutscene.jpeg',
-          'zone-boss-th':'img/zone-boss-cutscene.jpeg',
-          'leader-th-possessed':'img/leader-th-attack-cutscene.png',
-          'leader-asia-possessed':'img/leader-asia-attack-cutscene.png',
-          'leader-west-possessed':'img/leader-west-attack-cutscene.png',
-          'leader-cyberhell-possessed':'img/leader-cyberhell-attack-cutscene.png',
-          'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.jpeg',
-          'zone-boss-west':'img/West/Boss Zone3-cutscene.jpeg',
-          'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.jpeg',
+          'hero-boss':'img/hero-boss-cutscene.webp',
+          'zone-boss':'img/zone-boss-cutscene.webp',
+          'zone-boss-th':'img/zone-boss-cutscene.webp',
+          'leader-th-possessed':'img/leader-th-attack-cutscene.webp',
+          'leader-asia-possessed':'img/leader-asia-attack-cutscene.webp',
+          'leader-west-possessed':'img/leader-west-attack-cutscene.webp',
+          'leader-cyberhell-possessed':'img/leader-cyberhell-attack-cutscene.webp',
+          'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.webp',
+          'zone-boss-west':'img/West/Boss Zone3-cutscene.webp',
+          'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.webp',
         };
         // ภาพท่าไม้ตายบอส/เทวดาในอีเวนต์: โซน 1 = img/boss-<tester|frontier>-th-cutscene.jpeg
         // โซนอื่น = img/<Zone>/boss-<tester|frontier>-<z>-cutscene-<z>.png (เดิมชี้โฟลเดอร์ raw ซึ่ง gitignore → 404 บน live)
         const who = tester ? 'boss-tester' : 'boss-frontier';
         const special = bossScenes[counter.sp]
-          || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);
+          || (z === 'th' ? `img/${who}-th-cutscene.webp` : `img/${folder}${who}-${z}-cutscene-${z}.webp`);
         ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
           image:special, damage:Math.round(groupBase * (zoneBossRhythm ? BOSS_ULTIMATE_RHYTHM.damage : 1.7)) };
       }
@@ -5407,7 +5407,7 @@ API.restore = function (d) {
     Object.keys(this.bossArriveSeen).forEach(k => { if (!this.bossCleared[k]) delete this.bossArriveSeen[k]; });
   }
   this.bossArriveFixV10 = true;
-  // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.png 1527×704 →
+  // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.webp 1527×704 →
   // scene-v2.png 1678×937) เซฟเก่าที่มีตำแหน่งยมบาทน้อย/ยมทูต/ยักษ์ทวารบาลอิงพิกัดฉากเดิมอาจไปติดอยู่
   // ในลาวา/นอกแผนที่ใหม่ — รีเซ็ตตำแหน่งเป็นค่าเริ่มต้นใหม่ครั้งเดียวตอนโหลด (เฉพาะตอนอยู่โซน 1 ที่
   // ตอนชุดที่ 15b เปลี่ยนเฉพาะโซน 1; โซนอื่นมี migration แยกด้านล่าง ไม่กระทบความคืบหน้า/ของที่ถืออยู่เลย

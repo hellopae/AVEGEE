@@ -87,6 +87,8 @@ test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'&&!['src/data.js','src/town-layout.js','src/town-owner-walkmask-cyberhell.js','src/zone-skin.js'].includes(path)){
+    // 12 Nov: PNG/JPEG art became WebP; the original bytes this hash covers live in git history (commit 4635d8c8 and earlier).
+    if(!existsSync(path)&&existsSync(path.replace(/\.(png|jpe?g)$/,'.webp')))continue;
     let bytes=readFileSync(path);
     if(path==='src/walk.js'){
       // Undo only the reviewed town-dais clearance change. Legacy terrain and

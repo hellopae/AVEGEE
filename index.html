@@ -875,7 +875,7 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
    จะให้เผชิญหน้ากันเต็มตัวจริง ๆ ต้องมีรูปท่าเฉียง (ASSET-PROMPTS.md ชุดที่ 6)
    ซึ่ง heroFace() รอไฟล์อยู่แล้ว — วันนั้นค่อยเอาการพลิกนี้ออก */
 .arena .fig.you img,.hud .fig.you img{transform:scaleX(-1)}
-/* ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.png (ต่างจากท่ายืนด้านบน) วาดหันขวา/ชกไปทางขวาอยู่แล้ว
+/* ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.webp (ต่างจากท่ายืนด้านบน) วาดหันขวา/ชกไปทางขวาอยู่แล้ว
    กฎ scaleX(-1) ด้านบนตั้งไว้รองรับท่ายืนที่หันตรงเข้ากล้อง (สมมาตร ไม่มีทิศ) พอมาเจอท่าโจมตีที่มีทิศจริง
    มันเลยพลิกกลับไปหันซ้ายผิดทาง — ยกเลิก flip เฉพาะตอนโชว์ท่าโจมตี (ui.js ใส่ class .atk ให้ตอนนั้น) */
 .arena .fig.you.atk img,.hud .fig.you.atk img{transform:scaleX(1)}
@@ -1131,7 +1131,7 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
    ลดความทึบสต็อปล่างจาก .92 → .68 ด้วย ให้กระดาษยังเห็นชัดที่ขอบล่างการ์ด ตัวหนังสือยังอ่านง่าย
    (สีตัวหนังสือ .deed ใช้ var(--foreground) โทนอ่อนอยู่แล้ว ตัดกับพื้นน้ำตาล-ม่วงเข้มได้สบาย) */
 .hud-rec{flex:0 0 auto;max-height:36%;overflow-y:auto;padding:10px 12px;
-  background-image:linear-gradient(180deg,rgba(74,31,61,.45) 0%,rgba(20,10,14,.68) 100%),url('img/tex-paper-hell.png');
+  background-image:linear-gradient(180deg,rgba(74,31,61,.45) 0%,rgba(20,10,14,.68) 100%),url('img/tex-paper-hell.webp');
   background-size:cover,256px 256px;background-repeat:no-repeat,repeat;background-blend-mode:normal,normal}
 .hud-rec .deed{font-size:var(--text-sm);line-height:1.55}
 /* ---- หน้าของสถานีหนึ่งหลัง (9 ก.ย. 2569) ---- */
@@ -1796,16 +1796,16 @@ dialog.intro-comic-dialog.verdict-dialog{width:min(96vw,1000px,max(420px,calc((9
   transform:translateX(-50%);display:flex;gap:clamp(6px,1vw,12px);align-items:center}
 .btn-gold{box-sizing:border-box;display:grid;place-items:center;flex:none;
   width:clamp(135px,13vw,200px);height:clamp(54px,5.4vw,70px);padding:5px 15px 8px;
-  border:0;background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  border:0;background:transparent url('img/ui/icon-bg.webp') center/100% 100% no-repeat;
   color:#231f20;font:700 clamp(12px,1.25vw,18px)/1.15 var(--font-sans);
   text-align:center;cursor:pointer;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55));
   transition:filter .15s,transform .15s}
-.btn-gold:hover:not(:disabled){background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+.btn-gold:hover:not(:disabled){background:transparent url('img/ui/icon-bg.webp') center/100% 100% no-repeat;
   filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)) brightness(1.12);transform:translateY(-2px)}
-.btn-gold:active:not(:disabled){background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+.btn-gold:active:not(:disabled){background:transparent url('img/ui/icon-bg.webp') center/100% 100% no-repeat;
   transform:translateY(2px);filter:brightness(.9)}
 .btn-gold:focus-visible{outline:2px solid #fff4c7;outline-offset:2px}
-.btn-gold:disabled{background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+.btn-gold:disabled{background:transparent url('img/ui/icon-bg.webp') center/100% 100% no-repeat;
   opacity:.42;filter:grayscale(.65) drop-shadow(0 2px 4px rgba(0,0,0,.4));cursor:not-allowed}
 
 .hud-mini-goal{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 9%);
@@ -1864,8 +1864,8 @@ dialog.intro-comic-dialog.verdict-dialog{width:min(96vw,1000px,max(420px,calc((9
 .hero-profile-row.crew{margin:0 0 6px;padding:5px 8px}
 .hero-profile-row.crew>img{width:clamp(34px,3.6vw,56px);height:clamp(34px,3.6vw,56px);border-radius:50%;border:1px solid #b98b42;object-fit:cover}
 .hero-profile-row.crew b{font-size:clamp(14px,1.25vw,21px)}
-.hero-profile-row>img[src$="icon-sword.png"]{transform:scale(1.7);transform-origin:68% 45%}
-.hero-profile-row>img[src$="icon-fang.png"]{object-fit:cover;border-radius:50%}
+.hero-profile-row>img[src$="icon-sword.webp"]{transform:scale(1.7);transform-origin:68% 45%}
+.hero-profile-row>img[src$="icon-fang.webp"]{object-fit:cover;border-radius:50%}
 .hero-profile-hp{display:block;height:6px;width:100%;margin:3px 0;border-radius:8px;background:#13090e;overflow:hidden}
 .hero-profile-hp i{display:block;height:100%;background:#1aa65c}
 .hero-profile-menu{margin:16px 0 0;padding:8px 18px;border:1px solid #c69a51;border-radius:6px;background:#35202a;color:#f5d18c;cursor:pointer}
@@ -2194,7 +2194,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4-map-ui-review"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
-<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots"><link rel="stylesheet" href="src/battle-result.css?v=20261029-ui-jw"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
+<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots-w1112"><link rel="stylesheet" href="src/battle-result.css?v=20261029-ui-jw"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2213,11 +2213,11 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 </div>
 <div id="splash" aria-label="แอนิเมชันเปิดเกม">
   <video id="splash-video" src="img/intro-opening-v3.mp4" muted playsinline preload="auto"></video>
-  <img class="splash-logo" id="splash-logo" src="img/ui/logo-th.png" alt="อเวจี — CEO of Hell">
+  <img class="splash-logo" id="splash-logo" src="img/ui/logo-th.webp" alt="อเวจี — CEO of Hell">
   <button class="splash-skip" id="splash-skip" type="button">ข้าม →</button>
 </div>
 <div id="enter-gate" hidden>
-  <button id="enter-button" type="button"><img id="enter-logo" src="img/ui/logo-th.png" alt=""><span data-t="title.tapEnter"></span></button>
+  <button id="enter-button" type="button"><img id="enter-logo" src="img/ui/logo-th.webp" alt=""><span data-t="title.tapEnter"></span></button>
 </div>
 <div id="title">
   <div class="art" id="cover-art"></div>
@@ -2226,18 +2226,18 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 
   <!-- เฟืองตั้งค่ามุมขวาบน (ข้อ A.3) — ใช้ id เดิม #t-set ที่ ui.js ผูก openSettings() ไว้แล้ว -->
   <button id="t-set" class="title-gear" aria-label="settings">
-    <img src="img/ui/icon-setting2.png" alt="">
+    <img src="img/ui/icon-setting2.webp" alt="">
   </button>
   <!-- ป้าย 18+ มุมขวาล่าง (ข้อ A.3) -->
-  <div class="title-badge18"><img src="img/ui/icon-18plus.png" alt="18+"></div>
+  <div class="title-badge18"><img src="img/ui/icon-18plus.webp" alt="18+"></div>
 
   <div class="title-menu">
     <!-- โลโก้ขวากลางตามม็อกอัป (ข้อ A.1) — สลับ th/eng ตามภาษาใน bindTitleLang() (ui.js) -->
-    <img class="title-logo" id="title-logo" src="img/ui/logo-th.png" alt="อเวจี — CEO of Hell">
+    <img class="title-logo" id="title-logo" src="img/ui/logo-th.webp" alt="อเวจี — CEO of Hell">
 
     <div class="title-actions">
       <button id="t-start" class="title-action" type="button" aria-label="START">
-        <span class="glyph"><img src="img/ui/icon-resume-glyph.png" alt=""></span>
+        <span class="glyph"><img src="img/ui/icon-resume-glyph.webp" alt=""></span>
         <span class="label"><b>START</b></span>
       </button>
     </div>
@@ -2283,8 +2283,8 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 
     <!-- มุมขวาบน: หยุด + ตั้งค่า (D.3) -->
     <div class="hud-top-right">
-      <button id="hud-pause" class="hud-icon-btn" data-t-aria="hud.pause"><img id="hud-pause-img" src="img/ui/icon-pause.png" alt=""></button>
-      <button id="hud-settings" class="hud-icon-btn" data-t-aria="hud.settings"><img src="img/ui/icon-setting2.png" alt=""></button>
+      <button id="hud-pause" class="hud-icon-btn" data-t-aria="hud.pause"><img id="hud-pause-img" src="img/ui/icon-pause.webp" alt=""></button>
+      <button id="hud-settings" class="hud-icon-btn" data-t-aria="hud.settings"><img src="img/ui/icon-setting2.webp" alt=""></button>
     </div>
 
     <!-- ล่างซ้าย: ยมบาทน้อย + ยศ + แถบบารมี + ชื่อ · หนังสือคู่มือ · กระเป๋า (D.4)
@@ -2292,8 +2292,8 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     <div class="hud-bottom-left">
       <button id="hud-avatar" class="hud-avatar" aria-label="สถานะยมบาทน้อย">
         <span class="hud-ava-row">
-          <img id="hud-ava-img" src="img/hero-yama-profile.png" alt=""
-               onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+          <img id="hud-ava-img" src="img/hero-yama-profile.webp" alt=""
+               onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.webp'">
           <!-- ข้อ 2 ชุด 15b — ดาวยศ (level 1-3) แทน star5 เดิม ตามม็อกอัป UI2-th.jpg
                (คุณเป้ 28 ก.ย. 2569: "ดาว คือระดับ level ของ yama ... เวลาพ่อเลื่อนขั้นให้ ก็จะ 1 ดาว")
                star5 (จำนวนคำตัดสิน 5 ดาวสะสม) ยังนับต่อในแท็บข้อมูลตามเดิม ไม่ได้ลบทิ้ง -->
@@ -2306,9 +2306,9 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
         <small id="hud-ava-name">ยมบาทน้อย</small>
       </button>
       <button id="hud-book" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.book">
-        <img src="img/ui/icon-book.png" alt=""></button>
+        <img src="img/ui/icon-book.webp" alt=""></button>
       <button id="hud-bag" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.bag">
-        <img src="img/ui/icon-bag.png" alt=""></button>
+        <img src="img/ui/icon-bag.webp" alt=""></button>
     </div>
 
 
@@ -2325,13 +2325,13 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
   <section id="hero-profile" class="hero-profile" hidden aria-label="โปรไฟล์ยมบาท">
     <div class="hero-profile-frame">
       <div class="hero-profile-actions">
-        <button id="hero-profile-pause" class="hud-icon-btn" aria-label="พัก"><img src="img/ui/icon-pause.png" alt=""></button>
-        <button id="hero-profile-close" class="hud-icon-btn" aria-label="ปิด"><img src="img/ui/icon-close.png" alt=""></button>
+        <button id="hero-profile-pause" class="hud-icon-btn" aria-label="พัก"><img src="img/ui/icon-pause.webp" alt=""></button>
+        <button id="hero-profile-close" class="hud-icon-btn" aria-label="ปิด"><img src="img/ui/icon-close.webp" alt=""></button>
       </div>
-      <div class="hero-profile-figure"><img id="hero-profile-standee" src="img/hero-yama.png" alt=""></div>
+      <div class="hero-profile-figure"><img id="hero-profile-standee" src="img/hero-yama.webp" alt=""></div>
       <div class="hero-profile-content">
         <header class="hero-profile-heading">
-          <img id="hero-profile-face" src="img/hero-yama-profile.png" alt="">
+          <img id="hero-profile-face" src="img/hero-yama-profile.webp" alt="">
           <div id="hero-profile-intro"></div>
         </header>
         <nav id="hero-profile-tabs" class="menu-tabs" role="tablist" aria-label="โปรไฟล์ยมบาท"></nav>
@@ -2349,17 +2349,17 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
   <div id="legacy-drawer" class="legacy-drawer" hidden>
     <div class="legacy-drawer-sheet">
       <div class="legacy-drawer-head">
-        <img id="ava" src="img/hero-yama-profile.png" alt="" width="40" height="40"
-             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+        <img id="ava" src="img/hero-yama-profile.webp" alt="" width="40" height="40"
+             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.webp'">
         <h1>อเวจี<small id="hdr-sub">นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
         <button id="legacy-drawer-close" class="settings-close" aria-label="close">
-          <img src="img/ui/icon-close.png" alt=""></button>
+          <img src="img/ui/icon-close.webp" alt=""></button>
       </div>
       <div class="sysbtn">
         <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
         <button id="help" class="sm">วิธีเล่น</button>
         <button id="settings" class="sm">⚙ ตั้งค่า</button>
-        <button id="mute" class="sm mute-icon" type="button" aria-label="ปิดเสียง / Mute" aria-pressed="false"><img src="img/ui/icon-sound.png" alt=""></button>
+        <button id="mute" class="sm mute-icon" type="button" aria-label="ปิดเสียง / Mute" aria-pressed="false"><img src="img/ui/icon-sound.webp" alt=""></button>
       </div>
 
       <div class="deckbar" id="deck"></div>
@@ -2399,6 +2399,19 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <script type="importmap">
 {
   "imports": {
+    "./src/minigames/sala.js?v=20261009-book-art-h4": "./src/minigames/sala.js?v=20261009-book-art-h4-w1112",
+    "./src/sword-school-props.js?v=minigame-review-20261011-j2-l4a": "./src/sword-school-props.js?v=minigame-review-20261011-j2-l4a-w1112",
+    "./src/mirror-charge.js?v=minigame-review-20261011": "./src/mirror-charge.js?v=minigame-review-20261011-w1112",
+    "./src/asipatta-swords.js?v=l4a": "./src/asipatta-swords.js?v=l4a-w1112",
+    "./src/mirror-charge.js?v=minigame-review-20261011-j4": "./src/mirror-charge.js?v=minigame-review-20261011-j4-w1112",
+    "./src/command-wheel.js": "./src/command-wheel.js?v=20261112-w1112",
+    "./src/crew-walk-assets.js": "./src/crew-walk-assets.js?v=20261112-w1112",
+    "./src/diagnosis-ui.js": "./src/diagnosis-ui.js?v=20261112-w1112",
+    "./src/enemy-art.js": "./src/enemy-art.js?v=20261112-w1112",
+    "./src/hero-walk-assets.js": "./src/hero-walk-assets.js?v=20261112-w1112",
+    "./src/narrative-cutscenes.js": "./src/narrative-cutscenes.js?v=20261112-w1112",
+    "./src/power-cutscene-assets.js": "./src/power-cutscene-assets.js?v=20261112-w1112",
+    "./src/regional-spirits.js": "./src/regional-spirits.js?v=20261112-w1112",
     "./src/quest-fights.js": "./src/quest-fights.js?v=20261112-m1112",
     "./src/quest-rewards.js": "./src/quest-rewards.js?v=20261112-m1112",
     "./src/talk-lines.js": "./src/talk-lines.js?v=20261112-m1112",
@@ -2406,7 +2419,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/town-fluid-fx.js": "./src/town-fluid-fx.js?v=20261112-fluidfull2",
     "./src/fluid-shader.js": "./src/fluid-shader.js?v=20261112-fluidfull2",
     "./src/town-ground-sprites.js": "./src/town-ground-sprites.js?v=20261112-z1v7",
-    "./src/construction-sheets.js": "./src/construction-sheets.js?v=20261105-z1v5-fx4",
+    "./src/construction-sheets.js": "./src/construction-sheets.js?v=20261105-z1v5-fx4-w1112",
     "./src/town-grade.js": "./src/town-grade.js?v=20261105-z1v5-fx4",
     "./src/canteen-art-layout.js": "./src/canteen-art-layout.js?v=20261105-z1v5-fx4",
     "./src/z4-poles.js?v=z4-poles": "./src/z4-poles.js?v=20261103-electric-polish",
@@ -2421,12 +2434,12 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/worker-escort-spacing.js": "./src/worker-escort-spacing.js?v=20261025-a4",
     "./src/escort.js": "./src/escort.js?v=20261025-a4",
     "./src/tea-staff-rest.js": "./src/tea-staff-rest.js?v=20261028-walk-to-seat-grace-f-recovery-120",
-    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3-m1112",
-    "./src/zone-skin.js": "./src/zone-skin.js?v=20261112-z1v7r",
+    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3-m1112-w1112",
+    "./src/zone-skin.js": "./src/zone-skin.js?v=20261112-z1v7r-w1112",
     "./src/dungeon-navigation.js": "./src/dungeon-navigation.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia.js": "./src/frontier-walkmask-th-asia.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia-b12.js": "./src/frontier-walkmask-th-asia-b12.js?v=20261030-map-b12-v3",
-    "./src/route-geometry.js": "./src/route-geometry.js?v=20261101-b23-redraw-b34-redraw",
+    "./src/route-geometry.js": "./src/route-geometry.js?v=20261101-b23-redraw-b34-redraw-w1112",
     "./src/map-art-v5.js": "./src/map-art-v5.js?v=m2",
     "./src/walk.js?v=k1d": "./src/walk.js?v=k1d-z2-code-dais-navigation",
     "./src/town-asia-trees.js": "./src/town-asia-trees.js?v=m2-z2-code",
@@ -2435,9 +2448,9 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/town-owner-walkmask-west.js": "./src/town-owner-walkmask-west.js?v=m2-z3-west-20261027",
     "./src/town-owner-walkmask-cyberhell.js": "./src/town-owner-walkmask-cyberhell.js?v=20261030-z4-town-a",
     "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a-m1112",
-    "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1",
+    "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1-w1112",
     "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8-fbui",
-    "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles",
+    "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles-w1112",
     "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261112-fluidfull2",
     "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
     "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-m2-boss-justice-workers-v1",
@@ -2445,25 +2458,25 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/yama-fit.js": "./src/yama-fit.js?v=20261025-a7",
     "./src/yama-animation.js?v=20261015-live-v1": "./src/yama-animation.js?v=20261015-live-v1-a7",
     "./src/town-startup.js": "./src/town-startup.js?v=20261027-m2-startup-ready-food-art-painted-pole",
-    "./src/art.js": "./src/art.js?v=20261110-perf-fbui",
+    "./src/art.js": "./src/art.js?v=20261110-perf-fbui-w1112",
     "./src/i18n.js": "./src/i18n.js?v=20261110-questrewards",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
-    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
+    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112-w1112",
     "./src/pot-souls.js": "./src/pot-souls.js?v=20261022-p6",
-    "./src/minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
+    "./src/minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/krata-qte.js?v=20261029-c1-v2-w1112",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
-    "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
+    "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015-w1112",
     "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/town-dais-geometry.js": "./src/town-dais-geometry.js?v=20261102-dais-navigation",
     "./src/town-layout.js": "./src/town-layout.js?v=20261030-z4-town-a-art-dais2-map-ui-review-dais-navigation-fbui",
-    "./src/battle-facing.js": "./src/battle-facing.js?v=20261029-art-atk2",
-    "./src/battle-facing.js?v=i1b-westhit-skillatk-j1": "./src/battle-facing.js?v=20261029-art-atk2",
+    "./src/battle-facing.js": "./src/battle-facing.js?v=20261029-art-atk2-w1112",
+    "./src/battle-facing.js?v=i1b-westhit-skillatk-j1": "./src/battle-facing.js?v=20261029-art-atk2-w1112",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/cyberhell-terrain.js": "./src/cyberhell-terrain.js?v=20261030-z4-town-a",
-    "./src/scene.js": "./src/scene.js?v=20261110-gfx",
+    "./src/scene.js": "./src/scene.js?v=20261110-gfx-w1112",
     "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-flames-ground-r2-p5b",
     "./src/town-terrain.js": "./src/town-terrain.js?v=20261112-fluidfull2",
     "./src/proximity.js": "./src/proximity.js?v=20261030-e1-v2",
@@ -2475,32 +2488,32 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/interrogation.js": "./src/interrogation.js?v=20261022-p2",
     "./src/interrogation-ui.js": "./src/interrogation-ui.js?v=20261029-s1-soul-poses",
-    "./src/sentencing-guide.js": "./src/sentencing-guide.js?v=20261022-p2-p7-p8-sentence-time",
+    "./src/sentencing-guide.js": "./src/sentencing-guide.js?v=20261022-p2-p7-p8-sentence-time-w1112",
     "./src/sentence-colors.js": "./src/sentence-colors.js?v=20261022-p2",
-    "./src/soul-poses.js": "./src/soul-poses.js?v=20261030-e1-v2",
+    "./src/soul-poses.js": "./src/soul-poses.js?v=20261030-e1-v2-w1112",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261110-questrewards",
+    "./src/game.js": "./src/game.js?v=20261110-questrewards-w1112",
     "./src/preload.js": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
-    "./src/asset-preload.js": "./src/asset-preload.js?v=20261105-z1v5-fx4",
+    "./src/asset-preload.js": "./src/asset-preload.js?v=20261105-z1v5-fx4-w1112",
     "./src/battle-result.js": "./src/battle-result.js?v=20261110-questrewards",
     "./src/sfx.js": "./src/sfx.js?v=20261110-battlefx",
     "./src/graphics-setting.js": "./src/graphics-setting.js?v=20261110-gfx",
-    "./src/ui.js": "./src/ui.js?v=20261110-questrewards",
-    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4",
+    "./src/ui.js": "./src/ui.js?v=20261110-questrewards-w1112",
+    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4-w1112",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-questrewards",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-gfx",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-questrewards-w1112",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261110-gfx-w1112",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261105-z1v5-fx4",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
     "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261110-perf",
     "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261110-perf",
     "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261021-town-repairs",
     "./src/frontier-view-metrics.js": "./src/frontier-view-metrics.js?v=20261021-worker-supplies-o1-r3-scale-zone-atmosphere",
-    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere",
-    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere",
-    "./src/data.js": "./src/data.js?v=20261110-battlefx",
-    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261110-battlefx",
+    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere-w1112",
+    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261101-b23-redraw-b34-redraw-zone-atmosphere-w1112",
+    "./src/data.js": "./src/data.js?v=20261110-battlefx-w1112",
+    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261110-battlefx-w1112",
     "./src/cases.js": "./src/cases.js?v=20261030-e1-v2",
     "./src/cases-asia.js": "./src/cases-asia.js?v=n3b",
     "./src/battle-dash.js": "./src/battle-dash.js?v=20261101-tweak",
@@ -2509,18 +2522,18 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261020-m2-frontier-scale",
     "./src/frontier.js": "./src/frontier.js?v=20261110-battlefx",
     "./src/exit-marker.js": "./src/exit-marker.js?v=20261028-r1-map-ui",
-    "./src/zone-introductions.js": "./src/zone-introductions.js?v=20261029-grace-f",
+    "./src/zone-introductions.js": "./src/zone-introductions.js?v=20261029-grace-f-w1112",
     "./src/zone-travel.js": "./src/zone-travel.js?v=20261021-m2-b5bz2-c6-interrogation-roles-wft",
     "./src/npc-stand.js": "./src/npc-stand.js?v=20261016-boss-justice-workers-v1-o1",
     "./src/nira-combat.js": "./src/nira-combat.js?v=20261029-r2-battle-fx-p9",
-    "./src/verdict-scene.js": "./src/verdict-scene.js?v=p9-a5",
+    "./src/verdict-scene.js": "./src/verdict-scene.js?v=p9-a5-w1112",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1-w4-foundation",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading-w4-foundation",
     "./src/workers.js": "./src/workers.js?v=20261029-ui-jw-p5b-p5c-p9-fbui",
     "./src/worker-ui.js": "./src/worker-ui.js?v=20261029-food-a-m1112",
-    "./src/story.js": "./src/story.js?v=20261030-e1-v2-w4-foundation",
-    "./src/weapons.js": "./src/weapons.js?v=20261028-target-weapon",
-    "./src/weapons.js?v=i1b": "./src/weapons.js?v=20261028-target-weapon",
+    "./src/story.js": "./src/story.js?v=20261030-e1-v2-w4-foundation-w1112",
+    "./src/weapons.js": "./src/weapons.js?v=20261028-target-weapon-w1112",
+    "./src/weapons.js?v=i1b": "./src/weapons.js?v=20261028-target-weapon-w1112",
     "./src/final-event.js": "./src/final-event.js?v=20261030-z4-town-a",
     "./src/map-ambient.js": "./src/map-ambient.js?v=20261106-fx5",
     "./src/map-ambient.js?v=mapfx-k1d": "./src/map-ambient.js?v=20261106-fx5",
@@ -2541,10 +2554,10 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/battle-fx.js?v=m2": "./src/battle-fx.js?v=20261110-battlefx",
     "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261110-questrewards",
     "./src/battle-fx-map.js?v=m2": "./src/battle-fx-map.js?v=20261110-questrewards",
-    "./src/cutscene-presentation.js": "./src/cutscene-presentation.js?v=20261029-r2-battle-fx",
+    "./src/cutscene-presentation.js": "./src/cutscene-presentation.js?v=20261029-r2-battle-fx-w1112",
     "./src/actor-recovery.js": "./src/actor-recovery.js?v=20261029-c1-v2-recovery-120",
     "./src/krata-control.js": "./src/krata-control.js?v=20261029-c1-v2",
-    "./src/minigames/krata-qte.js": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
+    "./src/minigames/krata-qte.js": "./src/minigames/krata-qte.js?v=20261029-c1-v2-w1112",
     "./src/progression.js": "./src/progression.js?v=20261029-c1-v2",
     "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120-m1112",
     "./src/combat-skills.js": "./src/combat-skills.js?v=20261110-questrewards",
@@ -2555,14 +2568,14 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/e1-content.js": "./src/e1-content.js?v=20261110-questrewards",
     "./src/quest-cases.js": "./src/quest-cases.js?v=20261030-e1-v2",
     "./src/remorse.js": "./src/remorse.js?v=20261030-e1-v2-sentence-time",
-    "./src/side-quests.js": "./src/side-quests.js?v=20261110-questrewards",
+    "./src/side-quests.js": "./src/side-quests.js?v=20261110-questrewards-w1112",
     "./src/signal-arc.js": "./src/signal-arc.js?v=20261030-e1-v2",
     "./src/talk.js": "./src/talk.js?v=20261030-e1-v2-m1112",
     "./src/history-unlock.js": "./src/history-unlock.js?v=20261031-q2-hist",
     "./src/save-slots.js": "./src/save-slots.js?v=20261101-home-slots",
-    "./src/save-slot-menu.js": "./src/save-slot-menu.js?v=20261102-save-visual",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-questrewards",
-    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
+    "./src/save-slot-menu.js": "./src/save-slot-menu.js?v=20261102-save-visual-w1112",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-questrewards-w1112",
+    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112-w1112",
     "./src/diagnosis.js": "./src/diagnosis.js?v=20261101-sentence-time",
     "./src/battle-ko.js": "./src/battle-ko.js?v=20261106-fx5",
     "./src/scene-fluid-fx.js": "./src/scene-fluid-fx.js?v=20261106-fx5",
@@ -2578,6 +2591,6 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 </script>
 <script type="module" src="src/preload.js?v=20261105-z1v5-fx3-tiles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261110-questrewards"></script>
+<script type="module" src="src/ui.js?v=20261110-questrewards-w1112"></script>
 </body>
 </html>

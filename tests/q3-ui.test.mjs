@@ -43,7 +43,7 @@ test('Q3 team HUD: one row of workers, one row of yamatoot + guard, every member
   const [workers,crew]=teamHudRows(g);
   assert.equal(workers.length,6);assert.ok(workers.every(m=>m.worker));
   assert.equal(crew.length,6,'5 crew + guard, Yama himself excluded');assert.ok(crew.every(m=>!m.worker));
-  const html=teamHudHtml(g,()=>'/p.png');
+  const html=teamHudHtml(g,()=>'/p.webp');
   assert.equal((html.match(/class="team-hud-row"/g)||[]).length,2);
   assert.equal((html.match(/data-team-actor=/g)||[]).length,12);
   assert.match(html,/--cols:6;--cols-sm:6/);

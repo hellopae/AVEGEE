@@ -36,11 +36,11 @@ test('29F: all seven room lookups select the regional asset after manifest loads
 test('29F: every crew cutscene consumer points to one existing regional JPEG', () => {
   for (const [zone, folder] of [['asia', 'Asia'], ['west', 'West'], ['cyberhell', 'CyberHell']]) {
     for (const crew of crews) {
-      const path = `${folder}/crew-${crew}-${zone}-cutscene${zone === 'west' && crew === 'boon' ? '-f' : ''}.jpeg`;
+      const path = `${folder}/crew-${crew}-${zone}-cutscene${zone === 'west' && crew === 'boon' ? '-f' : ''}.webp`;
       assert.deepEqual(regionalCrewCutscene(crew, zone), { src: `img/${path}`, regional: true });
       assert.equal(manifest.zones[zone].filter(p => p === path).length, 1);
       assert.ok(existsSync(new URL(`../img/${path}`, import.meta.url)));
-      assert.ok(!manifest.zones[zone].includes(`${folder}/crew-${crew}-${zone}-cutscene-${zone}.png`));
+      assert.ok(!manifest.zones[zone].includes(`${folder}/crew-${crew}-${zone}-cutscene-${zone}.webp`));
     }
   }
 });
@@ -60,11 +60,11 @@ for zone, folder, base in ${JSON.stringify(rooms)}:
 for zone, folder in [('asia','Asia'),('west','West'),('cyberhell','CyberHell')]:
     for crew in ${JSON.stringify(crews)}:
         suffix = '-f' if zone == 'west' and crew == 'boon' else ''
-        path = f'img/{folder}/crew-{crew}-{zone}-cutscene{suffix}.jpeg'
+        path = f'img/{folder}/crew-{crew}-{zone}-cutscene{suffix}.webp'
         output = Image.open(path)
-        assert output.format == 'JPEG', path
+        assert output.format == 'WEBP', path
         assert output.size == (1375,768), (path, output.size)
         assert output.convert('RGBA').getchannel('A').getextrema() == (255,255), path
-        assert not Path(f'img/{folder}/crew-{crew}-{zone}-cutscene-{zone}.png').exists(), path
+        assert not Path(f'img/{folder}/crew-{crew}-{zone}-cutscene-{zone}.webp').exists(), path
   `]);
 });

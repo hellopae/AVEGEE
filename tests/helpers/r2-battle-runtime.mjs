@@ -21,7 +21,7 @@ export function commandHarness(loader) {
   const dlg={open:true,querySelector:()=>null,appendChild:node=>{node.isConnected=true;mounted.push(node);}};
   const ctx=vm.createContext({g,dlg,battleCutscenes:cache,Date,ITEMS,FX_OF,CREW_POWER,CREW,isMeleeAction,COMBAT_SKILLS,
     ACTION_CUT_MS:1300,COUNTER_WAIT_MS:2000,DEFEND_STANCE_MS:700,ACTION_CUTSCENE_PRESENTATION:{},
-    esc:String,crewCutsceneSrc:()=>null,actionCutsceneSrc:k=>`img/${k}.png`,cutsceneSource:k=>`img/${k}.png`,
+    esc:String,crewCutsceneSrc:()=>null,actionCutsceneSrc:k=>`img/${k}.webp`,cutsceneSource:k=>`img/${k}.webp`,
     actionCutsceneLabel:k=>k,fitCutsceneImage(){},vitalsOf:()=>({}),showHeals(){},powerSound(){},refresh(){},paint(){},
     startActionCue(){},startMoveFx(){},finishWave(){},sfx(){},camera:{cue(){}},
     document:{createElement:()=>({dataset:{},classList:{add(){}},prepend(image){this.image=image;},remove(){this.isConnected=false;}})},

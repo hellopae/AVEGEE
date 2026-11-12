@@ -7,7 +7,7 @@ import { planSquad, planCutscene, CREW_SCALE_TARGET } from '../src/battle-scale.
 
 const img = rel => fileURLToPath(new URL(`../img/${rel}`, import.meta.url));
 const FOLDERS = ['', 'Asia/', 'West/', 'CyberHell/'];
-const SPRITE = /^crew-(taan|plerng|dam|kan|boon|guard)(-(asia|west|cyberhell))?(-v2)?\.png$/;
+const SPRITE = /^crew-(taan|plerng|dam|kan|boon|guard)(-(asia|west|cyberhell))?(-v2)?\.webp$/;
 
 // วัดกรอบส่วนที่ไม่โปร่งใสของภาพจริงด้วย PIL (เกณฑ์ alpha > 40 เดียวกับ src/battle-scale.js)
 function boxesOf(files) {
@@ -68,7 +68,7 @@ test('ภาพผู้ใหญ่ที่กรอบตัวจริง�
 });
 
 // ---- ข้อ 8: คัตซีนยมทูต/ยักษ์ทวารบาลไม่ตกขอบ ทุกตัวทุกโซน ----
-const CUT = /^crew-(taan|plerng|dam|kan|boon|guard)(-(asia|west|cyberhell))?-cutscene(-(asia|west|cyberhell))?\.(png|jpeg)$/;
+const CUT = /^crew-(taan|plerng|dam|kan|boon|guard)(-(asia|west|cyberhell))?-cutscene(-(asia|west|cyberhell))?\.webp$/;
 const cutFiles = FOLDERS.flatMap(f => readdirSync(img(f || '.')).filter(n => CUT.test(n)).map(n => img(f + n)));
 
 test('คัตซีนยมทูต/ยักษ์ทวารบาลทุกใบทุกโซน: ส่วนที่มีภาพจริงอยู่ในฉากครบและเต็มอย่างน้อยหนึ่งแกน', () => {

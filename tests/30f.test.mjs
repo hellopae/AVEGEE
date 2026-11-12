@@ -70,11 +70,11 @@ test('30F: CyberHell translations move hits and worker/service points together a
 });
 
 test('30F: selected story image is 16:9; selected regional map sprites have alpha and are registered',()=>{
-  assert.equal(STORY.asia.pages[2].image,'img/story-asia-03.png');
-  assert.ok(manifest.rest.includes('story-asia-03.png'));
+  assert.equal(STORY.asia.pages[2].image,'img/story-asia-03.webp');
+  assert.ok(manifest.rest.includes('story-asia-03.webp'));
   const audit=JSON.parse(execFileSync('python3',['-c',
     'from PIL import Image;import json,sys; out=[]\nfor p in sys.argv[1:]:\n im=Image.open(p).convert("RGBA"); a=im.getchannel("A"); b=a.point(lambda v:255 if v>40 else 0).getbbox(); out.append(dict(size=im.size,alpha=a.getextrema(),box=[b[0]/im.width,b[1]/im.height,b[2]/im.width,b[3]/im.height]))\nprint(json.dumps(out))',
-    ...['img/story-asia-03.png','img/map-v5/st-tarang-cyberhell.webp','img/map-v5/st-krajok-cyberhell.webp'].map(p=>fileURLToPath(new URL('../'+p,import.meta.url)))],{encoding:'utf8'}));
+    ...['img/story-asia-03.webp','img/map-v5/st-tarang-cyberhell.webp','img/map-v5/st-krajok-cyberhell.webp'].map(p=>fileURLToPath(new URL('../'+p,import.meta.url)))],{encoding:'utf8'}));
   assert.equal(audit[0].size[0]*9,audit[0].size[1]*16);
   for(const [i,key] of ['tarang','krajok'].entries()) {
     const stem=`st-${key}-cyberhell`,path=`map-v5/${stem}.webp`,a=audit[i+1];
@@ -91,7 +91,7 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
   const g=createGame();g.zone='cyberhell';syncSceneZone(g.zone);art.bindZone(()=>g.zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);
-  assert.equal(walk.buildWalk({src:'img/scene-cyberhell-v2.png',naturalWidth:1678,naturalHeight:937}),false);
+  assert.equal(walk.buildWalk({src:'img/scene-cyberhell-v2.webp',naturalWidth:1678,naturalHeight:937}),false);
   g.syncBlocks(true);
   for(const d of STATIONS) {
     const foot=art.footOf(d);
@@ -114,7 +114,7 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
 
 test('30F review: new Rage image is full-bleed, so the old letterbox crop is gone from cutscene-presentation',async()=>{
   const { comicImageLayout } = await import('../src/cutscene-presentation.js');
-  const l = comicImageLayout('img/story-asia-03.png', 1664, 936);
+  const l = comicImageLayout('img/story-asia-03.webp', 1664, 936);
   assert.ok(Math.abs(l.aspect - 1664 / 936) < 1e-6 && l.top === 0 && Math.abs(l.height - 100) < 1e-6);
 });
 
@@ -123,7 +123,7 @@ test('themed sprites keep every zone station reachable with its terrain or town 
   const g=createGame();g.zone=zone;syncSceneZone(zone);art.bindZone(()=>zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
-  const src=zone==='west'?'img/scene-v2-opt.png':'img/'+g.zoneDef().scene+'.png';
+  const src=zone==='west'?'img/scene-v2-opt.webp':'img/'+g.zoneDef().scene+'.webp';
   assert.equal(walk.buildWalk({src,naturalWidth:1678,naturalHeight:937}), !isTownZone(zone), zone+': bitmap masks are regional; town streets are declarative');g.syncBlocks(true);
   for(const d of STATIONS){
    const path=walk.findPath(...ZONE_ENTRY.goal,d.x,d.y),end=path?.at(-1);

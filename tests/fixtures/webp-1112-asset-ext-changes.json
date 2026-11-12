@@ -1,0 +1,98 @@
+{
+ "data": [
+  {
+   "before": "  { k:'roar',   name:'ตวาดข่มขู่', glyph:'img/icon-fang.png', realtime:true, cdMs:120000, karma:0.5, lv:1,\n",
+   "after": "  { k:'roar',   name:'ตวาดข่มขู่', glyph:'img/icon-fang.webp', realtime:true, cdMs:120000, karma:0.5, lv:1,\n"
+  },
+  {
+   "before": "  // ภาพ item-food.png ใช้ต้นฉบับข้าวปั้นจาก img/raw/item-food.png\n",
+   "after": "  // ภาพ item-food.webp ใช้ต้นฉบับข้าวปั้นจาก img/raw/item-food.webp\n"
+  },
+  {
+   "before": "  // 28D: item-holywater.png เป็นไอคอนพื้นใสโทนฟ้า-ขาวสำหรับเติม MP\n",
+   "after": "  // 28D: item-holywater.webp เป็นไอคอนพื้นใสโทนฟ้า-ขาวสำหรับเติม MP\n"
+  },
+  {
+   "before": "  bg:'img/BG-frontier.jpeg', teamMax:2,\n",
+   "after": "  bg:'img/BG-frontier.webp', teamMax:2,\n"
+  },
+  {
+   "before": "  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.jpeg' },\n",
+   "after": "  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.webp' },\n"
+  },
+  {
+   "before": "  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.jpeg' },\n",
+   "after": "  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.webp' },\n"
+  },
+  {
+   "before": "  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.jpeg' },\n",
+   "after": "  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.webp' },\n"
+  },
+  {
+   "before": "  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.jpeg' },\n",
+   "after": "  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.webp' },\n"
+  },
+  {
+   "before": "// scene = ไฟล์ฉาก img/<scene>.png · ยังไม่มีไฟล์ = ถอยไปใช้ img/scene.png เกมไม่พัง\n",
+   "after": "// scene = ไฟล์ฉาก img/<scene>.png · ยังไม่มีไฟล์ = ถอยไปใช้ img/scene.webp เกมไม่พัง\n"
+  },
+  {
+   "before": "  // ไฟล์ใหม่ img/scene-v2-opt.png แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์\n",
+   "after": "  // ไฟล์ใหม่ img/scene-v2-opt.webp แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์\n"
+  }
+ ],
+ "game": [
+  {
+   "before": "      // spirit7.png (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว\n",
+   "after": "      // spirit7.webp (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว\n"
+  },
+  {
+   "before": "          'hero-boss':'img/hero-boss-cutscene.jpeg',\n",
+   "after": "          'hero-boss':'img/hero-boss-cutscene.webp',\n"
+  },
+  {
+   "before": "          'zone-boss':'img/zone-boss-cutscene.jpeg',\n",
+   "after": "          'zone-boss':'img/zone-boss-cutscene.webp',\n"
+  },
+  {
+   "before": "          'zone-boss-th':'img/zone-boss-cutscene.jpeg',\n",
+   "after": "          'zone-boss-th':'img/zone-boss-cutscene.webp',\n"
+  },
+  {
+   "before": "          'leader-th-possessed':'img/leader-th-attack-cutscene.png',\n",
+   "after": "          'leader-th-possessed':'img/leader-th-attack-cutscene.webp',\n"
+  },
+  {
+   "before": "          'leader-asia-possessed':'img/leader-asia-attack-cutscene.png',\n",
+   "after": "          'leader-asia-possessed':'img/leader-asia-attack-cutscene.webp',\n"
+  },
+  {
+   "before": "          'leader-west-possessed':'img/leader-west-attack-cutscene.png',\n",
+   "after": "          'leader-west-possessed':'img/leader-west-attack-cutscene.webp',\n"
+  },
+  {
+   "before": "          'leader-cyberhell-possessed':'img/leader-cyberhell-attack-cutscene.png',\n",
+   "after": "          'leader-cyberhell-possessed':'img/leader-cyberhell-attack-cutscene.webp',\n"
+  },
+  {
+   "before": "          'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.jpeg',\n",
+   "after": "          'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.webp',\n"
+  },
+  {
+   "before": "          'zone-boss-west':'img/West/Boss Zone3-cutscene.jpeg',\n",
+   "after": "          'zone-boss-west':'img/West/Boss Zone3-cutscene.webp',\n"
+  },
+  {
+   "before": "          'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.jpeg',\n",
+   "after": "          'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.webp',\n"
+  },
+  {
+   "before": "          || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);\n",
+   "after": "          || (z === 'th' ? `img/${who}-th-cutscene.webp` : `img/${folder}${who}-${z}-cutscene-${z}.webp`);\n"
+  },
+  {
+   "before": "  // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.png 1527×704 →\n",
+   "after": "  // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.webp 1527×704 →\n"
+  }
+ ]
+}

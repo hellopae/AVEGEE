@@ -9,7 +9,7 @@
 // and the same three sheets are used for every station.  `foot` = the pixel of a frame that stands on the station's foot point (def.bx, def.by);
 // the frame is drawn `def.bw * widthK` world units wide.  Frames of a stage loop with a linear cross-fade; around the 33 % and 66 % marks the two
 // neighbouring stages cross-fade over XFADE of the progress.  Anything missing or broken (no json, a sheet that does not load) = this module reports
-// "not drawn" and scene.js keeps drawing the old still picture img/st-building.png with its bar and label, exactly as before.
+// "not drawn" and scene.js keeps drawing the old still picture img/st-building.webp with its bar and label, exactly as before.
 import { activeTownZone } from './zone-skin.js';
 
 export const CONSTRUCTION_DIR = 'img/construction/';

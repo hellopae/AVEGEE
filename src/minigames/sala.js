@@ -4,8 +4,8 @@ import { t } from '../i18n.js';
 // Tight SVG viewports select the painted atlas without modifying its pixels.
 const BOOK_X = [87, 614, 1142, 1671];
 function bookArt(color) {
- if(color === 'rainbow')return '<img src="img/minigames/sala-book-rainbow-h4-v1.png" alt="" draggable="false">';
- return `<svg viewBox="${BOOK_X[color]} 93 412 520" aria-hidden="true" focusable="false"><image href="img/minigames/sala-books-v2.png" width="2172" height="724"/></svg>`;
+ if(color === 'rainbow')return '<img src="img/minigames/sala-book-rainbow-h4-v1.webp" alt="" draggable="false">';
+ return `<svg viewBox="${BOOK_X[color]} 93 412 520" aria-hidden="true" focusable="false"><image href="img/minigames/sala-books-v2.webp" width="2172" height="724"/></svg>`;
 }
 
 export default {

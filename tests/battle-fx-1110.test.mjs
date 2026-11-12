@@ -162,9 +162,9 @@ test('cache-busting: the changed modules moved to a new release string', () => {
   const html = read('index.html');
   // QUEST-REWARDS (10 Nov, later the same day) moved game / ui / battle-fx-map on to 20261110-questrewards (see tests/quest-rewards.test.mjs); the rest stay on this release
   for (const m of ['data', 'sfx', 'frontier', 'battle-fx', 'encounter-balance', 'party-balance'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx"`), m);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx(-w1112)?"`), m);
   for (const m of ['game', 'ui', 'battle-fx-map'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards"/);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?"/);
   assert.match(read('src/ui.js'), /battle-camera\.js\?v=20261110-battlefx/);
 });

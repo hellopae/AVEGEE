@@ -72,12 +72,12 @@ const png=(path)=>JSON.parse(execFileSync('python3',['-c',`
 from PIL import Image;import numpy as np,json,sys
 im=Image.open(sys.argv[1]).convert('RGBA');w,h=im.size;k=min(1,256/max(w,h));im=im.resize((max(1,round(w*k)),max(1,round(h*k))),Image.BILINEAR)
 a=np.array(im)[...,3];print(json.dumps({'frac':float((a>200).mean()),'aspect':h/w}))`,fileURLToPath(new URL('../'+path,import.meta.url))],{encoding:'utf8'}));
-const STAND={th:'img/hero-yama.png',asia:'img/Asia/hero-yama-asia.png',west:'img/West/hero-yama-west.png',cyberhell:'img/CyberHell/hero-yama-cyberhell.png'};
+const STAND={th:'img/hero-yama.webp',asia:'img/Asia/hero-yama-asia.webp',west:'img/West/hero-yama-west.webp',cyberhell:'img/CyberHell/hero-yama-cyberhell.webp'};
 const HERO_H=.15;
 test('I1-A lying sprite is scaled so its silhouette area equals the standing one, measured from real pixels, all four outfits',()=>{
  const report=[];
  for(const z of ['th','asia','west','cyberhell']){
-  const s=png(STAND[z]),l=png(`img/hero-yama-${z}-unconscious.png`),w=sleepSpriteWidth(s.frac,l.frac,l.aspect,HERO_H);
+  const s=png(STAND[z]),l=png(`img/hero-yama-${z}-unconscious.webp`),w=sleepSpriteWidth(s.frac,l.frac,l.aspect,HERO_H);
   const standArea=s.frac*HERO_H*HERO_H,lieBefore=l.frac*.24*.24*l.aspect,lieAfter=l.frac*w*w*l.aspect;
   report.push(`${z}: width ${.24} -> ${w.toFixed(4)} (x${(w/.24).toFixed(3)}), linear size lying/standing ${Math.sqrt(lieBefore/standArea).toFixed(2)} -> ${Math.sqrt(lieAfter/standArea).toFixed(2)}`);
   assert.ok(Math.sqrt(lieBefore/standArea)>1.15,z+': the old fixed 0.24U width really was >15% bigger than the standing body');
@@ -111,7 +111,7 @@ test('I1-A after waking, Yama stands at the wake point and can walk immediately'
  for(const z of ['th','asia','west','cyberhell']){
   const cfg=teaRoom(z),g={zone:z,items:[],sentences:[],roster:{},hp:30,hpMax:100,mp:50,mpMax:100,teaBeds:{[z]:true},save(){},onChange(){}};
   cfg.me=[...cfg.wake];
-  const room=makeRoom(canvas,g,tea,cfg,cfg.image||'img/x.png',null);
+  const room=makeRoom(canvas,g,tea,cfg,cfg.image||'img/x.webp',null);
   room.start();await new Promise(r=>setImmediate(r));room.tick(0);
   assert.equal(room.setSleep(),true,z+': can sleep from the wake point');
   for(let i=0;i<70;i++)room.tick(100);

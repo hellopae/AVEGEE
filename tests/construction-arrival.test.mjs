@@ -54,7 +54,7 @@ function setup(zone = 'th') {
   // Satisfy story gates so this fixture exercises construction, not progression.
   g.zoneEventStatus = () => 'cleared';
   assert.equal(g.hire('dam'), true);
-  const image = src => ({ src:`img/${src}.png`, naturalWidth:1678, naturalHeight:937 });
+  const image = src => ({ src:`img/${src}.webp`, naturalWidth:1678, naturalHeight:937 });
   const bg = image(ZONES.find(z => z.k === zone).scene);
   assert.equal(buildWalk(bg, zone === 'west' ? image('scene-v2-opt') : bg), !isTownZone(zone));
   assert.equal(canWalk(SPOTS.bench.x, SPOTS.bench.y), true, 'town streets or scene mask provide navigation');
@@ -203,7 +203,7 @@ test('two builds approach concurrently and retain each owner and build-work rend
     createLinearGradient() { return { addColorStop() {} }; },
   }, { get(target, key) { return key in target ? target[key] : () => {}; } });
   render(ctx, g, 0, null, null);
-  for (const owner of ['taan','dam']) assert.ok(drawn.includes(`img/crew-${owner}-build-work.png`), owner);
+  for (const owner of ['taan','dam']) assert.ok(drawn.includes(`img/crew-${owner}-build-work.webp`), owner);
 });
 
 test('Thai city quarry is reachable from the civic square before bounded recovery', () => {

@@ -455,7 +455,7 @@ export const INTENSITY_NAME = ['', 'ว่ากล่าว', 'เบา', 'ป
 //   hypno  สารภาพครบ 100% + เฉลยที่ไหน — L3 (15 ต.ค. 2569): ได้จากการชนะบอสชายแดนโซน 3 (แวมไพร์) ครั้งแรกเท่านั้น
 //          ไม่ผูกกับเลเวล/ไม่ขาย (game.js powerLocked ดู abilities.hypno)
 export const POWERS = [
-  { k:'roar',   name:'ตวาดข่มขู่', glyph:'img/icon-fang.png', realtime:true, cdMs:120000, karma:0.5, lv:1,
+  { k:'roar',   name:'ตวาดข่มขู่', glyph:'img/icon-fang.webp', realtime:true, cdMs:120000, karma:0.5, lv:1,
     howTo:'ในห้องสอบสวน กดตวาดข่มขู่ แล้วกดสอบสวนข้อที่มี 💢', desc:'ชี้ข้อในสำนวนที่นำไปสู่บาปหลัก ถ้าไม่มีจะบอกตรง ๆ · คูลดาวน์ 2 นาที' },
   { k:'mirror', name:'กระจกวิเศษ', glyph:'🪞', cd:3, karma:0, lv:2,
     howTo:'ในห้องสอบสวน กดกระจกวิเศษเพื่อดูคำเฉลยบนวงคำสั่ง', desc:'เฉลยที่ไหน ความแรง และยมทูตที่เหมาะบนวงคำสั่ง พร้อมชี้ข้อที่นำไปสู่บาปหลัก' },
@@ -608,7 +608,7 @@ export const ITEMS = {
   fire:   { name:'ลูกไฟ',          img:'fx-fireball', h:42, fireAmmo:1, glyph:'🔥',
             desc:'เตรียมลูกไฟสำหรับโจมตีศัตรูในฉากต่อสู้', howTo:'เก็บหรือซื้อแล้วเติมพลังเวททันที กดลูกไฟในฉากต่อสู้', fallback:'ของ', say:'ได้ลูกไฟมาอีกลูก' },
   // ข้อ A/B คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เปลี่ยนจากฟืน (item-fuel) เป็นเสบียงที่ยมทูตกินเอง
-  // ภาพ item-food.png ใช้ต้นฉบับข้าวปั้นจาก img/raw/item-food.png
+  // ภาพ item-food.webp ใช้ต้นฉบับข้าวปั้นจาก img/raw/item-food.webp
   food:   { name:'ห่อเสบียง',      img:'item-food',   h:44, food:12, glyph:'🍙',
             desc:'เพิ่มเสบียงและกำลังใจให้ทีมผ่านนิรา', howTo:'คุยกับนิราบนแผนที่ เลือกแจกเสบียงให้ทีม', fallback:'ของ', say:'ยมทูตอิ่มขึ้นอีกหน่อย ทำงานไวขึ้นได้อีกพัก' },
   // ของที่ศาลาน้ำชาวางไว้ให้ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569) — แทนปุ่ม "พักฟื้นบารมี" ที่ถูกถอดออก
@@ -617,7 +617,7 @@ export const ITEMS = {
             desc:'ฟื้นบารมีและพลังเวทของยมบาทน้อย', howTo:'เปิดกระเป๋า กดใช้เพื่อฟื้นบารมีและพลังเวทหรือเลือกไอเท็มในฉากต่อสู้', fallback:'ของ', say:'ท่านนั่งลงจิบน้ำชาหนึ่งถ้วย บารมีฟื้นขึ้นมา' },
   // ชุด 28B คุณเป้ 2 ต.ค. 2569 — น้ำมนต์ขายที่พ่อค้านรก เติม MP อย่างเดียว (น้ำชามี MP ติดมาแค่ 12 พร้อมบารมี)
   // 30 MP = ลูกไฟ ~3.7 ลูก · ราคา 45 (หีบยา 40 บารมี = 55) · ใช้ได้จากกระเป๋าบนแผนที่ และที่จุดพักศึกสุดท้าย/เตรียมศึกบอส
-  // 28D: item-holywater.png เป็นไอคอนพื้นใสโทนฟ้า-ขาวสำหรับเติม MP
+  // 28D: item-holywater.webp เป็นไอคอนพื้นใสโทนฟ้า-ขาวสำหรับเติม MP
   // glyph ว่างโดยตั้งใจ: ห้ามใช้อีโมจิแทนภาพ
   holyWater: { name:'น้ำมนต์', nameKey:'item.holyWater', img:'item-holywater', h:44, mp:30, glyph:'', placeholder:'พลังเวท',
             desc:'เติมพลังเวทของยมบาทน้อย', howTo:'เปิดกระเป๋า กดใช้เพื่อเติมพลังเวทหรือใช้ที่จุดเตรียมศึก', fallback:'พลังเวท', say:'น้ำมนต์เย็นฉ่ำไหลลงคอ — พลังเวทฟื้นขึ้นมา' },
@@ -738,7 +738,7 @@ export const isTrialDestination = def => !!def && def.pow > 0 && (!!def.heaven |
 export const FRONTIER = {
   k:'frontier', name:'ด่านชายแดนนรก', glyph:'🏯', img:'st-frontier',
   bx:835, by:840, bw:118.4, mapScale:0.8, blockScale:0.8, x:835, y:840, hit:[775.8,721.6,894.2,840], reach:84,
-  bg:'img/BG-frontier.jpeg', teamMax:2,
+  bg:'img/BG-frontier.webp', teamMax:2,
   drops:['bladeShard','emberWood','ashStone'],
 };
 
@@ -1994,10 +1994,10 @@ ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
 
 // TODO: รอ Rae ตั้งชื่อจริง
 export const BOSS_ULTIMATE = {
-  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.jpeg' },
-  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.jpeg' },
-  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.jpeg' },
-  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.jpeg' },
+  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.webp' },
+  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.webp' },
+  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.webp' },
+  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.webp' },
 };
 // BATTLE-FX (10 พ.ย. 2569, คุณเป้: "บอสใช้ท่า cutscene ให้บ่อยขึ้น") — จังหวะใหม่นับจาก "ครั้งที่บอสโจมตีจริง" ของบอสตัวนั้น (foe.attacks)
 // เดิม: ใช้ได้เมื่อ HP บอส < 50% และห่างจากครั้งก่อน ≥ 4 ตาของทั้งสนาม (B.turn) → หลายศึกเห็นแค่ 0–1 ครั้ง
@@ -2029,14 +2029,14 @@ export const YAMA_FIGHT = {
 // ---------- Phase 3 · ด่าน / โซน ----------
 // เจ้าของวางไว้สามด่าน: ไทย → เอเชีย → ยุโรป-อเมริกา
 // ย้ายโซนแล้ว "ของและคนติดตัวไป แต่สถานีต้องสร้างใหม่" — ไม่งั้นด่าน 2 จะไม่มีอะไรให้ทำเลย
-// scene = ไฟล์ฉาก img/<scene>.png · ยังไม่มีไฟล์ = ถอยไปใช้ img/scene.png เกมไม่พัง
+// scene = ไฟล์ฉาก img/<scene>.png · ยังไม่มีไฟล์ = ถอยไปใช้ img/scene.webp เกมไม่พัง
 // bossArrive = ฉากมาถึง 3-4 บรรทัดก่อนสู้บอสครั้งแรก (สลับผู้พูด) · bossWin = บทตอนบอสยอมรับ (ยมบาทน้อยชนะ)
 // bossLose = บทตอนยมบาทน้อยแพ้ (ท้าใหม่ได้) · ทั้งหมดผ่าน Reese fact-check แล้ว (17 ก.ย. 2569)
 // ดู Output/Rae/2026-09-17-avegee-boss-inspectors.md — ห้ามแก้ถ้อยคำ ล้นจอแจ้ง Claudy แทน
 export const ZONES = [
   // scene:'scene-v2-opt' — ชุด 15b ตรวจโดย Dale (28 ก.ย. 2569): img/scene-v2.png ต้นฉบับ (1.9MB)
   // ยังไม่ผ่าน quantize ของ scripts/prep-art.py (ต้องผ่าน img/raw/ ซึ่งใบงานนี้ห้ามแตะ) เลยทำ
-  // ไฟล์ใหม่ img/scene-v2-opt.png แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์
+  // ไฟล์ใหม่ img/scene-v2-opt.webp แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์
   // ขึ้นต้น scene- ทุกไฟล์ — ไม่ resize เพราะกว้าง 1678 < SCENE_W 2000 อยู่แล้ว, 1.9MB → 853KB)
   // แล้วชี้โค้ดมาไฟล์นี้แทน — img/scene-v2.png ต้นฉบับยังอยู่ครบ ไม่ถูกทับ/ลบ (กู้คืนได้จาก 6d7f47e)
   { k:'th', scene:'scene-v2-opt', w:TOWN_SIZE.w, h:TOWN_SIZE.h, level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',

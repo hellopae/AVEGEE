@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { crewWalkSheet } from '../src/crew-walk-assets.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 // Exercise rendering without fetching images or loading a browser canvas.
 globalThis.fetch = async () => ({ ok:false });
@@ -20,8 +21,8 @@ test('all 28 native PNG sheets exist and every crop stays inside its image', () 
   for (const z of ['th','asia','west','cyberhell']) for (const key of crews) {
     const sheet = crewWalkSheet(key, z);
     const png = fs.readFileSync(new URL('../' + sheet.src, import.meta.url));
-    assert.equal(png.subarray(1,4).toString(), 'PNG');
-    const w = png.readUInt32BE(16), h = png.readUInt32BE(20);
+    const { width: w, height: h, hasAlpha } = imageMeta(png);
+    assert.ok(hasAlpha, 'sheet keeps transparency');
     assert.equal(sheet.frames.length, 4);
     assert.ok(manifest.crewWalks[z].includes(sheet.src.slice(4)));
     for (const box of sheet.frames) {
@@ -43,7 +44,7 @@ test('all seven crew walk assets resolve the current zone before manifest loads'
     const sheet = crewWalkSheet(`crew-${key}`, zone);
     assert.equal(artUrl(`crew-${key}-walk`), sheet.src);
     assert.equal(typeof sheet.rightFacing, 'boolean');
-    assert.match(sheet.src, /-walk-v2\.png$/);
+    assert.match(sheet.src, /-walk-v2\.webp$/);
     if (zone !== 'th') assert.ok(sheet.src.includes(`-${zone}-walk-v2`));
   }
 });

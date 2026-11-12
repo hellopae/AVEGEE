@@ -4,9 +4,9 @@ import { t } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
-const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
+const panel = (id, title, line) => ({ image:`img/story-${id}.webp`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
-  image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
+  image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.webp`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
 }] });
 // G3b — คัตซีนรับอาวุธประจำโซน: ภาพ 16:9 วาดโดย Kittanate/Codex ที่ img/weapons/weapon-cutscene-<id>.jpeg
 // แยกจาก STORY ตั้งใจ: ภาพยังไม่มีไฟล์ได้ (renderStoryComic ใส่ภาพแทนให้เอง ไม่ error) · เทสต์ "ทุกหน้าเรื่องมีไฟล์จริง" จึงไม่ตีธงรายการนี้
@@ -17,7 +17,7 @@ const weaponStory = id => ({ get title() { return t('weapon.cutscene.title'); },
 }] });
 export const WEAPON_STORY = Object.fromEntries(Object.keys(WEAPONS).map(id => [`weapon-${id}`, weaponStory(id)]));
 export const STORY = {
-  'c1-guard-arrival': { title:'ยักษ์ทวารบาลเข้าร่วมทีม', pages:[{ image:'img/crew-guard-cutscene.jpeg', title:'ทีม 4 คน', line:'ยักษ์ทวารบาลเข้าช่วยทีมแล้ว ปลดล็อกบัญชาการยมทูตประสานพิพากษา' }] },
+  'c1-guard-arrival': { title:'ยักษ์ทวารบาลเข้าร่วมทีม', pages:[{ image:'img/crew-guard-cutscene.webp', title:'ทีม 4 คน', line:'ยักษ์ทวารบาลเข้าช่วยทีมแล้ว ปลดล็อกบัญชาการยมทูตประสานพิพากษา' }] },
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
   'deva-west':devaPanel('west', 'deva.west.arrival'),
@@ -65,22 +65,22 @@ export const STORY = {
   ]},
   ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', pages:[
     { ...panel('ending-02-v3','ผู้ปกครองทั้งสี่โซน','ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข โดยมีนิรา พ่อ และหัวหน้าโซน 2–4 ร่วมดูแลอยู่เคียงข้าง'), video:'img/story-ending-02-v1.mp4', videoAspect:1280/544 },
-    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.png' },
+    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.webp' },
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.png',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
+export const storyOf = key => STORY[key] || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
 export const ABILITY_REWARDS = {
   teamJudgment:{ name:'บัญชาการยมทูตประสานพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
-  bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะบอสชายแดนโซน 2' },
-  flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
-  rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้พลังเวท', name:'พลังบ้าคลั่ง', image:'img/fx-rage.png', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },
-  ice:{ howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้พลังเวท', name:'ผนึกน้ำแข็ง', image:'img/fx-ice.png', text:`โจมตีศัตรูทุกคน คนละ 30 หน่วยและหยุด 1 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.ice}` },
+  bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.webp', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะบอสชายแดนโซน 2' },
+  flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.webp', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
+  rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้พลังเวท', name:'พลังบ้าคลั่ง', image:'img/fx-rage.webp', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },
+  ice:{ howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้พลังเวท', name:'ผนึกน้ำแข็ง', image:'img/fx-ice.webp', text:`โจมตีศัตรูทุกคน คนละ 30 หน่วยและหยุด 1 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.ice}` },
 };
 
 Object.assign(ABILITY_REWARDS, {
- windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.png', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้พลังเวท'},
- hypno:{name:'สะกดจิต', image:'img/fx-hypno.png', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้พลังเวท'},
- valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'กวาดแทงศัตรูทุกคนด้วยหอก ความเสียหายต่อคนเท่าเดิม', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
- cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม ยกเว้นประสานพิพากษา', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
+ windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.webp', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้พลังเวท'},
+ hypno:{name:'สะกดจิต', image:'img/fx-hypno.webp', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้พลังเวท'},
+ valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.webp', text:'กวาดแทงศัตรูทุกคนด้วยหอก ความเสียหายต่อคนเท่าเดิม', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
+ cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.webp', text:'คืนคูลดาวน์ให้ทีม ยกเว้นประสานพิพากษา', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
 });

@@ -118,9 +118,9 @@ test('art slots exist for every zone and kind (P9: all four zones have their own
   for(const z of Object.keys(ZONES)){
     for(const k of ['praise','blame']){const p=verdictSceneImage(z,k);assert.ok(p,`${z}/${k}`);assert.ok(existsSync(new URL('../'+p,import.meta.url)),p+' exists on disk');}
   }
-  assert.equal(VERDICT_ART.th.praise,'img/head-th-praise-cutscene-v1.png');
+  assert.equal(VERDICT_ART.th.praise,'img/head-th-praise-cutscene-v1.webp');
   const m=JSON.stringify(JSON.parse(read('img/manifest.json')));
-  assert.ok(m.includes('head-th-praise-cutscene-v1.png')&&m.includes('head-th-scold-cutscene-v1.png'));
+  assert.ok(m.includes('head-th-praise-cutscene-v1.webp')&&m.includes('head-th-scold-cutscene-v1.webp'));
 });
 
 test('star badge is anchored: the .score badge scales around its own anchor and quiet verdicts skip it',()=>{

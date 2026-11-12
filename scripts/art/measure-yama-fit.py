@@ -35,12 +35,12 @@ for z,folder in [('th',''),('asia','Asia/'),('west','West/'),('cyberhell','Cyber
   rows.append({'height':foot-top,'footX':idleFeet[row]['x'],'footY':foot,'walkFootX':walkFeet[row]['x'],'walkFootY':walkFeet[row]['y']})
  sword=boxes(f'img/yama-animation-v1/{z}/sword-idle.webp',640,640,6,1)[0]
  top=min(b[1] for b in sword);foot=max(b[3] for b in sword)
- path='img/hero-yama.png' if z=='th' else f'img/{folder}hero-yama-{z}.png'
+ path='img/hero-yama.webp' if z=='th' else f'img/{folder}hero-yama-{z}.webp'
  stand=boxes(path,512,512,1,1)[0][0]
- path='img/hero-yama-walk.png' if z=='th' else f'img/{folder}hero-yama-{z}-walk.png'
+ path='img/hero-yama-walk.webp' if z=='th' else f'img/{folder}hero-yama-{z}-walk.webp'
  im=Image.open(ROOT/path);fw=im.width//4;fh=im.height
  legacy=boxes(path,fw,fh,4,1)[0];lt=min(b[1] for b in legacy);lf=max(b[3] for b in legacy)
- fits[z]={'book':rows,'sword':{'height':foot-top,'footX':soles(f'img/yama-animation-v1/{z}/sword-idle.webp',640,640,6,1)[0]['x'],'footY':foot},'standing':{'height':stand[3]-stand[1],'footX':soles('img/hero-yama.png' if z=='th' else f'img/{folder}hero-yama-{z}.png',512,512,1,1)[0]['x'],'footY':stand[3]},'legacyWalk':{'height':lf-lt,'footX':soles(path,fw,fh,4,1)[0]['x'],'footY':lf}}
+ fits[z]={'book':rows,'sword':{'height':foot-top,'footX':soles(f'img/yama-animation-v1/{z}/sword-idle.webp',640,640,6,1)[0]['x'],'footY':foot},'standing':{'height':stand[3]-stand[1],'footX':soles('img/hero-yama.webp' if z=='th' else f'img/{folder}hero-yama-{z}.webp',512,512,1,1)[0]['x'],'footY':stand[3]},'legacyWalk':{'height':lf-lt,'footX':soles(path,fw,fh,4,1)[0]['x'],'footY':lf}}
 text='// Generated from shipped alpha >=64 by scripts/art/measure-yama-fit.py; no artwork edits.\nconst FITS = '+json.dumps(fits,ensure_ascii=False,indent=2)+';\nexport const yamaFit = style => FITS[style] || FITS.th;\n'
 target=ROOT/'src/yama-fit.js'
 if a.write:target.write_text(text)

@@ -61,7 +61,7 @@ print(len(rows))
 
 test('A7 production standing fallback aligns every outfit silhouette to requested height and foot',()=>{
  const src=readFileSync(new URL('../src/art.js',import.meta.url),'utf8');const begin=src.indexOf('export function drawStandee('),end=src.indexOf('/** Eight drawn walk poses',begin),body=src.slice(begin,end).replace('export function','function');
- const paths={th:'img/hero-yama.png',asia:'img/Asia/hero-yama-asia.png',west:'img/West/hero-yama-west.png',cyberhell:'img/CyberHell/hero-yama-cyberhell.png'},rows=[];
+ const paths={th:'img/hero-yama.webp',asia:'img/Asia/hero-yama-asia.webp',west:'img/West/hero-yama-west.webp',cyberhell:'img/CyberHell/hero-yama-cyberhell.webp'},rows=[];
  for(const z of zones){let drawn;const im={naturalWidth:512,naturalHeight:512};const c=vm.createContext({standeeFit:()=>1,zoneOf:()=>z,heroStyleOf:()=>z,yamaFit,img:()=>im,drawContactShadow(){},ctx:{save(){},restore(){},translate(){},scale(){},drawImage:(im,...args)=>drawn=args}});vm.runInContext(body,c);c.drawStandee(c.ctx,'hero-yama',0,300,96,0);rows.push({path:paths[z],args:drawn});}
  const output=execFileSync('python3',['-c',`
 import json,sys

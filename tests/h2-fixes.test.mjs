@@ -50,11 +50,11 @@ test('H2-6: Yama moves left in portrait and the portrait wheel rules stay', () =
 
 // ข้อ 7 — ท่ายืนหลังฟาดหันขวา ตรงกับแผ่นดาบ
 test('H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces right after the slash; west stays native', () => {
-  assert.equal(teamNeedsMirror('img/Asia/hero-yama-asia.png'), true);
-  assert.equal(teamNeedsMirror('img/CyberHell/hero-yama-cyberhell.png'), true);
-  assert.equal(teamNeedsMirror('img/hero-yama.png'), true);
-  assert.equal(teamNeedsMirror('img/West/hero-yama-west.png'), false);
-  assert.equal(teamNeedsMirror('img/West/hero-yama-west-atk-R.png'), false);
+  assert.equal(teamNeedsMirror('img/Asia/hero-yama-asia.webp'), true);
+  assert.equal(teamNeedsMirror('img/CyberHell/hero-yama-cyberhell.webp'), true);
+  assert.equal(teamNeedsMirror('img/hero-yama.webp'), true);
+  assert.equal(teamNeedsMirror('img/West/hero-yama-west.webp'), false);
+  assert.equal(teamNeedsMirror('img/West/hero-yama-west-atk-R.webp'), false);
 });
 
 // ข้อ 2 — ซูมแผนที่ + กล้องตามนุ่ม
@@ -88,7 +88,7 @@ test('H2-3: standing up from the cushion puts Yama back inside the walkable floo
       for (const how of ['manual', 'mpFull']) {
         const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zone = zone; g.mp = 0;
         const room = teaRoom(zone); room.me = [room.act[0] + .03, room.act[1] + .02];
-        const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, `img/tea-${zone}-recovery.png`, null);
+        const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, `img/tea-${zone}-recovery.webp`, null);
         assert.equal(R.setSit(true), true, `${zone}: sits`);
         assert.deepEqual(R.pos().slice(0, 2), room.act);
         if (how === 'manual') R.setSit(false); else { g.mp = g.mpMax; R.tick(50); }

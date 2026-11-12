@@ -20,14 +20,14 @@ test('H1: three tiers partition the full zone bundle exactly (nothing dropped, n
 
 test('H1: critical tier holds the first-screen art and is far smaller than the whole zone', () => {
   const t = zoneTiers(catalog, 'th', 'th');
-  for (const p of ['img/scene-v2-opt.png', 'img/cover-v4.webp', 'img/hero-yama-walk-4dir-v2.png', mapReviewArt('st-sala','th'), themeBackground('th','map'),
-    'img/crew-nira-walk-v2.png', 'img/ui/logo-th.png', 'img/spirit1.png', 'img/Thai/spirit-worker-th-v2.png', 'img/icon-fang.png'])
+  for (const p of ['img/scene-v2-opt.webp', 'img/cover-v4.webp', 'img/hero-yama-walk-4dir-v2.webp', mapReviewArt('st-sala','th'), themeBackground('th','map'),
+    'img/crew-nira-walk-v2.webp', 'img/ui/logo-th.webp', 'img/spirit1.webp', 'img/Thai/spirit-worker-th-v2.webp', 'img/icon-fang.webp'])
     assert(t.critical.includes(p), p);
   assert(mb(t.critical) < mb(zoneAssets(catalog, 'th')) * 0.5, 'critical must be < 50% of the old gate');
   // Big event-only art is deferred, never silently deleted
-  for (const p of ['img/hero-yama-th-mirror-cutscene-v3.png', 'img/story-ending-03-v1.png', 'img/tea-th-recovery.png'])
+  for (const p of ['img/hero-yama-th-mirror-cutscene-v3.webp', 'img/story-ending-03-v1.webp', 'img/tea-th-recovery.webp'])
     assert(t.late.includes(p), p);
-  for (const p of ['img/rooms-wide/th-sala.webp', 'img/BG-Sala.webp', 'img/ui/Button1.png', 'img/fx-heal.png'])
+  for (const p of ['img/rooms-wide/th-sala.webp', 'img/BG-Sala.webp', 'img/ui/Button1.webp', 'img/fx-heal.webp'])
     assert(t.background.includes(p), p);
 });
 
@@ -35,8 +35,8 @@ test('H1: intro panels gate only the first run; panel 1 is always ready; zone ar
   assert.equal(assetTier('img/intro-panel-03-v2.webp', { firstRun:true }).tier, 0);
   assert.equal(assetTier('img/intro-panel-03-v2.webp').tier, 1);
   assert.equal(assetTier('img/intro-panel-01-v2.webp').tier, 0);
-  assert.equal(assetTier('img/Asia/intro-head-asia-v2.png', { arrival:true }).tier, 0);
-  assert.notEqual(assetTier('img/Asia/intro-head-asia-v2.png').tier, 0);
+  assert.equal(assetTier('img/Asia/intro-head-asia-v2.webp', { arrival:true }).tier, 0);
+  assert.notEqual(assetTier('img/Asia/intro-head-asia-v2.webp').tier, 0);
   const asia = zoneTiers(catalog, 'asia', 'asia', { arrival:true });
   assert(!asia.critical.some(p => /-th\.webp$/.test(p) && /map-v5|theme-v4/.test(p)), 'other zones do not gate on Thai map art');
 });

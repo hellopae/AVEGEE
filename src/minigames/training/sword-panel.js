@@ -31,7 +31,7 @@ export function mount(host,engine,ctx) {
   const controls=document.createElement('div');controls.className='sword-keys';
   const status=document.createElement('div');status.className='sword-feedback';status.setAttribute('role','status');
   host.append(hud,board,controls,status);
-  const c=canvas.getContext('2d'),log=new Image();log.src='img/minigames/sword-log-v1.png';
+  const c=canvas.getContext('2d'),log=new Image();log.src='img/minigames/sword-log-v1.webp';
   let point=null,pointer=null,arcs=[],slashAt=-10,beat=-1,lastMessage='',held=new Set();
   const swing=()=>{if(ctx.frozen())return;slashAt=engine.view().time;ctx.onSword?.();sfx('hit');};
   function note(lane){if(ctx.frozen())return;ctx.input({type:'note',lane});swing();}

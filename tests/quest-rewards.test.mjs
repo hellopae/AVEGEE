@@ -288,7 +288,7 @@ test('UI: the battle menu lists quest moves next to the trained one and wide mov
 test('cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const m of ['game', 'ui', 'battle-fx-map', 'battle-turns', 'battle-result', 'combat-skills', 'combat-skill-assets', 'side-quests', 'quest-panels', 'e1-content', 'i18n'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards"/);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?"/);
   assert.ok(!/src\/(game|ui)\.js\?v=20261110-battlefx/.test(html), 'no stale game/ui release left');
 });

@@ -37,7 +37,7 @@ test('J1 Rage targets only Yama, does no enemy damage, consumes three boosted st
  assert.doesNotMatch(read('index.html'),/rageAura|you\.raging::before/);
 });
 test('J1 rage assets expect J2 filenames and retain real charge pose fallback',()=>{
- const expected=['img/hero-yama-rage.png','img/Asia/hero-yama-asia-rage.png','img/West/hero-yama-west-rage.png','img/CyberHell/hero-yama-cyberhell-rage.png'];
+ const expected=['img/hero-yama-rage.webp','img/Asia/hero-yama-asia-rage.webp','img/West/hero-yama-west-rage.webp','img/CyberHell/hero-yama-cyberhell-rage.webp'];
  ['th','asia','west','cyberhell'].forEach((z,i)=>{assert.equal(rageArtSrc(z),expected[i]);assert.ok(existsSync(new URL('../'+ragePoseSrc(z),import.meta.url)));});
  assert.match(read('src/ui.js'),/onerror="this.onerror=null;this.src='\$\{showRage \? \(ragePoseSrc/);
 });
@@ -46,7 +46,7 @@ test('J1 direction audit: every standing team sprite renders right using indepen
  const right={th:['guard'],asia:[],west:['taan','plerng','kan','boon','dam','guard'],cyberhell:[]};
  const dirs={th:['',''],asia:['Asia/','-asia'],west:['West/','-west'],cyberhell:['CyberHell/','-cyberhell']};
  for(const [z,[dir,suffix]] of Object.entries(dirs))for(const k of ['taan','plerng','kan','boon','dam','guard']){
-  let src=`img/${dir}crew-${k}${suffix}.png`;if(!existsSync(new URL('../'+src,import.meta.url)))src=src.replace('.png','-v2.png');
+  let src=`img/${dir}crew-${k}${suffix}.webp`;if(!existsSync(new URL('../'+src,import.meta.url)))src=src.replace('.webp','-v2.webp');
   assert.ok(existsSync(new URL('../'+src,import.meta.url)),src);
   const drawnRight=right[z].includes(k);assert.equal(drawnRight !== teamNeedsMirror(src),true,src);
  }

@@ -15,7 +15,7 @@ import { TOWN_STAIRS,TOWN_HOUSES,TOWN_SPOTS,TOWN_MERCHANT } from '../src/town-la
 globalThis.Image = class {};
 
 const image = name => ({ naturalWidth:1678, naturalHeight:937,
-  path:fileURLToPath(new URL(`../img/${name}.png`, import.meta.url)) });
+  path:fileURLToPath(new URL(`../img/${name}.webp`, import.meta.url)) });
 const pixels = new Map();
 function imagePixels(im) {
   if (!pixels.has(im.path)) {

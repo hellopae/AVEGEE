@@ -45,8 +45,8 @@ export const ASIA_TOWN_SPRITES = {
     'town-residence-right-two':'img/town-district/house-right-two-asia-v3.webp',
   },
   trees: {
-    'town-tree-th':'img/frontier-route/tree-pine-v2.png',
-    'town-tree-red-th':'img/frontier-route/tree-maple-v2.png',
+    'town-tree-th':'img/frontier-route/tree-pine-v2.webp',
+    'town-tree-red-th':'img/frontier-route/tree-maple-v2.webp',
     'town-tree-snow-th':'img/theme-v4/town-tree-c-west-v1.webp',
     'town-prop-palm':'img/theme-v4/town-landmark-asia-v1.webp',
     'town-tree-sakura':'img/theme-v4/town-tree-sakura-asia-v1.webp',
@@ -126,7 +126,7 @@ export const ZONE_SKIN = {
     enabled: true,
     // C3/L3: registered repaint with a separately traced, walk-floor-excluding flow field.
     terrain: {...terrain('map-zone2','zone2'),dir:'img/map-zone2/v2/',preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp'},
-    rootAnchors:{'tree-pine-v2.png':[.567556297,.958841463],'tree-maple-v2.png':[.569224354,.987804878]},
+    rootAnchors:{'tree-pine-v2.webp':[.567556297,.958841463],'tree-maple-v2.webp':[.569224354,.987804878]},
     flowUrl: 'img/map-zone2/v2/flow-v2.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
     // Own Asia tree sprites disable TREE_TINT through finalize().

@@ -106,12 +106,12 @@ test('all item icons have files or usable error fallback; sword shares the helpe
   vm.runInContext(ui.slice(ui.indexOf('const placeholderSrc ='),ui.indexOf('function bagUseWhy')),ctx);
   for(const [k,d] of Object.entries(ITEMS)) {
     const html=ctx.itemImg(k);
-    assert.ok(fs.existsSync(new URL(`../img/${d.img}.png`,import.meta.url)) || d.fallback || d.glyph || d.placeholder,k);
+    assert.ok(fs.existsSync(new URL(`../img/${d.img}.webp`,import.meta.url)) || d.fallback || d.glyph || d.placeholder,k);
     assert.match(html,/onerror=/,k);
     assert.ok(d.howTo,k);
   }
   assert.equal(ITEMS.bladeShard.img,'item-demon-sword');
-  const sword=ctx.itemImg('bladeShard'); assert.match(sword,/item-demon-sword.png/);
+  const sword=ctx.itemImg('bladeShard'); assert.match(sword,/item-demon-sword.webp/);
   assert.ok(decodeURIComponent(sword).includes('🗡️'));
   assert.match(ui,/itemImg\(k, 'class="shop-item-img"'\)/);
   assert.match(ui,/itemImg\(it.k\)/);

@@ -92,7 +92,7 @@ test('combat art uses all four regional sheets and the four animation rows',()=>
     assert.deepEqual(niraCombatFrame(pose,450),{row,column:3});
     assert.deepEqual(niraCombatFrame(pose,600),{row,column:0});
   }
-  assert.doesNotThrow(()=>playNiraHealingCutscene({open:false},'th','fallback.png'));
+  assert.doesNotThrow(()=>playNiraHealingCutscene({open:false},'th','fallback.webp'));
 });
 
 test('healing cutscene has an accessible fallback, visible title and immediate skip',()=>{
@@ -102,11 +102,11 @@ test('healing cutscene has an accessible fallback, visible title and immediate s
     globalThis.document={createElement:tag=>({tag,style:{},children:[],setAttribute(k,v){this[k]=v;},
       append(...children){this.children.push(...children);},remove(){this.removed=true;}})};
     let overlay;const dialog={open:true,querySelector:()=>null,appendChild:node=>{overlay=node;}};
-    playNiraHealingCutscene(dialog,'asia','img/Asia/crew-nira-asia.png');
+    playNiraHealingCutscene(dialog,'asia','img/Asia/crew-nira-asia.webp');
     assert.equal(overlay.role,'status');assert.match(overlay['aria-label'],/นิรา/);
     assert.equal(overlay.children[0].src,'img/nira-combat/nira-asia-heal-cutscene-v1.webp');
     overlay.children[0].onerror();
-    assert.equal(overlay.children[0].src,'img/Asia/crew-nira-asia.png');
+    assert.equal(overlay.children[0].src,'img/Asia/crew-nira-asia.webp');
     assert.equal(overlay.children[1].textContent,'นิรา · แสงฟื้นบารมี');
     assert.equal(overlay.children[2].tag,'button');
     overlay.onclick();assert.equal(overlay.removed,true);

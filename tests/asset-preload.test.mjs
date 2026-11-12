@@ -8,7 +8,7 @@ test('zone bundle covers rooms, intro and chosen outfit without downloading ever
   for (const zone of ['th','asia','west','cyberhell']) {
     const files = zoneAssets(catalog, zone, 'th');
     assert(files.some(p => p === `img/rooms-wide/${zone}-sala.webp`));
-    assert(files.includes('img/hero-yama-th-fire-cutscene-v3.png'));
+    assert(files.includes('img/hero-yama-th-fire-cutscene-v3.webp'));
     assert(files.every(p => existsSync(p)), zone);
     if (zone !== 'th') {
       assert(files.some(p => p.includes(`intro-head-${zone}-v2`)));

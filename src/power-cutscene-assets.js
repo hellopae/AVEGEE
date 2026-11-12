@@ -7,5 +7,5 @@ export function powerCutsceneImage(power, outfit, abilities = {}) {
   const style = STYLES.has(outfit) ? outfit : 'th';
   const level = power === 'fire' && abilities.bigFire ? 'atk' : power;
   const version = power === 'roar' ? 'v4' : 'v3';
-  return `img/hero-yama-${style}-${level}-cutscene-${version}.png`;
+  return `img/hero-yama-${style}-${level}-cutscene-${version}.webp`;
 }

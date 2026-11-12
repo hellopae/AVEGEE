@@ -10,7 +10,7 @@ const named = {
 export function regionalSpiritAliases(zone) {
   const folder = { th: 'Thai', asia: 'Asia', west: 'West', cyberhell: 'CyberHell' }[zone];
   if (!folder) return {};
-  const path = type => `${folder}/spirit-${type}-${zone}-v2.png`;
+  const path = type => `${folder}/spirit-${type}-${zone}-v2.webp`;
   return Object.fromEntries([
     ...SPIRIT_ARCHETYPES.map(type => [`spirit-${type}-${zone}`, path(type)]),
     ...numbered.map((type, i) => [`spirit${i + 1}-${zone}`, path(type)]),

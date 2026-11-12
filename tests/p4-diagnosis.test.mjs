@@ -117,16 +117,16 @@ test('Reese F2: an innocent sent straight to the Heaven Gate shows no sentence l
   g.sentences=[e];
   const m=diagnosisModel(g,diagnosisSubjects(g,'sawan')[0]);
   assert.equal(m.order.direct,true);assert.equal(m.order.diff,null);assert.equal(m.karma.direct,true);assert.equal(m.karma.intensity,0);
-  const html=diagnosisHtml(m,{pos:1,total:1,portraitSrc:'x.png'});
+  const html=diagnosisHtml(m,{pos:1,total:1,portraitSrc:'x.webp'});
   assert.ok(html.includes('ส่งตรงประตูสวรรค์ · ไม่มีทัณฑ์'));
   assert.doesNotMatch(html,/หนักเกินไป|รับทัณฑ์ครบแล้ว|ทัณฑ์ที่รับ|ระดับวาระ/);
-  const normal=diagnosisHtml(diagnosisModel(game(),{kind:'prison',soul:soul(21),entry:entry(soul(21))}),{pos:1,total:1,portraitSrc:'x.png'});
+  const normal=diagnosisHtml(diagnosisModel(game(),{kind:'prison',soul:soul(21),entry:entry(soul(21))}),{pos:1,total:1,portraitSrc:'x.webp'});
   assert.match(normal,/รับทัณฑ์ครบแล้ว/);assert.match(normal,/ทัณฑ์ที่รับ/);
 });
 
 test('Reese F4/W2/W3: prison destinations are conditional; wording says "สำนึก"; gate banner uses the zone\'s Boon name',()=>{
   const g=game();
-  const html=e=>{g.sentences=[e];return diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'tarang')[0]),{pos:1,total:1,portraitSrc:'x.png'});};
+  const html=e=>{g.sentences=[e];return diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'tarang')[0]),{pos:1,total:1,portraitSrc:'x.webp'});};
   const before=html(entry(soul(30)));
   assert.match(before,/ถ้าถึงประตูสวรรค์: /);assert.doesNotMatch(before,/→ ขึ้นสวรรค์|→ ไปเกิดใหม่|หมดกรรม → |ยังเหลือกรรม → /);
   const back=html(entry(soul(31),{inspected:true,repentant:false,remorse:{total:41,parts:{keeper:10,intensity:20,trait:11},detail:{}}}));
@@ -136,10 +136,10 @@ test('Reese F4/W2/W3: prison destinations are conditional; wording says "สำ�
   assert.match(ok,/สำนึกแล้ว · พร้อมไปประตูสวรรค์/);assert.match(ok,/ถึงเกณฑ์ 60 = สำนึกแล้ว/);
   g.zone='asia';
   g.sentences=[entry(soul(33),{stage:'gate',checked:false,zone:'asia'})];
-  const gate=diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.png'});
+  const gate=diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.webp'});
   assert.match(gate,/รอเมกุมิตรวจกรรมคงเหลือ/);
   const zoneG=game();zoneG.sentences=[entry(soul(34),{stage:'gate',checked:false})];
-  assert.match(diagnosisHtml(diagnosisModel(zoneG,diagnosisSubjects(zoneG,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.png'}),/รอบุญตรวจกรรมคงเหลือ/);
+  assert.match(diagnosisHtml(diagnosisModel(zoneG,diagnosisSubjects(zoneG,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.webp'}),/รอบุญตรวจกรรมคงเหลือ/);
 });
 
 test('Reese F1: neutral keeper wording no longer says "half"',()=>{

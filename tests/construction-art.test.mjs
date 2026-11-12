@@ -13,11 +13,11 @@ test('construction poses resolve to all eight zone-specific transparent PNG asse
     for (const k of ['taan','dam']) {
       const folder = {th:'',asia:'Asia/',west:'West/',cyberhell:'CyberHell/'}[z];
       const stem = `crew-${k}${z === 'th' ? '' : `-${z}`}`;
-      const path = `img/${folder}${stem}-build-work.png`;
+      const path = `img/${folder}${stem}-build-work.webp`;
       assert.equal(artUrl(`crew-${k}-build-work`), path);
       assert.ok(existsSync(new URL(`../${path}`,import.meta.url)), path);
       if (z !== 'th') assert.ok(manifest.zones[z].includes(path.slice(4)),path);
-      const normal = `img/${folder}${stem}.png`;
+      const normal = `img/${folder}${stem}.webp`;
       assert.equal(artUrl(`crew-${k}`),normal);
     }
   }

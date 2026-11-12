@@ -48,7 +48,7 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
   for (const zone of ['th','asia','west','cyberhell']) {
    const sitter=game();sitter.zone=zone;sitter.hp=1;sitter.mp=0;
    const seatRoom=teaRoom(zone);seatRoom.me=[seatRoom.act[0]+.03,seatRoom.act[1]+.02];
-   const seated=makeRoom(cv,sitter,STATIONS.find(d=>d.k==='tea'),seatRoom,`img/tea-${zone}-recovery.png`,null);
+   const seated=makeRoom(cv,sitter,STATIONS.find(d=>d.k==='tea'),seatRoom,`img/tea-${zone}-recovery.webp`,null);
    assert.equal(seated.setSit(true),true);
    assert.deepEqual(seated.pos().slice(0,2),seatRoom.act,`${zone} sits exactly on its cushion`);
    seated.tick(1000);
@@ -57,7 +57,7 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
    seated.setSit(false);
   }
   const g=game();g.hp=1;g.pendingRecovery={zone:'th'};
-  const R=makeRoom(cv,g,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.png',null);
+  const R=makeRoom(cv,g,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.webp',null);
   assert.equal(R.setSleep(),false);assert.equal(R.setSleep(true),true);
   assert.equal(R.setSit(true),false);
   assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);
@@ -66,7 +66,7 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
   R.tick(TEA_WAKE_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
   for (const stage of ['sleep','wake']) {
    const resumed=game();g.hp=1;g.pendingRecovery={zone:'th',stage};resumed.restore(g.snapshot());
-   const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.png',null);
+   const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.webp',null);
    assert.equal(room.setSleep(true),true);
    const remaining=stage==='wake'?TEA_WAKE_MS:TEA_REST_TOTAL_MS;
    room.tick(remaining-1);assert.ok(resumed.hp>1);assert.equal(room.sleeping(),true);room.tick(1);

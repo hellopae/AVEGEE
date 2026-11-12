@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { heroWalkSheet } from '../src/hero-walk-assets.js';
 import { walkDirection } from '../src/walk-direction.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 globalThis.fetch = async () => ({ok:false});
 globalThis.Image = class {
@@ -26,14 +27,14 @@ test('all 64 frames exist inside RGBA PNG sheets registered in the manifest', ()
   const m = JSON.parse(fs.readFileSync(new URL('../img/manifest.json',import.meta.url)));
   for (const z of ['th','asia','west','cyberhell']) {
     const s = heroWalkSheet(z), png = fs.readFileSync(new URL('../'+s.src,import.meta.url));
-    assert.equal(png.subarray(1,4).toString(),'PNG');
-    assert.equal(png[25],6); // Native RGBA, including transparent background.
+    const meta=imageMeta(png);
+    assert.ok(meta.hasAlpha); // Native RGBA, including transparent background.
     assert.equal(m.heroWalks[z],s.src.slice(4));
     for (const dir of ['down','left','right','up']) {
       assert.equal(s.directions[dir].length,4);
       for (const b of s.directions[dir]) {
         assert.ok(b.x >= 0 && b.y >= 0 && b.w > 0 && b.h > 0);
-        assert.ok(b.x+b.w <= png.readUInt32BE(16) && b.y+b.h <= png.readUInt32BE(20));
+        assert.ok(b.x+b.w <= meta.width && b.y+b.h <= meta.height);
       }
     }
   }

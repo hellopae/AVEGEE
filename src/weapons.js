@@ -11,10 +11,10 @@ export const CRIT_MULT = 1.7;   // ตัวคูณคริเดิมขอ
 // ---------- ตารางไฟล์ภาพ (Kittanate/Codex วาดทับชื่อเดิมได้เลย ไม่ต้องแตะโค้ด) ----------
 /** สไปรท์ฟัน 8 เฟรม ต่ออาวุธ × ชุดยมบาท — ไม่มีไฟล์ = ใช้ดาบเดิมของชุดนั้นเอง (ดู yama-sword.js) */
 export const weaponSpriteSrc = (weapon, outfit) => `img/yama-sword-weapons/hero-yama-${outfit}-sword-${weapon}.webp`;
-export const weaponIconSrc = weapon => `img/weapons/weapon-icon-${weapon}.png`;
-/** I1-B ข้อ 1 — ไอคอนดาบธรรมดาของยมบาทน้อย (การ์ดแรกใน "อาวุธประจำโซน") · ครอปจาก img/icon-sword.png (ไอคอนดาบโจมตีปกติเดิม) ไม่แตะสี
+export const weaponIconSrc = weapon => `img/weapons/weapon-icon-${weapon}.webp`;
+/** I1-B ข้อ 1 — ไอคอนดาบธรรมดาของยมบาทน้อย (การ์ดแรกใน "อาวุธประจำโซน") · ครอปจาก img/icon-sword.webp (ไอคอนดาบโจมตีปกติเดิม) ไม่แตะสี
  *  Kittanate วาดดาบใหม่ทับชื่อไฟล์นี้ได้เลย (512×512 พื้นใส) */
-export const baseSwordIconSrc = 'img/weapons/weapon-icon-base.png';
+export const baseSwordIconSrc = 'img/weapons/weapon-icon-base.webp';
 /** I1-B ข้อ 1 — ข้อความพลังโจมตีของดาบธรรมดา คำนวณสดจาก stat จริง (สูตรเดียวกับแผงโปรไฟล์): ฟาดสุ่มช่วง BATTLE.atk หลังคูณเลเวล/ชุด/ฝึก
  *  normalAttackFn = g.normalAttack (ผูกกับสถานะเกม) · ค่าเดียวกันเมื่อ min=max จะแสดงเลขเดียว */
 export function baseSwordAttack(normalAttackFn) {
@@ -23,7 +23,7 @@ export function baseSwordAttack(normalAttackFn) {
 }
 /** P5b — คัตซีนที่วาดใหม่ลงชื่อไฟล์ -vN (ไฟล์เก่ายังอยู่ ไม่ทับ) · cane v2 = เคานต์ยื่นดาบทั้งฝัก ไม่ชักดาบ */
 export const WEAPON_CUTSCENE_VERSION = { cane: 'v2' };
-export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}${WEAPON_CUTSCENE_VERSION[weapon] ? '-' + WEAPON_CUTSCENE_VERSION[weapon] : ''}.jpeg`;
+export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}${WEAPON_CUTSCENE_VERSION[weapon] ? '-' + WEAPON_CUTSCENE_VERSION[weapon] : ''}.webp`;
 /** รายชื่อไฟล์ทั้งหมดที่ต้องวาด (16 สไปรท์ + 4 ไอคอน + 4 คัตซีน) */
 export const WEAPON_ART_FILES = {
   sprites: WEAPON_IDS.flatMap(w => OUTFIT_IDS.map(o => weaponSpriteSrc(w, o))),

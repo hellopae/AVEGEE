@@ -18,7 +18,7 @@ const size = () => [SCENE.w, SCENE.h];
 const grid = () => [walkGridSize().cols, walkGridSize().rows];
 const names = { th:'scene-v2-opt', asia:'scene-asia-v3', west:'scene-west-v2', cyberhell:'scene-cyberhell-v2' };
 const image = name => ({ naturalWidth:1678, naturalHeight:937,
-  path:fileURLToPath(new URL(`../img/${name}.png`, import.meta.url)) });
+  path:fileURLToPath(new URL(`../img/${name}.webp`, import.meta.url)) });
 const pixels = new Map();
 function imagePixels(im) {
   if (!pixels.has(im.path)) {
@@ -58,7 +58,7 @@ test('enabled towns use large city geometry and legacy zones retain their geomet
     if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k),true);
     assert.equal(SCENE,sceneRef);
     assert.equal(z.scene,names[z.k]);
-    assert.ok(manifest.rest.includes(`${z.scene}.png`));
+    assert.ok(manifest.rest.includes(`${z.scene}.webp`));
     if (isTownZone(z.k)) {
       assert.deepEqual(size(),[TOWN_SIZE.w,TOWN_SIZE.h]);
       assert.deepEqual(grid(),['asia','west','cyberhell'].includes(z.k)?[480,320]:[240,160]); // Z2: asia paths on an 8-unit grid (narrow bridges in the owner mask)

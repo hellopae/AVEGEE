@@ -187,7 +187,7 @@ export function actorWalkMotion(actor, time, zone = 'th', position = null) {
 
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
- *  => ดรอป img/hero-yama-atk.png หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
+ *  => ดรอป img/hero-yama-atk.webp หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
 const poseOr = (alt, base) => img(alt) ? alt : base;
 
 /** ย่อฉากให้พอดีความกว้าง canvas — คืนอัตราส่วนไว้ใช้แปลงพิกัดเมาส์ */

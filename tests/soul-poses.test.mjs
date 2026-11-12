@@ -5,8 +5,9 @@ import { ALL_CASES } from '../src/cases.js';
 import { createGame } from '../src/game.js';
 import { CASE_POSE_TYPES, SOUL_POSE_ASSETS, soulPoseForPress, soulPoseAssets } from '../src/soul-poses.js';
 import { zoneAssets } from '../src/asset-preload.js';
-const base = 'img/Thai/spirit-officer-th-v2.png';
-const pose = 'img/soul-poses/officer-th-caught-lie-v1.png';
+import {imageMeta} from './helpers/image-meta.mjs';
+const base = 'img/Thai/spirit-officer-th-v2.webp';
+const pose = 'img/soul-poses/officer-th-caught-lie-v1.webp';
 const soulFor = key => {
  const c = ALL_CASES.find(c=>c.k===key);
  return {case:key, presses:2, said:[], deeds:[...c.seen.map(d=>({...d,known:true})),...c.hidden.map(d=>({...d,known:false}))], merits:structuredClone(c.merits), lines:c.claims.map((l,i)=>({...l,i,used:false}))};
@@ -36,17 +37,18 @@ test('no substitution for a solid line, exhausted press, return, random case or 
  const g=createGame(),s=soulFor('pol');
  assert.equal(soulPoseForPress(g,s,s.lines.find(l=>l.kind==='solid'),base),null);
  for(const change of [{presses:0},{back:{}},{case:undefined},{case:'nurse'},{case:'sergeant'}])assert.equal(soulPoseForPress(g,{...s,...change},s.lines[0],base),null);
- assert.equal(soulPoseForPress(g,s,s.lines[0],'img/Asia/spirit-officer-asia.png'),null);
+ assert.equal(soulPoseForPress(g,s,s.lines[0],'img/Asia/spirit-officer-asia.webp'),null);
  const recruit=soulFor('recruit');
- assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/Asia/spirit-worker-asia-v2.png'),null,'regional costume must match');
+ assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/Asia/spirit-worker-asia-v2.webp'),null,'regional costume must match');
 });
 test('registered assets exist, preserve canvas size and transparent PNG format',()=>{
  for(const [original, variants] of Object.entries(SOUL_POSE_ASSETS)) for(const path of Object.values(variants)){
   assert.ok(existsSync(path),path);
   const a=readFileSync(original),b=readFileSync(path);
-  assert.deepEqual(b.subarray(0,8),a.subarray(0,8));
-  assert.deepEqual(b.subarray(16,24),a.subarray(16,24),'PNG canvas dimensions');
-  assert.equal(b[25],6,'RGBA PNG');
+  const ma=imageMeta(a),mb=imageMeta(b);
+  assert.equal(mb.format,ma.format);
+  assert.deepEqual([mb.width,mb.height],[ma.width,ma.height],'canvas dimensions');
+  assert.ok(mb.hasAlpha,'RGBA');
  }
 });
 test('preloading includes the pose alongside its original, including shared and fallback assets, once',()=>{
@@ -80,8 +82,8 @@ const art5Pairs = [
 test('ART4 and ART5 Asia cases select their regional drawing and preload it once without mutating evidence',()=>{
  for(const [key,name] of [...art4Pairs,...art5Pairs]){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
-  const original=`img/Asia/spirit-${name}-asia-v2.png`;
-  const expected=`img/soul-poses/${name}-asia-caught-lie-v1.png`;
+  const original=`img/Asia/spirit-${name}-asia-v2.webp`;
+  const expected=`img/soul-poses/${name}-asia-caught-lie-v1.webp`;
   const before=structuredClone(s);
   assert.ok(l,key);
   assert.equal(soulPoseForPress(g,s,l,original),expected,key);
@@ -96,14 +98,14 @@ test('ART4 and ART5 Asia cases select their regional drawing and preload it once
  for(const key of ['A5','A11','A13','A19']){
   const s=soulFor(key),l=s.lines[0];
   for(const [,name] of [...art4Pairs,...art5Pairs])
-   assert.equal(soulPoseForPress(createGame(),s,l,`img/Asia/spirit-${name}-asia-v2.png`),null,key);
+   assert.equal(soulPoseForPress(createGame(),s,l,`img/Asia/spirit-${name}-asia-v2.webp`),null,key);
  }
 });
 test('ART2 and ART3 caught lie cases select their original-specific drawing without changing evidence',()=>{
  for(const [key,name] of [...art2Pairs,...art3Pairs]){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
-  const original=`img/Thai/spirit-${name}-th-v2.png`;
-  const expected=`img/soul-poses/${name}-th-caught-lie-v1.png`;
+  const original=`img/Thai/spirit-${name}-th-v2.webp`;
+  const expected=`img/soul-poses/${name}-th-caught-lie-v1.webp`;
   const before=structuredClone(s);
   assert.ok(l,key);
   assert.equal(soulPoseForPress(g,s,l,original),expected,key);
@@ -117,8 +119,8 @@ test('ART2 and ART3 caught lie cases select their original-specific drawing with
 test('all six necessity cases select only an unused plea revealing unknown mitigation',()=>{
  for(const [key,name,version] of necessityPairs){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='plea');
-  const original=`img/Thai/spirit-${name}-th-${version}.png`;
-  const expected=`img/soul-poses/${name}-th-necessity-v1.png`;
+  const original=`img/Thai/spirit-${name}-th-${version}.webp`;
+  const expected=`img/soul-poses/${name}-th-necessity-v1.webp`;
   const before=structuredClone(s);
   assert.equal(soulPoseForPress(g,s,l,original),expected,key);
   assert.deepEqual(s,before,'selection must not change evidence or justice');
@@ -135,8 +137,8 @@ test('all six necessity cases select only an unused plea revealing unknown mitig
 });
 test('every necessity drawing preloads exactly once for shared, own and regional fallback catalogs',()=>{
  for(const [,name,version] of necessityPairs){
-  const original=`img/Thai/spirit-${name}-th-${version}.png`;
-  const expected=`img/soul-poses/${name}-th-necessity-v1.png`;
+  const original=`img/Thai/spirit-${name}-th-${version}.webp`;
+  const expected=`img/soul-poses/${name}-th-necessity-v1.webp`;
   for(const catalog of [{shared:[original],zones:{th:[]}},{shared:[],zones:{th:[original,original]}},{shared:[],zones:{th:[original],asia:[]}}]){
    const list=zoneAssets(catalog,'asia');
    assert.equal(list.filter(x=>x===expected).length,1,expected);

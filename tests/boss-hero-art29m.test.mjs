@@ -10,10 +10,10 @@ const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.
 const listed = new Set([...(manifest.critical || []), ...(manifest.rest || []), ...Object.values(manifest.zones).flat()]);
 
 const TABLE = {
-  th:        { hero:'hero-boss.png',                       boss:'zone-boss.png',                       arrive:null },
-  asia:      { hero:'Asia/hero-boss-asia.png',             boss:'Asia/zone-boss-asia.png',             arrive:'Asia/Boss Zone2-asia-profile.png' },
-  west:      { hero:'West/hero-boss-west-v2.png',          boss:'West/zone-boss-west.png',             arrive:'West/Boss Zone3-west-profile.png' },
-  cyberhell: { hero:'CyberHell/hero-boss-cyberhell-v2.png', boss:'CyberHell/zone-boss-cyberhell.png',   arrive:'CyberHell/Boss Zone4-cyberhell-profile.png' },
+  th:        { hero:'hero-boss.webp',                       boss:'zone-boss.webp',                       arrive:null },
+  asia:      { hero:'Asia/hero-boss-asia.webp',             boss:'Asia/zone-boss-asia.webp',             arrive:'Asia/Boss Zone2-asia-profile.webp' },
+  west:      { hero:'West/hero-boss-west-v2.webp',          boss:'West/zone-boss-west.webp',             arrive:'West/Boss Zone3-west-profile.webp' },
+  cyberhell: { hero:'CyberHell/hero-boss-cyberhell-v2.webp', boss:'CyberHell/zone-boss-cyberhell.webp',   arrive:'CyberHell/Boss Zone4-cyberhell-profile.webp' },
 };
 
 test('หัวหน้ากับบอสของทุกโซนเป็นคนละไฟล์ ไฟล์มีจริงและอยู่ใน manifest', () => {
@@ -34,16 +34,16 @@ test('หัวหน้ากับบอสของทุกโซนเป�
 });
 
 test('บอสโซน 2-4 ที่ใช้ในเกม = Boss Zone<N> ที่คุณเป้ยืนยัน (ภาพเดียวกัน)', () => {
-  assert.equal(md5('Asia/zone-boss-asia.png'), md5('Asia/Boss Zone2-asia.png'));
-  assert.equal(md5('West/zone-boss-west.png'), md5('West/Boss Zone3-west.png'));
-  assert.equal(md5('CyberHell/zone-boss-cyberhell.png'), md5('CyberHell/Boss Zone4-cyberhell.png'));
+  assert.equal(md5('Asia/zone-boss-asia.webp'), md5('Asia/Boss Zone2-asia.webp'));
+  assert.equal(md5('West/zone-boss-west.webp'), md5('West/Boss Zone3-west.webp'));
+  assert.equal(md5('CyberHell/zone-boss-cyberhell.webp'), md5('CyberHell/Boss Zone4-cyberhell.webp'));
 });
 
 test('ภาพ "บอสมาถึง" โซน 2-4 เป็นภาพบอส ไม่ใช่หัวหน้า (profile ของบอสโซน 2 ต้องมี ไม่ตกไปใช้ฉากรวม)', () => {
   const { zones } = manifest;
-  assert.ok(zones.asia.includes('Asia/Boss Zone2-asia-profile.png'));
-  assert.ok(zones.west.includes('West/Boss Zone3-west-profile.png'));
-  assert.ok(zones.cyberhell.includes('CyberHell/Boss Zone4-cyberhell-profile.png'));
+  assert.ok(zones.asia.includes('Asia/Boss Zone2-asia-profile.webp'));
+  assert.ok(zones.west.includes('West/Boss Zone3-west-profile.webp'));
+  assert.ok(zones.cyberhell.includes('CyberHell/Boss Zone4-cyberhell-profile.webp'));
   // ไม่มี profile ของ "หัวหน้า" ปนอยู่ในชื่อ Boss Zone
   for (const z of ['asia', 'west', 'cyberhell']) for (const f of zones[z].filter(p => /Boss Zone\d/.test(p))) assert.ok(!/hero/.test(f), f);
 });

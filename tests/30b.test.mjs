@@ -5,27 +5,27 @@ import { spriteKey, teamNeedsMirror, foeNeedsMirror, teamFaceClass, foeFaceClass
          TEAM_DRAWN_FACING_RIGHT, ragePoseSrc } from '../src/battle-facing.js';
 
 test('30B-2: spriteKey ตัด path/นามสกุล/-v2/query', () => {
-  assert.equal(spriteKey('img/West/crew-guard-west-v2.png?x=1'), 'crew-guard-west');
-  assert.equal(spriteKey('img/Asia/mob-gaki-asia.png'), 'mob-gaki-asia');
+  assert.equal(spriteKey('img/West/crew-guard-west-v2.webp?x=1'), 'crew-guard-west');
+  assert.equal(spriteKey('img/Asia/mob-gaki-asia.webp'), 'mob-gaki-asia');
   assert.equal(spriteKey(null), '');
 });
 
 test('30B-2: ทีมโซน 3 หันขวามาแล้ว; เทอร์โบโซน 4 ต้องพลิกตามภาพจริง J1', () => {
   for (const k of ['plerng', 'kan', 'boon', 'dam', 'guard'])
-    assert.equal(teamNeedsMirror(`img/West/crew-${k}-west.png`), false, k);
-  assert.equal(teamNeedsMirror('img/CyberHell/crew-plerng-cyberhell.png'), true);
-  assert.equal(teamNeedsMirror('img/West/crew-guard-west-v2.png'), false);
-  assert.equal(teamNeedsMirror('img/crew-plerng.png'), true);
-  assert.equal(teamNeedsMirror('img/Asia/crew-guard-asia-v2.png'), true);
-  assert.equal(teamFaceClass('img/West/crew-kan-west.png'), 'face-native');
-  assert.equal(teamFaceClass('img/Asia/crew-kan-asia.png'), '');
+    assert.equal(teamNeedsMirror(`img/West/crew-${k}-west.webp`), false, k);
+  assert.equal(teamNeedsMirror('img/CyberHell/crew-plerng-cyberhell.webp'), true);
+  assert.equal(teamNeedsMirror('img/West/crew-guard-west-v2.webp'), false);
+  assert.equal(teamNeedsMirror('img/crew-plerng.webp'), true);
+  assert.equal(teamNeedsMirror('img/Asia/crew-guard-asia-v2.webp'), true);
+  assert.equal(teamFaceClass('img/West/crew-kan-west.webp'), 'face-native');
+  assert.equal(teamFaceClass('img/Asia/crew-kan-asia.webp'), '');
   assert.ok(TEAM_DRAWN_FACING_RIGHT.size >= 6);
 });
 
 test('30B-2: ศัตรูที่วาดหันขวา (กากิ) ถูกพลิก ตัวอื่นแสดงตามต้นฉบับ', () => {
-  assert.equal(foeNeedsMirror('img/Asia/mob-gaki-asia.png'), true);
-  assert.equal(foeFaceClass('img/Asia/mob-gaki-asia.png'), 'face-flip');
-  assert.equal(foeFaceClass('img/West/mob-skeleton-west.png'), '');
+  assert.equal(foeNeedsMirror('img/Asia/mob-gaki-asia.webp'), true);
+  assert.equal(foeFaceClass('img/Asia/mob-gaki-asia.webp'), 'face-flip');
+  assert.equal(foeFaceClass('img/West/mob-skeleton-west.webp'), '');
 });
 
 test('30B-2: mirrorBox สลับขอบซ้ายตามการพลิก และพลิกซ้ำคืนค่าเดิม', () => {

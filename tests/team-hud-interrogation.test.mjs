@@ -13,8 +13,8 @@ test('TEAM current-zone actors have real vitals and duties; no other zone roster
  const status=teamStatus(g,w,true);assert.deepEqual(status,{hp:50,hunger:30,duty:'นำของไปขาย',starved:false,busy:true});
  const c=g.crewOf('taan');c.at='krata';c.hunger=22;
  assert.match(teamStatus(g,c).duty,/คุม/);assert.equal(teamStatus(g,c).busy,true);
- const html=teamHudHtml(g,()=>'/portrait.png');assert.match(html,/aria-valuenow="30"/);assert.match(html,/is-busy/);assert.match(html,/เฝ้าประตู/);
- const manage=teamManageHtml(g,()=>'/portrait.png');assert.doesNotMatch(manage,/data-hire|data-power-hire/);assert.match(manage,/data-team-party/);assert.match(manage,/data-team-mode/);
+ const html=teamHudHtml(g,()=>'/portrait.webp');assert.match(html,/aria-valuenow="30"/);assert.match(html,/is-busy/);assert.match(html,/เฝ้าประตู/);
+ const manage=teamManageHtml(g,()=>'/portrait.webp');assert.doesNotMatch(manage,/data-hire|data-power-hire/);assert.match(manage,/data-team-party/);assert.match(manage,/data-team-mode/);
  assert.ok(teamMembers(g).some(x=>x.a.id===g.guard.id));assert.ok(teamMembers(g).some(x=>x.a.k==='nira'));
 });
 test('TEAM starvation stays visible after kitchen refills; manual rice clears only selected worker and uses central stock once',()=>{

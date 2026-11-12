@@ -29,7 +29,7 @@ test('P2: the compact keeper bar lists keepers as picture + name + the colour th
   const g=game(),soul={id:11};
   for(const key of ['deeds','merits','secret','deserved','pure'])Object.defineProperty(soul,key,{get(){throw Error('preview read hidden '+key);}});
   g.crew=[keeper,{k:'kan',name:'กานต์',morale:100},{k:'plerng',name:'เพลิง',morale:100}];
-  const html=keeperBarHtml(g,soul,keeper,'krata',c=>`img/crew-${c.k}-profile.png`);
+  const html=keeperBarHtml(g,soul,keeper,'krata',c=>`img/crew-${c.k}-profile.webp`);
   assert.match(html,/data-pickkey="cr" data-k="taan"/);assert.match(html,/data-pickkey="cr" data-k="kan"/);
   assert.match(html,/aria-pressed="true"[^>]*title="[^"]*ทัณฑ์/s);
   assert.match(html,/is-trait-match/);assert.match(html,/คุมได้|เหมาะกับลักษณะนี้/);
@@ -46,8 +46,8 @@ test('P2: Kan is a round icon with the owner label, shown only when Kan is hired
   g.kanClueCost=()=>({mp:4,morale:4,cooldownSeconds:30});
   g.kanRevealClue=()=>{used=true;reveals++;return {kind:'truth',text:'เหตุบรรเทาหนึ่งข้อ'};};
   g.crewOf=k=>g.crew.find(c=>c.k===k);
-  const html=kanOrbHtml(g,{id:1},'img/crew-kan-profile.png');
-  assert.match(html,/ช่วยเปิดความจริง/);assert.equal(KAN_BUTTON_COPY.label,'ช่วยเปิดความจริง');assert.match(html,/<img src="img\/crew-kan-profile\.png"/);
+  const html=kanOrbHtml(g,{id:1},'img/crew-kan-profile.webp');
+  assert.match(html,/ช่วยเปิดความจริง/);assert.equal(KAN_BUTTON_COPY.label,'ช่วยเปิดความจริง');assert.match(html,/<img src="img\/crew-kan-profile\.webp"/);
   assert.match(html,/ใช้พลังเวท 4 · กำลังใจกานต์ 4 · พักพลัง 30 วินาที/);assert.doesNotMatch(html,/ขอเบาะแส 1 ประเด็น|kan-clue"|กานต์ · เปิดความจริงทีละประเด็น/,'the old box is gone');
   const button={};bindKanClue({querySelector:()=>button},g,{id:1},()=>announcements++);button.onclick();button.onclick();
   assert.equal(reveals,1);assert.equal(announcements,1);assert.match(kanOrbHtml(g,{id:1},'x','เหตุบรรเทาหนึ่งข้อ'),/data-kan-clue disabled/);assert.match(kanOrbHtml(g,{id:1},'x'),/กานต์กำลังพักพลัง · อีก 30 วินาที/);

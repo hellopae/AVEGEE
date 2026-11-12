@@ -18,7 +18,7 @@ test('27C: เรียกยมทูตช่วยในฉากสู้ไ
 
 test('27C: ตวาดข่มขู่ใช้ไอคอนเขี้ยวและไม่มี cutscene ลูกไฟ', () => {
   const roar = POWERS.find(p => p.k === 'roar');
-  assert.equal(roar.glyph, 'img/icon-fang.png');
+  assert.equal(roar.glyph, 'img/icon-fang.webp');
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   assert.doesNotMatch(ui, /if \(k === 'roar'\) return null;/);
 });

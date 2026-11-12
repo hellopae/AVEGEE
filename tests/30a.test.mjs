@@ -5,6 +5,7 @@ import { STORY } from '../src/story.js';
 import { ZONES, BAL, CREW_POWER } from '../src/data.js';
 import { zoneIntroduction } from '../src/zone-introductions.js';
 import { comicImageLayout, prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from '../src/cutscene-presentation.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
@@ -70,11 +71,11 @@ test('30A: back navigation retains the separate caption', () => {
 test('30A: zones 2–4 choose real arrival scenes even with a loaded boss profile; zone 1 keeps resolver behavior', () => {
   for (const z of ZONES) {
     const dlg = fakeRoot(); let done = 0;
-    const fallback = `img/Intro-Boss-Zone${ZONES.indexOf(z) + 1}.png`;
+    const fallback = `img/Intro-Boss-Zone${ZONES.indexOf(z) + 1}.webp`;
     renderer('openBossArrive', { ZONES, dlg, dlgGen:1, esc, bossArrivalScene, pauseForDlg() {},
-      zoneImg:() => ({src:'loaded-closeup.png'}), artUrl:() => fallback,
+      zoneImg:() => ({src:'loaded-closeup.webp'}), artUrl:() => fallback,
       openDlg() { dlg.open = true; }, prepareComicImages() {} })(z, () => done++);
-    const expected = bossArrivalScene(z.k) || (z.k === 'th' ? fallback : 'loaded-closeup.png');
+    const expected = bossArrivalScene(z.k) || (z.k === 'th' ? fallback : 'loaded-closeup.webp');
     for (let i = 0; i < z.bossArrive.length; i++) {
       assert.ok(dlg.innerHTML.includes(`src="${expected}"`)); assertCaptionOrder(dlg.innerHTML);
       dlg.querySelector('#arrive-next').onclick();
@@ -88,7 +89,7 @@ test('30A: zones 2–4 choose real arrival scenes even with a loaded boss profil
 test('30A: opening intro and both regional arrival pages keep text below the frame', () => {
   const dlg = fakeRoot();
   const deps = { dlg, esc, BAL, ZONES, zoneIntroduction, prepareComicImages() {},
-    g:{zoneIntroSeen:{},save() {}}, pauseForDlg() {}, openDlg() {}, artUrl:key => `img/${key}.png` };
+    g:{zoneIntroSeen:{},save() {}}, pauseForDlg() {}, openDlg() {}, artUrl:key => `img/${key}.webp` };
   renderer('openIntro', deps)(true);
   for (let i = 0; i < 5; i++) { assertCaptionOrder(dlg.innerHTML); dlg.querySelector('#intro-next').onclick(); }
   for (const z of ZONES.slice(1)) {
@@ -110,15 +111,13 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
       assert.deepEqual(comicImageLayout(panel.image,size.width,size.height),{aspect:size.width/size.height,top:0,height:100});
       continue;
     }
-    // PNG: IHDR size; lossy WebP: VP8 keyframe header (14-bit width/height at byte 26/28).
-    const isWebp = panel.image.endsWith('.webp');
-    const width = isWebp ? png.readUInt16LE(26) & 0x3fff : png.readUInt32BE(16), height = isWebp ? png.readUInt16LE(28) & 0x3fff : png.readUInt32BE(20);
+    const { width, height } = imageMeta(png);   // PNG / lossy / lossless / alpha WebP
     const layout = comicImageLayout(panel.image, width, height);
-    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.png' || panel.image === 'img/frontier-west-hypnosis-v1.webp') {
+    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v1.webp' || panel.image === 'img/crew-guard-cutscene.webp') {   // guard cutscene was a JPEG before 12 Nov: full frame, no letterbox
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
     }
-    if (panel.image === 'img/story-asia-03.png') continue;   // 30F: วาดใหม่เต็มเฟรม ไม่มีแถบดำให้ตัด (ทดสอบใน 30f.test.mjs)
+    if (panel.image === 'img/story-asia-03.webp') continue;   // 30F: วาดใหม่เต็มเฟรม ไม่มีแถบดำให้ตัด (ทดสอบใน 30f.test.mjs)
     assert.ok(layout.height > 100 && layout.top <= 0);
     const visibleHeight = width / layout.aspect;
     assert.ok(visibleHeight > 0 && visibleHeight < height);
@@ -126,19 +125,19 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     assert.ok(Math.abs((layout.height / 100) * visibleHeight - height) < 1e-9);
     assert.ok(layout.top + layout.height >= 100);
   }
-  assert.deepEqual(comicImageLayout('unknown.png', 1600, 900), {aspect:1600 / 900, top:0, height:100});
+  assert.deepEqual(comicImageLayout('unknown.webp', 1600, 900), {aspect:1600 / 900, top:0, height:100});
 });
 
 test('30A: crop updates cached, newly loaded and fallback images; thumbnail stays square', () => {
   for (const thumbnail of [false, true]) {
     let onload;
     const frame = { style:{}, classList:{contains:() => !thumbnail} };
-    const image = { naturalWidth:1280, naturalHeight:720, currentSrc:'http://local/img/story-ending-02-v3.png',
+    const image = { naturalWidth:1280, naturalHeight:720, currentSrc:'http://local/img/story-ending-02-v3.webp',
       complete:true, parentElement:frame, style:{}, addEventListener(type, fn) { assert.equal(type, 'load'); onload = fn; } };
     prepareComicImages({querySelectorAll:() => [image]});
     assert.ok(parseFloat(image.style.height) > 100 && parseFloat(image.style.top) < 0);
     assert.equal(Boolean(frame.style.aspectRatio), !thumbnail);
-    image.currentSrc = 'http://local/img/fallback.png'; onload();
+    image.currentSrc = 'http://local/img/fallback.webp'; onload();
     assert.equal(parseFloat(image.style.height), 100); assert.equal(parseFloat(image.style.top), 0);
     image.complete = false; image.style = {}; prepareComicImages({querySelectorAll:() => [image]});
     assert.deepEqual(image.style, {}); onload(); assert.equal(image.style.height, '100%');
@@ -149,14 +148,14 @@ test('30A: ending popup uses a clipped cover thumbnail, with crop preparation', 
   const dlg = fakeRoot(); let prepared = false;
   renderer('openEnding', {esc, g:{casesDone:40}, restart() {}, prepareComicImages(root) {assert.equal(root, dlg); prepared = true;},
     modal(markup, setup, cls) { assert.equal(cls, 'final-ending'); dlg.innerHTML = markup; setup(dlg); }})({k:'finalWin',title:'title',text:'text'});
-  assert.match(dlg.innerHTML, /class="ending-thumbnail"><img src="img\/story-ending-02-v3.png"/);
+  assert.match(dlg.innerHTML, /class="ending-thumbnail"><img src="img\/story-ending-02-v3.webp"/);
   assert.ok(prepared); assert.match(html, /\.final-ending \.ending-thumbnail img\{[^}]*object-fit:cover/);
 });
 
 test('30A: only the two requested action sources opt out of mirroring; runtime adds right-facing class', () => {
   assert.deepEqual(Object.keys(ACTION_CUTSCENE_PRESENTATION).sort(), [
-    'img/CyberHell/crew-plerng-cyberhell-cutscene.jpeg', 'img/West/crew-guard-west-cutscene.jpeg']);
-  for (const src of [...Object.keys(ACTION_CUTSCENE_PRESENTATION), 'img/West/crew-plerng-west-cutscene.jpeg']) {
+    'img/CyberHell/crew-plerng-cyberhell-cutscene.webp', 'img/West/crew-guard-west-cutscene.webp']);
+  for (const src of [...Object.keys(ACTION_CUTSCENE_PRESENTATION), 'img/West/crew-plerng-west-cutscene.webp']) {
     const cut = {className:'',prepend() {},classList:{add(cls) {cut.className += ` ${cls}`;}},querySelector:() => ({}),remove() {}};
     const dlg = {open:true,querySelector:() => null,appendChild(node) {assert.equal(node, cut);}};
     renderer('playActionCutscene', {dlg, battleCutscenes:{image:()=>({}),warm:async()=>{}}, document:{createElement:() => cut}, esc, ACTION_CUTSCENE_PRESENTATION,

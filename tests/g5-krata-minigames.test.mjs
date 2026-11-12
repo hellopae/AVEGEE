@@ -122,7 +122,7 @@ test('G5 new texts have TH+EN; all artwork registered and prompts retained',()=>
   for(const lang of ['th','en']){setLang(lang);for(const key of keys)assert.notEqual(t(key),key);}setLang('th');
   const manifest=readFileSync(new URL('../img/manifest.json',import.meta.url),'utf8');
   const catalog=readFileSync(new URL('../img/preload-catalog.json',import.meta.url),'utf8');
-  for(const name of ['yama-cutscene.jpeg','plerng-cutscene.jpeg','fireball.png']){
+  for(const name of ['yama-cutscene.webp','plerng-cutscene.webp','fireball.webp']){
     assert.ok(existsSync(new URL('../img/krata-minigame/'+name,import.meta.url)));assert.ok(manifest.includes('krata-minigame/'+name));assert.ok(catalog.includes('img/krata-minigame/'+name));
   }
   assert.ok(existsSync(new URL('../output/Codex/g5/prompts.md',import.meta.url)));
@@ -183,12 +183,12 @@ test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, 
       stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>{}});
       body=host.querySelector('.g5-content');
       body.querySelector('.g5-choices').children[0].onclick();
-      assert.ok(body.html.includes(`hero-yama-${zone}-fire-cutscene-v3.png`));
+      assert.ok(body.html.includes(`hero-yama-${zone}-fire-cutscene-v3.webp`));
       stop();
       stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>{}});
       body=host.querySelector('.g5-content');
       body.querySelector('.g5-choices').children[1].onclick();
-      assert.ok(body.html.includes(`plerng-${zone}-training-v2.png`));
+      assert.ok(body.html.includes(`plerng-${zone}-training-v2.webp`));
       stop();
     }
   }finally{Object.assign(globalThis,old);}

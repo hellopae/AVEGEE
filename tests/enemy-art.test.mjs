@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import * as data from '../src/data.js';
+import {imageMeta} from './helpers/image-meta.mjs';
 
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
 const listed = new Set([...manifest.critical, ...manifest.rest, ...Object.values(manifest.zones).flat()].map(p => `img/${p}`));
@@ -47,14 +48,14 @@ for (const loaded of [false, true]) {
 test('new fallback sprites are transparent 512px PNGs and existing regional identity stays intact', async () => {
   const {enemyArt} = await import('../src/enemy-art.js');
   for (const key of ['skeleton','bot','bug','worm']) {
-    const png = readFileSync(new URL(`../img/mob-${key}.png`, import.meta.url));
-    assert.equal(png.subarray(1,4).toString(), 'PNG');
-    assert.equal(png.readUInt32BE(16), 512);
-    assert.equal(png.readUInt32BE(20), 512);
-    assert.equal(png[25], 6, 'PNG must retain RGBA');
+    const png = readFileSync(new URL(`../img/mob-${key}.webp`, import.meta.url));
+    const meta = imageMeta(png);
+    assert.equal(meta.width, 512);
+    assert.equal(meta.height, 512);
+    assert.ok(meta.hasAlpha, 'sprite must retain RGBA');
   }
-  assert.equal(enemyArt('mob-skeleton', 'west'), 'img/West/mob-skeleton-west.png');
-  assert.equal(enemyArt('mob-bug', 'cyberhell'), 'img/CyberHell/mob-bug-cyberhell.png');
-  assert.equal(enemyArt('boss-frontier-west', 'cyberhell'), 'img/West/boss-frontier-west.png');
+  assert.equal(enemyArt('mob-skeleton', 'west'), 'img/West/mob-skeleton-west.webp');
+  assert.equal(enemyArt('mob-bug', 'cyberhell'), 'img/CyberHell/mob-bug-cyberhell.webp');
+  assert.equal(enemyArt('boss-frontier-west', 'cyberhell'), 'img/West/boss-frontier-west.webp');
   assert.equal(enemyArt('hero-yama', 'west'), undefined);
 });

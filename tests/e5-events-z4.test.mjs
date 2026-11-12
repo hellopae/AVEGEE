@@ -49,9 +49,9 @@ test('E5 a→e: warp before approach/preparation, four waves, reinforcement map,
   g.dismissFinalPreparation();encounter(g,'boss');story(g,'ending-capture',images);
   assert.equal(g.gameCompleted,false);
   finishBossJustice(g);story(g,'ending',images);
-  assert.deepEqual(images,['story-cyberhell-01-v2.png','story-cyberhell-reinforcements-01.png',
-    'story-cyberhell-reinforcements-02.png','story-cyberhell-02-v3.png','story-cyberhell-03-v4.png',
-    'story-ending-01-v4.png','story-ending-02-v3.png','story-ending-03-v1.png']);
+  assert.deepEqual(images,['story-cyberhell-01-v2.webp','story-cyberhell-reinforcements-01.webp',
+    'story-cyberhell-reinforcements-02.webp','story-cyberhell-02-v3.webp','story-cyberhell-03-v4.webp',
+    'story-ending-01-v4.webp','story-ending-02-v3.webp','story-ending-03-v1.webp']);
   assert.equal(new Set(images).size,images.length);assert.equal(g.gameCompleted,true);
 });
 test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win',()=>{
@@ -78,7 +78,7 @@ test('E5 cyber breach uses walk-to-boss before existing intro; four waves and sp
   const ev=ZONE_EVENTS.cyberhell[1];assert.equal(ev.atCases,5);assert.equal(ev.waves.length,4);
   assert.equal(ev.waves[3][0].name,'โทรจัน-9');assert.equal(ev.reward.item,'spareHeart');
   assert.equal(breachApproachActors('cyberhell','cyberBreach')[0].art,'boss-frontier');
-  assert.equal(frontierIntroduction('cyberhell','en').image,'img/frontier-cyberhell-intro-v1.png');
+  assert.equal(frontierIntroduction('cyberhell','en').image,'img/frontier-cyberhell-intro-v1.webp');
   const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
   assert.ok(ui.includes("'westVampireBreach','cyberBreach',...Object.values(SIGNAL_KEYS)].includes(breachKey) && !approachReached"));
 });
@@ -135,7 +135,7 @@ test('E5 interrupted presentation reloads each cutscene and map/preparation with
 });
 test('E5 runtime intro is preloaded only in CyberHell, cache bumped, canvas lightning stops with release',()=>{
   const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
-  const path='img/deva-intro/deva-intro-cyberhell-v1.png';assert.ok(existsSync(path));assert.ok(catalog.zones.cyberhell.includes(path));
+  const path='img/deva-intro/deva-intro-cyberhell-v1.webp';assert.ok(existsSync(path));assert.ok(catalog.zones.cyberhell.includes(path));
   assert.ok(!catalog.shared.includes(path));for(const z of ['th','asia','west'])assert.ok(!catalog.zones[z].includes(path));
   assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-zone3-hypnosis-ui'));
   const scene=readFileSync(new URL('../src/scene.js',import.meta.url),'utf8');

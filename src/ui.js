@@ -423,9 +423,9 @@ function bar(v, cls = '') { return `<span class="bar ${cls}"><i style="width:${M
  *  บารมี (g.hp) ไม่ได้อยู่แถวนี้แล้วในม็อกอัป — ย้ายไปเป็นแถบเขียวใต้รูปยมบาทน้อย (drawHudAvatar) */
 function drawRes() {
   $('#res').innerHTML = `
-    <span class="chip tap" data-ex="coin"><img src="img/ui/icon-coin.png" alt=""><b>${Math.round(g.coin)}</b></span>
-    <span class="chip tap" data-ex="order"><img src="img/ui/icon-justice.png" alt=""><b>${Math.round(g.order)}</b></span>
-    <span class="chip tap" data-ex="karma"><img src="img/ui/icon-skull.png" alt=""><b>${g.karma.toFixed(1)}</b></span>
+    <span class="chip tap" data-ex="coin"><img src="img/ui/icon-coin.webp" alt=""><b>${Math.round(g.coin)}</b></span>
+    <span class="chip tap" data-ex="order"><img src="img/ui/icon-justice.webp" alt=""><b>${Math.round(g.order)}</b></span>
+    <span class="chip tap" data-ex="karma"><img src="img/ui/icon-skull.webp" alt=""><b>${g.karma.toFixed(1)}</b></span>
     ${g.mobs.length ? `<span class="chip mob-warn">👹 <b>${g.mobs.length}</b></span>` : ''}`;
   $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
   drawTeamHud();
@@ -1094,7 +1094,7 @@ function syncAva() {
   const a = $('#ava');
   if (!a) return;
   const want = artUrl('hero-yama-profile') || artUrl('hero-yama');
-  if ((a.dataset.want || 'img/hero-yama-profile.png') === want) return;
+  if ((a.dataset.want || 'img/hero-yama-profile.webp') === want) return;
   a.dataset.want = want;
   a.onerror = function () { this.onerror = () => this.remove(); this.src = artUrl('hero-yama'); };
   a.src = want;
@@ -1131,7 +1131,7 @@ new MutationObserver(() => {
   const close = document.createElement('button');
   close.className = 'modal-corner-close';
   close.setAttribute('aria-label', t('common.close'));
-  close.innerHTML = '<img src="img/ui/icon-close.png" alt="">';
+  close.innerHTML = '<img src="img/ui/icon-close.webp" alt="">';
   close.onclick = () => dlg.close();
   dlg.append(close);
 }).observe(dlg, {childList:true, subtree:false, attributes:true, attributeFilter:['open']});
@@ -1624,7 +1624,7 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     `${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
       <button class="gold event-alert-go" data-event-go${ackOnly ? ' data-close' : ''}>${esc(action)}</button>`)}
     <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
-      ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !merchantOpen)}
+      ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.webp', !merchantOpen)}
       ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
       ${prepItemsHtml('bag')}
     </div></div>`, d => {
@@ -1697,7 +1697,7 @@ const eventAlertMainHtml = (title, description, art, actionsHtml, { note = '', e
 
 function openPrisonAlert() {
   openEventAlert('prisonBreak', t('event.prisonBreak.title'), t('event.prisonBreak.alert'),
-    'img/spirit7.png', t('event.prisonBreak.go'), () => {
+    'img/spirit7.webp', t('event.prisonBreak.go'), () => {
       if (g.startPrisonBreak()) { prisonTried = true; openBattle(); }
     }, true);
 }
@@ -1763,12 +1763,12 @@ function updateDevaFab() {
 
 const LEGACY_ZONE_EVENTS = new Set(['prisonBreak', 'frontierBreach', 'devaTest']);
 function storyFoeArt(sp) {
-  if (typeof sp !== 'string') return `img/spirit${sp || 7}.png`;
+  if (typeof sp !== 'string') return `img/spirit${sp || 7}.webp`;
   // Possessed rulers keep their home-zone identity in the CyberHell arena.
-  if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.png`;
+  if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.webp`;
   const z = sp.match(/-(asia|west|cyberhell)$/)?.[1];
-  if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.png`;
-  return artUrl(sp) || `img/${sp}.png`;
+  if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.webp`;
+  return artUrl(sp) || `img/${sp}.webp`;
 }
 function pendingZoneEvents() {
   return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !LEGACY_ZONE_EVENTS.has(ev.k) &&
@@ -1830,7 +1830,7 @@ function openZoneEventAlert(ev) {
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
-    : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
+    : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
   if(ev.k==='thBorderBoss') {
     openEventAlert(ev.k,title,'บอสโซน 1 รออยู่ในถ้ำนอกชายแดน — เดินผ่านป่า น้ำตก หุบเขา และเหวเพื่อไปพบ',foeArt,'เดินไปด่านชายแดน',()=>{dlg.close();g.walkTo(FRONTIER.x,FRONTIER.y);},false,true);
     return;
@@ -2056,7 +2056,7 @@ function showVerdict(v) {
 function openEnding(o) {
   if (o.k === 'finalWin') {
     modal(`<h2>👑 ${esc(o.title)}</h2>
-      <div class="boss"><div class="ending-thumbnail"><img src="img/story-ending-02-v3.png" alt="สันติสุขทั้ง 4 โซน"
+      <div class="boss"><div class="ending-thumbnail"><img src="img/story-ending-02-v3.webp" alt="สันติสุขทั้ง 4 โซน"
         onerror="this.remove()"></div><p style="line-height:var(--leading-body)">${esc(o.text)}</p></div>
       <div class="hint">ปิดคดี ${g.casesDone} เรื่อง · ปราบบอสครบทั้งสี่สาขา · กลับไปท้าบอสเก่าที่รออยู่ในแต่ละโซนได้</div>
       <div class="row"><button id="final-continue" class="gold">เล่นต่อ</button>
@@ -2191,7 +2191,7 @@ function openAuthorityWarning() {
     `${w.text ? `${w.text}\n\n` : ''}${w.n===w.of ? 'หัวหน้าจะตรวจและลงโทษท่านด้วยตนเอง' : `อีก ${w.of-w.n} คำตัดสินแดงติดกัน หัวหน้าจะลงมาด้วยตนเอง`}\nตัดสินได้สีเขียวจะล้างคำตัดสินแดงที่สะสม`, 'รับทราบ');
   if(w.fireball) {
     const hit=document.createElement('div');hit.className='warning-yama';
-    hit.innerHTML=`<img src="${heroCry()}" alt="Yama ถูกลูกไฟ"><img class="warning-fireball" src="img/fx-fireball.png" alt="ลูกไฟ"><p>HP ${Math.round(g.hp)}/${g.hpMax}</p>`;
+    hit.innerHTML=`<img src="${heroCry()}" alt="Yama ถูกลูกไฟ"><img class="warning-fireball" src="img/fx-fireball.webp" alt="ลูกไฟ"><p>HP ${Math.round(g.hp)}/${g.hpMax}</p>`;
     dlg.querySelector('.boss').after(hit);
     playActionCutscene('boss',{image:authorityPunishmentCutscene(g.zone),name:'ลูกไฟตักเตือน'});
     sfx('fire');
@@ -2458,12 +2458,12 @@ export function openFleeConfirm({ container = document.body, kind = 'mob', onCon
 }
 
 /** L2: shield over the head / on the portrait of whoever is in the defend stance.
- *  Real art goes in img/ui/icon-defend-shield.png (see Output/Toby note); until it exists the CSS shield underneath shows. */
+ *  Real art goes in img/ui/icon-defend-shield.webp (see Output/Toby note); until it exists the CSS shield underneath shows. */
 function defendShieldHtml() {
   // No <img> inside: fitBattleSprites() treats every <img> in the squad/fig as a sprite. Art swap is CSS-only (class set below).
   return `<span class="defend-shield" role="img" aria-label="${esc(t('battle.defend.on'))}" title="${esc(t('battle.defend.on'))}"></span>`;
 }
-{ const im = new Image(); im.onload = () => document.documentElement.classList.add('defend-shield-art'); im.src = 'img/ui/icon-defend-shield.png'; }
+{ const im = new Image(); im.onload = () => document.documentElement.classList.add('defend-shield-art'); im.src = 'img/ui/icon-defend-shield.webp'; }
 
 function battleStatusHtml(actor, options = {}) {
   const states = battleStatuses(actor, options);
@@ -2478,7 +2478,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     if (!fx || fx.side !== side || fx.key === 'defend') return '';
     if(side==='you'&&fx.key==='health'&&fx.recipient&&fx.recipient!=='you')return '';    // L2: defending is a stance, not an attack — no slash/claw effect
     const d = FX_OF[fx.key] || FX_OF.atk;
-    return `<img class="fx" src="img/${d.img}.png" alt=""
+    return `<img class="fx" src="img/${d.img}.webp" alt=""
       onerror="this.onerror=null;this.outerHTML='<span class=&quot;fx glyph&quot;>${d.glyph}</span>'">`;
   };
   const shieldAt = id => hp?.defending?.[id] ? defendShieldHtml() : '';
@@ -2488,8 +2488,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
   // ท่าลงทัณฑ์เฉพาะจังหวะที่เราลงมือใส่เขา — ใช้ของบำรุง (fx ลงที่ตัวเอง) ยังยืนท่าเดิม
-  // ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.png วาดหันขวา (ยื่นมือ/ชกไปทางขวา) มาแต่ต้นอยู่แล้ว
-  // ต่างจากท่ายืน hero-yama.png ที่หันหน้าเข้ากล้องตรง ๆ (สมมาตร ไม่มีทิศ) ซึ่งเป็นภาพที่กฎ
+  // ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.webp วาดหันขวา (ยื่นมือ/ชกไปทางขวา) มาแต่ต้นอยู่แล้ว
+  // ต่างจากท่ายืน hero-yama.webp ที่หันหน้าเข้ากล้องตรง ๆ (สมมาตร ไม่มีทิศ) ซึ่งเป็นภาพที่กฎ
   // .fig.you img{transform:scaleX(-1)} ถูกตั้งไว้รองรับแต่แรก (คอมเมนต์ heroFace ด้านบน) — กฎเดียวกันนั้น
   // ไปพลิกท่าโจมตีที่หันขวาอยู่แล้วให้กลับไปหันซ้ายโดยไม่ตั้งใจ ต้องแยกกันคนละเงื่อนไข ไม่ใช่ flip รวด
   // ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — ยมทูตโจมตี ไม่ใช่ยมบาทน้อย: ตอนก่อนหน้านี้ท่านฟาดของยมทูต
@@ -2529,7 +2529,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"
-      style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
+      style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.webp" alt=""></button>
     <div class="ttl">${esc(title)}</div>
     ${hp ? `<div class="cam-world" style="background-image:url('${esc(bg)}')">` : ''}
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
@@ -2558,14 +2558,14 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-current="${selectedId === f.id}" aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
         ${selectedId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
-        <img src="${esc(src)}" class="${foeFaceClass(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
+        <img src="${esc(src)}" class="${foeFaceClass(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.webp'}'">
         ${battleStatusHtml(f)}<span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
           ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
       </button>`;
     }).join('')}</div>` : `<div ${hp ? `data-foe-id="${esc(hp.foes?.[0]?.id)}" role="button" tabindex="0" aria-current="${!!selectedId}"` : ''} class="fig foe${hp?.foes?.[0]?.hypno ? ' signal-controlled' : ''}${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}${selectedId ? ' selected is-target' : ''}">
       ${selectedId ? `<span class="target-arrow">▼ ${esc(t('event.prisonBreak.target'))}</span>` : ''}
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
-      <img src="${foeSrc}" class="${foeFaceClass(foeSrc)}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
+      <img src="${foeSrc}" class="${foeFaceClass(foeSrc)}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.webp'}'">
       ${hp ? battleStatusHtml(hp.foes?.[0]) : ''}<span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}
@@ -2579,7 +2579,7 @@ function actionCutsceneSrc(k) {
   const style = g.outfit || g.zone;
   const powerArt = powerCutsceneImage(k, style, g.abilities);
   if (powerArt) return powerArt;
-  if (k === 'ice') return `img/hero-yama-${style}-ice-cutscene-v2.png`;
+  if (k === 'ice') return `img/hero-yama-${style}-ice-cutscene-v2.webp`;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   // ภาพท่าที่ปลดล็อกจากบอสชายแดน
   const unlockedPose = k === 'fire' && g.abilities?.bigFire ? 'fire'
@@ -2589,15 +2589,15 @@ function actionCutsceneSrc(k) {
              : k === 'valkyrieSpear' && g.abilities?.valkyrieSpear ? 'valkyrie-spear'
              : k === 'cooldownClock' && g.abilities?.cooldownClock ? 'clock-reset' : null;
   if (unlockedPose) {
-    if (style === 'th') return `img/hero-yama-${unlockedPose}-cutscene.jpeg`;
-    if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${unlockedPose}-cutscene.jpeg`;
+    if (style === 'th') return `img/hero-yama-${unlockedPose}-cutscene.webp`;
+    if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${unlockedPose}-cutscene.webp`;
   }
   const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
              : k === 'ice' ? 'ice'
              : k === 'fire' ? 'atk' : null;
   if (!pose) return null;
-  if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
-  return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
+  if (style === 'th') return `img/hero-yama-${pose}-cutscene.webp`;
+  return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.webp` : null;
 }
 
 /** Crew and Guard use their branch's action art, regardless of Yama's outfit. */
@@ -2691,7 +2691,7 @@ function openTrial(initialError = '') {
   let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false, reaction = 'fear', trialClosed = false;
   const reactionTimers=[];
   let activeSoulPose = null;
-  const baseSoulSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+  const baseSoulSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.webp` : `img/spirit${s.sp || 7}.webp`;
   soulPoseAssets(baseSoulSrc).forEach(src => { const im = new Image(); im.src = src; });
   // P2: the three-page "read the name colour" lesson, once per save (after the first-warrant lesson)
   const traitLessonHtml = page => {
@@ -2742,12 +2742,12 @@ function openTrial(initialError = '') {
     // ไอคอนปุ่มสอบสวนใช้ไฟล์ที่เตรียมไว้ใน img/
     const topActions =
       `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
-       <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.png" alt="">${esc(t('trial.guideBook'))}</button>
-       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.png" alt="">${esc(t('trial.lockCase'))}</button>
-       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.png" alt="">${esc(t('trial.skipCase'))}</button>`;
+       <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.webp" alt="">${esc(t('trial.guideBook'))}</button>
+       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.webp" alt="">${esc(t('trial.lockCase'))}</button>
+       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.webp" alt="">${esc(t('trial.skipCase'))}</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
-    const powerImg = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', hypno:'img/fx-hypno.png' };
+    const powerImg = { roar:'img/icon-fang.webp', mirror:'img/item-mirror.webp', hypno:'img/fx-hypno.webp' };
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่เปลี่ยนเป็นคูลดาวน์เวลาจริง (p.realtime) ไม่ใช้ ammo/item อีกแล้ว
     // แยกป้ายกำกับปุ่มเป็นสองแบบ: roar โชว์เวลานับถอยหลัง mm:ss · มิเรอร์/สะกดจิตยังโชว์จำนวนที่เหลือแบบเดิม
     const powerChoices = powerDefs.map(p => {
@@ -2796,7 +2796,7 @@ function openTrial(initialError = '') {
     }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
-    const forceIcon = i => `img/icon-force-${i}.png`;
+    const forceIcon = i => `img/icon-force-${i}.webp`;
     const forceChoices = answer?.intensity === 0
       ? `<button class="orb-choice is-revealed" disabled title="${esc(t('trial.noPunishment'))}"><span class="force-none">🕊️</span><b>${esc(t('trial.noPunishment'))}</b><span class="reveal-mark" aria-hidden="true">✓</span></button>`
       : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
@@ -2855,7 +2855,7 @@ function openTrial(initialError = '') {
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
         <div class="fig foe${activeSoulPose && Date.now() < fearUntil ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
-               onerror="this.onerror=null;this.src='img/spirit7.png'">
+               onerror="this.onerror=null;this.src='img/spirit7.webp'">
           ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
           <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div><span class="relief-label" role="status">น้ำตาแห่งความโล่งใจ · มีผู้รับฟังความจริงแล้ว</span>
           <div class="soul-fear" aria-hidden="true"><i class="fear-gloom"></i><i class="fear-burst"></i><i class="fear-sweat s1"></i><i class="fear-sweat s2"></i><i class="fear-sweat s3"></i><i class="fear-tremble l"></i><i class="fear-tremble r"></i></div></div>
@@ -2864,10 +2864,10 @@ function openTrial(initialError = '') {
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
       <div class="top-left-icons">
-        <button class="trial-pause" data-trial-pause aria-label="${esc(t('trial.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
-        <button class="icon-settings-mini" data-arena-settings title="${esc(t('trial.settings'))}"><img src="img/ui/icon-setting2.png" alt=""></button>
+        <button class="trial-pause" data-trial-pause aria-label="${esc(t('trial.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>
+        <button class="icon-settings-mini" data-arena-settings title="${esc(t('trial.settings'))}"><img src="img/ui/icon-setting2.webp" alt=""></button>
       </div>
-      <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.png" alt=""></button>
+      <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.webp" alt=""></button>
 
       ${!g.taught.includes('trial-calculation') ? `<div class="trial-first-lesson" role="dialog" aria-label="วิธีออกหมายครั้งแรก">${firstTrialLesson}<button class="gold" data-lesson-done>เข้าใจแล้ว เริ่มสอบสวน</button></div>`
         : !g.taught.includes('interrogation-traits') ? traitLessonHtml(traitLessonPage) : ''}
@@ -2951,7 +2951,7 @@ function openTrial(initialError = '') {
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
-      guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.png" alt=""></button><h2>คู่มือนรก</h2>
+      guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.webp" alt=""></button><h2>คู่มือนรก</h2>
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
         <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
@@ -3197,7 +3197,7 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
 function questReceiptHtml(r,celebrate=false){
   if(!r)return '';
   const rows=[];
-  if(r.coin)rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">${r.coin>0?'+':''}${r.coin}</span></div>`);
+  if(r.coin)rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.webp" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">${r.coin>0?'+':''}${r.coin}</span></div>`);
   if(r.exp)rows.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt">+${r.exp}</span></div>`);
   for(const[k,n]of Object.entries(r.items||{}))if(n>0&&ITEMS[k])rows.push(`<div class="reward-row">${itemImg(k)}<span><b>${esc(itemName(k))}</b></span><span class="amt">×${n}</span></div>`);
   if(r.skill&&COMBAT_SKILLS[r.skill])rows.push(`<div class="reward-row power"><img src="${esc(SKILL_ICONS[r.skill]||'')}" alt="" onerror="this.remove()"><span><b>${esc(COMBAT_SKILLS[r.skill].name)}</b><small>ท่าไม้ตายใหม่</small></span></div>`);
@@ -3254,7 +3254,7 @@ function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
     const near = Math.hypot(g.player.x - site.x, g.player.y - site.y) <= 150;
-    modal(`<h2>🍵 เยี่ยมนิราที่ศาลาน้ำชา</h2><img src="img/story-asia-05-v2.png" alt="นิราพักฟื้น" style="width:100%;border-radius:12px">
+    modal(`<h2>🍵 เยี่ยมนิราที่ศาลาน้ำชา</h2><img src="img/story-asia-05-v2.webp" alt="นิราพักฟื้น" style="width:100%;border-radius:12px">
       <p>นิรากำลังพักฟื้น อีก ${g.niraRest.remaining} วาระจะกลับมาช่วยงาน</p>
       <div class="row"><button id="visit-nira" class="gold" ${g.niraRest.visited ? 'disabled' : ''}>${g.niraRest.visited ? 'เยี่ยมแล้ว · ให้นิราพักต่อ' : near ? 'แวะเยี่ยมและส่งกำลังใจ' : 'เดินไปเยี่ยมที่ศาลาน้ำชา'}</button><button data-close>ให้นิราพักก่อน</button></div>`,
       d => d.querySelector('#visit-nira').onclick = () => { if (!near) { d.close(); g.walkTo(site.x, site.y); } else if (g.visitNira()) { d.close(); refresh(); } });
@@ -3343,7 +3343,7 @@ function openMerchant() {
   const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
-    dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
+    dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.webp" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       ${merchantGreet}${questOwnerButtonHtml(g,'merchant')}
       <h3>เสบียงสำหรับยมทูต</h3>${foodSupplyCard()}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
@@ -3536,17 +3536,17 @@ function openFrontierWalk(invasionKey = null) {
         <button class="frw-fab" id="frw-challenge" type="button" hidden></button>
         <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
       <div class="frw-res" aria-label="ทรัพยากร">
-        ${[['img/ui/icon-coin.png',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.png',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.png',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.png',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
+        ${[['img/ui/icon-coin.webp',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.webp',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.webp',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.webp',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
       </div>
       <div class="frw-controls">
-        <button id="frw-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
-        <button id="frw-settings" class="st-icon-btn" aria-label="${esc(t('pause.settings'))}"><img src="img/ui/icon-setting2.png" alt=""></button>
+        <button id="frw-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>
+        <button id="frw-settings" class="st-icon-btn" aria-label="${esc(t('pause.settings'))}"><img src="img/ui/icon-setting2.webp" alt=""></button>
       </div>
       <div class="frw-bottom">
         <div class="frw-avatar"><div><img src="${artUrl('hero-yama-profile') || heroFace()}" alt="${esc(HERO_NAME)}"><span>${[1,2,3].map(l=>`<i class="${g.level>=l?'on':''}">★</i>`).join('')}</span></div>
           <span class="hud-hpbar"><i style="width:${Math.max(0,Math.min(100,g.hp/g.hpMax*100))}%"></i></span><b>${esc(t('hud.heroName'))}</b></div>
-        <button id="frw-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('room.hud.book'))}</span></button>
-        <button id="frw-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>${esc(t('hud.bag'))}</span></button>
+        <button id="frw-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.webp" alt=""><span>${esc(t('room.hud.book'))}</span></button>
+        <button id="frw-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.webp" alt=""><span>${esc(t('hud.bag'))}</span></button>
       </div>
       <small class="frw-status">ระลอก ${wave} · ศัตรู <b id="frw-count">0</b>/${maxOnScreen(wave)}</small>
     </div>`;
@@ -4053,10 +4053,10 @@ function openBattle(after) {
         rest ? (b.challenge ? t('challenge.rest.text', { wave:b.pendingWave }) : b.pendingWave === 4 ? t('battle.prep.rest4') : t('battle.prep.rest8')) : t('battle.prep.sub'),
         prepFoeArt(), `<button class="gold event-alert-go" data-prep-go>⚔️ ${esc(goLabel)}</button>`,
         { note: b.proofBonus ? `<div class="prep-note good">✓ ${esc(t('battle.prep.proof'))} ${b.proofBonus}</div>` : '',
-          extraTop: `<div class="prep-top-actions"><button data-prep-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+          extraTop: `<div class="prep-top-actions"><button data-prep-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>
             <button data-prep-hide aria-label="${esc(t('common.close'))}">✕</button></div>` })}
       <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
-        ${prepCardHtml('merchant', t('event.prep.merchant'), g.zoneCaptivesFree() ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !g.zoneCaptivesFree())}
+        ${prepCardHtml('merchant', t('event.prep.merchant'), g.zoneCaptivesFree() ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.webp', !g.zoneCaptivesFree())}
         ${prepCardHtml('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
         ${prepItemsHtml('prep')}
       </div></div></div></div>` : '';
@@ -4089,13 +4089,13 @@ function openBattle(after) {
     // FX5 (owner 23:43): the ultimate row is not shown at all until it is unlocked (g.abilities.teamJudgment); once unlocked it is the same row as before
     const teamJudgmentChoice = !g.abilities?.teamJudgment ? '' : battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24`);
     // Q3: ท่าไม้ตายอยู่ล่างสุดของรายการพลัง (ใต้สะกดจิต)
-    const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
-      + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
-      + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม · ทุกเป้าหมาย', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
-      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `${t('battle.mp')} ${BATTLE.mpCost.rage}`) : '')
-      + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาลคีรี · ทุกเป้าหมาย', mp >= BATTLE.mpCost.spear, `${t('battle.mp')} ${BATTLE.mpCost.spear}`) : '')
-      + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
-      + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '')
+    const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.webp' : 'img/fx-fireball.webp', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
+      + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.webp', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
+      + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.webp', 'พัดสายลม · ทุกเป้าหมาย', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
+      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.webp', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `${t('battle.mp')} ${BATTLE.mpCost.rage}`) : '')
+      + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.webp', 'หอกวาลคีรี · ทุกเป้าหมาย', mp >= BATTLE.mpCost.spear, `${t('battle.mp')} ${BATTLE.mpCost.spear}`) : '')
+      + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.webp') : '')
+      + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.webp') : '')
       + teamJudgmentChoice;
     const currentTurn = !prepOn ? g.beginBattleTurns() : null;
     const actor = g.battleActors().find(c => c.id === (b.actorId || 'you')) || g.battleActors()[0];
@@ -4104,11 +4104,11 @@ function openBattle(after) {
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
       battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
-      + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : `1 ครั้งต่อชุด · ไม่ใช้${t('battle.mp')} · ไม่รีเซ็ตไม้ตายทีม`) : '');
+      + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.webp', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : `1 ครั้งต่อชุด · ไม่ใช้${t('battle.mp')} · ไม่รีเซ็ตไม้ตายทีม`) : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
     const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
-    const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
+    const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.webp" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.webp';
     const unlockedSkill = skillForActor(actor);
     const skillChoiceFor = k => battleChoice(k, SKILL_ICONS[k], COMBAT_SKILLS[k].name, !g.skillWhy(k, actor), g.skillWhy(k, actor) || `กำลังใจ ${COMBAT_SKILLS[k].morale} · 120 วินาที`);
     // QUEST-REWARDS: an ultimate won from a quest fight sits next to the trained one (bound to this roster ID only — see combat-skills.js)
@@ -4116,7 +4116,7 @@ function openBattle(after) {
     const newSkillChoice = (unlockedSkill && g.skillUnlocked(actor, unlockedSkill) ? skillChoiceFor(unlockedSkill) : '') + questSkillChoices;
     const specialChoice = newSkillChoice + battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
-      : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
+      : battleChoice('strike', 'img/fx-slash.webp', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && (pending === special || pending === unlockedSkill)));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
@@ -4208,7 +4208,7 @@ function openBattle(after) {
     const meter = (value, max, type, label = '') => `<span class="battle-meter ${type}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.max(0, Math.round(value))}"><i style="width:${Math.max(0, Math.min(100, 100 * value / (max || 1)))}%"></i></span>`;
     // Same stable back-to-front order as the visible squad; Yama is the last/front slot.
     const team = squadMembers;
-    stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
+    stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>`}
       ${battleTurnOrderHtml(b)}
       <div class="battle-team-hud">
         <div class="battle-team-roster">
@@ -5023,7 +5023,7 @@ function openOutfit() {
     ${ZONES.map(z => {
       const lock = !g.outfitsOwned?.includes(z.k), here = (g.outfit || 'th') === z.k;
       const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
-      const face = z.k === 'th' ? 'img/hero-yama.png' : `img/${folders[z.k]}/hero-yama-${z.k}.png`;
+      const face = z.k === 'th' ? 'img/hero-yama.webp' : `img/${folders[z.k]}/hero-yama-${z.k}.webp`;
       return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
         <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
         <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
@@ -5062,7 +5062,7 @@ const placeholderSrc = text => {
 /** <img> ของไอเท็ม — ไฟล์หายใช้ fallback ที่แสดงได้แทนรูปแตก */
 function itemImg(k, attrs = '') {
   const d = ITEMS[k]; if (!d) return '';
-  const src = artUrl(d.img) || `img/${d.img}.png`;
+  const src = artUrl(d.img) || `img/${d.img}.webp`;
   const ph = ` onerror="this.onerror=null;this.src='${placeholderSrc(d.placeholder || d.glyph || d.fallback)}'"`;
   return `<img src="${src}" alt="${esc(itemName(k))}" ${attrs}${ph}>`;
 }
@@ -5097,7 +5097,7 @@ function outfitCards() {
   return ZONES.map(z => {
     const why = g.outfitWhy(z.k), lock = !!why, here = (g.outfit || 'th') === z.k;
     const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
-    const face = z.k === 'th' ? 'img/hero-yama.png' : `img/${folders[z.k]}/hero-yama-${z.k}.png`;
+    const face = z.k === 'th' ? 'img/hero-yama.webp' : `img/${folders[z.k]}/hero-yama-${z.k}.webp`;
     return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
       <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
       <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
@@ -5121,7 +5121,7 @@ function weaponCards() {
     return `<small class="weapon-compare ${delta > 0 ? 'gain' : delta < 0 ? 'loss' : ''}">${esc(t('menu.bonusCompare', { current, next }))}<br>${esc(t('menu.bonusChange', { delta:delta > 0 ? `+${delta}` : delta }))}</small>`;
   };
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' }, style = g.outfit || g.zone;
-  const face = style === 'th' ? 'img/hero-yama.png' : `img/${folders[style]}/hero-yama-${style}.png`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
+  const face = style === 'th' ? 'img/hero-yama.webp' : `img/${folders[style]}/hero-yama-${style}.webp`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
   const base = `<div class="outfit-card weapon-card${eq ? '' : ' selected'}">
     <img src="${baseSwordIconSrc}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${face}'">
     <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote', { n:baseSwordAttack(b => g.normalAttack(b)) }))}</small>${comparison(null)}</span>
@@ -5158,7 +5158,7 @@ function openBag() {
   const counts = { items:allCarried.reduce((sum, [, n]) => sum + n, 0), outfits:g.outfitsOpen().length,
     weapons:Object.values(g.weapons?.owned || {}).filter(Boolean).length };
 
-  modal(`<div class="menu-heading"><img src="img/ui/icon-bag.png" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
+  modal(`<div class="menu-heading"><img src="img/ui/icon-bag.webp" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
     <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${BAG_SECTIONS.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
     <section id="bag-panel-items" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-items" ${bagSection === 'items' ? '' : 'hidden'}>
       <div class="bag-filters" role="group" aria-label="${esc(t('menu.items'))}">${['all','recovery','material','other'].map(key => `<button data-bag-filter="${key}" aria-pressed="${bagFilter === key}">${esc(t('menu.' + key))}</button>`).join('')}</div>
@@ -5214,7 +5214,7 @@ function openCoachInbox() {
   g.save();
   const paint = () => {
     const st = available[index];
-    dlg.innerHTML = `<div class="coach-reader-head"><img src="img/ui/icon-bell.png" alt=""><h2>${esc(t('coach.notice'))}</h2></div>
+    dlg.innerHTML = `<div class="coach-reader-head"><img src="img/ui/icon-bell.webp" alt=""><h2>${esc(t('coach.notice'))}</h2></div>
       ${!st ? `<h3>📜 ${esc(t('coach.goal'))}</h3><p>${esc(miniGoalText())}</p>` : `
       <p class="coach-reader-count">${esc(t('coach.chapter'))} ${TUTOR.indexOf(st) + 1} / ${TUTOR.length}</p>
       <h3>${esc(st.title)}</h3><p>${esc(st.text)}</p>
@@ -5259,7 +5259,7 @@ function drawCoach() {
   const unread = available.filter(st => !g.taught.includes(st.k)).length;
   coachEl.hidden = false;
   coachEl.innerHTML = `<button class="coach-bell ${unread ? 'has-unread' : ''}" aria-label="${esc(t('coach.notice'))}">
-    <img src="img/ui/icon-bell.png" alt="">${unread ? `<span class="coach-count">${unread}</span>` : ''}</button>`;
+    <img src="img/ui/icon-bell.webp" alt="">${unread ? `<span class="coach-count">${unread}</span>` : ''}</button>`;
   coachEl.querySelector('button').onclick = openCoachInbox;
 }
 
@@ -5286,10 +5286,10 @@ function openPause(allowReplacing = false) {
       <strong>${esc(t('pause.title'))}</strong>
     </div>
     <nav class="pause-actions" aria-label="${esc(t('pause.title'))}">
-      <button id="pause-home"><img src="img/ui/icon-home.png" alt=""><span>${esc(t('pause.home'))}</span></button>
-      <button id="pause-resume"><img src="img/ui/icon-play.png" alt=""><span>${esc(t('pause.resume'))}</span></button>
-      <button id="pause-settings"><img src="img/ui/icon-setting2.png" alt=""><span>${esc(t('pause.settings'))}</span></button>
-      <button id="pause-more"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('profile.more'))}</span></button>
+      <button id="pause-home"><img src="img/ui/icon-home.webp" alt=""><span>${esc(t('pause.home'))}</span></button>
+      <button id="pause-resume"><img src="img/ui/icon-play.webp" alt=""><span>${esc(t('pause.resume'))}</span></button>
+      <button id="pause-settings"><img src="img/ui/icon-setting2.webp" alt=""><span>${esc(t('pause.settings'))}</span></button>
+      <button id="pause-more"><img src="img/ui/icon-book.webp" alt=""><span>${esc(t('profile.more'))}</span></button>
     </nav>`;
   pauseDlg.querySelector('#pause-resume').onclick = finishPause;
   pauseDlg.querySelector('#pause-home').onclick = () => { finishPause(); goMenu(); };
@@ -5333,7 +5333,7 @@ function updatePlay() {
   }
   // PAUSE ขวาบนเปิดหน้าต่างพักเสมอ; ปุ่มเปิด/ปิดศาลด้านล่างคุมเฉพาะคดีใหม่และการมาถึง
   const hp = $('#hud-pause-img');
-  if (hp) hp.src = 'img/ui/icon-pause.png';
+  if (hp) hp.src = 'img/ui/icon-pause.webp';
   const court = $('#hud-open-court');
   if (court) {
     court.textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
@@ -5400,23 +5400,23 @@ function drawHeroProfile() {
   const sleepHint = !g.teaBedReady() && g.hp < g.hpMax ? `<small class="profile-hint">${esc(t('sleep.needTea'))}</small>` : '';
   const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint, 'hp')
     + row('<span class="profile-emoji">🔹</span>', `${Math.round(g.mp)}/${g.mpMax}`, t('battle.mp'), `<span class="hero-profile-hp profile-mp"><i style="width:${Math.max(0, Math.min(100, 100 * g.mp / g.mpMax))}%"></i></span>`)
-    + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
-    + row('img/item-food.png', Math.round(g.food), t('profile.food'))
-    + row('img/ui/icon-justice.png', Math.round(g.order), t('profile.order'))
-    + row('img/ui/icon-skull.png', g.karma.toFixed(1), t('profile.karma'))
-    + row('img/ui/icon-book.png', g.casesDone, t('profile.cases'));
+    + row('img/ui/icon-coin.webp', Math.round(g.coin), t('profile.coin'))
+    + row('img/item-food.webp', Math.round(g.food), t('profile.food'))
+    + row('img/ui/icon-justice.webp', Math.round(g.order), t('profile.order'))
+    + row('img/ui/icon-skull.webp', g.karma.toFixed(1), t('profile.karma'))
+    + row('img/ui/icon-book.webp', g.casesDone, t('profile.cases'));
   const attack = `${BATTLE.atk[0] + (g.level - 1) * 2}–${BATTLE.atk[1] + (g.level - 1) * 2}`;
   const lvBonus = (g.level - 1) * 2;
   const fireDmg = g.controlledFireDamage(BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus);
-  const powerIcon = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png' };
+  const powerIcon = { roar:'img/icon-fang.webp', mirror:'img/item-mirror.webp', ice:'img/fx-ice.webp', hypno:'img/fx-hypno.webp' };
   const abilityRows = [
-    ['flameCharge', 'img/fx-flame-charge.png', `${65 + (g.level - 1) * 3}`, 'charge'],
-    ['windFan', 'img/fx-fan-wind.png', t('battle.mp') + ' ' + BATTLE.mpCost.wind, 'wind'],
-    ['rage', 'img/fx-rage.png', t('battle.mp') + ' ' + BATTLE.mpCost.rage, 'rage'],
-    ['valkyrieSpear', 'img/fx-valkyrie-spear.png', t('battle.mp') + ' ' + BATTLE.mpCost.spear, 'spear'],
+    ['flameCharge', 'img/fx-flame-charge.webp', `${65 + (g.level - 1) * 3}`, 'charge'],
+    ['windFan', 'img/fx-fan-wind.webp', t('battle.mp') + ' ' + BATTLE.mpCost.wind, 'wind'],
+    ['rage', 'img/fx-rage.webp', t('battle.mp') + ' ' + BATTLE.mpCost.rage, 'rage'],
+    ['valkyrieSpear', 'img/fx-valkyrie-spear.webp', t('battle.mp') + ' ' + BATTLE.mpCost.spear, 'spear'],
   ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
-  const powers = row('img/icon-sword.png', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
-    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo} · ${t('g5.level')} ${g.fireControlState().level}/3`)
+  const powers = row('img/icon-sword.webp', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
+    + row('img/fx-fireball.webp', fireDmg, `${t('profile.fire')} ×${g.fireAmmo} · ${t('g5.level')} ${g.fireControlState().level}/3`)
     + abilityRows.join('')
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
@@ -5479,7 +5479,7 @@ function drawMute() {
   if (!b) return;
   const off = allMuted();
   const img = b.querySelector('img');
-  if (img) img.src = `img/ui/${off ? 'icon-sound-close' : 'icon-sound'}.png`;
+  if (img) img.src = `img/ui/${off ? 'icon-sound-close' : 'icon-sound'}.webp`;
   b.setAttribute('aria-pressed', String(off));
   const label = t(off ? 'hud.unmute' : 'hud.mute');
   b.title = label; b.setAttribute('aria-label', label);
@@ -6150,13 +6150,13 @@ function openStation(k, emergency = false) {
       <div class="st-drawer" id="st-right" hidden></div>
       <div class="st-alert" id="st-alert"></div>
       <div class="st-controls">
-        <button id="st-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+        <button id="st-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.webp" alt=""></button>
       </div>
       <div class="st-bottom-left">
-        <div class="st-avatar"><span class="st-ava-row"><img src="img/hero-yama-profile.png" alt=""><span class="hud-rank-stars" id="st-stars"><i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i></span></span>
+        <div class="st-avatar"><span class="st-ava-row"><img src="img/hero-yama-profile.webp" alt=""><span class="hud-rank-stars" id="st-stars"><i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i></span></span>
           <span class="hud-hpbar"><i id="st-hud-hp"></i></span><small>${esc(HERO_NAME)}</small></div>
-        <button id="st-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('room.hud.book'))}</span></button>
-        <button id="st-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>${esc(t('hud.bag'))}</span></button>
+        <button id="st-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.webp" alt=""><span>${esc(t('room.hud.book'))}</span></button>
+        <button id="st-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.webp" alt=""><span>${esc(t('hud.bag'))}</span></button>
       </div>
     </div>`;
   openDlg('hudwrap');           // กรอบเดียวกับห้องสอบสวน — .hud ต้องการกรอบใสเต็มความกว้าง
@@ -6192,7 +6192,7 @@ function openStation(k, emergency = false) {
     const after = ok => { if (ok) { sfx('stamp'); if (mine()) panels(); refresh(); } return ok; };
     diag = mountDiagnosis({
       g, roomK: k, box: sheet,
-      portrait: m => artUrl(soulKey(m.sp || 7)) || 'img/spirit7.png',
+      portrait: m => artUrl(soulKey(m.sp || 7)) || 'img/spirit7.webp',
       escorting: id => !!R?.prisonEscorting(id),
       onOpen: () => { pauseForDlg(); hud?.classList.add('diag-open'); R.lock(true); covered().forEach(el => el.inert = true); },
       onClose: () => {
@@ -6427,7 +6427,7 @@ function openBattleReward() {
   if (!r || rewardOpen || dlg.open) return;
   rewardOpen = true; sfx('star');
   const model = rewardView(r), totals = [], rows = [];
-  if (model.coin > 0) totals.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt" aria-hidden="true" data-reward-coin>+${model.coin}</span></div>`);
+  if (model.coin > 0) totals.push(`<div class="reward-row"><img src="img/ui/icon-coin.webp" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt" aria-hidden="true" data-reward-coin>+${model.coin}</span></div>`);
   if (model.exp > 0) totals.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt" aria-hidden="true" data-reward-exp>+${model.exp}</span></div>`);
   for (const it of model.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
   for (const id of model.weapons) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
@@ -6560,7 +6560,7 @@ function openDiscovery() {
   pauseForDlg();
   sfx('item');
   const icon = kind === 'item' ? itemImg(k, 'style="width:96px;height:96px;object-fit:contain"')
-    : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.png' : `img/fx-${k}.png`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
+    : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.webp' : `img/fx-${k}.webp`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
   modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(kind === 'item' ? itemName(k) : def.name)}</h2>
     ${icon}<p><b>ใช้ทำอะไร:</b> ${esc(kind === 'item' ? itemText(k, 'desc') : def.desc || def.text || def.say)}</p>
     <p><b>วิธีใช้:</b> ${esc(kind === 'item' ? itemText(k, 'howTo') : def.howTo)}</p>
@@ -6836,7 +6836,7 @@ function startPlay(fresh) {
 /** โลโก้หน้าปกมีสองไฟล์แยกภาษา (ข้อ A.1) — สลับ src ตรงๆ ไม่ต้องวาดใหม่ทั้งหน้า */
 function applyTitleLang() {
   const logo = $('#title-logo');
-  const src = getLang() === 'en' ? 'img/ui/logo-eng.png' : 'img/ui/logo-th.png';
+  const src = getLang() === 'en' ? 'img/ui/logo-eng.webp' : 'img/ui/logo-th.webp';
   if (logo) logo.src = src;
   const splashLogo = $('#splash-logo');
   if (splashLogo) splashLogo.src = src;
@@ -6913,8 +6913,8 @@ function openSaveSlots(message='') {
  *  และทุกครั้งที่ภาษาเปลี่ยนระหว่างกล่องเปิดอยู่ (ผูกกับ onLangChange ด้านล่าง) */
 function paintSettingsLangAssets(d) {
   const en = getLang() === 'en';
-  const save = d.querySelector('#s-save-img'); if (save) save.src = en ? 'img/ui/icon-save-eng.png' : 'img/ui/icon-save-th.png';
-  const lg = d.querySelector('#s-lang-img'); if (lg) lg.src = en ? 'img/ui/icon-change-eng.png' : 'img/ui/icon-change-th.png';
+  const save = d.querySelector('#s-save-img'); if (save) save.src = en ? 'img/ui/icon-save-eng.webp' : 'img/ui/icon-save-th.webp';
+  const lg = d.querySelector('#s-lang-img'); if (lg) lg.src = en ? 'img/ui/icon-change-eng.webp' : 'img/ui/icon-change-th.webp';
 }
 
 /** ข้อ B ชุด 15 — กล่องมืดขอบทอง ตามม็อกอัป UI3-menu-*.jpg
@@ -6922,14 +6922,14 @@ function paintSettingsLangAssets(d) {
 function openSettings() {
   const inGame = started;
   modal(`<div class="settings-head">
-      <img class="settings-gear" src="img/ui/icon-setting2.png" alt="">
+      <img class="settings-gear" src="img/ui/icon-setting2.webp" alt="">
       <span class="settings-title-pill" data-t="settings.title"></span>
-      <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.png" alt=""></button>
+      <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.webp" alt=""></button>
     </div>
 
     <div class="settings-row" data-off="${AUDIO.bgmOn === false}">
       <button type="button" id="s-bgm-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.bgmOn === false}"
-        aria-label="${esc(t('settings.musicToggle'))}" title="${esc(t('settings.musicToggle'))}"><img src="img/ui/${AUDIO.bgmOn === false ? 'icon-music-close' : 'icon-music'}.png" alt=""></button>
+        aria-label="${esc(t('settings.musicToggle'))}" title="${esc(t('settings.musicToggle'))}"><img src="img/ui/${AUDIO.bgmOn === false ? 'icon-music-close' : 'icon-music'}.webp" alt=""></button>
       <div class="settings-row-body">
         <label for="s-bgm"><span data-t="settings.music"></span><output for="s-bgm" id="s-bgm-value">${Math.round(AUDIO.bgm * 100)}%</output></label>
         <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
@@ -6937,7 +6937,7 @@ function openSettings() {
     </div>
     <div class="settings-row" data-off="${AUDIO.sfxOn === false}">
       <button type="button" id="s-sfx-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.sfxOn === false}"
-        aria-label="${esc(t('settings.soundsToggle'))}" title="${esc(t('settings.soundsToggle'))}"><img src="img/ui/${AUDIO.sfxOn === false ? 'icon-sound-close' : 'icon-sound'}.png" alt=""></button>
+        aria-label="${esc(t('settings.soundsToggle'))}" title="${esc(t('settings.soundsToggle'))}"><img src="img/ui/${AUDIO.sfxOn === false ? 'icon-sound-close' : 'icon-sound'}.webp" alt=""></button>
       <div class="settings-row-body">
         <label for="s-sfx"><span data-t="settings.sounds"></span><output for="s-sfx" id="s-sfx-value">${Math.round(AUDIO.sfx * 100)}%</output></label>
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
@@ -6967,17 +6967,17 @@ function openSettings() {
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
-        <img id="s-lang-img" src="img/ui/icon-change-th.png" alt="">
+        <img id="s-lang-img" src="img/ui/icon-change-th.webp" alt="">
       </button>
     </div>
 
     <div class="settings-actions">
       ${inGame ? `<div class="settings-action-wrap"><button id="s-home" class="settings-square" data-t-title="settings.home" data-t-aria="settings.home" aria-label="home">
-          <img src="img/ui/icon-home.png" alt=""></button><small data-t="settings.home"></small></div>
+          <img src="img/ui/icon-home.webp" alt=""></button><small data-t="settings.home"></small></div>
         <div class="settings-action-wrap"><button id="s-restart" class="settings-square" data-t-title="settings.restart" data-t-aria="settings.restart" aria-label="restart">
-          <img src="img/ui/icon-restart.png" alt=""></button><small data-t="settings.restart"></small></div>` : ''}
+          <img src="img/ui/icon-restart.webp" alt=""></button><small data-t="settings.restart"></small></div>` : ''}
       <div class="settings-action-wrap"><button id="s-save" ${inGame?'':'disabled'} class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
-        <img id="s-save-img" src="img/ui/icon-save-th.png" alt="">
+        <img id="s-save-img" src="img/ui/icon-save-th.webp" alt="">
       </button><small data-t="settings.save"></small></div>
     </div>
     <div class="hint" id="s-saved-hint" style="text-align:center;min-height:1.4em"></div>`,
@@ -6997,7 +6997,7 @@ function openSettings() {
         b.onclick = () => {
           AUDIO[key] = AUDIO[key] === false;           // เปิด↔ปิด
           const off = AUDIO[key] === false;
-          img.src = `img/ui/${off ? offIcon : onIcon}.png`; b.setAttribute('aria-pressed', String(off)); row.dataset.off = String(off);
+          img.src = `img/ui/${off ? offIcon : onIcon}.webp`; b.setAttribute('aria-pressed', String(off)); row.dataset.off = String(off);
           syncBgm(); saveAudio(); drawMute();
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };

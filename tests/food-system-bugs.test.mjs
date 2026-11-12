@@ -15,7 +15,7 @@ const art=()=>'';
 test('BUG 1: the team window shows rice in stock (the HUD counter) but "ให้ข้าวปั้น" is disabled — one stock must drive both', ()=>{
   const g=game();g.hire('dam');
   const dam=g.crewOf('dam');dam.hunger=20;dam.morale=100;
-  g.food=50;delete g.inventory.food;   // the HUD shows 50 rice balls (img/item-food.png + g.food) … the button needed a different stock
+  g.food=50;delete g.inventory.food;   // the HUD shows 50 rice balls (img/item-food.webp + g.food) … the button needed a different stock
   const html=teamManageHtml(g,art);
   const button=html.match(/<button data-team-feed="th:dam"[^>]*>/)[0];
   assert.doesNotMatch(button,/disabled/,'rice is in stock → the button must work');

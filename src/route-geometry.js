@@ -45,7 +45,7 @@ export const ROUTE_GEOMETRY = {
     corridor:DUNGEON_CORRIDOR,
     walkMask:BORDER12_MASK,
     enabled:true, geometryVersion:2, background:'img/frontier-route/zone1-2-v6.webp', patrolFoe:[2,3,2,5,3,5],
-    ambient:{ trees:[], waterfalls:[], leafArea:null, flowUrl:'img/frontier-route/zone1-2-v6-flow.png', treeArt:{red:'img/frontier-route/tree-maple-v2.png',green:'img/frontier-route/tree-pine-v2.png',lightgreen:'img/frontier-route/tree-bamboo-v2.png'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
+    ambient:{ trees:[], waterfalls:[], leafArea:null, flowUrl:'img/frontier-route/zone1-2-v6-flow.webp', treeArt:{red:'img/frontier-route/tree-maple-v2.webp',green:'img/frontier-route/tree-pine-v2.webp',lightgreen:'img/frontier-route/tree-bamboo-v2.webp'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
     // Checkpoint 2 is Zone 1's boss cave: locked until checkpoint 1 is done, the guide waits there, the zone event fights.
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },
   }),
@@ -55,15 +55,15 @@ export const ROUTE_GEOMETRY = {
     corridor:BORDER23_REDRAW_CORRIDOR, checkpointVertex:BORDER23_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER23_REDRAW_MASK,
     // B23-REDRAW: water flow is traced on v4; retain original falls as author anchors.
     // Autumn leaves stay west of the snow-covered mountains.
-    ambient:{trees:[],waterfalls:[],flowUrl:'img/frontier-route/zone2-3-v4-flow.png',waterfallAnchors:[[.066,.53,.08],[.264,.61,.10],
+    ambient:{trees:[],waterfalls:[],flowUrl:'img/frontier-route/zone2-3-v4-flow.webp',waterfallAnchors:[[.066,.53,.08],[.264,.61,.10],
       [.621,.472,.08],[.615,.82,.07]],
       leafArea:[0,0,.44,1],snowArea:[.48,0,1,1]},
   }),
   'west:cyberhell': row('west:cyberhell', {
     enabled:true, geometryVersion:2, background:'img/frontier-route/zone3-4-v2.webp', foes:[10,11,12],
     corridor:BORDER34_REDRAW_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_REDRAW_MASK,
-    ambient:{trees:[],bakedTrees:BORDER34_TREES,waterfalls:[],flowUrl:'img/frontier-route/zone3-4-v2-flow.png',leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
-      treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.png',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
+    ambient:{trees:[],bakedTrees:BORDER34_TREES,waterfalls:[],flowUrl:'img/frontier-route/zone3-4-v2-flow.webp',leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
+      treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.webp',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
       treeAnchors:{white:[.569224354,.987804878],teal:[.567556297,.958841463],purple:[.5,.987804878]}},
   }),
 };

@@ -31,10 +31,10 @@ test('every crop fits the declared atlas and source ships with fixed feet geomet
  }
 });
 test('boss lookup keeps home identity including possessed rulers and excludes minions',()=>{
- assert.equal(bossSpriteKey('img/West/hero-boss-west-v2.png','th'),'boss:west:hero-boss');
- assert.equal(bossSpriteKey('img/leader-asia-possessed.png','cyberhell'),'boss:asia:leader-possessed');
- assert.equal(bossSpriteKey('img/zone-boss.png','asia'),'boss:asia:zone-boss');
- assert.equal(bossSpriteKey('img/mob-vampire.png','west'),null);
+ assert.equal(bossSpriteKey('img/West/hero-boss-west-v2.webp','th'),'boss:west:hero-boss');
+ assert.equal(bossSpriteKey('img/leader-asia-possessed.webp','cyberhell'),'boss:asia:leader-possessed');
+ assert.equal(bossSpriteKey('img/zone-boss.webp','asia'),'boss:asia:zone-boss');
+ assert.equal(bossSpriteKey('img/mob-vampire.webp','west'),null);
 });
 test('the cliff stays solid outside the new painted stairs',()=>{
  for(const [x,y]of [[1400,980],[1400,1100],[1200,1140]])assert.equal(townContains(x,y),false,`${x},${y}`);

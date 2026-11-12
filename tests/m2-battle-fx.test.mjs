@@ -140,5 +140,5 @@ test('M-merge: M2 effects ride the M1 camera (registered once, camera attaches b
   assert.match(ui, /cueImpactAtMs/, 'startMoveFx reads the cue impact time');
   assert.equal((ui.match(/startActionCue\(/g) || []).length >= 4, true);
   for (const k of ['fx-fire-orb', 'fx-ice-crystal-a', 'fx-hypno-circle', 'fx-slash-arc-white']) assert.ok(existsSync(new URL(`../img/fx/${k}.webp`, import.meta.url)), k);
-  assert.ok(existsSync(new URL('../img/ui/icon-defend-shield.png', import.meta.url)));
+  assert.ok(existsSync(new URL('../img/ui/icon-defend-shield.webp', import.meta.url)));
 });

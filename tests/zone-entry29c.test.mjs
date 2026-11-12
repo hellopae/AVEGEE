@@ -13,7 +13,7 @@ globalThis.Image = class {};
 
 // อ่านพิกเซลภาพฉากจริงของแต่ละโซนผ่าน PIL แบบเดียวกับ tests/scene-zones.test.mjs เพื่อสร้าง walk mask จริง
 const image = name => ({ naturalWidth:1678, naturalHeight:937,
-  path:fileURLToPath(new URL(`../img/${name}.png`, import.meta.url)) });
+  path:fileURLToPath(new URL(`../img/${name}.webp`, import.meta.url)) });
 const pixels = new Map();
 function imagePixels(im) {
   if (!pixels.has(im.path)) {

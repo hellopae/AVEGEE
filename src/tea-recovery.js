@@ -7,8 +7,8 @@ export const teaSleepPhase = elapsed => elapsed < TEA_SLEEP_MS ? 'sleep'
   : elapsed < TEA_REST_TOTAL_MS ? 'wake' : 'done';
 export const teaRecoveredHp = (start, max, elapsed) => Math.min(max, Math.round(start + (max-start) * Math.min(1, Math.max(0,elapsed) / TEA_SLEEP_MS)));
 export const DEFEAT_SCENE_MS = 1600;
-export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.png`;
-export const teaBackground = zone => `img/tea-${zone || 'th'}-recovery.png`;
+export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.webp`;
+export const teaBackground = zone => `img/tea-${zone || 'th'}-recovery.webp`;
 export function teaRoom(zone = 'th') {
   // H2 (10 ต.ค. 2569) คุณเป้: "yama นั่งไม่ตรงเบาะ" / "นอนจะตกเตียง ขยับเข้าไปหน่อย"
   // seats = ก้นของยมบาทวางบนเบาะรองนั่งหน้าโต๊ะชา (ฝั่งซ้ายล่างของโต๊ะ) · beds = กึ่งกลางฟูก ไม่ใช่ขอบหน้าเตียง

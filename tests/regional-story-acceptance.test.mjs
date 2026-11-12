@@ -98,7 +98,7 @@ test('full final gauntlet ends in ending01, forced-mirror ordinary court, actual
   if(id!=='boss')acknowledge(g);
  }
  assert.equal(g.gameCompleted,false);assert.equal(g.finalEvent.phase,'justice');assert.equal(bossJusticeCase(g).phase,'capture');
- assert.equal(storyOf('ending-capture').pages[0].image,'img/story-ending-01-v4.png');
+ assert.equal(storyOf('ending-capture').pages[0].image,'img/story-ending-01-v4.webp');
  assert.ok(g.storyQueue.some(p=>p.key==='ending-capture'));assert.ok(!g.storyQueue.some(p=>p.key==='ending'));
  const captureCoins=g.coin;assert.equal(g.acknowledgeFinalReward(),true);assert.equal(g.coin,captureCoins);stories(g);
  assert.equal(bossJusticeCase(g).phase,'dais');interrogateBoss(g);g=reload(g);
@@ -113,6 +113,6 @@ test('full final gauntlet ends in ending01, forced-mirror ordinary court, actual
  assert.equal(g.gameCompleted,false);assert.equal(g.storyQueue.some(p=>p.key==='ending'),false);
  assert.ok(existsSync(new URL('../img/boss-justice/final-sentence-v1.webp',import.meta.url)));
  g=reload(g);assert.equal(releaseBoss(g),true);assert.equal(g.gameCompleted,true);assert.equal(releaseBoss(g),false);
- assert.equal(storyOf('ending').pages[0].image,'img/story-ending-02-v3.png');assert.equal(g.storyQueue.filter(p=>p.key==='ending').length,1);
+ assert.equal(storyOf('ending').pages[0].image,'img/story-ending-02-v3.webp');assert.equal(g.storyQueue.filter(p=>p.key==='ending').length,1);
  const finalCoins=g.coin;stories(g);g=reload(g);assert.equal(g.storySeen.ending,true);assert.equal(g.storyQueue.some(p=>p.key==='ending'),false);assert.equal(g.coin,finalCoins);
 });

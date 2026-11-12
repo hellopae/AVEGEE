@@ -3,7 +3,7 @@ const ZONES = ['th', 'asia', 'west', 'cyberhell'];
 const cache = new Map();
 export function plantedSwordSources(zone = 'th') {
   const z = ZONES.includes(zone) ? zone : 'th';
-  return [1, 2].map(n => `img/asipatta-l4a/${z}-sword-${n}-l4a.png`);
+  return [1, 2].map(n => `img/asipatta-l4a/${z}-sword-${n}-l4a.webp`);
 }
 export function drawPlantedSwords(ctx, x, y, u, zone = 'th') {
   plantedSwordSources(zone).forEach((src, i) => {

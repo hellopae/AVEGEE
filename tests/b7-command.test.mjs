@@ -10,7 +10,7 @@ test('B7 uses top/right/bottom Yama petals and top/right crew or Guard petals',(
  assert.match(crew,/segment-1[^>]+data-command="item"/);
  assert.ok(crew.includes('b4.webp'));assert.ok(!crew.includes('b3.webp'));
  assert.match(crew,/options-1" data-options="item"/);
- for(const html of [yama,crew]){assert.ok(!html.includes('Button7.png'));assert.match(html,/clip-path:polygon\(/);assert.match(html,/position:absolute;left:/);}
+ for(const html of [yama,crew]){assert.ok(!html.includes('Button7.webp'));assert.match(html,/clip-path:polygon\(/);assert.match(html,/position:absolute;left:/);}
 });
 test('B7 petal files are registered manually in the manifest',()=>{
  const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));

@@ -94,19 +94,19 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;
   if (key === 'worker-rice') return 'img/food-art/worker-rice.webp';
   if (key === 'crew-dam-cook' || key === 'crew-plerng-cook') return `img/food-art/cook-${key.split('-')[1]}.webp`;
-  if (key === 'soul-deva') return 'img/soul-deva.png'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
+  if (key === 'soul-deva') return 'img/soul-deva.webp'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
-  if (z === 'west' && (key === 'crew-boon' || key === 'crew-boon-profile')) return `img/West/crew-boon-west${key.endsWith('-profile') ? '-profile' : ''}-f.png`;
-  if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.png';
+  if (z === 'west' && (key === 'crew-boon' || key === 'crew-boon-profile')) return `img/West/crew-boon-west${key.endsWith('-profile') ? '-profile' : ''}-f.webp`;
+  if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.webp';
   const themed = themeArt(key, z);
   if (themed) return themed;
   const enemy = enemyArt(key, z);
   if (enemy !== undefined) return enemy;
   const map = ZMAP[z];
-  if (key.replace(POSE, '') === 'spirit-recruit') return key === 'spirit-recruit' ? 'img/Thai/spirit-recruit-th-v3.png' : null;
-  if (key.replace(POSE, '') === 'spirit-graduate') return key === 'spirit-graduate' ? 'img/West/spirit-graduate-west-v3.png' : null;
+  if (key.replace(POSE, '') === 'spirit-recruit') return key === 'spirit-recruit' ? 'img/Thai/spirit-recruit-th-v3.webp' : null;
+  if (key.replace(POSE, '') === 'spirit-graduate') return key === 'spirit-graduate' ? 'img/West/spirit-graduate-west-v3.webp' : null;
   if (key === 'hero-yama-unconscious') return yamaDownImage(z);
-  if (key === 'hero-yama-tea-clean') return `img/hero-yama-${z}-tea-clean.png`;
+  if (key === 'hero-yama-tea-clean') return `img/hero-yama-${z}-tea-clean.webp`;
   if (key === 'hero-yama-walk-4dir') return heroWalkSheet(z).src;
   if (/^crew-(nira|taan|plerng|dam|kan|boon|guard)-walk$/.test(key))
     return crewWalkSheet(key.slice(0, -5), z)?.src || null;
@@ -127,7 +127,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
     const m = key.match(POSE);
     if (m && map[zoneStem(key.slice(0, -m[0].length), z)]) return null;
   }
-  return `img/${key === 'crew-guard' && ext === 'png' ? 'crew-guard-v2' : key}.${ext}`;
+  return `img/${key === 'crew-guard' && ext === 'png' ? 'crew-guard-v2' : key}.${ext === 'png' ? 'webp' : ext}`;   // 12 พ.ย.: ไฟล์ png/jpeg ทั้งหมดแปลงเป็น webp แล้ว — 'png' ยังเป็นชื่อเรียกเดิมของผู้เรียก
 }
 
 function load(src) {
@@ -172,7 +172,7 @@ export const hash = (x, y) => {
   return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
 };
 
-// ---------- พื้นสำรอง (ใช้ตอนยังไม่มี img/scene.png) ----------
+// ---------- พื้นสำรอง (ใช้ตอนยังไม่มี img/scene.webp) ----------
 export const PAT = 256;
 const PATS = new Map();
 
@@ -479,7 +479,7 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */
 /** 30D ข้อ 6 — ภาพยืนของทัณฑ์/ซิสอ็อปโซน 4 วาดตัวสูงแค่ ~87% ของกรอบ (ยมทูตคนอื่นเต็มกรอบ ~100%)
  *  เลยตัวเล็กกว่าเพื่อนบนแผนที่ → ขยายตอนวาดให้ความสูงตัวจริงเท่าคนอื่น (ไม่แตะไฟล์ภาพ)
- *  ค่า = 1 / (ความสูงตัวจริง ÷ ความสูงกรอบ) วัดจาก alpha ของ img/CyberHell/crew-taan-cyberhell.png (0.871) */
+ *  ค่า = 1 / (ความสูงตัวจริง ÷ ความสูงกรอบ) วัดจาก alpha ของ img/CyberHell/crew-taan-cyberhell.webp (0.871) */
 export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
 export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '')}`] || 1;
 

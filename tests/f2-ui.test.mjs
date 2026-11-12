@@ -58,7 +58,7 @@ import { teamNeedsMirror, TEAM_DRAWN_FACING_RIGHT } from '../src/battle-facing.j
 import { swordDrawFrame, swordFrame, FRAME_FACING_FIX, SWORD_DURATION_MS } from '../src/yama-sword.js';
 test('2. ท่ายืนของยมบาททั้ง 4 ชุดไม่ถูกพลิกจนหันซ้าย: ภาพที่วาดหันขวา (บูรพา/ปัจฉิม/นรกเครือข่าย) ขึ้นทะเบียนไม่พลิก · ภาพโซน 1 วาดหันซ้าย → พลิก', () => {
   // ทิศที่วาดมา (ตรวจจากพิกเซลตาและหัว): th/asia/cyberhell = ซ้าย (พลิก) · west = ขวา (ไม่พลิก) · ผลต้องหันขวาทุกชุด ตรงกับแผ่นดาบ (H2 แก้ asia/cyberhell)
-  const drawn = { 'img/hero-yama.png':'L', 'img/Asia/hero-yama-asia.png':'L', 'img/West/hero-yama-west.png':'R', 'img/CyberHell/hero-yama-cyberhell.png':'L' };
+  const drawn = { 'img/hero-yama.webp':'L', 'img/Asia/hero-yama-asia.webp':'L', 'img/West/hero-yama-west.webp':'R', 'img/CyberHell/hero-yama-cyberhell.webp':'L' };
   for (const [file, dir] of Object.entries(drawn)) {
     const facing = teamNeedsMirror(file) ? (dir === 'L' ? 'R' : 'L') : dir;
     assert.equal(facing, 'R', `${file} ต้องหันขวาเข้าหาศัตรูหลังพลิก/ไม่พลิก`);
@@ -105,11 +105,11 @@ test('3. ป้ายชื่อวิญญาณใต้ตัว (soulLabel
 import { clockGuide } from '../src/sentencing-guide.js';
 import { CREW } from '../src/data.js';
 test('4. หนังสือคู่มือ: หน้านาฬิกาย้อนเวลามีรูปไอเท็ม และการ์ดยมทูตทุกคนมีรูปประจำตัวที่มีไฟล์จริง', () => {
-  assert.match(clockGuide, /<img class="guide-art" src="img\/fx-clock-reset\.png"/);
-  assert.ok(fs.statSync('img/fx-clock-reset.png').size > 1000);
+  assert.match(clockGuide, /<img class="guide-art" src="img\/fx-clock-reset\.webp"/);
+  assert.ok(fs.statSync('img/fx-clock-reset.webp').size > 1000);
   const ui = src('src/ui.js');
   assert.match(ui, /class="guide-card guide-crew"><img class="guide-portrait" src="\$\{esc\(crewArt\(c\)\)\}"/);
-  for (const c of CREW.filter(x => !x.reader)) assert.ok(fs.existsSync(`img/crew-${c.k}.png`), `crew-${c.k}.png`);
+  for (const c of CREW.filter(x => !x.reader)) assert.ok(fs.existsSync(`img/crew-${c.k}.webp`), `crew-${c.k}.webp`);
   assert.match(src('src/compact-ui.css'), /\.guide-portrait\{/);
 });
 
@@ -181,9 +181,9 @@ test('6. ui.js ใช้เสียงใหม่เฉพาะท่าไ�
 // ---------- ข้อ 7: ปุ่มปิดเสียงเพลง/เอฟเฟกต์ ----------
 test('7. ไอคอนปิดเสียงอยู่ใน img/ui และลง manifest + preload catalog ด้วยมือ', () => {
   for (const n of ['icon-sound', 'icon-sound-close', 'icon-music', 'icon-music-close']) {
-    assert.ok(fs.statSync(`img/ui/${n}.png`).size > 1000, n);
-    assert.ok(JSON.parse(src('img/preload-catalog.json')).shared.includes(`img/ui/${n}.png`), `catalog ${n}`);
-    assert.ok(JSON.stringify(JSON.parse(src('img/manifest.json'))).includes(`ui/${n}.png`), `manifest ${n}`);
+    assert.ok(fs.statSync(`img/ui/${n}.webp`).size > 1000, n);
+    assert.ok(JSON.parse(src('img/preload-catalog.json')).shared.includes(`img/ui/${n}.webp`), `catalog ${n}`);
+    assert.ok(JSON.stringify(JSON.parse(src('img/manifest.json'))).includes(`ui/${n}.webp`), `manifest ${n}`);
   }
 });
 test('7. สวิตช์เสียงเพลง/เอฟเฟกต์แยกกัน: เซฟเก่าไม่มีคีย์ = เปิด · ปิดเพลง = ความดังเพลงเป็น 0 · ปิดเอฟเฟกต์ = sfx() เงียบ แต่เพลงยังดัง', () => {

@@ -42,17 +42,17 @@ const SPLIT_RULES = [
   [0, 0, /^img\/yama-animation-v1\/[^/]+\/book-/],
   [1, 0, /^img\/yama-animation-v1\//],
   [0, 0, /^img\/hero-yama(-atk(-[LR])?|-sit(-sip)?|-cry|-walk|-walk-4dir-v2|-profile)?\.(png|webp)$/],
-  [0, 0, /^img\/(Asia|West|CyberHell)\/hero-yama-(asia|west|cyberhell)-atk(?:-v\d+)?\.png$/],
-  [0, 0, /^img\/hero-boss\.png$/],
+  [0, 0, /^img\/(Asia|West|CyberHell)\/hero-yama-(asia|west|cyberhell)-atk(?:-v\d+)?\.webp$/],
+  [0, 0, /^img\/hero-boss\.webp$/],
   // พบจากการรันจริงด้วยแคตตาล็อกว่าง (10 ต.ค.): จอแรกขอภาพเหล่านี้ทันที — แถวโปรไฟล์ยมบาท/บอส และสไปรต์วิญญาณประจำโซนในคิว
   [0, 0, /^img\/(\w+\/)?hero-(yama|boss)(-(th|asia|west|cyberhell))?-profile\.(png|webp)$/],
-  [0, 0, /^img\/icon-(fang|sword)\.png$/],
-  [0, 0, /^img\/\w+\/spirit-[a-z-]+-(th|asia|west|cyberhell)-v\d\.png$/],
-  [0, 0, /^img\/(\w+\/)?crew-[a-z]+(-(build-work|work|walk-v2))?(-v2)?\.png$/],
+  [0, 0, /^img\/icon-(fang|sword)\.webp$/],
+  [0, 0, /^img\/\w+\/spirit-[a-z-]+-(th|asia|west|cyberhell)-v\d\.webp$/],
+  [0, 0, /^img\/(\w+\/)?crew-[a-z]+(-(build-work|work|walk-v2))?(-v2)?\.webp$/],
   [0, 0, /^img\/ui\/(?!Button\d)/],
-  [0, 0, /^img\/(merchant|prop-boat|prop-lantern|prop-throne-platform)\.png$/],
-  [0, 0, /^img\/(soul-[a-z]+|spirit\d+)\.png$/],
-  [0, 0, /^img\/(item-[a-z-]+|icon-force-\d|icon-lock|icon-skip)\.png$/],
+  [0, 0, /^img\/(merchant|prop-boat|prop-lantern|prop-throne-platform)\.webp$/],
+  [0, 0, /^img\/(soul-[a-z]+|spirit\d+)\.webp$/],
+  [0, 0, /^img\/(item-[a-z-]+|icon-force-\d|icon-lock|icon-skip)\.webp$/],
   // G5 (10 ต.ค.): ภาพมินิเกมห้องกระทะทองแดง (close-up + ลูกไฟ) — โหลดเบื้องหลัง ไม่กั้นหน้าโหลด · ต้องอยู่ก่อนกฎ cutscene ด้านล่าง
   [1, 4, /^img\/krata-minigame\//],
   // H5b: มาสก์เอฟเฟกต์หน้าปก (เล็ก ~16KB รวม) — โหลดเบื้องหลัง ถ้ายังไม่มา cover-fx-h5b.js ดึงเองตอนปกนิ่ง · ต้องอยู่ก่อนกฎ cover ชั้นท้าย
@@ -61,7 +61,7 @@ const SPLIT_RULES = [
   [2, 1, /cutscene|story-ending|story-.*-\d|story-.*reinforce/],
   [2, 2, /deva-intro|frontier-.*-(intro|hypnosis)|tea-.*recovery|unconscious|roar/],
   [2, 3, /^img\/(Intro-|intro-panel|cover)/],
-  [2, 3, /^img\/st-[a-z]+\.png$/],       // อาคารเดิม — map-v5/theme-v4 แทนแล้ว เหลือไว้เป็น fallback
+  [2, 3, /^img\/st-[a-z]+\.webp$/],       // อาคารเดิม — map-v5/theme-v4 แทนแล้ว เหลือไว้เป็น fallback
   // ชั้นเบื้องหลัง เรียงตามโอกาสที่ผู้เล่นเจอเร็ว
   [1, 1, /rooms-wide|^img\/BG-|theme-v4\/(arena|frontier)/],
   [1, 2, /^img\/ui\/Button/],
@@ -75,7 +75,7 @@ export function assetTier(path, { firstRun = false, arrival = false } = {}) {
   if (/^img\/intro-panel-0\d-v2\.webp$/.test(path)) return { tier:1, rank:4 };
   if (arrival && /intro-head-|intro-zone|crew-[a-z]+-cutscene/.test(path)) return { tier:0, rank:0 };
   // ย้ายโซน: ผู้เล่นอ่านบทนำโซนก่อน ระหว่างนั้นสไปรต์วิญญาณโหลดเป็นอันดับแรกของเบื้องหลัง ไม่ต้องกั้นหน้าโหลด
-  if (arrival && /^img\/\w+\/spirit-[a-z-]+-(th|asia|west|cyberhell)-v\d\.png$/.test(path)) return { tier:1, rank:0 };
+  if (arrival && /^img\/\w+\/spirit-[a-z-]+-(th|asia|west|cyberhell)-v\d\.webp$/.test(path)) return { tier:1, rank:0 };
   for (const [tier, rank, re] of SPLIT_RULES) if (re.test(path)) return { tier, rank };
   return { tier:1, rank:3 };
 }

@@ -6,10 +6,10 @@ import { VERDICT_LINES, authorityOf } from './data.js';
 /** Stable art slots. All four zones now have their own praise/rebuke pair (zone 1: Codex 22 Oct, zones 2-4: Codex 23 Oct round two,
  *  inspected in P9). The files keep Codex's `scold` name; the scene kind is `blame`. A future redraw only overwrites the file. */
 export const VERDICT_ART = {
-  th:{ praise:'img/head-th-praise-cutscene-v1.png', blame:'img/head-th-scold-cutscene-v1.png' },
-  asia:{ praise:'img/head-asia-praise-cutscene-v1.png', blame:'img/head-asia-scold-cutscene-v1.png' },
-  west:{ praise:'img/head-west-praise-cutscene-v1.png', blame:'img/head-west-scold-cutscene-v1.png' },
-  cyberhell:{ praise:'img/head-cyberhell-praise-cutscene-v1.png', blame:'img/head-cyberhell-scold-cutscene-v1.png' },
+  th:{ praise:'img/head-th-praise-cutscene-v1.webp', blame:'img/head-th-scold-cutscene-v1.webp' },
+  asia:{ praise:'img/head-asia-praise-cutscene-v1.webp', blame:'img/head-asia-scold-cutscene-v1.webp' },
+  west:{ praise:'img/head-west-praise-cutscene-v1.webp', blame:'img/head-west-scold-cutscene-v1.webp' },
+  cyberhell:{ praise:'img/head-cyberhell-praise-cutscene-v1.webp', blame:'img/head-cyberhell-scold-cutscene-v1.webp' },
 };
 export const verdictSceneImage = (zone, kind) => (VERDICT_ART[zone] || VERDICT_ART.th)[kind];
 

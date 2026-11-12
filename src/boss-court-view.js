@@ -20,10 +20,10 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
   const answerStation=stations.find(s=>s.def.k===answer.station),answerKeeper=crew.find(v=>v.k===answer.crew);
   const choice=({kind,key,label,src,revealed=false,selected=false})=>`<button type="button" class="orb-choice${revealed?' is-revealed':''}" data-justice-choice="${kind}" data-value="${esc(key)}" aria-pressed="${selected}" aria-label="${esc(label+(revealed?' · กระจกเฉลย':''))}">${image(src)}<b>${esc(label)}</b>${revealed?'<span class="reveal-mark" aria-hidden="true">✓</span>':''}</button>`;
   const groups=[
-    {id:'power',label:'พลัง',picked:shown?'กระจกวิเศษ ✓':'',choices:`<button type="button" class="orb-choice${shown?' is-revealed':''}" data-justice-mirror ${shown?'disabled':''}>${image('img/item-mirror.png')}<b>กระจกวิเศษ</b><i>${shown?'ใช้แล้ว':'จำเป็น'}</i></button>`},
+    {id:'power',label:'พลัง',picked:shown?'กระจกวิเศษ ✓':'',choices:`<button type="button" class="orb-choice${shown?' is-revealed':''}" data-justice-mirror ${shown?'disabled':''}>${image('img/item-mirror.webp')}<b>กระจกวิเศษ</b><i>${shown?'ใช้แล้ว':'จำเป็น'}</i></button>`},
     {id:'where',label:'ที่ไหน',picked:station?.def.name,choices:stations.map(s=>choice({kind:'station',key:s.def.k,label:s.def.name,src:assets.station(s.def.k),revealed:shown&&s.def.k===answer.station,selected:p.station===s.def.k})).join('')},
     {id:'keeper',label:'ใครคุม',picked:keeper?.name,choices:crew.map(v=>choice({kind:'crew',key:v.k,label:v.name,src:assets.crew(v.k),revealed:shown&&v.k===answer.crew,selected:p.crew===v.k})).join('')},
-    {id:'force',label:'ความแรง',picked:INTENSITY[p.intensity],choices:[1,2,3,4,5].map(n=>choice({kind:'intensity',key:n,label:INTENSITY[n],src:`img/icon-force-${n}.png`,revealed:shown&&n===5,selected:p.intensity===n})).join('')},
+    {id:'force',label:'ความแรง',picked:INTENSITY[p.intensity],choices:[1,2,3,4,5].map(n=>choice({kind:'intensity',key:n,label:INTENSITY[n],src:`img/icon-force-${n}.webp`,revealed:shown&&n===5,selected:p.intensity===n})).join('')},
   ];
   const guidance=!shown?'เลือก พลัง → กระจกวิเศษ เพื่อเปิดเผยคำตัดสินคดีสุดท้าย':ready?'เลือกครบตามกระจกแล้ว · ออกหมายได้':'เลือก ที่ไหน ใครคุม และความแรง ตามตัวเลือกที่มีเครื่องหมาย ✓';
   const hp=Math.round(g.hp),max=g.hpMax,mp=Math.round(g.mp),mpMax=g.mpMax;
@@ -33,8 +33,8 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
       <div class="fig foe bound-boss" data-cam="suspect">${image(FINAL_BOUND_SPRITE,`${c.name} แพ้แล้วและถูกจับมัด`)}<span class="nm">${esc(c.name)} · ถูกพันธนาการ</span></div>
     </div></div><div class="hud-scrim"></div>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span><span class="corner-tick bl"></span><span class="corner-tick br"></span>
-    <div class="top-left-icons"><button class="trial-pause" data-justice-pause aria-label="หยุด">${image('img/ui/icon-pause.png')}</button><button class="icon-settings-mini" data-arena-settings aria-label="ตั้งค่า">${image('img/ui/icon-setting2.png')}</button></div>
-    <button class="trial-close" data-close aria-label="ปิด · บันทึกคดีไว้">${image('img/ui/icon-close.png')}</button>
+    <div class="top-left-icons"><button class="trial-pause" data-justice-pause aria-label="หยุด">${image('img/ui/icon-pause.webp')}</button><button class="icon-settings-mini" data-arena-settings aria-label="ตั้งค่า">${image('img/ui/icon-setting2.webp')}</button></div>
+    <button class="trial-close" data-close aria-label="ปิด · บันทึกคดีไว้">${image('img/ui/icon-close.webp')}</button>
     <div class="hud-body"><div class="hud-stage"><span class="trial-case-no">สำนวน · บอสโซน 4</span>
       <section class="comment8-menu" aria-label="คำสั่งออกหมาย"><div class="comment8-commands">
         ${groups.map((v,i)=>`<button type="button" class="court-command${v.picked?' has-selection':''}" data-court-panel="${v.id}" aria-expanded="${panel===v.id}" style="--command-index:${i}" ${!shown&&v.id!=='power'?'disabled':''}><span>${v.label}</span>${v.picked?`<span class="court-picked"><b>${esc(v.picked)}</b></span>`:''}</button>`).join('')}
@@ -42,7 +42,7 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
         ${groups.map(v=>`<div class="court-options${panel===v.id?' is-open':''}" data-court-options="${v.id}" aria-label="${v.label}" ${panel===v.id?'':'inert'}>${v.choices}</div>`).join('')}
         <small class="court-missing" role="status">${guidance}</small>
       </section></div>
-      <div class="hud-right"><div class="trial-top-actions"><button type="button" data-justice-ask>สอบสวน<br>ข้อกล่าวหา</button><button type="button" data-justice-guide><img class="tab-ico" src="img/ui/icon-book.png" alt="">คำแนะนำ</button></div>
+      <div class="hud-right"><div class="trial-top-actions"><button type="button" data-justice-ask>สอบสวน<br>ข้อกล่าวหา</button><button type="button" data-justice-guide><img class="tab-ico" src="img/ui/icon-book.webp" alt="">คำแนะนำ</button></div>
         <div class="hud-card hud-rec"><h4>สำนวนที่นิราอ่านให้ฟัง</h4><div class="deed allegation">${esc(c.name)} ใช้อำนาจข่มเหงวิญญาณ ปิดกั้นเส้นทางชายแดน และก่อความเดือดร้อน</div><p>บอสพ่ายแพ้แล้ว ถูกพันธนาการและนำมาต่อหน้าศาล</p></div>
         <div class="hud-card hud-opt"><h4>${shown?'กระจกวิเศษเปิดเผยคำตัดสิน':'คดีสุดท้าย · ต้องใช้กระจกวิเศษ'}</h4>${shown?`<p data-justice-answer>✓ สถานที่: <b>${esc(answerStation?.def.name)}</b><br>✓ ผู้คุม: <b>${esc(answerKeeper?.name)}</b><br>✓ ความแรงสูงสุด: <b>${INTENSITY[5]}</b></p><p>เปิดเมนูแต่ละหัวข้อ แล้วเลือกตัวเลือกที่มี ✓</p>`:'<p>นิรา: ขอให้ท่านเลือกพลังกระจกวิเศษ เพื่อเปิดเผยสถานที่ลงทัณฑ์ ผู้คุม และความแรงสูงสุดก่อนออกหมายค่ะ</p><button type="button" data-justice-open-power>เปิดเมนูพลัง</button>'}</div>
         <div class="hud-card"><h4>บันทึกการสอบสวน</h4><div class="hud-log">${shown?'กระจกวิเศษเปิดเผยความจริงครบแล้ว · รอคำตัดสินจากยามา':'นิราอ่านข้อกล่าวหาต่อหน้าศาลแล้ว · รอใช้พลังกระจกวิเศษ'}</div><p>${esc(guidance)}</p></div>

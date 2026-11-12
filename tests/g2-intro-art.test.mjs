@@ -19,7 +19,7 @@ test('new-game and menu intro navigation render all five shipped G2 panels', () 
       if (!nodes.has(id)) nodes.set(id, {});
       return nodes.get(id);
     }, close() { closed++; }};
-    const context = vm.createContext({dlg, BAL:{startCoin:123}, esc:String, artUrl:key => `img/${key}.png`,
+    const context = vm.createContext({dlg, BAL:{startCoin:123}, esc:String, artUrl:key => `img/${key}.webp`,
       prepareComicImages() {}, pauseForDlg() { paused++; }, openDlg() {}});
     vm.runInContext(ui.slice(start, end), context);
     context.openIntro(fromTitle);
