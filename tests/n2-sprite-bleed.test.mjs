@@ -7,7 +7,7 @@ import {execFileSync,spawnSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {TRIAL_IDLE_TIMING} from '../src/yama-trial-idle.js';
+import {TRIAL_IDLE_TIMING,TRIAL_IDLE_POSES} from '../src/yama-trial-idle.js';
 const root=fileURLToPath(new URL('..',import.meta.url));
 const read=readReleaseFile;
 const haveScipy=spawnSync('python3',['-c','import PIL,numpy,scipy']).status===0;
@@ -39,8 +39,9 @@ test('N2: interrogation Yama no longer bobs; the suspect still floats',()=>{
 
 test('N2: trial render mounts the map idle pose with the same timing as yama-animation.js',()=>{
   assert.match(read('src/ui.js'),/const yamaImg = dlg\.querySelector\('\.trial-hud \.hud-stage \.fig\.you img'\);[\s\S]*?mountYamaTrialIdle\(yamaImg, g\.outfit \|\| g\.zone\)/);
-  const src=read('src/yama-animation.js').match(/book:\[([\d,]+)\]/)[1].split(',').map(Number);
-  assert.deepEqual([...TRIAL_IDLE_TIMING],src);
+  // FB2-v1: the trial no longer replays the map's 0-1-2-3 cycle; every change goes through pose 0 (see yama-trial-idle.js header)
+  assert.equal(TRIAL_IDLE_TIMING.length,TRIAL_IDLE_POSES.length);
+  assert.deepEqual([...TRIAL_IDLE_POSES],[0,2,0,1]);
   const m=read('src/yama-trial-idle.js');
   assert.match(m,/yamaAnimationSrc\(style, 'book-idle'\)/);
   assert.match(m,/prefers-reduced-motion/);
