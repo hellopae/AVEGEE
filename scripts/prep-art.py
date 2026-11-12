@@ -8,7 +8,8 @@
   1. ตัดขอบโปร่งทิ้ง  — generator ชอบทิ้งขอบใสไว้เยอะ ทำให้ของดูลอยและเล็กกว่าตัวอื่น
   2. สถานีเก็บกรอบที่ครอปจริง; สไปรท์อื่นวางลงผืนจัตุรัส 512×512 ชิดขอบล่าง
   3. ลด palette เหลือ 96 สี ไม่ dither — ภาพ pixel/cel-shade อยู่แล้ว แทบไม่เสียรายละเอียด ไฟล์เล็กลงครึ่งหนึ่ง
-  4. เซฟไปที่ img/<key>.png ซึ่งเป็นชื่อที่ art.js มองหาอยู่ — ดรอปแล้วเกมเปลี่ยนหน้าตาทันที
+  4. เซฟไปที่ img/<key>.webp (12 พ.ย. 2569: ทุกภาพของเกมเป็น webp — สไปรท์/โปร่งใส/สีน้อย = lossless, ภาพวาดทึบ = lossy q86 m6) art.js มองหาชื่อนี้อยู่ — ดรอปแล้วเกมเปลี่ยนหน้าตาทันที
+     (ต้นฉบับใน art-src/raw/ ยังเป็น .png/.jpeg ได้ — ผลลัพธ์เท่านั้นที่เป็น webp)
 
 key ที่เกมมองหา:
   tileset · st-krata st-ngiw st-raeng st-lin st-lohak st-lan st-tea st-sala
@@ -270,6 +271,22 @@ def out_name(sub, name):
     return f'{name}-{z}', f'ไม่มี -{z} ในชื่อ เติมให้แล้ว'
 
 
+WEBP_Q = 86        # painterly opaque art (cutscenes): lossy q86 method 6 — same rule as the 12 Nov PNG/JPEG -> WebP conversion (Dale, 1ee18746)
+
+
+def save_art(im, stem, lossy=False):
+    """Every game image is shipped as WebP (12 Nov 2569): alpha / sprite / UI / few-colour art lossless (bit-identical), painterly opaque art lossy q86 m6.
+    stem = path without extension; returns the written path.  A new image can no longer fall out of this script as a PNG/JPEG the game does not ask for."""
+    path = stem + '.webp'
+    if im.mode == 'P':
+        im = im.convert('RGBA' if 'transparency' in im.info else 'RGB')
+    if lossy:
+        im.convert('RGB').save(path, 'WEBP', quality=WEBP_Q, method=6)
+    else:
+        im.save(path, 'WEBP', lossless=True, quality=100, method=6, exact=True)
+    return path
+
+
 def prep(path, name, out_dir=OUT, alpha_threshold=16):
     im = Image.open(path)
     stripped = 0
@@ -291,7 +308,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         alpha = canvas.getchannel('A')
         flat = canvas.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
         flat.putalpha(alpha)
-        flat.save(os.path.join(OUT, name + '.png'), optimize=True)
+        save_art(flat, os.path.join(OUT, name))
         return flat.size
 
     # ภาพเดินเป็นแถบ 4 เฟรมแนวนอนเท่ากันทุกช่อง (art.js หั่นด้วย naturalWidth/4 ตรง ๆ)
@@ -312,23 +329,23 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         alpha = strip.getchannel('A')
         flat = strip.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
         flat.putalpha(alpha)
-        flat.save(os.path.join(OUT, name + '.png'))
+        save_art(flat, os.path.join(OUT, name))
         return flat.size
 
     # ภาพคัตซีนพลัง — ภาพกว้างเต็มใบ ห้ามลอกพื้น/ครอป/บีบลงผืน 512
-    # เก็บเป็น JPEG เพราะ UI เรียกชื่อนี้โดยตรง และต้นฉบับเป็นภาพทึบไม่มี alpha
+    # เก็บเป็น WebP lossy (เดิม JPEG) — ต้นฉบับเป็นภาพทึบไม่มี alpha
     if name.endswith('-cutscene'):
         im = im.convert('RGB')
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
-        im.save(os.path.join(OUT, name + '.jpeg'), 'JPEG', quality=90, optimize=True)
+        save_art(im, os.path.join(OUT, name), lossy=True)      # painterly opaque: lossy q86 method 6 (was JPEG q90)
         return im.size
 
     # การ์ตูนแนะนำโซนและเนื้อเรื่อง — ฉากเต็มใบ รวมแถบดำ ไม่ใช่ standee
     if re.match(r'intro-zone\d+', name) or name.startswith('story-'):
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
-        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
+        save_art(im.convert('RGB').quantize(colors=256, dither=Image.NONE), os.path.join(OUT, name))
         return im.size
 
     # ฉากในห้องสถานี (BG-<Key>) — ภาพเต็มใบ ห้ามลอกพื้น ห้ามครอป
@@ -352,8 +369,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         im = im.crop((left, top, left + side, top + side))
         if im.width > PROFILE:
             im = im.resize((PROFILE, PROFILE), Image.LANCZOS)
-        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(
-            os.path.join(OUT, name + '.png'))
+        save_art(im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB'), os.path.join(OUT, name))
         return im.size
 
     # ฉากมาถึงของบอส (Intro-Boss-Zone<N>[-โซน]) — ภาพฉากกว้างเต็มใบ (~16:9) ไม่ใช่ standee
@@ -367,14 +383,14 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
     if re.match(r'Intro-Boss-Zone\d+', name):
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
-        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
+        save_art(im.convert('RGB').quantize(colors=256, dither=Image.NONE), os.path.join(OUT, name))
         return im.size
 
     if name.startswith('tex-'):              # พื้นผิว UI (18 ก.ย. 2569) — ผืนลายทึบ seamless เหมือน tile-*
         # แต่ใช้เป็น background-image ของการ์ด HUD ไม่ใช่พื้นบนแผนที่เกม ตั้งชื่อขึ้นต้นต่างจาก tile-
         # เพื่อไม่ให้สับสนกับพื้นในฉาก — ปฏิบัติเหมือน tile- ทุกอย่าง (ย่อเป็น PAT×PAT ห้ามลอกพื้น/ครอป)
         im = im.resize((PAT, PAT), Image.LANCZOS).convert('RGB')
-        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
+        save_art(im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB'), os.path.join(OUT, name))
         return (PAT, PAT)
 
     if im.mode != 'RGBA' and not name.startswith('tile-') and not name.startswith('scene'):
@@ -400,7 +416,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         im.save(os.path.join(OUT, name + '.webp'), 'WEBP', quality=90, method=6)
         return im.size
     if name == 'tileset':                    # atlas ห้ามยืด ปล่อยผ่าน
-        im.save(os.path.join(OUT, name + '.png'))
+        save_art(im, os.path.join(OUT, name))
         return im.size
 
     if name.startswith('scene'):             # ฉากเต็มใบทุกโซน — ย่อพอให้ไฟล์ไม่อ้วน ห้ามตัด ห้ามลอกพื้น
@@ -408,14 +424,14 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
                                              #  ถูกจับเป็นสไปรท์แล้วบีบเหลือ 512 จัตุรัส — 8 ก.ย. 2569)
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
-        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
+        save_art(im.convert('RGB').quantize(colors=256, dither=Image.NONE), os.path.join(OUT, name))
         return im.size
 
     if name.startswith('tile-'):             # พื้น: ย่อเป็นผืน pattern ขนาด PAT
         # ห้ามย่อลงเหลือ 32px — ลายก้อนหินจะเละเป็นสีเดียว
         # เกมเอาไปใช้เป็น repeating pattern ทับทั้งแผนที่ ไม่ได้ยัดลงช่องละใบ
         im = im.resize((PAT, PAT), Image.LANCZOS).convert('RGB')
-        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
+        save_art(im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB'), os.path.join(OUT, name))
         return (PAT, PAT)
 
     scale = min(SIZE / im.width, SIZE / im.height)
@@ -433,7 +449,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         # ศาลาน้ำชาโซนไทย: บันไดต้องอยู่ขวา; กลับก่อนเซฟเพื่อให้แผนที่และภาพอาคารที่โหลดจากไฟล์เดียวกันตรงกัน
         if name == 'st-tea':
             flat = flat.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
-        flat.save(os.path.join(OUT, name + '.png'))
+        save_art(flat, os.path.join(OUT, name))
         return flat.size
 
     canvas = Image.new('RGBA', (SIZE, SIZE), (0, 0, 0, 0))   # 2. ชิดขอบล่าง กึ่งกลางแนวนอน
@@ -442,7 +458,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
     alpha = canvas.getchannel('A')                            # 3. ลด palette
     flat = canvas.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
     flat.putalpha(alpha)
-    flat.save(os.path.join(OUT, name + '.png'))
+    save_art(flat, os.path.join(OUT, name))
     return flat.size
 
 def raw_files():
@@ -463,7 +479,7 @@ def ingest():
     (11 ก.ย. 2569 เจ้าของวางรูปใหม่ลง img/Asia/ ระหว่างที่กำลังต่อสายอยู่ — เป็นนิสัยที่ควรรองรับ
      ไม่ใช่ห้าม) · คืนเซตของไฟล์ที่ย้ายมา (ต้องทำใหม่แน่ ๆ ไม่ดูเวลาไฟล์ เพราะ Finder ก๊อปแล้วเวลาเดิมติดมา)
 
-    ผลลัพธ์ของสคริปต์นี้ในโฟลเดอร์โซน = .webp (ฉากในห้อง) · .png 512×512 · scene-*.png
+    ผลลัพธ์ของสคริปต์นี้ในโฟลเดอร์โซน = .webp ทั้งหมด (เดิม .png 512×512 · scene-*.png ก็ยังถือเป็นผลลัพธ์)
     อย่างอื่นถือว่าเป็นต้นฉบับ (.jpeg ทุกไฟล์ · .png ขนาดอื่น)"""
     import filecmp, shutil
     got = set()
@@ -525,9 +541,7 @@ def main():
         name, warn = out_name(sub, os.path.splitext(f)[0])
         out_dir = os.path.join(OUT, sub) if sub else OUT
         os.makedirs(out_dir, exist_ok=True)
-        # .webp = ฉากห้องสถานี/การ์ดเกาะ · .jpeg = คัตซีนกว้าง · ที่เหลือ .png
-        is_webp = name.startswith('BG-') or bool(re.fullmatch(r'Zone\d+', name))
-        ext = '.webp' if is_webp else ('.jpeg' if name.endswith('-cutscene') else '.png')
+        ext = '.webp'          # 12 พ.ย. 2569: ทุกผลลัพธ์เป็น webp (กฎเดียวกับ Dale 1ee18746) — ไม่มี .png/.jpeg หลุดออกมาอีก
         dst = os.path.join(out_dir, name + ext)
         src = os.path.join(RAW, rel)
         # ทำเฉพาะของใหม่ — ผลลัพธ์ที่มีอยู่แล้วไม่ถูกแตะ ไม่งั้นแก้กติกาทีไร รูปทั้งเกมเปลี่ยนตามหมด
@@ -576,13 +590,13 @@ def check_stations():
         return
     block = src.split('export const STATIONS')[1].split('\n];')[0]
     keys = re.findall(r"\{\s*k:'([a-z]+)'", block)
-    missing = [k for k in keys if not os.path.exists(os.path.join(OUT, f'st-{k}.png'))]
+    missing = [k for k in keys if not os.path.exists(os.path.join(OUT, f'st-{k}.webp'))]
     if missing:
         print('\n⚠️  สถานีที่ยังไม่มีรูป (เกมจะวาดกรอบเปล่า):')
         for k in missing:
             stray = [f for f in os.listdir(RAW) if os.path.splitext(f)[0] == k]
-            hint = f'  ← เจอ art-src/raw/{stray[0]} เปลี่ยนชื่อเป็น st-{k}.png' if stray else ''
-            print(f'   · img/st-{k}.png{hint}')
+            hint = f'  ← เจอ art-src/raw/{stray[0]} เปลี่ยนชื่อเป็น st-{k}.png (ผลลัพธ์จะเป็น st-{k}.webp)' if stray else ''
+            print(f'   · img/st-{k}.webp{hint}')
         print('   (ชื่อไฟล์สถานีต้องขึ้นต้นด้วย st- เสมอ)')
     # โซนอื่น — ไม่ใช่ข้อผิดพลาด (เกมใช้รูปโซน 1 แทน) แค่บอกว่ายังขาดหลังไหน
     for sub in sorted(os.listdir(OUT)):
@@ -590,7 +604,7 @@ def check_stations():
         if sub == 'raw' or sub in NON_ZONE_DIRS or sub.startswith(('_', '.')) or not os.path.isdir(d):
             continue
         z = sub.lower()
-        lack = [k for k in keys if not os.path.exists(os.path.join(d, f'st-{k}-{z}.png'))]
+        lack = [k for k in keys if not os.path.exists(os.path.join(d, f'st-{k}-{z}.webp'))]
         if lack:
             print(f'\nℹ️  img/{sub}/ ยังไม่มีอาคาร {len(lack)} หลัง (ใช้รูปโซน 1 แทน): ' + ' '.join(lack))
 
