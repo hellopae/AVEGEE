@@ -1,0 +1,236 @@
+{
+ "forest-r4-c1-q12": {
+  "context1x": [
+   448,
+   3008,
+   1088,
+   3277
+  ],
+  "core1x": [
+   512,
+   3072,
+   1024,
+   3277
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 234.4
+   },
+   "right": {
+    "meanCost": 435.4
+   },
+   "top": {
+    "meanCost": 404.7
+   },
+   "bottom": "no ring (map edge)"
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.034593306481838226,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 593933,
+  "fallbackFractionOfContextInV7": 0.556
+ },
+ "heaven-bridge": {
+  "context1x": [
+   3572,
+   497,
+   4113,
+   793
+  ],
+  "core1x": [
+   3620,
+   545,
+   4065,
+   745
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 968.6
+   },
+   "right": {
+    "meanCost": 312.6
+   },
+   "top": {
+    "meanCost": 722.6
+   },
+   "bottom": {
+    "meanCost": 688.3
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.013268929906189442,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 504661,
+  "fallbackFractionOfContextInV7": 0.717
+ },
+ "lava-north-stair": {
+  "context1x": [
+   522,
+   752,
+   798,
+   988
+  ],
+  "core1x": [
+   570,
+   800,
+   750,
+   940
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 458.6
+   },
+   "right": {
+    "meanCost": 584.1
+   },
+   "top": {
+    "meanCost": 360.0
+   },
+   "bottom": {
+    "meanCost": 433.8
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.014262465760111809,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 175029,
+  "fallbackFractionOfContextInV7": 0.589
+ },
+ "lava-mid-stairs": {
+  "context1x": [
+   572,
+   1372,
+   868,
+   1668
+  ],
+  "core1x": [
+   620,
+   1420,
+   820,
+   1620
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 516.7
+   },
+   "right": {
+    "meanCost": 539.8
+   },
+   "top": {
+    "meanCost": 561.1
+   },
+   "bottom": {
+    "meanCost": 310.8
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.023125533014535904,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 258051,
+  "fallbackFractionOfContextInV7": 0.659
+ },
+ "lava-low-stair": {
+  "context1x": [
+   652,
+   1912,
+   873,
+   2098
+  ],
+  "core1x": [
+   700,
+   1960,
+   825,
+   2050
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 351.5
+   },
+   "right": {
+    "meanCost": 617.0
+   },
+   "top": {
+    "meanCost": 308.8
+   },
+   "bottom": {
+    "meanCost": 415.8
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.24768485128879547,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 111911,
+  "fallbackFractionOfContextInV7": 0.581
+ },
+ "south-plaza-stair": {
+  "context1x": [
+   2372,
+   2862,
+   2668,
+   3108
+  ],
+  "core1x": [
+   2420,
+   2910,
+   2620,
+   3060
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 513.1
+   },
+   "right": {
+    "meanCost": 444.4
+   },
+   "top": {
+    "meanCost": 312.6
+   },
+   "bottom": {
+    "meanCost": 296.1
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.05890646576881409,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 203963,
+  "fallbackFractionOfContextInV7": 0.604
+ },
+ "pier-stair": {
+  "context1x": [
+   2722,
+   2072,
+   3008,
+   2288
+  ],
+  "core1x": [
+   2770,
+   2120,
+   2960,
+   2240
+  ],
+  "sides": {
+   "left": {
+    "meanCost": 497.8
+   },
+   "right": {
+    "meanCost": 538.2
+   },
+   "top": {
+    "meanCost": 488.9
+   },
+   "bottom": {
+    "meanCost": 421.5
+   }
+  },
+  "registered2xMeanAbsDiffVsCodexExport": 0.3626098036766052,
+  "colourDeltaAbsMax": 10.0,
+  "changedPx2x": 167966,
+  "fallbackFractionOfContextInV7": 0.518
+ },
+ "_chunksRewritten": [
+  "r1-c1.webp",
+  "r1-c4.webp",
+  "r1-c5.webp",
+  "r2-c1.webp",
+  "r3-c1.webp",
+  "r3-c2.webp",
+  "r3-c3.webp",
+  "r4-c1.webp",
+  "r4-c2.webp",
+  "r4-c3.webp"
+ ]
+}

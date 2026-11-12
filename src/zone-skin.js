@@ -94,7 +94,8 @@ const terrain = (folder, name) => ({
 //   v7   Codex's 2x ground (Z1-HD-ASSEMBLE, 9830 x 6554): 13 parts are HD redraws, 7 spots are still v5 + repairs enlarged 2x (stairs, heaven bridge, one forest strip).
 //        Served as 1024 px tiles (10 x 7, cut by scripts/install-z1-ground.py): the camera at phone zoom keeps few decoded tiles in memory (FX3: 2048 px chunks 100-130 MB, tiles 35-50 MB).
 //        The repairs of v5 are painted for v5 pixels, so v7 turns them off.  `sprites` = the rails drawn over the central bridge / pier (src/town-ground-sprites.js).
-//   v7r  the same pack after Codex repaired those 7 spots (Z1-HD-REPAIR + new assemble).  The folder does not exist until `scripts/install-z1-ground.py <pack> --name v7r --activate` runs.
+//   v7r  v7 after Codex's native repairs of those 7 spots were joined into the pack (docs/art-reviews/2026-11-12-z1-v7r-assemble, scripts/assemble-v7r.py; installed by scripts/install-z1-ground.py <pack> --name v7r --activate).
+//        ACTIVE.  Set ZONE1_GROUND_SET back to 'v7' to go back (v7 stays installed).  The pier rails (sprites.json `off`) stay off: the repaired pier stair has them painted in.
 // Folders are built from the name on purpose: a set that is not installed yet must not leave a literal URL to a missing file.
 const hd2x = name => { const dir = `img/map-zone1/${name}/`; return Object.freeze({ dir, preview:dir + 'zone1-terrain-v7-preview.webp',
   fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, sprites:dir + 'sprites.json' }); };
@@ -104,7 +105,7 @@ export const ZONE1_GROUND = Object.freeze({
   v7: hd2x('v7'),
   v7r: hd2x('v7r'),
 });
-export const ZONE1_GROUND_SET = 'v7';
+export const ZONE1_GROUND_SET = 'v7r';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {

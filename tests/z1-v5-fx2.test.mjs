@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const file = u => fileURLToPath(new URL('../' + u, import.meta.url));
-const FX = 'img/map-zone1/v5-fx/', GD = 'img/map-zone1/v7/';
+const FX = 'img/map-zone1/v5-fx/', GD = 'img/map-zone1/v7r/';
 const layout = JSON.parse(readFileSync(file(FX + 'fx-layout.json'), 'utf8'));
 const py = (code, ...args) => JSON.parse(execFileSync('python3', ['-c', code, ...args], { encoding: 'utf8', maxBuffer: 1 << 27 }));
 const fx = await import('../src/town-fluid-fx.js?v=v5fx');
@@ -88,9 +88,9 @@ test('spot state: swell breathes and drifts to the shore, once plays the drawn f
   assert.ok(fx.fluidSpotState(rise, rs, 0.001).alpha < .05 && fx.fluidSpotState(rise, rs, 9.999).alpha < .05, 'and fades in / out');
 });
 
-test('ground set v7: 70 tiles of 1024 px (10 x 7; last col 614, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
-  const g = skin.ZONE1_GROUND.v7;
-  assert.equal(skin.ZONE1_GROUND_SET, 'v7'); assert.strictEqual(skin.ZONE_SKIN.th.terrain, g);
+test('ground set v7r (v7 + the 7 repaired spots): 70 tiles of 1024 px (10 x 7; last col 614, last row 410), preview, sprites, walkmask untouched, <= 40 MB', () => {
+  const g = skin.ZONE1_GROUND.v7r;
+  assert.equal(skin.ZONE1_GROUND_SET, 'v7r'); assert.strictEqual(skin.ZONE_SKIN.th.terrain, g);
   assert.equal(g.chunk, 1024); assert.deepEqual({ ...g.fullPx }, { w: 9830, h: 6554 }); assert.equal(g.repairs, false);
   const sizes = py('import sys,json\nfrom PIL import Image\nprint(json.dumps({f:Image.open(sys.argv[1]+f).size for f in sys.argv[2:]}))', file(GD),
     ...Array.from({ length: 70 }, (_, i) => `r${Math.floor(i / 10) + 1}-c${i % 10 + 1}.webp`), 'zone1-terrain-v7-preview.webp');
@@ -106,6 +106,14 @@ test('ground set v7: 70 tiles of 1024 px (10 x 7; last col 614, last row 410), p
   // the walk mask is not derived from the ground set: its file and the code that builds it are untouched by this branch
   const diff = execFileSync('git', ['diff', '--name-only', '812152d2', 'HEAD'], { cwd: file('.'), encoding: 'utf8' });
   assert.ok(!/walk/i.test(diff.split('\n').filter(f => /^(art-src|src\/walk|img\/.*walk)/.test(f)).join('\n')), 'no walkmask file changed');
+});
+
+test('ground set v7r: pack manifest lists the 7 repaired spots, no v5 fallback left, the pier rails stay off because the repaired stair has them painted in', () => {
+  const man = JSON.parse(readFileSync(file(GD + 'pack-manifest.json'), 'utf8'));
+  assert.equal(man.version, '7r'); assert.deepEqual(man.fallbackParts, []); assert.deepEqual(man.fallbackPatches, []);
+  assert.deepEqual([...man.repairedSpots].sort(), ['forest-r4-c1-q12', 'heaven-bridge', 'lava-low-stair', 'lava-mid-stairs', 'lava-north-stair', 'pier-stair', 'south-plaza-stair']);
+  const list = JSON.parse(readFileSync(file(GD + 'sprites.json'), 'utf8'));
+  for (const id of ['pier-back', 'pier-front']) assert.match(list.find(s => s.id === id).off, /v7r checked/);
 });
 
 test('ground sprites: the objects painted out of the HD chunks come back as sorted sprites (trees, beds, rocks, bridge rails, pier)', async () => {

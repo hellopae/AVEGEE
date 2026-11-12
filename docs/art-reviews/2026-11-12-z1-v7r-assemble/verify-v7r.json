@@ -1,0 +1,61 @@
+{
+ "pixelsChangedOutsideContexts": 0,
+ "spots": {
+  "forest-r4-c1-q12": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 2378.4,
+   "lapVarRing_v7": 1546.3,
+   "lapVarOutside60": 1935.3,
+   "lapVarCore_v7r": 2729.2
+  },
+  "heaven-bridge": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 3294.9,
+   "lapVarRing_v7": 1213.4,
+   "lapVarOutside60": 2319.2,
+   "lapVarCore_v7r": 4630.2
+  },
+  "lava-north-stair": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 2996.2,
+   "lapVarRing_v7": 1423.5,
+   "lapVarOutside60": 2115.4,
+   "lapVarCore_v7r": 4781.4
+  },
+  "lava-mid-stairs": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 2112.0,
+   "lapVarRing_v7": 888.2,
+   "lapVarOutside60": 1580.0,
+   "lapVarCore_v7r": 3404.8
+  },
+  "lava-low-stair": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 2652.9,
+   "lapVarRing_v7": 770.4,
+   "lapVarOutside60": 1465.0,
+   "lapVarCore_v7r": 6491.5
+  },
+  "south-plaza-stair": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 3462.5,
+   "lapVarRing_v7": 1867.6,
+   "lapVarOutside60": 2857.7,
+   "lapVarCore_v7r": 4836.8
+  },
+  "pier-stair": {
+   "coreMaxAbsDiffVsNative": 0,
+   "coreMeanAbsDiffVsNative": 0.0,
+   "lapVarRing_v7r": 3584.4,
+   "lapVarRing_v7": 2120.1,
+   "lapVarOutside60": 2760.3,
+   "lapVarCore_v7r": 5178.4
+  }
+ }
+}

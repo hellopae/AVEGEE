@@ -1,0 +1,114 @@
+[
+ {
+  "view": [
+   600.0,
+   2476.0,
+   4.0
+  ],
+  "layerPx": 207274,
+  "overflowPx": 9,
+  "overflowPct": 0.0,
+  "stuckPx": 19723,
+  "stuckPct": 9.52,
+  "strictLiquidPx": 193126,
+  "uncoveredStrictPx": 10953,
+  "uncoveredPct": 5.67,
+  "pieces": 7
+ },
+ {
+  "view": [
+   3002.0,
+   504.0,
+   4.0
+  ],
+  "layerPx": 115260,
+  "overflowPx": 7086,
+  "overflowPct": 6.15,
+  "stuckPx": 4216,
+  "stuckPct": 3.66,
+  "strictLiquidPx": 3951,
+  "uncoveredStrictPx": 1859,
+  "uncoveredPct": 47.05,
+  "pieces": 15
+ },
+ {
+  "view": [
+   516.0,
+   680.0,
+   4.0
+  ],
+  "layerPx": 74840,
+  "overflowPx": 0,
+  "overflowPct": 0.0,
+  "stuckPx": 931,
+  "stuckPct": 1.24,
+  "strictLiquidPx": 66832,
+  "uncoveredStrictPx": 22031,
+  "uncoveredPct": 32.96,
+  "pieces": 16
+ },
+ {
+  "view": [
+   563.0,
+   1188.0,
+   4.0
+  ],
+  "layerPx": 115692,
+  "overflowPx": 21,
+  "overflowPct": 0.02,
+  "stuckPx": 7184,
+  "stuckPct": 6.21,
+  "strictLiquidPx": 109143,
+  "uncoveredStrictPx": 16921,
+  "uncoveredPct": 15.5,
+  "pieces": 18
+ },
+ {
+  "view": [
+   595.0,
+   1566.0,
+   4.0
+  ],
+  "layerPx": 215581,
+  "overflowPx": 9,
+  "overflowPct": 0.0,
+  "stuckPx": 8612,
+  "stuckPct": 3.99,
+  "strictLiquidPx": 193802,
+  "uncoveredStrictPx": 12379,
+  "uncoveredPct": 6.39,
+  "pieces": 13
+ },
+ {
+  "view": [
+   1969.0,
+   2332.0,
+   4.0
+  ],
+  "layerPx": 124505,
+  "overflowPx": 0,
+  "overflowPct": 0.0,
+  "stuckPx": 6925,
+  "stuckPct": 5.56,
+  "strictLiquidPx": 122533,
+  "uncoveredStrictPx": 3954,
+  "uncoveredPct": 3.23,
+  "pieces": 6
+ },
+ {
+  "view": [
+   2238.0,
+   1703.0,
+   4.0
+  ],
+  "layerPx": 175111,
+  "overflowPx": 679,
+  "overflowPct": 0.39,
+  "stuckPx": 8327,
+  "stuckPct": 4.76,
+  "strictLiquidPx": 166034,
+  "uncoveredStrictPx": 8845,
+  "uncoveredPct": 5.33,
+  "pieces": 9
+ }
+]

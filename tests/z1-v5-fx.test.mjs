@@ -238,8 +238,8 @@ test('canteen: the new picture is cleaned, cropped, and the foundation is the bo
 });
 
 test('ground swap: v7 (2x redraw of v5, served as 1024 px tiles) is one switch in zone-skin.js and the loader still copes with 2048 px chunks', async () => {
-  assert.equal(skin.ZONE1_GROUND_SET, 'v7', 'this branch plays the 2x ground');
-  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND.v7);
+  assert.equal(skin.ZONE1_GROUND_SET, 'v7r', 'this branch plays the repaired 2x ground (v7 stays installed, one switch back)');
+  assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND.v7r);
   assert.deepEqual({ ...skin.ZONE1_GROUND.v7, fullPx: { ...skin.ZONE1_GROUND.v7.fullPx } },
     { dir: 'img/map-zone1/v7/', preview: 'img/map-zone1/v7/zone1-terrain-v7-preview.webp', fullPx: { w: 9830, h: 6554 }, chunk: 1024, repairs: false, sprites: 'img/map-zone1/v7/sprites.json' });
   assert.equal(skin.ZONE1_GROUND.v7r.dir, 'img/map-zone1/v7r/', 'the repaired set is registered, one switch away');
