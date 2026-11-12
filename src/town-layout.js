@@ -172,7 +172,8 @@ export const TOWN_PROP_SITES = [
   // snow trees by the ice gate (owner: white marks)
   ...trees([[3375,545,131,'ice'],[3677,586,140,'ice']],'snow-tree'),
   // palm and banyan flanking the great stair to the river (owner: pasted pictures)
-  deco('palm','palm',1780,1663,132,'city',14,10,null,171),
+  // FB2-1: the palm was lit brighter than every other tree; it is now the same banyan sprite as its twin on the other side
+  deco('banyan-west','tree',1780,1663,167,'city',16,11),
   deco('banyan','tree',2068,1663,167,'city',16,11),
   // rocks beside the quarry
   ...[[3014,868,77],[3496,887,119],[3312,981,79],[3241,996,52]].map(([x,y,w],i)=>deco(`rock-${i}`,'rock',x,y,w,'ice',w*.34,w*.14)),

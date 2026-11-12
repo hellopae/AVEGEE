@@ -1,7 +1,8 @@
 import {drawMapWeather,drawBiomeWeather,drawSceneLava,weatherEnabled,weatherBudget,viewMetrics,MAP_FX} from './map-ambient.js';
 import {createSceneFluid,loadSceneFxLayout,sceneFxLayoutNow,sceneFxFor,sceneFxKey} from './scene-fluid-fx.js';
 export const ATMOSPHERE = Object.freeze({maxCanvasPixels:900000,maxParticles:160,mobileParticles:70,frameMs:33});
-export const TH_ATMOS_LAMPS=Object.freeze([{x:1720,y:1200,w:44},{x:2115,y:1200,w:44}].map(Object.freeze));
+// FB2-1: the two lamps by the civic stair stood on top of the rock (1720,1200 / 2115,1200); moved to the foot of the stair where the owner arrows point (still on blocked margin)
+export const TH_ATMOS_LAMPS=Object.freeze([{x:1764,y:1247,w:44},{x:1937,y:1240,w:44}].map(Object.freeze));
 export const TH_LAMP_ART='img/theme-v4/town-lamp-gold-th-v1.webp';
 export const SCENE_EFFECTS=Object.freeze({
  th:Object.freeze(['cloud','leaves','lava']),asia:Object.freeze(['cloud','leaves','light','lava']),

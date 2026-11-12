@@ -63,7 +63,7 @@ export function mapInteractions(g, merchant) {
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
     bx:nira.x, by:nira.y - (isTownZone(g.zone)?58:74), anchor:'top', label:'จัดทีมยมทูต' });
   if (g.zoneCaptivesFree() && (!g.merchantAvailable || g.merchantAvailable())) targets.push({ id:'merchant', kind:'merchant', x:merchant.x, y:merchant.y,
-    bx:merchant.x, by:merchant.y - (isTownZone(g.zone)?72:92), anchor:'top', label:'ซื้อขาย' });
+    bx:merchant.x, by:merchant.y - (isTownZone(g.zone)?54:92), anchor:'top', label:'ซื้อขาย' });
   for (const st of g.stations) {
     if (st.build) continue;
     const def = st.def;

@@ -480,7 +480,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);if(worker.supplyRest||(worker.hunger??100)<=0)label(ctx,'🍙',worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-6,11,'#ffb4a0');});   // FB2-6: out of food = just stops; a small rice icon over the head is the only sign
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -680,6 +680,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
+      if (!c.self && (c.hunger ?? 100) <= 0) label(ctx, '🍙', c.x, c.y - crewHeight - 6, 11, '#ffb4a0');   // FB2-6: small hunger icon over the head (no banner)
     });
   }
   const camp = finalRestSpot(g);
@@ -776,8 +777,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
 
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
+  const placedBubbles = [];
   for (const c of (rescue ? [] : g.crew))
-    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 54 : 48), c.k === 'nira' ? .74 : 1);
+    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H * characterScale(c.k) - 18, BUBBLE_SCALE, placedBubbles);
 
 
   // ---- ลูกไฟที่เพิ่งฟาด ----
@@ -971,6 +973,8 @@ function buildPrompt(ctx, def, t, g) {
   rr(ctx, x1 + 6, y1 + 6, x2 - x1 - 12, y2 - y1 - 12, 10); ctx.stroke();
   ctx.restore();
 
+  // FB2-7: a locked site shows ONE text (the lock plaque on the ground, town-map.js) - no name/lock box over it
+  if (locked) return;
   const { bx, by, w, h } = buildPromptRect(ctx, def, info);
   ctx.fillStyle = locked ? 'rgba(18,8,13,.8)' : 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
   ctx.strokeStyle = locked ? 'rgba(120,100,92,.6)' : afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
@@ -982,23 +986,32 @@ function buildPrompt(ctx, def, t, g) {
 /** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
  *  afford ไม่ผลต่อขนาดกรอบจริง (ข้อความสองแบบยาวใกล้กัน) ใส่ true ไปตรง ๆ ได้เสมอ · g ทำให้ล็อก/แนะนำนับด้วย */
 export function hitBuildPrompt(ctx, def, sx, sy, g) {
+  if (g?.buildLocked?.(def.k)) return false;   // FB2-7: a locked site draws no prompt box, so it has nothing to click
   const { bx, by, w, h } = buildPromptRect(ctx, def, promptInfo(g, def, g?.coin >= def.cost));
   return sx >= bx && sx <= bx + w && sy >= by && sy <= by + h;
 }
 
-/** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
-function bubble(ctx, text, x, y, scale=1) {
-  const originX=x;ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);x=0;y=0;
+/** บทพูดสั้น ๆ ลอยเหนือหัว — FB2-4: ทุกตัวขนาดเดียวกัน (BUBBLE_SCALE) กึ่งกลางเหนือหัว หางชี้หัว ไม่ล้นขอบฉาก
+ *  และไม่ทับกัน: ถ้าชนกล่องที่วาดไปแล้วในเฟรมนี้ ยกขึ้นทีละชั้น (placed = กล่องที่วาดแล้ว) */
+const BUBBLE_SCALE = .74;
+function bubble(ctx, text, x, y, scale = .74, placed = []) {   // .74 = BUBBLE_SCALE
+  ctx.save();
   ctx.font = `600 ${MAP_NAME_SIZE * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
-  const w = Math.min(180 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
-  const preferred=originX>SCENE.w*.58 ? -w-18*UI_SCALE_MAP : 18*UI_SCALE_MAP;
-  const bx = Math.max((6-originX)/scale,Math.min((SCENE.w-6-originX)/scale-w,preferred));
-  ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
+  const w = Math.min(190 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
+  const W = w * scale, H = h * scale, tail = 7 * scale;
+  const bx = Math.max(6, Math.min(SCENE.w - 6 - W, x - W / 2));
+  let top = y - H;
+  for (let i = 0; i < 4 && placed.some(r => bx < r.x + r.w + 3 && bx + W + 3 > r.x && top < r.y + r.h + 3 && top + H + 3 > r.y); i++) top -= H + tail + 3;
+  top = Math.max(6, top);
+  placed.push({ x: bx, y: top, w: W, h: H });
+  ctx.translate(bx, top); ctx.scale(scale, scale);
+  rr(ctx, 0, 0, w, h, 8); ctx.fillStyle = 'rgba(20,9,14,.92)'; ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 7);
+  const tx = Math.max(10, Math.min(w - 10, (x - bx) / scale));   // the tail points at the head even when the box was pushed in from an edge
+  ctx.beginPath(); ctx.moveTo(tx - 5, h - .5); ctx.lineTo(tx + 5, h - .5); ctx.lineTo(tx, h + 7);
   ctx.fillStyle = 'rgba(20,9,14,.92)'; ctx.fill();
   ctx.fillStyle = '#f2e6dd'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(text, bx + w / 2, y - h / 2 + 1, w - 10 * UI_SCALE_MAP);
+  ctx.fillText(text, w / 2, h / 2 + 1, w - 10 * UI_SCALE_MAP);
   ctx.restore();
 }
 

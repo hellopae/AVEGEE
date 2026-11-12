@@ -62,7 +62,7 @@ export function townNearbyAction(g, interaction, build, reach = 105) {
 // FB-UI 2 (owner 10 Nov): the "locked site" sign is a Thai-style plaque - gold double frame with a kranok crest, dark-red lacquer
 // panel, a gold padlock and gold lettering with a dark outline (readable on every ground colour). Drawn with canvas paths only (no
 // image to recolour); rendered once into a 4x offscreen canvas per text, then stamped with drawImage so the map loop stays cheap.
-const PLAQUE_FONT='700 13px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif', PLAQUE_K=4, PLAQUE_H=32, plaqueCache=new Map();
+const PLAQUE_FONT='700 13px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif', PLAQUE_K=4, PLAQUE_H=32, PLAQUE_S=.68, plaqueCache=new Map();   // PLAQUE_S: FB2-7 shown at 68% of the painted size
 function paintLockPlaque(c,text,w,h) {
   const goldEdge=c.createLinearGradient(0,0,0,h);
   goldEdge.addColorStop(0,'#fbe3a0');goldEdge.addColorStop(.5,'#c8963a');goldEdge.addColorStop(1,'#8f6422');
@@ -91,9 +91,9 @@ function paintLockPlaque(c,text,w,h) {
   c.fillStyle='#ffe9b4';c.fillText(text,tx,ty);
 }
 function drawLockPlaque(ctx,x,bottom,text) {
-  const h=PLAQUE_H;
+  const h=PLAQUE_H, S=PLAQUE_S;
   let cached=plaqueCache.get(text);
-  if(cached){ctx.drawImage(cached.cv,x-cached.w/2,bottom-h,cached.w,h);return;}
+  if(cached){ctx.drawImage(cached.cv,x-cached.w*S/2,bottom-h*S,cached.w*S,h*S);return;}
   const make=typeof document!=='undefined'&&document.createElement;
   const fontsReady=!make||!document.fonts?.check||document.fonts.check(PLAQUE_FONT,text);
   const probe=make&&make.call(document,'canvas').getContext?.('2d');
@@ -103,9 +103,9 @@ function drawLockPlaque(ctx,x,bottom,text) {
   if(make&&fontsReady) {
     const cv=document.createElement('canvas');cv.width=Math.ceil(w*PLAQUE_K);cv.height=Math.ceil(h*PLAQUE_K);
     const c=cv.getContext('2d');
-    if(c&&c.scale){c.scale(PLAQUE_K,PLAQUE_K);paintLockPlaque(c,text,w,h);plaqueCache.set(text,cached={cv,w,h});ctx.drawImage(cv,x-w/2,bottom-h,w,h);return;}
+    if(c&&c.scale){c.scale(PLAQUE_K,PLAQUE_K);paintLockPlaque(c,text,w,h);plaqueCache.set(text,cached={cv,w,h});ctx.drawImage(cv,x-w*S/2,bottom-h*S,w*S,h*S);return;}
   }
-  ctx.save();ctx.translate(x-w/2,bottom-h);paintLockPlaque(ctx,text,w,h);ctx.restore();   // fonts not ready yet: paint straight, cache on a later frame
+  ctx.save();ctx.translate(x-w*S/2,bottom-h*S);ctx.scale(S,S);paintLockPlaque(ctx,text,w,h);ctx.restore();   // fonts not ready yet: paint straight, cache on a later frame
 }
 
 /** Construction sites are visible; roads and stairs are supplied by the new town painting.

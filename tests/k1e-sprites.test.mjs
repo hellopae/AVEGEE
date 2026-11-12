@@ -6,7 +6,7 @@ import { TOWN_PROP_SITES } from '../src/town-layout.js';
 import { townPropArtKey, addTownSceneryLayers } from '../src/town-scenery.js';
 
 const expected = [
-  ['town-prop-palm', 'palm', 1],
+  ['town-prop-palm', 'palm', 0],   // FB2-1 (13 Nov): the zone-1 palm prop was replaced by a banyan; the art file stays shipped
   ['town-prop-lamp-gold', 'lamp-gold', 10],
   ['town-tree-red-th', 'tree-red', 8],
   ['town-tree-snow-th', 'tree-snow', 2],

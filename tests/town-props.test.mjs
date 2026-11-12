@@ -11,7 +11,7 @@ test('decorations have unique ids, art or a placeholder height, and a small soli
   assert.equal(new Set(TOWN_PROP_SITES.map(p=>p.id)).size,TOWN_PROP_SITES.length);
   assert.equal(TOWN_PROP_COLLIDERS.length,TOWN_PROP_SITES.length);
   const kinds=new Set(TOWN_PROP_SITES.map(p=>p.kind));
-  for(const kind of ['tree','rock','palm','lamp','torch'])assert.ok(kinds.has(kind),kind);
+  for(const kind of ['tree','rock','lamp','torch'])assert.ok(kinds.has(kind),kind);   // FB2-1: the zone-1 palm became a banyan like the others
   const count=(kind,biome)=>TOWN_PROP_SITES.filter(p=>p.kind===kind&&(!biome||p.biome===biome)).length;
   assert.equal(count('lamp'),10,'ten gold lanterns round the heaven gate');
   assert.equal(count('torch'),24,'fourteen courtyard torches and ten civic/entry fire pillars');
@@ -27,9 +27,9 @@ test('decorations have unique ids, art or a placeholder height, and a small soli
   }
 });
 
-test('placeholders are only the three drawings still to be made', () => {
+test('placeholders are only the two drawings still to be made (palm gone: FB2-1)', () => {
   const placeholder=new Set(TOWN_PROP_SITES.filter(p=>!p.key).map(p=>p.kind));
-  assert.deepEqual([...placeholder].sort(),['lamp','palm','torch']);
+  assert.deepEqual([...placeholder].sort(),['lamp','torch']);
 });
 
 test('houses: only the ground floor blocks', () => {
