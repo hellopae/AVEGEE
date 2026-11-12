@@ -116,7 +116,7 @@ test('ground loader: far tiles are released (LRU, memory cap), visible ones neve
   const f = await terrainFixture();
   try {
     const { module: t, images } = f;
-    const g = f.zone.ZONE1_GROUND.v7;
+    const g = f.zone.ZONE1_GROUND.v7r;
     assert.equal(t.townTerrainCap({ chunk: g.chunk }), 28, '1024 px tiles: 120 MB / 4.2 MB');
     assert.ok(t.townTerrainCap({ chunk: 1024 }) > 20 && t.townTerrainCap({ chunk: 2048 }) === 7);
     const finish = async () => { for (let pass = 0; pass < 4; pass++) { for (const im of images.filter(i => i.onload && !i.done)) { im.done = true; await im.onload(); } await flush(); } };

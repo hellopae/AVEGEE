@@ -23,11 +23,11 @@ test('FX5-1: scene cloud shadows are clearly stronger than the map (map stays .3
 
 test('FX5-2/3: the 51 pilot ground sprites are hidden by flag, the left lava bridge rails are removed, the central bridge rails stay, the pier rails are off (v5 fallback patch)', async () => {
   const gs = await import('../src/town-ground-sprites.js');
-  const list = JSON.parse(read('img/map-zone1/v7/sprites.json'));
+  const list = JSON.parse(read('img/map-zone1/v7r/sprites.json'));
   assert.equal(list.length, 51, 'files + json kept');
   const shown = list.filter(gs.groundSpriteShown);
   assert.ok(!shown.some(s => s.layer === 'sort'), 'no tree / bush / lamp post drawn');
-  assert.deepEqual(shown.map(s => s.id).sort(), ['river-back', 'river-front'], 'the pier rails are off in v7: that stair is the v5 fallback with its rails already painted in');
+  assert.deepEqual(shown.map(s => s.id).sort(), ['river-back', 'river-front'], 'the pier rails are off: the repaired pier stair of v7r has its rails painted in');
   assert.ok(list.filter(s => s.id.startsWith('pier-')).every(s => s.off), 'off carries the reason');
   assert.ok(!list.filter(s => s.id.startsWith('lava-')).some(gs.groundSpriteShown));
   gs.setGroundSpriteShow({ sort: true }); assert.ok(list.filter(gs.groundSpriteShown).length >= 47, "flag brings them back (51 - 2 left lava rails - 2 pier rails that are off)"); gs.setGroundSpriteShow({ sort: false });

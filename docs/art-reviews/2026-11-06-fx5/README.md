@@ -4,3 +4,5 @@
 - `04-ko-fall-and-rise.mp4`: Yama's health to 0 -> tilts back 84 deg about his feet in 300 ms and dims; revived -> rises.
 - `05-map-lava-bridge-no-rails-no-trees.mp4`: the map by the left lava bridge: rails removed, no pilot sprites.
 - Placement sheet: `Output/Toby/2026-11-06-placement-sheet.jpg` (AGAPAE repo).
+
+> Evidence media (clips / pictures) removed at the merge to main, 12 Nov 2026, to keep the deployed repo small. They are in git history at commit 3a33380c.

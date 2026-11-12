@@ -4,3 +4,5 @@
 - `NN-*.mp4` - 12.5 s clips at 390x844 (zone 1: volcano with a fireball cast in the middle, ice, forest, border, cave, interrogation room; zone 3 battle + interrogation = snow; zone 4 battle + interrogation = rain + lightning).
 - `ab-*-off.jpg` / `ab-*-on.jpg` - same picture at 1280 wide with the weather switch OFF and ON (no figures, no HUD).
 - Layout / masks: `img/scene-fx/` (made by `scripts/build-scene-fx.py`; `review <dir>` draws the masks over the pictures). Evidence: `scripts/scene-fx-evidence.py`.
+
+> Evidence media (clips / pictures) removed at the merge to main, 12 Nov 2026, to keep the deployed repo small. They are in git history at commit 3a33380c.

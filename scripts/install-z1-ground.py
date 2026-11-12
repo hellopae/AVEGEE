@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Z1-GROUND-INSTALL: put a Codex 2x ground pack (Z1-HD-ASSEMBLE output: r1-c1..r4-c5.webp, 2048 px chunks, 9830x6554) into the game, ONE command.
 
-  python3 scripts/install-z1-ground.py <pack dir> [--name v7] [--quality 88] [--activate]
+  python3 scripts/install-z1-ground.py <pack dir> [--name v7r] [--quality 88] [--activate]
 
   <pack dir>   the folder with the 20 chunks + zone1-terrain-v7-preview.webp + manifest.json (e.g. .../docs/art-reviews/2026-11-11-z1-v7-hd-assemble/v7)
-  --name       target folder img/map-zone1/<name>/ and the key in ZONE1_GROUND of src/zone-skin.js (default v7).  v7 and v7r are registered there.
+  --name       target folder img/map-zone1/<name>/ and the key in ZONE1_GROUND of src/zone-skin.js (default v7r).  A new name must be registered there first.
   --quality    WebP quality of the 1024 px tiles (default 88; the chunks are q90, one more lossy pass at 88 keeps size and look)
   --activate   also set ZONE1_GROUND_SET in src/zone-skin.js to <name>  (this is the switch: change that constant back to go back)
 
@@ -12,7 +12,7 @@ What it does (nothing is drawn or edited - pixels are only re-cut):
   * stitches the 20 chunks into one 9830x6554 picture, cuts it again into 1024 px tiles (10 x 7 = 70 files: the camera at phone zoom then keeps few
     decoded tiles in memory - FX3 measured 2048 px chunks at 100-130 MB, 1024 px at 35-50 MB);
   * copies the preview (1536x1024) and the pack's manifest/structure notes next to the tiles (pack-manifest.json);
-  * keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier); a new name gets v7's (or --sprites-from);
+  * keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier); a new name gets v7r's (or --sprites-from);
   * refuses a pack that is not exactly 20 chunks of the right size, so a half-finished export never reaches the game.
 Then:  node --test tests/*.test.mjs   and look at the map (390 px wide) before committing.
 """
@@ -28,7 +28,7 @@ COLS, ROWS = 5, 4
 
 ap = argparse.ArgumentParser()
 ap.add_argument('pack')
-ap.add_argument('--name', default='v7')
+ap.add_argument('--name', default='v7r')
 ap.add_argument('--quality', type=int, default=88)
 ap.add_argument('--activate', action='store_true')
 ap.add_argument('--sprites-from', default=None, help='folder with sprites.json + sprites/ (default: keep the ones already in the target folder)')
@@ -75,7 +75,7 @@ if pm.exists():
     'note': 'built by scripts/install-z1-ground.py', 'source': str(pack), 'tilePx': TILE, 'quality': a.quality,
     'fullPx': {'w': FULL[0], 'h': FULL[1]}, 'tiles': len(files), 'bytes': files, 'totalTileBytes': total}, indent=1))
 
-spr = a.sprites_from or (None if (out / 'sprites.json').exists() else str(ROOT / 'img/map-zone1/v7'))   # a new set starts from v7's sprite list
+spr = a.sprites_from or (None if (out / 'sprites.json').exists() else str(ROOT / 'img/map-zone1/v7r'))   # a new set starts from v7r's sprite list
 if spr and Path(spr).expanduser().resolve() != out.resolve():
     src = Path(spr).expanduser()
     shutil.copyfile(src / 'sprites.json', out / 'sprites.json')

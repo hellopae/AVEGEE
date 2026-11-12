@@ -91,18 +91,18 @@ const terrain = (folder, name) => ({
 
 // Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only; everything else (tile grid, preview, minimap, fluid masks, sprites) reads the set.
 //   v5   the 1x ground (4915 x 3277, 1024 px chunks) with the old runtime repairs.
-//   v7   Codex's 2x ground (Z1-HD-ASSEMBLE, 9830 x 6554): 13 parts are HD redraws, 7 spots are still v5 + repairs enlarged 2x (stairs, heaven bridge, one forest strip).
+//   v7   Codex's 2x ground (Z1-HD-ASSEMBLE, 9830 x 6554): 13 parts were HD redraws, 7 spots were still v5 + repairs enlarged 2x.  REMOVED from the repo at the merge to main
+//        (12 Nov 2026, 25 MB, superseded by v7r); it is in git history at 3a33380c if it is ever needed again.
 //        Served as 1024 px tiles (10 x 7, cut by scripts/install-z1-ground.py): the camera at phone zoom keeps few decoded tiles in memory (FX3: 2048 px chunks 100-130 MB, tiles 35-50 MB).
 //        The repairs of v5 are painted for v5 pixels, so v7 turns them off.  `sprites` = the rails drawn over the central bridge / pier (src/town-ground-sprites.js).
 //   v7r  v7 after Codex's native repairs of those 7 spots were joined into the pack (docs/art-reviews/2026-11-12-z1-v7r-assemble, scripts/assemble-v7r.py; installed by scripts/install-z1-ground.py <pack> --name v7r --activate).
-//        ACTIVE.  Set ZONE1_GROUND_SET back to 'v7' to go back (v7 stays installed).  The pier rails (sprites.json `off`) stay off: the repaired pier stair has them painted in.
+//        ACTIVE.  The pier rails (sprites.json `off`) stay off: the repaired pier stair has them painted in.
 // Folders are built from the name on purpose: a set that is not installed yet must not leave a literal URL to a missing file.
 const hd2x = name => { const dir = `img/map-zone1/${name}/`; return Object.freeze({ dir, preview:dir + 'zone1-terrain-v7-preview.webp',
   fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, sprites:dir + 'sprites.json' }); };
 export const ZONE1_GROUND = Object.freeze({
   v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
                       fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
-  v7: hd2x('v7'),
   v7r: hd2x('v7r'),
 });
 export const ZONE1_GROUND_SET = 'v7r';

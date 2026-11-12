@@ -2190,7 +2190,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=20261029-c1-v2-q3">
-<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3">
+<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3-m1112">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4-map-ui-review"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
@@ -2399,6 +2399,9 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <script type="importmap">
 {
   "imports": {
+    "./src/quest-fights.js": "./src/quest-fights.js?v=20261112-m1112",
+    "./src/quest-rewards.js": "./src/quest-rewards.js?v=20261112-m1112",
+    "./src/talk-lines.js": "./src/talk-lines.js?v=20261112-m1112",
     "./src/town-fluid-fx.js?v=v5fx": "./src/town-fluid-fx.js?v=20261112-fluidfull2",
     "./src/town-fluid-fx.js": "./src/town-fluid-fx.js?v=20261112-fluidfull2",
     "./src/fluid-shader.js": "./src/fluid-shader.js?v=20261112-fluidfull2",
@@ -2418,7 +2421,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/worker-escort-spacing.js": "./src/worker-escort-spacing.js?v=20261025-a4",
     "./src/escort.js": "./src/escort.js?v=20261025-a4",
     "./src/tea-staff-rest.js": "./src/tea-staff-rest.js?v=20261028-walk-to-seat-grace-f-recovery-120",
-    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3",
+    "./src/team-hud.js": "./src/team-hud.js?v=20261031-q3-m1112",
     "./src/zone-skin.js": "./src/zone-skin.js?v=20261112-z1v7r",
     "./src/dungeon-navigation.js": "./src/dungeon-navigation.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia.js": "./src/frontier-walkmask-th-asia.js?v=m2-f12-20261023",
@@ -2431,7 +2434,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/town-west-trees.js": "./src/town-west-trees.js?v=20261024-z3-west",
     "./src/town-owner-walkmask-west.js": "./src/town-owner-walkmask-west.js?v=m2-z3-west-20261027",
     "./src/town-owner-walkmask-cyberhell.js": "./src/town-owner-walkmask-cyberhell.js?v=20261030-z4-town-a",
-    "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a",
+    "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a-m1112",
     "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1",
     "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8-fbui",
     "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles",
@@ -2446,7 +2449,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/i18n.js": "./src/i18n.js?v=20261110-questrewards",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2-r3-scale",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261105-z1v5-fx3-tiles",
-    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
+    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
     "./src/pot-souls.js": "./src/pot-souls.js?v=20261022-p6",
     "./src/minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
@@ -2514,7 +2517,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1-w4-foundation",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading-w4-foundation",
     "./src/workers.js": "./src/workers.js?v=20261029-ui-jw-p5b-p5c-p9-fbui",
-    "./src/worker-ui.js": "./src/worker-ui.js?v=20261029-food-a",
+    "./src/worker-ui.js": "./src/worker-ui.js?v=20261029-food-a-m1112",
     "./src/story.js": "./src/story.js?v=20261030-e1-v2-w4-foundation",
     "./src/weapons.js": "./src/weapons.js?v=20261028-target-weapon",
     "./src/weapons.js?v=i1b": "./src/weapons.js?v=20261028-target-weapon",
@@ -2531,7 +2534,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/frontier-ambient.js": "./src/frontier-ambient.js?v=20261031-q5-fx3-zone-atmosphere",
     "./src/training.js": "./src/training.js?v=20261029-c1-v2",
     "./src/training.js?v=minigame-review-20261011": "./src/training.js?v=20261029-c1-v2",
-    "./src/canteen.js": "./src/canteen.js?v=20261029-food-a-onboard-food",
+    "./src/canteen.js": "./src/canteen.js?v=20261029-food-a-onboard-food-m1112",
     "./src/ferry-geometry.js": "./src/ferry-geometry.js?v=20261030-z4-town-a",
     "./src/map-travel.js": "./src/map-travel.js?v=20261103-boat-deck-fit",
     "./src/battle-fx.js": "./src/battle-fx.js?v=20261110-battlefx",
@@ -2543,7 +2546,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/krata-control.js": "./src/krata-control.js?v=20261029-c1-v2",
     "./src/minigames/krata-qte.js": "./src/minigames/krata-qte.js?v=20261029-c1-v2",
     "./src/progression.js": "./src/progression.js?v=20261029-c1-v2",
-    "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120",
+    "./src/roster.js": "./src/roster.js?v=20261029-c1-v2-recovery-120-m1112",
     "./src/combat-skills.js": "./src/combat-skills.js?v=20261110-questrewards",
     "./src/combat-skill-assets.js": "./src/combat-skill-assets.js?v=20261110-questrewards",
     "./src/encounter-balance.js": "./src/encounter-balance.js?v=20261110-battlefx",
@@ -2554,12 +2557,12 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/remorse.js": "./src/remorse.js?v=20261030-e1-v2-sentence-time",
     "./src/side-quests.js": "./src/side-quests.js?v=20261110-questrewards",
     "./src/signal-arc.js": "./src/signal-arc.js?v=20261030-e1-v2",
-    "./src/talk.js": "./src/talk.js?v=20261030-e1-v2",
+    "./src/talk.js": "./src/talk.js?v=20261030-e1-v2-m1112",
     "./src/history-unlock.js": "./src/history-unlock.js?v=20261031-q2-hist",
     "./src/save-slots.js": "./src/save-slots.js?v=20261101-home-slots",
     "./src/save-slot-menu.js": "./src/save-slot-menu.js?v=20261102-save-visual",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261110-questrewards",
-    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food",
+    "./src/room.js": "./src/room.js?v=20261029-ui-jw-r3-scale-sentence-time-onboard-food-m1112",
     "./src/diagnosis.js": "./src/diagnosis.js?v=20261101-sentence-time",
     "./src/battle-ko.js": "./src/battle-ko.js?v=20261106-fx5",
     "./src/scene-fluid-fx.js": "./src/scene-fluid-fx.js?v=20261106-fx5",
@@ -2567,7 +2570,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/snow-footprints.js": "./src/snow-footprints.js?v=20261101-zone-atmosphere",
     "./src/onboarding.js": "./src/onboarding.js?v=20261102-onboard-food",
     "./src/sun-shafts.js": "./src/sun-shafts.js?v=20261102-cloud-rays",
-    "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner",
+    "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner-m1112",
     "./src/quest-panels.js": "./src/quest-panels.js?v=20261110-questrewards",
     "./src/story-progression.js": "./src/story-progression.js?v=20261102-w4-foundation"
   }
