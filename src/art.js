@@ -158,6 +158,14 @@ export function img(key, sourceZone = null) {
   return r.ok ? r.el : null;
 }
 
+/** FB2-13: is this picture still on its way ('loading'), here ('ready') or lost ('failed')? Lets a scene wait for a pose instead of drawing nothing. */
+export function imgState(key, sourceZone = null) {
+  const src = artUrl(key, 'png', sourceZone);
+  if (!src) return 'failed';
+  const r = load(src);
+  return r.ok ? 'ready' : r.failedAt ? 'failed' : 'loading';
+}
+
 /** รูปของโซนนี้เท่านั้น — ไม่มีก็ null (ไม่ถอยไปโซน 1) ใช้กับฉากโซนที่มีชื่อไฟล์ของตัวเองอยู่แล้ว */
 export function zoneImg(key) {
   const z = zoneOf(), hit = ZMAP[z] && ZMAP[z][zoneStem(key, z)];

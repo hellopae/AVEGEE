@@ -4,7 +4,8 @@ import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
-globalThis.Image ??= class {};
+// FB2-13: the lying-pose picture is waited for while it is 'loading'. This stub answers every request with an error (a lost file) so the older tests do not wait; the hold test below uses a picture that never answers.
+globalThis.Image ??= class { set src(v){ this._src=v; this.onerror?.(); } get src(){ return this._src; } };
 const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; return g; };
 test('P1: there is no bed to buy — sleeping needs only a finished tea pavilion; old teaBeds data is kept but never read', () => {
  const g=game(); g.coin=1000;

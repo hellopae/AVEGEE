@@ -5855,9 +5855,6 @@ function openStation(k, emergency = false) {
           !!asleep || !!R?.sitting() || !R?.nearBed() || g.hp >= g.hpMax,
           asleep ? 'HP ค่อย ๆ ฟื้นระหว่างนอน' : g.hp >= g.hpMax ? 'บารมีเต็มแล้ว' : R?.nearBed() ? 'HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที' : 'เดินไปที่นอนก่อน']);
       }
-      const resourceLine = i => k !== 'tea' ? '' : i === 1
-        ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${100*g.hp/g.hpMax}%"></i></span><span class="st-hp">HP <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>`
-        : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">${t('battle.mp')} <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
         const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_ROOM_LAYOUT.pivot[0], MIRROR_ROOM_LAYOUT.pivot[1]-.15] : [MIRROR_ROOM_LAYOUT.target[0], MIRROR_ROOM_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
         const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala' || k === 'krata') && R ? R.anchor(u, v) : [u*100,v*100];
@@ -5865,7 +5862,7 @@ function openStation(k, emergency = false) {
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
           <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(t(label))}</button>
-          ${sub ? `<small>${esc(sub)}</small>` : ''}${resourceLine(i)}
+          ${sub ? `<small>${esc(sub)}</small>` : ''}
         </div>`;
       }).join(''));
       A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
@@ -5957,6 +5954,8 @@ function openStation(k, emergency = false) {
     const box=dlg.querySelector('#st-arch'),hud=dlg.querySelector('.st-hud');if(!box)return;
     box.hidden=!on;hud?.classList.toggle('archive-open',on);R?.lock(on);
     // Remove obscured HUD controls from keyboard navigation while the modal owns focus.
+    const mpf = dlg.querySelector('#st-hud-mp');
+    if (mpf) mpf.style.width = `${Math.max(0, Math.min(100, 100 * g.mp / (g.mpMax || 1)))}%`;
     const covered=dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls');
     covered.forEach(el=>el.inert=on);
     if(!on){archiveFocus?.focus();return;}
@@ -6184,7 +6183,7 @@ function openStation(k, emergency = false) {
       </div>
       <div class="st-bottom-left">
         <div class="st-avatar"><span class="st-ava-row"><img src="img/hero-yama-profile.webp" alt=""><span class="hud-rank-stars" id="st-stars"><i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i></span></span>
-          <span class="hud-hpbar"><i id="st-hud-hp"></i></span><small>${esc(HERO_NAME)}</small></div>
+          <span class="hud-hpbar" title="HP"><i id="st-hud-hp"></i></span><span class="hud-hpbar mp" title="${esc(t('battle.mp'))}"><i id="st-hud-mp"></i></span><small>${esc(HERO_NAME)}</small></div>
         <button id="st-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.webp" alt=""><span>${esc(t('room.hud.book'))}</span></button>
         <button id="st-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.webp" alt=""><span>${esc(t('hud.bag'))}</span></button>
       </div>
@@ -6214,6 +6213,7 @@ function openStation(k, emergency = false) {
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
   R.onCollect = () => { panels(); refresh(); };
+  if (k === 'tea') { img('hero-yama-unconscious'); img('hero-yama-tea-clean'); }   // FB2-13: warm the lying/sitting poses while the player walks to the bed
   if (k === 'tarang' || k === 'sawan') {
     // P4 ใบวินิจฉัยวิญญาณ — ปุ่มหลักเรียกฟังก์ชันเดิมทั้งหมด (release / inspectPrison / moveFromPrison / inspectGate / resolveGate)
     // พร้อมแอนิเมชันห้องเดิม · เปิดใบ = พักเกม (ปล่อยคืนตอนปิดใบ ผ่าน userPaused เหมือนกล่องอื่น)
@@ -6292,9 +6292,8 @@ function openStation(k, emergency = false) {
     if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
-    if (k === 'tea') {
-      const val = dlg.querySelector('#st-mp-value'); if (val) val.textContent = `${Math.round(g.mp)}/${g.mpMax}`;
-      const fill = dlg.querySelector('#st-mp-fill'); if (fill) fill.style.width = `${100*g.mp/g.mpMax}%`;
+    if (k === 'tea') {   // FB2-13: HP/MP live under the profile (bottom-left), no bars inside the window
+      const mpf = dlg.querySelector('#st-hud-mp'); if (mpf) mpf.style.width = `${Math.max(0, Math.min(100, 100 * g.mp / (g.mpMax || 1)))}%`;
     }
     if(k === 'krajok') { const nearStand=nearMirror(R.pos()); if(nearStand!==wasMirrorNear){wasMirrorNear=nearStand;panels();} }
     const trainingNear = R.inTrainingReach();

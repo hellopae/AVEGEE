@@ -25,7 +25,7 @@ import { regenMp } from './mp-regen.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
-import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
+import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, imgState, rr } from './art.js';
 import {drawWorker,assignWorkerEscort,releaseWorkerEscort,zoneWorkers} from './workers.js';
 import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
@@ -197,7 +197,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
-  let lying = false, sleepElapsed = 0, recoverySleep = false, sleepStartHp = 0;
+  let lying = false, sleepElapsed = 0, recoverySleep = false, sleepStartHp = 0, sleepHoldMs = 0;
   const mpAcc = { frac:0 };   // เศษ MP ที่ยังไม่ครบหน่วย (ข้อ 5 ชุด 30B)
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
@@ -310,13 +310,16 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         (Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
-    sleepStartHp = g.hp;
+    sleepStartHp = g.hp; sleepHoldMs = 0;
+    img('hero-yama-unconscious');       // FB2-13: start loading the lying pose now (it is lazy - on a slow link the bed stayed empty for the whole 5 s sleep)
     P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
     return true;
   }
 
   function step(dt) {
     if (lying) {
+      // FB2-13: the sleep clock waits (max 8 s) until the lying picture has loaded, so the player always sees Yama on the bed
+      if (imgState('hero-yama-unconscious') === 'loading' && sleepHoldMs < 8000) { sleepHoldMs += dt; return; }
       sleepElapsed += dt;
       g.hp = teaRecoveredHp(sleepStartHp, g.hpMax, sleepElapsed);
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
@@ -669,6 +672,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
       if (lying) {
         const down = img('hero-yama-unconscious');
+        if (!down) drawStandee(ctx,'hero-yama',px(P.x),py(P.y),U*HERO_H,t,'👑',P.face);     // still loading: the ordinary pose on the bed, never an empty bed
         if (down) {
           const width = U * lyingWidth(down, img('hero-yama')), height = width * down.naturalHeight / down.naturalWidth;
           ctx.drawImage(down, px(P.x)-width/2, py(P.y)-height/2, width, height);
