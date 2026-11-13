@@ -1,0 +1,41 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "interim": true,
+  "completed": [
+    {
+      "id": "r1-c5-q11",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-59b7b1d5-656a-4706-b2b8-e81612346d08.png",
+      "nativePath": "r1-c5/q11-native.webp"
+    },
+    {
+      "id": "r1-c5-q12",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-867841dc-c6cf-4ca2-8b54-20c0e005369e.png",
+      "nativePath": "r1-c5/q12-native.webp"
+    },
+    {
+      "id": "r1-c5-q21",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-5c62ca94-ff87-4bb4-b1bb-eb65b5a9c794.png",
+      "nativePath": "r1-c5/q21-native.webp"
+    },
+    {
+      "id": "r1-c5-q22",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-2d5de03c-8299-4526-b736-1e65d44f1ea6.png",
+      "nativePath": "r1-c5/q22-native.webp"
+    },
+    {
+      "id": "r2-c1-q11",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-f2ff43b7-5a49-4327-af5f-2eb5fff7a7bb.png",
+      "nativePath": "r2-c1/q11-native.webp"
+    },
+    {
+      "id": "r2-c1-q12",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-e8cd6a04-c28a-4e63-8a3a-60e48c132a54.png",
+      "nativePath": "r2-c1/q12-native.webp"
+    },
+    {
+      "id": "r2-c1-q21",
+      "generatedSourcePath": "/Users/agapae/.codex/generated_images/01a1d523-21bf-7ec3-9721-4e6e10840d4b/exec-bd824b9e-ed3e-48d3-9501-a65b87c88657.png",
+      "nativePath": "r2-c1/q21-native.webp"
+    }
+  ]
+}

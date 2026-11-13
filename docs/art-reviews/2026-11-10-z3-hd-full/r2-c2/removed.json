@@ -1,0 +1,22 @@
+{
+  "zone": "west",
+  "chunk": "r2-c2",
+  "removed": [
+    "r2-c2-rails-posts"
+  ],
+  "conditionalFloorCleanup": "r2-c2-paving-shrubs",
+  "observed": "ราวและเสาสะพานโค้ง/บันไดเฉียงถูกลบ พื้นสะพาน ซุ้มโค้งและขั้นบันไดยังคงอยู่",
+  "knownVisualIssue": {
+    "part": "q22",
+    "chunkRectPx1x": [
+      480,
+      515,
+      730,
+      650
+    ],
+    "description": "พบปื้นไฮไลต์โปร่งรูปวงรีผิดธรรมชาติบนหน้าผาใต้แนวน้ำแข็ง ยังเห็นในภาพประกอบ ต้องให้ Claude ตัดสินหรือซ่อมเฉพาะจุดภายหลัง",
+    "evidence": "known-issue.jpg",
+    "resolved": false
+  },
+  "reviewPending": true
+}

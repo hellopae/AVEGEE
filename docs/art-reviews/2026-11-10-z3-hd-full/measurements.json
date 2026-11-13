@@ -1,0 +1,33 @@
+[
+  {
+    "chunk": "r2-c2",
+    "status": "assembled-for-review",
+    "imageGenCalls": 4,
+    "actualNativeSizesPx": {
+      "q11": [
+        1254,
+        1254
+      ],
+      "q12": [
+        1254,
+        1254
+      ],
+      "q21": [
+        1254,
+        1254
+      ],
+      "q22": [
+        1254,
+        1254
+      ]
+    },
+    "outputSizePx": [
+      2048,
+      2048
+    ],
+    "structureMaxPx1x": 472.8785095214844,
+    "sharpnessRatioLaplacian2x": 63.356497653762524,
+    "sharpnessRatioLaplacian1x": 10.970703867640495,
+    "qualityDecision": "pending Claude; measurements are not automatic acceptance"
+  }
+]

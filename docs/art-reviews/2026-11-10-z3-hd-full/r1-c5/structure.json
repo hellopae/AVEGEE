@@ -1,0 +1,189 @@
+{
+  "chunk": "r1-c5",
+  "sharpness": {
+    "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+    "baseline2x": 56.07230166420561,
+    "redraw2x": 4996.009939695417,
+    "ratio2x": 89.09942683670282,
+    "baseline1x": 737.4688301992667,
+    "redrawDownsample1x": 7912.309828097704,
+    "ratio1x": 10.729009151423755
+  },
+  "structure": {
+    "method": "independent interleaved mutual-SIFT holdout after training-half affine; max includes ambiguous descriptor matches; proxy only, not proof of all structural outlines",
+    "maxPx1x": 648.137451171875,
+    "perPart": {
+      "q11": {
+        "trainInliers": 223,
+        "holdoutCount": 237,
+        "holdoutResidualMaxPx1x": 299.4659118652344,
+        "holdoutResidualMedianPx1x": 0.7971519827842712,
+        "holdoutResidualP95Px1x": 4.364560604095459,
+        "holdoutWithin4pxFraction": 0.9409282700421941,
+        "coreOutsideNativeFraction": 0.00012147484756097615
+      },
+      "q12": {
+        "trainInliers": 155,
+        "holdoutCount": 166,
+        "holdoutResidualMaxPx1x": 365.50994873046875,
+        "holdoutResidualMedianPx1x": 0.6638344526290894,
+        "holdoutResidualP95Px1x": 3.2231714725494385,
+        "holdoutWithin4pxFraction": 0.9518072289156626,
+        "coreOutsideNativeFraction": 0.00025428827933982046
+      },
+      "q21": {
+        "trainInliers": 144,
+        "holdoutCount": 152,
+        "holdoutResidualMaxPx1x": 648.137451171875,
+        "holdoutResidualMedianPx1x": 0.9810141324996948,
+        "holdoutResidualP95Px1x": 3.4515419006347656,
+        "holdoutWithin4pxFraction": 0.9473684210526315,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "trainInliers": 166,
+        "holdoutCount": 173,
+        "holdoutResidualMaxPx1x": 372.81976318359375,
+        "holdoutResidualMedianPx1x": 0.7929537296295166,
+        "holdoutResidualP95Px1x": 2.4330122470855713,
+        "holdoutWithin4pxFraction": 0.9826589595375722,
+        "coreOutsideNativeFraction": 0.0012224938875305957
+      }
+    },
+    "manualOutlineReview": "pending Claude; inspect source, native, compare and structure-matches"
+  },
+  "seams": {
+    "method": "minimum squared-colour-cost DP in actual 128-map-px internal overlap; smoothstep feather +/-8 output px; no neighboring chunk assembly",
+    "visualReview": "pending Claude; seam path overlay is supplied",
+    "meanSquaredCosts": [
+      461.6345520019531,
+      961.312744140625,
+      463.4151306152344
+    ]
+  },
+  "sampledLandmarks": {
+    "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+    "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+    "maxDisplacementPx1x": 20.615528128088304,
+    "minNcc": 0.4869970381259918,
+    "points": [
+      {
+        "id": "upper-waterfall-lip",
+        "sourceChunkPx1x": [
+          382,
+          187
+        ],
+        "deltaPx1x": [
+          1,
+          0
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.8842253684997559
+      },
+      {
+        "id": "lower-waterfall-lip",
+        "sourceChunkPx1x": [
+          366,
+          365
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.9146884679794312
+      },
+      {
+        "id": "plaza-back-curb",
+        "sourceChunkPx1x": [
+          407,
+          528
+        ],
+        "deltaPx1x": [
+          0,
+          -1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.830603301525116
+      },
+      {
+        "id": "plaza-left-curb",
+        "sourceChunkPx1x": [
+          127,
+          578
+        ],
+        "deltaPx1x": [
+          -7,
+          -11
+        ],
+        "displacementPx1x": 13.038404810405298,
+        "ncc": 0.598997950553894
+      },
+      {
+        "id": "plaza-right-curb",
+        "sourceChunkPx1x": [
+          641,
+          602
+        ],
+        "deltaPx1x": [
+          -2,
+          0
+        ],
+        "displacementPx1x": 2.0,
+        "ncc": 0.8528330326080322
+      },
+      {
+        "id": "cliff-gothic-apex",
+        "sourceChunkPx1x": [
+          605,
+          342
+        ],
+        "deltaPx1x": [
+          1,
+          0
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.8354016542434692
+      },
+      {
+        "id": "stair-centre",
+        "sourceChunkPx1x": [
+          399,
+          812
+        ],
+        "deltaPx1x": [
+          2,
+          1
+        ],
+        "displacementPx1x": 2.23606797749979,
+        "ncc": 0.9713773727416992
+      },
+      {
+        "id": "stair-bottom",
+        "sourceChunkPx1x": [
+          386,
+          873
+        ],
+        "deltaPx1x": [
+          -16,
+          13
+        ],
+        "displacementPx1x": 20.615528128088304,
+        "ncc": 0.8799846172332764
+      },
+      {
+        "id": "path-bend",
+        "sourceChunkPx1x": [
+          281,
+          976
+        ],
+        "deltaPx1x": [
+          7,
+          3
+        ],
+        "displacementPx1x": 7.615773105863909,
+        "ncc": 0.4869970381259918
+      }
+    ]
+  }
+}
