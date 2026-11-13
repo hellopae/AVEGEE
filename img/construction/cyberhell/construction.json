@@ -1,0 +1,27 @@
+{
+  "frameW": 704,
+  "frameH": 704,
+  "foot": [
+    352,
+    640
+  ],
+  "worldWidth": 256,
+  "source": "CONSTRUCTION-Z234: built-in ImageGen cyberhell, 3 generated construction stages; workers from img/workers/worker-cyberhell-sheet-v2.webp; 8 composited frames, 8 fps; no roof or completed building.",
+  "stages": [
+    {
+      "sheet": "stage-1.webp",
+      "frames": 8,
+      "fps": 8
+    },
+    {
+      "sheet": "stage-2.webp",
+      "frames": 8,
+      "fps": 8
+    },
+    {
+      "sheet": "stage-3.webp",
+      "frames": 8,
+      "fps": 8
+    }
+  ]
+}
