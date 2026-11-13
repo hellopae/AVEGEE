@@ -1,0 +1,825 @@
+{
+  "zone": "west",
+  "coordinates": "map pixels 1x; world conversion x*4915/3840,y*3277/2560",
+  "sources": [
+    "src/zone-skin.js",
+    "src/town-layout.js",
+    "src/town-west-trees.js",
+    "src/town-owner-walkmask-west.js"
+  ],
+  "runtimeProps": [
+    {
+      "id": "hell-pillar-0",
+      "kind": "torch",
+      "x": 1710,
+      "y": 1080,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2188.7109375,
+        1382.484375
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "hell-pillar-1",
+      "kind": "torch",
+      "x": 2100,
+      "y": 1080,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2687.890625,
+        1382.484375
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "hell-pillar-2",
+      "kind": "torch",
+      "x": 1788,
+      "y": 1405,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2288.546875,
+        1798.509765625
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "hell-pillar-3",
+      "kind": "torch",
+      "x": 2050,
+      "y": 1405,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2623.8932291666665,
+        1798.509765625
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "hell-pillar-4",
+      "kind": "torch",
+      "x": 1790,
+      "y": 1560,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2291.1067708333335,
+        1996.921875
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "hell-pillar-5",
+      "kind": "torch",
+      "x": 2050,
+      "y": 1560,
+      "w": 34,
+      "rx": 7,
+      "ry": 5,
+      "biome": "lava",
+      "h": 112,
+      "key": null,
+      "mapFootPx1x": [
+        2623.8932291666665,
+        1996.921875
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-5",
+      "kind": "tree",
+      "x": 2242.240512,
+      "y": 1041.328896,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        2869.9510719999994,
+        1332.9823407
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-6",
+      "kind": "tree",
+      "x": 1448.285568,
+      "y": 1088.93568,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        1853.7300955,
+        1393.9227435
+      ],
+      "chunks": [
+        "r2-c2"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-7",
+      "kind": "tree",
+      "x": 1760.0317440000001,
+      "y": 1121.18528,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        2252.748964,
+        1435.2047509999998
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-8",
+      "kind": "tree",
+      "x": 1997.2968959999998,
+      "y": 1127.328,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        2556.436001,
+        1443.0679125000001
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-9",
+      "kind": "tree",
+      "x": 2366.632704,
+      "y": 1406.824448,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-prop-palm",
+      "treeKind": "green",
+      "species": "cedar",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        3029.1665989999997,
+        1800.8452015999999
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-10",
+      "kind": "tree",
+      "x": 1471.321344,
+      "y": 1463.645696,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        1883.214689,
+        1873.5808382
+      ],
+      "chunks": [
+        "r2-c2"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-11",
+      "kind": "tree",
+      "x": 1812.246144,
+      "y": 1483.609856,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        2319.5806765,
+        1899.1365227000001
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-12",
+      "kind": "tree",
+      "x": 2050.2792959999997,
+      "y": 1489.75232,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-th",
+      "treeKind": "green",
+      "species": "blue-spruce",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        2624.2507134999996,
+        1906.9993565
+      ],
+      "chunks": [
+        "r2-c3"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-14",
+      "kind": "tree",
+      "x": 336.440448,
+      "y": 969.151744,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        430.6262505,
+        1240.5899473
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-15",
+      "kind": "tree",
+      "x": 624.383616,
+      "y": 918.473728,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        799.1785084999999,
+        1175.7181276000001
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-16",
+      "kind": "tree",
+      "x": 386.350848,
+      "y": 1082.793472,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        494.508963,
+        1386.0602374
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-17",
+      "kind": "tree",
+      "x": 643.58016,
+      "y": 1082.793216,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        823.7490849999999,
+        1386.0599097
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-18",
+      "kind": "tree",
+      "x": 762.59712,
+      "y": 1365.361408,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        976.084595,
+        1747.7692711
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-19",
+      "kind": "tree",
+      "x": 787.936512,
+      "y": 1483.610112,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        1008.517697,
+        1899.1368504000002
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-20",
+      "kind": "tree",
+      "x": 437.029632,
+      "y": 1454.4319999999998,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        559.375167,
+        1861.7865874999995
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-21",
+      "kind": "tree",
+      "x": 513.046656,
+      "y": 1525.07392,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        656.6729985,
+        1952.213764
+      ],
+      "chunks": [
+        "r2-c1"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-23",
+      "kind": "tree",
+      "x": 3402.45888,
+      "y": 576.012288,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-snow-th",
+      "treeKind": "white",
+      "species": "silver-fir",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        4354.970155,
+        737.3407296
+      ],
+      "chunks": [
+        "r1-c5"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    },
+    {
+      "id": "west-tree-24",
+      "kind": "tree",
+      "x": 3648.170496,
+      "y": 580.6192639999999,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-snow-th",
+      "treeKind": "white",
+      "species": "silver-fir",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        4669.468226,
+        743.2380188
+      ],
+      "chunks": [
+        "r1-c5"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "src/town-layout.js WEST_PROPS; src/town-west-trees.js; src/town-owner-walkmask-west.js"
+    }
+  ],
+  "paintedObjects": [
+    {
+      "id": "r1-c5-rails-posts",
+      "chunk": "r1-c5",
+      "action": "remove-baked",
+      "reason": "optional bridge/stair rails and posts removed; preserve every tread and deck edge",
+      "identification": "all manmade railings and freestanding finial posts visible in context; visual scope, not runtime prop IDs"
+    },
+    {
+      "id": "r1-c5-paving-shrubs",
+      "chunk": "r1-c5",
+      "action": "remove-if-on-paving",
+      "reason": "remove only plants rooted in paved walk floor, retain all off-floor forest/snow shrubs",
+      "identification": "visual paved-floor footprint checked against west owner mask"
+    },
+    {
+      "id": "r2-c1-rails-posts",
+      "chunk": "r2-c1",
+      "action": "remove-baked",
+      "reason": "optional bridge/stair rails and posts removed; preserve every tread and deck edge",
+      "identification": "all manmade railings and freestanding finial posts visible in context; visual scope, not runtime prop IDs"
+    },
+    {
+      "id": "r2-c1-paving-shrubs",
+      "chunk": "r2-c1",
+      "action": "remove-if-on-paving",
+      "reason": "remove only plants rooted in paved walk floor, retain all off-floor forest/snow shrubs",
+      "identification": "visual paved-floor footprint checked against west owner mask"
+    },
+    {
+      "id": "r2-c2-rails-posts",
+      "chunk": "r2-c2",
+      "action": "remove-baked",
+      "reason": "optional bridge/stair rails and posts removed; preserve every tread and deck edge",
+      "identification": "all manmade railings and freestanding finial posts visible in context; visual scope, not runtime prop IDs"
+    },
+    {
+      "id": "r2-c2-paving-shrubs",
+      "chunk": "r2-c2",
+      "action": "remove-if-on-paving",
+      "reason": "remove only plants rooted in paved walk floor, retain all off-floor forest/snow shrubs",
+      "identification": "visual paved-floor footprint checked against west owner mask"
+    },
+    {
+      "id": "r2-c3-rails-posts",
+      "chunk": "r2-c3",
+      "action": "remove-baked",
+      "reason": "optional bridge/stair rails and posts removed; preserve every tread and deck edge",
+      "identification": "all manmade railings and freestanding finial posts visible in context; visual scope, not runtime prop IDs"
+    },
+    {
+      "id": "r2-c3-paving-shrubs",
+      "chunk": "r2-c3",
+      "action": "remove-if-on-paving",
+      "reason": "remove only plants rooted in paved walk floor, retain all off-floor forest/snow shrubs",
+      "identification": "visual paved-floor footprint checked against west owner mask"
+    }
+  ],
+  "keep": [
+    "all water and waterfalls as painted base",
+    "all distant mountains, forest and sky",
+    "snow and ice outside paved walk floor",
+    "all plaza, cliff, stair, bank and bridge-deck outlines"
+  ],
+  "note": "runtime props are separate sprites, not proof of a corresponding baked object; per-part removal is prompted and per-chunk removed.json records observed result, not automatic success",
+  "runtimeStructures": [
+    {
+      "id": "house-2",
+      "kind": "front-one",
+      "worldFoot": [
+        1546,
+        1073
+      ],
+      "mapFootPx1x": [
+        1978.7994791666667,
+        1373.523828125
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c2"
+      ]
+    },
+    {
+      "id": "house-4",
+      "kind": "right-one",
+      "worldFoot": [
+        2239,
+        1014
+      ],
+      "mapFootPx1x": [
+        2865.8033854166665,
+        1297.99921875
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c3"
+      ]
+    },
+    {
+      "id": "house-5",
+      "kind": "front-one",
+      "worldFoot": [
+        2010,
+        1294
+      ],
+      "mapFootPx1x": [
+        2572.6953125,
+        1656.42109375
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c3"
+      ]
+    },
+    {
+      "id": "house-7",
+      "kind": "right-two",
+      "worldFoot": [
+        2283,
+        1588
+      ],
+      "mapFootPx1x": [
+        2922.12109375,
+        2032.7640625
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c3"
+      ]
+    },
+    {
+      "id": "house-9",
+      "kind": "right-one",
+      "worldFoot": [
+        710,
+        1204
+      ],
+      "mapFootPx1x": [
+        908.7630208333334,
+        1541.2140625
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c1"
+      ]
+    },
+    {
+      "id": "station-dab",
+      "kind": "station",
+      "worldFoot": [
+        465,
+        1038
+      ],
+      "mapFootPx1x": [
+        595.17578125,
+        1328.72109375
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c1"
+      ]
+    },
+    {
+      "id": "station-ngiw",
+      "kind": "station",
+      "worldFoot": [
+        551,
+        1496
+      ],
+      "mapFootPx1x": [
+        705.2513020833334,
+        1914.996875
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c1"
+      ]
+    },
+    {
+      "id": "station-lokan",
+      "kind": "station",
+      "worldFoot": [
+        3534,
+        507
+      ],
+      "mapFootPx1x": [
+        4523.3359375,
+        648.999609375
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r1-c5"
+      ]
+    },
+    {
+      "id": "station-tea",
+      "kind": "station",
+      "worldFoot": [
+        1527,
+        1398
+      ],
+      "mapFootPx1x": [
+        1954.48046875,
+        1789.54921875
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c2"
+      ]
+    },
+    {
+      "id": "station-sala",
+      "kind": "station",
+      "worldFoot": [
+        2252,
+        1382
+      ],
+      "mapFootPx1x": [
+        2882.4427083333335,
+        1769.06796875
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c3"
+      ]
+    },
+    {
+      "id": "judgment-dais",
+      "kind": "dais",
+      "worldFoot": [
+        1862,
+        1057
+      ],
+      "mapFootPx1x": [
+        2383.2630208333335,
+        1353.042578125
+      ],
+      "action": "sprite-only-do-not-bake",
+      "chunks": [
+        "r2-c3"
+      ]
+    }
+  ],
+  "scope": [
+    "r1-c5",
+    "r2-c1",
+    "r2-c2",
+    "r2-c3"
+  ]
+}

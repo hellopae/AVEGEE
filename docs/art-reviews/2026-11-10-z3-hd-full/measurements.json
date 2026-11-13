@@ -1,0 +1,66 @@
+[
+  {
+    "chunk": "r1-c5",
+    "sharpness": {
+      "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+      "baseline2x": 56.07230166420561,
+      "redraw2x": 4996.009939695417,
+      "ratio2x": 89.09942683670282,
+      "baseline1x": 737.4688301992667,
+      "redrawDownsample1x": 7912.309828097704,
+      "ratio1x": 10.729009151423755
+    },
+    "structureRawSiftHoldoutMaxPx1x": 648.137451171875,
+    "structureSampledLandmarkMaxPx1x": 20.615528128088304,
+    "measurementOrigin": "copied-previous-run",
+    "qualityDecision": "pending Claude; no metric acceptance retry"
+  },
+  {
+    "chunk": "r2-c1",
+    "sharpness": {
+      "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+      "baseline2x": 51.37858454351582,
+      "redraw2x": 3229.7698238566363,
+      "ratio2x": 62.862179885884885,
+      "baseline1x": 671.65784440319,
+      "redrawDownsample1x": 6929.023970016621,
+      "ratio1x": 10.316300223030213
+    },
+    "structureRawSiftHoldoutMaxPx1x": 483.2476806640625,
+    "structureSampledLandmarkMaxPx1x": 17.88854381999832,
+    "measurementOrigin": "copied-previous-run",
+    "qualityDecision": "pending Claude; no metric acceptance retry"
+  },
+  {
+    "chunk": "r2-c2",
+    "sharpness": {
+      "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+      "baseline2x": 48.54498950726338,
+      "redraw2x": 3075.640513818859,
+      "ratio2x": 63.356497653762524,
+      "baseline1x": 631.4355407725634,
+      "redrawDownsample1x": 6927.292329319229,
+      "ratio1x": 10.970703867640495
+    },
+    "structureRawSiftHoldoutMaxPx1x": 472.8785095214844,
+    "structureSampledLandmarkMaxPx1x": 13.341664064126334,
+    "measurementOrigin": "copied-previous-run",
+    "qualityDecision": "pending Claude; no metric acceptance retry"
+  },
+  {
+    "chunk": "r2-c3",
+    "sharpness": {
+      "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+      "baseline2x": 50.46356255388484,
+      "redraw2x": 4307.535950493071,
+      "ratio2x": 85.35933121831216,
+      "baseline1x": 659.842654915843,
+      "redrawDownsample1x": 8883.12946491275,
+      "ratio1x": 13.462496549341317
+    },
+    "structureRawSiftHoldoutMaxPx1x": 629.3570556640625,
+    "structureSampledLandmarkMaxPx1x": 21.93171219946131,
+    "measurementOrigin": "this-run",
+    "qualityDecision": "pending Claude; no metric acceptance retry"
+  }
+]

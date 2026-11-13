@@ -1,0 +1,334 @@
+{
+  "task": "Z234-HD-FULL zone3 west set2/5",
+  "date": "2026-11-13",
+  "tool": "built-in image_gen.imagegen only",
+  "imageGenCalls": 16,
+  "imageGenLimit": 16,
+  "imageGenCallsThisRun": 1,
+  "imageGenCallsPreviousRun": 15,
+  "continuationOf": "20261113T134009Z-6bb73ea0",
+  "copiedNativeParts": 15,
+  "chunks": [
+    {
+      "chunk": "r1-c5",
+      "imageGenCalls": 4,
+      "pendingParts": [],
+      "status": "assembled-for-Claude-review",
+      "outputSizePx": [
+        1638,
+        2048
+      ],
+      "actualNativeSizesPx": {
+        "q11": [
+          1212,
+          1298
+        ],
+        "q12": [
+          1136,
+          1385
+        ],
+        "q21": [
+          1149,
+          1368
+        ],
+        "q22": [
+          1078,
+          1460
+        ]
+      },
+      "sharpnessRatioLaplacian1x": 10.729009151423755,
+      "sharpnessRatioLaplacian2x": 89.09942683670282,
+      "structureSampledLandmarkMaxPx1x": 20.615528128088304,
+      "structureRawSiftHoldoutMaxPx1x": 648.137451171875,
+      "siftHoldoutPerPart": {
+        "q11": {
+          "holdoutResidualMedianPx1x": 0.7971519827842712,
+          "holdoutResidualP95Px1x": 4.364560604095459,
+          "holdoutResidualMaxPx1x": 299.4659118652344,
+          "holdoutWithin4pxFraction": 0.9409282700421941,
+          "trainInlierResidualMaxPx1x": 2.9504871368408203,
+          "coreOutsideNativeFraction": 0.00012147484756097615
+        },
+        "q12": {
+          "holdoutResidualMedianPx1x": 0.6638344526290894,
+          "holdoutResidualP95Px1x": 3.2231714725494385,
+          "holdoutResidualMaxPx1x": 365.50994873046875,
+          "holdoutWithin4pxFraction": 0.9518072289156626,
+          "trainInlierResidualMaxPx1x": 4.034274578094482,
+          "coreOutsideNativeFraction": 0.00025428827933982046
+        },
+        "q21": {
+          "holdoutResidualMedianPx1x": 0.9810141324996948,
+          "holdoutResidualP95Px1x": 3.4515419006347656,
+          "holdoutResidualMaxPx1x": 648.137451171875,
+          "holdoutWithin4pxFraction": 0.9473684210526315,
+          "trainInlierResidualMaxPx1x": 3.1305317878723145,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q22": {
+          "holdoutResidualMedianPx1x": 0.7929537296295166,
+          "holdoutResidualP95Px1x": 2.4330122470855713,
+          "holdoutResidualMaxPx1x": 372.81976318359375,
+          "holdoutWithin4pxFraction": 0.9826589595375722,
+          "trainInlierResidualMaxPx1x": 3.529855251312256,
+          "coreOutsideNativeFraction": 0.0012224938875305957
+        }
+      },
+      "qualityDecision": "pending Claude; sampled landmarks and SIFT do not certify every continuous outline"
+    },
+    {
+      "chunk": "r2-c1",
+      "imageGenCalls": 4,
+      "pendingParts": [],
+      "status": "assembled-for-Claude-review",
+      "outputSizePx": [
+        2048,
+        2048
+      ],
+      "actualNativeSizesPx": {
+        "q11": [
+          1189,
+          1323
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1189,
+          1323
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpnessRatioLaplacian1x": 10.316300223030213,
+      "sharpnessRatioLaplacian2x": 62.862179885884885,
+      "structureSampledLandmarkMaxPx1x": 17.88854381999832,
+      "structureRawSiftHoldoutMaxPx1x": 483.2476806640625,
+      "siftHoldoutPerPart": {
+        "q11": {
+          "holdoutResidualMedianPx1x": 0.687233030796051,
+          "holdoutResidualP95Px1x": 3.6685903072357178,
+          "holdoutResidualMaxPx1x": 483.2476806640625,
+          "holdoutWithin4pxFraction": 0.9560975609756097,
+          "trainInlierResidualMaxPx1x": 3.137099266052246,
+          "coreOutsideNativeFraction": 0.0009765625
+        },
+        "q12": {
+          "holdoutResidualMedianPx1x": 0.6014074683189392,
+          "holdoutResidualP95Px1x": 4.154776096343994,
+          "holdoutResidualMaxPx1x": 346.24212646484375,
+          "holdoutWithin4pxFraction": 0.9387755102040817,
+          "trainInlierResidualMaxPx1x": 2.680087089538574,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q21": {
+          "holdoutResidualMedianPx1x": 0.6418010592460632,
+          "holdoutResidualP95Px1x": 3.086900472640991,
+          "holdoutResidualMaxPx1x": 99.25920867919922,
+          "holdoutWithin4pxFraction": 0.9654088050314465,
+          "trainInlierResidualMaxPx1x": 3.2311203479766846,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q22": {
+          "holdoutResidualMedianPx1x": 0.9860237240791321,
+          "holdoutResidualP95Px1x": 199.66685485839844,
+          "holdoutResidualMaxPx1x": 464.2096862792969,
+          "holdoutWithin4pxFraction": 0.75,
+          "trainInlierResidualMaxPx1x": 3.320643424987793,
+          "coreOutsideNativeFraction": 0.0
+        }
+      },
+      "qualityDecision": "pending Claude; sampled landmarks and SIFT do not certify every continuous outline"
+    },
+    {
+      "chunk": "r2-c2",
+      "imageGenCalls": 4,
+      "pendingParts": [],
+      "status": "assembled-for-Claude-review",
+      "outputSizePx": [
+        2048,
+        2048
+      ],
+      "actualNativeSizesPx": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpnessRatioLaplacian1x": 10.970703867640495,
+      "sharpnessRatioLaplacian2x": 63.356497653762524,
+      "structureSampledLandmarkMaxPx1x": 13.341664064126334,
+      "structureRawSiftHoldoutMaxPx1x": 472.8785095214844,
+      "siftHoldoutPerPart": {
+        "q11": {
+          "holdoutResidualMedianPx1x": 0.7004629969596863,
+          "holdoutResidualP95Px1x": 2.9528732299804688,
+          "holdoutResidualMaxPx1x": 429.0043640136719,
+          "holdoutWithin4pxFraction": 0.9626168224299065,
+          "trainInlierResidualMaxPx1x": 3.894028902053833,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q12": {
+          "holdoutResidualMedianPx1x": 0.7625166177749634,
+          "holdoutResidualP95Px1x": 8.865357398986816,
+          "holdoutResidualMaxPx1x": 401.07208251953125,
+          "holdoutWithin4pxFraction": 0.9028571428571428,
+          "trainInlierResidualMaxPx1x": 2.9117510318756104,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q21": {
+          "holdoutResidualMedianPx1x": 1.3972265720367432,
+          "holdoutResidualP95Px1x": 266.8492431640625,
+          "holdoutResidualMaxPx1x": 377.78558349609375,
+          "holdoutWithin4pxFraction": 0.8596491228070176,
+          "trainInlierResidualMaxPx1x": 2.723313808441162,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q22": {
+          "holdoutResidualMedianPx1x": 0.6113821864128113,
+          "holdoutResidualP95Px1x": 94.76679229736328,
+          "holdoutResidualMaxPx1x": 472.8785095214844,
+          "holdoutWithin4pxFraction": 0.91875,
+          "trainInlierResidualMaxPx1x": 3.5185935497283936,
+          "coreOutsideNativeFraction": 0.0
+        }
+      },
+      "qualityDecision": "pending Claude; sampled landmarks and SIFT do not certify every continuous outline"
+    },
+    {
+      "chunk": "r2-c3",
+      "imageGenCalls": 4,
+      "pendingParts": [],
+      "status": "assembled-for-Claude-review",
+      "outputSizePx": [
+        2048,
+        2048
+      ],
+      "actualNativeSizesPx": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpnessRatioLaplacian1x": 13.462496549341317,
+      "sharpnessRatioLaplacian2x": 85.35933121831216,
+      "structureSampledLandmarkMaxPx1x": 21.93171219946131,
+      "structureRawSiftHoldoutMaxPx1x": 629.3570556640625,
+      "siftHoldoutPerPart": {
+        "q11": {
+          "holdoutResidualMedianPx1x": 1.5091197490692139,
+          "holdoutResidualP95Px1x": 364.9410400390625,
+          "holdoutResidualMaxPx1x": 561.2567749023438,
+          "holdoutWithin4pxFraction": 0.75,
+          "trainInlierResidualMaxPx1x": 2.519986391067505,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q12": {
+          "holdoutResidualMedianPx1x": 0.7396174669265747,
+          "holdoutResidualP95Px1x": 151.9210968017578,
+          "holdoutResidualMaxPx1x": 402.13983154296875,
+          "holdoutWithin4pxFraction": 0.9137931034482759,
+          "trainInlierResidualMaxPx1x": 2.2976887226104736,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q21": {
+          "holdoutResidualMedianPx1x": 0.5189357399940491,
+          "holdoutResidualP95Px1x": 364.7061767578125,
+          "holdoutResidualMaxPx1x": 506.2040710449219,
+          "holdoutWithin4pxFraction": 0.8666666666666667,
+          "trainInlierResidualMaxPx1x": 1.9898751974105835,
+          "coreOutsideNativeFraction": 0.0
+        },
+        "q22": {
+          "holdoutResidualMedianPx1x": 0.9320813417434692,
+          "holdoutResidualP95Px1x": 80.31114196777344,
+          "holdoutResidualMaxPx1x": 629.3570556640625,
+          "holdoutWithin4pxFraction": 0.8947368421052632,
+          "trainInlierResidualMaxPx1x": 1.736082673072815,
+          "coreOutsideNativeFraction": 0.0
+        }
+      },
+      "qualityDecision": "pending Claude; sampled landmarks and SIFT do not certify every continuous outline"
+    }
+  ],
+  "pendingGeneration": [],
+  "knownVisualIssues": [
+    {
+      "chunk": "r2-c2",
+      "part": "q22",
+      "chunkRectPx1x": [
+        480,
+        515,
+        730,
+        650
+      ],
+      "description": "พบปื้นไฮไลต์โปร่งรูปวงรีผิดธรรมชาติบนหน้าผาใต้แนวน้ำแข็ง ยังเห็นในภาพประกอบ ต้องให้ Claude ตัดสินหรือซ่อมเฉพาะจุดภายหลัง",
+      "evidence": "known-issue.jpg",
+      "resolved": false
+    }
+  ],
+  "pendingReview": [
+    "Claude: sharpness definition at both raster scales, all structural outlines <=4px, internal seam visibility, floor-object removal",
+    "ASSEMBLE: join external chunk borders using native contexts and registration; not performed in this run"
+  ],
+  "references": {
+    "writtenZ1BriefRead": true,
+    "oldPlazaDetailWorktreeAvailable": false,
+    "oldHdFullWorktreeAvailable": false,
+    "availableSeamReference": "docs/art-reviews/2026-11-12-z1-v7r-assemble/scripts/assemble-v7r.py"
+  },
+  "runtime": {
+    "zone": "west",
+    "terrainDir": "img/map-zone3/v1/",
+    "repairs": false,
+    "originalGameFilesModified": false
+  },
+  "qualityApproved": false,
+  "acceptanceSelfCheck": {
+    "allPartsPresent": true,
+    "sharpnessRatio1xAtLeast10": true,
+    "structureWithin4px": "not demonstrated; sampled NCC maxima exceed 4px in every chunk; raw SIFT includes ambiguous matches",
+    "internalSeams": "no straight grid seam seen at overview; full-detail decision pending Claude",
+    "objectRemoval": "rails/posts removed in overview; conditional paving shrubs and known r2-c2 highlight need review",
+    "nativeAndRegistration": "16 lossless native parts and 4 registration files; external chunk joins deferred to ASSEMBLE"
+  },
+  "packaging": {
+    "omitted": "20 reproducible source/input crops and optional scope overview",
+    "regenerateInputs": "python3 docs/art-reviews/2026-11-10-z3-hd-full/scripts/prepare.py (adds ~13.4MB; not needed for delivered native/registration)",
+    "assemblyLoadsMissingCropsFromMaster": true,
+    "compareJpegQuality": 25,
+    "compareDisplayScalePxPerWorldUnit": 2.8
+  },
+  "measurements": {
+    "sharpness": "grayscale Laplacian variance; no sharpening; 1x comparison plus equal-raster 2x comparison; see structure.json",
+    "structure": "fixed local NCC landmarks, independent SIFT holdout and full raw matches retained; not automatic acceptance"
+  },
+  "bytesBeforeSummary": 79498400
+}

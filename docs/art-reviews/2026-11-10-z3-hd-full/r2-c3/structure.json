@@ -1,0 +1,202 @@
+{
+  "chunk": "r2-c3",
+  "sharpness": {
+    "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+    "baseline2x": 50.46356255388484,
+    "redraw2x": 4307.535950493071,
+    "ratio2x": 85.35933121831216,
+    "baseline1x": 659.842654915843,
+    "redrawDownsample1x": 8883.12946491275,
+    "ratio1x": 13.462496549341317
+  },
+  "structure": {
+    "method": "independent interleaved mutual-SIFT holdout after training-half affine; max includes ambiguous descriptor matches; proxy only, not proof of all structural outlines",
+    "maxPx1x": 629.3570556640625,
+    "perPart": {
+      "q11": {
+        "trainInliers": 20,
+        "holdoutCount": 28,
+        "holdoutResidualMaxPx1x": 561.2567749023438,
+        "holdoutResidualMedianPx1x": 1.5091197490692139,
+        "holdoutResidualP95Px1x": 364.9410400390625,
+        "holdoutWithin4pxFraction": 0.75,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "trainInliers": 52,
+        "holdoutCount": 58,
+        "holdoutResidualMaxPx1x": 402.13983154296875,
+        "holdoutResidualMedianPx1x": 0.7396174669265747,
+        "holdoutResidualP95Px1x": 151.9210968017578,
+        "holdoutWithin4pxFraction": 0.9137931034482759,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "trainInliers": 40,
+        "holdoutCount": 45,
+        "holdoutResidualMaxPx1x": 506.2040710449219,
+        "holdoutResidualMedianPx1x": 0.5189357399940491,
+        "holdoutResidualP95Px1x": 364.7061767578125,
+        "holdoutWithin4pxFraction": 0.8666666666666667,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "trainInliers": 34,
+        "holdoutCount": 38,
+        "holdoutResidualMaxPx1x": 629.3570556640625,
+        "holdoutResidualMedianPx1x": 0.9320813417434692,
+        "holdoutResidualP95Px1x": 80.31114196777344,
+        "holdoutWithin4pxFraction": 0.8947368421052632,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "manualOutlineReview": "pending Claude; inspect source, native, compare and structure-matches"
+  },
+  "seams": {
+    "method": "minimum squared-colour-cost DP in actual 128-map-px internal overlap; smoothstep feather +/-8 output px; no neighboring chunk assembly",
+    "visualReview": "pending Claude; seam path overlay is supplied",
+    "meanSquaredCosts": [
+      1049.8165283203125,
+      878.5469360351562,
+      889.8400268554688
+    ]
+  },
+  "sampledLandmarks": {
+    "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+    "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+    "maxDisplacementPx1x": 21.93171219946131,
+    "minNcc": 0.5068448185920715,
+    "points": [
+      {
+        "id": "plaza-top-ring",
+        "sourceChunkPx1x": [
+          322,
+          70
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.6852331161499023
+      },
+      {
+        "id": "plaza-bottom-ring",
+        "sourceChunkPx1x": [
+          320,
+          398
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.889073371887207
+      },
+      {
+        "id": "central-stair",
+        "sourceChunkPx1x": [
+          319,
+          477
+        ],
+        "deltaPx1x": [
+          16,
+          15
+        ],
+        "displacementPx1x": 21.93171219946131,
+        "ncc": 0.956580400466919
+      },
+      {
+        "id": "right-stair",
+        "sourceChunkPx1x": [
+          715,
+          441
+        ],
+        "deltaPx1x": [
+          6,
+          12
+        ],
+        "displacementPx1x": 13.416407864998739,
+        "ncc": 0.9512218236923218
+      },
+      {
+        "id": "top-right-stair",
+        "sourceChunkPx1x": [
+          836,
+          45
+        ],
+        "deltaPx1x": [
+          -1,
+          1
+        ],
+        "displacementPx1x": 1.4142135623730951,
+        "ncc": 0.9443004131317139
+      },
+      {
+        "id": "path-bend",
+        "sourceChunkPx1x": [
+          386,
+          702
+        ],
+        "deltaPx1x": [
+          1,
+          0
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.7548258900642395
+      },
+      {
+        "id": "long-bridge-start",
+        "sourceChunkPx1x": [
+          428,
+          923
+        ],
+        "deltaPx1x": [
+          0,
+          1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9789748787879944
+      },
+      {
+        "id": "lower-right-court-edge",
+        "sourceChunkPx1x": [
+          826,
+          795
+        ],
+        "deltaPx1x": [
+          0,
+          -1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.5068448185920715
+      },
+      {
+        "id": "east-shore",
+        "sourceChunkPx1x": [
+          991,
+          484
+        ],
+        "deltaPx1x": [
+          0,
+          1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.8909466862678528
+      },
+      {
+        "id": "east-waterfall",
+        "sourceChunkPx1x": [
+          965,
+          550
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.70351243019104
+      }
+    ]
+  }
+}
