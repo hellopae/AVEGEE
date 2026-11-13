@@ -1,0 +1,176 @@
+{
+  "schema": "z1-touchup-1",
+  "sourceSet": "img/map-zone1/v7r/",
+  "rectConvention": "[x0,y0,x1,y1), upper-left origin; no inclusive endpoint",
+  "contextRectPx1x": [
+    3492,
+    620,
+    3748,
+    876
+  ],
+  "contextRectPx2x": [
+    6984,
+    1240,
+    7496,
+    1752
+  ],
+  "mapSizePx1x": [
+    4915,
+    3277
+  ],
+  "mapSizePx2x": [
+    9830,
+    6554
+  ],
+  "nativeSizePx": [
+    512,
+    512
+  ],
+  "nativeToContextPx1x": [
+    [
+      0.5,
+      0,
+      0
+    ],
+    [
+      0,
+      0.5,
+      0
+    ]
+  ],
+  "nativeToMapPx1x": [
+    [
+      0.5,
+      0,
+      3492
+    ],
+    [
+      0,
+      0.5,
+      620
+    ]
+  ],
+  "nativeToContextPx2x": [
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0
+    ]
+  ],
+  "nativeToMapPx2x": [
+    [
+      1,
+      0,
+      6984
+    ],
+    [
+      0,
+      1,
+      1240
+    ]
+  ],
+  "nativeDescription": "Ready-to-place localized patch: aligned ImageGen pixels through edit-mask.png; original v7r elsewhere. Not the raw model output.",
+  "generator": "built-in image_gen",
+  "generations": 1,
+  "retries": 0,
+  "generatedSizePx": [
+    1254,
+    1254
+  ],
+  "resizedGeneratedToNativeAffine": [
+    [
+      1.000138683295362,
+      6.688284390295805e-05,
+      -0.06028213882736548
+    ],
+    [
+      -6.688284390295805e-05,
+      1.000138683295362,
+      0.07212890649733862
+    ]
+  ],
+  "registrationMatches": 1220,
+  "registrationInliers": 1194,
+  "editPolygonNativePx": [
+    [
+      226,
+      185
+    ],
+    [
+      240,
+      175
+    ],
+    [
+      253,
+      182
+    ],
+    [
+      267,
+      194
+    ],
+    [
+      282,
+      201
+    ],
+    [
+      298,
+      201
+    ],
+    [
+      314,
+      213
+    ],
+    [
+      307,
+      235
+    ],
+    [
+      289,
+      253
+    ],
+    [
+      269,
+      269
+    ],
+    [
+      243,
+      259
+    ],
+    [
+      229,
+      239
+    ],
+    [
+      223,
+      215
+    ]
+  ],
+  "featherPx2x": 8,
+  "sourceTilesSHA256": {
+    "img/map-zone1/v7r/r2-c7.webp": "a5303eb9684fb95d9acd39d08a405b42b2f85fd2bfbad869c83bed3449ee8320",
+    "img/map-zone1/v7r/r2-c8.webp": "012a63b976fe574d53ff71b30c7735be26b306c8e97e89107b3e7098bc02a858"
+  },
+  "sha256": {
+    "source.webp": "6c95ff413fc2c8b683a42a2efc4a9c6f4be4ba64748cab5f18f183eacf9a9d2e",
+    "generated.webp": "7c9058e6f2b4da0d06f37296aa3bbc1e29f741f62d380be3667330a8b454488a",
+    "edit-mask.png": "67af26dbb381acdefd96409bdb108008423f6f09c3e841b5a5085dd32246dbbe",
+    "native.webp": "1c6d9259643ebe5f23a0c52baf12e70889a2937e9573a900426cc9482b4587c1",
+    "prompt.txt": "6945b1c17bb37d2f60c29083e8924dc45e40f2ece181c5a4a2fcd9f490d65b01"
+  },
+  "compare": {
+    "kind": "terrain-only camera-scale reconstruction, not a live-game screenshot",
+    "zoom": 5,
+    "viewportCssWidth": 390,
+    "dpr": 2,
+    "scalePerV7rOutputPixel": 0.9079257993760436,
+    "panelSizePx": [
+      465,
+      465
+    ]
+  }
+}

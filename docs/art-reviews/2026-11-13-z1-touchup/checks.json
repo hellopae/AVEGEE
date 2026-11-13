@@ -1,0 +1,60 @@
+{
+  "lava-north-stair": {
+    "filesDecoded": 5,
+    "losslessNative": true,
+    "changedPixelsPx2x": 4940,
+    "changedBoundsNativePx": [
+      137,
+      231,
+      221,
+      307
+    ],
+    "changedPixelsOutsideMask": 0,
+    "changedPixelsInProtectedRect": 0,
+    "protectedRectsNativePx": [
+      [
+        0,
+        0,
+        512,
+        230
+      ],
+      [
+        0,
+        315,
+        512,
+        512
+      ]
+    ],
+    "nativePlacementResampling": "none; identity at v7r 2x grid",
+    "scope": "File/decode, source hashes, affine and pixel-invariance checks only; no gameplay QA"
+  },
+  "heaven-bridge": {
+    "filesDecoded": 5,
+    "losslessNative": true,
+    "changedPixelsPx2x": 5304,
+    "changedBoundsNativePx": [
+      224,
+      176,
+      315,
+      270
+    ],
+    "changedPixelsOutsideMask": 0,
+    "changedPixelsInProtectedRect": 0,
+    "protectedRectsNativePx": [
+      [
+        0,
+        0,
+        512,
+        175
+      ],
+      [
+        0,
+        315,
+        512,
+        512
+      ]
+    ],
+    "nativePlacementResampling": "none; identity at v7r 2x grid",
+    "scope": "File/decode, source hashes, affine and pixel-invariance checks only; no gameplay QA"
+  }
+}
