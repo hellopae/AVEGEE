@@ -66,7 +66,7 @@ test('every texture key used by a recipe is declared, with a valid blend and atl
     assert.ok(Number.isInteger(cellsOf(k)) && TEX[k].w % cellsOf(k) === 0, `${k} cells divide width`);
   }
   assert.equal(TEX_KEYS.filter(k=>!TEX[k].path).length, 62, 'original 62-file art spec remains');
-  assert.equal(TEX_KEYS.filter(k=>TEX[k].path).length,8,'C1 adds eight shipped textures');
+  assert.equal(TEX_KEYS.filter(k=>TEX[k].path).length,11,'C1 adds eight shipped textures + the three quest ultimates (QUEST-ART)');
 });
 
 test('every texture has a stand-in generator so the game looks right before real art arrives', () => {
