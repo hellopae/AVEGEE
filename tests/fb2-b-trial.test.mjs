@@ -9,7 +9,7 @@ const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
 test('FB2-v3: a keeper the team page calls idle but the warrant picker greys out says WHY (no bare "ไม่ว่าง")',()=>{
   const game={stations:[]},plerng={k:'plerng',name:'เพลิง',morale:100};
   assert.equal(keeperBlockLabel(game,plerng,{role:{available:false,why:'เสบียงไม่พอ · เพลิงใช้เพิ่ม 2 หน่วยต่อหมาย'}}),'เสบียงไม่พอ');
-  assert.equal(keeperBlockLabel(game,{k:'boon',name:'บุญ',morale:100},{stationKeeper:{k:'taan',name:'ทัณฑ์'}}),'สถานีนี้ต้องใช้ ทัณฑ์');
+  assert.equal(keeperBlockLabel(game,{k:'boon',name:'บุญ',morale:100},{stationKeeper:{k:'taan',name:'ทัณฑ์'}}),'สถานีนี้ต้องให้ทัณฑ์คุม');
   assert.equal(keeperBlockLabel({stations:[{def:{k:'krata',name:'กระทะ'}}]},{k:'taan',name:'ทัณฑ์',morale:100,at:'krata'},{}),'ประจำ กระทะ');
   assert.notEqual(keeperBlockLabel(game,plerng,{why:'บางเหตุผล'}),'ว่าง · รอรับเวร','never shows "idle" for a blocked keeper');
 });

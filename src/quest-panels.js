@@ -10,7 +10,7 @@ export function questRewardText(g,q){
  const p=questRewardPreview(g,q);if(!p)return '';
  const parts=[`เบี้ยกรรม +${p.coin}`,...p.items.map(i=>`${i.name} ×${i.n}`)];
  if(p.skill)parts.push(`ท่าไม้ตายใหม่ ${p.skill.known?p.skill.name:'???'}`);
- return `ระดับ${p.label}${p.fight?' · ต้องสู้ก่อนปิดภารกิจ':''} · รางวัลเพิ่ม ${parts.join(' · ')} · และของตามทางที่เลือก`;
+ return `ระดับ${p.label}${p.fight?' · ต้องสู้ก่อนปิดภารกิจ':''} · โบนัส ${parts.join(' · ')} · ยังได้ของตามทางที่เลือกอีก`;
 }
 // what the closing paid, as plain text (journal of a finished quest)
 export function questReceiptText(q,s){

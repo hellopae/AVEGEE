@@ -1556,7 +1556,7 @@ Object.assign(TH, {
   "battle.status.rage": "บ้าคลั่ง {n} ครั้ง",
   "battle.status.sealRope": "ถูกเชือกรัด",
   "battle.status.sealGauze": "ถูกผ้าปิดปาก",
-  "battle.status.taunt": "รับการโจมตีแทนทีม",
+  "battle.status.taunt": "รับแทนทีม",
   "battle.move.enemy": "ท่าพิเศษ · {name}",
   "battle.move.fire": "อัคคีพิพากษา",
   "battle.move.flameCharge": "เพลิงชำระ",

@@ -29,7 +29,7 @@ export function keeperCurrentJob(game,keeper){
  *  `role` = game.keeperTrialInfo(...), `stationKeeper` = the keeper tied to the chosen station (null when it is empty), `why` = the full blocking text. */
 export function keeperBlockLabel(game,c,{role=null,stationKeeper=null,why=''}={}){
   if(role?.available===false)return String(role.why||why||'รับหมายนี้ไม่ได้').split(' · ')[0];
-  if(stationKeeper&&stationKeeper.k!==c.k)return `สถานีนี้ต้องใช้ ${stationKeeper.name}`;
+  if(stationKeeper&&stationKeeper.k!==c.k)return `สถานีนี้ต้องให้${stationKeeper.name}คุม`;
   const job=keeperCurrentJob(game,c);
   return job.startsWith('ว่าง')?String(why||'รับหมายนี้ไม่ได้').split(' · ')[0]:job;
 }

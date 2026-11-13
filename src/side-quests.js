@@ -52,7 +52,7 @@ function grantRetroQuestRewards(g){
     if(skill)unlockQuestSkill(g,skill);
     s.reward={coin:bonus.coin,order:0,exp:0,items:{...bonus.items},skill:skill||null,retro:true,seen:false};
     if(skill)s.fought=true;
-    g.log(`🎁 รางวัลย้อนหลังของภารกิจ “${q.title}”`,'good');
+    g.log(`🎁 ภารกิจ “${q.title}” ที่ปิดไปแล้ว ได้รางวัลเพิ่มย้อนหลัง`,'good');
   }
 }
 /** retro rewards the player has not been told about yet (the UI shows one notice window, then calls ackRetroQuestRewards) */
@@ -174,7 +174,7 @@ function award(g,q,s){
   coin+=bonus.coin;
   g.coin+=coin;g.order=Math.min(100,g.order+order);addItems(g,items);addItems(g,bonus.items);g.gainExp(30,'ภารกิจ');
   s.reward={coin,order,exp:30,items:given,skill:questSkillOf(q.id)&&s.fought?questSkillOf(q.id):null,retro:false};
-  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของรางวัลเพิ่ม':''}`,'good');return true;
+  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของเพิ่ม':''}`,'good');return true;
 }
 export function advanceQuest(g,id,choice=null){
   const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||questHandoffNeed(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
@@ -216,10 +216,10 @@ export function finishQuestFight(g,B){
   const q=QUESTS.find(x=>x.id===B.questId),s=g.sideQuests?.[B.questId];
   if(!q||!s||s.done||s.step!==3)return false;
   // PART-A: a lost / fled fight is remembered (the quest window then offers "สู้อีกครั้ง" instead of the first-time talk button) — the choice and step stay
-  if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังอยู่ — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');g.save();return false;}
+  if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังไม่ยอมไป — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');g.save();return false;}
   s.fought=true;s.step=4;delete s.fightLost;
   const skill=questSkillOf(q.id);
-  g.log(`⚔️ ชนะ${QUEST_FIGHTS[q.id]?.title||'ศัตรู'}`,'good');
+  g.log(`⚔️ ปราบ${QUEST_FIGHTS[q.id]?.title||'เงา'}ได้แล้ว`,'good');
   if(skill&&unlockQuestSkill(g,skill))g.log(QUEST_FIGHTS[q.id].unlockLog,'good');
   g.save();return true;
 }
