@@ -1,0 +1,85 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      0,
+      576,
+      576
+    ],
+    "removal": []
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removal": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      448,
+      576,
+      640
+    ],
+    "removal": []
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "west-r1-c1-floor-shrub-01",
+        "rectInInputPx": [
+          392,
+          230,
+          106,
+          103
+        ]
+      },
+      {
+        "id": "west-r1-c1-floor-shrub-02",
+        "rectInInputPx": [
+          408,
+          445,
+          102,
+          131
+        ]
+      }
+    ]
+  }
+]

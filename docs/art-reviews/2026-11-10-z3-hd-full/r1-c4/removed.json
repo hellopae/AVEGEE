@@ -1,0 +1,14 @@
+{
+  "requestedIds": [
+    "west-r1-c4-floor-shrub-01"
+  ],
+  "objectReview": [
+    {
+      "id": "west-r1-c4-floor-shrub-01",
+      "status": "visually removed low shrub to right of stair on front plaza rim"
+    }
+  ],
+  "pendingObjectIds": [],
+  "visualVerification": "offline partial observation only; not a semantic acceptance signoff",
+  "inventory": "../objects-inventory.json"
+}

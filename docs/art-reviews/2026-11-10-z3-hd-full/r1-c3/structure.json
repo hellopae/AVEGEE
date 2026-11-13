@@ -1,0 +1,282 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 landmark templates; normalized correlation search +/-16 map px on assembled output. Independent of SIFT residual. No probes removed after measurement.",
+  "totalProbes": 18,
+  "reliableProbes": 18,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Patch matching only; repeated steps, changed water texture, occlusion, and new detail can create ambiguous correspondences. This does not verify all contours or stair counts.",
+  "probes": [
+    {
+      "id": "ridge-left-snow",
+      "sourcePx1x": [
+        240,
+        308
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8167542219161987,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "ridge-toe",
+      "sourcePx1x": [
+        291,
+        451
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8243860006332397,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-upper-rim",
+      "sourcePx1x": [
+        191,
+        430
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8036771416664124,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-right-rim",
+      "sourcePx1x": [
+        435,
+        571
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.6298874020576477,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-rim",
+      "sourcePx1x": [
+        290,
+        672
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9303857684135437,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-top-left",
+      "sourcePx1x": [
+        121,
+        668
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9196610450744629,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-top-right",
+      "sourcePx1x": [
+        238,
+        661
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9087830185890198,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-foot-left",
+      "sourcePx1x": [
+        126,
+        789
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9283803105354309,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-stair-foot-right",
+      "sourcePx1x": [
+        236,
+        787
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9324281215667725,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-left",
+      "sourcePx1x": [
+        261,
+        948
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9237445592880249,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-right",
+      "sourcePx1x": [
+        375,
+        948
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.926968514919281,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "gothic-tip",
+      "sourcePx1x": [
+        399,
+        651
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.7973236441612244,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "right-path-upper-rim",
+      "sourcePx1x": [
+        863,
+        516
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7315428256988525,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "path-right-rim",
+      "sourcePx1x": [
+        924,
+        849
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9161939024925232,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-path-bend",
+      "sourcePx1x": [
+        686,
+        968
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8152178525924683,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "ridge-boulder",
+      "sourcePx1x": [
+        728,
+        850
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8716411590576172,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "right-cliff-gothic",
+      "sourcePx1x": [
+        910,
+        597
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8411376476287842,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "mountain-middle-peak",
+      "sourcePx1x": [
+        634,
+        162
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.884922206401825,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "qualityGatesAsserted": false,
+  "measurementPasses": 1,
+  "chunks": [
+    {
+      "chunk": "r1-c1",
+      "selectedParts": 4,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1189,
+            1323
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "siftResidualMaxPx1x": 2.869823694229126,
+      "structureMaxReliablePx1x": 1.0,
+      "reliableStructureProbes": 18,
+      "totalStructureProbes": 19,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 62.0439432154617,
+      "sharpnessAtLeast10": true,
+      "pendingParts": []
+    },
+    {
+      "chunk": "r1-c2",
+      "selectedParts": 4,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "siftResidualMaxPx1x": 3.418297529220581,
+      "structureMaxReliablePx1x": 1.0,
+      "reliableStructureProbes": 17,
+      "totalStructureProbes": 18,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 48.51929475735676,
+      "sharpnessAtLeast10": true,
+      "pendingParts": []
+    },
+    {
+      "chunk": "r1-c3",
+      "selectedParts": 4,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "siftResidualMaxPx1x": 2.962782144546509,
+      "structureMaxReliablePx1x": 1.0,
+      "reliableStructureProbes": 18,
+      "totalStructureProbes": 18,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 64.92131360981995,
+      "sharpnessAtLeast10": true,
+      "pendingParts": []
+    },
+    {
+      "chunk": "r1-c4",
+      "selectedParts": 4,
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "native": [
+        {
+          "id": "q11",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q12",
+          "size": [
+            1323,
+            1189
+          ]
+        },
+        {
+          "id": "q21",
+          "size": [
+            1254,
+            1254
+          ]
+        },
+        {
+          "id": "q22",
+          "size": [
+            1254,
+            1254
+          ]
+        }
+      ],
+      "siftResidualMaxPx1x": 3.3561410903930664,
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "reliableStructureProbes": 18,
+      "totalStructureProbes": 19,
+      "structureDiagnosticsWithin4px": true,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 61.70829302736406,
+      "sharpnessAtLeast10": true,
+      "pendingParts": []
+    }
+  ]
+}

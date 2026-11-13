@@ -1,0 +1,439 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCount": 16,
+  "generationCount": 16,
+  "generations": [
+    {
+      "chunk": "r1-c1",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return a single full-bleed image at maximum native resolution, ideally 1254x1254 or higher, same aspect ratio and exact framing. This crop represents 576x576 map pixels. Redraw with substantially finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, recessed mortar grains, tiny fissures, snow crystals, sharp faceted blue ice, flowing icy water filaments, individually articulated fir needles. Preserve the source painterly game style, cool blue grey palette, original soft light and broad color/value hierarchy. Every cliff contour, landing, paving edge, stair count/width/position, gothic arch and liquid bank must stay at exactly the same proportional coordinates, within 4 map pixels. Keep the liquid/waterfall and clouds painted as base layers with exact original shapes. Keep inaccessible trees and ridge shrubs. Do not change composition, camera, scale or perspective. No new objects, buildings, text or borders. No DOF, blur, parallax, photographic noise, sharpening halos. All objects intersecting image edges must stay clipped identically. q11 upper-left crop r1-c1: preserve the whole staircase at lower right and its gothic stone buttresses. No floor-object removal in this crop.",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-0cf3733b-fe8e-4872-8cbf-017de355ffa5.png",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c1/inputs/q11-master.webp"
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "35c1b12efb0ed6366d19cfb82b7c4863929f6065237dc607fa7677bd15710a0d",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          0,
+          0,
+          576,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q12 r1-c1, 640x576 map pixels. Preserve exact waterfall tiers, the staircase clipped at left, snowbank rim and paving at bottom. Keep the fir and leafless bushes that stand on the inaccessible raised snowbank; do not remove ridge vegetation. No floor-object removal in this crop.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c1/inputs/q12-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-1f4f147a-11d4-49db-bde1-1234e827a713.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "8d9c1af530fc7c8f26b20aba85799f95e648f044d75a84632937e946fdbf1ad4",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          448,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q21 r1-c1, 576x640 map pixels. Preserve the large ice waterfall and channel precisely; preserve paved terrace clipped at top right and stair clipped at bottom right. Preserve inaccessible ridge trees and bushes. No floor-object removal in this crop. Fine stone/ice detail must stay coherent with original material scale.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c1/inputs/q21-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-0c9e97a2-13df-40c2-9bea-9d2d82b6c8c2.png",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "nativeSha256": "55c5b4d0a6a4f6646f6aff34ec560d380c351913de13c3341729a8145a5db3c0",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          0,
+          448,
+          576,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q22 r1-c1, 640x640 map pixels. Remove only the small isolated fir overlapping the paved upper terrace near input (450,300), within approximate box [392,230,106,103], and the low bush intruding on the lower paved landing near (460,495), box [408,445,102,131]. Fill with coherent matching paving/snow edge; keep exact terrace outlines. Keep trees on the inaccessible right rim, left-rim shrubs, BOTH descending stair flights, all stair treads, buttresses and gothic cliff arches. Do not flatten the staircases or change bridge/path boundaries.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c1/inputs/q22-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-ec970b29-b1c0-42f1-a1e5-3b4d4bb15032.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "37a51807f19de19714932697ec733a9a74fea81c3bc563c5fd719603a7c41341",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          448,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q11 r1-c2, 640x576 map pixels. This is inaccessible frozen mountain scenery. Preserve ALL firs, ridge shrubs, icefall tiers, distant mountains and the cloud/forest silhouettes in their exact source locations. Detail fine stone/ice/fir textures without increasing tree density or changing peak shapes. No removal in this crop.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c2/inputs/q11-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-9c54d289-0d44-4472-9df2-3f40024f9b17.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "9d982b9314b00ce3519e27abc8424caf02d1cf1a18cbe9bf912271ba4c09bfca",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          960,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q12 r1-c2, 640x576 map pixels. Preserve the exact snow ridge with fir trees in the middle, the gothic pointed stone arch near lower center-right, the paving cropped at lower right, the distant mountain silhouettes and mist pockets. No removal in this crop. Keep the stone arch and its contour exactly.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c2/inputs/q12-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-f15bb9c2-0b51-4639-8238-57bf7251429a.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "2d78536059b7d4fe094ef626bca738397af9d7b55cf76bcea4a0a9a038b3a541",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          1472,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q21 r1-c2, 640x640 map pixels. Preserve the arched bridge, its deck contour, the descending stairs clipped at right, cliff edges and the ice-water fall under the bridge EXACTLY. Keep the existing rails/posts; no new rails. Remove only the low leafless shrub intruding onto the paved landing near lower-right edge, approximate input box [517,380,113,102]; continue paving behind it. Keep all inaccessible forest and snowbank shrubs. The bridge's curvature, deck thickness and stair treads must remain identical.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c2/inputs/q21-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-74abe655-96ad-41dc-a2b7-f54d43ec7b83.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "ce550f7a4b63405e5a6014e7ca7f4ea1c5f9e5652077b8d58e7fa70cb517378b",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          960,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q22 r1-c2, 640x640 map pixels. Preserve the long two-part diagonal staircase from lower-left toward upper-middle, exactly same tread counts, rails and contour; keep both gothic arches at right and the paved terraces at top/bottom right. Remove only the low leafless shrub intruding onto the walkway at the stair foot, approximate input box [69,380,113,102], and fill coherent pavement. Keep the firs on inaccessible cliffs and other snowbank shrubs. Do not remove or redesign ANY steps, stair posts or bridge decks.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c2/inputs/q22-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-838a5a59-7b76-4fdd-93db-4edee0c90063.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "23d0eba13554c60fc78e42ebc51b9a3fefb5d62df1f69b73b20b135ca5b4ac2d",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          1472,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q11 r1-c3, 640x576 map pixels. Preserve broad paved terrace and exact cliff rim along its upper edge, all snow ledges, the bare branching tree on the upper-middle ridge, firs and distant mountain/mist contours. The bare ridge tree is inaccessible and MUST STAY. No object removal in this crop. Retain original pink-orange distant sky subtly, without recoloring blue terrain.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c3/inputs/q11-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-9cf735fb-f267-483f-87b8-cade23c3e180.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "63d7ca2a4ce09229f121559651b74894c963e9e46eccbece55710cdad91c9028",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          1984,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q12 r1-c3, 640x576 map pixels. This is mostly distant frozen mountains, mist and pines, with paved terrace clipped at right and gothic arch clipped lower-right. Keep the exact peak silhouettes, large mist shapes, fir placement and snow rim. Preserve the subtle warm sky. No removal in this crop. Add resolved snow, rock and needle detail without inventing new peaks or shifting any cliff boundary.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c3/inputs/q12-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-8a2c3540-569e-4fe8-b3d2-f01612f1bd34.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "91acea63fab7b7b0614f41df835232d777be1ea15d04c3cdbd50b7d54cd925a9",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          2496,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q21 r1-c3, 640x640 map pixels. Keep BOTH frontal stair flights (one center-upper, one lower-middle), all stair treads, rails, stone posts, terrace edges and gothic arches EXACTLY at original locations. Remove the large low leafless bush whose branches overlap the lower paved landing at input approx [140,380,140,100]; also remove the isolated low shrub and small fir protruding onto that landing to the right of the lower stair top, approximate [474,394,155,120]. Repaint continuous matching paving where plant silhouettes overlapped it, preserving the snowy rim and cliff shape. Do not remove the larger firs on inaccessible ridges or any stair structure. No new objects.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c3/inputs/q21-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-c8b27ed9-05d7-44b5-8027-a0c7b0cbaea7.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "9d9f29a61163e081c2fb1b7a1d9af0c1baf9d6f266aea4d42390d4650495a071",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          1984,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q22 r1-c3, 640x640 map pixels. Preserve the diagonal cobbled walkway through the lower half and the stair clipped at bottom exactly, plus the cliff/gothic arches clipped upper-right. Remove only the small isolated fir and low bare bush intruding onto the lower-left landing at the LEFT edge, approximate input box [-38,394,155,120], leaving continuous matching paving and the unchanged snowy cliff edge. Keep the large central fir grove, ridge boulders, all inaccessible shrubs and every stair tread/post. Do not widen or move the walkway.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c3/inputs/q22-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-dfbf1d9e-b245-4a44-84ce-f023b1396bdb.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "9b57b3365a7a00a3c6867b558adb6544ffcb991d3e53f57bea58969cb8573def",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          2496,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q11 r1-c4, 640x576 map pixels. Preserve the single frontal stair in the upper-middle rocky mound, the paved plaza and its exact perimeter, the background fir group and distant mist/mountain silhouettes. No removal in this crop. Keep the original leafless ridge trees and snowbank shrubs. Focus drawn detail on tiny paving chips, snow grains, ice facets and stone stair bevels without changing the number, size or outline of stones at the plaza perimeter.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c4/inputs/q11-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-66bf59ca-75b5-4525-9d43-36473bde490f.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "e29db7818b4a3984f435b7fc5e559bd260513b8cb2ec9126ede918d7af2d0352",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          3008,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q12 r1-c4, 640x576 map pixels. Keep the curved stone bridge deck clipped at bottom, its exact top contour and gothic rail, preserve the left windswept pine, right forest and all distant mountain silhouettes. No removal in this crop. Keep the large mist base layer and original cloud placements; detail mountain rock/snow without moving any silhouettes or changing warm sky color. Draw higher material detail, not a reimagined landscape.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c4/inputs/q12-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-47f55bc2-a4a0-4200-9e0e-965f887a88ac.png",
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "nativeSha256": "09f6fa312bb4bdfbd3c310985789df864f45c6961025c5c080dcf2e8c7e3b7f8",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          3520,
+          0,
+          640,
+          576
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q21 r1-c4, 640x640 map pixels. Preserve the frontal descending stair near left-middle, its landing, diagonal path, gothic cliff arches and exact icy water channel at lower right. Remove only the low leafless bush intruding over the upper plaza's front rim to the RIGHT of the stair, input approximate box [349,158,98,100]; continue the underlying pavement and snowy rim at the same contour. Keep all other inaccessible firs and rocks. Do not remove stair rails, posts or steps, and do not change the cliff boundary to fill the plant.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c4/inputs/q21-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-93ee8738-2835-4239-bdbc-07bc041752ab.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "d12191f56b635fc4fb98b55ab136960393f95f3f02dad8c90f9da1472d5d3656",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          3008,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile for AVEGEE west frozen gothic hell. Edit this exact input crop. Return ONE full-bleed image, same aspect ratio and identical framing, maximum native resolution ideally 1254 pixels or higher. Redraw with much finer ACTUAL DRAWN detail: individually resolved chipped stone bevels, fine recessed mortar, tiny rock fissures, snow crystals, faceted blue ice, icy flowing water strands, detailed fir needles. Preserve the original painterly game style, cool blue-grey palette, soft original light and broad color/value hierarchy. Preserve EVERY large contour at its exact proportional pixel position: all paving edges, cliff silhouettes, stairs with same count/width/position, stone gothic buttresses, bridge decks, liquid banks. Structure must stay within 4 original-map pixels. Keep ice/waterfall and mist/clouds painted as BASE layers at their exact original positions for existing animation masks. Keep distant inaccessible trees and all ridge vegetation. Do not zoom, rotate, shift, reframe or redesign. No added structures, text, border, DOF, blur, parallax, photographic noise or sharpening halos. Keep all edge-crossing features clipped identically. Crop q22 r1-c4, 640x640 map pixels. Preserve arched stone bridge and rail across the top, its exact deck/arch shape and thickness, the large blue waterfall underneath, right-side waterfall, stone islands, bottom-right paving edge and all snowy forests. No removal in this crop. Increase fine drawn ripples, stone facets, icicles and snow crystals while retaining the exact water banks and waterfall boundaries for animation-mask registration. Never shift the bridge endpoints or water channels.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261113T133949Z-277abfe7/docs/art-reviews/2026-11-10-z3-hd-full/r1-c4/inputs/q22-master.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d522-dbb1-7913-b639-b229b63fa0db/exec-5b52ecd8-17c6-40a6-80c6-73a2434bad5f.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSha256": "e64a6dded4e6b5c9898717c31cd4c9d470415434f6a8b9265182e078ee001460",
+      "losslessPixelsEqualOriginal": true,
+      "selected": true,
+      "inputReconstruction": {
+        "script": "scripts/cache_inputs.py",
+        "contextMasterPx1x": [
+          3520,
+          448,
+          640,
+          640
+        ],
+        "decodedInputHashFile": "input-recipes.json",
+        "note": "Exact input crop omitted from package to meet 80 MB; stored native unchanged."
+      }
+    }
+  ]
+}

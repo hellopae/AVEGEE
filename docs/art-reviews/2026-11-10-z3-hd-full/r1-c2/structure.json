@@ -1,0 +1,282 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 landmark templates; normalized correlation search +/-16 map px on assembled output. Independent of SIFT residual. No probes removed after measurement.",
+  "totalProbes": 18,
+  "reliableProbes": 17,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Patch matching only; repeated steps, changed water texture, occlusion, and new detail can create ambiguous correspondences. This does not verify all contours or stair counts.",
+  "probes": [
+    {
+      "id": "distant-peak",
+      "sourcePx1x": [
+        438,
+        120
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7844865918159485,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "icefall-snow-lip",
+      "sourcePx1x": [
+        181,
+        444
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8313326835632324,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "icefall-bank",
+      "sourcePx1x": [
+        295,
+        538
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.7840970158576965,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-west-post",
+      "sourcePx1x": [
+        68,
+        748
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8192754983901978,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-east-post",
+      "sourcePx1x": [
+        301,
+        778
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8175771832466125,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-west",
+      "sourcePx1x": [
+        108,
+        787
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8916953206062317,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-mid",
+      "sourcePx1x": [
+        199,
+        800
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9253436326980591,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-arch-bottom",
+      "sourcePx1x": [
+        212,
+        834
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9162106513977051,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "diagonal-stair-top-left",
+      "sourcePx1x": [
+        735,
+        602
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8937445282936096,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "diagonal-stair-top-right",
+      "sourcePx1x": [
+        862,
+        622
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9195600748062134,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "diagonal-stair-mid",
+      "sourcePx1x": [
+        690,
+        722
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9582524299621582,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "diagonal-stair-foot-left",
+      "sourcePx1x": [
+        482,
+        867
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8978028297424316,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "diagonal-stair-foot-right",
+      "sourcePx1x": [
+        574,
+        914
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8139386773109436,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "upper-plaza-rim",
+      "sourcePx1x": [
+        883,
+        514
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8184108138084412,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-gothic-tip",
+      "sourcePx1x": [
+        793,
+        347
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8657878637313843,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-gothic-tip",
+      "sourcePx1x": [
+        900,
+        682
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8475661873817444,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-plaza-rim",
+      "sourcePx1x": [
+        892,
+        878
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8652675747871399,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "west-water-rock",
+      "sourcePx1x": [
+        159,
+        936
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "correlation": 0.530162513256073,
+      "reliable": false,
+      "within4px": true
+    }
+  ]
+}

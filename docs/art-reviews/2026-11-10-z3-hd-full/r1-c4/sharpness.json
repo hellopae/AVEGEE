@@ -1,0 +1,84 @@
+{
+  "method": "Same 2.8 device px/world unit; independent x,y scales 4915/3840 and 3277/2560; Lanczos resize, grayscale Laplacian ksize1 variance. Primary full chunk fixed before measurement. No sharpening.",
+  "threshold": 10,
+  "primaryRatio": 61.70829302736406,
+  "numericalThresholdMet": true,
+  "caveat": "Edge/texture energy, not perceptual resolution or structural fidelity. Contrast, water detail and removal affect this number.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "masterLaplacianVariance": 38.64301053093113,
+      "newLaplacianVariance": 2384.594217302213,
+      "ratio": 61.70829302736406
+    },
+    "upper_left_core": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 42.6830292068958,
+      "newLaplacianVariance": 2646.1339206554157,
+      "ratio": 61.994988870844026
+    },
+    "upper_right_core": {
+      "rectPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 28.715975002254815,
+      "newLaplacianVariance": 1436.2120838540557,
+      "ratio": 50.014393860604855
+    },
+    "lower_left_core": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 43.81613835395771,
+      "newLaplacianVariance": 2568.1088980782647,
+      "ratio": 58.611027684193424
+    },
+    "lower_right_core": {
+      "rectPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 40.66463471990583,
+      "newLaplacianVariance": 2901.73689354251,
+      "ratio": 71.35775136133401
+    }
+  }
+}

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      3072,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      0,
+      640,
+      576
+    ],
+    "removal": []
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      3584,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      0,
+      640,
+      576
+    ],
+    "removal": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      3072,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      448,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "west-r1-c4-floor-shrub-01",
+        "rectInInputPx": [
+          349,
+          158,
+          98,
+          100
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      3584,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      448,
+      640,
+      640
+    ],
+    "removal": []
+  }
+]
