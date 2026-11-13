@@ -1,0 +1,297 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 landmark templates; normalized correlation search +/-16 map px on assembled output. Independent of SIFT residual. No probes removed after measurement.",
+  "totalProbes": 19,
+  "reliableProbes": 18,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Patch matching only; repeated steps, changed water texture, occlusion, and new detail can create ambiguous correspondences. This does not verify all contours or stair counts.",
+  "probes": [
+    {
+      "id": "top-stair-left",
+      "sourcePx1x": [
+        112,
+        316
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8581869006156921,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "top-stair-right",
+      "sourcePx1x": [
+        207,
+        310
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8512464761734009,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "top-stair-foot-left",
+      "sourcePx1x": [
+        114,
+        384
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9077836275100708,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "top-stair-foot-right",
+      "sourcePx1x": [
+        207,
+        385
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8724866509437561,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west-rim",
+      "sourcePx1x": [
+        55,
+        398
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8294697999954224,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-rim",
+      "sourcePx1x": [
+        501,
+        553
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8966836929321289,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-rim",
+      "sourcePx1x": [
+        431,
+        630
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9233776926994324,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-left",
+      "sourcePx1x": [
+        106,
+        664
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8725548982620239,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-right",
+      "sourcePx1x": [
+        202,
+        668
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9045373201370239,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-bottom-left",
+      "sourcePx1x": [
+        86,
+        795
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9407323598861694,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-bottom-right",
+      "sourcePx1x": [
+        177,
+        797
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9013081789016724,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-west-end",
+      "sourcePx1x": [
+        579,
+        536
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8391166925430298,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-east-end",
+      "sourcePx1x": [
+        902,
+        541
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7694845199584961,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-deck-apex",
+      "sourcePx1x": [
+        752,
+        498
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9017766118049622,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-arch",
+      "sourcePx1x": [
+        741,
+        566
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "correlation": 0.632109522819519,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "right-waterfall-bank",
+      "sourcePx1x": [
+        956,
+        682
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8314635157585144,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "water-island-cliff",
+      "sourcePx1x": [
+        699,
+        867
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.6940449476242065,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "left-gothic-tip",
+      "sourcePx1x": [
+        369,
+        723
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8761955499649048,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "mountain-middle-peak",
+      "sourcePx1x": [
+        609,
+        185
+      ],
+      "displacementPx1x": [
+        0,
+        -2
+      ],
+      "distancePx1x": 2.0,
+      "correlation": 0.31072676181793213,
+      "reliable": false,
+      "within4px": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "requestedIds": [
+    "west-r1-c2-floor-shrub-01"
+  ],
+  "objectReview": [
+    {
+      "id": "west-r1-c2-floor-shrub-01",
+      "status": "partial / unresolved: bare branches remain at snowy rim next to stair foot; review source correspondence and walk overlap"
+    }
+  ],
+  "pendingObjectIds": [
+    "west-r1-c2-floor-shrub-01"
+  ],
+  "visualVerification": "offline partial observation only; not a semantic acceptance signoff",
+  "inventory": "../objects-inventory.json"
+}

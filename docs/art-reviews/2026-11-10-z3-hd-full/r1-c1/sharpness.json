@@ -1,0 +1,84 @@
+{
+  "method": "Same 2.8 device px/world unit; independent x,y scales 4915/3840 and 3277/2560; Lanczos resize, grayscale Laplacian ksize1 variance. Primary full chunk fixed before measurement. No sharpening.",
+  "threshold": 10,
+  "primaryRatio": 62.0439432154617,
+  "numericalThresholdMet": true,
+  "caveat": "Edge/texture energy, not perceptual resolution or structural fidelity. Contrast, water detail and removal affect this number.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "masterLaplacianVariance": 43.272179269782704,
+      "newLaplacianVariance": 2684.776633423677,
+      "ratio": 62.0439432154617
+    },
+    "upper_left_core": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 46.00425445776784,
+      "newLaplacianVariance": 3001.996224544069,
+      "ratio": 65.25475219471099
+    },
+    "upper_right_core": {
+      "rectPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 41.34447384462813,
+      "newLaplacianVariance": 2597.6901838634917,
+      "ratio": 62.830408572269405
+    },
+    "lower_left_core": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 39.36852434105355,
+      "newLaplacianVariance": 2303.673810372568,
+      "ratio": 58.515625081997136
+    },
+    "lower_right_core": {
+      "rectPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 47.04283350539773,
+      "newLaplacianVariance": 2844.912345355766,
+      "ratio": 60.47493599698535
+    }
+  }
+}

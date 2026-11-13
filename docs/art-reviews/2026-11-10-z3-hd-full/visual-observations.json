@@ -1,0 +1,61 @@
+{
+  "method": "Viewed all 16 source microtiles and generated natives; inspected four full seam sheets and unscaled object crops offline. No in-game review.",
+  "chunks": {
+    "r1-c1": {
+      "objects": {
+        "west-r1-c1-floor-shrub-01": "visually removed small fir; paving continuous in inspected crop",
+        "west-r1-c1-floor-shrub-02": "visually removed landing bush; paving continuous in inspected crop"
+      },
+      "seamReview": "No obvious rectangular quadrant boundary in inspected seam sheet. Fine independently drawn rock/ice textures differ near cuts; confirm at 100% in lossless export.",
+      "pendingObjectIds": []
+    },
+    "r1-c2": {
+      "objects": {
+        "west-r1-c2-floor-shrub-01": "partial / unresolved: bare branches remain at snowy rim next to stair foot; review source correspondence and walk overlap"
+      },
+      "seamReview": "No obvious rectangular quadrant boundary in inspected seam sheet. The seam passes near diagonal stair foot; inspect stair contour and remaining shrubs in lossless export.",
+      "pendingObjectIds": [
+        "west-r1-c2-floor-shrub-01"
+      ]
+    },
+    "r1-c3": {
+      "objects": {
+        "west-r1-c3-floor-shrub-01": "visually removed large low shrub overlapping landing",
+        "west-r1-c3-floor-shrub-02": "visually removed isolated shrub/small fir on front rim in assembled crop"
+      },
+      "seamReview": "No obvious rectangular quadrant boundary in inspected seam sheet or object crop; fine paving detail varies across cut. Original upper ridge tree retained.",
+      "pendingObjectIds": []
+    },
+    "r1-c4": {
+      "objects": {
+        "west-r1-c4-floor-shrub-01": "visually removed low shrub to right of stair on front plaza rim"
+      },
+      "seamReview": "No obvious rectangular quadrant boundary in inspected seam sheet. Horizontal cut is near bridge rail/deck; check curved deck and animation-mask banks at final assembly.",
+      "pendingObjectIds": []
+    }
+  },
+  "wholeStructureWithin4pxVerified": false,
+  "invisibleInternalSeamsCertified": false,
+  "notes": [
+    "Local patch and affine residual diagnostics do not certify complete contours, bridge thickness, stair counts or liquid masks.",
+    "Cross-chunk edges deliberately left for ASSEMBLE.",
+    "JPEGs are space-saving review previews. Use lossless native and 2x WebP for fine detail decisions."
+  ],
+  "continuationReview": {
+    "run": "20261113T141012Z-41d14972",
+    "viewedImages": [
+      "r1-c1/seam-check.jpg",
+      "r1-c2/seam-check.jpg",
+      "r1-c2/object-review.jpg",
+      "r1-c3/seam-check.jpg",
+      "r1-c4/seam-check.jpg"
+    ],
+    "observations": "No prominent rectangular quadrant boundary seen in the displayed seam sheets. Bare branches remain in r1-c2 object crop near the snowy rim at the stair foot.",
+    "pendingObjectIds": [
+      "west-r1-c2-floor-shrub-01"
+    ],
+    "qualityMeasurementPasses": 0,
+    "wholeStructureWithin4pxVerified": false,
+    "invisibleInternalSeamsCertified": false
+  }
+}

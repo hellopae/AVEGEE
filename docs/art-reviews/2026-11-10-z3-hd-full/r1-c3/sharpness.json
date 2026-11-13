@@ -1,0 +1,84 @@
+{
+  "method": "Same 2.8 device px/world unit; independent x,y scales 4915/3840 and 3277/2560; Lanczos resize, grayscale Laplacian ksize1 variance. Primary full chunk fixed before measurement. No sharpening.",
+  "threshold": 10,
+  "primaryRatio": 64.92131360981995,
+  "numericalThresholdMet": true,
+  "caveat": "Edge/texture energy, not perceptual resolution or structural fidelity. Contrast, water detail and removal affect this number.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "masterLaplacianVariance": 34.70116133812738,
+      "newLaplacianVariance": 2252.844977857527,
+      "ratio": 64.92131360981995
+    },
+    "upper_left_core": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 31.627145919503654,
+      "newLaplacianVariance": 1911.2703227097654,
+      "ratio": 60.4313246466901
+    },
+    "upper_right_core": {
+      "rectPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 23.657467821828387,
+      "newLaplacianVariance": 1673.3482977637466,
+      "ratio": 70.73235015540308
+    },
+    "lower_left_core": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 41.849257571810874,
+      "newLaplacianVariance": 2553.720061253886,
+      "ratio": 61.021872535536666
+    },
+    "lower_right_core": {
+      "rectPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "masterLaplacianVariance": 42.27836712688683,
+      "newLaplacianVariance": 2882.7250421952167,
+      "ratio": 68.18439873856799
+    }
+  }
+}

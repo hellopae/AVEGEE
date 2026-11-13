@@ -1,0 +1,301 @@
+{
+  "checks": [
+    "required files present",
+    "images and JSON readable",
+    "image dimensions"
+  ],
+  "chunks": [
+    "r1-c1",
+    "r1-c2",
+    "r1-c3",
+    "r1-c4"
+  ],
+  "nativeFiles": 16,
+  "assembledFiles": 4,
+  "decodedImages": 40,
+  "decodedJsonFilesExcludingReport": 33,
+  "images": [
+    {
+      "file": "r1-c1/inputs/walkmask-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "r1-c1/object-review.jpg",
+      "size": [
+        480,
+        808
+      ]
+    },
+    {
+      "file": "r1-c1/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c1/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c1/q21-native.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "file": "r1-c1/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c1/r1-c1-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c1/r1-c1-compare.jpg",
+      "size": [
+        4516,
+        2292
+      ]
+    },
+    {
+      "file": "r1-c1/seam-check.jpg",
+      "size": [
+        2110,
+        1640
+      ]
+    },
+    {
+      "file": "r1-c1/structure-check.jpg",
+      "size": [
+        1400,
+        718
+      ]
+    },
+    {
+      "file": "r1-c2/inputs/walkmask-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "r1-c2/object-review.jpg",
+      "size": [
+        540,
+        420
+      ]
+    },
+    {
+      "file": "r1-c2/q11-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c2/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c2/r1-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c2/r1-c2-compare.jpg",
+      "size": [
+        4516,
+        2292
+      ]
+    },
+    {
+      "file": "r1-c2/seam-check.jpg",
+      "size": [
+        2110,
+        1640
+      ]
+    },
+    {
+      "file": "r1-c2/structure-check.jpg",
+      "size": [
+        1400,
+        718
+      ]
+    },
+    {
+      "file": "r1-c3/inputs/walkmask-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "r1-c3/object-review.jpg",
+      "size": [
+        1160,
+        440
+      ]
+    },
+    {
+      "file": "r1-c3/q11-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c3/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c3/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c3/r1-c3-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c3/r1-c3-compare.jpg",
+      "size": [
+        4516,
+        2292
+      ]
+    },
+    {
+      "file": "r1-c3/seam-check.jpg",
+      "size": [
+        2110,
+        1640
+      ]
+    },
+    {
+      "file": "r1-c3/structure-check.jpg",
+      "size": [
+        1400,
+        718
+      ]
+    },
+    {
+      "file": "r1-c4/inputs/walkmask-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "r1-c4/object-review.jpg",
+      "size": [
+        270,
+        360
+      ]
+    },
+    {
+      "file": "r1-c4/q11-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c4/q12-native.webp",
+      "size": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "file": "r1-c4/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c4/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r1-c4/r1-c4-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c4/r1-c4-compare.jpg",
+      "size": [
+        4516,
+        2292
+      ]
+    },
+    {
+      "file": "r1-c4/seam-check.jpg",
+      "size": [
+        2110,
+        1640
+      ]
+    },
+    {
+      "file": "r1-c4/structure-check.jpg",
+      "size": [
+        1400,
+        718
+      ]
+    }
+  ],
+  "qualityMeasurementsRun": 0,
+  "qualityAcceptanceVerified": false
+}

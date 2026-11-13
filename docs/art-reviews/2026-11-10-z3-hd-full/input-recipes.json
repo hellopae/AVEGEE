@@ -1,0 +1,262 @@
+{
+  "why": "Avoid duplicate master pixels within 80 MB. Exact source crops reconstructible from unchanged repo masters and these rectangles.",
+  "rebuild": "python3 docs/art-reviews/2026-11-10-z3-hd-full/scripts/cache_inputs.py",
+  "inputs": [
+    {
+      "chunk": "r1-c1",
+      "id": "q11",
+      "file": "r1-c1/inputs/q11-master.webp",
+      "contextMasterPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "size": [
+        576,
+        576
+      ],
+      "decodedRGBSha256": "9e4597e5f63a71bf3ee0aa8decf303635fe75f791642c0a43cec2a51ebf290a3"
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q12",
+      "file": "r1-c1/inputs/q12-master.webp",
+      "contextMasterPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "e11090b81e95635c5690163637aebbcd25eeb46fb43e14388bd276f965a7f87f"
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q21",
+      "file": "r1-c1/inputs/q21-master.webp",
+      "contextMasterPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "size": [
+        576,
+        640
+      ],
+      "decodedRGBSha256": "e507abd3d12f73bce0adbd2c76ec481318fdbd5ccfd7b05f5278412e4d65f0fa"
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q22",
+      "file": "r1-c1/inputs/q22-master.webp",
+      "contextMasterPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "190d80e49890dfb99dc51058b22db9aaeafadec979cc8cbbf0cc9cb4cf3963f0"
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q11",
+      "file": "r1-c2/inputs/q11-master.webp",
+      "contextMasterPx1x": [
+        960,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "e9bc8ac1718eaae0f6a78b7a1a8a8cc2dff327b35e9c364b93e2cc7c3c63cbc7"
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q12",
+      "file": "r1-c2/inputs/q12-master.webp",
+      "contextMasterPx1x": [
+        1472,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "aa5e063c92cbbfd6e60f6888266b9e7db0869523e3b7353b65bab18eee2e9870"
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q21",
+      "file": "r1-c2/inputs/q21-master.webp",
+      "contextMasterPx1x": [
+        960,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "0aeb551e1dcf56645d588434d02a4a0faddae9d4559c094faf8000fadb7672e5"
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q22",
+      "file": "r1-c2/inputs/q22-master.webp",
+      "contextMasterPx1x": [
+        1472,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "a55c3ee19ee439fc7b4a02d3b8961468252c516bf6eba28b244dfeb854c01d62"
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q11",
+      "file": "r1-c3/inputs/q11-master.webp",
+      "contextMasterPx1x": [
+        1984,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "376669bcbee8b7f817ce8c8b8f998febf9013215808420fa867ab82473098385"
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q12",
+      "file": "r1-c3/inputs/q12-master.webp",
+      "contextMasterPx1x": [
+        2496,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "aedc76ff002bc5ec507fba2e9388af2fe0a83a914a339fd9bdd68b90e3acea18"
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q21",
+      "file": "r1-c3/inputs/q21-master.webp",
+      "contextMasterPx1x": [
+        1984,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "6a715b85764ce52463f9ee832db6826af419daf1b010d25760dd11abd96181cf"
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q22",
+      "file": "r1-c3/inputs/q22-master.webp",
+      "contextMasterPx1x": [
+        2496,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "019080990ccc9eb45f3695129560437308df0f76e199319678f5fa3372c002e9"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "file": "r1-c4/inputs/q11-master.webp",
+      "contextMasterPx1x": [
+        3008,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "abef2c92a6527a92f508d30f2a3eed4a9ac939fd101be3b849484a0aa592761e"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "file": "r1-c4/inputs/q12-master.webp",
+      "contextMasterPx1x": [
+        3520,
+        0,
+        640,
+        576
+      ],
+      "size": [
+        640,
+        576
+      ],
+      "decodedRGBSha256": "1e3402740fc9ee733489e6279194e8cb6c4b8d826ccc03a12cbece14ba0e2ef9"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "file": "r1-c4/inputs/q21-master.webp",
+      "contextMasterPx1x": [
+        3008,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "48113c740b12f121cb81cd7a2c9a63a18d920c0cf92a33d21e34f6e857b88ef0"
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "file": "r1-c4/inputs/q22-master.webp",
+      "contextMasterPx1x": [
+        3520,
+        448,
+        640,
+        640
+      ],
+      "size": [
+        640,
+        640
+      ],
+      "decodedRGBSha256": "f9f1d78cec9555c3afee6b5419699f5738a2242d818288454bafc65274f514d5"
+    }
+  ]
+}
