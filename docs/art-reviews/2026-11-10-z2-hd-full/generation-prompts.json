@@ -1,0 +1,158 @@
+{
+  "tool": "built-in image_gen",
+  "plannedCalls": 8,
+  "parts": [
+    {
+      "chunk": "r4-c2",
+      "part": "q11",
+      "coreRectPx1x": [
+        1024,
+        3072,
+        1536,
+        3277
+      ],
+      "contextRectPx1x": [
+        960,
+        3008,
+        1600,
+        3277
+      ],
+      "input": "r4-c2/inputs/q11-source.webp",
+      "native": "r4-c2/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. Keep the mist at the far left and all mountain peaks and red trees, which are unwalkable scenery; improve rock striations, moss and leaf detail without changing their silhouettes."
+    },
+    {
+      "chunk": "r4-c2",
+      "part": "q12",
+      "coreRectPx1x": [
+        1536,
+        3072,
+        2048,
+        3277
+      ],
+      "contextRectPx1x": [
+        1472,
+        3008,
+        2112,
+        3277
+      ],
+      "input": "r4-c2/inputs/q12-source.webp",
+      "native": "r4-c2/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. This crop is mainly grey-blue paving. Lock every large slab corner and existing mortar line exactly; add fine chiselled surface detail, tiny chips and moss inside existing joints. Keep all red foliage at the lower edge."
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q11",
+      "coreRectPx1x": [
+        2048,
+        3072,
+        2560,
+        3277
+      ],
+      "contextRectPx1x": [
+        1984,
+        3008,
+        2624,
+        3277
+      ],
+      "input": "r4-c3/inputs/q11-source.webp",
+      "native": "r4-c3/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. The vertical stairway at the right is a WALKABLE FLOOR: preserve every step, tread width, both straight stair boundaries and rail alignment exactly. Keep existing gold side rails/posts because they stand outside the walk floor, and do not add any foliage or objects on the stairway."
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q12",
+      "coreRectPx1x": [
+        2560,
+        3072,
+        3072,
+        3277
+      ],
+      "contextRectPx1x": [
+        2496,
+        3008,
+        3136,
+        3277
+      ],
+      "input": "r4-c3/inputs/q12-source.webp",
+      "native": "r4-c3/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. The narrow vertical stair edge at the far left must retain the exact boundaries and tread positions. Keep the existing gold side rail, paving boundaries and red trees. No new obstructions on any floor."
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q11",
+      "coreRectPx1x": [
+        3072,
+        3072,
+        3584,
+        3277
+      ],
+      "contextRectPx1x": [
+        3008,
+        3008,
+        3648,
+        3277
+      ],
+      "input": "r4-c4/inputs/q11-source.webp",
+      "native": "r4-c4/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. Keep the existing pale bone scenery at the upper edge, existing mountain and green/red trees because this is nonwalkable scenery. Sharpen stone grains, red maple leaves, pine needles and rock strata in place."
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q12",
+      "coreRectPx1x": [
+        3584,
+        3072,
+        4096,
+        3277
+      ],
+      "contextRectPx1x": [
+        3520,
+        3008,
+        4160,
+        3277
+      ],
+      "input": "r4-c4/inputs/q12-source.webp",
+      "native": "r4-c4/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. Keep all existing blue-grey mountain forms, moss, red maple foliage, small pink blossoms and paving exactly in place. Fine rock facets and fine leaves, no larger or smaller mountains."
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q11",
+      "coreRectPx1x": [
+        4096,
+        3072,
+        4506,
+        3277
+      ],
+      "contextRectPx1x": [
+        4032,
+        3008,
+        4570,
+        3277
+      ],
+      "input": "r4-c5/inputs/q11-source.webp",
+      "native": "r4-c5/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. Keep the diagonal paving path, red maple foliage, pink cherry blossom canopy and mountain outlines exactly in place. Delicate individual leaves, petals and rock fissures; retain the same colors and light."
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q12",
+      "coreRectPx1x": [
+        4506,
+        3072,
+        4915,
+        3277
+      ],
+      "contextRectPx1x": [
+        4442,
+        3008,
+        4915,
+        3277
+      ],
+      "input": "r4-c5/inputs/q12-source.webp",
+      "native": "r4-c5/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. The image reaches the right map border. Keep the same full crop and the existing blue-grey mountains, moss, pale pink cherry trees and red foliage precisely. Refine petals, bark and stone grains. Do not add sky or extend the canvas."
+    }
+  ]
+}
