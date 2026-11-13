@@ -1,0 +1,163 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      3072,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c4-paving-fringe-00",
+        "bboxInputPx": [
+          494,
+          548,
+          83,
+          72
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      3584,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c4-paving-fringe-00",
+        "bboxInputPx": [
+          -18,
+          548,
+          83,
+          72
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      3072,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c4-paving-fringe-00",
+        "bboxInputPx": [
+          494,
+          100,
+          83,
+          72
+        ]
+      },
+      {
+        "id": "asia-r1-c4-paving-fringe-01",
+        "bboxInputPx": [
+          209,
+          322,
+          74,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      3584,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c4-paving-fringe-00",
+        "bboxInputPx": [
+          -18,
+          100,
+          83,
+          72
+        ]
+      }
+    ]
+  }
+]

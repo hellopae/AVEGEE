@@ -1,0 +1,192 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed source landmarks; 49x49 DoG sigma1.5/6 template correlation, search +/-12 1x pixels, measured on assembled output downsampled to 1x. Confidence >=0.6; removal boxes excluded. Same method as d54fac28.",
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "totalProbes": 12,
+  "reliableProbes": 11,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "limitation": "Affine inliers and local probes do not certify all contours. Low-correlation and search-boundary hits require human review. No retry to meet numeric thresholds.",
+  "probes": [
+    {
+      "id": "mountain-summit",
+      "sourcePx1x": [
+        453,
+        309
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9661027193069458,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "plaza-east",
+      "sourcePx1x": [
+        511,
+        595
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9355316758155823,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "plaza-front-left",
+      "sourcePx1x": [
+        84,
+        663
+      ],
+      "displacementPx1x": [
+        2,
+        1
+      ],
+      "distancePx1x": 2.23606797749979,
+      "normalizedCorrelation": 0.2969789206981659,
+      "overlapsRemovalBox": false,
+      "reliable": false
+    },
+    {
+      "id": "plaza-front-right",
+      "sourcePx1x": [
+        323,
+        664
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.6369039416313171,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-top-left",
+      "sourcePx1x": [
+        132,
+        669
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9518677592277527,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-top-right",
+      "sourcePx1x": [
+        242,
+        669
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9050598740577698,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-foot-left",
+      "sourcePx1x": [
+        133,
+        773
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8620107173919678,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-foot-right",
+      "sourcePx1x": [
+        242,
+        773
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8433288335800171,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lower-stair-left",
+      "sourcePx1x": [
+        267,
+        934
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8785207867622375,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lower-stair-right",
+      "sourcePx1x": [
+        378,
+        934
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8214273452758789,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lower-cliff",
+      "sourcePx1x": [
+        470,
+        954
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8684757351875305,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "rock-tip",
+      "sourcePx1x": [
+        810,
+        421
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9686242938041687,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    }
+  ]
+}

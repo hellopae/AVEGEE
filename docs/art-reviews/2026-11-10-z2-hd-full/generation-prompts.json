@@ -1,0 +1,454 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCount": 16,
+  "generations": [
+    {
+      "chunk": "r1-c1",
+      "id": "q11",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-8907a1ee-9859-4828-98f6-9b0ecd668f1a.png",
+      "args": {
+        "prompt": "Use case: style-transfer. Edit the attached terrain crop for a high definition 2D isometric Chinese/Japanese underworld game map. This image is the EXACT edit target, not inspiration. Redraw the same composition at twice its detail, output approximately 1254x1254 pixels. Keep EVERY cliff silhouette, boulder, lava bank, stair tread, plaza edge, pathway and camera position at exactly the same normalized coordinates. Rich clean hand-painted game art, crisp individually resolved stones, thin fissures, moss on rocks, distinct red maple leaves, natural finely articulated lava crust and flow. Keep same colors, light and contrast, no new objects. Retain the distant mountains, inaccessible trees, lava and mist as painted base layers. Remove ONLY any small loose shrub or rock actually standing on the walkable stone pavement and continue the existing paving; retain stone floor, stair treads, rails and stair support columns. No text, grid, borders, characters, extra buildings, blur, DOF, parallax, sharpen halos, noise or camera change. This is quadrant r1-c1 q11; preserve even the cropped edge content exactly.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c1-q11-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "1e1fcd0e02cbeef8e6588f887b6425aad4c6abf56ed2d0cd545168f6bef25938",
+      "archivedNative": "r1-c1/q11-native.webp",
+      "archivedReferenceImages": [
+        "r1-c1/inputs/q11-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c1/inputs/q11-v2.webp": "9814ca1a8c3b7b7ba78d271a0d85eb7878c8a8ca880e639490f3689eae700d90"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q12",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-9d5c3b8b-6e19-4f2f-a9e0-b0fa568fe20d.png",
+      "args": {
+        "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the attached image ONLY, full bleed, EXACT framing and aspect ratio. Add substantial actual drawn microdetail at maximum native resolution (about 1254px on long edge): individually articulated stones, chipped bevels, mineral grain, fine fissures, recessed mortar, sparse moss and tiny leaves. Keep Chinese/Japanese underworld style, slate-blue rock, red maple leaves, lava gold and original overall color/value and lighting. STRICT GEOMETRY LOCK: preserve every large shape and original coordinate; every cliff silhouette, stair count/width/position, path boundary, bridge deck, lava/water channel, mountain summit and horizon must align within 4 original pixels. No redesign, rotation, zoom or invented structures; do not alter crop-edge content. Keep distant inaccessible forests, bones on inaccessible ledges, mountains, sky and all liquids/waterfalls/cloud-seas as base layers. Remove only small upright shrubs actually intruding onto walkable paved stone; reconstruct paving there, keep vegetation growing outside the pavement. Keep all bridge decks, stair treads and support columns. No new props, characters, buildings, text, DOF, parallax, blur, fake sharpening halos or photographic noise. Tile r1-c1/q12. Preserve the volcanic panorama and every circular plaza contour, stairs and lava bank exactly.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c1-q12-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "bebfae01ac8145c9a2383c75fe12b3d5c437ace34f9cd8835ee7e2f907a65909",
+      "archivedNative": "r1-c1/q12-native.webp",
+      "archivedReferenceImages": [
+        "r1-c1/inputs/q12-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c1/inputs/q12-v2.webp": "f5ffe309bb13616225f4300ee870c0309728064d7c011af84b21e1d2b5ffe62f"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-c7ce256e-523d-4d75-8a55-6791eda5e398.png",
+      "args": {
+        "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the attached image ONLY, full bleed, EXACT framing and aspect ratio. Add substantial actual drawn microdetail at maximum native resolution (about 1254px on long edge): individually articulated stones, chipped bevels, mineral grain, fine fissures, recessed mortar, sparse moss and tiny leaves. Keep Chinese/Japanese underworld style, slate-blue rock, red maple leaves, lava gold and original overall color/value and lighting. STRICT GEOMETRY LOCK: preserve every large shape and original coordinate; every cliff silhouette, stair count/width/position, path boundary, bridge deck, lava/water channel, mountain summit and horizon must align within 4 original pixels. No redesign, rotation, zoom or invented structures; do not alter crop-edge content. Keep distant inaccessible forests, bones on inaccessible ledges, mountains, sky and all liquids/waterfalls/cloud-seas as base layers. Remove only small upright shrubs actually intruding onto walkable paved stone; reconstruct paving there, keep vegetation growing outside the pavement. Keep all bridge decks, stair treads and support columns. No new props, characters, buildings, text, DOF, parallax, blur, fake sharpening halos or photographic noise. Tile r1-c1/q21. Preserve the volcanic panorama and every circular plaza contour, stairs and lava bank exactly.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c1-q21-input.png"
+        ]
+      },
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "decodedRgbSha256": "182923c4ed9c156d4a7a2d4c394b960e058a08e75a80228b8818ed0370afbc5b",
+      "archivedNative": "r1-c1/q21-native.webp",
+      "archivedReferenceImages": [
+        "r1-c1/inputs/q21-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c1/inputs/q21-v2.webp": "72d4608dbacd4904cedcf7a6171b5e1737767d076c1af5a4cdc78106098bc13f"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c1",
+      "id": "q22",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-11a1e744-cb01-418a-a03f-a1709c90cdba.png",
+      "args": {
+        "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric game terrain microtile. Edit the attached image ONLY, full bleed, EXACT framing and aspect ratio. Add substantial actual drawn microdetail at maximum native resolution (about 1254px on long edge): individually articulated stones, chipped bevels, mineral grain, fine fissures, recessed mortar, sparse moss and tiny leaves. Keep Chinese/Japanese underworld style, slate-blue rock, red maple leaves, lava gold and original overall color/value and lighting. STRICT GEOMETRY LOCK: preserve every large shape and original coordinate; every cliff silhouette, stair count/width/position, path boundary, bridge deck, lava/water channel, mountain summit and horizon must align within 4 original pixels. No redesign, rotation, zoom or invented structures; do not alter crop-edge content. Keep distant inaccessible forests, bones on inaccessible ledges, mountains, sky and all liquids/waterfalls/cloud-seas as base layers. Remove only small upright shrubs actually intruding onto walkable paved stone; reconstruct paving there, keep vegetation growing outside the pavement. Keep all bridge decks, stair treads and support columns. No new props, characters, buildings, text, DOF, parallax, blur, fake sharpening halos or photographic noise. Tile r1-c1/q22. Preserve the volcanic panorama and every circular plaza contour, stairs and lava bank exactly.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c1-q22-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "43c1fa033b8b1092f9f5c5a1b5ec56ebee7f07994e29440162bc071bf31652e3",
+      "archivedNative": "r1-c1/q22-native.webp",
+      "archivedReferenceImages": [
+        "r1-c1/inputs/q22-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c1/inputs/q22-v2.webp": "8618f0c6ed72f4279ca0f603890e74de166598ef7873a64216f9f2715c16ca81"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q11",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-b8eb1fd6-f888-473b-a576-4d4f6524077d.png",
+      "args": {
+        "prompt": "undefined Tile r1-c2/q11. Preserve the volcanic/misty mountain panorama, the red bridge deck and the diagonal staircase. Remove exposed little plant tufts on paving only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c2-q11-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "6ed0e0f2481d9d3232689756ff186d20facfd13383f27fa71b4f33d8ef73ed08",
+      "archivedNative": "r1-c2/q11-native.webp",
+      "archivedReferenceImages": [
+        "r1-c2/inputs/q11-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c2/inputs/q11-v2.webp": "842ff7c4cf755d608ca836e6b91a93365d39ba044c208fb27769edd38144a287"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q12",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-c1c8202f-f5b8-4445-9ead-c03fe2d72b04.png",
+      "args": {
+        "prompt": "undefined Tile r1-c2/q12. Preserve the volcanic/misty mountain panorama, the red bridge deck and the diagonal staircase. Remove exposed little plant tufts on paving only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c2-q12-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "576b762ecb600083b30820b545611d2237c488b2119f31080f2e0ecfde810b5c",
+      "archivedNative": "r1-c2/q12-native.webp",
+      "archivedReferenceImages": [
+        "r1-c2/inputs/q12-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c2/inputs/q12-v2.webp": "8a3d104d01fb9063e3d7332eddba93dd509f039eb752199b41369da6a129432a"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-232108fc-6656-458e-9489-34476a1353f0.png",
+      "args": {
+        "prompt": "undefined Tile r1-c2/q21. Preserve the volcanic/misty mountain panorama, the red bridge deck and the diagonal staircase. Remove exposed little plant tufts on paving only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c2-q21-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "685bf694af4497732459f3fd1aedd39475b487347ae6ec81ba9636ae96475384",
+      "archivedNative": "r1-c2/q21-native.webp",
+      "archivedReferenceImages": [
+        "r1-c2/inputs/q21-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c2/inputs/q21-v2.webp": "25035069fb453fed5c4d8c6f77b6698f1b1bea46774e8b6d721c535d08e22760"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c2",
+      "id": "q22",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-4cdffa6d-59b0-499e-850a-f12f8d32465b.png",
+      "args": {
+        "prompt": "undefined Tile r1-c2/q22. Preserve the volcanic/misty mountain panorama, the red bridge deck and the diagonal staircase. Remove exposed little plant tufts on paving only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c2-q22-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "d3c2c64fb4e44a98afe14f9e63697aef95172592a4bf3df4603abd048536b5bf",
+      "archivedNative": "r1-c2/q22-native.webp",
+      "archivedReferenceImages": [
+        "r1-c2/inputs/q22-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c2/inputs/q22-v2.webp": "26f4ae8152852db170cfad299ef561a5e61c206cdc78860be6e336d4f382a4b6"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q11",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-f4f29ce7-fb92-485a-8751-7f91a5f90147.png",
+      "args": {
+        "prompt": "undefined Tile r1-c4/q11. Keep the original pine-covered karst cliffs, distant snow trees, pale turquoise river, sea of mist, circular plaza and red bridge at EXACT original boundaries. Preserve bridge deck and supports and all stairs. Remove little upright shrubs intruding on paved walking floor only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c4-q11-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "72d2b6150e503625a484bcf4a47f54f5dff96a8ef7335e5f3c94ad11eca3181d",
+      "archivedNative": "r1-c4/q11-native.webp",
+      "archivedReferenceImages": [
+        "r1-c4/inputs/q11-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c4/inputs/q11-v2.webp": "862cc6723e34253863aefa78ad545e4da57ab1c679851df01acb91940fb8b211"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q12",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-a19dc226-c4eb-4b7a-9db7-b2c64d0fcd33.png",
+      "args": {
+        "prompt": "undefined Tile r1-c4/q12. Keep the original pine-covered karst cliffs, distant snow trees, pale turquoise river, sea of mist, circular plaza and red bridge at EXACT original boundaries. Preserve bridge deck and supports and all stairs. Remove little upright shrubs intruding on paved walking floor only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c4-q12-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "a2d02abfbf97dc01c7d42f446380b2f8ce15affd85f8937766786acb6585a493",
+      "archivedNative": "r1-c4/q12-native.webp",
+      "archivedReferenceImages": [
+        "r1-c4/inputs/q12-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c4/inputs/q12-v2.webp": "b6f460e3cae2df4b6a93597183ac2cc1a1ea919547858be928a829abd08912be"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-9db15fc0-ecb6-4d15-a38d-a812bcb96555.png",
+      "args": {
+        "prompt": "undefined Tile r1-c4/q21. Keep the original pine-covered karst cliffs, distant snow trees, pale turquoise river, sea of mist, circular plaza and red bridge at EXACT original boundaries. Preserve bridge deck and supports and all stairs. Remove little upright shrubs intruding on paved walking floor only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c4-q21-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "f0a92c57f23bb1d3e0db7e23a812ba622abfa713550ec5a696a7bcbc1bc383c2",
+      "archivedNative": "r1-c4/q21-native.webp",
+      "archivedReferenceImages": [
+        "r1-c4/inputs/q21-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c4/inputs/q21-v2.webp": "54823b308b20a4072a9c6e123c00fbef33c32bd8eb58ea1047d2da6c58be82cf"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c4",
+      "id": "q22",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-27f85ece-e272-4dfe-a6a0-0a2a007bb40a.png",
+      "args": {
+        "prompt": "undefined Tile r1-c4/q22. Keep the original pine-covered karst cliffs, distant snow trees, pale turquoise river, sea of mist, circular plaza and red bridge at EXACT original boundaries. Preserve bridge deck and supports and all stairs. Remove little upright shrubs intruding on paved walking floor only.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c4-q22-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "11c7372e848d24158f47441f5e396cab22dd13e46802437d9d9abf306240ad87",
+      "archivedNative": "r1-c4/q22-native.webp",
+      "archivedReferenceImages": [
+        "r1-c4/inputs/q22-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c4/inputs/q22-v2.webp": "ee4ffeca861041dea67b2746a9ae8170e006de164077621ee6bf239d889c28c9"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q11",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-5893d13d-0e74-4c3c-9602-c9caa833259c.png",
+      "args": {
+        "prompt": "undefined Tile r1-c3/q11. Preserve misty Chinese karst peaks, pine/sakura trees on inaccessible cliffs and exact stone plaza and stair contours. Remove upright vegetation from the paved walking strip, continuing the paving.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c3-q11-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "cd31c98f7216eaf3c19463c7e01a5a3c1b3127f95af1be90c2b99f05495dbc62",
+      "archivedNative": "r1-c3/q11-native.webp",
+      "archivedReferenceImages": [
+        "r1-c3/inputs/q11-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c3/inputs/q11-v2.webp": "8671ef50d656aa3edec587c593996990bb95874bc3bbb1ed388a1b31b0c1185d"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q12",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-9f906b83-8728-4c16-80fe-fa6b23acdf25.png",
+      "args": {
+        "prompt": "undefined Tile r1-c3/q12. Preserve misty Chinese karst peaks, pine/sakura trees on inaccessible cliffs and exact stone plaza and stair contours. Remove upright vegetation from the paved walking strip, continuing the paving.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c3-q12-input.png"
+        ]
+      },
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "decodedRgbSha256": "5ba595558854a91808850d0f46c8635deb33e5fed3219dde686e5db8a64a505e",
+      "archivedNative": "r1-c3/q12-native.webp",
+      "archivedReferenceImages": [
+        "r1-c3/inputs/q12-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c3/inputs/q12-v2.webp": "9be8e08615b5f915c64b0aff166357aca17436b8e2159ad30b4e93e1309a97b2"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q21",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-1d96631f-cdc7-45bb-96cc-5b62a1b8318d.png",
+      "args": {
+        "prompt": "undefined Tile r1-c3/q21. Preserve misty Chinese karst peaks, pine/sakura trees on inaccessible cliffs and exact stone plaza and stair contours. Remove upright vegetation from the paved walking strip, continuing the paving.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c3-q21-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "a6525a17656d74f53aa40d9314abf3610522e1f15bbb4765f146a36ca9e0fbcd",
+      "archivedNative": "r1-c3/q21-native.webp",
+      "archivedReferenceImages": [
+        "r1-c3/inputs/q21-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c3/inputs/q21-v2.webp": "2c4118361e204da373d6bd35aa29e93123c750483f722e80b72fc6319902bc14"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    },
+    {
+      "chunk": "r1-c3",
+      "id": "q22",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d329-2f7e-7810-82ac-a141871e58db/exec-9dd30e41-7118-43ff-8ecc-89451b086b6b.png",
+      "args": {
+        "prompt": "undefined Tile r1-c3/q22. Preserve misty Chinese karst peaks, pine/sakura trees on inaccessible cliffs and exact stone plaza and stair contours. Remove upright vegetation from the paved walking strip, continuing the paving.",
+        "transparent_background": false,
+        "referenced_image_paths": [
+          "tmp/z2-hd/r1-c3-q22-input.png"
+        ]
+      },
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "decodedRgbSha256": "727c6fc7eb8a93b1d0d1e140a9c169c7caacbb0d2dd042c22bec8da742faa6dc",
+      "archivedNative": "r1-c3/q22-native.webp",
+      "archivedReferenceImages": [
+        "r1-c3/inputs/q22-v2.webp"
+      ],
+      "selectedNative": true,
+      "attempt": 1,
+      "archivedReferenceFileSha256": {
+        "r1-c3/inputs/q22-v2.webp": "bc54df1042f3f829783bc60ef2d81a23383ce3064ba40e0ff714532910d5502c"
+      },
+      "productionApproved": false,
+      "note": "Only attempt, archived for review; selectedNative means archived attempt, not approval. See visual-review.json."
+    }
+  ]
+}

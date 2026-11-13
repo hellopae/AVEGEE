@@ -1,0 +1,134 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      1024,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      960,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": []
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      1536,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1472,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      1024,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      960,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c2-paving-fringe-00",
+        "bboxInputPx": [
+          401,
+          366,
+          102,
+          74
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      1536,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1472,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c2-paving-fringe-01",
+        "bboxInputPx": [
+          428,
+          351,
+          107,
+          81
+        ]
+      }
+    ]
+  }
+]

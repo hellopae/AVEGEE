@@ -1,0 +1,152 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      2048,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1984,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": []
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      2560,
+      0,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      2496,
+      0,
+      640,
+      576
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      0,
+      640,
+      576
+    ],
+    "removalTargets": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      2048,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      1984,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      -64,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c3-paving-fringe-00",
+        "bboxInputPx": [
+          341,
+          329,
+          91,
+          66
+        ]
+      },
+      {
+        "id": "asia-r1-c3-paving-fringe-01",
+        "bboxInputPx": [
+          459,
+          353,
+          115,
+          57
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      2560,
+      512,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      2496,
+      448,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r1-c3-paving-fringe-01",
+        "bboxInputPx": [
+          -53,
+          353,
+          115,
+          57
+        ]
+      },
+      {
+        "id": "asia-r1-c3-paving-fringe-02",
+        "bboxInputPx": [
+          242,
+          428,
+          114,
+          69
+        ]
+      }
+    ]
+  }
+]

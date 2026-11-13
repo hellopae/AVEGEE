@@ -1,0 +1,28 @@
+{
+  "reviewer": "Codex visual inspection; final decision reserved for Claude",
+  "qaPassedClaimed": false,
+  "allRemovalsVisuallyVerified": false,
+  "visualSeamlessnessVerified": false,
+  "chunks": {
+    "r1-c1": {
+      "decision": "candidate-for-Claude-review",
+      "observations": ["No obvious straight seam in the inspected overview and 2x boundary strips. Pavement texture varies between quadrants.", "Small foliage remains near paving boundaries; inventory removals are not fully certified."],
+      "pendingParts": ["human contour / tread-count review", "vegetation inventory verification"]
+    },
+    "r1-c2": {
+      "decision": "needs-correction-before-ASSEMBLE",
+      "observations": ["q11 invents a bridge and diagonal staircase in the upper volcanic panorama.", "q12 adds red railing and staircase on the right plaza boundary.", "Maximum reliable local probe displacement is 4.4721 map pixels; good SIFT inliers do not validate invented structures."],
+      "pendingParts": ["q11 geometry-preserving redraw", "q12 geometry-preserving redraw", "stair-foot-right probe review", "vegetation inventory verification"]
+    },
+    "r1-c3": {
+      "decision": "needs-correction-before-ASSEMBLE",
+      "observations": ["q11 adds steps at the upper-left road edge; q12 thickens the right plaza rim.", "q21 replaces the small pale bone-like feature beside the lower path with a pink tree.", "The low local probe displacement does not certify these semantic changes."],
+      "pendingParts": ["q11 / q12 contour correction", "q21 unwanted tree removal and source-feature review", "vegetation inventory verification"]
+    },
+    "r1-c4": {
+      "decision": "needs-correction-before-ASSEMBLE",
+      "observations": ["Bridge approaches / steps differ from source. The upper-stair-foot probe (not the bridge deck) has a 12-pixel search-boundary hit.", "Large mist and river bases remain present. Their complete contour alignment is unverified.", "No obvious hard straight seam in the inspected overview; this is not a seamlessness certification."],
+      "pendingParts": ["bridge geometry / stair review and correction", "12-pixel probe investigation", "vegetation inventory verification"]
+    }
+  }
+}

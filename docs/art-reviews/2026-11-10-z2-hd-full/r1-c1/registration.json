@@ -1,0 +1,391 @@
+{
+  "chunk": "r1-c1",
+  "outputScale": 2,
+  "neighborChunkSeamsApplied": false,
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMasterPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r1-c1-paving-fringe-00",
+          "bboxInputPx": [
+            267,
+            514,
+            65,
+            83
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          0.9996676229443762,
+          0.00023108976554782725,
+          -0.10392723052321763
+        ],
+        [
+          -0.00023108976554782725,
+          0.9996676229443762,
+          0.16494030477652652
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.45917747274000054,
+          0.00010614649517986324,
+          -0.10392723052321763
+        ],
+        [
+          -0.00010614649517986324,
+          0.45917747274000054,
+          0.16494030477652652
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.45917747274000054,
+          0.00010614649517986324,
+          -0.10392723052321763
+        ],
+        [
+          -0.00010614649517986324,
+          0.45917747274000054,
+          0.16494030477652652
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        2.1770833333333335,
+        2.1770833333333335
+      ],
+      "siftMatches": 475,
+      "siftInliers": 389,
+      "inlierResidualPx1x": {
+        "median": 0.6393783092498779,
+        "p95": 1.8497288227081299,
+        "max": 2.6892266273498535
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9998364860628858,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreMasterPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "removalTargets": [],
+      "nativeSize": [
+        1323,
+        1189
+      ],
+      "affine": [
+        [
+          1.0008250615795569,
+          0.0006610910335728569,
+          -0.7605320395337642
+        ],
+        [
+          -0.0006610910335728569,
+          1.0008250615795569,
+          0.32161616878305377
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.4841481779372006,
+          0.00032025940734900385,
+          -0.7605320395337642
+        ],
+        [
+          -0.00031980216287727016,
+          0.484840399890517,
+          0.32161616878305377
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.4841481779372006,
+          0.00032025940734900385,
+          447.23946796046624
+        ],
+        [
+          -0.00031980216287727016,
+          0.484840399890517,
+          0.32161616878305377
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        2.0671875,
+        2.064236111111111
+      ],
+      "siftMatches": 535,
+      "siftInliers": 482,
+      "inlierResidualPx1x": {
+        "median": 0.7312382459640503,
+        "p95": 1.8829540014266968,
+        "max": 2.8607592582702637
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9998379177517361,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q21",
+      "coreMasterPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r1-c1-paving-fringe-00",
+          "bboxInputPx": [
+            267,
+            66,
+            65,
+            83
+          ]
+        }
+      ],
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "affine": [
+        [
+          1.0006723765471741,
+          -0.00014566170498989245,
+          0.34201909854206125
+        ],
+        [
+          0.00014566170498989245,
+          1.0006723765471741,
+          -0.26083472189953044
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.4847664330455612,
+          -7.046371216442265e-05,
+          0.34201909854206125
+        ],
+        [
+          7.05644592718066e-05,
+          0.4840743166970457,
+          -0.26083472189953044
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.4847664330455612,
+          -7.046371216442265e-05,
+          0.34201909854206125
+        ],
+        [
+          7.05644592718066e-05,
+          0.4840743166970457,
+          447.7391652781005
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        2.064236111111111,
+        2.0671875
+      ],
+      "siftMatches": 695,
+      "siftInliers": 649,
+      "inlierResidualPx1x": {
+        "median": 0.5010560154914856,
+        "p95": 1.5069622993469238,
+        "max": 2.632678747177124
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9991319444444444,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q22",
+      "coreMasterPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r1-c1-paving-fringe-01",
+          "bboxInputPx": [
+            294,
+            288,
+            105,
+            63
+          ]
+        },
+        {
+          "id": "asia-r1-c1-paving-fringe-02",
+          "bboxInputPx": [
+            206,
+            456,
+            90,
+            56
+          ]
+        },
+        {
+          "id": "asia-r1-c1-paving-fringe-03",
+          "bboxInputPx": [
+            427,
+            395,
+            101,
+            71
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.0001074301494286,
+          6.537090969341466e-05,
+          0.03264789100041944
+        ],
+        [
+          -6.537090969341466e-05,
+          1.0001074301494286,
+          -0.31309437869915985
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5104216549406971,
+          3.336314370317813e-05,
+          0.03264789100041944
+        ],
+        [
+          -3.336314370317813e-05,
+          0.5104216549406971,
+          -0.31309437869915985
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5104216549406971,
+          3.336314370317813e-05,
+          448.0326478910004
+        ],
+        [
+          -3.336314370317813e-05,
+          0.5104216549406971,
+          447.68690562130087
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 441,
+      "siftInliers": 401,
+      "inlierResidualPx1x": {
+        "median": 0.5094505548477173,
+        "p95": 1.6486276388168335,
+        "max": 2.778339385986328
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9992266845703125,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    }
+  ]
+}

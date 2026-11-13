@@ -1,0 +1,38 @@
+{
+  "objects": [
+    {
+      "id": "asia-r1-c2-paving-fringe-00",
+      "chunk": [
+        "r1-c2"
+      ],
+      "kind": "baked upright vegetation intruding on paving",
+      "action": "remove-paving-intrusion-only",
+      "masterPx": [
+        1361,
+        814,
+        102,
+        74
+      ],
+      "walkmaskFraction": 0.41017488076311603,
+      "removalVerified": false
+    },
+    {
+      "id": "asia-r1-c2-paving-fringe-01",
+      "chunk": [
+        "r1-c2"
+      ],
+      "kind": "baked upright vegetation intruding on paving",
+      "action": "remove-paving-intrusion-only",
+      "masterPx": [
+        1900,
+        799,
+        107,
+        81
+      ],
+      "walkmaskFraction": 0.8003922926041306,
+      "removalVerified": false
+    }
+  ],
+  "allRemovalsVisuallyVerified": false,
+  "note": "Requested vegetation removals; IDs are not a claim of completed removal. See README visual findings."
+}

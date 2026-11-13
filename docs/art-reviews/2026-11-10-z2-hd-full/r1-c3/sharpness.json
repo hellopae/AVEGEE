@@ -1,0 +1,53 @@
+{
+  "devicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "threshold": 10,
+  "method": "Decoded RGB, identical engine zoom, Pillow Lanczos, grayscale Laplacian variance ksize1; no sharpening. Texture and contrast affect the metric.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "sourceLaplacianVariance": 20.72229478758987,
+      "newLaplacianVariance": 972.3866027199334,
+      "laplacianRatio": 46.92465832993914
+    },
+    "upper_panorama": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        448
+      ],
+      "deviceSize": [
+        2240,
+        980
+      ],
+      "sourceLaplacianVariance": 18.306879523830386,
+      "newLaplacianVariance": 725.6960767171037,
+      "laplacianRatio": 39.64062120868018
+    },
+    "lower_terrain": {
+      "rectPx1x": [
+        0,
+        448,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        1260
+      ],
+      "sourceLaplacianVariance": 22.69372286213639,
+      "newLaplacianVariance": 1166.2952043057858,
+      "laplacianRatio": 51.39285481676983
+    }
+  }
+}
