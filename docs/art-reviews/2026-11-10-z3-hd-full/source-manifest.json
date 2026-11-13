@@ -1,0 +1,298 @@
+{
+  "sourceHashes": {
+    "img/map-zone3/v1/r1-c1.webp": "f12fa8bd79dfd3aa3cd56418102277d4bfb631b5b93fa355d60b7fab338c982f",
+    "img/map-zone3/v1/r1-c2.webp": "b66080ea9481fdde084b69df2df3942edacaa254e3307e92722eb7473ae0b0cb",
+    "img/map-zone3/v1/r1-c3.webp": "96f72f652c5cca84ca684567c95d178c94303a62c31ba9986c675297b12cec00",
+    "img/map-zone3/v1/r1-c4.webp": "76aaa27caf051e4a4bd75cb3069cb9e8e858a7256e312dd2980f5e550d55208a",
+    "img/map-zone3/v1/r1-c5.webp": "7ac971f31aac4630a413fa2bf26971b72d5a249180a42547a7b1e719dd2c7c4e",
+    "img/map-zone3/v1/r2-c1.webp": "9f4b3eff89b0ea2d26c406838132bebf8abb3925c9781e5cb1cbb41d1ac901c6",
+    "img/map-zone3/v1/r2-c2.webp": "6ac26583eb1c6ca068445f297d252e1bf6a2a3133e3027c69056859449088c1b",
+    "img/map-zone3/v1/r2-c3.webp": "ebf58ba7a1306b64f9f9a7b6c389d0254639838a2c1cb12a95dc3c5cb40a0e84",
+    "img/map-zone3/v1/r2-c4.webp": "ca8cc8a894e7902943fedabfa61c44cfd18724a5460c722bf62bb3ab567518df",
+    "img/map-zone3/v1/r2-c5.webp": "3441ab36d65aa9194d968618234523cdf62bf3cac40bbab535d1195c5ec74f47",
+    "img/map-zone3/v1/r3-c1.webp": "bcc49a84117eb6692073ca7866899a612a9d39324b7710b8d2901935c5c66d2e",
+    "img/map-zone3/v1/r3-c2.webp": "e14a85d88230c31d14b11b5d7b58b41be7a7c237adb17014fa6ef272ff66795e",
+    "img/map-zone3/v1/r3-c3.webp": "90efe020535dbfd759757f04b268fd8802508464f0277b65bae131464b0d1f95",
+    "img/map-zone3/v1/r3-c4.webp": "67c4aa97d6a428774aaaea40e885c43b44c4b8f4167a7bf7555c4458c90090c0",
+    "img/map-zone3/v1/r3-c5.webp": "77a4d10fbe2749ef6c8c67aaf5132fc8a6cc76e66fdb8cb327dbbb724b616add",
+    "img/map-zone3/v1/r4-c1.webp": "febe795a4773cbe33cf0d4e3f3dffc360c68ffa691a4e35330d75af6e9390c08",
+    "img/map-zone3/v1/r4-c2.webp": "bfc88e055758cc24837526a953298a3b5211be45125a072b12cac158e1a63054",
+    "img/map-zone3/v1/r4-c3.webp": "cf9c99337fcf75202eb2acf7659eee28aa80b1ab095cf7491fa919b7a0a100f9",
+    "img/map-zone3/v1/r4-c4.webp": "95b72753f1bc634fb7b7a01e4107bbbc782843067daa5acdab494b37116ca8e3",
+    "img/map-zone3/v1/r4-c5.webp": "083f402119a1abc382eab653693083c36aa0bd89c4c25f8490690fb57e1a5316"
+  },
+  "repairs": false,
+  "chunks": {
+    "r2-c4": {
+      "chunkRectPx1x": [
+        3072,
+        1024,
+        4096,
+        2048
+      ],
+      "parts": {
+        "q11": {
+          "coreRectPx1x": [
+            3072,
+            1024,
+            3584,
+            1536
+          ],
+          "contextRectPx1x": [
+            3008,
+            960,
+            3648,
+            1600
+          ]
+        },
+        "q12": {
+          "coreRectPx1x": [
+            3584,
+            1024,
+            4096,
+            1536
+          ],
+          "contextRectPx1x": [
+            3520,
+            960,
+            4160,
+            1600
+          ]
+        },
+        "q21": {
+          "coreRectPx1x": [
+            3072,
+            1536,
+            3584,
+            2048
+          ],
+          "contextRectPx1x": [
+            3008,
+            1472,
+            3648,
+            2112
+          ]
+        },
+        "q22": {
+          "coreRectPx1x": [
+            3584,
+            1536,
+            4096,
+            2048
+          ],
+          "contextRectPx1x": [
+            3520,
+            1472,
+            4160,
+            2112
+          ]
+        }
+      }
+    },
+    "r2-c5": {
+      "chunkRectPx1x": [
+        4096,
+        1024,
+        4915,
+        2048
+      ],
+      "parts": {
+        "q11": {
+          "coreRectPx1x": [
+            4096,
+            1024,
+            4506,
+            1536
+          ],
+          "contextRectPx1x": [
+            4032,
+            960,
+            4570,
+            1600
+          ]
+        },
+        "q12": {
+          "coreRectPx1x": [
+            4506,
+            1024,
+            4915,
+            1536
+          ],
+          "contextRectPx1x": [
+            4442,
+            960,
+            4915,
+            1600
+          ]
+        },
+        "q21": {
+          "coreRectPx1x": [
+            4096,
+            1536,
+            4506,
+            2048
+          ],
+          "contextRectPx1x": [
+            4032,
+            1472,
+            4570,
+            2112
+          ]
+        },
+        "q22": {
+          "coreRectPx1x": [
+            4506,
+            1536,
+            4915,
+            2048
+          ],
+          "contextRectPx1x": [
+            4442,
+            1472,
+            4915,
+            2112
+          ]
+        }
+      }
+    },
+    "r3-c1": {
+      "chunkRectPx1x": [
+        0,
+        2048,
+        1024,
+        3072
+      ],
+      "parts": {
+        "q11": {
+          "coreRectPx1x": [
+            0,
+            2048,
+            512,
+            2560
+          ],
+          "contextRectPx1x": [
+            0,
+            1984,
+            576,
+            2624
+          ]
+        },
+        "q12": {
+          "coreRectPx1x": [
+            512,
+            2048,
+            1024,
+            2560
+          ],
+          "contextRectPx1x": [
+            448,
+            1984,
+            1088,
+            2624
+          ]
+        },
+        "q21": {
+          "coreRectPx1x": [
+            0,
+            2560,
+            512,
+            3072
+          ],
+          "contextRectPx1x": [
+            0,
+            2496,
+            576,
+            3136
+          ]
+        },
+        "q22": {
+          "coreRectPx1x": [
+            512,
+            2560,
+            1024,
+            3072
+          ],
+          "contextRectPx1x": [
+            448,
+            2496,
+            1088,
+            3136
+          ]
+        }
+      }
+    },
+    "r3-c2": {
+      "chunkRectPx1x": [
+        1024,
+        2048,
+        2048,
+        3072
+      ],
+      "parts": {
+        "q11": {
+          "coreRectPx1x": [
+            1024,
+            2048,
+            1536,
+            2560
+          ],
+          "contextRectPx1x": [
+            960,
+            1984,
+            1600,
+            2624
+          ]
+        },
+        "q12": {
+          "coreRectPx1x": [
+            1536,
+            2048,
+            2048,
+            2560
+          ],
+          "contextRectPx1x": [
+            1472,
+            1984,
+            2112,
+            2624
+          ]
+        },
+        "q21": {
+          "coreRectPx1x": [
+            1024,
+            2560,
+            1536,
+            3072
+          ],
+          "contextRectPx1x": [
+            960,
+            2496,
+            1600,
+            3136
+          ]
+        },
+        "q22": {
+          "coreRectPx1x": [
+            1536,
+            2560,
+            2048,
+            3072
+          ],
+          "contextRectPx1x": [
+            1472,
+            2496,
+            2112,
+            3136
+          ]
+        }
+      }
+    }
+  },
+  "runtimeEvidenceSHA256": {
+    "src/zone-skin.js": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1",
+    "src/town-layout.js": "0e0d8cb7f96a3410bb1c641c507a594b2df31d5413a818b6b5af2cb203b5b7ed",
+    "src/town-west-trees.js": "cfa04baf98fba4faf1a02c95722c9901a32d24747a737ee1a8067fb148143dfb",
+    "src/town-owner-walkmask-west.js": "e9503d1e3d0a4b44a219e2800fb4660338a01c93e9a7a847b1460542d6fa8e8d",
+    "src/town-terrain-repair.js": "0d8e8310d8a18c73b17d2471bed6e1e97c2b5bc842e54a0e0a9a86c6c3c67174"
+  }
+}

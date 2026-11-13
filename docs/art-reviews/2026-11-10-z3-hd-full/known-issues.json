@@ -1,0 +1,28 @@
+[
+  {
+    "chunk": "r2-c5",
+    "part": "q22",
+    "chunkRectPx1x": [
+      345,
+      500,
+      600,
+      740
+    ],
+    "description": "Fine white stream-like lines on the central snowy cliff are more water-like than the ambiguous pale source patch. Needs review; no regeneration.",
+    "resolved": false,
+    "evidence": "known-issue.jpg"
+  },
+  {
+    "chunk": "r3-c2",
+    "part": "q22",
+    "chunkRectPx1x": [
+      780,
+      820,
+      960,
+      960
+    ],
+    "description": "Tiny off-floor skull enlarged and shifted by ImageGen despite prompt to preserve small size/location. Needs review/repair.",
+    "resolved": false,
+    "evidence": "known-issue.jpg"
+  }
+]
