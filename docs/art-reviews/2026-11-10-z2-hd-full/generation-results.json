@@ -1,0 +1,32 @@
+[
+  {
+    "index": 0,
+    "chunk": "r3-c3",
+    "part": "q11",
+    "tool": "built-in image_gen.imagegen",
+    "source": "/Users/agapae/.codex/generated_images/01a1d34f-494c-7d70-a2e6-887fe92a6d62/exec-6d142903-ad74-4730-99ea-ed86779205ff.png",
+    "native": "r3-c3/q11-native.webp",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "sourceSha256": "e057b6a8a7dd42a89aeb72c692bf726aaa50a8a618cf1018ab0c0b9806a6cf51",
+    "nativeSha256": "03b3855fd39c99721e5c57eb20445544bc1e3fa70d6a00acdea470189bee08c1",
+    "losslessRoundTrip": true
+  },
+  {
+    "index": 1,
+    "chunk": "r3-c3",
+    "part": "q12",
+    "tool": "built-in image_gen.imagegen",
+    "source": "/Users/agapae/.codex/generated_images/01a1d34f-494c-7d70-a2e6-887fe92a6d62/exec-754115ae-1839-4a95-a63c-912cb9a12aee.png",
+    "native": "r3-c3/q12-native.webp",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "sourceSha256": "02c77b149d96c0f8662cbb843a56d6d9a08b111182e64f8aa16a303a6ca835e7",
+    "nativeSha256": "a588d5efbbe7ea93b07dbf3d3492496f1badb2096020e95e9cb4e7784d05297f",
+    "losslessRoundTrip": true
+  }
+]
