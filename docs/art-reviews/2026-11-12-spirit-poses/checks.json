@@ -1,0 +1,12 @@
+{
+  "expected": 39,
+  "opened_with_matching_dimensions": 34,
+  "missing": [
+    "business-cyberhell-scared-v1.webp",
+    "clerk-cyberhell-scared-v1.webp",
+    "elder-woman-cyberhell-scared-v1.webp",
+    "business-cyberhell-cry-v1.webp",
+    "clerk-cyberhell-cry-v1.webp"
+  ],
+  "errors": []
+}
