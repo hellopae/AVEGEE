@@ -21,15 +21,16 @@ export const setGroundSpriteShow = v => Object.assign(GROUND_SPRITE_SHOW, v);
 // Codex source made the crop the full canvas width).  They are re-cut at the true proportion (scripts/recut-bridge-rails.py, art-src/z1-bridge-rails/) and drawn at their own rectWorld.
 /** World rect [x, y, w, h] a sprite is drawn into. */
 export const groundSpriteDrawRect = s => s.rectWorld;
+// `show: true` in sprites.json = a 'sort' sprite that is drawn although the pilot sort sprites are hidden (the red trees added 13 Nov 2026, scripts/add-red-trees-z1.py).
 // `off` in sprites.json (a reason string) = this ground set already has the object painted in at that spot (e.g. a v5 fallback patch), so drawing the sprite would double it.
-export const groundSpriteShown = s => !s.off && (s.layer === 'sort' ? GROUND_SPRITE_SHOW.sort : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
+export const groundSpriteShown = s => !s.off && (s.layer === 'sort' ? (GROUND_SPRITE_SHOW.sort || s.show === true) : GROUND_SPRITE_SHOW.rails) && !GROUND_SPRITE_SHOW.hideIds.has(s.id);
 const urlOf = () => activeTownSkin()?.terrain?.sprites || null;
 function storeOf(url) {
   let st = stores.get(url);
   if (!st) {
     st = { status: 'loading', list: [], images: new Map(), base: url.slice(0, url.lastIndexOf('/') + 1) };
     stores.set(url, st);
-    fetch(url + '?v=20261113-rails').then(r => { if (!r.ok) throw new Error('sprites ' + r.status); return r.json(); })
+    fetch(url + '?v=20261113-rails2').then(r => { if (!r.ok) throw new Error('sprites ' + r.status); return r.json(); })
       .then(list => { st.list = list; st.status = 'ready'; }).catch(() => { st.status = 'failed'; });
   }
   return st;
