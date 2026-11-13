@@ -1,0 +1,241 @@
+{
+  "tool": "built-in image_gen only",
+  "plannedCallsThisRun": 5,
+  "actualCallsThisRun": 5,
+  "callBudgetThisRun": 16,
+  "reusedPartCount": 3,
+  "totalNativeParts": 8,
+  "priorPlanCalls": 8,
+  "transparentBackground": false,
+  "generations": [
+    {
+      "chunk": "r4-c2",
+      "part": "q11",
+      "coreRectPx1x": [
+        1024,
+        3072,
+        1536,
+        3277
+      ],
+      "contextRectPx1x": [
+        960,
+        3008,
+        1600,
+        3277
+      ],
+      "input": "r4-c2/inputs/q11-source.webp",
+      "native": "r4-c2/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. Keep the mist at the far left and all mountain peaks and red trees, which are unwalkable scenery; improve rock striations, moss and leaf detail without changing their silhouettes.",
+      "status": "reused-byte-identical",
+      "originalFile": "/Users/agapae/agapae-work/.codex-worktrees/20261113T050923Z-2099857a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/q11-native.webp",
+      "tool": "built-in image_gen (previous run)",
+      "originalPng": "not recorded in prior manifest",
+      "nativeSize": [
+        1934,
+        813
+      ],
+      "nativeSha256": "4e1e150b6c9ca1e09adb811039710f6e7cf82610184d9b42576e5fd76f7febf0"
+    },
+    {
+      "chunk": "r4-c2",
+      "part": "q12",
+      "coreRectPx1x": [
+        1536,
+        3072,
+        2048,
+        3277
+      ],
+      "contextRectPx1x": [
+        1472,
+        3008,
+        2112,
+        3277
+      ],
+      "input": "r4-c2/inputs/q12-source.webp",
+      "native": "r4-c2/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. This crop is mainly grey-blue paving. Lock every large slab corner and existing mortar line exactly; add fine chiselled surface detail, tiny chips and moss inside existing joints. Keep all red foliage at the lower edge.",
+      "status": "reused-byte-identical",
+      "originalFile": "/Users/agapae/agapae-work/.codex-worktrees/20261113T050923Z-2099857a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/q12-native.webp",
+      "tool": "built-in image_gen (previous run)",
+      "originalPng": "not recorded in prior manifest",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeSha256": "0ddd6d1ac0cdb7d2a2b0b7d3edeaf0e97cd7949c8bbcf3e1b06d0b130ed10c08"
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q11",
+      "coreRectPx1x": [
+        2048,
+        3072,
+        2560,
+        3277
+      ],
+      "contextRectPx1x": [
+        1984,
+        3008,
+        2624,
+        3277
+      ],
+      "input": "r4-c3/inputs/q11-source.webp",
+      "native": "r4-c3/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone 2 (Asia Chinese/Japanese hell) game ground HD repaint. Input image is the EDIT TARGET, a cropped piece of the existing map with 64 original-pixel overlap. Repaint the SAME complete crop at very high native resolution, about 3 times its pixel dimensions. Preserve the exact input aspect ratio and full edge-to-edge framing, no cropping, no border. Preserve every stone slab boundary, paving joint, stair tread, terrace/cliff silhouette, mountain outline, tree trunk and canopy position to within 1 original pixel. Do not redesign or shift any geometry. Preserve the original colors, light direction, exposure and material style. Increase crisp painted microdetail dramatically: separate small stone chips, fine irregular cracks WITHIN each existing stone, subtle mineral grains, engraved weathering, thin moss in existing mortar, individual maple leaves and tiny scattered fallen leaves. Fine detailed hand-painted isometric game illustration, sharp throughout, no blur or depth of field, no photorealism, no sharpening halos. Keep existing mist/liquid as a painted static base in its exact shape if present. No new objects, no characters, no text or watermark. Do not invent paving seams or change the scale. Keep distant/unwalkable rock formations, red maple foliage and pink cherry blossoms in their original places. The image must align over the source when downscaled. The vertical stairway at the right is a WALKABLE FLOOR: preserve every step, tread width, both straight stair boundaries and rail alignment exactly. Keep existing gold side rails/posts because they stand outside the walk floor, and do not add any foliage or objects on the stairway.",
+      "status": "reused-byte-identical",
+      "originalFile": "/Users/agapae/agapae-work/.codex-worktrees/20261113T050923Z-2099857a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/q11-native.webp",
+      "tool": "built-in image_gen (previous run)",
+      "originalPng": "not recorded in prior manifest",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeSha256": "79a737a544e2ec61a593f985245cf1d922438cf09fdbd5b1cc6d74d16e4ae195"
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q12",
+      "coreRectPx1x": [
+        2560,
+        3072,
+        3072,
+        3277
+      ],
+      "contextRectPx1x": [
+        2496,
+        3008,
+        3136,
+        3277
+      ],
+      "input": "r4-c3/inputs/q12-source.webp",
+      "native": "r4-c3/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset: AVEGEE Asia game ground HD repaint. This reference is the EDIT TARGET. Repaint this SAME complete crop at about 3x resolution, preserving its 640:269 aspect ratio and all edge-to-edge framing. Retain EXACT positions and shapes of every existing paving joint, stair tread, gold rail at far left, red maple trunk, bush and foliage silhouette; align over input when downscaled. Chinese/Japanese hell hand-painted isometric game art, original blue-grey stone/red leaves palette and lighting. Add extremely crisp fine stone grains, tiny chips, thin hairline cracks WITHIN the existing slabs, moss inside existing joints, individual maple leaves and bark texture. Preserve large stone slab corners and widths exactly. Preserve narrow stair strip and gold side rail at far left and its tread positions. All trees and shrubs are outside the owner walkmask and stay. No new objects, no extra mortar lines or redesign, no changed camera, no crop, no text, no blur, no DOF or sharpening halos. Match existing source geometry rigorously. Keep full image, no canvas extension.",
+      "tool": "built-in image_gen",
+      "status": "generated-this-run",
+      "originalPng": "/Users/agapae/.codex/generated_images/01a1d40c-eaa5-70b2-b976-530ac04f0c6a/exec-7ddacb69-7daf-4a53-aaee-ec1986f1f5ba.png",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeSha256": "cb604417fea3ac1a1b9ec0ec25ec0b611fdf81af91fef9d8bad214273bd192a8",
+      "originalPngSha256": "e3a7cf51178aef0f0113a705ff91b6501b66a4fcebd0683cb5e3a072fefc6e57"
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q11",
+      "coreRectPx1x": [
+        3072,
+        3072,
+        3584,
+        3277
+      ],
+      "contextRectPx1x": [
+        3008,
+        3008,
+        3648,
+        3277
+      ],
+      "input": "r4-c4/inputs/q11-source.webp",
+      "native": "r4-c4/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone2 Asia Chinese/Japanese hell HD ground. Input is the EDIT TARGET, one 640x269 crop with 64 map-pixel overlap. Repaint exactly the SAME scene at approximately 1935x813, preserving full framing and aspect ratio. Increase hand-painted fine material detail dramatically: tiny stone chips, mineral grains, hairline cracks within existing paving slabs, moss inside existing joints, crisp individual red maple leaves, pine needles and fine rock strata. Preserve EXACT source geometry, the big blue-grey mountain silhouettes and summit locations, tree trunks and canopy shapes, slab boundaries and corners. Preserve the pale bones near the top with the exact same shape/location and number; these are unwalkable scenery. Preserve blue-grey stone/red-green foliage colors, warm light and exposure. All scenery here lies outside owner walkmask, keep it. Strict alignment with original when downscaled, no new objects, no new paving seams or redesigned rocks. No photorealism, no blur/DOF, no camera change, no crop or border, no text/watermark, no sharpening halos. Do not enlarge foliage or shift any mountain or paving boundary.",
+      "tool": "built-in image_gen",
+      "status": "generated-this-run",
+      "originalPng": "/Users/agapae/.codex/generated_images/01a1d40c-eaa5-70b2-b976-530ac04f0c6a/exec-5568fec6-dc31-4e44-bec8-6207c75275fc.png",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeSha256": "b46726874dffe9e21123c2881dca0112fd47764aa449daeeb176fdbf1b55e6d3",
+      "originalPngSha256": "d426f8ffd6d785f66e5307e6489a7088ee85f656a0f71c145d4a8c4460ab2abc"
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q12",
+      "coreRectPx1x": [
+        3584,
+        3072,
+        4096,
+        3277
+      ],
+      "contextRectPx1x": [
+        3520,
+        3008,
+        4160,
+        3277
+      ],
+      "input": "r4-c4/inputs/q12-source.webp",
+      "native": "r4-c4/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE zone2 Asia Chinese/Japanese hell HD game ground. Input image is the EDIT TARGET, 640x269 with overlap. Repaint the SAME complete crop at about 1935x813. Keep aspect ratio, full framing and all source geometry EXACTLY. Every blue-grey mountain silhouette, summit, ridge, moss patch, red tree canopy and trunk, paving slab corner and mortar line must remain at the identical map location when downscaled. Keep red and green foliage and tiny pink blossoms in place. Refine only fine hand-painted texture: sharp rock strata, tiny mineral grains, chips and hairline fractures inside existing slabs, delicate moss, individual fine maple leaves, pine needles, petals and bark. Chinese/Japanese isometric painted game illustration with same colors, exposure and warm light; sharp throughout. No new objects, no additional large cracks or paving seams, no rock redesign, no new trees, no moving or enlarging mountains. Preserve existing crop edges. This region is unwalkable scenery: retain all rocks/trees. No camera or perspective change, no DOF/blur, no photorealism, no text or watermark, no border or canvas extension, no sharpening halos.",
+      "tool": "built-in image_gen",
+      "status": "generated-this-run",
+      "originalPng": "/Users/agapae/.codex/generated_images/01a1d40c-eaa5-70b2-b976-530ac04f0c6a/exec-4c2472b6-473f-475e-b72d-2e1142dd34a8.png",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeSha256": "3a8ffda54f51f1aa06a6d2a262e7ab0e148a06330a827bc88193abdbfca5500d",
+      "originalPngSha256": "3aa28e462d98a590310663d6e9a847f7472166a9e7e34cbef316a5bf0995c83f"
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q11",
+      "coreRectPx1x": [
+        4096,
+        3072,
+        4506,
+        3277
+      ],
+      "contextRectPx1x": [
+        4032,
+        3008,
+        4570,
+        3277
+      ],
+      "input": "r4-c5/inputs/q11-source.webp",
+      "native": "r4-c5/q11-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE Asia Chinese/Japanese hell game terrain HD. EDIT TARGET is the provided 538x269 original map crop. Repaint the exact same full crop at about 3x resolution (2:1 aspect ratio), keeping every source geometry point and framing. Preserve diagonal stone path with exact original mortar joints and slab corners. Preserve every blue-grey mountain summit, silhouette and ridge at original position; preserve existing red maple canopies and dark trunks, pale pink cherry blossoms and moss silhouettes, with no enlargement or shifting. Add extremely crisp detailed hand-painted stone grains, fine rock fissures, small chips, thin moss in joints, delicate individual maple leaves and petals, detailed bark. Keep original blue-grey/red/pink palette, exposure and light; retain game-art painted style, not photorealistic. All trees/rocks here are outside walkmask and must stay. STRICT alignment over original when downscaled, no new objects, no extra paving seams, no altered rock shapes, no camera change, no crop, no border, no text/watermark, no blur/DOF or sharpening halos.",
+      "tool": "built-in image_gen",
+      "status": "generated-this-run",
+      "originalPng": "/Users/agapae/.codex/generated_images/01a1d40c-eaa5-70b2-b976-530ac04f0c6a/exec-e0362c4b-9e08-416c-8645-bb2d5139d080.png",
+      "nativeSize": [
+        1774,
+        887
+      ],
+      "nativeSha256": "4d39e1572b4c216628fad3c37c19b9e41980c2eb9f27e223e4afea43d89a6048",
+      "originalPngSha256": "2ad31b98222fa22050e3bf3a519a056c8591717706d6edfe57c5526974309fd8"
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q12",
+      "coreRectPx1x": [
+        4506,
+        3072,
+        4915,
+        3277
+      ],
+      "contextRectPx1x": [
+        4442,
+        3008,
+        4915,
+        3277
+      ],
+      "input": "r4-c5/inputs/q12-source.webp",
+      "native": "r4-c5/q12-native.webp",
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE Asia Chinese/Japanese hell HD game terrain. This image is the EDIT TARGET, the rightmost map crop 473x269. Repaint precisely the SAME complete crop with about 3x native resolution, keeping original 473:269 aspect ratio, exact edge-to-edge framing, no crop or canvas extension. Preserve every mountain peak, rock silhouette, ridge boundary, cherry trunk/branch and canopy silhouette at its identical original coordinate when downscaled. Preserve blue-grey stone shapes and colors, golden moss patches, delicate pale pink cherry flowers, red maple foliage at the bottom, exposure and lighting. Increase only crisp painted microdetail: fine mineral grains, rock striations, tiny hairline fissures within existing surfaces, delicate individual cherry petals and leaf details, fine bark and moss. Same hand-painted isometric game illustration, sharp throughout, not photographic. This whole area is unwalkable mountain and tree scenery: keep everything in place. No additional objects, trees or new peaks, no rock redesign or enlarging canopy, no camera/perspective change, no border or text/watermark, no DOF/blur or sharpening halos. It is the map edge: do not add sky, do not extend canvas.",
+      "tool": "built-in image_gen",
+      "status": "generated-this-run",
+      "originalPng": "/Users/agapae/.codex/generated_images/01a1d40c-eaa5-70b2-b976-530ac04f0c6a/exec-81911a94-26a7-499d-9848-2948cb78ac8a.png",
+      "nativeSize": [
+        1663,
+        946
+      ],
+      "nativeSha256": "8ae00bbecc0b506227d9e2322679d429eb086803ad28716a59dc7d1fa052ac3f",
+      "originalPngSha256": "11ae06fb78394ee986e3e29f5d853d017115f555cb1f78250f7b82175fbe22f5"
+    }
+  ],
+  "notes": [
+    "Three existing natives copied byte-for-byte; no redraws of completed work.",
+    "Five new calls, one per missing part; no retries, CLI generation or Shado.",
+    "No further generation pending. Original PNGs left at tool default destination; project artifacts are lossless WebP."
+  ]
+}

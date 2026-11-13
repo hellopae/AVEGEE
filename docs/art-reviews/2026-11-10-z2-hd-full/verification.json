@@ -1,0 +1,275 @@
+{
+  "scope": "Presence, JSON/image decoding, recorded dimensions only; no quality acceptance",
+  "imagesChecked": 33,
+  "jsonChecked": 28,
+  "images": [
+    {
+      "file": "walkmask-review.jpg",
+      "size": [
+        1400,
+        600
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c2/q11-native.webp",
+      "size": [
+        1934,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c2/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c2/r4-c2-2x.webp",
+      "size": [
+        2048,
+        410
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c2/r4-c2-compare.jpg",
+      "size": [
+        4504,
+        488
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c2/structure-check.jpg",
+      "size": [
+        2072,
+        245
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c2/seam-check.jpg",
+      "size": [
+        2072,
+        570
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c3/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c3/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c3/r4-c3-2x.webp",
+      "size": [
+        2048,
+        410
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c3/r4-c3-compare.jpg",
+      "size": [
+        4504,
+        488
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c3/structure-check.jpg",
+      "size": [
+        2072,
+        245
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c3/seam-check.jpg",
+      "size": [
+        2072,
+        570
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c4/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c4/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c4/r4-c4-2x.webp",
+      "size": [
+        2048,
+        410
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c4/r4-c4-compare.jpg",
+      "size": [
+        4504,
+        488
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c4/structure-check.jpg",
+      "size": [
+        2072,
+        245
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c4/seam-check.jpg",
+      "size": [
+        2072,
+        570
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c5/q11-native.webp",
+      "size": [
+        1774,
+        887
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c5/q12-native.webp",
+      "size": [
+        1663,
+        946
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c5/r4-c5-2x.webp",
+      "size": [
+        1638,
+        410
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c5/r4-c5-compare.jpg",
+      "size": [
+        3608,
+        488
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c5/structure-check.jpg",
+      "size": [
+        1662,
+        245
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c5/seam-check.jpg",
+      "size": [
+        1662,
+        570
+      ],
+      "format": "JPEG"
+    },
+    {
+      "file": "r4-c2/inputs/q11-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c2/inputs/q12-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c3/inputs/q11-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c3/inputs/q12-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c4/inputs/q11-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c4/inputs/q12-source.webp",
+      "size": [
+        640,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c5/inputs/q11-source.webp",
+      "size": [
+        538,
+        269
+      ],
+      "format": "WEBP"
+    },
+    {
+      "file": "r4-c5/inputs/q12-source.webp",
+      "size": [
+        473,
+        269
+      ],
+      "format": "WEBP"
+    }
+  ],
+  "artifactBytesExcludingThisReport": 36150217,
+  "runBudgetBytes": 80000000,
+  "qualityAcceptanceEvaluated": false,
+  "gameTestRun": false
+}

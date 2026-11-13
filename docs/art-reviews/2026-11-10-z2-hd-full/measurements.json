@@ -1,0 +1,102 @@
+[
+  {
+    "chunk": "r4-c2",
+    "nativeSizes": [
+      [
+        1934,
+        813
+      ],
+      [
+        1935,
+        813
+      ]
+    ],
+    "inliers": [
+      373,
+      381
+    ],
+    "outputSize": [
+      2048,
+      410
+    ],
+    "sharpnessRatio": 137.79189496342946,
+    "structureMaxReliablePx1x": 0.0,
+    "reliableProbes": 10,
+    "totalProbes": 10
+  },
+  {
+    "chunk": "r4-c3",
+    "nativeSizes": [
+      [
+        1935,
+        813
+      ],
+      [
+        1935,
+        813
+      ]
+    ],
+    "inliers": [
+      603,
+      250
+    ],
+    "outputSize": [
+      2048,
+      410
+    ],
+    "sharpnessRatio": 235.71924057684342,
+    "structureMaxReliablePx1x": 1.0,
+    "reliableProbes": 16,
+    "totalProbes": 16
+  },
+  {
+    "chunk": "r4-c4",
+    "nativeSizes": [
+      [
+        1935,
+        813
+      ],
+      [
+        1935,
+        813
+      ]
+    ],
+    "inliers": [
+      375,
+      533
+    ],
+    "outputSize": [
+      2048,
+      410
+    ],
+    "sharpnessRatio": 161.57009028760808,
+    "structureMaxReliablePx1x": 1.0,
+    "reliableProbes": 10,
+    "totalProbes": 10
+  },
+  {
+    "chunk": "r4-c5",
+    "nativeSizes": [
+      [
+        1774,
+        887
+      ],
+      [
+        1663,
+        946
+      ]
+    ],
+    "inliers": [
+      661,
+      708
+    ],
+    "outputSize": [
+      1638,
+      410
+    ],
+    "sharpnessRatio": 131.92265537114136,
+    "structureMaxReliablePx1x": 0.0,
+    "reliableProbes": 9,
+    "totalProbes": 9
+  }
+]

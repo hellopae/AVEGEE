@@ -1,0 +1,86 @@
+{
+  "reusedNative": [
+    {
+      "file": "r4-c2/q11-native.webp",
+      "sha256": "4e1e150b6c9ca1e09adb811039710f6e7cf82610184d9b42576e5fd76f7febf0",
+      "previousSha256": "4e1e150b6c9ca1e09adb811039710f6e7cf82610184d9b42576e5fd76f7febf0",
+      "byteIdentical": true,
+      "size": [
+        1934,
+        813
+      ]
+    },
+    {
+      "file": "r4-c2/q12-native.webp",
+      "sha256": "0ddd6d1ac0cdb7d2a2b0b7d3edeaf0e97cd7949c8bbcf3e1b06d0b130ed10c08",
+      "previousSha256": "0ddd6d1ac0cdb7d2a2b0b7d3edeaf0e97cd7949c8bbcf3e1b06d0b130ed10c08",
+      "byteIdentical": true,
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c3/q11-native.webp",
+      "sha256": "79a737a544e2ec61a593f985245cf1d922438cf09fdbd5b1cc6d74d16e4ae195",
+      "previousSha256": "79a737a544e2ec61a593f985245cf1d922438cf09fdbd5b1cc6d74d16e4ae195",
+      "byteIdentical": true,
+      "size": [
+        1935,
+        813
+      ]
+    }
+  ],
+  "reusedInputs": [
+    {
+      "file": "r4-c2/inputs/q12-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c2/inputs/q11-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c5/inputs/q12-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c5/inputs/q11-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c4/inputs/q12-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c4/inputs/q11-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c3/inputs/q12-source.webp",
+      "byteIdentical": true
+    },
+    {
+      "file": "r4-c3/inputs/q11-source.webp",
+      "byteIdentical": true
+    }
+  ],
+  "masterHashesFromPrevious": [
+    {
+      "file": "img/map-zone2/v2/r4-c2.webp",
+      "hashMatches": true
+    },
+    {
+      "file": "img/map-zone2/v2/r4-c3.webp",
+      "hashMatches": true
+    },
+    {
+      "file": "img/map-zone2/v2/r4-c4.webp",
+      "hashMatches": true
+    },
+    {
+      "file": "img/map-zone2/v2/r4-c5.webp",
+      "hashMatches": true
+    }
+  ]
+}

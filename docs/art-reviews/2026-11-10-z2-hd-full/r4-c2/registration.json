@@ -1,0 +1,158 @@
+{
+  "chunk": "r4-c2",
+  "coordinateFormat": "All RectPx1x are [x0,y0,x1,y1] in global master 1x, exclusive end; affine maps native pixels to context-local/global master 1x",
+  "chunkRectPx1x": [
+    1024,
+    3072,
+    2048,
+    3277
+  ],
+  "outputSize": [
+    2048,
+    410
+  ],
+  "tiles": [
+    {
+      "id": "q11",
+      "nativeFile": "r4-c2/q11-native.webp",
+      "nativeSize": [
+        1934,
+        813
+      ],
+      "coreRectPx1x": [
+        1024,
+        3072,
+        1536,
+        3277
+      ],
+      "contextRectPx1x": [
+        960,
+        3008,
+        1600,
+        3277
+      ],
+      "overlapPerSidePx1x": 64,
+      "nativeToContextPx1x": [
+        [
+          0.33063038087398156,
+          0.0001785262267109104,
+          0.31710046532107705
+        ],
+        [
+          -0.00017855162035310392,
+          0.33058335856427856,
+          -0.20670867450469074
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.33063038087398156,
+          0.0001785262267109104,
+          960.3171004653211
+        ],
+        [
+          -0.00017855162035310392,
+          0.33058335856427856,
+          3007.7932913254954
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          0.9991236822035631,
+          0.0005395606777545359,
+          0.31710046532107705
+        ],
+        [
+          -0.0005395606777545359,
+          0.9991236822035631,
+          -0.20670867450469074
+        ]
+      ],
+      "siftMatches": 398,
+      "siftInliers": 373,
+      "inlierResidualPx1x": {
+        "median": 0.6330226063728333,
+        "p95": 1.8950239419937134,
+        "max": 2.971096992492676
+      },
+      "reflectedContextFraction": 0.0026385339219330856,
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "nativeFile": "r4-c2/q12-native.webp",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "coreRectPx1x": [
+        1536,
+        3072,
+        2048,
+        3277
+      ],
+      "contextRectPx1x": [
+        1472,
+        3008,
+        2112,
+        3277
+      ],
+      "overlapPerSidePx1x": 64,
+      "nativeToContextPx1x": [
+        [
+          0.3310734823297972,
+          0.00011974226436311314,
+          -0.41632283525503655
+        ],
+        [
+          -0.00011969740544156274,
+          0.33119755853108546,
+          0.1879478226366191
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3310734823297972,
+          0.00011974226436311314,
+          1471.583677164745
+        ],
+        [
+          -0.00011969740544156274,
+          0.33119755853108546,
+          3008.1879478226365
+        ]
+      ],
+      "resizedNativeToContextAffine": [
+        [
+          1.0009799817314962,
+          0.00036189762426472484,
+          -0.41632283525503655
+        ],
+        [
+          -0.00036189762426472484,
+          1.0009799817314962,
+          0.1879478226366191
+        ]
+      ],
+      "siftMatches": 400,
+      "siftInliers": 381,
+      "inlierResidualPx1x": {
+        "median": 0.42553502321243286,
+        "p95": 1.3598395586013794,
+        "max": 2.2854092121124268
+      },
+      "reflectedContextFraction": 0.00017861291821561338,
+      "localWarpApplied": false,
+      "semanticStructureVerified": false
+    }
+  ],
+  "colorCorrection": {
+    "sigmaMapPx": 35,
+    "gain": 0.8,
+    "excluded": "none: no object removal in these cores",
+    "noSharpening": true
+  },
+  "borderMode": "BORDER_REFLECT (fraction recorded per tile)",
+  "externalChunkBlend": false
+}

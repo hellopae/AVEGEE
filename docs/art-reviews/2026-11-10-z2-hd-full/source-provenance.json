@@ -1,0 +1,34 @@
+{
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "terrainRepairs": false,
+  "contextPxPerSide": 64,
+  "files": {
+    "img/map-zone2/v2/r3-c1.webp": "3937f0f05f0ca38e20d739538195a02dc2b1e2f874733e3c3d3884014224881e",
+    "img/map-zone2/v2/r3-c2.webp": "5ee384cad84f21a3725d2f0d12c4958324a0bfb596998e6d39ecf1b74af4d992",
+    "img/map-zone2/v2/r3-c3.webp": "5a0219541aa870e3c3c04b84875527b7cd3e7f7d4371bfcaea9929feacae1bad",
+    "img/map-zone2/v2/r3-c4.webp": "219394bd0635d7beaf76e7fb68354590afa211a605110b6b8fc0f07dcf0db9f4",
+    "img/map-zone2/v2/r3-c5.webp": "e17d8558f9109f2cff5c9da54d8a1a792e0e72d9d46b0fe4d59c4ee8af6f67e6",
+    "img/map-zone2/v2/r4-c1.webp": "6f48f2a62ee5309aa556cbb24ae88739c3dc830e599a892df53c74f715a1d93f",
+    "img/map-zone2/v2/r4-c2.webp": "b84e71ff7a3f00ea1a9e3557392e642b8cdfc717c0719baaf5e7dbfb8a2aff82",
+    "img/map-zone2/v2/r4-c3.webp": "8e76b5cef08c0c47084053d9d10e95e15ff3189aa8502ae181182133e391b93a",
+    "img/map-zone2/v2/r4-c4.webp": "d40ed27303a73685a6d555578a1b4ad0c5464cd503f3d3f620bb11e42a4dc65a",
+    "img/map-zone2/v2/r4-c5.webp": "b12f5649d63ce4a1ef9dbba5f7a726ac1d3296d706196e3d8d0a8c87bdc6eb84",
+    "src/zone-skin.js": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1",
+    "src/town-layout.js": "0e0d8cb7f96a3410bb1c641c507a594b2df31d5413a818b6b5af2cb203b5b7ed",
+    "src/town-asia-trees.js": "b218bf87f36aecc48bd519dd998fb8d93b70f7516d974e954bef66e93d761e70",
+    "src/town-owner-walkmask-asia.js": "d9f4842ff1b14405ab193b230d23c32a4e14624ba92be9567ad330b9312a1053"
+  },
+  "reusedFrom": "/Users/agapae/agapae-work/.codex-worktrees/20261113T050923Z-2099857a",
+  "reusedNativeFiles": [
+    "r4-c2/q11-native.webp",
+    "r4-c2/q12-native.webp",
+    "r4-c3/q11-native.webp"
+  ],
+  "prototypeGit": [
+    "bc9dc4dd:docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/assemble.py",
+    "0c544a3f:docs/art-reviews/2026-11-05-z1-v5-hd-full/scripts/assemble.py"
+  ]
+}

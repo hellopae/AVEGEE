@@ -1,0 +1,237 @@
+{
+  "method": "Fixed source 49x49 DoG sigma1.5/6 patches; search +/-12 map px, confidence >=0.6; independent of SIFT",
+  "thresholdPx1x": 4,
+  "totalProbes": 16,
+  "reliableProbes": 16,
+  "uncertainProbes": 0,
+  "maxReliableDisplacementPx1x": 1.0,
+  "semanticStructureVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "limitation": "Sparse local correspondences cannot certify all silhouettes, every joint or stair count. Repeated stair/paving patterns can be ambiguous; uncertain probes retained.",
+  "probes": [
+    {
+      "id": "source-landmark-1",
+      "sourcePx1x": [
+        85,
+        62
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.900622546672821,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-2",
+      "sourcePx1x": [
+        210,
+        125
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9459311366081238,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-3",
+      "sourcePx1x": [
+        300,
+        165
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9739093780517578,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-4",
+      "sourcePx1x": [
+        330,
+        40
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9623892903327942,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-5",
+      "sourcePx1x": [
+        330,
+        82
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9709504246711731,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-6",
+      "sourcePx1x": [
+        330,
+        124
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9662823677062988,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-7",
+      "sourcePx1x": [
+        490,
+        45
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.944368302822113,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-8",
+      "sourcePx1x": [
+        490,
+        118
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9613845944404602,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-9",
+      "sourcePx1x": [
+        490,
+        164
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9465453624725342,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-10",
+      "sourcePx1x": [
+        400,
+        64
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8268337249755859,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-11",
+      "sourcePx1x": [
+        424,
+        93
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9132430553436279,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-12",
+      "sourcePx1x": [
+        400,
+        135
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7578892707824707,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-13",
+      "sourcePx1x": [
+        430,
+        164
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.85399329662323,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-14",
+      "sourcePx1x": [
+        650,
+        75
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.807402491569519,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-15",
+      "sourcePx1x": [
+        810,
+        140
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6710689067840576,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-16",
+      "sourcePx1x": [
+        950,
+        50
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9151837825775146,
+      "reliable": true
+    }
+  ]
+}

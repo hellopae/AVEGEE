@@ -1,0 +1,429 @@
+{
+  "zone": 2,
+  "skin": "asia",
+  "scope": [
+    "r4-c2",
+    "r4-c3",
+    "r4-c4",
+    "r4-c5"
+  ],
+  "coordinates": "All RectPx1x use global [x0,y0,x1,y1] master pixels, exclusive end",
+  "terrain": {
+    "dir": "img/map-zone2/v2/",
+    "repairs": false,
+    "source": "src/zone-skin.js"
+  },
+  "evidence": [
+    "src/town-owner-walkmask-asia.js",
+    "src/town-layout.js",
+    "src/town-asia-trees.js",
+    "walkmask-review.jpg"
+  ],
+  "method": "Decode owner RLE 480x320 and resize nearest to4915x3277. Compare floor to original painted scenery, distinguish runtime decorations.",
+  "runtimeTrees": [
+    {
+      "id": "asia-tree-0",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2518.446,
+        935.5835
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-1",
+      "kind": "red",
+      "ownerFootPx1x": [
+        843.414,
+        1403.8668
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-2",
+      "kind": "green",
+      "ownerFootPx1x": [
+        3033.0465,
+        1816.1134000000002
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-3",
+      "kind": "green",
+      "ownerFootPx1x": [
+        1895.7155,
+        1888.8628
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-4",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2329.71,
+        1914.7511000000002
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-5",
+      "kind": "green",
+      "ownerFootPx1x": [
+        4574.882,
+        2062.2161
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-6",
+      "kind": "green",
+      "ownerFootPx1x": [
+        1866.2255,
+        1411.0762
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-7",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2563.6639999999998,
+        1460.2312
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-8",
+      "kind": "green",
+      "ownerFootPx1x": [
+        1858.3615,
+        881.513
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-9",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2263.3575,
+        1453.0218
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-10",
+      "kind": "green",
+      "ownerFootPx1x": [
+        3720.1635,
+        1493.0012
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-11",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2873.8005,
+        1350.124
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-12",
+      "kind": "white",
+      "ownerFootPx1x": [
+        4658.9285,
+        764.5241
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-13",
+      "kind": "green",
+      "ownerFootPx1x": [
+        3025.1825000000003,
+        2099.5739000000003
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-14",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2630.5080000000003,
+        1921.6328
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-15",
+      "kind": "white",
+      "ownerFootPx1x": [
+        4368.452,
+        755.0208
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-16",
+      "kind": "teal",
+      "ownerFootPx1x": [
+        4203.308,
+        1856.0928000000001
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-17",
+      "kind": "red",
+      "ownerFootPx1x": [
+        804.0939999999999,
+        1183.6524000000002
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-18",
+      "kind": "red",
+      "ownerFootPx1x": [
+        678.2700000000001,
+        1958.9906
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-19",
+      "kind": "red",
+      "ownerFootPx1x": [
+        519.024,
+        1403.8668
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-20",
+      "kind": "red",
+      "ownerFootPx1x": [
+        1029.6924999999999,
+        1914.7511000000002
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-21",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2518.446,
+        631.1501999999999
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-22",
+      "kind": "red",
+      "ownerFootPx1x": [
+        593.732,
+        2165.1139
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-23",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2300.7115,
+        527.9247
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-24",
+      "kind": "red",
+      "ownerFootPx1x": [
+        990.3725000000001,
+        1750.5734
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-25",
+      "kind": "red",
+      "ownerFootPx1x": [
+        434.97749999999996,
+        1249.5201
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-26",
+      "kind": "red",
+      "ownerFootPx1x": [
+        564.242,
+        1870.1839
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-27",
+      "kind": "green",
+      "ownerFootPx1x": [
+        2392.622,
+        663.9202
+      ],
+      "onWalk": true,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    },
+    {
+      "id": "asia-tree-28",
+      "kind": "green",
+      "ownerFootPx1x": [
+        4354.1985,
+        2516.4083
+      ],
+      "onWalk": false,
+      "action": "runtime-sprite-only",
+      "inThisRunContext": false
+    }
+  ],
+  "runtimeOtherProps": {
+    "source": "src/town-layout.js TOWN_PROP_SITES retained by ASIA_PROPS",
+    "maximumFootWorldY": 2250,
+    "maximumFootMapY": 2880.17578125,
+    "contextStartsMapY": 3008,
+    "rootIntersectionsInRun": 0,
+    "note": "Runtime sprites are independent of baked-image removal. No sprite or collider is edited."
+  },
+  "objects": [
+    {
+      "id": "r4-c2-baked-scenery",
+      "chunk": "r4-c2",
+      "coreRectPx1x": [
+        1024,
+        3072,
+        2048,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removalIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Keep painted mountain, maple/pine/cherry scenery and bones if present.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c3-baked-scenery",
+      "chunk": "r4-c3",
+      "coreRectPx1x": [
+        2048,
+        3072,
+        3072,
+        3277
+      ],
+      "ownerWalkPixels": 30955,
+      "ownerWalkBoundsPx1x": [
+        2376,
+        3072,
+        2539,
+        3277
+      ],
+      "action": "keep-baked",
+      "removalIds": [],
+      "visualSurvey": "Walkable stair treads remain; side gold rails/posts and maple trunks outside floor remain. No trunk/bone/rock obstruction surveyed inside mask.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c4-baked-scenery",
+      "chunk": "r4-c4",
+      "coreRectPx1x": [
+        3072,
+        3072,
+        4096,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removalIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Keep painted mountain, maple/pine/cherry scenery and bones if present.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c5-baked-scenery",
+      "chunk": "r4-c5",
+      "coreRectPx1x": [
+        4096,
+        3072,
+        4915,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removalIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Keep painted mountain, maple/pine/cherry scenery and bones if present.",
+      "completeSilhouetteAuditVerified": false
+    }
+  ],
+  "requestedRemovalIds": [],
+  "liquidCloudPolicy": "Keep painted static base and original shape, including mist at r4-c2 left context.",
+  "limitations": [
+    "Owner mask is navigation data, not a semantic segmentation of every leaf.",
+    "No obstruction was identified on the only walk floor (r4-c3 stair); no removal generation requested. Final silhouette review remains with Claude."
+  ]
+}

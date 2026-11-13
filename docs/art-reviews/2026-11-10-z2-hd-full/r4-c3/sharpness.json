@@ -1,0 +1,78 @@
+{
+  "method": "Same 2.8 device px/world, Pillow Lanczos, grayscale Laplacian variance ksize1; no sharpening",
+  "threshold": 10,
+  "primaryRoi": "full_chunk",
+  "primaryRatio": 235.71924057684342,
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        205
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 15.202544021716669,
+          "highPassMeanSquare": 2.7426129488934476
+        },
+        "redraw": {
+          "laplacianVariance": 3583.532131635084,
+          "highPassMeanSquare": 243.52654630504352
+        }
+      },
+      "laplacianRatio": 235.71924057684342
+    },
+    "left_core": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "deviceSize": [
+        1120,
+        448
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 14.888721757433604,
+          "highPassMeanSquare": 2.679009579057811
+        },
+        "redraw": {
+          "laplacianVariance": 3419.4672506139004,
+          "highPassMeanSquare": 244.86578122468973
+        }
+      },
+      "laplacianRatio": 229.66828894539836
+    },
+    "right_core": {
+      "rectPx1x": [
+        512,
+        0,
+        1024,
+        205
+      ],
+      "deviceSize": [
+        1120,
+        448
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 15.561846275599684,
+          "highPassMeanSquare": 2.813569311616967
+        },
+        "redraw": {
+          "laplacianVariance": 3750.6065430042754,
+          "highPassMeanSquare": 242.2697413278733
+        }
+      },
+      "laplacianRatio": 241.01295415602888
+    }
+  },
+  "limitation": "Texture/edge energy is not perceived detail gain or art acceptance."
+}
