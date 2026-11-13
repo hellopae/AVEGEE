@@ -1,0 +1,117 @@
+{
+  "tool": "built-in image_gen",
+  "generations": 8,
+  "retries": 0,
+  "budget": 16,
+  "assets": [
+    {
+      "key": "sitaSprite",
+      "name": "soul-sita-th.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "refs": [
+        "img/Thai/spirit-woman-th-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: single transparent standing soul sprite for AVEGEE Thai game, square 1254x1254 composition. Reference image is STYLE AND BODY PROPORTION guide only: img/Thai/spirit-woman-th-v2.webp. Create Nang Sita, revered Thai Ramakien heroine, original design. Respectful, dignified, innocent, quietly sorrowful and serene; no caricature. Match reference's delicate pixel-painted chibi proportions, large expressive eyes, crisp dark outlines, muted pale blue-grey spirit skin and hair, soft spectral curled lower-body tail instead of legs. Royal Thai traditional dress with modest ivory sabai, subtle gold embroidery, patterned grey ivory lower garment blending to a curled ghost tail, fine tall golden Thai royal chada crown and gold jewelry. Hands gently folded at waist, upright three-quarter facing slightly right; entirely visible crown and ghost-tail with safe margin. No book, no weapons, no chains, no evil aura, no text, no letters, no watermark. Truly transparent RGBA background, no ground shadow or scenery. Deliver only one sprite, no sheet."
+    },
+    {
+      "key": "sitaPortrait",
+      "name": "soul-sita-th-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "refs": [
+        "soul-sita-th.webp (generated sprite)"
+      ],
+      "prompt": "Use case: identity-preserve illustration-story. Create one square interrogation portrait of Nang Sita from the attached GENERATED SITA SPRITE, preserving exactly the same face, pale blue-grey spirit complexion, grey hair bun, tall fine gold chada with white gems, ivory gold sabai and jewelry. Respectful revered Thai Ramakien heroine, innocent, dignified, calmly sorrowful with gentle downcast eyes, closed mouth. Chest-up three-quarter view slightly right, crown fully visible with margin, hands folded near bottom if visible. Same crisp pixel-painted game illustration outlines and shading as input; no realistic skin or anime redesign. Transparent RGBA background, no scenery, no border, no text, no letters, no watermark. Square 1254x1254 composition to match the actual Thai spirit images used by interrogation."
+    },
+    {
+      "key": "hanumanSprite",
+      "name": "boss-hanuman-th.webp",
+      "size": [
+        512,
+        512
+      ],
+      "alpha": true,
+      "refs": [
+        "img/boss-frontier-th.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: one transparent combat boss sprite for AVEGEE, square 512x512 composition. Input image boss-frontier-th is STYLE, rendering detail and full-body scale reference ONLY; do NOT copy its identity. Subject: Hanuman, the noble loyal white monkey warrior from Thai Ramakien, descending on Rama's command to rescue Nang Sita. Respectful heroic original interpretation, not villain, not parody. Full body three-quarter facing left in balanced courageous combat stance, bent knees, one open guard hand and the other gripping a Thai short curved sword. Clearly WHITE FUR, recognizably simian white face with short pale muzzle, expressive honorable eyes, traditional Thai Hanuman brow ornament and small gold diadem, gold ear ornaments, ornate fitted gold shoulder armor and bracelets, ivory and red patterned Thai warrior trousers and gold belt; long WHITE monkey tail curling up behind, all limbs and entire tail inside frame. Match reference's crisp detailed pixel-painted Thai fantasy RPG cutscene outlines, rich shaded gold, compact powerful body proportions, approximately 90% canvas height and 80% width with margins. No demon horns, no red skin, no giant mace, no dark fur, no modern costume. Transparent RGBA background, no scenery, no cast shadow, no text, no letters, no border, no watermark. Only one character."
+    },
+    {
+      "key": "hanumanPortrait",
+      "name": "boss-hanuman-th-profile.webp",
+      "size": [
+        512,
+        512
+      ],
+      "alpha": false,
+      "refs": [
+        "boss-hanuman-th.webp (generated sprite)",
+        "img/hero-boss-profile.webp"
+      ],
+      "prompt": "Use case: identity-preserve illustration-story. Asset: one square 512x512 character portrait. Image 1 generated Hanuman sprite is exact identity reference; image 2 hero-boss-profile is portrait style/framing guide only, never copy its face. Portrait of the SAME Hanuman: noble loyal white monkey warrior in original Thai Ramakien gold and red armor, white fur crest, short gold diadem with red diamond, pink-white simian muzzle and red traditional cheek swirls, gold ear hoop, identical ornate gold shoulders and ivory scale chest with central red diamond. Courageous, alert, composed expression, mouth CLOSED with discreet natural canine tips at most; he is a respected hero here to rescue Sita, not a villain. Head and upper torso three-quarter view, full white crest and ornament inside frame, same detailed pixel-painted rendering with defined dark outlines. Dark Thai underworld temple softly behind with subtle amber torchlight, calm framing. No text, no letters, no UI, no watermark, no extra characters, no demonic eyes."
+    },
+    {
+      "key": "hanumanCutscene",
+      "name": "cut-hanuman-descends-th.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "alpha": false,
+      "refs": [
+        "boss-hanuman-th.webp (generated sprite)",
+        "soul-sita-th.webp (generated sprite)",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: a single widescreen cutscene 1375x768 for AVEGEE Thai fantasy game. Input1 Hanuman sprite is exact character identity and costume reference; input2 Sita sprite exact identity reference; input3 deva-intro-th-beggar-v2 is Thai underworld setting and game illustration style reference ONLY. Scene: Hanuman descends from a brilliant opening in the sky into the Thai underworld to rescue Nang Sita on Rama's command. Hanuman dominates center-right, full airborne white monkey body, long white tail curling upwards, identical gold red diadem, red traditional cheek markings, white fur, gold armor ivory red Thai warrior trousers, short curved sword held low, free hand reaching protectively toward Sita. Calm courageous heroic expression, not threatening her, no demonic aura. At lower left Sita floats in her pale grey ghost tail, same gold chada ivory sabai, sorrowful calm innocent expression looking up. Sacred-looking warm white-gold clouds and rays descend from top behind Hanuman; crimson-black Thai temple stairways, carved gold pillars and distant lava below, separate warm underworld lighting. Dramatic yet dignified, crisp detailed pixel-painted RPG cutscene illustration matching provided game's established style, strong readable silhouettes. Landscape 1375x768 full bleed, no black bars, no comic panels, no text, no symbols resembling writing, no letters, no watermark, no UI. No extra characters or copied media imagery."
+    },
+    {
+      "key": "yamaGather",
+      "name": "skill-yama-fire-charge-cut-01.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "alpha": false,
+      "refs": [
+        "img/story-th-03.webp",
+        "img/yama-sword-v3/hero-yama-th-sword.webp"
+      ],
+      "prompt": "Use case: identity-preserve illustration-story. Asset: cutscene frame 01 of a two-frame Yama fire body-charge ultimate, full-bleed landscape 1375x768. Reference1 story-th-03 is exact Yama FACE, crown, robe, body proportions, pixel-painted style and setting reference. Reference2 yama-sword-v3 sheet is SWORD design guide only; output ONE scene, never a sheet. SAME little red-skinned Yama with two short red horns, pointed ears, black short hair, gold Thai crown, large dark amber eyes, black long-sleeved robe with gold trim, red inner robe/sash, bare red feet. In the left-middle foreground Yama plants both feet on a broken stone underworld dais, bends knees, torso leaning slightly forward ready to launch RIGHT; his RIGHT HAND unmistakably grips a SINGLE long Thai sword with bright gold hilt and silver-gold curved blade held diagonally by his side. His left fist clenched. Two tight spiraling bright orange-gold fire ribbons gather inward around legs, waist, shoulders and the sword into a compact blazing body aura, leaving face and sword clearly readable. This is gathering power BEFORE moving, not casting a fireball. To right background stands his elder brother Yommat, same purple-grey face black red gold Thai armored ruler and crown visible in story-th-03, bracing for the test. Dark carved Thai underworld temple, torches and lava channel, same spatial layout as story-th-03, tense dramatic warm light. Crisp pixel-painted illustration, stepped shading and clear outlines matching the original story frames, not photoreal. Full bleed widescreen scene with no black letterbox bars, no text, no letters or inscriptions, no UI, no watermark, no extra limbs, no book. IMPORTANT same Yama face and outfit as reference, sword physically held and unobscured."
+    },
+    {
+      "key": "yamaImpact",
+      "name": "skill-yama-fire-charge-cut-02.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "alpha": false,
+      "refs": [
+        "skill-yama-fire-charge-cut-01.webp (generated frame)",
+        "img/story-th-04.webp"
+      ],
+      "prompt": "Use case: identity-preserve illustration-story. Asset: frame 02, the body-charge collision IMMEDIATELY AFTER the attached generated frame01, full-bleed landscape 1375x768. Input1 generated fire gather frame01 is exact identity, costume, sword, palette and temple reference. Input2 story-th-04 is action-blocking and ORIGINAL game's pixel-painted illustration style guide only. SAME little RED-skinned Yama with two short red horns, pointed ears, short black hair, golden Thai crown, black robe gold edging and red inset, bare red feet. SAME purple-grey Yommat with ornate black red gold Thai armor and crown. Scene: Yama launches from LEFT toward RIGHT, entire small body propelled horizontally inside a tight bright orange-gold flame comet; his SHOULDER and blazing body aura visibly collide into elder brother Yommat's chest near right-center. This is a physical fiery body ram, NOT a fireball shot and NOT merely a sword slash. Face visible, eyes determined. Yama's RIGHT HAND clearly still holds the SAME curved Thai sword with gold hilt, blade drawn BACK diagonally alongside his body and clearly visible away from the impact. His left forearm braces near torso. Streamers of coiled fire trail behind left, bright round impact burst at shoulder-to-chest contact, cracked stone fragments and sparks, brother recoils backwards with arms spread, non-gory. Reuse dark Thai temple pillars, torches, lava channel and broken dais, horizontal camera matching prior shot, elder brother larger than little Yama. Strong readable silhouettes, crisp pixel-painted outlines and stepped shaded flames, consistent original story cutscene style. No black bars, no letters, no text, no inscriptions or writing-like marks on armor/books, no UI, no watermark, no extra hands or swords. Golden chest decoration is purely geometric."
+    },
+    {
+      "key": "yamaIcon",
+      "name": "skill-yama-fire-charge-icon.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "refs": [
+        "skill-yama-fire-charge-cut-02.webp (generated frame)"
+      ],
+      "prompt": "Use case: identity-preserve illustration-story. Asset: ONE circular game skill icon for Yama's fiery BODY CHARGE, to be downsampled to 256x256. Attached generated collision cutscene is exact Yama FACE, golden crown, black gold-trimmed red-lined robe, red skin and red horns and curved gold-hilt sword reference. Centered perfect circular medallion occupies about 94% square canvas, simple thin polished golden rim, fully transparent OUTSIDE the circle. Inside, dark charcoal background and Yama launching diagonally from bottom-left toward top-right, his small full body enveloped in ONE bold orange-gold flame comet with trailing fire, determined face and golden Thai crown clearly recognizable, right hand gripping same sword visibly drawn back beside him. Cropped composition inside medallion if needed but face and sword readable at 256px. Show a bright impact spark ahead as the fire-charge cue; no opponent. Same crisp pixel-painted Thai RPG illustration with bold outlines, simplified large shapes for a skill button. Keep signature two short red horns, pointed ears and exact costume; no extra limbs. No text, no numbers, no letters, no runes, no writing, no watermark, no UI, no square frame. Real RGBA transparency outside a clean circle; do not draw checkerboard."
+    }
+  ]
+}

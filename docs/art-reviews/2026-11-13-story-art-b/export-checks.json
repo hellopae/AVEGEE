@@ -1,0 +1,327 @@
+{
+  "scope": "file completeness, dimensions, encoding and alpha equality; not in-game QA",
+  "imagegen_calls": 8,
+  "retries": 0,
+  "assets": [
+    {
+      "file": "soul-sita-th.webp",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 145258,
+      "sha256": "7b8d244067ef1bb36dedfee82e8a9e3e2a0b7e388177594506566622a840f9d3",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        9,
+        1240,
+        1254
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "soul-sita-th-profile.webp",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 232306,
+      "sha256": "be17b7f44f750b982c5d78fe620b3db11c9d9368131b1a02df9536bd68054aa3",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1253,
+        1254
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "boss-hanuman-th.webp",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 95664,
+      "sha256": "8194d411dbc61050eba37596cf61afd888f3b47ceba2bd3374e30327f22a4882",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        12,
+        504,
+        512
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "boss-hanuman-th-profile.webp",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 116482,
+      "sha256": "bb5bc8312cfc4b02a23aad72ecdead39105ac63a2434f612b15432868dc569a6",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "cut-hanuman-descends-th.webp",
+      "source_size": [
+        1677,
+        938
+      ],
+      "size": [
+        1375,
+        768
+      ],
+      "bytes": 356566,
+      "sha256": "285a6df8f97236711bf02c687264314a848879eaf581da9a448ad25e550b7f86",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1375,
+        768
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "skill-yama-fire-charge-cut-01.webp",
+      "source_size": [
+        1677,
+        938
+      ],
+      "size": [
+        1375,
+        768
+      ],
+      "bytes": 231498,
+      "sha256": "3faf8869728d10af3394ca1eb033beb924330b4231bb8e51894175544bdab914",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1375,
+        768
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "skill-yama-fire-charge-cut-02.webp",
+      "source_size": [
+        1677,
+        938
+      ],
+      "size": [
+        1375,
+        768
+      ],
+      "bytes": 292056,
+      "sha256": "4fe89f54a58fa5bcc08be08c41bcdb1b77f70954f72ccf512fdc9285f8075ce7",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1375,
+        768
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    },
+    {
+      "file": "skill-yama-fire-charge-icon.webp",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 30580,
+      "sha256": "20dfc3e96547c3b162d0d54bbdccc25576d67fa965fc8cd559850713ce326925",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        255,
+        254
+      ],
+      "alpha_max_difference_from_resized_source": 0,
+      "encoding_options": [
+        "-q",
+        "86",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-alpha_method",
+        "1",
+        "-alpha_filter",
+        "best",
+        "-exact",
+        "-metadata",
+        "none"
+      ],
+      "resize": "center-fit LANCZOS, no painting or background removal"
+    }
+  ]
+}
