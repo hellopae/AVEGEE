@@ -1,5 +1,5 @@
 {
- "note": "built by scripts/install-z1-ground.py",
+ "note": "built by scripts/install-z1-ground.py + scripts/apply-z1-touchup.py (heaven-bridge, lava-north-stair)",
  "source": "/Users/agapae/agapae-work/.toby-scratch/z1-v7r/v7r",
  "tilePx": 1024,
  "quality": 88,
@@ -20,17 +20,17 @@
   "r1-c9.webp": 405868,
   "r1-c10.webp": 241934,
   "r2-c1.webp": 358166,
-  "r2-c2.webp": 413856,
+  "r2-c2.webp": 407780,
   "r2-c3.webp": 373612,
   "r2-c4.webp": 426288,
   "r2-c5.webp": 462796,
   "r2-c6.webp": 385218,
-  "r2-c7.webp": 444458,
-  "r2-c8.webp": 388930,
+  "r2-c7.webp": 439204,
+  "r2-c8.webp": 383882,
   "r2-c9.webp": 449910,
   "r2-c10.webp": 285322,
   "r3-c1.webp": 347808,
-  "r3-c2.webp": 406658,
+  "r3-c2.webp": 400850,
   "r3-c3.webp": 354682,
   "r3-c4.webp": 403790,
   "r3-c5.webp": 471098,
@@ -80,5 +80,5 @@
   "r7-c9.webp": 151024,
   "r7-c10.webp": 76510
  },
- "totalTileBytes": 23584786
+ "totalTileBytes": 23562600
 }
