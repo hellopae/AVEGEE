@@ -1,0 +1,237 @@
+{
+  "zone": "asia",
+  "scope": [
+    "r3-c3",
+    "r3-c4",
+    "r3-c5",
+    "r4-c1"
+  ],
+  "coordinateFormat": "master1x [left,top,right,bottom]",
+  "evidence": [
+    "src/zone-skin.js",
+    "src/town-layout.js",
+    "src/town-asia-trees.js",
+    "src/town-owner-walkmask-asia.js",
+    "*/inputs/walkmask-overlay.jpg"
+  ],
+  "rules": {
+    "liquidsAndClouds": "keep original extent",
+    "unreachableForest": "keep-baked",
+    "stairsAndBridgeDecks": "keep-baked",
+    "rails": "remove vertical gold objects; preserve floors"
+  },
+  "limitation": "Visual survey, not semantic segmentation. Removal outcome is recorded separately after assembly.",
+  "objects": [
+    {
+      "id": "r3-c3-bridge-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2350,
+        1984,
+        2401,
+        2526
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.16985022791404383,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-bridge-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2520,
+        1984,
+        2578,
+        2526
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.33054459854943374,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-pier-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2768,
+        2108,
+        2831,
+        2315
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.4296449658768499,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-pier-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2921,
+        2106,
+        2980,
+        2315
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.36404184575460224,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-south-stair-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2392,
+        2920,
+        2452,
+        3136
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 1.0,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-south-stair-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2548,
+        2920,
+        2608,
+        3136
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.18348765432098765,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c4-west-stair-west-rail",
+      "chunk": "r3-c4",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        3059,
+        2070,
+        3116,
+        2203
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.4845007254979554,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c4-west-stair-east-rail",
+      "chunk": "r3-c4",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        3185,
+        2040,
+        3238,
+        2189
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.14182600987716854,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c4-upper-east-bridge-rails",
+      "chunk": "r3-c4",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        3955,
+        1984,
+        4160,
+        2102
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.332079371641174,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c5-upper-west-partial-bridge-rails",
+      "chunk": "r3-c5",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        4096,
+        1984,
+        4335,
+        2138
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.16187578112264306,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "asia-tree-5",
+      "chunk": "r3-c5",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        4574.882,
+        2062.2161
+      ],
+      "action": "separate-runtime-sprite",
+      "on_walk": false,
+      "note": "Source runtime prop is not proof of a baked object. Do not erase inaccessible forest."
+    },
+    {
+      "id": "asia-tree-13",
+      "chunk": "r3-c3",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        3025.1825000000003,
+        2099.5739000000003
+      ],
+      "action": "separate-runtime-sprite",
+      "on_walk": true,
+      "note": "Source runtime prop is not proof of a baked object. Do not erase inaccessible forest."
+    },
+    {
+      "id": "asia-tree-28",
+      "chunk": "r3-c5",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        4354.1985,
+        2516.4083
+      ],
+      "action": "separate-runtime-sprite",
+      "on_walk": false,
+      "note": "Source runtime prop is not proof of a baked object. Do not erase inaccessible forest."
+    },
+    {
+      "id": "r3-c3-inaccessible-environment",
+      "chunk": "r3-c3",
+      "kind": "forest-rocks-bones-liquid-mist",
+      "action": "keep-baked",
+      "note": "Source and owner walkmask inspected: off-route forest, bones, river/foam and fog remain painted base. Keep existing open-floor outline."
+    },
+    {
+      "id": "r3-c4-inaccessible-environment",
+      "chunk": "r3-c4",
+      "kind": "forest-rocks-bones-liquid-mist",
+      "action": "keep-baked",
+      "note": "Source and owner walkmask inspected: off-route forest, bones, river/foam and fog remain painted base. Keep existing open-floor outline."
+    },
+    {
+      "id": "r3-c5-inaccessible-environment",
+      "chunk": "r3-c5",
+      "kind": "forest-rocks-bones-liquid-mist",
+      "action": "keep-baked",
+      "note": "Source and owner walkmask inspected: off-route forest, bones, river/foam and fog remain painted base. Keep existing open-floor outline."
+    },
+    {
+      "id": "r4-c1-inaccessible-environment",
+      "chunk": "r4-c1",
+      "kind": "forest-rocks-bones-liquid-mist",
+      "action": "keep-baked",
+      "note": "Source and owner walkmask inspected: off-route forest, bones, river/foam and fog remain painted base. Keep existing open-floor outline."
+    },
+    {
+      "id": "r3-c3-gold-floor-inlay",
+      "chunk": "r3-c3",
+      "kind": "floor-pattern",
+      "action": "keep-baked",
+      "note": "Gold circular inlay is part of plaza, not railing."
+    }
+  ]
+}

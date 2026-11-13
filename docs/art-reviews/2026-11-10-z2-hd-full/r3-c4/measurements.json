@@ -1,0 +1,37 @@
+{
+  "chunk": "r3-c4",
+  "completeParts": [
+    "q11",
+    "q12",
+    "q21",
+    "q22"
+  ],
+  "pendingParts": [],
+  "nativeSizes": {
+    "q11": [
+      1254,
+      1254
+    ],
+    "q12": [
+      1254,
+      1254
+    ],
+    "q21": [
+      1254,
+      1254
+    ],
+    "q22": [
+      1254,
+      1254
+    ]
+  },
+  "outputSize": [
+    2048,
+    2048
+  ],
+  "structureMaxReliablePx1x": 0.0,
+  "reliableProbes": 16,
+  "totalProbes": 18,
+  "sharpnessRatioLaplacian": 71.34410492642355,
+  "qualityDecision": "pending Claude review"
+}

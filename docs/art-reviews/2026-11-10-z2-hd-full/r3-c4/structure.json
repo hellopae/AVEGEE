@@ -1,0 +1,301 @@
+{
+  "method": "Fixed source 49x49 DoG sigma1.5/6 templates, search +/-12 1x px; independent of SIFT. Correlation >=.6, removal boxes and boundary hits excluded from reliable subset.",
+  "thresholdPx1x": 4,
+  "totalProbes": 18,
+  "reliableProbes": 16,
+  "uncertainProbes": 2,
+  "maxReliableDisplacementPx1x": 0.0,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "limitation": "Sparse probes cannot certify every contour or tread. Uncertain probes retained for review; no retry to reach numeric thresholds.",
+  "probes": [
+    {
+      "id": "fixed-landmark-1",
+      "sourcePx1x": [
+        40,
+        133
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8358526825904846,
+      "overlapsRemovalBox": true,
+      "searchBoundaryHit": false,
+      "reliable": false
+    },
+    {
+      "id": "fixed-landmark-2",
+      "sourcePx1x": [
+        133,
+        137
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6445777416229248,
+      "overlapsRemovalBox": true,
+      "searchBoundaryHit": false,
+      "reliable": false
+    },
+    {
+      "id": "fixed-landmark-3",
+      "sourcePx1x": [
+        190,
+        145
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9718836545944214,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-4",
+      "sourcePx1x": [
+        274,
+        41
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9485859870910645,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-5",
+      "sourcePx1x": [
+        377,
+        161
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9798949956893921,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-6",
+      "sourcePx1x": [
+        532,
+        130
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9354422092437744,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-7",
+      "sourcePx1x": [
+        684,
+        108
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8062618970870972,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-8",
+      "sourcePx1x": [
+        781,
+        145
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9490709900856018,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-9",
+      "sourcePx1x": [
+        847,
+        221
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9402034282684326,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-10",
+      "sourcePx1x": [
+        344,
+        325
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9322816729545593,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-11",
+      "sourcePx1x": [
+        478,
+        422
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9581279158592224,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-12",
+      "sourcePx1x": [
+        272,
+        572
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9513839483261108,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-13",
+      "sourcePx1x": [
+        403,
+        548
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9396476149559021,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-14",
+      "sourcePx1x": [
+        556,
+        551
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9323303699493408,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-15",
+      "sourcePx1x": [
+        697,
+        587
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9567704796791077,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-16",
+      "sourcePx1x": [
+        821,
+        688
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9374531507492065,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-17",
+      "sourcePx1x": [
+        506,
+        758
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8126974701881409,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    },
+    {
+      "id": "fixed-landmark-18",
+      "sourcePx1x": [
+        218,
+        730
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.915785014629364,
+      "overlapsRemovalBox": false,
+      "searchBoundaryHit": false,
+      "reliable": true
+    }
+  ]
+}

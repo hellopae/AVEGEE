@@ -1,0 +1,31 @@
+{
+  "copiedFrom": "/Users/agapae/agapae-work/.codex-worktrees/20261113T050903Z-19483646/docs/art-reviews/2026-11-10-z2-hd-full",
+  "copiedNativeSha256": {
+    "r3-c3/q11-native.webp": "03b3855fd39c99721e5c57eb20445544bc1e3fa70d6a00acdea470189bee08c1",
+    "r3-c3/q12-native.webp": "a588d5efbbe7ea93b07dbf3d3492496f1badb2096020e95e9cb4e7784d05297f"
+  },
+  "newGenerationIndices": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "inheritedGenerationCount": 2,
+  "plannedNewGenerationCount": 12,
+  "totalDistinctGenerationCount": 14,
+  "sourceHashMismatches": [],
+  "approvedReference": {
+    "requestedPathsAbsent": true,
+    "readFromGit": "bc9dc4dd:docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/assemble.py"
+  },
+  "activeTerrain": "img/map-zone2/v2/",
+  "repairs": false
+}

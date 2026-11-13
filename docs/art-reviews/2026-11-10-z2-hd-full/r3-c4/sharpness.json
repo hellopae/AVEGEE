@@ -1,0 +1,94 @@
+{
+  "method": "Identical 2.8 device px/world unit; Pillow Lanczos; grayscale Laplacian variance ksize1; no sharpening.",
+  "threshold": 10,
+  "primaryRoi": "full_chunk",
+  "primaryRatio": 71.34410492642355,
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "laplacianVariance": {
+        "master": 22.580071102794335,
+        "redraw": 1610.9549620038636
+      },
+      "laplacianRatio": 71.34410492642355
+    },
+    "top_left": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "laplacianVariance": {
+        "master": 25.65751115125524,
+        "redraw": 1437.0035696306122
+      },
+      "laplacianRatio": 56.007130276948544
+    },
+    "bottom_left": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "laplacianVariance": {
+        "master": 20.798606236595653,
+        "redraw": 1751.5634358775858
+      },
+      "laplacianRatio": 84.21542366601794
+    },
+    "top_right": {
+      "rectPx1x": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "laplacianVariance": {
+        "master": 23.925804307711857,
+        "redraw": 1578.0593012224624
+      },
+      "laplacianRatio": 65.95637416936559
+    },
+    "bottom_right": {
+      "rectPx1x": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "laplacianVariance": {
+        "master": 20.242857887704034,
+        "redraw": 1684.009520819651
+      },
+      "laplacianRatio": 83.19030495405276
+    }
+  },
+  "limitation": "Texture/contrast and removals affect edge energy; this does not certify art quality."
+}

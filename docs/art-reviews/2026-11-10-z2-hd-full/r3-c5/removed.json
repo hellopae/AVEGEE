@@ -1,0 +1,21 @@
+{
+  "chunk": "r3-c5",
+  "objects": [
+    {
+      "id": "r3-c5-upper-west-partial-bridge-rails",
+      "chunk": "r3-c5",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        4096,
+        1984,
+        4335,
+        2138
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.16187578112264306,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    }
+  ],
+  "scope": "requested removals; see visual-review.json for observed result",
+  "completeRemovalVerified": false
+}
