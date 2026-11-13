@@ -1,0 +1,198 @@
+[
+  {
+    "chunk": "r3-c3",
+    "part": "q11",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. This crop contains the main vertical stone bridge, its lower stairs, dark icy river on left and upper edge of circular plaza below; preserve all these boundaries exactly.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c3/q11-source.webp",
+    "nativeFile": "r3-c3/q11-native.webp",
+    "sourceSha256": "5fd8272e24223b4d81b1189a3ed40ae4562d69df3d830c4accd1f7143db6f541",
+    "nativeSha256": "dd582d4bafe1e40d47770e77b6e387fe6f7e9ff90b57c60f3777eec75b9fd6a1",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q12",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop has a narrow strip of main bridge at left, small four-post stone dock at top center, turquoise river, bank and right edge of circular plaza below. Preserve the dock width, steps, riverbank and plaza arc exactly.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c3/q12-source.webp",
+    "nativeFile": "r3-c3/q12-native.webp",
+    "sourceSha256": "61e64e1348d1107b43f4caa9e5a0bc2d9def51d97d23b47b881f00060f2f3293",
+    "nativeSha256": "b8a0804022696d93f67241d85d7bd301e634b9e8a638ec64a26ff65cf2d2991c",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q21",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. This crop is the LEFT and lower half of a large circular plaza; preserve exactly the oval gold inlay arc, faint engraved curled motifs and stair treads and posts below. Enhance detail without adding or changing the engraved pattern.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c3/q21-source.webp",
+    "nativeFile": "r3-c3/q21-native.webp",
+    "sourceSha256": "8e671e8b9acb1bf3f0b1a41e17ff1827322852b562b99116313496b60903e05e",
+    "nativeSha256": "5c63f2b331afe8749e8000e418e7f40ad7f924b492bcb1df05fc81785e5e2723",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q22",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. This crop is the RIGHT and lower half of the same circular plaza, with snowy firs and rocky bank on the right and clear stone pathway lower right. Preserve exact plaza gold-inlay arc and curled engraved motifs; preserve all stair treads at left.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c3/q22-source.webp",
+    "nativeFile": "r3-c3/q22-native.webp",
+    "sourceSha256": "65126828181dd7e29290a1f25c9ae09ab667e2bb17a6f2fe45779d52a5085104",
+    "nativeSha256": "cf7e6683d41b3bdae987f7aed78edfa16e3df2bae62d64f12f30cdd1adb8a841",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q11",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows a cold river through the middle, small stone stairs at upper left, falling stream from rocks at top, and snowy firs and rock bank at bottom. Keep every shore and rock silhouette fixed.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c4/q11-source.webp",
+    "nativeFile": "r3-c4/q11-native.webp",
+    "sourceSha256": "388a81e14af35968bcf9490cb192cdb89021d2fc6135d1fad6a46602681ce271",
+    "nativeSha256": "8756428b05c9e713ce33def0c7d7157b0ad41ec78f5cce26951feebeedb2bee0",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q12",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows a cold river through the middle, cliff with pointed gothic arch and icicles above, and a portion of an ivory skeletal spine in water at right. Keep exact spine, cliff, shoreline, arch and ice positions.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c4/q12-source.webp",
+    "nativeFile": "r3-c4/q12-native.webp",
+    "sourceSha256": "7dbce8e296a5abb8d6eabe44e72e6ee00b08c5b444518c10b1e7982318453fa6",
+    "nativeSha256": "36747999a3fa7229ab7e97c0180ba76a3430b61a6c66467616454c9ec9cd70c1",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q21",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows stone paths through a snowy forest and rocks, with a few pale scattered bones along the lower path. Preserve every path boundary and bone position; these lower paths are outside owner walking mask. Keep branches out of the clear pavers.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c4/q21-source.webp",
+    "nativeFile": "r3-c4/q21-native.webp",
+    "sourceSha256": "25057da9ce412ee8f4834d60695ab1c8a9bb17ff5ff1023c3207d7b8f63f1ff7",
+    "nativeSha256": "558ac5c1f82f2966c11a2a70f6822ef27d80cb39bd265de458f5245af93ea44d",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q22",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows stone paths through snowy forest and rocks, large rocks with icicles below. Preserve every path boundary, trees, rocks and pale bones along the right edge. Do not add bushes into pavers.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c4/q22-source.webp",
+    "nativeFile": "r3-c4/q22-native.webp",
+    "sourceSha256": "f450081eb8694710d2d7889269b949cac4fee438863ddee2c7d2132f7f23c340",
+    "nativeSha256": "9e5adcb1171f0e7e143298b91e0c73a3c4fded3bd9c11a217ff18586f094d2e3",
+    "nativeSize": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q11",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1054x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows a cold river with large ivory skeletal spine across middle, part of a bridge above, and snowy rock banks. Preserve exact spine position, rib count and silhouettes, water and shore boundaries. Critical: preserve the source portrait aspect ratio and exact framing; no expansion or cropping.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c5/q11-source.webp",
+    "nativeFile": "r3-c5/q11-native.webp",
+    "sourceSha256": "38e5f8cae5ebbda3d028604fdec5fd038d8766c7d345190944aba5129608773a",
+    "nativeSha256": "e2ad9ab9ae262befc0e3124be8789fe93b790aa437a76ef6cff0b5214dd46c70",
+    "nativeSize": [
+      1149,
+      1368
+    ]
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q12",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 928x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows an ivory skull in a cold river, skeletal tail entering from left, and snowy forest banks. Preserve exact skull, its original stylized anatomy, position and size and shore silhouettes. Do not make it a realistic human skull. Critical: preserve the source portrait aspect ratio and exact framing; no expansion or cropping.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c5/q12-source.webp",
+    "nativeFile": "r3-c5/q12-native.webp",
+    "sourceSha256": "c26d4a14f67d28904150c7a076f694fd334c524bd921d1469d0032114897d187",
+    "nativeSha256": "9606ab859d5e2cb5eafeb5f06f3bddf872e5ead6569d4822a4554e61419bbff4",
+    "nativeSize": [
+      1078,
+      1460
+    ]
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q21",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1054x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows stone paths through snowy forest and rocks, a few scattered bones at left middle. These paths are nonwalkable scenery. Keep exact path edges, bone shapes, trees and rocks. Critical: preserve the source portrait aspect ratio and exact framing; no expansion or cropping.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c5/q21-source.webp",
+    "nativeFile": "r3-c5/q21-native.webp",
+    "sourceSha256": "8b7755052f57634eb9b42e7a0058fdbdb9e475ea10da36f327982ec725629593",
+    "nativeSha256": "0a45b3dcf33ede0b415a907dcbcfc0c897d563e4e62ddf274062d80fea24d88e",
+    "nativeSize": [
+      1149,
+      1368
+    ]
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q22",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 928x1254 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. The crop shows snowy rocks with small pointed gothic arches and icicles, forest and a path with one bone at upper left. Preserve exact rock shapes, trees, arches and every path edge. Critical: preserve the source portrait aspect ratio and exact framing; no expansion or cropping.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r3-c5/q22-source.webp",
+    "nativeFile": "r3-c5/q22-native.webp",
+    "sourceSha256": "e427810f83ebec051f3ee5a30b15e8718381d15a0682ca4d3b7153783a2ccec6",
+    "nativeSha256": "2ee5319cd828a0c6c9929e9654ca29cb7d583943928e9f196b338af479a9fec5",
+    "nativeSize": [
+      1078,
+      1459
+    ]
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q11",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x586 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. This is a WIDE SHALLOW landscape strip at the map's bottom edge: dense snowy firs and blue-grey mountain rock faces. Preserve the identical shallow landscape aspect ratio, crop and all tree and rock silhouettes. Do not add water, buildings, paths, arches or objects. No extended scene, no new sky. Enhance only existing rock facets, fine frosted needles, snow grain and icicle details. Keep the exact framing. Return a single landscape image.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r4-c1/q11-source.webp",
+    "nativeFile": "r4-c1/q11-native.webp",
+    "sourceSha256": "6e7f51176fd9c50c0eeb13822df7faf189aa17422f8a0bbe911d814bf5f3406c",
+    "nativeSha256": "06f309b15155d75925667c42a5bb70287d46b333b709bfd9a6751c68756922dc",
+    "nativeSize": [
+      1836,
+      857
+    ]
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q12",
+    "prompt": "Use case: precise-object-edit. Asset: west ice-hell isometric game ground, registered HD repaint. Edit target: the referenced source crop only. Redraw this exact image at 1254x527 with much finer crisp hand-painted texture: individually chipped stone pavers, fine hairline cracks and mortar, icy crystalline rock facets, detailed frosted branches, snow granules, intricate thin water ripples. Preserve the exact framing, orthographic/isometric camera, every large shape, shoreline, bridge deck, stair treads, circular plaza arcs, rails and posts, and object positions pixel-for-pixel in normalized coordinates. Keep original blue-white cold palette, brightness, shadows and lighting. Water remains a painted base at its identical shoreline. No new objects, no characters, no text, no border, no depth of field, no blur. Do not redesign or shift any structure. Keep pavement clear; do not add trees or props to walkable floor. This is a WIDE SHALLOW landscape strip at the map's bottom edge: dense snowy firs and blue-grey mountain rock faces. Preserve the identical shallow landscape aspect ratio, crop and all tree and rock silhouettes. Do not add water, buildings, paths, arches or objects. No extended scene, no new sky. Enhance only existing rock facets, fine frosted needles, snow grain and icicle details. Keep the exact framing. Return a single landscape image.",
+    "mode": "built-in image_gen",
+    "sourceFile": "r4-c1/q12-source.webp",
+    "nativeFile": "r4-c1/q12-native.webp",
+    "sourceSha256": "fee7bcfa240ed600b4f0e265df4867e627a028b5e0f82c1bd62d86b0f8ce1ae6",
+    "nativeSha256": "64f8e6d98823123107d3b18577a83fd46a65258773fc98ae4acd5847e60e04d6",
+    "nativeSize": [
+      1935,
+      813
+    ]
+  }
+]

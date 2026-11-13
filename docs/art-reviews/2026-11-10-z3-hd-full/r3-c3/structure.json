@@ -1,0 +1,39 @@
+{
+  "method": "SIFT affine residual in 1x master pixels; no dense structural guarantee",
+  "maxInlierResidualPx1x": 4.240853786468506,
+  "parts": {
+    "q11": {
+      "matches": 515,
+      "inliers": 465,
+      "inlierResidualMaxPx1x": 3.473304510116577,
+      "inlierResidualP95Px1x": 1.9646978378295898,
+      "allMatchResidualP95Px1x": 13.152143478393555,
+      "contextCoverage": 1.0
+    },
+    "q12": {
+      "matches": 728,
+      "inliers": 669,
+      "inlierResidualMaxPx1x": 2.8582897186279297,
+      "inlierResidualP95Px1x": 1.8628214597702026,
+      "allMatchResidualP95Px1x": 5.8786139488220215,
+      "contextCoverage": 1.0
+    },
+    "q21": {
+      "matches": 363,
+      "inliers": 304,
+      "inlierResidualMaxPx1x": 4.240853786468506,
+      "inlierResidualP95Px1x": 2.053196907043457,
+      "allMatchResidualP95Px1x": 44.91869354248047,
+      "contextCoverage": 1.0
+    },
+    "q22": {
+      "matches": 359,
+      "inliers": 340,
+      "inlierResidualMaxPx1x": 3.320967197418213,
+      "inlierResidualP95Px1x": 2.068608283996582,
+      "allMatchResidualP95Px1x": 3.35530424118042,
+      "contextCoverage": 1.0
+    }
+  },
+  "acceptance": "requires Claude visual judgement of plaza/stairs/cliffs/banks; match residual alone does not certify <=4px"
+}

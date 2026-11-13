@@ -1,0 +1,188 @@
+{
+  "task": "Z234-HD-FULL zone3 set4/5",
+  "chunks": [
+    {
+      "chunk": "r3-c3",
+      "state": "drawn-needs-review",
+      "parts": 4,
+      "nativeSizes": [
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ]
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 36.57020399486048,
+        "output": 4331.672408612352,
+        "ratio": 118.44813360136354,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 4.240853786468506,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "imageGenCalls": 4,
+      "visualNotes": [
+        "SIFT inlier residual max 4.24px exceeds 4px; this is a match proxy, not measured maximum structural displacement.",
+        "Engraved plaza motifs are darker and more defined; local design differs from source.",
+        "Bridge posts differ in silver/gold balance between q11 and q12."
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null
+    },
+    {
+      "chunk": "r3-c4",
+      "state": "drawn-needs-review",
+      "parts": 4,
+      "nativeSizes": [
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ]
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 39.63025153093797,
+        "output": 3560.256144777331,
+        "ratio": 89.83682937258074,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.7266225814819336,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "imageGenCalls": 4,
+      "visualNotes": [
+        "Water ripples are denser; inspect shore contours and waterfall detail against unchanged flow mask."
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null
+    },
+    {
+      "chunk": "r3-c5",
+      "state": "drawn-needs-review",
+      "parts": 4,
+      "nativeSizes": [
+        [
+          1149,
+          1368
+        ],
+        [
+          1078,
+          1460
+        ],
+        [
+          1149,
+          1368
+        ],
+        [
+          1078,
+          1459
+        ]
+      ],
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 39.604896613305726,
+        "output": 5049.496012377477,
+        "ratio": 127.49676035465373,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.3696322441101074,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "imageGenCalls": 4,
+      "visualNotes": [
+        "q12 adds a short bright waterfall at the upper bank where source had icicles; geometry preservation is not certified.",
+        "Skull and rib detail is reinterpreted; inspect liquid mask near bones."
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null
+    },
+    {
+      "chunk": "r4-c1",
+      "state": "drawn-needs-review",
+      "parts": 2,
+      "nativeSizes": [
+        [
+          1836,
+          857
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 46.82289003252912,
+        "output": 7514.5029907121025,
+        "ratio": 160.48780811034035,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.6218361854553223,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "imageGenCalls": 2,
+      "visualNotes": [
+        "More realistic snow/needle texture than source; inspect style consistency with adjacent chunks.",
+        "Native affine coverage in q12 context is 99.06%; border reflect sampling is used outside native support, not a new generation."
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null
+    }
+  ],
+  "imageGenCalls": 14,
+  "budgetCalls": 16,
+  "reviewState": "Not QA approved; measurements for Claude review",
+  "incompleteParts": [],
+  "completedDrawingParts": 14,
+  "pendingAcceptance": [
+    "Claude structure <=4px judgement; r3-c3 match residual warning and r3-c5 added-waterfall defect",
+    "Claude seam and west-style judgement at 2.8 px/world unit",
+    "ASSEMBLE cross-chunk seams; outer overlaps intentionally retained"
+  ],
+  "processingNotes": "Manifest packaging recovered and resumed from existing exports; no generations or fits repeated to improve thresholds."
+}

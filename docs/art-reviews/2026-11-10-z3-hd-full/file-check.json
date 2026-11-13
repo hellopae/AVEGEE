@@ -1,0 +1,134 @@
+{
+  "scope": "file completeness, decoding, recorded dimensions, lossless WebP, storage and call budget only",
+  "nativeAnd2xImages": [
+    {
+      "file": "r3-c3/r3-c3-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c3/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c3/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c3/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c4/r3-c4-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c4/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c4/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c4/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c4/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "r3-c5/r3-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c5/q11-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "file": "r3-c5/q12-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "file": "r3-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "file": "r3-c5/q22-native.webp",
+      "size": [
+        1078,
+        1459
+      ]
+    },
+    {
+      "file": "r4-c1/r4-c1-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c1/q11-native.webp",
+      "size": [
+        1836,
+        857
+      ]
+    },
+    {
+      "file": "r4-c1/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    }
+  ],
+  "imageGenCalls": 14,
+  "bytesAtCheck": 79362717,
+  "qualityApproval": null
+}
