@@ -1,0 +1,20 @@
+{
+  "expected": 39,
+  "opened_with_matching_dimensions": 26,
+  "missing": [
+    "worker-cyberhell-scared-v1.webp",
+    "officer-cyberhell-scared-v1.webp",
+    "executive-cyberhell-scared-v1.webp",
+    "woman-cyberhell-scared-v1.webp",
+    "business-cyberhell-scared-v1.webp",
+    "clerk-cyberhell-scared-v1.webp",
+    "elder-woman-cyberhell-scared-v1.webp",
+    "girl-cyberhell-scared-v1.webp",
+    "worker-cyberhell-cry-v1.webp",
+    "officer-cyberhell-cry-v1.webp",
+    "woman-cyberhell-cry-v1.webp",
+    "business-cyberhell-cry-v1.webp",
+    "clerk-cyberhell-cry-v1.webp"
+  ],
+  "errors": []
+}

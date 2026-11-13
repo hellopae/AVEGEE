@@ -1,0 +1,335 @@
+{
+  "tool": "built-in image_gen",
+  "limit": 40,
+  "attempts": 28,
+  "retries": 1,
+  "items": [
+    {
+      "name": "woman-th-cry-v1.webp",
+      "source": "img/Thai/spirit-woman-th-v2.webp",
+      "pose": "cry",
+      "zone": "th",
+      "status": "generated",
+      "attempt": 1
+    },
+    {
+      "name": "business-th-cry-v1.webp",
+      "source": "img/Thai/spirit-business-th-v2.webp",
+      "pose": "cry",
+      "zone": "th",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Game sprite image edit. Image 1 is the ONLY edit target. Image 2 is an expression reference ONLY; do not borrow its identity, costume, props or tail.\ntop-down 3/4 isometric-ish view game asset, high-detail modern pixel art in the style of a beautifully drawn Pokemon-style overworld map, chunky readable silhouette, soft dithered shading with warm rim light, rich saturated palette, clean crisp pixel edges, single object centered on a fully transparent background, square canvas, no ground shadow baked in, no text, no letters, no numbers, no watermark, no UI.\nCOLOR THEME: Thai buddhist underworld \u2014 obsidian black-purple stone, blood-red lacquer, molten orange lava glow, antique temple gold trim.\nLOCK: Image 1 OVERRIDES the color theme and square canvas above. Output canvas EXACT same pixel width and height as image 1, same palette, outline weight and pixel density. Preserve character identity, hair, outfit, EVERY prop and colors. Preserve EVERY pixel below the waist, lower ghost tail shape and tail tip at exactly original coordinates. Preserve framing, scale, silhouette position; do not shift or resize the character. Change ONLY facial expression; keep head angle, hands and held props at their original positions to minimize drift. White blank eyes or glasses MUST stay blank white with no added iris or pupils; emotion at brows, mouth and eye edges. Transparent alpha background, no ground shadow. Forbidden: text, letters, numbers, symbols, bubbles, motion lines, extra effects, blood, gore, injuries, costume changes, extra character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1199x1312. Edit target: img/Thai/spirit-business-th-v2.webp. Intended output: business-th-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 2
+    },
+    {
+      "name": "clerk-th-cry-v1.webp",
+      "source": "img/Thai/spirit-clerk-th-v2.webp",
+      "pose": "cry",
+      "zone": "th",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Original palette is muted cool grey-blue monochrome with original small accents. No warmer colors, no extra saturation, no orange rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/Thai/spirit-clerk-th-v2.webp. Intended output: clerk-th-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 4,
+      "retry_reason": "Visible warm palette drift in first generated version; retry with face-only edit and original cool palette lock."
+    },
+    {
+      "name": "girl-th-scared-v1.webp",
+      "source": "img/Thai/spirit-girl-th-v2.webp",
+      "pose": "scared",
+      "zone": "th",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Original palette is muted cool grey-blue monochrome with original small accents. No warmer colors, no extra saturation, no orange rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/Thai/spirit-girl-th-v2.webp. Intended output: girl-th-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 5
+    },
+    {
+      "name": "elder-woman-th-scared-v1.webp",
+      "source": "img/Thai/spirit-elder-woman-th-v2.webp",
+      "pose": "scared",
+      "zone": "th",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Original palette is muted cool grey-blue monochrome with original small accents. No warmer colors, no extra saturation, no orange rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1145x1374. Edit target: img/Thai/spirit-elder-woman-th-v2.webp. Intended output: elder-woman-th-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 6
+    },
+    {
+      "name": "worker-asia-cry-v1.webp",
+      "source": "img/Asia/spirit-worker-asia-v2.webp",
+      "pose": "cry",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/Asia/spirit-worker-asia-v2.webp. Intended output: worker-asia-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 7
+    },
+    {
+      "name": "officer-asia-cry-v1.webp",
+      "source": "img/Asia/spirit-officer-asia-v2.webp",
+      "pose": "cry",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/Asia/spirit-officer-asia-v2.webp. Intended output: officer-asia-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 8
+    },
+    {
+      "name": "woman-asia-cry-v1.webp",
+      "source": "img/Asia/spirit-woman-asia-v2.webp",
+      "pose": "cry",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/Asia/spirit-woman-asia-v2.webp. Intended output: woman-asia-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 9
+    },
+    {
+      "name": "business-asia-cry-v1.webp",
+      "source": "img/Asia/spirit-business-asia-v2.webp",
+      "pose": "cry",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1199x1312. Edit target: img/Asia/spirit-business-asia-v2.webp. Intended output: business-asia-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 10
+    },
+    {
+      "name": "clerk-asia-cry-v1.webp",
+      "source": "img/Asia/spirit-clerk-asia-v2.webp",
+      "pose": "cry",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/Asia/spirit-clerk-asia-v2.webp. Intended output: clerk-asia-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 11
+    },
+    {
+      "name": "girl-asia-scared-v1.webp",
+      "source": "img/Asia/spirit-girl-asia-v2.webp",
+      "pose": "scared",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/Asia/spirit-girl-asia-v2.webp. Intended output: girl-asia-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 12
+    },
+    {
+      "name": "elder-woman-asia-scared-v1.webp",
+      "source": "img/Asia/spirit-elder-woman-asia-v2.webp",
+      "pose": "scared",
+      "zone": "asia",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1145x1374. Edit target: img/Asia/spirit-elder-woman-asia-v2.webp. Intended output: elder-woman-asia-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 13
+    },
+    {
+      "name": "graduate-west-scared-v1.webp",
+      "source": "img/West/spirit-graduate-west-v3.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-graduate-west-v3.webp. Intended output: graduate-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 14
+    },
+    {
+      "name": "worker-west-scared-v1.webp",
+      "source": "img/West/spirit-worker-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-worker-west-v2.webp. Intended output: worker-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 15
+    },
+    {
+      "name": "officer-west-scared-v1.webp",
+      "source": "img/West/spirit-officer-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-officer-west-v2.webp. Intended output: officer-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 16
+    },
+    {
+      "name": "executive-west-scared-v1.webp",
+      "source": "img/West/spirit-executive-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-executive-west-v2.webp. Intended output: executive-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 17
+    },
+    {
+      "name": "woman-west-scared-v1.webp",
+      "source": "img/West/spirit-woman-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-woman-west-v2.webp. Intended output: woman-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 18
+    },
+    {
+      "name": "business-west-scared-v1.webp",
+      "source": "img/West/spirit-business-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1199x1312. Edit target: img/West/spirit-business-west-v2.webp. Intended output: business-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 19
+    },
+    {
+      "name": "clerk-west-scared-v1.webp",
+      "source": "img/West/spirit-clerk-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-clerk-west-v2.webp. Intended output: clerk-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 20
+    },
+    {
+      "name": "elder-woman-west-scared-v1.webp",
+      "source": "img/West/spirit-elder-woman-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1157x1359. Edit target: img/West/spirit-elder-woman-west-v2.webp. Intended output: elder-woman-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 21
+    },
+    {
+      "name": "girl-west-scared-v1.webp",
+      "source": "img/West/spirit-girl-west-v2.webp",
+      "pose": "scared",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/West/spirit-girl-west-v2.webp. Intended output: girl-west-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 22
+    },
+    {
+      "name": "worker-west-cry-v1.webp",
+      "source": "img/West/spirit-worker-west-v2.webp",
+      "pose": "cry",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/West/spirit-worker-west-v2.webp. Intended output: worker-west-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 23
+    },
+    {
+      "name": "officer-west-cry-v1.webp",
+      "source": "img/West/spirit-officer-west-v2.webp",
+      "pose": "cry",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/West/spirit-officer-west-v2.webp. Intended output: officer-west-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 24
+    },
+    {
+      "name": "woman-west-cry-v1.webp",
+      "source": "img/West/spirit-woman-west-v2.webp",
+      "pose": "cry",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/West/spirit-woman-west-v2.webp. Intended output: woman-west-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 25
+    },
+    {
+      "name": "business-west-cry-v1.webp",
+      "source": "img/West/spirit-business-west-v2.webp",
+      "pose": "cry",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1199x1312. Edit target: img/West/spirit-business-west-v2.webp. Intended output: business-west-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 26
+    },
+    {
+      "name": "clerk-west-cry-v1.webp",
+      "source": "img/West/spirit-clerk-west-v2.webp",
+      "pose": "cry",
+      "zone": "west",
+      "status": "generated",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE cry: quietly weeping with relief and understanding that someone finally listened to the truth. Inner eyebrows raised and gently drawn together, eyes half closed glistening, two clear pale white-blue tear streams down cheeks with tiny highlights, small gently parted sighing mouth or subtle soft relieved smile. Dignified, tender, respectful, moved to tears; no torment, no cruelty, no wailing or screaming. Keep original head and hands in place.\nCanvas: 1254x1254. Edit target: img/West/spirit-clerk-west-v2.webp. Intended output: clerk-west-cry-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 27
+    },
+    {
+      "name": "worker-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-worker-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending",
+      "prompt": "Use case: identity-preserve. Precise localized game sprite edit. IMAGE 1 IS THE EDIT TARGET. IMAGE 2 IS ONLY A TEAR/SWEAT EXPRESSION GUIDE, NEVER a source of palette, costume, face structure or shading.\nCopy image 1 EXACTLY, do not reinterpret, restyle, relight or repaint it. Use EXACTLY the original colors wherever they appear, including all original colored clothing and jewelry. No palette shifts, no extra saturation, no added rim light. Keep original crisp pixel grid, outline thickness and dither. Same exact canvas pixel width and height, framing and character placement. Keep every hair strand, ornament, outfit detail, hand, prop and all original colors. Tail, all pixels below waist and tail tip MUST remain EXACTLY as image 1 at original coordinates. Make a small LOCAL FACE ONLY EDIT to eyebrows, eyelids, mouth, tears/sweat. Keep face proportions, head angle and both arms/hands exactly in original positions. If eyes or glasses are blank white, keep them BLANK WHITE, no iris or pupils. Single complete sprite, actual fully transparent alpha background. No background, ground, shadow, text, letters, numbers, symbols, bubbles, detached effects, motion lines, blood, wounds, injuries, violence, screaming, outfit changes or second character.\nPOSE scared: startled and caught out. Raised inner eyebrows, wide eyes (retain blank white eyes if originally blank), small round open o mouth, two or three pale blue sweat drops ON temple/forehead. Shock at being exposed, no screaming, anger or horror, remove original smirk. Keep original head and hands in place, no effects outside silhouette.\nCanvas: 1254x1254. Edit target: img/CyberHell/spirit-worker-cyberhell-v2.webp. Intended output: worker-cyberhell-scared-v1.webp. Preserve the original blank white eyes if present.",
+      "attempt": 28
+    },
+    {
+      "name": "officer-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-officer-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "executive-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-executive-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "woman-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-woman-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "business-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-business-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "clerk-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-clerk-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "elder-woman-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-elder-woman-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "girl-cyberhell-scared-v1.webp",
+      "source": "img/CyberHell/spirit-girl-cyberhell-v2.webp",
+      "pose": "scared",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "worker-cyberhell-cry-v1.webp",
+      "source": "img/CyberHell/spirit-worker-cyberhell-v2.webp",
+      "pose": "cry",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "officer-cyberhell-cry-v1.webp",
+      "source": "img/CyberHell/spirit-officer-cyberhell-v2.webp",
+      "pose": "cry",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "woman-cyberhell-cry-v1.webp",
+      "source": "img/CyberHell/spirit-woman-cyberhell-v2.webp",
+      "pose": "cry",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "business-cyberhell-cry-v1.webp",
+      "source": "img/CyberHell/spirit-business-cyberhell-v2.webp",
+      "pose": "cry",
+      "zone": "cyberhell",
+      "status": "pending"
+    },
+    {
+      "name": "clerk-cyberhell-cry-v1.webp",
+      "source": "img/CyberHell/spirit-clerk-cyberhell-v2.webp",
+      "pose": "cry",
+      "zone": "cyberhell",
+      "status": "pending"
+    }
+  ]
+}
