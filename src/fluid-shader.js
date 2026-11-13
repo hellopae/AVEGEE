@@ -14,6 +14,7 @@
 // No WebGL / shader compile error / lost context / failed file => status 'failed' and the drawn frames play exactly as before.
 import { graphicsProfile } from './graphics-setting.js';   // same Performance-mode throttle as the drawn layers
 import { drawTownGroundRectAny, requestTownGroundRect } from './town-terrain.js?v=k1d';   // the graded ground, cut once per piece
+import { cloudsMode, codexCloudsApply, codexCloudsState, paintCodexClouds, codexCloudWeight } from './town-clouds-codex.js';   // CLOUDS-MIX: Codex's drawn clouds are the paint of the cloud pieces
 
 // ------------------------------------------------------------------------------------------------ pure helpers (unit tested)
 /** The shader is the default.  `?fluid=frames` (or `fluid=off`) gives the drawn frames back; anything else = shader. */
@@ -63,6 +64,8 @@ precision highp float;
 precision mediump float;
 #endif
 uniform sampler2D uGround;   // graded ground around the piece (mip-mapped)
+uniform sampler2D uGroundB;  // CLOUDS-MIX: the same ground with Codex's cloud layer B painted on it (A is in uGround); only read when uMixB > 0
+uniform float uMixB;         // CLOUDS-MIX: weight of uGroundB (Codex's A/B cross-fade); 0 for every piece that is not a mixed cloud piece
 uniform sampler2D uFlow;     // rg = flow direction * speed, b = liquid mask (feathered)
 uniform sampler2D uNoise;    // 128x128 random RGBA, repeating, bilinear: the smooth value noise of the direction wander and the light streaks (one fetch instead of 4 hashes)
 uniform vec2  uSize;         // size of the area drawn, layer px
@@ -93,7 +96,9 @@ float vnoiseG(vec2 p){ return texture2D(uNoise, p / 128.).g; }
 vec4 flowAt(vec2 world){ vec2 uv = (world - uRect.xy) / uRect.zw;
   if (uv.x < 0. || uv.y < 0. || uv.x > 1. || uv.y > 1.) return vec4(.5, .5, 0., 0.);
   return texture2D(uFlow, uv); }
-vec3 groundAt(vec2 world){ return texture2D(uGround, (world - uCapOrigin) * uGScale / uCapSize).rgb; }
+vec3 groundAt(vec2 world){ vec2 gu = (world - uCapOrigin) * uGScale / uCapSize; vec3 a = texture2D(uGround, gu).rgb;
+  if (uMixB > .002) a = mix(a, texture2D(uGroundB, gu).rgb, uMixB);
+  return a; }
 void main(){
   vec2 px = vec2(gl_FragCoord.x - uView.x, uSize.y - (gl_FragCoord.y - uView.y));
   vec2 world = uOrigin + px / uScale;
@@ -176,10 +181,10 @@ function initGL(st) {
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aPos = gl.getAttribLocation(prog, 'aPos'); gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-  const loc = {}; for (const n of ['uGround', 'uFlow', 'uNoise', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uShimmer', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
+  const loc = {}; for (const n of ['uGround', 'uGroundB', 'uMixB', 'uFlow', 'uNoise', 'uSize', 'uView', 'uCapSize', 'uOrigin', 'uCapOrigin', 'uGScale', 'uScale', 'uRect', 'uCore', 'uTime', 'uSpeed', 'uCycle', 'uWarp', 'uPulse', 'uHot', 'uSparkLum', 'uShimmer', 'uSpark', 'uCell', 'uDensity', 'uSparkR', 'uDrift']) loc[n] = gl.getUniformLocation(prog, n);
   gl.disable(gl.BLEND); gl.disable(gl.DEPTH_TEST);
   gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
-  gl.uniform1i(loc.uGround, 0); gl.uniform1i(loc.uFlow, 1); gl.uniform1i(loc.uNoise, 2);
+  gl.uniform1i(loc.uGround, 0); gl.uniform1i(loc.uFlow, 1); gl.uniform1i(loc.uNoise, 2); gl.uniform1i(loc.uGroundB, 3); gl.uniform1f(loc.uMixB, 0);
   // the noise texture: deterministic (a tiny LCG), 128 x 128, 4 channels
   const nz = new Uint8Array(128 * 128 * 4); let seed = 20261112; for (let i = 0; i < nz.length; i++) { seed = (seed * 1664525 + 1013904223) >>> 0; nz[i] = seed >>> 24; }
   const nt = gl.createTexture(); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, nt);
@@ -235,9 +240,12 @@ function buildGround(st, sp, now, level, wantDetail) {
   if (now - sp.groundTry < 300) return false;
   sp.groundTry = now;
   const g0 = sp.ground;
-  if (g0 && g0.level >= level && (g0.src === 'detail' || !wantDetail)) return false;
+  const wantMix = sp.p.group === 'clouds' && cloudsMode() === 'mix' && codexCloudsApply();   // CLOUDS-MIX: this piece's paint = ground + Codex layer A / B
+  if (g0 && g0.level >= level && (g0.src === 'detail' || !wantDetail) && (g0.mixed || g0.mixFailed || !wantMix)) return false;
   const ppu = GROUND_LEVELS[level], pad = 4, x0 = Math.max(0, sp.rect[0] - pad), y0 = Math.max(0, sp.rect[1] - pad);
   const x1 = Math.min(3840, sp.rect[0] + sp.rect[2] + pad), y1 = Math.min(2560, sp.rect[1] + sp.rect[3] + pad);
+  const mixState = wantMix ? codexCloudsState([x0, y0, x1 - x0, y1 - y0]) : 'off';   // asks for the chunk files; 'wait' = not decoded yet: the piece waits (the painted ground holds the cloud sea meanwhile)
+  if (mixState === 'wait') return false;
   const want = n => { const hi = pow2(n * ppu); return hi <= n * ppu * 1.4 ? hi : hi / 2; };
   const w = Math.max(16, want(x1 - x0)), h = Math.max(16, want(y1 - y0));
   const c = mk(w, h), g = c.getContext('2d');
@@ -246,21 +254,33 @@ function buildGround(st, sp, now, level, wantDetail) {
   const src = drawTownGroundRectAny(g, [x0, y0, x1 - x0, y1 - y0], 0, !wantDetail ? 'preview' : g0 ? 'detail' : 'any');
   if (!src) { c.width = c.height = 1; return false; }
   if (g0 && g0.src === 'detail' && src === 'preview') { c.width = c.height = 1; return false; }   // never swap a sharp texture for the blurry one
-  const gl = st.gl, tex = gl.createTexture();
-  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c);
-  gl.generateMipmap(gl.TEXTURE_2D);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  if (g0) gl.deleteTexture(g0.tex);
-  sp.ground = { tex, level, src, origin: [x0, y0], size: [w, h], ppu: [w / (x1 - x0), h / (y1 - y0)] };
-  c.width = c.height = 1;
+  const gl = st.gl;
+  let c2 = null;   // CLOUDS-MIX: the ground with layer B; c gets layer A.  Drawn files only, no filter, no recolour.
+  if (mixState === 'ready') {
+    c2 = mk(w, h); const g2 = c2.getContext('2d'); g2.drawImage(c, 0, 0);
+    g2.setTransform(w / (x1 - x0), 0, 0, h / (y1 - y0), -x0 * w / (x1 - x0), -y0 * h / (y1 - y0));
+    const rect = [x0, y0, x1 - x0, y1 - y0];
+    paintCodexClouds(g, 'A', rect); paintCodexClouds(g2, 'B', rect);
+  }
+  const upload = canvas => {
+    const tx = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tx);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return tx;
+  };
+  const tex = upload(c), texB = c2 ? upload(c2) : null;
+  if (g0) { gl.deleteTexture(g0.tex); if (g0.texB) gl.deleteTexture(g0.texB); }
+  sp.ground = { tex, texB, mixed: !!texB, mixFailed: mixState === 'failed', level, src, origin: [x0, y0], size: [w, h], ppu: [w / (x1 - x0), h / (y1 - y0)] };
+  c.width = c.height = 1; if (c2) c2.width = c2.height = 1;
   return true;
 }
 /** Free the ground texture of pieces that have not been on screen for a while (GPU memory on phones). */
 function sweep(st, time) {
   if (st.frame % 120) return;
-  for (const sp of st.pieces) if (sp.ground && time - sp.seen > 15000) { st.gl.deleteTexture(sp.ground.tex); sp.ground = null; }
+  for (const sp of st.pieces) if (sp.ground && time - sp.seen > 15000) { st.gl.deleteTexture(sp.ground.tex); if (sp.ground.texB) st.gl.deleteTexture(sp.ground.texB); sp.ground = null; }
 }
 
 /** Draw all pieces that are on screen.  Call once per frame BEFORE the drawn frame layers.
@@ -269,6 +289,7 @@ export function drawFluidShader(ctx, st, h) {
   if (!fluidShaderActive(st)) return 0;
   const gl = st.gl, L = st.loc, { m, view, cv, sec, time } = h;
   const fluidMs = graphicsProfile().fluidIntervalMs;
+  const mixB = codexCloudWeight(sec * 1000);   // CLOUDS-MIX: same clock as the direct layer under the shader
   const scale = Math.max(m.a, m.d), level = groundLevelFor(scale), wantDetail = scale >= .38;   // .38 = where town-terrain.js leaves the overview painting
   let drawn = 0; st.frame++;
   // pass 1: which pieces need the shader this frame (the others re-blit their last result in Performance graphics)
@@ -306,6 +327,7 @@ export function drawFluidShader(ctx, st, h) {
       gl.viewport(slot.x, slot.y, geo.lw, geo.lh);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, gr.tex);
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, sp.tex);
+      gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, gr.texB || gr.tex); gl.uniform1f(L.uMixB, gr.texB ? mixB : 0);   // CLOUDS-MIX
       gl.uniform2f(L.uSize, geo.lw, geo.lh); gl.uniform2f(L.uView, slot.x, slot.y); gl.uniform2f(L.uCapSize, gr.size[0], gr.size[1]);
       gl.uniform2f(L.uOrigin, geo.wx0, geo.wy0); gl.uniform2f(L.uCapOrigin, gr.origin[0], gr.origin[1]); gl.uniform2f(L.uGScale, gr.ppu[0], gr.ppu[1]); gl.uniform2f(L.uScale, geo.sx, geo.sy);
       gl.uniform4f(L.uRect, sp.rect[0], sp.rect[1], sp.rect[2], sp.rect[3]);

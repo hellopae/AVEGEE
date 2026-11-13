@@ -1,0 +1,50 @@
+{
+ "note": "per chunk [x, y, w, h] in file pixels = box of any alpha > 0 in layer A or B (null = fully transparent); speed-up only",
+ "chunks": {
+  "r1-c1": [
+   0,
+   1638,
+   156,
+   410
+  ],
+  "r1-c2": [
+   583,
+   376,
+   1465,
+   296
+  ],
+  "r1-c3": [
+   0,
+   374,
+   2048,
+   505
+  ],
+  "r1-c4": [
+   0,
+   347,
+   1918,
+   519
+  ],
+  "r1-c5": null,
+  "r2-c1": [
+   0,
+   0,
+   70,
+   24
+  ],
+  "r2-c2": null,
+  "r2-c3": null,
+  "r2-c4": null,
+  "r2-c5": null,
+  "r3-c1": null,
+  "r3-c2": null,
+  "r3-c3": null,
+  "r3-c4": null,
+  "r3-c5": null,
+  "r4-c1": null,
+  "r4-c2": null,
+  "r4-c3": null,
+  "r4-c4": null,
+  "r4-c5": null
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "file": "mask-q.png",
+ "sizePx": [
+  2032,
+  465
+ ],
+ "worldRect": [
+  0.0,
+  109.36832468721391,
+  3175.1291963377416,
+  726.5181568507782
+ ],
+ "note": "alpha = cloud-layer-mask.png (box-filtered 4x); clip for the puffs only"
+}
