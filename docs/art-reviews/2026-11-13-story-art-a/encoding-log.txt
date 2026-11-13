@@ -1,0 +1,111 @@
+cut-guard-joins-th
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/cut-guard-joins-th.webp'
+File:      tmp/story-art-a/cut-guard-joins-th.png
+Dimension: 1375 x 768
+Output:    359124 bytes Y-U-V-All-PSNR 40.81 39.31 38.88   40.16 dB
+           (2.72 bpp)
+block count:  intra4:       4124  (99.90%)
+              intra16:         4  (0.10%)
+              skipped:         0  (0.00%)
+bytes used:  header:            558  (0.2%)
+             mode-partition:  25683  (7.2%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |      28%|      31%|      30%|      11%|    4128
+      quantizer:  |      18 |      13 |      10 |       7 |
+   filter level:  |       5 |       3 |       2 |       0 |
+
+cut-frontier-boss-to-dais-th
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/cut-frontier-boss-to-dais-th.webp'
+File:      tmp/story-art-a/cut-frontier-boss-to-dais-th.png
+Dimension: 1375 x 768
+Output:    376320 bytes Y-U-V-All-PSNR 40.81 38.84 38.52   39.98 dB
+           (2.85 bpp)
+block count:  intra4:       4127  (99.98%)
+              intra16:         1  (0.02%)
+              skipped:         0  (0.00%)
+bytes used:  header:            580  (0.2%)
+             mode-partition:  25609  (6.8%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |      29%|      29%|      30%|      12%|    4128
+      quantizer:  |      18 |      13 |      10 |       7 |
+   filter level:  |       5 |       3 |       2 |       0 |
+
+cut-frontier-boss-punished-th
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/cut-frontier-boss-punished-th.webp'
+File:      tmp/story-art-a/cut-frontier-boss-punished-th.png
+Dimension: 1375 x 768
+Output:    353536 bytes Y-U-V-All-PSNR 41.00 39.14 38.92   40.24 dB
+           (2.68 bpp)
+block count:  intra4:       4123  (99.88%)
+              intra16:         5  (0.12%)
+              skipped:         0  (0.00%)
+bytes used:  header:            535  (0.2%)
+             mode-partition:  25494  (7.2%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |      27%|      30%|      32%|      11%|    4128
+      quantizer:  |      18 |      13 |      10 |       7 |
+   filter level:  |       5 |       3 |       2 |       0 |
+
+cut-frontier-boss-released-th
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/cut-frontier-boss-released-th.webp'
+File:      tmp/story-art-a/cut-frontier-boss-released-th.png
+Dimension: 1375 x 768
+Output:    394158 bytes Y-U-V-All-PSNR 40.83 38.93 38.71   40.05 dB
+           (2.99 bpp)
+block count:  intra4:       4125  (99.93%)
+              intra16:         3  (0.07%)
+              skipped:         0  (0.00%)
+bytes used:  header:            597  (0.2%)
+             mode-partition:  25410  (6.4%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |      33%|      27%|      30%|      10%|    4128
+      quantizer:  |      17 |      13 |      10 |       7 |
+   filter level:  |       5 |       3 |       2 |       0 |
+
+bg-cave-th
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/bg-cave-th.webp'
+File:      tmp/story-art-a/bg-cave-th.png
+Dimension: 1536 x 864
+Output:    196770 bytes Y-U-V-All-PSNR 42.75 44.62 43.68   43.17 dB
+           (1.19 bpp)
+block count:  intra4:       4365  (84.20%)
+              intra16:       819  (15.80%)
+              skipped:         2  (0.04%)
+bytes used:  header:            571  (0.3%)
+             mode-partition:  21366  (10.9%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |       5%|      11%|      25%|      59%|    5184
+      quantizer:  |      18 |      17 |      14 |      11 |
+   filter level:  |       5 |       4 |       2 |       8 |
+
+bg-cave-asia
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/bg-cave-asia.webp'
+File:      tmp/story-art-a/bg-cave-asia.png
+Dimension: 1536 x 864
+Output:    271394 bytes Y-U-V-All-PSNR 41.86 45.48 43.81   42.59 dB
+           (1.64 bpp)
+block count:  intra4:       4962  (95.72%)
+              intra16:       222  (4.28%)
+              skipped:         0  (0.00%)
+bytes used:  header:            570  (0.2%)
+             mode-partition:  27470  (10.1%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |       3%|      19%|      42%|      35%|    5184
+      quantizer:  |      18 |      16 |      13 |      10 |
+   filter level:  |       5 |       4 |       2 |      10 |
+
+bg-cave-west
+Saving file 'docs/art-reviews/2026-11-13-story-art-a/bg-cave-west.webp'
+File:      tmp/story-art-a/bg-cave-west.png
+Dimension: 1536 x 864
+Output:    262642 bytes Y-U-V-All-PSNR 41.61 46.35 46.24   42.69 dB
+           (1.58 bpp)
+block count:  intra4:       5047  (97.36%)
+              intra16:       137  (2.64%)
+              skipped:         0  (0.00%)
+bytes used:  header:            443  (0.2%)
+             mode-partition:  27978  (10.7%)
+ Residuals bytes  |segment 1|segment 2|segment 3|segment 4|  total
+    macroblocks:  |       3%|      19%|      41%|      37%|    5184
+      quantizer:  |      18 |      16 |      13 |      10 |
+   filter level:  |       5 |       4 |       2 |       0 |

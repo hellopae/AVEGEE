@@ -1,0 +1,123 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "generation": {
+    "budget": 16,
+    "tool_calls": 9,
+    "images_generated": 7,
+    "validation_failures": 2,
+    "retries_used": 2,
+    "content_regenerations": 0,
+    "notes": [
+      "First call rejected relative reference paths before generation.",
+      "One call rejected six reference paths before generation; subsequent requests used no more than five."
+    ]
+  },
+  "jobs": [
+    {
+      "name": "cut-guard-joins-th",
+      "size": [
+        1375,
+        768
+      ],
+      "refs": [
+        "img/crew-guard-cutscene.webp",
+        "img/hero-yama-profile.webp",
+        "img/crew-taan-profile.webp",
+        "img/crew-plerng-profile.webp",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: AVEGEE Thai underworld RPG story cutscene. Create one complete new widescreen scene using the supplied local images only as identity and art direction references; never copy their layouts or show reference sheets. Match the existing detailed hand-painted / pixel-textured 2D fantasy game cutscenes, strong dark outlines, ornate Thai underworld masonry, black-red-gold palette, amber firelight, readable expressive compact characters. Full-bleed landscape approximately 16:9, no bars. Absolutely no text, letters, numbers, runes, captions, UI, speech bubbles, logos, watermark or book-cover glyphs; books and plaques must be blank or abstract unlettered ornament. No blood, wounds or gore. Identity lock: Yama is SMALL childlike red-skinned with large dark eyes, short black hair, TWO small dark-red horns, pointed gold Thai crown, black robe with wide gold trim and red inner panel, small ledger. Guard is the GREEN tusked yaksha with broad nose, pointed ears, tiered bronze pointed helmet, charcoal segmented armor with bronze trim and dark red cords, long heavy bronze-headed club. Two reaper allies are Taan (older stocky red-skinned ogre, WHITE topknot, thick WHITE eyebrows and short white beard, round gold shoulder plates, brown wrap, engraved silver mace) and Plerng (small orange-skinned fire youth, tall flaming orange-yellow hair, maroon/gold shoulder armor and tunic). Do not replace these with generic hooded skeletons. The frontier boss, if present, is a different ADULT huge muscular RED-skinned tusked yaksha, small black side horns, flaming multi-point gold crown, gold hoop earrings, black scaled armor with highly ornate gold trim, PURPLE cloth skirt with gold lattice, black-gold greaves, black gold-studded mace. Preserve faces, silhouette, clothing and relative scales. Narrative moment 1: the green border gate Guard steps AWAY from his sentry post into the foreground alongside Yama and exactly TWO reaper allies Taan and Plerng to help defend the team. All four allies visible, faces readable in three-quarter view. Guard is the main dynamic subject center-right raising his heavy club to shield the three smaller allies on the left. Behind them a huge Thai fortress border gateway is being breached by threatening animal-like demons pushing inward through smoke; demons have no dialogue. Clearly show the gate and the Guard crossing out of it to join the team. Heroic action, determination, diagonal motion, blue smoke separates silhouettes from warm lava and fire.",
+      "source": "exec-2d2e09ec-617d-4d48-8eb2-7b9ddac701ff.png"
+    },
+    {
+      "name": "cut-frontier-boss-to-dais-th",
+      "size": [
+        1375,
+        768
+      ],
+      "refs": [
+        "generated:exec-2d2e09ec-617d-4d48-8eb2-7b9ddac701ff.png",
+        "img/boss-frontier-th.webp",
+        "img/hero-yama-profile.webp",
+        "img/crew-taan-profile.webp",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: AVEGEE Thai underworld RPG story cutscene. Create one complete new widescreen scene using the supplied local images only as identity and art direction references; never copy their layouts or show reference sheets. Match the existing detailed hand-painted / pixel-textured 2D fantasy game cutscenes, strong dark outlines, ornate Thai underworld masonry, black-red-gold palette, amber firelight, readable expressive compact characters. Full-bleed landscape approximately 16:9, no bars. Absolutely no text, letters, numbers, runes, captions, UI, speech bubbles, logos, watermark or book-cover glyphs; books and plaques must be blank or abstract unlettered ornament. No blood, wounds or gore. Identity lock: Yama is SMALL childlike red-skinned with large dark eyes, short black hair, TWO small dark-red horns, pointed gold Thai crown, black robe with wide gold trim and red inner panel, small ledger. Guard is the GREEN tusked yaksha with broad nose, pointed ears, tiered bronze pointed helmet, charcoal segmented armor with bronze trim and dark red cords, long heavy bronze-headed club. Two reaper allies are Taan (older stocky red-skinned ogre, WHITE topknot, thick WHITE eyebrows and short white beard, round gold shoulder plates, brown wrap, engraved silver mace) and Plerng (small orange-skinned fire youth, tall flaming orange-yellow hair, maroon/gold shoulder armor and tunic). Do not replace these with generic hooded skeletons. The frontier boss, if present, is a different ADULT huge muscular RED-skinned tusked yaksha, small black side horns, flaming multi-point gold crown, gold hoop earrings, black scaled armor with highly ornate gold trim, PURPLE cloth skirt with gold lattice, black-gold greaves, black gold-studded mace. Preserve faces, silhouette, clothing and relative scales. Narrative moment 2: AFTER victory, the team escorts the defeated red frontier boss UP stone steps onto the raised judgment dais inside an ornate Thai underworld court. Boss visibly restrained with simple nonviolent glowing gold manacles at wrists and short connected chain, head bowed, intact clothing, no injuries; he walks willingly. His removed black studded mace is carried by Guard pointing down, not by the prisoner. Small Yama leads up the steps in three-quarter profile holding a blank-covered ledger, Green Guard escorts beside the boss, Taan and Plerng follow, exactly these five characters. The elevated judgment platform and a large empty gold-trimmed judge's chair in rear must read unmistakably as a court, not a battle arena. Wide cinematic shot shows their full bodies, faces of Yama and boss visible. Solemn due process; no torture or execution.",
+      "source": "exec-0272edef-5ebe-4d30-a06c-3e1e7f6b7663.png"
+    },
+    {
+      "name": "cut-frontier-boss-punished-th",
+      "size": [
+        1375,
+        768
+      ],
+      "refs": [
+        "generated:exec-2d2e09ec-617d-4d48-8eb2-7b9ddac701ff.png",
+        "img/boss-frontier-th.webp",
+        "img/hero-yama-profile.webp",
+        "img/crew-taan-profile.webp",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: AVEGEE Thai underworld RPG story cutscene. Create one complete new widescreen scene using the supplied local images only as identity and art direction references; never copy their layouts or show reference sheets. Match the existing detailed hand-painted / pixel-textured 2D fantasy game cutscenes, strong dark outlines, ornate Thai underworld masonry, black-red-gold palette, amber firelight, readable expressive compact characters. Full-bleed landscape approximately 16:9, no bars. Absolutely no text, letters, numbers, runes, captions, UI, speech bubbles, logos, watermark or book-cover glyphs; books and plaques must be blank or abstract unlettered ornament. No blood, wounds or gore. Identity lock: Yama is SMALL childlike red-skinned with large dark eyes, short black hair, TWO small dark-red horns, pointed gold Thai crown, black robe with wide gold trim and red inner panel, small ledger. Guard is the GREEN tusked yaksha with broad nose, pointed ears, tiered bronze pointed helmet, charcoal segmented armor with bronze trim and dark red cords, long heavy bronze-headed club. Two reaper allies are Taan (older stocky red-skinned ogre, WHITE topknot, thick WHITE eyebrows and short white beard, round gold shoulder plates, brown wrap, engraved silver mace) and Plerng (small orange-skinned fire youth, tall flaming orange-yellow hair, maroon/gold shoulder armor and tunic). Do not replace these with generic hooded skeletons. The frontier boss, if present, is a different ADULT huge muscular RED-skinned tusked yaksha, small black side horns, flaming multi-point gold crown, gold hoop earrings, black scaled armor with highly ornate gold trim, PURPLE cloth skirt with gold lattice, black-gold greaves, black gold-studded mace. Preserve faces, silhouette, clothing and relative scales. Narrative moment 3: the red frontier boss has ALREADY COMPLETED his punishment and become calm. A quiet stone rehabilitation chamber attached to the same Thai court. The boss kneels upright calmly on a low circular stone platform, both wrists clearly FREE; the opened gold shackles and slack chain lie empty on the floor in front of him, a faint vanishing gold glow conveys completion, never ongoing restraint or pain. He has a solemn softened remorseful expression, eyes open lowered, visible red tusked face and matching gold crown, black/gold armor, purple skirt; uninjured. Small Yama faces him from the left with open accepting palm; green Guard stands respectfully on the right with club grounded. The mood is closure and reconciliation after a sentence, not active violence. Soft warm firelight, tranquil, no flames touching anyone, no torture devices, no blood.",
+      "source": "exec-039a548e-83eb-40f6-9ea2-1d2df7167b60.png"
+    },
+    {
+      "name": "cut-frontier-boss-released-th",
+      "size": [
+        1375,
+        768
+      ],
+      "refs": [
+        "generated:exec-2d2e09ec-617d-4d48-8eb2-7b9ddac701ff.png",
+        "img/boss-frontier-th.webp",
+        "img/hero-yama-profile.webp",
+        "img/crew-taan-profile.webp",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset: AVEGEE Thai underworld RPG story cutscene. Create one complete new widescreen scene using the supplied local images only as identity and art direction references; never copy their layouts or show reference sheets. Match the existing detailed hand-painted / pixel-textured 2D fantasy game cutscenes, strong dark outlines, ornate Thai underworld masonry, black-red-gold palette, amber firelight, readable expressive compact characters. Full-bleed landscape approximately 16:9, no bars. Absolutely no text, letters, numbers, runes, captions, UI, speech bubbles, logos, watermark or book-cover glyphs; books and plaques must be blank or abstract unlettered ornament. No blood, wounds or gore. Identity lock: Yama is SMALL childlike red-skinned with large dark eyes, short black hair, TWO small dark-red horns, pointed gold Thai crown, black robe with wide gold trim and red inner panel, small ledger. Guard is the GREEN tusked yaksha with broad nose, pointed ears, tiered bronze pointed helmet, charcoal segmented armor with bronze trim and dark red cords, long heavy bronze-headed club. Two reaper allies are Taan (older stocky red-skinned ogre, WHITE topknot, thick WHITE eyebrows and short white beard, round gold shoulder plates, brown wrap, engraved silver mace) and Plerng (small orange-skinned fire youth, tall flaming orange-yellow hair, maroon/gold shoulder armor and tunic). Do not replace these with generic hooded skeletons. The frontier boss, if present, is a different ADULT huge muscular RED-skinned tusked yaksha, small black side horns, flaming multi-point gold crown, gold hoop earrings, black scaled armor with highly ornate gold trim, PURPLE cloth skirt with gold lattice, black-gold greaves, black gold-studded mace. Preserve faces, silhouette, clothing and relative scales. Narrative moment 4: the sentence is completed and the frontier boss is RELEASED to return to his frontier. Wide view of the now peaceful OPEN Thai fortress border gate, matching moment 1 architecture, toward a dark rocky cave path beyond. The large red tusked gold-crowned purple-skirted boss walks AWAY from Yama's team through the gate, FREE wrists clearly visible, no chains, calm posture. Show his head turning in three-quarter profile for a recognizable grateful face. His black studded mace is carried lowered safely, no attack. In foreground SMALL Yama gestures toward the open path, green Guard with bronze club grounded, Taan and Plerng respectfully watch him leave. Exactly these five characters, no invading demons remaining. Quiet closure, gentle gold dawn-like firelight across dark stone, departure clearly readable.",
+      "source": "exec-5a60c2d5-9474-4b70-a131-4da0f603013b.png"
+    },
+    {
+      "name": "bg-cave-th",
+      "size": [
+        1536,
+        864
+      ],
+      "refs": [
+        "img/BG-Sala.webp",
+        "img/BG-frontier.webp",
+        "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      ],
+      "prompt": "Use case: stylized-concept. Asset: AVEGEE RPG station-room background. Paint one complete new EMPTY CAVE INTERIOR, widescreen 16:9 full bleed, no bars. Match detailed 2D hand-painted/pixel-textured game background style in the references with outlined stone and layered atmospheric lighting. Camera must be an elevated front-facing three-quarter view, looking down into a room as in the station BG references, with back wall in upper third, broad flat walkable floor filling lower two-thirds, clear visible floor plane. This is a room to composite a frontier-boss NPC onto AFTER a demon invasion. Do NOT include the boss, people, animals, figures, human-shaped statues, skeletons or enemies. Empty center floor around normalized x=.5,y=.65 for standing NPC, clear route from lower center entry to that spot, frame left and right with rock supports, one modest stone rest dais along back wall only, no pits or obstacles across center. No text, letters, numbers, runes, signs, labels, glyphs, UI, logos, borders or watermarks anywhere. No gore, no violence. Cave is enclosed under rock, clearly interior, visible ceiling stalactites and rough stone rear wall, not an exterior landscape. ZONE 1 THAI: dark warm basalt grotto reinforced with Thai carved stone columns, small pointed gold-trimmed Thai arch at back, maroon stone paving, two safe bronze braziers at sides with soft orange light, faint lava glow only in narrow distant back-wall cracks. Thai underworld red, charcoal and antique gold palette, subdued embers, quiet after battle. Keep central floor medium-dark and simple so a RED boss with purple-and-gold armor remains readable. Decorative carving is abstract Thai floral ornament only.",
+      "source": "exec-7ab832e1-8745-4c61-9633-6c652e986a94.png"
+    },
+    {
+      "name": "bg-cave-asia",
+      "size": [
+        1536,
+        864
+      ],
+      "refs": [
+        "img/Asia/BG-Sala-asia.webp",
+        "img/Asia/BG-Frontier-asia.webp",
+        "img/deva-intro/deva-intro-asia-v1.webp"
+      ],
+      "prompt": "Use case: stylized-concept. Asset: AVEGEE RPG station-room background. Paint one complete new EMPTY CAVE INTERIOR, widescreen 16:9 full bleed, no bars. Match detailed 2D hand-painted/pixel-textured game background style in the references with outlined stone and layered atmospheric lighting. Camera must be an elevated front-facing three-quarter view, looking down into a room as in the station BG references, with back wall in upper third, broad flat walkable floor filling lower two-thirds, clear visible floor plane. This is a room to composite a frontier-boss NPC onto AFTER a demon invasion. Do NOT include the boss, people, animals, figures, human-shaped statues, skeletons or enemies. Empty center floor around normalized x=.5,y=.65 for standing NPC, clear route from lower center entry to that spot, frame left and right with rock supports, one modest stone rest dais along back wall only, no pits or obstacles across center. No text, letters, numbers, runes, signs, labels, glyphs, UI, logos, borders or watermarks anywhere. No gore, no violence. Cave is enclosed under rock, clearly interior, visible ceiling stalactites and rough stone rear wall, not an exterior landscape. ZONE 2 ASIA: cool jade-blue East Asian mountain grotto with stone retaining walls, red wooden pillars and dark curved lintels nested beneath rocky cave ceiling, two warm plain lanterns, weathered blue-gray stone tiled floor, small spring and jade crystal details confined to side niches, thin mist in upper background. Match the red-pillared blue-stone station-room reference. Cyan and jade shadows, restrained red accents and warm paper-lantern light. No lava or Thai pointed palace spires. No scenery spilling across open standing area.",
+      "source": "exec-5e66c898-3412-4fba-8b33-351c90096283.png"
+    },
+    {
+      "name": "bg-cave-west",
+      "size": [
+        1536,
+        864
+      ],
+      "refs": [
+        "img/West/BG-Sala-west.webp",
+        "img/West/BG-Frontier-west.webp",
+        "img/deva-intro/deva-intro-west-v1.webp"
+      ],
+      "prompt": "Use case: stylized-concept. Asset: AVEGEE RPG station-room background. Paint one complete new EMPTY CAVE INTERIOR, widescreen 16:9 full bleed, no bars. Match detailed 2D hand-painted/pixel-textured game background style in the references with outlined stone and layered atmospheric lighting. Camera must be an elevated front-facing three-quarter view, looking down into a room as in the station BG references, with back wall in upper third, broad flat walkable floor filling lower two-thirds, clear visible floor plane. This is a room to composite a frontier-boss NPC onto AFTER a demon invasion. Do NOT include the boss, people, animals, figures, human-shaped statues, skeletons or enemies. Empty center floor around normalized x=.5,y=.65 for standing NPC, clear route from lower center entry to that spot, frame left and right with rock supports, one modest stone rest dais along back wall only, no pits or obstacles across center. No text, letters, numbers, runes, signs, labels, glyphs, UI, logos, borders or watermarks anywhere. No gore, no violence. Cave is enclosed under rock, clearly interior, visible ceiling stalactites and rough stone rear wall, not an exterior landscape. ZONE 3 WEST: enclosed icy blue-gray cavern transformed into a medieval Gothic border refuge, rough rock walls merge with dark Gothic stone ribs and pointed arches, ice formations and frost confined to cave edges, iron sconces with warm amber flames, muted teal-blue stone paved walkable floor, small heavy stone bench in rear alcove, carved Gothic geometric tracery without symbols or text. Match the snowy Gothic European zone reference and station camera, quiet silver-blue palette with warm small light pools. No Asian architecture, no red Thai lava palette, no cathedral exterior. Keep floor dry and uncluttered where NPC will stand.",
+      "source": "exec-30c8f089-c5e2-4dbd-88d7-a90c03f8e504.png"
+    }
+  ]
+}

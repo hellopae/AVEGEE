@@ -1,0 +1,102 @@
+{
+  "scope": "asset presence, dimensions, decode/container, export integrity; no in-game QA",
+  "expected_assets": 7,
+  "verified_assets": [
+    {
+      "file": "cut-guard-joins-th.webp",
+      "actual_size": [
+        1375,
+        768
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "cut-frontier-boss-to-dais-th.webp",
+      "actual_size": [
+        1375,
+        768
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "cut-frontier-boss-punished-th.webp",
+      "actual_size": [
+        1375,
+        768
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "cut-frontier-boss-released-th.webp",
+      "actual_size": [
+        1375,
+        768
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "bg-cave-th.webp",
+      "actual_size": [
+        1536,
+        864
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "bg-cave-asia.webp",
+      "actual_size": [
+        1536,
+        864
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    },
+    {
+      "file": "bg-cave-west.webp",
+      "actual_size": [
+        1536,
+        864
+      ],
+      "webp_decoded": true,
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "sha256_matches": true,
+      "byte_count_matches": true
+    }
+  ],
+  "contact_sheet_verified": true,
+  "budget_verified": true,
+  "retry_limit_verified": true,
+  "readme_and_prompts_present": true,
+  "visual_review": "Opened generated originals and final WebP contact sheet; owner art acceptance pending."
+}

@@ -1,0 +1,208 @@
+{
+  "assets": [
+    {
+      "file": "cut-guard-joins-th.webp",
+      "width": 1375,
+      "height": 768,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "2c364d491040290034e5a54c6e8f3ef60cd3dfa390eb0d3ce04296ae053d6ead",
+      "sha256": "5a17f8a4bac1061493ce3ae24a25708576683de346023c415ac5dc90dcc171a7",
+      "bytes": 359124,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "cut-frontier-boss-to-dais-th.webp",
+      "width": 1375,
+      "height": 768,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "498b9566004929c227786566abb0c288314c50f0175f97c5028f57595f52a1e0",
+      "sha256": "29936613d9cef7fc5049c5a1d25687b2b44f6faa383b4bd9ad08924e5579e3d7",
+      "bytes": 376320,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "cut-frontier-boss-punished-th.webp",
+      "width": 1375,
+      "height": 768,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "1bdeed21a1c14df5e049da29281231db62678c3b26ce6a182700d49a4d8b04d7",
+      "sha256": "0a12e4cf2b2d19ebe208a200793026b2fcea6a97780e6b631d6e32f3d4b3b4a5",
+      "bytes": 353536,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "cut-frontier-boss-released-th.webp",
+      "width": 1375,
+      "height": 768,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "09e10e6003035cdf36a3ebc9fd2e2a69d6814b1674a891cfa83de594457de864",
+      "sha256": "0ba95d69b3660595ff0915f56ab8235908cb0a2e4005f4cfae5e7d268f82c690",
+      "bytes": 394158,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "bg-cave-th.webp",
+      "width": 1536,
+      "height": 864,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "e7e018488b5a2d5026a1538f4e2d3c0ad5317c83d358bc4a7799c0273cf00a62",
+      "sha256": "8393de885cca27117f967f38a58f9a0313aec26339462ccb022dbbf4e34c7f94",
+      "bytes": 196770,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "bg-cave-asia.webp",
+      "width": 1536,
+      "height": 864,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "0d49cbad72202dfd466ab649574a0f4fc73acad94321b6016201a307cc9e318c",
+      "sha256": "833c80d1f57d15ea1224d008ed6d4146c81fb5fc4d40d972d0128ddeb9c4173b",
+      "bytes": 271394,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    },
+    {
+      "file": "bg-cave-west.webp",
+      "width": 1536,
+      "height": 864,
+      "mode": "RGB",
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_sha256": "179a5872874807d5d0a05974120bbbc25418b15ccff1b181fec95dde93d03c78",
+      "sha256": "d9ef044d7cde06b7ec35bc20a98aa1b728d733f0c2e83d154f8425554bfaf3a6",
+      "bytes": 262642,
+      "encoder": [
+        "cwebp",
+        "-q",
+        "86",
+        "-alpha_q",
+        "100",
+        "-m",
+        "6",
+        "-metadata",
+        "none"
+      ],
+      "resize": "LANCZOS, full source frame; no crop"
+    }
+  ],
+  "generation": {
+    "budget": 16,
+    "tool_calls": 9,
+    "images_generated": 7,
+    "validation_failures": 2,
+    "retries_used": 2,
+    "content_regenerations": 0,
+    "notes": [
+      "First call rejected relative reference paths before generation.",
+      "One call rejected six reference paths before generation; subsequent requests used no more than five."
+    ]
+  },
+  "encoding": {
+    "tool": "cwebp",
+    "version": "1.6.0\nlibsharpyuv: 0.4.2",
+    "color_quality": 86,
+    "alpha_quality": 100,
+    "alpha_encoding": "lossless; all seven outputs are opaque RGB full-scene artwork",
+    "metadata": "none"
+  },
+  "contact_sheet": {
+    "file": "contact-sheet.webp",
+    "size": [
+      1520,
+      890
+    ],
+    "sha256": "4ecbedb701d8d8c48c63b5777f0f80f802eb9432fc09cf97e664341ceb53c34c",
+    "layout": "3 columns, row-major, assets in manifest order; no text"
+  }
+}
