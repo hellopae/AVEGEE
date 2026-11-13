@@ -1,0 +1,101 @@
+{
+  "objects": [
+    {
+      "id": "asia-r1-c5-paving-foliage-00",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        4121,
+        625,
+        110,
+        70
+      ],
+      "chunk": "r1-c5",
+      "walkmaskBoxCoverage": 0.9358441558441558,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r1-c5-paving-foliage-01",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        4236,
+        680,
+        130,
+        80
+      ],
+      "chunk": "r1-c5",
+      "walkmaskBoxCoverage": 0.7076923076923077,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r1-c5-paving-foliage-02",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        4706,
+        725,
+        105,
+        70
+      ],
+      "chunk": "r1-c5",
+      "walkmaskBoxCoverage": 0.3013605442176871,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": false,
+      "reviewOutcome": "residual foliage visible / full paving clearance not confirmed",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r1-c5-paving-foliage-03",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        4358,
+        853,
+        115,
+        86
+      ],
+      "chunk": "r1-c5",
+      "walkmaskBoxCoverage": 0.38038422649140546,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r1-c5-paving-foliage-04",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        4501,
+        876,
+        105,
+        75
+      ],
+      "chunk": "r1-c5",
+      "walkmaskBoxCoverage": 0.09638095238095239,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": false,
+      "reviewOutcome": "residual foliage visible / full paving clearance not confirmed",
+      "reviewEvidence": "removal-check.jpg"
+    }
+  ],
+  "whiteLumps": [],
+  "allRemovalsVisuallyVerified": false,
+  "removedIds": [
+    "asia-r1-c5-paving-foliage-00",
+    "asia-r1-c5-paving-foliage-01",
+    "asia-r1-c5-paving-foliage-03"
+  ],
+  "residualOrUnverifiedIds": [
+    "asia-r1-c5-paving-foliage-02",
+    "asia-r1-c5-paving-foliage-04"
+  ],
+  "reviewMethod": "Same-size before/after crops: source v2 vs registered 2x; explicit visual review, no sprite overlays"
+}

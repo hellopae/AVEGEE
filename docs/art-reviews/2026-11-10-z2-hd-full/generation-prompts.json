@@ -1,0 +1,318 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCount": 16,
+  "generationLimit": 16,
+  "generations": [
+    {
+      "chunk": "r1-c5",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Production hand-painted isometric terrain microtile, Asia Chinese/Japanese underworld map. EDIT the provided image, same exact framing/full bleed, no border/text. Repaint with dramatically finer actually drawn detail: separate sharp chipped stone facets, fissures, mineral grains, recessed mortar on paving, fine moss/root/leaf/ice detail. Preserve original stylized painterly palette, lighting and value hierarchy. All mountain silhouettes, watercourses, waterfalls, banks, terrace boundaries, stair width/count/position, circular ornaments must remain at exact same relative coordinates; no redesign/shift/zoom/rotation. Keep liquid and large cloud/mist bases exactly in place; retain inaccessible mountain trees. Remove only small foliage that visibly protrudes ON paved walk-floor; inpaint matching continuous paving underneath without altering any cliff or terrace edge. No new objects or trees, no DOF, no blur, no sharpening halos, no photo noise. Return maximum native resolution with the SAME aspect ratio. Tile r1-c5 q11, north-west crop: snowy pine mountains and blue waterfalls, tiny edge of terrace at bottom. Keep every tree here because they stand on remote rocks. Detailed snow, bark, moss and water base, exact shapes.",
+      "referenced_image_paths": [
+        "r1-c5/inputs/q11-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-8ca6752a-3ac7-49e6-8895-b46e5b11a95e.png",
+      "archivedFile": "r1-c5/q11-native.webp",
+      "nativeSize": [
+        1212,
+        1298
+      ],
+      "sourceSha256": "52c2ab6971101239cfe716b8dee560b2fd1c5fd1f49889d0d36fd4b9818b110c",
+      "decodedRgbSha256": "92645bd873ae00a23bb9095cc879d4a8771f8ea2d415e86534f4d88f984ab54f",
+      "lossless": true,
+      "attempt": 1,
+      "selected": true
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r1-c5 q12: snowy mountain pine forest and blue waterfalls with a tiny terrace edge bottom left; keep all inaccessible trees; no removal boxes in this crop.",
+      "referenced_image_paths": [
+        "r1-c5/inputs/q12-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-0666c405-ddb0-43b9-9f9d-3abf84fcdb0f.png",
+      "archivedFile": "r1-c5/q12-native.webp",
+      "nativeSize": [
+        1136,
+        1385
+      ],
+      "sourceSha256": "d951e25c2b285158ff38d4fd8c1d301b7dd9eb23a9a275836a7a88f28b010aaf",
+      "decodedRgbSha256": "b2a17d8d4da48f283428a022da08014a3695c620dbfe5d53245d030719160a40",
+      "lossless": true,
+      "attempt": 2,
+      "selected": true
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r1-c5/q21. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r1-c5-paving-foliage-00\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [89, 177, 110, 70]}, {\"id\": \"asia-r1-c5-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [204, 232, 130, 80]}, {\"id\": \"asia-r1-c5-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [326, 405, 115, 86]}, {\"id\": \"asia-r1-c5-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [469, 428, 105, 75]}]. This crop contains circular stone terrace and main stair. Preserve every engraved ring and stair perfectly. Keep all remote rock trees. Remove foliage only where it crosses paved floor; never replace rocks with paving.",
+      "referenced_image_paths": [
+        "r1-c5/inputs/q21-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-d60be582-90db-4d23-9be8-072ff385c8e0.png",
+      "archivedFile": "r1-c5/q21-native.webp",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "sourceSha256": "4f204248e1bd44ca389c109ccea506f57e87a35e8f622b5c3d080ff94aea6dc4",
+      "decodedRgbSha256": "0742065bc39bb8dd411ef07fe5f1c139bca3c5aa9e65d3017217baa8362fda09",
+      "lossless": true,
+      "attempt": 3,
+      "selected": true
+    },
+    {
+      "chunk": "r1-c5",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r1-c5/q22. Snowy mountains, waterfall and circular stone terrace. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r1-c5-paving-foliage-02\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [264, 277, 105, 70]}, {\"id\": \"asia-r1-c5-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [-84, 405, 115, 86]}, {\"id\": \"asia-r1-c5-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [59, 428, 105, 75]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r1-c5/inputs/q22-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-6d7731dc-a99f-46b2-a79e-e441396e7941.png",
+      "archivedFile": "r1-c5/q22-native.webp",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "sourceSha256": "5858caa94aa2349ca57c61b8d97ebf20f96223c54e955ca7e940feee9d56850a",
+      "decodedRgbSha256": "a1ee03011d098bcc928163f1addfdeda14e29c5319225eb9b0d7089ca7fd8f38",
+      "lossless": true,
+      "attempt": 4,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c1/q11. Red maples, blue-grey rock pillars, lava, paved circular terraces and flights of stairs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c1-paving-foliage-00\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [355, 159, 120, 65]}, {\"id\": \"asia-r2-c1-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [365, 279, 180, 170]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c1/inputs/q11-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-d4ed497c-c56d-451e-a2cb-36f6a898c6c5.png",
+      "archivedFile": "r2-c1/q11-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "sourceSha256": "a03680f11e5cbb696c9011c0e8900e8bd5ba7839c8cc1ef6d34790a83d4cc73f",
+      "decodedRgbSha256": "9cd0dbc6e93bcca66bb42cdd6b80a898b68fc8d163050c230c39f6e135b6c9fa",
+      "lossless": true,
+      "attempt": 5,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c1/q12. Red maples, blue-grey rock pillars, lava, paved circular terraces and flights of stairs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c1-paving-foliage-00\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [-93, 159, 120, 65]}, {\"id\": \"asia-r2-c1-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [-83, 279, 180, 170]}, {\"id\": \"asia-r2-c1-paving-foliage-02\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [367, 384, 150, 90]}, {\"id\": \"asia-r2-c1-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [482, 264, 90, 100]}, {\"id\": \"asia-r2-c1-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [172, 564, 85, 55]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c1/inputs/q12-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-7bdf5538-e678-4254-93f7-4168dfba908e.png",
+      "archivedFile": "r2-c1/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "85f083b02ec5f8a6946b0047e601607424d77d3594952e0d3bd05e241cd6dac6",
+      "decodedRgbSha256": "2787dc6a50f8bff1e1d62d50237adc99af4f19fe3100c5874d2cb8e484edfdc5",
+      "lossless": true,
+      "attempt": 6,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c1/q21. Red maples, blue-grey rock pillars, lava, paved circular terraces and flights of stairs. The source has a thin straight horizontal stitching artifact through mist; paint continuous fine mist and rock texture there, preserving every actual silhouette. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c1-paving-foliage-06\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [535, 402, 180, 95]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c1/inputs/q21-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-8b0faddb-d981-4dca-8b31-c3a326adf203.png",
+      "archivedFile": "r2-c1/q21-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "sourceSha256": "fbfa211b6fe590d9eeac6a84a9f6757d7247f3c6b5d1a9c090d9d7310dadb468",
+      "decodedRgbSha256": "5dd1e32efea87a982f388883816184ea2653b031d79e62ced87e35d11f316aca",
+      "lossless": true,
+      "attempt": 7,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c1",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c1/q22. Red maples, blue-grey rock pillars, lava, paved circular terraces and flights of stairs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c1-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [172, 52, 85, 55]}, {\"id\": \"asia-r2-c1-paving-foliage-05\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [367, 167, 140, 85]}, {\"id\": \"asia-r2-c1-paving-foliage-06\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [87, 402, 180, 95]}, {\"id\": \"asia-r2-c1-paving-foliage-07\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [462, 457, 110, 85]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c1/inputs/q22-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-e7eecad2-9d10-455f-8941-ee539df83e97.png",
+      "archivedFile": "r2-c1/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "0613dd24618dd709e4b304afd2a162bbf6242f6c555ba39e654e2fc165600072",
+      "decodedRgbSha256": "813df9d7a0116fd098f6a407f82cbc1a2b82777486a17bdb062e87b5051fce61",
+      "lossless": true,
+      "attempt": 8,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c2/q11. Lava gorge, red Chinese bridge, diagonal stairway and grey paved terraces. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c2-paving-foliage-00\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [369, 334, 115, 65]}, {\"id\": \"asia-r2-c2-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [544, 449, 100, 75]}]. Remove any foliage visibly overlapping paved walking surface, including branches inside these search boxes. Keep cliff faces, rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c2/inputs/q11-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-07a89317-012f-4a40-aa84-dd6e57db503e.png",
+      "archivedFile": null,
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "54532ba5e5897670edff9f2804f9808182d1c44ae9628652f14f9bb43385314a",
+      "decodedRgbSha256": "b4e56e20aeefe53c5889790e2a267f118cef5c67834218af02b973f8d9c32064",
+      "lossless": true,
+      "attempt": 9,
+      "selected": false,
+      "supersededArchiveFile": "r2-c2/q11-native.webp",
+      "discardedReason": "Archive command returned a running session; orchestration incorrectly treated missing exit_code as failure and triggered a redundant redraw. Original output succeeded. Attempt 10 is selected."
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c2/q11: lava gorge and red Chinese bridge, partial diagonal stair at right. Preserve the exact bridge deck outline, all banks and falling lava geometry. Remove small red foliage protruding onto paved bridge landing, approximate input search box [369,334,115,65]. Keep all large remote trees. Same exact crop framing; do not invent any features.",
+      "referenced_image_paths": [
+        "r2-c2/inputs/q11-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-fec9d711-e53b-4a54-9521-8a8b77c53987.png",
+      "archivedFile": "r2-c2/q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "6588fa074832e5a60f9b0a60c260d63d8158f0555bfe94606ebdfd9d665653ab",
+      "decodedRgbSha256": "7fabcb836106409c565f9aae5030445aeebd2a2fdc45812ef9c435cdc789ebef",
+      "lossless": true,
+      "attempt": 10,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c2/q12. Lava gorge, red Chinese bridge, diagonal stairway and grey paved terraces. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c2-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [32, 449, 100, 75]}, {\"id\": \"asia-r2-c2-paving-foliage-02\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [352, 374, 110, 100]}, {\"id\": \"asia-r2-c2-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [202, 534, 120, 85]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c2/inputs/q12-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-a1deb4fc-b9a6-4b87-bc00-f5d3f08c932f.png",
+      "archivedFile": "r2-c2/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "13bdc96f184bfcd8d587fa377baad5952d24a0518db54da1d2265ba6625a8ab4",
+      "decodedRgbSha256": "155fcd5b65bce73a7db4fe73fc4f476c202e0ba2964f3edc2c12334a122b3f9f",
+      "lossless": true,
+      "attempt": 11,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c2/q21. Lava gorge, red Chinese bridge, diagonal stairway and grey paved terraces. A faint straight horizontal stitch exists through source upper lava; paint natural continuous lava texture, preserving the exact channel/fall geometry. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c2-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [544, -63, 100, 75]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c2/inputs/q21-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-2d04ebc7-db9b-41ad-8261-9277a6419797.png",
+      "archivedFile": "r2-c2/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "aea84c5000d94133e94cf1955f8533d6e8c3b98b325d43322b4c13ae7c43f358",
+      "decodedRgbSha256": "f303d800bbc7f6845315d6eddae7dea94ce290dc7e3774e2a758c5a85b02130c",
+      "lossless": true,
+      "attempt": 12,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c2",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c2/q22. Lava gorge, red Chinese bridge, diagonal stairway and grey paved terraces. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c2-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [32, -63, 100, 75]}, {\"id\": \"asia-r2-c2-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [202, 22, 120, 85]}, {\"id\": \"asia-r2-c2-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [232, 277, 140, 100]}, {\"id\": \"asia-r2-c2-paving-foliage-05\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [442, 352, 125, 75]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c2/inputs/q22-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-2fa88424-4779-4762-8f72-a1557f5be017.png",
+      "archivedFile": "r2-c2/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "f616b7f393cc8f021f9229ffd7481c7b52785d64cff60b4c136305f7f8f0a74c",
+      "decodedRgbSha256": "be517ebf46d248096dd07dd687a0ee56d714bad3d4787c662ba6d4e9f0fb1d53",
+      "lossless": true,
+      "attempt": 13,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c3",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c3/q11. Circular engraved plaza, curving inset stone paths, descending stairs and blue-grey cliffs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c3-paving-foliage-01\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [144, 418, 120, 85]}, {\"id\": \"asia-r2-c3-paving-foliage-02\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [464, 423, 115, 80]}, {\"id\": \"asia-r2-c3-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [584, 399, 110, 100]}, {\"id\": \"asia-r2-c3-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [244, 604, 100, 60]}, {\"id\": \"asia-r2-c3-paving-foliage-05\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [409, 634, 100, 100]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c3/inputs/q11-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-8e3ffb93-d4d2-4e7f-abb0-fc06441dd0ac.png",
+      "archivedFile": "r2-c3/q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "8f2e27462baa90e8a0b6a2c288a02276b11a26208336dd343b40b97d62e0eef1",
+      "decodedRgbSha256": "38f97be9a2ac1ac54a88e237acb53e70e1613998162b3d9eec732af69ec9105a",
+      "lossless": true,
+      "attempt": 14,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c3",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c3/q12. Circular engraved plaza, curving inset stone paths, descending stairs and blue-grey cliffs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c3-paving-foliage-00\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [197, 342, 120, 80]}, {\"id\": \"asia-r2-c3-paving-foliage-02\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [-48, 423, 115, 80]}, {\"id\": \"asia-r2-c3-paving-foliage-03\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [72, 399, 110, 100]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c3/inputs/q12-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-2dbe4626-67bb-417e-a8a7-2e53f59a62a4.png",
+      "archivedFile": "r2-c3/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "538ab5976c6e1919d0b17a52f92f205479e4cada12ad70ef592c735701ba80fc",
+      "decodedRgbSha256": "5d707ab8ff8492ac0717ecccd35f21a37321bc31aabeea3e82f60fcb2341fdd3",
+      "lossless": true,
+      "attempt": 15,
+      "selected": true
+    },
+    {
+      "chunk": "r2-c3",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric terrain microtile from an Asia Chinese/Japanese underworld game. EDIT the input crop. Return ONLY one full-bleed terrain image with identical framing and aspect ratio, maximum native resolution, no borders/captions. STRICT GEOMETRY LOCK: trace all original terrace/plaza boundaries, cliff silhouettes, stair tread count/width/locations, bridge deck, circular rings and ornamental lines, banks and water/lava channels at exactly the original relative coordinates. No shift/zoom/rotation, no added architecture or trees. Repaint with substantially finer ACTUAL DRAWN material detail: sharp chipped bevels on each individual paving stone, tiny fissures, recessed mortar, mineral grain, sparse moss and fine fallen leaves; detailed rock facets, bark and foliage. Preserve existing painterly stylization, colors, light direction and broad value hierarchy. Keep all water/lava/waterfalls and large clouds/mist as bases in exact original shapes for animation masks. Inaccessible mountains and forest trees stay. Remove only low shrubs/tree branches visibly crossing WALKABLE paving within specified boxes; extend coherent matching ground underneath. Boxes are approximate search areas, not rectangles to erase; never remove cliff, bank, bridge floor or stair structure. Paving-edge gold posts/rails may remain for now; preserve deck/stairs entirely. No DOF/parallax, no blur or sharpening halos, no photo noise. Tile r2-c3/q21. Circular engraved plaza, curving inset stone paths, descending stairs and blue-grey cliffs. Search boxes for foliage removal in INPUT pixels [x,y,width,height]: [{\"id\": \"asia-r2-c3-paving-foliage-04\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [244, 92, 100, 60]}, {\"id\": \"asia-r2-c3-paving-foliage-05\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [409, 122, 100, 100]}, {\"id\": \"asia-r2-c3-paving-foliage-06\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [344, 227, 110, 110]}, {\"id\": \"asia-r2-c3-paving-foliage-07\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [524, 252, 90, 80]}, {\"id\": \"asia-r2-c3-paving-foliage-09\", \"kind\": \"painted low foliage over/along walkable paving\", \"bboxInputPx\": [224, 397, 120, 65]}]. Remove any foliage visibly overlapping paved walking surface, including branches within these search boxes. Keep cliff faces, remote rock trees and terrace outlines completely unchanged.",
+      "referenced_image_paths": [
+        "r2-c3/inputs/q21-v2.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-6e66-71e2-a732-c3acc4249459/exec-0b9aa1a1-b6ee-4602-a9ff-9bb0457acdd7.png",
+      "archivedFile": "r2-c3/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "2213cac57e7159c99df1f8dfcab67a31b6e5790db51ceeabc36c296f6979ea15",
+      "decodedRgbSha256": "0aa1e85e64286234b764879163a5f75c82a16efb0bcf7c9d0fdec574af720996",
+      "lossless": true,
+      "attempt": 16,
+      "selected": true
+    }
+  ],
+  "failedGenerations": [],
+  "pendingAfterCallBudget": [
+    "r2-c3/q22"
+  ],
+  "note": "16 successful ImageGen calls, 15 distinct selected parts. Attempt 9 succeeded; an asynchronous archive-status handling error caused redundant attempt 10 for r2-c2/q11. No ImageGen service failure. Discarded variant pixels are not included in this pack; original source path and hash remain recorded."
+}

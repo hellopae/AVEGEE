@@ -1,0 +1,238 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      0,
+      1024,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      960,
+      576,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      0,
+      -64,
+      576,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r2-c1-paving-foliage-00",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          355,
+          159,
+          120,
+          65
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-01",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          365,
+          279,
+          180,
+          170
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      512,
+      1024,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      960,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      -64,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r2-c1-paving-foliage-00",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          -93,
+          159,
+          120,
+          65
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-01",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          -83,
+          279,
+          180,
+          170
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-02",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          367,
+          384,
+          150,
+          90
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-03",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          482,
+          264,
+          90,
+          100
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-04",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          172,
+          564,
+          85,
+          55
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      0,
+      1536,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      1472,
+      576,
+      640
+    ],
+    "coreChunkPx1x": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      0,
+      448,
+      576,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r2-c1-paving-foliage-06",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          535,
+          402,
+          180,
+          95
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      512,
+      1536,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      1472,
+      640,
+      640
+    ],
+    "coreChunkPx1x": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "contextChunkPx1x": [
+      448,
+      448,
+      640,
+      640
+    ],
+    "removalTargets": [
+      {
+        "id": "asia-r2-c1-paving-foliage-04",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          172,
+          52,
+          85,
+          55
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-05",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          367,
+          167,
+          140,
+          85
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-06",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          87,
+          402,
+          180,
+          95
+        ]
+      },
+      {
+        "id": "asia-r2-c1-paving-foliage-07",
+        "kind": "painted low foliage over/along walkable paving",
+        "bboxInputPx": [
+          462,
+          457,
+          110,
+          85
+        ]
+      }
+    ]
+  }
+]

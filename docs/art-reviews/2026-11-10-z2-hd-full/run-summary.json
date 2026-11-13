@@ -1,0 +1,216 @@
+{
+  "chunks": [
+    {
+      "chunk": "r1-c5",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1212,
+          1298
+        ],
+        "q12": [
+          1136,
+          1385
+        ],
+        "q21": [
+          1149,
+          1368
+        ],
+        "q22": [
+          1078,
+          1460
+        ]
+      },
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 9,
+      "structureTotalProbes": 12,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 77.43671232392781,
+      "sharpnessNumericalThresholdMet": true
+    },
+    {
+      "chunk": "r2-c1",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1189,
+          1323
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1189,
+          1323
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 8,
+      "structureTotalProbes": 12,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 66.63576532478007,
+      "sharpnessNumericalThresholdMet": true
+    },
+    {
+      "chunk": "r2-c2",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 6,
+      "structureTotalProbes": 12,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 55.28380343155873,
+      "sharpnessNumericalThresholdMet": true
+    },
+    {
+      "chunk": "r2-c3",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21"
+      ],
+      "pendingParts": [
+        "q22"
+      ],
+      "assemblyPending": true,
+      "pendingReason": "16-call cap reached: one redundant redraw of r2-c2/q11 after an asynchronous archive-status handling error",
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ]
+      },
+      "registrationAvailableForAllCompletedParts": true,
+      "sharpnessRatioLaplacian": null,
+      "structureMaxReliablePx1x": null,
+      "wholeStructureWithin4pxVerified": false
+    }
+  ],
+  "imageGenCalls": 16,
+  "generationLimit": 16,
+  "tool": "built-in image_gen.imagegen",
+  "neighborChunkSeamsApplied": false,
+  "qaPassedClaimed": false,
+  "inGameTestRun": false,
+  "successfulNativeParts": 15,
+  "failedCalls": [],
+  "pendingParts": [
+    "r2-c3/q22"
+  ],
+  "allRequestedChunksComplete": false,
+  "successfulImageGenCalls": 16,
+  "redundantGenerationCalls": 1,
+  "orchestrationIssue": "16 successful ImageGen calls, 15 distinct selected parts. Attempt 9 succeeded; an asynchronous archive-status handling error caused redundant attempt 10 for r2-c2/q11. No ImageGen service failure. Discarded variant pixels are not included in this pack; original source path and hash remain recorded.",
+  "pendingReview": [
+    "r2-c3/q22 generation and full chunk assembly/measurements",
+    "Residual foliage IDs in removed.json",
+    "All semantic structure contours and final art acceptance"
+  ],
+  "acceptanceSelfCheck": {
+    "1_parts_sharpness_structure": {
+      "status": "incomplete",
+      "selectedParts": 15,
+      "requestedParts": 16,
+      "completedChunksLaplacianRatio": [
+        77.43671232392781,
+        66.63576532478007,
+        55.28380343155873
+      ],
+      "reliableStructureProbeMaxPx1x": 1.4142135623730951,
+      "allSemanticContoursVerified": false,
+      "pending": [
+        "r2-c3/q22",
+        "r2-c3 full assembly and measurements",
+        "whole-map semantic contour review"
+      ]
+    },
+    "2_seams_and_object_removal": {
+      "status": "partial",
+      "reviewedCompleteChunkSeamSheets": [
+        "r1-c5",
+        "r2-c1",
+        "r2-c2"
+      ],
+      "observed": "No obvious rectangular internal seam in reviewed sheets; no certification of all microtexture joins",
+      "confirmedPavingIntrusionClearanceIds": 14,
+      "residualOrUnverifiedIds": [
+        "asia-r1-c5-paving-foliage-02",
+        "asia-r1-c5-paving-foliage-04",
+        "asia-r2-c1-paving-foliage-01",
+        "asia-r2-c1-paving-foliage-07",
+        "asia-r2-c2-paving-foliage-03"
+      ],
+      "r2c3FullReviewPending": true
+    },
+    "3_native_and_registration": {
+      "status": "partial",
+      "selectedNativePartsWithRegistration": 15,
+      "pending": [
+        "r2-c3/q22"
+      ],
+      "neighborChunkSeamsApplied": false
+    }
+  },
+  "verification": "verification.json",
+  "scope": "Only docs/art-reviews/2026-11-10-z2-hd-full added; no runtime assets activated"
+}

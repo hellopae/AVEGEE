@@ -1,0 +1,434 @@
+{
+  "checkScope": "files/decode/dimensions/affine shape/hash preservation/count/budget only; no art-quality gates",
+  "imageGenCalls": 16,
+  "fileBytesBeforeReport": 78864273,
+  "limitBytes": 80000000,
+  "decodedImageCount": 52,
+  "images": [
+    {
+      "path": "r1-c5/inputs/q11-v2.webp",
+      "size": [
+        538,
+        576
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/inputs/q12-v2.webp",
+      "size": [
+        473,
+        576
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/inputs/q21-v2.webp",
+      "size": [
+        538,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/inputs/q22-v2.webp",
+      "size": [
+        473,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/inventory-overlay.jpg",
+      "size": [
+        819,
+        1024
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r1-c5/q11-native.webp",
+      "size": [
+        1212,
+        1298
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/q12-native.webp",
+      "size": [
+        1136,
+        1385
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/q22-native.webp",
+      "size": [
+        1078,
+        1460
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/r1-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r1-c5/r1-c5-compare.jpg",
+      "size": [
+        3608,
+        2304
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r1-c5/removal-check.jpg",
+      "size": [
+        1080,
+        690
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r1-c5/seam-check.jpg",
+      "size": [
+        2200,
+        1850
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r1-c5/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c1/inputs/q11-v2.webp",
+      "size": [
+        576,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/inputs/q12-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/inputs/q21-v2.webp",
+      "size": [
+        576,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/inputs/q22-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/inventory-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c1/q11-native.webp",
+      "size": [
+        1189,
+        1323
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/q21-native.webp",
+      "size": [
+        1189,
+        1323
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/r2-c1-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c1/r2-c1-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c1/removal-check.jpg",
+      "size": [
+        1080,
+        920
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c1/seam-check.jpg",
+      "size": [
+        2200,
+        1850
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c1/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c2/inputs/q11-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/inputs/q12-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/inputs/q21-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/inputs/q22-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/inventory-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c2/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/r2-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c2/r2-c2-compare.jpg",
+      "size": [
+        4504,
+        2304
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c2/removal-check.jpg",
+      "size": [
+        1080,
+        690
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c2/seam-check.jpg",
+      "size": [
+        2200,
+        1850
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c2/structure-check.jpg",
+      "size": [
+        2096,
+        1110
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c3/inputs/q11-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/inputs/q12-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/inputs/q21-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/inputs/q22-v2.webp",
+      "size": [
+        640,
+        640
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/inventory-overlay.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "r2-c3/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "r2-c3/r2-c3-partial-review.jpg",
+      "size": [
+        1040,
+        1080
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "source-overview.jpg",
+      "size": [
+        2048,
+        1600
+      ],
+      "format": "JPEG"
+    }
+  ],
+  "errors": [
+    "missing r2-c3/seams.json",
+    "missing r2-c3/r2-c3-2x.webp",
+    "missing r2-c3/r2-c3-compare.jpg",
+    "missing r2-c3/seam-check.jpg",
+    "missing native/manifest r2-c3/q22",
+    "registration count r2-c3"
+  ],
+  "qaPassedClaimed": false
+}

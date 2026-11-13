@@ -1,0 +1,72 @@
+{
+  "devicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": 2.1875890132248217,
+  "threshold": 10,
+  "primaryRoi": "full_chunk",
+  "method": "Decoded output, Pillow Lanczos at identical engine zoom, grayscale Laplacian variance ksize1. No sharpening. Texture, contrast and removals affect ratio; not a resolution multiplier.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "v2": {
+        "laplacianVariance": 23.830278223323507,
+        "highPassMeanSquare": 4.453157806148481
+      },
+      "new": {
+        "laplacianVariance": 1587.9488273136021,
+        "highPassMeanSquare": 160.9177077777544
+      },
+      "laplacianRatio": 66.63576532478007
+    },
+    "upper_terrain": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        512
+      ],
+      "deviceSize": [
+        2240,
+        1120
+      ],
+      "v2": {
+        "laplacianVariance": 27.92594552017063,
+        "highPassMeanSquare": 5.292264269023325
+      },
+      "new": {
+        "laplacianVariance": 1662.8211367856547,
+        "highPassMeanSquare": 172.93281134361123
+      },
+      "laplacianRatio": 59.543951182767145
+    },
+    "lower_terrain": {
+      "rectPx1x": [
+        0,
+        512,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        1120
+      ],
+      "v2": {
+        "laplacianVariance": 19.843794809222906,
+        "highPassMeanSquare": 3.6311542745081637
+      },
+      "new": {
+        "laplacianVariance": 1514.6992532815473,
+        "highPassMeanSquare": 148.97233686429422
+      },
+      "laplacianRatio": 76.33112858925313
+    }
+  }
+}

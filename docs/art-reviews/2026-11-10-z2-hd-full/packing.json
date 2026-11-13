@@ -1,0 +1,101 @@
+{
+  "beforeBytes": 85662058,
+  "afterBytesBeforeReport": 78891742,
+  "targetBytes": 78500000,
+  "limitBytes": 80000000,
+  "jpegQuality": 70,
+  "jpegChromaSubsampling": "4:2:0",
+  "webpPixelsChanged": false,
+  "changes": [
+    {
+      "path": "r1-c5/inventory-overlay.jpg",
+      "oldBytes": 279062,
+      "newBytes": 162985
+    },
+    {
+      "path": "r1-c5/r1-c5-compare.jpg",
+      "oldBytes": 2855557,
+      "newBytes": 1429540
+    },
+    {
+      "path": "r1-c5/removal-check.jpg",
+      "oldBytes": 180239,
+      "newBytes": 131701
+    },
+    {
+      "path": "r1-c5/seam-check.jpg",
+      "oldBytes": 1662768,
+      "newBytes": 761588
+    },
+    {
+      "path": "r1-c5/structure-check.jpg",
+      "oldBytes": 893582,
+      "newBytes": 426301
+    },
+    {
+      "path": "r2-c1/inventory-overlay.jpg",
+      "oldBytes": 340425,
+      "newBytes": 195376
+    },
+    {
+      "path": "r2-c1/r2-c1-compare.jpg",
+      "oldBytes": 2696049,
+      "newBytes": 1894048
+    },
+    {
+      "path": "r2-c1/removal-check.jpg",
+      "oldBytes": 263482,
+      "newBytes": 189725
+    },
+    {
+      "path": "r2-c1/seam-check.jpg",
+      "oldBytes": 1424120,
+      "newBytes": 969701
+    },
+    {
+      "path": "r2-c1/structure-check.jpg",
+      "oldBytes": 802158,
+      "newBytes": 557201
+    },
+    {
+      "path": "r2-c2/inventory-overlay.jpg",
+      "oldBytes": 350287,
+      "newBytes": 199416
+    },
+    {
+      "path": "r2-c2/r2-c2-compare.jpg",
+      "oldBytes": 2709281,
+      "newBytes": 1839081
+    },
+    {
+      "path": "r2-c2/removal-check.jpg",
+      "oldBytes": 198751,
+      "newBytes": 146818
+    },
+    {
+      "path": "r2-c2/seam-check.jpg",
+      "oldBytes": 1398545,
+      "newBytes": 920648
+    },
+    {
+      "path": "r2-c2/structure-check.jpg",
+      "oldBytes": 821367,
+      "newBytes": 550507
+    },
+    {
+      "path": "r2-c3/inventory-overlay.jpg",
+      "oldBytes": 309862,
+      "newBytes": 177753
+    },
+    {
+      "path": "r2-c3/r2-c3-partial-review.jpg",
+      "oldBytes": 391203,
+      "newBytes": 279333
+    },
+    {
+      "path": "source-overview.jpg",
+      "oldBytes": 542730,
+      "newBytes": 517430
+    }
+  ]
+}
