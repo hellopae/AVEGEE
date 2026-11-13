@@ -23,7 +23,8 @@ test('FX5-1: scene cloud shadows are clearly stronger than the map (map stays .3
 
 test('FX5-2/3: the 51 pilot ground sprites are hidden by flag, the left lava bridge rails are removed, the central bridge rails stay, the pier rails are off (v5 fallback patch)', async () => {
   const gs = await import('../src/town-ground-sprites.js');
-  const list = JSON.parse(read('img/map-zone1/v7r/sprites.json'));
+  const all = JSON.parse(read('img/map-zone1/v7r/sprites.json'));
+  const list = all.filter(s => !s.id.startsWith('red-tree-'));   // the 12 red trees added 13 Nov carry show:true (tests/z1-red-trees.test.mjs)
   assert.equal(list.length, 51, 'files + json kept');
   const shown = list.filter(gs.groundSpriteShown);
   assert.ok(!shown.some(s => s.layer === 'sort'), 'no tree / bush / lamp post drawn');
