@@ -1,0 +1,178 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      3072,
+      1024,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      960,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "r2-c4-floor-shrub-1",
+        "rectInInputPx": [
+          369,
+          406,
+          210,
+          100
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-2",
+        "rectInInputPx": [
+          531,
+          469,
+          100,
+          90
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-3",
+        "rectInInputPx": [
+          529,
+          567,
+          105,
+          72
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      3584,
+      1024,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      960,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "r2-c4-floor-shrub-1",
+        "rectInInputPx": [
+          -143,
+          406,
+          210,
+          100
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-2",
+        "rectInInputPx": [
+          19,
+          469,
+          100,
+          90
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-3",
+        "rectInInputPx": [
+          17,
+          567,
+          105,
+          72
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-4",
+        "rectInInputPx": [
+          280,
+          562,
+          78,
+          76
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      3072,
+      1536,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3008,
+      1472,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "r2-c4-floor-shrub-2",
+        "rectInInputPx": [
+          531,
+          -43,
+          100,
+          90
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-3",
+        "rectInInputPx": [
+          529,
+          55,
+          105,
+          72
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      3584,
+      1536,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      3520,
+      1472,
+      640,
+      640
+    ],
+    "removal": [
+      {
+        "id": "r2-c4-floor-shrub-2",
+        "rectInInputPx": [
+          19,
+          -43,
+          100,
+          90
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-3",
+        "rectInInputPx": [
+          17,
+          55,
+          105,
+          72
+        ]
+      },
+      {
+        "id": "r2-c4-floor-shrub-4",
+        "rectInInputPx": [
+          280,
+          50,
+          78,
+          76
+        ]
+      }
+    ]
+  }
+]

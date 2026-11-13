@@ -1,0 +1,36 @@
+{
+  "requestedObjects": [
+    {
+      "id": "r2-c5-floor-shrub-1",
+      "chunk": "r2-c5",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        4119,
+        1715,
+        90,
+        75
+      ],
+      "ownerWalkMaskFraction": 0.49333333333333335,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c5-floor-shrub-2",
+      "chunk": "r2-c5",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        4466,
+        1862,
+        150,
+        115
+      ],
+      "ownerWalkMaskFraction": 0.6467826086956522,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    }
+  ],
+  "status": "visual floor-only removal reviewed; complete silhouette removal not certified; Claude review pending",
+  "removedIdsVerified": [],
+  "floorOnlyReview": "Open paved interiors appear continuous. Edge foliage remains intentionally; requested survey rectangles include cliff edges and are not wholesale deletion boxes.",
+  "qualityAcceptance": "pending Claude review"
+}

@@ -1,0 +1,263 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "plannedCount": 16,
+  "generationCount": 16,
+  "generations": [
+    {
+      "chunk": "r2-c4",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c4/q11, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c4-floor-shrub-1\", \"rectInInputPx\": [369, 406, 210, 100]}, {\"id\": \"r2-c4-floor-shrub-2\", \"rectInInputPx\": [531, 469, 100, 90]}, {\"id\": \"r2-c4-floor-shrub-3\", \"rectInInputPx\": [529, 567, 105, 72]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c4/inputs/q11-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-1ace579f-a24d-4354-aee8-c506aa53f668.png",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "archivedNative": "r2-c4/q11-native.webp",
+      "sourceSha256": "0ce1939462d62ae84ed379905e35d5c924f38a2db20a8b9861840c6582f98100",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c4/q12, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c4-floor-shrub-1\", \"rectInInputPx\": [-143, 406, 210, 100]}, {\"id\": \"r2-c4-floor-shrub-2\", \"rectInInputPx\": [19, 469, 100, 90]}, {\"id\": \"r2-c4-floor-shrub-3\", \"rectInInputPx\": [17, 567, 105, 72]}, {\"id\": \"r2-c4-floor-shrub-4\", \"rectInInputPx\": [280, 562, 78, 76]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c4/inputs/q12-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-eb7948a1-7e7d-432d-9f35-35496ecf5dac.png",
+      "archivedNative": "r2-c4/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "808494a2c986d304fac89daee8c7b604151bbc889d412c5c5a74c8de20a044ad",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c4/q21, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c4-floor-shrub-2\", \"rectInInputPx\": [531, -43, 100, 90]}, {\"id\": \"r2-c4-floor-shrub-3\", \"rectInInputPx\": [529, 55, 105, 72]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c4/inputs/q21-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-9f68fa88-e452-4800-95e5-1a50e4103ff1.png",
+      "archivedNative": "r2-c4/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "2065adf9cbb8fc85ca807991f84ff6e0c5058c9ee78a0b40221fe98c99cc090d",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c4",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c4/q22, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c4-floor-shrub-2\", \"rectInInputPx\": [19, -43, 100, 90]}, {\"id\": \"r2-c4-floor-shrub-3\", \"rectInInputPx\": [17, 55, 105, 72]}, {\"id\": \"r2-c4-floor-shrub-4\", \"rectInInputPx\": [280, 50, 78, 76]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c4/inputs/q22-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-98587671-d238-42d9-ad00-b12e666b1bd0.png",
+      "archivedNative": "r2-c4/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "127061e9517e0b3a63fc4c9ede7d92fd188535fb91bcb360f59a06dd55df3d39",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c5/q11, input 538x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c5/inputs/q11-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-a09117b6-00cc-4045-a842-84540eb826b6.png",
+      "archivedNative": "r2-c5/q11-native.webp",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "sourceSha256": "3093fdde9882e0042e8ad21d2a66123e53387ca04ce619cf4d571752102f131a",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c5/q12, input 473x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c5/inputs/q12-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-587aae76-c9f8-4dc5-9452-c9a7d4b0543d.png",
+      "archivedNative": "r2-c5/q12-native.webp",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "sourceSha256": "d32bee4d49643d6368453bb689b5ccc88c53d7ea5e6a09992cf8933e5d32a556",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c5/q21, input 538x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c5-floor-shrub-1\", \"rectInInputPx\": [87, 243, 90, 75]}, {\"id\": \"r2-c5-floor-shrub-2\", \"rectInInputPx\": [434, 390, 150, 115]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c5/inputs/q21-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-4369ae4c-91ab-470d-9cd1-8b587736f6aa.png",
+      "archivedNative": "r2-c5/q21-native.webp",
+      "nativeSize": [
+        1149,
+        1368
+      ],
+      "sourceSha256": "1fa18aef88f9f9066d35a6377a0b46977f82497cde8a2d397c519e926978dfba",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r2-c5",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r2-c5/q22, input 473x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: [{\"id\": \"r2-c5-floor-shrub-2\", \"rectInInputPx\": [24, 390, 150, 115]}]. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r2-c5/inputs/q22-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-93b9e8bc-1199-4e71-a82f-33d79ce73b90.png",
+      "archivedNative": "r2-c5/q22-native.webp",
+      "nativeSize": [
+        1078,
+        1460
+      ],
+      "sourceSha256": "5c9c6114e5a7500c3d7a7ba5c6303a57a5c4883680b217469778f4a020616555",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c1/q11, input 576x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c1/inputs/q11-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-b57b0af0-3bd3-459a-9874-2ea28eb355dc.png",
+      "archivedNative": "r3-c1/q11-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "sourceSha256": "1389b86705ce28a2340e3cebecb10c8e446ed58eafbac362fbb26a71e4a23e77",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c1/q12, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c1/inputs/q12-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-60b4e547-469f-47e0-ba7e-583c6aa8c510.png",
+      "archivedNative": "r3-c1/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "2f32bb8150e7bf59f2b1c52cec4fd1a4b69121c99be73799daefdc8fb1d14d08",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c1/q21, input 576x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c1/inputs/q21-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-8638322b-7723-4a99-be2f-fac0127fb6ca.png",
+      "archivedNative": "r3-c1/q21-native.webp",
+      "nativeSize": [
+        1189,
+        1323
+      ],
+      "sourceSha256": "43755a91316dbe6d46fb23f0368be95b5fab381dd51a0808865fda5e072011b5",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c1",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c1/q22, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c1/inputs/q22-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-d8c782a1-141d-4c0b-bc73-e9d2318dfcbd.png",
+      "archivedNative": "r3-c1/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "6ea3af580d7bb64ee4ae7d9f0bbdcb9fad4fe0ad9e087ab7b999d62421a747ad",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q11",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c2/q11, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c2/inputs/q11-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-2543e890-fac8-46b2-a67a-60ea0cebd0f6.png",
+      "archivedNative": "r3-c2/q11-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "f839c3b959b5a3d1d92d3d649c925aae443deaec937d435c9f35475aaba64062",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q12",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c2/q12, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c2/inputs/q12-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-61ce6c3c-612e-4372-af10-d787780dd66d.png",
+      "archivedNative": "r3-c2/q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "6d3ddae9e997fd5fb0f1a4e8109af4217f71029ce5944895ebee8a7b231c3e14",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q21",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c2/q21, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c2/inputs/q21-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-872907fa-e7f0-45ee-ab7e-a51e95f21022.png",
+      "archivedNative": "r3-c2/q21-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "6746bffea84da6d78237ba7bf856a9774e20524ade20ce3213ebdb961b69e194",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    },
+    {
+      "chunk": "r3-c2",
+      "id": "q22",
+      "prompt": "Use case: precise-object-edit. Edit the input image IN PLACE as one full-bleed production hand-painted isometric game terrain microtile. This is an exact terrain restoration, not loose inspiration. Preserve the exact crop, framing, perspective, ALL terrace/path boundaries, stone pavement outer contours, stair count/width/position, cliff silhouettes, rocks, waterbanks, waterfall shapes, river course and mist/cloud silhouettes. Do not move, rotate, zoom, redesign or invent structures. Keep original East Asian Chinese/Japanese underworld style, cool blue-grey stone, red maple/pink sakura/pine foliage, turquoise river, gold trim and red bridges. Match original overall lighting, palette and values. Draw substantially more REAL fine painterly detail: chipped stone bevels, distinct stones, fine recessed mortar, tiny fissures/mineral grain, sparse moss in cracks, individual small leaves, detailed bark and rock crevices. Keep water and mist as painted base layers in exactly their existing contours. Retain unreachable forest and mountains, all stairs, bridge decks, gold posts/rails and their exact silhouettes. Remove only the specifically listed low shrubs on owner-walkable stone. If no rectangles are listed, preserve ALL vegetation. Fill removed shrubs with continuous paving; never widen the path or erase forest. Crop r3-c2/q22, input 640x640 map pixels. Requested floor-only removal survey rectangles in input coordinates [x,y,w,h]: []. Rectangles locate intrusions, not areas to erase wholesale. Keep floor/rock boundaries inside them. Output just this same terrain crop, at maximum native resolution ideally 2048 pixels tall, exact same aspect ratio. No borders, labels, characters, new props, new clouds, DOF, blur, parallax, photographic noise or sharpening halos. Precisely align every object where it crosses the four image edges; add resolved material detail instead of enlarging blur.",
+      "input": "r3-c2/inputs/q22-master.webp",
+      "status": "generated",
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d335-bf75-7a92-add0-dd4006fd4ae2/exec-fbd1cba8-8fae-40a5-bbb9-f413e2f390d3.png",
+      "archivedNative": "r3-c2/q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "sourceSha256": "920ba4a969cf6f3962cc4efdb6f5743f899bcdfd5cd472234bc1d66b78fa56ac",
+      "inputArchived": false,
+      "inputRebuild": "scripts/prepare.py from source-provenance.json master tiles; crop in inputs/tiles.json"
+    }
+  ]
+}

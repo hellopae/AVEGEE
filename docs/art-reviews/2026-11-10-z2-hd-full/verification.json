@@ -1,0 +1,262 @@
+{
+  "scope": "file completeness, decoding and dimensions only; no art/structure/seam acceptance",
+  "imageGenCalls": 16,
+  "imageCount": 36,
+  "outputBytesBeforeVerificationFile": 78700603,
+  "limitBytes": 80000000,
+  "images": [
+    {
+      "path": "r2-c4/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c4/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c4/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c4/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r2-c4/r2-c4-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r2-c4/r2-c4-compare.jpg",
+      "size": [
+        1424,
+        2220
+      ]
+    },
+    {
+      "path": "r2-c4/seam-check.jpg",
+      "size": [
+        2072,
+        1690
+      ]
+    },
+    {
+      "path": "r2-c4/structure-check.jpg",
+      "size": [
+        2072,
+        1064
+      ]
+    },
+    {
+      "path": "r2-c4/walkmask-inventory.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "r2-c5/q11-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r2-c5/q12-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r2-c5/q21-native.webp",
+      "size": [
+        1149,
+        1368
+      ]
+    },
+    {
+      "path": "r2-c5/q22-native.webp",
+      "size": [
+        1078,
+        1460
+      ]
+    },
+    {
+      "path": "r2-c5/r2-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ]
+    },
+    {
+      "path": "r2-c5/r2-c5-compare.jpg",
+      "size": [
+        1424,
+        2220
+      ]
+    },
+    {
+      "path": "r2-c5/seam-check.jpg",
+      "size": [
+        1662,
+        1690
+      ]
+    },
+    {
+      "path": "r2-c5/structure-check.jpg",
+      "size": [
+        1662,
+        1064
+      ]
+    },
+    {
+      "path": "r2-c5/walkmask-inventory.jpg",
+      "size": [
+        819,
+        1024
+      ]
+    },
+    {
+      "path": "r3-c1/q11-native.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "path": "r3-c1/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c1/q21-native.webp",
+      "size": [
+        1189,
+        1323
+      ]
+    },
+    {
+      "path": "r3-c1/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c1/r3-c1-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c1/r3-c1-compare.jpg",
+      "size": [
+        1424,
+        2220
+      ]
+    },
+    {
+      "path": "r3-c1/seam-check.jpg",
+      "size": [
+        2072,
+        1690
+      ]
+    },
+    {
+      "path": "r3-c1/structure-check.jpg",
+      "size": [
+        2072,
+        1064
+      ]
+    },
+    {
+      "path": "r3-c1/walkmask-inventory.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "r3-c2/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c2/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "r3-c2/r3-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "r3-c2/r3-c2-compare.jpg",
+      "size": [
+        1424,
+        2220
+      ]
+    },
+    {
+      "path": "r3-c2/seam-check.jpg",
+      "size": [
+        2072,
+        1690
+      ]
+    },
+    {
+      "path": "r3-c2/structure-check.jpg",
+      "size": [
+        2072,
+        1064
+      ]
+    },
+    {
+      "path": "r3-c2/walkmask-inventory.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    }
+  ],
+  "qualityAcceptance": "pending Claude review"
+}

@@ -1,0 +1,124 @@
+{
+  "method": "Fixed ROIs, Pillow Lanczos to same 2.8 device px/world unit; grayscale Laplacian ksize1. No sharpening.",
+  "threshold": 10,
+  "primaryRoi": "full_chunk",
+  "primaryRatio": 69.32355969741445,
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        2240,
+        2240
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 24.919309192418197,
+          "highPassMeanSquare": 4.7199765740392055
+        },
+        "redraw": {
+          "laplacianVariance": 1727.4952184189317,
+          "highPassMeanSquare": 165.82469403329046
+        }
+      },
+      "laplacianRatio": 69.32355969741445
+    },
+    "top_left": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 25.32145691102015,
+          "highPassMeanSquare": 4.828737220386057
+        },
+        "redraw": {
+          "laplacianVariance": 1887.7570634258832,
+          "highPassMeanSquare": 174.37390182032144
+        }
+      },
+      "laplacianRatio": 74.55167647183494
+    },
+    "top_right": {
+      "rectPx1x": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 24.45101109526546,
+          "highPassMeanSquare": 4.650534682143796
+        },
+        "redraw": {
+          "laplacianVariance": 1456.6850541017247,
+          "highPassMeanSquare": 147.48389388594293
+        }
+      },
+      "laplacianRatio": 59.57565715488093
+    },
+    "bottom_left": {
+      "rectPx1x": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 29.442155346897675,
+          "highPassMeanSquare": 5.632764727983602
+        },
+        "redraw": {
+          "laplacianVariance": 2314.516468411983,
+          "highPassMeanSquare": 216.9943509144932
+        }
+      },
+      "laplacianRatio": 78.61233123531713
+    },
+    "bottom_right": {
+      "rectPx1x": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "deviceSize": [
+        1120,
+        1120
+      ],
+      "versions": {
+        "master": {
+          "laplacianVariance": 20.684301362568554,
+          "highPassMeanSquare": 3.804197857883638
+        },
+        "redraw": {
+          "laplacianVariance": 1254.8826597638501,
+          "highPassMeanSquare": 124.5738499396566
+        }
+      },
+      "laplacianRatio": 60.668360887197025
+    }
+  },
+  "limitation": "Edge/texture energy depends on material/contrast/removal; ratio does not certify art quality."
+}

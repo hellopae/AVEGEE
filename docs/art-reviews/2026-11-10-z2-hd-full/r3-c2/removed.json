@@ -1,0 +1,7 @@
+{
+  "requestedObjects": [],
+  "status": "visual floor-only removal reviewed; complete silhouette removal not certified; Claude review pending",
+  "removedIdsVerified": [],
+  "floorOnlyReview": "No baked removals requested: lower forest paths are outside owner walkmask. Original trees/skulls retained.",
+  "qualityAcceptance": "pending Claude review"
+}

@@ -1,0 +1,144 @@
+{
+  "zone": "asia",
+  "scope": [
+    "r2-c4",
+    "r2-c5",
+    "r3-c1",
+    "r3-c2"
+  ],
+  "coordinateFormat": "[x,y,width,height], master 1x",
+  "evidence": [
+    "src/town-layout.js",
+    "src/town-asia-trees.js",
+    "src/town-owner-walkmask-asia.js",
+    "src/zone-skin.js"
+  ],
+  "rules": {
+    "liquidsAndClouds": "keep-baked in original silhouette",
+    "unreachableForest": "keep-baked",
+    "stairsAndBridgeDecks": "keep-baked",
+    "bridgeRails": "keep unless individually requested"
+  },
+  "objects": [
+    {
+      "id": "asia-tree-10",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        3720.1635,
+        1493.0012
+      ],
+      "chunk": "r2-c4",
+      "on_walk": true,
+      "action": "separate-runtime-sprite",
+      "note": "Not automatically a baked object; do not erase background forest from sprite footprint."
+    },
+    {
+      "id": "asia-tree-16",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        4203.308,
+        1856.0928000000001
+      ],
+      "chunk": "r2-c5",
+      "on_walk": true,
+      "action": "separate-runtime-sprite",
+      "note": "Not automatically a baked object; do not erase background forest from sprite footprint."
+    },
+    {
+      "id": "asia-tree-22",
+      "kind": "runtime-tree",
+      "footMasterPx1x": [
+        593.732,
+        2165.1139
+      ],
+      "chunk": "r3-c1",
+      "on_walk": true,
+      "action": "separate-runtime-sprite",
+      "note": "Not automatically a baked object; do not erase background forest from sprite footprint."
+    },
+    {
+      "id": "r2-c4-floor-shrub-1",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3377,
+        1366,
+        210,
+        100
+      ],
+      "ownerWalkMaskFraction": 0.6801904761904762,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-2",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3539,
+        1429,
+        100,
+        90
+      ],
+      "ownerWalkMaskFraction": 0.6561111111111111,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-3",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3537,
+        1527,
+        105,
+        72
+      ],
+      "ownerWalkMaskFraction": 0.2392857142857143,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-4",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3800,
+        1522,
+        78,
+        76
+      ],
+      "ownerWalkMaskFraction": 0.8719635627530364,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c5-floor-shrub-1",
+      "chunk": "r2-c5",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        4119,
+        1715,
+        90,
+        75
+      ],
+      "ownerWalkMaskFraction": 0.49333333333333335,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c5-floor-shrub-2",
+      "chunk": "r2-c5",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        4466,
+        1862,
+        150,
+        115
+      ],
+      "ownerWalkMaskFraction": 0.6467826086956522,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    }
+  ]
+}

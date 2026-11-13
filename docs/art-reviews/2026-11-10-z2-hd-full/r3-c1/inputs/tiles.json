@@ -1,0 +1,66 @@
+[
+  {
+    "id": "q11",
+    "coreMasterPx1x": [
+      0,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      1984,
+      576,
+      640
+    ],
+    "removal": []
+  },
+  {
+    "id": "q12",
+    "coreMasterPx1x": [
+      512,
+      2048,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      1984,
+      640,
+      640
+    ],
+    "removal": []
+  },
+  {
+    "id": "q21",
+    "coreMasterPx1x": [
+      0,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      0,
+      2496,
+      576,
+      640
+    ],
+    "removal": []
+  },
+  {
+    "id": "q22",
+    "coreMasterPx1x": [
+      512,
+      2560,
+      512,
+      512
+    ],
+    "contextMasterPx1x": [
+      448,
+      2496,
+      640,
+      640
+    ],
+    "removal": []
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "requestedObjects": [
+    {
+      "id": "r2-c4-floor-shrub-1",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3377,
+        1366,
+        210,
+        100
+      ],
+      "ownerWalkMaskFraction": 0.6801904761904762,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-2",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3539,
+        1429,
+        100,
+        90
+      ],
+      "ownerWalkMaskFraction": 0.6561111111111111,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-3",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3537,
+        1527,
+        105,
+        72
+      ],
+      "ownerWalkMaskFraction": 0.2392857142857143,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    },
+    {
+      "id": "r2-c4-floor-shrub-4",
+      "chunk": "r2-c4",
+      "kind": "baked-low-shrub",
+      "action": "remove-on-floor-only",
+      "masterRectPx1x": [
+        3800,
+        1522,
+        78,
+        76
+      ],
+      "ownerWalkMaskFraction": 0.8719635627530364,
+      "note": "Remove only vegetation projecting onto existing stone floor in this survey region; retain cliff-edge/forest vegetation and exact floor contour."
+    }
+  ],
+  "status": "visual floor-only removal reviewed; complete silhouette removal not certified; Claude review pending",
+  "removedIdsVerified": [],
+  "floorOnlyReview": "Open paved interiors appear continuous. Edge foliage remains intentionally; requested survey rectangles include cliff edges and are not wholesale deletion boxes.",
+  "qualityAcceptance": "pending Claude review"
+}
