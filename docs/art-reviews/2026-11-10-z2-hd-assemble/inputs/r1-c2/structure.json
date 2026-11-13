@@ -1,0 +1,177 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed source landmarks; 49x49 DoG sigma1.5/6 template correlation, search +/-12 1x pixels, measured on assembled output downsampled to 1x. Confidence >=0.6; removal boxes excluded. Same method as d54fac28.",
+  "maxReliableDisplacementPx1x": 4.47213595499958,
+  "totalProbes": 11,
+  "reliableProbes": 10,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "limitation": "Affine inliers and local probes do not certify all contours. Low-correlation and search-boundary hits require human review. No retry to meet numeric thresholds.",
+  "probes": [
+    {
+      "id": "mountain-summit",
+      "sourcePx1x": [
+        474,
+        43
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9777158498764038,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lava-fall-top",
+      "sourcePx1x": [
+        152,
+        413
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.888603150844574,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lava-fall-base",
+      "sourcePx1x": [
+        180,
+        586
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9777584671974182,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "bridge-deck-left",
+      "sourcePx1x": [
+        48,
+        781
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.977006733417511,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "bridge-deck-right",
+      "sourcePx1x": [
+        289,
+        832
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9776110053062439,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-foot-left",
+      "sourcePx1x": [
+        407,
+        859
+      ],
+      "displacementPx1x": [
+        12,
+        -5
+      ],
+      "distancePx1x": 13.0,
+      "normalizedCorrelation": 0.5080643892288208,
+      "overlapsRemovalBox": true,
+      "reliable": false
+    },
+    {
+      "id": "stair-foot-right",
+      "sourcePx1x": [
+        513,
+        904
+      ],
+      "displacementPx1x": [
+        4,
+        2
+      ],
+      "distancePx1x": 4.47213595499958,
+      "normalizedCorrelation": 0.7799639105796814,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-top-left",
+      "sourcePx1x": [
+        750,
+        573
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9417420625686646,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "stair-top-right",
+      "sourcePx1x": [
+        866,
+        611
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9639166593551636,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "plaza-front-edge",
+      "sourcePx1x": [
+        952,
+        655
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8394630551338196,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "cliff-spire",
+      "sourcePx1x": [
+        679,
+        227
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9541175961494446,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    }
+  ]
+}

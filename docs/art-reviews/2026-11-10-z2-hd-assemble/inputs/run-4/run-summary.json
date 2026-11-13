@@ -1,0 +1,182 @@
+{
+  "zone": 2,
+  "skin": "asia",
+  "chunkSet": "4/5",
+  "chunks": [
+    {
+      "chunk": "r3-c3",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "reliableProbes": 8,
+      "totalProbes": 18,
+      "sharpnessRatioLaplacian": 81.4881878985918,
+      "qualityDecision": "pending Claude review",
+      "availableNatives": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingNativeParts": []
+    },
+    {
+      "chunk": "r3-c4",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 0.0,
+      "reliableProbes": 16,
+      "totalProbes": 18,
+      "sharpnessRatioLaplacian": 71.34410492642355,
+      "qualityDecision": "pending Claude review",
+      "availableNatives": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingNativeParts": []
+    },
+    {
+      "chunk": "r3-c5",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1149,
+          1368
+        ],
+        "q12": [
+          1078,
+          1459
+        ],
+        "q21": [
+          1149,
+          1368
+        ],
+        "q22": [
+          1078,
+          1460
+        ]
+      },
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "reliableProbes": 16,
+      "totalProbes": 16,
+      "sharpnessRatioLaplacian": 91.45794034523878,
+      "qualityDecision": "pending Claude review",
+      "availableNatives": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingNativeParts": []
+    },
+    {
+      "chunk": "r4-c1",
+      "completeParts": [
+        "q11",
+        "q12"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1835,
+          857
+        ],
+        "q12": [
+          1935,
+          813
+        ]
+      },
+      "outputSize": [
+        2048,
+        410
+      ],
+      "structureMaxReliablePx1x": 1.0,
+      "reliableProbes": 8,
+      "totalProbes": 8,
+      "sharpnessRatioLaplacian": 114.33815591138878,
+      "qualityDecision": "pending Claude review",
+      "availableNatives": [
+        "q11",
+        "q12"
+      ],
+      "pendingNativeParts": []
+    }
+  ],
+  "tool": "built-in image_gen.imagegen",
+  "inheritedImageGenCalls": 2,
+  "imageGenCallsThisRun": 12,
+  "totalDistinctImageGenCalls": 14,
+  "generationLimitThisRun": 16,
+  "pending": [],
+  "neighborChunkSeamsApplied": false,
+  "inGameTestRun": false,
+  "qaPassedClaimed": false,
+  "qualityDecision": "pending Claude review",
+  "automatedCheckScope": "file completeness / openability / dimensions; numeric quality measurements are evidence only"
+}

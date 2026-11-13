@@ -1,0 +1,119 @@
+{
+  "objects": [
+    {
+      "id": "asia-r2-c2-paving-foliage-00",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1329,
+        1294,
+        115,
+        65
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.7719063545150502,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r2-c2-paving-foliage-01",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1504,
+        1409,
+        100,
+        75
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.5452,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r2-c2-paving-foliage-02",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1824,
+        1334,
+        110,
+        100
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.4852727272727273,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r2-c2-paving-foliage-03",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1674,
+        1494,
+        120,
+        85
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.3988235294117647,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": false,
+      "reviewOutcome": "residual foliage visible / full paving clearance not confirmed",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r2-c2-paving-foliage-04",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1704,
+        1749,
+        140,
+        100
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.4594285714285714,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    },
+    {
+      "id": "asia-r2-c2-paving-foliage-05",
+      "kind": "painted low foliage over/along walkable paving",
+      "action": "remove-and-inpaint-ground",
+      "masterPx": [
+        1914,
+        1824,
+        125,
+        75
+      ],
+      "chunk": "r2-c2",
+      "walkmaskBoxCoverage": 0.37866666666666665,
+      "evidence": "source-overview.jpg + owner walkmask; bbox may include non-walkable margins, preserve cliff outline",
+      "removalVerified": true,
+      "reviewOutcome": "paving intrusion cleared in reviewed crop",
+      "reviewEvidence": "removal-check.jpg"
+    }
+  ],
+  "whiteLumps": [],
+  "allRemovalsVisuallyVerified": false,
+  "removedIds": [
+    "asia-r2-c2-paving-foliage-00",
+    "asia-r2-c2-paving-foliage-01",
+    "asia-r2-c2-paving-foliage-02",
+    "asia-r2-c2-paving-foliage-04",
+    "asia-r2-c2-paving-foliage-05"
+  ],
+  "residualOrUnverifiedIds": [
+    "asia-r2-c2-paving-foliage-03"
+  ],
+  "reviewMethod": "Same-size before/after crops: source v2 vs registered 2x; explicit visual review, no sprite overlays"
+}

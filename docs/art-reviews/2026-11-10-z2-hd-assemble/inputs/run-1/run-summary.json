@@ -1,0 +1,186 @@
+{
+  "zone": "asia",
+  "chunkSet": "1/5",
+  "status": "partial-quality-delivery-for-review",
+  "chunks": [
+    {
+      "chunk": "r1-c1",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [
+        "human contour / tread-count review",
+        "vegetation inventory verification"
+      ],
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1189,
+          1323
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 0.0,
+      "structureReliableProbes": 8,
+      "structureTotalProbes": 12,
+      "sharpnessRatioLaplacian": 67.69957086631884,
+      "wholeStructureWithin4pxVerified": false,
+      "qualityDecision": "candidate-for-Claude-review"
+    },
+    {
+      "chunk": "r1-c2",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [
+        "q11 geometry-preserving redraw",
+        "q12 geometry-preserving redraw",
+        "stair-foot-right probe review",
+        "vegetation inventory verification"
+      ],
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 4.47213595499958,
+      "structureReliableProbes": 10,
+      "structureTotalProbes": 11,
+      "sharpnessRatioLaplacian": 35.53991408716515,
+      "wholeStructureWithin4pxVerified": false,
+      "qualityDecision": "needs-correction-before-ASSEMBLE"
+    },
+    {
+      "chunk": "r1-c3",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [
+        "q11 / q12 contour correction",
+        "q21 unwanted tree removal and source-feature review",
+        "vegetation inventory verification"
+      ],
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 11,
+      "structureTotalProbes": 12,
+      "sharpnessRatioLaplacian": 46.92465832993914,
+      "wholeStructureWithin4pxVerified": false,
+      "qualityDecision": "needs-correction-before-ASSEMBLE"
+    },
+    {
+      "chunk": "r1-c4",
+      "completeParts": [
+        "q11",
+        "q12",
+        "q21",
+        "q22"
+      ],
+      "pendingParts": [
+        "bridge geometry / stair review and correction",
+        "12-pixel probe investigation",
+        "vegetation inventory verification"
+      ],
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxReliablePx1x": 12.0,
+      "structureReliableProbes": 10,
+      "structureTotalProbes": 12,
+      "sharpnessRatioLaplacian": 36.5845548190091,
+      "wholeStructureWithin4pxVerified": false,
+      "qualityDecision": "needs-correction-before-ASSEMBLE"
+    }
+  ],
+  "imageGenCalls": 16,
+  "generationLimit": 16,
+  "retries": 0,
+  "tool": "built-in image_gen.imagegen",
+  "nativeFormat": "lossless WebP VP8L",
+  "neighborChunkSeamsApplied": false,
+  "qualityDecision": "pending Claude decision; known semantic geometry defects",
+  "qaPassedClaimed": false,
+  "inGameTestRun": false,
+  "automatedCheckScope": "completeness, decoding, dimensions only; plus lossless archival hash and size integrity",
+  "pending": "See each chunk pendingParts and visual-review.json; no quality-threshold retry performed."
+}

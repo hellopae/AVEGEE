@@ -1,0 +1,83 @@
+{
+  "scope": "Offline visual observations, not acceptance approval; no in-game test.",
+  "qualityDecision": "pending Claude review",
+  "qaPassedClaimed": false,
+  "chunks": {
+    "r3-c3": {
+      "reviewedFiles": [
+        "r3-c3/seam-check.jpg",
+        "r3-c3/q11-native.webp",
+        "r3-c3/q12-native.webp",
+        "r3-c3/q21-native.webp",
+        "r3-c3/q22-native.webp"
+      ],
+      "observations": [
+        "Gold bridge/pier/south stair posts and rails are absent in the reviewed assembly. Gold floor ring remains.",
+        "No conspicuous straight tile division in the viewed overview and seam strips. Subtle texture/tread changes require full-size human review.",
+        "River/foam and inaccessible red maple/rock backdrop remain; fine texture is visibly more articulated."
+      ],
+      "limitations": [
+        "Only 8/18 structure probes reliable; no whole-contour certification.",
+        "External chunk borders not blended.",
+        "Pier corner/support surfaces behind removed posts were inferred by ImageGen; exact concealed geometry and tread counts are not certified."
+      ],
+      "acceptanceApproved": false
+    },
+    "r3-c4": {
+      "reviewedFiles": [
+        "r3-c4/seam-check.jpg",
+        "r3-c4/q11-native.webp",
+        "r3-c4/q12-native.webp",
+        "r3-c4/q21-native.webp",
+        "r3-c4/q22-native.webp"
+      ],
+      "observations": [
+        "Gold stair posts at the upper-left and red bridge rails in the upper-right context are absent; treads/deck retained in reviewed images.",
+        "River foam, rocks, off-route stone paths, bones and red/green foliage remain.",
+        "No conspicuous straight tile division in viewed overview and seam strips."
+      ],
+      "limitations": [
+        "16/18 structure probes reliable.",
+        "No claim that every bank, stair or water-mask boundary stays within 4px.",
+        "External chunk borders not blended."
+      ],
+      "acceptanceApproved": false
+    },
+    "r4-c1": {
+      "reviewedFiles": [
+        "r4-c1/seam-check.jpg",
+        "r4-c1/q11-native.webp",
+        "r4-c1/q12-native.webp"
+      ],
+      "observations": [
+        "Two-part bottom strip retains blue rock shapes, pink/red foliage, fog and skeleton.",
+        "No conspicuous vertical division in the viewed assembly/strip.",
+        "No baked walk-route removal target identified in this inaccessible bottom forest."
+      ],
+      "limitations": [
+        "8/8 sparse rock/foliage probes reliable, not whole-image geometry certification.",
+        "Outer neighbor boundaries unblended."
+      ],
+      "acceptanceApproved": false
+    },
+    "r3-c5": {
+      "reviewedFiles": [
+        "r3-c5/seam-check.jpg",
+        "r3-c5/q11-native.webp",
+        "r3-c5/q12-native.webp",
+        "r3-c5/q21-native.webp",
+        "r3-c5/q22-native.webp"
+      ],
+      "observations": [
+        "Red bridge rail segments along top context are absent; deck and river retained.",
+        "Rib spine, skull, off-route bones/foliage and mist remain in source layout.",
+        "No conspicuous straight tile division in the viewed overview and native seam strips."
+      ],
+      "limitations": [
+        "16/16 sparse contour probes reliable; this does not certify every liquid-mask boundary or detailed bone/stone geometry.",
+        "External chunk borders unblended."
+      ],
+      "acceptanceApproved": false
+    }
+  }
+}

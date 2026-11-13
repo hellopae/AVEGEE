@@ -1,0 +1,3814 @@
+{
+  "chunks": {
+    "r1-c1": [
+      {
+        "id": "q11",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          0,
+          576,
+          576
+        ],
+        "nativeFile": "inputs/r1-c1/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "5d9dc8d13c25ee5edd6100ea8a6004ce55d5926c7d6e3db58d900c7cf818c2f6",
+        "nativeToContextPx1x": [
+          [
+            0.45917747274000054,
+            0.00010614649517986324,
+            -0.10392723052321763
+          ],
+          [
+            -0.00010614649517986324,
+            0.45917747274000054,
+            0.16494030477652652
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.45917747274000054,
+            0.00010614649517986324,
+            -0.10392723052321763
+          ],
+          [
+            -0.00010614649517986324,
+            0.45917747274000054,
+            0.16494030477652652
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c1/registration.json",
+        "registrationSha256": "1f1bc7797f4c72efe55a9634e5814aaedc934813dd55b72055a00a5833f66028",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          512,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c1/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "8ebc169648f9119ad691eff7b719127ef41641dcbbba7c76150c216e43186ea9",
+        "nativeToContextPx1x": [
+          [
+            0.4841481779372006,
+            0.00032025940734900385,
+            -0.7605320395337642
+          ],
+          [
+            -0.00031980216287727016,
+            0.484840399890517,
+            0.32161616878305377
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4841481779372006,
+            0.00032025940734900385,
+            447.23946796046624
+          ],
+          [
+            -0.00031980216287727016,
+            0.484840399890517,
+            0.32161616878305377
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c1/registration.json",
+        "registrationSha256": "1f1bc7797f4c72efe55a9634e5814aaedc934813dd55b72055a00a5833f66028",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          0,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          448,
+          576,
+          640
+        ],
+        "nativeFile": "inputs/r1-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "a0f696ff47a9e8d6f41d0e9bd48c9827f30c27e17be3a00be668e99def537e6c",
+        "nativeToContextPx1x": [
+          [
+            0.4847664330455612,
+            -7.046371216442265e-05,
+            0.34201909854206125
+          ],
+          [
+            7.05644592718066e-05,
+            0.4840743166970457,
+            -0.26083472189953044
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4847664330455612,
+            -7.046371216442265e-05,
+            0.34201909854206125
+          ],
+          [
+            7.05644592718066e-05,
+            0.4840743166970457,
+            447.7391652781005
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c1/registration.json",
+        "registrationSha256": "1f1bc7797f4c72efe55a9634e5814aaedc934813dd55b72055a00a5833f66028",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c1",
+        "corePx1x": [
+          512,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "339649f8ac0588a800313307d772dffcb46733ca54db04f3788d01bfbe64daf7",
+        "nativeToContextPx1x": [
+          [
+            0.5104216549406971,
+            3.336314370317813e-05,
+            0.03264789100041944
+          ],
+          [
+            -3.336314370317813e-05,
+            0.5104216549406971,
+            -0.31309437869915985
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5104216549406971,
+            3.336314370317813e-05,
+            448.0326478910004
+          ],
+          [
+            -3.336314370317813e-05,
+            0.5104216549406971,
+            447.68690562130087
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c1/registration.json",
+        "registrationSha256": "1f1bc7797f4c72efe55a9634e5814aaedc934813dd55b72055a00a5833f66028",
+        "fallback": false
+      }
+    ],
+    "r1-c2": [
+      {
+        "id": "q11",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1024,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c2/q11-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "f435cf34c4c80de347ce682b6e952489592c0a5c4804b90937d36ba72460b14d",
+        "nativeToContextPx1x": [
+          [
+            0.484204533322876,
+            -8.283609509365136e-05,
+            -0.05759272130796095
+          ],
+          [
+            8.271782738418702e-05,
+            0.4848968358515967,
+            -0.34701646360787497
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.484204533322876,
+            -8.283609509365136e-05,
+            959.942407278692
+          ],
+          [
+            8.271782738418702e-05,
+            0.4848968358515967,
+            -0.34701646360787497
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c2/registration.json",
+        "registrationSha256": "7c3c822b6418a4cf6349130399c4aab66aa7461aa24e0988e2cd3644ddd261c0",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1536,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c2/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "fe4ec33080794b88df0330e81ef10767e5e0665ccffec2cc6e3595bc12f5dfab",
+        "nativeToContextPx1x": [
+          [
+            0.4843517923302471,
+            0.00014683139403401895,
+            -0.27500053505552463
+          ],
+          [
+            -0.0001466217582148724,
+            0.4850443054059085,
+            -0.4081765092437649
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4843517923302471,
+            0.00014683139403401895,
+            1471.7249994649444
+          ],
+          [
+            -0.0001466217582148724,
+            0.4850443054059085,
+            -0.4081765092437649
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c2/registration.json",
+        "registrationSha256": "7c3c822b6418a4cf6349130399c4aab66aa7461aa24e0988e2cd3644ddd261c0",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1024,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "879c5282342776006ba16bb8a2b425e3919f845aebb5a8d4bc6961fc5cb8e529",
+        "nativeToContextPx1x": [
+          [
+            0.5103805949311437,
+            -4.7897739774605946e-05,
+            0.16212684804473354
+          ],
+          [
+            4.7897739774605946e-05,
+            0.5103805949311437,
+            -0.31082658079008657
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103805949311437,
+            -4.7897739774605946e-05,
+            960.1621268480447
+          ],
+          [
+            4.7897739774605946e-05,
+            0.5103805949311437,
+            447.6891734192099
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c2/registration.json",
+        "registrationSha256": "7c3c822b6418a4cf6349130399c4aab66aa7461aa24e0988e2cd3644ddd261c0",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c2",
+        "corePx1x": [
+          1536,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "2a6bbe5b9c55362052f10ecb5046fef6e00ca6e51896983e617adce14a7c925e",
+        "nativeToContextPx1x": [
+          [
+            0.510295500602739,
+            5.881066048867061e-05,
+            0.10163094477093193
+          ],
+          [
+            -5.881066048867061e-05,
+            0.510295500602739,
+            -0.25343311054849627
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.510295500602739,
+            5.881066048867061e-05,
+            1472.101630944771
+          ],
+          [
+            -5.881066048867061e-05,
+            0.510295500602739,
+            447.7465668894515
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c2/registration.json",
+        "registrationSha256": "7c3c822b6418a4cf6349130399c4aab66aa7461aa24e0988e2cd3644ddd261c0",
+        "fallback": false
+      }
+    ],
+    "r1-c3": [
+      {
+        "id": "q11",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2048,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c3/q11-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "174197c82d905baee9be6b0c7d9eb8b3d684d32e88708552001e545492dad195",
+        "nativeToContextPx1x": [
+          [
+            0.48413062431537923,
+            5.670509536296974e-05,
+            -0.37721512764204695
+          ],
+          [
+            -5.662413570720671e-05,
+            0.48482282117100256,
+            -0.014546460781957038
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48413062431537923,
+            5.670509536296974e-05,
+            1983.622784872358
+          ],
+          [
+            -5.662413570720671e-05,
+            0.48482282117100256,
+            -0.014546460781957038
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c3/registration.json",
+        "registrationSha256": "abb7b3d31d87347a05680c59085b65b189adafec7bea4a6a452b5f2b8bc0bdc5",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2560,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c3/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "86993b79eac1517c02f4f0ba3d1ae8ff201db567760430abe0a113ddc2453b70",
+        "nativeToContextPx1x": [
+          [
+            0.48445667925468333,
+            0.0002670127638616526,
+            -0.4439116768364432
+          ],
+          [
+            -0.00026663154130469885,
+            0.48514934229482876,
+            -0.3398009803932289
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48445667925468333,
+            0.0002670127638616526,
+            2495.5560883231637
+          ],
+          [
+            -0.00026663154130469885,
+            0.48514934229482876,
+            -0.3398009803932289
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c3/registration.json",
+        "registrationSha256": "abb7b3d31d87347a05680c59085b65b189adafec7bea4a6a452b5f2b8bc0bdc5",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2048,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c3/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "3a8bb64953ca3822974c4ae372c11ddda306518604d3b518abb32b3b2da3a860",
+        "nativeToContextPx1x": [
+          [
+            0.5105042930809901,
+            0.0002522031541406372,
+            -0.44207588895081273
+          ],
+          [
+            -0.0002522031541406372,
+            0.5105042930809901,
+            -0.15924136026775743
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5105042930809901,
+            0.0002522031541406372,
+            1983.5579241110493
+          ],
+          [
+            -0.0002522031541406372,
+            0.5105042930809901,
+            447.84075863973226
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c3/registration.json",
+        "registrationSha256": "abb7b3d31d87347a05680c59085b65b189adafec7bea4a6a452b5f2b8bc0bdc5",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c3",
+        "corePx1x": [
+          2560,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c3/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "dc9e8e9653dcc065a2f76c2b43db9ce611ffc91134f4269615ba27e3b9c44275",
+        "nativeToContextPx1x": [
+          [
+            0.510133545404502,
+            0.00028700747792918433,
+            -0.1436523784293248
+          ],
+          [
+            -0.00028700747792918433,
+            0.510133545404502,
+            -0.029335773123004727
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.510133545404502,
+            0.00028700747792918433,
+            2495.856347621571
+          ],
+          [
+            -0.00028700747792918433,
+            0.510133545404502,
+            447.970664226877
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c3/registration.json",
+        "registrationSha256": "abb7b3d31d87347a05680c59085b65b189adafec7bea4a6a452b5f2b8bc0bdc5",
+        "fallback": false
+      }
+    ],
+    "r1-c4": [
+      {
+        "id": "q11",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3072,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c4/q11-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "a46f2fb73872ea5b11fda2f14f10e50cf360bbd07e97825206b86a97d7d026ff",
+        "nativeToContextPx1x": [
+          [
+            0.48369160129041794,
+            6.795289775834254e-05,
+            -0.1810528573925601
+          ],
+          [
+            -6.785587925982136e-05,
+            0.4843831704428096,
+            -0.7784920701594483
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48369160129041794,
+            6.795289775834254e-05,
+            3007.8189471426076
+          ],
+          [
+            -6.785587925982136e-05,
+            0.4843831704428096,
+            -0.7784920701594483
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c4/registration.json",
+        "registrationSha256": "6a1736bd56e56e0712d4123f84e9c305a20b9a602fd37189c241720b52cfae76",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3584,
+          0,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          0,
+          640,
+          576
+        ],
+        "nativeFile": "inputs/r1-c4/q12-native.webp",
+        "nativeSize": [
+          1323,
+          1189
+        ],
+        "sha256": "25840f851b16456c0ba2d79d0d0cf44db7c6d15535f96fe8f80ba3f18ed72835",
+        "nativeToContextPx1x": [
+          [
+            0.48350504819892975,
+            -1.0694402545680355e-05,
+            0.0647895631489222
+          ],
+          [
+            1.067913380936755e-05,
+            0.48419635062276334,
+            -0.6575009740424739
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48350504819892975,
+            -1.0694402545680355e-05,
+            3520.064789563149
+          ],
+          [
+            1.067913380936755e-05,
+            0.48419635062276334,
+            -0.6575009740424739
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c4/registration.json",
+        "registrationSha256": "6a1736bd56e56e0712d4123f84e9c305a20b9a602fd37189c241720b52cfae76",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3072,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "0ef3be61795374296fa3dbae6e7e207a818f7fc0fcb6d08d6c8dec6583f2ce8f",
+        "nativeToContextPx1x": [
+          [
+            0.5102901809046418,
+            -7.593470280999833e-05,
+            0.23133616686626615
+          ],
+          [
+            7.593470280999833e-05,
+            0.5102901809046418,
+            -0.29237533801066445
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5102901809046418,
+            -7.593470280999833e-05,
+            3008.231336166866
+          ],
+          [
+            7.593470280999833e-05,
+            0.5102901809046418,
+            447.7076246619893
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c4/registration.json",
+        "registrationSha256": "6a1736bd56e56e0712d4123f84e9c305a20b9a602fd37189c241720b52cfae76",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c4",
+        "corePx1x": [
+          3584,
+          512,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          448,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r1-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "21efda57ff9f27ce2a73d9d371080a81ceec0a1e1ef0365e0c27ba99853ca795",
+        "nativeToContextPx1x": [
+          [
+            0.5103135045305078,
+            -0.00021510820668613895,
+            -0.10789245968674652
+          ],
+          [
+            0.00021510820668613895,
+            0.5103135045305078,
+            -0.36951887538868644
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103135045305078,
+            -0.00021510820668613895,
+            3519.892107540313
+          ],
+          [
+            0.00021510820668613895,
+            0.5103135045305078,
+            447.6304811246113
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c4/registration.json",
+        "registrationSha256": "6a1736bd56e56e0712d4123f84e9c305a20b9a602fd37189c241720b52cfae76",
+        "fallback": false
+      }
+    ],
+    "r1-c5": [
+      {
+        "id": "q11",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4096,
+          0,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          0,
+          538,
+          576
+        ],
+        "nativeFile": "inputs/r1-c5/q11-native.webp",
+        "nativeSize": [
+          1212,
+          1298
+        ],
+        "sha256": "247f935158797950d35224166ffdadba3be62618a7ac4724ca1bbbb0c5971356",
+        "nativeToContextPx1x": [
+          [
+            0.44353768329824067,
+            -0.00020843147622374178,
+            0.7630068082800042
+          ],
+          [
+            0.0002084947719026005,
+            0.4434030323498855,
+            -0.0783906575219531
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.44353768329824067,
+            -0.00020843147622374178,
+            4032.76300680828
+          ],
+          [
+            0.0002084947719026005,
+            0.4434030323498855,
+            -0.0783906575219531
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c5/registration.json",
+        "registrationSha256": "7db5456f7aa17f2615eb7795aeca58142f006c9bd269d0c5170b88f42f5b4f98",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4506,
+          0,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          0,
+          473,
+          576
+        ],
+        "nativeFile": "inputs/r1-c5/q12-native.webp",
+        "nativeSize": [
+          1136,
+          1385
+        ],
+        "sha256": "f1ca441e14170028a25516a694c0cc86d5f1789443e2ebf757d022fcc975d6da",
+        "nativeToContextPx1x": [
+          [
+            0.41635049477703523,
+            2.442452420421476e-05,
+            -0.34338227373546554
+          ],
+          [
+            -2.44532288133346e-05,
+            0.4158617585737037,
+            -0.22238671411673736
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.41635049477703523,
+            2.442452420421476e-05,
+            4441.656617726265
+          ],
+          [
+            -2.44532288133346e-05,
+            0.4158617585737037,
+            -0.22238671411673736
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c5/registration.json",
+        "registrationSha256": "7db5456f7aa17f2615eb7795aeca58142f006c9bd269d0c5170b88f42f5b4f98",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4096,
+          512,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          448,
+          538,
+          640
+        ],
+        "nativeFile": "inputs/r1-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "df8fd17173f87f5609fc743f0d0a65b4ea5243a2ebf40547a6e065bfa478edc2",
+        "nativeToContextPx1x": [
+          [
+            0.46828649096941066,
+            -9.322953553331494e-05,
+            -0.05385960495923258
+          ],
+          [
+            9.330864675798421e-05,
+            0.4678894568350206,
+            -0.35330910293875173
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46828649096941066,
+            -9.322953553331494e-05,
+            4031.946140395041
+          ],
+          [
+            9.330864675798421e-05,
+            0.4678894568350206,
+            447.64669089706126
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c5/registration.json",
+        "registrationSha256": "7db5456f7aa17f2615eb7795aeca58142f006c9bd269d0c5170b88f42f5b4f98",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r1-c5",
+        "corePx1x": [
+          4506,
+          512,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          448,
+          473,
+          640
+        ],
+        "nativeFile": "inputs/r1-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "146738ad63472f2994096e64ad2ed8ab67a3a15c6369d1cb67bc5305459a5a21",
+        "nativeToContextPx1x": [
+          [
+            0.43852928940090624,
+            -8.438594006604084e-05,
+            -0.5331980782444444
+          ],
+          [
+            8.446666641176728e-05,
+            0.4381101788981338,
+            -0.1942450108972834
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43852928940090624,
+            -8.438594006604084e-05,
+            4441.466801921755
+          ],
+          [
+            8.446666641176728e-05,
+            0.4381101788981338,
+            447.8057549891027
+          ]
+        ],
+        "sourceRegistration": "inputs/r1-c5/registration.json",
+        "registrationSha256": "7db5456f7aa17f2615eb7795aeca58142f006c9bd269d0c5170b88f42f5b4f98",
+        "fallback": false
+      }
+    ],
+    "r2-c1": [
+      {
+        "id": "q11",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          0,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          960,
+          576,
+          640
+        ],
+        "nativeFile": "inputs/r2-c1/q11-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "f43fc49474004e1fba1d9cd8ed73d716379c2921aade38069e0157d87bdc86d0",
+        "nativeToContextPx1x": [
+          [
+            0.4844821630604005,
+            -0.00012433338222774014,
+            -0.4093893476214302
+          ],
+          [
+            0.00012451115073050477,
+            0.48379045257312187,
+            -0.37135062883576914
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4844821630604005,
+            -0.00012433338222774014,
+            -0.4093893476214302
+          ],
+          [
+            0.00012451115073050477,
+            0.48379045257312187,
+            959.6286493711642
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c1/registration.json",
+        "registrationSha256": "3acbd8d931b9645b2342ac87bce4171cb87cfc46a64ca6790934dbd9bd2a7535",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          512,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c1/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "8027fc1e17a0d492a9114c77e96eb5d3ef4a4b95f6f019dda709794d7ce5a8e7",
+        "nativeToContextPx1x": [
+          [
+            0.5102824916866665,
+            7.841872819608714e-05,
+            -0.1409621654909907
+          ],
+          [
+            -7.841872819608714e-05,
+            0.5102824916866665,
+            -0.2592140772991977
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5102824916866665,
+            7.841872819608714e-05,
+            447.859037834509
+          ],
+          [
+            -7.841872819608714e-05,
+            0.5102824916866665,
+            959.7407859227008
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c1/registration.json",
+        "registrationSha256": "3acbd8d931b9645b2342ac87bce4171cb87cfc46a64ca6790934dbd9bd2a7535",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          0,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          1472,
+          576,
+          640
+        ],
+        "nativeFile": "inputs/r2-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "d0f13f27ee173798d8ee1aa7cd2d986c77b020c2bc7e9e60731729f2df1616b0",
+        "nativeToContextPx1x": [
+          [
+            0.4843708601972896,
+            -0.00016262837881903482,
+            -0.49249478202704966
+          ],
+          [
+            0.00016286090047083664,
+            0.4836793086206243,
+            -0.32196798108860614
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4843708601972896,
+            -0.00016262837881903482,
+            -0.49249478202704966
+          ],
+          [
+            0.00016286090047083664,
+            0.4836793086206243,
+            1471.6780320189114
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c1/registration.json",
+        "registrationSha256": "3acbd8d931b9645b2342ac87bce4171cb87cfc46a64ca6790934dbd9bd2a7535",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c1",
+        "corePx1x": [
+          512,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "b9860fccef8307833749dde8ab68ebc5daf16433eb139ede9945ccb2a006e3d3",
+        "nativeToContextPx1x": [
+          [
+            0.5103598893129606,
+            -0.0002766342707384606,
+            -0.12754660754333264
+          ],
+          [
+            0.0002766342707384606,
+            0.5103598893129606,
+            -0.38145346242408185
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103598893129606,
+            -0.0002766342707384606,
+            447.8724533924567
+          ],
+          [
+            0.0002766342707384606,
+            0.5103598893129606,
+            1471.6185465375759
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c1/registration.json",
+        "registrationSha256": "3acbd8d931b9645b2342ac87bce4171cb87cfc46a64ca6790934dbd9bd2a7535",
+        "fallback": false
+      }
+    ],
+    "r2-c2": [
+      {
+        "id": "q11",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1024,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c2/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "f1f9322104e6e28c59f7ddb76f774b168672a4fe0c963d68d96b96d05efe7ff8",
+        "nativeToContextPx1x": [
+          [
+            0.5103965388811005,
+            -0.00013445856906180376,
+            0.14027569700095577
+          ],
+          [
+            0.00013445856906180376,
+            0.5103965388811005,
+            -0.21474905516444057
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103965388811005,
+            -0.00013445856906180376,
+            960.1402756970009
+          ],
+          [
+            0.00013445856906180376,
+            0.5103965388811005,
+            959.7852509448355
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c2/registration.json",
+        "registrationSha256": "6f1137f2efe554a9304bbc4eec1b2e9c801023e5840a306027a3c9e54bc39fa5",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1536,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c2/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "e19ae03a8ecf541823660dd9fa395b85d5874c8ae44836611cfc7fbd1f7c1415",
+        "nativeToContextPx1x": [
+          [
+            0.5102174950889713,
+            0.00010615484944156998,
+            -0.23809074134622432
+          ],
+          [
+            -0.00010615484944156998,
+            0.5102174950889713,
+            -0.15629114416246617
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5102174950889713,
+            0.00010615484944156998,
+            1471.7619092586538
+          ],
+          [
+            -0.00010615484944156998,
+            0.5102174950889713,
+            959.8437088558376
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c2/registration.json",
+        "registrationSha256": "6f1137f2efe554a9304bbc4eec1b2e9c801023e5840a306027a3c9e54bc39fa5",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1024,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "0e9dfeba6da22e35bdefc97aa702088803262abe5c3e47ecd59bac37ce463da8",
+        "nativeToContextPx1x": [
+          [
+            0.5107085254498643,
+            0.00021398377896322696,
+            -0.5729347014253697
+          ],
+          [
+            -0.00021398377896322696,
+            0.5107085254498643,
+            -0.3543702589752491
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5107085254498643,
+            0.00021398377896322696,
+            959.4270652985746
+          ],
+          [
+            -0.00021398377896322696,
+            0.5107085254498643,
+            1471.6456297410248
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c2/registration.json",
+        "registrationSha256": "6f1137f2efe554a9304bbc4eec1b2e9c801023e5840a306027a3c9e54bc39fa5",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c2",
+        "corePx1x": [
+          1536,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "396a9a001dca9d0df88f8666041b0b0fc6c11aeb50b682febe0ecf611c3a95ec",
+        "nativeToContextPx1x": [
+          [
+            0.5101678022743725,
+            0.0002084016080548383,
+            0.17053851722484736
+          ],
+          [
+            -0.0002084016080548383,
+            0.5101678022743725,
+            -0.020258326531337453
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101678022743725,
+            0.0002084016080548383,
+            1472.170538517225
+          ],
+          [
+            -0.0002084016080548383,
+            0.5101678022743725,
+            1471.9797416734687
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c2/registration.json",
+        "registrationSha256": "6f1137f2efe554a9304bbc4eec1b2e9c801023e5840a306027a3c9e54bc39fa5",
+        "fallback": false
+      }
+    ],
+    "r2-c3": [
+      {
+        "id": "q11",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2048,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c3/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "9a1d3d7bf5b51fce7a8d2d111108e0002b6e3e609d42499f37776bb3951d49b2",
+        "nativeToContextPx1x": [
+          [
+            0.5103116821960557,
+            9.812672269681618e-05,
+            -0.1852105846117017
+          ],
+          [
+            -9.812672269681618e-05,
+            0.5103116821960557,
+            -0.032065976097634355
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103116821960557,
+            9.812672269681618e-05,
+            1983.8147894153883
+          ],
+          [
+            -9.812672269681618e-05,
+            0.5103116821960557,
+            959.9679340239023
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c3/registration.json",
+        "registrationSha256": "06e7f4e28d84aff136e1d2d9b7a95b3f48239c5cdd373b0a32678495432e8d39",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2560,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c3/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "d0fe5549a16c1dcf7dcc0f94db67e86bd3543551f097f658f5d107155b51340c",
+        "nativeToContextPx1x": [
+          [
+            0.5101332904745844,
+            6.42392949281886e-05,
+            -0.11974911069800656
+          ],
+          [
+            -6.42392949281886e-05,
+            0.5101332904745844,
+            -0.09531557613755677
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101332904745844,
+            6.42392949281886e-05,
+            2495.880250889302
+          ],
+          [
+            -6.42392949281886e-05,
+            0.5101332904745844,
+            959.9046844238625
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c3/registration.json",
+        "registrationSha256": "06e7f4e28d84aff136e1d2d9b7a95b3f48239c5cdd373b0a32678495432e8d39",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2048,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c3/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "240fc0b50b4e0d4af3421db6ef40ca6709406f8ccebc37060d1895b125d2af0c",
+        "nativeToContextPx1x": [
+          [
+            0.5103649356699563,
+            7.57394624557684e-05,
+            -0.18597255112246716
+          ],
+          [
+            -7.57394624557684e-05,
+            0.5103649356699563,
+            -0.2319842334422991
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103649356699563,
+            7.57394624557684e-05,
+            1983.8140274488776
+          ],
+          [
+            -7.57394624557684e-05,
+            0.5103649356699563,
+            1471.7680157665577
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c3/registration.json",
+        "registrationSha256": "06e7f4e28d84aff136e1d2d9b7a95b3f48239c5cdd373b0a32678495432e8d39",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c3",
+        "corePx1x": [
+          2560,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          1472,
+          640,
+          640
+        ],
+        "fallback": true,
+        "reason": "Missing native in HD-FULL2; source Asia v2 enlarged2x Lanczos."
+      }
+    ],
+    "r2-c4": [
+      {
+        "id": "q11",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3072,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c4/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "c55ab471a78973d556befc02235d0d93a23bba246d4179f28a4cdb6ef76af8a6",
+        "nativeToContextPx1x": [
+          [
+            0.5101500351987737,
+            -0.00028144095502897495,
+            0.14692178641424897
+          ],
+          [
+            0.00028144095502897495,
+            0.5101500351987737,
+            -0.5484530651037015
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101500351987737,
+            -0.00028144095502897495,
+            3008.146921786414
+          ],
+          [
+            0.00028144095502897495,
+            0.5101500351987737,
+            959.4515469348963
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c4/registration.json",
+        "registrationSha256": "d578512dbabd23b074b66750d94422b2017c2d2969b53e763a3bf95e834027e3",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3584,
+          1024,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          960,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c4/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "08cfc530520e7c020a59cfc6b57e4a12654e856f2b2c8b8dc108a79bcebe3aea",
+        "nativeToContextPx1x": [
+          [
+            0.5101811499917204,
+            0.0002045753940004164,
+            -0.004575127997094103
+          ],
+          [
+            -0.0002045753940004164,
+            0.5101811499917204,
+            0.14119300731087267
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101811499917204,
+            0.0002045753940004164,
+            3519.995424872003
+          ],
+          [
+            -0.0002045753940004164,
+            0.5101811499917204,
+            960.1411930073109
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c4/registration.json",
+        "registrationSha256": "d578512dbabd23b074b66750d94422b2017c2d2969b53e763a3bf95e834027e3",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3072,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "290f6927e718f17b7773ebb11451a93e1d0caf036daad6913270458175336d7f",
+        "nativeToContextPx1x": [
+          [
+            0.5104370121323457,
+            7.507678939694311e-05,
+            -0.30590785982564384
+          ],
+          [
+            -7.507678939694311e-05,
+            0.5104370121323457,
+            -0.3942592410354181
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5104370121323457,
+            7.507678939694311e-05,
+            3007.6940921401742
+          ],
+          [
+            -7.507678939694311e-05,
+            0.5104370121323457,
+            1471.6057407589647
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c4/registration.json",
+        "registrationSha256": "d578512dbabd23b074b66750d94422b2017c2d2969b53e763a3bf95e834027e3",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c4",
+        "corePx1x": [
+          3584,
+          1536,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          1472,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r2-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "2350ea510a941664552bd4bb755c6edb11625954abc2c041430b1695cac83230",
+        "nativeToContextPx1x": [
+          [
+            0.5101925839507788,
+            0.00024260230208234275,
+            -0.3605307499799689
+          ],
+          [
+            -0.00024260230208234275,
+            0.5101925839507788,
+            -0.17647028554214075
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101925839507788,
+            0.00024260230208234275,
+            3519.63946925002
+          ],
+          [
+            -0.00024260230208234275,
+            0.5101925839507788,
+            1471.823529714458
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c4/registration.json",
+        "registrationSha256": "d578512dbabd23b074b66750d94422b2017c2d2969b53e763a3bf95e834027e3",
+        "fallback": false
+      }
+    ],
+    "r2-c5": [
+      {
+        "id": "q11",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4096,
+          1024,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          960,
+          538,
+          640
+        ],
+        "nativeFile": "inputs/r2-c5/q11-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "1228ec39e3c369fbd80bbcb3790cfc77ac23ed975cadbb0a1e10016e8a5cd929",
+        "nativeToContextPx1x": [
+          [
+            0.4684646472764811,
+            0.00020590679571689475,
+            -0.38300913641338147
+          ],
+          [
+            -0.0002060815208046441,
+            0.4680674620932427,
+            -0.3531687682389542
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4684646472764811,
+            0.00020590679571689475,
+            4031.6169908635866
+          ],
+          [
+            -0.0002060815208046441,
+            0.4680674620932427,
+            959.6468312317611
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c5/registration.json",
+        "registrationSha256": "9fd9ffce0db72b9cf204891f883202415a7b1e4b12d8fcffb0b393a841b37722",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4506,
+          1024,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          960,
+          473,
+          640
+        ],
+        "nativeFile": "inputs/r2-c5/q12-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "2ea4cf32ba882cab730a9cedd5b82c187e20de99925320541d682799d5828b05",
+        "nativeToContextPx1x": [
+          [
+            0.4385273650085455,
+            -1.8489430619052588e-05,
+            -0.5952760063413163
+          ],
+          [
+            1.8507118212119283e-05,
+            0.4381082563449502,
+            -0.1633954144481952
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4385273650085455,
+            -1.8489430619052588e-05,
+            4441.404723993659
+          ],
+          [
+            1.8507118212119283e-05,
+            0.4381082563449502,
+            959.8366045855518
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c5/registration.json",
+        "registrationSha256": "9fd9ffce0db72b9cf204891f883202415a7b1e4b12d8fcffb0b393a841b37722",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4096,
+          1536,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          1472,
+          538,
+          640
+        ],
+        "nativeFile": "inputs/r2-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "5e045c0f89d38331d80286b58a06ec5a0a5a614f8141d0a0aa1814d3207607ff",
+        "nativeToContextPx1x": [
+          [
+            0.4685940775722368,
+            -0.00019723559918128014,
+            -0.1129181579710993
+          ],
+          [
+            0.0001974029662040841,
+            0.4681967826522316,
+            -0.6343910650357173
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4685940775722368,
+            -0.00019723559918128014,
+            4031.8870818420287
+          ],
+          [
+            0.0001974029662040841,
+            0.4681967826522316,
+            1471.3656089349643
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c5/registration.json",
+        "registrationSha256": "9fd9ffce0db72b9cf204891f883202415a7b1e4b12d8fcffb0b393a841b37722",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r2-c5",
+        "corePx1x": [
+          4506,
+          1536,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          1472,
+          473,
+          640
+        ],
+        "nativeFile": "inputs/r2-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "6c1daf316fbc14885139289058a0ad6c71a0fe24a9f8f4b7751fcdc43a9bd36e",
+        "nativeToContextPx1x": [
+          [
+            0.43876281278842566,
+            -6.751820472318614e-05,
+            -0.2662452000679401
+          ],
+          [
+            6.758279484250042e-05,
+            0.4383434791030592,
+            -0.37948806187111267
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43876281278842566,
+            -6.751820472318614e-05,
+            4441.733754799932
+          ],
+          [
+            6.758279484250042e-05,
+            0.4383434791030592,
+            1471.6205119381289
+          ]
+        ],
+        "sourceRegistration": "inputs/r2-c5/registration.json",
+        "registrationSha256": "9fd9ffce0db72b9cf204891f883202415a7b1e4b12d8fcffb0b393a841b37722",
+        "fallback": false
+      }
+    ],
+    "r3-c1": [
+      {
+        "id": "q11",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          0,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          1984,
+          576,
+          640
+        ],
+        "nativeFile": "inputs/r3-c1/q11-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "77280b3e27f71e978bddd36d90072c122848585c63fd8ec09f1d948e4dd92c1c",
+        "nativeToContextPx1x": [
+          [
+            0.4842209871992677,
+            -5.02197298887103e-05,
+            0.27377118015941876
+          ],
+          [
+            5.029153269847548e-05,
+            0.4835296496010157,
+            0.38648399828925906
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4842209871992677,
+            -5.02197298887103e-05,
+            0.27377118015941876
+          ],
+          [
+            5.029153269847548e-05,
+            0.4835296496010157,
+            1984.3864839982893
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c1/registration.json",
+        "registrationSha256": "b06cdcfde1f274a737af1a4e78e2e683d5c9d01cf2a1167ad588cf1b6838fc80",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          512,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c1/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "324920704d476b5ebe465cad33b986615267157f330757faa662b8ff66bd6fea",
+        "nativeToContextPx1x": [
+          [
+            0.5102648987100706,
+            0.00020115841925000415,
+            -0.055951450362736896
+          ],
+          [
+            -0.00020115841925000415,
+            0.5102648987100706,
+            -0.05596392032746598
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5102648987100706,
+            0.00020115841925000415,
+            447.9440485496373
+          ],
+          [
+            -0.00020115841925000415,
+            0.5102648987100706,
+            1983.9440360796725
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c1/registration.json",
+        "registrationSha256": "b06cdcfde1f274a737af1a4e78e2e683d5c9d01cf2a1167ad588cf1b6838fc80",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          0,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          0,
+          2496,
+          576,
+          640
+        ],
+        "nativeFile": "inputs/r3-c1/q21-native.webp",
+        "nativeSize": [
+          1189,
+          1323
+        ],
+        "sha256": "64f1fae14f64202618b45d08a5eafbb3ddee3ce16cf367892d64090982ab22fa",
+        "nativeToContextPx1x": [
+          [
+            0.48486136359614906,
+            -2.4383120999807474e-05,
+            -0.00857508649840749
+          ],
+          [
+            2.4417983325879527e-05,
+            0.48416911171228794,
+            -0.4639971879422272
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.48486136359614906,
+            -2.4383120999807474e-05,
+            -0.00857508649840749
+          ],
+          [
+            2.4417983325879527e-05,
+            0.48416911171228794,
+            2495.5360028120576
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c1/registration.json",
+        "registrationSha256": "b06cdcfde1f274a737af1a4e78e2e683d5c9d01cf2a1167ad588cf1b6838fc80",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c1",
+        "corePx1x": [
+          512,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          448,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c1/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "e8b55086c3488b96b60e5126e156b39db6f5c5b493cc48aa872911bdd4849690",
+        "nativeToContextPx1x": [
+          [
+            0.5105796359310097,
+            -0.0001824852564317099,
+            0.1574427351814481
+          ],
+          [
+            0.0001824852564317099,
+            0.5105796359310097,
+            -0.4935819637127471
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5105796359310097,
+            -0.0001824852564317099,
+            448.15744273518146
+          ],
+          [
+            0.0001824852564317099,
+            0.5105796359310097,
+            2495.5064180362874
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c1/registration.json",
+        "registrationSha256": "b06cdcfde1f274a737af1a4e78e2e683d5c9d01cf2a1167ad588cf1b6838fc80",
+        "fallback": false
+      }
+    ],
+    "r3-c2": [
+      {
+        "id": "q11",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1024,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c2/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "fbf7c62d30c31491efe9124db90419391369976af90ec9fd01030e7ed45b0c1b",
+        "nativeToContextPx1x": [
+          [
+            0.5101875470380269,
+            4.640399526157991e-05,
+            -0.14773348697609806
+          ],
+          [
+            -4.640399526157991e-05,
+            0.5101875470380269,
+            -0.13986621709050923
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5101875470380269,
+            4.640399526157991e-05,
+            959.8522665130239
+          ],
+          [
+            -4.640399526157991e-05,
+            0.5101875470380269,
+            1983.8601337829095
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c2/registration.json",
+        "registrationSha256": "c6884684387e721a0a7ecd46b5a0f5ee6a179bdc1ce5dc76c3c04c8cb1ba2b61",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1536,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c2/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "3b966bc9a5f48398b25f367a4cfd3dc2e1ce79b8578969896f87ef753f3296a7",
+        "nativeToContextPx1x": [
+          [
+            0.5103061492409822,
+            8.392493171127294e-05,
+            -0.055765413521380924
+          ],
+          [
+            -8.392493171127294e-05,
+            0.5103061492409822,
+            0.002473157525945909
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103061492409822,
+            8.392493171127294e-05,
+            1471.9442345864786
+          ],
+          [
+            -8.392493171127294e-05,
+            0.5103061492409822,
+            1984.0024731575259
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c2/registration.json",
+        "registrationSha256": "c6884684387e721a0a7ecd46b5a0f5ee6a179bdc1ce5dc76c3c04c8cb1ba2b61",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1024,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          960,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c2/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "8f69ce35c99bea08a18a53156916ce3dfd6ad2415d24cde0f51b1a0833b55fbc",
+        "nativeToContextPx1x": [
+          [
+            0.5105969209047884,
+            7.618282300308644e-05,
+            -0.2999275348522442
+          ],
+          [
+            -7.618282300308644e-05,
+            0.5105969209047884,
+            -0.40154772576091907
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5105969209047884,
+            7.618282300308644e-05,
+            959.7000724651477
+          ],
+          [
+            -7.618282300308644e-05,
+            0.5105969209047884,
+            2495.598452274239
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c2/registration.json",
+        "registrationSha256": "c6884684387e721a0a7ecd46b5a0f5ee6a179bdc1ce5dc76c3c04c8cb1ba2b61",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c2",
+        "corePx1x": [
+          1536,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1472,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c2/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "76139dd8445ace09d21537b913b50d0445f1be2f3a1db6e1e835f2910ebc1a8e",
+        "nativeToContextPx1x": [
+          [
+            0.510640000023418,
+            0.0005533484727292226,
+            -0.856201566736522
+          ],
+          [
+            -0.0005533484727292226,
+            0.510640000023418,
+            -0.20247040479932965
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.510640000023418,
+            0.0005533484727292226,
+            1471.1437984332636
+          ],
+          [
+            -0.0005533484727292226,
+            0.510640000023418,
+            2495.7975295952006
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c2/registration.json",
+        "registrationSha256": "c6884684387e721a0a7ecd46b5a0f5ee6a179bdc1ce5dc76c3c04c8cb1ba2b61",
+        "fallback": false
+      }
+    ],
+    "r3-c3": [
+      {
+        "id": "q11",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2048,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c3/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "03b3855fd39c99721e5c57eb20445544bc1e3fa70d6a00acdea470189bee08c1",
+        "nativeToContextPx1x": [
+          [
+            0.5104842011129,
+            3.3766704962357067e-05,
+            -0.29583679165817584
+          ],
+          [
+            -3.3766704962357067e-05,
+            0.5104842011129,
+            -0.4840896350998977
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5104842011129,
+            3.3766704962357067e-05,
+            1983.704163208342
+          ],
+          [
+            -3.3766704962357067e-05,
+            0.5104842011129,
+            1983.5159103649
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c3/registration.json",
+        "registrationSha256": "7c8bfc5f90e8da8f9b6150dc062adb516cc4fb8ec002e29722342b2598bb522f",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2560,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c3/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "a588d5efbbe7ea93b07dbf3d3492496f1badb2096020e95e9cb4e7784d05297f",
+        "nativeToContextPx1x": [
+          [
+            0.5106442056622741,
+            6.799668500095895e-05,
+            -0.3128762425063763
+          ],
+          [
+            -6.799668500095895e-05,
+            0.5106442056622741,
+            -0.2203407728179241
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5106442056622741,
+            6.799668500095895e-05,
+            2495.6871237574937
+          ],
+          [
+            -6.799668500095895e-05,
+            0.5106442056622741,
+            1983.779659227182
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c3/registration.json",
+        "registrationSha256": "7c8bfc5f90e8da8f9b6150dc062adb516cc4fb8ec002e29722342b2598bb522f",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2048,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          1984,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c3/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "3cf53024c504e1a91e3872b93bc3e5f0681b48830c7c32209b737de92e75a83a",
+        "nativeToContextPx1x": [
+          [
+            0.5100085017447791,
+            -8.690968441707265e-06,
+            -0.08039823013552246
+          ],
+          [
+            8.690968441707265e-06,
+            0.5100085017447791,
+            -0.06671245764970683
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5100085017447791,
+            -8.690968441707265e-06,
+            1983.9196017698646
+          ],
+          [
+            8.690968441707265e-06,
+            0.5100085017447791,
+            2495.93328754235
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c3/registration.json",
+        "registrationSha256": "7c8bfc5f90e8da8f9b6150dc062adb516cc4fb8ec002e29722342b2598bb522f",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c3",
+        "corePx1x": [
+          2560,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          2496,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c3/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "73b38947c56380e52fab63ea23fe3130bfbbb6eab29975ae2892d2211d261616",
+        "nativeToContextPx1x": [
+          [
+            0.5103389309475447,
+            0.00013518244921382556,
+            -0.22162783373455944
+          ],
+          [
+            -0.00013518244921382556,
+            0.5103389309475447,
+            -0.27930849059336604
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103389309475447,
+            0.00013518244921382556,
+            2495.7783721662654
+          ],
+          [
+            -0.00013518244921382556,
+            0.5103389309475447,
+            2495.7206915094066
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c3/registration.json",
+        "registrationSha256": "7c8bfc5f90e8da8f9b6150dc062adb516cc4fb8ec002e29722342b2598bb522f",
+        "fallback": false
+      }
+    ],
+    "r3-c4": [
+      {
+        "id": "q11",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3072,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c4/q11-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "ad33f484105f492c5695b6510b459cbb3d37124e3da42ada6f83e2b24d2dee95",
+        "nativeToContextPx1x": [
+          [
+            0.5103551111289586,
+            5.028098097809245e-05,
+            -0.25885935064916443
+          ],
+          [
+            -5.028098097809245e-05,
+            0.5103551111289586,
+            -0.2902285491089042
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103551111289586,
+            5.028098097809245e-05,
+            3007.7411406493507
+          ],
+          [
+            -5.028098097809245e-05,
+            0.5103551111289586,
+            1983.7097714508911
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c4/registration.json",
+        "registrationSha256": "e862ac89874a9ce089e34f56c896a9871e3aefa06e7a171fa530d6e8b7a94c00",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3584,
+          2048,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          1984,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c4/q12-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "69bd015c1784fccbb34f66f71d5ec5224bdbca30538223350abbc25e83a39b8e",
+        "nativeToContextPx1x": [
+          [
+            0.5103609662612707,
+            0.00011927515911253651,
+            -0.23177263447488133
+          ],
+          [
+            -0.00011927515911253651,
+            0.5103609662612707,
+            -0.2759438565625799
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103609662612707,
+            0.00011927515911253651,
+            3519.768227365525
+          ],
+          [
+            -0.00011927515911253651,
+            0.5103609662612707,
+            1983.7240561434373
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c4/registration.json",
+        "registrationSha256": "e862ac89874a9ce089e34f56c896a9871e3aefa06e7a171fa530d6e8b7a94c00",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3072,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3008,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c4/q21-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "0d1c1e26ddd2445a10a99c6736f969674540579241f9c5ab163a1b533f688c6f",
+        "nativeToContextPx1x": [
+          [
+            0.5103686501450144,
+            0.00012631756635468763,
+            -0.22628560014151974
+          ],
+          [
+            -0.00012631756635468763,
+            0.5103686501450144,
+            -0.16587913362684875
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103686501450144,
+            0.00012631756635468763,
+            3007.7737143998584
+          ],
+          [
+            -0.00012631756635468763,
+            0.5103686501450144,
+            2495.8341208663733
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c4/registration.json",
+        "registrationSha256": "e862ac89874a9ce089e34f56c896a9871e3aefa06e7a171fa530d6e8b7a94c00",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c4",
+        "corePx1x": [
+          3584,
+          2560,
+          512,
+          512
+        ],
+        "contextPx1x": [
+          3520,
+          2496,
+          640,
+          640
+        ],
+        "nativeFile": "inputs/r3-c4/q22-native.webp",
+        "nativeSize": [
+          1254,
+          1254
+        ],
+        "sha256": "816c9b44cc36d133e7e0bbfcdb6d6e67639d0b1807848aa112fb06377b69e769",
+        "nativeToContextPx1x": [
+          [
+            0.5103717758880254,
+            4.9499663546736744e-05,
+            -0.22036497701288274
+          ],
+          [
+            -4.9499663546736744e-05,
+            0.5103717758880254,
+            -0.2653425302213794
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.5103717758880254,
+            4.9499663546736744e-05,
+            3519.779635022987
+          ],
+          [
+            -4.9499663546736744e-05,
+            0.5103717758880254,
+            2495.7346574697785
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c4/registration.json",
+        "registrationSha256": "e862ac89874a9ce089e34f56c896a9871e3aefa06e7a171fa530d6e8b7a94c00",
+        "fallback": false
+      }
+    ],
+    "r3-c5": [
+      {
+        "id": "q11",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4096,
+          2048,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          1984,
+          538,
+          640
+        ],
+        "nativeFile": "inputs/r3-c5/q11-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "503fbe1a570cec414f4e5849ffd8d4ddae89e7dcd7d064d65460b4e261e21959",
+        "nativeToContextPx1x": [
+          [
+            0.46835079791269685,
+            -0.00019104689055214738,
+            -0.210861208236211
+          ],
+          [
+            0.00019120900605979608,
+            0.4679537092560174,
+            -0.4345370278609465
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.46835079791269685,
+            -0.00019104689055214738,
+            4031.789138791764
+          ],
+          [
+            0.00019120900605979608,
+            0.4679537092560174,
+            1983.5654629721391
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c5/registration.json",
+        "registrationSha256": "860066fdec5fedb5b15672bad01a54d0018d8df883c3b006c021b0239688e00b",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4506,
+          2048,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          1984,
+          473,
+          640
+        ],
+        "nativeFile": "inputs/r3-c5/q12-native.webp",
+        "nativeSize": [
+          1078,
+          1459
+        ],
+        "sha256": "c106ceda69ecd7a6a1844d2a9608ed3dbab1ac7863c421646aa126757e635f29",
+        "nativeToContextPx1x": [
+          [
+            0.43898453201049353,
+            8.300605362616122e-05,
+            -0.5363181388068377
+          ],
+          [
+            -8.302855207819637e-05,
+            0.438865579286516,
+            -0.3898308715611488
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43898453201049353,
+            8.300605362616122e-05,
+            4441.463681861193
+          ],
+          [
+            -8.302855207819637e-05,
+            0.438865579286516,
+            1983.6101691284389
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c5/registration.json",
+        "registrationSha256": "860066fdec5fedb5b15672bad01a54d0018d8df883c3b006c021b0239688e00b",
+        "fallback": false
+      },
+      {
+        "id": "q21",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4096,
+          2560,
+          410,
+          512
+        ],
+        "contextPx1x": [
+          4032,
+          2496,
+          538,
+          640
+        ],
+        "nativeFile": "inputs/r3-c5/q21-native.webp",
+        "nativeSize": [
+          1149,
+          1368
+        ],
+        "sha256": "6201f8fbeb81c468172dbc943f16ee545e7d5f847d39a7e3668b3e02f5acb93c",
+        "nativeToContextPx1x": [
+          [
+            0.4683716342606763,
+            -1.3310269894444978e-05,
+            -0.27147399821170115
+          ],
+          [
+            1.3321564509890657e-05,
+            0.4679745279380134,
+            -0.357351648659748
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.4683716342606763,
+            -1.3310269894444978e-05,
+            4031.7285260017884
+          ],
+          [
+            1.3321564509890657e-05,
+            0.4679745279380134,
+            2495.64264835134
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c5/registration.json",
+        "registrationSha256": "860066fdec5fedb5b15672bad01a54d0018d8df883c3b006c021b0239688e00b",
+        "fallback": false
+      },
+      {
+        "id": "q22",
+        "chunk": "r3-c5",
+        "corePx1x": [
+          4506,
+          2560,
+          409,
+          512
+        ],
+        "contextPx1x": [
+          4442,
+          2496,
+          473,
+          640
+        ],
+        "nativeFile": "inputs/r3-c5/q22-native.webp",
+        "nativeSize": [
+          1078,
+          1460
+        ],
+        "sha256": "84ce78571fa9d7e4963e28035f70031a4b1dd02afbbc4616458146e170c25a03",
+        "nativeToContextPx1x": [
+          [
+            0.43880208554895095,
+            -9.522148876909855e-05,
+            -0.02338312096594574
+          ],
+          [
+            9.531258075452817e-05,
+            0.4383827143298854,
+            -0.2463071202502898
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.43880208554895095,
+            -9.522148876909855e-05,
+            4441.976616879034
+          ],
+          [
+            9.531258075452817e-05,
+            0.4383827143298854,
+            2495.75369287975
+          ]
+        ],
+        "sourceRegistration": "inputs/r3-c5/registration.json",
+        "registrationSha256": "860066fdec5fedb5b15672bad01a54d0018d8df883c3b006c021b0239688e00b",
+        "fallback": false
+      }
+    ],
+    "r4-c1": [
+      {
+        "id": "q11",
+        "chunk": "r4-c1",
+        "corePx1x": [
+          0,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          0,
+          3008,
+          576,
+          269
+        ],
+        "nativeFile": "inputs/r4-c1/q11-native.webp",
+        "nativeSize": [
+          1835,
+          857
+        ],
+        "sha256": "b4e1ffc7947b873dc18c770c4f9899a1047e6da9aed45ea0eabb40ca512bdabe",
+        "nativeToContextPx1x": [
+          [
+            0.31390520544424283,
+            1.7979116256778013e-05,
+            0.22957928540380373
+          ],
+          [
+            -1.7979735453877708e-05,
+            0.313894394985252,
+            -0.24042004536385092
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.31390520544424283,
+            1.7979116256778013e-05,
+            0.22957928540380373
+          ],
+          [
+            -1.7979735453877708e-05,
+            0.313894394985252,
+            3007.759579954636
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c1/registration.json",
+        "registrationSha256": "f54c2a55ec4a874726f4f0ed1b98e1b1e26da8d91f82f6d1c50ab0a7493f0e88",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c1",
+        "corePx1x": [
+          512,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          448,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c1/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "ae258d8908e4887b0c58e44569c9070a6f57ba6c1a79686a709d2d7e0385f323",
+        "nativeToContextPx1x": [
+          [
+            0.33075251844168513,
+            0.00013122464666937028,
+            -0.19929907344391215
+          ],
+          [
+            -0.00013117548611472625,
+            0.3308764743555384,
+            0.2755953640626686
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33075251844168513,
+            0.00013122464666937028,
+            447.8007009265561
+          ],
+          [
+            -0.00013117548611472625,
+            0.3308764743555384,
+            3008.2755953640626
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c1/registration.json",
+        "registrationSha256": "f54c2a55ec4a874726f4f0ed1b98e1b1e26da8d91f82f6d1c50ab0a7493f0e88",
+        "fallback": false
+      }
+    ],
+    "r4-c2": [
+      {
+        "id": "q11",
+        "chunk": "r4-c2",
+        "corePx1x": [
+          1024,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          960,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c2/q11-native.webp",
+        "nativeSize": [
+          1934,
+          813
+        ],
+        "sha256": "4e1e150b6c9ca1e09adb811039710f6e7cf82610184d9b42576e5fd76f7febf0",
+        "nativeToContextPx1x": [
+          [
+            0.33063038087398156,
+            0.0001785262267109104,
+            0.31710046532107705
+          ],
+          [
+            -0.00017855162035310392,
+            0.33058335856427856,
+            -0.20670867450469074
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33063038087398156,
+            0.0001785262267109104,
+            960.3171004653211
+          ],
+          [
+            -0.00017855162035310392,
+            0.33058335856427856,
+            3007.7932913254954
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c2/registration.json",
+        "registrationSha256": "a0b37cdce3b2a0f2748e0a5c451fbfa9f3ec0c271c5182997cbc787762329df1",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c2",
+        "corePx1x": [
+          1536,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          1472,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c2/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "0ddd6d1ac0cdb7d2a2b0b7d3edeaf0e97cd7949c8bbcf3e1b06d0b130ed10c08",
+        "nativeToContextPx1x": [
+          [
+            0.3310734823297972,
+            0.00011974226436311314,
+            -0.41632283525503655
+          ],
+          [
+            -0.00011969740544156274,
+            0.33119755853108546,
+            0.1879478226366191
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3310734823297972,
+            0.00011974226436311314,
+            1471.583677164745
+          ],
+          [
+            -0.00011969740544156274,
+            0.33119755853108546,
+            3008.1879478226365
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c2/registration.json",
+        "registrationSha256": "a0b37cdce3b2a0f2748e0a5c451fbfa9f3ec0c271c5182997cbc787762329df1",
+        "fallback": false
+      }
+    ],
+    "r4-c3": [
+      {
+        "id": "q11",
+        "chunk": "r4-c3",
+        "corePx1x": [
+          2048,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          1984,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c3/q11-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "79a737a544e2ec61a593f985245cf1d922438cf09fdbd5b1cc6d74d16e4ae195",
+        "nativeToContextPx1x": [
+          [
+            0.33069145518304055,
+            -2.6372093132184887e-05,
+            0.17578694902987801
+          ],
+          [
+            2.6362213382012895e-05,
+            0.33081538821225465,
+            0.2577304192146689
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33069145518304055,
+            -2.6372093132184887e-05,
+            1984.1757869490298
+          ],
+          [
+            2.6362213382012895e-05,
+            0.33081538821225465,
+            3008.2577304192146
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c3/registration.json",
+        "registrationSha256": "1e74f3afff86872d6b563ed20339325dcaa29a046cd797b5c64927f32af9e874",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c3",
+        "corePx1x": [
+          2560,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          2496,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c3/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "cb604417fea3ac1a1b9ec0ec25ec0b611fdf81af91fef9d8bad214273bd192a8",
+        "nativeToContextPx1x": [
+          [
+            0.33082873344388164,
+            7.705601273743918e-05,
+            -0.08820964673050018
+          ],
+          [
+            -7.702714532250627e-05,
+            0.33095271792078346,
+            0.056340183852007356
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.33082873344388164,
+            7.705601273743918e-05,
+            2495.9117903532697
+          ],
+          [
+            -7.702714532250627e-05,
+            0.33095271792078346,
+            3008.056340183852
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c3/registration.json",
+        "registrationSha256": "1e74f3afff86872d6b563ed20339325dcaa29a046cd797b5c64927f32af9e874",
+        "fallback": false
+      }
+    ],
+    "r4-c4": [
+      {
+        "id": "q11",
+        "chunk": "r4-c4",
+        "corePx1x": [
+          3072,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          3008,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c4/q11-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "b46726874dffe9e21123c2881dca0112fd47764aa449daeeb176fdbf1b55e6d3",
+        "nativeToContextPx1x": [
+          [
+            0.3306154771465263,
+            -2.296155827115031e-05,
+            0.04406679829233399
+          ],
+          [
+            2.2952956206151463e-05,
+            0.33073938170149936,
+            -0.11942686098098566
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3306154771465263,
+            -2.296155827115031e-05,
+            3008.0440667982925
+          ],
+          [
+            2.2952956206151463e-05,
+            0.33073938170149936,
+            3007.880573139019
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c4/registration.json",
+        "registrationSha256": "8fabd7ef7bc697c9f7b4fa844aa605329e72904e064c085c1a52dc21b196a8ce",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c4",
+        "corePx1x": [
+          3584,
+          3072,
+          512,
+          205
+        ],
+        "contextPx1x": [
+          3520,
+          3008,
+          640,
+          269
+        ],
+        "nativeFile": "inputs/r4-c4/q12-native.webp",
+        "nativeSize": [
+          1935,
+          813
+        ],
+        "sha256": "3a8ffda54f51f1aa06a6d2a262e7ab0e148a06330a827bc88193abdbfca5500d",
+        "nativeToContextPx1x": [
+          [
+            0.3306549692265808,
+            2.106081426741358e-05,
+            -0.08419955207620791
+          ],
+          [
+            -2.1052924276189223e-05,
+            0.3307788885819759,
+            -0.00996621463191385
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.3306549692265808,
+            2.106081426741358e-05,
+            3519.9158004479236
+          ],
+          [
+            -2.1052924276189223e-05,
+            0.3307788885819759,
+            3007.9900337853683
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c4/registration.json",
+        "registrationSha256": "8fabd7ef7bc697c9f7b4fa844aa605329e72904e064c085c1a52dc21b196a8ce",
+        "fallback": false
+      }
+    ],
+    "r4-c5": [
+      {
+        "id": "q11",
+        "chunk": "r4-c5",
+        "corePx1x": [
+          4096,
+          3072,
+          410,
+          205
+        ],
+        "contextPx1x": [
+          4032,
+          3008,
+          538,
+          269
+        ],
+        "nativeFile": "inputs/r4-c5/q11-native.webp",
+        "nativeSize": [
+          1774,
+          887
+        ],
+        "sha256": "4d39e1572b4c216628fad3c37c19b9e41980c2eb9f27e223e4afea43d89a6048",
+        "nativeToContextPx1x": [
+          [
+            0.30327261695002683,
+            7.907185386788634e-06,
+            -0.11916793416570284
+          ],
+          [
+            -7.907185386788634e-06,
+            0.30327261695002683,
+            -0.10036750876665523
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.30327261695002683,
+            7.907185386788634e-06,
+            4031.8808320658345
+          ],
+          [
+            -7.907185386788634e-06,
+            0.30327261695002683,
+            3007.899632491233
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c5/registration.json",
+        "registrationSha256": "b2c5e4043274e0303fceee2a3d407241b30646ae8c24ce6a8eee3aa400f18cd7",
+        "fallback": false
+      },
+      {
+        "id": "q12",
+        "chunk": "r4-c5",
+        "corePx1x": [
+          4506,
+          3072,
+          409,
+          205
+        ],
+        "contextPx1x": [
+          4442,
+          3008,
+          473,
+          269
+        ],
+        "nativeFile": "inputs/r4-c5/q12-native.webp",
+        "nativeSize": [
+          1663,
+          946
+        ],
+        "sha256": "8ae00bbecc0b506227d9e2322679d429eb086803ad28716a59dc7d1fa052ac3f",
+        "nativeToContextPx1x": [
+          [
+            0.28460083179702655,
+            8.805092343618441e-05,
+            -0.11716884311887638
+          ],
+          [
+            -8.807277147026403e-05,
+            0.2845302314449723,
+            -0.026731157289529316
+          ]
+        ],
+        "nativeToMasterPx1x": [
+          [
+            0.28460083179702655,
+            8.805092343618441e-05,
+            4441.882831156881
+          ],
+          [
+            -8.807277147026403e-05,
+            0.2845302314449723,
+            3007.9732688427107
+          ]
+        ],
+        "sourceRegistration": "inputs/r4-c5/registration.json",
+        "registrationSha256": "b2c5e4043274e0303fceee2a3d407241b30646ae8c24ce6a8eee3aa400f18cd7",
+        "fallback": false
+      }
+    ]
+  },
+  "imageGenCalls": 0,
+  "fallback": [
+    {
+      "part": "r2-c3/q22",
+      "reason": "Native missing in HD-FULL2.",
+      "corePx1x": [
+        2560,
+        1536,
+        512,
+        512
+      ],
+      "contextPx1x": [
+        2496,
+        1472,
+        640,
+        640
+      ],
+      "method": "Asia v2 Lanczos2x; min-cost join to native neighbours"
+    }
+  ],
+  "baselineInputs": [
+    {
+      "path": "img/map-zone2/v2/r1-c1.webp",
+      "sha256": "f765aca6d8e3cd3a2d5c2e8ef3644ec64677ab3ec1df32902c9d6905823e00f7"
+    },
+    {
+      "path": "img/map-zone2/v2/r1-c2.webp",
+      "sha256": "4e88366b574edccd26f4af9d083719e47e6eaa04de1bbfcb6476cbe3bed90395"
+    },
+    {
+      "path": "img/map-zone2/v2/r1-c3.webp",
+      "sha256": "e5a7718fbb4a99403c79127a6d11eb5ded652982779f05905541826a15bf23f5"
+    },
+    {
+      "path": "img/map-zone2/v2/r1-c4.webp",
+      "sha256": "d568780c5beed0285bb590c318811d28399767a9338fd1bf9f5e8ebf1cd32e9f"
+    },
+    {
+      "path": "img/map-zone2/v2/r1-c5.webp",
+      "sha256": "0ac2ed956ee9e072899f2a33eb378e1dfade6039c747a2e7116a03bd6f95dc80"
+    },
+    {
+      "path": "img/map-zone2/v2/r2-c1.webp",
+      "sha256": "26e39f39a9b380c1771d5107fc97fdffd8ca0c4ca3a2c9c601250cd01558ed38"
+    },
+    {
+      "path": "img/map-zone2/v2/r2-c2.webp",
+      "sha256": "22c4cf84ba3451b55fbdae7391cc7bca74a19f80bd9954455f08643368cd064a"
+    },
+    {
+      "path": "img/map-zone2/v2/r2-c3.webp",
+      "sha256": "40509471568e8818cae69e5f5b3740778aacd1d41402003e44d203b92cbf274c"
+    },
+    {
+      "path": "img/map-zone2/v2/r2-c4.webp",
+      "sha256": "88c5c4ece431f20108b80a669c7938b4e178317201cc600733052cc6451dc6e8"
+    },
+    {
+      "path": "img/map-zone2/v2/r2-c5.webp",
+      "sha256": "5e6180b243ec1da6f6b49e1015bb068b876107443ef75011cf2fecf1df43d3da"
+    },
+    {
+      "path": "img/map-zone2/v2/r3-c1.webp",
+      "sha256": "3937f0f05f0ca38e20d739538195a02dc2b1e2f874733e3c3d3884014224881e"
+    },
+    {
+      "path": "img/map-zone2/v2/r3-c2.webp",
+      "sha256": "5ee384cad84f21a3725d2f0d12c4958324a0bfb596998e6d39ecf1b74af4d992"
+    },
+    {
+      "path": "img/map-zone2/v2/r3-c3.webp",
+      "sha256": "5a0219541aa870e3c3c04b84875527b7cd3e7f7d4371bfcaea9929feacae1bad"
+    },
+    {
+      "path": "img/map-zone2/v2/r3-c4.webp",
+      "sha256": "219394bd0635d7beaf76e7fb68354590afa211a605110b6b8fc0f07dcf0db9f4"
+    },
+    {
+      "path": "img/map-zone2/v2/r3-c5.webp",
+      "sha256": "e17d8558f9109f2cff5c9da54d8a1a792e0e72d9d46b0fe4d59c4ee8af6f67e6"
+    },
+    {
+      "path": "img/map-zone2/v2/r4-c1.webp",
+      "sha256": "6f48f2a62ee5309aa556cbb24ae88739c3dc830e599a892df53c74f715a1d93f"
+    },
+    {
+      "path": "img/map-zone2/v2/r4-c2.webp",
+      "sha256": "b84e71ff7a3f00ea1a9e3557392e642b8cdfc717c0719baaf5e7dbfb8a2aff82"
+    },
+    {
+      "path": "img/map-zone2/v2/r4-c3.webp",
+      "sha256": "8e76b5cef08c0c47084053d9d10e95e15ff3189aa8502ae181182133e391b93a"
+    },
+    {
+      "path": "img/map-zone2/v2/r4-c4.webp",
+      "sha256": "d40ed27303a73685a6d555578a1b4ad0c5464cd503f3d3f620bb11e42a4dc65a"
+    },
+    {
+      "path": "img/map-zone2/v2/r4-c5.webp",
+      "sha256": "b12f5649d63ce4a1ef9dbba5f7a726ac1d3296d706196e3d8d0a8c87bdc6eb84"
+    },
+    {
+      "path": "src/zone-skin.js",
+      "sha256": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1"
+    },
+    {
+      "path": "src/town-walkmask.js",
+      "sha256": "67a318806666e40ba28a39b9edc1c8194d873daaf56bced65619d7ff11dcb15a"
+    },
+    {
+      "path": "src/town-owner-walkmask-asia.js",
+      "sha256": "d9f4842ff1b14405ab193b230d23c32a4e14624ba92be9567ad330b9312a1053"
+    }
+  ],
+  "fallbackPatches": [
+    {
+      "id": "invented-volcanic-bridge",
+      "core": [
+        1000,
+        90,
+        1590,
+        440
+      ],
+      "reason": "Run1 q11 invents a bridge and staircase in the panorama; visually confirmed in upstream-structure-review.jpg.",
+      "contextRectPx1x": [
+        952,
+        42,
+        1638,
+        488
+      ],
+      "effectiveFallbackPixels2x": 1056711
+    },
+    {
+      "id": "upper-plaza-added-steps-rail",
+      "core": [
+        1830,
+        320,
+        2260,
+        600
+      ],
+      "reason": "Run1 r1-c2/q12 adds railing; adjacent r1-c3/q11 adds upper-left steps.",
+      "contextRectPx1x": [
+        1782,
+        272,
+        2308,
+        648
+      ],
+      "effectiveFallbackPixels2x": 645653
+    },
+    {
+      "id": "east-plaza-thick-rim",
+      "core": [
+        2870,
+        370,
+        3072,
+        660
+      ],
+      "reason": "Run1 r1-c3/q12 changes the right road edge into a thick rim.",
+      "contextRectPx1x": [
+        2822,
+        322,
+        3120,
+        708
+      ],
+      "effectiveFallbackPixels2x": 368350
+    },
+    {
+      "id": "pale-source-feature",
+      "core": [
+        2360,
+        745,
+        2440,
+        815
+      ],
+      "reason": "Run1 r1-c3/q21 replaces the pale source feature with a pink tree.",
+      "contextRectPx1x": [
+        2312,
+        697,
+        2488,
+        863
+      ],
+      "effectiveFallbackPixels2x": 74715
+    },
+    {
+      "id": "upper-stair-foot",
+      "core": [
+        3120,
+        280,
+        3270,
+        420
+      ],
+      "reason": "Run1 r1-c4 upper stair foot reports12px displacement and a changed landing.",
+      "contextRectPx1x": [
+        3072,
+        232,
+        3318,
+        468
+      ],
+      "effectiveFallbackPixels2x": 162986
+    },
+    {
+      "id": "heaven-bridge",
+      "core": [
+        3600,
+        485,
+        3910,
+        660
+      ],
+      "reason": "Run1 r1-c4 bridge approaches and steps differ from source.",
+      "contextRectPx1x": [
+        3552,
+        437,
+        3958,
+        708
+      ],
+      "effectiveFallbackPixels2x": 338782
+    },
+    {
+      "id": "volcanic-stair-foot",
+      "core": [
+        1385,
+        775,
+        1580,
+        940
+      ],
+      "reason": "Run1 r1-c2 stair-foot-right displacement4.4721px and changed stair-foot paving.",
+      "contextRectPx1x": [
+        1337,
+        727,
+        1628,
+        988
+      ],
+      "effectiveFallbackPixels2x": 220450
+    },
+    {
+      "id": "northwest-stair",
+      "core": [
+        380,
+        360,
+        590,
+        550
+      ],
+      "reason": "Final focus audit: changed tread spacing, base and step/rail proportions at source staircase; repeated-step match displaced9,11px.",
+      "contextRectPx1x": [
+        332,
+        312,
+        638,
+        598
+      ],
+      "effectiveFallbackPixels2x": 266721
+    },
+    {
+      "id": "west-mid-stair",
+      "core": [
+        1640,
+        1190,
+        1870,
+        1360
+      ],
+      "reason": "Final focus audit: altered treads and extended edging; independent contour probes displaced6-12px.",
+      "contextRectPx1x": [
+        1592,
+        1142,
+        1918,
+        1408
+      ],
+      "effectiveFallbackPixels2x": 246237
+    },
+    {
+      "id": "main-plaza-stair",
+      "core": [
+        2290,
+        1390,
+        2540,
+        1670
+      ],
+      "reason": "Final focus audit: tread geometry differs; source stairs match at search boundary12px.",
+      "contextRectPx1x": [
+        2242,
+        1342,
+        2588,
+        1718
+      ],
+      "effectiveFallbackPixels2x": 429184
+    },
+    {
+      "id": "central-bridge-stair-rails",
+      "core": [
+        2340,
+        1900,
+        2600,
+        2580
+      ],
+      "reason": "Final focus audit: bridge rails removed and lower stair sides shifted5-7px. Restore source geometry rather than invent rails.",
+      "contextRectPx1x": [
+        2292,
+        1852,
+        2648,
+        2628
+      ],
+      "effectiveFallbackPixels2x": 919945
+    },
+    {
+      "id": "pier-stair-rails",
+      "core": [
+        2770,
+        2100,
+        2960,
+        2330
+      ],
+      "reason": "Final focus audit: pier rails removed and stair width changed; reliable contour discrepancies retained.",
+      "contextRectPx1x": [
+        2722,
+        2052,
+        3008,
+        2378
+      ],
+      "effectiveFallbackPixels2x": 296986
+    },
+    {
+      "id": "east-water-stair",
+      "core": [
+        3130,
+        2100,
+        3260,
+        2220
+      ],
+      "reason": "Final focus audit: water stair rail supports removed and side outline changed.",
+      "contextRectPx1x": [
+        3082,
+        2052,
+        3308,
+        2268
+      ],
+      "effectiveFallbackPixels2x": 125136
+    },
+    {
+      "id": "ice-stair",
+      "core": [
+        4435,
+        750,
+        4645,
+        950
+      ],
+      "reason": "Final focus audit: tread arrangement and source right stair edge changed.",
+      "contextRectPx1x": [
+        4387,
+        702,
+        4693,
+        998
+      ],
+      "effectiveFallbackPixels2x": 257025
+    },
+    {
+      "id": "east-plaza-stair",
+      "core": [
+        3110,
+        650,
+        3290,
+        810
+      ],
+      "reason": "Final focus audit: altered tread spacing; repeated-step correspondence hits12px search boundary.",
+      "contextRectPx1x": [
+        3062,
+        602,
+        3338,
+        858
+      ],
+      "effectiveFallbackPixels2x": 208699
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "chunk": "r3-c3",
+  "objects": [
+    {
+      "id": "r3-c3-bridge-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2350,
+        1984,
+        2401,
+        2526
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.16985022791404383,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-bridge-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2520,
+        1984,
+        2578,
+        2526
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.33054459854943374,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-pier-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2768,
+        2108,
+        2831,
+        2315
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.4296449658768499,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-pier-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2921,
+        2106,
+        2980,
+        2315
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.36404184575460224,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-south-stair-west-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2392,
+        2920,
+        2452,
+        3136
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 1.0,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    },
+    {
+      "id": "r3-c3-south-stair-east-rail",
+      "chunk": "r3-c3",
+      "kind": "baked-gold-rail-or-post",
+      "rectPx1x": [
+        2548,
+        2920,
+        2608,
+        3136
+      ],
+      "action": "remove-baked",
+      "ownerWalkMaskFraction": 0.18348765432098765,
+      "note": "Remove gold vertical object only, keep deck, treads, support blocks, river/bank silhouette. Box includes context outside chunk."
+    }
+  ],
+  "scope": "requested removals; see visual-review.json for observed result",
+  "completeRemovalVerified": false
+}

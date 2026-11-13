@@ -1,0 +1,192 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed source landmarks; 49x49 DoG sigma1.5/6 template correlation, search +/-12 1x pixels, measured on assembled output downsampled to 1x. Confidence >=0.6; removal boxes excluded. Same method as d54fac28.",
+  "maxReliableDisplacementPx1x": 12.0,
+  "totalProbes": 12,
+  "reliableProbes": 10,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "limitation": "Affine inliers and local probes do not certify all contours. Low-correlation and search-boundary hits require human review. No retry to meet numeric thresholds.",
+  "probes": [
+    {
+      "id": "upper-stair-left",
+      "sourcePx1x": [
+        99,
+        323
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9391226172447205,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "upper-stair-right",
+      "sourcePx1x": [
+        206,
+        323
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.977596640586853,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "upper-stair-foot",
+      "sourcePx1x": [
+        150,
+        387
+      ],
+      "displacementPx1x": [
+        12,
+        0
+      ],
+      "distancePx1x": 12.0,
+      "normalizedCorrelation": 0.8155505657196045,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "plaza-left",
+      "sourcePx1x": [
+        45,
+        447
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8594867587089539,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "plaza-south",
+      "sourcePx1x": [
+        259,
+        672
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.4124666452407837,
+      "overlapsRemovalBox": false,
+      "reliable": false
+    },
+    {
+      "id": "lower-stair-left",
+      "sourcePx1x": [
+        109,
+        678
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9644696712493896,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lower-stair-right",
+      "sourcePx1x": [
+        212,
+        686
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9563921093940735,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "lower-stair-foot",
+      "sourcePx1x": [
+        142,
+        780
+      ],
+      "displacementPx1x": [
+        2,
+        0
+      ],
+      "distancePx1x": 2.0,
+      "normalizedCorrelation": 0.987220823764801,
+      "overlapsRemovalBox": true,
+      "reliable": false
+    },
+    {
+      "id": "bridge-west",
+      "sourcePx1x": [
+        572,
+        576
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.95444655418396,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "bridge-mid-deck",
+      "sourcePx1x": [
+        751,
+        532
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9704405069351196,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "bridge-east",
+      "sourcePx1x": [
+        897,
+        578
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9349838495254517,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    },
+    {
+      "id": "river-rock",
+      "sourcePx1x": [
+        391,
+        942
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9654650688171387,
+      "overlapsRemovalBox": false,
+      "reliable": true
+    }
+  ]
+}

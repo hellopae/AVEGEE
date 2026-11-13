@@ -1,0 +1,162 @@
+{
+  "task": "Z234-HD-FULL zone2 asia set3/5",
+  "chunks": [
+    {
+      "chunk": "r2-c4",
+      "imageGenCalls": 4,
+      "allFourPartsGenerated": true,
+      "nativeSizes": [
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ]
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpnessLaplacianRatio": 86.21390890127553,
+      "structureMaxReliablePx1x": 1.0,
+      "structureReliableProbes": 13,
+      "structureTotalProbes": 20,
+      "semanticStructureVerified": false,
+      "nativeAndRegistrationComplete": true
+    },
+    {
+      "chunk": "r2-c5",
+      "imageGenCalls": 4,
+      "allFourPartsGenerated": true,
+      "nativeSizes": [
+        [
+          1149,
+          1368
+        ],
+        [
+          1078,
+          1460
+        ],
+        [
+          1149,
+          1368
+        ],
+        [
+          1078,
+          1460
+        ]
+      ],
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "sharpnessLaplacianRatio": 116.84712684292772,
+      "structureMaxReliablePx1x": 1.0,
+      "structureReliableProbes": 15,
+      "structureTotalProbes": 16,
+      "semanticStructureVerified": false,
+      "nativeAndRegistrationComplete": true
+    },
+    {
+      "chunk": "r3-c1",
+      "imageGenCalls": 4,
+      "allFourPartsGenerated": true,
+      "nativeSizes": [
+        [
+          1189,
+          1323
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1189,
+          1323
+        ],
+        [
+          1254,
+          1254
+        ]
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpnessLaplacianRatio": 69.32355969741445,
+      "structureMaxReliablePx1x": 1.0,
+      "structureReliableProbes": 15,
+      "structureTotalProbes": 16,
+      "semanticStructureVerified": false,
+      "nativeAndRegistrationComplete": true
+    },
+    {
+      "chunk": "r3-c2",
+      "imageGenCalls": 4,
+      "allFourPartsGenerated": true,
+      "nativeSizes": [
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ],
+        [
+          1254,
+          1254
+        ]
+      ],
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpnessLaplacianRatio": 84.27592670931509,
+      "structureMaxReliablePx1x": 2.0,
+      "structureReliableProbes": 16,
+      "structureTotalProbes": 16,
+      "semanticStructureVerified": false,
+      "nativeAndRegistrationComplete": true
+    }
+  ],
+  "tool": "built-in image_gen.imagegen",
+  "imageGenCalls": 16,
+  "imageGenLimit": 16,
+  "generatedParts": 16,
+  "pendingGenerationParts": [],
+  "status": "artifacts-complete; quality review pending",
+  "runtimeInstalled": false,
+  "method": "2x2 cores +64px context each side, clipped only at map edges. SIFT partial affine, native direct warp to 2x, sigma35 broad colour correction, min-cost seams, feather8 output px. No sharpening or local deformation.",
+  "outputBudgetBytes": 80000000,
+  "pendingWork": [
+    "Claude: judge semantic structure including uncertain probes, internal seams and floor-only object removal.",
+    "Claude: review redrawn water micro-patterns and added small floating leaves in r3-c2/q11.",
+    "ASSEMBLE: join external chunk edges using lossless natives and per-part registration; no external joins done here."
+  ],
+  "caveats": [
+    "Structure max covers only reliable fixed template probes, not every contour. 9/68 probes uncertain.",
+    "No complete-object removal is certified in removedIdsVerified; floor-only clearing and retained edge foliage require visual judgment.",
+    "Derived source crops omitted for size budget; source hashes and exact crop rectangles permit recreation.",
+    "JPEG review images are compressed diagnostics; judge texture against lossless exports."
+  ],
+  "referenceEvidence": [
+    "Original local brief read at supplied absolute path.",
+    "Requested reference worktree directories missing; equivalent approved pipeline recovered read-only with git show bc9dc4dd and 0c544a3f."
+  ],
+  "automation": "Mechanical file existence/decode/dimensions only; quality metrics not pass/fail gates."
+}

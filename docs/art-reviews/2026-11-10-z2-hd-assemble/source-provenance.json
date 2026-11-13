@@ -1,0 +1,864 @@
+{
+  "referenceCommit": "8c8f339f",
+  "referenceWorktreeMissing": true,
+  "sourceRuns": [
+    "20261113T042731Z-852dd473",
+    "20261113T044051Z-18492653",
+    "20261113T044110Z-6767827c",
+    "20261113T083606Z-6d680311",
+    "20261113T083614Z-edf7e01a"
+  ],
+  "files": [
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/registration.json",
+      "local": "inputs/r1-c1/registration.json",
+      "bytes": 8632,
+      "sha256": "1f1bc7797f4c72efe55a9634e5814aaedc934813dd55b72055a00a5833f66028"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/q11-native.webp",
+      "local": "inputs/r1-c1/q11-native.webp",
+      "bytes": 2768392,
+      "sha256": "5d9dc8d13c25ee5edd6100ea8a6004ce55d5926c7d6e3db58d900c7cf818c2f6"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/q12-native.webp",
+      "local": "inputs/r1-c1/q12-native.webp",
+      "bytes": 2786438,
+      "sha256": "8ebc169648f9119ad691eff7b719127ef41641dcbbba7c76150c216e43186ea9"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/q21-native.webp",
+      "local": "inputs/r1-c1/q21-native.webp",
+      "bytes": 2663596,
+      "sha256": "a0f696ff47a9e8d6f41d0e9bd48c9827f30c27e17be3a00be668e99def537e6c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/q22-native.webp",
+      "local": "inputs/r1-c1/q22-native.webp",
+      "bytes": 2746170,
+      "sha256": "339649f8ac0588a800313307d772dffcb46733ca54db04f3788d01bfbe64daf7"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/structure.json",
+      "local": "inputs/r1-c1/structure.json",
+      "bytes": 4156,
+      "sha256": "0b999555eeedaa95508aa09b1f5163b91a63ffc2df4b3e7743bf5715b7864d57"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c1/removed.json",
+      "local": "inputs/r1-c1/removed.json",
+      "bytes": 1631,
+      "sha256": "1e1b0a096f38eb56b32e5b4355f9657b74c4163f9a3dda7975ef2995612eea55"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/registration.json",
+      "local": "inputs/r1-c2/registration.json",
+      "bytes": 8069,
+      "sha256": "7c3c822b6418a4cf6349130399c4aab66aa7461aa24e0988e2cd3644ddd261c0"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/q11-native.webp",
+      "local": "inputs/r1-c2/q11-native.webp",
+      "bytes": 2409710,
+      "sha256": "f435cf34c4c80de347ce682b6e952489592c0a5c4804b90937d36ba72460b14d"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/q12-native.webp",
+      "local": "inputs/r1-c2/q12-native.webp",
+      "bytes": 2228714,
+      "sha256": "fe4ec33080794b88df0330e81ef10767e5e0665ccffec2cc6e3595bc12f5dfab"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/q21-native.webp",
+      "local": "inputs/r1-c2/q21-native.webp",
+      "bytes": 2297854,
+      "sha256": "879c5282342776006ba16bb8a2b425e3919f845aebb5a8d4bc6961fc5cb8e529"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/q22-native.webp",
+      "local": "inputs/r1-c2/q22-native.webp",
+      "bytes": 2423762,
+      "sha256": "2a6bbe5b9c55362052f10ecb5046fef6e00ca6e51896983e617adce14a7c925e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/structure.json",
+      "local": "inputs/r1-c2/structure.json",
+      "bytes": 3865,
+      "sha256": "15f2d10d1b9b32424974cfb9f33debaa4cd69ffd7d3344d16ee1177f79664379"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c2/removed.json",
+      "local": "inputs/r1-c2/removed.json",
+      "bytes": 907,
+      "sha256": "efe433ebaec234d1dba5fc2013c565f89f3698dec8d6c4ee0981c7b898ca0fec"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/registration.json",
+      "local": "inputs/r1-c3/registration.json",
+      "bytes": 8423,
+      "sha256": "abb7b3d31d87347a05680c59085b65b189adafec7bea4a6a452b5f2b8bc0bdc5"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/q11-native.webp",
+      "local": "inputs/r1-c3/q11-native.webp",
+      "bytes": 2175396,
+      "sha256": "174197c82d905baee9be6b0c7d9eb8b3d684d32e88708552001e545492dad195"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/q12-native.webp",
+      "local": "inputs/r1-c3/q12-native.webp",
+      "bytes": 1956542,
+      "sha256": "86993b79eac1517c02f4f0ba3d1ae8ff201db567760430abe0a113ddc2453b70"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/q21-native.webp",
+      "local": "inputs/r1-c3/q21-native.webp",
+      "bytes": 2396896,
+      "sha256": "3a8bb64953ca3822974c4ae372c11ddda306518604d3b518abb32b3b2da3a860"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/q22-native.webp",
+      "local": "inputs/r1-c3/q22-native.webp",
+      "bytes": 2242538,
+      "sha256": "dc9e8e9653dcc065a2f76c2b43db9ce611ffc91134f4269615ba27e3b9c44275"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/structure.json",
+      "local": "inputs/r1-c3/structure.json",
+      "bytes": 4172,
+      "sha256": "a9322a9fb417a6bf1399951bca2dadef157023f038d472e483f77047f233591d"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c3/removed.json",
+      "local": "inputs/r1-c3/removed.json",
+      "bytes": 1270,
+      "sha256": "1ad2e91d0cda46666c9617da38b09af5762b3c9adda8a7241af4ade283479463"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/registration.json",
+      "local": "inputs/r1-c4/registration.json",
+      "bytes": 8631,
+      "sha256": "6a1736bd56e56e0712d4123f84e9c305a20b9a602fd37189c241720b52cfae76"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/q11-native.webp",
+      "local": "inputs/r1-c4/q11-native.webp",
+      "bytes": 2250058,
+      "sha256": "a46f2fb73872ea5b11fda2f14f10e50cf360bbd07e97825206b86a97d7d026ff"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/q12-native.webp",
+      "local": "inputs/r1-c4/q12-native.webp",
+      "bytes": 2039230,
+      "sha256": "25840f851b16456c0ba2d79d0d0cf44db7c6d15535f96fe8f80ba3f18ed72835"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/q21-native.webp",
+      "local": "inputs/r1-c4/q21-native.webp",
+      "bytes": 2105592,
+      "sha256": "0ef3be61795374296fa3dbae6e7e207a818f7fc0fcb6d08d6c8dec6583f2ce8f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/q22-native.webp",
+      "local": "inputs/r1-c4/q22-native.webp",
+      "bytes": 1971426,
+      "sha256": "21efda57ff9f27ce2a73d9d371080a81ceec0a1e1ef0365e0c27ba99853ca795"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/structure.json",
+      "local": "inputs/r1-c4/structure.json",
+      "bytes": 4121,
+      "sha256": "2288f2eb7bae3fa6727fe1aef9c6daea74e44b39b57e9591e8edac88ce1ed496"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/r1-c4/removed.json",
+      "local": "inputs/r1-c4/removed.json",
+      "bytes": 905,
+      "sha256": "5529ffda69b5c3598c4366b1adf16ffb5164490c94874b6c6fbcb4067c4df64a"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/README.md",
+      "local": "inputs/run-1/README.md",
+      "bytes": 12125,
+      "sha256": "d512f76ab5f5388cb75e9db2faa72d8bf727c9b8f4248a638cf00c5110735d4e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/visual-review.json",
+      "local": "inputs/run-1/visual-review.json",
+      "bytes": 2206,
+      "sha256": "0a552e63a4e556f40ef51b13a88352810087712f4112dba5d84b37fd12cb02ce"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T042731Z-852dd473/docs/art-reviews/2026-11-10-z2-hd-full/run-summary.json",
+      "local": "inputs/run-1/run-summary.json",
+      "bytes": 4252,
+      "sha256": "80d62f300bfefafc4961304434cf6cc591c088b97432b157b418a40230df22d1"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/registration.json",
+      "local": "inputs/r1-c5/registration.json",
+      "bytes": 9483,
+      "sha256": "7db5456f7aa17f2615eb7795aeca58142f006c9bd269d0c5170b88f42f5b4f98"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/q11-native.webp",
+      "local": "inputs/r1-c5/q11-native.webp",
+      "bytes": 2567968,
+      "sha256": "247f935158797950d35224166ffdadba3be62618a7ac4724ca1bbbb0c5971356"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/q12-native.webp",
+      "local": "inputs/r1-c5/q12-native.webp",
+      "bytes": 2470234,
+      "sha256": "f1ca441e14170028a25516a694c0cc86d5f1789443e2ebf757d022fcc975d6da"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/q21-native.webp",
+      "local": "inputs/r1-c5/q21-native.webp",
+      "bytes": 2596510,
+      "sha256": "df8fd17173f87f5609fc743f0d0a65b4ea5243a2ebf40547a6e065bfa478edc2"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/q22-native.webp",
+      "local": "inputs/r1-c5/q22-native.webp",
+      "bytes": 2609280,
+      "sha256": "146738ad63472f2994096e64ad2ed8ab67a3a15c6369d1cb67bc5305459a5a21"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/structure.json",
+      "local": "inputs/r1-c5/structure.json",
+      "bytes": 4494,
+      "sha256": "fb82ca516b748dc58571230389726aae3d80ae2bbaac2db3a577e59d633551a4"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r1-c5/removed.json",
+      "local": "inputs/r1-c5/removed.json",
+      "bytes": 3402,
+      "sha256": "c373f08f8682395253c2a6a2836dd33a26253292ddde580ea4519e6440c958c8"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/registration.json",
+      "local": "inputs/r2-c1/registration.json",
+      "bytes": 10675,
+      "sha256": "3acbd8d931b9645b2342ac87bce4171cb87cfc46a64ca6790934dbd9bd2a7535"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/q11-native.webp",
+      "local": "inputs/r2-c1/q11-native.webp",
+      "bytes": 2593974,
+      "sha256": "f43fc49474004e1fba1d9cd8ed73d716379c2921aade38069e0157d87bdc86d0"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/q12-native.webp",
+      "local": "inputs/r2-c1/q12-native.webp",
+      "bytes": 2815722,
+      "sha256": "8027fc1e17a0d492a9114c77e96eb5d3ef4a4b95f6f019dda709794d7ce5a8e7"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/q21-native.webp",
+      "local": "inputs/r2-c1/q21-native.webp",
+      "bytes": 2669310,
+      "sha256": "d0f13f27ee173798d8ee1aa7cd2d986c77b020c2bc7e9e60731729f2df1616b0"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/q22-native.webp",
+      "local": "inputs/r2-c1/q22-native.webp",
+      "bytes": 2711344,
+      "sha256": "b9860fccef8307833749dde8ab68ebc5daf16433eb139ede9945ccb2a006e3d3"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/structure.json",
+      "local": "inputs/r2-c1/structure.json",
+      "bytes": 4516,
+      "sha256": "254b3fdc863de9bfc5cf7cc958b28533889ed5de9c2ce4826a223b01d8083ba6"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c1/removed.json",
+      "local": "inputs/r2-c1/removed.json",
+      "bytes": 5260,
+      "sha256": "303b34423ab746bf6615f18208ab596351f06398019b738b474099f9b08e4653"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/registration.json",
+      "local": "inputs/r2-c2/registration.json",
+      "bytes": 10157,
+      "sha256": "6f1137f2efe554a9304bbc4eec1b2e9c801023e5840a306027a3c9e54bc39fa5"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/q11-native.webp",
+      "local": "inputs/r2-c2/q11-native.webp",
+      "bytes": 2551510,
+      "sha256": "f1f9322104e6e28c59f7ddb76f774b168672a4fe0c963d68d96b96d05efe7ff8"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/q12-native.webp",
+      "local": "inputs/r2-c2/q12-native.webp",
+      "bytes": 2595368,
+      "sha256": "e19ae03a8ecf541823660dd9fa395b85d5874c8ae44836611cfc7fbd1f7c1415"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/q21-native.webp",
+      "local": "inputs/r2-c2/q21-native.webp",
+      "bytes": 2643442,
+      "sha256": "0e9dfeba6da22e35bdefc97aa702088803262abe5c3e47ecd59bac37ce463da8"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/q22-native.webp",
+      "local": "inputs/r2-c2/q22-native.webp",
+      "bytes": 2411264,
+      "sha256": "396a9a001dca9d0df88f8666041b0b0fc6c11aeb50b682febe0ecf611c3a95ec"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/structure.json",
+      "local": "inputs/r2-c2/structure.json",
+      "bytes": 4515,
+      "sha256": "98912b051bf9291b0761fb34934f5ede37837a1d22d1ff33292678b308a573f0"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c2/removed.json",
+      "local": "inputs/r2-c2/removed.json",
+      "bytes": 3994,
+      "sha256": "8da1b719df8fc961af7d61ad05b7a1442ac5df5eee1358ccf196b93fb5083241"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/registration.json",
+      "local": "inputs/r2-c3/registration.json",
+      "bytes": 9048,
+      "sha256": "06e7f4e28d84aff136e1d2d9b7a95b3f48239c5cdd373b0a32678495432e8d39"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/q11-native.webp",
+      "local": "inputs/r2-c3/q11-native.webp",
+      "bytes": 2677150,
+      "sha256": "9a1d3d7bf5b51fce7a8d2d111108e0002b6e3e609d42499f37776bb3951d49b2"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/q12-native.webp",
+      "local": "inputs/r2-c3/q12-native.webp",
+      "bytes": 2733430,
+      "sha256": "d0fe5549a16c1dcf7dcc0f94db67e86bd3543551f097f658f5d107155b51340c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/q21-native.webp",
+      "local": "inputs/r2-c3/q21-native.webp",
+      "bytes": 2633280,
+      "sha256": "240fc0b50b4e0d4af3421db6ef40ca6709406f8ccebc37060d1895b125d2af0c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/structure.json",
+      "local": "inputs/r2-c3/structure.json",
+      "bytes": 135,
+      "sha256": "4d1ea274b4ed85d1d2c3ff5c8937232ba1f11f81727dc56964d1c2628c1e987c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/r2-c3/removed.json",
+      "local": "inputs/r2-c3/removed.json",
+      "bytes": 5370,
+      "sha256": "04908e4b0fe6c1bb979ed4548472177a557cf0bfebc1fcb60973bbfab25128fe"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/README.md",
+      "local": "inputs/run-2/README.md",
+      "bytes": 8902,
+      "sha256": "1d25c90209332f50a7dd6b33c622071ad19feb9654992c94171ea02a0bf70bc5"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044051Z-18492653/docs/art-reviews/2026-11-10-z2-hd-full/run-summary.json",
+      "local": "inputs/run-2/run-summary.json",
+      "bytes": 5386,
+      "sha256": "620d09cbcb246b7a406c8b707d0d82ee2aa9da276310dec6d1b5957eae590d65"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/registration.json",
+      "local": "inputs/r2-c4/registration.json",
+      "bytes": 5977,
+      "sha256": "d578512dbabd23b074b66750d94422b2017c2d2969b53e763a3bf95e834027e3"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/q11-native.webp",
+      "local": "inputs/r2-c4/q11-native.webp",
+      "bytes": 2574682,
+      "sha256": "c55ab471a78973d556befc02235d0d93a23bba246d4179f28a4cdb6ef76af8a6"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/q12-native.webp",
+      "local": "inputs/r2-c4/q12-native.webp",
+      "bytes": 2709038,
+      "sha256": "08cfc530520e7c020a59cfc6b57e4a12654e856f2b2c8b8dc108a79bcebe3aea"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/q21-native.webp",
+      "local": "inputs/r2-c4/q21-native.webp",
+      "bytes": 2810874,
+      "sha256": "290f6927e718f17b7773ebb11451a93e1d0caf036daad6913270458175336d7f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/q22-native.webp",
+      "local": "inputs/r2-c4/q22-native.webp",
+      "bytes": 2679068,
+      "sha256": "2350ea510a941664552bd4bb755c6edb11625954abc2c041430b1695cac83230"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/structure.json",
+      "local": "inputs/r2-c4/structure.json",
+      "bytes": 5620,
+      "sha256": "39642f3a1e58126d9e812ff7a6ad7227c29711a73f7dea9119cca1a9d0628212"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c4/removed.json",
+      "local": "inputs/r2-c4/removed.json",
+      "bytes": 2181,
+      "sha256": "a6552b28c976dc50a480347832fb1c98e05b6896cb7adcf3584b416cb33eabc3"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/registration.json",
+      "local": "inputs/r2-c5/registration.json",
+      "bytes": 5973,
+      "sha256": "9fd9ffce0db72b9cf204891f883202415a7b1e4b12d8fcffb0b393a841b37722"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/q11-native.webp",
+      "local": "inputs/r2-c5/q11-native.webp",
+      "bytes": 2820338,
+      "sha256": "1228ec39e3c369fbd80bbcb3790cfc77ac23ed975cadbb0a1e10016e8a5cd929"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/q12-native.webp",
+      "local": "inputs/r2-c5/q12-native.webp",
+      "bytes": 2641954,
+      "sha256": "2ea4cf32ba882cab730a9cedd5b82c187e20de99925320541d682799d5828b05"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/q21-native.webp",
+      "local": "inputs/r2-c5/q21-native.webp",
+      "bytes": 2636822,
+      "sha256": "5e045c0f89d38331d80286b58a06ec5a0a5a614f8141d0a0aa1814d3207607ff"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/q22-native.webp",
+      "local": "inputs/r2-c5/q22-native.webp",
+      "bytes": 2815174,
+      "sha256": "6c1daf316fbc14885139289058a0ad6c71a0fe24a9f8f4b7751fcdc43a9bd36e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/structure.json",
+      "local": "inputs/r2-c5/structure.json",
+      "bytes": 4510,
+      "sha256": "937162ac358fb4bc66d41429e1e1c0851b9358fc6bb6ab983a282b63956cf1a9"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r2-c5/removed.json",
+      "local": "inputs/r2-c5/removed.json",
+      "bytes": 1296,
+      "sha256": "8722fda0b2f5e58abb553c3dce20446c4ba7a5a06b277e421b22f9488c0ec7c6"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/registration.json",
+      "local": "inputs/r3-c1/registration.json",
+      "bytes": 5968,
+      "sha256": "b06cdcfde1f274a737af1a4e78e2e683d5c9d01cf2a1167ad588cf1b6838fc80"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/q11-native.webp",
+      "local": "inputs/r3-c1/q11-native.webp",
+      "bytes": 2694050,
+      "sha256": "77280b3e27f71e978bddd36d90072c122848585c63fd8ec09f1d948e4dd92c1c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/q12-native.webp",
+      "local": "inputs/r3-c1/q12-native.webp",
+      "bytes": 2674586,
+      "sha256": "324920704d476b5ebe465cad33b986615267157f330757faa662b8ff66bd6fea"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/q21-native.webp",
+      "local": "inputs/r3-c1/q21-native.webp",
+      "bytes": 2813302,
+      "sha256": "64f1fae14f64202618b45d08a5eafbb3ddee3ce16cf367892d64090982ab22fa"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/q22-native.webp",
+      "local": "inputs/r3-c1/q22-native.webp",
+      "bytes": 2739698,
+      "sha256": "e8b55086c3488b96b60e5126e156b39db6f5c5b493cc48aa872911bdd4849690"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/structure.json",
+      "local": "inputs/r3-c1/structure.json",
+      "bytes": 4530,
+      "sha256": "53bbf27c88030882a2eb25fecaca046be50b46ec46074b3e7ae509bb2b1bf279"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c1/removed.json",
+      "local": "inputs/r3-c1/removed.json",
+      "bytes": 353,
+      "sha256": "fedf71f5b1ff5088e91796f8bd67ffb469a83ac75e8eee4ea5845d64fd1a807e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/registration.json",
+      "local": "inputs/r3-c2/registration.json",
+      "bytes": 5974,
+      "sha256": "c6884684387e721a0a7ecd46b5a0f5ee6a179bdc1ce5dc76c3c04c8cb1ba2b61"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/q11-native.webp",
+      "local": "inputs/r3-c2/q11-native.webp",
+      "bytes": 2721696,
+      "sha256": "fbf7c62d30c31491efe9124db90419391369976af90ec9fd01030e7ed45b0c1b"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/q12-native.webp",
+      "local": "inputs/r3-c2/q12-native.webp",
+      "bytes": 2691858,
+      "sha256": "3b966bc9a5f48398b25f367a4cfd3dc2e1ce79b8578969896f87ef753f3296a7"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/q21-native.webp",
+      "local": "inputs/r3-c2/q21-native.webp",
+      "bytes": 2837706,
+      "sha256": "8f69ce35c99bea08a18a53156916ce3dfd6ad2415d24cde0f51b1a0833b55fbc"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/q22-native.webp",
+      "local": "inputs/r3-c2/q22-native.webp",
+      "bytes": 2940900,
+      "sha256": "76139dd8445ace09d21537b913b50d0445f1be2f3a1db6e1e835f2910ebc1a8e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/structure.json",
+      "local": "inputs/r3-c2/structure.json",
+      "bytes": 4545,
+      "sha256": "ee2fecfa80eaa120c2a9d1d70909e8987bb502fec627e944dbb6611ea18c7532"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/r3-c2/removed.json",
+      "local": "inputs/r3-c2/removed.json",
+      "bytes": 353,
+      "sha256": "fedf71f5b1ff5088e91796f8bd67ffb469a83ac75e8eee4ea5845d64fd1a807e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/README.md",
+      "local": "inputs/run-3/README.md",
+      "bytes": 11258,
+      "sha256": "4b0dea92311afa386d461be6ffda3a00e032a0bbeb6cfe4ba2007d27562af04f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T044110Z-6767827c/docs/art-reviews/2026-11-10-z2-hd-full/run-summary.json",
+      "local": "inputs/run-3/run-summary.json",
+      "bytes": 4305,
+      "sha256": "5e5291ab80e948f9597331384cc2ea678bfae3531351105f0004bdc8eecbd349"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/registration.json",
+      "local": "inputs/r3-c3/registration.json",
+      "bytes": 6305,
+      "sha256": "7c8bfc5f90e8da8f9b6150dc062adb516cc4fb8ec002e29722342b2598bb522f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/q11-native.webp",
+      "local": "inputs/r3-c3/q11-native.webp",
+      "bytes": 2456338,
+      "sha256": "03b3855fd39c99721e5c57eb20445544bc1e3fa70d6a00acdea470189bee08c1"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/q12-native.webp",
+      "local": "inputs/r3-c3/q12-native.webp",
+      "bytes": 2457516,
+      "sha256": "a588d5efbbe7ea93b07dbf3d3492496f1badb2096020e95e9cb4e7784d05297f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/q21-native.webp",
+      "local": "inputs/r3-c3/q21-native.webp",
+      "bytes": 2527824,
+      "sha256": "3cf53024c504e1a91e3872b93bc3e5f0681b48830c7c32209b737de92e75a83a"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/q22-native.webp",
+      "local": "inputs/r3-c3/q22-native.webp",
+      "bytes": 2825384,
+      "sha256": "73b38947c56380e52fab63ea23fe3130bfbbb6eab29975ae2892d2211d261616"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/structure.json",
+      "local": "inputs/r3-c3/structure.json",
+      "bytes": 6549,
+      "sha256": "b107cfb6988ed4503436a61977918a6faf564ecc0fcf7c1644e0f6b317cfe241"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c3/removed.json",
+      "local": "inputs/r3-c3/removed.json",
+      "bytes": 2712,
+      "sha256": "e3e58377dbd2c099aaa4daffd33c3444463d78d789d44e92734a70e64cd08232"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/registration.json",
+      "local": "inputs/r3-c4/registration.json",
+      "bytes": 6323,
+      "sha256": "e862ac89874a9ce089e34f56c896a9871e3aefa06e7a171fa530d6e8b7a94c00"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/q11-native.webp",
+      "local": "inputs/r3-c4/q11-native.webp",
+      "bytes": 2575304,
+      "sha256": "ad33f484105f492c5695b6510b459cbb3d37124e3da42ada6f83e2b24d2dee95"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/q12-native.webp",
+      "local": "inputs/r3-c4/q12-native.webp",
+      "bytes": 2568588,
+      "sha256": "69bd015c1784fccbb34f66f71d5ec5224bdbca30538223350abbc25e83a39b8e"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/q21-native.webp",
+      "local": "inputs/r3-c4/q21-native.webp",
+      "bytes": 2746130,
+      "sha256": "0d1c1e26ddd2445a10a99c6736f969674540579241f9c5ab163a1b533f688c6f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/q22-native.webp",
+      "local": "inputs/r3-c4/q22-native.webp",
+      "bytes": 2721220,
+      "sha256": "816c9b44cc36d133e7e0bbfcdb6d6e67639d0b1807848aa112fb06377b69e769"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/structure.json",
+      "local": "inputs/r3-c4/structure.json",
+      "bytes": 6490,
+      "sha256": "8752ccc5123c3a207c0819db0019a2c2632f643cd33f05b8e5c287b34452d387"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c4/removed.json",
+      "local": "inputs/r3-c4/removed.json",
+      "bytes": 1451,
+      "sha256": "f55c0ef55a4c17a39d5b224812224f8b6777b240b25a7d001d219c6662865dc4"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/registration.json",
+      "local": "inputs/r3-c5/registration.json",
+      "bytes": 6303,
+      "sha256": "860066fdec5fedb5b15672bad01a54d0018d8df883c3b006c021b0239688e00b"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/q11-native.webp",
+      "local": "inputs/r3-c5/q11-native.webp",
+      "bytes": 2513538,
+      "sha256": "503fbe1a570cec414f4e5849ffd8d4ddae89e7dcd7d064d65460b4e261e21959"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/q12-native.webp",
+      "local": "inputs/r3-c5/q12-native.webp",
+      "bytes": 2635130,
+      "sha256": "c106ceda69ecd7a6a1844d2a9608ed3dbab1ac7863c421646aa126757e635f29"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/q21-native.webp",
+      "local": "inputs/r3-c5/q21-native.webp",
+      "bytes": 2682556,
+      "sha256": "6201f8fbeb81c468172dbc943f16ee545e7d5f847d39a7e3668b3e02f5acb93c"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/q22-native.webp",
+      "local": "inputs/r3-c5/q22-native.webp",
+      "bytes": 2813262,
+      "sha256": "84ce78571fa9d7e4963e28035f70031a4b1dd02afbbc4616458146e170c25a03"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/structure.json",
+      "local": "inputs/r3-c5/structure.json",
+      "bytes": 5830,
+      "sha256": "004b342b142c974ea7403c0db525bb97ca569b5b01734581b96d11edb23e1bc8"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r3-c5/removed.json",
+      "local": "inputs/r3-c5/removed.json",
+      "bytes": 598,
+      "sha256": "7921d3d388fd28329f1fa89fc5a6499f4121da14af559dc49a1b386532222c27"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r4-c1/registration.json",
+      "local": "inputs/r4-c1/registration.json",
+      "bytes": 3402,
+      "sha256": "f54c2a55ec4a874726f4f0ed1b98e1b1e26da8d91f82f6d1c50ab0a7493f0e88"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r4-c1/q11-native.webp",
+      "local": "inputs/r4-c1/q11-native.webp",
+      "bytes": 2393508,
+      "sha256": "b4e1ffc7947b873dc18c770c4f9899a1047e6da9aed45ea0eabb40ca512bdabe"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r4-c1/q12-native.webp",
+      "local": "inputs/r4-c1/q12-native.webp",
+      "bytes": 2602412,
+      "sha256": "ae258d8908e4887b0c58e44569c9070a6f57ba6c1a79686a709d2d7e0385f323"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r4-c1/structure.json",
+      "local": "inputs/r4-c1/structure.json",
+      "bytes": 3186,
+      "sha256": "1b55a759fe6b2228f059d94da24e99a3be5bc39502edf4d3adebe59eed146453"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/r4-c1/removed.json",
+      "local": "inputs/r4-c1/removed.json",
+      "bytes": 153,
+      "sha256": "8217555ccbd004e8c03880d10d8953094a8cce3be4a40c5604c2b7771b397bca"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/README.md",
+      "local": "inputs/run-4/README.md",
+      "bytes": 5970,
+      "sha256": "4450bbdda9715e5f7df376c9bdb20dcb49f838fa3d7255fee77b6e24d39f4483"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/visual-review.json",
+      "local": "inputs/run-4/visual-review.json",
+      "bytes": 3383,
+      "sha256": "1cae27d9342c4f3712cee7bd7e447bbca4d4bb5cd052b1a6af4b7ae73e42a03d"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083606Z-6d680311/docs/art-reviews/2026-11-10-z2-hd-full/run-summary.json",
+      "local": "inputs/run-4/run-summary.json",
+      "bytes": 3543,
+      "sha256": "4dcb6840edef08885c45e48acdc83e72dd9bd326f515e70402ca4a2651376778"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/registration.json",
+      "local": "inputs/r4-c2/registration.json",
+      "bytes": 3524,
+      "sha256": "a0b37cdce3b2a0f2748e0a5c451fbfa9f3ec0c271c5182997cbc787762329df1"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/q11-native.webp",
+      "local": "inputs/r4-c2/q11-native.webp",
+      "bytes": 2719828,
+      "sha256": "4e1e150b6c9ca1e09adb811039710f6e7cf82610184d9b42576e5fd76f7febf0"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/q12-native.webp",
+      "local": "inputs/r4-c2/q12-native.webp",
+      "bytes": 2472688,
+      "sha256": "0ddd6d1ac0cdb7d2a2b0b7d3edeaf0e97cd7949c8bbcf3e1b06d0b130ed10c08"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/structure.json",
+      "local": "inputs/r4-c2/structure.json",
+      "bytes": 3138,
+      "sha256": "0b79fde0e005ad23b30ee31a342232e4a1d5bc6406aa412e0e6a7b96c2764a09"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c2/removed.json",
+      "local": "inputs/r4-c2/removed.json",
+      "bytes": 308,
+      "sha256": "b4a223b08d2384fc8d07358e9faa54c48d3ada0db85776ec018cc80de343de04"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/registration.json",
+      "local": "inputs/r4-c3/registration.json",
+      "bytes": 3505,
+      "sha256": "1e74f3afff86872d6b563ed20339325dcaa29a046cd797b5c64927f32af9e874"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/q11-native.webp",
+      "local": "inputs/r4-c3/q11-native.webp",
+      "bytes": 2599300,
+      "sha256": "79a737a544e2ec61a593f985245cf1d922438cf09fdbd5b1cc6d74d16e4ae195"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/q12-native.webp",
+      "local": "inputs/r4-c3/q12-native.webp",
+      "bytes": 2828206,
+      "sha256": "cb604417fea3ac1a1b9ec0ec25ec0b611fdf81af91fef9d8bad214273bd192a8"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/structure.json",
+      "local": "inputs/r4-c3/structure.json",
+      "bytes": 4703,
+      "sha256": "eb76befbe0c9b59e31db323811e36bedfa5ac1e617188c7f3a047900fe04793b"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c3/removed.json",
+      "local": "inputs/r4-c3/removed.json",
+      "bytes": 308,
+      "sha256": "847efdf5202e4912981fe3580c8a153fbb3cca45fcff756ad33a4b0bcfe26183"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c4/registration.json",
+      "local": "inputs/r4-c4/registration.json",
+      "bytes": 3485,
+      "sha256": "8fabd7ef7bc697c9f7b4fa844aa605329e72904e064c085c1a52dc21b196a8ce"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c4/q11-native.webp",
+      "local": "inputs/r4-c4/q11-native.webp",
+      "bytes": 2892128,
+      "sha256": "b46726874dffe9e21123c2881dca0112fd47764aa449daeeb176fdbf1b55e6d3"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c4/q12-native.webp",
+      "local": "inputs/r4-c4/q12-native.webp",
+      "bytes": 2825708,
+      "sha256": "3a8ffda54f51f1aa06a6d2a262e7ab0e148a06330a827bc88193abdbfca5500d"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c4/structure.json",
+      "local": "inputs/r4-c4/structure.json",
+      "bytes": 3138,
+      "sha256": "ebd72c53c12b030119e994dda3a685458359d3d74a9ef6d8600a1bd5c08f7292"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c4/removed.json",
+      "local": "inputs/r4-c4/removed.json",
+      "bytes": 308,
+      "sha256": "049f07527310b3baaa3df8cef5718a048613fecd71f2b67fac7f23f3fa282b0f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c5/registration.json",
+      "local": "inputs/r4-c5/registration.json",
+      "bytes": 3489,
+      "sha256": "b2c5e4043274e0303fceee2a3d407241b30646ae8c24ce6a8eee3aa400f18cd7"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c5/q11-native.webp",
+      "local": "inputs/r4-c5/q11-native.webp",
+      "bytes": 2749926,
+      "sha256": "4d39e1572b4c216628fad3c37c19b9e41980c2eb9f27e223e4afea43d89a6048"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c5/q12-native.webp",
+      "local": "inputs/r4-c5/q12-native.webp",
+      "bytes": 2561002,
+      "sha256": "8ae00bbecc0b506227d9e2322679d429eb086803ad28716a59dc7d1fa052ac3f"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c5/structure.json",
+      "local": "inputs/r4-c5/structure.json",
+      "bytes": 2873,
+      "sha256": "4f724a284cedcf5b71e796ae1d9f27f8f606efa3b9a35e0dc6b757ffd40ec8ca"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/r4-c5/removed.json",
+      "local": "inputs/r4-c5/removed.json",
+      "bytes": 308,
+      "sha256": "234f67392a71e5c4067a5cf8f9cf15e623f80e7b92454e19f8f97ba93b266b35"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/README.md",
+      "local": "inputs/run-5/README.md",
+      "bytes": 9275,
+      "sha256": "1f8e31f28f0400239f5427f352ffa54d07ef39cfa34812754974f40a6bc86979"
+    },
+    {
+      "source": "/Users/agapae/agapae-work/.codex-worktrees/20261113T083614Z-edf7e01a/docs/art-reviews/2026-11-10-z2-hd-full/run-summary.json",
+      "local": "inputs/run-5/run-summary.json",
+      "bytes": 4188,
+      "sha256": "9e22ba91f4933fe9474fb0f6050aa89d613bd54709b0b38f854bfc3ce8b259c7"
+    }
+  ],
+  "nativeCount": 69,
+  "missingParts": [
+    "r2-c3/q22"
+  ],
+  "imageGenCalls": 0
+}

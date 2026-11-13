@@ -1,0 +1,206 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 templates, normalized correlation +/-12 map px on assembled output; separate from affine inlier residuals; selected source coordinates fixed before generation.",
+  "limitation": "Local patch correspondence does not certify every semantic contour; uncertain probes retained. Removed and formerly occluded structures cannot be proven against source.",
+  "totalProbes": 12,
+  "reliableProbes": 8,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "redrawFeedbackLandmarks": [],
+  "probes": [
+    {
+      "id": "upper-plaza-west",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        435,
+        60
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.4283140301704407,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "upper-plaza-east",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        925,
+        90
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8585944771766663,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-south",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        700,
+        378
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8422077298164368,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        587,
+        389
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7508201003074646,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        714,
+        374
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7518594861030579,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-left",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        626,
+        499
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8842211365699768,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        750,
+        484
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.923463761806488,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        726,
+        559
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9251094460487366,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-foot",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        773,
+        659
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8758692741394043,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fork",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        413,
+        762
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7775327563285828,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-plaza-edge",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        552,
+        841
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.307263046503067,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "rock-summit",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        300,
+        635
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7789705395698547,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

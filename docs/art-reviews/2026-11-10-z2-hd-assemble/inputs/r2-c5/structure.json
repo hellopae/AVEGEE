@@ -1,0 +1,236 @@
+{
+  "method": "Fixed 49x49 DoG sigma1.5/6 templates, search +/-12 map pixels; independent of SIFT",
+  "thresholdPx1x": 4,
+  "totalProbes": 16,
+  "reliableProbes": 15,
+  "maxReliableDisplacementPx1x": 1.0,
+  "uncertainProbes": 1,
+  "semanticStructureVerified": false,
+  "limitation": "Sparse local correspondences do not certify every contour or stair count. All uncertain probes retained; repeated stone/water patterns may be ambiguous.",
+  "probes": [
+    {
+      "id": "contour-1",
+      "sourcePx1x": [
+        68,
+        519
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8902831673622131,
+      "reliable": true
+    },
+    {
+      "id": "contour-2",
+      "sourcePx1x": [
+        184,
+        510
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9261382818222046,
+      "reliable": true
+    },
+    {
+      "id": "contour-3",
+      "sourcePx1x": [
+        89,
+        628
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7204506993293762,
+      "reliable": true
+    },
+    {
+      "id": "contour-4",
+      "sourcePx1x": [
+        218,
+        638
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7959110140800476,
+      "reliable": true
+    },
+    {
+      "id": "contour-5",
+      "sourcePx1x": [
+        74,
+        273
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9147017598152161,
+      "reliable": true
+    },
+    {
+      "id": "contour-6",
+      "sourcePx1x": [
+        224,
+        263
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9026723504066467,
+      "reliable": true
+    },
+    {
+      "id": "contour-7",
+      "sourcePx1x": [
+        389,
+        218
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8673095107078552,
+      "reliable": true
+    },
+    {
+      "id": "contour-8",
+      "sourcePx1x": [
+        167,
+        936
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.919556200504303,
+      "reliable": true
+    },
+    {
+      "id": "contour-9",
+      "sourcePx1x": [
+        188,
+        986
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9637938737869263,
+      "reliable": true
+    },
+    {
+      "id": "contour-10",
+      "sourcePx1x": [
+        124,
+        882
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7476615309715271,
+      "reliable": true
+    },
+    {
+      "id": "contour-11",
+      "sourcePx1x": [
+        412,
+        911
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.2882603406906128,
+      "reliable": false
+    },
+    {
+      "id": "contour-12",
+      "sourcePx1x": [
+        601,
+        716
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9197364449501038,
+      "reliable": true
+    },
+    {
+      "id": "contour-13",
+      "sourcePx1x": [
+        741,
+        917
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9288355708122253,
+      "reliable": true
+    },
+    {
+      "id": "contour-14",
+      "sourcePx1x": [
+        531,
+        315
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8099081516265869,
+      "reliable": true
+    },
+    {
+      "id": "contour-15",
+      "sourcePx1x": [
+        625,
+        401
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8502229452133179,
+      "reliable": true
+    },
+    {
+      "id": "contour-16",
+      "sourcePx1x": [
+        580,
+        161
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9338490962982178,
+      "reliable": true
+    }
+  ]
+}

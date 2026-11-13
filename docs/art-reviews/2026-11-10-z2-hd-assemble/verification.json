@@ -1,0 +1,35 @@
+{
+  "fileChecksSucceeded": true,
+  "imagesDecoded": 142,
+  "v7Bytes": 25316983,
+  "v7MBDecimal": 25.316983,
+  "imageGenCalls": 0,
+  "sourceHashesUnchanged": true,
+  "sourceFilesUnavailable": [],
+  "jsonFilesParsed": 77,
+  "shippingImages": 21,
+  "chunkCount": 20,
+  "minCostJoins": 129,
+  "structureReliableFailures": 7,
+  "structureUncertain": 604,
+  "inGameTested": false,
+  "acceptance": [
+    {
+      "id": 1,
+      "verified": true,
+      "evidence": "20 expected chunks, preview, manifest; dimensions/decode/SHA256/<=40MB checked."
+    },
+    {
+      "id": 2,
+      "verified": false,
+      "evidence": "Offline seam strips and game-scale comparisons supplied. Whole semantic structure<=4px and invisible joins in-game are not certified.",
+      "reliableProbeFailures": 7
+    },
+    {
+      "id": 3,
+      "verified": true,
+      "evidence": "Fallback r2-c3/q22, 15 architecture patches and unresolved findings in inventory.json and Thai README. ImageGen0."
+    }
+  ],
+  "finalIntegritySweep": true
+}

@@ -1,0 +1,166 @@
+{
+  "inGameTested": false,
+  "visualSeamlessnessVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "inspected": [
+    "upstream-structure-review.jpg",
+    "first-assembly-structure-review.jpg",
+    "restored-structure-review.jpg",
+    "structure-residuals.jpg",
+    "seam-check/vertical-2048-game.jpg",
+    "seam-check/vertical-4096-game.jpg",
+    "seam-check/vertical-6144-game.jpg",
+    "seam-check/vertical-8192-game.jpg",
+    "seam-check/horizontal-2048-game.jpg",
+    "seam-check/horizontal-4096-game.jpg",
+    "seam-check/horizontal-6144-game.jpg",
+    "fallback-check/central-bridge-stair-rails.jpg",
+    "fallback-check/pier-stair-rails.jpg",
+    "fallback-check/invented-volcanic-bridge.jpg",
+    "fallback-check/missing-r2-c3-q22.jpg"
+  ],
+  "observations": [
+    "ต้นทางเพิ่มสะพาน/ขั้น/ราวหรือเปลี่ยนขอบลานจริง ภาพupstreamเทียบsourceเก็บไว้ก่อนประกอบ ใช้ภาพฐานคืนรูปเฉพาะ15บริเวณ ไม่มีgeneration",
+    "ตรวจภาพรอยต่อครบ4แนวตั้ง+3แนวนอนที่สเกลเกมoffline ไม่พบเส้นตารางแข็งต่อเนื่องเด่น แต่เห็นรอยเปลี่ยนความคมของfallbackชัด โดยเฉพาะr2-c3/q22, สะพานกลาง และท่าเรือ จึงไม่รับรองว่าไม่เห็นรอยต่อ",
+    "fallbackรักษาราว/โครงสร้างเดิมได้แต่ความคมต่ำกว่าnative; ลายหิน/ใบไม้ตามวงแหวนอาจขาดช่วง ไม่ใช่ภาพnativeHDในcoreเหล่านี้",
+    "จุดNCCที่ยังเกิน4pxอยู่บนพืชที่ถูกลบ/ลายพื้นและบันไดซ้ำ จุด[2839,1065]ชนขอบค้น12px ต้องตรวจจำนวนขั้น/side contourต่อ ไม่ตัดจุดนั้นออกเพื่อให้ตัวเลขผ่าน",
+    "ยังมีพืช/กระดูก/รายละเอียดพื้นตามต้นทางและวัตถุที่fallbackคืนมา การซ้อนruntime spriteและการเดินจริงยังไม่ได้ทดสอบ"
+  ],
+  "remainingProbeFailures": [
+    {
+      "id": "asia-owner-21-22",
+      "kind": "asia-owner-walkmask-boundary",
+      "sourcePx1x": [
+        1816,
+        1495
+      ],
+      "displacementPx1x": [
+        1,
+        4
+      ],
+      "distancePx1x": 4.123105625617661,
+      "normalizedCorrelation": 0.7357814311981201,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "asia-owner-22-9",
+      "kind": "asia-owner-walkmask-boundary",
+      "sourcePx1x": [
+        1825,
+        1506
+      ],
+      "displacementPx1x": [
+        1,
+        4
+      ],
+      "distancePx1x": 4.123105625617661,
+      "normalizedCorrelation": 0.7114185094833374,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "asia-owner-51-917",
+      "kind": "asia-owner-walkmask-boundary",
+      "sourcePx1x": [
+        4163,
+        604
+      ],
+      "displacementPx1x": [
+        3,
+        -3
+      ],
+      "distancePx1x": 4.242640687119285,
+      "normalizedCorrelation": 0.6555086374282837,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": false,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "zone1-reference-9-26",
+      "kind": "zone1-reference-walkmask-boundary",
+      "sourcePx1x": [
+        1888,
+        1537
+      ],
+      "displacementPx1x": [
+        -5,
+        2
+      ],
+      "distancePx1x": 5.385164807134504,
+      "normalizedCorrelation": 0.6052528619766235,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 0.0
+    },
+    {
+      "id": "zone1-reference-9-55",
+      "kind": "zone1-reference-walkmask-boundary",
+      "sourcePx1x": [
+        1865,
+        860
+      ],
+      "displacementPx1x": [
+        -6,
+        2
+      ],
+      "distancePx1x": 6.324555320336759,
+      "normalizedCorrelation": 0.6174706816673279,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 28.649999618530273
+    },
+    {
+      "id": "zone1-reference-12-76",
+      "kind": "zone1-reference-walkmask-boundary",
+      "sourcePx1x": [
+        419,
+        648
+      ],
+      "displacementPx1x": [
+        4,
+        1
+      ],
+      "distancePx1x": 4.123105625617661,
+      "normalizedCorrelation": 0.6021822690963745,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": false,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 16.235000610351562
+    },
+    {
+      "id": "zone1-reference-12-496",
+      "kind": "zone1-reference-walkmask-boundary",
+      "sourcePx1x": [
+        2839,
+        1065
+      ],
+      "displacementPx1x": [
+        -4,
+        -12
+      ],
+      "distancePx1x": 12.649110640673518,
+      "normalizedCorrelation": 0.9723153114318848,
+      "reliable": true,
+      "within4px": false,
+      "searchBoundaryHit": true,
+      "walkable": true,
+      "distanceToWalkmaskBoundaryPx1x": 1.909999966621399
+    }
+  ],
+  "remainingUncertainProbes": 604,
+  "finalDecision": "เกณฑ์ไฟล์1ครบ; เกณฑ์2ยังค้าง; เกณฑ์3ระบุfallback/ข้อค้างแล้ว"
+}

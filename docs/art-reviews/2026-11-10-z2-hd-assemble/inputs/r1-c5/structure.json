@@ -1,0 +1,206 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 templates, normalized correlation +/-12 map px on assembled output; separate from affine inlier residuals; selected source coordinates fixed before generation.",
+  "limitation": "Local patch correspondence does not certify every semantic contour; uncertain probes retained. Removed and formerly occluded structures cannot be proven against source.",
+  "totalProbes": 12,
+  "reliableProbes": 9,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "redrawFeedbackLandmarks": [],
+  "probes": [
+    {
+      "id": "peak-1",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        200,
+        105
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7483432292938232,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "peak-2",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        393,
+        60
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9551775455474854,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "fall-head",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        432,
+        265
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9279608726501465,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "fall-foot",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        445,
+        500
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9252038598060608,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-north",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        480,
+        573
+      ],
+      "displacementPx1x": [
+        -1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.6679502129554749,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        80,
+        667
+      ],
+      "displacementPx1x": [
+        -2,
+        -10
+      ],
+      "distancePx1x": 10.198039027185569,
+      "normalizedCorrelation": 0.2801797688007355,
+      "reliable": false,
+      "within4px": false
+    },
+    {
+      "id": "plaza-east",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        670,
+        668
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.722114622592926,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        348,
+        752
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7811892032623291,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        459,
+        760
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9461730122566223,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-left",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        334,
+        888
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7562076449394226,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-right",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        443,
+        893
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8391488194465637,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "cliff-east",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        742,
+        741
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.941379189491272,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "method": "Fixed source 49x49 DoG sigma1.5/6 patches; search +/-12 map px, confidence >=0.6; independent of SIFT",
+  "thresholdPx1x": 4,
+  "totalProbes": 9,
+  "reliableProbes": 9,
+  "uncertainProbes": 0,
+  "maxReliableDisplacementPx1x": 0.0,
+  "semanticStructureVerified": false,
+  "wholeStructureWithin4pxVerified": false,
+  "limitation": "Sparse local correspondences cannot certify all silhouettes, every joint or stair count. Repeated stair/paving patterns can be ambiguous; uncertain probes retained.",
+  "probes": [
+    {
+      "id": "source-landmark-1",
+      "sourcePx1x": [
+        52,
+        90
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9480119943618774,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-2",
+      "sourcePx1x": [
+        135,
+        148
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9669891595840454,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-3",
+      "sourcePx1x": [
+        245,
+        48
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8214157819747925,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-4",
+      "sourcePx1x": [
+        335,
+        110
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.90798020362854,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-5",
+      "sourcePx1x": [
+        430,
+        155
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9164863228797913,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-6",
+      "sourcePx1x": [
+        520,
+        65
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9306464195251465,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-7",
+      "sourcePx1x": [
+        603,
+        123
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9555222988128662,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-8",
+      "sourcePx1x": [
+        698,
+        51
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9779491424560547,
+      "reliable": true
+    },
+    {
+      "id": "source-landmark-9",
+      "sourcePx1x": [
+        765,
+        150
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9606297016143799,
+      "reliable": true
+    }
+  ]
+}

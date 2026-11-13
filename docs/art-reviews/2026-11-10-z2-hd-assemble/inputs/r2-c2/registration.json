@@ -1,0 +1,447 @@
+{
+  "chunk": "r2-c2",
+  "outputScale": 2,
+  "neighborChunkSeamsApplied": false,
+  "tiles": [
+    {
+      "id": "q11",
+      "coreMasterPx1x": [
+        1024,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        960,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r2-c2-paving-foliage-00",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            369,
+            334,
+            115,
+            65
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-01",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            544,
+            449,
+            100,
+            75
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.0000582183701563,
+          -0.00026345475875547174,
+          0.14027569700095577
+        ],
+        [
+          0.00026345475875547174,
+          1.0000582183701563,
+          -0.21474905516444057
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5103965388811005,
+          -0.00013445856906180376,
+          0.14027569700095577
+        ],
+        [
+          0.00013445856906180376,
+          0.5103965388811005,
+          -0.21474905516444057
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5103965388811005,
+          -0.00013445856906180376,
+          960.1402756970009
+        ],
+        [
+          0.00013445856906180376,
+          0.5103965388811005,
+          959.7852509448355
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 488,
+      "siftInliers": 410,
+      "inlierResidualPx1x": {
+        "median": 0.6075587272644043,
+        "p95": 1.893862009048462,
+        "max": 2.7820420265197754
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 1.0,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreMasterPx1x": [
+        1536,
+        1024,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        1472,
+        960,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        -64,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r2-c2-paving-foliage-01",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            32,
+            449,
+            100,
+            75
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-02",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            352,
+            374,
+            110,
+            100
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-03",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            202,
+            534,
+            120,
+            85
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          0.9997074044399532,
+          0.0002079971581245762,
+          -0.23809074134622432
+        ],
+        [
+          -0.0002079971581245762,
+          0.9997074044399532,
+          -0.15629114416246617
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5102174950889713,
+          0.00010615484944156998,
+          -0.23809074134622432
+        ],
+        [
+          -0.00010615484944156998,
+          0.5102174950889713,
+          -0.15629114416246617
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5102174950889713,
+          0.00010615484944156998,
+          1471.7619092586538
+        ],
+        [
+          -0.00010615484944156998,
+          0.5102174950889713,
+          959.8437088558376
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 669,
+      "siftInliers": 633,
+      "inlierResidualPx1x": {
+        "median": 0.5542372465133667,
+        "p95": 1.5224498510360718,
+        "max": 2.6490063667297363
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9984381103515625,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q21",
+      "coreMasterPx1x": [
+        1024,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        960,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        -64,
+        448,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r2-c2-paving-foliage-01",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            544,
+            -63,
+            100,
+            75
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          1.000669517053328,
+          0.00041927446690607286,
+          -0.5729347014253697
+        ],
+        [
+          -0.00041927446690607286,
+          1.000669517053328,
+          -0.3543702589752491
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5107085254498643,
+          0.00021398377896322696,
+          -0.5729347014253697
+        ],
+        [
+          -0.00021398377896322696,
+          0.5107085254498643,
+          -0.3543702589752491
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5107085254498643,
+          0.00021398377896322696,
+          959.4270652985746
+        ],
+        [
+          -0.00021398377896322696,
+          0.5107085254498643,
+          1471.6456297410248
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 439,
+      "siftInliers": 357,
+      "inlierResidualPx1x": {
+        "median": 0.722392737865448,
+        "p95": 1.9323437213897705,
+        "max": 3.136476516723633
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 1.0,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q22",
+      "coreMasterPx1x": [
+        1536,
+        1536,
+        512,
+        512
+      ],
+      "contextMasterPx1x": [
+        1472,
+        1472,
+        640,
+        640
+      ],
+      "coreChunkPx1x": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "contextChunkPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "removalTargets": [
+        {
+          "id": "asia-r2-c2-paving-foliage-01",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            32,
+            -63,
+            100,
+            75
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-03",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            202,
+            22,
+            120,
+            85
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-04",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            232,
+            277,
+            140,
+            100
+          ]
+        },
+        {
+          "id": "asia-r2-c2-paving-foliage-05",
+          "kind": "painted low foliage over/along walkable paving",
+          "bboxInputPx": [
+            442,
+            352,
+            125,
+            75
+          ]
+        }
+      ],
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "affine": [
+        [
+          0.9996100375813488,
+          0.0004083369007824488,
+          0.17053851722484736
+        ],
+        [
+          -0.0004083369007824488,
+          0.9996100375813488,
+          -0.020258326531337453
+        ]
+      ],
+      "affineCoordinateConvention": "resized native in context-map pixels -> reference context-map pixels; coordinates are crop-local",
+      "nativeToContextPx1x": [
+        [
+          0.5101678022743725,
+          0.0002084016080548383,
+          0.17053851722484736
+        ],
+        [
+          -0.0002084016080548383,
+          0.5101678022743725,
+          -0.020258326531337453
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.5101678022743725,
+          0.0002084016080548383,
+          1472.170538517225
+        ],
+        [
+          -0.0002084016080548383,
+          0.5101678022743725,
+          1471.9797416734687
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        1.959375,
+        1.959375
+      ],
+      "siftMatches": 537,
+      "siftInliers": 507,
+      "inlierResidualPx1x": {
+        "median": 0.5512101054191589,
+        "p95": 1.6047958135604858,
+        "max": 2.47804594039917
+      },
+      "localWarpApplied": false,
+      "validWarpFraction": 0.9986907958984375,
+      "lowFrequencyCorrection": "0.8 delta Gaussian sigma35 map px, removal boxes excluded and normalized; no sharpening",
+      "semanticStructureVerified": false
+    }
+  ]
+}

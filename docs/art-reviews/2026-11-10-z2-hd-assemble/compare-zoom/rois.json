@@ -1,0 +1,48 @@
+{
+  "rectFormat": "[x0,y0,x1,y1], map1x",
+  "devicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": [
+    2.1875890132248217,
+    2.1873664937442783
+  ],
+  "rois": {
+    "main-plaza": [
+      2160,
+      1130,
+      2810,
+      1610
+    ],
+    "central-bridge": [
+      2290,
+      1910,
+      2640,
+      2580
+    ],
+    "lava-bank": [
+      1040,
+      1270,
+      1650,
+      1800
+    ],
+    "ice-bank": [
+      3980,
+      880,
+      4600,
+      1410
+    ],
+    "heaven-gate": [
+      2930,
+      220,
+      3570,
+      750
+    ],
+    "south-plaza": [
+      2130,
+      2600,
+      2820,
+      3090
+    ]
+  },
+  "inGameTested": false,
+  "spriteOverlays": false
+}

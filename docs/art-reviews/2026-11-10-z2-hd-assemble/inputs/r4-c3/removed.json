@@ -1,0 +1,8 @@
+{
+  "chunk": "r4-c3",
+  "removedIds": [],
+  "requestedRemovalIds": [],
+  "reason": "Only walk floor in this run is r4-c3 stair; no baked obstruction surveyed inside owner mask. Unwalkable scenery and side rails kept.",
+  "inventory": "../objects-inventory.json",
+  "completeSilhouetteAuditVerified": false
+}

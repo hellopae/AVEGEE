@@ -1,0 +1,206 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 templates, normalized correlation +/-12 map px on assembled output; separate from affine inlier residuals; selected source coordinates fixed before generation.",
+  "limitation": "Local patch correspondence does not certify every semantic contour; uncertain probes retained. Removed and formerly occluded structures cannot be proven against source.",
+  "totalProbes": 12,
+  "reliableProbes": 6,
+  "maxReliableDisplacementPx1x": 1.4142135623730951,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "redrawFeedbackLandmarks": [],
+  "probes": [
+    {
+      "id": "bridge-west",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        70,
+        215
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9340956807136536,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "bridge-east",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        296,
+        267
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7757620215415955,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-left",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        461,
+        450
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8635756969451904,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-foot-right",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        547,
+        477
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9490665793418884,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-left",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        756,
+        286
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9203738570213318,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "stair-top-right",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        833,
+        318
+      ],
+      "displacementPx1x": [
+        -1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.2888520658016205,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-top",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        497,
+        681
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8650504350662231,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lava-fall-base",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        523,
+        832
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9544968008995056,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "rock-tip",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        528,
+        607
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8521677851676941,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-road",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        933,
+        638
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.47414928674697876,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "cliff-center",
+      "overlapsRemovalBox": true,
+      "sourcePx1x": [
+        693,
+        548
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.34010910987854004,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "lava-island",
+      "overlapsRemovalBox": false,
+      "sourcePx1x": [
+        480,
+        919
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9244545698165894,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}
