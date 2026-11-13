@@ -1,0 +1,172 @@
+{
+  "tool": "built-in image_gen",
+  "generations": 3,
+  "retries": 0,
+  "budget": 14,
+  "workerSource": "img/workers/worker-west-sheet-v2.webp",
+  "prompts": [
+    {
+      "stage": 1,
+      "prompt": "Use case: stylized-concept. Asset type: WEST zone isometric construction sprite STAGE 1 of 3, genuine transparent background.\nReference 1: approved construction sprite, CAMERA AND COMPOSITION ONLY (rear-left crane, diamond base, material pile front-right, open central ground). Reference 2: WEST zone visual style and materials ONLY; DO NOT copy its finished buildings.\nCreate a new Western frozen hell construction site with a DIFFERENT design from the wooden Asian/Thai one. Hand-painted detailed isometric game sprite. Ground diamond of grey frozen earth inset with rough square stone pavers, thick grey masonry border with small icy edges, modest frost and small icicles. Tall rear-left medieval black cast-iron lifting crane with riveted lattice steel upright, sloped steel brace, straight iron jib projecting right, iron pulley and chain with empty hook. Short iron maintenance scaffold around its base. Front-right neatly stacked black steel beams, piles of grey stone blocks at rear and left. Early foundation stage: low stone footings and a few very short iron post stubs, central ground empty. Subtle Gothic iron craftsmanship, no symbols or station-specific ornaments. Charcoal grey iron, desaturated blue-grey stone and icy cyan highlights. NO red wood, NO bamboo, NO neon.\nOrthographic 3/4 isometric camera matching reference. Whole scene framed in square with transparent margin. Ground occupies same diamond footprint and frontmost point at 50% x, 91% y. Scene about x7%-93%,y16%-91%. No people or workers; supplied worker sprites are composited separately. NO roof, NO walls, NO complete building. No environment outside base, no text, no watermark. One single sprite, not a sheet."
+    },
+    {
+      "stage": 2,
+      "prompt": "Use case: precise-object-edit. Edit target: supplied WEST STAGE 1 transparent construction sprite. Make STAGE 2 (mid construction) of EXACT SAME frozen Western hell site.\nKeep exact canvas, viewpoint, whole ground diamond, contact point, all low stone foundation outlines, grey stones, frost, tall lattice crane at rear-left, existing crane maintenance platform and front-right steel pile unchanged in position and design.\nOnly increase progress: add FOUR unfinished vertical charcoal iron columns to the existing low metal stubs on the central footings, about half of the crane height. Add one low narrow iron work platform inside the back of the site. Suspend one diagonal steel I-beam/post from the crane chain so it is being raised toward a footing. Icy edges and bolts, dark grey iron and blue-grey masonry. Leave the foreground and central floor mostly open for composited worker sprites.\nNo people or figures. NO roof, NO canopy, NO complete building, NO wall surfaces; the existing low foundation blocks stay low. No banners, logos or station-specific decor. No red wood or neon. One square sprite on actual transparent background, no added outside ground, no text. Do not zoom, rotate, reframe or change the base footprint."
+    },
+    {
+      "stage": 3,
+      "prompt": "Use case: precise-object-edit. Supplied edit target is WEST STAGE 2 construction sprite. Make STAGE 3 (late construction) of the EXACT SAME frozen iron construction site.\nKeep entire base diamond, crane, all foundations, steel pile, ice details, exact camera, pixel registration and transparent canvas margins unchanged.\nIncrease only construction progress: extend the four unfinished charcoal lattice iron columns so they stand about 60% of crane height; add a narrow open iron scaffolding walkway with safety rails and a ladder between the left/back columns. Show a SINGLE long straight steel I-beam hanging horizontally under the crane hook on a triangular chain sling, ready to be installed between posts. Keep central and foreground ground mostly empty for worker sprites. All structural space stays see-through. Blue-grey masonry and bolted black iron with subtle frost and icicles. No new structure outside the original footprint.\nNO roof, NO canopy, NO filled walls, NO completed station or building, NO figures or workers, NO text, NO coloured glow. Show only crane, bare posts, scaffolding and construction materials. True transparent background. Do not zoom or reframe."
+    }
+  ],
+  "exports": [
+    {
+      "stage": 1,
+      "generatedSourceSHA256": "d39707a6adeb4f372621dd2d3bd7e41f5583d2bc64bbeaacf6060f2bac460cb5",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 462820
+    },
+    {
+      "stage": 2,
+      "generatedSourceSHA256": "773a078ea302dea75fc60cd05b8ed48eb97e6a0fa82e03ec7f4dd04454c5721a",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 466908
+    },
+    {
+      "stage": 3,
+      "generatedSourceSHA256": "5d7d07cabb0d61339ea351dc8eacc34a4c44664e37705e6272c35dda4fc620df",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 483192
+    }
+  ],
+  "assembly": {
+    "baseAlphaNoiseCutoff": 16,
+    "baseBounds": [
+      51,
+      114,
+      653,
+      640
+    ],
+    "frameSize": [
+      704,
+      704
+    ],
+    "foot": [
+      352,
+      640
+    ],
+    "worldWidth": 256,
+    "frames": 8,
+    "fps": 8,
+    "workerRows": {
+      "build": 2,
+      "repair": 8
+    },
+    "workerCellSize": [
+      320,
+      320
+    ],
+    "buildSequence": [
+      0,
+      1,
+      2,
+      3,
+      3,
+      2,
+      1,
+      0
+    ],
+    "slowSequence": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3
+    ],
+    "placementsBackToFront": [
+      {
+        "row": 2,
+        "sequence": "slow",
+        "phase": 2,
+        "cellSize": 82,
+        "foot": [
+          382,
+          475
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 0,
+        "cellSize": 100,
+        "foot": [
+          222,
+          553
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 4,
+        "cellSize": 98,
+        "foot": [
+          450,
+          551
+        ],
+        "flipX": true
+      },
+      {
+        "row": 8,
+        "sequence": "slow",
+        "phase": 0,
+        "cellSize": 102,
+        "foot": [
+          340,
+          604
+        ]
+      }
+    ],
+    "workerInsetsSource": "src/workers.js WORKER_FRAME_INSETS (rows 1-2); row 8 has no inset",
+    "webp": "Pillow WEBP lossless=True exact=True method=6",
+    "gifDurationsMs": [
+      120,
+      130,
+      120,
+      130,
+      120,
+      130,
+      120,
+      130
+    ],
+    "gifPalette": "single shared 256-colour palette per stage; preview checkerboard only"
+  }
+}

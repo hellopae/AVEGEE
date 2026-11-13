@@ -1,0 +1,172 @@
+{
+  "tool": "built-in image_gen",
+  "generations": 3,
+  "retries": 0,
+  "budget": 14,
+  "workerSource": "img/workers/worker-asia-sheet-v2.webp",
+  "prompts": [
+    {
+      "stage": 1,
+      "prompt": "Use case: stylized-concept. Asset type: transparent isometric construction game sprite, ASIA zone, stage 1 of 3.\nReference image 1 is the approved Thai construction frame: match its isometric camera, silhouette scale, diamond ground footprint, tall crane at rear-left, ground contact, generous transparent margins. Reference image 2 is ASIA material/color inspiration ONLY; never reproduce the completed architecture.\nDraw ONE single construction site in a square image on actual transparent background. Fine detailed hand-painted isometric game art. Early construction: bare foundation outline, scattered stone footings, a few very short timber posts, stacked red/black beams at front-right, tall rear-left crane of red lacquered dark timber, dark iron bands, rope pulley and empty hook. Small bamboo scaffold around the crane base. Chinese/Japanese hell aesthetics, vermilion and black wood, muted warm dirt with grey stone border. Curved joinery details on the crane arm only, no roofing. Keep the central ground mostly open to place workers later.\nNO PEOPLE, NO WORKERS, NO FIGURES: existing worker sprites will be composited separately. NO roof, NO finished building, NO walls, NO station-specific objects. No text, borders, checkerboard, labels or environment. Camera orthographic 3/4 isometric as the reference. Entire site inside canvas. Ground frontmost point at 50% x and 91% y; overall scene occupies about x 7%-93%, y 16%-91%. Single coherent sprite, NOT a sprite sheet."
+    },
+    {
+      "stage": 2,
+      "prompt": "Use case: precise-object-edit. Edit target is the supplied ASIA stage 1 transparent isometric construction sprite.\nCreate ASIA STAGE 2 (mid construction) of this EXACT SAME site. Preserve the entire ground diamond, frontmost ground point, camera, canvas dimensions, rear-left crane, bamboo crane scaffold, wood palette, all existing objects and clear margins in EXACT same coordinates. Change only the construction progress inside the open site: add four upright unfinished vermilion-black timber posts on the existing footings, about half the crane's height. Add a simple low bamboo working platform near rear-center. Hang ONE diagonally tilted red timber post from crane hook with a taut rope, clearly being installed. Keep large foreground ground space open for workers. No wall surfaces. No roof, no roof beams shaped like roofing, no completed building. No people or workers; existing sprites are added later. Same red lacquered wood, black iron fittings, grey stones and Chinese/Japanese hell game art. Single square sprite on genuine transparent background. No text or frame. Do not zoom, reframe, rotate or change lighting."
+    },
+    {
+      "stage": 3,
+      "prompt": "Use case: precise-object-edit. Edit target is the supplied ASIA stage 2 transparent construction sprite. Create ASIA STAGE 3, late construction, EXACT same site and camera.\nPreserve all ground, crane, perimeter, stack of lumber, colours and canvas registration exactly. Extend the four unfinished red/black timber posts upwards to roughly 60% of crane height. Add an open bamboo scaffolding walkway connecting the left/rear posts with a small ladder. Change the hanging diagonal post into a single straight horizontal timber beam suspended from the crane with two ropes forming a triangle, ready for installation over the upright posts. Keep the scaffold narrow so the ground and empty space remain visible through the structure. Still only crane, bare posts, scaffolding and hoisted materials.\nAbsolutely NO roof, NO roofing, NO canopy, NO walls, NO completed building, NO people/workers, NO ornaments that define a station. No curved rooflines: the only slight curved detail is the crane's existing joinery. Keep front center ground empty for worker sprites. Same canvas, exact base position, same transparent margins and genuine alpha background. No text, labels or frame."
+    }
+  ],
+  "exports": [
+    {
+      "stage": 1,
+      "generatedSourceSHA256": "ec44bbb0b4beb932863fb7d9bc5c603a869951aed6843669ed6fbb15c9051850",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 516698
+    },
+    {
+      "stage": 2,
+      "generatedSourceSHA256": "1650a2b3581651c94c092f41c00cdf528bb420c7f7750ffd14303652956c7f59",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 519058
+    },
+    {
+      "stage": 3,
+      "generatedSourceSHA256": "d8c69a0b8e2eeca2e8137e03c4daa34fabedba4604a300bdd3f80ca70f01bfa3",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 547808
+    }
+  ],
+  "assembly": {
+    "baseAlphaNoiseCutoff": 16,
+    "baseBounds": [
+      51,
+      114,
+      653,
+      640
+    ],
+    "frameSize": [
+      704,
+      704
+    ],
+    "foot": [
+      352,
+      640
+    ],
+    "worldWidth": 256,
+    "frames": 8,
+    "fps": 8,
+    "workerRows": {
+      "build": 2,
+      "repair": 8
+    },
+    "workerCellSize": [
+      320,
+      320
+    ],
+    "buildSequence": [
+      0,
+      1,
+      2,
+      3,
+      3,
+      2,
+      1,
+      0
+    ],
+    "slowSequence": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3
+    ],
+    "placementsBackToFront": [
+      {
+        "row": 2,
+        "sequence": "slow",
+        "phase": 2,
+        "cellSize": 82,
+        "foot": [
+          340,
+          475
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 0,
+        "cellSize": 100,
+        "foot": [
+          222,
+          553
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 4,
+        "cellSize": 98,
+        "foot": [
+          450,
+          551
+        ],
+        "flipX": true
+      },
+      {
+        "row": 8,
+        "sequence": "slow",
+        "phase": 0,
+        "cellSize": 102,
+        "foot": [
+          340,
+          604
+        ]
+      }
+    ],
+    "workerInsetsSource": "src/workers.js WORKER_FRAME_INSETS (rows 1-2); row 8 has no inset",
+    "webp": "Pillow WEBP lossless=True exact=True method=6",
+    "gifDurationsMs": [
+      120,
+      130,
+      120,
+      130,
+      120,
+      130,
+      120,
+      130
+    ],
+    "gifPalette": "single shared 256-colour palette per stage; preview checkerboard only"
+  }
+}

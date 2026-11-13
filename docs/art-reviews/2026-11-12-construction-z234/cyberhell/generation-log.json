@@ -1,0 +1,172 @@
+{
+  "tool": "built-in image_gen",
+  "generations": 3,
+  "retries": 0,
+  "budget": 14,
+  "workerSource": "img/workers/worker-cyberhell-sheet-v2.webp",
+  "prompts": [
+    {
+      "stage": 1,
+      "prompt": "Use case: stylized-concept. Asset: CYBERHELL zone isometric construction sprite STAGE 1 of 3 on genuine transparent background.\nImage 1 is CAMERA / FOOTPRINT / SCALE reference only: tall lifting crane at rear-left, diamond ground pad, spare materials front-right, open central floor. Image 2 is CYBERHELL style/material/color reference ONLY: do not copy completed buildings.\nDraw a distinct futuristic industrial hell construction site. Detailed hand-painted isometric game sprite. Diamond foundation platform made of dark gunmetal segmented floor plates, heavy beveled steel edge, small inset cyan and violet neon strips, thin cables routed along ground edges and one cable spool at front-right next to a compact stack of metallic beams. Tall rear-left crane with a heavy SOLID angular segmented hydraulic mast (NOT wooden and NOT medieval lattice), bolted plated steel, a thick angular telescopic jib reaching right, hydraulic hoses and black cables, small restrained cyan panel seams and purple status lamps. Mechanical hoist and empty black-metal hook. Small grated metal maintenance scaffold at crane base. Early construction only: short socket stubs and four low square bolted post-foot plates on open central floor. No walls.\nBlack/gunmetal steel, cyan/violet neon, visible cables. NO ice, NO wooden beams, NO bamboo. Orthographic 3/4 isometric as reference. Whole scene in square with clear transparent margins: x7%-93%, y16%-91%, ground frontmost point at x50%,y91%. NO workers or people: real worker sprites will be composited separately. NO roof, NO canopy, NO completed building or station-specific props. No outside landscape, labels, text or watermarks. One sprite, not a sheet."
+    },
+    {
+      "stage": 2,
+      "prompt": "Use case: precise-object-edit. Supplied edit target is CYBERHELL STAGE 1 transparent construction sprite. Make STAGE 2, mid construction, of the EXACT SAME site.\nPreserve exact camera, canvas size, full diamond steel floor, ground contact point, edge cables, neon accents, front-right beam stack and cable spool, rear-left solid hydraulic crane, maintenance platform and all positions.\nAdd FOUR unfinished vertical gunmetal plated columns bolted into the four square central sockets. Columns about half the crane's height, bare open posts with narrow cyan seams and violet cable junctions. Add a low narrow grated work platform at rear-center and a few exposed cable loops linking the post bases. From the crane hook suspend ONE diagonal metallic beam on two lifting cables; it is being raised toward an unfinished post. This is bare infrastructure under construction: leave central/foreground floor mostly open for later worker sprites. Distinct solid plated futuristic metal, never medieval lattice or wood.\nNO roof, NO roofing, NO canopy, NO walls, NO complete building or station. NO people or workers, NO signage or text. Same restrained cyan/purple lighting and black steel. True alpha transparency outside the footprint, not a black background. Do not zoom, rotate, change scale or reframe."
+    },
+    {
+      "stage": 3,
+      "prompt": "Use case: precise-object-edit. Supplied edit target is CYBERHELL STAGE 2 transparent construction sprite. Make STAGE 3 late construction of this EXACT SAME site.\nPreserve full ground diamond, cable routes, mast and telescopic crane, crane-base platform, material pile, cable spool, all cyan/violet colour accents, camera, canvas registration and margins exactly.\nIncrease construction progress only: extend the bare plated steel posts to roughly 60% of crane height and add an open narrow grated-steel scaffold walkway and ladder across the back/left posts. Reroute exposed cables up the sides of posts with clips. Show a SINGLE long gunmetal beam hanging HORIZONTALLY from the crane hook on a triangular two-cable sling, clearly still above the posts, not a completed superstructure. The site remains open and see-through with the central and foreground floor clear for the existing worker sprites.\nNO roof of any kind, NO canopy, NO ceiling, NO panels forming walls, NO completed station/building, NO people or workers, NO text. Black industrial metal with cyan seams and violet connector lights, visible black cables. No ice or wood. Single square sprite with genuine alpha transparent background outside the site. Do not zoom, rotate or reframe."
+    }
+  ],
+  "exports": [
+    {
+      "stage": 1,
+      "generatedSourceSHA256": "472ba967f98579ddf6f8782e18de8f57fef50c1ccced48cc3995244676436f62",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 480270
+    },
+    {
+      "stage": 2,
+      "generatedSourceSHA256": "df6a8f5f046a3382bee1cba021cb23750cc3db667b1ed693ec6fa8e23eb4c02b",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 479312
+    },
+    {
+      "stage": 3,
+      "generatedSourceSHA256": "a7a28008a9e73792c4c000743338d0e8a3773f5b30e9d742f4a8cde677a88cd1",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "normalisedBaseAlphaBounds": [
+        51,
+        114,
+        653,
+        640
+      ],
+      "sheetBytes": 501800
+    }
+  ],
+  "assembly": {
+    "baseAlphaNoiseCutoff": 16,
+    "baseBounds": [
+      51,
+      114,
+      653,
+      640
+    ],
+    "frameSize": [
+      704,
+      704
+    ],
+    "foot": [
+      352,
+      640
+    ],
+    "worldWidth": 256,
+    "frames": 8,
+    "fps": 8,
+    "workerRows": {
+      "build": 2,
+      "repair": 8
+    },
+    "workerCellSize": [
+      320,
+      320
+    ],
+    "buildSequence": [
+      0,
+      1,
+      2,
+      3,
+      3,
+      2,
+      1,
+      0
+    ],
+    "slowSequence": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3
+    ],
+    "placementsBackToFront": [
+      {
+        "row": 2,
+        "sequence": "slow",
+        "phase": 2,
+        "cellSize": 82,
+        "foot": [
+          340,
+          475
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 0,
+        "cellSize": 100,
+        "foot": [
+          222,
+          553
+        ]
+      },
+      {
+        "row": 2,
+        "sequence": "build",
+        "phase": 4,
+        "cellSize": 98,
+        "foot": [
+          450,
+          551
+        ],
+        "flipX": true
+      },
+      {
+        "row": 8,
+        "sequence": "slow",
+        "phase": 0,
+        "cellSize": 102,
+        "foot": [
+          340,
+          604
+        ]
+      }
+    ],
+    "workerInsetsSource": "src/workers.js WORKER_FRAME_INSETS (rows 1-2); row 8 has no inset",
+    "webp": "Pillow WEBP lossless=True exact=True method=6",
+    "gifDurationsMs": [
+      120,
+      130,
+      120,
+      130,
+      120,
+      130,
+      120,
+      130
+    ],
+    "gifPalette": "single shared 256-colour palette per stage; preview checkerboard only"
+  }
+}
