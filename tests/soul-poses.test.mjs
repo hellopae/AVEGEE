@@ -43,7 +43,7 @@ test('no substitution for a solid line, exhausted press, return, an `other` case
  for(const change of [{presses:0},{back:{}},{case:'nurse'},{case:'sergeant'}])assert.equal(soulPoseForPress(g,{...s,...change},s.lines[0],base),null);
  assert.equal(soulPoseForPress(g,s,s.lines[0],'img/Asia/spirit-officer-asia.webp'),null);
  const recruit=soulFor('recruit');
- assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/Asia/spirit-worker-asia-v2.webp'),null,'regional costume must match');
+ assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/CyberHell/spirit-clerk-cyberhell-v2.webp'),null,'no drawing for this slot yet; never another zone costume');
 });
 const ORIGINAL_DIR={th:'Thai',asia:'Asia',west:'West',cyberhell:'CyberHell'};
 // every generic file (manifest) belongs to an original: <archetype>-<zone>-<scared|cry|caught-lie|necessity>-v1 -> img/<Dir>/spirit-<archetype>-<zone>-v*.webp
@@ -174,17 +174,17 @@ test('base path parsing needs the matching folder, zone and a version',()=>{
 // A slot is filled by: the new -scared/-cry file, else the old caught-lie / necessity drawing (alias), else nothing (the CSS effect stays). Never another zone's costume.
 const withFiles=(files,fn)=>{for(const f of files)SOUL_POSE_FILES.add(f);try{fn()}finally{for(const f of files)SOUL_POSE_FILES.delete(f)}};
 test('alias then own file then nothing, per archetype and zone, never another zone',()=>{
- const th='img/Thai/spirit-officer-th-v2.webp', west='img/West/spirit-officer-west-v2.webp', asia='img/Asia/spirit-worker-asia-v2.webp';
+ const th='img/Thai/spirit-officer-th-v2.webp', west='img/CyberHell/spirit-business-cyberhell-v2.webp', asia='img/Asia/spirit-worker-asia-v2.webp';
  assert.equal(genericSoulPose(th,'scared'),'img/soul-poses/officer-th-caught-lie-v1.webp','alias');
  assert.equal(genericSoulPose(th,'cry'),'img/soul-poses/officer-th-necessity-v1.webp','alias');
  assert.equal(genericSoulPose(asia,'scared'),'img/soul-poses/worker-asia-caught-lie-v1.webp');
- assert.equal(genericSoulPose(asia,'cry'),null,'no cry drawing yet: nothing, not a Thai one');
+ assert.equal(genericSoulPose(asia,'cry'),'img/soul-poses/worker-asia-cry-v1.webp','own cry file');
  assert.equal(genericSoulPose(west,'scared'),null);assert.equal(genericSoulPose(west,'cry'),null);
- const own='img/soul-poses/officer-th-scared-v1.webp',westOwn='img/soul-poses/officer-west-scared-v1.webp';
+ const own='img/soul-poses/officer-th-scared-v1.webp',westOwn='img/soul-poses/business-cyberhell-scared-v1.webp';
  withFiles([own,westOwn],()=>{
   assert.equal(genericSoulPose(th,'scared'),own,'a new file wins over the alias');
   assert.equal(genericSoulPose(west,'scared'),westOwn);
-  assert.equal(genericSoulPose('img/CyberHell/spirit-officer-cyberhell-v2.webp','scared'),null,'West file never serves CyberHell');
+  assert.equal(genericSoulPose('img/CyberHell/spirit-clerk-cyberhell-v2.webp','scared'),null,'a West clerk file never serves CyberHell');
   assert.ok(soulPoseAssets(west).includes(westOwn),'preloaded');
  });
  assert.equal(genericSoulPose(west,'scared'),null,'file gone -> back to nothing');
@@ -205,13 +205,13 @@ test('random souls: deny / fake boast -> scared, plea that opens mitigation -> c
  const hard=randomSoul('sergeant'), plea=hard.lines.find(l=>l.kind==='plea');
  assert.equal(pressReaction(g,hard,plea),'relief');
  assert.equal(soulPoseForPress(g,hard,plea,th),'img/soul-poses/officer-th-necessity-v1.webp');
- assert.equal(soulPoseForPress(g,hard,plea,'img/West/spirit-officer-west-v2.webp'),null,'no West drawing yet: CSS effect');
+ assert.equal(soulPoseForPress(g,hard,plea,'img/CyberHell/spirit-business-cyberhell-v2.webp'),null,'no Cyberhell business drawing yet: CSS effect');
  const gen=randomSoul('gen'), boast=gen.lines.find(l=>l.kind==='boast');
  assert.equal(soulPoseForPress(g,gen,boast,th),'img/soul-poses/officer-th-caught-lie-v1.webp');
  gen.merits[0].exposed=true;assert.equal(soulPoseForPress(g,gen,boast,th),null,'exposed boast');
 });
 test('named case without its own file takes the generic drawing; `other` never does',()=>{
- const g=createGame(), west='img/West/spirit-officer-west-v2.webp', file='img/soul-poses/officer-west-scared-v1.webp', cry='img/soul-poses/officer-west-cry-v1.webp';
+ const g=createGame(), west='img/CyberHell/spirit-business-cyberhell-v2.webp', file='img/soul-poses/business-cyberhell-scared-v1.webp', cry='img/soul-poses/business-cyberhell-cry-v1.webp';
  const pol=soulFor('pol'), sergeant=soulFor('sergeant'), nurse=soulFor('nurse');
  assert.equal(soulPoseForPress(g,pol,pol.lines.find(l=>l.kind==='deny'),west),null);
  withFiles([file,cry],()=>{
@@ -227,7 +227,7 @@ test('mirror / hypnosis and a beaten soul use the scared drawing; a returned sou
  assert.equal(soulPoseForScare(s,th),'img/soul-poses/officer-th-caught-lie-v1.webp');
  assert.equal(soulPoseForScare(randomSoul('pol'),th),'img/soul-poses/officer-th-caught-lie-v1.webp');
  assert.equal(soulPoseForScare({...s,back:{}},th),null);
- assert.equal(soulPoseForScare(s,'img/West/spirit-officer-west-v2.webp'),null);
+ assert.equal(soulPoseForScare(s,'img/CyberHell/spirit-business-cyberhell-v2.webp'),null);
  assert.equal(soulPoseForScare(null,th),null);
 });
 test('real random souls from spawnSoul get a pose slot decided by their reaction, with no throw',()=>{
