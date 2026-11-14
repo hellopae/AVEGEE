@@ -1,0 +1,186 @@
+{
+  "checked_files": 12,
+  "automated_checks": [
+    "exists",
+    "WebP decode",
+    "dimensions",
+    "mode",
+    "sprite alpha range",
+    "transparent sprite margins"
+  ],
+  "limits": "These file checks do not establish character identity, absence of text, visual style or in-game behavior.",
+  "assets": [
+    {
+      "path": "img/z3-events/boss-cerberus-west.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 209574,
+      "sha256": "d06c58f7571a853f8d8e73ec4e33e3cc2275ff8efc8cd4a7b0a5b2c7aa1d9065",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        16,
+        88,
+        496,
+        496
+      ]
+    },
+    {
+      "path": "img/z3-events/boss-cerberus-west-profile.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 434160,
+      "sha256": "2a1291e03d69ec6fe3e6cf0e0107d955659dd770f24210c491afb01cf059bbc1"
+    },
+    {
+      "path": "img/z3-events/cut-cerberus-howl-west.webp",
+      "format": "WEBP",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 2590704,
+      "sha256": "51804437ac0a9987536b5f784fd70a55c68b096dc50a0c68526393d923344cc8"
+    },
+    {
+      "path": "img/z3-events/boss-jormungandr-west.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 284376,
+      "sha256": "ee59732da53233d04af8be085e5565985d42aca26d2e869b75e609a9bb0d6abc",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        16,
+        27,
+        496,
+        496
+      ]
+    },
+    {
+      "path": "img/z3-events/boss-jormungandr-west-profile.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 445752,
+      "sha256": "66a12c11c8b6df3ec0904a5eb9db651f6b979caecd2506df10690cc6c650469b"
+    },
+    {
+      "path": "img/z3-events/cut-jormungandr-tide-west.webp",
+      "format": "WEBP",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 2622070,
+      "sha256": "aa187d08a3f6ace0ec720b2607b6681b94dd90e0c92c215b982d4948a2bbdd00"
+    },
+    {
+      "path": "img/z4-events/boss-phantom404-cyberhell.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 262820,
+      "sha256": "eeb497ae50cb1ab5cceab3280cc7faa84cc2fbb84d16643eeeee8ff8e8e477fd",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        45,
+        17,
+        467,
+        496
+      ]
+    },
+    {
+      "path": "img/z4-events/boss-phantom404-cyberhell-profile.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 468814,
+      "sha256": "7ba468c39a17e2a4ef725f10ff9ecd3ce3d55fb9f799b8094ca076523e5c3925"
+    },
+    {
+      "path": "img/z4-events/cut-scammer-phishing-cyberhell.webp",
+      "format": "WEBP",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 2491554,
+      "sha256": "23acebf1290811e97a6b8ab28e8ca97f11ae4c1fa263084adfc9557f2cb6438b"
+    },
+    {
+      "path": "img/z4-events/cut-phantom404-delete-cyberhell.webp",
+      "format": "WEBP",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 2308590,
+      "sha256": "d8ea3c318e4406a7d791f5b2f9b6fd4f06a7a1c6885570c9a4171d75b550f367"
+    },
+    {
+      "path": "img/z4-events/phantom404-entry-cyberhell.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 58634,
+      "sha256": "e5df6ff7b5931a89458015ccdcf571c710e95ba6522de32ca2b52307b7964737",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        32,
+        49,
+        485,
+        456
+      ]
+    },
+    {
+      "path": "img/z4-events/phantom404-entry-cyberhell-profile.webp",
+      "format": "WEBP",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 344324,
+      "sha256": "58223ad020a8e15c6c6b58e000028617e23b1820d5ffeb5df55bcab3ea41b351"
+    }
+  ]
+}

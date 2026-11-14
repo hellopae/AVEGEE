@@ -1,0 +1,32 @@
+[
+  {
+    "role": "character reference",
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-w4/assets/w4-cerberus-v1.png",
+    "sha256": "8367b8744c78738e29dd9ef2db14db9ddce649df64793a7430de9d39a4faf19c"
+  },
+  {
+    "role": "character reference and sprite source",
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-w4/assets/w4-jormungandr-v1.png",
+    "sha256": "22c5cc0a84dc986f628b2d181adeb7cefa493f60287fbbfdcfd319114b614b94"
+  },
+  {
+    "role": "character reference and sprite source",
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-w4/assets/w4-ai-scammer-robot-v1.png",
+    "sha256": "f1e6c248ea2fa06759d3875b0b89c53c983b3e4d03e0ade05202aa7cd07007df"
+  },
+  {
+    "role": "style and player-team reference",
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261114T174152Z-4dfd205d/img/z2-events/cut-wukong-arrives-asia.webp",
+    "sha256": "bf137889f944520f54c3ae17209eca99786e30c00c50f1f309fed5109c69f361"
+  },
+  {
+    "role": "style reference",
+    "path": "/Users/agapae/agapae-work/.codex-worktrees/20261114T174152Z-4dfd205d/img/z2-events/cut-wukong-sweep-asia.webp",
+    "sha256": "5ba0a65374d8ad71d1fa0a397d70cf2aae5d001d413a171d4ffdf507f5b115b6"
+  },
+  {
+    "role": "skill descriptions, overridden by task for PHANTOM identity",
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Rae/2026-11-14-avegee-boss-skills.md",
+    "sha256": "eb7599ea47758b36676713f79b3b406a559b7bae8af068ff6f2bd16269b2dbb6"
+  }
+]
