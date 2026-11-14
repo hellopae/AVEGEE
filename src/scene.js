@@ -28,7 +28,8 @@ import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-e
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
-import { drawMapAmbientGround, drawMapAmbientSky, drawMapWeather, weatherEnabled, weatherViewport } from './map-ambient.js?v=mapfx-k1d';
+import { drawMapAmbientGround, drawMapAmbientSky, drawMapAmbientOver, drawMapWeather, weatherEnabled, weatherViewport, viewMetrics } from './map-ambient.js?v=mapfx-k1d';
+import { addZ3FogLayers } from './zone3-fog.js';
 import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
@@ -287,7 +288,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
-  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
+  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused, town && (g.zone === 'west' || g.zone === 'cyberhell'));   // zone 3 / 4 town: snow only here; the fog banks and the rain are laid over the sprites below
   const cloudMs=townFluidFxClock();   // CLOUDS-MIX: one clock (stops with pause) for the direct Codex layer, the shader's paint and the puffs
   if(town&&townTerrainImage()&&cloudsMode()==='mix')drawCodexClouds(ctx,cloudMs,{reduced});   // Codex's layers under the shader: it paints opaque over them inside its own mask, so nothing is doubled
   if(town&&townTerrainImage())drawTownFluidFx(ctx,t,{reduced,paused:!!g.paused});   // Z1-V5-FX: painted lava / river / fall / cloud-sea frames
@@ -388,6 +389,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   if(town&&g.zone==='th')addGroundSpriteLayers(at,ctx);   // Z1-V5-FX2: trees / beds / rocks / bridge rails painted out of the HD chunks, drawn again as sprites
+  if(town&&g.zone==='west'&&weatherEnabled()&&!reduced&&!g.paused)addZ3FogLayers(at,ctx,viewMetrics(ctx,SCENE.w,SCENE.h),ambientTime);   // Z3-FOG: banks sorted with the sprites, so they veil whatever stands behind them
   if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
@@ -779,6 +781,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, 92 * CHAR_SCALE_MAP * 1.2, t, '👹');
   }
 
+  if(town&&g.zone==='cyberhell')drawMapAmbientOver(ctx,g.zone,ambientTime,SCENE.w,SCENE.h,reduced||!!g.paused);   // Z4-RAIN: over every sprite, under the cloud shadows
   drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,
     labels:weatherLabels,sources:town&&g.zone==='th' ? [
       ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>

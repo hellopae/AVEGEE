@@ -25,7 +25,9 @@ export function z4Layout() {
     // Each wire hangs from the crossbar tip that faces its partner.
     const x0 = pa.x + sa * pa.arm, y0 = pa.top + pa.h * .12, x1 = pb.x - sa * pb.arm, y1 = pb.top + pb.h * .12;
     const chord = Math.hypot(x1 - x0, y1 - y0);
-    const droop = Math.max(.03, sag) * chord;
+    // Z4-WIRES (owner 15 Nov): every span hangs in a gentle catenary-like sag (5-13 % of its length), never a taut straight line.
+    // The owner's markup stores a rough curvature (some of it inverted by the trace), so only its size is used, not its sign.
+    const droop = chord * (.05 + Math.min(.16, Math.abs(sag)) * .5);
     const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2 + 2 * droop;
     const minX = Math.min(x0, x1, cx), maxX = Math.max(x0, x1, cx), minY = Math.min(y0, y1), maxY = Math.max(y0, y1, cy);
     return {i, a, b, x0, y0, x1, y1, cx, cy, chord, minX, maxX, minY, maxY, depth:(pa.y + pb.y) / 2};
@@ -38,19 +40,26 @@ export const z4WirePoint = (w, t) => [quad(w.x0, w.cx, w.x1, t), quad(w.y0, w.cy
 export function z4ElectricBudget({width = 1440, height = 900, dpr = 1, reduced = false} = {}) {
   if (reduced) return {runners:0, bolts:false, slotMs:Infinity};
   const area = Math.min(1, width * height / (1440 * 900));
-  return {runners:Math.max(2, Math.round(10 * area / Math.max(1, dpr / 1.5))), bolts:true, slotMs:width * height < 600000 ? 600 : 400};
+  return {runners:Math.max(2, Math.round(10 * area / Math.max(1, dpr / 1.5))), bolts:true, slotMs:width * height < 600000 ? 600 : 400, sparks:Math.max(1, Math.round(4 * area))};
 }
+const SPARK_LIFE = 170;   // ms a tip spark is visible
 const BOLT_LIFE = 240;   // ms a bolt is visible; one bolt per slot, slot >= 400 ms => <= 2.5 flashes/s
 /** Which sparks/bolts are active at `time`. Pure + deterministic. visiblePoles/visibleWires are index lists. */
 export function z4Electric(time, {reduced = false, enabled = true, viewport = {}, visibleWires = [], visiblePoles = []} = {}) {
-  const none = {runners:[], bolt:null};
+  const none = {runners:[], bolt:null, sparks:[]};
   if (reduced || !enabled) return none;
   const budget = z4ElectricBudget({...viewport, reduced});
-  const out = {runners:[], bolt:null};
+  const out = {runners:[], bolt:null, sparks:[]};
   if (visibleWires.length) for (let k = 0; k < budget.runners; k++) {
     const period = 1700 + k * 230, shifted = time + k * 977, cycle = Math.floor(shifted / period), phase = (shifted % period) / period;
     if (phase > .5) continue;
     out.runners.push({wire:visibleWires[Math.floor(hash(k * 31 + cycle) * visibleWires.length)], u:phase / .5, k});
+  }
+  // Small crackles at the insulator tips: a few at a time, each ~170 ms, never more than `budget.sparks` visible together.
+  if (visiblePoles.length) for (let k = 0; k < budget.sparks; k++) {
+    const slotLen = 310 + k * 83, shifted = time + k * 531, slot = Math.floor(shifted / slotLen), into = shifted - slot * slotLen;
+    if (hash(slot * 3 + k * 11 + .3) < .55 && into < SPARK_LIFE)
+      out.sparks.push({pole:visiblePoles[Math.floor(hash(slot * 5 + k * 17 + 2) * visiblePoles.length)], side:hash(slot + k * 3.7) < .5 ? -1 : 1, age:into / SPARK_LIFE, seed:slot * 7 + k});
   }
   if (budget.bolts && visiblePoles.length) {
     const slot = Math.floor(time / budget.slotMs), into = time - slot * budget.slotMs;
@@ -146,41 +155,88 @@ export function drawZ4Pole(ctx, pole, time = 0, still = false) {
   for (const sd of [-1, 1]) halo(ctx, x + sd * arm, barY - ih * .5, gr, .3 * pulse);
   if (variant === 1) halo(ctx, x, top - h * .18, gr * .8, .32 * pulse);
 }
-// Thin lines vanish when the camera is zoomed out (phones): widen them so they stay >= ~1.2 device px.
-const lineScale = ctx => { const a = ctx.getTransform?.()?.a; return a > 0 ? Math.min(3, Math.max(1, 1.2 / a)) : 1; };
-export function drawWire(ctx, w, still, k = 1) {
-  ctx.save();ctx.lineCap='round';
-  ctx.beginPath();ctx.moveTo(w.x0,w.y0);ctx.quadraticCurveTo(w.cx,w.cy,w.x1,w.y1);
-  // Dark insulated cable with a restrained cool reflection, not a neon outline.
-  ctx.strokeStyle='rgba(0,0,8,.42)';ctx.lineWidth=3.6*k;ctx.stroke();
-  ctx.strokeStyle='#131724';ctx.lineWidth=2.1*k;ctx.stroke();
-  const g=ctx.createLinearGradient(w.x0,w.y0,w.x1,w.y1);
-  g.addColorStop(0,'#8c998f');g.addColorStop(.18,'#45677a');g.addColorStop(.52,'#293a52');g.addColorStop(.84,'#527787');g.addColorStop(1,'#a1ada0');
-  ctx.strokeStyle=g;ctx.lineWidth=.7*k;ctx.stroke();
+// World units per device pixel (1 / camera scale). Cable widths are given in device pixels so a cable stays a fine line at every zoom, instead of
+// being widened when the camera zooms out (that made the zoomed-out wires thick, grey and flat).
+const pixel = ctx => { const a = ctx.getTransform?.()?.a; return a > 0 ? Math.min(4, Math.max(.5, 1 / a)) : 1; };
+const lineScale = pixel;   // kept for the bolt / spark sizing below
+let violet = null;
+function violetSprite() {
+  if (violet !== null) return violet;
+  violet = false;
+  if (typeof document === 'undefined') return violet;
+  const cv = document.createElement('canvas'); cv.width = cv.height = 64;
+  const c = cv.getContext('2d'), g = c?.createRadialGradient?.(32, 32, 0, 32, 32, 32);
+  if (typeof g?.addColorStop !== 'function') return violet;
+  g.addColorStop(0, 'rgba(236,224,255,1)'); g.addColorStop(.22, 'rgba(160,120,255,.6)'); g.addColorStop(1, 'rgba(100,80,255,0)');
+  c.fillStyle = g; c.fillRect(0, 0, 64, 64);
+  return violet = cv;
+}
+/** One cable: a soft contact shadow, a slim dark core, a 1-device-pixel highlight along its upper side and, while the line is live, a faint violet glow
+ *  that breathes slowly. Painted cable art can replace this by drawing over/instead of it; the geometry (z4Layout) is unchanged. */
+export function drawWire(ctx, w, still, k = 1, time = 0) {
+  const px = pixel(ctx);
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const path = (dy = 0) => { ctx.beginPath(); ctx.moveTo(w.x0, w.y0 + dy); ctx.quadraticCurveTo(w.cx, w.cy + dy, w.x1, w.y1 + dy); };
+  if (!still) {   // live line: a wide, very faint violet halo that swells and fades along the span's own phase
+    path(); ctx.strokeStyle = `rgba(132,104,255,${.05 + .035 * Math.sin(time / 640 + w.i * 1.9)})`; ctx.lineWidth = 3.4 * px; ctx.stroke();
+  }
+  path(1.4 * px); ctx.strokeStyle = 'rgba(0,0,10,.26)'; ctx.lineWidth = 1.5 * px; ctx.stroke();      // shadow on the ground side
+  path(); ctx.strokeStyle = '#2a3150'; ctx.lineWidth = 1.2 * px; ctx.stroke();                         // core
+  path(-.55 * px); ctx.strokeStyle = 'rgba(196,210,250,.72)'; ctx.lineWidth = .6 * px; ctx.stroke();    // light along the top
   // Small bronze sockets connect each span to the painted ceramic insulator.
-  ctx.fillStyle='#a99a70';
-  for(const [x,y]of [[w.x0,w.y0],[w.x1,w.y1]]){ctx.beginPath();ctx.arc(x,y,1.05*k,0,Math.PI*2);ctx.fill();}
+  ctx.fillStyle = '#a99a70';
+  for (const [x, y] of [[w.x0, w.y0], [w.x1, w.y1]]) { ctx.beginPath(); ctx.arc(x, y, .85 * px, 0, Math.PI * 2); ctx.fill(); }
   ctx.restore();
 }
+/** A pulse of current running along a span: a comet tail from violet to white-blue, a glowing head, and a small crackle when it reaches the insulator. */
 export function drawRunner(ctx, w, u) {
-  const k=lineScale(ctx),fade=Math.min(1,u*12,(1-u)*12);
-  if(fade<=0)return;
-  ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
-  // A tapered stream follows the actual sag curve; the head is a round ion glow.
-  for(let i=7;i>0;i--){
-    const a=z4WirePoint(w,Math.max(0,u-i*.009)),b=z4WirePoint(w,Math.max(0,u-(i-1)*.009));
-    ctx.globalAlpha=fade*(1-i/8)*.8;ctx.strokeStyle=i<3?'#ecfcff':'#64b9f7';ctx.lineWidth=(.7+(1-i/8)*1.1)*k;
-    ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();
+  const px = pixel(ctx), fade = Math.min(1, u * 10, (1 - u) * 6);
+  if (fade <= 0) return;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+  const N = 9, span = .085;
+  for (let i = N; i > 0; i--) {
+    const f = i / N, a = z4WirePoint(w, Math.max(0, u - f * span)), b = z4WirePoint(w, Math.max(0, u - (f - 1 / N) * span));
+    ctx.globalAlpha = fade * Math.pow(1 - f, 1.3) * .85;
+    ctx.strokeStyle = f < .35 ? '#dff4ff' : f < .65 ? '#8ab8ff' : '#7a5cff';
+    ctx.lineWidth = (.55 + (1 - f) * 1.15) * px;
+    ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
   }
-  const [x,y]=z4WirePoint(w,u);halo(ctx,x,y,7*Math.sqrt(k),fade*.52);
-  ctx.globalAlpha=fade;ctx.fillStyle='#edfdff';ctx.beginPath();ctx.arc(x,y,.95*k,0,Math.PI*2);ctx.fill();
-  // Tiny forked corona beside the head, with no rectangular spark pixels.
-  const tangent=z4WirePoint(w,Math.min(1,u+.005)),angle=Math.atan2(tangent[1]-y,tangent[0]-x),j=Math.floor(u*26);
-  for(let side of [-1,1]){
-    const length=(2+hash(j+side+w.i)*3)*Math.sqrt(k),nx=Math.cos(angle+side*1.25),ny=Math.sin(angle+side*1.25);
-    ctx.strokeStyle='#9ddfff';ctx.globalAlpha=fade*.65;ctx.lineWidth=.5*k;
-    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+nx*length*.45-ny,y+ny*length*.45+nx);ctx.lineTo(x+nx*length,y+ny*length);ctx.stroke();
+  const [x, y] = z4WirePoint(w, u), vs = violetSprite();
+  if (vs) { ctx.globalAlpha = fade * .6; ctx.drawImage(vs, x - 8 * px, y - 8 * px, 16 * px, 16 * px); }
+  halo(ctx, x, y, 5 * px, fade * .5);
+  ctx.globalAlpha = fade; ctx.fillStyle = '#f4fbff'; ctx.beginPath(); ctx.arc(x, y, .9 * px, 0, Math.PI * 2); ctx.fill();
+  // tiny forked corona beside the head
+  const tangent = z4WirePoint(w, Math.min(1, u + .005)), angle = Math.atan2(tangent[1] - y, tangent[0] - x), j = Math.floor(u * 26);
+  for (const side of [-1, 1]) {
+    const length = (2 + hash(j + side + w.i) * 3) * Math.sqrt(px), nx = Math.cos(angle + side * 1.25), ny = Math.sin(angle + side * 1.25);
+    ctx.strokeStyle = '#b9a6ff'; ctx.globalAlpha = fade * .6; ctx.lineWidth = .5 * px;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + nx * length * .45 - ny, y + ny * length * .45 + nx); ctx.lineTo(x + nx * length, y + ny * length); ctx.stroke();
   }
+  // arrival: a few short crackles flick off the insulator
+  if (u > .9) {
+    const e = (u - .9) / .1, [ex, ey] = z4WirePoint(w, 1), cyc = Math.floor(w.i * 7 + u * 3);
+    ctx.globalAlpha = fade * (1 - e) * .9; ctx.strokeStyle = '#d8ccff'; ctx.lineWidth = .6 * px;
+    ctx.beginPath();
+    for (let n = 0; n < 4; n++) { const ang = -Math.PI * (.1 + .8 * hash(w.i + n * 3.3 + cyc)), len = (2 + 5 * e) * px * (.6 + hash(n + w.i * 1.7)); ctx.moveTo(ex, ey); ctx.lineTo(ex + Math.cos(ang) * len, ey + Math.sin(ang) * len); }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+/** A crackle at one insulator tip of a pole: a hot dot, a few short forked arcs, a violet-blue flash that dies in ~170 ms. */
+export function drawZ4Spark(ctx, pole, side, age, seed) {
+  if (age < 0 || age >= 1) return;
+  const px = pixel(ctx), sx = pole.x + side * pole.arm, sy = pole.top + pole.h * .12 - Math.max(4, pole.h * .12) * .9, power = Math.pow(1 - age, 1.4);
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+  halo(ctx, sx, sy, 9 * px, power * .55);
+  ctx.strokeStyle = '#d9ccff'; ctx.lineWidth = .7 * px; ctx.globalAlpha = power;
+  ctx.beginPath();
+  for (let n = 0; n < 4; n++) {
+    const ang = -Math.PI * (.05 + .9 * hash(seed + n * 2.7)), len = (3 + 7 * hash(seed + n * 5.1 + 1)) * px * (.5 + age);
+    const mx = sx + Math.cos(ang) * len * .5 + (hash(seed + n) - .5) * 2 * px, my = sy + Math.sin(ang) * len * .5;
+    ctx.moveTo(sx, sy); ctx.lineTo(mx, my); ctx.lineTo(sx + Math.cos(ang) * len, sy + Math.sin(ang) * len);
+  }
+  ctx.stroke();
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(sx, sy, .8 * px, 0, Math.PI * 2); ctx.fill();
   ctx.restore();
 }
 /** Local insulator discharge with pinned origin and feathered branching tips. */
@@ -210,8 +266,9 @@ export function addZ4PoleLayers(at, ctx, time, {reduced = false, enabled = true,
   for (const i of vp) { const p = poles[i]; at(p.y, () => drawZ4Pole(ctx, p, time, still)); }
   for (const i of vw) {
     const w = wires[i];
-    at(w.depth, () => { drawWire(ctx, w, still, k); for (const u of runners.get(i) || []) drawRunner(ctx, w, u); });
+    at(w.depth, () => { drawWire(ctx, w, still, k, time); for (const u of runners.get(i) || []) drawRunner(ctx, w, u); });
   }
+  for (const sp of fx.sparks) { const p = poles[sp.pole]; at(p.y + 2, () => drawZ4Spark(ctx, p, sp.side, sp.age, sp.seed)); }
   if (fx.bolt) { const p = poles[fx.bolt.pole]; at(p.y + 2, () => drawZ4Bolt(ctx, p, fx.bolt.age, fx.bolt.seed, k)); }
-  return {poles:vp.length, wires:vw.length, runners:fx.runners.length, bolt:!!fx.bolt};
+  return {poles:vp.length, wires:vw.length, runners:fx.runners.length, sparks:fx.sparks.length, bolt:!!fx.bolt};
 }

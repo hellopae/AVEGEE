@@ -3,6 +3,7 @@ import {drawAsiaSunRays} from './sun-shafts.js';
 import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js?v=mapfx';
 import { zoneStyle } from './scene-style.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js?v=k1d';
+import { drawFogField } from './zone3-fog.js';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
 const frac = n => n - Math.floor(n);
@@ -47,8 +48,16 @@ export const MAP_FX = Object.freeze({
   }),
   rain: Object.freeze({
     max: 1000,   // ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
-    speed: [560, 820], slant: -110, length: [14, 24], width: 1.4,
+    speed: [560, 820], slant: -110, length: [14, 24], width: 1.4,   // legacy single-layer values (ambientParticles, tests); the drawn rain uses `layers`
     alpha: [.4, .75], color: 'rgba(204,230,252,1)',
+    slantTravel: 1,
+    // Z4-RAIN (owner 15 Nov): far / middle / near sheets. CSS px, CSS px per second, opacity of the stroke.
+    layers: Object.freeze([
+      Object.freeze({speed: [330, 470], length: [5, 10],  width: .8,  alpha: [.18, .34], color: 'rgba(150,178,222,1)'}),
+      Object.freeze({speed: [520, 720], length: [10, 18], width: 1.1, alpha: [.3, .55],  color: 'rgba(184,212,246,1)'}),
+      Object.freeze({speed: [780, 1050], length: [18, 30], width: 1.6, alpha: [.4, .74], color: 'rgba(222,238,255,1)'}),
+    ]),
+    splash: Object.freeze({share: .1, rate: 2.6, life: .85, alpha: .5, color: 'rgba(196,220,250,1)'}),   // splashes per drop, landings per second, ring life (fraction of a cycle)
   }),
   storm: Object.freeze({
     period: 4000, jitter: 1200,     // one strike per slot, started somewhere in the first `jitter` ms
@@ -293,14 +302,16 @@ export function ambientParticles(zone, time, W, H, limit = null) {
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
  *  Snow (zone 3) is laid out over the VISIBLE part of the area in CSS pixels, so its density and flake size are the
  *  same at any zoom; the embers and dust of zones 1-2 keep their original world-space layout. */
-export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null, { quiet = false } = {}) {
+/** `layer`: 'all' = everything of the biome in one pass (frontier, dialog scenes); 'sky' = what lies UNDER the actors of the zone 3 / 4 town
+ *  (zone 3: the snow only, the fog banks are depth-sorted into the actor list; zone 4: nothing); 'over' = what falls ABOVE every sprite (zone 4: rain, splashes, lightning). */
+export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null, { quiet = false, layer = 'all' } = {}) {
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
   const viewZone=zone==='west'||zone==='cyberhell',view=viewZone?viewMetrics(ctx,aw,ah):null;
   if(viewZone){
-    if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H,maxParticles);
-    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles,quiet);
+    if(view&&zone==='west'){if(layer!=='over')drawSnowAndFog(ctx,view,time,W,H,maxParticles,{fog:layer==='all'});}
+    else if(view&&layer!=='sky')drawRainAndStorm(ctx,view,time,W,H,maxParticles,quiet);
   }else{
     const count=biomeBudget(ctx,W,H,MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
     for(const p of ambientParticles(zone,time,aw,ah,count)){
@@ -312,12 +323,9 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
   ctx.restore();
 }
 /** Zone 3: drifting low fog banks, then a dense snowfall. Both are sized from the visible area. */
-function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null){
-  const fog=MAP_FX.fog,bank=blobSprites(fog.tint,'fog');
-  if(bank){
-    const off=driftOffset(ctx,'fog',time,[fog.drift[0]*view.w*fog.cell[0],fog.drift[1]*view.h*fog.cell[1]],true);
-    drawPatchField(ctx,view,maxParticles!==null?{...fog,peak:.14}:fog,off,time/1000,()=>bank);
-  }
+function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null,{fog:withFog=true}={}){
+  // Z3-FOG: puffy rolling banks (zone3-fog.js). The zone 3 town skips this call and lays the same banks into its depth-sorted actor list instead (scene.js).
+  if(withFog)drawFogField(ctx,view,time,{densityAt:()=>.45,peak:maxParticles!==null?.12:undefined});
   const snow=MAP_FX.snow,list=ambientParticles('west',time,view.w/view.u,view.h/view.u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,snow.max)));
   const lo=snow.alpha[0],span=snow.alpha[1]-lo,BINS=4;
   ctx.fillStyle=snow.color;
@@ -334,17 +342,53 @@ function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null){
   ctx.globalAlpha=1;
 }
 
+/** Zone 4 rain drops, pure + deterministic (tests, and the drawing below). `w`,`h` = visible area in CSS px.
+ *  Not a field of parallel lines (owner 15 Nov): three distance layers (far = short, faint, slow; near = long, bright, fast), every drop with its own
+ *  speed / length / slant, and a wind that gusts slowly, so the whole sheet leans one way and then another. */
+export function rainDrops(time,w,h,count){
+  const R=MAP_FX.rain,t=time/1000,L=R.layers,out=new Array(count);
+  const F=t=>t-.35/.37*Math.cos(t*.37)-.2/.91*Math.cos(t*.91+1.3);   // integral of the gust 1 + .35 sin(.37t) + .2 sin(.91t + 1.3) (up to a constant), so drops move smoothly
+  const gust=1+.35*Math.sin(t*.37)+.2*Math.sin(t*.91+1.3),f=F(t)-F(0);
+  for(let i=0;i<count;i++){
+    const z=Math.pow(seed(i+55),.8),layer=z<.45?0:z<.8?1:2,l=L[layer];
+    const speed=(l.speed[0]+(l.speed[1]-l.speed[0])*seed(i+61)),len=(l.length[0]+(l.length[1]-l.length[0])*seed(i+60));
+    const lean=(R.slant/700)*(.55+.9*seed(i+62))+(seed(i+63)-.5)*.16;      // per-drop slant (fraction of the fall speed), base leans left like before
+    const x=mod(seed(i+4)*w+speed*lean*f*R.slantTravel,w),y=mod(seed(i+80)*h+speed*t,h);
+    out[i]={x,y,len,layer,alpha:l.alpha[0]+(l.alpha[1]-l.alpha[0])*seed(i+30),dx:lean*gust,speed};
+  }
+  return out;
+}
+/** Small splashes where drops land: a flat ring and two droplets, each lives ~.25 s, then lands somewhere else. Pure + deterministic. */
+export function rainSplashes(time,w,h,count){
+  const S=MAP_FX.rain.splash,t=time/1000,out=[];
+  for(let i=0;i<count;i++){
+    const rate=S.rate*(.8+.5*seed(i+141)),ph=t*rate+seed(i+140),cycle=Math.floor(ph),age=(ph-cycle)/S.life;
+    if(age>=1)continue;
+    out.push({x:seed(i*7.7+cycle*3.1+143)*w,y:seed(i*5.3+cycle*1.7+147)*h,age,big:seed(i+149)});
+  }
+  return out;
+}
 /** Zone 4: heavy slanted rain over the visible area, plus lightning: a jagged bolt and a faint whole-screen flash. */
 function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null,quiet=false){
-  const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,R.max)));
-  const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
-  ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;
-  for(let b=0;b<BINS;b++){
-    ctx.globalAlpha=lo+span*(b+.5)/BINS;ctx.beginPath();
-    for(const p of list){
-      if(Math.min(BINS-1,Math.floor((p.alpha-lo)/span*BINS))!==b)continue;
-      const px=view.x+p.x*u,py=view.y+p.y*u;
-      ctx.moveTo(px,py);ctx.lineTo(px+p.dx*p.size*u,py+p.size*u);
+  const R=MAP_FX.rain,u=view.u,count=Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,R.max)),drops=rainDrops(time,view.w/u,view.h/u,count);
+  // One stroke per layer: every full-screen stroke costs a fixed raster pass, and the old single-layer rain used four. Drops differ in length, speed and slant instead of opacity.
+  for(let layer=0;layer<3;layer++){
+    const l=R.layers[layer];ctx.strokeStyle=l.color;ctx.lineWidth=l.width*u;ctx.globalAlpha=(l.alpha[0]+l.alpha[1])/2;ctx.beginPath();
+    for(const d of drops){
+      if(d.layer!==layer)continue;
+      const px=view.x+d.x*u,py=view.y+d.y*u,k=d.len/Math.hypot(d.dx,1);
+      ctx.moveTo(px,py);ctx.lineTo(px+d.dx*k*u,py+k*u);
+    }
+    ctx.stroke();
+  }
+  // splashes on the ground: flat rings that open and fade, plus two flicked droplets (one stroke)
+  const S=R.splash,splashes=rainSplashes(time,view.w/u,view.h/u,Math.round(count*S.share));
+  if(splashes.length){
+    ctx.strokeStyle=S.color;ctx.lineWidth=.9*u;ctx.globalAlpha=S.alpha;ctx.beginPath();
+    for(const p of splashes){
+      const rx=(1.5+p.age*(3+4*p.big))*u,px=view.x+p.x*u,py=view.y+p.y*u;
+      ctx.moveTo(px+rx,py);ctx.ellipse(px,py,rx,rx*.42,0,0,Math.PI*2);
+      if(p.big>.4){const j=p.age*5*u;ctx.moveTo(px-rx*.6,py-j);ctx.lineTo(px-rx*.6,py-j-1.4*u);ctx.moveTo(px+rx*.7,py-j*.8);ctx.lineTo(px+rx*.7,py-j*.8-1.4*u);}
     }
     ctx.stroke();
   }
@@ -598,6 +642,10 @@ function fogSprite() {
   g.addColorStop(0,'rgba(201,226,241,.8)');g.addColorStop(1,'rgba(201,226,241,0)');
   c.scale(1,.25);c.fillStyle=g;c.fillRect(0,0,128,128);return fogCache=cv;
 }
-export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
-  drawBiomeWeather(ctx,zone,time,W,H,reduced);
+export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false, town = false) {
+  drawBiomeWeather(ctx,zone,time,W,H,reduced,undefined,null,{layer:town?'sky':'all'});
+}
+/** Zone 4 town: rain, splashes and lightning, painted after every sprite so they fall over buildings and characters too. */
+export function drawMapAmbientOver(ctx, zone, time, W, H, reduced = false) {
+  if(zone==='cyberhell')drawBiomeWeather(ctx,zone,time,W,H,reduced,undefined,null,{layer:'over'});
 }
