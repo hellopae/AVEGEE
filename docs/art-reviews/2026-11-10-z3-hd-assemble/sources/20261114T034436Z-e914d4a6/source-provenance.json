@@ -1,0 +1,29 @@
+{
+  "masterSize": [
+    4915,
+    3277
+  ],
+  "repairs": false,
+  "overlapPerSidePx1x": 64,
+  "files": {
+    "img/map-zone3/v1/r3-c1.webp": "bcc49a84117eb6692073ca7866899a612a9d39324b7710b8d2901935c5c66d2e",
+    "img/map-zone3/v1/r3-c2.webp": "e14a85d88230c31d14b11b5d7b58b41be7a7c237adb17014fa6ef272ff66795e",
+    "img/map-zone3/v1/r3-c3.webp": "90efe020535dbfd759757f04b268fd8802508464f0277b65bae131464b0d1f95",
+    "img/map-zone3/v1/r3-c4.webp": "67c4aa97d6a428774aaaea40e885c43b44c4b8f4167a7bf7555c4458c90090c0",
+    "img/map-zone3/v1/r3-c5.webp": "77a4d10fbe2749ef6c8c67aaf5132fc8a6cc76e66fdb8cb327dbbb724b616add",
+    "img/map-zone3/v1/r4-c1.webp": "febe795a4773cbe33cf0d4e3f3dffc360c68ffa691a4e35330d75af6e9390c08",
+    "img/map-zone3/v1/r4-c2.webp": "bfc88e055758cc24837526a953298a3b5211be45125a072b12cac158e1a63054",
+    "img/map-zone3/v1/r4-c3.webp": "cf9c99337fcf75202eb2acf7659eee28aa80b1ab095cf7491fa919b7a0a100f9",
+    "img/map-zone3/v1/r4-c4.webp": "95b72753f1bc634fb7b7a01e4107bbbc782843067daa5acdab494b37116ca8e3",
+    "img/map-zone3/v1/r4-c5.webp": "083f402119a1abc382eab653693083c36aa0bd89c4c25f8490690fb57e1a5316",
+    "src/zone-skin.js": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1",
+    "src/town-layout.js": "0e0d8cb7f96a3410bb1c641c507a594b2df31d5413a818b6b5af2cb203b5b7ed",
+    "src/town-west-trees.js": "cfa04baf98fba4faf1a02c95722c9901a32d24747a737ee1a8067fb148143dfb",
+    "src/town-owner-walkmask-west.js": "e9503d1e3d0a4b44a219e2800fb4660338a01c93e9a7a847b1460542d6fa8e8d"
+  },
+  "prototypeEvidence": [
+    "bc9dc4dd:docs/art-reviews/2026-11-05-z1-v5-plaza-detail/scripts/assemble.py",
+    "0c544a3f:docs/art-reviews/2026-11-05-z1-v5-hd-full/scripts/assemble.py"
+  ],
+  "adaptedHelper": "/Users/agapae/agapae-work/.codex-worktrees/20261113T141806Z-4c0979f5/docs/art-reviews/2026-11-10-z3-hd-full/scripts/build.py"
+}

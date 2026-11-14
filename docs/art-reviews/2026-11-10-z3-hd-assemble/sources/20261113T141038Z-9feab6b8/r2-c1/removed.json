@@ -1,0 +1,12 @@
+{
+  "zone": "west",
+  "chunk": "r2-c1",
+  "removed": [
+    "r2-c1-rails-posts"
+  ],
+  "conditionalFloorCleanup": "r2-c1-paving-shrubs",
+  "runtimeProps": "separate sprites; no sprite imagery added to ground",
+  "observed": "ลานบน-ล่างและบันไดต่อชานพักคงอยู่ เสาคู่ริมบันไดถูกลบ ป่าและน้ำคงอยู่ ไม่เห็นเส้นตรงของกริดที่ภาพรวม; ขอบละเอียดรอตรวจ",
+  "verification": "visual overview of native parts and registered chunk; no exhaustive pixel-level removal sign-off",
+  "reviewPending": true
+}

@@ -1,0 +1,19 @@
+{
+  "requestedIds": [
+    "west-r1-c1-floor-shrub-01",
+    "west-r1-c1-floor-shrub-02"
+  ],
+  "objectReview": [
+    {
+      "id": "west-r1-c1-floor-shrub-01",
+      "status": "visually removed small fir; paving continuous in inspected crop"
+    },
+    {
+      "id": "west-r1-c1-floor-shrub-02",
+      "status": "visually removed landing bush; paving continuous in inspected crop"
+    }
+  ],
+  "pendingObjectIds": [],
+  "visualVerification": "offline partial observation only; not a semantic acceptance signoff",
+  "inventory": "../objects-inventory.json"
+}

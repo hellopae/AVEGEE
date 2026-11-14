@@ -1,0 +1,48 @@
+{
+  "rectFormat": "[x0,y0,x1,y1], map1x",
+  "devicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": [
+    2.1875890132248217,
+    2.1873664937442783
+  ],
+  "rois": {
+    "main-plaza": [
+      2160,
+      1050,
+      2810,
+      1620
+    ],
+    "central-bridge": [
+      2290,
+      1820,
+      2640,
+      2580
+    ],
+    "west-cliffs": [
+      1040,
+      1270,
+      1650,
+      1800
+    ],
+    "east-bank": [
+      3980,
+      880,
+      4600,
+      1410
+    ],
+    "north-stairs": [
+      300,
+      280,
+      800,
+      950
+    ],
+    "south-plaza": [
+      2130,
+      2600,
+      2820,
+      3090
+    ]
+  },
+  "inGameTested": false,
+  "spriteOverlays": false
+}

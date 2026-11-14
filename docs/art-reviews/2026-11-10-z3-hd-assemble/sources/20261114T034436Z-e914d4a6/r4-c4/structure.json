@@ -1,0 +1,25 @@
+{
+  "method": "SIFT affine residual in 1x master pixels; no dense structural guarantee",
+  "maxInlierResidualPx1x": 3.0711731910705566,
+  "parts": {
+    "q11": {
+      "matches": 531,
+      "inliers": 515,
+      "inlierResidualMaxPx1x": 3.0579111576080322,
+      "inlierResidualP95Px1x": 1.6362998485565186,
+      "allMatchResidualP95Px1x": 2.068418502807617,
+      "contextCoverage": 0.9956145446096655
+    },
+    "q12": {
+      "matches": 696,
+      "inliers": 661,
+      "inlierResidualMaxPx1x": 3.0711731910705566,
+      "inlierResidualP95Px1x": 1.6395857334136963,
+      "allMatchResidualP95Px1x": 2.2370595932006836,
+      "contextCoverage": 1.0
+    }
+  },
+  "acceptance": "requires Claude visual judgement of plaza/stairs/cliffs/banks; match residual alone does not certify <=4px",
+  "structureMaxPx1x": null,
+  "semanticStructureVerified": false
+}

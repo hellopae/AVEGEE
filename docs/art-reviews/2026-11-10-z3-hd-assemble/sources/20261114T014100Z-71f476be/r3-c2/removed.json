@@ -1,0 +1,9 @@
+{
+  "chunk": "r3-c2",
+  "requestedRemovedIds": [],
+  "observedRemovedIds": [],
+  "visualReview": "No unmistakable baked object inside walk-floor interior; bank vegetation retained. Off-floor skull scale defect recorded in known-issues.",
+  "conditionalVegetation": "remove only roots on paved floor; verify edge shrubs against owner-walkmask-overlay.jpg",
+  "inventory": "../objects-inventory.json",
+  "runtimeSpriteIdsNotCountedAsBakedRemovals": []
+}

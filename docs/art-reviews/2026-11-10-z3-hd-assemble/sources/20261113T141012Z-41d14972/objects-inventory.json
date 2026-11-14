@@ -1,0 +1,271 @@
+{
+  "zone": "west",
+  "scope": "r1-c1..r1-c4 and their 64px contexts",
+  "objects": [
+    {
+      "id": "west-r1-c1-floor-shrub-01",
+      "chunk": "r1-c1",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        840,
+        678,
+        106,
+        103
+      ],
+      "chunkRectPx1x": [
+        840,
+        678,
+        106,
+        103
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.7143249679428467,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "visually removed small fir; paving continuous in inspected crop"
+    },
+    {
+      "id": "west-r1-c1-floor-shrub-02",
+      "chunk": "r1-c1",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        856,
+        893,
+        102,
+        131
+      ],
+      "chunkRectPx1x": [
+        856,
+        893,
+        102,
+        131
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.4693159706630744,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "visually removed landing bush; paving continuous in inspected crop"
+    },
+    {
+      "id": "west-r1-c2-floor-shrub-01",
+      "chunk": "r1-c2",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        1477,
+        828,
+        113,
+        102
+      ],
+      "chunkRectPx1x": [
+        453,
+        828,
+        113,
+        102
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.6591185146625022,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "partial / unresolved: bare branches remain at snowy rim next to stair foot; review source correspondence and walk overlap"
+    },
+    {
+      "id": "west-r1-c3-floor-shrub-01",
+      "chunk": "r1-c3",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        2124,
+        828,
+        140,
+        100
+      ],
+      "chunkRectPx1x": [
+        76,
+        828,
+        140,
+        100
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.5208571428571429,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "visually removed large low shrub overlapping landing"
+    },
+    {
+      "id": "west-r1-c3-floor-shrub-02",
+      "chunk": "r1-c3",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        2458,
+        842,
+        155,
+        120
+      ],
+      "chunkRectPx1x": [
+        410,
+        842,
+        155,
+        120
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.5486021505376344,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "visually removed isolated shrub/small fir on front rim in assembled crop"
+    },
+    {
+      "id": "west-r1-c4-floor-shrub-01",
+      "chunk": "r1-c4",
+      "kind": "isolated shrub / small fir on or over paving",
+      "action": "remove-and-inpaint-ground",
+      "masterRectPx1x": [
+        3357,
+        606,
+        98,
+        100
+      ],
+      "chunkRectPx1x": [
+        285,
+        606,
+        98,
+        100
+      ],
+      "ownerWalkMaskFractionInSurveyBox": 0.5009183673469387,
+      "evidence": [
+        "visual terrain survey",
+        "src/town-owner-walkmask-west.js",
+        "src/town-layout.js WEST_PROPS",
+        "src/town-west-trees.js"
+      ],
+      "status": "visually removed low shrub to right of stair on front plaza rim"
+    }
+  ],
+  "keepBaked": [
+    "distant forest / inaccessible ridge trees",
+    "rock/cliff outlines",
+    "all stairs and bridge decks",
+    "liquids, icefalls and clouds as base layers"
+  ],
+  "runtimeRepairs": false,
+  "runtimeTreeEvidence": [
+    {
+      "id": "west-tree-0",
+      "worldFoot": [
+        1794.5836800000002,
+        404.014848
+      ],
+      "masterFootPx1x": [
+        2296.9736425,
+        517.1705691
+      ],
+      "species": "blue-spruce",
+      "spriteKey": "town-tree-th",
+      "ownerMaskWalkableAtFoot": true,
+      "bakedObjectCorrespondence": "not assumed; separate sprite feet only"
+    },
+    {
+      "id": "west-tree-1",
+      "worldFoot": [
+        1862.154624,
+        500.763648
+      ],
+      "masterFootPx1x": [
+        2383.4609315,
+        641.0165916
+      ],
+      "species": "blue-spruce",
+      "spriteKey": "town-tree-th",
+      "ownerMaskWalkableAtFoot": true,
+      "bakedObjectCorrespondence": "not assumed; separate sprite feet only"
+    },
+    {
+      "id": "west-tree-2",
+      "worldFoot": [
+        1959.6714240000001,
+        476.192512
+      ],
+      "masterFootPx1x": [
+        2508.2773565,
+        609.5636179
+      ],
+      "species": "blue-spruce",
+      "spriteKey": "town-tree-th",
+      "ownerMaskWalkableAtFoot": true,
+      "bakedObjectCorrespondence": "not assumed; separate sprite feet only"
+    },
+    {
+      "id": "west-tree-3",
+      "worldFoot": [
+        1442.141952,
+        672.7618560000001
+      ],
+      "masterFootPx1x": [
+        1845.866587,
+        861.1877352
+      ],
+      "species": "blue-spruce",
+      "spriteKey": "town-tree-th",
+      "ownerMaskWalkableAtFoot": true,
+      "bakedObjectCorrespondence": "not assumed; separate sprite feet only"
+    },
+    {
+      "id": "west-tree-4",
+      "worldFoot": [
+        1961.207424,
+        715.761152
+      ],
+      "masterFootPx1x": [
+        2510.2433565,
+        916.2301934000001
+      ],
+      "species": "blue-spruce",
+      "spriteKey": "town-tree-th",
+      "ownerMaskWalkableAtFoot": false,
+      "bakedObjectCorrespondence": "not assumed; separate sprite feet only"
+    }
+  ],
+  "surveyPolicy": "Removal boxes are hand-inspected silhouettes overlapping paving/owner walkmask; not inferred solely from runtime feet. Runtime sprites remain untouched. Shrubs grounded on inaccessible snow/rock are kept.",
+  "keptSurveyExamples": [
+    {
+      "id": "west-r1-c3-upper-ridge-tree",
+      "masterRectPx1x": [
+        2348,
+        286,
+        98,
+        126
+      ],
+      "action": "keep-baked",
+      "reason": "ridge/tree base outside owner walkmask; corrected before generation"
+    },
+    {
+      "id": "west-r1-c4-east-ridge-vegetation",
+      "masterRectPx1x": [
+        3544,
+        617,
+        113,
+        140
+      ],
+      "action": "keep-baked",
+      "reason": "inaccessible boulder/ridge vegetation, no removal requested"
+    }
+  ]
+}

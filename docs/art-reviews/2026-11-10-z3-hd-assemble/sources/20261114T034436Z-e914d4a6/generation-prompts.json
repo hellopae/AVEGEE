@@ -1,0 +1,114 @@
+[
+  {
+    "id": "r4-c2/q11",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c2/q11. Preserve the two snow-capped rock spires in the lower left and center and the diagonal paving behind them.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-8c5372ae-d32b-4f97-b0cf-0f1811776aaa.png",
+    "nativeSize": [
+      1935,
+      813
+    ],
+    "sourceSha256": "7760f1174b81bbd133fa91471a3c0938467b1f612919c83af2596959e004e2ea",
+    "nativeSha256": "2a610506f8bf26f6e17367d4f0169573e3d4b7e34ecc8856dcb662daac607fa2",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c2/q11-native.webp",
+    "referenceImage": "r4-c2/q11-source.webp"
+  },
+  {
+    "id": "r4-c2/q12",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c2/q12. Preserve the broad continuous cobblestone road and the small snowy rock/tree fragments along the bottom and top edges.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-1867a85a-2e18-49e5-95b8-3bea7aea25ab.png",
+    "nativeSize": [
+      1935,
+      813
+    ],
+    "sourceSha256": "54ed9bc2a64e03710d90be4dc9198a04dd7c8a884e6618bf88271636a8ccb454",
+    "nativeSha256": "f6b87d335c24f4df07977bbc98e18e35c0051d91f51f27d67e81a3e65cf81096",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c2/q12-native.webp",
+    "referenceImage": "r4-c2/q12-source.webp"
+  },
+  {
+    "id": "r4-c3/q11",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c3/q11. The narrow stone walkway and steps run near the RIGHT side of this crop. Lock both parallel rail edges, each post center, all step risers and the paving surface boundaries. Keep the snow-covered pine left of the walkway outside the walking floor. No rail removal.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-cb412b2b-392b-4657-bb6f-41b705499ea3.png",
+    "nativeSize": [
+      1935,
+      813
+    ],
+    "sourceSha256": "01ecf7e5235acf86d24e1ee2033b82f2592e3e2c7c7197f143f4af860c71b93a",
+    "nativeSha256": "d9af71ee960772ef0ea98267b6904404255a218757385f30b77bd0deea06f014",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c3/q11-native.webp",
+    "referenceImage": "r4-c3/q11-source.webp"
+  },
+  {
+    "id": "r4-c3/q12",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c3/q12. The narrow stone walkway is clipped at the far LEFT edge. Preserve this exact clipping, side-rail line, all round post centers, steps, paving outlines and the snow/bare shrub patches scattered beside the wide diagonal road. Do not expand the narrow left walkway or move its rail.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-6d8223ae-62f0-4a3d-8df6-04f4f7706067.png",
+    "nativeSize": [
+      1934,
+      813
+    ],
+    "sourceSha256": "fd2d1b5df0475491b1d3f271ea5e543e59ee3abcc450aa6bad561f6649830114",
+    "nativeSha256": "ab4650b2dcb962707fbf58d5566790bbcf56ce77603e3005704ac6f7d0e79667",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c3/q12-native.webp",
+    "referenceImage": "r4-c3/q12-source.webp"
+  },
+  {
+    "id": "r4-c4/q11",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c4/q11. Preserve the bone fragments clipped along the top edge, their exact number, outlines and positions. Preserve the snowy rock peak and pines in the lower-right half and the diagonal road.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-aca03e66-efd1-40ef-ba00-c75651772537.png",
+    "nativeSize": [
+      1935,
+      813
+    ],
+    "sourceSha256": "596229497b06505c3deab9a3d492f437446d5e04ce6256921e36cdbe5588064b",
+    "nativeSha256": "0b8e9a082d1d47f91026559bfc431e49940673d8fb238126ad481a96f36dd0e6",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c4/q11-native.webp",
+    "referenceImage": "r4-c4/q11-source.webp"
+  },
+  {
+    "id": "r4-c4/q12",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c4/q12. Preserve the central snow-capped flat cliff with long BLUE ICICLES. These are frozen icicles, keep them frozen, opaque and pointed. Preserve every rock peak, small bare shrub and pine in their existing positions and the paved path clipped along the bottom. No waterfalls or liquid water.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-ea47580d-9fca-4c85-a5ac-f55c79a77dc3.png",
+    "nativeSize": [
+      1935,
+      813
+    ],
+    "sourceSha256": "90ee3708f7c38d159a314c81adf21227ed8825d8cdf3997a487693e3307f936f",
+    "nativeSha256": "cf66b21ac8a05cc49c0c270ed602dc6671b6c7ef35f59461ce10a15ba1388127",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c4/q12-native.webp",
+    "referenceImage": "r4-c4/q12-source.webp"
+  },
+  {
+    "id": "r4-c5/q11",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c5/q11. Source dimensions 538 by 269, preserve the 2:1 aspect ratio. Keep the cobbled path receding through the top center and the exact arrangement of snowy peaks and pine trees on both sides. Keep the blue icicles at the right edge frozen and pointed. No water.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-350a2569-f9a3-4a9d-a491-9f95ea403e06.png",
+    "nativeSize": [
+      1774,
+      887
+    ],
+    "sourceSha256": "428ecdf71c65a2dd3cb62c5c3e1f0c69003e6c20fe805589fadec62aea0e7e17",
+    "nativeSha256": "538706da8b8c55b6f481d818266238e82c26b8d493efb8b596befee77f12afb1",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c5/q11-native.webp",
+    "referenceImage": "r4-c5/q11-source.webp"
+  },
+  {
+    "id": "r4-c5/q12",
+    "prompt": "Use case: style-transfer. Asset type: high-resolution painted terrain for the existing isometric west ice-hell game map. The attached image is the exact EDIT TARGET, a rectangular crop with neighbor overlap. Redraw this same entire crop at high native resolution, preserving its exact framing, aspect ratio, isometric camera, every stone's outline, tree placement, cliff silhouette, snow boundary, walkway width and all structural positions. Enrich only fine surface detail: crisp distinct stone blocks, small natural cracks and mortar grit, crystalline snow grains, layered frost, sharply resolved pine needles and bark, stratified slate rock with snow caps. Maintain the original hand-painted game-art style and original cool blue/gray palette, overall illumination and broad color values. Keep existing paths clear. Keep all bridge decks and steps, side rails and posts in exactly their original positions. Keep distant nonwalkable trees. Preserve any painted water, ice or mist as a static base with exactly the same footprint. No additional objects, no new streams, no new architecture, no text or borders, no depth of field. This is a detail-only repaint of this exact image. Return the full rectangular crop edge to edge at approximately 3x the reference pixel dimensions. Crop ID r4-c5/q12. Source dimensions 473 by 269. The right edge is the map boundary. Preserve the pointed Gothic inset window/arch on the right rock wall, exact snowy peaks and existing pines. Preserve frozen blue icicles, no flowing water. Lock the rock and snow silhouettes to the reference.",
+    "generatedPath": "/Users/agapae/.codex/generated_images/01a1d828-545e-7d92-bf24-3cff1c866ba1/exec-44ca5245-3f26-417c-a1ec-c48ff40892f5.png",
+    "nativeSize": [
+      1663,
+      946
+    ],
+    "sourceSha256": "f7fbdd0fa3bedcc5e200ece65db9effd9abcf0f7a1e1346e105f9d159d3d8725",
+    "nativeSha256": "c1694abf5e47c77f2b5316f5ba42332a246a3bed63cbbe2a7aa71f1d0186e8e2",
+    "tool": "built-in image_gen",
+    "nativeFile": "r4-c5/q12-native.webp",
+    "referenceImage": "r4-c5/q12-source.webp"
+  }
+]

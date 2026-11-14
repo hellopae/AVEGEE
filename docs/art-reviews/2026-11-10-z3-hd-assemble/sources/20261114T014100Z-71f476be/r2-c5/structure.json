@@ -1,0 +1,150 @@
+{
+  "chunk": "r2-c5",
+  "sharpness": {
+    "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+    "baseline2x": 49.02634133132933,
+    "redraw2x": 4101.03242110788,
+    "ratio2x": 83.64957102126637,
+    "baseline1x": 643.9842923265865,
+    "redrawDownsample1x": 6995.153656321101,
+    "ratio1x": 10.8623047792812
+  },
+  "structure": {
+    "method": "independent interleaved mutual-SIFT holdout after training-half affine; max includes ambiguous descriptor matches; proxy only, not proof of all structural outlines",
+    "maxPx1x": 334.4799499511719,
+    "perPart": {
+      "q11": {
+        "trainInliers": 386,
+        "holdoutCount": 391,
+        "holdoutResidualMaxPx1x": 334.4799499511719,
+        "holdoutResidualMedianPx1x": 0.5505426526069641,
+        "holdoutResidualP95Px1x": 1.8491148948669434,
+        "holdoutWithin4pxFraction": 0.989769820971867,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "trainInliers": 360,
+        "holdoutCount": 373,
+        "holdoutResidualMaxPx1x": 290.80743408203125,
+        "holdoutResidualMedianPx1x": 0.6155276298522949,
+        "holdoutResidualP95Px1x": 2.760524272918701,
+        "holdoutWithin4pxFraction": 0.9758713136729222,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "trainInliers": 490,
+        "holdoutCount": 499,
+        "holdoutResidualMaxPx1x": 265.8934326171875,
+        "holdoutResidualMedianPx1x": 0.6713197231292725,
+        "holdoutResidualP95Px1x": 1.9070578813552856,
+        "holdoutWithin4pxFraction": 0.9819639278557114,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "trainInliers": 449,
+        "holdoutCount": 461,
+        "holdoutResidualMaxPx1x": 325.7525329589844,
+        "holdoutResidualMedianPx1x": 0.5041515231132507,
+        "holdoutResidualP95Px1x": 1.6007980108261108,
+        "holdoutWithin4pxFraction": 0.9869848156182213,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "manualOutlineReview": "pending Claude; inspect source, native, compare and structure-matches"
+  },
+  "seams": {
+    "method": "minimum squared-colour-cost DP in actual 128-map-px internal overlap; smoothstep feather +/-8 output px; no neighboring chunk assembly",
+    "visualReview": "pending Claude; seam path overlay is supplied",
+    "meanSquaredCosts": [
+      420.4158630371094,
+      673.1383666992188,
+      371.8612365722656
+    ]
+  },
+  "sampledLandmarks": {
+    "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+    "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+    "maxDisplacementPx1x": 1.0,
+    "minNcc": 0.840870201587677,
+    "points": [
+      {
+        "id": "stair-centre",
+        "sourceChunkPx1x": [
+          135,
+          586
+        ],
+        "deltaPx1x": [
+          -1,
+          0
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9839587211608887
+      },
+      {
+        "id": "upper-cliff-cap",
+        "sourceChunkPx1x": [
+          263,
+          255
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.9777712225914001
+      },
+      {
+        "id": "upper-plaza-edge",
+        "sourceChunkPx1x": [
+          445,
+          150
+        ],
+        "deltaPx1x": [
+          0,
+          1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.840870201587677
+      },
+      {
+        "id": "lower-landing-bank",
+        "sourceChunkPx1x": [
+          276,
+          950
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.9504721164703369
+      },
+      {
+        "id": "path-bend",
+        "sourceChunkPx1x": [
+          230,
+          720
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.8748093247413635
+      },
+      {
+        "id": "middle-cliff-peak",
+        "sourceChunkPx1x": [
+          353,
+          542
+        ],
+        "deltaPx1x": [
+          0,
+          -1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9126049876213074
+      }
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "chunk": "r4-c1",
+  "coordinateSystem": "rects [x0,y0,x1,y1], exclusive max; affine native pixels -> context origin or master pixels",
+  "outerRectPx1x": [
+    0,
+    3008,
+    1088,
+    3277
+  ],
+  "chunkRectPx1x": [
+    0,
+    3072,
+    1024,
+    3277
+  ],
+  "parts": [
+    {
+      "part": "q11",
+      "coreRectPx1x": [
+        0,
+        3072,
+        512,
+        3277
+      ],
+      "contextRectPx1x": [
+        0,
+        3008,
+        576,
+        3277
+      ],
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1836,
+        857
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.3135256490291102,
+          0.0008971508086095937,
+          -0.1814541352291229
+        ],
+        [
+          0.0003004036000631322,
+          0.31605296497334356,
+          -1.0888748580995076
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3135256490291102,
+          0.0008971508086095937,
+          -0.1814541352291229
+        ],
+        [
+          0.0003004036000631322,
+          0.31605296497334356,
+          3006.9111251419004
+        ]
+      ],
+      "fit": {
+        "matches": 167,
+        "inliers": 129,
+        "inlierResidualMaxPx1x": 2.93356990814209,
+        "inlierResidualP95Px1x": 2.131117820739746,
+        "allMatchResidualP95Px1x": 78.47972869873047,
+        "contextCoverage": 0.9990319083023544
+      }
+    },
+    {
+      "part": "q12",
+      "coreRectPx1x": [
+        512,
+        3072,
+        1024,
+        3277
+      ],
+      "contextRectPx1x": [
+        448,
+        3008,
+        1088,
+        3277
+      ],
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.3308881535553159,
+          -8.473989995812315e-05,
+          0.10933704487723736
+        ],
+        [
+          -0.000495498228031011,
+          0.3454517974695561,
+          2.6671694649161846
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3308881535553159,
+          -8.473989995812315e-05,
+          448.10933704487724
+        ],
+        [
+          -0.000495498228031011,
+          0.3454517974695561,
+          3010.6671694649162
+        ]
+      ],
+      "fit": {
+        "matches": 198,
+        "inliers": 171,
+        "inlierResidualMaxPx1x": 3.6218361854553223,
+        "inlierResidualP95Px1x": 2.3063454627990723,
+        "allMatchResidualP95Px1x": 4.365668773651123,
+        "contextCoverage": 0.9906424256505576
+      }
+    }
+  ]
+}

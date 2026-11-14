@@ -1,0 +1,101 @@
+{
+  "zone": "west",
+  "scope": [
+    "r4-c2",
+    "r4-c3",
+    "r4-c4",
+    "r4-c5"
+  ],
+  "master": "img/map-zone3/v1/",
+  "repairs": false,
+  "coordinateSystem": "full master pixels 1x; world 3840x2560",
+  "walkmask": "src/town-owner-walkmask-west.js",
+  "objects": [
+    {
+      "id": "r4-c2-baked-scenery",
+      "chunk": "r4-c2",
+      "coreRectPx1x": [
+        1024,
+        3072,
+        2048,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removedIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Retain the snowy rocks, pines and shrubs.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c3-baked-scenery",
+      "chunk": "r4-c3",
+      "coreRectPx1x": [
+        2048,
+        3072,
+        3072,
+        3277
+      ],
+      "ownerWalkPixels": 28905,
+      "ownerWalkBoundsPx1x": [
+        2386,
+        3072,
+        2529,
+        3277
+      ],
+      "action": "keep-baked",
+      "removedIds": [],
+      "visualSurvey": "Only the narrow central stone corridor is walkable. Its paving is clear. Side rails/posts and snowbank pine remain outside the corridor.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c4-baked-scenery",
+      "chunk": "r4-c4",
+      "coreRectPx1x": [
+        3072,
+        3072,
+        4096,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removedIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Retain the snowy rocks, pines and shrubs.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c5-baked-scenery",
+      "chunk": "r4-c5",
+      "coreRectPx1x": [
+        4096,
+        3072,
+        4915,
+        3277
+      ],
+      "ownerWalkPixels": 0,
+      "ownerWalkBoundsPx1x": null,
+      "action": "keep-baked",
+      "removedIds": [],
+      "visualSurvey": "No owner walk pixels in this core. Retain the snowy rocks, pines and shrubs.",
+      "completeSilhouetteAuditVerified": false
+    },
+    {
+      "id": "r4-c4-context-bones",
+      "action": "keep-baked",
+      "sourcePart": "r4-c4/q11-source.webp",
+      "reason": "Bones are clipped along the upper neighbor context, outside the walking corridor. Keep their original silhouette."
+    }
+  ],
+  "runtimeRoots": {
+    "treeCount": 28,
+    "maximumTreeFootMapY": 2150.76064,
+    "otherPropMaximumFootWorldY": 2250,
+    "otherPropMaximumFootMapY": 2880.17578125,
+    "contextStartsMapY": 3008,
+    "rootsIntersectingRunContext": 0,
+    "source": "src/town-west-trees.js and WEST_PROPS/TOWN_PROP_SITES in src/town-layout.js"
+  },
+  "liquidCloudPolicy": "Retain any liquid/cloud base and footprint. The blue hanging forms in this run are frozen icicles.",
+  "limitations": "Visual survey and owner navigation mask inform removals. Full silhouette/occlusion acceptance remains for Claude."
+}

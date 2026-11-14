@@ -1,0 +1,138 @@
+{
+  "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+  "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+  "maxDisplacementPx1x": 21.93171219946131,
+  "minNcc": 0.5068448185920715,
+  "points": [
+    {
+      "id": "plaza-top-ring",
+      "sourceChunkPx1x": [
+        322,
+        70
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.6852331161499023
+    },
+    {
+      "id": "plaza-bottom-ring",
+      "sourceChunkPx1x": [
+        320,
+        398
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.889073371887207
+    },
+    {
+      "id": "central-stair",
+      "sourceChunkPx1x": [
+        319,
+        477
+      ],
+      "deltaPx1x": [
+        16,
+        15
+      ],
+      "displacementPx1x": 21.93171219946131,
+      "ncc": 0.956580400466919
+    },
+    {
+      "id": "right-stair",
+      "sourceChunkPx1x": [
+        715,
+        441
+      ],
+      "deltaPx1x": [
+        6,
+        12
+      ],
+      "displacementPx1x": 13.416407864998739,
+      "ncc": 0.9512218236923218
+    },
+    {
+      "id": "top-right-stair",
+      "sourceChunkPx1x": [
+        836,
+        45
+      ],
+      "deltaPx1x": [
+        -1,
+        1
+      ],
+      "displacementPx1x": 1.4142135623730951,
+      "ncc": 0.9443004131317139
+    },
+    {
+      "id": "path-bend",
+      "sourceChunkPx1x": [
+        386,
+        702
+      ],
+      "deltaPx1x": [
+        1,
+        0
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.7548258900642395
+    },
+    {
+      "id": "long-bridge-start",
+      "sourceChunkPx1x": [
+        428,
+        923
+      ],
+      "deltaPx1x": [
+        0,
+        1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.9789748787879944
+    },
+    {
+      "id": "lower-right-court-edge",
+      "sourceChunkPx1x": [
+        826,
+        795
+      ],
+      "deltaPx1x": [
+        0,
+        -1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.5068448185920715
+    },
+    {
+      "id": "east-shore",
+      "sourceChunkPx1x": [
+        991,
+        484
+      ],
+      "deltaPx1x": [
+        0,
+        1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.8909466862678528
+    },
+    {
+      "id": "east-waterfall",
+      "sourceChunkPx1x": [
+        965,
+        550
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.70351243019104
+    }
+  ]
+}

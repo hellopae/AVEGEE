@@ -1,0 +1,157 @@
+{
+  "zone": "west",
+  "scope": [
+    "r3-c3",
+    "r3-c4",
+    "r3-c5",
+    "r4-c1"
+  ],
+  "master": "img/map-zone3/v1/",
+  "repairs": false,
+  "coordinateSystem": "full master pixels 1x; world 3840x2560",
+  "walkmask": "src/town-owner-walkmask-west.js",
+  "objects": [
+    {
+      "id": "west-tree-11",
+      "source": "src/town-west-trees.js",
+      "footPx1x": [
+        2319.5806765,
+        1899.1365227
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "outside-scope",
+      "reason": "foot and trunk above every supplied context; no removal claimed in this run"
+    },
+    {
+      "id": "west-tree-12",
+      "source": "src/town-west-trees.js",
+      "footPx1x": [
+        2624.2507135,
+        1906.9993565
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "outside-scope",
+      "reason": "foot and trunk above every supplied context; no removal claimed in this run"
+    },
+    {
+      "id": "west-tree-13",
+      "source": "src/town-west-trees.js",
+      "footPx1x": [
+        3019.3390565,
+        2083.9222926
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "owner floor at foot; visual source has clear pavers at this foot, no matching baked cedar to erase"
+    },
+    {
+      "id": "west-tree-26",
+      "source": "src/town-west-trees.js",
+      "footPx1x": [
+        4185.9290515,
+        1846.058626
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "outside-scope",
+      "reason": "foot and trunk above every supplied context; no removal claimed in this run"
+    },
+    {
+      "id": "west-tree-27",
+      "source": "src/town-west-trees.js",
+      "footPx1x": [
+        4622.2955305,
+        2048.5369189
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "keep-baked",
+      "reason": "nonwalkable snowbank; keep forest silhouette"
+    },
+    {
+      "id": "hell-pillar-4",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2291.1067708333335,
+        1996.921875
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "hell-pillar-5",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2623.8932291666665,
+        1996.921875
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "hell-pillar-6",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2265.5078125,
+        2662.5625
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "hell-pillar-7",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2649.4921875,
+        2662.5625
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "hell-pillar-8",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2265.5078125,
+        2880.17578125
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "hell-pillar-9",
+      "source": "src/town-layout.js",
+      "footPx1x": [
+        2649.4921875,
+        2880.17578125
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-only",
+      "reason": "runtime sprite position; no separate matching baked torch visible in source; do not erase structural bridge posts"
+    },
+    {
+      "id": "west-south-bridge-rails",
+      "action": "keep-baked",
+      "reason": "rails outside walking deck; deck and stair treads locked"
+    },
+    {
+      "id": "west-river-bones",
+      "action": "keep-baked",
+      "reason": "skull and spine in nonwalkable water; preserve liquid base silhouette"
+    },
+    {
+      "id": "west-lower-path-bones",
+      "action": "keep-baked",
+      "reason": "r3-c4 and r3-c5 lower paths have no owner walkmask cells; retain scenery bones"
+    },
+    {
+      "id": "west-snowbank-forest",
+      "action": "keep-baked",
+      "reason": "forest on nonwalkable bank; distant scenery retained"
+    }
+  ],
+  "limitations": "Source-foot mask test is evidence, not a whole-object occlusion test. Compare overlays visually. Runtime sprites are not baked objects."
+}

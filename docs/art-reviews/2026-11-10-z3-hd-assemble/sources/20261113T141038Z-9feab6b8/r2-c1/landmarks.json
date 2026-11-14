@@ -1,0 +1,125 @@
+{
+  "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+  "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+  "maxDisplacementPx1x": 17.88854381999832,
+  "minNcc": 0.33863991498947144,
+  "points": [
+    {
+      "id": "left-cliff-peak",
+      "sourceChunkPx1x": [
+        140,
+        270
+      ],
+      "deltaPx1x": [
+        2,
+        -1
+      ],
+      "displacementPx1x": 2.23606797749979,
+      "ncc": 0.9148731827735901
+    },
+    {
+      "id": "upper-terrace-bank",
+      "sourceChunkPx1x": [
+        742,
+        41
+      ],
+      "deltaPx1x": [
+        -13,
+        2
+      ],
+      "displacementPx1x": 13.152946437965905,
+      "ncc": 0.642483115196228
+    },
+    {
+      "id": "right-terrace-bank",
+      "sourceChunkPx1x": [
+        952,
+        252
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.8391140103340149
+    },
+    {
+      "id": "front-terrace-edge",
+      "sourceChunkPx1x": [
+        521,
+        397
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.8790777325630188
+    },
+    {
+      "id": "upper-stair-centre",
+      "sourceChunkPx1x": [
+        596,
+        452
+      ],
+      "deltaPx1x": [
+        0,
+        -1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.3422086536884308
+    },
+    {
+      "id": "stair-landing",
+      "sourceChunkPx1x": [
+        706,
+        536
+      ],
+      "deltaPx1x": [
+        0,
+        1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.5630025863647461
+    },
+    {
+      "id": "lower-stair-centre",
+      "sourceChunkPx1x": [
+        744,
+        629
+      ],
+      "deltaPx1x": [
+        -13,
+        1
+      ],
+      "displacementPx1x": 13.038404810405298,
+      "ncc": 0.732188880443573
+    },
+    {
+      "id": "lower-plaza-left-bank",
+      "sourceChunkPx1x": [
+        528,
+        782
+      ],
+      "deltaPx1x": [
+        8,
+        -16
+      ],
+      "displacementPx1x": 17.88854381999832,
+      "ncc": 0.6160182952880859
+    },
+    {
+      "id": "lower-plaza-front",
+      "sourceChunkPx1x": [
+        689,
+        932
+      ],
+      "deltaPx1x": [
+        -3,
+        -5
+      ],
+      "displacementPx1x": 5.830951894845301,
+      "ncc": 0.33863991498947144
+    }
+  ]
+}

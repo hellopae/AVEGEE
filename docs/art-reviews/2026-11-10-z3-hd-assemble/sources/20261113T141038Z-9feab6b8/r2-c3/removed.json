@@ -1,0 +1,12 @@
+{
+  "zone": "west",
+  "chunk": "r2-c3",
+  "removed": [
+    "r2-c3-rails-posts"
+  ],
+  "conditionalFloorCleanup": "r2-c3-paving-shrubs",
+  "runtimeProps": "separate sprites; no sprite imagery added to ground",
+  "observed": "ตรวจภาพ native q22 และภาพประกอบ: เสาคู่ข้างบันไดและราวถูกลบ พื้นลาน วงแหวน บันได น้ำและป่านอกพื้นเดินยังอยู่ ไม่เห็นเส้นกริดตรงที่ภาพรวม; การลบพุ่มไม้เฉพาะบนพื้นและขอบโครงสร้างละเอียดรอ Claude ตรวจ",
+  "verification": "visual native q22 and assembled overview; not exhaustive pixel-level acceptance",
+  "reviewPending": true
+}

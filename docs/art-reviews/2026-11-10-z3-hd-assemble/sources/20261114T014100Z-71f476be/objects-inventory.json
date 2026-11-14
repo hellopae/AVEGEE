@@ -1,0 +1,401 @@
+{
+  "zone": "west",
+  "scope": [
+    "r2-c4",
+    "r2-c5",
+    "r3-c1",
+    "r3-c2"
+  ],
+  "coordinates": "chunkRectPx1x uses chunk-local [x0,y0,x1,y1], exclusive end; runtime prop feet are global 1x map pixels",
+  "sources": [
+    "src/zone-skin.js",
+    "src/town-layout.js",
+    "src/town-west-trees.js",
+    "src/town-owner-walkmask-west.js"
+  ],
+  "runtimeProps": [
+    {
+      "id": "rock-0",
+      "kind": "rock",
+      "x": 3014,
+      "y": 868,
+      "w": 77,
+      "rx": 26.180000000000003,
+      "ry": 10.780000000000001,
+      "biome": "ice",
+      "key": "town-prop-rock",
+      "mapFootPx1x": [
+        3857.7630208333335,
+        1111.1078125
+      ],
+      "chunks": [
+        "r2-c4"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "rock-1",
+      "kind": "rock",
+      "x": 3496,
+      "y": 887,
+      "w": 119,
+      "rx": 40.46,
+      "ry": 16.66,
+      "biome": "ice",
+      "key": "town-prop-rock",
+      "mapFootPx1x": [
+        4474.697916666667,
+        1135.429296875
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "rock-2",
+      "kind": "rock",
+      "x": 3312,
+      "y": 981,
+      "w": 79,
+      "rx": 26.860000000000003,
+      "ry": 11.06,
+      "biome": "ice",
+      "key": "town-prop-rock",
+      "mapFootPx1x": [
+        4239.1875,
+        1255.756640625
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "rock-3",
+      "kind": "rock",
+      "x": 3241,
+      "y": 996,
+      "w": 52,
+      "rx": 17.68,
+      "ry": 7.280000000000001,
+      "biome": "ice",
+      "key": "town-prop-rock",
+      "mapFootPx1x": [
+        4148.311197916667,
+        1274.9578125
+      ],
+      "chunks": [
+        "r2-c4",
+        "r2-c5"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-9",
+      "kind": "tree",
+      "x": 2366.632704,
+      "y": 1406.824448,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-prop-palm",
+      "treeKind": "green",
+      "species": "cedar",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        3029.1665989999997,
+        1800.8452015999999
+      ],
+      "chunks": [
+        "r2-c4"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-13",
+      "kind": "tree",
+      "x": 2358.954624,
+      "y": 1627.964928,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-prop-palm",
+      "treeKind": "green",
+      "species": "cedar",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        3019.3390565,
+        2083.9222926
+      ],
+      "chunks": [
+        "r2-c4"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-22",
+      "kind": "tree",
+      "x": 446.244096,
+      "y": 1680.1792,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-red-th",
+      "treeKind": "cyan",
+      "species": "blackthorn",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        571.169201,
+        2150.76064
+      ],
+      "chunks": [
+        "r3-c1"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-25",
+      "kind": "tree",
+      "x": 2905.661952,
+      "y": 1153.4343680000002,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-snow-th",
+      "treeKind": "white",
+      "species": "silver-fir",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        3719.095962,
+        1476.4861031000003
+      ],
+      "chunks": [
+        "r2-c4"
+      ],
+      "walkmaskAtFoot": true,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-26",
+      "kind": "tree",
+      "x": 3270.390144,
+      "y": 1442.14528,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-snow-th",
+      "treeKind": "white",
+      "species": "silver-fir",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        4185.9290515,
+        1846.058626
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    },
+    {
+      "id": "west-tree-27",
+      "kind": "tree",
+      "x": 3611.3153279999997,
+      "y": 1600.321792,
+      "w": 160,
+      "rx": 16,
+      "ry": 11,
+      "biome": "city",
+      "key": "town-tree-snow-th",
+      "treeKind": "white",
+      "species": "silver-fir",
+      "ownerFoot": true,
+      "mapFootPx1x": [
+        4622.2955305000005,
+        2048.5369189000003
+      ],
+      "chunks": [
+        "r2-c5"
+      ],
+      "walkmaskAtFoot": false,
+      "action": "sprite-only-do-not-bake",
+      "evidence": "Runtime WEST_PROPS. This record does not prove a matching object is baked in the source."
+    }
+  ],
+  "paintedObjects": [
+    {
+      "id": "west-upper-ice-bridge-rails",
+      "chunk": "r2-c4",
+      "chunkRectPx1x": [
+        0,
+        170,
+        275,
+        300
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "whole bridge deck and supporting arch"
+    },
+    {
+      "id": "west-upper-court-stair-posts",
+      "chunk": "r2-c4",
+      "chunkRectPx1x": [
+        810,
+        215,
+        975,
+        375
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "all treads, landing and stone supporting side walls"
+    },
+    {
+      "id": "west-lower-ice-bridge-rails-c4",
+      "chunk": "r2-c4",
+      "chunkRectPx1x": [
+        905,
+        915,
+        1024,
+        1024
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "whole bridge deck and arch; same bridge continues into r2-c5"
+    },
+    {
+      "id": "west-lower-ice-bridge-rails-c5",
+      "chunk": "r2-c5",
+      "chunkRectPx1x": [
+        0,
+        900,
+        190,
+        1024
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "whole bridge deck and arch"
+    },
+    {
+      "id": "west-east-court-stair-posts",
+      "chunk": "r2-c5",
+      "chunkRectPx1x": [
+        65,
+        490,
+        205,
+        670
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "all treads and stair footprint"
+    },
+    {
+      "id": "west-riverside-landing-stair-posts",
+      "chunk": "r3-c1",
+      "chunkRectPx1x": [
+        765,
+        0,
+        955,
+        80
+      ],
+      "action": "remove-posts-and-rails",
+      "keep": "visible stair treads at top edge and all context above chunk"
+    },
+    {
+      "id": "r2-c4-snowbank-vegetation",
+      "chunk": "r2-c4",
+      "action": "keep-baked",
+      "reason": "source-inventory.jpg: off-floor snowbank/remote forest vegetation; keep unless root demonstrably sits on paved walk floor"
+    },
+    {
+      "id": "r2-c4-fluid-mist-base",
+      "chunk": "r2-c4",
+      "action": "keep-baked",
+      "reason": "preserve river, waterfall, foam and mist contours for later masks"
+    },
+    {
+      "id": "r2-c5-snowbank-vegetation",
+      "chunk": "r2-c5",
+      "action": "keep-baked",
+      "reason": "source-inventory.jpg: off-floor snowbank/remote forest vegetation; keep unless root demonstrably sits on paved walk floor"
+    },
+    {
+      "id": "r2-c5-fluid-mist-base",
+      "chunk": "r2-c5",
+      "action": "keep-baked",
+      "reason": "preserve river, waterfall, foam and mist contours for later masks"
+    },
+    {
+      "id": "r3-c1-snowbank-vegetation",
+      "chunk": "r3-c1",
+      "action": "keep-baked",
+      "reason": "source-inventory.jpg: off-floor snowbank/remote forest vegetation; keep unless root demonstrably sits on paved walk floor"
+    },
+    {
+      "id": "r3-c1-fluid-mist-base",
+      "chunk": "r3-c1",
+      "action": "keep-baked",
+      "reason": "preserve river, waterfall, foam and mist contours for later masks"
+    },
+    {
+      "id": "r3-c2-snowbank-vegetation",
+      "chunk": "r3-c2",
+      "action": "keep-baked",
+      "reason": "source-inventory.jpg: off-floor snowbank/remote forest vegetation; keep unless root demonstrably sits on paved walk floor"
+    },
+    {
+      "id": "r3-c2-fluid-mist-base",
+      "chunk": "r3-c2",
+      "action": "keep-baked",
+      "reason": "preserve river, waterfall, foam and mist contours for later masks"
+    },
+    {
+      "id": "west-off-floor-skull",
+      "chunk": "r3-c2",
+      "chunkFootPx1x": [
+        878,
+        898
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "nearbySamplesAllBlocked": [
+        [
+          878,
+          910
+        ],
+        [
+          878,
+          880
+        ],
+        [
+          886,
+          898
+        ]
+      ],
+      "action": "keep-baked",
+      "reason": "Small skull rooted on snowbank outside owner floor; ImageGen enlarged it, see known-issue.jpg"
+    }
+  ],
+  "walkmaskMethod": "decode alternating runs into 480x320 cells (8 world units), nearest scale to 4915x3277. Red line in source-inventory.jpg is owner floor boundary, yellow circles are runtime prop feet.",
+  "observations": [
+    "Runtime rock-0..3 and west-tree-25 feet lie on already empty paving in master: sprite-only, no baked object removed there.",
+    "west-tree-9/13 are context-only at left of r2-c4; west-tree-22 foot is near top-right r3-c1 margin. Runtime sprite position alone is not a removal mask.",
+    "No unmistakable freestanding painted object found in interior floor of r3-c2. Edge shrubs remain conditional for visual review."
+  ],
+  "limitations": "Inventory bounding boxes locate groups; not masks. Rail removal allowed by brief. Post removal and edge shrub decisions require visual review, not automatic acceptance."
+}

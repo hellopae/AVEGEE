@@ -1,0 +1,34 @@
+{
+  "v7Bytes": 31352899,
+  "v7MBDecimal": 31.352899,
+  "copiedFiles": 169,
+  "nativeCount": 70,
+  "sourceHashesUnchanged": true,
+  "shippingImages": 21,
+  "chunkCount": 20,
+  "minCostJoins": 73,
+  "fileChecksSucceeded": true,
+  "imagesDecoded": 115,
+  "imageGenCalls": 0,
+  "inGameTested": false,
+  "structureReliableFailures": 33,
+  "structureUncertain": 508,
+  "acceptance": [
+    {
+      "id": 1,
+      "verified": true,
+      "evidence": "20 chunks, preview, dimensions, WebP decode, SHA256, exact grid and <=40MB checked."
+    },
+    {
+      "id": 2,
+      "verified": false,
+      "evidence": "Offline full-length seam strips and game-scale comparisons supplied. Whole-contour structure and in-game seams remain unresolved.",
+      "reliableProbeFailures": 33
+    },
+    {
+      "id": 3,
+      "verified": true,
+      "evidence": "Thai README records fallback usage, upstream defects, visual findings and ImageGen0."
+    }
+  ]
+}

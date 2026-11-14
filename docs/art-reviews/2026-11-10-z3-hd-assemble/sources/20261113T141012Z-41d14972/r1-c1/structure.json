@@ -1,0 +1,297 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed 49x49 DoG sigma1.5/6 landmark templates; normalized correlation search +/-16 map px on assembled output. Independent of SIFT residual. No probes removed after measurement.",
+  "totalProbes": 19,
+  "reliableProbes": 18,
+  "maxReliableDisplacementPx1x": 1.0,
+  "allReliableWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "limitations": "Patch matching only; repeated steps, changed water texture, occlusion, and new detail can create ambiguous correspondences. This does not verify all contours or stair counts.",
+  "probes": [
+    {
+      "id": "cliff-ridge-west",
+      "sourcePx1x": [
+        168,
+        190
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7738158106803894,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "cliff-snow-lip",
+      "sourcePx1x": [
+        238,
+        306
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8622919917106628,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "icefall-left-bank",
+      "sourcePx1x": [
+        353,
+        260
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9176986217498779,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "icefall-right-bank",
+      "sourcePx1x": [
+        469,
+        220
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.7746935486793518,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "gothic-arch-tip",
+      "sourcePx1x": [
+        270,
+        381
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8675512671470642,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-stair-top-left",
+      "sourcePx1x": [
+        399,
+        371
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9249349236488342,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-stair-top-right",
+      "sourcePx1x": [
+        518,
+        352
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9181336760520935,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-stair-foot-left",
+      "sourcePx1x": [
+        426,
+        468
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.912105143070221,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "north-stair-foot-right",
+      "sourcePx1x": [
+        562,
+        447
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8602041006088257,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-west-rim",
+      "sourcePx1x": [
+        241,
+        597
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8361313939094543,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-east-rim",
+      "sourcePx1x": [
+        936,
+        555
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8726980686187744,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "plaza-front-rim",
+      "sourcePx1x": [
+        530,
+        760
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9043970108032227,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-left",
+      "sourcePx1x": [
+        638,
+        800
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9347848296165466,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-top-right",
+      "sourcePx1x": [
+        735,
+        791
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9059918522834778,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-bottom-left",
+      "sourcePx1x": [
+        609,
+        914
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9087150692939758,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "lower-stair-bottom-right",
+      "sourcePx1x": [
+        719,
+        915
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8980017304420471,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "ice-channel-center-rock",
+      "sourcePx1x": [
+        252,
+        895
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.5418963432312012,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "west-fall-bank",
+      "sourcePx1x": [
+        158,
+        726
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7888066172599792,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-front-arch",
+      "sourcePx1x": [
+        865,
+        866
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8632416725158691,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

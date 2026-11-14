@@ -1,0 +1,19 @@
+{
+  "requestedIds": [
+    "west-r1-c3-floor-shrub-01",
+    "west-r1-c3-floor-shrub-02"
+  ],
+  "objectReview": [
+    {
+      "id": "west-r1-c3-floor-shrub-01",
+      "status": "visually removed large low shrub overlapping landing"
+    },
+    {
+      "id": "west-r1-c3-floor-shrub-02",
+      "status": "visually removed isolated shrub/small fir on front rim in assembled crop"
+    }
+  ],
+  "pendingObjectIds": [],
+  "visualVerification": "offline partial observation only; not a semantic acceptance signoff",
+  "inventory": "../objects-inventory.json"
+}
