@@ -1,0 +1,7 @@
+HUNGRY-ICON: file presence and dimensions only; no gameplay or visual QA.
+OK img/ui/icon-hungry.webp: 48x48
+OK docs/art-reviews/2026-11-13-hungry-icon/icon-hungry-48.webp: 48x48
+OK docs/art-reviews/2026-11-13-hungry-icon/icon-hungry-192.webp: 192x192
+OK docs/art-reviews/2026-11-13-hungry-icon/compare.webp: 576x256
+OK docs/art-reviews/2026-11-13-hungry-icon/README.md: present
+ImageGen calls: 1; retries: 0.
