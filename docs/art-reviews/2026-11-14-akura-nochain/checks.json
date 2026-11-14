@@ -1,0 +1,137 @@
+{
+  "imagegen": {
+    "mode": "built-in edit",
+    "calls": 6,
+    "limit": 8,
+    "attempts_per_asset": [
+      2,
+      2,
+      2
+    ],
+    "retries_per_asset": [
+      1,
+      1,
+      1
+    ],
+    "retry_limit_per_asset": 2
+  },
+  "webp_encoding": {
+    "RGBA": "lossless, method=6, exact=True",
+    "RGB": "quality=86, method=6"
+  },
+  "assets": [
+    {
+      "path": "img/Asia/boss-frontier-asia.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 256814,
+      "sha256": "e7fb82864a66e5d3d6e8d65db287146988d9bd687c6636d1f28913528acbc244",
+      "original_sha256": "14a47d762710202808737ecd1c955fd5c16990951c11a75fe496f327e065de5a",
+      "riff_chunks": [
+        "VP8L"
+      ],
+      "decode_ok": true,
+      "selected_attempt": 2,
+      "alpha_lossless_roundtrip": true,
+      "transparent_pixels": 122730,
+      "partial_alpha_pixels": 138652,
+      "opaque_pixels": 762,
+      "alpha_1_to_7_pixels": 0,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha_bbox": [
+        32,
+        0,
+        480,
+        512
+      ],
+      "alpha_components": 1,
+      "small_low_alpha_dust_components": 0,
+      "cleanup": {
+        "alpha_threshold": 8,
+        "removed_disconnected_dust_pixels": 27,
+        "rule": "keep largest component"
+      }
+    },
+    {
+      "path": "img/Asia/boss-frontier-asia-cutscene-asia.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 209362,
+      "sha256": "31f05b635c780d8e52d6873e1bc516ed1873e812d7a8895ae442d7d6977493a7",
+      "original_sha256": "e1209424d29f4a50ca84f613e6351505a63070fd910300cccdeccda674442a9f",
+      "riff_chunks": [
+        "VP8L"
+      ],
+      "decode_ok": true,
+      "selected_attempt": 2,
+      "alpha_lossless_roundtrip": true,
+      "transparent_pixels": 159256,
+      "partial_alpha_pixels": 102380,
+      "opaque_pixels": 508,
+      "alpha_1_to_7_pixels": 0,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha_bbox": [
+        0,
+        223,
+        512,
+        512
+      ],
+      "alpha_components": 46,
+      "small_low_alpha_dust_components": 0,
+      "cleanup": {
+        "alpha_threshold": 8,
+        "removed_disconnected_dust_pixels": 93,
+        "rule": "remove components of <=4 pixels only when maximum alpha <32; retain brighter sparks and debris"
+      }
+    },
+    {
+      "path": "img/frontier-asia-intro-v1.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 296572,
+      "sha256": "6a1eee1c27a86337b90222081b161612b58b048506e2c72cd6ad953c1f7d356c",
+      "original_sha256": "5746be10bfb1cb416ebff6b65344b676563c699e24f888f842bd1c1e4c6c26dd",
+      "riff_chunks": [
+        "VP8 "
+      ],
+      "decode_ok": true,
+      "selected_attempt": 1
+    }
+  ],
+  "comparisons": [
+    "boss-frontier-asia-before-after.jpg",
+    "boss-frontier-asia-cutscene-asia-before-after.jpg",
+    "frontier-asia-intro-v1-before-after.jpg"
+  ],
+  "regression_tests": {
+    "command": "node --test tests/30a.test.mjs tests/i2b-frontier-boss.test.mjs tests/asset-paths-runtime.test.mjs",
+    "tests": 24,
+    "pass": 24,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "limitations": [
+    "ImageGen changed some linework and background texture outside the wrists; exact unchanged-background criterion is not fully met.",
+    "No game/browser QA run, OCR test, or automated chain detector.",
+    "Referenced story file was not present in this worktree."
+  ]
+}
