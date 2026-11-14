@@ -1,0 +1,246 @@
+{
+  "generator": "built-in image_gen",
+  "calls": 16,
+  "edits": [
+    {
+      "chunk": "r1-c5",
+      "part": "q11",
+      "prompt": "Use case: precise-object-edit. Asset type: Cyberhell isometric game terrain, HD redraw from this exact edit target. Redraw all visible surfaces with extremely crisp hand-painted small material details: individually defined dark basalt stones, fine cracks, sharp mortar joints, tiny metallic seams and scratches, violet crystal facets. Keep the original painterly game style and exact cyan/violet/orange palette, overall illumination, perspective and composition. This is a registered map crop: every plaza outline, stair tread and landing, cliff silhouette, riverbank, bridge deck, waterfall and liquid channel must stay at the exact same relative pixel coordinates. No reframing, zooming, shifting, cropping, perspective change, new structures or objects, DOF or blur. Preserve existing distant scenery, clouds, fog, crystals outside walkable pavement, liquid and waterfall shapes as fully painted bases. Do not turn liquid or fog transparent. No characters, UI, text, watermark or border. Return a high-resolution image at exactly twice the input pixel dimensions, no layout changes. Input image 1 is the edit target r1-c5 q11. Preserve all scenery and geometry; increase genuine painted microdetail, not simple sharpening.",
+      "inputImage": "/tmp/z4-hd-full/r1-c5-q11-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-ffbfbe77-6368-46c8-9f88-6e1e087891fd.png",
+      "sourcePNGSHA256": "f097a7bf17f3073e278525d6fd5ac02f739132e21319f14b341515463782b86b",
+      "nativeFile": "r1-c5/q11-native.webp",
+      "nativeSHA256": "8aad9968c9a52ade9118a5c2e1d115cc0ac138181658a4b1f39b93861a30324a",
+      "nativeSize": [
+        857,
+        1836
+      ]
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q12",
+      "prompt": "Edit this exact image in place. Output a nearly square canvas 1024 by 1248 pixels preserving the complete input framing and every feature's normalized xy position. Do not extend the scene. No extra terrain below. Use case: precise-object-edit. Asset type: Cyberhell isometric game terrain, HD redraw from this exact edit target. Redraw all visible surfaces with extremely crisp hand-painted small material details: individually defined dark basalt stones, fine cracks, sharp mortar joints, tiny metallic seams and scratches, violet crystal facets. Keep the original painterly game style and exact cyan/violet/orange palette, overall illumination, perspective and composition. This is a registered map crop: every plaza outline, stair tread and landing, cliff silhouette, riverbank, bridge deck, waterfall and liquid channel must stay at the exact same relative pixel coordinates. No reframing, zooming, shifting, cropping, perspective change, new structures or objects, DOF or blur. Preserve existing distant scenery, clouds, fog, crystals outside walkable pavement, liquid and waterfall shapes as fully painted bases. Do not turn liquid or fog transparent. No characters, UI, text, watermark or border. Return a high-resolution image at exactly twice the input pixel dimensions, no layout changes. Target r1-c5 q12: retain the distant violet cyber city, cyan waterfall and violet crystals exactly where they are. Crisp fine basalt masonry texture and metal engraving. The output must depict only the input crop, with the bottom edge cutting exactly the same scenery.",
+      "inputImage": "/tmp/z4-hd-full/r1-c5-q12-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-1e18ef0d-e928-4b57-b0c9-20058e22a6ee.png",
+      "sourcePNGSHA256": "bb0449ac99a52c7326a8b87ddc680a4d9a6b39cfa0c3f83f6e4d0a1d062dedb7",
+      "nativeFile": "r1-c5/q12-native.webp",
+      "nativeSHA256": "6beb557cdf02be69c42143ed520688781377dc5d1e85970c607aa8186ab09bf7",
+      "nativeSize": [
+        1136,
+        1385
+      ]
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q21",
+      "prompt": "Edit target r1-c5 q21. Canvas 1088x1280, preserve input aspect ratio and exact framing; bottom edge ends at the same pavement, no added scene. Use case: precise-object-edit. Asset type: Cyberhell isometric game terrain, HD redraw from this exact edit target. Redraw all visible surfaces with extremely crisp hand-painted small material details: individually defined dark basalt stones, fine cracks, sharp mortar joints, tiny metallic seams and scratches, violet crystal facets. Keep the original painterly game style and exact cyan/violet/orange palette, overall illumination, perspective and composition. This is a registered map crop: every plaza outline, stair tread and landing, cliff silhouette, riverbank, bridge deck, waterfall and liquid channel must stay at the exact same relative pixel coordinates. No reframing, zooming, shifting, cropping, perspective change, new structures or objects, DOF or blur. Preserve existing distant scenery, clouds, fog, crystals outside walkable pavement, liquid and waterfall shapes as fully painted bases. Do not turn liquid or fog transparent. No characters, UI, text, watermark or border. Return a high-resolution image at exactly twice the input pixel dimensions, no layout changes. Preserve upper oval court, cliff border and staircase on the right precisely. No movable objects on the empty floor; keep it empty.",
+      "inputImage": "/tmp/z4-hd-full/r1-c5-q21-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-e9ad348d-c81d-411c-9b51-39dc7692711d.png",
+      "sourcePNGSHA256": "4f85abc414d3a53c569ff937273a83b28533d4cd06d6ec1bb0d37d434a18e04c",
+      "nativeFile": "r1-c5/q21-native.webp",
+      "nativeSHA256": "fbb503e1b802373e99c5779cd588ff56d9d259fe11d721be4e27d2f644951e81",
+      "nativeSize": [
+        813,
+        1935
+      ]
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q22",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target r1-c5 q22, a 473x640 map crop. Render the EXACT SAME CROP, same bounds, same perspective and scene, at 946x1280 resolution (portrait 3:4). No outpainting. Redraw only the fine surface texture with sharp basalt masonry, metal scratches, crystal facets. Keep cyan/violet cyberhell painterly style, lighting and colors identical. Preserve every stair, plaza boundary, cliff, bridge deck and cyan waterfall edge pixel-for-pixel in normalized coordinates. Keep liquids and mist as painted bases. No added objects, no extra pavement below, no duplication, no characters, text, UI, borders, DOF. End the image at the exact same bottom cut through the flowing cyan channel.",
+      "inputImage": "/tmp/z4-hd-full/r1-c5-q22-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-33f31ccc-6af7-46f1-a876-ed5cd2fb8c94.png",
+      "sourcePNGSHA256": "8b62dadc7e1a8861ec34d8d7ae3773c83e47a0c0275f474e7ae54202eeabd72b",
+      "nativeFile": "r1-c5/q22-native.webp",
+      "nativeSHA256": "b7e65a56129b97b6b578082118b33dc0f464c5458d65e6fd204ffe884d25ea75",
+      "nativeSize": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q11",
+      "prompt": "Use case: precise-object-edit. Edit target: input image r2-c1 q11, an isometric Cyberhell game terrain crop. Redraw the exact crop at 1254x1394 pixels for q11/q21 or 1254x1254 for q12/q22, matching the input aspect ratio. NO outpainting, extension or duplicate scene. Preserve normalized positions of every feature, framing, perspective, stair tread, cliff edge, plaza outline, engraved floor emblem, riverbank and lava channel. Enhance fine painted details: sharp individual basalt stones and mortar, fine cracks, brushed metal seams and scratches, faceted violet crystals. Same painterly style, cyan/violet/orange palette and overall light. Keep lava, fog and distant terrain as painted base layers with identical shapes. Floor stays completely unobstructed. Preserve decorative cliff pillars and crystals outside pavement. No new structures, props, text, characters, UI, watermark, DOF or blur.",
+      "inputImage": "/tmp/z4-hd-full/r2-c1-q11-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-56562a97-8d23-4307-9f93-94622eb64afd.png",
+      "sourcePNGSHA256": "d38a433dc3014ec55dd55130431cdee9745379cab7e0df035b210c210a35a7f7",
+      "nativeFile": "r2-c1/q11-native.webp",
+      "nativeSHA256": "26449d84b3d6878845d50766deda95b6701130c92d1f2f4566c4a50936f9f5c7",
+      "nativeSize": [
+        1075,
+        1463
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q12",
+      "prompt": "Use case: precise-object-edit. Edit target: input image r2-c1 q12, an isometric Cyberhell game terrain crop. Redraw the exact crop at 1254x1394 pixels for q11/q21 or 1254x1254 for q12/q22, matching the input aspect ratio. NO outpainting, extension or duplicate scene. Preserve normalized positions of every feature, framing, perspective, stair tread, cliff edge, plaza outline, engraved floor emblem, riverbank and lava channel. Enhance fine painted details: sharp individual basalt stones and mortar, fine cracks, brushed metal seams and scratches, faceted violet crystals. Same painterly style, cyan/violet/orange palette and overall light. Keep lava, fog and distant terrain as painted base layers with identical shapes. Floor stays completely unobstructed. Preserve decorative cliff pillars and crystals outside pavement. No new structures, props, text, characters, UI, watermark, DOF or blur.",
+      "inputImage": "/tmp/z4-hd-full/r2-c1-q12-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-48bccba7-9c89-4e6d-bfdb-23b14e2a0d05.png",
+      "sourcePNGSHA256": "36ac5facac6fa453dc4ca8a1081b75a654e9307ecff21baad80d19bc9875389d",
+      "nativeFile": "r2-c1/q12-native.webp",
+      "nativeSHA256": "371348aa7e921ca9c8aed9bfc38cebbf35801ac444438820cca7df6229a19ccb",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q21",
+      "prompt": "Use case: precise-object-edit. Edit target: input image r2-c1 q21, an isometric Cyberhell game terrain crop. Redraw the exact crop at 1254x1394 pixels for q11/q21 or 1254x1254 for q12/q22, matching the input aspect ratio. NO outpainting, extension or duplicate scene. Preserve normalized positions of every feature, framing, perspective, stair tread, cliff edge, plaza outline, engraved floor emblem, riverbank and lava channel. Enhance fine painted details: sharp individual basalt stones and mortar, fine cracks, brushed metal seams and scratches, faceted violet crystals. Same painterly style, cyan/violet/orange palette and overall light. Keep lava, fog and distant terrain as painted base layers with identical shapes. Floor stays completely unobstructed. Preserve decorative cliff pillars and crystals outside pavement. No new structures, props, text, characters, UI, watermark, DOF or blur.",
+      "inputImage": "/tmp/z4-hd-full/r2-c1-q21-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-00d63057-f557-4b4a-9cb0-7d3469f2702f.png",
+      "sourcePNGSHA256": "e3460833b9146d3708e5b6f6bc6c1816e453ab82b1e51676be9c7a222bb1af2a",
+      "nativeFile": "r2-c1/q21-native.webp",
+      "nativeSHA256": "08c865faeb5cf57deeee98eef73f5cf76a72eff03df91382ab7c29eb17047816",
+      "nativeSize": [
+        1075,
+        1463
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q22",
+      "prompt": "Use case: precise-object-edit. Edit target: input image r2-c1 q22, an isometric Cyberhell game terrain crop. Redraw the exact crop at 1254x1394 pixels for q11/q21 or 1254x1254 for q12/q22, matching the input aspect ratio. NO outpainting, extension or duplicate scene. Preserve normalized positions of every feature, framing, perspective, stair tread, cliff edge, plaza outline, engraved floor emblem, riverbank and lava channel. Enhance fine painted details: sharp individual basalt stones and mortar, fine cracks, brushed metal seams and scratches, faceted violet crystals. Same painterly style, cyan/violet/orange palette and overall light. Keep lava, fog and distant terrain as painted base layers with identical shapes. Floor stays completely unobstructed. Preserve decorative cliff pillars and crystals outside pavement. No new structures, props, text, characters, UI, watermark, DOF or blur.",
+      "inputImage": "/tmp/z4-hd-full/r2-c1-q22-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-5d17bcc2-945f-4516-9fd4-5887230690a0.png",
+      "sourcePNGSHA256": "a91f50bd311563c3b72eeff37cc77bb56a561e0f763e9b7b588f1b1ac2c8f289",
+      "nativeFile": "r2-c1/q22-native.webp",
+      "nativeSHA256": "20c754c513faf8eb9feb1d58e6d9281e701343bb7177b727482eafa2d223574f",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q11",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT SQUARE map crop r2-c2 q11, input image 1. Output a SQUARE 1254x1254 image. Preserve the exact input framing, scene layout and normalized xy coordinates of ALL features; do NOT outpaint. Only redraw fine material details with much sharper individually defined basalt stones, hairline cracks, metal engravings, scratches and faceted purple crystals. Same isometric painterly cyberhell game art, dark basalt, gold metal, violet crystals, orange lava, original overall color and illumination. Bridge deck, rail posts, each stair tread, landing, cliff outline, plaza outline, lava bank and all lava-fall shapes MUST stay fixed. Keep liquids, mist and inaccessible scenery fully painted as bases. Keep walkable pavement empty. No added objects, structures, text, characters, UI, borders, duplication, blur or DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c2-q11-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-c5cd4a84-954a-4845-b348-8e10e38f262c.png",
+      "sourcePNGSHA256": "3298b3db7c773371d4721174d8c14889e7884075f130ab02e551ac3c93d72e78",
+      "nativeFile": "r2-c2/q11-native.webp",
+      "nativeSHA256": "1be5949d47c15e505341f1cfb5d2f4fbe92fd25cbc90541c1c2a163a910e2945",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q12",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT SQUARE map crop r2-c2 q12, input image 1. Output a SQUARE 1254x1254 image. Preserve the exact input framing, scene layout and normalized xy coordinates of ALL features; do NOT outpaint. Only redraw fine material details with much sharper individually defined basalt stones, hairline cracks, metal engravings, scratches and faceted purple crystals. Same isometric painterly cyberhell game art, dark basalt, gold metal, violet crystals, orange lava, original overall color and illumination. Bridge deck, rail posts, each stair tread, landing, cliff outline, plaza outline, lava bank and all lava-fall shapes MUST stay fixed. Keep liquids, mist and inaccessible scenery fully painted as bases. Keep walkable pavement empty. No added objects, structures, text, characters, UI, borders, duplication, blur or DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c2-q12-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-66973547-76f2-4225-9ae3-6b8b3a5e6052.png",
+      "sourcePNGSHA256": "66c3a4ed8bfdf4df05bd5d2b46f1d2ba66b0e1d7b815a7f41e5ea10e7835dcb6",
+      "nativeFile": "r2-c2/q12-native.webp",
+      "nativeSHA256": "ce1a4f38b6d35080541ac1449637bd3a0667ed86820d89a2139bef1b262cc82e",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q21",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT SQUARE map crop r2-c2 q21, input image 1. Output a SQUARE 1254x1254 image. Preserve the exact input framing, scene layout and normalized xy coordinates of ALL features; do NOT outpaint. Only redraw fine material details with much sharper individually defined basalt stones, hairline cracks, metal engravings, scratches and faceted purple crystals. Same isometric painterly cyberhell game art, dark basalt, gold metal, violet crystals, orange lava, original overall color and illumination. Bridge deck, rail posts, each stair tread, landing, cliff outline, plaza outline, lava bank and all lava-fall shapes MUST stay fixed. Keep liquids, mist and inaccessible scenery fully painted as bases. Keep walkable pavement empty. No added objects, structures, text, characters, UI, borders, duplication, blur or DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c2-q21-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-d279044f-4cc0-4835-b881-bf5c7219694a.png",
+      "sourcePNGSHA256": "bfcc827cb4f3cbb7c45c9eea03a5bed1097746bfbc3bd6ebf72c06b44cf3692e",
+      "nativeFile": "r2-c2/q21-native.webp",
+      "nativeSHA256": "01ae2ac92bd8c76b0c75e7c8ac87bd9190d4a6b366c7371aa64f261ad9a41a1d",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q22",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT SQUARE map crop r2-c2 q22, input image 1. Output a SQUARE 1254x1254 image. Preserve the exact input framing, scene layout and normalized xy coordinates of ALL features; do NOT outpaint. Only redraw fine material details with much sharper individually defined basalt stones, hairline cracks, metal engravings, scratches and faceted purple crystals. Same isometric painterly cyberhell game art, dark basalt, gold metal, violet crystals, orange lava, original overall color and illumination. Bridge deck, rail posts, each stair tread, landing, cliff outline, plaza outline, lava bank and all lava-fall shapes MUST stay fixed. Keep liquids, mist and inaccessible scenery fully painted as bases. Keep walkable pavement empty. No added objects, structures, text, characters, UI, borders, duplication, blur or DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c2-q22-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-83f06e29-f934-48a8-8781-cbdbd95c84b7.png",
+      "sourcePNGSHA256": "f04e4ff7b834ad8f66e049de32de744f8b7f4233ebdf3389c3aed563934c78f2",
+      "nativeFile": "r2-c2/q22-native.webp",
+      "nativeSHA256": "b1fb07361b908c6f28f6072213ebb72f2a0e7471bc4a0f6c17adcbc48bcfa4c4",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q11",
+      "prompt": "Use case: precise-object-edit. Input image 1 is the exact SQUARE edit target r2-c3 q11. Output a SQUARE 1254x1254 image depicting ONLY this same crop, no outpainting, extension or duplication. HD repaint fine material details only: sharp individual basalt stones, thin mortar, hairline cracks, engraved metal, tiny scratches, violet crystal facets. Same painterly isometric Cyberhell palette, lighting, dark gray basalt, violet crystals and cyan energy. Keep normalized xy positions, camera, framing, ALL plaza outlines and gold floor symbols, stair treads/landings, cliff boundaries and any water channels exactly fixed. The walkable floor must stay empty. Preserve every existing engraved gold circle and line on the plaza. Keep liquids and mist fully painted as base layers with the original shapes. No new objects, buildings, characters, text, UI, border, blur, DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c3-q11-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-dfbd962a-16d3-45cb-a789-e7b4ddc34d35.png",
+      "sourcePNGSHA256": "65852c99cd0c36fd0c6531b8969998b44b385764f5f843658b7d18d69db8e3e2",
+      "nativeFile": "r2-c3/q11-native.webp",
+      "nativeSHA256": "15be2239a4bfe0e0fbdb633c431991bcde08a5fe58a6b5aa585a767bee3f917e",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q12",
+      "prompt": "Use case: precise-object-edit. Input image 1 is the exact SQUARE edit target r2-c3 q12. Output a SQUARE 1254x1254 image depicting ONLY this same crop, no outpainting, extension or duplication. HD repaint fine material details only: sharp individual basalt stones, thin mortar, hairline cracks, engraved metal, tiny scratches, violet crystal facets. Same painterly isometric Cyberhell palette, lighting, dark gray basalt, violet crystals and cyan energy. Keep normalized xy positions, camera, framing, ALL plaza outlines and gold floor symbols, stair treads/landings, cliff boundaries and any water channels exactly fixed. The walkable floor must stay empty. Preserve every existing engraved gold circle and line on the plaza. Keep liquids and mist fully painted as base layers with the original shapes. No new objects, buildings, characters, text, UI, border, blur, DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c3-q12-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-13af0c5f-3cea-4beb-8a42-7b975e2968d9.png",
+      "sourcePNGSHA256": "e8b76593b72c50628cb72376ea7ae11f50cf91478be9fd0a12f3eeeb98e2177c",
+      "nativeFile": "r2-c3/q12-native.webp",
+      "nativeSHA256": "ca674145323fba501043288e985b9f3c931a633c48fbc7cae0cff5ceab644239",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q21",
+      "prompt": "Use case: precise-object-edit. Input image 1 is the exact SQUARE edit target r2-c3 q21. Output a SQUARE 1254x1254 image depicting ONLY this same crop, no outpainting, extension or duplication. HD repaint fine material details only: sharp individual basalt stones, thin mortar, hairline cracks, engraved metal, tiny scratches, violet crystal facets. Same painterly isometric Cyberhell palette, lighting, dark gray basalt, violet crystals and cyan energy. Keep normalized xy positions, camera, framing, ALL plaza outlines and gold floor symbols, stair treads/landings, cliff boundaries and any water channels exactly fixed. Remove FOUR freestanding floor obstacles completely, including their shadows, replacing them with continuous flat basalt paving and uninterrupted engraved gold lines: (1) the isolated purple-tipped short post near (52%,36%); (2) the blue-purple crystal group near (72%,29%); (3) little loose rocks near (62%,46%); (4) the purple rock/crystal cluster near (85%,46%). Percent coordinates refer to this exact input image. These obstacles are on the open floor between the upper and lower staircases. Keep all rim-mounted columns and cliff crystals. Keep liquids and mist fully painted as base layers with the original shapes. No new objects, buildings, characters, text, UI, border, blur, DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c3-q21-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-3527b553-41d4-46fe-ba98-d03f5812a7bd.png",
+      "sourcePNGSHA256": "4314e9b06a9c4022d751c84b4164173b2eabe4ad6313933c8b61f469a72469c0",
+      "nativeFile": "r2-c3/q21-native.webp",
+      "nativeSHA256": "7718f6d212b0c2126e0913877b4f24381bcab7107315c781fd6bd8ee3d7ccb43",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q22",
+      "prompt": "Use case: precise-object-edit. Input image 1 is the exact SQUARE edit target r2-c3 q22. Output a SQUARE 1254x1254 image depicting ONLY this same crop, no outpainting, extension or duplication. HD repaint fine material details only: sharp individual basalt stones, thin mortar, hairline cracks, engraved metal, tiny scratches, violet crystal facets. Same painterly isometric Cyberhell palette, lighting, dark gray basalt, violet crystals and cyan energy. Keep normalized xy positions, camera, framing, ALL plaza outlines and gold floor symbols, stair treads/landings, cliff boundaries and any water channels exactly fixed. Remove the isolated small purple crystal/boulder cluster clipped by the LEFT edge around 46% image height, filling with continuous flat paving and the gold line. Keep the tall rim columns, their violet tips, cliff crystals and all stairs unchanged. Keep liquids and mist fully painted as base layers with the original shapes. No new objects, buildings, characters, text, UI, border, blur, DOF.",
+      "inputImage": "/tmp/z4-hd-full/r2-c3-q22-input.png",
+      "transparent_background": false,
+      "sourcePNG": "/Users/agapae/.codex/generated_images/01a1d84f-0bc0-7452-91b6-658765c1e846/exec-db5e4f87-dd33-4329-a834-de0a2e77a43b.png",
+      "sourcePNGSHA256": "4ca71a41fddf72806a3981f1356fd164d70696e1732dbf240f338d2d27103886",
+      "nativeFile": "r2-c3/q22-native.webp",
+      "nativeSHA256": "8593154fc8a4a8bca6fc9a8a80a37f823814d94fa6005ff6611503a5d10a37ff",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    }
+  ]
+}

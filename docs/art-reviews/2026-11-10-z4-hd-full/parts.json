@@ -1,0 +1,266 @@
+{
+  "r1-c5": {
+    "q11": {
+      "coreRectPx1x": [
+        4096,
+        0,
+        4506,
+        512
+      ],
+      "contextRectPx1x": [
+        4032,
+        0,
+        4570,
+        576
+      ],
+      "input": "/tmp/z4-hd-full/r1-c5-q11-input.png",
+      "inputSHA256": "3727d92f8880465603fa070be7ac7607d333adaf928f324fa9c9654eb7462f56"
+    },
+    "q12": {
+      "coreRectPx1x": [
+        4506,
+        0,
+        4915,
+        512
+      ],
+      "contextRectPx1x": [
+        4442,
+        0,
+        4915,
+        576
+      ],
+      "input": "/tmp/z4-hd-full/r1-c5-q12-input.png",
+      "inputSHA256": "5db5d68d51f20d968bcf5578a821679e3b17f913445ded260316c6ac1b85de2b"
+    },
+    "q21": {
+      "coreRectPx1x": [
+        4096,
+        512,
+        4506,
+        1024
+      ],
+      "contextRectPx1x": [
+        4032,
+        448,
+        4570,
+        1088
+      ],
+      "input": "/tmp/z4-hd-full/r1-c5-q21-input.png",
+      "inputSHA256": "93630331c8d3a68641e0db82604fd0f992be8e2e41562f4169540ce3a69c514a"
+    },
+    "q22": {
+      "coreRectPx1x": [
+        4506,
+        512,
+        4915,
+        1024
+      ],
+      "contextRectPx1x": [
+        4442,
+        448,
+        4915,
+        1088
+      ],
+      "input": "/tmp/z4-hd-full/r1-c5-q22-input.png",
+      "inputSHA256": "d060fa6088f1f064d572b6fa163afe7069092ce9f4b4062977ce865b5043fbea"
+    }
+  },
+  "r2-c1": {
+    "q11": {
+      "coreRectPx1x": [
+        0,
+        1024,
+        512,
+        1536
+      ],
+      "contextRectPx1x": [
+        0,
+        960,
+        576,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q11-input.png",
+      "inputSHA256": "dd8a2ce287210a797ebe392329efa898c5cbf56f63eb1beff35e8f9880761e39"
+    },
+    "q12": {
+      "coreRectPx1x": [
+        512,
+        1024,
+        1024,
+        1536
+      ],
+      "contextRectPx1x": [
+        448,
+        960,
+        1088,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q12-input.png",
+      "inputSHA256": "edeb6e55bb85919c2d8be6884954315fe51c45ca809a5c291dc7d1ff9060a1a8"
+    },
+    "q21": {
+      "coreRectPx1x": [
+        0,
+        1536,
+        512,
+        2048
+      ],
+      "contextRectPx1x": [
+        0,
+        1472,
+        576,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q21-input.png",
+      "inputSHA256": "423fc4ea9fc9f480f56d1c03f73c21056f649532aee2ff298a81ae7d065f5507"
+    },
+    "q22": {
+      "coreRectPx1x": [
+        512,
+        1536,
+        1024,
+        2048
+      ],
+      "contextRectPx1x": [
+        448,
+        1472,
+        1088,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q22-input.png",
+      "inputSHA256": "f9b923b5c10d1d42c71196e13cc85f58d04a154e0023c06f1e47bc7595cd277e"
+    }
+  },
+  "r2-c2": {
+    "q11": {
+      "coreRectPx1x": [
+        1024,
+        1024,
+        1536,
+        1536
+      ],
+      "contextRectPx1x": [
+        960,
+        960,
+        1600,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c2-q11-input.png",
+      "inputSHA256": "7842f6dd676125ace931d980cd254d13662afcfd15f6cb5c6501ce22bc123646"
+    },
+    "q12": {
+      "coreRectPx1x": [
+        1536,
+        1024,
+        2048,
+        1536
+      ],
+      "contextRectPx1x": [
+        1472,
+        960,
+        2112,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c2-q12-input.png",
+      "inputSHA256": "212e3502af9a46928fd1815c979e4a748ca907d7ebdfdffe126e77f4acb550d5"
+    },
+    "q21": {
+      "coreRectPx1x": [
+        1024,
+        1536,
+        1536,
+        2048
+      ],
+      "contextRectPx1x": [
+        960,
+        1472,
+        1600,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c2-q21-input.png",
+      "inputSHA256": "a73f95fe6483e732350800c25d9441f2293770ce516e84e17c1b2429a537b9a7"
+    },
+    "q22": {
+      "coreRectPx1x": [
+        1536,
+        1536,
+        2048,
+        2048
+      ],
+      "contextRectPx1x": [
+        1472,
+        1472,
+        2112,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c2-q22-input.png",
+      "inputSHA256": "4292d492f75c3a778c86513520f5185ce6a920ecef6d1db2a6097c4031a17e75"
+    }
+  },
+  "r2-c3": {
+    "q11": {
+      "coreRectPx1x": [
+        2048,
+        1024,
+        2560,
+        1536
+      ],
+      "contextRectPx1x": [
+        1984,
+        960,
+        2624,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c3-q11-input.png",
+      "inputSHA256": "405771b90431c71811d4baca796a4b7d9a288937d66a6100c98efe818835ada0"
+    },
+    "q12": {
+      "coreRectPx1x": [
+        2560,
+        1024,
+        3072,
+        1536
+      ],
+      "contextRectPx1x": [
+        2496,
+        960,
+        3136,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c3-q12-input.png",
+      "inputSHA256": "c345383871be3ce9fecdc3202290185c7f3bc7532b18d78865e25a6b8b2b1ac5"
+    },
+    "q21": {
+      "coreRectPx1x": [
+        2048,
+        1536,
+        2560,
+        2048
+      ],
+      "contextRectPx1x": [
+        1984,
+        1472,
+        2624,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c3-q21-input.png",
+      "inputSHA256": "1fbd2ff1eb2dea44c63f7109c75e8712ac6747d3469e048367cd8fca6bca62cd"
+    },
+    "q22": {
+      "coreRectPx1x": [
+        2560,
+        1536,
+        3072,
+        2048
+      ],
+      "contextRectPx1x": [
+        2496,
+        1472,
+        3136,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c3-q22-input.png",
+      "inputSHA256": "fb0997476780675d98555fa96d513e4382705571de46c3b67f6b005546d16bfb"
+    }
+  }
+}

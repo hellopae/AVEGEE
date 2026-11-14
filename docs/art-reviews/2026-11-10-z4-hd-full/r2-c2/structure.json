@@ -1,0 +1,72 @@
+{
+  "laplacianBaselineAt2x": 11.154561742254316,
+  "laplacianCandidateAt2x": 3762.7887813768803,
+  "sharpnessRatio": 337.3318350216445,
+  "measurementScale": "both compared at delivered 2x with Lanczos baseline; no sharpening filter",
+  "validGeneratedCoverageFraction": 1.0,
+  "sourceEdges": 121309,
+  "nearestEdgeMaxPx1x": 18.681541442871094,
+  "nearestEdgeP95Px1x": 3.605551242828369,
+  "nearestEdgeMedianPx1x": 1.0,
+  "within4pxFraction": 0.9605552761955007,
+  "landmarks": [
+    {
+      "id": "bridge-junction",
+      "mapPx1x": [
+        1482,
+        1390
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.930167019367218,
+      "searchBoundary": false
+    },
+    {
+      "id": "west-bridge-deck",
+      "mapPx1x": [
+        1285,
+        1280
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9373221397399902,
+      "searchBoundary": false
+    },
+    {
+      "id": "south-bridge-edge",
+      "mapPx1x": [
+        1600,
+        1490
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.933704674243927,
+      "searchBoundary": false
+    },
+    {
+      "id": "lava-fall-lip",
+      "mapPx1x": [
+        1430,
+        1760
+      ],
+      "offsetPx1x": [
+        0,
+        3
+      ],
+      "distancePx1x": 3.0,
+      "correlation": 0.8533641695976257,
+      "searchBoundary": false
+    }
+  ],
+  "landmarkMaxPx1x": 3.0,
+  "limitation": "Local template translations and nearest edges are diagnostics, not proof that every semantic outline is within 4 px. Low correlation/search-boundary values need visual review."
+}

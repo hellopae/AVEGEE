@@ -1,0 +1,194 @@
+{
+  "zone": 4,
+  "set": "2/5",
+  "requestedChunks": [
+    "r1-c5",
+    "r2-c1",
+    "r2-c2",
+    "r2-c3"
+  ],
+  "imageGenCalls": 16,
+  "generator": "built-in image_gen",
+  "chunks": [
+    {
+      "chunk": "r1-c5",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          857,
+          1836
+        ],
+        "q12": [
+          1136,
+          1385
+        ],
+        "q21": [
+          813,
+          1935
+        ],
+        "q22": [
+          1122,
+          1402
+        ]
+      },
+      "structureMaxPx1x": 5.0990195135927845,
+      "sharpnessRatio": 200.91480595037888,
+      "nearestEdgeMaxPx1x": 16.6433162689209,
+      "validGeneratedCoverageFraction": 1.0,
+      "registrationStatuses": {
+        "q11": "affine-estimated",
+        "q12": "affine-estimated",
+        "q21": "affine-estimated",
+        "q22": "affine-estimated"
+      },
+      "status": "NEEDS-REVISION",
+      "pending": [
+        "stair-top 5.099 px > 4 px",
+        "visible sky join q11/q12; see seam-details.jpg"
+      ],
+      "siftInlierResidualMaxPx1x": 2.908047914505005,
+      "nearestEdgeP95Px1x": 4.0,
+      "removedIds": []
+    },
+    {
+      "chunk": "r2-c1",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1075,
+          1463
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1075,
+          1463
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "structureMaxPx1x": 2.0,
+      "sharpnessRatio": 246.46164714599203,
+      "nearestEdgeMaxPx1x": 20.099750518798828,
+      "validGeneratedCoverageFraction": 0.9999303817749023,
+      "registrationStatuses": {
+        "q11": "affine-estimated",
+        "q12": "affine-estimated",
+        "q21": "affine-estimated",
+        "q22": "affine-estimated"
+      },
+      "status": "candidate-awaiting-Claude-review",
+      "pending": [
+        "semantic geometry and seam quality decision by Claude",
+        "292 output px border-reflected, not inside native affine valid domain"
+      ],
+      "siftInlierResidualMaxPx1x": 3.312272787094116,
+      "nearestEdgeP95Px1x": 4.123105525970459,
+      "removedIds": []
+    },
+    {
+      "chunk": "r2-c2",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "structureMaxPx1x": 3.0,
+      "sharpnessRatio": 337.3318350216445,
+      "nearestEdgeMaxPx1x": 18.681541442871094,
+      "validGeneratedCoverageFraction": 1.0,
+      "registrationStatuses": {
+        "q11": "affine-estimated",
+        "q12": "affine-estimated",
+        "q21": "affine-estimated",
+        "q22": "affine-estimated"
+      },
+      "status": "candidate-awaiting-Claude-review",
+      "pending": [
+        "semantic geometry and seam quality decision by Claude"
+      ],
+      "siftInlierResidualMaxPx1x": 3.151872158050537,
+      "nearestEdgeP95Px1x": 3.605551242828369,
+      "removedIds": []
+    },
+    {
+      "chunk": "r2-c3",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "structureMaxPx1x": 1.4142135623730951,
+      "sharpnessRatio": 309.3193550371353,
+      "nearestEdgeMaxPx1x": 16.76305389404297,
+      "validGeneratedCoverageFraction": 1.0,
+      "registrationStatuses": {
+        "q11": "affine-estimated",
+        "q12": "affine-estimated",
+        "q21": "affine-estimated",
+        "q22": "affine-estimated"
+      },
+      "status": "candidate-awaiting-Claude-review",
+      "pending": [
+        "semantic geometry and seam quality decision by Claude"
+      ],
+      "siftInlierResidualMaxPx1x": 2.9436848163604736,
+      "nearestEdgeP95Px1x": 4.123105525970459,
+      "removedIds": [
+        "z4-floor-post-01",
+        "z4-floor-crystal-02",
+        "z4-floor-rubble-03",
+        "z4-floor-crystal-04"
+      ]
+    }
+  ],
+  "assemblyPending": "Cross-chunk seams intentionally deferred to ASSEMBLE; quality/re-registration may be needed.",
+  "qualityStatus": "NOT APPROVED: r1-c5 landmark exceeds 4 px and sky join is visible; all quality decisions reserved for Claude",
+  "generationComplete": true,
+  "allNativeAndRegistrationPresent": true,
+  "pendingGenerationParts": [],
+  "remainingWork": [
+    "r1-c5: review/re-register q21 around stair-top [4537,782], measured offset [-1,-5] px at 1x; no quality rerun performed",
+    "r1-c5: match sky color/shape across q11-q12 internal join; visible discontinuity near top middle",
+    "r2-c1: review 292 output pixels outside affine valid domain (border-reflected generated samples)",
+    "Claude visual quality decision on the 4 candidates",
+    "Cross-chunk joins deferred to ASSEMBLE"
+  ],
+  "reviewEvidence": [
+    "seam-details.jpg",
+    "removed-compare.jpg",
+    "objects-walkmask.jpg"
+  ]
+}

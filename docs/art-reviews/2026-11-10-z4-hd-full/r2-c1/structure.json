@@ -1,0 +1,72 @@
+{
+  "laplacianBaselineAt2x": 11.02639965985776,
+  "laplacianCandidateAt2x": 2717.5846222585496,
+  "sharpnessRatio": 246.46164714599203,
+  "measurementScale": "both compared at delivered 2x with Lanczos baseline; no sharpening filter",
+  "validGeneratedCoverageFraction": 0.9999303817749023,
+  "sourceEdges": 114038,
+  "nearestEdgeMaxPx1x": 20.099750518798828,
+  "nearestEdgeP95Px1x": 4.123105525970459,
+  "nearestEdgeMedianPx1x": 1.0,
+  "within4pxFraction": 0.9475788772163665,
+  "landmarks": [
+    {
+      "id": "upper-stair-top",
+      "mapPx1x": [
+        655,
+        1440
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9799195528030396,
+      "searchBoundary": false
+    },
+    {
+      "id": "upper-stair-foot",
+      "mapPx1x": [
+        684,
+        1554
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.8179314136505127,
+      "searchBoundary": false
+    },
+    {
+      "id": "lower-stair-top",
+      "mapPx1x": [
+        795,
+        1600
+      ],
+      "offsetPx1x": [
+        -2,
+        0
+      ],
+      "distancePx1x": 2.0,
+      "correlation": 0.9681501984596252,
+      "searchBoundary": false
+    },
+    {
+      "id": "lava-bank",
+      "mapPx1x": [
+        620,
+        1810
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.7910128235816956,
+      "searchBoundary": false
+    }
+  ],
+  "landmarkMaxPx1x": 2.0,
+  "limitation": "Local template translations and nearest edges are diagnostics, not proof that every semantic outline is within 4 px. Low correlation/search-boundary values need visual review."
+}

@@ -1,0 +1,96 @@
+{
+  "zone": 4,
+  "scope": [
+    "r1-c5",
+    "r2-c1",
+    "r2-c2",
+    "r2-c3"
+  ],
+  "coordinateSpace": "global master v3 1x pixels",
+  "evidence": [
+    "src/town-owner-walkmask-cyberhell.js",
+    "output/coordination/2026-10-30-z4-town-a/owner-walkmask.png",
+    "src/town-cyberhell-layout.js",
+    "src/town-layout.js"
+  ],
+  "method": "Visual master inspection with owner floor mask overlay; props:[] / houses:[], strictFloor:true; no inherited Zone 1 object IDs",
+  "objects": [
+    {
+      "id": "z4-floor-post-01",
+      "chunk": "r2-c3",
+      "rectPx1x": [
+        2300,
+        1640,
+        2349,
+        1755
+      ],
+      "description": "freestanding violet-tipped post on the central lower pavement",
+      "action": "remove-and-repaint-floor",
+      "walkmaskOverlapFraction": 0.3487133984028394,
+      "reason": "Visible freestanding obstacle over owner walkable floor; CYBERHELL_LAYOUT has no prop collider at these locations."
+    },
+    {
+      "id": "z4-floor-crystal-02",
+      "chunk": "r2-c3",
+      "rectPx1x": [
+        2395,
+        1600,
+        2488,
+        1717
+      ],
+      "description": "blue/violet crystal group crossing the gold pavement line",
+      "action": "remove-and-repaint-floor",
+      "walkmaskOverlapFraction": 0.9405385534417793,
+      "reason": "Visible freestanding obstacle over owner walkable floor; CYBERHELL_LAYOUT has no prop collider at these locations."
+    },
+    {
+      "id": "z4-floor-rubble-03",
+      "chunk": "r2-c3",
+      "rectPx1x": [
+        2340,
+        1730,
+        2420,
+        1797
+      ],
+      "description": "small rubble on the left gold pavement line",
+      "action": "remove-and-repaint-floor",
+      "walkmaskOverlapFraction": 0.9733208955223881,
+      "reason": "Visible freestanding obstacle over owner walkable floor; CYBERHELL_LAYOUT has no prop collider at these locations."
+    },
+    {
+      "id": "z4-floor-crystal-04",
+      "chunk": "r2-c3",
+      "rectPx1x": [
+        2494,
+        1734,
+        2568,
+        1800
+      ],
+      "description": "isolated purple crystal cluster on the right gold pavement line",
+      "action": "remove-and-repaint-floor",
+      "walkmaskOverlapFraction": 0.5022522522522522,
+      "reason": "Visible freestanding obstacle over owner walkable floor; CYBERHELL_LAYOUT has no prop collider at these locations."
+    },
+    {
+      "id": "z4-cliff-decor",
+      "chunks": [
+        "r1-c5",
+        "r2-c1",
+        "r2-c2",
+        "r2-c3"
+      ],
+      "action": "keep-baked",
+      "description": "Crystals, rocks and pillars rooted outside walkable pavement at cliff boundaries; bridge edge rails kept."
+    },
+    {
+      "id": "z4-fluid-cloud-base",
+      "action": "keep-baked",
+      "description": "All orange lava, cyan water/waterfalls, violet mist and distant clouds retain original silhouettes as painted base."
+    },
+    {
+      "id": "z4-reserved-floor-holes",
+      "action": "keep-baked",
+      "description": "Bare basalt inside mask holes is reserved building floor, not a prop to remove. Preserve floor and emblem."
+    }
+  ]
+}

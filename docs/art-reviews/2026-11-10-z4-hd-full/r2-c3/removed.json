@@ -1,0 +1,18 @@
+{
+  "chunk": "r2-c3",
+  "requestedIds": [
+    "z4-floor-post-01",
+    "z4-floor-crystal-02",
+    "z4-floor-rubble-03",
+    "z4-floor-crystal-04"
+  ],
+  "removedIds": [
+    "z4-floor-post-01",
+    "z4-floor-crystal-02",
+    "z4-floor-rubble-03",
+    "z4-floor-crystal-04"
+  ],
+  "status": "visually-observed-removed-in-native-and-assembled-candidate",
+  "method": "Built-in ImageGen object removal; inspected native q21/q22, final chunk and side-by-side crop. No collider or walkmask changes.",
+  "evidence": "../removed-compare.jpg"
+}

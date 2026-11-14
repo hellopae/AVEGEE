@@ -1,0 +1,171 @@
+{
+  "scope": "ONLY completeness, decode, dimensions, encoding/source integrity and <=80 MB; no quality assertions",
+  "files": [
+    {
+      "file": "r1-c5/q11-native.webp",
+      "size": [
+        857,
+        1836
+      ],
+      "opens": true
+    },
+    {
+      "file": "r1-c5/q12-native.webp",
+      "size": [
+        1136,
+        1385
+      ],
+      "opens": true
+    },
+    {
+      "file": "r1-c5/q21-native.webp",
+      "size": [
+        813,
+        1935
+      ],
+      "opens": true
+    },
+    {
+      "file": "r1-c5/q22-native.webp",
+      "size": [
+        1122,
+        1402
+      ],
+      "opens": true
+    },
+    {
+      "file": "r1-c5/r1-c5-2x.webp",
+      "size": [
+        1638,
+        2048
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c1/q11-native.webp",
+      "size": [
+        1075,
+        1463
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c1/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c1/q21-native.webp",
+      "size": [
+        1075,
+        1463
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c1/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c1/r2-c1-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c2/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c2/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c2/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c2/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c2/r2-c2-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c3/q11-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c3/q12-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c3/q21-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c3/q22-native.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "opens": true
+    },
+    {
+      "file": "r2-c3/r2-c3-2x.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "opens": true
+    }
+  ],
+  "decodedImages": 31,
+  "losslessWebPImages": 20,
+  "sourceChunkHashesUnchanged": 20,
+  "qualityChecksRun": false,
+  "totalBytes": 79264273,
+  "limitBytes": 80000000
+}
