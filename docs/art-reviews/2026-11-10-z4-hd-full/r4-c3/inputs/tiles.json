@@ -1,0 +1,58 @@
+[
+  {
+    "id": "q11",
+    "coreChunkPx1x": [
+      0,
+      0,
+      512,
+      205
+    ],
+    "coreMasterPx1x": [
+      2048,
+      3072,
+      512,
+      205
+    ],
+    "contextMasterPx1x": [
+      1984,
+      3008,
+      640,
+      269
+    ],
+    "contextChunkPx1x": [
+      -64,
+      -64,
+      640,
+      269
+    ],
+    "removalTargets": []
+  },
+  {
+    "id": "q12",
+    "coreChunkPx1x": [
+      512,
+      0,
+      512,
+      205
+    ],
+    "coreMasterPx1x": [
+      2560,
+      3072,
+      512,
+      205
+    ],
+    "contextMasterPx1x": [
+      2496,
+      3008,
+      640,
+      269
+    ],
+    "contextChunkPx1x": [
+      448,
+      -64,
+      640,
+      269
+    ],
+    "removalTargets": []
+  }
+]

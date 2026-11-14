@@ -1,0 +1,293 @@
+{
+  "checks": "Required files, image decode, expected image dimensions, decimal 80 MB budget",
+  "requiredFilesChecked": 71,
+  "missingFiles": [],
+  "decodedImages": 40,
+  "expectedDimensionsChecked": 24,
+  "bytesExcludingThisReport": 33691264,
+  "budgetBytes": 80000000,
+  "qualityThresholdsChecked": false,
+  "qaPassedClaimed": false,
+  "images": [
+    {
+      "file": "r4-c2/inputs/master-v3.webp",
+      "size": [
+        1024,
+        205
+      ]
+    },
+    {
+      "file": "r4-c2/inputs/q11-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c2/inputs/q12-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c2/inputs/walkmask-review.jpg",
+      "size": [
+        2048,
+        538
+      ]
+    },
+    {
+      "file": "r4-c2/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c2/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c2/r4-c2-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c2/r4-c2-compare.jpg",
+      "size": [
+        4504,
+        512
+      ]
+    },
+    {
+      "file": "r4-c2/seam-check.jpg",
+      "size": [
+        2048,
+        970
+      ]
+    },
+    {
+      "file": "r4-c2/structure-check.jpg",
+      "size": [
+        2072,
+        275
+      ]
+    },
+    {
+      "file": "r4-c3/inputs/master-v3.webp",
+      "size": [
+        1024,
+        205
+      ]
+    },
+    {
+      "file": "r4-c3/inputs/q11-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c3/inputs/q12-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c3/inputs/walkmask-review.jpg",
+      "size": [
+        2048,
+        538
+      ]
+    },
+    {
+      "file": "r4-c3/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c3/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c3/r4-c3-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c3/r4-c3-compare.jpg",
+      "size": [
+        4504,
+        512
+      ]
+    },
+    {
+      "file": "r4-c3/seam-check.jpg",
+      "size": [
+        2048,
+        970
+      ]
+    },
+    {
+      "file": "r4-c3/structure-check.jpg",
+      "size": [
+        2072,
+        275
+      ]
+    },
+    {
+      "file": "r4-c4/inputs/master-v3.webp",
+      "size": [
+        1024,
+        205
+      ]
+    },
+    {
+      "file": "r4-c4/inputs/q11-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c4/inputs/q12-v3.webp",
+      "size": [
+        640,
+        269
+      ]
+    },
+    {
+      "file": "r4-c4/inputs/walkmask-review.jpg",
+      "size": [
+        2048,
+        538
+      ]
+    },
+    {
+      "file": "r4-c4/q11-native.webp",
+      "size": [
+        1935,
+        812
+      ]
+    },
+    {
+      "file": "r4-c4/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c4/r4-c4-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c4/r4-c4-compare.jpg",
+      "size": [
+        4504,
+        512
+      ]
+    },
+    {
+      "file": "r4-c4/seam-check.jpg",
+      "size": [
+        2048,
+        970
+      ]
+    },
+    {
+      "file": "r4-c4/structure-check.jpg",
+      "size": [
+        2072,
+        275
+      ]
+    },
+    {
+      "file": "r4-c5/inputs/master-v3.webp",
+      "size": [
+        819,
+        205
+      ]
+    },
+    {
+      "file": "r4-c5/inputs/q11-v3.webp",
+      "size": [
+        538,
+        269
+      ]
+    },
+    {
+      "file": "r4-c5/inputs/q12-v3.webp",
+      "size": [
+        473,
+        269
+      ]
+    },
+    {
+      "file": "r4-c5/inputs/walkmask-review.jpg",
+      "size": [
+        1638,
+        538
+      ]
+    },
+    {
+      "file": "r4-c5/q11-native.webp",
+      "size": [
+        1774,
+        887
+      ]
+    },
+    {
+      "file": "r4-c5/q12-native.webp",
+      "size": [
+        1663,
+        946
+      ]
+    },
+    {
+      "file": "r4-c5/r4-c5-2x.webp",
+      "size": [
+        1638,
+        410
+      ]
+    },
+    {
+      "file": "r4-c5/r4-c5-compare.jpg",
+      "size": [
+        3608,
+        512
+      ]
+    },
+    {
+      "file": "r4-c5/seam-check.jpg",
+      "size": [
+        1638,
+        970
+      ]
+    },
+    {
+      "file": "r4-c5/structure-check.jpg",
+      "size": [
+        1662,
+        275
+      ]
+    }
+  ]
+}

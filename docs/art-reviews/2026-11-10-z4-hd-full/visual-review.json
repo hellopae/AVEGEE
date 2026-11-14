@@ -1,0 +1,20 @@
+{
+  "method": "Offline view_image inspection of all source crops, native generation outputs, four walkmask overlays, four compare sheets, four 2x seam sheets and r4-c2 structure sheet.",
+  "reviewedChunks": ["r4-c2", "r4-c3", "r4-c4", "r4-c5"],
+  "observations": [
+    "Purple-grey paving, gold trim, violet crystals and red cables remain identifiable in the original composition.",
+    "New material detail is visible on stone bevels, cracks, crystal facets and metal surfaces.",
+    "Central bridge deck in r4-c3 remains clear, with its architectural side edges retained.",
+    "No obvious rectangular split between the two image parts was observed in the four seam sheets. Fine paving and rock textures differ between independently drawn parts near the adaptive seams.",
+    "r4-c2 has two reliable local correspondence probes above 4px, at source chunk coordinates [240,100] and [720,172]."
+  ],
+  "pending": [
+    "Claude decision on r4-c2 measured drift of 6.403px and 4.472px",
+    "Claude assessment of exact semantic contours and seam appearance at full output scale",
+    "Neighbor-chunk joining during ASSEMBLE",
+    "In-game visual assessment"
+  ],
+  "inGameTestRun": false,
+  "wholeSemanticStructureVerified": false,
+  "qaPassedClaimed": false
+}

@@ -1,0 +1,134 @@
+{
+  "zone": 4,
+  "sourceSet": "v3",
+  "chunks": [
+    {
+      "chunk": "r4-c2",
+      "completeParts": [
+        "q11",
+        "q12"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1935,
+          813
+        ],
+        "q12": [
+          1935,
+          813
+        ]
+      },
+      "outputSize": [
+        2048,
+        410
+      ],
+      "structureMaxReliablePx1x": 6.4031242374328485,
+      "structureReliableProbes": 33,
+      "structureTotalProbes": 34,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 291.3260882109993,
+      "structureProbesOver4px": [
+        "grid-240-100",
+        "grid-720-172"
+      ]
+    },
+    {
+      "chunk": "r4-c3",
+      "completeParts": [
+        "q11",
+        "q12"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1935,
+          813
+        ],
+        "q12": [
+          1935,
+          813
+        ]
+      },
+      "outputSize": [
+        2048,
+        410
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 35,
+      "structureTotalProbes": 35,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 368.0312679028914,
+      "structureProbesOver4px": []
+    },
+    {
+      "chunk": "r4-c4",
+      "completeParts": [
+        "q11",
+        "q12"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1935,
+          812
+        ],
+        "q12": [
+          1935,
+          813
+        ]
+      },
+      "outputSize": [
+        2048,
+        410
+      ],
+      "structureMaxReliablePx1x": 1.4142135623730951,
+      "structureReliableProbes": 34,
+      "structureTotalProbes": 34,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 307.4461793525577,
+      "structureProbesOver4px": []
+    },
+    {
+      "chunk": "r4-c5",
+      "completeParts": [
+        "q11",
+        "q12"
+      ],
+      "pendingParts": [],
+      "nativeSizes": {
+        "q11": [
+          1774,
+          887
+        ],
+        "q12": [
+          1663,
+          946
+        ]
+      },
+      "outputSize": [
+        1638,
+        410
+      ],
+      "structureMaxReliablePx1x": 3.1622776601683795,
+      "structureReliableProbes": 27,
+      "structureTotalProbes": 28,
+      "wholeStructureWithin4pxVerified": false,
+      "sharpnessRatioLaplacian": 314.22608321176,
+      "structureProbesOver4px": []
+    }
+  ],
+  "imageGenCalls": 8,
+  "generationLimit": 16,
+  "tool": "built-in image_gen.imagegen",
+  "pendingParts": [],
+  "qualityDecision": "Pending Claude review of measurements and images",
+  "neighborChunkSeamsApplied": false,
+  "qaPassedClaimed": false,
+  "inGameTestRun": false,
+  "pendingQualityReview": [
+    "r4-c2 structure probes above 4px",
+    "Whole semantic contours and seam appearance for all four chunks"
+  ],
+  "visualReviewFile": "visual-review.json"
+}

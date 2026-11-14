@@ -1,0 +1,149 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "generations": [
+    {
+      "id": "r4-c2/q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c2 q11. Input 640x269. Keep the cable-bearing post on the left and jagged rock/crystal foreground. Preserve every cobblestone and gold diagonal line.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c2/inputs/q11-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-4f1d3ab4-2143-422c-b3c2-8caec1a15fe6.png",
+      "archivedReferenceImages": [
+        "r4-c2/inputs/q11-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "archivedNative": "r4-c2/q11-native.webp",
+      "nativeSha256": "de1affa93579cd23fad52dc909bcee70910eccb3e968b7e4b42021ee2d64c7f2"
+    },
+    {
+      "id": "r4-c2/q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c2 q12. Input 640x269. Mostly dark purple-grey cobblestone paving intersected by gold diagonals, jagged rock tips clipped along the bottom. Preserve each paver's exact shape and position, gold lines and clipping.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c2/inputs/q12-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-5da6d2e8-a4fb-41af-b8c0-b18101525e88.png",
+      "archivedReferenceImages": [
+        "r4-c2/inputs/q12-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "archivedNative": "r4-c2/q12-native.webp",
+      "nativeSha256": "dfd1720ad4cdaa2762e77eb9e4d688111c57db152381322f44b163fe3b37d04d"
+    },
+    {
+      "id": "r4-c3/q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c3 q11. Input 640x269. CRITICAL exact geometry: central bridge deck is at the right side of this crop, with vertical golden side rails and a short flight of stairs clipped at the top. Preserve stair count, every tread, deck width and BOTH straight side rails, their positions and posts exactly. Central deck stays clear. Left crystal/rock cluster is outside the deck, keep it. Keep every diagonal gold line on surrounding paving.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c3/inputs/q11-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-06ecdf03-6d6d-457a-a4c3-72a756113112.png",
+      "archivedReferenceImages": [
+        "r4-c3/inputs/q11-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "archivedNative": "r4-c3/q11-native.webp",
+      "nativeSha256": "ee556726972604fc76ffbe185543ef293ae82d3e56e513250b8d187328ddff41"
+    },
+    {
+      "id": "r4-c3/q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c3 q12. Input 640x269. CRITICAL: this is the RIGHT continuation of a bridge deck cut off at the LEFT edge. Keep the thin straight golden bridge edge at the far LEFT at exactly its original position and thickness. Keep the small post and red cable cut off at top, crystal clusters clipped lower left, distant rock tip clipped lower right. Preserve each cobblestone, paving gold line, deck boundary and the short stair fragment at top left.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c3/inputs/q12-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-10d8d67d-38b4-45ee-a1e2-b301de690a21.png",
+      "archivedReferenceImages": [
+        "r4-c3/inputs/q12-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "archivedNative": "r4-c3/q12-native.webp",
+      "nativeSha256": "4823295c020e618338511a307b334c0466a4d3fd57626705ce867b9aa3d147d0"
+    },
+    {
+      "id": "r4-c4/q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c4 q11. Input 640x269. This is unwalkable outer scenery, KEEP every rock and purple crystal cluster. Cobblestone passage runs diagonally between jagged foreground peaks and the far rock wall. Keep all path borders, rock peaks and purple crystal tips exactly in their existing position. Preserve gold paving lines. Fine surface detail only.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c4/inputs/q11-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-59a729b9-8cf1-411e-b07a-163fa2e163bc.png",
+      "archivedReferenceImages": [
+        "r4-c4/inputs/q11-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        812
+      ],
+      "archivedNative": "r4-c4/q11-native.webp",
+      "nativeSha256": "1e3a9c02106465da687102e1c457fa6062907304f2029ee51c92533320a54acd"
+    },
+    {
+      "id": "r4-c4/q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c4 q12. Input 640x269. Keep the big glowing violet crystal at upper middle-right and its surrounding dark pointed rock wall exactly in their silhouettes and position. Keep diagonal cobbled passage between foreground peaks and background rock/crystal wall, original gold edge line and every paving border. All outer rock/crystal scenery stays.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c4/inputs/q12-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-a2966b7f-b6b4-41ff-af10-29434e01ba08.png",
+      "archivedReferenceImages": [
+        "r4-c4/inputs/q12-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "archivedNative": "r4-c4/q12-native.webp",
+      "nativeSha256": "06d1836b70635f8b6b6614fc3974a9c452279b48dd4995a8bfc2a1b1ab7371ef"
+    },
+    {
+      "id": "r4-c5/q11",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c5 q11. Input 538x269 (2:1 landscape). Preserve foreground sharply pointed dark rock silhouettes, the violet crystals between them, background paving passage and narrow gold diagonals. This is map-edge outer scenery, all original rocks and crystals stay in place. Fine detail inside existing silhouettes, no new crystals or rocks.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c5/inputs/q11-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-a2359547-12de-4c73-9c26-cbaa0f536646.png",
+      "archivedReferenceImages": [
+        "r4-c5/inputs/q11-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1774,
+        887
+      ],
+      "archivedNative": "r4-c5/q11-native.webp",
+      "nativeSha256": "7916e0a43e0e56dc4c8d5ca1dec3f194ab1148271992f94a7a9e4f6ba3f7b9e9"
+    },
+    {
+      "id": "r4-c5/q12",
+      "prompt": "Use case: precise-object-edit. Asset: production hand-painted isometric cyberhell game terrain microtile. Edit this exact input crop into a highly detailed HD redraw. Return one full-bleed landscape image matching the input aspect ratio and exact framing, preferably 2048 pixels wide or more. Preserve every existing major shape and every cobblestone outline, gold paving line, cliff silhouette, crystal silhouette, stair tread, bridge deck, architectural post and railing at its exact proportional input coordinates. Keep all cut-off objects clipped identically at the four edges. Do not zoom, rotate, add margin or change perspective. Retain original dark purple-grey stone, cyan/violet glow, subdued gold trim, red luminous cables and the original overall lighting and value hierarchy. Add genuinely drawn fine material detail inside the existing shapes: sharply resolved chipped stone bevels, irregular mineral grains, tiny fissures and recessed mortar, subtle worn metallic etching, fine cracks and facets on violet crystals and dark rock faces. Preserve original light sources and ground boundaries exactly. Keep the central walkable paving fully clear. Retain existing rocks, crystals, posts and architecture outside the walkable floor. No new props, plants, characters, text, labels, buildings or decorative shapes. Preserve any liquid or mist as the same continuous base in its original location. No blur, DOF, parallax, sharpening halos or photographic noise. This crop spans only a few hundred original-map pixels, draw much finer resolved detail than a blurry upscale. Tile r4-c5 q12. Input 473x269. Last crop at bottom-right map edge. Keep original diagonal passage, gold borderline against tall dark jagged rocks, all violet crystals and their silhouettes including the large crystal clipped at right edge, rock tips clipped bottom. No extension of scene beyond these exact map borders. Fine detail inside every existing stone and rock shape.",
+      "referenced_image_paths": [
+        "/Users/agapae/agapae-work/.codex-worktrees/20261114T070300Z-30291ec5/docs/art-reviews/2026-11-10-z4-hd-full/r4-c5/inputs/q12-v3.webp"
+      ],
+      "nativeFile": "/Users/agapae/.codex/generated_images/01a1d8dd-e8b8-7d11-b88c-7c43537c2601/exec-dc152fff-8017-44bf-86f1-2a473b93a89d.png",
+      "archivedReferenceImages": [
+        "r4-c5/inputs/q12-v3.webp"
+      ],
+      "transparent_background": false,
+      "nativeSize": [
+        1663,
+        946
+      ],
+      "archivedNative": "r4-c5/q12-native.webp",
+      "nativeSha256": "a7c3101221e829c4f4c9c9e7484f7e6018e0c1217dd54f368ee44f7d082d7417"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "zone": "cyberhell",
+  "scope": ["r4-c2", "r4-c3", "r4-c4", "r4-c5"],
+  "sourceSet": "img/map-zone4/v3/",
+  "coordinateConvention": "Review groups identified visually on source crops. Group extents are approximate chunk-local 1x map pixels, not segmentation masks.",
+  "evidence": [
+    "src/zone-skin.js cyberhell terrain v3, repairs false, flowUrl null",
+    "src/town-owner-walkmask-cyberhell.js owner RLE, 480x320 cells, 8 world units per cell",
+    "src/town-cyberhell-layout.js strictFloor true, houses [], props [], frontier at source [768,1018] on the central deck",
+    "src/town-layout.js applyTownZoneLayout uses zone-specific owner mask and clears houses/props",
+    "r4-c2/inputs/walkmask-review.jpg",
+    "r4-c3/inputs/walkmask-review.jpg",
+    "r4-c4/inputs/walkmask-review.jpg",
+    "r4-c5/inputs/walkmask-review.jpg"
+  ],
+  "walkmaskMapping": "master x/4915*3840, y/3277*2560, then floor(world/8). Overlay uses the original undilated blocked/walkable cells.",
+  "method": "Decoded owner RLE compared with source imagery. Only r4-c3 has walkable pixels in these cores. Its central bridge deck is visibly clear. Architectural side edges are retained as permitted by the brief.",
+  "objects": [
+    {
+      "id": "z4-r4c2-cable-post-and-red-cable",
+      "chunk": "r4-c2",
+      "bboxChunkPx1x": [0,0,180,205],
+      "action": "keep-baked",
+      "reason": "Outer cable architecture on blocked scenery, outside the player floor. Retain the original position."
+    },
+    {
+      "id": "z4-r4c2-foreground-rocks-and-crystals",
+      "chunk": "r4-c2",
+      "bboxChunkPx1x": [0,0,700,205],
+      "action": "keep-baked",
+      "reason": "Outer rock and crystal scenery. This entire core has zero owner-walkable pixels."
+    },
+    {
+      "id": "z4-r4c3-bridge-side-posts-and-gold-edges",
+      "chunk": "r4-c3",
+      "bboxChunkPx1x": [285,0,250,205],
+      "action": "keep-baked",
+      "reason": "Architectural bridge side posts and edges beside the clear central deck. Rail removal is optional. Keep their existing silhouettes and the complete bridge floor."
+    },
+    {
+      "id": "z4-r4c3-west-rock-crystal-island",
+      "chunk": "r4-c3",
+      "bboxChunkPx1x": [175,45,175,160],
+      "action": "keep-baked",
+      "reason": "Blocked island beside the deck, clear of the green owner-floor overlay."
+    },
+    {
+      "id": "z4-r4c3-east-and-bottom-crystal-rocks",
+      "chunk": "r4-c3",
+      "bboxChunkPx1x": [490,140,534,65],
+      "action": "keep-baked",
+      "reason": "Scenery outside the right deck boundary, including the bottom-right cropped rock."
+    },
+    {
+      "id": "z4-r4c4-foreground-and-background-rock-crystals",
+      "chunk": "r4-c4",
+      "bboxChunkPx1x": [0,0,1024,205],
+      "action": "keep-baked",
+      "reason": "Outer rock and crystal scenery. This entire core has zero owner-walkable pixels."
+    },
+    {
+      "id": "z4-r4c5-map-edge-rock-crystals",
+      "chunk": "r4-c5",
+      "bboxChunkPx1x": [0,0,819,205],
+      "action": "keep-baked",
+      "reason": "Map-edge rock and crystal scenery. This entire core has zero owner-walkable pixels."
+    }
+  ],
+  "removalTargets": [],
+  "liquidCloudPolicy": "Preserve any liquid or cloud base at its original contour. No liquid/cloud surface identified in these four source cores.",
+  "limitations": "Inventory groups are visual review records, not automatic object segmentation. Owner mask has 8-world-unit cell resolution."
+}
