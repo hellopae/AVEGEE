@@ -1,0 +1,12 @@
+{
+  "chunk": "r4-c3",
+  "removedIds": [],
+  "objects": [],
+  "keptBakedIds": [
+    "z4-r4c3-bridge-side-posts-and-gold-edges",
+    "z4-r4c3-west-rock-crystal-island",
+    "z4-r4c3-east-and-bottom-crystal-rocks"
+  ],
+  "reason": "No baked object identified on the owner-walkable deck in these crops. Other scenery and bridge side architecture retained.",
+  "inventory": "../objects-inventory.json"
+}

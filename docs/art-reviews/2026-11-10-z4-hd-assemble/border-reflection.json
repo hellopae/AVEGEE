@@ -1,0 +1,845 @@
+{
+  "parts": [
+    {
+      "chunk": "r1-c1",
+      "part": "q11",
+      "contextPx1x": [
+        0,
+        0,
+        576,
+        576
+      ],
+      "reflectedContextSamples": 1504,
+      "contextSamples": 1327104
+    },
+    {
+      "chunk": "r1-c1",
+      "part": "q12",
+      "contextPx1x": [
+        448,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 1456,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c1",
+      "part": "q21",
+      "contextPx1x": [
+        0,
+        448,
+        576,
+        640
+      ],
+      "reflectedContextSamples": 2427,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c1",
+      "part": "q22",
+      "contextPx1x": [
+        448,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c2",
+      "part": "q11",
+      "contextPx1x": [
+        960,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 17276,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c2",
+      "part": "q12",
+      "contextPx1x": [
+        1472,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c2",
+      "part": "q21",
+      "contextPx1x": [
+        960,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 743,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c2",
+      "part": "q22",
+      "contextPx1x": [
+        1472,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c3",
+      "part": "q11",
+      "contextPx1x": [
+        1984,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 2620,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c3",
+      "part": "q12",
+      "contextPx1x": [
+        2496,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 1152,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c3",
+      "part": "q21",
+      "contextPx1x": [
+        1984,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 824,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c3",
+      "part": "q22",
+      "contextPx1x": [
+        2496,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1717,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c4",
+      "part": "q11",
+      "contextPx1x": [
+        3008,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 803,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c4",
+      "part": "q12",
+      "contextPx1x": [
+        3520,
+        0,
+        640,
+        576
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r1-c4",
+      "part": "q21",
+      "contextPx1x": [
+        3008,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 892,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c4",
+      "part": "q22",
+      "contextPx1x": [
+        3520,
+        448,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 440,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q11",
+      "contextPx1x": [
+        4032,
+        0,
+        538,
+        576
+      ],
+      "reflectedContextSamples": 1065,
+      "contextSamples": 1239552
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q12",
+      "contextPx1x": [
+        4442,
+        0,
+        473,
+        576
+      ],
+      "reflectedContextSamples": 1272,
+      "contextSamples": 1089792
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q21",
+      "contextPx1x": [
+        4032,
+        448,
+        538,
+        640
+      ],
+      "reflectedContextSamples": 8468,
+      "contextSamples": 1377280
+    },
+    {
+      "chunk": "r1-c5",
+      "part": "q22",
+      "contextPx1x": [
+        4442,
+        448,
+        473,
+        640
+      ],
+      "reflectedContextSamples": 186,
+      "contextSamples": 1210880
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q11",
+      "contextPx1x": [
+        0,
+        960,
+        576,
+        640
+      ],
+      "reflectedContextSamples": 70214,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q12",
+      "contextPx1x": [
+        448,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q21",
+      "contextPx1x": [
+        0,
+        1472,
+        576,
+        640
+      ],
+      "reflectedContextSamples": 104289,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r2-c1",
+      "part": "q22",
+      "contextPx1x": [
+        448,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1566,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q11",
+      "contextPx1x": [
+        960,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q12",
+      "contextPx1x": [
+        1472,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1547,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q21",
+      "contextPx1x": [
+        960,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1829,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c2",
+      "part": "q22",
+      "contextPx1x": [
+        1472,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1314,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q11",
+      "contextPx1x": [
+        1984,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q12",
+      "contextPx1x": [
+        2496,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 575,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q21",
+      "contextPx1x": [
+        1984,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 512,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c3",
+      "part": "q22",
+      "contextPx1x": [
+        2496,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 170,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c4",
+      "part": "q11",
+      "contextPx1x": [
+        3008,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c4",
+      "part": "q12",
+      "contextPx1x": [
+        3520,
+        960,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c4",
+      "part": "q21",
+      "contextPx1x": [
+        3008,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 2497,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c4",
+      "part": "q22",
+      "contextPx1x": [
+        3520,
+        1472,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 868,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r2-c5",
+      "part": "q11",
+      "contextPx1x": [
+        4032,
+        960,
+        538,
+        640
+      ],
+      "reflectedContextSamples": 1076,
+      "contextSamples": 1377280
+    },
+    {
+      "chunk": "r2-c5",
+      "part": "q12",
+      "contextPx1x": [
+        4442,
+        960,
+        473,
+        640
+      ],
+      "reflectedContextSamples": 1816,
+      "contextSamples": 1210880
+    },
+    {
+      "chunk": "r2-c5",
+      "part": "q21",
+      "contextPx1x": [
+        4032,
+        1472,
+        538,
+        640
+      ],
+      "reflectedContextSamples": 1076,
+      "contextSamples": 1377280
+    },
+    {
+      "chunk": "r2-c5",
+      "part": "q22",
+      "contextPx1x": [
+        4442,
+        1472,
+        473,
+        640
+      ],
+      "reflectedContextSamples": 220,
+      "contextSamples": 1210880
+    },
+    {
+      "chunk": "r3-c1",
+      "part": "q11",
+      "contextPx1x": [
+        0,
+        1984,
+        576,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r3-c1",
+      "part": "q12",
+      "contextPx1x": [
+        448,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1223,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c1",
+      "part": "q21",
+      "contextPx1x": [
+        0,
+        2496,
+        576,
+        640
+      ],
+      "reflectedContextSamples": 399,
+      "contextSamples": 1474560
+    },
+    {
+      "chunk": "r3-c1",
+      "part": "q22",
+      "contextPx1x": [
+        448,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c2",
+      "part": "q11",
+      "contextPx1x": [
+        960,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1253,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c2",
+      "part": "q12",
+      "contextPx1x": [
+        1472,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1752,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c2",
+      "part": "q21",
+      "contextPx1x": [
+        960,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c2",
+      "part": "q22",
+      "contextPx1x": [
+        1472,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c3",
+      "part": "q11",
+      "contextPx1x": [
+        1984,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 897,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c3",
+      "part": "q12",
+      "contextPx1x": [
+        2496,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 429,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c3",
+      "part": "q21",
+      "contextPx1x": [
+        1984,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1558,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c3",
+      "part": "q22",
+      "contextPx1x": [
+        2496,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 1132,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c4",
+      "part": "q11",
+      "contextPx1x": [
+        3008,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 39,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c4",
+      "part": "q12",
+      "contextPx1x": [
+        3520,
+        1984,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c4",
+      "part": "q21",
+      "contextPx1x": [
+        3008,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c4",
+      "part": "q22",
+      "contextPx1x": [
+        3520,
+        2496,
+        640,
+        640
+      ],
+      "reflectedContextSamples": 0,
+      "contextSamples": 1638400
+    },
+    {
+      "chunk": "r3-c5",
+      "part": "q11",
+      "contextPx1x": [
+        4032,
+        1984,
+        538,
+        640
+      ],
+      "reflectedContextSamples": 55924,
+      "contextSamples": 1377280
+    },
+    {
+      "chunk": "r3-c5",
+      "part": "q12",
+      "contextPx1x": [
+        4442,
+        1984,
+        473,
+        640
+      ],
+      "reflectedContextSamples": 1545,
+      "contextSamples": 1210880
+    },
+    {
+      "chunk": "r3-c5",
+      "part": "q21",
+      "contextPx1x": [
+        4032,
+        2496,
+        538,
+        640
+      ],
+      "reflectedContextSamples": 52575,
+      "contextSamples": 1377280
+    },
+    {
+      "chunk": "r3-c5",
+      "part": "q22",
+      "contextPx1x": [
+        4442,
+        2496,
+        473,
+        640
+      ],
+      "reflectedContextSamples": 728,
+      "contextSamples": 1210880
+    },
+    {
+      "chunk": "r4-c1",
+      "part": "q11",
+      "contextPx1x": [
+        0,
+        3008,
+        576,
+        269
+      ],
+      "reflectedContextSamples": 578,
+      "contextSamples": 619776
+    },
+    {
+      "chunk": "r4-c1",
+      "part": "q12",
+      "contextPx1x": [
+        448,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 2493,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c2",
+      "part": "q11",
+      "contextPx1x": [
+        960,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 1817,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c2",
+      "part": "q12",
+      "contextPx1x": [
+        1472,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 238,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q11",
+      "contextPx1x": [
+        1984,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c3",
+      "part": "q12",
+      "contextPx1x": [
+        2496,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 2281,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q11",
+      "contextPx1x": [
+        3008,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 1280,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c4",
+      "part": "q12",
+      "contextPx1x": [
+        3520,
+        3008,
+        640,
+        269
+      ],
+      "reflectedContextSamples": 2354,
+      "contextSamples": 688640
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q11",
+      "contextPx1x": [
+        4032,
+        3008,
+        538,
+        269
+      ],
+      "reflectedContextSamples": 1650,
+      "contextSamples": 578888
+    },
+    {
+      "chunk": "r4-c5",
+      "part": "q12",
+      "contextPx1x": [
+        4442,
+        3008,
+        473,
+        269
+      ],
+      "reflectedContextSamples": 1457,
+      "contextSamples": 508948
+    }
+  ],
+  "note": "Native-to-context domain diagnostic, before joining. BORDER_REFLECT extends generated pixels only where affine exceeds native bounds. Counts are not final atlas counts: overlaps are composited and clipped. No v3 fallback used."
+}

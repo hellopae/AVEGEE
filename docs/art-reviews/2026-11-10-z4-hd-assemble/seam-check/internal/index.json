@@ -1,0 +1,356 @@
+{
+  "devicePxPerWorldUnit": 2.8,
+  "regions": [
+    {
+      "chunk": "r1-c1",
+      "axis": "vertical",
+      "rectPx2x": [
+        864,
+        0,
+        1184,
+        2048
+      ]
+    },
+    {
+      "chunk": "r1-c1",
+      "axis": "horizontal",
+      "rectPx2x": [
+        0,
+        864,
+        2048,
+        1184
+      ]
+    },
+    {
+      "chunk": "r1-c2",
+      "axis": "vertical",
+      "rectPx2x": [
+        2912,
+        0,
+        3232,
+        2048
+      ]
+    },
+    {
+      "chunk": "r1-c2",
+      "axis": "horizontal",
+      "rectPx2x": [
+        2048,
+        864,
+        4096,
+        1184
+      ]
+    },
+    {
+      "chunk": "r1-c3",
+      "axis": "vertical",
+      "rectPx2x": [
+        4960,
+        0,
+        5280,
+        2048
+      ]
+    },
+    {
+      "chunk": "r1-c3",
+      "axis": "horizontal",
+      "rectPx2x": [
+        4096,
+        864,
+        6144,
+        1184
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "axis": "vertical",
+      "rectPx2x": [
+        7008,
+        0,
+        7328,
+        2048
+      ]
+    },
+    {
+      "chunk": "r1-c4",
+      "axis": "horizontal",
+      "rectPx2x": [
+        6144,
+        864,
+        8192,
+        1184
+      ]
+    },
+    {
+      "chunk": "r1-c5",
+      "axis": "vertical",
+      "rectPx2x": [
+        8852,
+        0,
+        9172,
+        2048
+      ]
+    },
+    {
+      "chunk": "r1-c5",
+      "axis": "horizontal",
+      "rectPx2x": [
+        8192,
+        864,
+        9830,
+        1184
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "axis": "vertical",
+      "rectPx2x": [
+        864,
+        2048,
+        1184,
+        4096
+      ]
+    },
+    {
+      "chunk": "r2-c1",
+      "axis": "horizontal",
+      "rectPx2x": [
+        0,
+        2912,
+        2048,
+        3232
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "axis": "vertical",
+      "rectPx2x": [
+        2912,
+        2048,
+        3232,
+        4096
+      ]
+    },
+    {
+      "chunk": "r2-c2",
+      "axis": "horizontal",
+      "rectPx2x": [
+        2048,
+        2912,
+        4096,
+        3232
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "axis": "vertical",
+      "rectPx2x": [
+        4960,
+        2048,
+        5280,
+        4096
+      ]
+    },
+    {
+      "chunk": "r2-c3",
+      "axis": "horizontal",
+      "rectPx2x": [
+        4096,
+        2912,
+        6144,
+        3232
+      ]
+    },
+    {
+      "chunk": "r2-c4",
+      "axis": "vertical",
+      "rectPx2x": [
+        7008,
+        2048,
+        7328,
+        4096
+      ]
+    },
+    {
+      "chunk": "r2-c4",
+      "axis": "horizontal",
+      "rectPx2x": [
+        6144,
+        2912,
+        8192,
+        3232
+      ]
+    },
+    {
+      "chunk": "r2-c5",
+      "axis": "vertical",
+      "rectPx2x": [
+        8852,
+        2048,
+        9172,
+        4096
+      ]
+    },
+    {
+      "chunk": "r2-c5",
+      "axis": "horizontal",
+      "rectPx2x": [
+        8192,
+        2912,
+        9830,
+        3232
+      ]
+    },
+    {
+      "chunk": "r3-c1",
+      "axis": "vertical",
+      "rectPx2x": [
+        864,
+        4096,
+        1184,
+        6144
+      ]
+    },
+    {
+      "chunk": "r3-c1",
+      "axis": "horizontal",
+      "rectPx2x": [
+        0,
+        4960,
+        2048,
+        5280
+      ]
+    },
+    {
+      "chunk": "r3-c2",
+      "axis": "vertical",
+      "rectPx2x": [
+        2912,
+        4096,
+        3232,
+        6144
+      ]
+    },
+    {
+      "chunk": "r3-c2",
+      "axis": "horizontal",
+      "rectPx2x": [
+        2048,
+        4960,
+        4096,
+        5280
+      ]
+    },
+    {
+      "chunk": "r3-c3",
+      "axis": "vertical",
+      "rectPx2x": [
+        4960,
+        4096,
+        5280,
+        6144
+      ]
+    },
+    {
+      "chunk": "r3-c3",
+      "axis": "horizontal",
+      "rectPx2x": [
+        4096,
+        4960,
+        6144,
+        5280
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "axis": "vertical",
+      "rectPx2x": [
+        7008,
+        4096,
+        7328,
+        6144
+      ]
+    },
+    {
+      "chunk": "r3-c4",
+      "axis": "horizontal",
+      "rectPx2x": [
+        6144,
+        4960,
+        8192,
+        5280
+      ]
+    },
+    {
+      "chunk": "r3-c5",
+      "axis": "vertical",
+      "rectPx2x": [
+        8852,
+        4096,
+        9172,
+        6144
+      ]
+    },
+    {
+      "chunk": "r3-c5",
+      "axis": "horizontal",
+      "rectPx2x": [
+        8192,
+        4960,
+        9830,
+        5280
+      ]
+    },
+    {
+      "chunk": "r4-c1",
+      "axis": "vertical",
+      "rectPx2x": [
+        864,
+        6144,
+        1184,
+        6554
+      ]
+    },
+    {
+      "chunk": "r4-c2",
+      "axis": "vertical",
+      "rectPx2x": [
+        2912,
+        6144,
+        3232,
+        6554
+      ]
+    },
+    {
+      "chunk": "r4-c3",
+      "axis": "vertical",
+      "rectPx2x": [
+        4960,
+        6144,
+        5280,
+        6554
+      ]
+    },
+    {
+      "chunk": "r4-c4",
+      "axis": "vertical",
+      "rectPx2x": [
+        7008,
+        6144,
+        7328,
+        6554
+      ]
+    },
+    {
+      "chunk": "r4-c5",
+      "axis": "vertical",
+      "rectPx2x": [
+        8852,
+        6144,
+        9172,
+        6554
+      ]
+    }
+  ],
+  "note": "Each vertical band includes both q-row seams; the horizontal band includes the q-row join. Full chunk extent, decoded shipping pixels."
+}

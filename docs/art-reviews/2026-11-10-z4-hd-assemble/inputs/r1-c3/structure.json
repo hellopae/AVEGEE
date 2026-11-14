@@ -1,0 +1,101 @@
+{
+  "method": "41x41 low-pass grayscale patches, +/-24 px search, delivered output downsampled to 1x",
+  "coordinateSpace": "chunk-local master 1x pixels",
+  "landmarks": [
+    {
+      "name": "west-plaza-stair-left-head",
+      "sourcePx1x": [
+        117,
+        650
+      ],
+      "bestCandidatePx1x": [
+        117,
+        650
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9655905365943909,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "west-plaza-stair-right-head",
+      "sourcePx1x": [
+        255,
+        650
+      ],
+      "bestCandidatePx1x": [
+        255,
+        650
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.958329439163208,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "west-stair-left-foot",
+      "sourcePx1x": [
+        111,
+        783
+      ],
+      "bestCandidatePx1x": [
+        111,
+        783
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9607177376747131,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "lower-stair-left-head",
+      "sourcePx1x": [
+        246,
+        923
+      ],
+      "bestCandidatePx1x": [
+        246,
+        923
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9501999616622925,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "east-path-cliff-turn",
+      "sourcePx1x": [
+        860,
+        885
+      ],
+      "bestCandidatePx1x": [
+        860,
+        885
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.980017364025116,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "upper-plaza-edge",
+      "sourcePx1x": [
+        990,
+        580
+      ],
+      "bestCandidatePx1x": [
+        990,
+        580
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9279103875160217,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    }
+  ],
+  "structureMaxProxyPx1x": 0.0,
+  "structureMaxCertifiedPx1x": null,
+  "decision": "NOT CERTIFIED: proxy probes do not prove every plaza/stair/cliff/bank <=4 px; Claude review required",
+  "registrationInlierResidualMaxPx1x": 4.04857873916626,
+  "affineUncoveredMasterFallbackFraction": 0.0
+}

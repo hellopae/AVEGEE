@@ -1,0 +1,170 @@
+{
+  "chunk": "r2-c1",
+  "coordinateConvention": "rects [x0,y0,x1,y1], global master 1x px; affine native -> context-local 1x px",
+  "parts": {
+    "q11": {
+      "coreRectPx1x": [
+        0,
+        1024,
+        512,
+        1536
+      ],
+      "contextRectPx1x": [
+        0,
+        960,
+        576,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q11-input.png",
+      "inputSHA256": "dd8a2ce287210a797ebe392329efa898c5cbf56f63eb1beff35e8f9880761e39",
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1075,
+        1463
+      ],
+      "nativeSHA256": "26449d84b3d6878845d50766deda95b6701130c92d1f2f4566c4a50936f9f5c7",
+      "nativeToContextPx1x": [
+        [
+          0.5144173223354913,
+          0.01461645664143289,
+          -13.25113026970047
+        ],
+        [
+          0.000992742092559269,
+          0.48925301639116364,
+          -2.020507459372737
+        ]
+      ],
+      "matches": 599,
+      "inliers": 204,
+      "inlierHullFraction": 0.542638007819869,
+      "inlierResidualMaxPx1x": 2.848597764968872,
+      "inlierResidualMedianPx1x": 1.3397616147994995,
+      "descriptorScale": 1.0,
+      "status": "affine-estimated"
+    },
+    "q12": {
+      "coreRectPx1x": [
+        512,
+        1024,
+        1024,
+        1536
+      ],
+      "contextRectPx1x": [
+        448,
+        960,
+        1088,
+        1600
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q12-input.png",
+      "inputSHA256": "edeb6e55bb85919c2d8be6884954315fe51c45ca809a5c291dc7d1ff9060a1a8",
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSHA256": "371348aa7e921ca9c8aed9bfc38cebbf35801ac444438820cca7df6229a19ccb",
+      "nativeToContextPx1x": [
+        [
+          0.5106178543732307,
+          -0.00010932328451947478,
+          -0.041883994841239204
+        ],
+        [
+          -3.5544339395406924e-05,
+          0.5105492232862842,
+          -0.17022286937271783
+        ]
+      ],
+      "matches": 1130,
+      "inliers": 1074,
+      "inlierHullFraction": 0.9624939878730708,
+      "inlierResidualMaxPx1x": 3.312272787094116,
+      "inlierResidualMedianPx1x": 0.5629442930221558,
+      "descriptorScale": 0.5103668261562998,
+      "status": "affine-estimated"
+    },
+    "q21": {
+      "coreRectPx1x": [
+        0,
+        1536,
+        512,
+        2048
+      ],
+      "contextRectPx1x": [
+        0,
+        1472,
+        576,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q21-input.png",
+      "inputSHA256": "423fc4ea9fc9f480f56d1c03f73c21056f649532aee2ff298a81ae7d065f5507",
+      "nativeFile": "q21-native.webp",
+      "nativeSize": [
+        1075,
+        1463
+      ],
+      "nativeSHA256": "08c865faeb5cf57deeee98eef73f5cf76a72eff03df91382ab7c29eb17047816",
+      "nativeToContextPx1x": [
+        [
+          0.5047293121710897,
+          0.0039593489910899875,
+          -10.25607453891999
+        ],
+        [
+          0.0005829192386006695,
+          0.48524241408795854,
+          -10.263520923318127
+        ]
+      ],
+      "matches": 484,
+      "inliers": 188,
+      "inlierHullFraction": 0.381556290542782,
+      "inlierResidualMaxPx1x": 2.62764835357666,
+      "inlierResidualMedianPx1x": 1.3314948081970215,
+      "descriptorScale": 1.0,
+      "status": "affine-estimated"
+    },
+    "q22": {
+      "coreRectPx1x": [
+        512,
+        1536,
+        1024,
+        2048
+      ],
+      "contextRectPx1x": [
+        448,
+        1472,
+        1088,
+        2112
+      ],
+      "input": "/tmp/z4-hd-full/r2-c1-q22-input.png",
+      "inputSHA256": "f9b923b5c10d1d42c71196e13cc85f58d04a154e0023c06f1e47bc7595cd277e",
+      "nativeFile": "q22-native.webp",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "nativeSHA256": "20c754c513faf8eb9feb1d58e6d9281e701343bb7177b727482eafa2d223574f",
+      "nativeToContextPx1x": [
+        [
+          0.5108238792448125,
+          9.643197952513906e-05,
+          -0.08842673466015209
+        ],
+        [
+          -8.190235821246977e-05,
+          0.5101781226611389,
+          0.14314343149894418
+        ]
+      ],
+      "matches": 801,
+      "inliers": 708,
+      "inlierHullFraction": 0.9554432382907296,
+      "inlierResidualMaxPx1x": 2.545701026916504,
+      "inlierResidualMedianPx1x": 0.5975096821784973,
+      "descriptorScale": 0.5103668261562998,
+      "status": "affine-estimated"
+    }
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "version": 7,
+  "zone": 4,
+  "fullPx": {
+    "w": 9830,
+    "h": 6554
+  },
+  "chunk": 2048,
+  "rows": 4,
+  "cols": 5,
+  "worldSize": {
+    "w": 3840,
+    "h": 2560
+  },
+  "format": "webp",
+  "quality": 90,
+  "repairs": false,
+  "runtimeIntegration": "Asset pack only; src/img unchanged. Loader must select this directory, fullPx and chunk=2048, repairs=false.",
+  "imageGenCalls": 0,
+  "fallbackParts": [],
+  "fallbackPatches": [],
+  "files": [
+    {
+      "file": "r1-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1707902,
+      "sha256": "9ac83b1b843e6392fd70074c9cab450d52fe73c5df92bb992bbeae857e2199dc",
+      "rectPx2x": [
+        0,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1577136,
+      "sha256": "1d25e6fab4f2d436ee7cdab091303267ee01e1caeab253101dccb4270675e5d8",
+      "rectPx2x": [
+        2048,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1474576,
+      "sha256": "43272bbfc97e9a22688c211c087de28953c4362765bad2c850607933689773da",
+      "rectPx2x": [
+        4096,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1537152,
+      "sha256": "a06ab2479db265e42894a93a4ed98213ac8ee5c01ad49a37a5b01821dfbfc930",
+      "rectPx2x": [
+        6144,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1232642,
+      "sha256": "cce3bee201a7ec3e08488b1a35012c8436cb9b6ee8c6db121716826253e9ec96",
+      "rectPx2x": [
+        8192,
+        0,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1579688,
+      "sha256": "243a3302081c7721ee012b1faaadbcddcaf5e45708f2668076f23dd26c8f0627",
+      "rectPx2x": [
+        0,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1749594,
+      "sha256": "e5ef9b4cc88af76af52cdcb90a720c0ef54ecd7208ee4713ec0436935f169188",
+      "rectPx2x": [
+        2048,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1666562,
+      "sha256": "3c3a514990ac213658a5fa3b706a6f21b064113d3afd7c86c0976501baf29b88",
+      "rectPx2x": [
+        4096,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1650114,
+      "sha256": "95795db25157b1df95c5f5c657573999a667c5d7c6410355307e5c8cbad7705d",
+      "rectPx2x": [
+        6144,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1302094,
+      "sha256": "82bb52084a09b96d870284f864b92069a8c94046323d0c83a48eac215112f839",
+      "rectPx2x": [
+        8192,
+        2048,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1363004,
+      "sha256": "b4d7b35b3b85e3bf760efc9d8f5e630db09ef1b97a0726721548f0210d05c2f0",
+      "rectPx2x": [
+        0,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1435240,
+      "sha256": "4ecd6b7c35308ff722bd692f1680db62b7cb086ea1ef2951bea7631d94ec8938",
+      "rectPx2x": [
+        2048,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1861980,
+      "sha256": "3b54d4260f91f6ad5f2fdbbf11c334c2b62f401bc120773a41b7687421b9940c",
+      "rectPx2x": [
+        4096,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1702220,
+      "sha256": "6d250b266a98a5cbaf4f381fad4193de5e728e45c6bc899aac8465c1ddcfda9b",
+      "rectPx2x": [
+        6144,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1416732,
+      "sha256": "f6a0aac53637e531aaef8c0e032f24b06601b275283bbe22c3d74ec51a7ff06d",
+      "rectPx2x": [
+        8192,
+        4096,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r4-c1.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 304530,
+      "sha256": "4a89ac8a65e438bcc6c03614560a400cae840678c16b539761346c774c35e385",
+      "rectPx2x": [
+        0,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c2.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 340054,
+      "sha256": "f60be78d4a1c5c115a0d9300734499f98bf4bfd7c6cb006cff9cc50e4330a29f",
+      "rectPx2x": [
+        2048,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c3.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 363094,
+      "sha256": "d739d799c774ef2f25bc66f5e8cc9546e1bcb421c00aa64a32d6a9f10a7cb556",
+      "rectPx2x": [
+        4096,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c4.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 357768,
+      "sha256": "998982b59462562d1ef478b5d267d2a21298b4ca7b7a7924473cfcc701fe6c50",
+      "rectPx2x": [
+        6144,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c5.webp",
+      "width": 1638,
+      "height": 410,
+      "bytes": 287992,
+      "sha256": "491903baa0abdad1212baeccf5dd2a7fd094cda4ef6217a4dcc20e95f2855f2b",
+      "rectPx2x": [
+        8192,
+        6144,
+        1638,
+        410
+      ]
+    },
+    {
+      "file": "zone4-terrain-v7-preview.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 857484,
+      "sha256": "654e238df722d308a40a6fd35cc23cec791acb246c916aa96e37ac75c52cc96b"
+    }
+  ],
+  "imageBytes": 25767558,
+  "limitBytes": 40000000
+}

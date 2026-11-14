@@ -1,0 +1,56 @@
+{
+  "registration": {
+    "q11": {
+      "matches": 560,
+      "inliers": 436,
+      "inlierResidualP50Px1x": 0.7917923927307129,
+      "inlierResidualP95Px1x": 1.7629077434539795,
+      "inlierResidualMaxPx1x": 3.406665802001953,
+      "validContextFraction": 0.999482421875,
+      "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+    },
+    "q12": {
+      "matches": 778,
+      "inliers": 621,
+      "inlierResidualP50Px1x": 0.7394785284996033,
+      "inlierResidualP95Px1x": 1.9329571723937988,
+      "inlierResidualMaxPx1x": 3.3089349269866943,
+      "validContextFraction": 0.999462890625,
+      "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+    },
+    "q21": {
+      "matches": 763,
+      "inliers": 661,
+      "inlierResidualP50Px1x": 0.7116302251815796,
+      "inlierResidualP95Px1x": 1.9469122886657715,
+      "inlierResidualMaxPx1x": 2.9148898124694824,
+      "validContextFraction": 0.9984381103515625,
+      "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+    },
+    "q22": {
+      "matches": 564,
+      "inliers": 474,
+      "inlierResidualP50Px1x": 0.7026364207267761,
+      "inlierResidualP95Px1x": 1.7060871124267578,
+      "inlierResidualMaxPx1x": 2.5640158653259277,
+      "validContextFraction": 0.9994677734375,
+      "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+    }
+  },
+  "semanticStructureMaxPx1x": null,
+  "note": "Semantic structure max is unproven. SIFT measures only matched texture locations. Inspect structure-overlay.jpg against source and walkmask. No automatic quality gate.",
+  "sharpness": {
+    "method": "grayscale Laplacian variance at identical 2x output resolution, baseline Lanczos 2x; no sharpening filter",
+    "baseline2x": 11.22022533416748,
+    "redraw2x": 3145.248046875,
+    "ratio": 280.31950813832486
+  },
+  "sourceEdgeNearestDistanceProxy": {
+    "method": "Canny 60/130, source edge -> nearest redraw edge at 1x, all pixels",
+    "samples": 131754,
+    "p50Px1x": 1.0,
+    "p95Px1x": 1.4142135381698608,
+    "maxPx1x": 6.7082037925720215,
+    "limitations": "Texture edges are not semantic boundaries. This is NOT proof of structure <=4px; no thresholds applied."
+  }
+}

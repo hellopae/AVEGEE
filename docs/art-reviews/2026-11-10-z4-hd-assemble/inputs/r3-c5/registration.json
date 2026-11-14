@@ -1,0 +1,198 @@
+{
+  "coordinateConvention": "all rects [x0,y0,x1,y1], global master 1x pixels; affine maps native to local context 1x",
+  "chunk": "r3-c5",
+  "parts": {
+    "q11": {
+      "chunk": "r3-c5",
+      "part": "q11",
+      "coreRectPx1x": [
+        4096,
+        2048,
+        4506,
+        2560
+      ],
+      "contextRectPx1x": [
+        4032,
+        1984,
+        4570,
+        2624
+      ],
+      "referenceSize": [
+        538,
+        640
+      ],
+      "referenceSHA256": "7b74c42dad579a191ea193854094f6bbef3db79ab33c96fd83441d913b471f3a",
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1122,
+        1402
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.46010160905360026,
+          0.000626895569610278,
+          -0.5656698981750894
+        ],
+        [
+          0.0001359393747476986,
+          0.4563541805144073,
+          -0.33667842420130895
+        ]
+      ],
+      "nativeSHA256": "12880f6a575c188e52e96525cd0b7ee702faffb12e457b56eed88770f74af523",
+      "registrationEvidence": {
+        "matches": 391,
+        "inliers": 268,
+        "inlierResidualP50Px1x": 1.0068941116333008,
+        "inlierResidualP95Px1x": 2.298067808151245,
+        "inlierResidualMaxPx1x": 2.8019275665283203,
+        "validContextFraction": 0.9585400209107807,
+        "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+      }
+    },
+    "q12": {
+      "chunk": "r3-c5",
+      "part": "q12",
+      "coreRectPx1x": [
+        4506,
+        2048,
+        4915,
+        2560
+      ],
+      "contextRectPx1x": [
+        4442,
+        1984,
+        4915,
+        2624
+      ],
+      "referenceSize": [
+        473,
+        640
+      ],
+      "referenceSHA256": "fa70ae4f4a964674d05072ce08f4464089257bb784783a52c52e15697f938ff9",
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1122,
+        1402
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.4424669896118014,
+          -0.0038566068764816983,
+          1.5731001470663764
+        ],
+        [
+          -0.0009172593229981457,
+          0.45643095147499185,
+          -0.08156808939995455
+        ]
+      ],
+      "nativeSHA256": "04defbb326dcf92ad50c7ed017923c6ceffcb4d12a71a8502c2717c19cd29e50",
+      "registrationEvidence": {
+        "matches": 322,
+        "inliers": 170,
+        "inlierResidualP50Px1x": 1.2843601703643799,
+        "inlierResidualP95Px1x": 2.1115708351135254,
+        "inlierResidualMaxPx1x": 2.383232831954956,
+        "validContextFraction": 0.9984936575052854,
+        "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+      }
+    },
+    "q21": {
+      "chunk": "r3-c5",
+      "part": "q21",
+      "coreRectPx1x": [
+        4096,
+        2560,
+        4506,
+        3072
+      ],
+      "contextRectPx1x": [
+        4032,
+        2496,
+        4570,
+        3136
+      ],
+      "referenceSize": [
+        538,
+        640
+      ],
+      "referenceSHA256": "610abe72f1643e6bd3bdced8cf3fd167a379a119a61faed136a2f029f12abf80",
+      "nativeFile": "q21-native.webp",
+      "nativeSize": [
+        1122,
+        1402
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.4624524887806335,
+          -0.0004505535243365755,
+          -0.926261829853604
+        ],
+        [
+          2.3961741283207906e-05,
+          0.45600181527006095,
+          0.19428123571404532
+        ]
+      ],
+      "nativeSHA256": "9215735bcfeac3fe7248b494025736277e5a89963aba11af26467d51f4096e09",
+      "registrationEvidence": {
+        "matches": 402,
+        "inliers": 318,
+        "inlierResidualP50Px1x": 0.9172986745834351,
+        "inlierResidualP95Px1x": 2.038316249847412,
+        "inlierResidualMaxPx1x": 2.589714288711548,
+        "validContextFraction": 0.9614595434479554,
+        "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+      }
+    },
+    "q22": {
+      "chunk": "r3-c5",
+      "part": "q22",
+      "coreRectPx1x": [
+        4506,
+        2560,
+        4915,
+        3072
+      ],
+      "contextRectPx1x": [
+        4442,
+        2496,
+        4915,
+        3136
+      ],
+      "referenceSize": [
+        473,
+        640
+      ],
+      "referenceSHA256": "b87b0265bb78997ef27125c9045fd4c45cc2ec2facd128cb8a541652bf7fb833",
+      "nativeFile": "q22-native.webp",
+      "nativeSize": [
+        1122,
+        1402
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.45134422733474605,
+          -0.0008279097987870541,
+          0.13253484365560825
+        ],
+        [
+          -0.00034533776895450237,
+          0.45654945550235365,
+          -0.45400841237183454
+        ]
+      ],
+      "nativeSHA256": "9af2367da6d5649ee1476c34af36ee68cba4dcdb08902546e6042d85890bdd5d",
+      "registrationEvidence": {
+        "matches": 399,
+        "inliers": 338,
+        "inlierResidualP50Px1x": 0.8443295955657959,
+        "inlierResidualP95Px1x": 1.9738731384277344,
+        "inlierResidualMaxPx1x": 3.213714599609375,
+        "validContextFraction": 0.99921875,
+        "note": "SIFT inlier residuals only; not a bound on semantic geometry. No structure restoration or baseline overlay."
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "chunk": "r3-c2",
+  "removedObjectIds": [],
+  "reviewedBakedGroupIds": [
+    "z4-r3-c2-north-bank-rocks-pylons",
+    "z4-r3-c2-middle-riverbank-border",
+    "z4-r3-c2-plaza-rock-island",
+    "z4-r3-c2-east-plaza-rim",
+    "z4-r3-c2-fluid-fog-base"
+  ],
+  "finding": "No isolated raised object identified in open source pavement corridors. Border ensembles retained.",
+  "evidence": "../objects-inventory.json"
+}

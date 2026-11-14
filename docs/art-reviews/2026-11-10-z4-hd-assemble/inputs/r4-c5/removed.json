@@ -1,0 +1,10 @@
+{
+  "chunk": "r4-c5",
+  "removedIds": [],
+  "objects": [],
+  "keptBakedIds": [
+    "z4-r4c5-map-edge-rock-crystals"
+  ],
+  "reason": "No baked object identified on the owner-walkable deck in these crops. Other scenery and bridge side architecture retained.",
+  "inventory": "../objects-inventory.json"
+}

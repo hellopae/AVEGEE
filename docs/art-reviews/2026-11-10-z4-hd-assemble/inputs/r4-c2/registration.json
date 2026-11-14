@@ -1,0 +1,177 @@
+{
+  "chunk": "r4-c2",
+  "outputScale": 2,
+  "rectConvention": "[x,y,width,height], 1x map pixels",
+  "overlapPerSidePx1x": 64,
+  "neighborChunkSeamsApplied": false,
+  "tiles": [
+    {
+      "id": "q11",
+      "coreChunkPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "coreMasterPx1x": [
+        1024,
+        3072,
+        512,
+        205
+      ],
+      "contextMasterPx1x": [
+        960,
+        3008,
+        640,
+        269
+      ],
+      "contextChunkPx1x": [
+        -64,
+        -64,
+        640,
+        269
+      ],
+      "removalTargets": [],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "affine": [
+        [
+          1.0002673745496233,
+          -0.000298333236751645,
+          0.05546038766345869
+        ],
+        [
+          0.000298333236751645,
+          1.0002673745496233,
+          0.14551206709856845
+        ]
+      ],
+      "affineCoordinateConvention": "resized native -> context-local 1x map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.3308377879647333,
+          -9.871050514906828e-05,
+          0.05546038766345869
+        ],
+        [
+          9.867352533387741e-05,
+          0.33096177583499226,
+          0.14551206709856845
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3308377879647333,
+          -9.871050514906828e-05,
+          960.0554603876634
+        ],
+        [
+          9.867352533387741e-05,
+          0.33096177583499226,
+          3008.1455120670985
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        3.0234375,
+        3.0223048327137545
+      ],
+      "siftMatches": 176,
+      "siftInliers": 153,
+      "inlierResidualPx1x": {
+        "median": 0.6014133095741272,
+        "p95": 1.6750000715255737,
+        "max": 2.879580020904541
+      },
+      "validWarpFraction": 0.9983373025092936,
+      "localWarpApplied": false,
+      "lowFrequencyCorrection": "0.8 delta, Gaussian sigma35 map px, no sharpening",
+      "semanticStructureVerified": false
+    },
+    {
+      "id": "q12",
+      "coreChunkPx1x": [
+        512,
+        0,
+        512,
+        205
+      ],
+      "coreMasterPx1x": [
+        1536,
+        3072,
+        512,
+        205
+      ],
+      "contextMasterPx1x": [
+        1472,
+        3008,
+        640,
+        269
+      ],
+      "contextChunkPx1x": [
+        448,
+        -64,
+        640,
+        269
+      ],
+      "removalTargets": [],
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "affine": [
+        [
+          1.001134963947821,
+          0.00021530008700080592,
+          -0.5671935043812687
+        ],
+        [
+          -0.00021530008700080592,
+          1.001134963947821,
+          -0.7776442984384886
+        ]
+      ],
+      "affineCoordinateConvention": "resized native -> context-local 1x map pixels",
+      "nativeToContextPx1x": [
+        [
+          0.33112474259772895,
+          7.123705215647823e-05,
+          -0.5671935043812687
+        ],
+        [
+          -7.121036469277301e-05,
+          0.33124883800979565,
+          -0.7776442984384886
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.33112474259772895,
+          7.123705215647823e-05,
+          1471.4328064956187
+        ],
+        [
+          -7.121036469277301e-05,
+          0.33124883800979565,
+          3007.2223557015614
+        ]
+      ],
+      "nativePxPerMapPixel": [
+        3.0234375,
+        3.0223048327137545
+      ],
+      "siftMatches": 49,
+      "siftInliers": 37,
+      "inlierResidualPx1x": {
+        "median": 0.973833441734314,
+        "p95": 1.7717816829681396,
+        "max": 2.216102361679077
+      },
+      "validWarpFraction": 0.9981412639405205,
+      "localWarpApplied": false,
+      "lowFrequencyCorrection": "0.8 delta, Gaussian sigma35 map px, no sharpening",
+      "semanticStructureVerified": false
+    }
+  ]
+}

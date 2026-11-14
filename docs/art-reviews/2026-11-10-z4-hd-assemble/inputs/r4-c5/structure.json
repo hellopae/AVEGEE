@@ -1,0 +1,433 @@
+{
+  "thresholdPx1x": 4,
+  "method": "Fixed source 33x33 DoG sigma1.5/6 templates, NCC search +/-12 map px",
+  "limitation": "Local correspondences do not certify every semantic contour. Low-correlation probes retained.",
+  "totalProbes": 28,
+  "reliableProbes": 27,
+  "maxReliableDisplacementPx1x": 3.1622776601683795,
+  "allReliableProbesWithin4px": true,
+  "wholeStructureWithin4pxVerified": false,
+  "semanticStructureVerified": false,
+  "probes": [
+    {
+      "id": "west-rock-tip",
+      "sourcePx1x": [
+        146,
+        30
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6870400309562683,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "middle-rock-tip",
+      "sourcePx1x": [
+        345,
+        62
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6841777563095093,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "path-gold-crossing",
+      "sourcePx1x": [
+        499,
+        148
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.6700222492218018,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "east-path-border",
+      "sourcePx1x": [
+        674,
+        181
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7443048357963562,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-48-32",
+      "sourcePx1x": [
+        48,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8601474761962891,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-144-32",
+      "sourcePx1x": [
+        144,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7500535249710083,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-240-32",
+      "sourcePx1x": [
+        240,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.7887619137763977,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-336-32",
+      "sourcePx1x": [
+        336,
+        32
+      ],
+      "displacementPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7323660850524902,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-432-32",
+      "sourcePx1x": [
+        432,
+        32
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.8807055950164795,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-528-32",
+      "sourcePx1x": [
+        528,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8949761986732483,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-624-32",
+      "sourcePx1x": [
+        624,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9482274651527405,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-720-32",
+      "sourcePx1x": [
+        720,
+        32
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8390336036682129,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-48-100",
+      "sourcePx1x": [
+        48,
+        100
+      ],
+      "displacementPx1x": [
+        1,
+        1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "normalizedCorrelation": 0.5980937480926514,
+      "reliable": false,
+      "within4px": true
+    },
+    {
+      "id": "grid-144-100",
+      "sourcePx1x": [
+        144,
+        100
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8891038298606873,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-240-100",
+      "sourcePx1x": [
+        240,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9066876769065857,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-336-100",
+      "sourcePx1x": [
+        336,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.846511960029602,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-432-100",
+      "sourcePx1x": [
+        432,
+        100
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7509827613830566,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-528-100",
+      "sourcePx1x": [
+        528,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8590611815452576,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-624-100",
+      "sourcePx1x": [
+        624,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.9354148507118225,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-720-100",
+      "sourcePx1x": [
+        720,
+        100
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8855035305023193,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-48-172",
+      "sourcePx1x": [
+        48,
+        172
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.9191823601722717,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-144-172",
+      "sourcePx1x": [
+        144,
+        172
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.8101361989974976,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-240-172",
+      "sourcePx1x": [
+        240,
+        172
+      ],
+      "displacementPx1x": [
+        -1,
+        3
+      ],
+      "distancePx1x": 3.1622776601683795,
+      "normalizedCorrelation": 0.7865691781044006,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-336-172",
+      "sourcePx1x": [
+        336,
+        172
+      ],
+      "displacementPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7550479173660278,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-432-172",
+      "sourcePx1x": [
+        432,
+        172
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8580999970436096,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-528-172",
+      "sourcePx1x": [
+        528,
+        172
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7494999170303345,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-624-172",
+      "sourcePx1x": [
+        624,
+        172
+      ],
+      "displacementPx1x": [
+        1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "normalizedCorrelation": 0.7240703105926514,
+      "reliable": true,
+      "within4px": true
+    },
+    {
+      "id": "grid-720-172",
+      "sourcePx1x": [
+        720,
+        172
+      ],
+      "displacementPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "normalizedCorrelation": 0.8935795426368713,
+      "reliable": true,
+      "within4px": true
+    }
+  ]
+}

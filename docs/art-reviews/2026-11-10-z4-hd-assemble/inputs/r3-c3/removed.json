@@ -1,0 +1,5 @@
+{
+  "chunk": "r3-c3",
+  "removedIds": [],
+  "note": "No removable baked object found on walkable floor in this chunk. Boundary architecture and inaccessible crystals retained. See ../objects-inventory.json."
+}

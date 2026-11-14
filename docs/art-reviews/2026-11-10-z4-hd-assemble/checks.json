@@ -1,0 +1,34 @@
+{
+  "commands": [
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-assemble/scripts/check-composition.py",
+      "exitCode": 0,
+      "stdout": "7 check groups succeeded: horizontal, vertical, overlap locality/extent, five-schema registration, 70-part coverage, direct-native pixel-centre placement, invalid-domain source selection."
+    },
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-assemble/scripts/assemble.py --snapshot",
+      "exitCode": 1,
+      "note": "Initial --snapshot copied all inputs successfully, then assembly stopped at redundant-matrix consistency check: run3 includes a +0.5 output-pixel centre offset. Normalization was corrected to validate that convention and all later assemblies completed with exit0."
+    },
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-assemble/scripts/assemble.py",
+      "exitCode": 0
+    },
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-assemble/scripts/review-details.py",
+      "exitCode": 0
+    },
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-assemble/scripts/verify.py --acceptance",
+      "exitCode": 2,
+      "note": "File checks succeeded; acceptance criterion2 unresolved. See verification.json."
+    }
+  ],
+  "branch": "codex/20261114T071713Z-9434a667",
+  "trackedFilesChanged": [],
+  "addedFilesConfinedTo": "docs/art-reviews/2026-11-10-z4-hd-assemble",
+  "finalVisualHashesChecked": 42,
+  "shippingHashesChecked": 21,
+  "inGameTested": false,
+  "qaSignOff": false
+}

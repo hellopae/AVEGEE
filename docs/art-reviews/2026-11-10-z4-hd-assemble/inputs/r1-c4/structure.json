@@ -1,0 +1,101 @@
+{
+  "method": "41x41 low-pass grayscale patches, +/-24 px search, delivered output downsampled to 1x",
+  "coordinateSpace": "chunk-local master 1x pixels",
+  "landmarks": [
+    {
+      "name": "north-stair-left-foot",
+      "sourcePx1x": [
+        174,
+        392
+      ],
+      "bestCandidatePx1x": [
+        174,
+        391
+      ],
+      "displacementPx1x": 1.0,
+      "correlation": 0.9657642841339111,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "north-stair-right-foot",
+      "sourcePx1x": [
+        287,
+        392
+      ],
+      "bestCandidatePx1x": [
+        287,
+        392
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9404235482215881,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "south-stair-left-head",
+      "sourcePx1x": [
+        129,
+        705
+      ],
+      "bestCandidatePx1x": [
+        129,
+        705
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9704524874687195,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "south-stair-right-head",
+      "sourcePx1x": [
+        261,
+        710
+      ],
+      "bestCandidatePx1x": [
+        261,
+        710
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9342343807220459,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "arched-bridge-centre-deck",
+      "sourcePx1x": [
+        836,
+        533
+      ],
+      "bestCandidatePx1x": [
+        836,
+        533
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9574025273323059,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "cyan-waterfall-lip",
+      "sourcePx1x": [
+        992,
+        663
+      ],
+      "bestCandidatePx1x": [
+        992,
+        663
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9698328375816345,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    }
+  ],
+  "structureMaxProxyPx1x": 1.0,
+  "structureMaxCertifiedPx1x": null,
+  "decision": "NOT CERTIFIED: proxy probes do not prove every plaza/stair/cliff/bank <=4 px; Claude review required",
+  "registrationInlierResidualMaxPx1x": 3.77736496925354,
+  "affineUncoveredMasterFallbackFraction": 0.0
+}

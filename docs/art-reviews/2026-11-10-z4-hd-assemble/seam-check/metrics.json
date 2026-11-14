@@ -1,0 +1,98 @@
+{
+  "nativeScale": 2,
+  "fullLengthStrips": 7,
+  "method": "Mean adjacent decoded RGB difference at exported chunk boundary vs nearby columns/rows. Diagnostic only; does not certify invisible adaptive seams.",
+  "seams": [
+    {
+      "axis": "vertical",
+      "coordinatePx2x": 2048,
+      "stripRectPx2x": [
+        1888,
+        0,
+        2208,
+        6554
+      ],
+      "meanAdjacentRGBAtChunkEdge": 13.518309593200684,
+      "meanAdjacentRGBNearby": 11.59179401397705,
+      "ratio": 1.1661964987387368
+    },
+    {
+      "axis": "vertical",
+      "coordinatePx2x": 4096,
+      "stripRectPx2x": [
+        3936,
+        0,
+        4256,
+        6554
+      ],
+      "meanAdjacentRGBAtChunkEdge": 12.916794776916504,
+      "meanAdjacentRGBNearby": 12.04295825958252,
+      "ratio": 1.072559955660286
+    },
+    {
+      "axis": "vertical",
+      "coordinatePx2x": 6144,
+      "stripRectPx2x": [
+        5984,
+        0,
+        6304,
+        6554
+      ],
+      "meanAdjacentRGBAtChunkEdge": 15.324738502502441,
+      "meanAdjacentRGBNearby": 13.207684516906738,
+      "ratio": 1.1602895634647943
+    },
+    {
+      "axis": "vertical",
+      "coordinatePx2x": 8192,
+      "stripRectPx2x": [
+        8032,
+        0,
+        8352,
+        6554
+      ],
+      "meanAdjacentRGBAtChunkEdge": 13.206133842468262,
+      "meanAdjacentRGBNearby": 11.793375968933105,
+      "ratio": 1.1197924900602454
+    },
+    {
+      "axis": "horizontal",
+      "coordinatePx2x": 2048,
+      "stripRectPx2x": [
+        0,
+        1888,
+        9830,
+        2208
+      ],
+      "meanAdjacentRGBAtChunkEdge": 13.804611206054688,
+      "meanAdjacentRGBNearby": 12.429244041442871,
+      "ratio": 1.110655737390458
+    },
+    {
+      "axis": "horizontal",
+      "coordinatePx2x": 4096,
+      "stripRectPx2x": [
+        0,
+        3936,
+        9830,
+        4256
+      ],
+      "meanAdjacentRGBAtChunkEdge": 16.474262237548828,
+      "meanAdjacentRGBNearby": 14.262139320373535,
+      "ratio": 1.1551045651345773
+    },
+    {
+      "axis": "horizontal",
+      "coordinatePx2x": 6144,
+      "stripRectPx2x": [
+        0,
+        5984,
+        9830,
+        6304
+      ],
+      "meanAdjacentRGBAtChunkEdge": 15.521871566772461,
+      "meanAdjacentRGBNearby": 14.828143119812012,
+      "ratio": 1.046784579927176
+    }
+  ]
+}

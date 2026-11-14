@@ -1,0 +1,58 @@
+{
+  "devicePxPerWorldUnit": 2.8,
+  "devicePxPerMapPixel": [
+    2.1875890132248217,
+    2.1873664937442783
+  ],
+  "threshold": 10,
+  "primaryRoi": "full_chunk",
+  "method": "Decoded output, equal game zoom, Lanczos, grayscale Laplacian ksize1. No sharpening.",
+  "limitation": "Texture and contrast affect the ratio. This metric is not a resolution multiplier.",
+  "rois": {
+    "full_chunk": {
+      "rectPx1x": [
+        0,
+        0,
+        1024,
+        205
+      ],
+      "deviceSize": [
+        2240,
+        448
+      ],
+      "v3LaplacianVariance": 7.762702139226262,
+      "newLaplacianVariance": 2386.6131141570404,
+      "laplacianRatio": 307.4461793525577
+    },
+    "left_half": {
+      "rectPx1x": [
+        0,
+        0,
+        512,
+        205
+      ],
+      "deviceSize": [
+        1120,
+        448
+      ],
+      "v3LaplacianVariance": 7.660907245363508,
+      "newLaplacianVariance": 2045.3256529490643,
+      "laplacianRatio": 266.9821716203293
+    },
+    "right_half": {
+      "rectPx1x": [
+        512,
+        0,
+        1024,
+        205
+      ],
+      "deviceSize": [
+        1120,
+        448
+      ],
+      "v3LaplacianVariance": 7.886591183711269,
+      "newLaplacianVariance": 2730.0846718592925,
+      "laplacianRatio": 346.16789538906596
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "laplacianBaselineAt2x": 11.775101635397732,
+  "laplacianCandidateAt2x": 3642.266843357944,
+  "sharpnessRatio": 309.3193550371353,
+  "measurementScale": "both compared at delivered 2x with Lanczos baseline; no sharpening filter",
+  "validGeneratedCoverageFraction": 1.0,
+  "sourceEdges": 125713,
+  "nearestEdgeMaxPx1x": 16.76305389404297,
+  "nearestEdgeP95Px1x": 4.123105525970459,
+  "nearestEdgeMedianPx1x": 1.0,
+  "within4pxFraction": 0.9446198881579471,
+  "landmarks": [
+    {
+      "id": "central-stair-top",
+      "mapPx1x": [
+        2368,
+        1460
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9837083220481873,
+      "searchBoundary": false
+    },
+    {
+      "id": "central-stair-foot",
+      "mapPx1x": [
+        2370,
+        1590
+      ],
+      "offsetPx1x": [
+        1,
+        -1
+      ],
+      "distancePx1x": 1.4142135623730951,
+      "correlation": 0.8472888469696045,
+      "searchBoundary": false
+    },
+    {
+      "id": "east-stair",
+      "mapPx1x": [
+        2860,
+        1395
+      ],
+      "offsetPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.964147686958313,
+      "searchBoundary": false
+    },
+    {
+      "id": "central-court-rim",
+      "mapPx1x": [
+        2350,
+        1400
+      ],
+      "offsetPx1x": [
+        0,
+        1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8424453139305115,
+      "searchBoundary": false
+    },
+    {
+      "id": "court-gold-ring",
+      "mapPx1x": [
+        2580,
+        1140
+      ],
+      "offsetPx1x": [
+        -1,
+        0
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8579397201538086,
+      "searchBoundary": false
+    }
+  ],
+  "landmarkMaxPx1x": 1.4142135623730951,
+  "limitation": "Local template translations and nearest edges are diagnostics, not proof that every semantic outline is within 4 px. Low correlation/search-boundary values need visual review."
+}

@@ -1,0 +1,95 @@
+{
+  "method": "33x33 low-pass grayscale patches sigma=2; +/-20px search on delivered output at 1x",
+  "coordinateSpace": "chunk-local master 1x pixels",
+  "landmarks": [
+    {
+      "name": "north-stair-left-foot",
+      "sourcePx1x": [
+        650,
+        43
+      ],
+      "bestCandidatePx1x": [
+        650,
+        43
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9169257283210754,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "north-stair-right-foot",
+      "sourcePx1x": [
+        783,
+        45
+      ],
+      "bestCandidatePx1x": [
+        783,
+        44
+      ],
+      "displacementPx1x": 1.0,
+      "correlation": 0.8542912602424622,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "north-plaza-bank",
+      "sourcePx1x": [
+        682,
+        157
+      ],
+      "bestCandidatePx1x": [
+        682,
+        157
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9900347590446472,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "river-south-bank",
+      "sourcePx1x": [
+        682,
+        486
+      ],
+      "bestCandidatePx1x": [
+        682,
+        486
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9238739013671875,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "lower-plaza-cliff",
+      "sourcePx1x": [
+        250,
+        759
+      ],
+      "bestCandidatePx1x": [
+        250,
+        760
+      ],
+      "displacementPx1x": 1.0,
+      "correlation": 0.8040881156921387,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "plaza-rock-tip",
+      "sourcePx1x": [
+        624,
+        687
+      ],
+      "bestCandidatePx1x": [
+        624,
+        687
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.8666452765464783,
+      "reliableCorrespondence": true
+    }
+  ],
+  "structureMaxProxyPx1x": 1.0,
+  "structureMaxCertifiedPx1x": null,
+  "limitation": "Local template probes are diagnostics. Complete plaza/stair/cliff/bank geometry remains for Claude visual decision.",
+  "registrationInlierMaxPx1x": 3.402923583984375,
+  "affineUncoveredMasterFallbackFraction": 0.0
+}

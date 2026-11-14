@@ -1,0 +1,7 @@
+{
+  "chunk": "r2-c1",
+  "requestedIds": [],
+  "removedIds": [],
+  "status": "no-freestanding-floor-props-found",
+  "method": "Built-in ImageGen inpaint instruction; inspect candidate before asserting removal"
+}

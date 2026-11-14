@@ -1,0 +1,185 @@
+{
+  "reviewType": "Offline visual inspection; no game execution or QA sign-off.",
+  "inGameTested": false,
+  "devicePxPerWorldUnit": 2.8,
+  "observations": [
+    "Opened all seven complete main-edge sheets and all20 internal-seam sheets from final decoded v7. No dominant straight rectangular chunk border observed in these offline views.",
+    "Inspected six game-scale v3|v7 comparisons. Native paintings add stronger stone/metal/crystal facets and rail detail. Inherited texture and silhouette equivalence is not certified.",
+    "River ripple shapes/line spacing and cloud texture differ between independently drawn natives. The seam blend can hide a straight cut without making every ripple or stone grout line semantically continuous.",
+    "r1-c5 sky detail does not show a dominant straight cut in the inspected crop; stair-top still measures5px displacement with both the standard final method and the inherited low-pass method.",
+    "Final standard structure report retains19 confident probes over4px (max10.4403) and59 uncertain. A separate original-method retest in r4-c2 retains a6.4031px rock match. These are unresolved diagnostics, not proof of a semantic contour error at every sample.",
+    "No v3 fallback or ImageGen repair was applied. Final unavoidably extrapolated native samples occupy8229 output pixels at outer map edges only; max band thickness5 output pixels. No uncovered-domain component in the interior.",
+    "No in-game loader/memory/performance or walking/collision test was run. Whole semantic structure tolerance and seam invisibility in actual game remain unresolved."
+  ],
+  "inspectedFiles": [
+    {
+      "path": "seam-check/horizontal-2048-game.jpg",
+      "sha256": "ba3cfd9832852e33d7022b28ef1df97fbde5c6857196061a79e4c23d1c951cc1"
+    },
+    {
+      "path": "seam-check/horizontal-4096-game.jpg",
+      "sha256": "b7001d372e2365eb6a6b3a79a7243902abcec5781ea2c80c2e023c13bb3c3c49"
+    },
+    {
+      "path": "seam-check/horizontal-6144-game.jpg",
+      "sha256": "92905ddfdb0ff2f94ee09359d4d57bc224722f7ceb72010fcc2a3271f64738b0"
+    },
+    {
+      "path": "seam-check/vertical-2048-game.jpg",
+      "sha256": "1ca5d1c12f0af05e4c59362e3b147cee435531d10bb135e9b05851b174fb3f3b"
+    },
+    {
+      "path": "seam-check/vertical-4096-game.jpg",
+      "sha256": "9442b0b4691fe0c786b34dab29fe621a36f517960210ed77842e696edf17b72e"
+    },
+    {
+      "path": "seam-check/vertical-6144-game.jpg",
+      "sha256": "4eb91cf5bce87bfb40ea56f01303c6c2b8c97e06c37ccd9c80975b63db036917"
+    },
+    {
+      "path": "seam-check/vertical-8192-game.jpg",
+      "sha256": "ee674bb0e1ace0eddfbcd3eedd8416037e15f7efcca698d0d3c777ed0c709725"
+    },
+    {
+      "path": "seam-check/internal/r1-c1.jpg",
+      "sha256": "6c1df9178cecea991b09d9aa4c91b4a2c4c6b54e13611ae493b3cfac08dc6de4"
+    },
+    {
+      "path": "seam-check/internal/r1-c2.jpg",
+      "sha256": "ea70fc3528d9697bc1c3460d1090cf2a5687aa18efa25d99ca119e4693074598"
+    },
+    {
+      "path": "seam-check/internal/r1-c3.jpg",
+      "sha256": "c7c681670947f0b9fcde48e164122a57924d5f7199a3ce5313563d15b3d0e0af"
+    },
+    {
+      "path": "seam-check/internal/r1-c4.jpg",
+      "sha256": "db00f255b148d37e0f81dbf92e135bacbf97bc6fb8994bab04a95ecb95c9b829"
+    },
+    {
+      "path": "seam-check/internal/r1-c5.jpg",
+      "sha256": "a676c80ec3c6f6eb4af674080c06dda5acb399d0b66d063bd524afa4ae95e7d6"
+    },
+    {
+      "path": "seam-check/internal/r2-c1.jpg",
+      "sha256": "cdb8cd0d12f0e57b678c782d3c554fefcd2460eab319379dae139175eedc8289"
+    },
+    {
+      "path": "seam-check/internal/r2-c2.jpg",
+      "sha256": "c34cba381cb32be316a551490d354cdec199a8678be16258eb39a620cdc61780"
+    },
+    {
+      "path": "seam-check/internal/r2-c3.jpg",
+      "sha256": "81a8973d641d0055ac7be70dfaed316d6ed9ff7b15dde2ff17a8bfd7b0fed3e6"
+    },
+    {
+      "path": "seam-check/internal/r2-c4.jpg",
+      "sha256": "11a67c10d80840c8d3a4a8e0d3fb34365a24929cc624b10b6405b0016ab3eaf5"
+    },
+    {
+      "path": "seam-check/internal/r2-c5.jpg",
+      "sha256": "c0d5ac8f1925964f68d34d79350281c18d54e10b7ae4e55baa09ff7b1373ade8"
+    },
+    {
+      "path": "seam-check/internal/r3-c1.jpg",
+      "sha256": "afb4a89b8b162fc4d07b93bad05031dae376c8c5f217dda93e9ed5c660d58e09"
+    },
+    {
+      "path": "seam-check/internal/r3-c2.jpg",
+      "sha256": "17fa32d7c17a2ca571805877da08fd3eb467452bfa82221dec7d68e0b943ea77"
+    },
+    {
+      "path": "seam-check/internal/r3-c3.jpg",
+      "sha256": "c7c6fadda2b1fd05dfce1fd28637fd352a571c84cb96c0a502cc4cadb378a9df"
+    },
+    {
+      "path": "seam-check/internal/r3-c4.jpg",
+      "sha256": "fc4eab2e7bd6cd026199248c804453b282b416c6f556f4390742630e0936e6fc"
+    },
+    {
+      "path": "seam-check/internal/r3-c5.jpg",
+      "sha256": "7b80f75c2d4b982374bd1ebf64468c7db4a46292e27eb6ee81873d74711b5d23"
+    },
+    {
+      "path": "seam-check/internal/r4-c1.jpg",
+      "sha256": "27b0c13ed17dc70c7acdeb3c13e6e9848ae9bd6253827aad8572408a699c9482"
+    },
+    {
+      "path": "seam-check/internal/r4-c2.jpg",
+      "sha256": "7d3dafdf1b703e508afca3e019aeea891c2330e17b4287d423c31a2a01e16262"
+    },
+    {
+      "path": "seam-check/internal/r4-c3.jpg",
+      "sha256": "2962e27e9511b47dc933627487b2791fd70a3e2bc171c3802ce8d16d82ef3b97"
+    },
+    {
+      "path": "seam-check/internal/r4-c4.jpg",
+      "sha256": "ef48a0d696e4e8e99d2134b94a0e103583318e3532b540c9d5a37bb84872d409"
+    },
+    {
+      "path": "seam-check/internal/r4-c5.jpg",
+      "sha256": "de0e9f89a05cd3e71e3e7ce02d71926343a82fabe7cadebb176a60ebe1f835ad"
+    },
+    {
+      "path": "compare-zoom/central-bridge.jpg",
+      "sha256": "a8dd0c2360824c361628badeb4985d4ff8daf7a996be6b38165dccb2c188db37"
+    },
+    {
+      "path": "compare-zoom/heaven-gate.jpg",
+      "sha256": "c3b05b45959eeee761857164e12b7f438273b35cc8594de15395930f5373b714"
+    },
+    {
+      "path": "compare-zoom/ice-bank.jpg",
+      "sha256": "34d8237c68a20331e8df94b46656000b231739d8f973b748383591622798ac88"
+    },
+    {
+      "path": "compare-zoom/lava-bank.jpg",
+      "sha256": "ab874a2e4fa14fec7882ed010f99808a90a7a1e8690268ab76fb8d3f7b92d2f2"
+    },
+    {
+      "path": "compare-zoom/main-plaza.jpg",
+      "sha256": "8de7b88d0023c4424bfa37aac3463ef3f941601f1758703f6ba00602a6ce1646"
+    },
+    {
+      "path": "compare-zoom/south-plaza.jpg",
+      "sha256": "4178b6a49a3a69e19af7367ccec0b4a493f62ef7278c9364d1c0f3b561cac0b2"
+    },
+    {
+      "path": "structure-details/east-stair.jpg",
+      "sha256": "ea0a08334e23ae2d1d1f04457103c802f81bf2dcfca657c148c20da76e30a1d2"
+    },
+    {
+      "path": "structure-details/lava-lip.jpg",
+      "sha256": "924a6109c826a2cd39e654175d932c089b956fc36c96ea863ad0bc9b88f04855"
+    },
+    {
+      "path": "structure-details/south-rocks.jpg",
+      "sha256": "4908dbcb8abbd8a34b1a6fe6ea14dde58561d330586e7b37902dccf99748828a"
+    },
+    {
+      "path": "structure-details/upper-stair-head.jpg",
+      "sha256": "7181d7d5ddecb8a011d57900199fbc5d9f2f219a25542f371edd7a31b140b0eb"
+    },
+    {
+      "path": "structure-details/west-bank.jpg",
+      "sha256": "e8011167da43470225520b92c083b3b8318488a01a14e8101404ddf3da8003b0"
+    },
+    {
+      "path": "structure-details/west-cliff-top.jpg",
+      "sha256": "e05dc068c0340e6ce4bea7e0361ac6a39e87d038c8f8def47b271b1faba8bd7c"
+    },
+    {
+      "path": "structure-details/west-plaza-rim.jpg",
+      "sha256": "0dfb92733cb67bd70b5b57231d6a3e35ea7fcc41d8eb78c60302b4308e19a672"
+    },
+    {
+      "path": "structure-details/west-rocks.jpg",
+      "sha256": "dc337f3f8e99c4ff4c65725301af2c8c3c8597ab396cb113e427f56c2a0af9f7"
+    },
+    {
+      "path": "structure-check.jpg",
+      "sha256": "9dec1dad67840b123bd0f12d840e5a7356addba8091eec83429b5f4d088e2222"
+    }
+  ],
+  "finalStructure": 10.44030650891055
+}

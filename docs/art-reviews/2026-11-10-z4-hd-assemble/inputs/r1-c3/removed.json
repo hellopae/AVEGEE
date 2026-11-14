@@ -1,0 +1,9 @@
+{
+  "chunk": "r1-c3",
+  "removedObjectIds": [
+    "z4-r1-c3-loose-crystal-west",
+    "z4-r1-c3-loose-crystal-east"
+  ],
+  "method": "built-in ImageGen q21 prompt for isolated pavement crystals",
+  "review": "visual native and assembled crops; no game collision changes"
+}

@@ -1,0 +1,35 @@
+{
+  "fileChecksSucceeded": true,
+  "imagesDecoded": 143,
+  "v7Bytes": 25773731,
+  "v7MBDecimal": 25.773731,
+  "imageGenCalls": 0,
+  "localInputCopiesVerified": true,
+  "upstreamFilesChecked": 163,
+  "upstreamFilesRecorded": 163,
+  "shippingImages": 21,
+  "chunkCount": 20,
+  "minCostJoins": 69,
+  "nativeDomainExtrapolatedOutputPixels": 8229,
+  "structureReliableFailures": 19,
+  "structureUncertain": 59,
+  "inGameTested": false,
+  "acceptance": [
+    {
+      "id": 1,
+      "verified": true,
+      "evidence": "20 expected chunks, preview, manifest; dimensions/decode/SHA256/<=40MB checked."
+    },
+    {
+      "id": 2,
+      "verified": false,
+      "evidence": "Offline seam strips and game-scale comparisons supplied. Whole semantic structure<=4px and invisible joins in-game are not certified.",
+      "reliableProbeFailures": 19
+    },
+    {
+      "id": 3,
+      "verified": true,
+      "evidence": "Fallback decisions and unresolved findings in inventory.json and Thai README; ImageGen0."
+    }
+  ]
+}

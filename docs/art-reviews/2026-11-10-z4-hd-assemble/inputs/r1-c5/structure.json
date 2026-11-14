@@ -1,0 +1,86 @@
+{
+  "laplacianBaselineAt2x": 13.413088289202747,
+  "laplacianCandidateAt2x": 2694.8880308204693,
+  "sharpnessRatio": 200.91480595037888,
+  "measurementScale": "both compared at delivered 2x with Lanczos baseline; no sharpening filter",
+  "validGeneratedCoverageFraction": 1.0,
+  "sourceEdges": 97699,
+  "nearestEdgeMaxPx1x": 16.6433162689209,
+  "nearestEdgeP95Px1x": 4.0,
+  "nearestEdgeMedianPx1x": 1.0,
+  "within4pxFraction": 0.9536842751717008,
+  "landmarks": [
+    {
+      "id": "waterfall-bank",
+      "mapPx1x": [
+        4445,
+        480
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9463777542114258,
+      "searchBoundary": false
+    },
+    {
+      "id": "stair-top",
+      "mapPx1x": [
+        4537,
+        782
+      ],
+      "offsetPx1x": [
+        -1,
+        -5
+      ],
+      "distancePx1x": 5.0990195135927845,
+      "correlation": 0.9325181245803833,
+      "searchBoundary": false
+    },
+    {
+      "id": "stair-foot",
+      "mapPx1x": [
+        4537,
+        875
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9673231840133667,
+      "searchBoundary": false
+    },
+    {
+      "id": "east-cliff",
+      "mapPx1x": [
+        4810,
+        530
+      ],
+      "offsetPx1x": [
+        0,
+        0
+      ],
+      "distancePx1x": 0.0,
+      "correlation": 0.9184377193450928,
+      "searchBoundary": false
+    },
+    {
+      "id": "west-court-edge",
+      "mapPx1x": [
+        4310,
+        719
+      ],
+      "offsetPx1x": [
+        0,
+        -1
+      ],
+      "distancePx1x": 1.0,
+      "correlation": 0.8405095338821411,
+      "searchBoundary": false
+    }
+  ],
+  "landmarkMaxPx1x": 5.0990195135927845,
+  "limitation": "Local template translations and nearest edges are diagnostics, not proof that every semantic outline is within 4 px. Low correlation/search-boundary values need visual review."
+}
