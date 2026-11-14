@@ -1,0 +1,282 @@
+{
+  "r2-c4": {
+    "chunkRectPx1x": [
+      3072,
+      1024,
+      4096,
+      2048
+    ],
+    "parts": {
+      "q11": {
+        "coreRectPx1x": [
+          3072,
+          1024,
+          3584,
+          1536
+        ],
+        "contextRectPx1x": [
+          3008,
+          960,
+          3648,
+          1600
+        ],
+        "inputSHA256": "57e7a002d1da621bd632f50ff1dceebee9e72e52907a804f0ac7611c54f5dcfd"
+      },
+      "q12": {
+        "coreRectPx1x": [
+          3584,
+          1024,
+          4096,
+          1536
+        ],
+        "contextRectPx1x": [
+          3520,
+          960,
+          4160,
+          1600
+        ],
+        "inputSHA256": "f80bb85d5712d3b7704d713bf256e2e01a9bda401ad4a175afd1bd5c678636e2"
+      },
+      "q21": {
+        "coreRectPx1x": [
+          3072,
+          1536,
+          3584,
+          2048
+        ],
+        "contextRectPx1x": [
+          3008,
+          1472,
+          3648,
+          2112
+        ],
+        "inputSHA256": "6a20ddbe498c481e39eef52cf125210b52209187c98a7124c9a7d429b41c20eb"
+      },
+      "q22": {
+        "coreRectPx1x": [
+          3584,
+          1536,
+          4096,
+          2048
+        ],
+        "contextRectPx1x": [
+          3520,
+          1472,
+          4160,
+          2112
+        ],
+        "inputSHA256": "4ffd1a9406cc615ad36139e4000642dba2fa5dbfdb36e4508de19717b343867f"
+      }
+    }
+  },
+  "r2-c5": {
+    "chunkRectPx1x": [
+      4096,
+      1024,
+      4915,
+      2048
+    ],
+    "parts": {
+      "q11": {
+        "coreRectPx1x": [
+          4096,
+          1024,
+          4506,
+          1536
+        ],
+        "contextRectPx1x": [
+          4032,
+          960,
+          4570,
+          1600
+        ],
+        "inputSHA256": "660ae6f378764ab8101ed971b13a1aa4fa90ea68958c99f4b43c9bb97eac48ff"
+      },
+      "q12": {
+        "coreRectPx1x": [
+          4506,
+          1024,
+          4915,
+          1536
+        ],
+        "contextRectPx1x": [
+          4442,
+          960,
+          4915,
+          1600
+        ],
+        "inputSHA256": "e65898f4f880ee4f3e2f5392e39e640e46ce5897fe177d66c841a1dd24b1d154"
+      },
+      "q21": {
+        "coreRectPx1x": [
+          4096,
+          1536,
+          4506,
+          2048
+        ],
+        "contextRectPx1x": [
+          4032,
+          1472,
+          4570,
+          2112
+        ],
+        "inputSHA256": "13d9b7d18d59bf763414aa0367fb26fdd6d6b130f2b6ba2a8d17fea44fe92369"
+      },
+      "q22": {
+        "coreRectPx1x": [
+          4506,
+          1536,
+          4915,
+          2048
+        ],
+        "contextRectPx1x": [
+          4442,
+          1472,
+          4915,
+          2112
+        ],
+        "inputSHA256": "cecb6739ce599cbfe3d28ce04793ccf5a6a10de1b3b87c2c8ca3cde6c8f33932"
+      }
+    }
+  },
+  "r3-c1": {
+    "chunkRectPx1x": [
+      0,
+      2048,
+      1024,
+      3072
+    ],
+    "parts": {
+      "q11": {
+        "coreRectPx1x": [
+          0,
+          2048,
+          512,
+          2560
+        ],
+        "contextRectPx1x": [
+          0,
+          1984,
+          576,
+          2624
+        ],
+        "inputSHA256": "c8dfbfe72e94648cc85e90870e5c41253df705c9d04d07a9689078f4f9fa7ad3"
+      },
+      "q12": {
+        "coreRectPx1x": [
+          512,
+          2048,
+          1024,
+          2560
+        ],
+        "contextRectPx1x": [
+          448,
+          1984,
+          1088,
+          2624
+        ],
+        "inputSHA256": "8ab4280f5c67ad63c7f9ae7f7481ad3e88d68a4a3824dd942232c8a19e750da0"
+      },
+      "q21": {
+        "coreRectPx1x": [
+          0,
+          2560,
+          512,
+          3072
+        ],
+        "contextRectPx1x": [
+          0,
+          2496,
+          576,
+          3136
+        ],
+        "inputSHA256": "1b963835d73b4a59a5169fd93470d9059bbfb2e88d9a556eb055d1e71b6b8f24"
+      },
+      "q22": {
+        "coreRectPx1x": [
+          512,
+          2560,
+          1024,
+          3072
+        ],
+        "contextRectPx1x": [
+          448,
+          2496,
+          1088,
+          3136
+        ],
+        "inputSHA256": "bb61dc1f5a1aade836d9ef44d3fed3fac7f1fb05cc2fb48f86ff289d7fefd4aa"
+      }
+    }
+  },
+  "r3-c2": {
+    "chunkRectPx1x": [
+      1024,
+      2048,
+      2048,
+      3072
+    ],
+    "parts": {
+      "q11": {
+        "coreRectPx1x": [
+          1024,
+          2048,
+          1536,
+          2560
+        ],
+        "contextRectPx1x": [
+          960,
+          1984,
+          1600,
+          2624
+        ],
+        "inputSHA256": "902409a56994dd8602c6f9a258bc58bd618698a6e816d6cce8529aa60dec64ae"
+      },
+      "q12": {
+        "coreRectPx1x": [
+          1536,
+          2048,
+          2048,
+          2560
+        ],
+        "contextRectPx1x": [
+          1472,
+          1984,
+          2112,
+          2624
+        ],
+        "inputSHA256": "eb2ac5a69f2234f612281eb6cdd0bac0f03e0e51428b2e36d6e166bf83492ced"
+      },
+      "q21": {
+        "coreRectPx1x": [
+          1024,
+          2560,
+          1536,
+          3072
+        ],
+        "contextRectPx1x": [
+          960,
+          2496,
+          1600,
+          3136
+        ],
+        "inputSHA256": "1a67fd72def795489dcc569977d84bbf7d182f609b4a5d3268e91ff189afee10"
+      },
+      "q22": {
+        "coreRectPx1x": [
+          1536,
+          2560,
+          2048,
+          3072
+        ],
+        "contextRectPx1x": [
+          1472,
+          2496,
+          2112,
+          3136
+        ],
+        "inputSHA256": "37e81c8e3dada1a8d7208cb3cde4d929f436a89664299d6cc6ab48aa38720a6a"
+      }
+    }
+  }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "call": 1,
+    "chunk": "r2-c4",
+    "quadrant": "q11",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-d80e0246-0c58-4523-ac3f-83c7a4e90373.png",
+    "sourceSHA256": "9f3ea5b7bb65fcfc02220ac104d3bea8294c02da9b08188f646637f04a0587fc",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r2-c4/q11-native.webp",
+    "nativeSHA256": "2c959af702d8c1d56bed08e3e57ac5bea2a017ae5276197c3ccc58bc290e9f69",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 2,
+    "chunk": "r2-c4",
+    "quadrant": "q12",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-51a0b9cd-1bbf-40db-8a53-1b8721d1b357.png",
+    "sourceSHA256": "60483fc08c370eb8706b06e5343dba8503f7488c4a8e1b13a058993bbeb7ff64",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r2-c4/q12-native.webp",
+    "nativeSHA256": "63c8037b842331a36afc848ddddac8d48249178d5b4d50695cda2c2e71238a19",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 3,
+    "chunk": "r2-c4",
+    "quadrant": "q21",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-94784db0-c882-407d-ab7d-3e1f282ec57b.png",
+    "sourceSHA256": "c8a5fb85b84576c73ee1290dfebdb4ae1eeadf16762e8f6aafe6f40f726edff4",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r2-c4/q21-native.webp",
+    "nativeSHA256": "9131b0f08ee25fdfc07a08456f71d5698580be85b3a639a5dca87b5aa4477ea6",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 4,
+    "chunk": "r2-c4",
+    "quadrant": "q22",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-7a38c623-2b12-41b1-b2e6-007467cc668c.png",
+    "sourceSHA256": "b660dc5c192efd2e844355e64f19f77249617a7e55222e7eef65d71c9fea65e1",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r2-c4/q22-native.webp",
+    "nativeSHA256": "e029425a454dbfec6ca43c428a4de49237e816a7b1b2d6385a433331e5477cdc",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 5,
+    "chunk": "r2-c5",
+    "quadrant": "q11",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-0b52b3ee-cf18-4c40-8ab5-683001779233.png",
+    "sourceSHA256": "cad1b1d19e00794f3c99875de0e7363cc6e25e614f7158c1f6284c84e8013acb",
+    "nativeSize": [
+      1149,
+      1368
+    ],
+    "nativeFile": "r2-c5/q11-native.webp",
+    "nativeSHA256": "2eecb9788b423643c526a106868215828f5aa371155ba2f7d07df231bd827ef4",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 6,
+    "chunk": "r2-c5",
+    "quadrant": "q12",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-9b5ac2fe-1bee-4b75-8267-13c78619414a.png",
+    "sourceSHA256": "90bca368312b466144bad34896bc9e4231fd27c3af389cb4a31248db024c612f",
+    "nativeSize": [
+      1078,
+      1460
+    ],
+    "nativeFile": "r2-c5/q12-native.webp",
+    "nativeSHA256": "246797581cc3229516f33e5789ef7e2937d060d9e7e122739c6d6e1519399826",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 7,
+    "chunk": "r2-c5",
+    "quadrant": "q21",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-951964bb-1d0f-4083-8636-a61c37863662.png",
+    "sourceSHA256": "c415e74f3882c1f3f8f465e4b55caf0e70e4a6283deb57382c96c6b64cf53ae6",
+    "nativeSize": [
+      1149,
+      1368
+    ],
+    "nativeFile": "r2-c5/q21-native.webp",
+    "nativeSHA256": "6c7f7ecb092a4f00ad4cba95c3dd2a8582bb32c70704dbc71e5f99bee87164e0",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 8,
+    "chunk": "r2-c5",
+    "quadrant": "q22",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-636fa8cb-988a-4f99-ad73-9a7c66259e5e.png",
+    "sourceSHA256": "49a5b6b9d9ca3af487041ff53ad1d4530ab9729f48635676d1071ce4a8e25706",
+    "nativeSize": [
+      1078,
+      1460
+    ],
+    "nativeFile": "r2-c5/q22-native.webp",
+    "nativeSHA256": "6bd91c1fa81d41f5a75887bda71c649a67ec7e66ded3eae29c4522535b242fa0",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 9,
+    "chunk": "r3-c1",
+    "quadrant": "q11",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-0b008417-75bb-46d9-943f-3d459cac31f8.png",
+    "sourceSHA256": "f3ac2cc4d31dada450a8725a0b9520801b5d109d3c93c644b0c5e6fdb7ae4c77",
+    "nativeSize": [
+      1189,
+      1323
+    ],
+    "nativeFile": "r3-c1/q11-native.webp",
+    "nativeSHA256": "6cff0ee8872078b357a10dae6e8853a3818ab7b34eb0bd64fe21a121dee9701e",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 10,
+    "chunk": "r3-c1",
+    "quadrant": "q12",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-2b06d8a9-c5c0-4230-a033-7f2e18f59064.png",
+    "sourceSHA256": "86b26f291eff6d92e930e5b19c1d4733d05bd4ecc8a549e3bba1719a8ccde0b2",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c1/q12-native.webp",
+    "nativeSHA256": "a8ffb69e8e9c7a6b4cae754ae78ff369a75e590680a322dacd4202db9408c896",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 11,
+    "chunk": "r3-c1",
+    "quadrant": "q21",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-73470ae1-fd15-46fc-85ab-027ab46dc8d0.png",
+    "sourceSHA256": "9f0f3ab963ee2dddd9dcc776daa0176eb27b50838c28f698884005214d5e25ea",
+    "nativeSize": [
+      1189,
+      1323
+    ],
+    "nativeFile": "r3-c1/q21-native.webp",
+    "nativeSHA256": "1d63a56f046e12b761ee093b3eb8f0867312d2d5c45c65607f77bf326dfbcefe",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 12,
+    "chunk": "r3-c1",
+    "quadrant": "q22",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-2623df32-5b19-4617-aae9-aaeeb493e76b.png",
+    "sourceSHA256": "956a7a3be409a3b85f6ff9ecef3df9c7dc6cd5088ff754f8940bf7d32f1004a8",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c1/q22-native.webp",
+    "nativeSHA256": "41748f8674671c16881ceef501b49609ea62f96df5edbad70137ad884e016e2e",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 13,
+    "chunk": "r3-c2",
+    "quadrant": "q11",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-0ec63296-e47c-44ed-9664-30072d8c786c.png",
+    "sourceSHA256": "e5d8825b53c268fb6e8b793ff5001207fecd47364d540efa785025bda14eb5e9",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c2/q11-native.webp",
+    "nativeSHA256": "cc645ecb49ec5039d5282e8baba4fc3bafd035d4c601aea0590a663fdc6ed132",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 14,
+    "chunk": "r3-c2",
+    "quadrant": "q12",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-f58e290a-867c-4240-89de-4e325d827cc8.png",
+    "sourceSHA256": "1c2ae1dcd03aa6410f65fc84a0530c1ecb92a46eb20ab4c780e1e3f5b1460163",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c2/q12-native.webp",
+    "nativeSHA256": "5368a9f64abaae9e7bdec78f3aa612dac9d107dfdf01a2541984c165160c6f5e",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 15,
+    "chunk": "r3-c2",
+    "quadrant": "q21",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-76df6e01-45c1-451a-b15c-f00647d7279c.png",
+    "sourceSHA256": "6454c8c4d7808d61c3da5b87d43b969b4a4598a7134c2c901cb18e72cf95c457",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c2/q21-native.webp",
+    "nativeSHA256": "de0d8d9b93494768288bc101e1a138af0d2b22b8d454e549a1fea142bea6e992",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  },
+  {
+    "call": 16,
+    "chunk": "r3-c2",
+    "quadrant": "q22",
+    "source": "/Users/agapae/.codex/generated_images/01a1d86a-7d99-7851-9ba2-4ab07e510a82/exec-d77ec193-839d-445a-8bd6-bbaa3a6cfcb5.png",
+    "sourceSHA256": "97dfd84b96bc36a1e15f0aacdde1342f3fa230c0fe12f7fbba9eaad62de9f090",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c2/q22-native.webp",
+    "nativeSHA256": "43e1f8c9354edf021d30e3fdb944c6a588349f98f11a9039a6907457000a0bda",
+    "rgbPreserved": true,
+    "tool": "built-in image_gen"
+  }
+]
