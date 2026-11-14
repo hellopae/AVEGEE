@@ -67,7 +67,8 @@ export const hireRank = id => HIRE_PLAN.findIndex(p => p.id === id) + 1;
 /** จ้างแล้วหรือยัง — คนงานนับว่าจ้างแล้วเมื่อมีอย่างน้อย 1 คนในโซนนี้ */
 export function hireDone(g, plan) {
   if (plan.kind === 'crew') return g.crew.some(c => c.k === plan.k);
-  if (plan.kind === 'guard') return !!g.guard;
+  // Z1-EVENTS: in Zone 1 the Guard joins through the frontier event - before it he is not a hire to recommend
+  if (plan.kind === 'guard') return !!g.guard || (g.zone === 'th' && g.zoneEvents?.th?.frontierBreach !== 'cleared' && !g.bossCleared?.th);
   return (g.workerState?.workers || []).some(w => w.homeZone === g.zone);
 }
 

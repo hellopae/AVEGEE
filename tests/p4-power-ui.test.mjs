@@ -38,6 +38,9 @@ test('sheet: numbers come from the same functions as the office card; hire / tea
   html=powerSheetHtml(g,'guard');
   assert.ok(html.includes(`คูลดาวน์ ${GUARD.helpCdMs/1000} วินาที`),'guard cooldown = what battleAct really sets (20 s), not the old 120');
   assert.ok(html.includes(`กำลังใจ −${GUARD.helpMorale}`));assert.equal(GUARD.helpCdMs,20000);assert.equal(GUARD.helpMorale,8);
+  // Z1-EVENTS: Zone 1's Guard is not for hire before the frontier event; once it is cleared (and he is somehow absent) the button is back
+  assert.doesNotMatch(html,/data-power-hire="guard"/);assert.doesNotMatch(html,/job-/);
+  g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'};html=powerSheetHtml(g,'guard');
   assert.match(html,/data-power-hire="guard"/);assert.doesNotMatch(html,/job-/);
   html=powerSheetHtml(g,'nira');assert.doesNotMatch(html,/data-power-hire|data-power-party/,'nira is staff, not hirable or teamable');
   assert.ok(html.includes(`ฟื้นบารมี ${CREW_POWER.nira.heal}`),'nira effect = the heal she really casts');

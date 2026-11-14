@@ -170,7 +170,8 @@ test('after the farewell zone 1 captain stays in its cave; other frontier stands
   assert.equal(after.challengeCanTalk(),true,'captain remains at the cave after the farewell');
   const js=read('../src/dungeon-view.js');
   assert.match(js,/\.dungeon-challenge'\)\.hidden=!challengeStandeeShown\(\)/,'cave button is tied to the drawn standee');
-  assert.match(js,/if\(challengeStandeeShown\(\)\)\{/,'and the same predicate draws the boss');
+  // Z1-EVENTS (owner e9): where a cave interior is drawn the boss stands inside it, so the mouth standee is skipped there - same predicate otherwise
+  assert.match(js,/if\(challengeStandeeShown\(\)&&!BREACH_ART\.caveInterior\[g\.zone\]\)\{/,'and the same predicate draws the boss');
 });
 
 test('route again after the farewell: Yama + Nira only (no hired keepers, guard or guide); first escort keeps the guide',()=>{

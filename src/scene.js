@@ -568,8 +568,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
-    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
-    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
+    const onPath = walk?.path ? pointOnPath(walk.path, progress) : null;   // Z1-EVENTS: case 15 - he walks in from the lower border gate along the real paths
+    const x = onPath ? onPath[0] : walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
+    const y = onPath ? onPath[1] : walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
     spot_(x, y, 92 * CHAR_SCALE_MAP * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);

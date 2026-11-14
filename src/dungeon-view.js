@@ -1,3 +1,4 @@
+import {BREACH_ART} from './z1-events.js';
 import {drawSnowGround} from './scene-atmosphere.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
 import {weatherEnabled} from './map-ambient.js';
@@ -237,7 +238,7 @@ export function dungeonChaseReach(g) {
 }
 /** O1/P5: the route is one full-bleed map. Only floating controls remain: bag, minimap, status chip and the two talk buttons.
  *  Going back to the frontier post is done by walking back onto the route start (arrow on the ground), not by a button. */
-const dungeonShell=guideLabel=>'<div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p><button type="button" class="dungeon-icon dungeon-menu" data-action="menu" aria-label="เมนู · กระเป๋า">☰</button><p class="dungeon-status" aria-live="polite"></p><div class="dungeon-actions"><button type="button" class="dungeon-guide" hidden>'+guideLabel+'</button><button type="button" class="dungeon-challenge" hidden>ประลองบอสชายแดนในถ้ำ</button></div></div>';
+const dungeonShell=guideLabel=>'<div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p><button type="button" class="dungeon-icon dungeon-menu" data-action="menu" aria-label="เมนู · กระเป๋า">☰</button><p class="dungeon-status" aria-live="polite"></p><div class="dungeon-actions"><button type="button" class="dungeon-guide" hidden>'+guideLabel+'</button><button type="button" class="dungeon-challenge" hidden>เข้าถ้ำ · พบบอสชายแดน</button></div></div>';
 /** Reaching the gate enters the next land by itself; the latch needs a step away before it can fire again. */
 export function dungeonExitArrival(g,latched,{cut=0,destroyed=false}={}) {
   const s=dungeonStatus(g),at=!!(s?.ready&&dungeonAtExit(g));
@@ -438,7 +439,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const nextEnemies=new Map(dungeonEnemyPositions(g,enemyTime+100).map(e=>[e.id,e]));
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
     if(bossGuideWaiting(g)){actors.push({p:dungeonGuideAnchor(g),kind:'guide'});}
-    if(challengeStandeeShown()){actors.push({p:captainCave?.position||dungeonGuideAnchor(g),kind:'challenge'});}
+    // Z1-EVENTS (owner e9): where the cave interior is drawn the border boss stands INSIDE it - no standee at the cave mouth, the button leads in
+    if(challengeStandeeShown()&&!BREACH_ART.caveInterior[g.zone]){actors.push({p:captainCave?.position||dungeonGuideAnchor(g),kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       if(a.kind==='foreground'){drawRouteForeground(ctx,image,a.foreground,{x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});return;}

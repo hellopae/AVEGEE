@@ -90,13 +90,14 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame
 import { GRAPHICS_MODES, getGraphicsMode, setGraphicsMode, frameDue } from './graphics-setting.js';   // GFX-1110
 import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
-import { stepTo, nearestWalk } from './walk.js?v=k1d';
+import { stepTo, nearestWalk, findPath } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
+import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -339,7 +340,8 @@ setInterval(() => {
       !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
       Date.now() - lastBattleEnd > 1600) {
     zoneEventAlertSeen.add(`${g.zone}:${nextEvent.k}`);
-    openZoneEventAlert(nextEvent);
+    if (nextEvent.k === 'thBorderBoss' && !g.bossArriveSeen.th) beginBrotherArrival(nextEvent);
+    else openZoneEventAlert(nextEvent);
   }
   updateZoneEventFabs();
   // QUEST-REWARDS: a quest fight is open in g.battle but its window is gone (should not happen — the scene blocks Esc): open it again instead of leaving the world stuck
@@ -647,7 +649,7 @@ function drawTab() {
       </div>`).join('') : '<div class="empty">จ้างครบทุกคนแล้ว</div>')
       // ยักษ์ทวารบาลอยู่ในแท็บนี้ด้วย — เป็นคน ไม่ใช่สิ่งก่อสร้าง
       // (เดิมตัวจัดการปุ่มไปรออยู่แท็บก่อสร้าง แต่ไม่เคยมีใครวาดปุ่มให้ เลยจ้างไม่ได้เลย)
-      + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
+      + (!(g.guard || g.guardUnlocked()) ? '' : `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
         <span class="pw-av">${face(GUARD.img, '🛡️')}${powerBadgeHtml('guard', { zone: g.zone })}</span>
         <span class="n"><b>${GUARD.name}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
@@ -655,7 +657,7 @@ function drawTab() {
           <div class="st">${esc(GUARD.line)}</div></span>
         ${g.guard ? '<button class="sm" disabled>จ้างแล้ว</button>'
                   : `<button class="sm" id="hireg" ${g.coin < GUARD.hire ? 'disabled' : ''}>จ้าง ${GUARD.hire}</button>`}
-      </div>`;
+      </div>`);
     b.querySelectorAll('[data-hire]').forEach(el =>
       el.onclick = () => { g.hire(el.dataset.hire); refresh(); });
     const hg2 = b.querySelector('#hireg');
@@ -1833,16 +1835,13 @@ function openZoneEventAlert(ev) {
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
-  if(ev.k==='thBorderBoss') {
-    openEventAlert(ev.k,title,'บอสโซน 1 รออยู่ในถ้ำนอกชายแดน — เดินผ่านป่า น้ำตก หุบเขา และเหวเพื่อไปพบ',foeArt,'เดินไปด่านชายแดน',()=>{dlg.close();g.walkTo(FRONTIER.x,FRONTIER.y);},false,true);
-    return;
-  }
+  // Z1-EVENTS (owner e8): the elder brother stands at the pier and can be talked to - this window IS that talk (prepare / fight), no cave walk
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
     openEventAlert(ev.k, title, ev.k === 'westVampireBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
     return;
   }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
-    zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
+    zoneEventTried.has(`${g.zone}:${ev.k}`) ? (zoneEventText(ev.retry) || t('event.prep.retry')) : (zoneEventText(ev.go) || t('event.prep.fight')), () => {
       const startFight = () => {
         if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(afterBreachBattle); }
       };
@@ -1941,6 +1940,25 @@ function verdictComment(v) {
   return (v.reason || BOSS_LINE[v.boss] || BOSS_LINE.ok) + (bonus ? ` · เบี้ยพิเศษ +${bonus}` : '');
 }
 
+/** Z1-EVENTS (case 15): the elder brother walks in through the lower border gate to the pier -> cutscene Intro-Boss-Zone1 -> the notice window.
+ *  After that he stands at the pier (npc-stand.js waitingEvents) and talking to him opens the same window. */
+function beginBrotherArrival(ev) {
+  const path = findPath(FRONTIER.x, FRONTIER.y, SPOTS.bossPier.x, SPOTS.bossPier.y);
+  const from = [FRONTIER.x, FRONTIER.y], to = [SPOTS.bossPier.x, SPOTS.bossPier.y];
+  g.bossWalk = { started:Date.now(), duration:4200, from, to, path:path?.length ? [from, ...path] : null, arrival:true };
+  pauseForDlg(); sfx('gong');
+  const done = () => {
+    if (dlg.open) { setTimeout(done, 300); return; }
+    g.bossWalk = null;
+    if (g.over || g.zone !== 'th' || g.zoneEventStatus('thBorderBoss') !== 'pending') { refresh(); return; }
+    openBossArrive(g.zoneDef(), () => {
+      g.bossArriveSeen.th = true; g.dismissEventAlert('thBorderBoss');
+      openZoneEventAlert(ev);
+    }, 'ไปพบพี่ใหญ่');
+  };
+  setTimeout(done, 4200);
+}
+
 let bossBridgeTimer = 0;
 function beginBossBridgeWalk() {
   if (g.bossWalk || bossBridgeTimer || !g.bossReady()) return;
@@ -1963,7 +1981,7 @@ function beginBossBridgeWalk() {
 /** ฉากมาถึงของบอสประจำโซน — 3-4 บรรทัดสลับผู้พูด ก่อนสู้ครั้งแรกเท่านั้น (17 ก.ย. 2569)
  *  รีแมตช์ (bossArriveSeen ติดไปแล้ว) ข้ามตรงไปสู้เลย · ใช้ภาพ Intro-Boss-Zone<N> เป็นพื้นหลังถ้ามี
  *  บทมาจาก Rae ผ่าน Reese fact-check แล้ว (ดู ZONES[].bossArrive ใน data.js) ห้ามแก้ถ้อยคำ */
-function openBossArrive(z, onDone) {
+function openBossArrive(z, onDone, lastLabel = '⚔️ สู้เลย') {
   const lines = z.bossArrive || [];
   if (!lines.length) { onDone(); return; }
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
@@ -1984,7 +2002,7 @@ function openBossArrive(z, onDone) {
         <div class="intro-comic-head"><span>👑 ${esc(z.bossName)}มาถึงแล้ว</span><span>${i + 1} / ${lines.length}</span></div>
       </div>
       <div class="intro-comic-caption"><h2>${esc(speaker)}</h2><p>${esc(text)}</p></div>
-      <div class="intro-comic-controls"><button class="gold" id="arrive-next">${i + 1 === lines.length ? '⚔️ สู้เลย' : 'หน้าถัดไป →'}</button></div>
+      <div class="intro-comic-controls"><button class="gold" id="arrive-next">${i + 1 === lines.length ? esc(lastLabel) : 'หน้าถัดไป →'}</button></div>
     </div>`;
     prepareComicImages(dlg);
     dlg.querySelector('#arrive-next').onclick = () => { if (++i >= lines.length) dlg.close(); else paint(); };
@@ -2695,6 +2713,7 @@ function openTrial(initialError = '') {
   if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s || !g.caseReady(s)) return;
+  if (s.storyHearing) { openSitaHearing(); return; }   // Z1-EVENTS (case 12): her own hearing - she is never sentenced
   if(needsFirstDestination(g)){
     const cauldron=STATIONS.find(d=>d.k==='krata'),building=g.stations.find(st=>st.def.k==='krata');
     modal(`<h2>เตรียมกระทะทองแดงก่อนสอบสวน</h2><p>เดินขึ้นไปที่จุดสร้างกระทะทองแดงด้านบน แล้วกดสร้าง เพื่อให้มีสถานที่ลงทัณฑ์รองรับคำตัดสินแรก${building?.build?' · ช่างกำลังก่อสร้าง รอจนเสร็จก่อนพิจารณาคดี':''}</p><button class="gold" data-walk-cauldron>เดินไปจุดสร้างกระทะทองแดง</button><button data-close>กลับแผนที่</button>`,d=>{
@@ -3327,7 +3346,8 @@ function openNiraOffice() {
     });
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาวด้านล่างเดิม
     // (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน)
-    cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
+    // e2 (owner 13 Nov): Zone 1's Guard is not for hire - he joins through the frontier event, so his card appears only once he is with the team
+    if (g.guard || g.guardUnlocked()) cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — นับรวมในทีม</small>
         ${hireTag('guard', !!g.guard)}
@@ -3443,6 +3463,83 @@ function openChallenge(onReturn) {
   dlg.addEventListener('close', back);
 }
 
+/** Z1-EVENTS notice window (case 5 nurse ledger · case 12 Sita arrival / PHANTOM-404). Text: src/z1-events.js NOTICES. Shown once (g.ackNotice). */
+function openStoryNotice(id) {
+  const n = NOTICES[id];
+  if (!n) { g.ackNotice(id); return; }
+  pauseForDlg();
+  let detail = false;
+  const paint = () => modal(`<div class="event-alert-main z1-notice"><h2>${esc(n.title)}</h2><p>${esc(detail ? n.detail : n.text)}</p>
+      <img class="event-alert-foe" src="${esc(n.art)}" alt="" onerror="this.remove()">
+      <div class="event-alert-actions"><button class="gold" data-notice-ok>${esc(detail || !n.detail ? (detail ? 'ปิด' : n.button) : n.button)}</button></div></div>`, d => {
+    d.querySelector('[data-notice-ok]').onclick = () => {
+      if (n.detail && !detail) { detail = true; paint(); return; }
+      g.ackNotice(id); dlg.close(); setTimeout(() => g.onChange(), 0);
+    };
+  }, 'event-alert');
+  paint();
+  onDlgClose(() => { if (g.notices.includes(id)) g.ackNotice(id); });
+}
+
+/** Z1-EVENTS case 12 — Sita's hearing. Text: Rae (src/z1-events.js SITA.hearing). Questions are asked one by one; the verdict buttons (A / B only -
+ *  choice C is cut) open once the question that shows the ledger was tampered with has been asked. No path sentences, escorts or scores against her. */
+function openSitaHearing() {
+  const h = SITA.hearing, asked = new Set();
+  let last = null, chosen = null;
+  pauseForDlg(); bgm('bgm-trial');
+  const paint = () => {
+    const truth = h.questions.some((q, i) => q.truth && asked.has(i));
+    const said = chosen ? chosen.lines.map(l => `<p>${esc(l)}</p>`).join('')
+      : last == null ? `<p>${esc(h.opening)}</p><p>${esc(h.line)}</p>`
+      : `<p><b>ยมบาทน้อย:</b> ${esc(h.questions[last].q)}</p><p><b>${esc(h.name)}:</b> ${esc(h.questions[last].a)}</p>${h.questions[last].reveal ? `<p class="hint">${esc(h.questions[last].reveal)}</p>` : ''}`;
+    dlg.innerHTML = `<div class="sita-hearing">
+      <header><small>${esc(SITA.caseTitle)}</small><h2>${esc(h.title)}</h2></header>
+      <div class="sita-hearing-body">
+        <figure><img src="${esc(SITA.art.portrait)}" alt="${esc(h.name)}"><figcaption><b>${esc(h.name)}</b><small>${esc(h.who)}</small></figcaption></figure>
+        <section>
+          <p class="sita-face">${esc(h.face)}</p>
+          <div class="sita-charge"><span class="tag">${esc(h.chargeTag)}</span> ${esc(h.charge)}</div>
+          <ul class="sita-merits">${h.merits.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+          <div class="sita-said">${said}</div>
+        </section>
+      </div>
+      ${chosen ? `<div class="row"><button class="gold" data-sita-done>ต่อ</button></div>`
+        : `<div class="sita-questions">${h.questions.map((q, i) => `<button data-sita-q="${i}" class="${asked.has(i) ? 'asked' : ''}">${asked.has(i) ? '✓ ' : ''}${esc(q.q)}</button>`).join('')}</div>
+      <div class="sita-choices"><small>${truth ? 'คำตัดสิน' : 'ไต่สวนแฟ้มต้นฉบับก่อน จึงตัดสินได้'}</small>
+        ${h.choices.map(c => `<button class="gold" data-sita-choice="${c.k}" ${truth ? '' : 'disabled'}>${esc(c.label)}</button>`).join('')}</div>
+      <div class="row"><button data-close>ไว้ก่อน</button></div>`}
+    </div>`;
+    dlg.querySelectorAll('[data-sita-q]').forEach(b => b.onclick = () => { last = Number(b.dataset.sitaQ); asked.add(last); sfx('crack'); paint(); });
+    dlg.querySelectorAll('[data-sita-choice]').forEach(b => b.onclick = () => {
+      const c = h.choices.find(x => x.k === b.dataset.sitaChoice);
+      if (!g.resolveSitaCase(c.k)) return;
+      chosen = c; sfx('stamp'); paint();
+    });
+    const done = dlg.querySelector('[data-sita-done]');
+    if (done) done.onclick = () => { dlg.close(); setTimeout(() => g.onChange(), 0); };
+  };
+  openDlg('sita-hearing-dialog'); paint();
+  onDlgClose(() => { bgm('bgm-zone'); refresh(); });
+}
+
+/** Z1-EVENTS (owner e9): after the frontier event the border boss stands INSIDE the cave. Drawn background per zone (img/z1-events/bg-cave-<zone>.webp),
+ *  the boss's own standee on its open floor. Talking to him is the frontier trial, as before. */
+function openCaveInterior(onLeave) {
+  const zone = g.zone, bg = BREACH_ART.caveInterior[zone], name = BOSS_NAMES[zone].frontier;
+  if (!bg) { openChallenge(onLeave); return; }
+  pauseForDlg();
+  const sprite = storyFoeArt(zone === 'th' ? 'boss-frontier-th' : `boss-frontier-${zone}`);
+  modal(`<div class="cave-interior"><div class="cave-interior-scene"><img class="cave-interior-bg" src="${esc(bg)}" alt="ในถ้ำ">
+      <img class="cave-interior-boss" src="${esc(sprite)}" alt="${esc(name)}"><img class="cave-interior-yama" src="${esc(artUrl('hero-yama'))}" alt="${esc(HERO_NAME)}"></div>
+    <div class="row"><button data-cave-leave>ออกจากถ้ำ</button><button class="gold" data-cave-talk>💬 คุยกับ${esc(name)}</button></div></div>`, d => {
+    d.querySelector('[data-cave-leave]').onclick = () => { dlg.close(); };
+    d.querySelector('[data-cave-talk]').onclick = () => { left = true; openChallenge(() => openCaveInterior(onLeave)); };
+  }, 'cave-interior-dialog');
+  let left = false;
+  const back = () => { if (dlg.open) return; dlg.removeEventListener('close', back); if (!left && !g.over && !g.battle) onLeave?.(); };
+  dlg.addEventListener('close', back);
+}
+
 function openBossPier() {
   const z = g.zoneDef();
   pauseForDlg();
@@ -3465,9 +3562,16 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const intro = breach && !bev?.signal && !introSeen && frontierIntroduction(g.zone, getLang());
   if (intro) {
     const zone = g.zone;
-    const proceed = () => {
+    const toPrep = () => {
       if (g.zone === zone && g.zoneEventStatus(breachKey) === 'pending') openFrontier(false, breachKey, true, true);
       else dlg.close();
+    };
+    // Z1-EVENTS (case 9): right after the intro, the green giant who keeps the border gate steps out to help (cutscene, once)
+    const proceed = () => {
+      const key = 'frontier-th-guard-joins';
+      if (!thBreach || g.storySeen[key]) { toPrep(); return; }
+      openDlg('intro-comic-dialog');
+      renderStoryComic(dlg, storyOf(key), () => { g.storySeen[key] = true; g.save(); toPrep(); });
     };
     modal(`<div class="intro-comic frontier-introduction" role="region" aria-label="${esc(intro.speaker)}">
       <div class="intro-comic-frame"><img src="${esc(intro.image)}" alt="${esc(intro.speaker)}"></div>
@@ -3739,7 +3843,7 @@ function openBattle(after) {
   };
 
   let commandPanel = null, commandPanelActor = null;
-  let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
+  let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
@@ -4031,8 +4135,8 @@ function openBattle(after) {
       storyActive = true;
       const overlay = document.createElement('div');
       overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
-      renderStoryComic(overlay, STORY[key], () => {
-        if (key === 'west-hypnosis') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
+      renderStoryComic(overlay, storyOf(key), () => {
+        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
         overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
       });
       return;
@@ -4275,7 +4379,7 @@ function openBattle(after) {
         <img src="${esc(bossProfileOverride(f.sp, g.zone) || (String(f.sp ?? '').startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp)))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
         <div class="battle-boss-status"><b>${esc(f.who)}</b>${meter(f.hp, f.maxHp, 'health', t('battle.morale'))}<small>${esc(t('battle.morale'))} ${Math.round(f.hp)}/${f.maxHp}</small></div>
         ${f.sub ? `<p>${esc(f.sub)}</p>` : ''}
-      </div>`; })() : `<div class="battle-scene-talk talkbox">${esc(view.talk || '')}</div>`}
+      </div>`; })() : ''/* e4 (owner 13 Nov): no speech box under the enemies - demons, werewolves ... do not talk */}
     `);
     if (view.foes?.length > 1) {
       const counts = new Map(), seen = new Map();
@@ -4774,7 +4878,12 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = () => { if (!phase) finish(); };
-    if(currentTurn?.side==='foe'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
+    // Z1-EVENTS (case 9): the new team move was just unlocked (window closed) -> Yama uses it to close the border boss fight, whoever's turn it was
+    if(b.breachFinale==='ready'&&!b.storyInterlude&&!phase&&!b.over&&!b.commandBusy&&!finaleScheduled&&!userPaused&&!pauseDlg.open){
+      finaleScheduled=true;
+      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready')executeSkill('teamJudgment','you');},650);
+    }
+    if(currentTurn?.side==='foe'&&b.breachFinale!=='ready'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;
       phaseTimer=setTimeout(async ()=>{
         enemyScheduled=false;
@@ -4939,6 +5048,9 @@ function openZone() {
 function openBorder() {
   if(Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y)>FRONTIER.reach)return;
   borderGateLatched=true;
+  // f1 (owner 13 Nov): the border boss is there the first time Yama walks down - not only after leaving and coming back
+  const pending=g.breachPending();
+  if(pending){if(!g.eventMapClosed[`${g.zone}:${pending.key}`])g.dismissEventAlert(pending.key);openFrontier(false,pending.key);return;}
   openFrontierWalk();
 }
 function openDungeon() {
@@ -4947,7 +5059,7 @@ function openDungeon() {
   modal('<div id="dungeon-root"></div>',d=>{
     destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
       onGuide:()=>{destroy?.();destroy=null;runBossGuideStory('welcome',()=>openDungeon());},
-      onChallenge:()=>{destroy?.();destroy=null;openChallenge(()=>{if(!g.pendingRecovery)openDungeon();});},
+      onChallenge:()=>{destroy?.();destroy=null;openCaveInterior(()=>{if(!g.pendingRecovery)openDungeon();});},
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
         if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
@@ -6510,10 +6622,10 @@ function openBossJustice() {
       d.querySelector('#justice-end').onclick=()=>{if(releaseBoss(g)){persist();d.close();setTimeout(()=>g.onChange(),0);}};
     },'intro-comic-dialog');return;
   }
-  if(c.final){
+  if(c.final||c.arena){   // Z1-EVENTS: Zone 1's border boss is tried on the same trial page as the final boss (answer locked by the mirror) - not the small form (owner e5 / e6)
     pauseForDlg();bgm('bgm-trial');openDlg('hudwrap');
     mountFinalBossCourt(dlg,g,{
-      assets:{background:artUrl('BG-Turn-Base','webp'),hero:heroFace(),portrait:artUrl('hero-yama-profile')||heroFace(),
+      assets:{background:artUrl('BG-Turn-Base','webp'),hero:heroFace(),portrait:artUrl('hero-yama-profile')||heroFace(),foe:storyFoeArt(c.art),
         station:stBg,crew:k=>artUrl(`crew-${k}-profile`)||artUrl(`crew-${k}`)},
       onPaint:()=>{
         mountYamaTrialIdle(dlg.querySelector('.fig.you img'),g.outfit||g.zone);
@@ -6693,6 +6805,7 @@ g.onChange = () => {
     }
     return;
   }
+  if (!g.battle && !dlg.open && g.notices?.length) { openStoryNotice(g.notices[0]); return; }
   if (!g.battle && !dlg.open && g.bossJustice?.active && bossJusticeActive(g)) {
     const c=bossJusticeCase(g);
     if (['dais','trial','sentenceScene'].includes(c.phase)) { openBossJustice(); return; }

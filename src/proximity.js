@@ -1,3 +1,4 @@
+import { waitingEvents } from './npc-stand.js';
 import { isTownZone } from './zone-skin.js';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { t } from './i18n.js';
@@ -51,6 +52,7 @@ export function stationButtonPos(def, top = topOf(def), body = bodyBoxOf(def)) {
   return { bx: body ? (body[0] + body[2]) / 2 : def.bx, by: top + height * BUTTON_ROOF_DROP, anchor: 'roof' };
 }
 
+const TALK_EVENTS = { thBorderBoss:g => g.zoneDef().bossName, sitaHanuman:() => 'หนุมาน' };
 export function mapInteractions(g, merchant) {
   if (westRescuePending(g)) return [{ id:'west-rescue', kind:'zoneEvent', key:'westHypnotized', ...WEST_RESCUE,
     bx:WEST_RESCUE.x, by:WEST_RESCUE.y-100, label:t('west.rescue.approach') }];
@@ -59,6 +61,9 @@ export function mapInteractions(g, merchant) {
   for (const a of finalEventActors(g)) if (a.enabled) targets.push({ id:a.id,key:a.id,kind:'finalEncounter',x:a.x,y:a.y,bx:a.x,by:a.y-85,label:'เริ่มศึก' });
   const rest = finalRestSpot(g);
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
+  // Z1-EVENTS (owner e8): the elder brother (case 15) / Hanuman (case 12) waiting at the pier can be talked to like any other character
+  for (const ev of waitingEvents(g)) if (TALK_EVENTS[ev.key]) targets.push({ id:`event:${ev.key}`, key:ev.key, kind:'zoneEvent', x:ev.x, y:ev.y,
+    bx:ev.x, by:ev.y - 118, label:`💬 คุยกับ${TALK_EVENTS[ev.key](g)}` });
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
     bx:nira.x, by:nira.y - (isTownZone(g.zone)?58:74), anchor:'top', label:'จัดทีมยมทูต' });

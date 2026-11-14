@@ -41,7 +41,8 @@ export function powerSheetHtml(g, k) {
   const price = k === 'guard' ? GUARD.hire : def?.hire;
   const inParty = !!actor && k !== 'guard' && (g.party?.members || []).includes(k);
   const canTeam = hired && k !== 'guard' && !def?.reader;
-  const buttons = !hired
+  const buttons = !hired && k === 'guard' && g.guardUnlocked && !g.guardUnlocked() ? ''   // Z1-EVENTS: Zone 1's Guard is not for hire before the frontier event
+    : !hired
     ? `<button type="button" class="gold" data-power-hire="${esc(k)}" ${g.coin < price ? 'disabled' : ''}>${esc(t('power.hire', { n: price }))}</button>`
     : canTeam ? `<button type="button" class="gold" data-power-party="${esc(k)}">${esc(t(inParty ? 'power.leaveTeam' : 'power.joinTeam'))}</button>` : '';
   return `<div class="power-sheet" role="dialog" aria-modal="true" aria-label="${esc(name)}">
