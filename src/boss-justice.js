@@ -121,9 +121,9 @@ export function sentenceBoss(g,pick) {
   if(c.arena){
     c.pick={...pick};c.phase='aftermath';c.elapsed=0;
     g.log(`⚖️ ออกหมาย ${c.name} → ${st.def.name} · ผู้คุม ${crew.name} · ความแรง ${pick.intensity}`,'event');
-    const st=arenaStories(c);
-    if(g.storySeen?.[st.released])releaseBoss(g);
-    else{g.queueStory(st.punished);g.queueStory(st.released);}
+    const arts=arenaStories(c);
+    if(g.storySeen?.[arts.released])releaseBoss(g);
+    else{g.queueStory(arts.punished);g.queueStory(arts.released);}
     return true;
   }
   c.pick={...pick};c.phase='escort';c.elapsed=0;

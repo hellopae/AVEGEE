@@ -3,13 +3,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame, loadSave } from '../src/game.js';
-import { STATIONS, ZONE_EVENTS, ZONE_BOSS_AT, GUARD } from '../src/data.js';
+import { STATIONS, ZONE_EVENTS, ZONE_BOSS_AT, GUARD, SPOTS } from '../src/data.js';
 import { bossJusticeCase, bossJusticeAnswer, interrogateBoss, mirrorBoss, sentenceBoss, ARENA_STORIES } from '../src/boss-justice.js';
 import { NOTICES, Z1_STORIES, storyCaseRows } from '../src/z1-events.js';
 import { Z2_KIN, Z2_STORY_CASES, Z2_STORIES, Z2_TEXT, Z2_ART, AKURA_TRIAL, DEVA_ASIA_ARRIVAL } from '../src/z2-events.js';
 import { storyOf, ABILITY_REWARDS } from '../src/story.js';
 import { devaMapActors } from '../src/deva-map.js';
 import { setLang, t } from '../src/i18n.js';
+import { ALL_CASES as CASES_ALL } from '../src/cases.js';
 globalThis.document = { documentElement:{} };
 globalThis.Image = class { set src(value) {} };
 
@@ -141,4 +142,204 @@ test('Wukong half-way line is said once', () => {
   for (const f of b.foes) f.atk = [0, 0];
   boss.hp = Math.floor(boss.maxHp / 2); b.selectedFoeId = boss.id; g.battleAct('atk');
   assert.equal(g.battle.talk, Z2_TEXT.wukong.lines.half);
+});
+
+/** ... on to just after case 7 (Wukong calmed). */
+function passCase7(g, heaven = true) {
+  passCase3(g);
+  for (let n = 4; n <= 6; n++) judgeNext(g);
+  judgeNext(g, { heaven }); drainStories(g); ackAll(g);
+  g.startZoneEvent('asiaWukong'); winFight(g); drainStories(g); ackAll(g);
+  assert.equal(status(g, 'asiaWukong'), 'cleared'); assert.equal(g.zoneCases.asia, 7);
+}
+
+test('case 11: 3 waves -> Akura -> the closing fireball -> court with the locked answer -> punished -> back to the cave', () => {
+  let g = fresh(); passCase7(g);
+  for (let n = 8; n <= 11; n++) { assert.equal(status(g, 'asiaRageBreach'), 'locked', `breach must wait for case 11 (at ${n - 1})`); judgeNext(g); }
+  assert.equal(status(g, 'asiaRageBreach'), 'pending'); assert.equal(g.zoneCases.asia, 11);
+  assert.equal(ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach').alert.th, 'ปีศาจกำลังฝ่าชายแดนบูรพา ให้เดินลงไปตรวจที่ชายแดนด้านล่าง');
+  assert.equal(g.breachPending().key, 'asiaRageBreach');
+  const b = g.startZoneEvent('asiaRageBreach'); assert.ok(b);
+  const subs = [];
+  for (let wave = 1; wave <= 3; wave++) {
+    assert.equal(g.battle.wave, wave); assert.ok(!g.battle.foes.some(f => f.boss)); subs.push(g.battle.foes[0].sub);
+    while (!g.battle.pendingWave) strike(g);
+    assert.equal(g.advanceZoneEventWave(), true);
+    if (wave === 1) assert.equal(g.battle.talk, Z2_TEXT.breach.afterWave1);
+    if (wave === 2) assert.equal(g.battle.talk, Z2_TEXT.breach.afterWave2);
+  }
+  assert.deepEqual(subs, ['ระลอก 1/3', 'ระลอก 2/3', 'ระลอก 3/3']);
+  const boss = g.battle.foes.find(f => f.boss); assert.equal(boss.sp, 'boss-frontier-asia'); assert.equal(boss.who, 'อากุระ'); assert.equal(g.battle.foes.length, 1);
+  assert.equal(g.battle.talk, Z2_TEXT.breach.lines.start); assert.equal(g.abilities.bigFire, undefined);
+  for (const f of g.battle.foes) f.atk = [0, 0];
+  boss.hp = Math.floor(boss.maxHp * 0.25); g.battle.selectedFoeId = boss.id; g.battleAct('atk');
+  assert.equal(g.battle.breachFinale, 'ready'); assert.equal(g.battle.finaleMove, 'fire'); assert.equal(g.battle.storyInterlude, 'asia-big-fire-unlock');
+  assert.equal(g.abilities.bigFire, true); assert.ok(boss.hp >= 1, 'the boss cannot fall to anything but the story move');
+  assert.equal(storyOf('asia-big-fire-unlock').pages[0].title, ABILITY_REWARDS.bigFire.name);
+  assert.equal(g.battleAct('atk'), true);     // pressing anything IS the closing move
+  assert.equal(g.battle.over, 'win'); const mp = g.mp; assert.equal(g.battle.breachFinale, 'done');
+  g.endBattle(); steady(g);
+  assert.equal(status(g, 'asiaRageBreach'), 'cleared');
+  // the court: Akura is tried in the arena (not on a walk), answer locked = the exercise yard at middle strength
+  const c = bossJusticeCase(g); assert.ok(c && c.arena && c.zone === 'asia' && c.phase === 'capture');
+  assert.deepEqual(g.storyQueue.map(p => p.key), ['z2-akura-down', ARENA_STORIES.asia.toDais]);
+  drainStories(g); assert.equal(bossJusticeCase(g).phase, 'dais');
+  const ans = bossJusticeAnswer(g); assert.deepEqual([ans.station, ans.intensity], [AKURA_TRIAL.station, 3]); assert.equal(AKURA_TRIAL.station, 'lan');
+  assert.ok(interrogateBoss(g)); assert.ok(mirrorBoss(g));
+  assert.equal(sentenceBoss(g, { station:'krata', crew:ans.crew, intensity:5 }), false, 'a wrong sentence is refused');
+  assert.equal(sentenceBoss(g, { station:'lan', crew:ans.crew, intensity:5 }), false);
+  assert.equal(sentenceBoss(g, { station:'lan', crew:ans.crew, intensity:3 }), true);
+  assert.equal(bossJusticeCase(g).phase, 'aftermath');
+  g = reload(g); assert.equal(bossJusticeCase(g).phase, 'aftermath');
+  assert.deepEqual(g.storyQueue.map(p => p.key), [ARENA_STORIES.asia.punished, ARENA_STORIES.asia.released]);
+  drainStories(g); assert.equal(bossJusticeCase(g), null); assert.equal(Object.values(g.bossJustice.ledger)[0].phase, 'released');
+  assert.equal(storyOf(ARENA_STORIES.asia.released).pages[0].line.includes('เจ้าไม่ได้ล่ามข้า ข้าจำไว้'), true);
+  g.refreshZoneEvents('asia'); assert.equal(status(g, 'asiaRageBreach'), 'cleared'); assert.equal(g.abilities.bigFire, true);
+});
+
+function passCase11(g) {
+  passCase7(g);
+  for (let n = 8; n <= 11; n++) judgeNext(g);
+  g.startZoneEvent('asiaRageBreach'); winFight(g); drainStories(g);
+  const ans = bossJusticeAnswer(g); interrogateBoss(g); mirrorBoss(g); sentenceBoss(g, { station:'lan', crew:ans.crew, intensity:3 }); drainStories(g);
+  assert.equal(bossJusticeCase(g), null);
+}
+
+for (const hired of [true, false]) test(`case 13 (Satori ${hired ? 'hired' : 'not hired'}): his father always comes · the clue button is off · farewell`, () => {
+  let g = fresh(); passCase11(g);
+  if (hired) { assert.ok(g.hire('kan')); } else assert.ok(!g.crew.some(c => c.k === 'kan'));
+  assert.equal(g.storyCaseOwed(), null, 'case 12 is still an ordinary case');
+  const n12 = judgeNext(g); assert.notEqual(n12.case, 'satorifather'); assert.equal(g.zoneCases.asia, 12);
+  assert.equal(g.storyCaseOwed(), 'satorifather'); g = reload(g);
+  const father = g.queue.find(s => s.case === 'satorifather'); assert.ok(father); assert.equal(father.sp, 'soul-satori-father-asia'); assert.equal(father.sex, 'm');
+  assert.equal(g.queue.filter(s => s.case === 'satorifather').length, 1); assert.deepEqual(plain(g), ['z2-satori-arrive']);
+  assert.equal(NOTICES['z2-satori-arrive'].button, 'ฟังซาโตริ');
+  // Satori's clue button is closed for this case, with his own words
+  if (hired) assert.equal(g.kanClueWhy(father), Z2_TEXT.satori.blocked);
+  assert.equal(g.kanRevealClue(father), null);
+  ackAll(g); assert.equal(g.storyQueue[0].key, hired ? 'z2-satori-ask' : 'z2-satori-ask-b');
+  const ask = storyOf(g.storyQueue[0].key).pages[0].line;
+  assert.ok(ask.startsWith(hired ? 'บรรยาย: ซาโตริเดินมาหยุดหน้าโต๊ะของท่าน' : 'บรรยาย: ชายหนุ่มผู้ถือสมุดบันทึกเดินเข้ามาในโถงพิพากษา'));
+  drainStories(g);
+  const soul = judgeNext(g); assert.equal(soul.case, 'satorifather'); assert.equal(g.zoneCases.asia, 13);
+  assert.equal(g.storyQueue[0].key, hired ? 'z2-satori-farewell' : 'z2-satori-farewell-b');
+  const last = storyOf(g.storyQueue[0].key).pages.at(-1).line;
+  assert.equal(last.includes('ข้ายังอยู่ที่บูรพาครับ'), !hired);
+  drainStories(g); assert.equal(g.storyCaseOwed(), null); g = reload(g); assert.equal(g.storyCaseOwed(), null);
+  assert.ok(!g.queue.some(s => s.case === 'satorifather'));
+});
+
+test('case 15: the zone boss comes at the 15th case only, after 11 and 13 · Lian Gang · then the boss guide takes over', () => {
+  let g = fresh(); passCase11(g);
+  for (let n = 12; n <= 13; n++) judgeNext(g);
+  assert.equal(g.zoneCases.asia, 13); assert.equal(g.bossReady(), false);
+  judgeNext(g); assert.equal(g.zoneCases.asia, 14); assert.equal(g.bossReady(), false, 'not at 14');
+  g.bossPending = false;
+  judgeNext(g); assert.equal(g.zoneCases.asia, 15); assert.equal(g.bossReady(), true); assert.equal(g.bossPending, true);
+  assert.equal(NOTICES['z2-lian-arrive'].title, 'แม่ทัพแห่งบูรพามาถึงแล้ว'); assert.equal(NOTICES['z2-lian-arrive'].button, 'ไปที่ท่าเรือ');
+  const z = g.zoneDef(); assert.equal(z.bossName, 'เหลียนกัง'); assert.ok(z.bossArrive.length >= 6 && z.bossArrive.some(l => l.includes('ข้าชื่อเหลียนกัง แม่ทัพตรวนบูรพา')));
+  g = reload(g); assert.equal(g.bossReady(), true);
+  const b = g.startZoneBoss(); assert.ok(b); assert.equal(b.talk, Z2_TEXT.lian.lines.start); assert.equal(b.halfLine, Z2_TEXT.lian.lines.half);
+  g.battle.foes.forEach(f => { f.hp = 99999; f.atk = [999, 999]; }); g.battle.youHp = 1;
+  for (let i = 0; i < 12 && !g.battle.over; i++) g.battleAct('atk');
+  assert.equal(g.battle.over, 'lose'); g.endBattle(); steady(g);
+  assert.ok(g.storyQueue.some(p => p.key === 'z2-lian-lose')); drainStories(g);
+  assert.equal(g.bossGuarding.asia, true); assert.equal(g.bossCleared.asia, undefined);
+  Object.assign(g.player, { x:SPOTS.bossPier.x, y:SPOTS.bossPier.y });
+  assert.ok(g.startZoneBoss(true), 'retry from the pier');
+  for (const f of g.battle.foes) f.atk = [0, 0];
+  for (let i = 0; i < 40 && g.battle && !g.battle.over; i++) strike(g);
+  assert.equal(g.battle.over, 'win'); g.endBattle(); steady(g);
+  assert.equal(g.bossCleared.asia, true);
+  assert.deepEqual(drainStories(g).filter(k => k.startsWith('z2-') || k === 'asia'), ['asia', 'z2-lian-win']);
+  assert.equal(bossJusticeCase(g), null, 'a zone boss is never tried');
+  assert.equal(g.bossGuideWaiting(), true, 'the existing boss-guide system takes over: he waits at the border gate');
+  assert.equal(g.abilities.rage, true);
+});
+
+test('the Guard of Zone 2 must be beaten before he is hired (Rae 7.1) - hire button -> test -> win hires him; lose = try again', () => {
+  const g = fresh(); g.coin = 9000;
+  assert.equal(g.guard, null); assert.equal(g.guardTestNeeded(), true);
+  const coin = g.coin;
+  assert.equal(g.hireGuard(), false); assert.equal(g.guard, null); assert.equal(g.coin, coin, 'nothing is paid before the test');
+  assert.equal(status(g, 'asiaGuardTest'), 'pending');
+  const ev = ZONE_EVENTS.asia.find(e => e.k === 'asiaGuardTest'); assert.equal(ev.openStory, 'z2-guard-test-open'); assert.equal(ev.alert.th.startsWith('ก่อนรับท่านเป็นนาย'), true);
+  assert.equal(ev.go.th, 'รับมือ'); assert.equal(ev.retry.th, 'ทดสอบอีกครั้ง');
+  let b = g.startZoneEvent('asiaGuardTest'); assert.ok(b); assert.equal(b.foes[0].who, 'ยักษ์ทวารบาล');
+  b.foes.forEach(f => { f.hp = 99999; f.atk = [999, 999]; }); b.youHp = 1;
+  for (let i = 0; i < 12 && !g.battle.over; i++) g.battleAct('atk');
+  assert.equal(g.battle.over, 'lose'); g.endBattle(); steady(g);
+  assert.equal(g.guard, null, 'losing does not hire him'); assert.equal(status(g, 'asiaGuardTest'), 'pending');
+  assert.deepEqual(drainStories(g), ['z2-guard-test-lose']);
+  g.startZoneEvent('asiaGuardTest'); winFight(g);
+  assert.ok(g.guard, 'winning hires him'); assert.equal(g.coin, coin - GUARD.hire); assert.equal(status(g, 'asiaGuardTest'), 'cleared');
+  assert.deepEqual(drainStories(g), ['z2-guard-test-win']);
+  assert.equal(reload(g).guard.k, 'guard');
+  // a Guard hired before this package (old save) is never asked to fight
+  const old = fresh(); old.guard = reload(g).guard; assert.equal(old.guardTestNeeded(), false);
+});
+
+test('the crew relatives: unlocked by hiring, put in the queue once, the lines in order, a choice at the end', () => {
+  const g = fresh(); g.coin = 99999; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 4;
+  assert.ok(g.crew.some(c => c.k === 'taan'), 'Taan is hired from the first day');
+  g.zoneEvents.asia.asiaDevaTest = 'pending'; g.ensureKinCases(); assert.deepEqual(g.queue.filter(s => s.kin), [], 'the relatives wait for the end of the zone opening'); g.zoneEvents.asia.asiaDevaTest = 'cleared';
+  const expectCase = { chaincmd:'taan', deserter:'guard', fakecup:'plerng', A2:'dam', granarysister:'boon' };
+  for (const [k, who] of Object.entries(expectCase)) {
+    assert.equal(g.queue.some(s => s.kin === k), false);
+    if (who === 'guard') { g.zoneEvents.asia.asiaGuardTest = 'cleared'; assert.ok(g.hireGuard()); } else if (who !== 'taan') assert.ok(g.hire(who), `hire ${who}`);
+    g.ensureKinCases(); g.ensureKinCases();
+    const soul = g.queue.find(s => s.kin === k); assert.ok(soul, `${k} is in the queue once`); assert.equal(g.queue.filter(s => s.kin === k).length, 1);
+    const row = Z2_KIN.find(r => r.k === k); assert.equal(g.notices.includes(`kin-${k}`), true);
+    assert.equal(NOTICES[`kin-${k}`].button, row.notice.button); assert.equal(NOTICES[`kin-${k}`].detail, row.before.join('\n'));
+    assert.ok(NOTICES[`kin-${k}`].detail.length > 20);
+    if (k !== 'A2') assert.equal(soul.sp, Z2_ART && { deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia', fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia' }[k]);
+    // the relative speaks at the first question, once
+    assert.equal(soul.said.some(x => x.kind === 'kin'), false);
+    g.press(soul, 0); assert.equal(soul.said.filter(x => x.kind === 'kin').length, row.during.length);
+    g.press(soul, 1); assert.equal(soul.said.filter(x => x.kind === 'kin').length, row.during.length, 'only once');
+    ackAll(g); g.notices = g.notices.filter(n => n !== `kin-${k}`);
+    // the verdict opens the closing window; its two choices are saved
+    g.queue.splice(g.queue.indexOf(soul), 1);
+    g.applyVerdict(g.judge({ def:STATIONS.find(d => d.k === 'krata'), crewK:'taan' }, { soul, intensity:2 }), soul); steady(g);
+    assert.ok(g.notices.includes(`kin-after-${k}`)); assert.equal(g.kinDone[k].choice, null);
+    assert.equal(row.choices.length, 2); g.kinDone[k].choice = 1; g.ackNotice(`kin-after-${k}`);
+    const again = reload(g); assert.equal(again.kinDone[k].choice, 1); again.ensureKinCases();
+    assert.equal(again.queue.some(s => s.kin === k), false, 'a relative is never queued twice');
+  }
+});
+
+test('fakecup: the relative tells the truth himself - no hypnosis, no karma, once', () => {
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 4; assert.ok(g.hire('plerng')); g.ensureKinCases();
+  const soul = g.queue.find(s => s.kin === 'fakecup'); assert.ok(soul.assist);
+  const hiddenBefore = soul.deeds.filter(d => !d.known).length; assert.ok(hiddenBefore >= 1); const karma = g.karma, mp = g.mp;
+  assert.equal(g.kinAssistWhy(soul), '');
+  const out = g.kinAssist(soul); assert.ok(out);
+  assert.equal(soul.deeds.filter(d => !d.known).length, hiddenBefore - 1); assert.equal(g.karma, karma); assert.equal(g.mp, mp);
+  assert.ok(soul.said.some(x => x.kind === 'truth' && x.text.startsWith('โฮมุระ: "ขอผมดูใต้ก้นถ้วยหน่อยครับ')));
+  assert.notEqual(g.kinAssistWhy(soul), ''); assert.equal(g.kinAssist(soul), null);
+  assert.equal(reload(g).queue.find(s => s.kin === 'fakecup').assist.used, true);
+});
+
+test('A2 (old bandit case): Rae rewrite - the families\' winter help is a real merit, the whole-city sharing is a false one', () => {
+  const a2 = [...CASES_ALL].find(c => c.k === 'A2');
+  assert.equal(a2.merits.length, 2); assert.deepEqual(a2.merits.map(m => m.fake), [false, true]);
+  assert.ok(a2.merits[0].t.startsWith('ช่วยครอบครัวของลูกน้องในแก๊ง'));
+  assert.equal(a2.claims.some(c => c.kind === 'boast'), true);
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.queue = []; g.casesDone = 2;
+  g.usedCases = CASES_ALL.filter(c => c.zone === 'asia' && c.k !== 'A2' && !c.quest).map(c => c.k);   // only A2 is left to be drawn
+  for (let i = 0; i < 6 && !g.queue.some(s => s.case === 'A2'); i++) g.spawnSoul();
+  const soul = g.queue.find(s => s.case === 'A2'); assert.ok(soul, 'A2 is drawn'); assert.equal(soul.kin, undefined);
+  assert.ok(g.hire('dam')); g.ensureKinCases();
+  assert.equal(g.queue.filter(s => s.case === 'A2').length, 1, 'the existing A2 soul gets the relative - no second copy'); assert.equal(soul.kin, 'A2');
+});
+
+test('old saves and Zone 1 are untouched', () => {
+  // Zone 1: nothing of Zone 2's tables is read
+  const th = createGame(); assert.equal(th.storyCaseOwed(), null); assert.deepEqual(storyCaseRows('th').map(r => r.k), ['nurse', 'devaMonk', 'sitaledger']);
+  // an old Zone 2 save in the middle of the zone: ape already judged under no rule -> the story catches up in order, never twice
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 9;
+  const loaded = reload(g); assert.equal(loaded.storyCaseOwed(), 'apeelder');
+  loaded.queue = []; loaded.ensureDevaCase(); assert.equal(loaded.queue[0].case, 'apeelder');
+  // a save whose boss was already beaten never gets the story cases
+  const done = fresh(); done.zoneCases.asia = 20; done.bossCleared.asia = true; assert.equal(reload(done).storyCaseOwed(), null);
 });
