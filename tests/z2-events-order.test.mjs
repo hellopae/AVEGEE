@@ -309,6 +309,23 @@ test('the crew relatives: unlocked by hiring, put in the queue once, the lines i
   }
 });
 
+test("Akura's cave follow-up (Rae 7.3): only after the chain-commander case is closed with its choice, said once, kept across a reload", () => {
+  const g = fresh(); g.coin = 99999; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 4;
+  const row = Z2_KIN.find(r => r.k === 'chaincmd'); assert.equal(row.followUp.length, 2);
+  assert.equal(g.kinFollowUpLines(), null, 'nothing before the case');
+  g.ensureKinCases(); const soul = g.queue.find(s => s.kin === 'chaincmd'); assert.ok(soul);
+  assert.equal(g.kinFollowUpLines(), null, 'nothing while the case is open');
+  g.queue.splice(g.queue.indexOf(soul), 1);
+  g.applyVerdict(g.judge({ def:STATIONS.find(d => d.k === 'krata'), crewK:'taan' }, { soul, intensity:2 }), soul); steady(g);
+  assert.equal(g.kinFollowUpLines(), null, 'nothing before the closing choice is made');
+  g.kinDone.chaincmd.choice = 0; g.ackNotice('kin-after-chaincmd');
+  assert.deepEqual(g.kinFollowUpLines(), row.followUp);
+  assert.deepEqual(reload(g).kinFollowUpLines(), row.followUp, 'a reload before hearing it keeps it');
+  g.kinFollowUpSeen();
+  assert.equal(g.kinFollowUpLines(), null, 'said once'); assert.equal(reload(g).kinFollowUpLines(), null, 'and not again after a reload');
+  const other = fresh(); other.kinDone.chaincmd = { verdict:'punished', choice:1 }; other.zone = 'th'; assert.equal(other.kinFollowUpLines(), null, 'only in Zone 2');
+});
+
 test('fakecup: the relative tells the truth himself - no hypnosis, no karma, once', () => {
   const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 4; assert.ok(g.hire('plerng')); g.ensureKinCases();
   const soul = g.queue.find(s => s.kin === 'fakecup'); assert.ok(soul.assist);

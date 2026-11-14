@@ -3481,16 +3481,19 @@ function openChallenge(onReturn) {
   const w = ev.reward.weapon, name = BOSS_NAMES[zone].frontier, done = g.challengeDone(zone), wave = g.challengeStartWave(zone);
   const go = done ? t('challenge.rematch') : wave > 1 ? t('challenge.resume', { wave }) : t('challenge.start');
   const info = done ? t('challenge.info.replay') : wave > 1 ? t('challenge.info.checkpoint', { wave }) : '';
+  const followUp = g.kinFollowUpLines();      // Z2-EVENTS (Rae 7.3): Akura's two extra lines after the chain-commander case, said once
   pauseForDlg();
   modal(`<div class="challenge-talk">
     <img class="challenge-boss" src="${esc(storyFoeArt(`boss-frontier-${zone}`))}" alt="${esc(name)}">
     <h2>${esc(name)}</h2>
+    ${followUp ? `<div class="challenge-followup" data-kin-followup>${followUp.map(l => `<p class="challenge-line">${esc(l)}</p>`).join('')}</div>` : ''}
     <p class="challenge-line">“${esc(t(`challenge.${zone}.talk`))}”</p>
     <p class="challenge-line">“${esc(t(`challenge.${zone}.invite`))}”</p>
     <div class="challenge-weapon">${weaponImg(w)}<span><small>${esc(t('challenge.info.reward', { weapon:t(`weapon.${w}.name`) }))}</small>
       ${weaponEffectLines(w).map(l => `<small>${esc(l)}</small>`).join('')}<small>${esc(t('weapon.only'))}</small></span></div>
     ${info ? `<p class="hint">${esc(info)}</p>` : ''}
     <div class="row"><button data-close>${esc(t('challenge.later'))}</button><button class="gold" data-challenge-go>${go}</button></div></div>`, d => {
+      if (followUp) g.kinFollowUpSeen();
       d.querySelector('[data-challenge-go]').onclick = () => { if (g.startChallenge()) { dlg.removeEventListener('close', back); dlg.close(); openBattle(onReturn); } };
     }, 'challenge-dialog');
   dlg.addEventListener('close', back);

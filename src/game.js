@@ -583,6 +583,13 @@ const API = {
       soul.kin = row.k; this.kinSeen[row.k] = true; this.queueNotice(`kin-${row.k}`);
     }
   },
+  /** Rae 7.3 follow-up: once the Gokū relative's case is closed (verdict + his closing choice), Akura says two more lines the next time he is talked to in the cave. null = nothing to say. */
+  kinFollowUpLines() {
+    const rec = this.kinDone?.chaincmd, row = Z2_KIN_BY_KEY.chaincmd;
+    if (this.zone !== 'asia' || !rec || rec.choice == null || rec.followSeen || !row?.followUp?.length) return null;
+    return row.followUp;
+  },
+  kinFollowUpSeen() { const rec = this.kinDone?.chaincmd; if (rec && !rec.followSeen) { rec.followSeen = true; this.save(); } },
   /** The relative's lines of the interrogation ("during") join the log at the first question, once. */
   kinSpeaks(soul) {
     const row = soul?.kin && Z2_KIN_BY_KEY[soul.kin];
