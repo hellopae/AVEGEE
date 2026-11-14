@@ -1,0 +1,163 @@
+{
+  "chunk": "r3-c2",
+  "sharpness": {
+    "method": "variance of grayscale OpenCV Laplacian ksize=1; both images on identical 2x raster; baseline Lanczos4 upsample; no sharpening",
+    "baseline2x": 41.80474656125966,
+    "redraw2x": 2958.604053703739,
+    "ratio2x": 70.77196483820975,
+    "baseline1x": 547.3945693601406,
+    "redrawDownsample1x": 6746.18403816781,
+    "ratio1x": 12.324170563207351
+  },
+  "structure": {
+    "method": "independent interleaved mutual-SIFT holdout after training-half affine; max includes ambiguous descriptor matches; proxy only, not proof of all structural outlines",
+    "maxPx1x": 522.6992797851562,
+    "perPart": {
+      "q11": {
+        "trainInliers": 380,
+        "holdoutCount": 392,
+        "holdoutResidualMaxPx1x": 349.1656799316406,
+        "holdoutResidualMedianPx1x": 0.6707732677459717,
+        "holdoutResidualP95Px1x": 2.6255009174346924,
+        "holdoutWithin4pxFraction": 0.9693877551020408,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "trainInliers": 329,
+        "holdoutCount": 340,
+        "holdoutResidualMaxPx1x": 522.6992797851562,
+        "holdoutResidualMedianPx1x": 0.5520143508911133,
+        "holdoutResidualP95Px1x": 2.261146306991577,
+        "holdoutWithin4pxFraction": 0.9735294117647059,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "trainInliers": 244,
+        "holdoutCount": 249,
+        "holdoutResidualMaxPx1x": 380.1111755371094,
+        "holdoutResidualMedianPx1x": 0.6474317312240601,
+        "holdoutResidualP95Px1x": 2.483346939086914,
+        "holdoutWithin4pxFraction": 0.9718875502008032,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "trainInliers": 667,
+        "holdoutCount": 686,
+        "holdoutResidualMaxPx1x": 287.9707946777344,
+        "holdoutResidualMedianPx1x": 0.5174581408500671,
+        "holdoutResidualP95Px1x": 1.7222094535827637,
+        "holdoutWithin4pxFraction": 0.9912536443148688,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "manualOutlineReview": "pending Claude; inspect source, native, compare and structure-matches"
+  },
+  "seams": {
+    "method": "minimum squared-colour-cost DP in actual 128-map-px internal overlap; smoothstep feather +/-8 output px; no neighboring chunk assembly",
+    "visualReview": "pending Claude; seam path overlay is supplied",
+    "meanSquaredCosts": [
+      367.5369873046875,
+      915.557861328125,
+      378.95709228515625
+    ]
+  },
+  "sampledLandmarks": {
+    "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+    "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+    "maxDisplacementPx1x": 1.0,
+    "minNcc": 0.8284686207771301,
+    "points": [
+      {
+        "id": "waterfall-lip",
+        "sourceChunkPx1x": [
+          288,
+          38
+        ],
+        "deltaPx1x": [
+          0,
+          -1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9316822290420532
+      },
+      {
+        "id": "upper-island",
+        "sourceChunkPx1x": [
+          509,
+          104
+        ],
+        "deltaPx1x": [
+          0,
+          1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9762187600135803
+      },
+      {
+        "id": "east-bank",
+        "sourceChunkPx1x": [
+          990,
+          180
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.9545318484306335
+      },
+      {
+        "id": "south-bank",
+        "sourceChunkPx1x": [
+          750,
+          460
+        ],
+        "deltaPx1x": [
+          0,
+          1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.86005038022995
+      },
+      {
+        "id": "lower-path-edge",
+        "sourceChunkPx1x": [
+          430,
+          615
+        ],
+        "deltaPx1x": [
+          1,
+          0
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.8284686207771301
+      },
+      {
+        "id": "south-rock-peak",
+        "sourceChunkPx1x": [
+          300,
+          692
+        ],
+        "deltaPx1x": [
+          0,
+          -1
+        ],
+        "displacementPx1x": 1.0,
+        "ncc": 0.9241060018539429
+      },
+      {
+        "id": "right-path-bend",
+        "sourceChunkPx1x": [
+          970,
+          713
+        ],
+        "deltaPx1x": [
+          0,
+          0
+        ],
+        "displacementPx1x": 0.0,
+        "ncc": 0.909026563167572
+      }
+    ]
+  }
+}

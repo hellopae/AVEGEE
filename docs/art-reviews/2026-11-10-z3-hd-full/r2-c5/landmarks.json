@@ -1,0 +1,86 @@
+{
+  "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+  "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+  "maxDisplacementPx1x": 1.0,
+  "minNcc": 0.840870201587677,
+  "points": [
+    {
+      "id": "stair-centre",
+      "sourceChunkPx1x": [
+        135,
+        586
+      ],
+      "deltaPx1x": [
+        -1,
+        0
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.9839587211608887
+    },
+    {
+      "id": "upper-cliff-cap",
+      "sourceChunkPx1x": [
+        263,
+        255
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.9777712225914001
+    },
+    {
+      "id": "upper-plaza-edge",
+      "sourceChunkPx1x": [
+        445,
+        150
+      ],
+      "deltaPx1x": [
+        0,
+        1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.840870201587677
+    },
+    {
+      "id": "lower-landing-bank",
+      "sourceChunkPx1x": [
+        276,
+        950
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.9504721164703369
+    },
+    {
+      "id": "path-bend",
+      "sourceChunkPx1x": [
+        230,
+        720
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.8748093247413635
+    },
+    {
+      "id": "middle-cliff-peak",
+      "sourceChunkPx1x": [
+        353,
+        542
+      ],
+      "deltaPx1x": [
+        0,
+        -1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.9126049876213074
+    }
+  ]
+}

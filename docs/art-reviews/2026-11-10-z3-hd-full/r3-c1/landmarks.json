@@ -1,0 +1,112 @@
+{
+  "method": "fixed 41x41 source templates, Gaussian sigma1.3 at 1x, NCC search +/-16px on registered final downsample; integer-pixel precision; no point exclusion",
+  "limitation": "sampled landmark alignment only; removed rail/post areas avoided; texture changes and repeated stone can bias NCC; full outline acceptance remains manual",
+  "maxDisplacementPx1x": 1.0,
+  "minNcc": 0.6942139863967896,
+  "points": [
+    {
+      "id": "upper-left-rock-peak",
+      "sourceChunkPx1x": [
+        137,
+        42
+      ],
+      "deltaPx1x": [
+        0,
+        -1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.9209703803062439
+    },
+    {
+      "id": "upper-centre-rock-peak",
+      "sourceChunkPx1x": [
+        367,
+        133
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.8710035085678101
+    },
+    {
+      "id": "upper-right-bank-rock",
+      "sourceChunkPx1x": [
+        647,
+        120
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.9548761248588562
+    },
+    {
+      "id": "landing-bank",
+      "sourceChunkPx1x": [
+        820,
+        183
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.9491254687309265
+    },
+    {
+      "id": "small-island",
+      "sourceChunkPx1x": [
+        529,
+        355
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.9429253339767456
+    },
+    {
+      "id": "middle-island",
+      "sourceChunkPx1x": [
+        189,
+        301
+      ],
+      "deltaPx1x": [
+        0,
+        0
+      ],
+      "displacementPx1x": 0.0,
+      "ncc": 0.8338310718536377
+    },
+    {
+      "id": "south-rock-peak",
+      "sourceChunkPx1x": [
+        385,
+        378
+      ],
+      "deltaPx1x": [
+        0,
+        -1
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.9225863814353943
+    },
+    {
+      "id": "path-boundary",
+      "sourceChunkPx1x": [
+        500,
+        662
+      ],
+      "deltaPx1x": [
+        -1,
+        0
+      ],
+      "displacementPx1x": 1.0,
+      "ncc": 0.6942139863967896
+    }
+  ]
+}

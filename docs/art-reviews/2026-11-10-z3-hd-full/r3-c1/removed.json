@@ -1,0 +1,15 @@
+{
+  "chunk": "r3-c1",
+  "requestedRemovedIds": [
+    "west-riverside-landing-stair-posts"
+  ],
+  "observedRemovedIds": [
+    "west-riverside-landing-stair-posts"
+  ],
+  "visualReview": "Overview checked: clipped upper stair posts removed; no other requested removal group",
+  "conditionalVegetation": "remove only roots on paved floor; verify edge shrubs against owner-walkmask-overlay.jpg",
+  "inventory": "../objects-inventory.json",
+  "runtimeSpriteIdsNotCountedAsBakedRemovals": [
+    "west-tree-22"
+  ]
+}

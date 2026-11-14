@@ -1,0 +1,111 @@
+{
+  "scope": "artifact completeness, decode, dimensions and integrity only; no quality approval",
+  "errors": [],
+  "chunks": {
+    "r2-c4": {
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "missing": []
+    },
+    "r2-c5": {
+      "nativeSizes": {
+        "q11": [
+          1149,
+          1368
+        ],
+        "q12": [
+          1078,
+          1460
+        ],
+        "q21": [
+          1149,
+          1368
+        ],
+        "q22": [
+          1078,
+          1460
+        ]
+      },
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "missing": []
+    },
+    "r3-c1": {
+      "nativeSizes": {
+        "q11": [
+          1189,
+          1323
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1189,
+          1323
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "missing": []
+    },
+    "r3-c2": {
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "missing": []
+    }
+  },
+  "imagesDecoded": 46,
+  "generatedNativesPixelIdentical": 16,
+  "unchangedMasterTiles": 20,
+  "unchangedRuntimeEvidenceFiles": 5,
+  "bytesBeforeVerification": 79072156
+}

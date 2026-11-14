@@ -1,0 +1,258 @@
+[
+  {
+    "chunk": "r2-c4",
+    "status": "assembled-for-Claude-review",
+    "imageGenCalls": 4,
+    "pendingParts": [],
+    "actualNativeSizesPx": {
+      "q11": [
+        1254,
+        1254
+      ],
+      "q12": [
+        1254,
+        1254
+      ],
+      "q21": [
+        1254,
+        1254
+      ],
+      "q22": [
+        1254,
+        1254
+      ]
+    },
+    "outputSizePx": [
+      2048,
+      2048
+    ],
+    "sharpnessRatioLaplacian1x": 14.315516842857594,
+    "sharpnessRatioLaplacian2x": 82.20625260780601,
+    "structureSampledLandmarkMaxPx1x": 1.0,
+    "landmarkCount": 7,
+    "structureRawSiftHoldoutMaxPx1x": 591.2787475585938,
+    "siftHoldoutPerPart": {
+      "q11": {
+        "holdoutResidualMaxPx1x": 591.2787475585938,
+        "holdoutResidualMedianPx1x": 0.8337477445602417,
+        "holdoutResidualP95Px1x": 4.185766696929932,
+        "holdoutWithin4pxFraction": 0.9464285714285714,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "holdoutResidualMaxPx1x": 127.92485046386719,
+        "holdoutResidualMedianPx1x": 0.5244573950767517,
+        "holdoutResidualP95Px1x": 1.552983283996582,
+        "holdoutWithin4pxFraction": 0.9886524822695035,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "holdoutResidualMaxPx1x": 6.733275413513184,
+        "holdoutResidualMedianPx1x": 0.8273472785949707,
+        "holdoutResidualP95Px1x": 2.5676207542419434,
+        "holdoutWithin4pxFraction": 0.9772727272727273,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "holdoutResidualMaxPx1x": 167.78114318847656,
+        "holdoutResidualMedianPx1x": 0.6550488471984863,
+        "holdoutResidualP95Px1x": 2.2405927181243896,
+        "holdoutWithin4pxFraction": 0.9789029535864979,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "qualityDecision": "pending Claude; sampled landmarks do not certify every continuous outline"
+  },
+  {
+    "chunk": "r2-c5",
+    "status": "assembled-for-Claude-review",
+    "imageGenCalls": 4,
+    "pendingParts": [],
+    "actualNativeSizesPx": {
+      "q11": [
+        1149,
+        1368
+      ],
+      "q12": [
+        1078,
+        1460
+      ],
+      "q21": [
+        1149,
+        1368
+      ],
+      "q22": [
+        1078,
+        1460
+      ]
+    },
+    "outputSizePx": [
+      1638,
+      2048
+    ],
+    "sharpnessRatioLaplacian1x": 10.8623047792812,
+    "sharpnessRatioLaplacian2x": 83.64957102126637,
+    "structureSampledLandmarkMaxPx1x": 1.0,
+    "landmarkCount": 6,
+    "structureRawSiftHoldoutMaxPx1x": 334.4799499511719,
+    "siftHoldoutPerPart": {
+      "q11": {
+        "holdoutResidualMaxPx1x": 334.4799499511719,
+        "holdoutResidualMedianPx1x": 0.5505426526069641,
+        "holdoutResidualP95Px1x": 1.8491148948669434,
+        "holdoutWithin4pxFraction": 0.989769820971867,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "holdoutResidualMaxPx1x": 290.80743408203125,
+        "holdoutResidualMedianPx1x": 0.6155276298522949,
+        "holdoutResidualP95Px1x": 2.760524272918701,
+        "holdoutWithin4pxFraction": 0.9758713136729222,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "holdoutResidualMaxPx1x": 265.8934326171875,
+        "holdoutResidualMedianPx1x": 0.6713197231292725,
+        "holdoutResidualP95Px1x": 1.9070578813552856,
+        "holdoutWithin4pxFraction": 0.9819639278557114,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "holdoutResidualMaxPx1x": 325.7525329589844,
+        "holdoutResidualMedianPx1x": 0.5041515231132507,
+        "holdoutResidualP95Px1x": 1.6007980108261108,
+        "holdoutWithin4pxFraction": 0.9869848156182213,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "qualityDecision": "pending Claude; sampled landmarks do not certify every continuous outline"
+  },
+  {
+    "chunk": "r3-c1",
+    "status": "assembled-for-Claude-review",
+    "imageGenCalls": 4,
+    "pendingParts": [],
+    "actualNativeSizesPx": {
+      "q11": [
+        1189,
+        1323
+      ],
+      "q12": [
+        1254,
+        1254
+      ],
+      "q21": [
+        1189,
+        1323
+      ],
+      "q22": [
+        1254,
+        1254
+      ]
+    },
+    "outputSizePx": [
+      2048,
+      2048
+    ],
+    "sharpnessRatioLaplacian1x": 12.332236914161912,
+    "sharpnessRatioLaplacian2x": 78.48361496432003,
+    "structureSampledLandmarkMaxPx1x": 1.0,
+    "landmarkCount": 8,
+    "structureRawSiftHoldoutMaxPx1x": 501.6073913574219,
+    "siftHoldoutPerPart": {
+      "q11": {
+        "holdoutResidualMaxPx1x": 501.6073913574219,
+        "holdoutResidualMedianPx1x": 0.8151305913925171,
+        "holdoutResidualP95Px1x": 3.52958083152771,
+        "holdoutWithin4pxFraction": 0.9615384615384616,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "holdoutResidualMaxPx1x": 386.8502502441406,
+        "holdoutResidualMedianPx1x": 0.6293259859085083,
+        "holdoutResidualP95Px1x": 2.650247097015381,
+        "holdoutWithin4pxFraction": 0.9799498746867168,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "holdoutResidualMaxPx1x": 452.94854736328125,
+        "holdoutResidualMedianPx1x": 0.7891653180122375,
+        "holdoutResidualP95Px1x": 2.380321502685547,
+        "holdoutWithin4pxFraction": 0.9768339768339769,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "holdoutResidualMaxPx1x": 284.5404052734375,
+        "holdoutResidualMedianPx1x": 0.5756485462188721,
+        "holdoutResidualP95Px1x": 1.6766607761383057,
+        "holdoutWithin4pxFraction": 0.989451476793249,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "qualityDecision": "pending Claude; sampled landmarks do not certify every continuous outline"
+  },
+  {
+    "chunk": "r3-c2",
+    "status": "assembled-for-Claude-review",
+    "imageGenCalls": 4,
+    "pendingParts": [],
+    "actualNativeSizesPx": {
+      "q11": [
+        1254,
+        1254
+      ],
+      "q12": [
+        1254,
+        1254
+      ],
+      "q21": [
+        1254,
+        1254
+      ],
+      "q22": [
+        1254,
+        1254
+      ]
+    },
+    "outputSizePx": [
+      2048,
+      2048
+    ],
+    "sharpnessRatioLaplacian1x": 12.324170563207351,
+    "sharpnessRatioLaplacian2x": 70.77196483820975,
+    "structureSampledLandmarkMaxPx1x": 1.0,
+    "landmarkCount": 7,
+    "structureRawSiftHoldoutMaxPx1x": 522.6992797851562,
+    "siftHoldoutPerPart": {
+      "q11": {
+        "holdoutResidualMaxPx1x": 349.1656799316406,
+        "holdoutResidualMedianPx1x": 0.6707732677459717,
+        "holdoutResidualP95Px1x": 2.6255009174346924,
+        "holdoutWithin4pxFraction": 0.9693877551020408,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q12": {
+        "holdoutResidualMaxPx1x": 522.6992797851562,
+        "holdoutResidualMedianPx1x": 0.5520143508911133,
+        "holdoutResidualP95Px1x": 2.261146306991577,
+        "holdoutWithin4pxFraction": 0.9735294117647059,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q21": {
+        "holdoutResidualMaxPx1x": 380.1111755371094,
+        "holdoutResidualMedianPx1x": 0.6474317312240601,
+        "holdoutResidualP95Px1x": 2.483346939086914,
+        "holdoutWithin4pxFraction": 0.9718875502008032,
+        "coreOutsideNativeFraction": 0.0
+      },
+      "q22": {
+        "holdoutResidualMaxPx1x": 287.9707946777344,
+        "holdoutResidualMedianPx1x": 0.5174581408500671,
+        "holdoutResidualP95Px1x": 1.7222094535827637,
+        "holdoutWithin4pxFraction": 0.9912536443148688,
+        "coreOutsideNativeFraction": 0.0
+      }
+    },
+    "qualityDecision": "pending Claude; sampled landmarks do not certify every continuous outline"
+  }
+]

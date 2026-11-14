@@ -1,0 +1,21 @@
+{
+  "chunk": "r2-c5",
+  "requestedRemovedIds": [
+    "west-lower-ice-bridge-rails-c5",
+    "west-east-court-stair-posts"
+  ],
+  "observedRemovedIds": [
+    "west-lower-ice-bridge-rails-c5",
+    "west-east-court-stair-posts"
+  ],
+  "visualReview": "r2 posts/rails absent in overview; r3 not yet reviewed",
+  "conditionalVegetation": "remove only roots on paved floor; verify edge shrubs against owner-walkmask-overlay.jpg",
+  "inventory": "../objects-inventory.json",
+  "runtimeSpriteIdsNotCountedAsBakedRemovals": [
+    "rock-1",
+    "rock-2",
+    "rock-3",
+    "west-tree-26",
+    "west-tree-27"
+  ]
+}
