@@ -8,7 +8,7 @@ globalThis.Image = class {};
 const named = key => ({ ...ALL_CASES.find(c => c.k === key), case:key });
 
 test('case identity overrides numbered sprite and preserves profession and sex', () => {
-  assert.equal(soulPortrait(named('A2'), 'asia'), 'spirit-worker');
+  assert.equal(soulPortrait(named('A2'), 'asia'), 'soul-bandit-chief-asia');      // Z2-ART-C (14 Nov): the bandit has his own drawing (was the shared worker spirit)
   assert.equal(soulPortrait(named('A4'), 'asia'), 'spirit-executive');
   assert.equal(soulPortrait(named('A6'), 'asia'), 'spirit-executive');
   assert.equal(soulPortrait(named('A13'), 'asia'), 'spirit-officer');
@@ -60,7 +60,7 @@ test('legacy save reconciliation covers queue, stations, jail, walkers, closed c
     returning:[{ who:'เจ้าของกิจการ', sex:'m', sp:2, zone:'th' }],
     zoneSave:{ west:{ queue:[{ who:'นักเรียนหญิง', sex:'g', sp:10 }], held:[], stations:[] } } };
   reconcileSoulPortraits(game);
-  assert.equal(game.queue[0].sp, 'spirit-worker');
+  assert.equal(game.queue[0].sp, 'soul-bandit-chief-asia');
   assert.equal(game.held[0].sp, 'spirit-woman');
   assert.equal(game.stations[0].slots[0].soul.sp, 'spirit-business');
   assert.equal(game.sentences[0].soul.sp, 'spirit-officer');

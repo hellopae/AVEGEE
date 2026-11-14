@@ -31,6 +31,7 @@ export const Z2_ART = Object.freeze({
 export const Z2_SOUL_SPRITE = Object.freeze({
   apeelder:'soul-ape-elder-asia', satorifather:'soul-satori-father-asia', deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia',
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
+  A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
 export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia)(-profile)?$/;
 
@@ -234,7 +235,7 @@ export const AKURA_TRIAL = Object.freeze({
 
 /** The notice that introduces each relative: the window (N7K-x) and, behind its button, what the crew member says before the bench. */
 const KIN_NOTICES = Object.fromEntries(Z2_KIN.map(r => [`kin-${r.k}`, { title:r.notice.title, text:r.notice.text, button:r.notice.button, detail:r.before.join('\n'),
-  art:r.def ? A(`${Z2_SOUL_SPRITE[r.k]}-profile`) : 'img/Asia/spirit-worker-asia-v2.webp' }]));
+  art:Z2_SOUL_SPRITE[r.k] ? A(`${Z2_SOUL_SPRITE[r.k]}-profile`) : 'img/Asia/spirit-worker-asia-v2.webp' }]));
 /** Notice windows (Rae N3-4, N7-1, N7-6, N13-1, N15-1 and the relatives'): game.js queueNotice / ackNotice · ui.js openStoryNotice. */
 export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES });
 

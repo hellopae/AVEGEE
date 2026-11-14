@@ -293,7 +293,7 @@ test('the crew relatives: unlocked by hiring, put in the queue once, the lines i
     const row = Z2_KIN.find(r => r.k === k); assert.equal(g.notices.includes(`kin-${k}`), true);
     assert.equal(NOTICES[`kin-${k}`].button, row.notice.button); assert.equal(NOTICES[`kin-${k}`].detail, row.before.join('\n'));
     assert.ok(NOTICES[`kin-${k}`].detail.length > 20);
-    if (k !== 'A2') assert.equal(soul.sp, Z2_ART && { deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia', fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia' }[k]);
+    assert.equal(soul.sp, { deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia', fakecup:'soul-cupdealer-asia', A2:'soul-bandit-chief-asia', granarysister:'soul-granary-sister-asia' }[k]);      // A2: the bandit chief's own drawing (Z2-ART-C)
     // the relative speaks at the first question, once
     assert.equal(soul.said.some(x => x.kind === 'kin'), false);
     g.press(soul, 0); assert.equal(soul.said.filter(x => x.kind === 'kin').length, row.during.length);
