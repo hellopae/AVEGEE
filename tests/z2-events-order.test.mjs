@@ -6,7 +6,7 @@ import { createGame, loadSave } from '../src/game.js';
 import { STATIONS, ZONE_EVENTS, ZONE_BOSS_AT, GUARD, SPOTS } from '../src/data.js';
 import { bossJusticeCase, bossJusticeAnswer, interrogateBoss, mirrorBoss, sentenceBoss, ARENA_STORIES } from '../src/boss-justice.js';
 import { NOTICES, Z1_STORIES, storyCaseRows } from '../src/z1-events.js';
-import { Z2_KIN, Z2_STORY_CASES, Z2_STORIES, Z2_TEXT, Z2_ART, AKURA_TRIAL, DEVA_ASIA_ARRIVAL } from '../src/z2-events.js';
+import { Z2_KIN, Z2_STORY_CASES, Z2_STORIES, Z2_TEXT, Z2_ART, AKURA_TRIAL, DEVA_ASIA_ARRIVAL, Z2_KIN_REPEAT_LINE } from '../src/z2-events.js';
 import { storyOf, ABILITY_REWARDS } from '../src/story.js';
 import { devaMapActors } from '../src/deva-map.js';
 import { setLang, t } from '../src/i18n.js';
@@ -349,6 +349,19 @@ test('A2 (old bandit case): Rae rewrite - the families\' winter help is a real m
   const soul = g.queue.find(s => s.case === 'A2'); assert.ok(soul, 'A2 is drawn'); assert.equal(soul.kin, undefined);
   assert.ok(g.hire('dam')); g.ensureKinCases();
   assert.equal(g.queue.filter(s => s.case === 'A2').length, 1, 'the existing A2 soul gets the relative - no second copy'); assert.equal(soul.kin, 'A2');
+  assert.equal(soul.kinRepeat, undefined); assert.equal(g.kinRepeatLine('A2'), '', 'still waiting in the queue: nothing to explain');
+});
+
+test('A2 judged BEFORE Kuro is hired: the copy that comes for the relative carries the explaining line (temporary text, Rae to replace)', () => {
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.queue = []; g.casesDone = 2;
+  g.usedCases = CASES_ALL.filter(c => c.zone === 'asia' && c.k !== 'A2' && !c.quest).map(c => c.k);
+  for (let i = 0; i < 6 && !g.queue.some(s => s.case === 'A2'); i++) g.spawnSoul();
+  const first = g.queue.find(s => s.case === 'A2'); assert.ok(first); g.queue.splice(g.queue.indexOf(first), 1);       // judged and gone
+  assert.ok(g.hire('dam')); g.ensureKinCases();
+  const copy = g.queue.find(s => s.kin === 'A2'); assert.ok(copy, 'the relative still gets its case'); assert.equal(copy.kinRepeat, true);
+  assert.equal(g.kinRepeatLine('A2'), Z2_KIN_REPEAT_LINE); assert.ok(Z2_KIN_REPEAT_LINE.length > 20);
+  assert.equal(reload(g).kinRepeatLine('A2'), Z2_KIN_REPEAT_LINE, 'kept across a reload');
+  for (const k of ['deserter', 'chaincmd', 'fakecup', 'granarysister']) assert.equal(g.kinRepeatLine(k), '');
 });
 
 test('old saves and Zone 1 are untouched', () => {

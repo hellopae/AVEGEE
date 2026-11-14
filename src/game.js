@@ -59,7 +59,7 @@ import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
-import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO } from './z2-events.js';
+import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
@@ -572,6 +572,8 @@ const API = {
     for (const row of Z2_KIN) {
       if (this.kinSeen[row.k] || !this.kinHired(row)) continue;
       let soul = row.existing ? this.queue.find(s => s.case === row.k && !s.kin) : null;
+      // A2 already drawn (and judged) before Kuro was hired: the copy that comes now is the same soul a second time - the notice says so (kinRepeatLine)
+      const repeat = !!row.existing && !soul && this.usedCases.includes(row.k);
       if (!soul) {
         const def = row.def || ALL_CASES.find(c => c.k === row.k);
         if (!def) continue;
@@ -580,9 +582,11 @@ const API = {
         this.queue.push(soul);
         if (!this.usedCases.includes(row.k)) this.usedCases.push(row.k);
       }
-      soul.kin = row.k; this.kinSeen[row.k] = true; this.queueNotice(`kin-${row.k}`);
+      soul.kin = row.k; if (repeat) soul.kinRepeat = true; this.kinSeen[row.k] = true; this.queueNotice(`kin-${row.k}`);
     }
   },
+  /** The line that explains why the same soul stands in the queue twice (only the old bandit case A2, when it was judged before its relative was hired). '' = nothing to explain. */
+  kinRepeatLine(k) { return this.queue.find(s => s.kin === k)?.kinRepeat ? Z2_KIN_REPEAT_LINE : ''; },
   /** Rae 7.3 follow-up: once the Gokū relative's case is closed (verdict + his closing choice), Akura says two more lines the next time he is talked to in the cave. null = nothing to say. */
   kinFollowUpLines() {
     const rec = this.kinDone?.chaincmd, row = Z2_KIN_BY_KEY.chaincmd;

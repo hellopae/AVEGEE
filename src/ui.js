@@ -3525,8 +3525,10 @@ function kinAssistHtml(s) {
 }
 function openStoryNotice(id) {
   if (id.startsWith('kin-after-')) { openKinAfter(id.slice('kin-after-'.length)); return; }
-  const n = NOTICES[id];
+  let n = NOTICES[id];
   if (!n) { g.ackNotice(id); return; }
+  const repeat = id.startsWith('kin-') ? g.kinRepeatLine(id.slice(4)) : '';      // Z2: the same soul a second time (old bandit case)
+  if (repeat) n = { ...n, detail:`${repeat}\n${n.detail}` };
   pauseForDlg();
   let detail = false;
   const paint = () => modal(`<div class="event-alert-main z1-notice"><h2>${esc(n.title)}</h2><p>${esc(detail ? n.detail : n.text)}</p>

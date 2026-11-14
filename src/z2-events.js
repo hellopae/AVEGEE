@@ -214,6 +214,9 @@ export const Z2_KIN = Object.freeze([
         'บรรยาย: เมกุมิจุดเตาข้างประตู ต้มข้าวต้มใสหนึ่งหม้อโดยไม่พูดสักคำ แล้วยกถ้วยส่งให้พี่สาวด้วยสองมือ',
         'พี่สาว: "ข้าวต้มของเจ้ายังใสเหมือนที่ข้าเคยต้มให้เจ้ากินตอนเด็กเลย"', 'เมกุมิ: "ครับ ผมพูดไม่เก่งเท่าข้าวต้มหม้อนี้หรอกครับ"'] }] },
 ]);
+/** TEMPORARY wording (Toby, 14 Nov - Rae has no line for this yet, see Output/Toby/2026-11-14-avegee-z2-fixup.md): said when the old bandit case A2 comes back as Kuro's relative
+ *  after the same soul was already judged once. Rae to replace; the game reads only this constant. */
+export const Z2_KIN_REPEAT_LINE = 'บรรยาย: วิญญาณดวงนี้เคยขึ้นแท่นของท่านมาแล้วครั้งหนึ่ง วันนี้เขากลับมาที่คิวอีกครั้งเพราะคุโรขอให้ท่านฟังเรื่องของเขาอีกด้าน';
 /** Every hand-written case of this package that the court can hold (cases.js ALL_CASES / the Zone 2 pool; `story` keeps them out of the random draw). */
 export const Z2_CASES = Object.freeze([APE_CASE, SATORI_CASE, ...Z2_KIN.filter(k => k.def).map(k => k.def)]);
 export const Z2_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z2_KIN.map(k => [k.k, k])));
