@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-11-15T02:58:10.547171+07:00",
+  "branch": "codex/20261114T194144Z-646f933b",
+  "tracked_files_changed": 0,
+  "new_game_assets": 9,
+  "new_files": [
+    "docs/art-reviews/2026-11-15-boss-art-3/README.md",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-01.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-02.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-03.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-04.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-05.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-06.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-07.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/compare-08.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/contact-sheet.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/file-validation.json",
+    "docs/art-reviews/2026-11-15-boss-art-3/generation-log.json",
+    "docs/art-reviews/2026-11-15-boss-art-3/prompts.md",
+    "docs/art-reviews/2026-11-15-boss-art-3/scope-validation.json",
+    "docs/art-reviews/2026-11-15-boss-art-3/style-comparison.webp",
+    "docs/art-reviews/2026-11-15-boss-art-3/verify_assets.py",
+    "img/z1-events/cut-arunadet-mirror-th.webp",
+    "img/z2-events/cut-ash-bird-feather-asia.webp",
+    "img/z2-events/cut-kuroha-gale-asia.webp",
+    "img/z3-events/cut-eirlin-spearrain-west.webp",
+    "img/z4-events/cut-halvar-lantern-west.webp",
+    "img/z4-events/cut-lumen-scan-cyberhell.webp",
+    "img/z4-events/cut-nexar-logsweep-cyberhell.webp",
+    "img/z4-events/cut-yama-ledger-tide-th.webp",
+    "img/z4-events/cut-zhaowen-seal-asia.webp"
+  ],
+  "checks": {
+    "git diff --check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "git diff --exit-code": {
+      "exit_code": 0,
+      "output": ""
+    }
+  },
+  "only_requested_assets_and_review_directory": true,
+  "non_webp_images_in_delivery": 0
+}

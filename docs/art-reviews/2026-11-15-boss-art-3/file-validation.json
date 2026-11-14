@@ -1,0 +1,104 @@
+{
+  "required_count": 8,
+  "optional_count": 1,
+  "decoded_count": 9,
+  "assets": [
+    {
+      "path": "img/z1-events/cut-arunadet-mirror-th.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 800734,
+      "sha256": "2921d47b65c992183c8dc2f0ade6739ba8c76ceaa16c627c3963883c721350c9"
+    },
+    {
+      "path": "img/z2-events/cut-kuroha-gale-asia.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 790526,
+      "sha256": "cab1cc54e987a74ecc4e11173e07ca9b030b203f968437687ad7a919d49eab51"
+    },
+    {
+      "path": "img/z3-events/cut-eirlin-spearrain-west.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 758124,
+      "sha256": "f9fa6269403bda4ed87fd3f6e8976231c2ebf9847a908f98c08b921d6da8c28d"
+    },
+    {
+      "path": "img/z4-events/cut-lumen-scan-cyberhell.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 732060,
+      "sha256": "a9ad273ca989fa57270fbd864bd72d4871d8a43939a590f689f1558e15738aca"
+    },
+    {
+      "path": "img/z4-events/cut-yama-ledger-tide-th.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 755774,
+      "sha256": "371db29f2e20ae691b65a846f4aca47016bceb9e7baf156a1ef13f0e0fc3aaff"
+    },
+    {
+      "path": "img/z4-events/cut-zhaowen-seal-asia.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 747812,
+      "sha256": "d78810f891e9a4dad0ff8a467bbcc2f7395e458821bfc137b48b4c8f36138a54"
+    },
+    {
+      "path": "img/z4-events/cut-halvar-lantern-west.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 718686,
+      "sha256": "e8e8bd726a15518632894cf1a5eb08ed537daaf44beff5244fe99453f30a4356"
+    },
+    {
+      "path": "img/z4-events/cut-nexar-logsweep-cyberhell.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 784156,
+      "sha256": "f61a58d218028354de6587980d05954e9dca347db8ad2663ccb7087e6866ab35"
+    },
+    {
+      "path": "img/z2-events/cut-ash-bird-feather-asia.webp",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "format": "WEBP",
+      "frames": 1,
+      "bytes": 699084,
+      "sha256": "f9dfef2b705d1f472ec96daca3d1cb40343635f38dc944daf5979a418ad76821"
+    }
+  ],
+  "evidence_images_decoded": 10,
+  "ocr": {
+    "status": "unavailable",
+    "swift_error": "redefinition of module SwiftBridging",
+    "vision_error": "Failed to create CVPixelBuffer Width = 1672, Height = 942, Format = 420f",
+    "manual_visual_review_required": true
+  }
+}

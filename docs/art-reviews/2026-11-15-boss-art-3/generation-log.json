@@ -1,0 +1,75 @@
+{
+  "tool": "built-in image_gen",
+  "generation_calls": 9,
+  "retries": 0,
+  "budget_calls": 12,
+  "style_references": [
+    "/Users/agapae/agapae-work/.codex-worktrees/20261114T174152Z-4dfd205d/img/z2-events/cut-wukong-arrives-asia.webp",
+    "/Users/agapae/agapae-work/.codex-worktrees/20261114T174152Z-4dfd205d/img/z2-events/cut-wukong-sweep-asia.webp"
+  ],
+  "jobs": [
+    {
+      "call": 1,
+      "output": "img/z1-events/cut-arunadet-mirror-th.webp",
+      "reference": "img/boss-tester-th.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-8499b02c-1d02-4688-a0f3-18d03ed4d86b.png",
+      "optional": false
+    },
+    {
+      "call": 2,
+      "output": "img/z2-events/cut-kuroha-gale-asia.webp",
+      "reference": "img/deva-intro/deva-intro-asia-v1.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-0c592649-e615-4ad7-9d94-a5712774fa25.png",
+      "optional": false
+    },
+    {
+      "call": 3,
+      "output": "img/z3-events/cut-eirlin-spearrain-west.webp",
+      "reference": "img/West/boss-tester-west.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-69a6cd92-da58-474e-8eb7-2ee7b2cc0dcf.png",
+      "optional": false
+    },
+    {
+      "call": 4,
+      "output": "img/z4-events/cut-lumen-scan-cyberhell.webp",
+      "reference": "img/CyberHell/boss-tester-cyberhell.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-26855780-3cc7-41ee-84c4-46a495534148.png",
+      "optional": false
+    },
+    {
+      "call": 5,
+      "output": "img/z4-events/cut-yama-ledger-tide-th.webp",
+      "reference": "img/leader-th-possessed.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-30ca9919-6672-4e32-91dc-4a68ff4455f1.png",
+      "optional": false
+    },
+    {
+      "call": 6,
+      "output": "img/z4-events/cut-zhaowen-seal-asia.webp",
+      "reference": "img/leader-asia-possessed.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-ac5758e5-4b73-4b1c-9ccd-6559ad17c672.png",
+      "optional": false
+    },
+    {
+      "call": 7,
+      "output": "img/z4-events/cut-halvar-lantern-west.webp",
+      "reference": "img/leader-west-possessed.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-5ded35a2-3038-4ffb-bb55-aabd0da17a38.png",
+      "optional": false
+    },
+    {
+      "call": 8,
+      "output": "img/z4-events/cut-nexar-logsweep-cyberhell.webp",
+      "reference": "img/leader-cyberhell-possessed.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-1c35e62f-1b22-450c-acc2-dda8bcab05b6.png",
+      "optional": false
+    },
+    {
+      "call": 9,
+      "output": "img/z2-events/cut-ash-bird-feather-asia.webp",
+      "reference": "/Users/agapae/agapae-work/.codex-worktrees/20261114T174152Z-4dfd205d/img/z2-events/cut-wukong-arrives-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1db94-8e7e-7323-9432-8ad6dfd4209f/exec-82407b59-6c49-40a4-8266-47d0a6667962.png",
+      "optional": true
+    }
+  ]
+}
