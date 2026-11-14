@@ -22,7 +22,7 @@ export function scenarios() {
   }
   return cases;
 }
-export function setup({zone,size,kind,encounter,moves,fullBreach=false}) {
+export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}) {
   const g=createGame();g.save=()=>true;g.onChange=()=>{};g.zone=zone;
   const index=zones.indexOf(zone),kinds=teamOrder.slice(0,size-1);
   g.bossCleared=Object.fromEntries(zones.slice(0,index).map(z=>[z,true]));
@@ -50,6 +50,9 @@ export function setup({zone,size,kind,encounter,moves,fullBreach=false}) {
     const key={th:'frontierBreach',asia:'asiaRageBreach',west:'westVampireBreach',cyberhell:'cyberBreach'}[zone];
     g.zoneEvents[zone][key]='pending';
     if(zone==='th')g.startFrontierBreach();else g.startZoneEvent(key);
+  }
+  else if(kind==='event') {   // Z2-FIXUP: a single story fight of the zone (ZONE_EVENTS[zone][eventKey]) on its own, the way the player first meets it
+    g.zoneEvents[zone][eventKey]='pending';g.startZoneEvent(eventKey);
   }
   else if(kind==='breach') {
     const key={th:'frontierBreach',asia:'asiaRageBreach',west:'westVampireBreach',cyberhell:'cyberBreach'}[zone];

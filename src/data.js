@@ -1958,7 +1958,7 @@ export const ZONE_EVENTS = {
     { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,
       title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],
       waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],
-        [{ kind:6, count:1, hp:56, atk:[9,14] }, { kind:7, count:1, hp:56, atk:[9,14] }],
+        [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)
         [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
       betweenWaveHeal:18, reward:{ coin:150, ability:'bigFire' } },
     // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.
