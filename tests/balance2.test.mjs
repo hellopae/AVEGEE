@@ -131,9 +131,13 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const fb2Only=JSON.parse(readFileSync(new URL('./fixtures/fb2-a-noncombat-changes.json',import.meta.url)));
   // FB2-B (13 Nov): the warrant picker's Plerng food rule moved into one shared constant (PLERNG_WARRANT_FOOD, same value 2) so the team page can show it; text/label only. Reversible snippets, same method.
   const fb2bOnly=JSON.parse(readFileSync(new URL('./fixtures/fb2-b-noncombat-changes.json',import.meta.url)));
+  // Z1-EVENTS (13 Nov, owner's Zone 1 story order): WHEN the story beats happen (case 3 / 5 / 6 / 9 / 12 / 15), the frontier breach as 3 waves + the border boss with the
+  // team move as its closing blow, the Guard joining through that event, the new Sita / Hanuman test fight. The breach and Hanuman rows are NEW encounters (not among the
+  // 32,000 measured trials) and have no balance run yet — see Output/Toby/2026-11-13-avegee-z1-events.md. Reversible snippets, same method (scripts/build-z1-events-hash-fixture.py).
+  const z1Only=JSON.parse(readFileSync(new URL('./fixtures/z1-events-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

@@ -3585,7 +3585,8 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       }, 'intro-comic-dialog');
     return;
   }
-  const waveN = bev?.waves?.length || 2;
+  // Z1-EVENTS: Zone 1's breach = 3 demon waves, then the border boss (his row is not a numbered wave)
+  const waveN = thBreach ? bev.waves.length - 1 : bev?.waves?.length || 2;
   const breachTitle = thBreach ? t('event.frontierBreach.title') : zoneEventText(bev?.title);
   const breachText = thBreach ? t('event.frontierBreach.alert') : zoneEventText(bev?.alert);
   const breachLoot = thBreach ? t('event.frontierBreach.win') : `รางวัล: ${bev?.reward?.coin || 0} เบี้ยกรรม + ของสนามรบ`;
@@ -4319,7 +4320,7 @@ function openBattle(after) {
           : b.kind === 'zoneBoss' ? `บอส${g.zoneDef().name}`
           : b.kind === 'frontier' ? `ชายแดนนรก — ระลอกที่ ${b.wave}`
           // จำนวนระลอกอ่านจากข้อมูล event จริง ไม่ฮาร์ดโค้ด (frontierBreach โซน 1 มี 2 ระลอก)
-          : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · Wave ${b.wave}/${ZONE_EVENTS.th.find(x => x.k === 'frontierBreach').waves.length}`
+          : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · ${b.foes.some(f => f.boss) ? t('event.frontierBreach.bossSub') : `Wave ${b.wave}/${ZONE_EVENTS.th.find(x => x.k === 'frontierBreach').waves.length - 1}`}`
           : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return g.isFinalBattle(b) ? `${zoneEventText(ev?.title)} · ${b.encounter.startsWith('minion:') ? `Wave ${b.wave}/4` : b.who}` : `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
           : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')

@@ -1,0 +1,250 @@
+{
+ "game": [
+  {
+   "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
+   "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
+  },
+  {
+   "before": "",
+   "after": "import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';\n"
+  },
+  {
+   "before": "",
+   "after": "    storyCaseDone: {}, notices: [], z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)\n"
+  },
+  {
+   "before": "",
+   "after": "/** Z1-EVENTS (13 Nov 2026) — bring a save written before the new Zone 1 order into it without replaying or stranding anything:\n *   · Zone 1 already finished -> the Sita / Hanuman beat is marked done (never replayed)\n *   · elder brother already announced under the old order (case 10) but not fought -> he steps back until Sita's case and case 15 are done\n *   · nurse already heard by chance -> counted as heard\n *   · Guard hired at Nira's desk before the border event -> back to his gate, hire refunded, training kept for when he joins\n *   · a beggar soul still standing around after the deva revealed himself (owner e1) -> gone */\nfunction migrateZ1Events(g, d) {\n  if (d.z1EventsVersion === 1) return;\n  const th = g.zoneEvents.th ||= {};\n  if (g.bossCleared?.th || th.thBorderBoss === 'cleared') {\n    th.sitaHanuman = 'cleared'; g.storyCaseDone.sitaledger = true; g.storyCaseDone.nurse = true;\n  } else if (th.thBorderBoss && th.sitaHanuman !== 'cleared') {\n    delete th.thBorderBoss; delete g.eventMapClosed['th:thBorderBoss'];\n    g.bossGuarding.th = false; g.bossPending = false; if (g.bossArriveSeen) delete g.bossArriveSeen.th;\n  }\n  const active = g.zone === 'th';\n  if (active && g.usedCases?.includes('nurse') && !g.queue.some(s => s.case === 'nurse')) g.storyCaseDone.nurse = true;\n  if (active && g.guard && !guardUnlocked(g, 'th')) {\n    g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];\n    delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;\n    g.log(`🛡️ ${GUARD.name}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');\n  }\n  if (active && g.devaVisits?.th) g.revealDevaSoul(null);\n  if (active) g.refreshZoneEvents('th');\n}\n\n"
+  },
+  {
+   "before": "  devaCaseOwed() {\n    return this.zone === 'th' && (this.zoneCases.th || 0) >= 4 && !this.devaVisits.th && this.devaTestStatus() === 'locked';\n",
+   "after": "  devaCaseOwed() { return this.storyCaseOwed() === 'devaMonk'; },\n  /** Z1-EVENTS: the Zone 1 story case that is due now ('nurse' = 5th case, 'devaMonk' = 6th, 'sitaledger' = 12th) or null. See src/z1-events.js. */\n  storyCaseOwed() { return owedStoryCase(this); },\n  /** Is this queued soul the story case that must be heard first? (It cannot be jailed, deferred or skipped.) */\n  storyCaseReserved(soul) {\n    const owed = this.storyCaseOwed();\n    return !!owed && !!soul && soul.case === owed && (!TH_STORY_CASES.find(c => c.k === owed).needsGate || this.gateBuilt());\n"
+  },
+  {
+   "before": "  ensureDevaCase() {\n    if (!this.devaCaseOwed()) return;\n",
+   "after": "  ensureDevaCase() { this.ensureStoryCase(); },\n  ensureStoryCase() {\n    const owed = this.storyCaseOwed();\n    if (!owed) return;\n    const row = TH_STORY_CASES.find(c => c.k === owed), def = owed === SITA_CASE.k ? SITA_CASE : ALL_CASES.find(c => c.k === owed);\n    if (!def) return;\n"
+  },
+  {
+   "before": "    const queued = this.queue.find(s => s.case === 'devaMonk' || s.case === 'monk' && s.pure);\n    if (!this.gateBuilt()) {\n",
+   "after": "    const queued = this.queue.find(s => s.case === owed || owed === 'devaMonk' && s.case === 'monk' && s.pure);\n    if (row.needsGate && !this.gateBuilt()) {\n"
+  },
+  {
+   "before": "    if (queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {\n      const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');\n",
+   "after": "    if (owed === 'devaMonk' && queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {\n      const replacement = applySoulPortrait(mkCaseSoul(def), 'th');\n"
+  },
+  {
+   "before": "",
+   "after": "    if (queued && this.queue[0] !== queued && this.caseReady(queued)) {       // drawn earlier by chance (nurse) -> it is the next case now\n      this.queue.splice(this.queue.indexOf(queued), 1); this.queue.unshift(queued);\n    }\n"
+  },
+  {
+   "before": "      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');\n",
+   "after": "      const soul = owed === 'sitaledger' ? mkCaseSoul(def) : applySoulPortrait(mkCaseSoul(def), 'th');\n      if (owed === 'sitaledger') soul.storyHearing = true;\n"
+  },
+  {
+   "before": "      if (!this.usedCases.includes('devaMonk')) this.usedCases.push('devaMonk');\n",
+   "after": "      if (!this.usedCases.includes(owed)) this.usedCases.push(owed);\n      if (owed === 'sitaledger') this.queueNotice('sita-arrive');\n"
+  },
+  {
+   "before": "",
+   "after": "  },\n  /** e1 (owner 13 Nov): the temple beggar IS the deva. Once he is judged he reveals himself - so no beggar soul waits for an escort, serves a\n   *  sentence, queues at the heaven gate or comes back as a returning case afterwards. Pays what finish() would have paid, once. */\n  revealDevaSoul(soul, r = null) {\n    const id = soul?.id, mine = x => x?.id === id || x?.case === 'devaMonk';\n    for (const st of this.stations || []) {\n      const i = st.slots.findIndex(slot => mine(slot.soul)); if (i < 0) continue;\n      const [slot] = st.slots.splice(i, 1), v = r || slot.verdict;\n      if (Number.isFinite(v?.coin)) this.coin += v.coin;\n      this.closed.unshift({ soul:slot.soul, zone:this.zone, verdict:v, stK:st.def.k, crewK:st.crewK, intensity:slot.intensity, tick:this.tick });\n      if (this.closed.length > 12) this.closed.pop();\n      if (!st.slots.length) { const c = this.crewOf(st.crewK); st.crewK = null; if (c) { c.at = null; c.path = null; } }\n    }\n    this.transits = (this.transits || []).filter(v => {\n      if (v.id !== id) return true;\n      const c = this.crewOf(v.crew); if (c?.escort === id) c.escort = null;\n      return false;\n    });\n    for (let i = (this.afterlifeWalks || []).length - 1; i >= 0; i--) {\n      const walk = this.afterlifeWalks[i]; if (!mine(walk.soul) || walk.zone && walk.zone !== 'th') continue;\n      this.afterlifeWalks.splice(i, 1); this.releaseEscort(walk);\n    }\n    this.sentences = (this.sentences || []).filter(x => !mine(x.soul) || x.zone !== 'th');\n    this.held = (this.held || []).filter(x => !mine(x.soul || x));\n    this.returning = (this.returning || []).filter(x => !mine(x.soul || x));\n    this.queue = this.queue.filter(x => !mine(x) || this.storyCaseOwed() === 'devaMonk');\n    this.courtArrivals = (this.courtArrivals || []).filter(a => this.queue.some(q => q.id === a.soulId));\n  },\n  /** Z1-EVENTS notice windows (case 5 nurse ledger, case 12 Sita arrival / Hanuman / PHANTOM-404). Persisted, shown once each by ui.js. */\n  queueNotice(id) { if (!this.notices.includes(id) && !this.storySeen[`notice:${id}`]) this.notices.push(id); },\n  ackNotice(id) {\n    this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;\n    if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);\n    this.save();\n  },\n  /** Case 12: Sita's hearing closes with choice A or B only. She is never sentenced, escorted or scored against (Rae 3.2 · Claudy's cultural default).\n   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). */\n  resolveSitaCase(choice) {\n    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA.hearing.choices.find(c => c.k === choice)?.k;\n    if (i < 0 || !pickK || this.battle || this.over || this.zone !== 'th') return false;\n    const [soul] = this.queue.splice(i, 1);\n    this.cancelCourtArrival(soul.id);\n    this.casesDone++; this.zoneCases.th = (this.zoneCases.th || 0) + 1;\n    this.storyCaseDone[SITA.caseKey] = true; this.sitaChoice = pickK;\n    this.ledger.push({ id:soul.id, who:soul.who, tick:this.tick, over:0, short:0, karma:0, stars:5, score:null, tham:null,\n      boss:'great', heaven:false, right:true, deserved:0, back:false, story:SITA.caseKey,\n      archiveSoul:{ name:soul.name, who:soul.who, sp:soul.sp, case:soul.case, sex:soul.sex, deeds:[] } });\n    this.log(`⚖️ ${SITA.hearing.choices.find(c => c.k === pickK).label}`, 'good');\n    this.refreshZoneEvents('th');\n    this.queueStory('sita-hanuman-open');\n    this.bossPending = this.bossReady();\n    this.save(); this.onChange();\n    return true;\n"
+  },
+  {
+   "before": "    let left = pool.filter(c => c.k !== 'devaMonk' && !c.quest && !this.usedCases.includes(c.k));\n",
+   "after": "    // Z1-EVENTS: story cases come at their own count (ensureStoryCase), never by chance - except the nurse once the story is past her (old saves)\n    const reserved = k => this.zone === 'th' && TH_STORY_CASE_KEYS.includes(k) && !(k === 'nurse' && storyCaseDone(this, 'nurse'));\n    let left = pool.filter(c => c.k !== 'devaMonk' && !c.story && !reserved(c.k) && !c.quest && !this.usedCases.includes(c.k));\n"
+  },
+  {
+   "before": "",
+   "after": "      if (actor.id === 'you' && b.breachFinale === 'ready') return '';   // Z1-EVENTS: the story's closing move - free, no cooldown\n"
+  },
+  {
+   "before": "    if (this.devaCaseOwed() && this.queue.find(s => s.id === soulId)?.case === 'devaMonk') return false;\n",
+   "after": "    if (this.storyCaseReserved(this.queue.find(s => s.id === soulId))) return false;\n"
+  },
+  {
+   "before": "    if (this.devaCaseOwed() && this.queue[0]?.case === 'devaMonk') return false;\n",
+   "after": "    if (this.storyCaseReserved(this.queue[0])) return false;\n"
+  },
+  {
+   "before": "    const reservedCase = this.devaCaseOwed() && this.queue.some(s => s.case === 'devaMonk');\n",
+   "after": "    const reservedSoul = this.queue.find(s => this.storyCaseReserved(s)), reservedCase = !!reservedSoul;\n"
+  },
+  {
+   "before": "    if (reservedCase && selectedSoul && selectedSoul.case !== 'devaMonk') return { key:'devaCaseFirst' };\n",
+   "after": "    if (reservedCase && selectedSoul && selectedSoul !== reservedSoul) return { key:'devaCaseFirst', text:`โปรดตัดสินคดี${reservedSoul.name}ก่อน` };\n    if (selectedSoul?.storyHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)\n"
+  },
+  {
+   "before": "    this.ensureDevaCase();\n",
+   "after": "    if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;\n    // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.\n    if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');\n"
+  },
+  {
+   "before": "",
+   "after": "      this.revealDevaSoul(soul, r);\n"
+  },
+  {
+   "before": "",
+   "after": "    this.ensureDevaCase();\n"
+  },
+  {
+   "before": "",
+   "after": "  /** f1 (owner 13 Nov): the frontier event that is waiting at the border right now, whether or not its alert window was acknowledged.\n   *  Every way into the border scene asks this, so the border boss is there the first time Yama walks down. */\n  breachPending() {\n    if (this.battle || this.over) return null;\n    for (const ev of ZONE_EVENTS[this.zone] || []) {\n      if (ev.team !== 'frontier' || ev.signal || this.zoneEventStatus(ev.k) !== 'pending') continue;\n      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;\n      return { key:ev.k, ev };\n    }\n    return null;\n  },\n"
+  },
+  {
+   "before": "",
+   "after": "      // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)\n      if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;\n"
+  },
+  {
+   "before": "    if (b?.storyInterlude !== 'west-hypnosis') return false;\n",
+   "after": "    if (!['west-hypnosis','th-team-judgment-unlock'].includes(b?.storyInterlude)) return false;\n"
+  },
+  {
+   "before": "    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>\n",
+   "after": "    const waves = ZONE_EVENTS.th[1].waves, demonWaves = waves.length - 1;   // the last row is the border boss, after the 3 waves\n    return waves[wave - 1].flatMap((entry, group) =>\n"
+  },
+  {
+   "before": "          sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/${ZONE_EVENTS.th[1].waves.length}`,\n",
+   "after": "          sub:boss ? t('event.frontierBreach.bossSub') : `ระลอก ${wave}/${demonWaves}`,\n"
+  },
+  {
+   "before": "",
+   "after": "    // The gate keeper steps out to help in this fight (cutscene cut-guard-joins-th). He stays with the team only if it is won.\n    if (!this.guard) {\n      this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1], ...(this.guardReserve || {}) }, 'th', 'guard');\n      this.guard.breachGuest = true; syncRoster(this);\n    }\n"
+  },
+  {
+   "before": "    b.talk = t('event.frontierBreach.next');\n",
+   "after": "    b.talk = b.foes.some(f => f.boss) ? t('event.frontierBreach.bossLine') : t('event.frontierBreach.next');\n"
+  },
+  {
+   "before": "",
+   "after": "    if(this.battle.breachFinale==='ready'){this.battle.actorId='you';return turn;}\n"
+  },
+  {
+   "before": "    if(!b||b.over||b.commandBusy||turn?.side!=='foe')return false;\n",
+   "after": "    if(!b||b.over||b.commandBusy||turn?.side!=='foe'||b.breachFinale==='ready')return false;\n"
+  },
+  {
+   "before": "",
+   "after": "    if (b.breachFinale === 'ready') return this.breachFinaleStrike();\n"
+  },
+  {
+   "before": "",
+   "after": "  },\n  /** Z1-EVENTS (case 9): the border boss fight closes with Yama's new team move, whoever's turn it was. Free and always ready (see skillWhy). */\n  breachFinaleStrike() {\n    const b = this.battle, boss = b?.foes.find(f => f.boss && f.hp > 0);\n    if (!b || b.over || b.commandBusy || b.breachFinale !== 'ready' || !boss) return false;\n    b.actorId = 'you'; b.selectedFoeId = boss.id;\n    b.initiativeAction = !!b.turnQueue;\n    let ok; try { ok = this.battleAct('teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }\n    if (!ok) return false;\n    b.commandBusy = true; b.command = null; return true;\n"
+  },
+  {
+   "before": "",
+   "after": "    // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).\n    if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {\n      if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;\n      what = 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };\n    }\n"
+  },
+  {
+   "before": "",
+   "after": "    if (B.breachFinale === 'ready' && what !== 'teamJudgment') return false;   // foes wait\n"
+  },
+  {
+   "before": "      this.mp -= newSkill.mp;\n",
+   "after": "      const finale = B.breachFinale === 'ready';\n      if (!finale) this.mp -= newSkill.mp;\n"
+  },
+  {
+   "before": "",
+   "after": "      if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }\n"
+  },
+  {
+   "before": "",
+   "after": "    // Z1-EVENTS (case 9): when the border boss is nearly down (or would fall) the fight pauses, Yama learns the team move mid-fight\n    // (window: B.storyInterlude) and that move is the one that ends it. The boss cannot fall to anything else.\n    const breachFinaleGate = force => {\n      if (B.kind !== 'frontierBreach' || B.breachFinale) return false;\n      const boss = B.foes.find(f => f.boss);\n      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;\n      boss.hp = Math.max(1, boss.hp);\n      B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;\n      this.abilities.teamJudgment = true;\n      B.storyInterlude = 'th-team-judgment-unlock';\n      this.onChange();\n      return true;\n    };\n"
+  },
+  {
+   "before": "",
+   "after": "      if (breachFinaleGate(true)) return true;\n"
+  },
+  {
+   "before": "          this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'th', 'guard');\n",
+   "after": "          this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1], ...(this.guardReserve || {}) }, 'th', 'guard');\n"
+  },
+  {
+   "before": "        this.queueStory('c1-guard-arrival', 'teamJudgment');\n",
+   "after": "        delete this.guard.breachGuest; this.guardReserve = null;\n        this.queueStory('c1-guard-arrival');\n"
+  },
+  {
+   "before": "",
+   "after": "        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);\n"
+  },
+  {
+   "before": "",
+   "after": "    if (breachFinaleGate(false)) return true;\n"
+  },
+  {
+   "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",
+   "after": "      if (!ultimate && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
+  },
+  {
+   "before": "",
+   "after": "        this.benchLockedGuard();\n"
+  },
+  {
+   "before": "",
+   "after": "        if (B.eventKey === 'sitaHanuman') this.queueStory('sita-hanuman-lose');\n"
+  },
+  {
+   "before": "",
+   "after": "    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');\n"
+  },
+  {
+   "before": "",
+   "after": "    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits at the pier (case 15)\n"
+  },
+  {
+   "before": "",
+   "after": "  guardUnlocked(zone = this.zone) { return guardUnlocked(this, zone); },\n  /** Zone 1: a Guard who is with the team before the frontier breach is won goes back to his gate (lost breach / reload mid-fight). */\n  benchLockedGuard() {\n    if (this.zone !== 'th' || !this.guard || guardUnlocked(this, 'th')) return false;\n    if (!this.guard.breachGuest) this.guardReserve = snapshotRoster({ [this.guard.id]:this.guard })[this.guard.id];\n    delete this.roster[this.guard.id]; this.guard = null; return true;\n  },\n"
+  },
+  {
+   "before": "    if (this.guard || this.coin < GUARD.hire) return false;\n",
+   "after": "    if (this.guard || this.coin < GUARD.hire || !guardUnlocked(this)) return false;   // Z1-EVENTS: Zone 1's Guard joins through the frontier breach, not the hire desk\n"
+  },
+  {
+   "before": "",
+   "after": "    storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],\n    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,\n"
+  },
+  {
+   "before": "      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });\n",
+   "after": "      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', sitaHanuman:'cleared', thBorderBoss:'cleared' });\n"
+  },
+  {
+   "before": "",
+   "after": "  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];\n  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;\n  migrateZ1Events(this, d);\n  this.benchLockedGuard(); reconcileArenaDocket(this);\n"
+  }
+ ],
+ "data": [
+  {
+   "before": "  { k:'frontierBreach', atCases:8, requires:['devaTest'], mode:'waves', team:'frontier',\n",
+   "after": "  // Z1-EVENTS (owner 13 Nov 2026): case 9 · three demon waves, then the border boss as the closing encounter.\n  // The last row is the boss; game.js frontierBreachFoes() labels it as the boss, not as a numbered wave.\n  { k:'frontierBreach', atCases:9, requires:['devaTest'], mode:'waves', team:'frontier',\n"
+  },
+  {
+   "before": "    alert:{ th:'ปีศาจหลายตัวฝ่าชายแดนเข้ามา รวมทีมยมทูตไปสกัดทั้ง 2 ระลอก',\n      en:'Demons have breached the frontier. Assemble the crew and stop both waves.' },\n",
+   "after": "    alert:{ th:'ปีศาจหลายตัวฝ่าชายแดนเข้ามา รวมทีมยมทูตไปสกัดทั้ง 3 ระลอก',\n      en:'Demons have breached the frontier. Assemble the crew and stop all three waves.' },\n"
+  },
+  {
+   "before": "      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],\n",
+   "after": "      [{ kind:2, count:2, hp:36, atk:MOB.fightAtk }],\n      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],\n      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],\n"
+  },
+  {
+   "before": "  { k:'devaTest', atCases:5, requires:['prisonBreak'], mode:'single',\n",
+   "after": "  // Z1-EVENTS: the temple beggar is the 6th case; the deva test opens once he is judged.\n  { k:'devaTest', atCases:6, requires:['prisonBreak'], mode:'single',\n"
+  },
+  {
+   "before": "  { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',\n",
+   "after": "  // Z1-EVENTS: case 12 · Sita's ledger. Hanuman descends once her hearing is closed (game.js resolveSitaCase) and TESTS Yama - he is not an enemy.\n  // Text: Rae (src/z1-events.js SITA). hp/atk: Toby's first numbers between the deva (case 6) and the elder brother (case 15) - no spec, tune freely.\n  { k:'sitaHanuman', atCases:12, requires:['frontierBreach'], mode:'single',\n    title:{ th:'หนุมานลงมาแล้ว', en:'Hanuman descends' },\n    alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',\n      en:'Rama\\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },\n    go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },\n    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:120, atk:[11,17], boss:true },\n    reward:{}, lose:{ hp:9 } },\n  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.\n  { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',\n"
+  },
+  {
+   "before": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },\n",
+   "after": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },\n"
+  }
+ ],
+ "combat-skills": [
+  {
+   "before": "  teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการยมทูตประสานพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },\n",
+   "after": "  teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการประสานยมทูตพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },\n"
+  }
+ ],
+ "party-balance": [
+  {
+   "before": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' ? 4 : 3);\n",
+   "after": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' || game.guard?.breachGuest ? 4 : 3);   // Z1-EVENTS: the gate keeper who steps out for the breach fight is the 4th member\n"
+  }
+ ]
+}
