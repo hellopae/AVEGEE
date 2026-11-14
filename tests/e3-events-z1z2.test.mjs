@@ -32,13 +32,12 @@ for (const right of [true,false]) test(`case five monk → ${right?'praise':'war
  strike(saved);assert.equal(saved.inventory.mirror,1);saved.endBattle();assert.equal(saved.startDevaTest(),null);
  const cleared=reload(saved);assert.equal(cleared.inventory.mirror,1);assert.equal(cleared.storyQueue.length,0);
 });
-test('Asia: two kills → saved descent → intro → deva defeats third → waiting actor → test → disappears',()=>{
+test('Asia: ONE kill (Z2-EVENTS) → saved descent → intro → deva defeats third → waiting actor → test → disappears',()=>{
  let g=createGame();g.zone='asia';g.zoneCases.asia=3;g.refreshZoneEvents();
  assert.equal(g.stations.find(s=>s.def.k==='tarang').fire,MOB.burnMax);assert.equal(prisonEventBurning(g),true);
- const coin=g.coin;g.startZoneEvent('asiaPrisonFire');strike(g);
- assert.equal(!!g.battle.devaArrived,false);assert.equal(devaMapActors(g).length,0);
+ const coin=g.coin;g.startZoneEvent('asiaPrisonFire');assert.equal(!!g.battle.devaArrived,false);assert.equal(devaMapActors(g).length,0);
  strike(g);assert.equal(g.battle,null);assert.equal(g.devaVisits.asia.phase,'descending');
- assert.equal(g.devaVisits.asia.battle.foes.filter(f=>f.hp>0).length,1);assert.equal(g.coin,coin);
+ assert.equal(g.devaVisits.asia.battle.foes.filter(f=>f.hp>0).length,2);assert.equal(g.coin,coin);
  g=reload(g);assert.equal(g.zoneEventStatus('asiaPrisonFire'),'active');g.devaDescentStartedAt=1000;
  assert.ok(devaMapActors(g,1000)[0].y < devaMapActors(g,1000+DEVA_DESCENT_MS/2)[0].y);
  assert.equal(g.finishDevaDescent(),true);assert.equal(g.storyQueue[0].key,'deva-asia');
@@ -60,9 +59,9 @@ test('legacy active fire restarts safely, cleared fire waits, completed tester n
  }
 });
 test('breaches keep thresholds, waves, bosses and saved marching state',()=>{
- for(const [zone,key,cases,waves] of [['th','frontierBreach',9,4],['asia','asiaRageBreach',6,3]]) {
+ for(const [zone,key,cases,waves] of [['th','frontierBreach',9,4],['asia','asiaRageBreach',11,4]]) {   // Z2-EVENTS: 3 waves + Akura, at case 11
  const g=createGame();g.zone=zone;g.zoneCases[zone]=cases;
- g.zoneEvents[zone]=zone==='th'?{prisonBreak:'cleared',devaTest:'cleared'}:{asiaPrisonFire:'cleared',asiaDevaTest:'cleared'};
+ g.zoneEvents[zone]=zone==='th'?{prisonBreak:'cleared',devaTest:'cleared'}:{asiaPrisonFire:'cleared',asiaDevaTest:'cleared',asiaWukong:'cleared'};
  g.refreshZoneEvents();g.dismissEventAlert(key);const loaded=reload(g);assert.equal(loaded.breachMarch().key,key);
  const ev=ZONE_EVENTS[zone].find(e=>e.k===key);assert.equal(ev.waves.length,waves);assert.ok(ev.waves.at(-1).some(f=>f.boss));
  }
@@ -74,7 +73,7 @@ test('area damage and self-hit still leave the third spirit to the deva',()=>{
   if(action==='windFan') {g.abilities.windFan=true;g.mp=999;g.battle.foes.forEach(f=>f.hp=1);}
   else {g.battle.foes[0].hp=0;g.battle.foes[1].hp=1;g.battle.foes[1].confuse=1;g.battle.selectedFoeId=g.battle.foes[2].id;}
   assert.equal(g.battleAct(action),true);assert.equal(g.battle,null);
-  assert.equal(g.devaVisits.asia.battle.foes.filter(f=>f.hp>0).length,1);
+  assert.equal(g.devaVisits.asia.battle.foes.filter(f=>f.hp>0).length,action==='windFan'?1:2);   // Z2-EVENTS: the deva comes after ONE spirit - an area hit still leaves the last one; a single kill leaves two
   g.finishDevaDescent();g.completeStory();assert.equal(g.zoneEventStatus('asiaPrisonFire'),'cleared');
  }
 });

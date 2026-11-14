@@ -8,6 +8,9 @@ const necessity = ['recruit','girl','boy','sergeant','hammer','healer'];
 const other = ['nurse','devaMonk','scapegoat','A5','A11','A13','A19','campelder','silentman'];
 // W2 quest cases: denial/fake boast, plea with mitigation, or a truthful/innocent account.
 caught.push('swapdoc','chainhand','hospice','smokeheir');
+// Z2-EVENTS: the old ape tells the plain truth (other); the rest deny or boast about a merit that is not real
+caught.push('satorifather','deserter','chaincmd','fakecup','granarysister');
+other.push('apeelder');
 necessity.push('feudgran','hirefire');
 export const CASE_POSE_TYPES = Object.freeze(Object.fromEntries([
   ...caught.map(k => [k, 'caught_lie']), ...necessity.map(k => [k, 'necessity']), ...other.map(k => [k, 'other']),

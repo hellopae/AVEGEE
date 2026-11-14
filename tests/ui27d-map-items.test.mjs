@@ -287,13 +287,13 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 18, seen.join());
+  assert.ok(seen.length === 20, seen.join());   // Z2-EVENTS: + Wukong and the Guard's proving fight
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {
   const g = freshIn('asia');
-  g.zoneCases.asia = 10;
-  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  g.zoneCases.asia = 15;
+  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' };
   g.bossCleared.asia = false;
   assert.ok(g.startZoneBoss());
   const exp0 = g.exp, lvl0 = g.level;

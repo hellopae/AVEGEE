@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import * as data from '../src/data.js';
+import { Z2_ART_KEY } from '../src/z2-events.js';
 import {imageMeta} from './helpers/image-meta.mjs';
 
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
@@ -32,7 +33,7 @@ for (const loaded of [false, true]) {
       await new Promise(resolve => setImmediate(resolve));
       for (const {k:zone} of data.ZONES) {
         bindZone(() => zone);
-        const context = vm.createContext({artUrl});
+        const context = vm.createContext({artUrl, Z2_ART_KEY});
         vm.runInContext(storyResolver, context);
         for (const key of keys) {
           shipped(artUrl(key), `${zone}/${key}/map`);

@@ -7,8 +7,8 @@ import { MERCHANT, ITEMS } from '../src/data.js';
 
 const readyBoss = (g) => {
   g.zone = 'asia';
-  g.zoneCases.asia = 10;
-  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  g.zoneCases.asia = 15;
+  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' };
   return g.startZoneBoss();
 };
 

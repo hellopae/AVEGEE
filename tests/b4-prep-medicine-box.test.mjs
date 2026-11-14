@@ -37,8 +37,8 @@ test('I2-C: both surfaces share icon markup; empty base items and owned higher t
 for (const context of ['bag','prep']) test(`I2-C: ${context} clicks consume once, fill caps HP using existing item rates, and exhausted/full actions do nothing`, () => {
   const g = createGame();
   if (context === 'prep') {
-    g.zone = 'asia'; g.zoneCases.asia = 10;
-    g.zoneEvents.asia = {asiaPrisonFire:'cleared',asiaDevaTest:'cleared',asiaRageBreach:'cleared'};
+    g.zone = 'asia'; g.zoneCases.asia = 15;
+    g.zoneEvents.asia = {asiaPrisonFire:'cleared',asiaDevaTest:'cleared',asiaWukong:'cleared',asiaRageBreach:'cleared'};
     assert.ok(g.startZoneBoss()); g.battle.youHp = 1;
   } else g.hp = 1;
   g.mp = 0; g.inventory = {tea:1,health:3,holyWater:1};

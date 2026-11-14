@@ -6,7 +6,7 @@ import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActors
 const game=()=>{const g=createGame();g.paused=false;g.save=()=>true;g.onChange=()=>{};return g;};
 const advance=(g,target)=>{for(let i=0;i<2000&&bossJusticeCase(g)?.phase!==target;i++)advanceBossJustice(g,100);assert.equal(bossJusticeCase(g)?.phase,target);};
 test('captured zone boss is tried, escorted along map route, punished and released exactly once',()=>{
- const g=game();g.zone='asia';syncSceneZone('asia');const b={kind:'frontierBreach',zone:'asia',who:'บอสชายแดน',sp:'zone-boss',over:'win'};   // Z1-EVENTS: zone bosses (rulers) are no longer tried (owner 14 Nov) - the court mechanics are checked with a border-boss docket
+ const g=game();g.zone='west';syncSceneZone('west');const b={kind:'frontierBreach',zone:'west',who:'บอสชายแดน',sp:'zone-boss',over:'win'};   // Z1-EVENTS: zone bosses (rulers) are no longer tried (owner 14 Nov) - the court mechanics are checked with a border-boss docket
  assert.equal(queueBossJustice(g,b),true);assert.equal(queueBossJustice(g,b),false);
  assert.equal(bossJusticeActors(g).length,2);assert.equal(sentenceBoss(g,{station:'krata',crew:'taan',intensity:3}),false);
  interrogateBoss(g);assert.equal(sentenceBoss(g,{station:'krata',crew:'nira',intensity:3}),false);
@@ -16,7 +16,7 @@ test('captured zone boss is tried, escorted along map route, punished and releas
  advance(g,'punishment');const c=bossJusticeCase(g);assert.equal(c.punishmentDuration,6000);
  g.paused=true;advanceBossJustice(g,100);assert.equal(c.elapsed,0);g.paused=false;
  advance(g,'return');for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
- assert.equal(g.bossJustice.active,null);assert.equal(g.bossJustice.ledger['asia:frontierBreach'].phase,'released');
+ assert.equal(g.bossJustice.active,null);assert.equal(g.bossJustice.ledger['west:frontierBreach'].phase,'released');
  assert.equal(queueBossJustice(g,b),false);assert.equal(releaseBoss(g),false);
 });
 test('final boss requires asked dossier, mandatory mirror and all correct maximum choices before ending02',()=>{
@@ -47,7 +47,7 @@ test('all four frontier bosses receive one persistent docket and rematches do no
   const g=game();g.zone=zone;syncSceneZone(zone);
   const b={kind:zone==='th'?'frontierBreach':'zoneEvent',zone,eventKey,over:'win',foes:[{who:'ลูกน้อง',sp:'spirit1'},{who:'หัวหน้าชายแดน',sp:`boss-frontier-${zone}`,boss:true}]};
   assert.equal(queueBossJustice(g,b),true);assert.equal(bossJusticeCase(g).name,'หัวหน้าชายแดน');
-  if(zone==='th'){   // Z1-EVENTS: cutscene to the dais -> trial arena with the mirror-locked answer -> cutscenes (no escort walk)
+  if(zone==='th'||zone==='asia'){   // Z1-EVENTS / Z2-EVENTS: cutscene to the dais -> trial arena with the mirror-locked answer -> cutscenes (no escort walk)
    assert.equal(bossJusticeCase(g).phase,'capture');while(g.storyQueue.length)g.completeStory();
    interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),false);mirrorBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);
    assert.equal(bossJusticeCase(g).phase,'aftermath');while(g.storyQueue.length)g.completeStory();
@@ -83,8 +83,8 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const {releasedFrontierBoss}=await import('../src/frontier.js');
  const source=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
  const start=source.indexOf('function releaseDlgPause() {'),end=source.indexOf('\n}',start)+2;
- // Z1-EVENTS: Zone 1's border boss no longer walks an escort (cutscenes) - the map escort is exercised with Zone 2's
- const g=game();g.zone='asia';syncSceneZone('asia');queueBossJustice(g,{kind:'zoneEvent',zone:'asia',eventKey:'asiaRageBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-asia'}]});
+ // Z1/Z2-EVENTS: Zone 1's and Zone 2's border bosses no longer walk an escort (cutscenes) - the map escort is exercised with Zone 3's
+ const g=game();g.zone='west';syncSceneZone('west');queueBossJustice(g,{kind:'zoneEvent',zone:'west',eventKey:'westVampireBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-west'}]});
  interrogateBoss(g);assert.equal(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}),true);
  const c=bossJusticeCase(g),first=bossJusticeActors(g)[0];g.paused=true;
  const dlg={open:true},pauseDlg={open:false};let playUpdates=0;
@@ -96,7 +96,7 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const phases=[];g.onChange=()=>phases.push(bossJusticeCase(g)?.phase||'released');
  for(let i=0;i<2000&&g.bossJustice.active;i++)g.stepWorld(100);
  assert.equal(g.bossJustice.active,null);assert.deepEqual(phases,['punishment','return','released']);
- const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-asia');assert.equal(post.name,'หัวหน้าชายแดน');
+ const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-west');assert.equal(post.name,'หัวหน้าชายแดน');
  const h=createGame();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
  assert.equal(releasedFrontierBoss(h).docket,post.docket);
 });
@@ -159,15 +159,15 @@ test('a replayed final capture acknowledgement cannot rewind an already sentence
 
 for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],['west','westVampireBreach'],['cyberhell','cyberBreach']])test(`${zone} court resumes every saved phase without duplicate docket, money or temporary chamber`,()=>{
  let g=game();g.zone=zone;syncSceneZone(zone);g.stations=[];
- const battle={kind:'frontierBreach',zone,eventKey,over:'win',who:'ผู้คุมชายแดน',sp:`boss-frontier-${zone}`};
+ const battle={kind:zone==='th'?'frontierBreach':'zoneEvent',zone,eventKey,over:'win',who:'ผู้คุมชายแดน',sp:`boss-frontier-${zone}`};
  assert.equal(queueBossJustice(g,battle),true);const money=g.coin;
  assert.equal(g.stations.length,1);assert.equal(g.stations[0].bossCourtTemporary,true);
  const reload=phase=>{
   const before=structuredClone(bossJusticeCase(g)),copy=game();assert.equal(copy.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
   assert.equal(bossJusticeCase(copy)?.phase,phase);assert.deepEqual(bossJusticeCase(copy),before);assert.equal(copy.coin,money);
-  assert.equal(copy.stations.find(st=>st.def.k==='krata').bossCourtTemporary,true);g=copy;
+  assert.equal(copy.stations.find(st=>st.def.k===(zone==='asia'?'lan':'krata')).bossCourtTemporary,true);g=copy;
  };
- if(zone==='th'){   // Z1-EVENTS: capture (cutscene) -> dais -> trial (mirror-locked answer) -> aftermath (cutscenes) -> released
+ if(zone==='th'||zone==='asia'){   // Z1/Z2-EVENTS: capture (cutscene) -> dais -> trial (mirror-locked answer) -> aftermath (cutscenes) -> released
   reload('capture');while(g.storyQueue.length)g.completeStory();reload('dais');interrogateBoss(g);reload('trial');mirrorBoss(g);reload('trial');
   const pick=bossJusticeAnswer(g);assert.equal(sentenceBoss(g,{...pick,intensity:2}),false,'the answer is locked');assert.equal(sentenceBoss(g,pick),true);
   reload('aftermath');assert.equal(sentenceBoss(g,pick),false,'saved sentence cannot be issued twice');

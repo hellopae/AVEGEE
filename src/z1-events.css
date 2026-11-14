@@ -32,3 +32,13 @@ dialog.cave-interior-dialog[open]{width:min(1100px,calc(100% - 20px));max-width:
 .cave-interior .row{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
 
 .z1-notice .event-alert-foe{max-height:min(38vh,320px);width:auto;max-width:100%;object-fit:contain}
+
+/* Z2-EVENTS (14 Nov 2026) — the notice windows carry several spoken lines (the relatives' "before" scene, the closing question): keep each line on its own row. */
+.z1-notice p{white-space:pre-line}
+.kin-after .kin-choices{flex-direction:column}
+.kin-after .kin-choices button{text-align:left}
+/* the relative's own help orb (fakecup) sits under Satori's clue orb */
+.trial-comment8 .hud-stage .kan-orb.kin-orb{top:56%}
+.trial-comment8 .hud-stage .kan-orb.kin-orb .kan-orb-btn{border-color:#e9b448;box-shadow:0 0 12px -2px #e9b448,0 3px 8px #000a}
+.trial-comment8 .hud-stage .kan-orb.kin-orb .kan-orb-label{color:#fff2cf}
+@media(max-width:700px){.trial-comment8 .hud-stage .kan-orb.kin-orb{top:44%}}

@@ -57,7 +57,7 @@ test('deva and waiting boss are clickable on the right bridge', () => {
 
 test('a dismissed branch boss stays pending through restore and can be challenged from its alert', () => {
   const g = createGame();
-  g.zone = 'asia'; g.zoneCases.asia = 10;
+  g.zone = 'asia'; g.zoneCases.asia = 15;
   g.zoneEvents.asia = Object.fromEntries(ZONE_EVENTS.asia.map(ev => [ev.k, 'cleared']));
   g.bossGuarding.asia = true;
   const copy = createGame(); copy.restore(g.snapshot());
@@ -77,7 +77,7 @@ test('west and CyberHell wave mobs use local rosters and preserve encounter stat
   assert.deepEqual(cyber.waves.slice(0, 3).map(w => w[0].hp), [60,65,70]);
   assert.deepEqual(MOB.kinds.slice(10).map(m => m.img),
     ['mob-skeleton','mob-bot','mob-bug','mob-worm','mob-cyber-guard','mob-cyber-lancer','mob-cyber-brute']);
-  assert.equal(ZONE_EVENTS.asia.find(ev => ev.k === 'asiaRageBreach').waves[2][0].sp,
+  assert.equal(ZONE_EVENTS.asia.find(ev => ev.k === 'asiaRageBreach').waves[3][0].sp,   // Z2-EVENTS: 3 waves, then Akura
     'boss-frontier-asia');
 });
 

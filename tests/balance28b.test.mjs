@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { merchantStock } from '../src/progression.js';
 import { createGame } from '../src/game.js';
 import { win } from './final-event-helpers.mjs';
-import { BATTLE, BOSS_BALANCE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
+import { BATTLE, BOSS_BALANCE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
 
 globalThis.Image ??= class {};
 
@@ -81,7 +81,7 @@ test('ฐานบอส/อีเวนต์คูณ HP ตามโซน �
   assert.equal(seen.filter(Boolean).length, 5, 'ศึกสุดท้ายมีบอส 5 ตัว');
   // บอสโซน (ชนะแล้วเปิดโซนถัดไป) และเทวดา/บอสชายแดน/พี่ใหญ่โซน 1
   for (const [zone, n] of [['asia', 1], ['west', 2]]) {
-    const gg = createGame(); gg.zone = zone; gg.zoneCases[zone] = 10;
+    const gg = createGame(); gg.zone = zone; gg.zoneCases[zone] = ZONE_BOSS_AT[zone] || 10;
     gg.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].map(e => [e.k, 'cleared']));
     const b = gg.startZoneBoss();
     const tuning=ENCOUNTER_BALANCE[`${zone}:boss`]?.[b.balance.partySize] || {hp:1,atk:1};
@@ -165,7 +165,7 @@ const SCEN = [
   ['th frontierBreach', 'th', 2, 0, 2, g => { g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' }; g.setFrontierTeam('taan'); return g.startFrontierBreach(); }],
   ['th borderBoss', 'th', 2, 1, 2, g => { g.zoneCases.th = 10; g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'pending' }; return g.startZoneEvent('thBorderBoss'); }],
   ['asia rageBreach', 'asia', 3, 3, 3, g => { g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'pending' }; return g.startZoneEvent('asiaRageBreach'); }],
-  ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 10; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
+  ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 15; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['west vampireBreach', 'west', 4, 4, 3, g => { g.zoneCases.west = 3; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'pending' }; return g.startZoneEvent('westVampireBreach'); }],
   ['west devaTest', 'west', 4, 5, 3, g => { g.zoneCases.west = 7; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'pending' }; return g.startZoneEvent('westDevaTest'); }],
   ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 10; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
@@ -261,8 +261,8 @@ test('น้ำมนต์: ดื่มผ่านกระเป๋าบน
   g.mp = g.mpMax;
   assert.equal(g.useBag('holyWater'), false, 'MP เต็มแล้ว');
 
-  const b = createGame(); b.zone = 'asia'; b.zoneCases.asia = 10;
-  b.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  const b = createGame(); b.zone = 'asia'; b.zoneCases.asia = 15;
+  b.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' };
   b.startZoneBoss(); b.inventory.holyWater = 1; b.mp = 0;
   assert.equal(b.useHolyWater(), true, 'เตรียมศึกบอสโซน');
   assert.equal(b.mp, 26);
@@ -399,7 +399,7 @@ test('น้ำมนต์ดื่มได้กลางศึกทุก�
   drinkChecks(mob, 'mob');
   const fr = createGame(); fr.setFrontierTeam('taan'); fr.startFrontierBattle({ kindIdx:0, id:1, level:1 }); huge(fr);
   drinkChecks(fr, 'frontier');
-  const ev = createGame(); ev.zone = 'asia'; ev.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'pending' }; ev.zoneCases.asia = 6;
+  const ev = createGame(); ev.zone = 'asia'; ev.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'pending' }; ev.zoneCases.asia = 11;
   ev.startZoneEvent('asiaRageBreach'); huge(ev);
   drinkChecks(ev, 'zoneEvent wave 1');
   const bs = createGame(); bs.zone = 'west'; bs.zoneCases.west = 10;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { BAL, BATTLE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimate, bossUltimateDue, LEVELS, MERCHANT, ZONES, ZONE_EVENTS, SPOTS } from '../src/data.js';
+import { BAL, BATTLE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimate, bossUltimateDue, LEVELS, MERCHANT, ZONES, ZONE_EVENTS, ZONE_BOSS_AT, SPOTS } from '../src/data.js';
 import { clearFrontierSession, frontierSession, nearFrontierGate, nearFrontierNira } from '../src/frontier.js';
 
 test('ราคาห่อเสบียงลดครึ่งทั้งร้านและแท็บก่อสร้าง', () => {
@@ -66,11 +66,11 @@ test('ทีมยมบาทน้อย ทัณฑ์ เพลิง ใ�
       g.inventory.tea = 5;
       assert.equal(g.hire('plerng'), true);
       g.party.members = ['taan', 'plerng'];
-      g.zoneCases[z.k] = 10;
+      g.zoneCases[z.k] = ZONE_BOSS_AT[z.k] || 10;
       // This test enters the ordinary zone-boss arena directly; story events
       // are covered separately and must be cleared before that arena opens.
       g.zoneEvents[z.k] = Object.fromEntries((ZONE_EVENTS[z.k] || [])
-        .filter(event => event.atCases <= 9)
+        .filter(event => event.atCases < (ZONE_BOSS_AT[z.k] || 10))
         .map(event => [event.k, 'cleared']));
       if (z.k === 'th' || z.k === 'cyberhell') {
         // These zones now use story battles at case ten; the old arena remains

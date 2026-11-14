@@ -100,8 +100,8 @@ test('ระลอกชายแดนของโซน 2–4: ใช้ flow 
   g.bossCleared.th = true;
   assert.equal(harbourTravel(g, 'asia'), true);
   g.hire('plerng'); g.hire('kan');
-  g.zoneCases.asia = 7;
-  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' };
+  g.zoneCases.asia = 11;   // Z2-EVENTS: the breach is the 11th case, after Wukong
+  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared' };
   g.refreshZoneEvents('asia');
   assert.equal(g.zoneEventStatus('asiaRageBreach'), 'pending');
   assert.equal(g.breachMarch(), null, 'ยังไม่รับทราบ');

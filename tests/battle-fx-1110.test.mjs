@@ -155,7 +155,7 @@ test('the border map holds a few more demons (3, then 4 from wave 4)', () => {
 });
 
 test('boss story fights are untouched: zone bosses and story events never roll a demon count', () => {
-  const g = game(); g.zone = 'asia'; g.zoneCases.asia = 10; g.zoneEvents.asia = Object.fromEntries(['asiaPrisonFire', 'asiaDevaTest', 'asiaRageBreach'].map(k => [k, 'cleared']));
+  const g = game(); g.zone = 'asia'; g.zoneCases.asia = 15; g.zoneEvents.asia = Object.fromEntries(['asiaPrisonFire', 'asiaDevaTest', 'asiaWukong', 'asiaRageBreach'].map(k => [k, 'cleared']));
   const b = g.startZoneBoss(); assert.equal(b.frontierCount, undefined); assert.equal(b.foes.length >= 3, true);
 });
 

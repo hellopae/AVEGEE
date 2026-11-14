@@ -85,7 +85,7 @@ test('ตารางประลอง: ทุกโซนมี 10 wave · wav
 test('ตัวเลขสมดุลของอีเวนต์เนื้อเรื่องเดิมไม่ถูกแตะ (เพิ่มแค่รายการท้ายสุดของแต่ละโซน)', () => {
   const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge && !e.signal).map(e => e.k);
   assert.deepEqual(keys('th'), ['prisonBreak', 'frontierBreach', 'devaTest', 'sitaHanuman', 'thBorderBoss']);   // Z1-EVENTS: + Sita / Hanuman (case 12)
-  assert.deepEqual(keys('asia'), ['asiaPrisonFire', 'asiaDevaTest', 'asiaRageBreach']);
+  assert.deepEqual(keys('asia'), ['asiaPrisonFire', 'asiaDevaTest', 'asiaWukong', 'asiaRageBreach', 'asiaGuardTest']);   // Z2-EVENTS: + Wukong (case 7) and the Guard's proving fight (opened by the hire button)
   assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest']);
   assert.deepEqual(keys('cyberhell'), ['cyberRescue', 'cyberBreach', 'cyberFinal']);
   for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal).at(-1).challenge, true);

@@ -36,8 +36,8 @@ test('ordinary encounters keep one foe; Zone 2 boss arrives with two demons', ()
   };
   check(g => { g.mobs.push({ id:900, kind:0 }); g.startMobBattle(0); });
   check(g => { g.setFrontierTeam('taan'); g.startFrontierBattle(); }, 'frontier');
-  check(g => { g.zone = 'asia'; g.zoneCases.asia = 10;
-    g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  check(g => { g.zone = 'asia'; g.zoneCases.asia = 15;
+    g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' };
     g.startZoneBoss(); }, 3);
   check(g => g.startDadFight());
   check(g => g.startYamaFight());

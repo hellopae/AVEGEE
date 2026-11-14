@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { actorFromLegacy, rosterId } from '../src/roster.js';
 import { effectiveAllyStats, actorTraining, normalizeTraining, merchantStock } from '../src/progression.js';
-import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS, ITEMS, BATTLE, ZONE_EVENTS, SPOTS } from '../src/data.js';
+import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS, ITEMS, BATTLE, ZONE_EVENTS, ZONE_BOSS_AT, SPOTS } from '../src/data.js';
 import { crewAbility } from '../src/command-wheel.js';
 import { setLang } from '../src/i18n.js';
 
@@ -106,8 +106,8 @@ test('B3 Kan scales enemy self damage but player hypnosis resets the source mult
 
 function prep(g) {
   g.zoneEvents[g.zone]=Object.fromEntries((ZONE_EVENTS[g.zone] || []).map(e => [e.k,'cleared']));
-  g.zoneCases[g.zone]=10;
-  if (g.zone === 'th') { g.zone='asia'; g.zoneCases.asia=10; g.zoneEvents.asia=Object.fromEntries(ZONE_EVENTS.asia.map(e => [e.k,'cleared'])); }
+  g.zoneCases[g.zone]=ZONE_BOSS_AT[g.zone]||10;
+  if (g.zone === 'th') { g.zone='asia'; g.zoneCases.asia=15; g.zoneEvents.asia=Object.fromEntries(ZONE_EVENTS.asia.map(e => [e.k,'cleared'])); }
   let b;
   if (g.zone === 'cyberhell') {
     // B2b: the final event no longer has an in-battle rest stop (medicine is used from the bag on the map between fights),

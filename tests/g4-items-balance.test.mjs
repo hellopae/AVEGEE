@@ -105,7 +105,7 @@ test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama /
   assert.equal(g.useBag('healthLarge'), true); assert.equal(g.hp, g.hpMax);
   assert.equal(g.useBag('holyWaterLarge'), true); assert.equal(g.mp, g.mpMax);
   // reaper and Guard drink the Large medkit but not Large holy water
-  g.hire('taan'); (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
+  g.hire('taan'); (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.zoneEvents.asia={...g.zoneEvents.asia,asiaGuardTest:'cleared'},g.hireGuard());   // Z2-EVENTS: Zone 2's Guard has to pass his test first
   for (const c of [g.crewOf('taan'), g.guard]) {
     c.morale = 5; g.inventory.healthLarge = 1; g.inventory.holyWaterLarge = 1;
     assert.equal(g.giveCrewItem('holyWaterLarge', c.id), false);
@@ -184,7 +184,7 @@ test('G4 enemy atk: cyber breach and the final-line waves hit harder than before
   // other zones' breach fights untouched
   const atks = (zone, key) => ZONE_EVENTS[zone].find(e => e.k === key).waves.map(w => w[0].atk);
   assert.deepEqual(atks('th', 'frontierBreach'), [[6, 13], [6, 13], [6, 13], [10, 16]]);   // Z1-EVENTS: 3 waves at the old demon atk, then the border boss at his old atk
-  assert.deepEqual(atks('asia', 'asiaRageBreach'), [[8, 13], [9, 14], [12, 19]]);
+  assert.deepEqual(atks('asia', 'asiaRageBreach'), [[8, 13], [9, 14], [9, 14], [12, 19]]);   // Z2-EVENTS: 3 waves (the third is a mixed pair) + Akura at his old atk
   assert.deepEqual(atks('west', 'westVampireBreach'), [[9, 14], [10, 15], [10, 15], [13, 20]]);
 });
 

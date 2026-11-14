@@ -50,7 +50,8 @@ for(const [zone,eventKey] of regions)test(`${zone}: real border-challenge victor
 });
 
 for(const [zone,to] of [['th','asia'],['asia','west'],['west','cyberhell']])test(`${zone}: actual ruler victory unlocks the guide at once (no court - owner 14 Nov), then pays money/outfit once`,()=>{
- let g=setup(zone);g.zoneCases[zone]=10;g.zoneEvents[zone]=Object.fromEntries((ZONE_EVENTS[zone]||[]).map(ev=>[ev.k,'cleared']));
+ let g=setup(zone);g.zoneCases[zone]=zone==='asia'?15:10;   // Z2-EVENTS: Zone 2's ruler is the 15th case
+ g.zoneEvents[zone]=Object.fromEntries((ZONE_EVENTS[zone]||[]).map(ev=>[ev.k,'cleared']));
  let b;
  if(zone==='th'){g.zoneEvents.th.thBorderBoss='pending';b=g.startZoneEvent('thBorderBoss');}
  else b=g.startZoneBoss('alert');

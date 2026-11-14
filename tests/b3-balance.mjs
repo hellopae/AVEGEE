@@ -67,7 +67,7 @@ const SCEN = [
   ['th frontierBreach', 'th', 2, 0, 2, g => { g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' }; g.setFrontierTeam('taan'); return g.startFrontierBreach(); }],
   ['th borderBoss', 'th', 2, 1, 2, g => { g.zoneCases.th = 10; g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'pending' }; return g.startZoneEvent('thBorderBoss'); }],
   ['asia rageBreach', 'asia', 3, 3, 3, g => { g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'pending' }; return g.startZoneEvent('asiaRageBreach'); }],
-  ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 10; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
+  ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 15; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['west vampireBreach', 'west', 4, 4, 3, g => { g.zoneCases.west = 3; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'pending' }; return g.startZoneEvent('westVampireBreach'); }],
   ['west devaTest', 'west', 4, 5, 3, g => { g.zoneCases.west = 7; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'pending' }; return g.startZoneEvent('westDevaTest'); }],
   ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 10; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],

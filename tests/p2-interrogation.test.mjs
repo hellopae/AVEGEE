@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import {createGame} from '../src/game.js';
 import {ALL_CASES,CASES} from '../src/cases.js';
+import {Z2_KIN} from '../src/z2-events.js';
 import {spiritTrait,traitKeyFor,lockSoulTrait,keeperWorkPlan,hiddenIssues,revealOneIssue,TRAIT_KEYS} from '../src/interrogation.js';
 import {kanOrbHtml} from '../src/interrogation-ui.js';
 import {soulTraitGuide,keeperTeamGuide,firstInterrogationLesson,sentencingChapters} from '../src/sentencing-guide.js';
@@ -17,7 +18,13 @@ function namedSouls(){
  for(const c of ALL_CASES){
   g.zone=c.zone||'th';g.casesDone=1;g.spawns=3;g.storyCaseDone={...g.storyCaseDone,nurse:true};   // Z1-EVENTS: the nurse is a story case (5th) - drawn by chance only once the story is past her
 g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
-  let s;if(c.k==='devaMonk'){g.queue=[];g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}else s=g.nextNamedCase([]);
+  let s;if(c.k==='devaMonk'){g.queue=[];g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}
+  else if(c.z2){   // Z2-EVENTS: the story / relative cases come through their own doors (story case at its number · relative when its crew member is hired)
+   g.zone='asia';g.queue=[];g.kinSeen={};g.storyCaseDone=c.k==='satorifather'?{apeelder:true}:{};g.coin=99999;g.zoneEvents.asia={asiaDevaTest:'cleared',asiaRageBreach:'cleared'};g.zoneCases.asia=14;
+   const row=Z2_KIN.find(r=>r.k===c.k);
+   if(row){if(row.crew==='guard'){g.zoneEvents.asia.asiaGuardTest='cleared';g.hireGuard();}else if(!g.crew.some(x=>x.k===row.crew))g.hire(row.crew);g.ensureKinCases();}else g.ensureStoryCase();
+   s=g.queue.find(x=>x.case===c.k);}
+  else s=g.nextNamedCase([]);
   assert.equal(s.case,c.k);out.push(s);
  }
  return out;

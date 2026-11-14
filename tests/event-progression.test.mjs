@@ -41,11 +41,9 @@ test('Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for th
   assert.equal(g.zoneEventStatus('asiaPrisonFire'), 'pending');
   assert.equal(g.stations.some(s => s.fire === MOB.burnMax), true);
   assert.equal(g.startZoneEvent('asiaPrisonFire').foes.length, 3);
-  g.battle.foes[0].hp = 1;
-  g.battleAct('atk');
   assert.equal(!!g.battle.devaArrived, false);
-  const second = g.battle.foes.find(f => f.hp > 0);
-  second.hp = 1; g.battle.selectedFoeId = second.id; g.battleAct('atk');
+  g.battle.foes[0].hp = 1;
+  g.battleAct('atk');          // Z2-EVENTS: the deva comes down after ONE spirit fell
   assert.equal(g.battle, null);
   assert.equal(g.devaVisits.asia.phase, 'descending');
   assert.equal(g.finishDevaDescent(), true);
@@ -54,7 +52,7 @@ test('Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for th
   assert.equal(g.zoneEventStatus('asiaDevaTest'), 'pending');
   g.startZoneEvent('asiaDevaTest'); winBattle(g);
   assert.equal(g.abilities.windFan, true);
-  g.zoneCases.asia = 6; g.refreshZoneEvents();
+  g.zoneEvents.asia.asiaWukong = 'cleared'; g.zoneCases.asia = 11; g.refreshZoneEvents();
   const breach = g.startZoneEvent('asiaRageBreach');
   assert.equal(breach.foes.length, 2);
   winBattle(g);
