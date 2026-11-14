@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Z23-GROUND evidence: the real game in Chromium, zone 2 (Asia) / zone 3 (West), the old 1x ground against Codex's 2x ground v7.
+"""Z23-GROUND evidence (zone 4 added 14 Nov): the real game in Chromium, zone 2 (Asia) / zone 3 (West) / zone 4 (Cyberhell), the old 1x ground against Codex's 2x ground v7.
 
   python3 scripts/serve-nocache.py 8801 &                      (any threaded static server on the repo root works)
-  BASE=http://127.0.0.1:8801/index.html CH=chromium python3 scripts/z23-ground-evidence.py shots <outdir> <asia|west> <old|new>
+  BASE=http://127.0.0.1:8801/index.html CH=chromium python3 scripts/z23-ground-evidence.py shots <outdir> <asia|west|cyberhell> <old|new>
   python3 scripts/z23-ground-evidence.py compose <shots dir> <review dir>        (old | new, one jpg per spot)
-  BASE=... CH=chromium python3 scripts/z23-ground-evidence.py fps <out.json> <asia|west> <old|new> [desktop|mobile]
+  BASE=... CH=chromium python3 scripts/z23-ground-evidence.py fps <out.json> <asia|west|cyberhell> <old|new> [desktop|mobile]
 'old' / 'new' only changes the ZONE<N>_GROUND_SET constant in the copy of src/zone-skin.js the browser gets (v2 or v1 / v7); the repo file is not touched.
 shots = four 390x844 screenshots at DPR 2 (hero teleported, camera follows).  fps = rAF rate while the hero crosses the town at about walking speed."""
 import os, sys, json, time
@@ -15,10 +15,12 @@ BASE = os.environ.get('BASE', 'http://127.0.0.1:8801/index.html'); CH = os.envir
 SPOTS = {
     'asia': {'main-plaza': (1941, 1070), 'central-bridge': (1926, 1750), 'lava-bank': (1051, 1200), 'heaven-gate': (2540, 380)},
     'west': {'main-plaza': (1941, 1043), 'central-bridge': (1926, 1720), 'west-cliffs': (1051, 1200), 'north-stairs': (430, 480)},
+    'cyberhell': {'main-plaza': (1941, 1070), 'central-bridge': (1926, 1754), 'lava-bank': (1051, 1199), 'ice-bank': (3352, 895), 'heaven-gate': (2539, 379), 'south-plaza': (1934, 2223)},
 }
 ROUTE = {'asia': [(1926, 1750), (1941, 1070), (1051, 1200), (1941, 1070), (2540, 380), (3352, 895), (1926, 1750)],
-         'west': [(1926, 1720), (1941, 1043), (1051, 1200), (430, 480), (1941, 1043), (3352, 895), (1926, 1720)]}
-SET = {'asia': ('ZONE2_GROUND_SET', 'v2', 'v7'), 'west': ('ZONE3_GROUND_SET', 'v1', 'v7')}
+         'west': [(1926, 1720), (1941, 1043), (1051, 1200), (430, 480), (1941, 1043), (3352, 895), (1926, 1720)],
+         'cyberhell': [(1926, 1754), (1941, 1070), (1051, 1199), (1941, 1070), (2539, 379), (3352, 895), (1934, 2223), (1926, 1754)]}
+SET = {'asia': ('ZONE2_GROUND_SET', 'v2', 'v7'), 'west': ('ZONE3_GROUND_SET', 'v1', 'v7'), 'cyberhell': ('ZONE4_GROUND_SET', 'v3', 'v7')}
 DISMISS = "()=>{const ds=[...document.querySelectorAll('dialog[open]')];ds.forEach(d=>d.close());return ds.length}"
 TERRAIN = "async()=>{const m=await import('./src/town-terrain.js');return {s:m.townTerrainStats(),v:m.townTerrainViewStats()}}"
 
@@ -57,14 +59,15 @@ def look(pg, x, y):
 def shots(out, zone, which):
     os.makedirs(out, exist_ok=True)
     with sync_playwright() as p:
-        browser, pg, errs = boot(p, zone, which, 390, 844, 2, False)
+        W, H, DPR = (int(os.environ.get('W', 390)), int(os.environ.get('H', 844)), int(os.environ.get('DPR', 2)))      # W=1792 H=958 DPR=1 for the desktop view
+        browser, pg, errs = boot(p, zone, which, W, H, DPR, False)
         for name, (x, y) in SPOTS[zone].items():
             look(pg, x, y); pg.screenshot(path=f'{out}/{zone}-{name}-{which}.png')
         print(zone, which, 'terrain', pg.evaluate(TERRAIN)['s'], 'errors', errs[:5])
         browser.close()
 
 def fps(out, zone, which, kind='desktop'):
-    w, h, dpr, mob = (1440, 900, 1, False) if kind == 'desktop' else (390, 844, 3, True)
+    w, h, dpr, mob = (int(os.environ.get('W', 1440)), int(os.environ.get('H', 900)), 1, False) if kind == 'desktop' else (390, 844, 3, True)
     RAF = """() => { const w = window.__w = {last: performance.now(), max: 0, stalls: 0, frames: 0, t0: performance.now(), d: []};
       const loop = t => { const d = t - w.last; w.last = t; w.frames++; w.d.push(d); if (d > w.max) w.max = d; if (d > 100) w.stalls++; requestAnimationFrame(loop); }; requestAnimationFrame(loop); }"""
     with sync_playwright() as p:

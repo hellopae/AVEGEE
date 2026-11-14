@@ -1,8 +1,8 @@
-// Z23-GROUND (14 Nov 2026): Codex's 2x ground for zone 2 (Asia) and zone 3 (West) is the default; the old 1x ground is one constant away.
+// Z23-GROUND (14 Nov 2026): Codex's 2x ground for zone 2 (Asia), zone 3 (West) and zone 4 (Cyberhell) is the default; the old 1x ground is one constant away.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { ZONE_SKIN, ZONE2_GROUND, ZONE2_GROUND_SET, ZONE3_GROUND, ZONE3_GROUND_SET } from '../src/zone-skin.js';
+import { ZONE_SKIN, ZONE2_GROUND, ZONE2_GROUND_SET, ZONE3_GROUND, ZONE3_GROUND_SET, ZONE4_GROUND, ZONE4_GROUND_SET } from '../src/zone-skin.js';
 import { townTerrainGrid, townChunkUrl, townChunkRect } from '../src/town-terrain.js';
 
 const webpSize = file => { const b = readFileSync(file), k = b.toString('latin1', 12, 16);
@@ -11,7 +11,7 @@ const webpSize = file => { const b = readFileSync(file), k = b.toString('latin1'
   if (k === 'VP8L') { const v = b.readUInt32LE(21); return [1 + (v & 0x3fff), 1 + ((v >> 14) & 0x3fff)]; }
   throw Error('unexpected WebP ' + k); };
 
-for (const [zone, folder, sets, active, old, prev] of [['asia', 'map-zone2', ZONE2_GROUND, ZONE2_GROUND_SET, 'v2', 'zone2'], ['west', 'map-zone3', ZONE3_GROUND, ZONE3_GROUND_SET, 'v1', 'zone3']]) {
+for (const [zone, folder, sets, active, old, prev] of [['asia', 'map-zone2', ZONE2_GROUND, ZONE2_GROUND_SET, 'v2', 'zone2'], ['west', 'map-zone3', ZONE3_GROUND, ZONE3_GROUND_SET, 'v1', 'zone3'], ['cyberhell', 'map-zone4', ZONE4_GROUND, ZONE4_GROUND_SET, 'v3', 'zone4']]) {
   test(`Z23-GROUND ${zone}: the 2x ground v7 is the default, the old 1x ground stays registered and on disk`, () => {
     assert.equal(active, 'v7');
     assert.strictEqual(ZONE_SKIN[zone].terrain, sets.v7);
@@ -44,5 +44,5 @@ test('Z23-GROUND: the install script is zone aware and the Z1 name still works',
   assert.match(s, /--zone/); assert.match(s, /ZONE\{Z\}_GROUND_SET/);
   assert.match(readFileSync('scripts/install-z1-ground.py', 'utf8'), /install-ground\.py/);
   const zs = readFileSync('src/zone-skin.js', 'utf8');
-  for (const n of [1, 2, 3]) assert.equal([...zs.matchAll(new RegExp(`export const ZONE${n}_GROUND_SET = '([^']+)';`, 'g'))].length, 1);
+  for (const n of [1, 2, 3, 4]) assert.equal([...zs.matchAll(new RegExp(`export const ZONE${n}_GROUND_SET = '([^']+)';`, 'g'))].length, 1);
 });

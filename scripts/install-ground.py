@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""GROUND-INSTALL: put a Codex 2x ground pack (Z1/Z2/Z3-HD-ASSEMBLE output: r1-c1..r4-c5.webp, 2048 px chunks, 9830x6554) into the game, ONE command.
+"""GROUND-INSTALL: put a Codex 2x ground pack (Z1/Z2/Z3/Z4-HD-ASSEMBLE output: r1-c1..r4-c5.webp, 2048 px chunks, 9830x6554) into the game, ONE command.
 (was install-z1-ground.py, which is now a one-line shim for --zone 1)
 
-  python3 scripts/install-ground.py <pack dir> [--zone 1|2|3] [--name v7r] [--quality 88] [--activate]
+  python3 scripts/install-ground.py <pack dir> [--zone 1|2|3|4] [--name v7r] [--quality 88] [--activate]
 
-  --zone       1 = Thai (img/map-zone1, ZONE1_GROUND_SET), 2 = Asia (img/map-zone2, ZONE2_GROUND_SET), 3 = West (img/map-zone3, ZONE3_GROUND_SET).  Default 1.
+  --zone       1 = Thai (img/map-zone1, ZONE1_GROUND_SET), 2 = Asia (img/map-zone2, ZONE2_GROUND_SET), 3 = West (img/map-zone3, ZONE3_GROUND_SET), 4 = Cyberhell (img/map-zone4, ZONE4_GROUND_SET).  Default 1.
 
   <pack dir>   the folder with the 20 chunks + zone<N>-terrain-v7-preview.webp + manifest.json (e.g. .../docs/art-reviews/2026-11-11-z1-v7-hd-assemble/v7)
-  --name       target folder img/map-zone<N>/<name>/ and the key in ZONE<N>_GROUND of src/zone-skin.js (default v7r for zone 1, v7 for zones 2/3).  A new name must be registered there first.
+  --name       target folder img/map-zone<N>/<name>/ and the key in ZONE<N>_GROUND of src/zone-skin.js (default v7r for zone 1, v7 for zones 2/3/4).  A new name must be registered there first.
   --quality    WebP quality of the 1024 px tiles (default 88; the chunks are q90, one more lossy pass at 88 keeps size and look)
   --activate   also set ZONE<N>_GROUND_SET in src/zone-skin.js to <name>  (this is the switch: change that constant back to go back)
 
@@ -15,7 +15,7 @@ What it does (nothing is drawn or edited - pixels are only re-cut):
   * stitches the 20 chunks into one 9830x6554 picture, cuts it again into 1024 px tiles (10 x 7 = 70 files: the camera at phone zoom then keeps few
     decoded tiles in memory - FX3 measured 2048 px chunks at 100-130 MB, 1024 px at 35-50 MB);
   * copies the preview (1536x1024) and the pack's manifest/structure notes next to the tiles (pack-manifest.json);
-  * zone 1 only: keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier); a new name gets v7r's (or --sprites-from).  Zones 2/3 have no ground sprites;
+  * zone 1 only: keeps sprites.json + sprites/ already in img/map-zone1/<name>/ (the rails drawn over the bridges / pier); a new name gets v7r's (or --sprites-from).  Zones 2/3/4 have no ground sprites;
   * refuses a pack that is not exactly 20 chunks of the right size, so a half-finished export never reaches the game.
 Then:  node --test tests/*.test.mjs   and look at the map (390 px wide) before committing.
 """
@@ -31,7 +31,7 @@ COLS, ROWS = 5, 4
 
 ap = argparse.ArgumentParser()
 ap.add_argument('pack')
-ap.add_argument('--zone', type=int, choices=(1, 2, 3), default=1)
+ap.add_argument('--zone', type=int, choices=(1, 2, 3, 4), default=1)
 ap.add_argument('--name', default=None)
 ap.add_argument('--quality', type=int, default=88)
 ap.add_argument('--activate', action='store_true')

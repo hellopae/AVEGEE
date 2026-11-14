@@ -17,7 +17,7 @@ async function fixture(){
 test('MAP-Z4 v3: enabled town uses owner mask and a 3:2 world',async()=>{
   assert.equal(ZONE_SKIN.cyberhell.enabled,true);
   syncSceneZone('cyberhell');assert.deepEqual([SCENE.w,SCENE.h],[3840,2560]);syncSceneZone('th');
-  assert.equal(ZONE_SKIN.cyberhell.terrain.dir,'img/map-zone4/v3/');
+  assert.equal(ZONE_SKIN.cyberhell.terrain.dir,'img/map-zone4/v7/');      // 14 Nov: Codex's 2x ground is the default (ZONE4_GROUND_SET); v3 stays on disk and in the legacy loader
   const {TOWN_OWNER_WALK_RUNS}=await import('../src/town-owner-walkmask-cyberhell.js');
   assert.ok(TOWN_OWNER_WALK_RUNS.length>0);
 });

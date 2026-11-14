@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Z23-GROUND: owner walkmask (src/town-owner-walkmask-<zone>.js, 480 x 320 cells of 8 world units) drawn as a yellow outline + red tint over the OLD 1x | NEW 2x ground at the evidence spots.
-  python3 scripts/z23-walkmask-overlay.py <outdir>      -> <outdir>/<zone>-<spot>-walkmask.jpg  (1000 x 1000 world-crop 2x, old enlarged 2x to the same pixel size)
+  python3 scripts/z23-walkmask-overlay.py <outdir> [zone ...]   (default: every zone in SPOTS)      -> <outdir>/<zone>-<spot>-walkmask.jpg  (1000 x 1000 world-crop 2x, old enlarged 2x to the same pixel size)
 Edges of the walkable area that do not follow the painted stairs / bridges / water in the NEW panel are structure drift."""
 import re, sys, os
 from pathlib import Path
@@ -9,7 +9,8 @@ from PIL import Image, ImageDraw
 Image.MAX_IMAGE_PIXELS = None
 ROOT = Path(__file__).resolve().parent.parent
 SPOTS = {'asia': ('map-zone2', 'v2', {'main-plaza': (1941, 1070), 'central-bridge': (1926, 1750), 'lava-bank': (1051, 1200), 'heaven-gate': (2540, 380)}),
-         'west': ('map-zone3', 'v1', {'main-plaza': (1941, 1043), 'central-bridge': (1926, 1720), 'west-cliffs': (1051, 1200), 'north-stairs': (430, 480)})}
+         'west': ('map-zone3', 'v1', {'main-plaza': (1941, 1043), 'central-bridge': (1926, 1720), 'west-cliffs': (1051, 1200), 'north-stairs': (430, 480)}),
+         'cyberhell': ('map-zone4', 'v3', {'main-plaza': (1941, 1070), 'central-bridge': (1926, 1754), 'lava-bank': (1051, 1199), 'ice-bank': (3352, 895), 'heaven-gate': (2539, 379), 'south-plaza': (1934, 2223)})}
 def canvas(folder, ver, tile, full):
     W, H = full; c = np.zeros((H, W, 3), np.uint8)
     for r in range(1, -(-H // tile) + 1):
@@ -22,7 +23,7 @@ def mask(zone):
     for r in runs: m[i:i+r] = walk; i += r; walk ^= 1
     return m.reshape(320, 480)
 out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
-for zone, (folder, old, spots) in SPOTS.items():
+for zone, (folder, old, spots) in [(z, v) for z, v in SPOTS.items() if z in (sys.argv[2:] or SPOTS)]:
     m = mask(zone); new = canvas(folder, 'v7', 1024, (9830, 6554)); oldc = canvas(folder, old, 1024, (4915, 3277))
     for name, (wx, wy) in spots.items():
         panels = []

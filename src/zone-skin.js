@@ -118,6 +118,10 @@ export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', '
 export const ZONE2_GROUND_SET = 'v7';
 export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
 export const ZONE3_GROUND_SET = 'v7';
+// Zone 4 (Cyberhell), 14 Nov 2026: same switch.  v3 = the old 1x ground (4915 x 3277, 1024 px chunks, still on disk, also read by the legacy src/cyberhell-terrain.js);
+//   v7 = Codex's 2x ground (Z4-HD-ASSEMBLE, 9830 x 6554, 1024 px tiles WebP q88).  ACTIVE.  No runtime repairs, no ground sprites.  To go back: set ZONE4_GROUND_SET = 'v3'.
+export const ZONE4_GROUND = Object.freeze({ v3: ground1x('map-zone4', 'zone4', 'v3'), v7: hd2x('v7', 'map-zone4', 'zone4-terrain-v7-preview.webp', false) });
+export const ZONE4_GROUND_SET = 'v7';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {
@@ -164,7 +168,7 @@ export const ZONE_SKIN = {
   },
   cyberhell: {
     enabled: true,
-    terrain: {...terrain('map-zone4','zone4'),dir:'img/map-zone4/v3/',preview:'img/map-zone4/v3/zone4-terrain-v3-preview.webp'},
+    terrain: ZONE4_GROUND[ZONE4_GROUND_SET],
     flowUrl: null,
     use: ['judgment'],
     stations: { suffix:'cyberhell', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
