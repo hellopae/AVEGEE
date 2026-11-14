@@ -85,9 +85,9 @@ export const SITA = Object.freeze({
     hanumanSprite:'img/z1-events/boss-hanuman-th.webp',
     hanumanPortrait:'img/z1-events/boss-hanuman-th-profile.webp',
     descend:'img/z1-events/cut-hanuman-descends-th.webp',
-    yield:'img/z1-events/cut-hanuman-descends-th.webp'      /* no own picture yet: spec cut-hanuman-yields-th */,
-    phantom:'img/z1-events/cut-sita-phantom-ledger-th.webp'   /* PLACEHOLDER until Codex draws it */,
-    return:'img/z1-events/cut-hanuman-descends-th.webp'     /* no own picture yet: spec cut-sita-return-th */,
+    yield:'img/z1-events/cut-hanuman-yields-th.webp',
+    phantom:'img/z1-events/cut-sita-phantom-ledger-th.webp',
+    return:'img/z1-events/cut-sita-return-th.webp',
   }),
   notices:Object.freeze({
     arrive:{ title:'วิญญาณนามสูงมาถึงแล้ว', text:'วิญญาณนางสีดามาถึงคิวพิจารณา ตามบัญชีระบุว่าต้องรับโทษ แต่รายละเอียดในแฟ้มมีข้อน่าสงสัย โปรดไต่สวนอย่างรอบคอบ', button:'เริ่มไต่สวน' },
