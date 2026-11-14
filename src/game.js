@@ -4128,6 +4128,9 @@ const API = {
       }
       this.gainExp(expGain, 'ต่อสู้');
       if (this.isFinalBattle(B)) { this.finalEvent.pendingReward = { ...B.summary, encounter:B.encounter }; this.persistFinalEvent(); }
+      // Z2-EVENTS step 0: the win is written down the moment it is won. Before this, the result lived in memory until the "back to the zone" button
+      // (endBattle) saved it, and a reload in between loaded the save taken at the start of the fight (event 'active' -> 'pending') - the reward and the event came twice.
+      this.save();
       this.onChange();
       return true;
     };
