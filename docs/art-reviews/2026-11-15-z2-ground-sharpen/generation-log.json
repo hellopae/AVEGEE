@@ -1,0 +1,207 @@
+{
+  "budget": 24,
+  "calls": 20,
+  "mode": "image-to-image",
+  "entries": [
+    {
+      "call": 1,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/main-plaza-stair-v7.png",
+      "output": "generated/main-plaza-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Edit target is the attached local crop main-plaza-stair-v7.png, an existing registered 2x-native game ground texture. Redraw only the visibly blurry central region into crisp native detail: stone tread surfaces, small rock cracks, individual red maple leaves and green bush foliage. Match the sharpness and color palette of the already sharp surrounding perimeter. Preserve EXACTLY every step count, tread spacing, cliff edge, stair outline, railing posts and rail thickness, paving boundaries, all positions and silhouettes. Keep the exact same crop framing, perspective and canvas dimensions 692x752; no geometric changes. No text, no watermark, no new objects, no lighting change, no depth of field, no bloom, no global color grading. The outer 64 pixels must remain unchanged. Return only the edited game texture.",
+      "inputSha256": "e5d7bfbd18dc0a8b5f3d47acd094cf3a023e2e17cdc3631010e3d2014d159258",
+      "outputSha256": "70b6c874b035426191fb0a80367671b3e9102a89ec717569b0e35a9bf5b4eabe"
+    },
+    {
+      "call": 2,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/west-mid-stair-v7.png",
+      "output": "generated/west-mid-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: west-mid-stair.",
+      "inputSha256": "e7c5d5d86dd038b9031a30c63aa88396b768a2463dc1e8524bdba59d9421c0b6",
+      "outputSha256": "b41280d809710d6fbe52b035e182220b0ebf2c90b2b2261183058f33f2af8555"
+    },
+    {
+      "call": 3,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/central-bridge-stair-rails-v7.png",
+      "output": "generated/central-bridge-stair-rails.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: central-bridge-stair-rails.",
+      "inputSha256": "bcab7a39639d008f4331c51713374d072922d0654c3076761bd0886617d2500e",
+      "outputSha256": "2ed12330c2c1085cce4fe5ef146416f58cc0674b1bdb6cf4b81aa055f8293b8b"
+    },
+    {
+      "call": 4,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/missing-r2-c3-q22-v7.png",
+      "output": "generated/missing-r2-c3-q22.png",
+      "used": false,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: missing-r2-c3-q22.",
+      "inputSha256": "4aa03f5b06b714a1d27f373572adef8b905162681950cbdb62944550953f3dc0",
+      "outputSha256": "63399fa0f6119cc6478be17d6a76538159f2fa2a408b711102b12a05f1a5bc65"
+    },
+    {
+      "call": 5,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/upper-plaza-added-steps-rail-v7.png",
+      "output": "generated/upper-plaza-added-steps-rail.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: upper-plaza-added-steps-rail.",
+      "inputSha256": "4942916d07cba374135cc38d8918437bfa494ea6fa063fc43a4bc2ddc83d0f68",
+      "outputSha256": "284f77665b433f2ee91e3c1210fdb34fb7c79f7bf1706b4e4e9f081f2cd36702"
+    },
+    {
+      "call": 6,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/volcanic-stair-foot-v7.png",
+      "output": "generated/volcanic-stair-foot.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: volcanic-stair-foot.",
+      "inputSha256": "61a0e5681bf5e264d1dec8de10e8bd13b17483472cf304ef4890f989daeac4df",
+      "outputSha256": "465b4a54d8216aef9b4d979b85fd37b5357c99a737aa9ae171fe8e1e35cf3fb4"
+    },
+    {
+      "call": 7,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/northwest-stair-v7.png",
+      "output": "generated/northwest-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: northwest-stair.",
+      "inputSha256": "06d1b4602eeb0589a3f43d1037176683853c3344fb50c7bcdf9007c069b3198a",
+      "outputSha256": "d651c60f269b2414f952e172eddf28ee0593ed1263371365132bc0c9109123ba"
+    },
+    {
+      "call": 8,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/heaven-bridge-v7.png",
+      "output": "generated/heaven-bridge.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: heaven-bridge.",
+      "inputSha256": "ab38abc195677da5583af574cc6f69647a1bafa0eac656f66148965fd7e83b5a",
+      "outputSha256": "b18d44338a4e76a275e897ee0721258558781e756c9a4606d5cfa378491e0b1a"
+    },
+    {
+      "call": 9,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/pier-stair-rails-v7.png",
+      "output": "generated/pier-stair-rails.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: pier-stair-rails.",
+      "inputSha256": "445f210bd7b0d32bc7cb51672f3b0874fe8282d3fbd5e93730820a84d874a567",
+      "outputSha256": "9bef58a4e312fda436056ca67d5e1d6a6a1ad7e0cb827063fb8ce973e220d413"
+    },
+    {
+      "call": 10,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/east-water-stair-v7.png",
+      "output": "generated/east-water-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: east-water-stair.",
+      "inputSha256": "8e350ed9931c3354406daca44a80463d2b36c1e02546a9dcbfd1b6f2fcb37c73",
+      "outputSha256": "70e51187d40a98a336cbc45f1f81a3741a93a25a4ce40b721d0d2b730f57d99c"
+    },
+    {
+      "call": 11,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/east-plaza-thick-rim-v7.png",
+      "output": "generated/east-plaza-thick-rim.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: east-plaza-thick-rim.",
+      "inputSha256": "c514d33a3ecb4d9cbf1826dfede600be09fcbb6b16eb06f94b3cdf33b2b00678",
+      "outputSha256": "9060f9b6475bda04c94b3acd38d8b568c1f8ccb7370841560169e735efac43ed"
+    },
+    {
+      "call": 12,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/upper-stair-foot-v7.png",
+      "output": "generated/upper-stair-foot.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: upper-stair-foot.",
+      "inputSha256": "93d19f8af40914caf28fd6274b39282d70e14ed6c1241cb34e78f560e2f50a6e",
+      "outputSha256": "ea8fce67dc2bfece9c753c782e4de5470bbe1a205f99250a8f32c8ab27f13708"
+    },
+    {
+      "call": 13,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/east-plaza-stair-v7.png",
+      "output": "generated/east-plaza-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: east-plaza-stair.",
+      "inputSha256": "1c4c91f2e2b2f3ddb587176c0ec91b4b8d443147774f4647c1f9c60fda4ece5f",
+      "outputSha256": "aeeb89af823cf371f7455f519ee67a0852084e669068c376e961e8791e0e7dff"
+    },
+    {
+      "call": 14,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/invented-volcanic-bridge-v7.png",
+      "output": "generated/invented-volcanic-bridge.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: invented-volcanic-bridge.",
+      "inputSha256": "1402fe4d12af215142fcd232db11fcc9edb5fe91c1ca93e4291eaed5a7b0f02e",
+      "outputSha256": "18fe8fb262af89fb8496fdf3c96404c087c24937056ee2602182bea1596f50be"
+    },
+    {
+      "call": 15,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/pale-source-feature-v7.png",
+      "output": "generated/pale-source-feature.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: pale-source-feature.",
+      "inputSha256": "36ba1f6480bb9e12a1e9e686b1c0084481b8de9e0af824873cee98b6f0b0bb06",
+      "outputSha256": "8286528a6676ae049aa73c6661a34f843218e8d3caa63635b6b792f0a617da14"
+    },
+    {
+      "call": 16,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/ice-stair-v7.png",
+      "output": "generated/ice-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: ice-stair.",
+      "inputSha256": "13296f75fa15357bd08ff13a2690b5562a09bc0965eb19ee1e9e6be58a72e7cd",
+      "outputSha256": "68f553354a961a0c544e4b7c3fb6ed0c5abf3b6aa73abd4e87ae436c5fd8701a"
+    },
+    {
+      "call": 17,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/lava-actual-v2.png",
+      "output": "generated/lava-bank-stair.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Specific source edit: lava-actual-v2.png is the immutable geometry reference. Restore crisp native detail across the ENTIRE diagonal staircase. Preserve EXACTLY all source tread lines including the lower-left stretch, each tread spacing, gold rail joints and landing positions. No flat ramp anywhere along the source stair. Output at least 1720x1160 pixels, same aspect ratio. Only sharpen materials by redrawing, no stairs added or removed.",
+      "inputSha256": "c84b0572e4f82f600d21e7cd0466042fad698bbe60693ce16297311837264185",
+      "outputSha256": "262ac39e7b749894d42d61fa1250fefce5ad78d8bf032be86e6c51a66d7532bc"
+    },
+    {
+      "call": 18,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/q22-left.png",
+      "output": "generated/q22-left-first.png",
+      "used": false,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: missing q22 q22-left. Output a crisp native portrait image at least 688x1280 pixels; keep aspect ratio and all geometry/objects unchanged.",
+      "inputSha256": "beefea19c5304ba5d220eb1cadb104ad1a55b436001a6ddee42d6b1eb55ac30c",
+      "outputSha256": "9b4607d2619d52f5f4ff0e18fd12e428eda50e7577ffe4d4da0f067864777b61"
+    },
+    {
+      "call": 19,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/q22-right.png",
+      "output": "generated/q22-right.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: missing q22 q22-right. Output a crisp native portrait image at least 688x1280 pixels; keep aspect ratio and all geometry/objects unchanged.",
+      "inputSha256": "53708618039c3b92c3699b8d804bc05e0d5d87cb856949867d47cfec2b580721",
+      "outputSha256": "6d9ad6fefb6a50a1c4f9e5027cd6ff2b526d7838dd4d6b8502482cf05a011c39"
+    },
+    {
+      "call": 20,
+      "tool": "image_gen.imagegen (built-in)",
+      "input": "inputs/q22-left-v2.png",
+      "output": "generated/q22-left.png",
+      "used": true,
+      "prompt": "Use case: precise-object-edit. Asset: registered 2x-native isometric game ground crop. Redraw the blurry surfaces as crisp native-resolution hand-painted game texture matching the sharp perimeter: individual red maple leaves, fine green foliage, chipped grey-blue stones, paving joints, gold rails. Preserve every existing silhouette, every tread COUNT and tread SPACING, exact rail positions/widths, cliff outline, bridges, waterline and paving layout. No new objects; no changes to framing/perspective or geometry. Match original palette and light; no global recolor, text, watermark, bloom or depth of field. Do not simplify or remove anything. Keep the outer context perimeter unchanged. Return ONLY the edited ground crop, same aspect ratio, with enough native resolution for the input dimensions. Fine detail will be registered and composited onto original geometry. Region: missing q22 left half, use V2 SOURCE as immutable geometry reference. Preserve and crisply redraw the small red/yellow bush on the left paving ring at about 45% of image height: do NOT erase it. Preserve every gold rail and stair tread exactly. Output at least 688x1280, same portrait aspect ratio.",
+      "inputSha256": "418880baecb09df1c5a878f44a1ba3775472d5981f72c9ea7b360f979b4c50ea",
+      "outputSha256": "84cd9ffa5dcf72709f872d6069dccaf42f5b31d2311bc62a120f61809f541ec4"
+    }
+  ]
+}

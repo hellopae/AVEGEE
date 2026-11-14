@@ -1,0 +1,175 @@
+{
+  "base": "/Users/agapae/agapae-work/.codex-worktrees/20261113T085021Z-39f7fa12/docs/art-reviews/2026-11-10-z2-hd-assemble/v7",
+  "patches": [
+    {
+      "file": "invented-volcanic-bridge.png",
+      "rectPx1x": [
+        952,
+        42,
+        1638,
+        488
+      ],
+      "sha256": "d4634708baa1ac09adb09d9c481de6b4c1e6feb981db844523b72310eb5c2aca"
+    },
+    {
+      "file": "upper-plaza-added-steps-rail.png",
+      "rectPx1x": [
+        1782,
+        272,
+        2308,
+        648
+      ],
+      "sha256": "115cbb1431a09d4d8dfc1de645dd3f95e2147460d5e7f10ed5152616d97ee445"
+    },
+    {
+      "file": "east-plaza-thick-rim.png",
+      "rectPx1x": [
+        2822,
+        322,
+        3120,
+        708
+      ],
+      "sha256": "d31438ce91257b25597d47ee9087b088cbb61727474e97d75c063dda4783c0de"
+    },
+    {
+      "file": "pale-source-feature.png",
+      "rectPx1x": [
+        2312,
+        697,
+        2488,
+        863
+      ],
+      "sha256": "5d2fbe438ce814d6baef281179e62b82b14331d42abba974f5d1f6324e90a48c"
+    },
+    {
+      "file": "upper-stair-foot.png",
+      "rectPx1x": [
+        3072,
+        232,
+        3318,
+        468
+      ],
+      "sha256": "399d5027bdd866732aaea0b64c857ecf05c21cba0f394cf5fd318dc780346168"
+    },
+    {
+      "file": "heaven-bridge.png",
+      "rectPx1x": [
+        3552,
+        437,
+        3958,
+        708
+      ],
+      "sha256": "20c57e3c5e75428dadb2cf528c009e9bd22c2e89ad926fbf4c34a772ed96e11e"
+    },
+    {
+      "file": "volcanic-stair-foot.png",
+      "rectPx1x": [
+        1337,
+        727,
+        1628,
+        988
+      ],
+      "sha256": "f5cdf8b0f021c8e63b9430d9177697beb7a3471342e35cef066cbc0218a85735"
+    },
+    {
+      "file": "northwest-stair.png",
+      "rectPx1x": [
+        332,
+        312,
+        638,
+        598
+      ],
+      "sha256": "43a0a0e21b4167ae045b030bca07ddb91c7eadc7cba9aea5c8387a068710f96b"
+    },
+    {
+      "file": "west-mid-stair.png",
+      "rectPx1x": [
+        1592,
+        1142,
+        1918,
+        1408
+      ],
+      "sha256": "59195e9c5c331b06b540c860ab3f4308e48037c0527cefa1cb1a79b28a2733ae"
+    },
+    {
+      "file": "main-plaza-stair.png",
+      "rectPx1x": [
+        2242,
+        1342,
+        2588,
+        1718
+      ],
+      "sha256": "9968bc0bfccf26f9b2c474f63f8851a28b881555160b88b476358f68531fba63"
+    },
+    {
+      "file": "central-bridge-stair-rails.png",
+      "rectPx1x": [
+        2292,
+        1852,
+        2648,
+        2628
+      ],
+      "sha256": "a17bf0df4a0865ce5ff38ce6a508301f4fae3c7ead22765bfb62cdd80c392ca7"
+    },
+    {
+      "file": "pier-stair-rails.png",
+      "rectPx1x": [
+        2722,
+        2052,
+        3008,
+        2378
+      ],
+      "sha256": "0cfdbc89b242dc7e0b61eb5f34527444fff1ae7cd45c52edea523be3494107fd"
+    },
+    {
+      "file": "east-water-stair.png",
+      "rectPx1x": [
+        3082,
+        2052,
+        3308,
+        2268
+      ],
+      "sha256": "2281acd1a85ecb3884f61a6b4a4eb644be65653d65d8d962bee6a635205ff2e4"
+    },
+    {
+      "file": "ice-stair.png",
+      "rectPx1x": [
+        4387,
+        702,
+        4693,
+        998
+      ],
+      "sha256": "1792931ba670712f03a91bae1f1ad4a2fc94286e8030f700c29c18158069637e"
+    },
+    {
+      "file": "east-plaza-stair.png",
+      "rectPx1x": [
+        3062,
+        602,
+        3338,
+        858
+      ],
+      "sha256": "549c88f7d31fd6e8a5e9b05d04c6d199e1bdbffc2b4dcb81c622e0c669bde33d"
+    },
+    {
+      "file": "missing-r2-c3-q22.png",
+      "rectPx1x": [
+        2496,
+        1472,
+        3136,
+        2112
+      ],
+      "sha256": "72758dd5f95cdc027b0b2e29036e1fdafb4b825584f3a519672327d8f26604dd"
+    },
+    {
+      "file": "lava-bank-stair.png",
+      "rectPx1x": [
+        1490,
+        1170,
+        1920,
+        1460
+      ],
+      "sha256": "219cfe5c497c441b4e50a9fcb5d768e6a943092adbe05ada710c9610728dcc80"
+    }
+  ]
+}

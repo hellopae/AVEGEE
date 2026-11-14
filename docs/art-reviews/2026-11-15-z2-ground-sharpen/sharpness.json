@@ -1,0 +1,230 @@
+{
+  "method": "Mean squared grayscale Laplacian ksize1 on decoded q90 2x pixels. Core vs context ring (48 map px; 64 for missing q22). Fixed masks; generated detail gain recorded per region; no synthetic noise. Content differs across ring: diagnostic, not perceptual proof.",
+  "threshold": 0.85,
+  "regions": [
+    {
+      "id": "invented-volcanic-bridge",
+      "before": {
+        "coreLaplacianMeanSquare": 49.067543029785156,
+        "ringLaplacianMeanSquare": 668.7439575195312,
+        "ratio": 0.07337268991825185
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1274.000732421875,
+        "ringLaplacianMeanSquare": 1084.4759521484375,
+        "ratio": 1.174761625555618
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "upper-plaza-added-steps-rail",
+      "before": {
+        "coreLaplacianMeanSquare": 60.19655227661133,
+        "ringLaplacianMeanSquare": 1060.41650390625,
+        "ratio": 0.05676689494634009
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1964.6817626953125,
+        "ringLaplacianMeanSquare": 1774.898681640625,
+        "ratio": 1.1069261490910915
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-plaza-thick-rim",
+      "before": {
+        "coreLaplacianMeanSquare": 47.72057342529297,
+        "ringLaplacianMeanSquare": 466.24603271484375,
+        "ratio": 0.10235062622930433
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1996.5396728515625,
+        "ringLaplacianMeanSquare": 1255.059814453125,
+        "ratio": 1.5907924465907046
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "pale-source-feature",
+      "before": {
+        "coreLaplacianMeanSquare": 50.110267639160156,
+        "ringLaplacianMeanSquare": 733.4102172851562,
+        "ratio": 0.06832501982949175
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1905.53076171875,
+        "ringLaplacianMeanSquare": 1509.7662353515625,
+        "ratio": 1.2621362944144994
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "upper-stair-foot",
+      "before": {
+        "coreLaplacianMeanSquare": 66.83470153808594,
+        "ringLaplacianMeanSquare": 867.451416015625,
+        "ratio": 0.07704719861438565
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1913.3216552734375,
+        "ringLaplacianMeanSquare": 1930.70556640625,
+        "ratio": 0.9909960837968835
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "heaven-bridge",
+      "before": {
+        "coreLaplacianMeanSquare": 55.35547637939453,
+        "ringLaplacianMeanSquare": 350.1446228027344,
+        "ratio": 0.15809317857376
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1492.04052734375,
+        "ringLaplacianMeanSquare": 972.168701171875,
+        "ratio": 1.534754745287736
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "volcanic-stair-foot",
+      "before": {
+        "coreLaplacianMeanSquare": 70.87784576416016,
+        "ringLaplacianMeanSquare": 594.5713500976562,
+        "ratio": 0.119208309906824
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 2064.7314453125,
+        "ringLaplacianMeanSquare": 1184.670654296875,
+        "ratio": 1.7428738002613546
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "northwest-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 68.54608154296875,
+        "ringLaplacianMeanSquare": 1235.6611328125,
+        "ratio": 0.05547320355294365
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 2054.081298828125,
+        "ringLaplacianMeanSquare": 2036.0074462890625,
+        "ratio": 1.0088771053229717
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "west-mid-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 61.81679153442383,
+        "ringLaplacianMeanSquare": 1308.0792236328125,
+        "ratio": 0.047257681658413264
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1994.862548828125,
+        "ringLaplacianMeanSquare": 1990.189208984375,
+        "ratio": 1.0023481887162553
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "main-plaza-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 37.659095764160156,
+        "ringLaplacianMeanSquare": 1492.973388671875,
+        "ratio": 0.025224224390001406
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 2703.601806640625,
+        "ringLaplacianMeanSquare": 2933.414306640625,
+        "ratio": 0.9216569921678798
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "central-bridge-stair-rails",
+      "before": {
+        "coreLaplacianMeanSquare": 36.57935333251953,
+        "ringLaplacianMeanSquare": 1200.794921875,
+        "ratio": 0.030462614944608633
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 2006.874755859375,
+        "ringLaplacianMeanSquare": 2001.6881103515625,
+        "ratio": 1.002591135692414
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "pier-stair-rails",
+      "before": {
+        "coreLaplacianMeanSquare": 49.25008010864258,
+        "ringLaplacianMeanSquare": 713.10546875,
+        "ratio": 0.06906423000089014
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 944.5523071289062,
+        "ringLaplacianMeanSquare": 1102.4521484375,
+        "ratio": 0.8567739728818303
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-water-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 66.9007568359375,
+        "ringLaplacianMeanSquare": 1149.459228515625,
+        "ratio": 0.05820193981332509
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1688.6295166015625,
+        "ringLaplacianMeanSquare": 1632.861572265625,
+        "ratio": 1.0341535040588643
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "ice-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 52.43303680419922,
+        "ringLaplacianMeanSquare": 2707.10595703125,
+        "ratio": 0.019368668104036812
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 4423.57177734375,
+        "ringLaplacianMeanSquare": 4532.44775390625,
+        "ratio": 0.9759785479118505
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-plaza-stair",
+      "before": {
+        "coreLaplacianMeanSquare": 60.07823944091797,
+        "ringLaplacianMeanSquare": 373.07513427734375,
+        "ratio": 0.1610352283523025
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1466.01806640625,
+        "ringLaplacianMeanSquare": 1209.7117919921875,
+        "ratio": 1.2118738331813481
+      },
+      "atLeast85Percent": true
+    },
+    {
+      "id": "missing-r2-c3-q22",
+      "before": {
+        "coreLaplacianMeanSquare": 128.54861450195312,
+        "ringLaplacianMeanSquare": 1533.4288330078125,
+        "ratio": 0.08383083175096277
+      },
+      "after": {
+        "coreLaplacianMeanSquare": 1484.3563232421875,
+        "ringLaplacianMeanSquare": 1606.9871826171875,
+        "ratio": 0.9236889623629233
+      },
+      "atLeast85Percent": true
+    }
+  ]
+}

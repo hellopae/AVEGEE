@@ -1,0 +1,663 @@
+{
+  "zone": "asia",
+  "version": 8,
+  "fullPx": {
+    "w": 9830,
+    "h": 6554
+  },
+  "chunk": 2048,
+  "rows": 4,
+  "cols": 5,
+  "worldSize": {
+    "w": 3840,
+    "h": 2560
+  },
+  "format": "webp",
+  "quality": "unchanged chunks: source q90; modified chunks: lossless",
+  "repairs": false,
+  "visualAcceptanceVerified": false,
+  "imageGenCalls": 19,
+  "editedChunkCodec": "VP8L lossless",
+  "method": "Generated registered fine-band texture; v7 low frequencies and source-derived v2 stair mask; archived adaptive 48px feather, smoothstep64px for missing q22.",
+  "files": [
+    {
+      "file": "r1-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6838724,
+      "sha256": "ccb4e692ed27a0d8703be10428bba602a7af25860d495154c801da20fe290597",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r1-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6126836,
+      "sha256": "37d4226d7056bfc0095f2795f040d31d50502e6d7658677cdbcc549702588dab",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r1-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 5398174,
+      "sha256": "ff917dd14a48cd96b3a5551f2a291a8d7e48a83a07c7434d5811ef1dcb3ecfb2",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r1-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 5353174,
+      "sha256": "ab7c47c31c7a0684e2870763979ebac71655cb67ee5e48783cf6306e4c68c526",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r1-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 5226982,
+      "sha256": "5c1ce3e60c91ac67523b441d339c37bf144b24b2214d9c665c182b8169f21fdf",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r2-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1731202,
+      "sha256": "8c2f01afb0abd6d796d311b8c23cb7e2bed02ddd2986811c758197390f19a7b8",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r2-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6591782,
+      "sha256": "a08fe7a10264efa5ad27d308caca84ec81a6e87a9f5a68d9587c078b00fa3798",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r2-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6634750,
+      "sha256": "2c8bd1b83f4af565ea3ec7650bf5a38315d04626d02d5c7710c9b19c84684baf",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r2-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6448424,
+      "sha256": "1417ab58c9963f0b9ad5bb8db3d14fbe6ae52a082c6d733ef56c18968eee3945",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r2-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1554934,
+      "sha256": "89f5cf63d13bd6a76f8b6df1da3a46c4392c4bdbb33901247792d58d761a9c49",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r3-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1808394,
+      "sha256": "696f2f2cf24d1839c241a2f73c084a69c5daec2a9a01131baed0ba113868d393",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r3-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1787534,
+      "sha256": "9af741493e811b1cc75cbdb88001d39a1f37032d0310a41a96eefbf17631974c",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r3-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6267828,
+      "sha256": "fcee7622167290c4e68cec4bc4ef8c82a1e8599a4a02df0071a3c5809696d270",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r3-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 6439836,
+      "sha256": "f652c2506b5fe9292f3c6982ebf3b3497f05447960520eaeb7f5765db0d1d743",
+      "reencoded": true,
+      "codec": "VP8L lossless"
+    },
+    {
+      "file": "r3-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1457108,
+      "sha256": "64eea26b1de33214583468d3a6fa19aeba0e211ecfff3afac20d1003070b458d",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r4-c1.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 377032,
+      "sha256": "708bbb4ddde0873ee866e2cf1c5fafbf559fb5c6a0a4770b228c4485519a0da4",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r4-c2.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 398634,
+      "sha256": "4a72fcf9d46e9a793f8391271b42052500f75d846a57471760750b30e85895e4",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r4-c3.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 435744,
+      "sha256": "3c23e94dc83777e254bc0eca47456237f1967f3e78890d028b5455bed8b6bdd5",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r4-c4.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 456812,
+      "sha256": "b740a1bebdd8fb788f85a4f1ea4dc64164cba4626ccfb1c529b54bd30074f114",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    },
+    {
+      "file": "r4-c5.webp",
+      "width": 1638,
+      "height": 410,
+      "bytes": 359896,
+      "sha256": "876b1bf03ee87b76b61dccd334224596d6ff642962f9f6dcb9b8927468050c64",
+      "reencoded": false,
+      "codec": "VP8 q90"
+    }
+  ],
+  "regions": [
+    {
+      "id": "invented-volcanic-bridge",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1555,
+        1011
+      ],
+      "inputSize": [
+        1372,
+        892
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "invented-volcanic-bridge.png",
+          "sha256": "18fe8fb262af89fb8496fdf3c96404c087c24937056ee2602182bea1596f50be",
+          "nativeSize": [
+            1555,
+            1011
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.869450032711029,
+        "p95FlowPx2x": 3.9927260875701904
+      }
+    },
+    {
+      "id": "upper-plaza-added-steps-rail",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1484,
+        1060
+      ],
+      "inputSize": [
+        1052,
+        752
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "upper-plaza-added-steps-rail.png",
+          "sha256": "284f77665b433f2ee91e3c1210fdb34fb7c79f7bf1706b4e4e9f081f2cd36702",
+          "nativeSize": [
+            1484,
+            1060
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 1.526482343673706,
+        "p95FlowPx2x": 2.6368203163146973
+      }
+    },
+    {
+      "id": "east-plaza-thick-rim",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1102,
+        1428
+      ],
+      "inputSize": [
+        596,
+        772
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "east-plaza-thick-rim.png",
+          "sha256": "9060f9b6475bda04c94b3acd38d8b568c1f8ccb7370841560169e735efac43ed",
+          "nativeSize": [
+            1102,
+            1428
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.8998116254806519,
+        "p95FlowPx2x": 2.8841404914855957
+      }
+    },
+    {
+      "id": "pale-source-feature",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1292,
+        1218
+      ],
+      "inputSize": [
+        352,
+        332
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "pale-source-feature.png",
+          "sha256": "8286528a6676ae049aa73c6661a34f843218e8d3caa63635b6b792f0a617da14",
+          "nativeSize": [
+            1292,
+            1218
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.5219517946243286,
+        "p95FlowPx2x": 1.543200135231018
+      }
+    },
+    {
+      "id": "upper-stair-foot",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1280,
+        1229
+      ],
+      "inputSize": [
+        492,
+        472
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "upper-stair-foot.png",
+          "sha256": "ea8fce67dc2bfece9c753c782e4de5470bbe1a205f99250a8f32c8ab27f13708",
+          "nativeSize": [
+            1280,
+            1229
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 1.068678379058838,
+        "p95FlowPx2x": 3.420789957046509
+      }
+    },
+    {
+      "id": "heaven-bridge",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1535,
+        1024
+      ],
+      "inputSize": [
+        812,
+        542
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "heaven-bridge.png",
+          "sha256": "b18d44338a4e76a275e897ee0721258558781e756c9a4606d5cfa378491e0b1a",
+          "nativeSize": [
+            1535,
+            1024
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 1.0668582916259766,
+        "p95FlowPx2x": 7.195104598999023
+      }
+    },
+    {
+      "id": "volcanic-stair-foot",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1324,
+        1188
+      ],
+      "inputSize": [
+        582,
+        522
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "volcanic-stair-foot.png",
+          "sha256": "465b4a54d8216aef9b4d979b85fd37b5357c99a737aa9ae171fe8e1e35cf3fb4",
+          "nativeSize": [
+            1324,
+            1188
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.9049910306930542,
+        "p95FlowPx2x": 1.6232026815414429
+      }
+    },
+    {
+      "id": "northwest-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1297,
+        1212
+      ],
+      "inputSize": [
+        612,
+        572
+      ],
+      "detailGain": 1.25,
+      "generatedFiles": [
+        {
+          "file": "northwest-stair.png",
+          "sha256": "d651c60f269b2414f952e172eddf28ee0593ed1263371365132bc0c9109123ba",
+          "nativeSize": [
+            1297,
+            1212
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.5594577789306641,
+        "p95FlowPx2x": 2.7551026344299316
+      }
+    },
+    {
+      "id": "west-mid-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1389,
+        1132
+      ],
+      "inputSize": [
+        652,
+        532
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "west-mid-stair.png",
+          "sha256": "b41280d809710d6fbe52b035e182220b0ebf2c90b2b2261183058f33f2af8555",
+          "nativeSize": [
+            1389,
+            1132
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.9524526596069336,
+        "p95FlowPx2x": 1.8926266431808472
+      }
+    },
+    {
+      "id": "main-plaza-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1203,
+        1308
+      ],
+      "inputSize": [
+        692,
+        752
+      ],
+      "detailGain": 1.25,
+      "generatedFiles": [
+        {
+          "file": "main-plaza-stair.png",
+          "sha256": "70b6c874b035426191fb0a80367671b3e9102a89ec717569b0e35a9bf5b4eabe",
+          "nativeSize": [
+            1203,
+            1308
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.7853687405586243,
+        "p95FlowPx2x": 5.897611618041992
+      }
+    },
+    {
+      "id": "central-bridge-stair-rails",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        849,
+        1851
+      ],
+      "inputSize": [
+        712,
+        1552
+      ],
+      "detailGain": 1.25,
+      "generatedFiles": [
+        {
+          "file": "central-bridge-stair-rails.png",
+          "sha256": "2ed12330c2c1085cce4fe5ef146416f58cc0674b1bdb6cf4b81aa055f8293b8b",
+          "nativeSize": [
+            849,
+            1851
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 1.1670175790786743,
+        "p95FlowPx2x": 9.067230224609375
+      }
+    },
+    {
+      "id": "pier-stair-rails",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1174,
+        1339
+      ],
+      "inputSize": [
+        572,
+        652
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "pier-stair-rails.png",
+          "sha256": "9bef58a4e312fda436056ca67d5e1d6a6a1ad7e0cb827063fb8ce973e220d413",
+          "nativeSize": [
+            1174,
+            1339
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.7157935500144958,
+        "p95FlowPx2x": 3.1409575939178467
+      }
+    },
+    {
+      "id": "east-water-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1283,
+        1226
+      ],
+      "inputSize": [
+        452,
+        432
+      ],
+      "detailGain": 1.25,
+      "generatedFiles": [
+        {
+          "file": "east-water-stair.png",
+          "sha256": "70e51187d40a98a336cbc45f1f81a3741a93a25a4ce40b721d0d2b730f57d99c",
+          "nativeSize": [
+            1283,
+            1226
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.7314087748527527,
+        "p95FlowPx2x": 16.66500473022461
+      }
+    },
+    {
+      "id": "ice-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1275,
+        1233
+      ],
+      "inputSize": [
+        612,
+        592
+      ],
+      "detailGain": 1.6,
+      "generatedFiles": [
+        {
+          "file": "ice-stair.png",
+          "sha256": "68f553354a961a0c544e4b7c3fb6ed0c5abf3b6aa73abd4e87ae436c5fd8701a",
+          "nativeSize": [
+            1275,
+            1233
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.5185204744338989,
+        "p95FlowPx2x": 4.218594074249268
+      }
+    },
+    {
+      "id": "east-plaza-stair",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1303,
+        1207
+      ],
+      "inputSize": [
+        552,
+        512
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "east-plaza-stair.png",
+          "sha256": "aeeb89af823cf371f7455f519ee67a0852084e669068c376e961e8791e0e7dff",
+          "nativeSize": [
+            1303,
+            1207
+          ]
+        }
+      ],
+      "registration": {
+        "medianFlowPx2x": 0.6045390367507935,
+        "p95FlowPx2x": 2.7244796752929688
+      }
+    },
+    {
+      "id": "missing-r2-c3-q22",
+      "status": "generated-detail-composited",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "inputSize": [
+        1280,
+        1280
+      ],
+      "detailGain": 1.0,
+      "generatedFiles": [
+        {
+          "file": "q22-left.png",
+          "sha256": "9b4607d2619d52f5f4ff0e18fd12e428eda50e7577ffe4d4da0f067864777b61",
+          "nativeSize": [
+            919,
+            1711
+          ]
+        },
+        {
+          "file": "q22-right.png",
+          "sha256": "6d9ad6fefb6a50a1c4f9e5027cd6ff2b526d7838dd4d6b8502482cf05a011c39",
+          "nativeSize": [
+            919,
+            1710
+          ]
+        }
+      ],
+      "registration": {
+        "q22-left": {
+          "medianFlowPx2x": 1.0096737146377563,
+          "p95FlowPx2x": 3.879196882247925
+        },
+        "q22-right": {
+          "medianFlowPx2x": 1.0201752185821533,
+          "p95FlowPx2x": 2.8882346153259277
+        }
+      }
+    },
+    {
+      "id": "lava-bank-stair",
+      "status": "v2-source-treads-restored",
+      "contextRectPx1x": [
+        1490,
+        1170,
+        1920,
+        1460
+      ]
+    }
+  ],
+  "note": "Alternative to q90 pack: exact outside-mask pixels; modified chunks depart from requested lossy q90. Existing installer reencodes at q88, so exactness does not survive that installation step."
+}
