@@ -117,7 +117,7 @@ const ground1x = (folder, name, ver) => Object.freeze({ dir:`img/${folder}/${ver
 export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
 export const ZONE2_GROUND_SET = 'v7';
 export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
-export const ZONE3_GROUND_SET = 'v1';
+export const ZONE3_GROUND_SET = 'v7';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {
