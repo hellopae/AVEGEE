@@ -1,0 +1,134 @@
+{
+  "scope": "File properties and workspace scope only; no art QA verdict.",
+  "assets_checked": 8,
+  "assets": [
+    {
+      "path": "img/item-phoenix-feather.webp",
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 13450,
+      "sha256": "798c25270ad8f2e79ffc4d691196245b3abf4b24ab64c26a2285e3773b5b0869",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "visible_bbox_alpha_ge_8": [
+        17,
+        6,
+        121,
+        118
+      ],
+      "transparent_canvas_edges": true
+    },
+    {
+      "path": "img/mob-q-ashsmoke-big.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 148670,
+      "sha256": "26c0fbfd2c007d5987f80b0519b1a4982ec2567f64d908d65808a4c6818def9f",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "visible_bbox_alpha_ge_8": [
+        113,
+        6,
+        388,
+        506
+      ],
+      "transparent_canvas_edges": true
+    },
+    {
+      "path": "img/mob-q-ashsmoke.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 45590,
+      "sha256": "bfe1e742f1467caafa6dd59f97b1557cce65cd06f389130eec31901d89b55d1c",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "visible_bbox_alpha_ge_8": [
+        151,
+        131,
+        353,
+        375
+      ],
+      "transparent_canvas_edges": true
+    },
+    {
+      "path": "img/z1-events/cut-tanthasura-army-th.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 781552,
+      "sha256": "e74d60ee9c0db8358531222318e74228a36fe962c11e95c609e3875e7b071e55"
+    },
+    {
+      "path": "img/z1-events/cut-hanuman-sweep-th.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 763732,
+      "sha256": "cad63dd8d9bf6208232e7194d83c6a7cbd792c8af5b704080ec6a2ab1082c530"
+    },
+    {
+      "path": "img/z2-events/cut-akura-thornstorm-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 775472,
+      "sha256": "85d077e2727d948c752e8bcc540ba1df3a26c425e922575983119e4b6599bff4"
+    },
+    {
+      "path": "img/z3-events/cut-valdric-batstorm-west.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 587860,
+      "sha256": "8df93870685006bf7a6877321bceb875c024fba5e95055134902a42a15ddc68d"
+    },
+    {
+      "path": "img/z4-events/cut-trojan9-rush-cyberhell.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 783452,
+      "sha256": "23059a490067587692b83d180eeeb777aafb46a792433e90b31837eac88bf4b2"
+    }
+  ],
+  "small_to_big_visible_height_ratio": 0.488,
+  "visible_scale_alpha_threshold": 8,
+  "existing_tracked_files_changed": [],
+  "branch_observed": "codex/20261114T191206Z-d0bcc9fc",
+  "imagegen_calls": 8,
+  "imagegen_limit": 12,
+  "ocr": "Not run: tesseract unavailable. Text checked visually only."
+}
