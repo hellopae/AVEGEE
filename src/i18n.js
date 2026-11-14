@@ -492,6 +492,9 @@ const TH = {
   'event.frontierBreach.th.march': 'ปีศาจมาบุกที่ชายแดน ให้เดินไปตรวจที่ชายแดนด้านล่าง',   // Z1-EVENTS: the owner's own sentence (spec 13 Nov, case 9)
   'event.frontierBreach.ack': 'รับทราบ',
   'event.frontierBreach.marker': 'ปีศาจบุกที่ชายแดน',
+  // POINTERS (temporary words - Rae to polish)
+  'pointer.dist': '{n} ม.',
+  'pointer.look': 'ดูตำแหน่งศัตรู',
   'event.frontierBreach.start': 'เริ่มสกัดปีศาจ',
   'event.frontierBreach.retry': 'ท้าสกัดอีกครั้ง',
   'event.frontierBreach.return': 'กลับไปคุมโซน',
@@ -999,6 +1002,8 @@ const EN = {
   'event.frontierBreach.th.march': 'Demons are attacking at the frontier. Walk down to check the frontier below.',
   'event.frontierBreach.ack': 'Understood',
   'event.frontierBreach.marker': 'Demons at the frontier',
+  'pointer.dist': '{n} m',
+  'pointer.look': 'Look at the enemy',
   'event.frontierBreach.start': 'Stop the demons',
   'event.frontierBreach.retry': 'Try the breach again',
   'event.frontierBreach.return': 'Return to zone',

@@ -56,6 +56,7 @@ import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-rev
 import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011-fire-theme-v2';
 import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
+import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './enemy-pointers.js';   // POINTERS: arrows to every enemy the player has to walk to
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
@@ -222,7 +223,9 @@ function updateMapCamera(now) {
   const court=bossJusticeCase(g),escortView=court&&['escort','punishment','return','sentenceScene'].includes(court.phase)?bossJusticeActors(g).find(a=>a.id==='justice-boss'):null;
   // Z1-EVENTS fixup (case 15): while the elder brother walks in from the lower border gate the camera follows HIM, not Yama
   const brotherView = g.bossWalk?.arrival ? (([x, y]) => ({ x, y }))(bossWalkPosition(g.bossWalk, Date.now())) : null;
-  const focus=g.mapTravel?.focus||escortView||brotherView||g.player;
+  // POINTERS: pressing an arrow glances at that enemy for POINTER.peekMs, then the camera glides back to Yama (same exponential follow as every other focus)
+  const peek = mapCam.peek && now < mapCam.peek.until ? mapCam.peek : (mapCam.peek = null);
+  const focus=g.mapTravel?.focus||peek||escortView||brotherView||g.player;
   const wantX = mapCam.level > 0 ? focus.x : SCENE.w / 2, wantY = mapCam.level > 0 ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
@@ -403,7 +406,7 @@ function frame(now) {
   updateMapCamera(now);
   render(ctx, g, now, hover, sel, mapCam.view);
   updateTownHud(now);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); updateTalk(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); updateEnemyPointers(now); updateTalk(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -1476,6 +1479,100 @@ function updateFrontierFab() {
   if(!started||g.over||g.battle||dlg.open||borderGateLatched)return;
   borderGateLatched=true;
   openBorder();
+}
+
+/** POINTERS (owner 14 Nov): "เมื่อมีปีศาจบุกเข้ามา เราไม่รู้ว่าอยู่ตำแหน่งไหนบนแผนที่ อยากให้เพิ่มลูกศรบอกตำแหน่ง"
+ *  ศัตรูนอกจอ = ป้ายลูกศรชิดขอบจอ (ไอคอนศัตรู + ระยะคร่าว ๆ · ตัวที่อยู่ใกล้กันรวมเป็นป้ายเดียว ×N · หลบ HUD) ชี้ตรงไปที่ตัว · กดแล้วกล้องเลื่อนไปดูตัวนั้น
+ *  ศัตรูในจอ = ตัวชี้เด้งอยู่เหนือหัว (ไม่รับคลิก — ไม่บังการคลิกพื้นเพื่อเดิน) · ปราบแล้ว/เหตุการณ์จบ = หายในเฟรมถัดไป (รายการสร้างใหม่จากสถานะเกมทุกเฟรม)
+ *  คำนวณทั้งหมดอยู่ที่ src/enemy-pointers.js · ที่นี่มีแต่การวาด DOM บน #enemy-pointers (ชั้นเดียวกับจอ ไม่ซูมตามกล้อง) */
+const epLayer = document.getElementById('enemy-pointers');
+const epEls = new Map();            // id → { el, kind:'arrow'|'head', x, y, a, text, count }
+let epGeoAt = -Infinity, epBlockers = [], epSafe = { t:0, r:0, b:0, l:0 };
+const EP_AVOID = '.hud-res,.hud-top-right,.hud-bottom-left,.map-controls,#team-hud,#town-map-panel,#quest-tracker,#town-action,#bell,.notice-bell,.bell-btn';
+function epGeometry(now) {
+  if (now - epGeoAt < 500) return;
+  epGeoAt = now;
+  const L = epLayer.getBoundingClientRect(), cs = getComputedStyle(epLayer);
+  epSafe = { t:parseFloat(cs.paddingTop) || 0, r:parseFloat(cs.paddingRight) || 0, b:parseFloat(cs.paddingBottom) || 0, l:parseFloat(cs.paddingLeft) || 0 };
+  epBlockers = [];
+  for (const el of document.querySelectorAll(EP_AVOID)) {
+    if (el.hidden || epLayer.contains(el)) continue;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) continue;
+    epBlockers.push([r.left - L.left - 4, r.top - L.top - 4, r.right - L.left + 4, r.bottom - L.top + 4]);
+  }
+}
+function epIconUrl(icon) {
+  if (icon?.event) return zoneEventMarkerArt(icon.event);
+  return icon?.art ? artUrl(icon.art, 'png', icon.zone) : null;
+}
+function epMake(item, arrow) {
+  const el = document.createElement(arrow ? 'button' : 'div');
+  el.dataset.ep = item.id;
+  if (arrow) {
+    el.type = 'button'; el.className = 'ep-arrow';
+    el.innerHTML = '<span class="ep-dir"><i></i></span><span class="ep-face"><img alt="" draggable="false"><em class="ep-glyph">👹</em></span><b class="ep-dist"></b><u class="ep-count" hidden></u>';
+    const im = el.querySelector('img');
+    im.onerror = () => { im.remove(); };
+    el.onclick = ev => {
+      ev.stopPropagation();
+      const tg = epEls.get(el.dataset.ep)?.target;
+      if (!tg) return;
+      mapCam.peek = { x:tg.x, y:tg.y - (tg.h || POINTER.charH) * CHAR_SCALE_MAP / 2, until:performance.now() + POINTER.peekMs };
+    };
+  } else {
+    el.className = 'ep-head'; el.innerHTML = '<i></i>';
+  }
+  epLayer.appendChild(el);
+  return el;
+}
+function updateEnemyPointers(now) {
+  if (!epLayer) return;
+  const view = mapCam.viewport;
+  const active = started && !g.over && !g.battle && !g.mapTravel && !dlg.open && !storyPlaying && heroProfile.hidden && view?.sx;
+  const targets = active ? enemyPointerTargets(g) : [];
+  if (!targets.length) {
+    if (epEls.size) { for (const e of epEls.values()) e.el.remove(); epEls.clear(); }
+    epLayer.hidden = true;
+    return;
+  }
+  epLayer.hidden = false;
+  epGeometry(now);
+  const { heads, arrows } = layoutPointers(targets, view, { player:g.player, charScale:CHAR_SCALE_MAP, safe:epSafe, blockers:epBlockers });
+  // the map canvas already bounces its own red arrow over the frontier gate while the breach march is on (scene.js) - one marker there, not two
+  if (g.breachMarch?.()) for (let i = heads.length; i--;) if (heads[i].kind === 'frontier') heads.splice(i, 1);
+  const seen = new Set();
+  for (const it of [...arrows.map(a => ({ ...a, arrow:true })), ...heads.map(h => ({ ...h, arrow:false }))]) {
+    const key = `${it.arrow ? 'a' : 'h'}:${it.id}`;
+    seen.add(key);
+    let e = epEls.get(key);
+    if (!e) {
+      e = { el:epMake(it, it.arrow), x:NaN, y:NaN, a:NaN, text:'', count:0, url:undefined };
+      epEls.set(key, e);
+      e.el.dataset.ep = key;
+    }
+    e.target = it.target;
+    if (!(Math.abs(e.x - it.x) <= .4 && Math.abs(e.y - it.y) <= .4)) {
+      e.x = it.x; e.y = it.y;
+      e.el.style.transform = `translate3d(${it.x.toFixed(1)}px,${it.y.toFixed(1)}px,0)`;
+    }
+    if (!it.arrow) continue;
+    if (!(Math.abs(e.a - it.angle) <= .01)) { e.a = it.angle; e.el.querySelector('.ep-dir').style.transform = `rotate(${it.angle.toFixed(3)}rad)`; }
+    const text = t('pointer.dist', { n:roughDistance(it.dist) });
+    if (text !== e.text) { e.text = text; e.el.querySelector('.ep-dist').textContent = text; e.el.setAttribute('aria-label', `${t('pointer.look')} · ${text}`); }
+    if (e.count !== it.count) {
+      e.count = it.count;
+      const c = e.el.querySelector('.ep-count'); c.hidden = it.count < 2; c.textContent = `×${it.count}`;
+    }
+    const url = epIconUrl(it.target.icon);
+    if (url !== e.url) {
+      e.url = url;
+      const im = e.el.querySelector('img');
+      if (im) { im.hidden = !url; if (url) im.src = url; }
+    }
+    e.el.classList.toggle('boss', !!it.target.boss);
+  }
+  for (const [key, e] of epEls) if (!seen.has(key)) { e.el.remove(); epEls.delete(key); }
 }
 
 /** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง

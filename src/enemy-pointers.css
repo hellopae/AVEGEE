@@ -1,0 +1,37 @@
+/* POINTERS: ลูกศรชี้ตำแหน่งศัตรูบนแผนที่ (ภาพวาดใช้ของที่มีอยู่ — รูปทรง CSS ล้วน ไม่มีไฟล์ภาพใหม่) */
+.enemy-pointers{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+.enemy-pointers[hidden]{display:none}
+.enemy-pointers>*{position:absolute;left:0;top:0;will-change:transform}
+/* ---- ลูกศรชิดขอบจอ: ป้ายกลม 52px (หน้าศัตรู) + หัวลูกศรชี้ตรงไปที่ตัว + ระยะ ---- */
+.ep-arrow{--ep:var(--destructive);width:52px;height:52px;margin:-26px 0 0 -26px;padding:0;border:0;background:none;
+  pointer-events:auto;cursor:pointer;font:inherit;color:#fff;-webkit-tap-highlight-color:transparent}
+.ep-arrow.boss{--ep:#ff6a4a}
+.ep-face{position:absolute;inset:0;isolation:isolate;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#4a1f3d,#1e1015 78%);
+  border:2.5px solid var(--ep);box-shadow:0 3px 12px rgba(0,0,0,.7),0 0 0 2px rgba(20,10,14,.85)}
+.ep-face img{position:absolute;left:50%;top:0;width:150%;height:150%;object-fit:cover;object-position:50% 8%;transform:translateX(-50%);pointer-events:none}
+.ep-glyph{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:22px;z-index:-1}
+.ep-dir{position:absolute;inset:0;pointer-events:none}
+.ep-dir i{position:absolute;left:50%;top:50%;margin:-9px 0 0 -9px;width:0;height:0;
+  /* หัวลูกศรอยู่นอกวงกลมทางขวาของป้าย แล้วหมุนทั้งชั้นด้วย --a ที่ ui.js ใส่ */
+  transform:translateX(33px);border-left:17px solid var(--ep);border-top:9px solid transparent;border-bottom:9px solid transparent;
+  filter:drop-shadow(0 0 2px #2a0c08) drop-shadow(0 1px 3px rgba(0,0,0,.8))}
+.ep-dist{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);padding:1px 7px;border-radius:99px;white-space:nowrap;
+  background:#2a0c08;border:1px solid var(--ep);font-size:11px;font-weight:700;line-height:15px;color:#ffe9b0;
+  text-shadow:none;pointer-events:none}
+.ep-count{position:absolute;right:-6px;top:-6px;min-width:22px;height:22px;padding:0 5px;border-radius:99px;display:grid;place-items:center;
+  background:var(--gold);color:var(--gold-foreground);border:1.5px solid #2a0c08;font-size:12px;font-weight:800;text-decoration:none;pointer-events:none}
+.ep-count[hidden]{display:none}
+.ep-arrow:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:50%}
+.ep-arrow{animation:epIn .2s ease-out}
+.ep-arrow .ep-face{animation:epPulse 1.6s ease-in-out infinite}
+/* ---- ตัวชี้เหนือหัวศัตรูที่อยู่ในจอ: สามเหลี่ยมชี้ลง เด้งเบา ๆ ---- */
+.ep-head{width:0;height:0;pointer-events:none}
+.ep-head i{position:absolute;left:-12px;top:-14px;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;
+  border-top:20px solid #ff6a4a;filter:drop-shadow(0 0 2px #2a0c08) drop-shadow(0 2px 3px rgba(0,0,0,.75));animation:epBob .9s ease-in-out infinite}
+@keyframes epIn{from{opacity:0}to{opacity:1}}
+@keyframes epPulse{0%,100%{box-shadow:0 3px 12px rgba(0,0,0,.7),0 0 0 2px rgba(20,10,14,.85)}50%{box-shadow:0 3px 12px rgba(0,0,0,.7),0 0 0 2px rgba(20,10,14,.85),0 0 14px 3px rgba(255,106,74,.65)}}
+@keyframes epBob{0%,100%{transform:translateY(-5px)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.ep-arrow,.ep-arrow .ep-face,.ep-head i{animation:none}}
+/* จอแคบ (มือถือแนวตั้ง 360–390px): ป้ายเล็กลงนิด แต่ยังใหญ่พอแตะ (≥ 44px รวมพื้นที่กด) */
+@media (max-width:480px){.ep-arrow{width:46px;height:46px;margin:-23px 0 0 -23px}.ep-dir i{transform:translateX(30px)}.ep-dist{font-size:10px}}

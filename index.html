@@ -2240,7 +2240,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <link rel="stylesheet" href="src/z1-events.css?v=20261114-z1-events">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4-map-ui-review"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
-<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots-w1112-label1"><link rel="stylesheet" href="src/battle-result.css?v=20261114-boss-skills"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
+<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots-w1112-label1"><link rel="stylesheet" href="src/battle-result.css?v=20261114-boss-skills"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/enemy-pointers.css?v=20261115-pointers"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2321,6 +2321,8 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
         <button id="fab-atk" class="fab hot" hidden>⚔️ ฟาด</button>
       </div>
     </div>
+    <!-- POINTERS: ลูกศร/ตัวชี้ตำแหน่งศัตรู — ชั้นพิกัดจอ (ไม่ซูมตามกล้อง) ดู src/enemy-pointers.js + updateEnemyPointers ใน ui.js -->
+    <div id="enemy-pointers" class="enemy-pointers" hidden></div>
 
     <!-- ================= ข้อ D ชุด 15 — HUD ใหม่ตามม็อกอัป UI2-th/eng.jpg ================= -->
     <!-- มุมซ้ายบน: เหรียญ/ข้าวปั้น/ระเบียบ(ตาชั่ง)/กรรมท่าน(กะโหลก) — แทนที่ .res เดิม (D.2) -->
