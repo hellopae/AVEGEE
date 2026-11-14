@@ -1,0 +1,261 @@
+{
+  "files_checked": 13,
+  "failures": 0,
+  "checks": [
+    {
+      "file": "img/z2-events/soul-deserter-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 143424,
+      "sha256": "2ae68eac2e652b5cb10fb8bd9895ef7c42086fe1edbd6c89d0729bde1c8a14a3",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        65,
+        16,
+        1222,
+        1240
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-deserter-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 165804,
+      "sha256": "b14d797bcfe0bf867742285261780196e4b02b2f687816bfa65ca9465220c280",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        47,
+        0,
+        1144,
+        1241
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-commander-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 197836,
+      "sha256": "4775586bd24b039444d78c0f19675c6cbf5e356f80ca461df8afa9bc81ff5c24",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        49,
+        0,
+        1194,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-commander-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 197172,
+      "sha256": "ab06b84a2d3971820b970e38174cf8700f53c0ac8794fcfad98054efcef04564",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        59,
+        0,
+        1230,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-cupdealer-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 99666,
+      "sha256": "9c1b1c2c1cf83fca206900f7606ab5588c3a7ab535202d8712e9702fa1ad7259",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        146,
+        10,
+        1208,
+        1243
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-cupdealer-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 143670,
+      "sha256": "4afc599f069c66848d93c10625cc21c8887b7169a997d34e591559ada16a588f",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        14,
+        1227,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-granary-sister-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 123876,
+      "sha256": "3dc99238b37231bc97c6789ffd34ced2eb575a76416b76a332e9c88af0a62594",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1202,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-granary-sister-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 187018,
+      "sha256": "227b758620396ca09a11ffed216bc0b216e905cac3c89f93ca256f9ce376c675",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1226,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-bandit-chief-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 131682,
+      "sha256": "1e5547d128f65f5e21a18a60defdc29759c0078a8cef634e86d88a01fbe33dfd",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        31,
+        9,
+        1224,
+        1243
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/soul-bandit-chief-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "decode": true,
+      "bytes": 166218,
+      "sha256": "17ab7ee4e40b57dc87edeaf7d0a339c14463606f978fc8c73ec681d66c979587",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        10,
+        1222,
+        1254
+      ],
+      "source_alpha_identical": true
+    },
+    {
+      "file": "img/z2-events/prop-shackle-pair-asia.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "decode": true,
+      "bytes": 120346,
+      "sha256": "59cb374a53062d5b5e35ac051f2621d2f68f4ea52f7d80fd92244f0bfe41decd"
+    },
+    {
+      "file": "img/z2-events/prop-cup-flame-asia.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "decode": true,
+      "bytes": 108694,
+      "sha256": "c2fbaa77e49c821bdec0d503e2e8840303f0479b4578bbeb83d1c1aacbcc9ef6"
+    },
+    {
+      "file": "img/z2-events/prop-empty-granary-asia.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "decode": true,
+      "bytes": 150010,
+      "sha256": "a822eb483b076b42a1abcbe53e6845be4a27ff8ad31d84c4df57443c08f1a989"
+    }
+  ],
+  "source_alpha_files_compared": 10,
+  "note": "ตรวจโครงสร้างไฟล์เท่านั้น; ข้อกำหนดภาพและหน้า/ชุดตรวจด้วยสายตาแยกต่างหาก"
+}

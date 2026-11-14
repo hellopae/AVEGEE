@@ -1,0 +1,127 @@
+{
+  "tool": "built-in image_gen",
+  "planned_max": 20,
+  "generations": 14,
+  "retries": 1,
+  "export": {
+    "format": "WebP",
+    "quality": 86,
+    "method": 6,
+    "alpha_quality": 100,
+    "exact": true
+  },
+  "prompts": [
+    {
+      "file": "soul-deserter-asia.webp",
+      "prompt": "Use case: stylized-concept. Create ONE game character sprite, no text. Reference image is STYLE AND FRAMING ONLY, not the new man's identity. Match exactly its East Asian underworld pixel-painted chibi ghost style: large head, compact body, crisp stepped pixel clusters, dark outline, pale icy blue-grey skin, blank pale ghost eyes, warm muted red/brown/teal clothing, soft light from upper left, frontal nearly orthographic full-body view, a curled spectral wisp instead of legs. NEW SUBJECT: gaunt middle-aged former frontier foot soldier, narrow hollow cheeks, unshaven tired jaw, dark hair tied in a plain short topknot with grey strands, swollen sleepless eyelids. His torso faces forward, eyes anxiously looking slightly toward an off-frame doorway to viewer right. Rough calloused hands lowered, faded patched brown-red military tunic, modest battered shoulder plates, frayed teal sash, no weapons, no officer hat, no cane, no jewelry. Full silhouette including head and ghost tail visible with breathing room on all sides. Transparent background with true alpha, no floor, no shadow plate, no scene, no checkerboard, no labels or writing, no symbols resembling letters. Square asset."
+    },
+    {
+      "file": "soul-deserter-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. Create ONE square waist-up dialogue portrait of exactly the ghost soldier in input image 1. Preserve his exact facial identity, gaunt cheeks, swollen sleepless eyelids, scruffy stubble, tousled topknot with beige tie, battered bronze shoulder plates, patched muted red tunic, tan diagonal collar and teal sash. Input image 2 is only the dialogue portrait framing guide: head and hands completely inside square with modest margin, from top of hair to waist, face clearly enlarged. Keep image 1's precise pixel-painted chibi game art, outline, pale blue skin and white ghost eyes, soft upper-left light. Body frontal and gaze anxiously toward viewer right. Rough hands held low in frame. No ghost tail in this waist-up portrait. Transparent true-alpha background. No text, letters, calligraphy, logo, watermark, scene, border, checkerboard or floor."
+    },
+    {
+      "file": "soul-commander-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE new full-body ghost character sprite for an East Asian underworld game. Reference 1 dictates the pixel-painted chibi style, big head proportions, frontal nearly orthographic camera, dark contour and crisp pixel shading, upper-left light, icy pale blue-grey skin, blank pale ghost eyes, curled ghost tail in place of feet. Reference 2 is scale/style consistency with the newly made soldier, NOT his identity. NEW CHARACTER: retired frontier commander, square disciplined face, smooth neatly trimmed black moustache, stern guarded expression, grey temples and neat black topknot under a small plain dark military cap. Old but carefully polished layered iron and bronze lamellar armor over muted red sleeves, dark teal sash, restrained brass edging, no oversized fantasy spikes, no inscriptions or emblems resembling text. One bare hand tightly clutches a single PAIR of thick forged iron wrist shackles by their broken short connecting chain at his side: exactly two closed cuff rings with a visible broken link, one cuff with a broad hammer dent on its outer left side. Other hand rigid at his side. Entire head, hands, armor hem and pale curling spectral tail inside the square with margin. Transparent true-alpha background, no scenery, floor or pedestal, no letters, text, symbols, watermark, labels or checkerboard."
+    },
+    {
+      "file": "soul-commander-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. Make ONE square waist-up dialogue portrait of EXACTLY the commander in reference image 1. Preserve his face, slick grey temples, upright topknot, flat dark cap with brass trim, straight groomed moustache, stern closed mouth, icy blue-grey skin and pale blank ghost eyes. Preserve all his layered iron armor with brass rivets and edging, red sleeves, teal sash. Keep the same pixel-painted East Asian underworld chibi game style with crisp stepped shading, dark outline, upper-left light. Reference 2 only demonstrates waist-up portrait framing, not identity or clothes. Show head to waist, enlarged clear face, both shoulders inside margin. Bring the commander's clenched hand and his SAME two thick iron wrist cuffs with broken connecting chain upward into the lower frame so cuffs are completely visible beside his chest, retaining the broad dent on viewer-left cuff. No extra cuffs. No tail. True alpha transparent background, no scene, no floor, no border. No text, glyphs, writing, logos, watermark, labels or checkerboard."
+    },
+    {
+      "file": "prop-shackle-pair-asia.webp",
+      "prompt": "Use case: stylized-concept. One cinematic evidence close-up illustration, wide landscape aspect ratio 1375:768. Use reference image ONLY to copy the exact design of the two thick forged iron wrist cuffs the commander holds: dark thick closed oval metal cuffs with a hinge pin, short heavy chain snapped between them, and a distinctive broad hammered concave dent on outer side of viewer-LEFT cuff. Now show ONLY that ONE pair of shackles resting side by side on a plain worn dark wooden evidence tabletop. Both cuffs fully visible, their two broken chain ends clearly separated at the center, no third cuff, no hands or person. Left cuff is nearer camera with its hammer dent clearly lit. East Asian underworld game pixel-painted illustration, crisp dark outlines, restrained pixel clusters, iron charcoal grey with muted warm highlights, soft warm upper-left light and cool ambient shadows. Camera close and slightly elevated, shallow background suggesting a quiet timber judgment hall, subdued so the dent reads immediately. Opaque RGB scene, no alpha. No text, labels, placards, writing, letters, symbols, runes, logos, watermark, borders, weapons or extra props."
+    },
+    {
+      "file": "soul-cupdealer-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE NEW ghost antiquities dealer full-body sprite. Reference is visual style only, NOT same man or same body type. Match its East Asian underworld pixel-painted chibi RPG character art: oversized head compact body, dark stepped outline, textured crisp pixel shading, pale blue-grey skin and blank pale ghost eyes, soft light upper left, front-facing nearly orthographic view, lower body becomes curled spectral wisp instead of feet. New man is a tidy middle-aged antiquities merchant with lean-average build, refined long oval face, gently arched brows, narrow neatly groomed moustache and a small pointed goatee, smooth dark hair in a neat bun under modest plain maroon cloth cap. Mild courteous smile, composed soft-spoken demeanor. Neat muted burgundy long robe with subdued teal cuffs and cream collar, very restrained gold trim, plain belt. Cradles a SMALL OPEN wooden display box snugly in both arms like a baby: walnut-colored box, lid tilted open so plush pale teal silk lining and one small ivory ceramic cup are visible. Both hands anatomically readable. No excess wealth jewelry, no staff or hat wings, no medallion bearing writing. Full head, box, hands, robe and curled tail entirely within square with margin. True alpha transparent background, no floor or shadow plate, no scenery. No text, letters, glyphs, emblems resembling writing, numbers, labels, border, logos, watermark or checkerboard."
+    },
+    {
+      "file": "soul-cupdealer-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. ONE square waist-up transparent dialogue portrait of exactly the ghost antiques dealer in input 1. Same narrow oval face, raised fine eyebrows, gentle courteous smile, narrow curled moustache, pointed goatee, pale blue-grey skin, pale blank ghost eyes, maroon cap, smooth dark hair, same burgundy robe with cream diagonal collar, muted teal cuffs and dark cloth belt. Preserve the EXACT small open walnut wooden box with pale teal silk cushions and one small ivory tea cup. Cradle the box close to his chest in both hands; full hands and entire box visible. Reference 2 is ONLY guide to waist-up framing: big clear face, head to waist with margin, no ghost tail. Match the fine pixel-painted East Asian underworld RPG style of input 1, crisply stepped outlines and muted warm/cool clustered shading, light upper left. No background, true alpha transparent. No writing, symbols, letters, text, labels, logos, watermark, border, floor or checkerboard."
+    },
+    {
+      "file": "prop-cup-flame-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE wide landscape 1375:768 game evidence close-up illustration of the UNDERSIDE of a small ivory glazed antique ceramic tea cup. Opaque scene. Reference 1 provides the ivory cup material and East Asian muted game palette ONLY; do not show the dealer, box or any character. Cup lies on its side on a dark walnut evidence tabletop, camera extremely close slightly above, the round foot ring and underside face toward camera and fill most of the frame; a sliver of the bowl curves away. On the flat underside inside foot ring are exactly THREE separate simple dark red flame-shaped brush strokes side-by-side, decorative abstract curved wisps, NOT letters or writing: first two intact rising hooked strokes; the THIRD on the right is conspicuously shorter, broken off mid-stroke with a clear missing section and unfinished tip. A thin old dark hairline crack crosses the base diagonally and extends toward the bowl; a translucent glossy OVERGLAZE layer bridges and partly hides the crack with a clearly visible reflective patch. This is deliberate evidence of a concealed repair, not gold kintsugi. Make the three strokes and the glazed crack distinct and readable. Pixel-painted East Asian underworld RPG illustration with crisp contours and restrained stepped texture, warm upper-left raking light and cool shadows, subdued blurred timber hall background. No other cups, people, hands, labels, certificates, text, letters, numbers, inscriptions, calligraphy, logos, watermark or border."
+    },
+    {
+      "file": "soul-granary-sister-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE NEW full-body ghost woman sprite for an East Asian underworld RPG. Reference 1 is STYLE AND CAMERA ONLY, not this woman's face, wealthy clothing or ornaments. Match its big-head compact chibi proportions, frontal near-orthographic camera, pixel-painted crisp stepped shading and dark contours, pale icy blue-grey ghost skin and softly blank ghost eyes, upper-left light, lower body ending in a gently curled pale ghost wisp instead of feet. NEW CHARACTER is a thin middle-aged village granary keeper, older sister who has spent life giving out rice: narrow gentle face with faint crow's feet, slightly hollow cheeks, kindly drooping brows, small apologetic smile. Dark-grey hair in a loose simple low bun with plain wooden pin, a few stray grey strands, no jewelry or crown. Wears a faded dull clay-red cross-collar cotton blouse, muted olive-grey shawl, dark dusty teal PHA SIN wrap skirt visibly repaired with many overlapping tan/brown/grey cloth patches and coarse stitches, humble practical clothing. Her rough calloused cracked hands held gently together in front of waist, clearly visible and slender; slight tired stoop but facing forward. Full silhouette from hair to curling tail entirely inside square with modest padding. No fan, silk robe, ornate accessories, rice bag or extra props. Genuine alpha transparent background, no scene, ground or shadow plate. No text, calligraphy, letters, glyphs, writing, logos, watermark, border or checkerboard."
+    },
+    {
+      "file": "soul-granary-sister-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. Make ONE square waist-up dialogue portrait of the EXACT SAME ghost granary keeper woman in input image 1. Preserve her narrow face, gentle downturned brows, faint crow's feet, hollow cheeks, small apologetic smile, blank pale ghost eyes, icy blue-grey skin, grey swept hair in loose low bun at viewer left with a plain wooden pin. Same faded clay-red cross-collar blouse, cream collar, patched muted olive-grey shawl with frayed hem, dusty dark teal wrap skirt and dark cloth waist sash. Preserve the exact patch placements on her upper clothes. Her rough cracked calloused slender hands gently clasped together at the waist, both hands fully visible. Input 2 is framing only: enlarged clear face, full top of head and pin with margin, head to waist, body frontal, no spectral tail. Same pixel-painted East Asian underworld chibi RPG style as input 1 with crisp contours, stepped shading, soft upper-left light. True alpha transparency; no background, floor or shadow plate. No jewelry, crown, fan, accessories, lettering, labels, text, writing, glyphs, logos, watermark, border or checkerboard."
+    },
+    {
+      "file": "prop-empty-granary-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE wide landscape 1375:768 environmental evidence illustration for an East Asian underworld story game, matching reference image's crisp dark contours, restrained pixel-painted surface texture, muted earthy palette and upper-left warm light. Reference is STYLE ONLY, do NOT include its shackles or judgment hall. Scene: interior of a humble village wooden rice granary after a flood. A low camera looks into a nearly EMPTY timber rice storage bin, exposing the bare wooden bottom; just a FEW scattered individual uncooked rice grains, not a pile. Very clear dark horizontal flood water stains on aged vertical plank walls at knee height, damp discolored wood below the line, dusty beams above. At viewer right beside the open wooden doorway on the floor rests ONE humble unadorned ceramic bowl of watery translucent rice gruel with only a few rice grains visible through the thin liquid. Soft warm daylight enters from the doorway across an otherwise cool dim interior, quiet sorrowful mood, no people or ghosts. Keep rice grains, waterline and bowl easily readable. Opaque RGB scene. No sacks, barrels full of grain, abundant food, furniture clutter, lettering, signage, text, writing, numbers, glyphs, labels, logos, watermark, borders."
+    },
+    {
+      "file": "soul-bandit-chief-asia.webp",
+      "prompt": "Use case: stylized-concept. ONE NEW full-body ghost character, legendary old-market bandit chief, for an East Asian underworld RPG. Reference 1 dictates exact large-head compact chibi proportions, frontal nearly orthographic camera, pixel-painted stepped shading, dark outlines, pale icy blue-grey skin and pale blank ghost eyes, soft upper-left lighting, curling ghost tail instead of feet. Reference 2 is same game style and outfit modesty only, NOT same face or uniform. NEW man: lean wiry older market bandit leader with angular weathered face, narrow calculating eyes, one raised eyebrow, restrained knowing half-smile, calm and sly but NOT cruel. Grey-streaked dark hair swept back and tied low with a simple charcoal headband, short neat salt-and-pepper chin beard, no moustache curl, no hat. Worn charcoal-teal sleeveless vest over muted umber cross-collar shirt with sleeves pushed to forearms, plain rust-red cloth sash, patched dark trousers becoming pale spectral tail, modest cloth wrist wraps. One hand rests loosely in the other in front of waist, relaxed and nonthreatening. No visible weapons, loot, money, jewelry, armor, rich brocade, symbols or fancy ornaments. Whole head, hands and ghost tail inside square with margin. True alpha transparent background, no scenery, floor or shadow plate. No text, writing, letters, glyphs, labels, logos, watermark, frame or checkerboard."
+    },
+    {
+      "file": "soul-bandit-chief-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. ONE square waist-up transparent dialogue portrait of the EXACT SAME ghost bandit chief from reference 1. Preserve his angular lean older face, pale blue-grey skin, blank pale eyes with narrow sly eyelids, one raised eyebrow, calm knowing half-smile without cruelty, short salt-white chin beard, grey-streaked swept-back dark hair and charcoal cloth headband with tied ends at viewer left. Same worn charcoal-teal patched vest over umber cross-collar shirt with cream collar and sleeves pushed up, rust-red sash, dark cloth wrist wraps, same upper patch placements. Hands loosely resting one in the other at waist. Input 2 framing only: head to waist, clear enlarged face, full hair and hands within square with margin; no ghost tail. Match input 1 East Asian underworld chibi game pixel-painted style, dark stepped contours, crisp clustered shading and upper-left soft light. True alpha transparent background. No weapons, jewelry, fancy brocade, accessories, extra props, writing, text, letters, glyphs, symbols, labels, logos, watermark, border, scene, floor or checkerboard."
+    },
+    {
+      "file": "soul-commander-asia-profile.webp",
+      "prompt": "Use case: identity-preserve. TARGETED EDIT of input image 1, the waist-up commander portrait. Change ONLY his HAND POSE to match the brief. His RIGHT hand on VIEWER LEFT tightly grips BOTH short broken chain ends together in ONE fist, holding exactly TWO thick iron wrist cuff rings dangling side by side at the lower-left side of his chest. Keep the distinctive broad hammer dent on the VIEWER-LEFT ring. The OTHER hand, on viewer right, is relaxed and empty and rests LOW at his waist; it does NOT touch or hold any chain or cuff. Exactly two cuff rings total and just one gripping hand. Maintain exact same stern face, groomed black moustache, grey temples, topknot, cap, all armor layers, brass rivets, red sleeves, teal sash, proportions, pale blue-grey skin, ghost eyes, upper-left lighting and pixel-painted game style. Input 2 (full-body version) confirms character identity and ONE-HAND shackle hold. Portrait remains head-to-waist square with full head, both cuffs and hands visible, do not add tail or legs. True-alpha transparent background, no text, symbols, labels, logos, watermark, border, scene, floor, checkerboard. All other visual details unchanged.",
+      "attempt": 2,
+      "reason": "แก้โปรไฟล์ให้กำตรวนด้วยมือเดียวตรงตาราง"
+    }
+  ],
+  "sources": [
+    {
+      "file": "soul-deserter-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-1a9da64d-fcea-49a3-8b08-57dc87d52a97.png"
+    },
+    {
+      "file": "soul-deserter-asia-profile.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-4532f3db-c0d8-46bb-8720-91342fa3397f.png"
+    },
+    {
+      "file": "soul-commander-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-b097ecc0-dffc-4742-b57a-8a8ce019ddc1.png"
+    },
+    {
+      "file": "soul-commander-asia-profile.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-de206382-eaf4-4aa0-99ad-61f9595f234b.png"
+    },
+    {
+      "file": "prop-shackle-pair-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-bdd14486-99a9-4010-b340-ea047ca75e27.png"
+    },
+    {
+      "file": "soul-cupdealer-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-34f7da80-59e7-4994-8faf-8b0a211ed452.png"
+    },
+    {
+      "file": "soul-cupdealer-asia-profile.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-69de8141-1e67-40da-9acd-cbb9de7d6c31.png"
+    },
+    {
+      "file": "prop-cup-flame-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-def76916-25ed-4e6f-94fc-4bed1f189d9b.png"
+    },
+    {
+      "file": "soul-granary-sister-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-cf022e6d-620d-4bec-a8bb-85a973be7238.png"
+    },
+    {
+      "file": "soul-granary-sister-asia-profile.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-99f5b722-a5d8-4231-8238-f5441e29926e.png"
+    },
+    {
+      "file": "prop-empty-granary-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-35c58d6c-9dd2-4540-ba67-bf608b4ce716.png"
+    },
+    {
+      "file": "soul-bandit-chief-asia.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-5e04cdf9-27b8-433c-91eb-eb5b46f53909.png"
+    },
+    {
+      "file": "soul-bandit-chief-asia-profile.webp",
+      "source": "/Users/agapae/.codex/generated_images/01a1da68-15fc-70e0-aef5-7ae95cf730a0/exec-d63f1908-1a9c-4707-91a1-fffd0ce9be2f.png"
+    }
+  ]
+}
