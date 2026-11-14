@@ -1,0 +1,1205 @@
+{
+  "source_sha256": {
+    "img/crew-dam.webp": "ffd5c707dc0ed1ef4e303ca8637f6c1933b19e73a6a77eab3dc5c3c896fc2043",
+    "img/crew-dam-walk-v2.webp": "deb27bdd2e4d757212950a204e8bf7784422a00c75ef33f143f5b8f08a70f395",
+    "img/crew-dam-work.webp": "84b834221de3806fe30e90e177a54cfa13b9f4d6ceddda43535fbc6214ad8809",
+    "img/crew-dam-profile.webp": "129e0ce5f8ba976603ef190db0e989504994c98c4d909085e3895e23276964ac",
+    "img/workers/worker-th-carry-v1.webp": "8b3a3c32fd045a28ece75ebce1c8720bb0def9c45819d5ced4dd70a7140030f8",
+    "img/workers/worker-th-carry-v1.json": "ac94f58ec4e34311bc7dfb91add505cde86636e6293dbe4117148d09db1cfdec"
+  },
+  "sheets": {
+    "crew-dam-carry-walk-v1": {
+      "size": [
+        2560,
+        1280
+      ],
+      "mode": "RGBA",
+      "source_pose_order_1_based": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2
+      ],
+      "unique_drawn_key_poses_per_direction": 5,
+      "pivot_measurement": "midpoint of visible feet within lowest 15% of silhouette, projected to sole baseline; up to 3px upper-body stabilization",
+      "frames": [
+        {
+          "row": 0,
+          "frame": 1,
+          "bounds": [
+            34,
+            24,
+            292,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 2,
+          "bounds": [
+            37,
+            24,
+            295,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 3,
+          "bounds": [
+            39,
+            24,
+            294,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 4,
+          "bounds": [
+            41,
+            24,
+            296,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 5,
+          "bounds": [
+            38,
+            24,
+            297,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 6,
+          "bounds": [
+            41,
+            24,
+            296,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 7,
+          "bounds": [
+            39,
+            24,
+            294,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 8,
+          "bounds": [
+            37,
+            24,
+            295,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 1,
+          "bounds": [
+            14,
+            24,
+            275,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 2,
+          "bounds": [
+            16,
+            24,
+            276,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 3,
+          "bounds": [
+            16,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 4,
+          "bounds": [
+            17,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 5,
+          "bounds": [
+            17,
+            24,
+            279,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 6,
+          "bounds": [
+            17,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 7,
+          "bounds": [
+            16,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 8,
+          "bounds": [
+            16,
+            24,
+            276,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 1,
+          "bounds": [
+            39,
+            24,
+            283,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 2,
+          "bounds": [
+            38,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 3,
+          "bounds": [
+            38,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 4,
+          "bounds": [
+            39,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 156.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 5,
+          "bounds": [
+            41,
+            24,
+            282,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 6,
+          "bounds": [
+            39,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 156.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 7,
+          "bounds": [
+            38,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 8,
+          "bounds": [
+            38,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 1,
+          "bounds": [
+            35,
+            24,
+            281,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 2,
+          "bounds": [
+            32,
+            24,
+            281,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 3,
+          "bounds": [
+            29,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 4,
+          "bounds": [
+            32,
+            24,
+            282,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 5,
+          "bounds": [
+            33,
+            24,
+            282,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 6,
+          "bounds": [
+            32,
+            24,
+            282,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 7,
+          "bounds": [
+            29,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 8,
+          "bounds": [
+            32,
+            24,
+            281,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        }
+      ],
+      "silhouette_height_variation_percent": 0,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "bright_external_boundary_pixels": 0,
+      "metadata_matches_template_except_image_and_source": true,
+      "motion_metrics_not_visual_approval": [
+        {
+          "direction": "side",
+          "adjacent_silhouette_difference_fraction": [
+            0.04912109375,
+            0.036259765625,
+            0.034541015625,
+            0.045078125,
+            0.045078125,
+            0.034541015625,
+            0.036259765625,
+            0.04912109375
+          ],
+          "loop_seam": 0.04912109375,
+          "largest_internal_transition": 0.04912109375,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "side-left",
+          "adjacent_silhouette_difference_fraction": [
+            0.05697265625,
+            0.032294921875,
+            0.02267578125,
+            0.0264453125,
+            0.0264453125,
+            0.02267578125,
+            0.032294921875,
+            0.05697265625
+          ],
+          "loop_seam": 0.05697265625,
+          "largest_internal_transition": 0.05697265625,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "down",
+          "adjacent_silhouette_difference_fraction": [
+            0.02865234375,
+            0.023984375,
+            0.02423828125,
+            0.026328125,
+            0.026328125,
+            0.02423828125,
+            0.023984375,
+            0.02865234375
+          ],
+          "loop_seam": 0.02865234375,
+          "largest_internal_transition": 0.02865234375,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "up",
+          "adjacent_silhouette_difference_fraction": [
+            0.0257421875,
+            0.03431640625,
+            0.047939453125,
+            0.0258203125,
+            0.0258203125,
+            0.047939453125,
+            0.03431640625,
+            0.0257421875
+          ],
+          "loop_seam": 0.0257421875,
+          "largest_internal_transition": 0.047939453125,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        }
+      ]
+    },
+    "crew-dam-carry-rice-v1": {
+      "size": [
+        2560,
+        1280
+      ],
+      "mode": "RGBA",
+      "source_pose_order_1_based": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        3,
+        2
+      ],
+      "unique_drawn_key_poses_per_direction": 5,
+      "pivot_measurement": "midpoint of visible feet within lowest 15% of silhouette, projected to sole baseline; up to 3px upper-body stabilization",
+      "frames": [
+        {
+          "row": 0,
+          "frame": 1,
+          "bounds": [
+            67,
+            24,
+            286,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 2,
+          "bounds": [
+            67,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 3,
+          "bounds": [
+            67,
+            24,
+            288,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 4,
+          "bounds": [
+            64,
+            24,
+            287,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 5,
+          "bounds": [
+            67,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 6,
+          "bounds": [
+            64,
+            24,
+            287,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 7,
+          "bounds": [
+            67,
+            24,
+            288,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 0,
+          "frame": 8,
+          "bounds": [
+            67,
+            24,
+            285,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 1,
+          "bounds": [
+            38,
+            24,
+            256,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 2,
+          "bounds": [
+            39,
+            24,
+            255,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 3,
+          "bounds": [
+            36,
+            24,
+            252,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 156.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 4,
+          "bounds": [
+            35,
+            24,
+            257,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 5,
+          "bounds": [
+            36,
+            24,
+            255,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 6,
+          "bounds": [
+            35,
+            24,
+            257,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 157.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 7,
+          "bounds": [
+            36,
+            24,
+            252,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 156.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 1,
+          "frame": 8,
+          "bounds": [
+            39,
+            24,
+            255,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 163.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 1,
+          "bounds": [
+            50,
+            24,
+            276,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 2,
+          "bounds": [
+            49,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 3,
+          "bounds": [
+            49,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 4,
+          "bounds": [
+            49,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 5,
+          "bounds": [
+            50,
+            24,
+            275,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 6,
+          "bounds": [
+            49,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 7,
+          "bounds": [
+            49,
+            24,
+            277,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 2,
+          "frame": 8,
+          "bounds": [
+            49,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 1,
+          "bounds": [
+            40,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 161.0,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 2,
+          "bounds": [
+            39,
+            24,
+            279,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 3,
+          "bounds": [
+            39,
+            24,
+            280,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 4,
+          "bounds": [
+            35,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 5,
+          "bounds": [
+            40,
+            24,
+            278,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 162.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 6,
+          "bounds": [
+            35,
+            24,
+            284,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 158.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 7,
+          "bounds": [
+            39,
+            24,
+            280,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 160.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        },
+        {
+          "row": 3,
+          "frame": 8,
+          "bounds": [
+            39,
+            24,
+            279,
+            320
+          ],
+          "both_feet_projected_midpoint_x": 159.5,
+          "sole_baseline_y": 320,
+          "silhouette_height": 296
+        }
+      ],
+      "silhouette_height_variation_percent": 0,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "bright_external_boundary_pixels": 0,
+      "metadata_matches_template_except_image_and_source": true,
+      "motion_metrics_not_visual_approval": [
+        {
+          "direction": "side",
+          "adjacent_silhouette_difference_fraction": [
+            0.038134765625,
+            0.017294921875,
+            0.0302734375,
+            0.04681640625,
+            0.04681640625,
+            0.0302734375,
+            0.017294921875,
+            0.038134765625
+          ],
+          "loop_seam": 0.038134765625,
+          "largest_internal_transition": 0.04681640625,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "side-left",
+          "adjacent_silhouette_difference_fraction": [
+            0.036796875,
+            0.01982421875,
+            0.030751953125,
+            0.049931640625,
+            0.049931640625,
+            0.030751953125,
+            0.01982421875,
+            0.036796875
+          ],
+          "loop_seam": 0.036796875,
+          "largest_internal_transition": 0.049931640625,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "down",
+          "adjacent_silhouette_difference_fraction": [
+            0.010107421875,
+            0.013095703125,
+            0.015625,
+            0.0264453125,
+            0.0264453125,
+            0.015625,
+            0.013095703125,
+            0.010107421875
+          ],
+          "loop_seam": 0.010107421875,
+          "largest_internal_transition": 0.0264453125,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        },
+        {
+          "direction": "up",
+          "adjacent_silhouette_difference_fraction": [
+            0.026279296875,
+            0.01953125,
+            0.032890625,
+            0.038408203125,
+            0.038408203125,
+            0.032890625,
+            0.01953125,
+            0.026279296875
+          ],
+          "loop_seam": 0.026279296875,
+          "largest_internal_transition": 0.038408203125,
+          "seam_no_larger_than_internal": true,
+          "unique_playback_masks": 5
+        }
+      ]
+    }
+  },
+  "supervisor": {
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "opaque_bounds": [
+      60,
+      1,
+      452,
+      511
+    ],
+    "reference_opaque_bounds": [
+      61,
+      1,
+      451,
+      511
+    ]
+  },
+  "gif_reviews": {
+    "crew-dam-carry-rice-v1-down.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-rice-v1-side-left.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-rice-v1-side.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-rice-v1-up.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-walk-v1-down.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-walk-v1-side-left.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-walk-v1-side.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    },
+    "crew-dam-carry-walk-v1-up.gif": {
+      "size": [
+        640,
+        320
+      ],
+      "frames": 8,
+      "durations_ms": [
+        130,
+        120,
+        130,
+        120,
+        130,
+        120,
+        130,
+        120
+      ],
+      "loop": 0
+    }
+  }
+}
