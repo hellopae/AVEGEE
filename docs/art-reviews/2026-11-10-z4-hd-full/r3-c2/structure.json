@@ -1,0 +1,95 @@
+{
+  "method": "33x33 low-pass grayscale patches sigma=2; +/-20px search on delivered output at 1x",
+  "coordinateSpace": "chunk-local master 1x pixels",
+  "landmarks": [
+    {
+      "name": "lavafall-lip",
+      "sourcePx1x": [
+        172,
+        45
+      ],
+      "bestCandidatePx1x": [
+        172,
+        45
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9809640049934387,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "lavafall-base",
+      "sourcePx1x": [
+        185,
+        126
+      ],
+      "bestCandidatePx1x": [
+        184,
+        126
+      ],
+      "displacementPx1x": 1.0,
+      "correlation": 0.9800598621368408,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "north-plaza-cliff",
+      "sourcePx1x": [
+        833,
+        120
+      ],
+      "bestCandidatePx1x": [
+        833,
+        120
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9847083687782288,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "south-bank",
+      "sourcePx1x": [
+        669,
+        472
+      ],
+      "bestCandidatePx1x": [
+        669,
+        472
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9668881297111511,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "island-rock-tip",
+      "sourcePx1x": [
+        435,
+        679
+      ],
+      "bestCandidatePx1x": [
+        435,
+        679
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.8353939652442932,
+      "reliableCorrespondence": true
+    },
+    {
+      "name": "east-plaza-rim",
+      "sourcePx1x": [
+        889,
+        721
+      ],
+      "bestCandidatePx1x": [
+        889,
+        721
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9741718173027039,
+      "reliableCorrespondence": true
+    }
+  ],
+  "structureMaxProxyPx1x": 1.0,
+  "structureMaxCertifiedPx1x": null,
+  "limitation": "Local template probes are diagnostics. Complete plaza/stair/cliff/bank geometry remains for Claude visual decision.",
+  "registrationInlierMaxPx1x": 3.669957160949707,
+  "affineUncoveredMasterFallbackFraction": 0.0
+}

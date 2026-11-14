@@ -1,0 +1,1200 @@
+{
+  "zone": 4,
+  "skin": "cyberhell",
+  "scope": [
+    "r2-c4",
+    "r2-c5",
+    "r3-c1",
+    "r3-c2"
+  ],
+  "coordinateSpace": "full-map master 1x 4915x3277 pixels; bbox half-open [x0,y0,x1,y1]",
+  "sources": {
+    "src/zone-skin.js": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1",
+    "src/cyberhell-terrain.js": "c98eb2311962206b95d92b2c6264c2b4de1388944c5796b9b71328d397edf40f",
+    "src/town-layout.js": "0e0d8cb7f96a3410bb1c641c507a594b2df31d5413a818b6b5af2cb203b5b7ed",
+    "src/town-cyberhell-layout.js": "4674723fbdcae4379358660a5ee0f6228e03b22066684ad4bef54ddf40f27df1",
+    "src/town-owner-walkmask-cyberhell.js": "70fcee489d04bc085068e17d4502bb158955511d988b94b35854a87d5b5907e1",
+    "src/z4-poles-data.js": "76e5884881b5319f064e6f678699aaca7a71e21637ea8fecdd3699e10521f001",
+    "src/z4-poles.js": "c579cc6167e00d760341796aef0934ae1ecb843b8502b2584a783318755a1d4e"
+  },
+  "repairs": false,
+  "runtimeHouses": [],
+  "runtimeProps": [],
+  "bakedRemovalCandidates": [],
+  "limitations": "Border groups are visually reviewed, not individual collision masks. Owner mask cell = 8 world units, centre sampling. Sample feet do not classify a whole group. r3 lower plazas are outside this owner walkmask. No freestanding pavement obstruction identified in this scope.",
+  "objects": [
+    {
+      "id": "z4-r2-c4-upper-cliff-crystals-pylons",
+      "chunk": "r2-c4",
+      "bboxPx1x": [
+        3287,
+        1024,
+        3722,
+        1374
+      ],
+      "sampleFootPx1x": [
+        3642,
+        1366
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c4-stair-side-rails",
+      "chunk": "r2-c4",
+      "bboxPx1x": [
+        3857,
+        1259,
+        4063,
+        1415
+      ],
+      "sampleFootPx1x": [
+        3877,
+        1394
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c4-central-path-rim-pylon",
+      "chunk": "r2-c4",
+      "bboxPx1x": [
+        3390,
+        1338,
+        3491,
+        1589
+      ],
+      "sampleFootPx1x": [
+        3433,
+        1579
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c4-lower-mountain-border",
+      "chunk": "r2-c4",
+      "bboxPx1x": [
+        3072,
+        1514,
+        3827,
+        2048
+      ],
+      "sampleFootPx1x": [
+        3744,
+        2024
+      ],
+      "ownerWalkmaskAtSampleFoot": true,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c4-lower-bridge-rails",
+      "chunk": "r2-c4",
+      "bboxPx1x": [
+        3869,
+        1949,
+        4096,
+        2048
+      ],
+      "sampleFootPx1x": [
+        3937,
+        2044
+      ],
+      "ownerWalkmaskAtSampleFoot": true,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c4-fluid-fog-base",
+      "chunk": "r2-c4",
+      "action": "keep-baked",
+      "reason": "cyan river/waterfalls, orange lava where present and purple fog retain their source extent as the painted base"
+    },
+    {
+      "id": "z4-r2-c5-upper-cliff-border",
+      "chunk": "r2-c5",
+      "bboxPx1x": [
+        4096,
+        1191,
+        4566,
+        1516
+      ],
+      "sampleFootPx1x": [
+        4461,
+        1501
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c5-middle-rock-border",
+      "chunk": "r2-c5",
+      "bboxPx1x": [
+        4284,
+        1359,
+        4915,
+        1756
+      ],
+      "sampleFootPx1x": [
+        4646,
+        1689
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c5-stair-side-rails",
+      "chunk": "r2-c5",
+      "bboxPx1x": [
+        4173,
+        1526,
+        4361,
+        1734
+      ],
+      "sampleFootPx1x": [
+        4202,
+        1719
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c5-lower-plaza-rim",
+      "chunk": "r2-c5",
+      "bboxPx1x": [
+        4652,
+        1729,
+        4915,
+        2048
+      ],
+      "sampleFootPx1x": [
+        4746,
+        2014
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c5-lower-bridge-rails",
+      "chunk": "r2-c5",
+      "bboxPx1x": [
+        4096,
+        1940,
+        4309,
+        2048
+      ],
+      "sampleFootPx1x": [
+        4255,
+        2034
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r2-c5-fluid-fog-base",
+      "chunk": "r2-c5",
+      "action": "keep-baked",
+      "reason": "cyan river/waterfalls, orange lava where present and purple fog retain their source extent as the painted base"
+    },
+    {
+      "id": "z4-r3-c1-north-bank-rocks-crystals",
+      "chunk": "r3-c1",
+      "bboxPx1x": [
+        0,
+        2048,
+        1024,
+        2290
+      ],
+      "sampleFootPx1x": [
+        560,
+        2270
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c1-south-riverbank-border",
+      "chunk": "r3-c1",
+      "bboxPx1x": [
+        0,
+        2368,
+        1024,
+        2778
+      ],
+      "sampleFootPx1x": [
+        296,
+        2668
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c1-lower-plaza-border",
+      "chunk": "r3-c1",
+      "bboxPx1x": [
+        0,
+        2723,
+        1024,
+        3072
+      ],
+      "sampleFootPx1x": [
+        785,
+        3038
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c1-fluid-fog-base",
+      "chunk": "r3-c1",
+      "action": "keep-baked",
+      "reason": "cyan river/waterfalls, orange lava where present and purple fog retain their source extent as the painted base"
+    },
+    {
+      "id": "z4-r3-c2-north-bank-rocks-pylons",
+      "chunk": "r3-c2",
+      "bboxPx1x": [
+        1024,
+        2048,
+        2048,
+        2259
+      ],
+      "sampleFootPx1x": [
+        1684,
+        2242
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c2-middle-riverbank-border",
+      "chunk": "r3-c2",
+      "bboxPx1x": [
+        1024,
+        2438,
+        2048,
+        2679
+      ],
+      "sampleFootPx1x": [
+        1764,
+        2653
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c2-plaza-rock-island",
+      "chunk": "r3-c2",
+      "bboxPx1x": [
+        1207,
+        2693,
+        1761,
+        3058
+      ],
+      "sampleFootPx1x": [
+        1450,
+        2943
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c2-east-plaza-rim",
+      "chunk": "r3-c2",
+      "bboxPx1x": [
+        1727,
+        2578,
+        2048,
+        2900
+      ],
+      "sampleFootPx1x": [
+        1824,
+        2873
+      ],
+      "ownerWalkmaskAtSampleFoot": false,
+      "action": "keep-baked",
+      "reason": "connected cliff/bank/island border or stair/bridge railing; source inspection found no isolated raised object in the open pavement corridor",
+      "reviewEvidence": [
+        "source-contact.jpg",
+        "walkmask-contact.jpg"
+      ]
+    },
+    {
+      "id": "z4-r3-c2-fluid-fog-base",
+      "chunk": "r3-c2",
+      "action": "keep-baked",
+      "reason": "cyan river/waterfalls, orange lava where present and purple fog retain their source extent as the painted base"
+    },
+    {
+      "id": "runtime-z4-pole-82",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4022.436,
+        1053.5555
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[82]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-94",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3484.7349999999997,
+        1126.3049
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[94]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-95",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3884.816,
+        1096.8119
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[95]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-105",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3485.7180000000003,
+        1193.1557
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[105]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-106",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3689.199,
+        1149.8993
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[106]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-107",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3770.788,
+        1157.7641
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[107]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-108",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4552.273,
+        1175.4599
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[108]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-116",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3303.8630000000003,
+        1287.5333
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[116]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-117",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3769.8050000000003,
+        1218.7163
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[117]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-118",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3902.51,
+        1258.0403000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[118]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-119",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4045.0449999999996,
+        1238.3783
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[119]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-120",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4371.401,
+        1261.9727
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[120]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-128",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3303.8630000000003,
+        1330.7897
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[128]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-129",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4044.062,
+        1305.2291
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[129]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-130",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4199.376,
+        1299.3305
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[130]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-141",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3430.6699999999996,
+        1415.3363
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[141]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-142",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3593.848,
+        1405.5053
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[142]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-143",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3860.241,
+        1421.2349
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[143]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-144",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4034.232,
+        1385.8433
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[144]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-145",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4034.232,
+        1446.7955
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[145]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-148",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3589.916,
+        1458.5927
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[148]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-149",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3752.111,
+        1480.2209
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[149]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-157",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3752.111,
+        1539.2069000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[157]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-158",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3936.9150000000004,
+        1576.5647000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[158]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-159",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4171.852,
+        1568.6999
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[159]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-160",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4287.846,
+        1541.1731
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[160]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-168",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4357.639,
+        1674.8747
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[168]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-176",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3670.522,
+        1763.3537000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[176]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-177",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4084.365,
+        1722.0635
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[177]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-178",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4236.73,
+        1755.4888999999998
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[178]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-179",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4352.724,
+        1737.7930999999999
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[179]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-183",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        4084.365,
+        1788.9143000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[183]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-184",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4559.1539999999995,
+        1788.9143000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[184]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-185",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4691.859,
+        1832.1707000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[185]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-199",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3198.6820000000002,
+        1875.4271
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[199]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-207",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4212.155,
+        1967.8385
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[207]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-208",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4624.032,
+        2001.2639000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[208]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-209",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4625.014999999999,
+        1946.2103
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[209]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-210",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        845.3799999999999,
+        2075.9795
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[210]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-211",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1908.003,
+        2062.2161
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[211]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-216",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3695.097,
+        2044.5203000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[216]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-217",
+      "chunk": "r2-c4",
+      "footPx1x": [
+        3912.34,
+        2022.8920999999998
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[217]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-218",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4336.996,
+        2013.0611
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[218]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-220",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4746.907,
+        2044.5203000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[220]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-221",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        633.052,
+        2154.6275
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[221]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-222",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        845.3799999999999,
+        2136.9317
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[222]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-223",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1904.0710000000001,
+        2103.5063
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[223]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-232",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        1018.388,
+        2203.7825
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[232]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-236",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        667.457,
+        2573.1004
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[236]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-237",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1735.978,
+        2594.7286
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[237]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-242",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        302.764,
+        2704.8358000000003
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[242]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-243",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        665.491,
+        2634.0526
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[243]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-244",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1026.252,
+        2651.7484
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[244]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-245",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1401.758,
+        2651.7484
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[245]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-246",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1716.318,
+        2677.3089999999997
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[246]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-251",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1991.558,
+        2765.788
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[251]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-256",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        428.588,
+        2816.9092
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[256]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-257",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        428.588,
+        2854.267
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[257]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-258",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        825.72,
+        2864.098
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[258]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-260",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1100.96,
+        2915.2192
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[260]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-265",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1100.96,
+        2980.1038
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[265]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-272",
+      "chunk": "r3-c1",
+      "footPx1x": [
+        346.016,
+        3041.056
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[272]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-273",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1361.4550000000002,
+        3048.9208
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[273]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-z4-pole-274",
+      "chunk": "r3-c2",
+      "footPx1x": [
+        1716.318,
+        3056.7855999999997
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[274]",
+      "reason": "separate pole/wire rendering in src/z4-poles.js"
+    },
+    {
+      "id": "runtime-station-lan",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4140.631510416667,
+        1152.0703125
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "reason": "separate station sprite and reserved footprint"
+    },
+    {
+      "id": "runtime-station-krajok",
+      "chunk": "r2-c5",
+      "footPx1x": [
+        4473.41796875,
+        1916.9169921875
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "reason": "separate station sprite and reserved footprint"
+    }
+  ]
+}

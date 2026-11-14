@@ -1,0 +1,14 @@
+{
+  "chunk": "r2-c5",
+  "removedObjectIds": [],
+  "reviewedBakedGroupIds": [
+    "z4-r2-c5-upper-cliff-border",
+    "z4-r2-c5-middle-rock-border",
+    "z4-r2-c5-stair-side-rails",
+    "z4-r2-c5-lower-plaza-rim",
+    "z4-r2-c5-lower-bridge-rails",
+    "z4-r2-c5-fluid-fog-base"
+  ],
+  "finding": "No isolated raised object identified in open source pavement corridors. Border ensembles retained.",
+  "evidence": "../objects-inventory.json"
+}

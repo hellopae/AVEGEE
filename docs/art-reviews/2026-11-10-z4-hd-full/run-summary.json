@@ -1,0 +1,235 @@
+{
+  "continuation": {
+    "runId": "20261114T065936Z-8b73ee34",
+    "copiedFrom": "/Users/agapae/agapae-work/.codex-worktrees/20261114T045654Z-4c7792e0/docs/art-reviews/2026-11-10-z4-hd-full",
+    "copiedFiles": 67,
+    "imageGenCallsThisRun": 0,
+    "imageGenCallsPriorRun": 16,
+    "measurements": "Retained from prior run without rerunning registration, assembly or quality metrics",
+    "checksBeforeContinuationMetadata": {
+      "copiedFilesByteIdenticalExcludingRegeneratedVerification": 66,
+      "presenceDecodeDimensionChecks": 60,
+      "presenceDecodeDimensionErrors": [],
+      "pythonScriptsAstParsed": 5,
+      "contextHashesMatchCurrentMaster": 16,
+      "nativeAndRegistrationHashesMatch": 16,
+      "losslessVP8LImages": 20,
+      "inventorySourceHashesMatch": 7,
+      "gitDiffCheckExitCode": 0
+    },
+    "visualEvidenceViewedThisRun": [
+      "source-contact.jpg",
+      "walkmask-contact.jpg",
+      "hd-contact.jpg",
+      "r2-c4/seam-check.jpg",
+      "r2-c5/seam-check.jpg",
+      "r3-c1/seam-check.jpg",
+      "r3-c2/seam-check.jpg"
+    ],
+    "qualityDecision": "Pending Claude review of complete structural boundaries, internal seams and liquid/fog fidelity"
+  },
+  "zone": 4,
+  "set": "v3",
+  "run": "3/5",
+  "requestedChunks": [
+    "r2-c4",
+    "r2-c5",
+    "r3-c1",
+    "r3-c2"
+  ],
+  "tool": "built-in image_gen only",
+  "imageGenCalls": 16,
+  "retries": 0,
+  "source": "img/map-zone4/v3/",
+  "repairs": false,
+  "measurementRuns": 1,
+  "qualityDecision": "Pending Claude review",
+  "missingDeliverables": [],
+  "pendingWork": [
+    "Claude decision on full semantic structure <=4px, seams and color/water/fog fidelity",
+    "ASSEMBLE neighbouring chunk boundaries"
+  ],
+  "referenceAvailability": "Both supplied Zone1 example directories missing. Brief read in full. SIFT/affine and min-cost seam precedent reused from available repo scripts and Zone4 set 1 review script.",
+  "chunks": [
+    {
+      "chunk": "r2-c4",
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 135.38031005859375,
+        "baselineLanczos2xLaplacianVariance": 12.776505470275879,
+        "delivered2xLaplacianVariance": 2765.41064453125,
+        "deliveredDownsampled1xLaplacianVariance": 4696.451171875,
+        "ratioAtEqual1xSampling": 34.69079934772151,
+        "ratioAtEqual2xSampling": 216.44499358333053,
+        "method": "Full chunk grayscale CV_32F Laplacian variance; Lanczos equal-sampling comparison; generated detail only, no sharpening/noise"
+      },
+      "structureMaxProxyPx1x": 1.0,
+      "structureMaxCertifiedPx1x": null,
+      "affineUncoveredMasterFallbackFraction": 0.0,
+      "registeredParts": 4,
+      "removedObjectIds": [],
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r2-c5",
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1149,
+          1368
+        ],
+        "q12": [
+          1078,
+          1460
+        ],
+        "q21": [
+          1149,
+          1368
+        ],
+        "q22": [
+          1078,
+          1460
+        ]
+      },
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 121.3940200805664,
+        "baselineLanczos2xLaplacianVariance": 11.733736038208008,
+        "delivered2xLaplacianVariance": 2992.399169921875,
+        "deliveredDownsampled1xLaplacianVariance": 3714.3330078125,
+        "ratioAtEqual1xSampling": 30.59733095046513,
+        "ratioAtEqual2xSampling": 255.02526732984853,
+        "method": "Full chunk grayscale CV_32F Laplacian variance; Lanczos equal-sampling comparison; generated detail only, no sharpening/noise"
+      },
+      "structureMaxProxyPx1x": 1.0,
+      "structureMaxCertifiedPx1x": null,
+      "affineUncoveredMasterFallbackFraction": 0.0004456535218253968,
+      "registeredParts": 4,
+      "removedObjectIds": [],
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r3-c1",
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1189,
+          1323
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1189,
+          1323
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 94.80465698242188,
+        "baselineLanczos2xLaplacianVariance": 9.679150581359863,
+        "delivered2xLaplacianVariance": 1853.259521484375,
+        "deliveredDownsampled1xLaplacianVariance": 3245.64697265625,
+        "ratioAtEqual1xSampling": 34.23510063707143,
+        "ratioAtEqual2xSampling": 191.4692313035596,
+        "method": "Full chunk grayscale CV_32F Laplacian variance; Lanczos equal-sampling comparison; generated detail only, no sharpening/noise"
+      },
+      "structureMaxProxyPx1x": 1.0,
+      "structureMaxCertifiedPx1x": null,
+      "affineUncoveredMasterFallbackFraction": 0.0,
+      "registeredParts": 4,
+      "removedObjectIds": [],
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r3-c2",
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 93.89795684814453,
+        "baselineLanczos2xLaplacianVariance": 9.663528442382812,
+        "delivered2xLaplacianVariance": 1860.9688720703125,
+        "deliveredDownsampled1xLaplacianVariance": 3311.4482421875,
+        "ratioAtEqual1xSampling": 35.266456836147185,
+        "ratioAtEqual2xSampling": 192.5765400460123,
+        "method": "Full chunk grayscale CV_32F Laplacian variance; Lanczos equal-sampling comparison; generated detail only, no sharpening/noise"
+      },
+      "structureMaxProxyPx1x": 1.0,
+      "structureMaxCertifiedPx1x": null,
+      "affineUncoveredMasterFallbackFraction": 0.0,
+      "registeredParts": 4,
+      "removedObjectIds": [],
+      "qualityDecision": "pending Claude review"
+    }
+  ],
+  "visualReview": {
+    "inspected": [
+      "all 16 native tool outputs",
+      "source/walkmask/HD contacts",
+      "r2-c4 and r2-c5 full assembly",
+      "all four seam-check sheets"
+    ],
+    "finding": "Material facets and water/fog detail reinterpreted by ImageGen. Review water pattern continuity and local illumination near overlaps, especially r3-c1/r3-c2.",
+    "seamsDecision": "pending Claude visual decision",
+    "structureDecision": "24 local probes at 0-1px; full semantic boundary certification pending Claude",
+    "inventoryDecision": "87 scoped entries; no isolated raised object identified on open source pavement; border groups retained"
+  },
+  "provenance": {
+    "registerAndSeamCode": "Adapted from Zone4 set1 script in 20261114T042638Z-7b9ca353 with generalized row/c5 geometry and 2x pixel-centre mapping",
+    "inputCrops": "reconstruct using scripts/prepare.py; omitted from package to control size"
+  }
+}
