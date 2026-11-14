@@ -1,0 +1,245 @@
+[
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-f83158a7-6763-4345-820c-9fb67871bae5.png",
+    "file": "img/z1-events/cut-sita-phantom-ledger-th.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1375,
+      768
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "6542c09599b3675a8e56799074303523604422b3ec92ce20225e884e0cb67e1c",
+    "source_sha256": "6a312451e7a6d1aa2d3e7790b316fefcb2a81f2e9dad27c5530cde3227f4f9bd"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-070f80c8-573d-4377-b0d2-9bb0da628f26.png",
+    "file": "img/z1-events/cut-hanuman-yields-th.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1375,
+      768
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "b297b96007dd204e2c2a17626178e3f0abb7e2093c108088ee63f753cf5e84b4",
+    "source_sha256": "2b7ed6438612e7e4865dc0556aead9f2e029a64a8a4eb115f4fe7e53c9eee29d"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-3db305d3-e26d-4db7-a7b5-49214477cb24.png",
+    "file": "img/z1-events/cut-sita-return-th.webp",
+    "source_size": [
+      1678,
+      937
+    ],
+    "size": [
+      1375,
+      768
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "d44a9ec1a447ffc7b15cb4d9d50570a2530b0b5a14a191fe478bb97e85aaf1d1",
+    "source_sha256": "c6fc24a143783067c3ca42e0930df335afec532fcdd568f37c17e3d4b1c7fa6a"
+  },
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-w4/assets/w4-sun-wukong-v1.png",
+    "file": "img/z2-events/boss-wukong-asia.webp",
+    "source_size": [
+      512,
+      512
+    ],
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "encoding": {
+      "quality": 86,
+      "method": 6,
+      "lossless": true,
+      "exact": true
+    },
+    "alpha_lossless_equal": true,
+    "rgba_lossless_equal": true,
+    "sha256": "2e829e8ee19699d4b3214347994d80a9ce345dcc1a6674a2aa9a5f0d6fbb5aad",
+    "source_sha256": "f9e761dc2c0e3478f7287c109018039dee08e1fede39832fc88837cc269df6bd",
+    "source_alpha_sha256": "c5a16ffda910de11c8a5e994b5a81967070a41d2f578019a5f0e1cfb1b6bd0c1",
+    "source_rgba_sha256": "aae289e08f2aa073551636cd7bd4d531a5b3c2f92ab00af3cdc071872c1f1735"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-9b3a2a85-189b-44cf-9773-b677fb720afb.png",
+    "file": "img/z2-events/soul-ape-elder-asia.webp",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "encoding": {
+      "quality": 86,
+      "method": 6,
+      "lossless": false,
+      "exact": true
+    },
+    "alpha_lossless_equal": true,
+    "rgba_lossless_equal": false,
+    "sha256": "b6658c09a94292cf92269c1c6b213f0c9dfe97c3f317024b02d70b41b2eb0147",
+    "source_sha256": "03f4da710a0e4d6a0e5509ff26243d7fddedcfdb81147803cf7ccc6f6c7b95c4",
+    "source_alpha_sha256": "f1f7a59e9c803ef959bd2912d23dd107cbeec3c795ef305ce9bf7b673afc83cd",
+    "source_rgba_sha256": "dae17845c91edb2f641e19e379b610964c5bde8c8bb61a16216caad027b0dff6"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-2c21e457-266c-433d-b651-766ae4977cb9.png",
+    "file": "img/z2-events/soul-ape-elder-asia-profile.webp",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "encoding": {
+      "quality": 86,
+      "method": 6,
+      "lossless": false,
+      "exact": true
+    },
+    "alpha_lossless_equal": true,
+    "rgba_lossless_equal": false,
+    "sha256": "4d2d49c4eb3a19ef2c46951a947a681dd41c22022ed3c0946e8c7ad305d978f4",
+    "source_sha256": "619026bb84c053465221e66eeade90fad6a60022e7caf13f75550b7dbce14e61",
+    "source_alpha_sha256": "58206ecbd4eb52ae554442905e210bd4264c6ed0f0fbc940e335c173445b87bc",
+    "source_rgba_sha256": "76c06645a9a201d9e7ee487ca813127b665e03000f3df385b51f770a201459a2"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-a9a9a6f7-dfd5-4653-81bd-1b0fdba67bdd.png",
+    "file": "img/z2-events/boss-wukong-asia-profile.webp",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "44c159b4884e6f56e0d50eddca462535d07ba4333945710c65d75b3cb7c946a0",
+    "source_sha256": "30270c2bbc17fbbfb830afc483ded2e7a0a736c8b5c39431a4a973bd228853e1"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-e919df33-116d-44e7-bbe4-3e13bfe5de03.png",
+    "file": "img/z2-events/cut-wukong-arrives-asia.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "bf137889f944520f54c3ae17209eca99786e30c00c50f1f309fed5109c69f361",
+    "source_sha256": "fc0132968fd3f384d69029abcad82ff80ad6b511eb0cb24d905b1b780b3bede3"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-e7296864-3f9c-4eda-9cec-cbe0e3cd7708.png",
+    "file": "img/z2-events/cut-ape-phantom-ledger-asia.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "68ea234a7127a19f501f59b7e59e252cb279fc6302141af6e3a7aa952529f662",
+    "source_sha256": "c6ecc483902669a0239234799810d50f4997c17cd80f38cdf11c9dc48a974703"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-5ab331a9-b51a-4e9d-a261-97d0e6bb05ad.png",
+    "file": "img/z2-events/cut-wukong-returns-asia.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "1d5bc2f9164473dbce5104f99a3d9f0bebad16a4c31b2b016575701c48033020",
+    "source_sha256": "b32118ea7a35cfffa7ce3db6032a8b22f1d6f743aaa1690305a52a332483a147"
+  },
+  {
+    "source": "/Users/agapae/.codex/generated_images/01a1da4f-648e-7ff1-bca2-a41393fadf9b/exec-818ad467-8dc1-447c-9a93-51d020a101a3.png",
+    "file": "img/z2-events/cut-wukong-yields-asia.webp",
+    "source_size": [
+      1672,
+      941
+    ],
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "encoding": {
+      "quality": 86,
+      "method": 6
+    },
+    "alpha_lossless_equal": null,
+    "rgba_lossless_equal": null,
+    "sha256": "47001a5ff9cc9ceefdafab927d8ab97a563b6a6cc30498ed6cbf34ff559a1a70",
+    "source_sha256": "ce59b2d2fcdc56695098ca74c29a69afd2aef852c7a86389f3982dc6fb8e82ae"
+  }
+]
