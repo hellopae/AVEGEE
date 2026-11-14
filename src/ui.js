@@ -1728,7 +1728,7 @@ function updatePrisonFab() {
 // ผู้เล่นเดินยมบาทไปชายแดนเอง ถึงแล้ว watcher ใน setInterval ด้านบนจึงเปิดหน้าต่างเตรียมทีม (openFrontier)
 // ปิดหน้าต่างด้วยทางไหนก็ตามนับเป็นรับทราบ (onDlgClose → dismissEventAlert ตั้ง eventMapClosed ซึ่งเซฟอยู่แล้ว)
 function openBreachAlert() {
-  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.march'),
+  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.th.march'),
     artUrl(MOB.kinds[0].img), t('event.frontierBreach.ack'), () => dlg.close(), false, true);
 }
 

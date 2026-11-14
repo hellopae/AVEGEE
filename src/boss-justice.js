@@ -23,6 +23,16 @@ export function initializeBossJustice(g, saved = g.bossJustice) {
   const state = saved?.version === 1 ? structuredClone(saved) : {version:1, active:null, ledger:{}};
   state.ledger ||= {};
   for(const entry of Object.values(state.ledger))entry.encounterRole ||= entry.final?'final':entry.frontierBoss?'frontier':String(entry.art).startsWith('zone-boss')?'ruler':'ordinary';
+  // Z1-EVENTS (owner 14 Nov 2026): a zone boss (the "ruler": Zone 1 Yommathat, Zone 2, Zone 3) is NOT tried - the existing boss-guide system (boss-guides.js) takes over:
+  // praise -> he waits at the border gate -> welcome -> follows -> farewell at the next land. Only border bosses go to the court. A save that is
+  // still holding him at the court is moved on to "waiting at the border" (boss-guides.js bossGuideWaiting) and keeps every other bit of progress.
+  for (const [id, entry] of Object.entries(state.ledger)) {
+    if (entry.encounterRole !== 'ruler' || entry.final || entry.phase === 'released') continue;
+    for (const key of entry.courtResources?.temporary || []) g.stations = (g.stations || []).filter(st => st.def?.k !== key);     // the requisitioned chamber goes back
+    for (const held of entry.courtResources?.construction || []) { const st = g.stations?.find(x => x.def?.k === held.key); if (st) { st.build = held.build; st.buildWait = held.buildWait; } }
+    entry.phase = 'released'; entry.elapsed = 0; entry.migratedNoTrial = true;
+    if (state.active === id) state.active = null;
+  }
   if (!state.ledger[state.active] || !JUSTICE_PHASES.includes(state.ledger[state.active].phase)) state.active=null;
   g.bossJustice=state;
   // Station snapshots omit court-only flags. Keep requisitions on the persisted
@@ -46,6 +56,8 @@ export function queueBossJustice(g,b,{final=false}={}) {
   const zone=b.zone||g.zone, challenge=b.kind==='zoneEvent'&&b.challenge&&(ZONE_EVENTS[zone]||[]).some(ev=>ev.k===b.eventKey&&ev.challenge),
     frontier=b.kind==='frontierBreach'||b.kind==='zoneEvent'&&isFrontierBreachEvent(zone,b.eventKey)||challenge;
   if(b.over!=='win'||(!final&&b.kind!=='zoneBoss'&&b.eventKey!=='thBorderBoss'&&!frontier))return false;
+  // Z1-EVENTS (owner 14 Nov 2026): zone bosses (rulers) are never put on the dais - the boss-guide system handles them. Only border bosses are tried (and the final boss, which has its own path).
+  if(!final&&storyEncounterRole(b)==='ruler')return false;
   const state=g.bossJustice||initializeBossJustice(g),role=storyEncounterRole(b),base=final?'final:cyberhell':`${zone}:${role==='ruler'?'ruler':b.eventKey||'frontierBreach'}`;
   // A named boss answers to the court once. Rematches may still be fought,
   // but a fresh battle object must not bypass the persistent court ledger.

@@ -18,7 +18,7 @@ test('outer trail opens after border defense; the cave boss still gates zone 2',
  assert.equal(canTravelZone(g,'asia'),true);
 });
 // Z1-EVENTS (owner 13 Nov 2026, e8 / e9): Zone 1's ruler is fought at the city pier (case 15), not at the cave mouth beside the border boss.
-test('pier victory returns to court, then guide invitation and farewell unlock the next city',()=>{
+test('pier victory (no court for the elder brother - owner 14 Nov), then guide invitation and farewell unlock the next city',()=>{
  const g=createGame();g.save=()=>{};g.onChange=()=>{};
  g.zoneEvents.th={prisonBreak:'cleared',devaTest:'cleared',frontierBreach:'cleared',sitaHanuman:'cleared',thBorderBoss:'pending'};
  g.zoneCases.th=15;g.player.x=FRONTIER.x;g.player.y=FRONTIER.y;
@@ -30,11 +30,8 @@ test('pier victory returns to court, then guide invitation and farewell unlock t
  const b=g.startZoneEvent('thBorderBoss');assert.equal(b.eventKey,'thBorderBoss');assert.equal(b.dungeonToken,undefined);
  assert.equal(g.moveZone('asia'),false);
  b.over='win';g.bossCleared.th=true;g.zoneEvents.th.thBorderBoss='cleared';g.endBattle();
- assert.equal(g.zoneTravel.active,null,'captured boss returns to judgement dais');
- const docket=bossJusticeCase(g);assert.equal(docket.encounterRole,'ruler');
- interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);g.paused=false;
- for(let n=0;n<10000&&g.bossJustice.active;n++)advanceBossJustice(g,100);
- assert.equal(g.bossJustice.active,null);
+ assert.equal(bossJusticeCase(g),null,'owner 14 Nov: the elder brother is not tried - no dais, no mirror, no warrant');
+ assert.equal(g.bossJustice?.active||null,null);
  Object.assign(g.player,{x:FRONTIER.x,y:FRONTIER.y});assert.equal(g.beginBorderDungeon('asia'),true);
  for(let n=0;n<3;n++){const e=nextDungeonEncounter(g);assert.equal(e.boss,false,'the cave camp is an ordinary one once he is beaten');resolveDungeonEncounter(g,e.token,true);}
  assert.equal(g.zoneTravel.active.checkpoint,3);

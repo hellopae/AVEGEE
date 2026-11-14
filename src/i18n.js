@@ -488,6 +488,7 @@ const TH = {
   'event.frontierBreach.alert': 'ปีศาจหลายตัวฝ่าชายแดนเข้ามา ยมบาทน้อยกับทีมยมทูตต้องสกัดให้ครบ 3 ระลอก',
   'event.frontierBreach.go': 'รวมทีมไปสกัด',
   'event.frontierBreach.march': 'ปีศาจชายแดนบุกเข้ามา! เดินไปที่ประตูชายแดนเพื่อป้องกัน',
+  'event.frontierBreach.th.march': 'ปีศาจมาบุกที่ชายแดน ให้เดินไปตรวจที่ชายแดนด้านล่าง',   // Z1-EVENTS: the owner's own sentence (spec 13 Nov, case 9)
   'event.frontierBreach.ack': 'รับทราบ',
   'event.frontierBreach.marker': 'ปีศาจบุกที่ชายแดน',
   'event.frontierBreach.start': 'เริ่มสกัดปีศาจ',
@@ -994,6 +995,7 @@ const EN = {
   'event.frontierBreach.alert': 'Demons breached the frontier. Yama and the crew must stop all three waves.',
   'event.frontierBreach.go': 'Assemble the crew',
   'event.frontierBreach.march': 'Demons are storming the frontier! Head to the frontier to defend it.',
+  'event.frontierBreach.th.march': 'Demons are attacking at the frontier. Walk down to check the frontier below.',
   'event.frontierBreach.ack': 'Understood',
   'event.frontierBreach.marker': 'Demons at the frontier',
   'event.frontierBreach.start': 'Stop the demons',

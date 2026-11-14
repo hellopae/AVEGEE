@@ -6,7 +6,7 @@ import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActors
 const game=()=>{const g=createGame();g.paused=false;g.save=()=>true;g.onChange=()=>{};return g;};
 const advance=(g,target)=>{for(let i=0;i<2000&&bossJusticeCase(g)?.phase!==target;i++)advanceBossJustice(g,100);assert.equal(bossJusticeCase(g)?.phase,target);};
 test('captured zone boss is tried, escorted along map route, punished and released exactly once',()=>{
- const g=game();const b={kind:'zoneBoss',zone:'th',who:'บอสชายแดน',sp:'zone-boss',over:'win'};
+ const g=game();g.zone='asia';syncSceneZone('asia');const b={kind:'frontierBreach',zone:'asia',who:'บอสชายแดน',sp:'zone-boss',over:'win'};   // Z1-EVENTS: zone bosses (rulers) are no longer tried (owner 14 Nov) - the court mechanics are checked with a border-boss docket
  assert.equal(queueBossJustice(g,b),true);assert.equal(queueBossJustice(g,b),false);
  assert.equal(bossJusticeActors(g).length,2);assert.equal(sentenceBoss(g,{station:'krata',crew:'taan',intensity:3}),false);
  interrogateBoss(g);assert.equal(sentenceBoss(g,{station:'krata',crew:'nira',intensity:3}),false);
@@ -16,7 +16,7 @@ test('captured zone boss is tried, escorted along map route, punished and releas
  advance(g,'punishment');const c=bossJusticeCase(g);assert.equal(c.punishmentDuration,6000);
  g.paused=true;advanceBossJustice(g,100);assert.equal(c.elapsed,0);g.paused=false;
  advance(g,'return');for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
- assert.equal(g.bossJustice.active,null);assert.equal(g.bossJustice.ledger['th:ruler'].phase,'released');
+ assert.equal(g.bossJustice.active,null);assert.equal(g.bossJustice.ledger['asia:frontierBreach'].phase,'released');
  assert.equal(queueBossJustice(g,b),false);assert.equal(releaseBoss(g),false);
 });
 test('final boss requires asked dossier, mandatory mirror and all correct maximum choices before ending02',()=>{
@@ -32,7 +32,7 @@ test('final boss requires asked dossier, mandatory mirror and all correct maximu
  assert.equal(g.finalEvent.phase,'completed');assert.equal(g.bossJustice.ledger['final:cyberhell'].phase,'released');
 });
 test('saved escort and sentence choices resume without receiving another battle reward',()=>{
- const g=game();queueBossJustice(g,{kind:'zoneBoss',zone:'th',who:'บอส',over:'win'});interrogateBoss(g);
+ const g=game();g.zone='asia';syncSceneZone('asia');queueBossJustice(g,{kind:'frontierBreach',zone:'asia',who:'บอส',over:'win'});interrogateBoss(g);
  sentenceBoss(g,{station:'krata',crew:'taan',intensity:2});advanceBossJustice(g,100);
  const snapshot=JSON.parse(JSON.stringify(g.snapshot()));const h=createGame();assert.equal(h.restore(snapshot),true);
  assert.equal(bossJusticeCase(h).phase,'escort');assert.equal(bossJusticeCase(h).elapsed,100);
@@ -188,10 +188,10 @@ for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],
 });
 
 test('a requisitioned construction site resumes its original build state after a saved court sentence',()=>{
- let g=game();const deadline=Date.now()+60_000;
+ let g=game();g.zone='asia';syncSceneZone('asia');const deadline=Date.now()+60_000;
  g.stations=STATIONS.filter(def=>!def.heaven&&!['tea','sala','krajok','tarang'].includes(def.k))
    .map(def=>({def,slots:[],crewK:null,build:deadline,buildWait:true,repair:0,fire:0}));
- queueBossJustice(g,{kind:'zoneBoss',zone:'th',who:'บอส',over:'win'});
+ queueBossJustice(g,{kind:'frontierBreach',zone:'asia',who:'บอส',over:'win'});
  const key=bossJusticeCase(g).courtResources.construction[0].key;
  const original=g.stations.find(st=>st.def.k===key).bossCourtConstruction;
  assert.deepEqual(original,{build:deadline,buildWait:true});
@@ -221,4 +221,18 @@ test('final court survives capture, mirror, escort and sentencing saves before o
  assert.equal(h.gameCompleted,true);assert.equal(h.storyQueue.filter(p=>p.key==='ending').length,1);
  assert.equal(releaseBoss(h),false);assert.equal(queueBossJustice(h,{kind:'zoneEvent',zone:'cyberhell',over:'win'},{final:true}),false);
  assert.equal(h.coin,money);
+});
+
+// Z1-EVENTS (owner 14 Nov 2026): the elder brother (Zone 1 ruler) is never put on the dais; only the border boss is.
+test('zone bosses (rulers) have no court in any zone; a save still holding one at the court is moved on, keeping everything else',()=>{
+ const g=game();for(const zone of ['th','asia','west'])assert.equal(queueBossJustice(g,{kind:'zoneBoss',zone,who:'บอส',sp:'zone-boss',over:'win'}),false,zone);
+ assert.equal(queueBossJustice(g,{kind:'zoneEvent',zone:'th',eventKey:'thBorderBoss',who:'ยมทัต',over:'win',foes:[{sp:'zone-boss',boss:true}]}),false);
+ assert.equal(bossJusticeCase(g),null);
+ const s=game().snapshot();
+ s.bossJustice={version:1,active:'th:ruler',ledger:{'th:ruler':{id:'th:ruler',zone:'th',encounterRole:'ruler',phase:'trial',art:'zone-boss',asked:true,courtResources:{temporary:['krata'],construction:[]}}}};
+ const h=game();h.stations.push({def:STATIONS.find(d=>d.k==='krata'),slots:[],crewK:null,intensity:3,build:0,repair:0,fire:0});
+ const snap=JSON.parse(JSON.stringify(s));snap.stations=[...(snap.stations||[]),...h.snapshot().stations.filter(x=>x.k==='krata'||x.def==='krata')];
+ const r=game();r.restore(snap);
+ assert.equal(r.bossJustice.active,null);assert.equal(r.bossJustice.ledger['th:ruler'].phase,'released');assert.equal(bossJusticeCase(r),null);
+ assert.equal(r.stations.some(st=>st.bossCourtTemporary),false);
 });

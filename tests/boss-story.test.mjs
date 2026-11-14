@@ -51,14 +51,11 @@ test('Zone 2 finale saves Nira, unlocks Rage and allows a visit during three tur
   const loaded = createGame(); loaded.restore(g.snapshot());
   assert.equal(loaded.niraRest.visited,true);
   loaded.paused = false;
-  // The captured boss docket suspends normal city turns until the keeper releases him.
-  loaded.step(); assert.equal(loaded.niraRest.remaining,3);
+  // owner 14 Nov 2026: zone bosses have no court any more (the boss-guide system takes over), so city turns are not suspended.
+  assert.equal(bossJusticeCase(loaded),null);
   while(loaded.storyQueue.length)loaded.completeStory();
-  interrogateBoss(loaded);sentenceBoss(loaded,{...bossJusticeAnswer(loaded),intensity:1});
-  for(let i=0;i<2000&&bossJusticeCase(loaded);i++)advanceBossJustice(loaded,100);
-  assert.equal(loaded.bossJustice.active,null);
-  loaded.step(); loaded.step();
-  assert.equal(loaded.niraRest.remaining,1);
+  loaded.step(); assert.equal(loaded.niraRest.remaining,2);
+  loaded.step(); assert.equal(loaded.niraRest.remaining,1);
   loaded.step(); assert.equal(loaded.niraRest,null);
 });
 

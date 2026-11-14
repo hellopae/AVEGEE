@@ -73,7 +73,7 @@ test('public merit colors describe claimed merit without leaking whether the cla
 
 test('Thai ruler dockets use ruler identity; released legacy ruler dockets cannot be sentenced twice',()=>{
  const ruler={kind:'zoneEvent',zone:'th',eventKey:'thBorderBoss',over:'win',who:'ผู้ตรวจการ',foes:[{sp:'zone-boss',boss:true}]};
- const g=game();assert.equal(queueBossJustice(g,structuredClone(ruler)),true);assert.equal(bossJusticeCase(g).id,'th:ruler');assert.equal(bossJusticeCase(g).encounterRole,'ruler');
+ const g=game();assert.equal(queueBossJustice(g,structuredClone(ruler)),false,'owner 14 Nov: the elder brother has no court');assert.equal(bossJusticeCase(g),null);
  const s=game().snapshot();s.bossJustice={version:1,active:null,ledger:{'th:frontier':{id:'th:frontier',zone:'th',phase:'released',art:'zone-boss',frontierBoss:false}}};
  const h=game();h.restore(s);assert.equal(h.bossJustice.ledger['th:frontier'].encounterRole,'ruler');assert.equal(queueBossJustice(h,structuredClone(ruler)),false);
  const actualFrontier=game();assert.equal(queueBossJustice(actualFrontier,{kind:'frontierBreach',zone:'th',over:'win',who:'บอสชายแดน',foes:[{sp:'boss-frontier-th',boss:true}]}),true);assert.equal(bossJusticeCase(actualFrontier).encounterRole,'frontier');

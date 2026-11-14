@@ -198,6 +198,16 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   assert.equal(g.bossCleared.th, true); assert.equal(g.abilities.flameCharge, true);
   const th = g.storyQueue.find(p => p.key === 'th'); assert.equal(th.reward, 'flameCharge');
   assert.deepEqual(storyOf('th').pages.map(p => p.image), [1, 2, 3, 4, 5].map(n => `img/story-th-0${n}.webp`));
+  // ---- owner 14 Nov: no court for the elder brother; he waits at the border and takes Yama + Nira to the next land
+  assert.equal(bossJusticeCase(g), null, 'the elder brother is not tried'); assert.equal(g.bossJustice?.active || null, null);
+  drainStories(g); g = reload(g);
+  assert.equal(g.bossGuideWaiting(), true, 'he stands at the border and can be talked to'); assert.equal(g.bossGuideFollowing(), false);
+  assert.equal(g.inviteBossGuide(), true); assert.equal(g.storyQueue.at(-1).key, 'boss-guide-th-welcome');
+  g.completeStory(); assert.equal(g.bossGuideFollowing(), true, 'after the talk he travels with the team (Yama + Nira + him)');
+  const coinBefore = g.coin;
+  assert.equal(g.farewellBossGuide(), true); assert.equal(g.storyQueue.at(-1).key, 'boss-guide-th-farewell');
+  g.completeStory(); assert.equal(g.bossGuideFollowing(), false); assert.equal(g.coin, coinBefore + 500, 'farewell at the new land\'s gate pays the boss-guide grant');
+  assert.equal(g.outfitsOwned.includes('asia'), true);
   // ---- nothing replays
   g = reload(g); drainStories(g); g = reload(g);
   assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, []);

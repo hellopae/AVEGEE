@@ -49,14 +49,12 @@ for(const [zone,eventKey] of regions)test(`${zone}: real border-challenge victor
  g=reload(g);assert.equal(releasedFrontierBoss(g).docket,npc.docket);assert.equal(g.coin,money);assert.equal(releaseBoss(g),false);
 });
 
-for(const [zone,to] of [['th','asia'],['asia','west'],['west','cyberhell']])test(`${zone}: actual ruler victory unlocks guide only after court, then pays money/outfit once`,()=>{
+for(const [zone,to] of [['th','asia'],['asia','west'],['west','cyberhell']])test(`${zone}: actual ruler victory unlocks the guide at once (no court - owner 14 Nov), then pays money/outfit once`,()=>{
  let g=setup(zone);g.zoneCases[zone]=10;g.zoneEvents[zone]=Object.fromEntries((ZONE_EVENTS[zone]||[]).map(ev=>[ev.k,'cleared']));
  let b;
  if(zone==='th'){g.zoneEvents.th.thBorderBoss='pending';b=g.startZoneEvent('thBorderBoss');}
  else b=g.startZoneBoss('alert');
- assert.ok(b);winBattle(g);g.endBattle();assert.equal(bossGuideState(g).won,true);assert.ok(bossJusticeCase(g));
- assert.equal(g.bossGuideWaiting(),false);assert.equal(g.inviteBossGuide(),false,'a captured ruler cannot guide from court');
- interrogateBoss(g);assert.ok(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}));worldUntil(g,'return');releaseCourt(g);
+ assert.ok(b);winBattle(g);g.endBattle();assert.equal(bossGuideState(g).won,true);assert.equal(bossJusticeCase(g),null,'zone bosses are not tried');
  stories(g);assert.equal(g.bossGuideWaiting(),true);assert.equal(g.inviteBossGuide(),true);stories(g);assert.equal(g.bossGuideFollowing(),true);
  const before=g.coin;assert.equal(g.farewellBossGuide(),true);g=reload(g);assert.equal(g.coin,before);stories(g);
  assert.equal(g.coin,before+BOSS_GUIDE_GRANTS[zone]);assert.ok(g.outfitsOwned.includes(to));assert.equal(g.pendingReward.guideZone,zone);
