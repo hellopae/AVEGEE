@@ -4,7 +4,9 @@ import { t } from './i18n.js';
 export const DEVA_MAP = {
   cyberhell:{ key:'cyberRescue', prerequisite:null, x:1715, y:1285 },   // Q4-6: was (1500,1287.5), now under the x1.5 tea pavilion; same road, east of it
   west:{ key:'westDevaTest', prerequisite:'westVampireBreach', x:1160, y:400 },
-  asia:{ key:'asiaDevaTest', prerequisite:'asiaPrisonFire', x:1120, y:400 },
+  // Z2-EVENTS: was (1120,400) from the 1x map - on the 2x ground that spot is a cliff nobody can walk to (nearest walkable point 240 px away > the 100 px reach),
+  // so Kuroha could not be talked to. He now waits on the court plaza (SPOTS.plaza 1862,1090), as Rae writes: "ลานหน้าศาล".
+  asia:{ key:'asiaDevaTest', prerequisite:'asiaPrisonFire', x:2050, y:1100 },
 };
 export const DEVA_DESCENT_MS = 3200;
 // art key: th sprite sits at img root; other zones resolve 'boss-tester' via the zone manifest (artUrl)
