@@ -1,0 +1,277 @@
+{
+  "calls": [
+    {
+      "call": 1,
+      "id": "volcanic-stair-foot",
+      "mode": "built-in image_gen",
+      "prompt": "Edit this existing game ground crop, precise-object-edit. Repaint the blurry center in genuinely crisp native high resolution, matching the crisp red maple leaves and stone detail at the bottom edge. Reconstruct distinct individual red maple leaves, small green bush foliage, moss and rock facets, stone grain and clean stair tread faces. Keep EXACTLY the same image framing, camera, silhouette, every rock edge, EVERY step edge/count/spacing, gold handrail, path joint and walkable boundary, exact positions and colors. No new architecture, no missing railing. No text, labels, border, watermark, bloom, depth of field, parallax or color grading. Output the same rectangular composition, at least 1164x1044 pixels so it can supply native detail to this 582x522 crop. The purpose is restoration of texture detail, geometric registration is critical.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-bdc8f7f7-1963-41f5-8eb9-cf10adf8daf0.png",
+      "superseded": false,
+      "sha256": "3457aae71cd4387c0a33af0aff70197754a4b215e5686cc20092bdfa6de82a30",
+      "nativeSize": [
+        1324,
+        1188
+      ]
+    },
+    {
+      "call": 2,
+      "id": "main-plaza-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit the supplied isometric game ground crop. Restore the blurry center with newly drawn crisp native 2x detail matching the sharp perimeter of the SAME image. Same framing and exact scene geometry. Repaint individual scarlet maple leaves, green moss and small foliage, rock facets and fine gray stone grain. Trace every existing paving joint, cliff edge, stair tread, gold rail and water boundary at EXACT positions. Preserve the count and spacing of ALL steps, all rail supports, all silhouettes. No new objects, no text, no labels, no border, no watermark. No color grading, bloom, depth of field or lighting change. Maintain the same rectangular aspect and at least 1536 pixels on the long side. Strictly restore fine detail of this image without redesigning its architecture.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-e0c4f996-95eb-4ffd-a476-7d5f4ff9ea9e.png",
+      "superseded": false,
+      "sha256": "0aa109211c058d2e0ac0389c0ae5ed30ddd35bdba89848da9120e9a18bdcd917",
+      "nativeSize": [
+        1203,
+        1308
+      ]
+    },
+    {
+      "call": 3,
+      "id": "missing-r2-c3-q22",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit the supplied isometric game ground crop. Restore the blurry center with newly drawn crisp native 2x detail matching the sharp perimeter of the SAME image. Same framing and exact scene geometry. Repaint individual scarlet maple leaves, green moss and small foliage, rock facets and fine gray stone grain. Trace every existing paving joint, cliff edge, stair tread, gold rail and water boundary at EXACT positions. Preserve the count and spacing of ALL steps, all rail supports, all silhouettes. No new objects, no text, no labels, no border, no watermark. No color grading, bloom, depth of field or lighting change. Maintain the same rectangular aspect and at least 1536 pixels on the long side. Strictly restore fine detail of this image without redesigning its architecture.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-32bd5b8d-2668-4c0b-86bd-d75ba0e4d364.png",
+      "superseded": true,
+      "sha256": "d3d799270c924d83cfc459c6d7ca7c599cf18a79fe4ff61a1db2599ca6f480d7",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 4,
+      "id": "west-mid-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Important: keep all diagonal staircase treads and gold border edges.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-86947994-17e1-4420-b78d-26c7486f4669.png",
+      "superseded": false,
+      "sha256": "e4e5ec37914e8ddb34c0e35536b39608498a58cbf4b5f114b783aaae0ddca041",
+      "nativeSize": [
+        1389,
+        1132
+      ]
+    },
+    {
+      "call": 5,
+      "id": "central-bridge-stair-rails",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Important: match every gold baluster and ALL existing treads faithfully.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-67c46a44-92c2-48a8-8acb-0a89001f76ae.png",
+      "superseded": false,
+      "sha256": "b1e31baa189d8c4beeb03ed566549edcc91faa7160b84c4bc1ad9b5fad6c519c",
+      "nativeSize": [
+        849,
+        1851
+      ]
+    },
+    {
+      "call": 6,
+      "id": "pier-stair-rails",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Important: match every gold baluster and ALL existing treads faithfully.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-2fe3c7bd-ec4d-481e-9e91-5c377ea7aad4.png",
+      "superseded": false,
+      "sha256": "25627adf38d806e915f9d87180bc2187affdda2bbed34a640730d052d019784d",
+      "nativeSize": [
+        1174,
+        1339
+      ]
+    },
+    {
+      "call": 7,
+      "id": "invented-volcanic-bridge",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. The supplied landscape has NO bridge. Keep the lava and distant cliffs entirely natural.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-7a14799a-e944-4c60-84ee-d546c78ed94e.png",
+      "superseded": false,
+      "sha256": "56e2f4cb05457407b9b787333909fc1463172c11791e1d7dd9d753047f4c604a",
+      "nativeSize": [
+        1555,
+        1011
+      ]
+    },
+    {
+      "call": 8,
+      "id": "upper-plaza-added-steps-rail",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. ",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-f0dffce5-a25c-4361-9c53-defebad5cfe1.png",
+      "superseded": true,
+      "sha256": "6d5fc6a9383f8984efc1bec9cf417d25816a1738846e6c265935e04a6d39c9c2",
+      "nativeSize": [
+        1484,
+        1060
+      ]
+    },
+    {
+      "call": 9,
+      "id": "east-plaza-thick-rim",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. ",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-6ed60ffe-275c-4085-9a0b-a92f2b1d2392.png",
+      "superseded": false,
+      "sha256": "2b119d3c7526cd73f992302cabecf2f52ca3fce32bc63716524a5a8dfb27c4fc",
+      "nativeSize": [
+        1102,
+        1428
+      ]
+    },
+    {
+      "call": 10,
+      "id": "northwest-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. ",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-42588df6-a159-4f31-b53b-e494a1a43ece.png",
+      "superseded": false,
+      "sha256": "71faba8990afd41b82d4e20696128c0fd60be360c3d9b12260719abc443acd14",
+      "nativeSize": [
+        1297,
+        1212
+      ]
+    },
+    {
+      "call": 11,
+      "id": "pale-source-feature",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. The pale cream-colored feature at the center must keep its exact shape, color, silhouette and branches. Do not replace it with a pink tree.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-6a958363-7712-41aa-8a9c-14b6c1c210c1.png",
+      "superseded": false,
+      "sha256": "70baff9b6a3928ef1d079086a2f52ee9a713b46bb89be1a02c5bb5d136838549",
+      "nativeSize": [
+        1292,
+        1218
+      ]
+    },
+    {
+      "call": 12,
+      "id": "upper-stair-foot",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Strictly preserve every existing stair tread and gold rail.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-ec170cc3-6b5e-432e-a7ec-3133d2651a17.png",
+      "superseded": false,
+      "sha256": "3b1f7b80c741ade08eab0739dd6a7c43440ad59c9e30388482dabd825e9f99b2",
+      "nativeSize": [
+        1280,
+        1229
+      ]
+    },
+    {
+      "call": 13,
+      "id": "heaven-bridge",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Keep the EXACT red bridge shape and number and positions of all its posts.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-9dce2163-91f2-415c-85c2-88beba71aa3e.png",
+      "superseded": false,
+      "sha256": "cb85362121a99798a6588c80e8c52ee0dde93ef44132a7735348a289decd838a",
+      "nativeSize": [
+        1535,
+        1024
+      ]
+    },
+    {
+      "call": 14,
+      "id": "east-water-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Strictly preserve every existing stair tread and gold rail.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-7622f62f-45e6-41ff-8711-62e1068f9751.png",
+      "superseded": false,
+      "sha256": "fcf3f38677f68cdff41b4c535775d487758519a2c7fb7547c1e57791affe1f9b",
+      "nativeSize": [
+        1283,
+        1226
+      ]
+    },
+    {
+      "call": 15,
+      "id": "ice-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Strictly preserve every existing stair tread and gold rail.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-8b4a07db-1d78-42aa-bb79-6f69f0bd37d2.png",
+      "superseded": false,
+      "sha256": "be47c9ee76faadbd81fd23267649430b256a5c50333bd1f7817d185e61b08241",
+      "nativeSize": [
+        1275,
+        1233
+      ]
+    },
+    {
+      "call": 16,
+      "id": "east-plaza-stair",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Edit this supplied isometric game ground crop. Restore all blurry parts with newly painted crisp native 2x detail, matching sharp areas at the perimeter. Keep EXACT composition, rectangular framing, geometry, stair count and tread spacing, every edge of cliffs, water, cobbles and gold railings in exactly the same location. Same palette and lighting. Paint fine gray stone grain and fissures, tiny moss/green foliage and individually defined red maple leaves. Preserve every existing object. No new objects or architecture. No letters, text, labels, watermark, border, bloom, depth of field or color grading. Output the SAME aspect ratio, at least 1536 pixels on the long side. Preserve all path/bridge/water/stair boundaries precisely. Strictly preserve every existing stair tread and gold rail.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-7afa7543-5614-43d1-b0b5-c0279de5d6f5.png",
+      "superseded": false,
+      "sha256": "f919ee29ca2ce9320e4326f0f1192e755dab4ee225eb4cdfdd6394bdedb7ef14",
+      "nativeSize": [
+        1303,
+        1207
+      ]
+    },
+    {
+      "call": 17,
+      "id": "lava-bank-treads",
+      "mode": "built-in image_gen",
+      "prompt": "Use case precise-object-edit. Two crops of the SAME game ground. Image 1 is the v2 GEOMETRY TARGET. Image 2 is v7 STYLE REFERENCE with crisp stone detail at the bottom and left. Restore Image 1 to crisp native high resolution, preserving every tread, ALL eight diagonal stair treads plus the landings, their exact edges, count, perspective and spacing as Image 1. The staircase must retain steps across its entire length from lower left to upper right. Keep every gold rail, post, paving joint, cliff edge in its exact Image 1 location. Repaint tiny stone grain, moss, red maple leaves and green pine needles matching Image 2 detail and colors. Same rectangular composition and exact camera, at least 1536 pixels wide. No added objects or architecture, text, labels, border, watermark, depth of field, bloom or color grading. Do not turn steps into a ramp. Do not copy Image 2's altered tread arrangement. Structure must be Image 1.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-0b3e9e73-f239-4e03-877f-997dc7bda09c.png",
+      "superseded": false,
+      "sha256": "5b44754e2ddf882960f20e936739bc38e1e1f77401ccb16f509445cd085af544",
+      "nativeSize": [
+        1601,
+        983
+      ]
+    },
+    {
+      "call": 18,
+      "id": "stone-grain",
+      "mode": "built-in image_gen",
+      "prompt": "Create a seamless high resolution game-art material texture, square 2048x2048. A single uninterrupted close-up surface of muted medium blue-gray weathered stone, hand-painted realistic fantasy isometric RPG style. Even orthographic flat lighting, very fine irregular mineral grains and tiny shallow scratches only, restrained contrast and subtle natural mottling. Uniform rock slab material covering the ENTIRE image, no edges visible. No paving layout, no tiles, no joints, no large cracks, no lines, no carved pattern, no symbols, no engravings, no diamonds, no leaves, no grass, no moss, no objects, no text, no vignette, no perspective, no scene. This is solely microscopic stone surface grain to restore detail while the existing game map supplies all geometry. Native crisp fine detail.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-859cccdf-2611-4b95-958f-b6b0a8451fb3.png",
+      "superseded": false,
+      "sha256": "524dbc5304b0d6a1a12890f2a0e4605f62ced3d269caab8817cbcc0d8722731b",
+      "nativeSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "call": 19,
+      "id": "missing-top",
+      "mode": "built-in image_gen",
+      "prompt": "Precise-object-edit. Redraw only texture detail in this exact isometric game ground crop at higher resolution. Keep pixel-accurate geometry and EXACT framing. Every cobblestone joint, path boundary, cliff edge, gold line, handrail and staircase tread must remain exactly positioned. Do not add any ornament, pattern, medallion, steps or object. Restore sharp individually drawn red maple leaves, green pine needles, weathered rock facets, fine mineral grain of gray stone, small moss. Match the existing sharp outer edges in the same image. No text, labels, border, watermark, depth of field, bloom or color grading. Output 1600x960 or larger, SAME wide composition and complete content, no cropping. All layout and lighting from the supplied image. Especially important: do not invent a design in the flat paved floor.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-0035c532-216c-4c08-9e26-1f2bcf1c922a.png",
+      "superseded": false,
+      "sha256": "8098a5e97fdb231ab87a4c2f04be63fa204673e9660fce4603a8fb663e401b34",
+      "nativeSize": [
+        1619,
+        972
+      ]
+    },
+    {
+      "call": 20,
+      "id": "missing-bottom",
+      "mode": "built-in image_gen",
+      "prompt": "Precise-object-edit. Redraw only texture detail in this exact isometric game ground crop at higher resolution. Keep pixel-accurate geometry and EXACT framing. Every cobblestone joint, path boundary, cliff edge, gold line, handrail and staircase tread must remain exactly positioned. Do not add any ornament, pattern, medallion, steps or object. Restore sharp individually drawn red maple leaves, green pine needles, weathered rock facets, fine mineral grain of gray stone, small moss. Match the existing sharp outer edges in the same image. No text, labels, border, watermark, depth of field, bloom or color grading. Output 1600x960 or larger, SAME wide composition and complete content, no cropping. All layout and lighting from the supplied image. Especially important: do not invent a design in the flat paved floor.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-9694a927-d99e-474c-b043-fd026b499b10.png",
+      "superseded": false,
+      "sha256": "6af086fadedc5f8d08850bfca051005ae0c2f94eb39fe73e2441dd36ec2e2d2b",
+      "nativeSize": [
+        1619,
+        971
+      ]
+    },
+    {
+      "call": 21,
+      "id": "upper-plaza-retry",
+      "mode": "built-in image_gen",
+      "prompt": "Restore this exact game ground image in higher resolution. This is a GEOMETRY-LOCKED restoration, not a redesign. The central gray plaza has ONLY plain large blue-gray cobblestones and existing thin curved brass lines. There is NO medallion, NO center ornament, NO seal, NO flower engraving. Do NOT add one. The narrow path at the top center is FLAT paving with a few horizontal paving joints, NOT a staircase, NO raised steps and NO railing there. Copy each paving joint and each curved brass line at its exact source position, size, shape and spacing. Restore crisp native texture on the SAME existing stone slabs. Draw individual red maple leaves, green pine needles, tiny moss and weathered rock facets. Exact original camera, framing and palette. Keep all existing tree silhouettes and rock faces in place. No new objects, no altered paving layout, no text, labels, watermark, border, bloom, depth of field or color grading. Entire original image retained, 1600x1144 or larger. In particular the large plain plaza must remain completely plain, without a central ornament.",
+      "rawOutput": "/Users/agapae/.codex/generated_images/01a1db76-e4cb-7741-b86b-92ff4a631bac/exec-76ccb016-d807-4f95-8594-21608253928b.png",
+      "superseded": false,
+      "sha256": "365de606aff9358b8208d4cf6475d7bbf8fa6b98d04be0b087f72296219e8dad",
+      "nativeSize": [
+        1484,
+        1060
+      ]
+    }
+  ]
+}

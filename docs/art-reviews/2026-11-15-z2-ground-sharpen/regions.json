@@ -1,0 +1,295 @@
+[
+  {
+    "id": "invented-volcanic-bridge",
+    "core": [
+      1000,
+      90,
+      1590,
+      440
+    ],
+    "reason": "Run1 q11 invents a bridge and staircase in the panorama; visually confirmed in upstream-structure-review.jpg.",
+    "contextRectPx1x": [
+      952,
+      42,
+      1638,
+      488
+    ],
+    "effectiveFallbackPixels2x": 1056711
+  },
+  {
+    "id": "upper-plaza-added-steps-rail",
+    "core": [
+      1830,
+      320,
+      2260,
+      600
+    ],
+    "reason": "Run1 r1-c2/q12 adds railing; adjacent r1-c3/q11 adds upper-left steps.",
+    "contextRectPx1x": [
+      1782,
+      272,
+      2308,
+      648
+    ],
+    "effectiveFallbackPixels2x": 645653
+  },
+  {
+    "id": "east-plaza-thick-rim",
+    "core": [
+      2870,
+      370,
+      3072,
+      660
+    ],
+    "reason": "Run1 r1-c3/q12 changes the right road edge into a thick rim.",
+    "contextRectPx1x": [
+      2822,
+      322,
+      3120,
+      708
+    ],
+    "effectiveFallbackPixels2x": 368350
+  },
+  {
+    "id": "pale-source-feature",
+    "core": [
+      2360,
+      745,
+      2440,
+      815
+    ],
+    "reason": "Run1 r1-c3/q21 replaces the pale source feature with a pink tree.",
+    "contextRectPx1x": [
+      2312,
+      697,
+      2488,
+      863
+    ],
+    "effectiveFallbackPixels2x": 74715
+  },
+  {
+    "id": "upper-stair-foot",
+    "core": [
+      3120,
+      280,
+      3270,
+      420
+    ],
+    "reason": "Run1 r1-c4 upper stair foot reports12px displacement and a changed landing.",
+    "contextRectPx1x": [
+      3072,
+      232,
+      3318,
+      468
+    ],
+    "effectiveFallbackPixels2x": 162986
+  },
+  {
+    "id": "heaven-bridge",
+    "core": [
+      3600,
+      485,
+      3910,
+      660
+    ],
+    "reason": "Run1 r1-c4 bridge approaches and steps differ from source.",
+    "contextRectPx1x": [
+      3552,
+      437,
+      3958,
+      708
+    ],
+    "effectiveFallbackPixels2x": 338782
+  },
+  {
+    "id": "volcanic-stair-foot",
+    "core": [
+      1385,
+      775,
+      1580,
+      940
+    ],
+    "reason": "Run1 r1-c2 stair-foot-right displacement4.4721px and changed stair-foot paving.",
+    "contextRectPx1x": [
+      1337,
+      727,
+      1628,
+      988
+    ],
+    "effectiveFallbackPixels2x": 220450
+  },
+  {
+    "id": "northwest-stair",
+    "core": [
+      380,
+      360,
+      590,
+      550
+    ],
+    "reason": "Final focus audit: changed tread spacing, base and step/rail proportions at source staircase; repeated-step match displaced9,11px.",
+    "contextRectPx1x": [
+      332,
+      312,
+      638,
+      598
+    ],
+    "effectiveFallbackPixels2x": 266721
+  },
+  {
+    "id": "west-mid-stair",
+    "core": [
+      1640,
+      1190,
+      1870,
+      1360
+    ],
+    "reason": "Final focus audit: altered treads and extended edging; independent contour probes displaced6-12px.",
+    "contextRectPx1x": [
+      1592,
+      1142,
+      1918,
+      1408
+    ],
+    "effectiveFallbackPixels2x": 246237
+  },
+  {
+    "id": "main-plaza-stair",
+    "core": [
+      2290,
+      1390,
+      2540,
+      1670
+    ],
+    "reason": "Final focus audit: tread geometry differs; source stairs match at search boundary12px.",
+    "contextRectPx1x": [
+      2242,
+      1342,
+      2588,
+      1718
+    ],
+    "effectiveFallbackPixels2x": 429184
+  },
+  {
+    "id": "central-bridge-stair-rails",
+    "core": [
+      2340,
+      1900,
+      2600,
+      2580
+    ],
+    "reason": "Final focus audit: bridge rails removed and lower stair sides shifted5-7px. Restore source geometry rather than invent rails.",
+    "contextRectPx1x": [
+      2292,
+      1852,
+      2648,
+      2628
+    ],
+    "effectiveFallbackPixels2x": 919945
+  },
+  {
+    "id": "pier-stair-rails",
+    "core": [
+      2770,
+      2100,
+      2960,
+      2330
+    ],
+    "reason": "Final focus audit: pier rails removed and stair width changed; reliable contour discrepancies retained.",
+    "contextRectPx1x": [
+      2722,
+      2052,
+      3008,
+      2378
+    ],
+    "effectiveFallbackPixels2x": 296986
+  },
+  {
+    "id": "east-water-stair",
+    "core": [
+      3130,
+      2100,
+      3260,
+      2220
+    ],
+    "reason": "Final focus audit: water stair rail supports removed and side outline changed.",
+    "contextRectPx1x": [
+      3082,
+      2052,
+      3308,
+      2268
+    ],
+    "effectiveFallbackPixels2x": 125136
+  },
+  {
+    "id": "ice-stair",
+    "core": [
+      4435,
+      750,
+      4645,
+      950
+    ],
+    "reason": "Final focus audit: tread arrangement and source right stair edge changed.",
+    "contextRectPx1x": [
+      4387,
+      702,
+      4693,
+      998
+    ],
+    "effectiveFallbackPixels2x": 257025
+  },
+  {
+    "id": "east-plaza-stair",
+    "core": [
+      3110,
+      650,
+      3290,
+      810
+    ],
+    "reason": "Final focus audit: altered tread spacing; repeated-step correspondence hits12px search boundary.",
+    "contextRectPx1x": [
+      3062,
+      602,
+      3338,
+      858
+    ],
+    "effectiveFallbackPixels2x": 208699
+  },
+  {
+    "id": "missing-r2-c3-q22",
+    "core": [
+      2560,
+      1536,
+      3072,
+      2048
+    ],
+    "contextRectPx1x": [
+      2496,
+      1472,
+      3136,
+      2112
+    ],
+    "geometrySource": "v2"
+  },
+  {
+    "id": "lava-bank-treads",
+    "core": [
+      1450,
+      1210,
+      1885,
+      1440
+    ],
+    "contextRectPx1x": [
+      1402,
+      1162,
+      1933,
+      1488
+    ],
+    "geometrySource": "v2",
+    "briefApproximateCore": [
+      1340,
+      1120,
+      1700,
+      1250
+    ]
+  }
+]

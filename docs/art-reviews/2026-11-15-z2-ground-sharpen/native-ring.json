@@ -1,0 +1,206 @@
+[
+  {
+    "id": "invented-volcanic-bridge",
+    "laplacian": 1098.421142578125,
+    "highpassRms": 9.772830963134766,
+    "pixels": 452784,
+    "outerRectOutputPx": [
+      1808,
+      0,
+      3372,
+      1072
+    ]
+  },
+  {
+    "id": "upper-plaza-added-steps-rail",
+    "laplacian": 1801.62060546875,
+    "highpassRms": 13.44839096069336,
+    "pixels": 383232,
+    "outerRectOutputPx": [
+      3468,
+      448,
+      4712,
+      1392
+    ]
+  },
+  {
+    "id": "east-plaza-thick-rim",
+    "laplacian": 1209.8865966796875,
+    "highpassRms": 10.853509902954102,
+    "pixels": 212352,
+    "outerRectOutputPx": [
+      5548,
+      548,
+      6336,
+      1512
+    ]
+  },
+  {
+    "id": "pale-source-feature",
+    "laplacian": 1830.24462890625,
+    "highpassRms": 13.156305313110352,
+    "pixels": 168192,
+    "outerRectOutputPx": [
+      4528,
+      1298,
+      5072,
+      1822
+    ]
+  },
+  {
+    "id": "upper-stair-foot",
+    "laplacian": 1770.009521484375,
+    "highpassRms": 12.857917785644531,
+    "pixels": 175488,
+    "outerRectOutputPx": [
+      6048,
+      368,
+      6732,
+      1032
+    ]
+  },
+  {
+    "id": "heaven-bridge",
+    "laplacian": 991.1058349609375,
+    "highpassRms": 9.796652793884277,
+    "pixels": 296832,
+    "outerRectOutputPx": [
+      7008,
+      778,
+      8012,
+      1512
+    ]
+  },
+  {
+    "id": "volcanic-stair-foot",
+    "laplacian": 868.2290649414062,
+    "highpassRms": 9.355706214904785,
+    "pixels": 248832,
+    "outerRectOutputPx": [
+      2578,
+      1358,
+      3352,
+      2072
+    ]
+  },
+  {
+    "id": "northwest-stair",
+    "laplacian": 2789.216552734375,
+    "highpassRms": 15.0397310256958,
+    "pixels": 264192,
+    "outerRectOutputPx": [
+      568,
+      528,
+      1372,
+      1292
+    ]
+  },
+  {
+    "id": "west-mid-stair",
+    "laplacian": 2267.773193359375,
+    "highpassRms": 14.632417678833008,
+    "pixels": 127512,
+    "outerRectOutputPx": [
+      3088,
+      2188,
+      3932,
+      2912
+    ]
+  },
+  {
+    "id": "main-plaza-stair",
+    "laplacian": 3779.804443359375,
+    "highpassRms": 17.811372756958008,
+    "pixels": 240000,
+    "outerRectOutputPx": [
+      4388,
+      2588,
+      5272,
+      3532
+    ]
+  },
+  {
+    "id": "central-bridge-stair-rails",
+    "laplacian": 2413.51904296875,
+    "highpassRms": 14.752313613891602,
+    "pixels": 383232,
+    "outerRectOutputPx": [
+      4488,
+      3608,
+      5392,
+      5352
+    ]
+  },
+  {
+    "id": "pier-stair-rails",
+    "laplacian": 1625.925048828125,
+    "highpassRms": 12.268681526184082,
+    "pixels": 175488,
+    "outerRectOutputPx": [
+      5348,
+      4008,
+      6112,
+      4852
+    ]
+  },
+  {
+    "id": "east-water-stair",
+    "laplacian": 1672.08154296875,
+    "highpassRms": 12.385008811950684,
+    "pixels": 175488,
+    "outerRectOutputPx": [
+      6068,
+      4008,
+      6712,
+      4632
+    ]
+  },
+  {
+    "id": "ice-stair",
+    "laplacian": 4311.72607421875,
+    "highpassRms": 18.09665870666504,
+    "pixels": 268032,
+    "outerRectOutputPx": [
+      8678,
+      1308,
+      9482,
+      2092
+    ]
+  },
+  {
+    "id": "east-plaza-stair",
+    "laplacian": 611.9231567382812,
+    "highpassRms": 8.451497077941895,
+    "pixels": 200448,
+    "outerRectOutputPx": [
+      6028,
+      1108,
+      6772,
+      1812
+    ]
+  },
+  {
+    "id": "missing-r2-c3-q22",
+    "laplacian": 2736.500244140625,
+    "highpassRms": 15.438314437866211,
+    "pixels": 279936,
+    "outerRectOutputPx": [
+      4896,
+      2848,
+      6368,
+      4320
+    ]
+  },
+  {
+    "id": "lava-bank-treads",
+    "laplacian": 1905.163330078125,
+    "highpassRms": 13.15855884552002,
+    "pixels": 339872,
+    "outerRectOutputPx": [
+      2708,
+      2228,
+      3962,
+      3072
+    ]
+  }
+]

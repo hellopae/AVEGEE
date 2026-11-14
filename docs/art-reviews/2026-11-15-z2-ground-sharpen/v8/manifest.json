@@ -1,0 +1,323 @@
+{
+  "zone": "asia",
+  "version": 8,
+  "fullPx": {
+    "w": 9830,
+    "h": 6554
+  },
+  "chunk": 2048,
+  "rows": 4,
+  "cols": 5,
+  "worldSize": {
+    "w": 3840,
+    "h": 2560
+  },
+  "format": "webp",
+  "quality": 90,
+  "repairs": false,
+  "imageGenCalls": 21,
+  "visualAcceptanceVerified": false,
+  "encoding": "q90 repair composites, exact VP8L storage for changed chunks; unchanged VP8 copied",
+  "repairedRegions": [
+    "invented-volcanic-bridge",
+    "upper-plaza-added-steps-rail",
+    "east-plaza-thick-rim",
+    "pale-source-feature",
+    "upper-stair-foot",
+    "heaven-bridge",
+    "volcanic-stair-foot",
+    "northwest-stair",
+    "west-mid-stair",
+    "main-plaza-stair",
+    "central-bridge-stair-rails",
+    "pier-stair-rails",
+    "east-water-stair",
+    "ice-stair",
+    "east-plaza-stair",
+    "missing-r2-c3-q22",
+    "lava-bank-treads"
+  ],
+  "files": [
+    {
+      "file": "r1-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        0,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 6746956,
+      "sha256": "e2bee30303a621ff35ba9ee95662ee064f6d78bd52280e207dd1090f5ccfdd0b",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r1-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        2048,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 5737692,
+      "sha256": "f59d010178884fb75e116ec68e1deb3a8a2f645a40c70b631fc907fa1501b67d",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r1-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        4096,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 5236566,
+      "sha256": "bc16507c19e4fae6b8565152aa4f0be4e9d5ad494a0a591c4860734607470bc5",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r1-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        6144,
+        0,
+        2048,
+        2048
+      ],
+      "bytes": 5131170,
+      "sha256": "59265af4852b5a2279d6a145591e3a4c2742fe475967ecda1e3782f233403100",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r1-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "rectPx2x": [
+        8192,
+        0,
+        1638,
+        2048
+      ],
+      "bytes": 5115118,
+      "sha256": "3c9c7d90242c45a1140dea324569acff47ad4106f384d61b9f790df7cd429e5b",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r2-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        0,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 1731202,
+      "sha256": "8c2f01afb0abd6d796d311b8c23cb7e2bed02ddd2986811c758197390f19a7b8",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r2-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        2048,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 6558684,
+      "sha256": "e2cacb9da32a862c5cd530a75aa2ad83a3acf2e60eba2f71cb19a5da65083fbe",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r2-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        4096,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 6463558,
+      "sha256": "29a923b03d27a673ebe6ed7c2fe4f130dad1a82b8bd7e9c93c7cc7e4979c5add",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r2-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        6144,
+        2048,
+        2048,
+        2048
+      ],
+      "bytes": 6405462,
+      "sha256": "27ecc5f4c51ff0a1a03596ede27d56009a8f0088dda9fe384597c7e8c17e040c",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r2-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "rectPx2x": [
+        8192,
+        2048,
+        1638,
+        2048
+      ],
+      "bytes": 1554934,
+      "sha256": "89f5cf63d13bd6a76f8b6df1da3a46c4392c4bdbb33901247792d58d761a9c49",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r3-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        0,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 1808394,
+      "sha256": "696f2f2cf24d1839c241a2f73c084a69c5daec2a9a01131baed0ba113868d393",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r3-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        2048,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 1787534,
+      "sha256": "9af741493e811b1cc75cbdb88001d39a1f37032d0310a41a96eefbf17631974c",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r3-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        4096,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 6091832,
+      "sha256": "1ca2362290d823bf7a7c5005cd5a5cbae8005781379655413e6c49526aee700d",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r3-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "rectPx2x": [
+        6144,
+        4096,
+        2048,
+        2048
+      ],
+      "bytes": 6367230,
+      "sha256": "f3e3d2808841ce90a25696c13e843e9f69a19ee30c6aad9f0a4e635872756e3c",
+      "storage": "VP8L"
+    },
+    {
+      "file": "r3-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "rectPx2x": [
+        8192,
+        4096,
+        1638,
+        2048
+      ],
+      "bytes": 1457108,
+      "sha256": "64eea26b1de33214583468d3a6fa19aeba0e211ecfff3afac20d1003070b458d",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r4-c1.webp",
+      "width": 2048,
+      "height": 410,
+      "rectPx2x": [
+        0,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 377032,
+      "sha256": "708bbb4ddde0873ee866e2cf1c5fafbf559fb5c6a0a4770b228c4485519a0da4",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r4-c2.webp",
+      "width": 2048,
+      "height": 410,
+      "rectPx2x": [
+        2048,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 398634,
+      "sha256": "4a72fcf9d46e9a793f8391271b42052500f75d846a57471760750b30e85895e4",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r4-c3.webp",
+      "width": 2048,
+      "height": 410,
+      "rectPx2x": [
+        4096,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 435744,
+      "sha256": "3c23e94dc83777e254bc0eca47456237f1967f3e78890d028b5455bed8b6bdd5",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r4-c4.webp",
+      "width": 2048,
+      "height": 410,
+      "rectPx2x": [
+        6144,
+        6144,
+        2048,
+        410
+      ],
+      "bytes": 456812,
+      "sha256": "b740a1bebdd8fb788f85a4f1ea4dc64164cba4626ccfb1c529b54bd30074f114",
+      "storage": "copied v7 VP8"
+    },
+    {
+      "file": "r4-c5.webp",
+      "width": 1638,
+      "height": 410,
+      "rectPx2x": [
+        8192,
+        6144,
+        1638,
+        410
+      ],
+      "bytes": 359896,
+      "sha256": "876b1bf03ee87b76b61dccd334224596d6ff642962f9f6dcb9b8927468050c64",
+      "storage": "copied v7 VP8"
+    }
+  ],
+  "imageBytes": 71090658
+}

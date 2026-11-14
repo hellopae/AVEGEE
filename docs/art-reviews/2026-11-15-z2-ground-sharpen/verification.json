@@ -1,0 +1,23 @@
+{
+  "fileChecks": true,
+  "sourceHashesUnchanged": 42,
+  "chunks": 20,
+  "fullPx": {
+    "w": 9830,
+    "h": 6554
+  },
+  "imageGenCalls": 21,
+  "bytes": 71090658,
+  "editedSupportPixels": 7484247,
+  "changedPixelsInside": 7340587,
+  "changedPixelsOutside": 0,
+  "sharpnessAtLeast85": 16,
+  "sharpnessRegions": 16,
+  "structureProbes": 4904,
+  "structureMaxMapPx": 4.0,
+  "structureOver4": 0,
+  "structureLowConfidence": 0,
+  "runtimeTested": false,
+  "continuousSemanticContoursVerified": false,
+  "allChunksLossyQ90": false
+}

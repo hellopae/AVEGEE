@@ -1,0 +1,583 @@
+{
+  "method": "Decoded v8 full 2x grayscale Laplacian ksize1 variance and highpass sigma1 RMS. Native annulus is 48 map px outside each original context, excluding every edited context. Fixed masks, identical before/after sampling. Ratios measure texture contrast, not semantic detail or resolution.",
+  "rows": [
+    {
+      "id": "invented-volcanic-bridge",
+      "coreMapPx": [
+        1000,
+        90,
+        1590,
+        440
+      ],
+      "ring": {
+        "id": "invented-volcanic-bridge",
+        "laplacian": 1098.421142578125,
+        "highpassRms": 9.772830963134766,
+        "pixels": 452784,
+        "outerRectOutputPx": [
+          1808,
+          0,
+          3372,
+          1072
+        ]
+      },
+      "before": {
+        "laplacianVariance": 47.86776351928711,
+        "highpassRms": 2.652217149734497
+      },
+      "after": {
+        "laplacianVariance": 1111.486572265625,
+        "highpassRms": 10.367828369140625
+      },
+      "laplacianRatioBefore": 0.04357869824586204,
+      "laplacianRatioAfter": 1.011894736163612,
+      "highpassRatioBefore": 0.2713867823703525,
+      "highpassRatioAfter": 1.060882809520631,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "upper-plaza-added-steps-rail",
+      "coreMapPx": [
+        1830,
+        320,
+        2260,
+        600
+      ],
+      "ring": {
+        "id": "upper-plaza-added-steps-rail",
+        "laplacian": 1801.62060546875,
+        "highpassRms": 13.44839096069336,
+        "pixels": 383232,
+        "outerRectOutputPx": [
+          3468,
+          448,
+          4712,
+          1392
+        ]
+      },
+      "before": {
+        "laplacianVariance": 59.01686096191406,
+        "highpassRms": 3.0230889320373535
+      },
+      "after": {
+        "laplacianVariance": 2546.641357421875,
+        "highpassRms": 13.820858001708984
+      },
+      "laplacianRatioBefore": 0.032757652073233764,
+      "laplacianRatioAfter": 1.4135281033596325,
+      "highpassRatioBefore": 0.22479186847505897,
+      "highpassRatioAfter": 1.027696030112767,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-plaza-thick-rim",
+      "coreMapPx": [
+        2870,
+        370,
+        3072,
+        660
+      ],
+      "ring": {
+        "id": "east-plaza-thick-rim",
+        "laplacian": 1209.8865966796875,
+        "highpassRms": 10.853509902954102,
+        "pixels": 212352,
+        "outerRectOutputPx": [
+          5548,
+          548,
+          6336,
+          1512
+        ]
+      },
+      "before": {
+        "laplacianVariance": 46.51563262939453,
+        "highpassRms": 2.594750165939331
+      },
+      "after": {
+        "laplacianVariance": 2069.4736328125,
+        "highpassRms": 12.175691604614258
+      },
+      "laplacianRatioBefore": 0.03844627484678992,
+      "laplacianRatioAfter": 1.7104690956092843,
+      "highpassRatioBefore": 0.23907014312790129,
+      "highpassRatioAfter": 1.121820656495673,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "pale-source-feature",
+      "coreMapPx": [
+        2360,
+        745,
+        2440,
+        815
+      ],
+      "ring": {
+        "id": "pale-source-feature",
+        "laplacian": 1830.24462890625,
+        "highpassRms": 13.156305313110352,
+        "pixels": 168192,
+        "outerRectOutputPx": [
+          4528,
+          1298,
+          5072,
+          1822
+        ]
+      },
+      "before": {
+        "laplacianVariance": 49.16674041748047,
+        "highpassRms": 2.704280138015747
+      },
+      "after": {
+        "laplacianVariance": 3397.6328125,
+        "highpassRms": 15.214930534362793
+      },
+      "laplacianRatioBefore": 0.026863480236990176,
+      "laplacianRatioAfter": 1.856381796640167,
+      "highpassRatioBefore": 0.20555012016336477,
+      "highpassRatioAfter": 1.1564744183308826,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "upper-stair-foot",
+      "coreMapPx": [
+        3120,
+        280,
+        3270,
+        420
+      ],
+      "ring": {
+        "id": "upper-stair-foot",
+        "laplacian": 1770.009521484375,
+        "highpassRms": 12.857917785644531,
+        "pixels": 175488,
+        "outerRectOutputPx": [
+          6048,
+          368,
+          6732,
+          1032
+        ]
+      },
+      "before": {
+        "laplacianVariance": 65.73639678955078,
+        "highpassRms": 3.343672275543213
+      },
+      "after": {
+        "laplacianVariance": 2598.992919921875,
+        "highpassRms": 13.97152042388916
+      },
+      "laplacianRatioBefore": 0.03713900744128346,
+      "laplacianRatioAfter": 1.4683496830809664,
+      "highpassRatioBefore": 0.2600477255560243,
+      "highpassRatioAfter": 1.0866083184547914,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "heaven-bridge",
+      "coreMapPx": [
+        3600,
+        485,
+        3910,
+        660
+      ],
+      "ring": {
+        "id": "heaven-bridge",
+        "laplacian": 991.1058349609375,
+        "highpassRms": 9.796652793884277,
+        "pixels": 296832,
+        "outerRectOutputPx": [
+          7008,
+          778,
+          8012,
+          1512
+        ]
+      },
+      "before": {
+        "laplacianVariance": 54.33797073364258,
+        "highpassRms": 2.9850921630859375
+      },
+      "after": {
+        "laplacianVariance": 1766.2900390625,
+        "highpassRms": 12.62975788116455
+      },
+      "laplacianRatioBefore": 0.05482559865645852,
+      "laplacianRatioAfter": 1.7821406925044638,
+      "highpassRatioBefore": 0.3047053137321995,
+      "highpassRatioAfter": 1.2891911295507876,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "volcanic-stair-foot",
+      "coreMapPx": [
+        1385,
+        775,
+        1580,
+        940
+      ],
+      "ring": {
+        "id": "volcanic-stair-foot",
+        "laplacian": 868.2290649414062,
+        "highpassRms": 9.355706214904785,
+        "pixels": 248832,
+        "outerRectOutputPx": [
+          2578,
+          1358,
+          3352,
+          2072
+        ]
+      },
+      "before": {
+        "laplacianVariance": 69.52201080322266,
+        "highpassRms": 3.2920491695404053
+      },
+      "after": {
+        "laplacianVariance": 2042.8720703125,
+        "highpassRms": 12.471935272216797
+      },
+      "laplacianRatioBefore": 0.0800733511586766,
+      "laplacianRatioAfter": 2.3529183170692014,
+      "highpassRatioBefore": 0.35187607369455104,
+      "highpassRatioAfter": 1.3330832526942196,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "northwest-stair",
+      "coreMapPx": [
+        380,
+        360,
+        590,
+        550
+      ],
+      "ring": {
+        "id": "northwest-stair",
+        "laplacian": 2789.216552734375,
+        "highpassRms": 15.0397310256958,
+        "pixels": 264192,
+        "outerRectOutputPx": [
+          568,
+          528,
+          1372,
+          1292
+        ]
+      },
+      "before": {
+        "laplacianVariance": 67.33513641357422,
+        "highpassRms": 3.424651622772217
+      },
+      "after": {
+        "laplacianVariance": 3229.591064453125,
+        "highpassRms": 14.906785011291504
+      },
+      "laplacianRatioBefore": 0.024141236487200332,
+      "laplacianRatioAfter": 1.1578846616577814,
+      "highpassRatioBefore": 0.22770697274579604,
+      "highpassRatioAfter": 0.9911603462736698,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "west-mid-stair",
+      "coreMapPx": [
+        1640,
+        1190,
+        1870,
+        1360
+      ],
+      "ring": {
+        "id": "west-mid-stair",
+        "laplacian": 2267.773193359375,
+        "highpassRms": 14.632417678833008,
+        "pixels": 127512,
+        "outerRectOutputPx": [
+          3088,
+          2188,
+          3932,
+          2912
+        ]
+      },
+      "before": {
+        "laplacianVariance": 60.590293884277344,
+        "highpassRms": 3.089719772338867
+      },
+      "after": {
+        "laplacianVariance": 2750.990478515625,
+        "highpassRms": 13.808259010314941
+      },
+      "laplacianRatioBefore": 0.026717969002235917,
+      "laplacianRatioAfter": 1.2130800763371024,
+      "highpassRatioBefore": 0.21115579394705225,
+      "highpassRatioAfter": 0.943675837677168,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "main-plaza-stair",
+      "coreMapPx": [
+        2290,
+        1390,
+        2540,
+        1670
+      ],
+      "ring": {
+        "id": "main-plaza-stair",
+        "laplacian": 3779.804443359375,
+        "highpassRms": 17.811372756958008,
+        "pixels": 240000,
+        "outerRectOutputPx": [
+          4388,
+          2588,
+          5272,
+          3532
+        ]
+      },
+      "before": {
+        "laplacianVariance": 36.57990646362305,
+        "highpassRms": 2.367654800415039
+      },
+      "after": {
+        "laplacianVariance": 4120.3623046875,
+        "highpassRms": 16.56061553955078
+      },
+      "laplacianRatioBefore": 0.009677724605009444,
+      "laplacianRatioAfter": 1.090099333558497,
+      "highpassRatioBefore": 0.13292938353053754,
+      "highpassRatioAfter": 0.9297776070113059,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "central-bridge-stair-rails",
+      "coreMapPx": [
+        2340,
+        1900,
+        2600,
+        2580
+      ],
+      "ring": {
+        "id": "central-bridge-stair-rails",
+        "laplacian": 2413.51904296875,
+        "highpassRms": 14.752313613891602,
+        "pixels": 383232,
+        "outerRectOutputPx": [
+          4488,
+          3608,
+          5392,
+          5352
+        ]
+      },
+      "before": {
+        "laplacianVariance": 35.59229278564453,
+        "highpassRms": 2.400834560394287
+      },
+      "after": {
+        "laplacianVariance": 2609.8486328125,
+        "highpassRms": 14.970292091369629
+      },
+      "laplacianRatioBefore": 0.014747052810432445,
+      "laplacianRatioAfter": 1.081345780310171,
+      "highpassRatioBefore": 0.16274291770299185,
+      "highpassRatioAfter": 1.0147758841889565,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "pier-stair-rails",
+      "coreMapPx": [
+        2770,
+        2100,
+        2960,
+        2330
+      ],
+      "ring": {
+        "id": "pier-stair-rails",
+        "laplacian": 1625.925048828125,
+        "highpassRms": 12.268681526184082,
+        "pixels": 175488,
+        "outerRectOutputPx": [
+          5348,
+          4008,
+          6112,
+          4852
+        ]
+      },
+      "before": {
+        "laplacianVariance": 48.27855682373047,
+        "highpassRms": 2.8838300704956055
+      },
+      "after": {
+        "laplacianVariance": 2270.6884765625,
+        "highpassRms": 13.120915412902832
+      },
+      "laplacianRatioBefore": 0.02969297807332935,
+      "laplacianRatioAfter": 1.396551752615586,
+      "highpassRatioBefore": 0.23505623357659694,
+      "highpassRatioAfter": 1.069464178762803,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-water-stair",
+      "coreMapPx": [
+        3130,
+        2100,
+        3260,
+        2220
+      ],
+      "ring": {
+        "id": "east-water-stair",
+        "laplacian": 1672.08154296875,
+        "highpassRms": 12.385008811950684,
+        "pixels": 175488,
+        "outerRectOutputPx": [
+          6068,
+          4008,
+          6712,
+          4632
+        ]
+      },
+      "before": {
+        "laplacianVariance": 65.77588653564453,
+        "highpassRms": 3.4002065658569336
+      },
+      "after": {
+        "laplacianVariance": 2393.49267578125,
+        "highpassRms": 13.561211585998535
+      },
+      "laplacianRatioBefore": 0.03933772656736624,
+      "laplacianRatioAfter": 1.4314449470757555,
+      "highpassRatioBefore": 0.2745421192252982,
+      "highpassRatioAfter": 1.094969877850462,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "ice-stair",
+      "coreMapPx": [
+        4435,
+        750,
+        4645,
+        950
+      ],
+      "ring": {
+        "id": "ice-stair",
+        "laplacian": 4311.72607421875,
+        "highpassRms": 18.09665870666504,
+        "pixels": 268032,
+        "outerRectOutputPx": [
+          8678,
+          1308,
+          9482,
+          2092
+        ]
+      },
+      "before": {
+        "laplacianVariance": 51.27379608154297,
+        "highpassRms": 2.9106736183166504
+      },
+      "after": {
+        "laplacianVariance": 4661.27978515625,
+        "highpassRms": 17.953201293945312
+      },
+      "laplacianRatioBefore": 0.01189171000173831,
+      "laplacianRatioAfter": 1.0810704819648906,
+      "highpassRatioBefore": 0.16084038857651897,
+      "highpassRatioAfter": 0.9920727127009976,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "east-plaza-stair",
+      "coreMapPx": [
+        3110,
+        650,
+        3290,
+        810
+      ],
+      "ring": {
+        "id": "east-plaza-stair",
+        "laplacian": 611.9231567382812,
+        "highpassRms": 8.451497077941895,
+        "pixels": 200448,
+        "outerRectOutputPx": [
+          6028,
+          1108,
+          6772,
+          1812
+        ]
+      },
+      "before": {
+        "laplacianVariance": 58.920658111572266,
+        "highpassRms": 3.047528028488159
+      },
+      "after": {
+        "laplacianVariance": 1766.9586181640625,
+        "highpassRms": 12.510418891906738
+      },
+      "laplacianRatioBefore": 0.0962876751153455,
+      "laplacianRatioAfter": 2.887549847896651,
+      "highpassRatioBefore": 0.36059031913317446,
+      "highpassRatioAfter": 1.4802606895006194,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "missing-r2-c3-q22",
+      "coreMapPx": [
+        2560,
+        1536,
+        3072,
+        2048
+      ],
+      "ring": {
+        "id": "missing-r2-c3-q22",
+        "laplacian": 2736.500244140625,
+        "highpassRms": 15.438314437866211,
+        "pixels": 279936,
+        "outerRectOutputPx": [
+          4896,
+          2848,
+          6368,
+          4320
+        ]
+      },
+      "before": {
+        "laplacianVariance": 127.47810363769531,
+        "highpassRms": 3.6714155673980713
+      },
+      "after": {
+        "laplacianVariance": 2788.823486328125,
+        "highpassRms": 14.865937232971191
+      },
+      "laplacianRatioBefore": 0.04658435675664584,
+      "laplacianRatioAfter": 1.0191204960787175,
+      "highpassRatioBefore": 0.23781194392524058,
+      "highpassRatioAfter": 0.9629248900714753,
+      "atLeast85Percent": true
+    },
+    {
+      "id": "lava-bank-treads",
+      "coreMapPx": [
+        1450,
+        1210,
+        1885,
+        1440
+      ],
+      "ring": {
+        "id": "lava-bank-treads",
+        "laplacian": 1905.163330078125,
+        "highpassRms": 13.15855884552002,
+        "pixels": 339872,
+        "outerRectOutputPx": [
+          2708,
+          2228,
+          3962,
+          3072
+        ]
+      },
+      "before": {
+        "laplacianVariance": 1171.7021484375,
+        "highpassRms": 10.421341896057129
+      },
+      "after": {
+        "laplacianVariance": 2667.044677734375,
+        "highpassRms": 13.972877502441406
+      },
+      "laplacianRatioBefore": 0.6150140147771226,
+      "laplacianRatioAfter": 1.399903428555392,
+      "highpassRatioBefore": 0.7919820109787473,
+      "highpassRatioAfter": 1.061885094445478,
+      "atLeast85Percent": true
+    }
+  ]
+}
