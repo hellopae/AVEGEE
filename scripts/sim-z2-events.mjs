@@ -14,6 +14,6 @@ for (const job of jobs) for (const size of [3, 4, 5]) for (const moves of [false
   const samples = Array.from({ length:count }, (_, i) => { try { return simulate({ zone:'asia', size, moves, seed:30000 + i, ...job }); } catch (e) { return { result:'error', msg:e.message, rounds:0, bossRounds:0 }; } });
   const wins = samples.filter(r => r.result === 'win'), err = samples.filter(r => r.result === 'error');
   const mean = (set, key) => set.length ? +(set.reduce((a, r) => a + r[key], 0) / set.length).toFixed(2) : null;
-  const row = { what:job.eventKey || job.kind, size, moves:moves ? 'unlocked' : 'locked', winPct:+(100 * wins.length / count).toFixed(1), winRounds:mean(wins, 'rounds'), heroHpLeft:mean(wins, 'heroHp'), healing:mean(samples, 'healing'), errors:err.length, firstError:err[0]?.msg };
+  const row = { what:job.eventKey || job.kind, size, moves:moves ? 'unlocked' : 'locked', winPct:+(100 * wins.length / count).toFixed(1), winRounds:mean(wins, 'rounds'), heroHpLeft:mean(wins, 'heroHp'), healing:mean(samples, 'healing'), skillUses:mean(samples, 'skillUses'), clones:mean(samples, 'clones'), errors:err.length, firstError:err[0]?.msg };
   rows.push(row); console.log(JSON.stringify(row));
 }

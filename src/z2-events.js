@@ -24,6 +24,7 @@ export const Z2_ART = Object.freeze({
   wukongArrives:A('cut-wukong-arrives-asia'), wukongYields:A('cut-wukong-yields-asia'), apePhantom:A('cut-ape-phantom-ledger-asia'), wukongReturns:A('cut-wukong-returns-asia'),
   toDais:A('cut-frontier-boss-to-dais-asia'), punished:A('cut-frontier-boss-punished-asia'), released:A('cut-frontier-boss-released-asia'),
   satoriAsk:A('cut-satori-ask-asia'), satoriFarewell:A('cut-satori-farewell-asia'), guardTest:A('cut-guard-test-asia'),
+  wukongSweep:A('cut-wukong-sweep-asia'), wukongClone:'boss-wukong-clone-asia',
   shacklePair:A('prop-shackle-pair-asia'), cupFlame:A('prop-cup-flame-asia'), emptyGranary:A('prop-empty-granary-asia'),
   breachIntro:BREACH_INTRO, devaIntro:DEVA_INTRO, lianIntro:LIAN_INTRO,
 });
@@ -33,7 +34,7 @@ export const Z2_SOUL_SPRITE = Object.freeze({
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
   A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
-export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia)(-profile)?$/;
+export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia)(-profile)?$/;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Story pages. Rae's text is copied verbatim (z2-events-text.js); here only the pictures are attached - one picture per page, the last one repeats.
@@ -223,6 +224,32 @@ export const Z2_CASES = Object.freeze([APE_CASE, SATORI_CASE, ...Z2_KIN.filter(k
 export const Z2_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z2_KIN.map(k => [k.k, k])));
 /** The old A2 (existing case) with Rae's rewrite: the soul keeps the case key 'A2', only the wording changes (cases-asia.js uses this). */
 export const A2_REWRITE = Object.freeze({ ...CASE_A2 });
+/** BOSS-SKILLS (14 Nov, owner: "ปรับให้ยากขึ้น เพิ่มท่าไม้ตาย เป่าขนเพิ่มลูกน้อง โจมตีหมู่ เพิ่มความแรง"): the special moves of Wukong (case 7) and of the Gate Guard's test, as DATA for src/boss-skills.js.
+ *  TEMPORARY wording (names, warning and "used" lines are Toby's placeholders - Rae to polish, list in Output/Toby/2026-11-14-avegee-wukong-harder.md).
+ *  data.js copies these onto the foe definitions (`skills`). Numbers come from scripts/sim-z2-events.mjs. */
+export const Z2_BOSS_SKILLS = Object.freeze({
+  wukong:Object.freeze([
+    { id:'hairClones', kind:'summon', warn:1,
+      name:{ th:'เป่าขนแยกร่าง', en:'Hair-clone blast' },
+      warnText:{ th:'หงอคงถอนขนขึ้นมาหนึ่งกำ เตรียมเป่าเรียกร่างแยก!', en:'Wukong plucks a tuft of hair, ready to blow out clones!' },
+      useText:{ th:'หงอคง: "ออกมา พวกเรา!"', en:'Wukong: "Come out, all of you!"' },
+      when:{ hpBelow:.8, firstAct:2, everyActs:5, maxUses:2 },
+      summon:{ count:[2, 3], hp:26, atk:[6, 10], sp:'boss-wukong-clone-asia', name:'ร่างแยกหงอคง', sub:'ร่างแยกจากขน', max:3 } },
+    { id:'staffSweep', kind:'groupHit', warn:1, power:.75,
+      name:{ th:'กระบองกวาดสิบทิศ', en:'Ten-direction sweep' },
+      warnText:{ th:'หงอคงหมุนกระบองรอบตัว — รอบหน้าจะกวาดทั้งทีม!', en:'Wukong spins his staff — next turn it sweeps the whole team!' },
+      useText:{ th:'หงอคง: "รับไปทั้งหมด!"', en:'Wukong: "Take it, all of you!"' },
+      when:{ firstAct:3, everyActs:3 }, image:Z2_ART.wukongSweep },
+  ]),
+  guardTest:Object.freeze([
+    { id:'gateSmash', kind:'heavyHit', warn:1, power:1.8,
+      name:{ th:'ฟาดประตูหนัก', en:'Gate smash' },
+      warnText:{ th:'ยักษ์ทวารบาลยกกระบองเหนือหัว — รอบหน้าจะฟาดหนัก!', en:'The Gate Guard raises his club overhead — a heavy blow comes next turn!' },
+      useText:{ th:'ยักษ์ทวารบาล: "ยืนให้มั่น!"', en:'Gate Guard: "Stand firm!"' },
+      when:{ firstAct:3, everyActs:3 } },
+  ]),
+});
+
 /** The Akura trial: what Nira reads and what the verdict says (Rae 3.8). The arena shows these instead of the generic Zone 1 lines. */
 export const AKURA_TRIAL = Object.freeze({
   name:CASE_AKURA.name, face:CASE_AKURA.face, who:CASE_AKURA.who,

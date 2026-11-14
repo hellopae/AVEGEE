@@ -29,7 +29,9 @@ BOARDS = {   # file -> (w, h, mode, label)
     'prop-shackle-pair-asia.webp': (1375, 768, 'RGB', 'prop-shackle-pair-asia  (a broken pair of shackles, hammer mark on the left loop)'),
     'prop-cup-flame-asia.webp': (1375, 768, 'RGB', 'prop-cup-flame-asia  (cup base, three flame lines, the third unfinished)'),
     'prop-empty-granary-asia.webp': (1375, 768, 'RGB', 'prop-empty-granary-asia  (P2)'),
+    'cut-wukong-sweep-asia.webp': (1672, 941, 'RGB', 'cut-wukong-sweep-asia  (Wukong sweeps his staff across the whole team)'),   # BOSS-SKILLS 14 Nov
 }
+COPIES = {'boss-wukong-clone-asia.webp': 'boss-wukong-asia.webp', 'boss-wukong-clone-asia-profile.webp': 'boss-wukong-asia-profile.webp'}   # BOSS-SKILLS: the hair clone stands in as a plain copy of Wukong until its own drawing replaces it
 def board(name, w, h, mode, label):
     im = Image.new(mode, (w, h), (24, 14, 20) + ((255,) if mode == 'RGBA' else ())); d = ImageDraw.Draw(im)
     gold = (167, 129, 67) + ((255,) if mode == 'RGBA' else ()); dark = (60, 40, 48) + ((255,) if mode == 'RGBA' else ())
@@ -44,3 +46,5 @@ for key, base in SOULS.items():
     for suffix in ('', '-profile'):
         dst = OUT / f'{key}{suffix}.webp'
         if force or not dst.exists(): shutil.copyfile(ROOT / 'img' / 'Asia' / f'{base}.webp', dst); print('copy', dst.name, '<-', base)
+for dst, src in COPIES.items():
+    if force or not (OUT / dst).exists(): shutil.copyfile(OUT / src, OUT / dst); print('copy', dst, '<-', src)

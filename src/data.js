@@ -1,5 +1,5 @@
 import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
-import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
+import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -1951,7 +1951,7 @@ export const ZONE_EVENTS = {
     // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).
     { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',
       title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,
-      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:140, atk:[12,19], boss:true },
+      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:Z2_BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)
       winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
       reward:{ coin:140 }, lose:{ hp:9 } },
     // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).
@@ -1964,7 +1964,7 @@ export const ZONE_EVENTS = {
     // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.
     { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,
       title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,
-      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:110, atk:[10,16], boss:true },
+      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:Z2_BOSS_SKILLS.guardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %
       openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,
       reward:{ coin:0 }, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),

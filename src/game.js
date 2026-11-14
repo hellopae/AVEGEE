@@ -56,7 +56,8 @@ import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersi
 import { DEVA_MAP } from './deva-map.js';
 import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
-import { t } from './i18n.js';
+import { t, getLang } from './i18n.js';
+import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';   // BOSS-SKILLS: data-driven boss moves
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
@@ -3213,7 +3214,7 @@ const API = {
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
       return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
-        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno,
+        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
     }));
   },
@@ -3677,6 +3678,35 @@ const API = {
     let ok;try {ok=this.battleAct('__enemy',{enemyOnly:true});} finally {delete b.initiativeAction;delete b.enemyActorId;}
     if(ok){b.turnAction={...turn};b.commandBusy=true;}return ok;
   },
+  /** BOSS-SKILLS: the boss announces a move it will use on its next turn (warning tag on the foe + banner; the player has a whole round to answer). */
+  announceFoeSkill(B, foe, plan, say) {
+    const sk = skillState(foe), sp = plan.skill, lang = getLang();
+    sk.pending = sp.id; sk.pendingLabel = sp.name;
+    const text = pickText(sp.warnText, lang) || pickText(sp.name, lang);
+    B.skillNotice = { phase:'warn', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };
+    B.talk = text; say(`⚠ ${foe.who}: ${text}`);
+  },
+  /** BOSS-SKILLS: a boss turn with no attack in it - the charge turn of a warned move, a summon, or a heal. */
+  runFoeSkillTurn(B, foe, plan, say) {
+    const sk = skillState(foe), sp = plan.skill, lang = getLang();
+    sk.turns = plan.turn;
+    B.dmg.enemyHits = []; B.dmg.hitActors = []; B.dmg.skillOnly = true;
+    if (plan.mode === 'warn') { this.announceFoeSkill(B, foe, plan, say); return; }
+    sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;
+    const text = pickText(sp.useText, lang);
+    B.skillNotice = { phase:'use', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };
+    if (text) B.talk = text;
+    if (sp.kind === 'summon') {
+      const zone = B.zone || this.zone;
+      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event') });
+      B.dmg.summoned = made.map(f => f.id);
+      say(`${foe.who}ใช้${pickText(sp.name, lang)} — เรียก ${made.length} ตนลงสนาม`);
+    } else if (sp.kind === 'heal') {
+      const gain = Math.min(foe.maxHp - foe.hp, Math.max(1, Math.round(foe.maxHp * (sp.heal?.pct ?? .2))));
+      foe.hp += gain; B.dmg.foeHealed = { id:foe.id, amount:gain };
+      say(`${foe.who}ใช้${pickText(sp.name, lang)} — ฟื้น ${gain}`);
+    }
+  },
   selectBattleActor(id) {
     const b = this.battle;
     if (!b || b.over || b.commandBusy || (b.turnQueue && activeCombatUnit(this)?.id !== id) || !this.battleActors().some(c => c.id === id)) return false;
@@ -3792,6 +3822,7 @@ const API = {
     const talk = k => { const p = TALK[k]; if (p && p.length) B.talk = voice(pick(p), B.sex || 'm'); };
     B.dmg = { foe: 0, you: 0 };
     B.ultimate = null;
+    B.skillNotice = null;      // BOSS-SKILLS: what the foe announced / did this turn (banner)
     B.helper = null;
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
@@ -3813,6 +3844,7 @@ const API = {
     }
 
     let dmg = 0, stunFoe = 0, confuseFoe = 0, swing = null, rageMult = 1;
+    let skillPlan = null;      // BOSS-SKILLS: the move the boss plays this turn (boss-skills.js planSkill)
     B.weaponNote = null;
     // G4 — คูลดาวน์ผลพิเศษของอาวุธ: ค่าตอนต้นคำสั่งนี้ (0 = พร้อมเกิด) · เกิดแล้วตั้ง WEAPON_EFFECT_COOLDOWN · ลดทีละ 1 ทุกคำสั่ง
     const weaponCdStart = B.weaponCd || 0, weaponReady = weaponCdStart === 0;
@@ -4286,6 +4318,7 @@ const API = {
       B.foes.forEach(f => { f.hp = 0; });
       return declareWin();
     }
+    settleSummons(B);      // BOSS-SKILLS: summoned foes vanish with their summoner (before any 'all foes down?' check)
     const awaitDeva = () => {
       if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < (ZONE_EVENTS.asia.find(e => e.k === 'asiaPrisonFire')?.afterKills || 2)) return false;
       // Area attacks also leave the last spirit for the deva; no combat stats change.
@@ -4323,6 +4356,7 @@ const API = {
         if(!acting.burn.turns)delete acting.burn;
         B.dmg.burnSelf=damage;B.dmg.counterFoeId=acting.id;say(`${acting.who}ถูกไฟลวก — ${damage} หน่วย`);
         if(acting.hp<=0){
+          settleSummons(B);
           if(awaitDeva())return true;
           if(B.foes.every(f=>f.hp<=0)){
             const ev=B.kind==='zoneEvent'?ZONE_EVENTS[B.zone]?.find(e=>e.k===B.eventKey):null;
@@ -4368,6 +4402,7 @@ const API = {
       B.dmg.confuseSelf = attacks.reduce((sum, a) => sum + a.damage, 0);
       say(confused.length > 1 ? 'ศัตรูถูกสะกดจิตและหันไปโจมตีกันเอง' : 'ศัตรูถูกสะกดจิต ฟาดเข้ากับตัวเอง');
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
+      settleSummons(B);
       if (B.foes.some(f => f.hp <= 0)) {
         if (awaitDeva()) return true;
         if (B.foes.every(f => f.hp <= 0)) {
@@ -4390,6 +4425,9 @@ const API = {
       counter.stun--;
       say('ศัตรูถูกผนึกน้ำแข็ง ขยับไม่ได้ทั้งตา');
     }
+    else if ((skillPlan = planSkill(B, counter)) && skillPlan.noAttack) {
+      this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack
+    }
     else {
       const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
       const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
@@ -4402,7 +4440,7 @@ const API = {
       // BATTLE-FX: the new rhythm (2nd, 4th, 6th ... attack) is for the zone-ending bosses only: Thai border boss and the final boss; Asia/West bosses use it through
       // bossUltimate() above.  Border lords, deva tests, possessed rulers ... keep the old rule (HP under half, 4 turns apart) so their balance does not move.
       const zoneBossRhythm = B.eventKey === 'thBorderBoss' || (B.eventKey === 'cyberFinal' && B.encounter === 'boss');
-      if (!ultimate && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
+      if (!ultimate && !hasSkills(counter) && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
           (zoneBossRhythm ? bossUltimateDue(bossAct)
             : counter.hp <= counter.maxHp / 2 && (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4))) {
         const z = B.zone || this.zone;
@@ -4428,7 +4466,23 @@ const API = {
         ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
           image:special, damage:Math.round(groupBase * (zoneBossRhythm ? BOSS_ULTIMATE_RHYTHM.damage : 1.7)) };
       }
-      const d = ultimate ? ultimate.damage : normal;
+      // BOSS-SKILLS: the boss's own data-driven moves.  A warning is announced after the usual attack; groupHit reuses the full-screen "ultimate" path (every ally is hit);
+      // heavyHit is a single big blow.  (Foes with no `skills` never get here.)
+      let heavy = null;
+      if (skillPlan && !ultimate) {
+        const sk = skillState(counter), sp = skillPlan.skill;
+        if (skillPlan.mode === 'run' && sp.kind === 'groupHit') {
+          ultimate = { name:pickText(sp.name, getLang()), image:sp.image || BOSS_ULTIMATE[B.zone || this.zone]?.image, damage:Math.round(groupBase * (sp.power ?? .8)), skill:sp.id };
+          B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };
+        } else if (skillPlan.mode === 'run' && sp.kind === 'heavyHit') {
+          heavy = { skill:sp, damage:Math.round(normal * (sp.power ?? 1.6)) };
+          B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };
+        }
+        if (skillPlan.mode === 'run') { sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = skillPlan.turn; }
+        else this.announceFoeSkill(B, counter, skillPlan, say);
+        sk.turns = skillPlan.turn;
+      } else if (hasSkills(counter)) skillState(counter).turns++;
+      const d = ultimate ? ultimate.damage : heavy ? heavy.damage : normal;
       if (ultimate) {
         ultimate.by = counter.who;   // the cutscene shows who is attacking
         B.ultimate = ultimate;
@@ -4462,7 +4516,7 @@ const API = {
       }
       if (victims.some(v => v.actor)) this.save();
       const dealt = B.dmg.enemyHits[0]?.damage ?? d;     // L2: the number after the defend stance, not before
-      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);
+      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : heavy ? `${counter.who}ใช้${pickText(heavy.skill.name, getLang())} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);
       if (!B.over) talk('hit');
       if (ultimate) B.talk = `${B.who}ใช้${ultimate.name}!`;
     }

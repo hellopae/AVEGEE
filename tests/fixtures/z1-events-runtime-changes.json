@@ -9,6 +9,10 @@
    "after": "         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n"
   },
   {
+   "before": "import { t } from './i18n.js';\n",
+   "after": "import { t, getLang } from './i18n.js';\nimport { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';   // BOSS-SKILLS: data-driven boss moves\n"
+  },
+  {
    "before": "",
    "after": "import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';\nimport { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';\n"
   },
@@ -121,8 +125,8 @@
    "after": "      // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)\n      if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;\n      // Z2-EVENTS: Wukong comes down only once the old ape's case is judged (z2AfterVerdict)\n      if (zone === 'asia' && ev.k === 'asiaWukong' && !this.storyCaseDone[EVENT_AFTER_CASE.asiaWukong]) continue;\n"
   },
   {
-   "before": "        sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',\n",
-   "after": "        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',\n"
+   "before": "        sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',\n        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno,\n",
+   "after": "        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',\n        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),\n"
   },
   {
    "before": "      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });\n",
@@ -162,6 +166,10 @@
   },
   {
    "before": "",
+   "after": "  },\n  /** BOSS-SKILLS: the boss announces a move it will use on its next turn (warning tag on the foe + banner; the player has a whole round to answer). */\n  announceFoeSkill(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.pending = sp.id; sk.pendingLabel = sp.name;\n    const text = pickText(sp.warnText, lang) || pickText(sp.name, lang);\n    B.skillNotice = { phase:'warn', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    B.talk = text; say(`⚠ ${foe.who}: ${text}`);\n  },\n  /** BOSS-SKILLS: a boss turn with no attack in it - the charge turn of a warned move, a summon, or a heal. */\n  runFoeSkillTurn(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.turns = plan.turn;\n    B.dmg.enemyHits = []; B.dmg.hitActors = []; B.dmg.skillOnly = true;\n    if (plan.mode === 'warn') { this.announceFoeSkill(B, foe, plan, say); return; }\n    sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;\n    const text = pickText(sp.useText, lang);\n    B.skillNotice = { phase:'use', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    if (text) B.talk = text;\n    if (sp.kind === 'summon') {\n      const zone = B.zone || this.zone;\n      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event') });\n      B.dmg.summoned = made.map(f => f.id);\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — เรียก ${made.length} ตนลงสนาม`);\n    } else if (sp.kind === 'heal') {\n      const gain = Math.min(foe.maxHp - foe.hp, Math.max(1, Math.round(foe.maxHp * (sp.heal?.pct ?? .2))));\n      foe.hp += gain; B.dmg.foeHealed = { id:foe.id, amount:gain };\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — ฟื้น ${gain}`);\n    }\n"
+  },
+  {
+   "before": "",
    "after": "    if (b.breachFinale === 'ready') return this.breachFinaleStrike();\n"
   },
   {
@@ -183,6 +191,14 @@
   {
    "before": "",
    "after": "    if (B.breachFinale === 'ready' && what !== (B.finaleMove || 'teamJudgment')) return false;   // foes wait\n"
+  },
+  {
+   "before": "",
+   "after": "    B.skillNotice = null;      // BOSS-SKILLS: what the foe announced / did this turn (banner)\n"
+  },
+  {
+   "before": "",
+   "after": "    let skillPlan = null;      // BOSS-SKILLS: the move the boss plays this turn (boss-skills.js planSkill)\n"
   },
   {
    "before": "      this.mp -= newSkill.mp;\n",
@@ -249,12 +265,36 @@
    "after": "    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && !B.breachFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {\n      if (storyZone === 'th' && B.kind === 'zoneEvent') {\n        // Z1-EVENTS fixup (case 15): his last move wounds Yama (boss cutscene) -> story-th-01..05 inside the fight -> Yama's new move\n        // \"พุ่งชนเพลิง\" (skill-yama-fire-charge-cut-01/02) ends the fight for real -> reward summary -> the \"new power\" window.\n        // The fight is held (foes wait) exactly like the border boss finale; B.breachFinale === 'ready' + B.finaleMove say what closes it.\n        const hurt = Math.min(Math.max(0, B.youHp - 1), 34);\n        B.youHp -= hurt; B.dmg.you = hurt;\n        storyBoss.hp = Math.max(1, storyBoss.hp);\n        B.breachFinale = 'ready'; B.finaleMove = 'flameCharge'; B.actorId = 'you'; B.selectedFoeId = storyBoss.id;\n        B.thUltimate = { name:BOSS_ULTIMATE.th?.name || 'ดาบเพลิง', image:BOSS_ULTIMATE.th?.image || 'img/zone-boss-cutscene.webp', by:storyBoss.who, damage:hurt };\n        B.storyInterlude = 'th';\n        say('พี่ใหญ่ใช้ดาบเพลิงจนยมบาทน้อยบาดเจ็บ — ยมบาทน้อยรวบพลังไฟแล้วพุ่งชน');\n        this.onChange();\n        return true;\n      }\n"
   },
   {
+   "before": "",
+   "after": "    settleSummons(B);      // BOSS-SKILLS: summoned foes vanish with their summoner (before any 'all foes down?' check)\n"
+  },
+  {
    "before": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < 2) return false;\n",
    "after": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < (ZONE_EVENTS.asia.find(e => e.k === 'asiaPrisonFire')?.afterKills || 2)) return false;\n"
   },
   {
+   "before": "",
+   "after": "          settleSummons(B);\n"
+  },
+  {
+   "before": "      // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง\n      if (B.foes.some(f => f.hp <= 0)) {\n",
+   "after": "      // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง\n      settleSummons(B);\n      if (B.foes.some(f => f.hp <= 0)) {\n"
+  },
+  {
+   "before": "",
+   "after": "    else if ((skillPlan = planSkill(B, counter)) && skillPlan.noAttack) {\n      this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack\n    }\n"
+  },
+  {
    "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",
-   "after": "      if (!ultimate && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
+   "after": "      if (!ultimate && !hasSkills(counter) && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
+  },
+  {
+   "before": "      const d = ultimate ? ultimate.damage : normal;\n",
+   "after": "      // BOSS-SKILLS: the boss's own data-driven moves.  A warning is announced after the usual attack; groupHit reuses the full-screen \"ultimate\" path (every ally is hit);\n      // heavyHit is a single big blow.  (Foes with no `skills` never get here.)\n      let heavy = null;\n      if (skillPlan && !ultimate) {\n        const sk = skillState(counter), sp = skillPlan.skill;\n        if (skillPlan.mode === 'run' && sp.kind === 'groupHit') {\n          ultimate = { name:pickText(sp.name, getLang()), image:sp.image || BOSS_ULTIMATE[B.zone || this.zone]?.image, damage:Math.round(groupBase * (sp.power ?? .8)), skill:sp.id };\n          B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };\n        } else if (skillPlan.mode === 'run' && sp.kind === 'heavyHit') {\n          heavy = { skill:sp, damage:Math.round(normal * (sp.power ?? 1.6)) };\n          B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };\n        }\n        if (skillPlan.mode === 'run') { sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = skillPlan.turn; }\n        else this.announceFoeSkill(B, counter, skillPlan, say);\n        sk.turns = skillPlan.turn;\n      } else if (hasSkills(counter)) skillState(counter).turns++;\n      const d = ultimate ? ultimate.damage : heavy ? heavy.damage : normal;\n"
+  },
+  {
+   "before": "      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);\n",
+   "after": "      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : heavy ? `${counter.who}ใช้${pickText(heavy.skill.name, getLang())} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);\n"
   },
   {
    "before": "",
@@ -312,7 +352,7 @@
  "data": [
   {
    "before": "",
-   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';\n"
+   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';\n"
   },
   {
    "before": "",
@@ -360,11 +400,11 @@
   },
   {
    "before": "    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',\n      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },\n      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },\n      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],\n",
-   "after": "    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).\n    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',\n      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,\n      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:140, atk:[12,19], boss:true },\n      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,\n      reward:{ coin:140 }, lose:{ hp:9 } },\n    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).\n    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,\n      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],\n      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],\n        [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)\n"
+   "after": "    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).\n    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',\n      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,\n      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:Z2_BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)\n      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,\n      reward:{ coin:140 }, lose:{ hp:9 } },\n    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).\n    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,\n      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],\n      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],\n        [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)\n"
   },
   {
    "before": "",
-   "after": "    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.\n    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,\n      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,\n      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:110, atk:[10,16], boss:true },\n      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,\n      reward:{ coin:0 }, lose:{ hp:9 } },\n"
+   "after": "    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.\n    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,\n      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,\n      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:Z2_BOSS_SKILLS.guardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %\n      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,\n      reward:{ coin:0 }, lose:{ hp:9 } },\n"
   },
   {
    "before": "    bossArrive:[\n      'เหลียนกัง: \"เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ\"',\n      'เหลียนกัง: \"ข้าคือผู้ตรวจการท้องถิ่นแห่งบูรพา ต้องดูให้แน่ก่อนว่า\"',\n      'เหลียนกัง: \"คนต่างถิ่นอย่างเจ้าคู่ควรจะมาปกครองสาขานี้หรือไม่\"',\n      'ยมบาทน้อย: \"งั้นก็ตรวจผมให้เต็มที่เลยสิ\"',\n    ],\n",
@@ -381,6 +421,14 @@
   {
    "before": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' ? 4 : 3);\n",
    "after": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' || game.guard?.breachGuest ? 4 : 3);   // Z1-EVENTS: the gate keeper who steps out for the breach fight is the 4th member\n"
+  },
+  {
+   "before": "  const profile = encounterProfile(battle, count);\n",
+   "after": "  const profile = encounterProfile(battle, count), n = Math.max(3, Math.min(7, count));\n"
+  },
+  {
+   "before": "",
+   "after": "  // BOSS-SKILLS: a foe may carry its own party-size curve: `partyScale:{ hp:[x3,x5,x7], atk:[x3,x5,x7] }` (multipliers for a team of 3 / 5 / 7, linear in between) - the data lives on the foe in data.js\n  if (boss?.partyScale) {\n    const ps = boss.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);\n    const hpK = at(ps.hp), atkK = at(ps.atk);\n    boss.hp = Math.round(boss.hp * hpK); boss.maxHp = Math.round(boss.maxHp * hpK);\n    if (boss.atk) boss.atk = boss.atk.map(v => Math.max(1, Math.round(v * atkK)));\n  }\n"
   }
  ]
 }

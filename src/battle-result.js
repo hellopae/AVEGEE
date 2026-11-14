@@ -51,6 +51,7 @@ export function battleStatuses(actor, { defending = false, rage = 0, sealed = nu
   const list = [];
   for (const key of ['stun','confuse']) if (actor[key] > 0) list.push({key,n:actor[key]});
   if (actor.burn?.turns > 0) list.push({key:'burn',n:actor.burn.turns});
+  if (actor.sk?.pending) list.push({key:'warn',n:1,label:actor.sk.pendingLabel});      // BOSS-SKILLS: the foe has announced a move for its next turn
   if (sealed) list.push({key:sealed === 'rope' ? 'sealRope' : 'sealGauze',n:1});
   if (taunt) list.push({key:'taunt',n:1});
   if (defending) list.push({key:'defend',n:1});

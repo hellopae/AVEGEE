@@ -134,7 +134,8 @@ export function simulate(options) {
       }
     }
     return {...options,result:b.over||'timeout',rounds:completedRounds+round,bossRounds:round,actions,healing,absorbed,heroHp:b.youHp,ultimates,firstUltAct:b.ultimateActs?.[0]||0,bossActs:Math.max(0,...b.foes.filter(f=>f.boss).map(f=>f.attacks||0)),
-      fallen:(b.absentActors||[]).length,initial};
+      fallen:(b.absentActors||[]).length,initial,
+      clones:b.foes.filter(f=>f.summoned).length,skillUses:b.foes.reduce((n,f)=>n+Object.values(f.sk?.used||{}).reduce((a,v)=>a+v,0),0)};   // BOSS-SKILLS: summoned foes in the fight / moves the foes played
   } finally {Math.random=random;Date.now=now;}
 }
 export function run(label='after',count=200) {

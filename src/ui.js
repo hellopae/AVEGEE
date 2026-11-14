@@ -94,7 +94,8 @@ import { stepTo, nearestWalk, findPath } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
-import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
+import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';
+import { pickText } from './boss-skills.js';   // BOSS-SKILLS   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
@@ -2525,7 +2526,8 @@ function defendShieldHtml() {
 
 function battleStatusHtml(actor, options = {}) {
   const states = battleStatuses(actor, options);
-  return states.length ? `<span class="battle-state-tags">${states.map(s => `<em data-battle-status="${s.key}">${esc(t('battle.status.' + s.key, {n:s.n}))}</em>`).join('')}</span>` : '';
+  const label = s => s.key === 'warn' ? `⚠ ${esc(pickText(s.label, getLang()) || 'ท่าไม้ตาย')}` : esc(t('battle.status.' + s.key, {n:s.n}));      // BOSS-SKILLS: the warning tag shows the move's own name
+  return states.length ? `<span class="battle-state-tags">${states.map(s => `<em data-battle-status="${s.key}">${label(s)}</em>`).join('')}</span>` : '';
 }
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
   const selectedId = selectedVisibleFoeId(hp);
@@ -2614,7 +2616,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       const hit = act?.struck === 'foe' && (hits ? damage > 0 :
         (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id));
       const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
-      return `<button type="button" class="fig foe${f.hypno ? ' signal-controlled' : ''}${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${selectedId === f.id ? ' selected is-target' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
+      return `<button type="button" class="fig foe${f.hypno ? ' signal-controlled' : ''}${f.boss ? ' boss-foe' : ''}${f.summoned ? ' summoned' : ''}${f.hp <= 0 ? ' down' : ''}${selectedId === f.id ? ' selected is-target' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-current="${selectedId === f.id}" aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
         ${selectedId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
@@ -3903,6 +3905,13 @@ function openBattle(after) {
     if (!stage) return;
     const el = document.createElement('div'); el.className = 'battle-move-name'; el.setAttribute('role','status'); el.textContent = moveName.label; stage.append(el);
   };
+  // BOSS-SKILLS: banner for a boss move that has no full-screen card (the warning of any move, a heavy blow, a clone blast, a heal)
+  const showSkillBanner = notice => {
+    if (!notice) return;
+    clearMoveName();
+    moveName = { label:`${notice.phase === 'warn' ? '⚠ ' : ''}${notice.name}${notice.text ? ` · ${notice.text}` : ''}`, until:Date.now() + 3200 }; renderMoveName();
+    moveNameTimer = setTimeout(clearMoveName, 3200);
+  };
   const setMoveName = (action, ultimate = null, cutMs = 0) => {
     clearMoveName();
     const key = specialMoveKey(action, ultimate); if (!key) return;
@@ -5003,12 +5012,18 @@ function openBattle(after) {
         if(!g.runEnemyTurn()){phase=null;paint();return;}
         await battleCutscenes.wait(b.ultimate?.image);
         if(g.battle!==b||!dlg.open)return;
+        if(b.dmg?.skillOnly){      // BOSS-SKILLS: a charge / clone blast / heal turn - nothing hits anybody, the banner tells what happened
+          phaseAt=Date.now();fxNow=null;sfx('hurt');paint();showSkillBanner(b.skillNotice);
+          phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},2100);
+          return;
+        }
         phaseAt=Date.now();
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         fxHandled=true;
         sfx('hurt');paint();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
-        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
+        if(b.skillNotice&&!b.ultimate)showSkillBanner(b.skillNotice);      // BOSS-SKILLS: warning of a move / a heavy blow
+        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:b.skillNotice?2200:900);
       },600);
     }
     if (b.kind === 'dad' && !b.over && !authorityAttackScheduled) {
