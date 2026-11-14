@@ -69,6 +69,7 @@ test('one keeper can accept three souls while the first escort is still travelli
  // This tests keeper capacity after arrival; newly spawned souls first disembark.
  g.courtClosed=false;
  for(let i=0;i<g.queue.length;i++)g.advanceCourtArrivals(4000);
+ for(let i=0;i<600;i++)g.advanceAfterlife(100);   // FOREMAN: a hired Dam now walks the docked souls in (not Nira) - let those walks end before the test assigns him as a keeper
  const st=g.stations.find(st=>st.def.k==='krata');
  for(let i=0;i<3;i++){
   const soul=g.queue[0];assert.equal(g.assignBlock(soul.id,'krata','dam'),null);

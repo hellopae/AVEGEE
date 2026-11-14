@@ -1,6 +1,10 @@
 {
  "game": [
   {
+   "before": "",
+   "after": "import {foremanCourier,foremanPhase,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
+  },
+  {
    "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
    "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
   },
@@ -27,6 +31,10 @@
   {
    "before": "",
    "after": "/** Z1-EVENTS (13 Nov 2026) — bring a save written before the new Zone 1 order into it without replaying or stranding anything:\n *   · Zone 1 already finished -> the Sita / Hanuman beat is marked done (never replayed)\n *   · elder brother already announced under the old order (case 10) but not fought -> he steps back until Sita's case and case 15 are done\n *   · nurse already heard by chance -> counted as heard\n *   · Guard hired at Nira's desk before the border event -> back to his gate, hire refunded, training kept for when he joins\n *   · a beggar soul still standing around after the deva revealed himself (owner e1) -> gone */\nfunction migrateZ1Events(g, d) {\n  if (d.z1EventsVersion === 1) return;\n  const th = g.zoneEvents.th ||= {};\n  if (g.bossCleared?.th || th.thBorderBoss === 'cleared') {\n    th.sitaHanuman = 'cleared'; g.storyCaseDone.sitaledger = true; g.storyCaseDone.nurse = true;\n  } else if (th.thBorderBoss && th.sitaHanuman !== 'cleared') {\n    delete th.thBorderBoss; delete g.eventMapClosed['th:thBorderBoss'];\n    g.bossGuarding.th = false; g.bossPending = false; if (g.bossArriveSeen) delete g.bossArriveSeen.th;\n  }\n  const active = g.zone === 'th';\n  if (active && g.usedCases?.includes('nurse') && !g.queue.some(s => s.case === 'nurse')) g.storyCaseDone.nurse = true;\n  if (active && g.guard && !guardUnlocked(g, 'th')) {\n    g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];\n    delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;\n    g.log(`🛡️ ${GUARD.name}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');\n  }\n  if (active && g.devaVisits?.th) g.revealDevaSoul(null);\n  if (active) g.refreshZoneEvents('th');\n}\n\n"
+  },
+  {
+   "before": "",
+   "after": "  /** FOREMAN: who walks a docked soul to the queue before workers exist - Dam when he is hired and free, otherwise Nira exactly as before (Dam down / building / keeping a post / not hired) */\n  courtCourier() { return foremanCourier(this) || this.niraCourtCourier(); },\n\n"
   },
   {
    "before": "  devaCaseOwed() {\n    return this.zone === 'th' && (this.zoneCases.th || 0) >= 4 && !this.devaVisits.th && this.devaTestStatus() === 'locked';\n",
@@ -103,6 +111,22 @@
   {
    "before": "",
    "after": "    this.ensureDevaCase();\n"
+  },
+  {
+   "before": "    if(destination==='arrival'&&!(zoneWorkers(this).length?zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0):this.niraCourtCourier()))return false;\n",
+   "after": "    if(destination==='arrival'&&!(zoneWorkers(this).length?zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0):this.courtCourier()))return false;\n"
+  },
+  {
+   "before": "    const reader=walk.destination==='arrival'?this.niraCourtCourier():null;\n",
+   "after": "    const reader=walk.destination==='arrival'?this.courtCourier():null;\n"
+  },
+  {
+   "before": "",
+   "after": "      if (reader && c.k === 'dam') foremanSay(c, 'foreman.say.pickup');\n"
+  },
+  {
+   "before": "",
+   "after": "\n      // FOREMAN: Dam's own work (field jobs before workers exist / standing at the kitchen after) replaces the ordinary roaming; building and escorting stay with the code below\n      if (c.k === 'dam' && advanceForeman(this, c, dt)) continue;\n"
   },
   {
    "before": "      (this.zoneCases[this.zone] || 0) >= 10 && this.zoneEventGateReady();\n",
@@ -331,6 +355,10 @@
   {
    "before": "",
    "after": "    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him\n"
+  },
+  {
+   "before": "    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n",
+   "after": "    const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen\n    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n"
   },
   {
    "before": "",

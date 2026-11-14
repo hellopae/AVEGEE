@@ -57,6 +57,7 @@ import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-
 import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './enemy-pointers.js';   // POINTERS: arrows to every enemy the player has to walk to
+import { foremanDesk } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
@@ -1599,6 +1600,7 @@ function activateMapInteraction(now) {
       } else if (now.kind === 'harbour') openHarbour();
       else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
+      else if (now.kind === 'foreman') openForeman();
       else if (now.kind === 'merchant') openMerchant();
       else if (now.kind === 'challenge') openChallenge();
       else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
@@ -1679,7 +1681,7 @@ function updateTownHud(now) {
 function updateRepairFabs() {
   const active=started&&!g.over&&!g.battle&&!dlg.open;
   const near=active?currentMapInteraction():null;
-  const targets=active?mapInteractions(g,MERCHANT).filter(t=>t.kind==='nira'||t.kind==='merchant'):[];
+  const targets=active?mapInteractions(g,MERCHANT).filter(t=>t.kind==='nira'||t.kind==='merchant'||t.kind==='foreman'):[];
   if(near&&!targets.some(t=>t.id===near.id))targets.push(near);
   for(const f of ov.querySelectorAll('.repairfab'))if(!targets.some(t=>t.id===f.dataset.target))f.remove();
   for(const target of targets){
@@ -2478,7 +2480,8 @@ function openHelp(initialTab = 'guide') {
           ชนะบอสชายแดนโซน 1 แล้วจึงสร้างโรงอาหารได้ · จ้างคนงานที่นิรา แล้วกำหนด <b>พ่อครัว</b> และ <b>คนเสิร์ฟ</b> ที่โรงอาหาร
           พ่อครัวใช้เสบียงปั้นข้าวและซื้อเสบียงเพิ่มอัตโนมัติเมื่อใกล้หมด (ต้องมีเบี้ยกรรม) คนเสิร์ฟเดินส่งให้คนที่หิวที่สุดก่อน หรือเลือกส่งเฉพาะคน · หลายคนส่งได้เร็วขึ้น
           หลังสร้างโรงอาหารแล้ว ปุ่มให้ข้าวใช้คลังพร้อมเสิร์ฟ หรือสั่งเดินไปกินได้จากจัดทีม พร้อมดู HP ความอิ่ม จัดทีมต่อสู้ กำหนดหน้าที่ และสั่งพักศาลาน้ำชา
-          นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · ดำและเพลิงไม่ปรุงอาหารแล้ว</li>
+          นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · เพลิงไม่ปรุงอาหารแล้ว</li>
+      <li><b>ดำ (หัวหน้าคนงาน)</b> — จ้างแล้วดำไป<b>รับวิญญาณที่ท่าเรือแทนนิรา</b> (ถ้าดำล้มหรือไม่ว่าง นิรารับเหมือนเดิม) · <b>ก่อนมีคนงาน</b> ดำทำงานแทนคนงานทั้งหมดคนเดียว: ช่วยสร้างและซ่อม เก็บหนามกับเศษหินไปขายให้พ่อค้า และเอาข้าวปั้นจากเสบียงไปแจกยมทูตที่หิว · <b>จ้างคนงานแล้ว</b> คนงานรับงานเหล่านั้นต่อ ดำไปคุมพ่อครัวที่โรงอาหาร — <b>คุยกับดำ</b>เพื่อจ้างพ่อครัวหรือคนเสิร์ฟ และเลือกว่าข้าวปั้นจะส่งให้ใคร</li>
       ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}${clockUnlocked() ? `<li>${clockGuide}</li>` : ''}
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
@@ -3433,6 +3436,28 @@ function openSignalChoice(ev){
   }
   show();
   function show(){modal(`<h2>${esc(ev.title.th)}</h2><p>เสียงเดิมของเขายังอยู่ข้างใน เป็นแต่คำสั่งทับอยู่ข้างบน</p><div class="row"><button data-signal="call">เรียกคำฝาก · บอสข้ามเทิร์นแรก</button><button data-signal="rush">บุกทันที · เบี้ยรางวัล +25%</button><button data-close>เตรียมตัวต่อ</button></div>`,d=>d.querySelectorAll('[data-signal]').forEach(b=>b.onclick=()=>{if(g.startZoneEvent(ev.k,b.dataset.signal))openBattle(afterBreachBattle);}));}
+}
+
+/** FOREMAN (owner 14 Nov): talk to Dam at the canteen - the kitchen orders live here: hire a cook / a server, and choose who a server brings the rice to
+ *  (default = the hungriest first). The same panel as the canteen window used to carry (canteenPanelHtml), so there is one set of controls and one state. */
+function openForeman() {
+  const c = g.crewOf('dam');
+  if (!c || !foremanDesk(g)) return;
+  let shown = '';
+  const paint = () => {
+    if (!foremanDesk(g)) { if (dlg.open) dlg.close(); return; }
+    const html = `<h2>👷 ${esc(c.name)} · ${esc(t('foreman.title'))}</h2>
+      <div class="foreman-head"><img src="${crewArt(c, '-profile')}" alt="" width="72" height="72" style="border-radius:12px;object-fit:cover"><p class="hint">${esc(t('foreman.line'))}</p></div>
+      ${canteenPanelHtml(g, true)}
+      <div class="row"><button class="gold" data-close>${esc(t('foreman.done'))}</button></div>`;
+    if (html === shown) return;               // same numbers: leave the buttons under the player's finger alone (the meal count ticks every few seconds)
+    shown = html; dlg.innerHTML = html;
+    dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
+    bindWorkersPanel(dlg, g, () => { paint(); refresh(); });
+  };
+  pauseForDlg(); paint(); openDlg('foreman-office');
+  const generation = dlgGen;
+  const timer = setInterval(() => { if (!dlg.open || dlgGen !== generation) { clearInterval(timer); return; } paint(); }, 900);
 }
 
 function openNiraOffice() {
@@ -6071,8 +6096,12 @@ function openStation(k, emergency = false) {
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
     if(k==='canteen'){
-      put(L,`<h2>🍙 โรงอาหาร</h2>${canteenPanelHtml(g,inside)}`);
+      // FOREMAN: while Dam stands at the kitchen the orders (hire cook / server, who gets the rice) are given to him in ONE window - this one shows the same numbers read-only
+      const desk=foremanDesk(g),inRoom=inside;
+      {const inside=inRoom&&!desk;   // at the desk the controls are read-only here: orders go through Dam
+      put(L,`<h2>🍙 โรงอาหาร</h2>${desk?`<p class="foreman-note">${esc(t('foreman.canteen.hint',{name:desk.crew.name}))}</p><div class="row"><button class="gold" data-open-foreman>${esc(t('foreman.canteen.go',{name:desk.crew.name}))}</button></div>`:''}${canteenPanelHtml(g,inside)}`);}
       bindWorkersPanel(L,g,()=>{panels();refresh();});
+      L.querySelector('[data-open-foreman]')?.addEventListener('click',()=>{dlg.close();setTimeout(openForeman,0);});
       put(A,'');if(Rg)Rg.hidden=true;return;
     }
 

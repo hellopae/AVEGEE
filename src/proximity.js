@@ -5,6 +5,7 @@ import { t } from './i18n.js';
 import { devaMapActors } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { topOf, bodyBoxOf } from './art.js';
+import { foremanDesk } from './foreman.js';
 // 29B: map distances are scene pixels; room distances are normalized image coordinates.
 export const INTERACTION_REACH = 100;
 export const ROOM_EXIT_REACH = 0.10;
@@ -67,6 +68,10 @@ export function mapInteractions(g, merchant) {
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
     bx:nira.x, by:nira.y - (isTownZone(g.zone)?58:74), anchor:'top', label:'จัดทีมยมทูต' });
+  // FOREMAN: once the zone has workers Dam stands at the canteen and the kitchen orders are given to him (hire cook / server, who gets the rice)
+  const desk = foremanDesk(g);
+  if (desk) targets.push({ id:'foreman', kind:'foreman', x:desk.x, y:desk.y,
+    bx:desk.x, by:desk.y - (isTownZone(g.zone)?58:74), anchor:'top', label:t('foreman.talk', { name:desk.crew.name }) });
   if (g.zoneCaptivesFree() && (!g.merchantAvailable || g.merchantAvailable())) targets.push({ id:'merchant', kind:'merchant', x:merchant.x, y:merchant.y,
     bx:merchant.x, by:merchant.y - (isTownZone(g.zone)?54:92), anchor:'top', label:'ซื้อขาย' });
   for (const st of g.stations) {

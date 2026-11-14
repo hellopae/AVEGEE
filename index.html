@@ -402,7 +402,8 @@ dialog.battle-reward.reward-world[open]{width:100vw;height:100dvh;max-width:none
 .shop-card img{width:52px;height:52px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid var(--gold)}
 .shop-card>span:nth-child(2){min-width:0}.shop-card b,.shop-card small{display:block}.shop-card small{font-size:10px;color:var(--muted-foreground)}
 .shop-card button{padding:6px 8px;font-size:10px}.shop-glyph{font-size:30px;text-align:center}
-dialog.merchant[open],dialog.nira-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+dialog.merchant[open],dialog.nira-office[open],dialog.foreman-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.foreman-head{display:flex;gap:12px;align-items:center;margin:6px 0 10px}.foreman-head .hint{margin:0}.foreman-note{margin:4px 0 8px;color:var(--accent-foreground)}
 @media(max-width:680px){.market-grid{grid-template-columns:1fr}.shop-card{grid-template-columns:46px minmax(0,1fr) auto auto}.shop-card img{width:46px;height:46px}}
 /* P1: ลำดับแนะนำจ้าง/สร้าง — ตัวถัดไปขอบทอง · ที่ล็อกหรี่ลง (ใช้ token สีเดิมเท่านั้น) */
 .hire-recommended{border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold) inset}
@@ -2235,7 +2236,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 @media(prefers-reduced-motion:reduce){#update-banner .ub-dot,#update-chip::after{animation:none}}
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=20261029-c1-v2-q3">
-<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3-m1112">
+<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3-m1112-foreman">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/z1-events.css?v=20261114-z1-events">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">

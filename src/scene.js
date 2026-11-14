@@ -681,7 +681,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       // (ก่อนถึงไซต์ยังเดินอยู่ ไม่เข้าเงื่อนไขนี้ เพราะ st จะยังเป็น buildWait:true)
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
-      const working = c.at || c.cook || (buildingHere && Math.floor(t / 500) % 2 === 0);
+      const working = c.at || c.cook || c.fmWork || (buildingHere && Math.floor(t / 500) % 2 === 0);   // FOREMAN: c.fmWork = Dam cutting thorns / digging shards / selling
       shade(c.x, c.y, crewHeight, cx => {
         const cookingPose = c.cook && !motion.moving && g.zone==='th' && img(base+'-cook');
         if (cookingPose) { drawStandee(cx, base+'-cook', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
@@ -692,6 +692,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
           c.x, c.y, crewHeight, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
       if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
+      if(c.fmCarry)label(ctx,{rice:'🍙',wood:'🪵',shards:'💎'}[c.fmCarry]||'📦',c.x,c.y-crewHeight-8,14);   // FOREMAN: what Dam is carrying
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
       if (!c.self && (c.hunger ?? 100) <= 0) label(ctx, '🍙', c.x, c.y - crewHeight - 6, 11, '#ffb4a0');   // FB2-6: small hunger icon over the head (no banner)

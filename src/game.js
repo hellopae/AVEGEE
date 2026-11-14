@@ -9,6 +9,7 @@ import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffec
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
+import {foremanCourier,foremanPhase,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
@@ -489,6 +490,9 @@ const API = {
     const c=this.crewOf('nira');
     return !zoneWorkers(this).length&&actorStanding(c)&&!this.niraRest&&!c.teaRest&&!c.escort&&!c.buildK&&!c.at&&!this.mapTravel?c:null;
   },
+
+  /** FOREMAN: who walks a docked soul to the queue before workers exist - Dam when he is hired and free, otherwise Nira exactly as before (Dam down / building / keeping a post / not hired) */
+  courtCourier() { return foremanCourier(this) || this.niraCourtCourier(); },
 
   startCourtArrival(soul) {
     if(!soul||soul.courtDisembarked||this.courtArrivals.some(a=>a.soulId===soul.id)||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
@@ -1588,7 +1592,7 @@ const API = {
     // Before hiring unlocks, Nira covers dock pickup. Once workers exist, their
     // normal role/supply availability applies; Nira must not bypass a stopped workforce.
     if(destination==='station'&&!zoneWorkers(this).length)return false;
-    if(destination==='arrival'&&!(zoneWorkers(this).length?zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0):this.niraCourtCourier()))return false;
+    if(destination==='arrival'&&!(zoneWorkers(this).length?zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0):this.courtCourier()))return false;
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -1625,7 +1629,7 @@ const API = {
     if (walk.destination!=='station'&&assignWorkerEscort(this,walk)) return true;
     const start = walk.path[0];
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
-    const reader=walk.destination==='arrival'?this.niraCourtCourier():null;
+    const reader=walk.destination==='arrival'?this.courtCourier():null;
     if(walk.destination==='arrival'&&!reader)return false;
     const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k) && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
@@ -1644,6 +1648,7 @@ const API = {
       walk.duration += delay;
       walk.escort = { k:c.k, pickup, ...(reader?{courtCourier:true}:{}) };
       c.escort = walk.soul.id; c.path = null; c.x = cx; c.y = cy;
+      if (reader && c.k === 'dam') foremanSay(c, 'foreman.say.pickup');
       return true;
     }
     return false;
@@ -2294,6 +2299,9 @@ const API = {
         c.escort = null;
         c.x = hx; c.y = hy; c.path = null; c.wait = 500;
       }
+
+      // FOREMAN: Dam's own work (field jobs before workers exist / standing at the kitchen after) replaces the ordinary roaming; building and escorting stay with the code below
+      if (c.k === 'dam' && advanceForeman(this, c, dt)) continue;
 
       const job = building && this.stations.find(st => st.def.k === building.k);
       const arriving = job && (job.buildWait || job.repairWait);
@@ -5361,7 +5369,8 @@ const API = {
   dismissWorker(id) { const ok=dismissWorker(this,id);if(ok){this.save();this.onChange();}return ok; },
 
   builders() {
-    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
+    const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
   },
 
   availableBuilder() {
