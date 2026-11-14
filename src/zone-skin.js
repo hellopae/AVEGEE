@@ -98,14 +98,26 @@ const terrain = (folder, name) => ({
 //   v7r  v7 after Codex's native repairs of those 7 spots were joined into the pack (docs/art-reviews/2026-11-12-z1-v7r-assemble, scripts/assemble-v7r.py; installed by scripts/install-z1-ground.py <pack> --name v7r --activate).
 //        ACTIVE.  The pier rails (sprites.json `off`) stay off: the repaired pier stair has them painted in.
 // Folders are built from the name on purpose: a set that is not installed yet must not leave a literal URL to a missing file.
-const hd2x = name => { const dir = `img/map-zone1/${name}/`; return Object.freeze({ dir, preview:dir + 'zone1-terrain-v7-preview.webp',
-  fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, sprites:dir + 'sprites.json' }); };
+const hd2x = (name, folder = 'map-zone1', preview = 'zone1-terrain-v7-preview.webp', sprites = true) => { const dir = `img/${folder}/${name}/`; return Object.freeze({ dir, preview:dir + preview,
+  fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, ...(sprites ? { sprites:dir + 'sprites.json' } : {}) }); };
 export const ZONE1_GROUND = Object.freeze({
   v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
                       fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
   v7r: hd2x('v7r'),
 });
 export const ZONE1_GROUND_SET = 'v7r';
+
+// Zone 2 (Asia) and zone 3 (West) ground sets, same switch as zone 1 (14 Nov 2026, scripts/install-ground.py <pack> --zone 2|3 --activate).
+//   v2 / v1  the 1x ground of each zone (4915 x 3277, 1024 px chunks), kept on disk so the old look is one constant away.
+//   v7       Codex's 2x ground (Z234-HD-ASSEMBLE, 9830 x 6554, cut to 1024 px tiles, WebP q88).  ACTIVE.  It carries its own list of spots restored from the 1x art (15 in Asia, 1 in West),
+//            see docs/art-reviews/2026-11-14-z23-ground-integrate/.  No runtime repairs, no ground sprites.
+// To go back: set ZONE2_GROUND_SET = 'v2' / ZONE3_GROUND_SET = 'v1'.
+const ground1x = (folder, name, ver) => Object.freeze({ dir:`img/${folder}/${ver}/`, preview:`img/${folder}/${ver}/${name}-terrain-${ver}-preview.webp`,
+  fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:false });
+export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
+export const ZONE2_GROUND_SET = 'v7';
+export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
+export const ZONE3_GROUND_SET = 'v1';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */
 export const ZONE_SKIN = {
@@ -125,7 +137,7 @@ export const ZONE_SKIN = {
   asia: {
     enabled: true,
     // C3/L3: registered repaint with a separately traced, walk-floor-excluding flow field.
-    terrain: {...terrain('map-zone2','zone2'),dir:'img/map-zone2/v2/',preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp'},
+    terrain: ZONE2_GROUND[ZONE2_GROUND_SET],
     rootAnchors:{'tree-pine-v2.webp':[.567556297,.958841463],'tree-maple-v2.webp':[.569224354,.987804878]},
     flowUrl: 'img/map-zone2/v2/flow-v2.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
@@ -136,7 +148,7 @@ export const ZONE_SKIN = {
   },
   west: {
     enabled: true,
-    terrain: terrain('map-zone3', 'zone3'),
+    terrain: ZONE3_GROUND[ZONE3_GROUND_SET],
     flowUrl: 'img/map-zone3/v1/flow-v1.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
     stations: { suffix:'west', facade:{

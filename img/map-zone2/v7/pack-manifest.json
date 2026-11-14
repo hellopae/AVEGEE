@@ -1,0 +1,552 @@
+{
+  "zone": "asia",
+  "version": 7,
+  "visualAcceptanceVerified": false,
+  "fullPx": {
+    "w": 9830,
+    "h": 6554
+  },
+  "chunk": 2048,
+  "rows": 4,
+  "cols": 5,
+  "worldSize": {
+    "w": 3840,
+    "h": 2560
+  },
+  "format": "webp",
+  "quality": 90,
+  "repairs": false,
+  "runtimeIntegration": "Asset pack only; src/img unchanged. Loader must select this directory, fullPx and chunk=2048, repairs=false.",
+  "imageGenCalls": 0,
+  "fallbackParts": [
+    "r2-c3/q22"
+  ],
+  "fallbackPatches": [
+    {
+      "id": "invented-volcanic-bridge",
+      "core": [
+        1000,
+        90,
+        1590,
+        440
+      ],
+      "reason": "Run1 q11 invents a bridge and staircase in the panorama; visually confirmed in upstream-structure-review.jpg.",
+      "contextRectPx1x": [
+        952,
+        42,
+        1638,
+        488
+      ],
+      "effectiveFallbackPixels2x": 1056711
+    },
+    {
+      "id": "upper-plaza-added-steps-rail",
+      "core": [
+        1830,
+        320,
+        2260,
+        600
+      ],
+      "reason": "Run1 r1-c2/q12 adds railing; adjacent r1-c3/q11 adds upper-left steps.",
+      "contextRectPx1x": [
+        1782,
+        272,
+        2308,
+        648
+      ],
+      "effectiveFallbackPixels2x": 645653
+    },
+    {
+      "id": "east-plaza-thick-rim",
+      "core": [
+        2870,
+        370,
+        3072,
+        660
+      ],
+      "reason": "Run1 r1-c3/q12 changes the right road edge into a thick rim.",
+      "contextRectPx1x": [
+        2822,
+        322,
+        3120,
+        708
+      ],
+      "effectiveFallbackPixels2x": 368350
+    },
+    {
+      "id": "pale-source-feature",
+      "core": [
+        2360,
+        745,
+        2440,
+        815
+      ],
+      "reason": "Run1 r1-c3/q21 replaces the pale source feature with a pink tree.",
+      "contextRectPx1x": [
+        2312,
+        697,
+        2488,
+        863
+      ],
+      "effectiveFallbackPixels2x": 74715
+    },
+    {
+      "id": "upper-stair-foot",
+      "core": [
+        3120,
+        280,
+        3270,
+        420
+      ],
+      "reason": "Run1 r1-c4 upper stair foot reports12px displacement and a changed landing.",
+      "contextRectPx1x": [
+        3072,
+        232,
+        3318,
+        468
+      ],
+      "effectiveFallbackPixels2x": 162986
+    },
+    {
+      "id": "heaven-bridge",
+      "core": [
+        3600,
+        485,
+        3910,
+        660
+      ],
+      "reason": "Run1 r1-c4 bridge approaches and steps differ from source.",
+      "contextRectPx1x": [
+        3552,
+        437,
+        3958,
+        708
+      ],
+      "effectiveFallbackPixels2x": 338782
+    },
+    {
+      "id": "volcanic-stair-foot",
+      "core": [
+        1385,
+        775,
+        1580,
+        940
+      ],
+      "reason": "Run1 r1-c2 stair-foot-right displacement4.4721px and changed stair-foot paving.",
+      "contextRectPx1x": [
+        1337,
+        727,
+        1628,
+        988
+      ],
+      "effectiveFallbackPixels2x": 220450
+    },
+    {
+      "id": "northwest-stair",
+      "core": [
+        380,
+        360,
+        590,
+        550
+      ],
+      "reason": "Final focus audit: changed tread spacing, base and step/rail proportions at source staircase; repeated-step match displaced9,11px.",
+      "contextRectPx1x": [
+        332,
+        312,
+        638,
+        598
+      ],
+      "effectiveFallbackPixels2x": 266721
+    },
+    {
+      "id": "west-mid-stair",
+      "core": [
+        1640,
+        1190,
+        1870,
+        1360
+      ],
+      "reason": "Final focus audit: altered treads and extended edging; independent contour probes displaced6-12px.",
+      "contextRectPx1x": [
+        1592,
+        1142,
+        1918,
+        1408
+      ],
+      "effectiveFallbackPixels2x": 246237
+    },
+    {
+      "id": "main-plaza-stair",
+      "core": [
+        2290,
+        1390,
+        2540,
+        1670
+      ],
+      "reason": "Final focus audit: tread geometry differs; source stairs match at search boundary12px.",
+      "contextRectPx1x": [
+        2242,
+        1342,
+        2588,
+        1718
+      ],
+      "effectiveFallbackPixels2x": 429184
+    },
+    {
+      "id": "central-bridge-stair-rails",
+      "core": [
+        2340,
+        1900,
+        2600,
+        2580
+      ],
+      "reason": "Final focus audit: bridge rails removed and lower stair sides shifted5-7px. Restore source geometry rather than invent rails.",
+      "contextRectPx1x": [
+        2292,
+        1852,
+        2648,
+        2628
+      ],
+      "effectiveFallbackPixels2x": 919945
+    },
+    {
+      "id": "pier-stair-rails",
+      "core": [
+        2770,
+        2100,
+        2960,
+        2330
+      ],
+      "reason": "Final focus audit: pier rails removed and stair width changed; reliable contour discrepancies retained.",
+      "contextRectPx1x": [
+        2722,
+        2052,
+        3008,
+        2378
+      ],
+      "effectiveFallbackPixels2x": 296986
+    },
+    {
+      "id": "east-water-stair",
+      "core": [
+        3130,
+        2100,
+        3260,
+        2220
+      ],
+      "reason": "Final focus audit: water stair rail supports removed and side outline changed.",
+      "contextRectPx1x": [
+        3082,
+        2052,
+        3308,
+        2268
+      ],
+      "effectiveFallbackPixels2x": 125136
+    },
+    {
+      "id": "ice-stair",
+      "core": [
+        4435,
+        750,
+        4645,
+        950
+      ],
+      "reason": "Final focus audit: tread arrangement and source right stair edge changed.",
+      "contextRectPx1x": [
+        4387,
+        702,
+        4693,
+        998
+      ],
+      "effectiveFallbackPixels2x": 257025
+    },
+    {
+      "id": "east-plaza-stair",
+      "core": [
+        3110,
+        650,
+        3290,
+        810
+      ],
+      "reason": "Final focus audit: altered tread spacing; repeated-step correspondence hits12px search boundary.",
+      "contextRectPx1x": [
+        3062,
+        602,
+        3338,
+        858
+      ],
+      "effectiveFallbackPixels2x": 208699
+    }
+  ],
+  "files": [
+    {
+      "file": "r1-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1702222,
+      "sha256": "d63d7541d56db824219c821e133faf8552897ef638ed39feac37a3fe27bba59e",
+      "rectPx2x": [
+        0,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1009268,
+      "sha256": "a23bec7ae54860c7622e0e0ff51c3b540e06e9ec1d083f5761ccb6a8ad91420a",
+      "rectPx2x": [
+        2048,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1068574,
+      "sha256": "cd1c6f394a985a53af5e2d71350b142ead0b0d7eaa291c6fcef8fcca67f97d3d",
+      "rectPx2x": [
+        4096,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1035974,
+      "sha256": "c907855c8b4a4a18095d7ba8ee21407638bf9649e146b256f3e02273ffc33129",
+      "rectPx2x": [
+        6144,
+        0,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r1-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1415280,
+      "sha256": "ba4f4e76735a36d0cff42fe5ebad636706f83ea7d43458fcfdae2d811660035e",
+      "rectPx2x": [
+        8192,
+        0,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1731202,
+      "sha256": "8c2f01afb0abd6d796d311b8c23cb7e2bed02ddd2986811c758197390f19a7b8",
+      "rectPx2x": [
+        0,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1613426,
+      "sha256": "5c8b93e51a15b4600d0ea47d84a23d987d8de019a07aa56e4b7fcd9d1d23c5bb",
+      "rectPx2x": [
+        2048,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1373778,
+      "sha256": "dd460d090d7be0470b27e9f8f83514cf6cc0d6fd1c668f4068fc9b494b678f1b",
+      "rectPx2x": [
+        4096,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1768174,
+      "sha256": "3aeabc2f9d43bf7493bfd7bb0cce00ce23d1762b9be7be1f755f2df4083372a1",
+      "rectPx2x": [
+        6144,
+        2048,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r2-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1554934,
+      "sha256": "89f5cf63d13bd6a76f8b6df1da3a46c4392c4bdbb33901247792d58d761a9c49",
+      "rectPx2x": [
+        8192,
+        2048,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c1.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1808394,
+      "sha256": "696f2f2cf24d1839c241a2f73c084a69c5daec2a9a01131baed0ba113868d393",
+      "rectPx2x": [
+        0,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c2.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1787534,
+      "sha256": "9af741493e811b1cc75cbdb88001d39a1f37032d0310a41a96eefbf17631974c",
+      "rectPx2x": [
+        2048,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c3.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1428328,
+      "sha256": "4eee35a49f5b718c95ae0928a707ae4dfc3ebb04619c85e9613d6cbb15e88b6c",
+      "rectPx2x": [
+        4096,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c4.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1657186,
+      "sha256": "2c5a249f40d53e6f345cc39b1682bc7fa0e034433e18b1fe44b6ad37088ad6cb",
+      "rectPx2x": [
+        6144,
+        4096,
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "r3-c5.webp",
+      "width": 1638,
+      "height": 2048,
+      "bytes": 1457108,
+      "sha256": "64eea26b1de33214583468d3a6fa19aeba0e211ecfff3afac20d1003070b458d",
+      "rectPx2x": [
+        8192,
+        4096,
+        1638,
+        2048
+      ]
+    },
+    {
+      "file": "r4-c1.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 377032,
+      "sha256": "708bbb4ddde0873ee866e2cf1c5fafbf559fb5c6a0a4770b228c4485519a0da4",
+      "rectPx2x": [
+        0,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c2.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 398634,
+      "sha256": "4a72fcf9d46e9a793f8391271b42052500f75d846a57471760750b30e85895e4",
+      "rectPx2x": [
+        2048,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c3.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 435744,
+      "sha256": "3c23e94dc83777e254bc0eca47456237f1967f3e78890d028b5455bed8b6bdd5",
+      "rectPx2x": [
+        4096,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c4.webp",
+      "width": 2048,
+      "height": 410,
+      "bytes": 456812,
+      "sha256": "b740a1bebdd8fb788f85a4f1ea4dc64164cba4626ccfb1c529b54bd30074f114",
+      "rectPx2x": [
+        6144,
+        6144,
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c5.webp",
+      "width": 1638,
+      "height": 410,
+      "bytes": 359896,
+      "sha256": "876b1bf03ee87b76b61dccd334224596d6ff642962f9f6dcb9b8927468050c64",
+      "rectPx2x": [
+        8192,
+        6144,
+        1638,
+        410
+      ]
+    },
+    {
+      "file": "zone2-terrain-v7-preview.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 865792,
+      "sha256": "22f9ea63f57764cd48017af4c3a7d2d926bece5228f2c5554803d6e2d6b3baf6"
+    }
+  ],
+  "imageBytes": 25305292,
+  "limitBytes": 40000000
+}

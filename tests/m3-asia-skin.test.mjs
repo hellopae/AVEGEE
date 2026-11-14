@@ -20,17 +20,17 @@ test('M3b: Asia ships its own terrain and flow without Zone 1 repairs or tree ti
   assert.deepEqual(s.use, ['judgment','houses','trees','lamp','torch','rock']);
   assert.equal(s.treeTint, false);
   assert.deepEqual(s.terrain, {
-    dir:'img/map-zone2/v2/', preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp',
-    fullPx:{w:4915,h:3277}, chunk:1024, repairs:false,
+    dir:'img/map-zone2/v7/', preview:'img/map-zone2/v7/zone2-terrain-v7-preview.webp',   // 14 Nov: Codex's 2x ground (ZONE2_GROUND_SET); 'v2' = the old 1x ground
+    fullPx:{w:9830,h:6554}, chunk:1024, repairs:false,
   });
   assert.equal(s.flowUrl, 'img/map-zone2/v2/flow-v2.png', 'flow belongs to the registered Asia repaint');
   assert.ok(existsSync(new URL('../'+s.flowUrl,import.meta.url)));
   assert.ok(existsSync(new URL('../'+s.terrain.preview,import.meta.url)));
   const grid=townTerrainGrid('asia');
-  assert.deepEqual([grid.cols,grid.rows],[5,4]);
+  assert.deepEqual([grid.cols,grid.rows],[10,7]);
   for (let r=1;r<=grid.rows;r++) for (let c=1;c<=grid.cols;c++) {
     const url=townChunkUrl(r,c,'asia');
-    assert.equal(url,`img/map-zone2/v2/r${r}-c${c}.webp`);
+    assert.equal(url,`img/map-zone2/v7/r${r}-c${c}.webp`);
     assert.ok(existsSync(new URL('../'+url,import.meta.url)),url);
   }
   assert.equal(ZONE_SKIN.th.terrain.dir,'img/map-zone1/v5/');
