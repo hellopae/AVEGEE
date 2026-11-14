@@ -1,0 +1,129 @@
+{
+  "generation_mode": "built-in image_gen",
+  "imagegen_calls": 9,
+  "budget": 14,
+  "webp_quality": 86,
+  "webp_method": 6,
+  "rgb_lossless": false,
+  "alpha_encoding": "lossless; byte-for-byte comparison against generated PNG",
+  "assets": [
+    {
+      "file": "img/z2-events/cut-frontier-boss-to-dais-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 352856,
+      "sha256": "65d6e8a260557eb4aa8b6f15c8c3f18935105dc473899b6e7e72c71b94ab0db5",
+      "alpha": null,
+      "imagegen_calls": 2,
+      "source_png": "exec-82847abe-6e77-43f3-a1f1-7956a9306f09.png"
+    },
+    {
+      "file": "img/z2-events/cut-frontier-boss-punished-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 438576,
+      "sha256": "96157ea5abed3faf34a83d485b833cd64f169bfd08b9df6f19f6337792657e5d",
+      "alpha": null,
+      "imagegen_calls": 1,
+      "source_png": "exec-4aeaa07a-afad-4023-875e-a090fca4e6af.png"
+    },
+    {
+      "file": "img/z2-events/cut-frontier-boss-released-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 345900,
+      "sha256": "df857bdb37856142c61c454090d24512735f7347283474fc711ab334ba9e190b",
+      "alpha": null,
+      "imagegen_calls": 1,
+      "source_png": "exec-22b22a0b-ab8d-4a1c-8ae8-766190ee8bbe.png"
+    },
+    {
+      "file": "img/z2-events/soul-satori-father-asia.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 122194,
+      "sha256": "65c60eaf78c8729151b745b37093e46071909e09331b2ec0a468d7b296bf96fd",
+      "alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "sha256": "98769580c89ac50798fa55437ca898b6d4f2373e4eda0eaf8c9f7b307f50ac3d",
+        "identical_to_generated_png": true
+      },
+      "imagegen_calls": 1,
+      "source_png": "exec-aece925d-7108-425b-8398-4d5dac6eb077.png"
+    },
+    {
+      "file": "img/z2-events/soul-satori-father-asia-profile.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 149482,
+      "sha256": "af6b71fc0d573a8811ef4941fcadafba553da664786909762405a03ff165bd6e",
+      "alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "sha256": "38a7fd12be470e4f13d8d048dd86056330e7a63cdd2423d430275329c66d5348",
+        "identical_to_generated_png": true
+      },
+      "imagegen_calls": 1,
+      "source_png": "exec-56a73969-1905-44b1-b2d0-2e12f6e0f8f7.png"
+    },
+    {
+      "file": "img/z2-events/cut-satori-farewell-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 293066,
+      "sha256": "b964a7470ecfd6623371e9db7ec814f668a96366cc2b8e428b5f41ceda87cba0",
+      "alpha": null,
+      "imagegen_calls": 1,
+      "source_png": "exec-654fce7b-6f8c-4336-89bc-6e2c45193d39.png"
+    },
+    {
+      "file": "img/z2-events/cut-guard-test-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 379138,
+      "sha256": "f6d5cb5e4d62cfad10154145e6fb785c0bfd2c6f49c93da196d89c0e7ad95645",
+      "alpha": null,
+      "imagegen_calls": 1,
+      "source_png": "exec-7f084c19-b568-4cfc-adb3-26caa71288f9.png"
+    },
+    {
+      "file": "img/z2-events/cut-satori-ask-asia.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 274448,
+      "sha256": "d986bd6e0ab5a16070175867bf25d6c1b1805ea3ee51b02a94d038b2d079f2e4",
+      "alpha": null,
+      "imagegen_calls": 1,
+      "source_png": "exec-3d2bd064-5ee3-48f4-923a-d11d4995392b.png"
+    }
+  ]
+}
