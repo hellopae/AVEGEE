@@ -1,0 +1,190 @@
+{
+  "task": "Z234-HD-FULL / Zone 4 / set 4 of 5",
+  "source": "img/map-zone4/v3/r*-c*.webp",
+  "repairsApplied": false,
+  "chunks": [
+    {
+      "chunk": "r3-c3",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at identical 2x output resolution, baseline Lanczos 2x; no sharpening filter",
+        "baseline2x": 11.811067581176758,
+        "redraw2x": 5063.748046875,
+        "ratio": 428.7290722936063
+      },
+      "structureMaxPx1x": null,
+      "siftInlierResidualMaxPx1x": 2.8074402809143066,
+      "sourceEdgeNearestDistanceProxy": {
+        "method": "Canny 60/130, source edge -> nearest redraw edge at 1x, all pixels",
+        "samples": 139508,
+        "p50Px1x": 1.0,
+        "p95Px1x": 1.4142135381698608,
+        "maxPx1x": 5.656854152679443,
+        "limitations": "Texture edges are not semantic boundaries. This is NOT proof of structure <=4px; no thresholds applied."
+      },
+      "semanticStructureAcceptance": "unconfirmed; texture evidence is not a semantic bound",
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r3-c4",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at identical 2x output resolution, baseline Lanczos 2x; no sharpening filter",
+        "baseline2x": 11.22022533416748,
+        "redraw2x": 3145.248046875,
+        "ratio": 280.31950813832486
+      },
+      "structureMaxPx1x": null,
+      "siftInlierResidualMaxPx1x": 3.406665802001953,
+      "sourceEdgeNearestDistanceProxy": {
+        "method": "Canny 60/130, source edge -> nearest redraw edge at 1x, all pixels",
+        "samples": 131754,
+        "p50Px1x": 1.0,
+        "p95Px1x": 1.4142135381698608,
+        "maxPx1x": 6.7082037925720215,
+        "limitations": "Texture edges are not semantic boundaries. This is NOT proof of structure <=4px; no thresholds applied."
+      },
+      "semanticStructureAcceptance": "unconfirmed; texture evidence is not a semantic bound",
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r3-c5",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1122,
+          1402
+        ],
+        "q12": [
+          1122,
+          1402
+        ],
+        "q21": [
+          1122,
+          1402
+        ],
+        "q22": [
+          1122,
+          1402
+        ]
+      },
+      "outputSize": [
+        1638,
+        2048
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at identical 2x output resolution, baseline Lanczos 2x; no sharpening filter",
+        "baseline2x": 10.641829490661621,
+        "redraw2x": 3819.8759765625,
+        "ratio": 358.9491806756069
+      },
+      "structureMaxPx1x": null,
+      "siftInlierResidualMaxPx1x": 3.213714599609375,
+      "sourceEdgeNearestDistanceProxy": {
+        "method": "Canny 60/130, source edge -> nearest redraw edge at 1x, all pixels",
+        "samples": 102027,
+        "p50Px1x": 1.0,
+        "p95Px1x": 1.4142135381698608,
+        "maxPx1x": 5.385164737701416,
+        "limitations": "Texture edges are not semantic boundaries. This is NOT proof of structure <=4px; no thresholds applied."
+      },
+      "semanticStructureAcceptance": "unconfirmed; texture evidence is not a semantic bound",
+      "qualityDecision": "pending Claude review"
+    },
+    {
+      "chunk": "r4-c1",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1836,
+          857
+        ],
+        "q12": [
+          1935,
+          813
+        ]
+      },
+      "outputSize": [
+        2048,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at identical 2x output resolution, baseline Lanczos 2x; no sharpening filter",
+        "baseline2x": 8.284151077270508,
+        "redraw2x": 3674.0732421875,
+        "ratio": 443.50630594704785
+      },
+      "structureMaxPx1x": null,
+      "siftInlierResidualMaxPx1x": 3.635110855102539,
+      "sourceEdgeNearestDistanceProxy": {
+        "method": "Canny 60/130, source edge -> nearest redraw edge at 1x, all pixels",
+        "samples": 19323,
+        "p50Px1x": 0.0,
+        "p95Px1x": 1.4142135381698608,
+        "maxPx1x": 7.211102485656738,
+        "limitations": "Texture edges are not semantic boundaries. This is NOT proof of structure <=4px; no thresholds applied."
+      },
+      "semanticStructureAcceptance": "unconfirmed; texture evidence is not a semantic bound",
+      "qualityDecision": "pending Claude review"
+    }
+  ],
+  "imageGenCalls": 16,
+  "imageGenCallLimit": 16,
+  "plannedParts": 14,
+  "deliveredParts": 14,
+  "pendingGenerationOrAssembly": [],
+  "pendingQuality": [
+    "Semantic geometry <=4px requires reviewer decision",
+    "Internal seam invisibility requires reviewer decision"
+  ],
+  "totalBytesAtSummary": 76655112,
+  "budgetBytes": 80000000,
+  "installedInGame": false,
+  "templateAvailability": "Referenced plaza-detail and hd-full worktree directories unavailable. Followed supplied brief and min-cost solver documented in local Z1 v7r assemble script.",
+  "noRegenerationForMetrics": true,
+  "visualCorrection": "Two additional calls for r4-c1 removed invented cyan water/cracks. Superseded native pixels omitted; attempts and rejected hashes retained in generations.json."
+}

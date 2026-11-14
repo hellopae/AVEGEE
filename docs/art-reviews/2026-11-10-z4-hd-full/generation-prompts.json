@@ -1,0 +1,134 @@
+[
+  {
+    "chunk": "r3-c3",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "reference": "r3-c3/inputs/q11-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c3 q11. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "reference": "r3-c3/inputs/q12-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c3 q12. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "reference": "r3-c3/inputs/q21-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c3 q21. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "reference": "r3-c3/inputs/q22-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c3 q22. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "reference": "r3-c4/inputs/q11-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c4 q11. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "reference": "r3-c4/inputs/q12-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c4 q12. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "reference": "r3-c4/inputs/q21-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c4 q21. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "reference": "r3-c4/inputs/q22-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c4 q22. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "reference": "r3-c5/inputs/q11-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c5 q11. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1076x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "reference": "r3-c5/inputs/q12-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c5 q12. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 946x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "reference": "r3-c5/inputs/q21-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c5 q21. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1076x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "reference": "r3-c5/inputs/q22-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r3-c5 q22. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 946x1280 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "reference": "r4-c1/inputs/q11-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r4-c1 q11. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1152x538 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "reference": "r4-c1/inputs/q12-reference.png",
+    "prompt": "Use case: precise-object-edit. Asset: Zone 4 cyberhell HD game terrain, r4-c1 q12. The attached image is the exact edit target, not a composition suggestion. Redraw this same crop at 1280x538 with truly crisp finely painted material detail, about twice its source resolution. Keep EVERY large shape and position exactly fixed: pavement outline, round plaza arcs, staircase count and widths, bridge deck and rails, cliff silhouette, water bank, crystals, pillars. Keep the same isometric camera, crop, scale, dark charcoal stone, cyan electric water and purple crystal glow with gold accents; no palette shift. Add individually defined irregular basalt pavers, tiny cracks, chipped corners, fine mortar, stone grain, etched metal and sharp crystal facets. Retain water and mist as a detailed static base in precisely the existing region; no moving banks. The traversable floor and stairs must remain clear, do not add any objects, vegetation, characters, buildings or fog clumps on the pavement. Existing edge pillars and rails stay in place; preserve bridge deck and every stair. No text, no border, no blur, no depth of field, no new scenery. This is a constrained detail restoration, not a redesign. Return only the same full image composition with richer fine detail.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q11",
+    "attempt": "visual correction",
+    "replacesEarlierAttempt": true,
+    "tool": "built-in image_gen",
+    "reference": "r4-c1/inputs/q11-reference.png",
+    "prompt": "Use case: precise-object-edit. Edit target: the attached original Zone 4 cyberhell terrain crop r4-c1 q11. Constrained high detail restoration. This crop contains inaccessible jagged charcoal rock ridges, purple crystals, and soft purple mist. Preserve the exact original composition, rock silhouettes, crystal positions, pillar and cable geometry, cropping, camera and colour balance. Increase only micro material clarity: crisp basalt grain, tiny chips and fissures, sharp purple crystal facets, fine gold and red metalwork. CRITICAL: there is NO cyan water, NO electric blue glowing cracks, NO river, NO new stairs, NO lava channel in this crop. Do not invent any of those. The original dark negative spaces between rocks must remain dark charcoal rock and soft purple fog, as in the reference. Mist remains soft purple static base in its existing areas. Keep rock contours and all silhouettes fixed, no new objects, no new architecture, no changing mountain shape, no background additions, no text, no border, no depth of field. Return the same full landscape crop with native high resolution and finely painted texture, approximately 1152x538.",
+    "transparent_background": false
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q12",
+    "attempt": "visual correction",
+    "replacesEarlierAttempt": true,
+    "tool": "built-in image_gen",
+    "reference": "r4-c1/inputs/q12-reference.png",
+    "prompt": "Use case: precise-object-edit. Edit target: the attached original Zone 4 cyberhell terrain crop r4-c1 q12. Constrained high detail restoration. This crop contains inaccessible jagged charcoal rock ridges, purple crystals, and soft purple mist. Preserve the exact original composition, rock silhouettes, crystal positions, pillar and cable geometry, cropping, camera and colour balance. Increase only micro material clarity: crisp basalt grain, tiny chips and fissures, sharp purple crystal facets, fine gold and red metalwork. CRITICAL: there is NO cyan water, NO electric blue glowing cracks, NO river, NO new stairs, NO lava channel in this crop. Do not invent any of those. The original dark negative spaces between rocks must remain dark charcoal rock and soft purple fog, as in the reference. Mist remains soft purple static base in its existing areas. Keep rock contours and all silhouettes fixed, no new objects, no new architecture, no changing mountain shape, no background additions, no text, no border, no depth of field. Return the same full landscape crop with native high resolution and finely painted texture, approximately 1280x538.",
+    "transparent_background": false
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "zone": "cyberhell",
+  "scope": ["r3-c3", "r3-c4", "r3-c5", "r4-c1"],
+  "coordinateSpace": "global master 1x pixels, rect [x0,y0,x1,y1]",
+  "evidence": [
+    "src/zone-skin.js: cyberhell terrain v3, repairs false, use judgment only",
+    "src/town-cyberhell-layout.js: houses [], props [], patches false, strictFloor true",
+    "src/town-layout.js: applyTownZoneLayout uses CYBERHELL_LAYOUT and CYBERHELL_WALK_RUNS",
+    "src/town-owner-walkmask-cyberhell.js: 480x320 cells, cell 8 world units",
+    "walkmask-evidence.json: decoded runtime RLE, 29226 walkable cells; r4-c1 has zero walkable pixels",
+    "output/coordination/2026-10-30-z4-town-a/owner-walkmask.png",
+    "Each chunk inputs/walkmask-overlay.jpg: red = blocked; clear = walkable"
+  ],
+  "review": "Visual inspection of the four original chunks against the owner walkmask. No freestanding baked obstacle identified on clear walkable pavement. Empty removal lists are intentional, not copied from Zone 1. Runtime actors/buildings are separate sprites and are absent from terrain input.",
+  "objects": [
+    {"id":"z4-central-bridge-boundary-rails", "chunks":["r3-c3"], "rectPx1x":[2360,2048,2580,2540], "action":"keep-baked", "reason":"Boundary architecture beside the bridge floor; does not occupy the clear deck. Optional rail removal is not required; preserve deck and all stairs."},
+    {"id":"z4-south-circle-perimeter", "chunks":["r3-c3"], "rectPx1x":[2048,2460,3072,3072], "action":"keep-baked", "reason":"Pillars, cable rails and crystals follow blocked rim; circular plaza floor stays clear."},
+    {"id":"z4-boss-pier-boundary", "chunks":["r3-c3","r3-c4"], "rectPx1x":[2750,2048,3150,2360], "action":"keep-baked", "reason":"Pier floor/stairs must be retained. Pillars stand at perimeter, not on traversable centre."},
+    {"id":"z4-east-crystal-ridges", "chunks":["r3-c4","r3-c5"], "rectPx1x":[3072,2048,4915,3072], "action":"keep-baked", "reason":"Inaccessible rocky boundary surrounding the southeast paved area. Do not remove background ridges or alter cliff silhouettes."},
+    {"id":"z4-southwest-bottom-ridge", "chunks":["r4-c1"], "rectPx1x":[0,3072,1024,3277], "action":"keep-baked", "reason":"Entire chunk is inaccessible foreground rock/crystal/mist; no walkable floor object to remove."},
+    {"id":"z4-cyan-river-base", "chunks":["r3-c3","r3-c4","r3-c5"], "action":"keep-baked", "reason":"Retain static liquid and exact banks; preserve cyan electric water and purple reflected light."},
+    {"id":"z4-background-mist-base", "chunks":["r3-c4","r3-c5","r4-c1"], "action":"keep-baked", "reason":"Retain mist within inaccessible scenery; add no white fog clumps on walkable floors."}
+  ],
+  "removeIds": []
+}

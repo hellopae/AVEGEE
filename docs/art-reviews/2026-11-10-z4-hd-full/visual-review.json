@@ -1,0 +1,25 @@
+{
+  "reviewType": "Visual inspection in view_image, descriptive evidence only; no QA acceptance",
+  "views": ["native images returned by ImageGen", "all four seam-check.jpg", "all four seam-strips.jpg", "all source walkmask overlays"],
+  "chunks": {
+    "r3-c3": {
+      "observations": "Bridge deck, pier deck, stairs and circular plaza remain visible and clear. No obvious straight quadrant boundary seen in the overview or output-pixel seam strips. Purple/cyan/gold material detail is much stronger than the blurred source.",
+      "reviewNeeded": "Gold inlay has local pattern differences. Confirm circle rim, bridge stair edges and pier bank against source overlays; SIFT inliers do not prove their maximum displacement."
+    },
+    "r3-c4": {
+      "observations": "River base remains continuous across the upper half. Jagged crystal/rock boundary surrounds open pavement. No obvious straight quadrant boundary seen in the viewed seam strips.",
+      "reviewNeeded": "q22 makes small step/curb details and metal edging more pronounced. Compare these against the original floor and walkmask before accepting geometry."
+    },
+    "r3-c5": {
+      "observations": "Cyan river, upper cliff, southeast floor and inaccessible crystal ridge remain present. No obvious straight quadrant boundary seen in the viewed seam strips.",
+      "reviewNeeded": "q21/q22 have more pronounced small gold curb posts and step details than the source. Confirm they do not intrude onto walkable pavement and that silhouettes remain within tolerance."
+    },
+    "r4-c1": {
+      "observations": "Initial candidates invented cyan water-like cracks inside rock/mist. Both were rejected and corrected with two additional ImageGen calls. Selected candidates retain purple mist and dark rock; no cyan water-like additions visible in selected overview. No obvious straight vertical join seen.",
+      "reviewNeeded": "Rock facets, crystal edges and mist density differ locally. No walkable floor exists in this chunk; still inspect foreground silhouettes and the top context for cross-chunk assembly."
+    }
+  },
+  "semanticStructureWithin4Px": "unconfirmed",
+  "internalSeamsAccepted": "pending Claude decision",
+  "runtimeReview": "not performed"
+}

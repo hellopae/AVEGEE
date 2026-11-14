@@ -1,0 +1,246 @@
+[
+  {
+    "chunk": "r3-c3",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c3/q11-native.webp",
+    "nativeSHA256": "27ab72d6730d015af45e19e176aad079f74d14a8ddd62dfa70ea8809f380f295",
+    "sourcePNGName": "exec-d02971d1-a39f-43d3-8ef3-ec9386b35558.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 1,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c3/q12-native.webp",
+    "nativeSHA256": "701dd5ee67133d99470759b527e43611f0b2fbd89045f9e823c78a33c90b2be1",
+    "sourcePNGName": "exec-9e25e563-5613-49f5-97e8-06c364dc84c5.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 2,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c3/q21-native.webp",
+    "nativeSHA256": "8806cd989949c8d397ff0b59492ee369c584f984a9fd3f91f520136ffca01a67",
+    "sourcePNGName": "exec-3b92b093-214c-4cf4-87f0-b16d5e0aa809.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 3,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c3",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c3/q22-native.webp",
+    "nativeSHA256": "72932dc273370d1060eb66718ea1f3b681d6ac808e89969b1b0b429351c7645e",
+    "sourcePNGName": "exec-c1f16d7b-fded-4043-8c8b-11db3b200a16.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 4,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c4/q11-native.webp",
+    "nativeSHA256": "ff8a4ebde8a12bf73a392bb1e6189bd57a290d0e030e0dccbca3d92e4f36ee15",
+    "sourcePNGName": "exec-94580951-7410-4742-b2bb-f3e36c8296c6.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 5,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c4/q12-native.webp",
+    "nativeSHA256": "b3898de908a4631966a73cc2889e19bd0d4d585de930d0e19e899aa2f3cb0795",
+    "sourcePNGName": "exec-a9bc0b65-9861-46de-a389-4b5ea0d08e48.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 6,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c4/q21-native.webp",
+    "nativeSHA256": "211ecb16312a5146189598c8bb0aab8a679c6416b793f078eb0b971e08531968",
+    "sourcePNGName": "exec-fac50c0b-3ab3-4f1d-b84f-dbc14ba9fe8e.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 7,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c4",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1254,
+      1254
+    ],
+    "nativeFile": "r3-c4/q22-native.webp",
+    "nativeSHA256": "4dfa79f6b09f91ad6f747176b560dec0621bdc8877b0144f46b200b24c39ef20",
+    "sourcePNGName": "exec-1eb42398-87b1-4e27-b497-622823b5f8a0.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 8,
+    "selected": true
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1835,
+      857
+    ],
+    "nativeFile": "r4-c1/q11-native.webp",
+    "nativeSHA256": "d3be54fbf8efe468c2808e276dd5cb1fc05c9beb6b95974d12e3648710a26d15",
+    "sourcePNGName": "exec-ab0c5382-4619-47ce-93a9-a7d04febf18b.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 9,
+    "selected": false,
+    "rejectionReason": "Invented cyan water/electric cracks in original rock/mist; replaced for visual correctness, not metric score."
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1935,
+      813
+    ],
+    "nativeFile": "r4-c1/q12-native.webp",
+    "nativeSHA256": "bf0e9884e9d4432e8ba7f2a3df1c993286feab9a8c2063303b1a6e8d6cf7dc5e",
+    "sourcePNGName": "exec-3b0f43b0-d378-44f7-9666-ea0328a4ac45.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 10,
+    "selected": false,
+    "rejectionReason": "Invented cyan water/electric cracks in original rock/mist; replaced for visual correctness, not metric score."
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1122,
+      1402
+    ],
+    "nativeFile": "r3-c5/q11-native.webp",
+    "nativeSHA256": "12880f6a575c188e52e96525cd0b7ee702faffb12e457b56eed88770f74af523",
+    "sourcePNGName": "exec-1ce19dea-46ae-4f81-8061-ddb32f1ea7e4.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 11,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1122,
+      1402
+    ],
+    "nativeFile": "r3-c5/q12-native.webp",
+    "nativeSHA256": "04defbb326dcf92ad50c7ed017923c6ceffcb4d12a71a8502c2717c19cd29e50",
+    "sourcePNGName": "exec-42086073-bd0d-4b25-8edc-c8b5a6cf0874.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 12,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q21",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1122,
+      1402
+    ],
+    "nativeFile": "r3-c5/q21-native.webp",
+    "nativeSHA256": "9215735bcfeac3fe7248b494025736277e5a89963aba11af26467d51f4096e09",
+    "sourcePNGName": "exec-d261568a-111c-4703-964e-1a09e780b30e.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 13,
+    "selected": true
+  },
+  {
+    "chunk": "r3-c5",
+    "part": "q22",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1122,
+      1402
+    ],
+    "nativeFile": "r3-c5/q22-native.webp",
+    "nativeSHA256": "9af2367da6d5649ee1476c34af36ee68cba4dcdb08902546e6042d85890bdd5d",
+    "sourcePNGName": "exec-fdbe7cd8-47ce-482b-8361-ddbf78b9ba48.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 14,
+    "selected": true
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q11",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1836,
+      857
+    ],
+    "nativeFile": "r4-c1/q11-native.webp",
+    "nativeSHA256": "e8fcc6529169d0ae25ffac5bf245787c366d9628d299911e55d55bfa27f1a6b5",
+    "sourcePNGName": "exec-9303950f-757f-4579-bbcc-4f7edb1cbb8d.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 15,
+    "selected": true,
+    "reason": "Visual correction: no invented cyan water in rock/mist."
+  },
+  {
+    "chunk": "r4-c1",
+    "part": "q12",
+    "tool": "built-in image_gen",
+    "returnedSize": [
+      1935,
+      813
+    ],
+    "nativeFile": "r4-c1/q12-native.webp",
+    "nativeSHA256": "1707bae9e82c8c59a5b66c34b15ec64d09de8d8aeff15edafab98624945ff10b",
+    "sourcePNGName": "exec-e1ab542b-aa13-4b45-9cf4-ed7add3de406.png",
+    "pixelExactLosslessConversion": true,
+    "attempt": 16,
+    "selected": true,
+    "reason": "Visual correction: no invented cyan water in rock/mist."
+  }
+]

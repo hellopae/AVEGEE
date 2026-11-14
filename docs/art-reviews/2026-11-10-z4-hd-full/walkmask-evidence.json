@@ -1,0 +1,27 @@
+{
+  "source": "src/town-owner-walkmask-cyberhell.js",
+  "method": "decode runtime RLE 480x320; nearest resize to master; chunk core coverage only, not visual QA",
+  "walkableCells": 29226,
+  "chunks": [
+    {
+      "chunk": "r3-c3",
+      "walkableFraction": 0.4595756530761719,
+      "walkablePixels1x": 481900
+    },
+    {
+      "chunk": "r3-c4",
+      "walkableFraction": 0.016048431396484375,
+      "walkablePixels1x": 16828
+    },
+    {
+      "chunk": "r3-c5",
+      "walkableFraction": 0.030936403006715508,
+      "walkablePixels1x": 25945
+    },
+    {
+      "chunk": "r4-c1",
+      "walkableFraction": 0.0,
+      "walkablePixels1x": 0
+    }
+  ]
+}

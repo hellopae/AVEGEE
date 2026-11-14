@@ -1,0 +1,7 @@
+{
+  "scope": "files complete, decode, exact output dimensions, JSON readable, affine shape, lossless WebP, <=80MB only. No art quality gate.",
+  "checkedFiles": 54,
+  "errors": [],
+  "totalBytes": 76671460,
+  "qualityAcceptance": "not evaluated by this script"
+}
