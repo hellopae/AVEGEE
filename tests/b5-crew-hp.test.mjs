@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -8,7 +9,7 @@ import { hitActor } from '../src/scene.js';
 import { STATIONS } from '../src/data.js';
 globalThis.Image ??= class {};
 const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; return g; };
-const battle = () => { const g=game(); g.coin=10000; g.hire('taan'); g.party.members=['taan']; g.hireGuard();
+const battle = () => { const g=game(); g.coin=10000; g.hire('taan'); g.party.members=['taan']; (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
  g.startBattle({id:99,who:'test',deserved:4,resist:true});
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];}); return g; };
 test('weights are exactly Guard 3 / Yama 2 / each crew 1; recovery cannot be targeted',()=>{
@@ -41,7 +42,7 @@ test('crew recovers after 120 real seconds including reload; the fallen guard re
  g.updateActorRecovery(now+120000);assert.equal(c.morale,50);assert.ok(!g.battleCrew().includes(c));
  g.battle=null;g.startBattle({id:100,who:'next',deserved:4,resist:true});assert.ok(g.battleCrew().includes(c));
  const guard=g.guard;g.battle=null;g.downActor(guard,now);assert.equal(guard.morale,0);assert.ok(guard.teaRest?.recovery);assert.equal(guard.recoverUntil,now+120000);const saved=game();saved.restore(g.snapshot());
- saved.updateActorRecovery(now+119999);assert.equal(saved.guard.morale,0);assert.equal(saved.guardActive(),false);assert.equal(saved.hireGuard(),false);
+ saved.updateActorRecovery(now+119999);assert.equal(saved.guard.morale,0);assert.equal(saved.guardActive(),false);assert.equal((saved.zoneEvents.th={...saved.zoneEvents.th,frontierBreach:'cleared'},saved.hireGuard()),false);
  saved.updateActorRecovery(now+120000);assert.equal(saved.guard.morale,50);assert.equal(saved.guard.recoverUntil,0);assert.equal(saved.guard.teaRest,null);assert.equal(saved.guardActive(),true);
  {const {GUARD_POST}=await import('../src/data.js');assert.ok(Math.hypot(saved.guard.x-GUARD_POST[0],saved.guard.y-GUARD_POST[1])<80,'back at the gate post');}
  saved.guard.morale=47;saved.updateActorRecovery(now+150000);assert.equal(saved.guard.morale,47);

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 // Q2 HIST — character history guide unlocks with meeting the character (brief 2026-10-31-avegee-q2-hist)
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -38,7 +39,7 @@ test('Q2 hiring a crew member or the giant opens their card', () => {
   assert.equal(g.hire('dam'), true);
   assert.ok(ids(g).includes('crew:dam@th'));
   assert.ok(!ids(g).includes('crew:plerng@th'));
-  assert.equal(g.hireGuard(), true);
+  assert.equal((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard()), true);
   assert.ok(ids(g).includes('guard@th'));
   assert.equal(ids(g).includes('guard@asia'), false);
   assert.match(text(g, 'guard@th'), /^กุมภัณฑ์ /);
@@ -81,7 +82,7 @@ test('Q2 two-relative cards follow the Q1 combination table', () => {
 });
 
 test('Q2 giants relatives: uncle and nephew sentences', () => {
-  const g = createGame(); g.coin = 99999; g.hireGuard();
+  const g = createGame(); g.coin = 99999; (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
   assert.match(text(g, 'guard@th'), /เฝ้าประตูอยู่แดนไกล$/);
   g.talk.seen['met:guard@cyberhell'] = true;
   assert.match(text(g, 'guard@th'), /เฝ้าประตูนรกเครือข่าย$/);
@@ -154,9 +155,9 @@ test('Q2 unlocks persist through save and reload and never go back', () => {
 });
 
 test('Q2 an old save without history data opens cards by existing progress', () => {
-  const g = createGame(); g.coin = 99999; g.hire('plerng'); g.hireGuard();
+  const g = createGame(); g.coin = 99999; g.hire('plerng'); g.bossCleared.th = true; g.hireGuard();   // Z1-EVENTS: the Guard needs Zone 1's frontier event or ruler behind him
   g.casesDone = 6; g.zoneIntroSeen.asia = true;
-  g.storySeen['deva-th-praise'] = true; g.bossCleared.th = true;
+  g.storySeen['deva-th-praise'] = true;
   const snap = JSON.parse(JSON.stringify(g.snapshot()));
   delete snap.historyV; delete snap.historySeen;
   const h = createGame();

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 // BATTLE-FX (10 Nov): stronger enemy hits by rank · the zone boss's cutscene move every 2nd attack · border fights with 1-3 demons.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -81,7 +82,7 @@ test('boss cutscene move: attack 2, 4, 6 ... (never twice in a row, not tied to 
 
 test('a real zone-boss fight shows the cutscene move on its 2nd and 4th attack, with damage to the whole team', () => {
   for (const zone of ['th', 'asia', 'west']) {
-    const g = game(); g.zone = zone; g.hire('boon'); g.party.members = ['taan', 'boon']; g.hireGuard();
+    const g = game(); g.zone = zone; g.hire('boon'); g.party.members = ['taan', 'boon']; (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
     g.startBattle({ id: 99, who: 'boss', deserved: 4 }); const B = g.battle;
     B.kind = 'zoneBoss'; B.zone = zone;
     B.foes = [{ id: 'boss', who: 'บอส', sp: 'zone-boss', boss: true, hp: 99999, maxHp: 99999, atk: [3, 3], stun: 0, confuse: 0 }]; B.selectedFoeId = 'boss';

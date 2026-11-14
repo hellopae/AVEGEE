@@ -264,6 +264,7 @@ test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่�
   t.after(()=>{enableTownSkin('asia');enableTownSkin('west');enableTownSkin('cyberhell');syncSceneZone('th');});
   const saved = createGame().snapshot();
   saved.guard = { x:895, y:795 };
+  saved.zoneEvents = { th:{ frontierBreach:'cleared' } };   // Z1-EVENTS: Zone 1's Guard is with the team only after the frontier breach
   saved.zoneSave = { asia:{ guard:{ x:895, y:795 } } };
   const g = createGame();
   assert.equal(g.restore(saved), true);

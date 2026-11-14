@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -5,15 +6,15 @@ import { BATTLE, CREW_POWER, FRONTIER, MOB, ZONE_EVENTS, scaleFoeHp } from '../s
 
 const ready = () => {
   const g = createGame();
-  g.zoneCases.th = 8;
+  g.zoneCases.th = 9;   // Z1-EVENTS: the breach is the case-9 beat
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' };
   g.frontierOf().team = []; g.setFrontierTeam('taan');
   return g;
 };
 
-test('case eight waits for deva test before frontier breach', () => {
+test('case nine waits for deva test before frontier breach', () => {
   const g = createGame();
-  g.zoneCases.th = 7;
+  g.zoneCases.th = 8;
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'pending' };
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
   assert.equal(g.frontierBreachStatus(), 'locked');
@@ -25,7 +26,7 @@ test('case eight waits for deva test before frontier breach', () => {
   assert.equal(g.frontierBreachStatus(), 'pending');
 });
 
-test('two waves keep one battle, heal at transition, and reward after both', () => {
+test('three waves and the border boss keep one battle, heal at transition, and reward once at the end', () => {
   const g = ready(), beforeCoin = g.coin;
   const beforeClears = g.frontierOf().clears;
   const beforeBoss = { ...g.bossCleared };
@@ -46,13 +47,24 @@ test('two waves keep one battle, heal at transition, and reward after both', () 
   assert.equal(g.battle, b);
   assert.equal(b.wave, 2);
   assert.equal(b.youHp, Math.min(b.youMax, 90));
-  assert.deepEqual(b.foes.map(f => f.hp), [40, scaleFoeHp('th', 90, 'boss')]);   // ชุด 28B: บอสอึดขึ้น
+  assert.deepEqual(b.foes.map(f => f.hp), [36, 36]);
+  for (const wave of [2, 3]) {                                   // Z1-EVENTS: waves 2 and 3 are two demons each
+    assert.equal(b.wave, wave); assert.equal(b.foes.length, 2);
+    b.foes.forEach(f => { f.hp = 1; f.atk = [0, 0]; });
+    g.battleAct('atk'); assert.equal(b.pendingWave, null);
+    b.selectedFoeId = b.foes.find(f => f.hp > 0).id;
+    g.battleAct('atk'); assert.equal(b.pendingWave, wave + 1); assert.equal(g.coin, beforeCoin);
+    assert.equal(g.advanceFrontierBreachWave(), true);
+  }
+  assert.deepEqual(b.foes.map(f => f.hp), [scaleFoeHp('th', 90, 'boss')]);   // ชุด 28B: บอสอึดขึ้น · the border boss comes after the three waves
   b.youHp = b.youMax - 5;
-  b.foes.forEach(f => { f.hp = 1; });
+  b.foes.forEach(f => { f.hp = 1; f.atk = [0, 0]; });
+  assert.equal(!!g.abilities.teamJudgment, false);
   g.battleAct('atk');
-  assert.equal(b.pendingWave, null);
-  g.battleAct('atk');
-  assert.equal(b.over, 'win');
+  assert.equal(b.over, null); assert.equal(b.breachFinale, 'ready');   // the new move unlocks mid-fight ...
+  assert.equal(g.abilities.teamJudgment, true);
+  g.battleAct('atk');                                                 // ... and is the move that ends it
+  assert.equal(b.over, 'win'); assert.equal(b.breachFinale, 'done');
   assert.equal(g.abilities.teamJudgment, true);
   assert.equal(!!g.abilities.bigFire, false);
   assert.equal(!!g.abilities.flameCharge, false);
@@ -105,8 +117,9 @@ test('cleared deva save at case eight schedules the breach on load', () => {
 
 test('frontier crew and hired guard use the existing combat powers', () => {
   const g = ready();
-  assert.equal(g.hireGuard(), true);
+  assert.equal(g.hireGuard(), false);            // Z1-EVENTS: he cannot be hired; he steps out of his gate for this fight
   const b = g.startFrontierBreach();
+  assert.ok(g.guard?.breachGuest);
   assert.equal(g.battleAct('crew:taan'), true);
   assert.equal(b.dmg.foe, CREW_POWER.taan.dmg);
   assert.equal(g.battleAct('guard'), true);

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,7 +13,7 @@ function west(pair, guard=true) {
  const g=createGame();g.bossCleared.asia=true;harbourTravel(g, 'west');g.coin=10000;g.level=5;
  g.zoneEvents.west.westHypnotized='cleared';g.zoneEvents.west.westVampireBreach='pending';
  for(const k of pair) if(!g.crewOf(k)) g.hire(k);
- g.frontierOf().team=[...pair];if(guard)g.hireGuard();
+ g.frontierOf().team=[...pair];if(guard)(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
  g.startZoneEvent('westVampireBreach');g.battle.youHp=100000;g.battle.youMax=100000;
  return g;
 }

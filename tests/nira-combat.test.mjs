@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
@@ -5,7 +6,7 @@ import {isFrontierDuoBattle,niraCombatFrame,niraCombatSheet,niraHealingCutscene,
 
 function setup() {
   const game=createGame();game.save=()=>true;game.onChange=()=>{};game.coin=10000;
-  game.hire('taan');game.hire('boon');game.hireGuard();game.party.members=['taan','boon'];
+  game.hire('taan');game.hire('boon');(game.zoneEvents.th={...game.zoneEvents.th,frontierBreach:'cleared'},game.hireGuard());game.party.members=['taan','boon'];
   game.startBattle({id:900,who:'test',deserved:4,resist:true});
   game.battle.foes.forEach(foe=>{foe.hp=foe.maxHp=10000;foe.atk=[1,1];});
   game.battle.dungeonToken='th:asia:test';game.battle.expeditionParty=true;

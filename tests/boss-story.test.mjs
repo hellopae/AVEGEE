@@ -7,8 +7,8 @@ import { STORY } from '../src/story.js';
 globalThis.Image = class {};
 function boss(zone) {
   const g = createGame();
-  g.zone = zone; g.zoneCases[zone] = 10;
-  g.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].filter(e => e.atCases < 10).map(e => [e.k,'cleared']));
+  g.zone = zone; g.zoneCases[zone] = zone === 'th' ? 15 : 10;   // Z1-EVENTS: Zone 1's ruler is the case-15 beat
+  g.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].filter(e => e.atCases < (zone === 'th' ? 15 : 10)).map(e => [e.k,'cleared']));
   const b = zone === 'th' ? (g.refreshZoneEvents(),g.startZoneEvent('thBorderBoss')) : g.startZoneBoss();
   assert.ok(b); b.youHp = b.youMax;
   return g;

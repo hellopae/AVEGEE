@@ -95,6 +95,8 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (key === 'worker-rice') return 'img/food-art/worker-rice.webp';
   if (key === 'crew-dam-cook' || key === 'crew-plerng-cook') return `img/food-art/cook-${key.split('-')[1]}.webp`;
   if (key === 'soul-deva') return 'img/soul-deva.webp'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
+  // Z1-EVENTS (case 12): Sita / Hanuman art lives in its own folder under its own names - a new drawing overwrites the file, no code change
+  if (/^(soul-sita-th|boss-hanuman-th)(-profile)?$/.test(key)) return `img/z1-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   if (z === 'west' && (key === 'crew-boon' || key === 'crew-boon-profile')) return `img/West/crew-boon-west${key.endsWith('-profile') ? '-profile' : ''}-f.webp`;
   if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.webp';

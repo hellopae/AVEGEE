@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -10,7 +11,7 @@ globalThis.Image??=class {};
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const dashSource=ui.slice(ui.indexOf('  const runDash = async'),ui.indexOf('  const finishWaveAfterDash ='));
 function game(){
- const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.hireGuard();g.party.members=[];
+ const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());g.party.members=[];
  g.startBattle({id:90210,who:'คู่ซ้อม',deserved:4,resist:true});
  const b=g.battle;for(const f of b.foes)f.hp=f.maxHp=10000;
  g.beginBattleTurns();b.turnQueue.remaining=[{id:g.guard.id,side:'ally'},{id:'you',side:'ally'},...b.foes.map(f=>({id:f.id,side:'foe'}))];

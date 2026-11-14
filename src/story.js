@@ -3,6 +3,7 @@ import {bossGuideStory} from './boss-guides.js';
 import { t } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
+import { Z1_STORIES, TEAM_MOVE_UNLOCK } from './z1-events.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.webp`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
@@ -17,7 +18,7 @@ const weaponStory = id => ({ get title() { return t('weapon.cutscene.title'); },
 }] });
 export const WEAPON_STORY = Object.fromEntries(Object.keys(WEAPONS).map(id => [`weapon-${id}`, weaponStory(id)]));
 export const STORY = {
-  'c1-guard-arrival': { title:'ยักษ์ทวารบาลเข้าร่วมทีม', pages:[{ image:'img/crew-guard-cutscene.webp', title:'ทีม 4 คน', line:'ยักษ์ทวารบาลเข้าช่วยทีมแล้ว ปลดล็อกบัญชาการยมทูตประสานพิพากษา' }] },
+  'c1-guard-arrival': { title:'ยักษ์ทวารบาลเข้าร่วมทีม', pages:[{ image:'img/crew-guard-cutscene.webp', title:'ทีม 4 คน', line:'ยักษ์ทวารบาลเข้าช่วยทีมแล้ว ปลดล็อกบัญชาการประสานยมทูตพิพากษา' }] },
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
   'deva-west':devaPanel('west', 'deva.west.arrival'),
@@ -69,9 +70,12 @@ export const STORY = {
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
+export const storyOf = key => STORY[key] || Z1_STORIES[key] || (key === TEAM_MOVE_UNLOCK ? teamMoveUnlockStory() : null) || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
+// Z1-EVENTS: the window shown in the middle of the border boss fight (owner: "หน้าต่างแจ้งเตือน ยามาได้ท่าไม้ตายใหม่"). Name and text are the ability's own.
+const teamMoveUnlockStory = () => ({ title:'ยามาได้ท่าไม้ตายใหม่', pages:[{ image:'img/z1-events/cut-guard-joins-th.webp', fallback:'⚔️',
+  title:ABILITY_REWARDS.teamJudgment.name, line:`${ABILITY_REWARDS.teamJudgment.text}\nใช้ท่านี้ปิดฉากบอสชายแดน` }] });
 export const ABILITY_REWARDS = {
-  teamJudgment:{ name:'บัญชาการยมทูตประสานพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
+  teamJudgment:{ name:'บัญชาการประสานยมทูตพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.webp', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะบอสชายแดนโซน 2' },
   flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.webp', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
   rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้พลังเวท', name:'พลังบ้าคลั่ง', image:'img/fx-rage.webp', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },

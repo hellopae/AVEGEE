@@ -7,7 +7,7 @@ const image=(src,alt='')=>`<img src="${esc(src)}" alt="${esc(alt)}">`;
 
 /** The final docket uses the ordinary trial arena and command styles, not an ordinary soul queue. */
 export function finalCourtModel(g) {
-  const c=bossJusticeCase(g);if(!c?.final)return null;
+  const c=bossJusticeCase(g);if(!c?.final&&!c?.arena)return null;
   const stations=bossJusticeStations(g),crew=bossJusticeCrew(g),answer=bossJusticeAnswer(g),p=c.pick;
   const ready=c.phase==='trial'&&c.asked&&c.mirror&&p.station===answer.station&&p.crew===answer.crew&&p.intensity===5;
   return {c,stations,crew,answer,ready};
@@ -25,17 +25,17 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
     {id:'keeper',label:'ใครคุม',picked:keeper?.name,choices:crew.map(v=>choice({kind:'crew',key:v.k,label:v.name,src:assets.crew(v.k),revealed:shown&&v.k===answer.crew,selected:p.crew===v.k})).join('')},
     {id:'force',label:'ความแรง',picked:INTENSITY[p.intensity],choices:[1,2,3,4,5].map(n=>choice({kind:'intensity',key:n,label:INTENSITY[n],src:`img/icon-force-${n}.webp`,revealed:shown&&n===5,selected:p.intensity===n})).join('')},
   ];
-  const guidance=!shown?'เลือก พลัง → กระจกวิเศษ เพื่อเปิดเผยคำตัดสินคดีสุดท้าย':ready?'เลือกครบตามกระจกแล้ว · ออกหมายได้':'เลือก ที่ไหน ใครคุม และความแรง ตามตัวเลือกที่มีเครื่องหมาย ✓';
+  const guidance=!shown?`เลือก พลัง → กระจกวิเศษ เพื่อเปิดเผยคำตัดสิน${c.final?'คดีสุดท้าย':'คดีนี้'}`:ready?'เลือกครบตามกระจกแล้ว · ออกหมายได้':'เลือก ที่ไหน ใครคุม และความแรง ตามตัวเลือกที่มีเครื่องหมาย ✓';
   const hp=Math.round(g.hp),max=g.hpMax,mp=Math.round(g.mp),mpMax=g.mpMax;
   return `<div class="hud trial-hud trial-comment8 final-boss-court" data-justice-phase="${esc(c.phase)}" style="background-image:url('${esc(assets.background)}')">
     <div class="cam-world" style="background-image:url('${esc(assets.background)}')"><div class="hud-stage cam-stage-box">
       <div class="fig you" data-cam="you">${image(assets.hero,'ยามา')}<span class="nm">ยามา</span></div>
-      <div class="fig foe bound-boss" data-cam="suspect">${image(FINAL_BOUND_SPRITE,`${c.name} แพ้แล้วและถูกจับมัด`)}<span class="nm">${esc(c.name)} · ถูกพันธนาการ</span></div>
+      <div class="fig foe bound-boss" data-cam="suspect">${image(c.final?FINAL_BOUND_SPRITE:assets.foe,`${c.name} แพ้แล้วและถูกจับมัด`)}<span class="nm">${esc(c.name)} · ถูกพันธนาการ</span></div>
     </div></div><div class="hud-scrim"></div>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span><span class="corner-tick bl"></span><span class="corner-tick br"></span>
     <div class="top-left-icons"><button class="trial-pause" data-justice-pause aria-label="หยุด">${image('img/ui/icon-pause.webp')}</button><button class="icon-settings-mini" data-arena-settings aria-label="ตั้งค่า">${image('img/ui/icon-setting2.webp')}</button></div>
     <button class="trial-close" data-close aria-label="ปิด · บันทึกคดีไว้">${image('img/ui/icon-close.webp')}</button>
-    <div class="hud-body"><div class="hud-stage"><span class="trial-case-no">สำนวน · บอสโซน 4</span>
+    <div class="hud-body"><div class="hud-stage"><span class="trial-case-no">สำนวน · ${c.final?'บอสโซน 4':esc(c.name)}</span>
       <section class="comment8-menu" aria-label="คำสั่งออกหมาย"><div class="comment8-commands">
         ${groups.map((v,i)=>`<button type="button" class="court-command${v.picked?' has-selection':''}" data-court-panel="${v.id}" aria-expanded="${panel===v.id}" style="--command-index:${i}" ${!shown&&v.id!=='power'?'disabled':''}><span>${v.label}</span>${v.picked?`<span class="court-picked"><b>${esc(v.picked)}</b></span>`:''}</button>`).join('')}
         <button type="button" id="justice-sentence" class="court-command court-issue${ready?' ready':''}" style="--command-index:4" ${ready?'':'disabled'}>ออกหมาย</button></div>
@@ -44,7 +44,7 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
       </section></div>
       <div class="hud-right"><div class="trial-top-actions"><button type="button" data-justice-ask>สอบสวน<br>ข้อกล่าวหา</button><button type="button" data-justice-guide><img class="tab-ico" src="img/ui/icon-book.webp" alt="">คำแนะนำ</button></div>
         <div class="hud-card hud-rec"><h4>สำนวนที่นิราอ่านให้ฟัง</h4><div class="deed allegation">${esc(c.name)} ใช้อำนาจข่มเหงวิญญาณ ปิดกั้นเส้นทางชายแดน และก่อความเดือดร้อน</div><p>บอสพ่ายแพ้แล้ว ถูกพันธนาการและนำมาต่อหน้าศาล</p></div>
-        <div class="hud-card hud-opt"><h4>${shown?'กระจกวิเศษเปิดเผยคำตัดสิน':'คดีสุดท้าย · ต้องใช้กระจกวิเศษ'}</h4>${shown?`<p data-justice-answer>✓ สถานที่: <b>${esc(answerStation?.def.name)}</b><br>✓ ผู้คุม: <b>${esc(answerKeeper?.name)}</b><br>✓ ความแรงสูงสุด: <b>${INTENSITY[5]}</b></p><p>เปิดเมนูแต่ละหัวข้อ แล้วเลือกตัวเลือกที่มี ✓</p>`:'<p>นิรา: ขอให้ท่านเลือกพลังกระจกวิเศษ เพื่อเปิดเผยสถานที่ลงทัณฑ์ ผู้คุม และความแรงสูงสุดก่อนออกหมายค่ะ</p><button type="button" data-justice-open-power>เปิดเมนูพลัง</button>'}</div>
+        <div class="hud-card hud-opt"><h4>${shown?'กระจกวิเศษเปิดเผยคำตัดสิน':(c.final?'คดีสุดท้าย':'คดีนี้')+' · ต้องใช้กระจกวิเศษ'}</h4>${shown?`<p data-justice-answer>✓ สถานที่: <b>${esc(answerStation?.def.name)}</b><br>✓ ผู้คุม: <b>${esc(answerKeeper?.name)}</b><br>✓ ความแรงสูงสุด: <b>${INTENSITY[5]}</b></p><p>เปิดเมนูแต่ละหัวข้อ แล้วเลือกตัวเลือกที่มี ✓</p>`:'<p>นิรา: ขอให้ท่านเลือกพลังกระจกวิเศษ เพื่อเปิดเผยสถานที่ลงทัณฑ์ ผู้คุม และความแรงสูงสุดก่อนออกหมายค่ะ</p><button type="button" data-justice-open-power>เปิดเมนูพลัง</button>'}</div>
         <div class="hud-card"><h4>บันทึกการสอบสวน</h4><div class="hud-log">${shown?'กระจกวิเศษเปิดเผยความจริงครบแล้ว · รอคำตัดสินจากยามา':'นิราอ่านข้อกล่าวหาต่อหน้าศาลแล้ว · รอใช้พลังกระจกวิเศษ'}</div><p>${esc(guidance)}</p></div>
       </div></div>
     <div class="hud-bottom"><div class="port you">${image(assets.portrait,'ยามา')}<span class="who2"><b>ยามา</b><small>ตำแหน่ง · ยมบาทน้อย</small><small>บารมี ${hp}/${max}</small><small>พลังเวท ${mp}/${mpMax}</small><span class="trial-mpbar"><i style="width:${Math.max(0,Math.min(100,100*mp/mpMax))}%"></i></span><span class="trial-hpbar"><i style="width:${Math.max(0,Math.min(100,100*hp/max))}%"></i></span></span></div></div>
@@ -53,7 +53,7 @@ export function finalCourtMarkup(g,{panel=null,prompt=false,assets}) {
 }
 
 export function mountFinalBossCourt(dialog,g,hooks) {
-  const docket=bossJusticeCase(g);if(!docket?.final||!['dais','trial'].includes(docket.phase))return;
+  const docket=bossJusticeCase(g);if(!docket?.final&&!docket?.arena||!['dais','trial'].includes(docket.phase))return;
   // Reading the dossier is the first step of the ordinary arena, and is persisted.
   if(docket.phase==='dais'){interrogateBoss(g);g.save();}
   let panel=null,prompt=!docket.mirror;

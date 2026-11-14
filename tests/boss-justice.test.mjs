@@ -47,8 +47,15 @@ test('all four frontier bosses receive one persistent docket and rematches do no
   const g=game();g.zone=zone;syncSceneZone(zone);
   const b={kind:zone==='th'?'frontierBreach':'zoneEvent',zone,eventKey,over:'win',foes:[{who:'ลูกน้อง',sp:'spirit1'},{who:'หัวหน้าชายแดน',sp:`boss-frontier-${zone}`,boss:true}]};
   assert.equal(queueBossJustice(g,b),true);assert.equal(bossJusticeCase(g).name,'หัวหน้าชายแดน');
+  if(zone==='th'){   // Z1-EVENTS: cutscene to the dais -> trial arena with the mirror-locked answer -> cutscenes (no escort walk)
+   assert.equal(bossJusticeCase(g).phase,'capture');while(g.storyQueue.length)g.completeStory();
+   interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),false);mirrorBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);
+   assert.equal(bossJusticeCase(g).phase,'aftermath');while(g.storyQueue.length)g.completeStory();
+  } else {
   interrogateBoss(g);sentenceBoss(g,{...bossJusticeAnswer(g),intensity:2});advance(g,'return');
   for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
+  }
+  assert.equal(g.bossJustice.active,null);
   assert.equal(queueBossJustice(g,b),false);
   assert.equal(queueBossJustice(g,{...b,justiceDocket:null,challenge:true,rematch:true}),false);
   assert.equal(Object.keys(g.bossJustice.ledger).length,1);
@@ -76,7 +83,8 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const {releasedFrontierBoss}=await import('../src/frontier.js');
  const source=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
  const start=source.indexOf('function releaseDlgPause() {'),end=source.indexOf('\n}',start)+2;
- const g=game();queueBossJustice(g,{kind:'frontierBreach',zone:'th',eventKey:'frontierBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-th'}]});
+ // Z1-EVENTS: Zone 1's border boss no longer walks an escort (cutscenes) - the map escort is exercised with Zone 2's
+ const g=game();g.zone='asia';syncSceneZone('asia');queueBossJustice(g,{kind:'zoneEvent',zone:'asia',eventKey:'asiaRageBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-asia'}]});
  interrogateBoss(g);assert.equal(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}),true);
  const c=bossJusticeCase(g),first=bossJusticeActors(g)[0];g.paused=true;
  const dlg={open:true},pauseDlg={open:false};let playUpdates=0;
@@ -88,7 +96,7 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const phases=[];g.onChange=()=>phases.push(bossJusticeCase(g)?.phase||'released');
  for(let i=0;i<2000&&g.bossJustice.active;i++)g.stepWorld(100);
  assert.equal(g.bossJustice.active,null);assert.deepEqual(phases,['punishment','return','released']);
- const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-th');assert.equal(post.name,'หัวหน้าชายแดน');
+ const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-asia');assert.equal(post.name,'หัวหน้าชายแดน');
  const h=createGame();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
  assert.equal(releasedFrontierBoss(h).docket,post.docket);
 });
@@ -159,12 +167,19 @@ for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],
   assert.equal(bossJusticeCase(copy)?.phase,phase);assert.deepEqual(bossJusticeCase(copy),before);assert.equal(copy.coin,money);
   assert.equal(copy.stations.find(st=>st.def.k==='krata').bossCourtTemporary,true);g=copy;
  };
+ if(zone==='th'){   // Z1-EVENTS: capture (cutscene) -> dais -> trial (mirror-locked answer) -> aftermath (cutscenes) -> released
+  reload('capture');while(g.storyQueue.length)g.completeStory();reload('dais');interrogateBoss(g);reload('trial');mirrorBoss(g);reload('trial');
+  const pick=bossJusticeAnswer(g);assert.equal(sentenceBoss(g,{...pick,intensity:2}),false,'the answer is locked');assert.equal(sentenceBoss(g,pick),true);
+  reload('aftermath');assert.equal(sentenceBoss(g,pick),false,'saved sentence cannot be issued twice');
+  while(g.storyQueue.length)g.completeStory();
+ } else {
  reload('dais');interrogateBoss(g);reload('trial');mirrorBoss(g);reload('trial');
  const pick={...bossJusticeAnswer(g),intensity:2};assert.equal(sentenceBoss(g,pick),true);
  advanceBossJustice(g,100);reload('escort');assert.equal(sentenceBoss(g,pick),false,'saved sentence cannot be issued twice');
  advance(g,'punishment');advanceBossJustice(g,100);reload('punishment');
  advance(g,'return');advanceBossJustice(g,100);reload('return');
  for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
+ }
  assert.equal(g.bossJustice.active,null);assert.equal(g.stations.some(st=>st.def.k==='krata'),false);assert.equal(g.coin,money);
  const copy=game();assert.equal(copy.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
  assert.equal(copy.bossJustice.active,null);assert.equal(copy.stations.some(st=>st.def.k==='krata'),false);

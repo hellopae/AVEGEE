@@ -3,7 +3,22 @@ import {storyEncounterRole} from './story-progression.js';
 import { STATIONS, SPOTS, FRONTIER, CREW, ZONE_EVENTS, isFrontierBreachEvent } from './data.js';
 import { findPath, nearestWalk } from './walk.js?v=k1d';
 import { pointAtDistance, pathLength } from './escort.js';
-export const JUSTICE_PHASES = ['capture','dais','trial','escort','punishment','sentenceScene','return','released'];
+export const JUSTICE_PHASES = ['capture','dais','trial','escort','punishment','sentenceScene','return','aftermath','released'];
+// Z1-EVENTS (owner 13 Nov 2026): Zone 1's border boss is tried in the real trial arena with the answer locked by the mirror, and the
+// walk to the dais / the punishment / the release are cutscenes (no small form, no escort walk on the map - owner e5 e6 e7).
+//   capture --story ARENA_STORY.toDais--> dais -> trial --sentence--> aftermath --stories punished, released--> released
+export const ARENA_STORY = Object.freeze({ toDais:'frontier-th-boss-to-dais', punished:'frontier-th-boss-punished', released:'frontier-th-boss-released' });
+const arenaDocket = (zone, role, final) => !final && zone === 'th' && role === 'frontier';
+/** After a reload: a docket waiting on a cutscene that is no longer queued must not hang. */
+export function reconcileArenaDocket(g) {
+  const c = bossJusticeCase(g); if (!c?.arena) return;
+  const queued = key => g.storyQueue?.some(p => p.key === key);
+  if (c.phase === 'capture' && !queued(ARENA_STORY.toDais)) { if (g.storySeen?.[ARENA_STORY.toDais]) c.phase = 'dais'; else g.queueStory(ARENA_STORY.toDais); }
+  if (c.phase === 'aftermath' && !queued(ARENA_STORY.released)) {
+    if (g.storySeen?.[ARENA_STORY.released]) releaseBoss(g);
+    else { g.queueStory(ARENA_STORY.punished); g.queueStory(ARENA_STORY.released); }
+  }
+}
 export function initializeBossJustice(g, saved = g.bossJustice) {
   const state = saved?.version === 1 ? structuredClone(saved) : {version:1, active:null, ledger:{}};
   state.ledger ||= {};
@@ -48,13 +63,15 @@ export function queueBossJustice(g,b,{final=false}={}) {
     }
   }
   const throne=SPOTS.throne;
-  const c={id, encounterRole:final?'final':storyEncounterRole(b), frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, phase:final?'capture':'dais', elapsed:0,
+  const arena=arenaDocket(zone,role,final),toDaisSeen=!!g.storySeen?.[ARENA_STORY.toDais];
+  const c={id, encounterRole:final?'final':storyEncounterRole(b), frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, ...(arena?{arena:true}:{}), phase:final||arena&&!toDaisSeen?'capture':'dais', elapsed:0,
     asked:false, mirror:false, pick:{station:null,crew:null,intensity:null}, courtResources,
     dais:[throne.x,throne.y+55], suspendedRoute:g.zoneTravel?.active?structuredClone(g.zoneTravel.active):null};
   state.ledger[id]=c;state.active=id;
   if(g.zoneTravel)g.zoneTravel.active=null;
   Object.assign(g.player,{x:throne.x-45,y:throne.y+20,path:null,tx:null,ty:null});
   g.huntMob=false;g.bossPending=false;
+  if(arena&&!toDaisSeen)g.queueStory?.(ARENA_STORY.toDais);
   return true;
 }
 export function bossJusticeCrew(g) { const owned=(g.crew||[]).filter(c=>!c.reader&&!c.self&&c.k!=='nira');return owned.length?owned:[{...CREW.find(c=>c.k==='taan'),name:'ผู้คุมศาล · ทัณฑ์ (รับหมายชั่วคราว)'}]; }
@@ -81,7 +98,14 @@ export function sentenceBoss(g,pick) {
   const st=bossJusticeStations(g).find(s=>s.def.k===pick.station),crew=bossJusticeCrew(g).find(a=>a.k===pick.crew);
   if(!st||!crew||!Number.isInteger(pick.intensity)||pick.intensity<1||pick.intensity>5)return false;
   const a=bossJusticeAnswer(g);
-  if(c.final&&(!c.mirror||pick.station!==a.station||pick.crew!==a.crew||pick.intensity!==5))return false;
+  if((c.final||c.arena)&&(!c.mirror||pick.station!==a.station||pick.crew!==a.crew||pick.intensity!==5))return false;
+  if(c.arena){
+    c.pick={...pick};c.phase='aftermath';c.elapsed=0;
+    g.log(`⚖️ ออกหมาย ${c.name} → ${st.def.name} · ผู้คุม ${crew.name} · ความแรง ${pick.intensity}`,'event');
+    if(g.storySeen?.[ARENA_STORY.released])releaseBoss(g);
+    else{g.queueStory(ARENA_STORY.punished);g.queueStory(ARENA_STORY.released);}
+    return true;
+  }
   c.pick={...pick};c.phase='escort';c.elapsed=0;
   c.destination=[st.def.x,st.def.y];
   const end=nearestWalk(...c.destination)||c.destination;
@@ -104,7 +128,7 @@ export function advanceBossJustice(g,dt) {
   g.save();g.onChange();return true;
 }
 export function releaseBoss(g) {
-  const c=bossJusticeCase(g);if(!c||!['return','sentenceScene'].includes(c.phase))return false;
+  const c=bossJusticeCase(g);if(!c||!['return','sentenceScene','aftermath'].includes(c.phase))return false;
   c.phase='released';c.elapsed=0;g.bossJustice.active=null;
   g.stations=g.stations.filter(st=>!st.bossCourtTemporary);
   for(const st of g.stations)if(st.bossCourtConstruction){Object.assign(st,st.bossCourtConstruction);delete st.bossCourtConstruction;}
@@ -122,9 +146,11 @@ export function completeBossJusticeStory(g,key) {
   // A delayed acknowledgement may be delivered again after a saved trial/escort.
   // Capture is a one-way transition; later sentencing phases must never rewind.
   if(c?.final&&c.phase==='capture'&&key==='ending-capture')c.phase='dais';
+  if(c?.arena&&c.phase==='capture'&&key===ARENA_STORY.toDais)c.phase='dais';
+  if(c?.arena&&c.phase==='aftermath'&&key===ARENA_STORY.released)releaseBoss(g);
 }
 export function bossJusticeActors(g) {
-  const c=bossJusticeCase(g);if(!c||c.zone!==g.zone||['capture','released'].includes(c.phase))return [];
+  const c=bossJusticeCase(g);if(!c||c.zone!==g.zone||['capture','aftermath','released'].includes(c.phase))return [];
   let p=c.dais,moving=false;
   if(c.phase==='escort'){p=pointAtDistance(c.path,pathLength(c.path)*Math.min(1,c.elapsed/c.escortDuration));moving=true;}
   if(['punishment','sentenceScene'].includes(c.phase))p=c.path.at(-1);

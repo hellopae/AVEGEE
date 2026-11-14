@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -173,14 +174,14 @@ test('after the farewell zone 1 captain stays in its cave; other frontier stands
 });
 
 test('route again after the farewell: Yama + Nira only (no hired keepers, guard or guide); first escort keeps the guide',()=>{
-  const setup=(mode)=>{const g=game('th',mode);g.hire('taan');g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.party.members=['taan','boon'];
+  const setup=(mode)=>{const g=game('th',mode);g.hire('taan');g.hire('boon');(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());g.frontierOf().team=['taan','boon'];g.party.members=['taan','boon'];
     g.mobs.push({id:900,kind:2,dungeonToken:'th:travel:0'});assert.ok(g.startMobBattle(g.mobs.length-1));return g;};
   const again=setup('farewell');
   assert.deepEqual(again.battleActors().map(c=>c.k),['yama','nira']);assert.equal(again.guardActive(),false);
   const first=setup('following');
   assert.deepEqual(first.battleActors().map(c=>c.k),['yama','nira','guide']);assert.equal(first.guardActive(),false);
   // The frontier station is untouched: an ordinary border patrol still uses the selected team and the guard.
-  const patrol=game('th','farewell');patrol.hire('taan');patrol.hire('boon');patrol.hireGuard();patrol.frontierOf().team=['taan','boon'];
+  const patrol=game('th','farewell');patrol.hire('taan');patrol.hire('boon');(patrol.zoneEvents.th={...patrol.zoneEvents.th,frontierBreach:'cleared'},patrol.hireGuard());patrol.frontierOf().team=['taan','boon'];
   assert.ok(patrol.startFrontierBattle());assert.deepEqual(patrol.battleCrew().map(c=>c.k),['taan','boon']);assert.equal(patrol.guardActive(),true);
 });
 

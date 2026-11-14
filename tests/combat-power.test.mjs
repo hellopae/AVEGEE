@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — ค่าพลัง/คูลดาวน์ยมทูตต้องตรงตารางที่คุณเป้กำหนดเป๊ะ
 // (ไม่สุ่มอีกต่อไป) และสะกดจิตต้องทำให้ศัตรูฟาดใส่ตัวเอง ไม่ใช่แค่ข้ามตาเฉย ๆ แบบน้ำแข็ง
 import test from 'node:test';
@@ -39,7 +40,7 @@ test('ตารางค่าพลัง B — ทัณฑ์/เพลิง
   assert.equal(g.battle.dmg.foe, 35);
 
   g = battleWith([]);
-  assert.equal(g.hireGuard(), true);
+  assert.equal((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard()), true);
   assert.equal(g.battleAct('guard'), true);
   assert.equal(g.battle.dmg.foe, 60);
 });

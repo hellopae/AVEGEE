@@ -276,6 +276,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       else if (ev.k === 'frontierBreach') b = (g.zoneEvents.th.devaTest = 'cleared', g.startFrontierBreach());
       else b = g.startZoneEvent(ev.k,ev.signal?'call':null);
       assert.ok(b, `${zone}/${ev.k} starts`);
+      if (ev.k === 'sitaHanuman') { seen.push(`${zone}/${ev.k}`); winBattle(g); assert.equal(b.over, 'win'); continue; }   // Z1-EVENTS: Hanuman tests Yama - Rae/owner set no reward, so no EXP rule is pinned here
       const exp0 = g.exp, lvl0 = g.level;
       const itemsBefore = total(g);
       winBattle(g);
@@ -286,7 +287,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 17, seen.join());
+  assert.ok(seen.length === 18, seen.join());
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -16,7 +17,7 @@ const rng0=()=>0;
 const leaves=txt=>/\{[a-zA-Z]+\}/.test(txt);
 
 test('who can be talked to: crew (not Nira), guard, workers, queue ranks 2+ and walking souls — not the head of the queue',()=>{
-  const g=game();g.hire('plerng');g.hire('kan');g.hireGuard();g.hireWorker();
+  const g=game();g.hire('plerng');g.hire('kan');(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());g.hireWorker();
   g.crew.forEach((c,i)=>{c.x=300+i*40;c.y=500;});g.guard.x=800;g.guard.y=900;
   g.queue=[soul(1),soul(2),soul(3)];
   g.afterlifeWalks=[{soul:soul(9),destination:'prison',zone:g.zone,path:[[700,700]],elapsed:0,duration:5000},{soul:soul(8),destination:'exit',zone:g.zone,path:[[10,10]]}];
@@ -93,7 +94,7 @@ test('Nira / merchant greetings come from Rae lines and need real state',()=>{
 });
 
 test('TALK = ATMOSPHERE ONLY (D8): talking never changes any resource, state or the verdict inputs',()=>{
-  const g=game();g.hire('plerng');g.hire('kan');g.hireGuard();g.hireWorker();
+  const g=game();g.hire('plerng');g.hire('kan');(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());g.hireWorker();
   g.crew.forEach((c,i)=>{c.x=300+i*40;c.y=500;});g.guard.x=800;g.guard.y=900;
   g.queue=[soul(1),soul(2,{waited:60}),soul(3,{back:{gave:3}})];
   g.afterlifeWalks=[{soul:soul(9),destination:'gate',zone:g.zone,path:[[700,700]],elapsed:0,duration:5000}];

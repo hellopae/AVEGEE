@@ -30,14 +30,15 @@ test('27C: บทสอนไม่อ้างแถบแดง และไ�
   assert.ok(!stuck.text.includes('⏭️') && !stuck.text.includes('🔒'));
 });
 
-test('27C: frontierBreach โซน 1 มี 2 ระลอก และข้อความไทย/อังกฤษไม่บอกว่า 3', () => {
+// Z1-EVENTS (owner 13 Nov 2026): 3 demon waves, then the border boss. The texts say 3.
+test('frontierBreach โซน 1 มี 3 ระลอก + บอสชายแดน และข้อความไทย/อังกฤษบอกว่า 3', () => {
   const ev = ZONE_EVENTS.th.find(e => e.k === 'frontierBreach');
-  assert.equal(ev.waves.length, 2);
+  assert.equal(ev.waves.length, 4); assert.ok(ev.waves[3].every(f => f.boss)); assert.ok(!ev.waves.slice(0, 3).flat().some(f => f.boss));
   for (const lang of ['th', 'en']) {
     setLang(lang);
     for (const k of ['alert', 'win']) {
       const s = t(`event.frontierBreach.${k}`);
-      assert.ok(!/3 wave|three waves/i.test(s), s);
+      assert.ok(/3 ระลอก|three waves/i.test(s) && !/2 ระลอก|both waves/i.test(s), s);
     }
     for (const k of ['prisonBreak', 'frontierBreach', 'devaTest']) {
       assert.ok(!/−8|−9/.test(t(`event.${k}.lose`)), t(`event.${k}.lose`));

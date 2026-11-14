@@ -22,10 +22,10 @@ function winBattle(g) {
   g.endBattle();
 }
 
-test('Zone 1 case 10 boss with two demons awards flame charge and opens Zone 2', () => {
+test('Zone 1 case 15 boss with two demons awards flame charge and opens Zone 2', () => {
   const g = createGame();
-  g.zoneCases.th = 10;
-  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared' };
+  g.zoneCases.th = 15;   // Z1-EVENTS: the elder brother is the case-15 beat, after Sita / Hanuman
+  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', sitaHanuman:'cleared' };
   g.refreshZoneEvents();
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
   assert.equal(g.startZoneEvent('thBorderBoss').foes.length, 3);

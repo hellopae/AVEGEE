@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';import {FRONTIER} from '../src/data.js';
 import {initializeBossGuides,completeBossGuideStory} from '../src/boss-guides.js';
@@ -7,7 +8,7 @@ import {workersPanelHtml} from '../src/worker-ui.js';
 const game=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=10000;return g;};
 const win=g=>{const b=g.battle;b.foes.forEach(f=>{f.hp=1;f.atk=[0,0];});for(let i=0;i<4&&!b.over;i++){const f=b.foes.find(x=>x.hp>0);g.selectFoe(f.id);assert.equal(g.battleAct('atk'),true);}assert.equal(b.over,'win');g.endBattle();return b;};   // BATTLE-FX: a border fight has 1-3 demons
 test('ordinary frontier reward keeps its frontier backdrop and selected office team',()=>{
- const g=game();g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.startFrontierBattle();
+ const g=game();g.hire('boon');(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());g.frontierOf().team=['taan','boon'];g.startFrontierBattle();
  assert.deepEqual(g.battleCrew().map(c=>c.k),['taan','boon']);assert.equal(g.guardActive(),true);const b=win(g);
  assert.ok(b.worldBackground);assert.equal(g.pendingReward.background,b.worldBackground);assert.match(g.pendingReward.background,/frontier/i);
 });

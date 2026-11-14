@@ -10,7 +10,7 @@ export const COMBAT_SKILLS = Object.freeze({
   shadowCleaver:{ chipParts:['คมเงา','ทลายตรวน'], actor:'dam', station:'lan', name:'คมเงาทลายตรวน', damage:1.45, morale:6 },
   abyssGatebreaker:{ chipParts:['ทวารบาล','ทลาย','โลกันต์'], actor:'guard', station:'lokan', name:'ทวารบาลทลายโลกันต์', damage:1.3, morale:8 },
   karmaFracture:{ chipParts:['กระจกกรรม','สะท้อนคม'], actor:'kan', station:'krajok', name:'กระจกกรรมสะท้อนคม', base:28, morale:6 },
-  teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการยมทูตประสานพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },
+  teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการประสานยมทูตพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },
   // QUEST-REWARDS (10 พ.ย. 2569) — ท่าไม้ตายจากฉากต่อสู้ท้ายภารกิจ (Rae: Output/Rae/2026-11-10-avegee-quest-battle-script.md)
   // ผูกกับ roster ID (rosterId) ไม่ผูกกับชนิดตัวละคร: ซาโตริ@บูรพาได้ท่านี้ ซาโตริ/ซิบิลที่โซนอื่นไม่ได้ · ปลดล็อกจากภารกิจ ไม่ผ่านการฝึก (quest = id ภารกิจ)
   // ใช้ภาพ/effect ของท่าเดิมของตัวละครเดียวกันไปก่อน (combat-skill-assets.js) จนกว่า Codex จะวาดชุดใหม่

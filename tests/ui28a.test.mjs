@@ -53,15 +53,16 @@ test('โซนบูรพาไม่มีคำโปรยประเท�
 test('ชนะศึกปีศาจฝ่าชายแดนแล้วไปแผนที่ชายแดน; แพ้/ศึกอื่นไม่ไป (28A ข้อ 5)', () => {
   // โซน 1: frontierBreach เดิม
   const g = createGame();
-  g.zoneCases.th = 8;
+  g.zoneCases.th = 9;
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' };
   g.setFrontierTeam('taan');
   const b = g.startFrontierBreach();
   assert.ok(b);
-  b.foes[0].hp = 1; g.battleAct('atk');
-  g.advanceFrontierBreachWave();
-  b.foes.forEach(f => { f.hp = 1; });
-  g.battleAct('atk'); g.battleAct('atk');
+  // Z1-EVENTS: 3 waves, then the border boss, closed by the team move (the press after he is held at 1 HP)
+  for (let i = 0; i < 30 && !b.over; i++) {
+    if (b.pendingWave) { g.advanceFrontierBreachWave(); continue; }
+    const f = b.foes.find(f => f.hp > 0); f.hp = 1; b.selectedFoeId = f.id; b.foes.forEach(x => { x.atk = [0, 0]; }); g.battleAct('atk');
+  }
   assert.equal(b.over, 'win');
   const done = g.endBattle();
   assert.equal(done.kind, 'frontierBreach');

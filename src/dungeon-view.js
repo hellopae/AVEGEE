@@ -167,6 +167,8 @@ export function dungeonEnemyPositions(g,time=0) {
     const anchor=dungeonPoint(progress,s.route.id);
     const cave=routeBossCave(s.route.id),atCave=!!cave&&index===cave.checkpoint;
     const boss=atCave&&!g.bossCleared?.[cave.zone];
+    // Z1-EVENTS (owner e8 / e9): Zone 1's ruler is met at the city pier, never at the cave mouth beside the border boss.
+    if(boss&&cave.eventKey==='thBorderBoss')return [];
     const locked=atCave&&(s.checkpoint<cave.checkpoint||boss&&g.zoneEvents?.[cave.zone]?.[cave.eventKey]!=='pending');
     // The boss at the cave mouth keeps his post; the guide and the captain stand there too.
     const position=boss?anchor:dungeonRoamPoint(anchor,index,time,s.route.id);

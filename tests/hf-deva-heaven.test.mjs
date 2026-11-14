@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): the ER nurse is the 5th case and the temple beggar the 6th; beggar fixtures start at 5 cases with the nurse already heard.
 // HOTFIX 22 ต.ค. 2569 — คดีขอทานในวัด (เทวดา) ต้องรอประตูสวรรค์ที่สร้างเสร็จ
 // บั๊กเดิม: ensureDevaCase บังคับเข้าคิวที่คดีที่ 5 โดยไม่เช็คประตู (ขั้น 3) แล้วบล็อกคดีอื่นทั้งหมด → ตัดสินถูกไม่ได้
 import test from 'node:test';
@@ -7,7 +8,7 @@ import { STATIONS } from '../src/data.js';
 
 globalThis.Image ??= class {};
 const gateSt = build => ({ def:STATIONS.find(d => d.k === 'sawan'), crewK:null, intensity:3, fire:0, build, slots:[] });
-const fresh = () => { const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zoneEvents.th = { prisonBreak:'cleared' }; return g; };
+const fresh = () => { const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zoneEvents.th = { prisonBreak:'cleared' }; g.storyCaseDone.nurse = true; return g; };   // Z1-EVENTS: nurse (5th case) already heard - these tests are about the beggar (6th)
 const reload = g => { const h = createGame(); h.save = () => true; h.onChange = () => {}; assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))), true); return h; };
 const beggars = g => g.queue.filter(s => s.case === 'devaMonk');
 /** ตัดสินคดีธรรมดาหนึ่งคดี (ไม่ใช่ขอทาน) — เหมือนผู้เล่นเดินคดีผ่านไป */
@@ -21,8 +22,8 @@ const judgeOrdinary = g => {
 test('bug repro: no gate at case four must NOT queue the beggar or block anything', () => {
   const g = fresh();
   assert.equal(g.has('sawan'), false);
-  for (let i = 0; i < 4; i++) judgeOrdinary(g);
-  assert.equal(g.zoneCases.th, 4);
+  for (let i = 0; i < 5; i++) judgeOrdinary(g);
+  assert.equal(g.zoneCases.th, 5);
   assert.equal(beggars(g).length, 0, 'beggar waits for the gate');
   assert.equal(g.devaCaseOwed(), true);
   // other cases stay free: not reserved, can be jailed / deferred / assigned
@@ -47,7 +48,7 @@ test('no gate: cases five..ten keep flowing, the beggar never appears, deva even
 
 test('gate still under scaffolding does not count; finished gate queues the beggar exactly once, others wait behind it', () => {
   const g = fresh();
-  for (let i = 0; i < 4; i++) judgeOrdinary(g);
+  for (let i = 0; i < 5; i++) judgeOrdinary(g);
   g.stations.push(gateSt(Date.now() + 60000));
   g.ensureDevaCase(); assert.equal(beggars(g).length, 0, 'scaffolding is not a built gate');
   g.stations.at(-1).build = 0;
@@ -58,7 +59,7 @@ test('gate still under scaffolding does not count; finished gate queues the begg
   // reserved: cannot defer / jail it, other souls cannot be assigned before it
   assert.equal(g.defer(), false); assert.equal(g.jail(g.queue[0].id), false);
   g.queue.push({ id:999999, case:'other' });
-  assert.deepEqual(g.assignBlock(999999, 'krata', 'taan'), { key:'devaCaseFirst' });
+  assert.equal(g.assignBlock(999999, 'krata', 'taan').key, 'devaCaseFirst');
 });
 
 test('beggar arriving late (gate built at case seven) is judged once; the deva test + story start only then', () => {
@@ -87,14 +88,14 @@ test('beggar arriving late (gate built at case seven) is judged once; the deva t
 test('prison break cleared after the beggar was judged still opens the deva test (no double lock)', () => {
   const g = fresh(); g.zoneEvents.th = {};
   g.stations.push(gateSt(0));
-  g.zoneCases.th = 4; g.ensureDevaCase();
+  g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5; g.ensureDevaCase();
   const monk = g.queue[0]; g.applyVerdict({ score:55, karma:0 }, monk);
   assert.equal(g.devaTestStatus(), 'pending');
 });
 
 test('old save: beggar forced into the queue at case four with no gate is pulled out, not left as an unjudgeable case', () => {
   const g = fresh();
-  g.zoneCases.th = 4; g.stations.push(gateSt(0));
+  g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5; g.stations.push(gateSt(0));
   g.ensureDevaCase(); assert.equal(beggars(g).length, 1);
   const snap = JSON.parse(JSON.stringify(g.snapshot()));
   snap.stations = snap.stations.filter(s => s.k !== 'sawan');          // the pre-fix save: beggar queued, no gate
@@ -111,7 +112,7 @@ test('old save: beggar forced into the queue at case four with no gate is pulled
 });
 
 test('old save: beggar queued while the gate already exists is kept as is', () => {
-  const g = fresh(); g.zoneCases.th = 4; g.stations.push(gateSt(0)); g.ensureDevaCase();
+  const g = fresh(); g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5; g.stations.push(gateSt(0)); g.ensureDevaCase();
   const id = g.queue[0].id;
   const h = reload(g);
   assert.equal(beggars(h).length, 1); assert.equal(h.queue.find(s => s.case === 'devaMonk').id, id);

@@ -17,23 +17,27 @@ test('outer trail opens after border defense; the cave boss still gates zone 2',
  assert.equal(resolveDungeonEncounter(g,boss.token,true),true);assert.equal(dungeonStatus(g).ready,true);
  assert.equal(canTravelZone(g,'asia'),true);
 });
-test('cave victory returns to court, then guide invitation and farewell unlock the next city',()=>{
+// Z1-EVENTS (owner 13 Nov 2026, e8 / e9): Zone 1's ruler is fought at the city pier (case 15), not at the cave mouth beside the border boss.
+test('pier victory returns to court, then guide invitation and farewell unlock the next city',()=>{
  const g=createGame();g.save=()=>{};g.onChange=()=>{};
- g.zoneEvents.th={prisonBreak:'cleared',devaTest:'cleared',frontierBreach:'cleared',thBorderBoss:'pending'};
- g.zoneCases.th=10;g.player.x=FRONTIER.x;g.player.y=FRONTIER.y;
+ g.zoneEvents.th={prisonBreak:'cleared',devaTest:'cleared',frontierBreach:'cleared',sitaHanuman:'cleared',thBorderBoss:'pending'};
+ g.zoneCases.th=15;g.player.x=FRONTIER.x;g.player.y=FRONTIER.y;
  assert.equal(g.beginBorderDungeon('asia'),true);
  for(let n=0;n<2;n++){const e=nextDungeonEncounter(g);resolveDungeonEncounter(g,e.token,true);}
  const [x,y]=DUNGEON_CHECKPOINTS[2];g.zoneTravel.active.position={x,y};
- const b=g.startDungeonEncounter();assert.equal(b.eventKey,'thBorderBoss');assert.equal(b.sceneBiome,'cave');assert.ok(b.dungeonToken);
+ assert.equal(g.startDungeonEncounter(),null,'no ruler fight at the cave');assert.equal(g.battle,null);assert.equal(g.zoneTravel.active.pending,null);
+ assert.equal(g.leaveBorderDungeon(),true);
+ const b=g.startZoneEvent('thBorderBoss');assert.equal(b.eventKey,'thBorderBoss');assert.equal(b.dungeonToken,undefined);
  assert.equal(g.moveZone('asia'),false);
  b.over='win';g.bossCleared.th=true;g.zoneEvents.th.thBorderBoss='cleared';g.endBattle();
  assert.equal(g.zoneTravel.active,null,'captured boss returns to judgement dais');
- const docket=bossJusticeCase(g);assert.equal(docket.suspendedRoute.checkpoint,3);
+ const docket=bossJusticeCase(g);assert.equal(docket.encounterRole,'ruler');
  interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);g.paused=false;
  for(let n=0;n<10000&&g.bossJustice.active;n++)advanceBossJustice(g,100);
  assert.equal(g.bossJustice.active,null);
  Object.assign(g.player,{x:FRONTIER.x,y:FRONTIER.y});assert.equal(g.beginBorderDungeon('asia'),true);
- assert.equal(g.zoneTravel.active.checkpoint,3,'cleared camps survive sentencing');
+ for(let n=0;n<3;n++){const e=nextDungeonEncounter(g);assert.equal(e.boss,false,'the cave camp is an ordinary one once he is beaten');resolveDungeonEncounter(g,e.token,true);}
+ assert.equal(g.zoneTravel.active.checkpoint,3);
  // Finish the queued post-victory praise before meeting the released boss.
  while(g.storyQueue.length)g.completeStory();
  assert.equal(g.storySeen['boss-guide-th-praise'],true);
@@ -69,14 +73,14 @@ test('free movement supports broad clearings, blocks ravines, and routes around 
 });
 test('several enemies roam; proximity starts an available encounter once and future victories persist',()=>{
  const g={zone:'th',bossCleared:{},zoneEvents:{th:{frontierBreach:'cleared',thBorderBoss:'pending'}}};initializeZoneTravel(g);beginDungeon(g,'asia');
- const foes=dungeonEnemyPositions(g,0);assert.equal(foes.length,9);assert.equal(foes[2].locked,true);
+ const foes=dungeonEnemyPositions(g,0);assert.equal(foes.length,8);assert.ok(!foes.some(f=>f.boss),'Z1-EVENTS: the ruler waits at the pier, not at the cave');
  assert.notDeepEqual(dungeonEnemyPositions(g,1000)[0].position,foes[0].position);
  assert.equal(dungeonAutoEncounter(g,DUNGEON_CORRIDOR[0]),null);
  const second=foes[1];assert.equal(dungeonAutoEncounter(g,second.position).checkpoint,1);
  const e=nextDungeonEncounter(g,1);assert.ok(e);assert.equal(dungeonAutoEncounter(g,second.position),null,'pending token prevents repeated dispatch');
  resolveDungeonEncounter(g,e.token,true);assert.equal(dungeonStatus(g).checkpoint,0);
  const saved=JSON.parse(JSON.stringify(g.zoneTravel));initializeZoneTravel(g,saved);
- assert.equal(dungeonEnemyPositions(g).length,8,'defeated mob stays gone after restoring');
+ assert.equal(dungeonEnemyPositions(g).length,7,'defeated mob stays gone after restoring');
  const first=nextDungeonEncounter(g,0);resolveDungeonEncounter(g,first.token,true);
  assert.equal(dungeonStatus(g).checkpoint,2);assert.equal(dungeonEnemyPositions(g)[0].locked,false);
 });

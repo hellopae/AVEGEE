@@ -4,7 +4,7 @@ export function partyCap(game) {
   const zones = ['th','asia','west','cyberhell'];
   const reached = Math.max(zones.indexOf(game.zone), ...Object.keys(game.zoneSave || {}).map(z => zones.indexOf(z)),
     ...Object.keys(game.bossCleared || {}).filter(z => game.bossCleared[z]).map(z => zones.indexOf(z) + 1));
-  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' ? 4 : 3);
+  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' || game.guard?.breachGuest ? 4 : 3);   // Z1-EVENTS: the gate keeper who steps out for the breach fight is the 4th member
 }
 export const selectablePartyMax = game => partyCap(game) - 1 - (game.guard ? 1 : 0);
 const interpolate = (n, a, b, c) => n <= 5 ? a + (b-a) * (n-3)/2 : b + (c-b) * (n-5)/2;

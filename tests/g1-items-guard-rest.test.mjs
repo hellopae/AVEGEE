@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -7,7 +8,7 @@ import { medicineResult } from '../src/progression.js';
 import { snapshotRoster } from '../src/roster.js';
 import { t, setLang } from '../src/i18n.js';
 import { readFileSync } from 'node:fs';
-const game = () => { const g=createGame(); g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.hireGuard();return g; };
+const game = () => { const g=createGame(); g.save=()=>true;g.onChange=()=>{};g.coin=10000;(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());return g; };
 const tea = g => g.stations.push({def:STATIONS.find(s=>s.k==='tea'),build:0,slots:[],fire:0});
 test('G1 all four item families restore only the specified resource, round and cap by maximum',()=>{
  for(const k of Object.keys(ITEMS).filter(k=>/^(food|health|tea|holyWater)(Z[234])?$/.test(k))){

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -110,7 +111,7 @@ test('B1 backup precedes migration, remains unchanged on repeat, and failed back
 
 test('B1 new hires and guards get IDs immediately; party counts the purchased guard in its unlocked cap', () => {
   const g = createGame(); g.coin = 10000; g.party.members = []; g.zoneEvents.th = {frontierBreach:'cleared'};
-  g.hire('kan'); g.hire('boon'); g.hireGuard();
+  g.hire('kan'); g.hire('boon'); (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());
   assert.equal(g.roster['th:kan'],g.crewOf('kan'));
   assert.equal(g.guard.morale,100);
   assert.equal(g.guard.id,'th:guard');

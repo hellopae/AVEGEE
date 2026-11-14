@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';import {FRONTIER} from '../src/data.js';
 import {DUNGEON_CHECKPOINTS,DUNGEON_EXIT} from '../src/dungeon-view.js';
@@ -14,7 +15,7 @@ const visit=game=>{
 test('physical border, checkpoint and city exit guards are enforced by game methods',()=>{
  const g=setup();g.bossCleared.th=true;assert.equal(g.moveZone('asia'),false);assert.equal(g.beginBorderDungeon('asia'),false);
  g.player.x=FRONTIER.x;g.player.y=FRONTIER.y;assert.equal(g.beginBorderDungeon('asia'),true);assert.equal(g.startDungeonEncounter(),null);
- g.zoneTravel.active.position={x:DUNGEON_CHECKPOINTS[0][0],y:DUNGEON_CHECKPOINTS[0][1]};g.hireGuard();assert.ok(g.startDungeonEncounter(),'city guard does not block a dungeon fight');
+ g.zoneTravel.active.position={x:DUNGEON_CHECKPOINTS[0][0],y:DUNGEON_CHECKPOINTS[0][1]};(g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard());assert.ok(g.startDungeonEncounter(),'city guard does not block a dungeon fight');
 });
 test('real dungeon victories unlock arrival then dock interaction, keeping local cities on boat return',()=>{
  const g=setup(),stations=g.stations.map(s=>s.def.k);assert.equal(visit(g),'asia');

@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -62,7 +63,7 @@ test('reload preserves cook progress, delivery cargo, selected recipient and sto
 });
 test('crew, guard and workers walk to eat, wait for ready food, and consume once; no kitchen rejects the order',()=>{
  for(const type of ['crew','guard','worker']){
- const g=game();const c=type==='worker'?g.hireWorker():type==='guard'?(g.hireGuard(),g.guard):g.crewOf('taan');c.hunger=0;
+ const g=game();const c=type==='worker'?g.hireWorker():type==='guard'?((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard()),g.guard):g.crewOf('taan');c.hunger=0;
  assert.equal(g.eatAtCanteen(c.id),false);kitchen(g);const stock=g.food;assert.equal(g.eatAtCanteen(c.id),true);assert.equal(g.eatAtCanteen(c.id),false);
  for(let i=0;i<1000&&Math.hypot(c.x-canteenPoint(g)[0],c.y-canteenPoint(g)[1])>=24;i++){if(type==='worker')advanceWorkers(g,120);else if(type==='guard')stepCanteen(g,120);else g.stepWorld(120);}
  assert.ok(Math.hypot(c.x-canteenPoint(g)[0],c.y-canteenPoint(g)[1])<24,type);assert.equal(c.hunger,0);assert.equal(g.food,stock);

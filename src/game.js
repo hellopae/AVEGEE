@@ -11,7 +11,7 @@ import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
-import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
+import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
 import {PLERNG_WARRANT_FOOD,spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
@@ -58,6 +58,7 @@ import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
+import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
@@ -161,6 +162,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    storyCaseDone: {}, notices: [], z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
     bossGuides:{version:1,zones:{}}, bossGuarding: {}, bossWalk: null, zoneEntry: null,
@@ -313,6 +315,32 @@ function mkSoul(tags, hiddenBonus = 0, g) {
 /** สำนวนที่มีชื่อ มีหน้า มีเรื่อง — เขียนมือไว้ที่ src/cases.js
  *  ต่างจาก mkSoul ตรงที่ทุกบรรทัดถูกเขียนให้ตรงกับ "คนคนนั้น" ไม่ใช่ประกอบจากตาราง
  *  รูป (sp) เพศ (sex) และเนื้อสำนวน จึงตรงกันเสมอโดยไม่ต้องพึ่งการสุ่ม */
+/** Z1-EVENTS (13 Nov 2026) — bring a save written before the new Zone 1 order into it without replaying or stranding anything:
+ *   · Zone 1 already finished -> the Sita / Hanuman beat is marked done (never replayed)
+ *   · elder brother already announced under the old order (case 10) but not fought -> he steps back until Sita's case and case 15 are done
+ *   · nurse already heard by chance -> counted as heard
+ *   · Guard hired at Nira's desk before the border event -> back to his gate, hire refunded, training kept for when he joins
+ *   · a beggar soul still standing around after the deva revealed himself (owner e1) -> gone */
+function migrateZ1Events(g, d) {
+  if (d.z1EventsVersion === 1) return;
+  const th = g.zoneEvents.th ||= {};
+  if (g.bossCleared?.th || th.thBorderBoss === 'cleared') {
+    th.sitaHanuman = 'cleared'; g.storyCaseDone.sitaledger = true; g.storyCaseDone.nurse = true;
+  } else if (th.thBorderBoss && th.sitaHanuman !== 'cleared') {
+    delete th.thBorderBoss; delete g.eventMapClosed['th:thBorderBoss'];
+    g.bossGuarding.th = false; g.bossPending = false; if (g.bossArriveSeen) delete g.bossArriveSeen.th;
+  }
+  const active = g.zone === 'th';
+  if (active && g.usedCases?.includes('nurse') && !g.queue.some(s => s.case === 'nurse')) g.storyCaseDone.nurse = true;
+  if (active && g.guard && !guardUnlocked(g, 'th')) {
+    g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];
+    delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;
+    g.log(`🛡️ ${GUARD.name}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');
+  }
+  if (active && g.devaVisits?.th) g.revealDevaSoul(null);
+  if (active) g.refreshZoneEvents('th');
+}
+
 function mkCaseSoul(c) {
   const soul = {
     id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex,
@@ -509,27 +537,94 @@ const API = {
   gateBuilt() { return this.has('sawan') && !this.stations.some(st => st.def.k === 'sawan' && (st.build||st.repair)); },
   /** HOTFIX 22 ต.ค. 2569 — คดีขอทานในวัด (เทวดา) ยังค้างส่งอยู่ไหม: คดีที่ 5 ขึ้นไป ยังไม่เคยตัดสิน และด่านเทวดายังไม่เริ่ม
    *  เดิมเช็คแค่ zoneCases.th === 4 แล้วบังคับเข้าคิวแม้ไม่มีประตูสวรรค์ (ขั้น 3) → ผู้เล่นใหม่เจอคดีที่ตัดสินถูกไม่ได้ */
-  devaCaseOwed() {
-    return this.zone === 'th' && (this.zoneCases.th || 0) >= 4 && !this.devaVisits.th && this.devaTestStatus() === 'locked';
+  devaCaseOwed() { return this.storyCaseOwed() === 'devaMonk'; },
+  /** Z1-EVENTS: the Zone 1 story case that is due now ('nurse' = 5th case, 'devaMonk' = 6th, 'sitaledger' = 12th) or null. See src/z1-events.js. */
+  storyCaseOwed() { return owedStoryCase(this); },
+  /** Is this queued soul the story case that must be heard first? (It cannot be jailed, deferred or skipped.) */
+  storyCaseReserved(soul) {
+    const owed = this.storyCaseOwed();
+    return !!owed && !!soul && soul.case === owed && (!TH_STORY_CASES.find(c => c.k === owed).needsGate || this.gateBuilt());
   },
-  ensureDevaCase() {
-    if (!this.devaCaseOwed()) return;
+  ensureDevaCase() { this.ensureStoryCase(); },
+  ensureStoryCase() {
+    const owed = this.storyCaseOwed();
+    if (!owed) return;
+    const row = TH_STORY_CASES.find(c => c.k === owed), def = owed === SITA_CASE.k ? SITA_CASE : ALL_CASES.find(c => c.k === owed);
+    if (!def) return;
     // 'monk' pure = soul จาก build E3 ช่วงสั้น ๆ ที่เขียนทับเจ้าอาวาส — ย้ายมาเป็น devaMonk
-    const queued = this.queue.find(s => s.case === 'devaMonk' || s.case === 'monk' && s.pure);
-    if (!this.gateBuilt()) {
+    const queued = this.queue.find(s => s.case === owed || owed === 'devaMonk' && s.case === 'monk' && s.pure);
+    if (row.needsGate && !this.gateBuilt()) {
       // ยังไม่มีประตูสวรรค์ — คดีรอก่อน ไม่บล็อกคดีอื่น · เซฟเก่าที่ถูกบังคับเข้าคิวไปแล้ว ดึงออกจากคิว (สร้างใหม่ตอนประตูเสร็จ)
       if (queued && this.caseReady(queued)) this.queue.splice(this.queue.indexOf(queued), 1);
       return;
     }
-    if (queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {
-      const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');
+    if (owed === 'devaMonk' && queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {
+      const replacement = applySoulPortrait(mkCaseSoul(def), 'th');
       Object.assign(queued, replacement, { id:queued.id });
     }
-    if (!queued) {
-      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');
-      this.queue.unshift(soul);
-      if (!this.usedCases.includes('devaMonk')) this.usedCases.push('devaMonk');
+    if (queued && this.queue[0] !== queued && this.caseReady(queued)) {       // drawn earlier by chance (nurse) -> it is the next case now
+      this.queue.splice(this.queue.indexOf(queued), 1); this.queue.unshift(queued);
     }
+    if (!queued) {
+      const soul = owed === 'sitaledger' ? mkCaseSoul(def) : applySoulPortrait(mkCaseSoul(def), 'th');
+      if (owed === 'sitaledger') soul.storyHearing = true;
+      this.queue.unshift(soul);
+      if (!this.usedCases.includes(owed)) this.usedCases.push(owed);
+      if (owed === 'sitaledger') this.queueNotice('sita-arrive');
+    }
+  },
+  /** e1 (owner 13 Nov): the temple beggar IS the deva. Once he is judged he reveals himself - so no beggar soul waits for an escort, serves a
+   *  sentence, queues at the heaven gate or comes back as a returning case afterwards. Pays what finish() would have paid, once. */
+  revealDevaSoul(soul, r = null) {
+    const id = soul?.id, mine = x => x?.id === id || x?.case === 'devaMonk';
+    for (const st of this.stations || []) {
+      const i = st.slots.findIndex(slot => mine(slot.soul)); if (i < 0) continue;
+      const [slot] = st.slots.splice(i, 1), v = r || slot.verdict;
+      if (Number.isFinite(v?.coin)) this.coin += v.coin;
+      this.closed.unshift({ soul:slot.soul, zone:this.zone, verdict:v, stK:st.def.k, crewK:st.crewK, intensity:slot.intensity, tick:this.tick });
+      if (this.closed.length > 12) this.closed.pop();
+      if (!st.slots.length) { const c = this.crewOf(st.crewK); st.crewK = null; if (c) { c.at = null; c.path = null; } }
+    }
+    this.transits = (this.transits || []).filter(v => {
+      if (v.id !== id) return true;
+      const c = this.crewOf(v.crew); if (c?.escort === id) c.escort = null;
+      return false;
+    });
+    for (let i = (this.afterlifeWalks || []).length - 1; i >= 0; i--) {
+      const walk = this.afterlifeWalks[i]; if (!mine(walk.soul) || walk.zone && walk.zone !== 'th') continue;
+      this.afterlifeWalks.splice(i, 1); this.releaseEscort(walk);
+    }
+    this.sentences = (this.sentences || []).filter(x => !mine(x.soul) || x.zone !== 'th');
+    this.held = (this.held || []).filter(x => !mine(x.soul || x));
+    this.returning = (this.returning || []).filter(x => !mine(x.soul || x));
+    this.queue = this.queue.filter(x => !mine(x) || this.storyCaseOwed() === 'devaMonk');
+    this.courtArrivals = (this.courtArrivals || []).filter(a => this.queue.some(q => q.id === a.soulId));
+  },
+  /** Z1-EVENTS notice windows (case 5 nurse ledger, case 12 Sita arrival / Hanuman / PHANTOM-404). Persisted, shown once each by ui.js. */
+  queueNotice(id) { if (!this.notices.includes(id) && !this.storySeen[`notice:${id}`]) this.notices.push(id); },
+  ackNotice(id) {
+    this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;
+    if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
+    this.save();
+  },
+  /** Case 12: Sita's hearing closes with choice A or B only. She is never sentenced, escorted or scored against (Rae 3.2 · Claudy's cultural default).
+   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). */
+  resolveSitaCase(choice) {
+    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA.hearing.choices.find(c => c.k === choice)?.k;
+    if (i < 0 || !pickK || this.battle || this.over || this.zone !== 'th') return false;
+    const [soul] = this.queue.splice(i, 1);
+    this.cancelCourtArrival(soul.id);
+    this.casesDone++; this.zoneCases.th = (this.zoneCases.th || 0) + 1;
+    this.storyCaseDone[SITA.caseKey] = true; this.sitaChoice = pickK;
+    this.ledger.push({ id:soul.id, who:soul.who, tick:this.tick, over:0, short:0, karma:0, stars:5, score:null, tham:null,
+      boss:'great', heaven:false, right:true, deserved:0, back:false, story:SITA.caseKey,
+      archiveSoul:{ name:soul.name, who:soul.who, sp:soul.sp, case:soul.case, sex:soul.sex, deeds:[] } });
+    this.log(`⚖️ ${SITA.hearing.choices.find(c => c.k === pickK).label}`, 'good');
+    this.refreshZoneEvents('th');
+    this.queueStory('sita-hanuman-open');
+    this.bossPending = this.bossReady();
+    this.save(); this.onChange();
+    return true;
   },
   advanceQuest(id, choice = null) { return advanceQuest(this,id,choice); },
   merchantAvailable() { return merchantAvailable(this); },
@@ -549,7 +644,9 @@ const API = {
     if (this.casesDone < 1) return null;
     if (this.zone === 'th' && this.spawns % CASE_EVERY !== 0) return null;
     const pool = CASES_BY_ZONE[this.zone] || [];
-    let left = pool.filter(c => c.k !== 'devaMonk' && !c.quest && !this.usedCases.includes(c.k));
+    // Z1-EVENTS: story cases come at their own count (ensureStoryCase), never by chance - except the nurse once the story is past her (old saves)
+    const reserved = k => this.zone === 'th' && TH_STORY_CASE_KEYS.includes(k) && !(k === 'nurse' && storyCaseDone(this, 'nurse'));
+    let left = pool.filter(c => c.k !== 'devaMonk' && !c.story && !reserved(c.k) && !c.quest && !this.usedCases.includes(c.k));
     // บูรพาไม่ถอยกลับไปสุ่มสำนวนไทยเมื่อ A1-A20 ครบชุด — ล้างรอบแล้วคละใหม่
     if (!left.length && this.zone === 'asia' && pool.length) {
       const keys = new Set(pool.filter(c=>!c.quest).map(c => c.k));
@@ -590,6 +687,7 @@ const API = {
     const def = COMBAT_SKILLS[skill], b = this.battle;
     if (!def || !b || !actor || !this.battleActors().some(a => a.id === actor.id)) return 'ไม่อยู่ในสนาม';
     if (skill === 'teamJudgment') {
+      if (actor.id === 'you' && b.breachFinale === 'ready') return '';   // Z1-EVENTS: the story's closing move - free, no cooldown
       if (actor.id !== 'you' || !this.abilities.teamJudgment) return 'ชนะฝ่าชายแดนไทยเพื่อปลดล็อก';
       if (this.teamJudgmentRemaining()) return `อีก ${this.teamJudgmentRemaining()} เทิร์นยามา`;
       return this.mp < def.mp ? 'พลังเวทไม่พอ' : '';
@@ -826,7 +924,7 @@ const API = {
   /** ขังไว้ก่อน — ทางออกตอน "สถานีที่ตรงกรรมไม่ว่าง แต่คิวกำลังล้น"
    *  ไม่นับเป็นคำตัดสิน ไม่ได้คะแนน ไม่เสียคะแนน แค่ซื้อเวลา แลกกับค่าข้าวทุกวาระ */
   jail(soulId) {
-    if (this.devaCaseOwed() && this.queue.find(s => s.id === soulId)?.case === 'devaMonk') return false;
+    if (this.storyCaseReserved(this.queue.find(s => s.id === soulId))) return false;
     if (this.jailFree() <= 0) return false;
     const i = this.queue.findIndex(x => x.id === soulId);
     if (i < 0) return false;
@@ -853,7 +951,7 @@ const API = {
    *  มีไว้แก้ทางตันที่เจ้าของเจอ 8 ก.ย. 2569: สำนวนเป็นฉ้อโกง แต่กระทะทองแดงไม่ว่าง
    *  ตัดสินให้ตรงกรรมไม่ได้เลย และไม่มีปุ่มอะไรให้กดนอกจากตัดสินผิด ๆ ไปก่อน */
   defer() {
-    if (this.devaCaseOwed() && this.queue[0]?.case === 'devaMonk') return false;
+    if (this.storyCaseReserved(this.queue[0])) return false;
     if (this.queue.length < 2) return false;
     const soul = this.queue.shift();
     this.queue.push(soul);
@@ -1126,10 +1224,11 @@ const API = {
 
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
-    const reservedCase = this.devaCaseOwed() && this.queue.some(s => s.case === 'devaMonk');
+    const reservedSoul = this.queue.find(s => this.storyCaseReserved(s)), reservedCase = !!reservedSoul;
     const selectedSoul = this.queue.find(s => s.id === soulId);
     if(selectedSoul&&!this.caseReady(selectedSoul))return {key:'soulArriving'};
-    if (reservedCase && selectedSoul && selectedSoul.case !== 'devaMonk') return { key:'devaCaseFirst' };
+    if (reservedCase && selectedSoul && selectedSoul !== reservedSoul) return { key:'devaCaseFirst', text:`โปรดตัดสินคดี${reservedSoul.name}ก่อน` };
+    if (selectedSoul?.storyHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)
     const st = this.stations.find(s => s.def.k === stKey);
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
@@ -1375,12 +1474,16 @@ const API = {
                        archiveSoul:{name:soul.name,who:soul.who,sp:soul.sp,case:soul.case,sex:soul.sex,
                          deeds:(soul.deeds || []).map(d=>({t:d.t}))} });
     if (this.ledger.length > 300) this.ledger.shift();
-    this.ensureDevaCase();
+    if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;
+    // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.
+    if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');
     if (this.zone === 'th' && soul.case === 'devaMonk' && !this.devaVisits.th && this.devaTestStatus() !== 'cleared') {
       this.zoneEvents.th.devaTest = 'pending';
       this.devaVisits.th = { phase:'intro', right:!!r.right };
       this.queueStory(r.right ? 'deva-th-praise' : 'deva-th-warning');
+      this.revealDevaSoul(soul, r);
     }
+    this.ensureDevaCase();
     // A5: ordinary grades and non-red over-punishment also receive a head's
     // comment. Existing praise/rebuke scenes keep their tier and granted reward.
     if (!this.pendingVerdictScene || this.pendingVerdictScene.id !== soul.id)
@@ -2934,6 +3037,17 @@ const API = {
     }
     return null;
   },
+  /** f1 (owner 13 Nov): the frontier event that is waiting at the border right now, whether or not its alert window was acknowledged.
+   *  Every way into the border scene asks this, so the border boss is there the first time Yama walks down. */
+  breachPending() {
+    if (this.battle || this.over) return null;
+    for (const ev of ZONE_EVENTS[this.zone] || []) {
+      if (ev.team !== 'frontier' || ev.signal || this.zoneEventStatus(ev.k) !== 'pending') continue;
+      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;
+      return { key:ev.k, ev };
+    }
+    return null;
+  },
   /** ยมบาทถึงประตูชายแดนแล้วหรือยัง (ระยะเดียวกับปุ่ม "เข้าด่านชายแดน") */
   nearFrontierGate(pad = 0) {
     return Math.hypot(this.player.x - FRONTIER.x, this.player.y - FRONTIER.y) <= FRONTIER.reach + pad;
@@ -2967,6 +3081,8 @@ const API = {
       if (states[ev.k] || (this.zoneCases[zone] || 0) < ev.atCases) continue;
       // ด่านเทวดาโซนไทยเริ่มหลังตัดสินคดีขอทานในวัดแล้วเท่านั้น (คดีนั้นรอประตูสวรรค์ — applyVerdict เป็นคนเปิดด่าน)
       if (zone === 'th' && ev.k === 'devaTest' && !this.devaVisits.th) continue;
+      // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)
+      if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;
       if (signalRequirements(this,ev,zone)) {
         states[ev.k] = 'pending';
         if (zone === this.zone && ev.k === 'asiaPrisonFire') {
@@ -3298,7 +3414,7 @@ const API = {
   },
   completeBattleInterlude() {
     const b=this.battle;
-    if (b?.storyInterlude !== 'west-hypnosis') return false;
+    if (!['west-hypnosis','th-team-judgment-unlock'].includes(b?.storyInterlude)) return false;
     b.storyInterlude=null; this.save(); return true;
   },
   startDevaTest() {
@@ -3320,12 +3436,13 @@ const API = {
     return this.battle;
   },
   frontierBreachFoes(wave) {
-    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>
+    const waves = ZONE_EVENTS.th[1].waves, demonWaves = waves.length - 1;   // the last row is the border boss, after the 3 waves
+    return waves[wave - 1].flatMap((entry, group) =>
       Array.from({ length:entry.count }, (_, i) => {
         const kind = MOB.kinds[entry.kind ?? 0];
         const boss = !!entry.boss;
         return { id:`breach-${wave}-${group}-${i}`, who:boss ? BOSS_NAMES.th.frontier : kind.name,
-          sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/${ZONE_EVENTS.th[1].waves.length}`,
+          sub:boss ? t('event.frontierBreach.bossSub') : `ระลอก ${wave}/${demonWaves}`,
           sp:boss ? entry.sp : kind.img, boss,
           hp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), maxHp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), atk:entry.atk, stun:0, confuse:0 };
       }));
@@ -3337,6 +3454,11 @@ const API = {
     const team = this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k));
     if (!team.length) return null;
     const foes = this.frontierBreachFoes(1);
+    // The gate keeper steps out to help in this fight (cutscene cut-guard-joins-th). He stays with the team only if it is won.
+    if (!this.guard) {
+      this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1], ...(this.guardReserve || {}) }, 'th', 'guard');
+      this.guard.breachGuest = true; syncRoster(this);
+    }
     this.zoneEvents.th.frontierBreach = 'active';
     this.fights++;
     this.battle = prepareBattle({ kind:'frontierBreach', zone:'th', wave:1, pendingWave:null,
@@ -3358,7 +3480,7 @@ const API = {
     b.who = b.foes[0].who; b.sp = b.foes[0].sp; b.sub = b.foes[0].sub;
     b.youHp = Math.min(b.youMax, b.youHp + ZONE_EVENTS.th[1].betweenWaveHeal);
     b.dmg = null; b.mid = null; b.helper = null;
-    b.talk = t('event.frontierBreach.next');
+    b.talk = b.foes.some(f => f.boss) ? t('event.frontierBreach.bossLine') : t('event.frontierBreach.next');
     this.onChange();
     return true;
   },
@@ -3445,6 +3567,7 @@ const API = {
   beginBattleTurns() {
     this.prepareEncounter();
     const turn=activeCombatUnit(this);
+    if(this.battle.breachFinale==='ready'){this.battle.actorId='you';return turn;}
     if(turn?.side==='ally'&&!this.battle.commandBusy&&!this.battle.turnAction) {
       this.battle.actorId=turn.id;
       // L2: the defend stance lasts until this actor's next turn begins
@@ -3454,7 +3577,7 @@ const API = {
   },
   runEnemyTurn() {
     const b=this.battle,turn=activeCombatUnit(this);
-    if(!b||b.over||b.commandBusy||turn?.side!=='foe')return false;
+    if(!b||b.over||b.commandBusy||turn?.side!=='foe'||b.breachFinale==='ready')return false;
     b.enemyActorId=turn.id;b.initiativeAction=true;
     let ok;try {ok=this.battleAct('__enemy',{enemyOnly:true});} finally {delete b.initiativeAction;delete b.enemyActorId;}
     if(ok){b.turnAction={...turn};b.commandBusy=true;}return ok;
@@ -3495,6 +3618,7 @@ const API = {
   confirmBattleCommand(what, recipientId = 'you') {
     const b = this.battle;
     if (!b || b.commandBusy) return false;
+    if (b.breachFinale === 'ready') return this.breachFinaleStrike();
     const turn=b.turnQueue?this.beginBattleTurns():null;
     if(turn&&turn.side!=='ally')return false;
     const actorId = b.actorId || 'you';
@@ -3504,6 +3628,16 @@ const API = {
     if(!ok)return false;
     if(turn)b.turnAction={...turn};
     b.commandBusy = true; b.command = null; if (this.isFinalBattle(b)) this.save(); return true;
+  },
+  /** Z1-EVENTS (case 9): the border boss fight closes with Yama's new team move, whoever's turn it was. Free and always ready (see skillWhy). */
+  breachFinaleStrike() {
+    const b = this.battle, boss = b?.foes.find(f => f.boss && f.hp > 0);
+    if (!b || b.over || b.commandBusy || b.breachFinale !== 'ready' || !boss) return false;
+    b.actorId = 'you'; b.selectedFoeId = boss.id;
+    b.initiativeAction = !!b.turnQueue;
+    let ok; try { ok = this.battleAct('teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }
+    if (!ok) return false;
+    b.commandBusy = true; b.command = null; return true;
   },
   finishBattleCommand() {
     if (this.battle) {
@@ -3518,7 +3652,13 @@ const API = {
   battleAct(what, command = null) {
     const B = this.battle;
     if (typeof what !== 'string') return false;
+    // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).
+    if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {
+      if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;
+      what = 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };
+    }
     if (!B || B.over || B.pendingWave || B.storyInterlude === 'west-hypnosis' || B.commandBusy) return false;
+    if (B.breachFinale === 'ready' && what !== 'teamJudgment') return false;   // foes wait
     const enemyOnly=command?.enemyOnly===true&&B.initiativeAction===true;
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
     const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
@@ -3575,9 +3715,11 @@ const API = {
     if(!enemyOnly) {
     if(what==='flee') {B.over='flee';B.talk='ทีมถอนตัวกลับไปตั้งหลัก';this.onChange();return true;}
     if (what === 'teamJudgment') {
-      this.mp -= newSkill.mp;
+      const finale = B.breachFinale === 'ready';
+      if (!finale) this.mp -= newSkill.mp;
       B.teamReadyTurn = (B.actorTurns?.you || 0) + newSkill.turns;
       B.comboHits = applyCombo(B, teamCombo(this));
+      if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }
       B.dmg.comboHits = B.comboHits;
       B.talk = newSkill.name;
     } else if (newSkill) {
@@ -3827,7 +3969,21 @@ const API = {
     // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — แยกเป็นฟังก์ชันย่อย เพราะตอนนี้เช็คแพ้ชนะได้ 2 จังหวะ:
     // ตอนยมบาทน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
     // ถ้าสะกดจิตฆ่าศัตรูตายพอดี ผู้เล่นต้องกดอีกทีถึงจะเห็นว่าชนะแล้ว — Dale เจอตอนรีวิวชุด 13
+    // Z1-EVENTS (case 9): when the border boss is nearly down (or would fall) the fight pauses, Yama learns the team move mid-fight
+    // (window: B.storyInterlude) and that move is the one that ends it. The boss cannot fall to anything else.
+    const breachFinaleGate = force => {
+      if (B.kind !== 'frontierBreach' || B.breachFinale) return false;
+      const boss = B.foes.find(f => f.boss);
+      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;
+      boss.hp = Math.max(1, boss.hp);
+      B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;
+      this.abilities.teamJudgment = true;
+      B.storyInterlude = 'th-team-judgment-unlock';
+      this.onChange();
+      return true;
+    };
     const declareWin = () => {
+      if (breachFinaleGate(true)) return true;
       B.over = 'win';
       // ชุด 28B — จำของก่อนรับรางวัล เพื่อสรุปให้หน้าต่างรางวัลจากส่วนต่างจริง (ไม่เดาแยกตามชนิดศึก)
       const before = { coin:this.coin, inv:{ ...this.inventory }, ab:{ ...this.abilities } };
@@ -3854,10 +4010,11 @@ const API = {
         const event = ZONE_EVENTS.th[1];
         this.zoneEvents.th.frontierBreach = 'cleared';
         if (!this.guard) {
-          this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'th', 'guard');
+          this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1], ...(this.guardReserve || {}) }, 'th', 'guard');
           syncRoster(this);
         }
-        this.queueStory('c1-guard-arrival', 'teamJudgment');
+        delete this.guard.breachGuest; this.guardReserve = null;
+        this.queueStory('c1-guard-arrival');
         const item = pick(FRONTIER.drops);
         this.coin += event.reward.coin;
         this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
@@ -3900,6 +4057,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
+        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);
         // ศึกชายแดนของโซน 2–4 (team:'frontier') ได้ของสุ่มเพิ่มต่อชัยชนะทั้งศึกครั้งเดียว · บอส/เทวดา/แหกคุก ไม่ได้
         B.loot = ev?.team === 'frontier' ? this.winLoot() : '';
         B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
@@ -3967,6 +4125,7 @@ const API = {
       return true;
     };
 
+    if (breachFinaleGate(false)) return true;
     const storyZone = B.kind === 'zoneEvent' && B.eventKey === 'thBorderBoss' ? 'th'
       : B.kind === 'zoneBoss' && ['th','asia'].includes(B.zone) ? B.zone : null;
     const storyBoss = storyZone && (B.foes.find(f => f.boss) || (B.kind === 'zoneBoss' ? B.foes[0] : null));
@@ -4106,7 +4265,7 @@ const API = {
       // BATTLE-FX: the new rhythm (2nd, 4th, 6th ... attack) is for the zone-ending bosses only: Thai border boss and the final boss; Asia/West bosses use it through
       // bossUltimate() above.  Border lords, deva tests, possessed rulers ... keep the old rule (HP under half, 4 turns apart) so their balance does not move.
       const zoneBossRhythm = B.eventKey === 'thBorderBoss' || (B.eventKey === 'cyberFinal' && B.encounter === 'boss');
-      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
+      if (!ultimate && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
           (zoneBossRhythm ? bossUltimateDue(bossAct)
             : counter.hp <= counter.maxHp / 2 && (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4))) {
         const z = B.zone || this.zone;
@@ -4190,6 +4349,7 @@ const API = {
       } else if (B.kind === 'frontierBreach') {
         this.zoneEvents.th.frontierBreach = 'pending';
         this.hp = 1;
+        this.benchLockedGuard();
         B.talk = t('event.frontierBreach.lose');
         say(B.talk);
       } else if (B.kind === 'devaTest') {
@@ -4200,6 +4360,7 @@ const API = {
       } else if (B.challenge) {
         this.loseChallenge(B, say);
       } else if (B.kind === 'zoneEvent') {
+        if (B.eventKey === 'sitaHanuman') this.queueStory('sita-hanuman-lose');
         this.zoneEvents[B.zone][B.eventKey] = 'pending';
         this.hp = 1;
         B.talk = `${ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey)?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;
@@ -4456,6 +4617,7 @@ const API = {
       }
     }
     if (next?.key === 'deva-asia') this.completeDevaArrival();
+    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
     if (next?.key?.startsWith('deva-th-')) {
       this.devaVisits.th.phase = 'fighting';
       this.startDevaTest();
@@ -4503,6 +4665,7 @@ const API = {
     checkpoint=typeof opts.patrol==='string'?opts.patrol:Number.isInteger(checkpoint)?checkpoint:null;
     if(!(typeof checkpoint==='string'?dungeonAtPatrol(this,checkpoint):opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
+    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits at the pier (case 15)
     if(encounter.boss) {
       const battle=this.startZoneEvent(routeBossCave(dungeonStatus(this)?.route.id)?.eventKey||'thBorderBoss');
       if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';battle.expeditionParty=false;this.save();}
@@ -4726,8 +4889,15 @@ const API = {
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
 
+  guardUnlocked(zone = this.zone) { return guardUnlocked(this, zone); },
+  /** Zone 1: a Guard who is with the team before the frontier breach is won goes back to his gate (lost breach / reload mid-fight). */
+  benchLockedGuard() {
+    if (this.zone !== 'th' || !this.guard || guardUnlocked(this, 'th')) return false;
+    if (!this.guard.breachGuest) this.guardReserve = snapshotRoster({ [this.guard.id]:this.guard })[this.guard.id];
+    delete this.roster[this.guard.id]; this.guard = null; return true;
+  },
   hireGuard() {
-    if (this.guard || this.coin < GUARD.hire) return false;
+    if (this.guard || this.coin < GUARD.hire || !guardUnlocked(this)) return false;   // Z1-EVENTS: Zone 1's Guard joins through the frontier breach, not the hire desk
     this.coin -= GUARD.hire;
     this.guard = actorFromLegacy({ x: GUARD_POST[0], y: GUARD_POST[1] }, this.zone, 'guard');
     syncRoster(this);
@@ -5106,6 +5276,8 @@ API.snapshot = function (withEntry = true) {
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
+    storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
+    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -5360,7 +5532,7 @@ API.restore = function (d) {
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
   if (legacyBossGate) {
     Object.assign((this.zoneEvents.th ||= {}),
-      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });
+      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', sitaHanuman:'cleared', thBorderBoss:'cleared' });
   }
   for (const [zone, events] of Object.entries(this.zoneEvents)) {
     for (const [key, status] of Object.entries(events)) if (status === 'active') events[key] = 'pending';
@@ -5564,6 +5736,10 @@ API.restore = function (d) {
     this.discoveryQueue = [];
   }
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
+  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
+  migrateZ1Events(this, d);
+  this.benchLockedGuard(); reconcileArenaDocket(this);
   this.ensureDevaCase();
   reconcileSoulPortraits(this);
   reconcileSoulTraits(this);

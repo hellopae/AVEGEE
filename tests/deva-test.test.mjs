@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): the ER nurse is the 5th case and the temple beggar the 6th; beggar fixtures start at 5 cases with the nurse already heard.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -29,6 +30,9 @@ test('the zone-one border boss waits for deva and frontier events', () => {
   assert.equal(g.frontierBreachStatus(), 'pending');
   g.zoneEvents.th.frontierBreach = 'cleared';
   g.refreshZoneEvents('th');
+  assert.equal(g.zoneEventStatus('thBorderBoss'), 'locked');   // Z1-EVENTS: he also waits for Sita / Hanuman (case 12) and case 15
+  g.zoneEvents.th.sitaHanuman = 'cleared'; g.zoneCases.th = 15;
+  g.refreshZoneEvents('th');
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
   assert.equal(g.startZoneEvent('thBorderBoss')?.kind, 'zoneEvent');
 });
@@ -51,10 +55,10 @@ test('a failed deva test can be retried, and an active save restarts the test', 
   assert.equal(loaded.startDevaTest()?.foes[0].hp, scaleFoeHp('th', 100, 'boss'));   // ชุด 28B: บอสอึดขึ้น
 });
 
-test('case five schedules deva after prison; case eight schedules frontier after deva', () => {
+test('case six schedules deva after prison; case nine schedules frontier after deva', () => {
   const g = createGame();
   g.stations.push({ def:STATIONS.find(d => d.k === 'sawan'), crewK:null, intensity:3, fire:0, build:0, slots:[] });   // HOTFIX: คดีเทวดารอประตูสวรรค์
-  g.zoneCases.th = 4;
+  g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5;
   g.zoneEvents.th = { prisonBreak:'cleared' };
   g.ensureDevaCase();
   const monk = g.queue[0];
@@ -66,6 +70,8 @@ test('case five schedules deva after prison; case eight schedules frontier after
   assert.equal(g.devaTestStatus(), 'cleared');
   g.endBattle();
   g.zoneCases.th = 7;
+  g.applyVerdict({ score:55, karma:0 }, { said:[] });
+  assert.equal(g.frontierBreachStatus(), 'locked');
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
   assert.equal(g.frontierBreachStatus(), 'pending');
 });

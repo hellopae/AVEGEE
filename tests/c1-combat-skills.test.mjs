@@ -17,6 +17,7 @@ function game(zone='th', kinds=['taan','plerng']) {
   const g=createGame(); g.zone=zone; g.save=()=>true;
   g.crew=kinds.filter(k=>k!=='guard').map(k=>actorFromLegacy({k,morale:100},zone));
   g.guard=kinds.includes('guard')?actorFromLegacy({morale:100},zone,'guard'):null;
+  if(g.guard&&zone==='th')g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'};   // Z1-EVENTS: Zone 1's Guard is with the team only after the frontier breach
   g.roster={}; syncRoster(g); g.party.members=kinds.filter(k=>k!=='guard');
   g.stations=Object.keys(STATIONS.reduce((out,s)=>({...out,[s.k]:1}),{})).map(k=>({def:STATIONS.find(s=>s.k===k),build:0,slots:[]}));
   return g;
@@ -158,8 +159,10 @@ test('C1 total party cap grows 3/4/5/6/7 without creating actors or deleting exc
 
 test('C1 victory grants teamJudgment and Guard once; old cleared saves infer only Yama entitlement',()=>{
   const g=game('th',['taan','nira']);g.zoneEvents.th={frontierBreach:'pending',devaTest:'cleared'};
-  g.frontierOf().team=['taan','nira'];const b=g.startFrontierBreach();assert.ok(b);b.wave=2;b.foes=g.frontierBreachFoes(2);b.selectedFoeId=b.foes[0].id;
+  g.frontierOf().team=['taan','nira'];const b=g.startFrontierBreach();assert.ok(b);b.wave=4;b.foes=g.frontierBreachFoes(4);b.selectedFoeId=b.foes[0].id;
   b.foes.forEach(f=>f.hp=1);g.abilities.windFan=true;g.mp=100;assert.equal(g.battleAct('windFan'),true);
+  // Z1-EVENTS: the move unlocks mid-fight (boss held at 1 HP) and whatever is pressed next is that move
+  assert.equal(b.over,null);assert.equal(b.breachFinale,'ready');assert.equal(g.battleAct('windFan'),true);assert.equal(b.over,'win');
   assert.equal(g.abilities.teamJudgment,true);assert.ok(g.guard);assert.equal(g.partyCap(),4);
   assert.equal(g.storyQueue.filter(s=>s.key==='c1-guard-arrival').length,1);
   const coin=g.coin;assert.equal(g.battleAct('windFan'),false);assert.equal(g.coin,coin);

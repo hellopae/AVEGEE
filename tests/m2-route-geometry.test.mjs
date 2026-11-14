@@ -58,7 +58,8 @@ test('Zone 1-2 cave rules still come from its row: boss at checkpoint 2, locked 
   assert.equal(openDungeonRoutes(g).some(r => r.id === 'th:asia'), true, 'opens early after the breach');
   assert.equal(beginDungeon(g, 'asia'), true);
   const en = dungeonEnemyPositions(g, 0).filter(e => e.checkpoint !== undefined);
-  assert.deepEqual(en.map(e => [e.checkpoint, e.boss, e.locked]), [[0,false,false],[1,false,false],[2,true,true]]);
+  // Z1-EVENTS (owner e8 / e9): Zone 1's ruler is met at the city pier - no boss standee at the cave mouth while he is undefeated
+  assert.deepEqual(en.map(e => [e.checkpoint, e.boss, e.locked]), [[0,false,false],[1,false,false]]);
   assert.equal(nextDungeonEncounter(g, 2), null, 'cave fight is closed while checkpoint 0 is open');
   g.zoneEvents.th.thBorderBoss = 'pending';
   for (let i = 0; i < 2; i++) { const e = nextDungeonEncounter(g); resolveDungeonEncounter(g, e.token, true); }

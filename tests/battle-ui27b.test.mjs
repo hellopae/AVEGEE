@@ -13,19 +13,19 @@ test('battle HUD labels exist in Thai and English', () => {
   setLang('th');
 });
 
-test('frontier breach wave count comes from event data, not a hardcoded 3', () => {
+test('frontier breach wave count comes from event data (3 demon waves + the border boss)', () => {
   const waves = ZONE_EVENTS.th.find(e => e.k === 'frontierBreach').waves.length;
-  assert.equal(waves, 2);
+  assert.equal(waves, 4);
   const g = createGame();
-  g.zoneCases.th = 8;
+  g.zoneCases.th = 9;
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' };
   g.setFrontierTeam('taan');
   g.startFrontierBreach();
-  assert.match(g.battle.foes[0].sub, new RegExp(`Wave 1/${waves}`));
+  assert.match(g.battle.foes[0].sub, new RegExp(`ระลอก 1/${waves - 1}`));
   for (const lang of ['th', 'en']) {
     setLang(lang);
     for (const k of ['event.frontierBreach.alert', 'event.frontierBreach.win'])
-      assert.doesNotMatch(t(k), /\b3\b|three/i, `${lang}:${k}`);
+      assert.match(t(k), /\b3\b|three/i, `${lang}:${k}`);   // Z1-EVENTS: the owner's breach is 3 waves, then the border boss
   }
   setLang('th');
 });

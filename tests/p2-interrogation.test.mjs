@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): the ER nurse is the 5th case and the temple beggar the 6th; beggar fixtures start at 5 cases with the nurse already heard.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
@@ -14,8 +15,9 @@ const tally=()=>({concealing:0,resisting:0,accepting:0});
 function namedSouls(){
  const g=game(),out=[];
  for(const c of ALL_CASES){
-  g.zone=c.zone||'th';g.casesDone=1;g.spawns=3;g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
-  let s;if(c.k==='devaMonk'){g.queue=[];g.zoneCases.th=4;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}else s=g.nextNamedCase([]);
+  g.zone=c.zone||'th';g.casesDone=1;g.spawns=3;g.storyCaseDone={...g.storyCaseDone,nurse:true};   // Z1-EVENTS: the nurse is a story case (5th) - drawn by chance only once the story is past her
+g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
+  let s;if(c.k==='devaMonk'){g.queue=[];g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}else s=g.nextNamedCase([]);
   assert.equal(s.case,c.k);out.push(s);
  }
  return out;

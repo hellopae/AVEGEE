@@ -1,3 +1,4 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import { isTownZone } from '../src/zone-skin.js';
 import assert from 'node:assert/strict';
@@ -93,7 +94,7 @@ test('hired guard crosses the city waterfront route and defeats a mob without pl
   const shore=g.harbourPoint();
   assert.equal(canWalk(shore.x,shore.y),true,'mob starts on the harbour walking floor');
   g.mobs = [{ id:1900, ...shore, hp:MOB.hp, kind:0 }];
-  assert.equal(g.hireGuard(), true);
+  assert.equal((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard()), true);
   assert.equal(g.attack(), false);
   assert.equal(g.startMobBattle(0), null);
   assert.equal(g.battle, null);

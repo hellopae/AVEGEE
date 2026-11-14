@@ -1,10 +1,11 @@
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
 import { STATIONS, BAL } from '../src/data.js';
 import { actorStanding } from '../src/actor-recovery.js';
-const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; g.coin=10000; g.hireGuard(); return g; };
+const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; g.coin=10000; (g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard()); return g; };
 const tea = g => g.stations.push({def:STATIONS.find(s=>s.k==='tea'),build:0,slots:[],fire:0});
 const reload = g => { const copy=game(); assert.ok(copy.restore(JSON.parse(JSON.stringify(g.snapshot())))); return copy; };
 test('J3 bag rejects other recipients; Nira food restores hunger only and medicine HP only',()=>{

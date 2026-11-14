@@ -160,7 +160,8 @@ test('B3 medicines retain old-zone effects, cap gains, and do not consume when f
 test('B3 legacy upLv migration keeps active/dormant crew and Guard bonuses across repeated save/load', () => {
   const g=createGame(); const d=g.snapshot(); delete d.roster; delete d.rosterVersion; delete d.training;
   const c=d.crew.find(c => c.k==='taan'); c.upLv=3; delete c.statTraining;
-  d.guard={upLv:2}; d.zoneSave.asia={crew:[{k:'taan',upLv:4}],guard:{upLv:1}};
+  d.guard={upLv:2}; d.zoneEvents={th:{frontierBreach:'cleared'}};   // Z1-EVENTS: Zone 1's Guard is with the team only after the frontier breach
+  d.zoneSave.asia={crew:[{k:'taan',upLv:4}],guard:{upLv:1}};
   const restored=createGame(); assert.equal(restored.restore(d),true);
   for (const [id,lv] of [['th:taan',3],['th:guard',2],['asia:taan',4],['asia:guard',1]]) {
     assert.equal(restored.roster[id].upLv,lv); assert.equal(restored.roster[id].statTraining.raeng,lv);
