@@ -226,7 +226,7 @@
   },
   {
    "before": "",
-   "after": "        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);\n        // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him\n        for (const key of ev?.winStories || []) this.queueStory(key);\n        for (const id of ev?.winNotices || []) this.queueNotice(id);\n        if (ev?.guardTest && !this.guard && this.coin >= GUARD.hire) this.hireGuard();\n"
+   "after": "        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);\n        // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him\n        for (const key of ev?.winStories || []) this.queueStory(key);\n        for (const id of ev?.winNotices || []) this.queueNotice(id);\n        if (ev?.guardTest && !this.guard && this.coin >= GUARD.hire) this.hireGuard();\n        if (B.zone === 'asia') this.ensureKinCases();   // the relatives wait for the end of the zone opening (the deva's test)\n"
   },
   {
    "before": "        B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;\n",
@@ -274,7 +274,7 @@
   },
   {
    "before": "",
-   "after": "    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');\n    if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');   // Z2-EVENTS: the journal window after Nira's scene\n"
+   "after": "    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');\n    if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');\n    if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5\n    if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene\n"
   },
   {
    "before": "",
@@ -290,6 +290,14 @@
   },
   {
    "before": "",
+   "after": "    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him\n"
+  },
+  {
+   "before": "",
+   "after": "    this.ensureKinCases();   // Z2-EVENTS: his / her relative's case is unlocked by hiring\n"
+  },
+  {
+   "before": "",
    "after": "    storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],\n    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,\n"
   },
   {
@@ -298,7 +306,7 @@
   },
   {
    "before": "",
-   "after": "  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];\n  this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;\n  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;\n  migrateZ1Events(this, d);\n  this.benchLockedGuard(); reconcileArenaDocket(this);\n"
+   "after": "  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];\n  this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;\n  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;\n  migrateZ1Events(this, d);\n  // Z2-EVENTS: a save from before the new order may hold the border breach as \"pending\" from case 6 - it now waits for Wukong (case 7) and case 11\n  const az = this.zoneEvents.asia;\n  if (az?.asiaRageBreach && az.asiaRageBreach !== 'cleared' && az.asiaWukong !== 'cleared') { delete az.asiaRageBreach; delete this.eventMapClosed['asia:asiaRageBreach']; this.refreshZoneEvents('asia'); }\n  this.benchLockedGuard(); reconcileArenaDocket(this);\n"
   }
  ],
  "data": [

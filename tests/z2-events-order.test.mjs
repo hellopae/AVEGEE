@@ -183,7 +183,7 @@ test('case 11: 3 waves -> Akura -> the closing fireball -> court with the locked
   // the court: Akura is tried in the arena (not on a walk), answer locked = the exercise yard at middle strength
   const c = bossJusticeCase(g); assert.ok(c && c.arena && c.zone === 'asia' && c.phase === 'capture');
   assert.deepEqual(g.storyQueue.map(p => p.key), ['z2-akura-down', ARENA_STORIES.asia.toDais]);
-  drainStories(g); assert.equal(bossJusticeCase(g).phase, 'dais');
+  drainStories(g); assert.deepEqual(plain(g), ['z2-akura-to-dais']); ackAll(g); assert.equal(bossJusticeCase(g).phase, 'dais');
   const ans = bossJusticeAnswer(g); assert.deepEqual([ans.station, ans.intensity], [AKURA_TRIAL.station, 3]); assert.equal(AKURA_TRIAL.station, 'lan');
   assert.ok(interrogateBoss(g)); assert.ok(mirrorBoss(g));
   assert.equal(sentenceBoss(g, { station:'krata', crew:ans.crew, intensity:5 }), false, 'a wrong sentence is refused');
@@ -192,7 +192,8 @@ test('case 11: 3 waves -> Akura -> the closing fireball -> court with the locked
   assert.equal(bossJusticeCase(g).phase, 'aftermath');
   g = reload(g); assert.equal(bossJusticeCase(g).phase, 'aftermath');
   assert.deepEqual(g.storyQueue.map(p => p.key), [ARENA_STORIES.asia.punished, ARENA_STORIES.asia.released]);
-  drainStories(g); assert.equal(bossJusticeCase(g), null); assert.equal(Object.values(g.bossJustice.ledger)[0].phase, 'released');
+  drainStories(g); assert.deepEqual(plain(g), ['z2-akura-cave']); assert.equal(NOTICES['z2-akura-cave'].text, 'อากุระรับโทษเสร็จแล้วและกลับไปยืนอยู่ในถ้ำริมชายแดน แวะไปคุยกับเขาได้'); ackAll(g);
+  assert.equal(bossJusticeCase(g), null); assert.equal(Object.values(g.bossJustice.ledger)[0].phase, 'released');
   assert.equal(storyOf(ARENA_STORIES.asia.released).pages[0].line.includes('เจ้าไม่ได้ล่ามข้า ข้าจำไว้'), true);
   g.refreshZoneEvents('asia'); assert.equal(status(g, 'asiaRageBreach'), 'cleared'); assert.equal(g.abilities.bigFire, true);
 });
@@ -201,7 +202,7 @@ function passCase11(g) {
   passCase7(g);
   for (let n = 8; n <= 11; n++) judgeNext(g);
   g.startZoneEvent('asiaRageBreach'); winFight(g); drainStories(g);
-  const ans = bossJusticeAnswer(g); interrogateBoss(g); mirrorBoss(g); sentenceBoss(g, { station:'lan', crew:ans.crew, intensity:3 }); drainStories(g);
+  const ans = bossJusticeAnswer(g); interrogateBoss(g); mirrorBoss(g); sentenceBoss(g, { station:'lan', crew:ans.crew, intensity:3 }); drainStories(g); ackAll(g);
   assert.equal(bossJusticeCase(g), null);
 }
 
@@ -342,4 +343,25 @@ test('old saves and Zone 1 are untouched', () => {
   loaded.queue = []; loaded.ensureDevaCase(); assert.equal(loaded.queue[0].case, 'apeelder');
   // a save whose boss was already beaten never gets the story cases
   const done = fresh(); done.zoneCases.asia = 20; done.bossCleared.asia = true; assert.equal(reload(done).storyCaseOwed(), null);
+});
+
+test('an old Zone 2 save with the border breach already pending (old case 6) waits for Wukong and case 11 again', () => {
+  const g = fresh(); g.zoneCases.asia = 6; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'pending' }; g.eventMapClosed['asia:asiaRageBreach'] = true;
+  const loaded = reload(g);
+  assert.equal(status(loaded, 'asiaRageBreach'), 'locked'); assert.equal(loaded.breachMarch(), null); assert.equal(loaded.startZoneEvent('asiaRageBreach'), null);
+  // a save that already cleared it keeps it
+  const done = fresh(); done.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  assert.equal(status(reload(done), 'asiaRageBreach'), 'cleared');
+});
+
+test('the clue orb of the court shows Satori\'s own words on the father\'s case (and not on any other)', async () => {
+  const { kanOrbHtml } = await import('../src/interrogation-ui.js');
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; g.zoneCases.asia = 12; g.storyCaseDone.apeelder = true;
+  assert.ok(g.hire('kan')); g.ensureStoryCase();
+  const father = g.queue.find(s => s.case === 'satorifather');
+  const html = kanOrbHtml(g, father, 'img/x.webp');
+  assert.ok(html.includes(Z2_TEXT.satori.blocked.replaceAll('"', '&quot;')) || html.includes(Z2_TEXT.satori.blocked), 'his sentence is on the disabled orb'); assert.ok(html.includes('is-off'));
+  assert.ok(html.includes('disabled'));
+  g.spawnSoul(); const other = g.queue.find(s => s.case !== 'satorifather');
+  assert.ok(!kanOrbHtml(g, other, 'img/x.webp').includes(Z2_TEXT.satori.blocked));
 });

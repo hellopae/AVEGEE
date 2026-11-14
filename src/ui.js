@@ -1841,7 +1841,7 @@ function openZoneEventAlert(ev) {
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
   // Z1-EVENTS (owner e8): the elder brother stands at the pier and can be talked to - this window IS that talk (prepare / fight), no cave walk
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
-    openEventAlert(ev.k, title, ev.k === 'westVampireBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
+    openEventAlert(ev.k, title, ev.k === 'westVampireBreach' || ev.k === 'asiaRageBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);   // Z2-EVENTS: Rae N11-1 for Zone 2
     return;
   }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,

@@ -4165,6 +4165,7 @@ const API = {
         for (const key of ev?.winStories || []) this.queueStory(key);
         for (const id of ev?.winNotices || []) this.queueNotice(id);
         if (ev?.guardTest && !this.guard && this.coin >= GUARD.hire) this.hireGuard();
+        if (B.zone === 'asia') this.ensureKinCases();   // the relatives wait for the end of the zone opening (the deva's test)
         // ศึกชายแดนของโซน 2–4 (team:'frontier') ได้ของสุ่มเพิ่มต่อชัยชนะทั้งศึกครั้งเดียว · บอส/เทวดา/แหกคุก ไม่ได้
         B.loot = ev?.team === 'frontier' ? this.winLoot() : '';
         B.talk = ev?.win?.text ? `${ev.win.text}${ev.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}` : `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
@@ -4746,7 +4747,9 @@ const API = {
     }
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
-    if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');   // Z2-EVENTS: the journal window after Nira's scene
+    if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
+    if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
+    if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene
     if (next?.key?.startsWith('deva-th-')) {
       this.devaVisits.th.phase = 'fighting';
       this.startDevaTest();
@@ -5033,6 +5036,7 @@ const API = {
     syncRoster(this);
     if (this.huntMob) { this.huntMob = false; this.player.path = null; this.player.tx = null; }
     this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
+    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him
     return true;
   },
 
@@ -5337,6 +5341,7 @@ const API = {
     this.crew.push(member);
     syncRoster(this);
     this.log(`🤝 ${member.name} เข้าประจำการ ${def.line}`, 'good');
+    this.ensureKinCases();   // Z2-EVENTS: his / her relative's case is unlocked by hiring
     return true;
   },
 };
@@ -5870,6 +5875,9 @@ API.restore = function (d) {
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
   this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
+  // Z2-EVENTS: a save from before the new order may hold the border breach as "pending" from case 6 - it now waits for Wukong (case 7) and case 11
+  const az = this.zoneEvents.asia;
+  if (az?.asiaRageBreach && az.asiaRageBreach !== 'cleared' && az.asiaWukong !== 'cleared') { delete az.asiaRageBreach; delete this.eventMapClosed['asia:asiaRageBreach']; this.refreshZoneEvents('asia'); }
   this.benchLockedGuard(); reconcileArenaDocket(this);
   this.ensureDevaCase();
   reconcileSoulPortraits(this);

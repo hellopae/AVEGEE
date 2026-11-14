@@ -34,7 +34,7 @@ test('closed wave alerts restore their raiders in each zone', () => {
     const g = createGame();
     g.zone = zone;
     g.zoneEvents[zone] ||= {};
-    g.zoneEvents[zone][key] = 'pending';
+    g.zoneEvents[zone][key] = 'pending'; if (zone === 'asia') g.zoneEvents.asia.asiaWukong = 'cleared';   // Z2-EVENTS: the breach comes after Wukong
     g.dismissEventAlert(key, true);
     assert.equal(g.mobs.filter(m => m.eventKey === key).length, 1, zone);
     const copy = createGame(); copy.restore(g.snapshot());
