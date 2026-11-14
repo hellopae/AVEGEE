@@ -1,0 +1,158 @@
+{
+  "zone": "cyberhell",
+  "sheet_size": [
+    1280,
+    1920
+  ],
+  "frame_size": [
+    320,
+    480
+  ],
+  "edited_row": 0,
+  "frame_states": [
+    "base",
+    "glance_viewer_right",
+    "closed",
+    "base_copy"
+  ],
+  "eye_mask_coordinates": "frame-local pixels, origin top-left; filled polygons including boundary, then dilated by 3 pixels (7x7 max filter) to cover eyelid outlines",
+  "eye_mask_polygons": [
+    [
+      [
+        104,
+        252
+      ],
+      [
+        107,
+        247
+      ],
+      [
+        113,
+        243
+      ],
+      [
+        121,
+        243
+      ],
+      [
+        126,
+        248
+      ],
+      [
+        130,
+        255
+      ],
+      [
+        130,
+        262
+      ],
+      [
+        126,
+        267
+      ],
+      [
+        119,
+        269
+      ],
+      [
+        111,
+        266
+      ],
+      [
+        106,
+        262
+      ]
+    ],
+    [
+      [
+        154,
+        255
+      ],
+      [
+        157,
+        248
+      ],
+      [
+        163,
+        243
+      ],
+      [
+        172,
+        244
+      ],
+      [
+        179,
+        249
+      ],
+      [
+        183,
+        257
+      ],
+      [
+        182,
+        264
+      ],
+      [
+        177,
+        269
+      ],
+      [
+        169,
+        272
+      ],
+      [
+        161,
+        270
+      ],
+      [
+        157,
+        264
+      ]
+    ]
+  ],
+  "eye_mask_pixel_count": 1940,
+  "comparison": "exact decoded RGBA, including RGB at alpha=0",
+  "outside_eye_different_pixels_by_frame": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "inside_eye_different_pixels_by_frame": [
+    0,
+    1160,
+    1939,
+    0
+  ],
+  "frame_0_vs_original_different_pixels": 0,
+  "rows_1_to_3_vs_original_different_pixels": 0,
+  "new_visible_rgb_colours_vs_original_frame_0": 0,
+  "original_frame_0_rgba_sha256": "94a977769e02315a64af18c09b052db0e2eb7e1fcff18956c1ca6ab1e82ed3be",
+  "exported_frame_0_rgba_sha256": "94a977769e02315a64af18c09b052db0e2eb7e1fcff18956c1ca6ab1e82ed3be",
+  "original_rows_1_to_3_rgba_sha256": "b19027e7e8a13fe1501f6f0dba79920954f1fc510fa839779406d5dcdde6febc",
+  "exported_rows_1_to_3_rgba_sha256": "b19027e7e8a13fe1501f6f0dba79920954f1fc510fa839779406d5dcdde6febc",
+  "webp_sha256": "57f729dcf90c81e3c8fd871b8641c449026b33e42e76dc0fac87948ee6d9f7b8",
+  "webp_lossless_rgba_roundtrip": true,
+  "runtime_and_review_identical_bytes": true,
+  "gif_size": [
+    320,
+    480
+  ],
+  "gif_pose_sequence": [
+    0,
+    2,
+    0,
+    1
+  ],
+  "gif_durations_ms": [
+    1300,
+    120,
+    1100,
+    320
+  ],
+  "imagegen_calls": 1,
+  "retries": 0,
+  "original_commit": "3bead967c7e3b2d57ec5b6a5eea0a4f64e3a3fe8",
+  "webp_codec": "VP8L",
+  "alpha_unchanged_from_frame_0_in_all_poses": true
+}
