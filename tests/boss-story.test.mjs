@@ -14,25 +14,27 @@ function boss(zone) {
   return g;
 }
 
-test('Zone 1 finale triggers even on a lethal hit, injures the hero and awards flame charge once', () => {
+test('Zone 1 finale triggers even on a lethal hit, injures the hero, plays the story inside the fight, then the fire charge ends it and awards flame charge once', () => {
   const g = boss('th'); const b = g.battle;
   assert.equal(b.foes[0].sp, 'zone-boss');
-  b.foes[0].hp = 1; const before = b.youHp;
+  b.foes[0].hp = 1; const before = b.youHp, mpBefore = g.mp;
   assert.equal(g.battleAct('atk'), true);
-  assert.equal(b.over, 'win'); assert.equal(b.storyFinale, 'th');
-  assert.ok(b.youHp > 0 && b.youHp < before);
+  // Z1-EVENTS fixup: his last move wounds Yama, the fight is HELD for story-th-01..05, the power is not paid out yet
+  assert.equal(b.over, null); assert.equal(b.storyInterlude, 'th'); assert.equal(b.breachFinale, 'ready'); assert.equal(b.finaleMove, 'flameCharge');
+  assert.ok(b.youHp > 0 && b.youHp < before); assert.equal(b.thUltimate.image, 'img/zone-boss-cutscene.webp');
+  assert.ok(!g.abilities.flameCharge); assert.deepEqual(g.storyQueue, []);
+  assert.equal(g.completeBattleInterlude(), true); assert.equal(g.storySeen.th, true);
+  assert.equal(g.runEnemyTurn(), false, 'the foes wait for the closing move');
+  assert.equal(g.breachFinaleStrike(), true);   // Yama's new move (free) closes the fight for real
+  assert.equal(b.over, 'win'); assert.equal(b.breachFinale, 'done'); assert.ok(b.foes.every(f => f.hp === 0)); assert.equal(g.mp, mpBefore, 'the closing move costs no MP');
   assert.equal(g.abilities.flameCharge, true);
-  assert.deepEqual(g.storyQueue, [{key:'th',reward:'flameCharge',stage:'comic'}]);
+  assert.deepEqual(g.storyQueue.filter(p => p.key === 'th'), [], 'the story is not queued a second time');
   assert.equal(g.battleAct('atk'), false);
   g.endBattle();
   const loaded = createGame(); loaded.restore(g.snapshot());
-  assert.equal(loaded.storyQueue[0].key, 'th');
-  loaded.storyQueue[0].stage = 'reward';
-  const reloaded = createGame(); reloaded.restore(loaded.snapshot());
-  assert.equal(reloaded.storyQueue[0].stage, 'reward');
-  reloaded.completeStory(); reloaded.queueStory('th','flameCharge');
-  assert.equal(reloaded.storyQueue.some(p=>p.key==='th'),false);
-  assert.equal(reloaded.storyQueue.some(p=>p.key==='boss-guide-th-praise'),true);
+  assert.equal(loaded.storySeen.th, true); assert.equal(loaded.abilities.flameCharge, true);
+  assert.equal(loaded.storyQueue.some(p=>p.key==='th'),false);
+  assert.equal(loaded.storyQueue.some(p=>p.key==='boss-guide-th-praise'),true);
 });
 
 test('Zone 2 finale saves Nira, unlocks Rage and allows a visit during three turns of rest', () => {

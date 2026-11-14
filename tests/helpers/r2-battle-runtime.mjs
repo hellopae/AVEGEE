@@ -23,7 +23,7 @@ export function commandHarness(loader) {
     ACTION_CUT_MS:1300,COUNTER_WAIT_MS:2000,DEFEND_STANCE_MS:700,ACTION_CUTSCENE_PRESENTATION:{},
     esc:String,crewCutsceneSrc:()=>null,actionCutsceneSrc:k=>`img/${k}.webp`,cutsceneSource:k=>`img/${k}.webp`,
     actionCutsceneLabel:k=>k,fitCutsceneImage(){},vitalsOf:()=>({}),showHeals(){},powerSound(){},refresh(){},paint(){},
-    startActionCue(){},startMoveFx(){},finishWave(){},sfx(){},camera:{cue(){}},
+    startActionCue(){},startMoveFx(){},finishWave(){},holdFinaleExit(){},sfx(){},camera:{cue(){}},
     document:{createElement:()=>({dataset:{},classList:{add(){}},prepend(image){this.image=image;},remove(){this.isConnected=false;}})},
     setTimeout(fn,ms){const key=++id;timers.set(key,{fn,ms});return key;},clearTimeout(key){timers.delete(key);}});
   vm.runInContext(`let phase=null,phaseAt=0,phaseTimer=0,fxNow=null,fxHandled=false,commandMenuOpen=true;\n${cut}\n${command}\nglobalThis.execute=executeCommand;globalThis.phaseNow=()=>phase;`,ctx);

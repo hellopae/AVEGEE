@@ -325,7 +325,8 @@ test('สรุปรางวัล: แพ้ไม่มี · วิญญ�
   assert.ok(r.coin >= 160, 'เบี้ยกรรมรางวัลอีเวนต์');
   assert.deepEqual(r.abilities, ['flameCharge']);
   assert.equal(r.exp, 60);
-  assert.ok(boss.storyQueue.some(p => p.key === 'th' && p.reward === 'flameCharge'), 'คิวเรื่องราว+พลังเดิมของ 28-0 ไม่ถูกแทนที่');
+  // Z1-EVENTS fixup: story-th-01..05 now play INSIDE the fight (before the closing move), so the win does not queue them a second time
+  assert.equal(boss.storySeen.th, true, 'เรื่องราวโซน 1 เล่นกลางศึกแล้ว'); assert.ok(!boss.storyQueue.some(p => p.key === 'th'), 'ไม่เข้าคิวซ้ำหลังชนะ');
 });
 
 test('สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป', () => {

@@ -88,7 +88,7 @@ import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate,
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
 import { GRAPHICS_MODES, getGraphicsMode, setGraphicsMode, frameDue } from './graphics-setting.js';   // GFX-1110
-import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
+import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK, bossWalkPosition } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk, findPath } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -218,7 +218,9 @@ function updateMapCamera(now) {
   mapCam.z += (target - mapCam.z) * blend;
   // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
   const court=bossJusticeCase(g),escortView=court&&['escort','punishment','return','sentenceScene'].includes(court.phase)?bossJusticeActors(g).find(a=>a.id==='justice-boss'):null;
-  const focus=g.mapTravel?.focus||escortView||g.player;
+  // Z1-EVENTS fixup (case 15): while the elder brother walks in from the lower border gate the camera follows HIM, not Yama
+  const brotherView = g.bossWalk?.arrival ? (([x, y]) => ({ x, y }))(bossWalkPosition(g.bossWalk, Date.now())) : null;
+  const focus=g.mapTravel?.focus||escortView||brotherView||g.player;
   const wantX = mapCam.level > 0 ? focus.x : SCENE.w / 2, wantY = mapCam.level > 0 ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
@@ -2657,11 +2659,11 @@ function cutsceneSource(k, ultimate = null) {
   if (crewKey === 'nira') return niraHealingCutscene(g.zone);
   return ultimate?.image || (crewKey ? crewCutsceneSrc(crewKey)?.src : actionCutsceneSrc(k));
 }
-function playActionCutscene(k, ultimate = null) {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
+function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverride = '') {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
-  const src = ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));
+  const src = imageOverride || ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));   // imageOverride: Kittanate's picture for one story moment (case 15 closing move) - same card, same right-facing rule
   if (!src || !dlg.open) return false;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
@@ -2675,7 +2677,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
   const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
-  const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
+  const moveName = nameOverride || ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
   if (ultimate && g.battle) {   // BATTLE-FX: dark vignette · speed lines · hit flash · shaking picture · big name · charge-and-boom sound
     cut.classList.add('boss-cut');
@@ -3812,6 +3814,7 @@ function openBattle(after) {
     const sources = g.battleActors().flatMap(actor => actor.id === 'you'
       ? ['fire',...POWERS.filter(p => ['ice','hypno'].includes(p.k) && !g.powerLocked(p)).map(p => p.k),...['flameCharge','windFan','rage','valkyrieSpear','cooldownClock'].filter(k => g.abilities?.[k])].map(k => actionCutsceneSrc(k))
       : [actor.k === 'nira' ? niraHealingCutscene(g.zone) : crewCutsceneSrc(crewBattleKey(actor))?.src]);
+    if (g.battle?.eventKey === 'thBorderBoss') sources.push('img/zone-boss-cutscene.webp', ...BREACH_ART.flameCharge);   // case 15: his last move + Yama's closing move
     void battleCutscenes.warm([...sources, ...g.battleActors().flatMap(a => [skillForActor(a), ...questSkillsForActor(a).filter(k => g.skillUnlocked(a, k))].flatMap(k => skillScenes(k, a.homeZone === 'global' ? g.zone : a.homeZone || g.zone)))]);
   };
   warmBattleCutscenes();
@@ -3844,7 +3847,7 @@ function openBattle(after) {
   };
 
   let commandPanel = null, commandPanelActor = null;
-  let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false;
+  let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false, finaleCutTimer = 0;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
@@ -4127,17 +4130,38 @@ function openBattle(after) {
     if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
     else g.advanceFrontierBreachWave();
   };
+  // Z1-EVENTS fixup: after a story finale (border boss team move / case 15 fire charge) the exit button waits for the impact effect too, then the box is painted once more
+  let finaleExitTimer = 0;
+  const holdFinaleExit = b => {
+    if (b?.breachFinale !== 'done' || fxIdle()) return;
+    clearInterval(finaleExitTimer); let n = 0;
+    finaleExitTimer = setInterval(() => {
+      if (g.battle !== b || !dlg.open || fxIdle() || ++n > 40) { clearInterval(finaleExitTimer); if (g.battle === b && dlg.open) paint(); }
+    }, 150);
+  };
   const paint = () => {
     const b = g.battle;
     if (!b || storyActive) return;
     warmBattleCutscenes();
+    if (b.storyInterlude === 'th' && (phase || dash)) return;   // case 15: let Yama's last swing finish first; paint() runs again when it ends
+    if (b.storyInterlude === 'th' && b.thUltimate && !b.thUltimateShown) {
+      // case 15: his last move (zone-boss-cutscene) wounds Yama, THEN story-th-01..05 plays inside the fight
+      b.thUltimateShown = true; storyActive = true;
+      void battleCutscenes.wait(b.thUltimate.image).then(() => {   // the picture must be decoded or the card mounts without it
+        if (g.battle !== b || !dlg.open) { storyActive = false; return; }
+        if (playActionCutscene('boss', b.thUltimate)) { sfx('hurt'); camera.flash({ alpha:.35 }); }
+        clearTimeout(phaseTimer);
+        phaseTimer = setTimeout(() => { storyActive = false; if (g.battle === b && dlg.open) paint(); }, ACTION_CUT_MS + 250);
+      });
+      return;
+    }
     if (b.storyInterlude) {
       const key = b.storyInterlude;
       storyActive = true;
       const overlay = document.createElement('div');
       overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
       renderStoryComic(overlay, storyOf(key), () => {
-        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
+        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock' || key === 'th') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
         overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
       });
       return;
@@ -4306,7 +4330,10 @@ function openBattle(after) {
     // G3b — การประลองชายแดน: บอสพูดบทแพ้/ชนะหลังจบ (ชนะครั้งแรกเท่านั้น — ประลองซ้ำไม่มีบทใหม่) · ศึกบอสตัวเดียวไม่มีกล่องบทพูดกลางจอ จึงแสดงตรงนี้
     const challengeLine = b.challenge && b.over && (b.over === 'lose' || !b.rematch)
       ? `<p class="challenge-boss-line"><b>${esc(BOSS_NAMES[b.zone].frontier)}</b> “${esc(t(`challenge.${b.zone}.${b.over === 'win' ? 'win' : 'lose'}`))}”${b.over === 'lose' ? `<small>${esc(t('challenge.lose.note'))}</small>` : ''}</p>` : '';
-    const done = b.over
+    // Z1-EVENTS fixup: while the story's closing move is still playing (border boss team move, case 15 fire charge) the exit button waits - it used to sit on top of the animation.
+    // Only these finales are held, and only until the animation ends (phase/dash/skillView clear, or the 6 s phase guard resets them), so the old "dead end" cannot come back.
+    const finaleBusy = b.breachFinale === 'done' && !!(phase || dash || skillView || !fxIdle());
+    const done = b.over && !finaleBusy
       ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     if (fleeConfirm && (b.over || phase || prepOn || fleeWhy)) fleeConfirm = false;
@@ -4736,6 +4763,7 @@ function openBattle(after) {
       });
     };
     const executeSkill = async (action, recipient) => {
+      if (g.battle?.storyInterlude === 'th') return;   // case 15: the story is on screen
       const b = g.battle, who = g.battleActors().find(a => a.id === (b.actorId || 'you'));
       const before = vitalsOf(g), initialFoes = b.foes.map(f => ({...f}));
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
@@ -4779,10 +4807,10 @@ function openBattle(after) {
       b.dmg = allDamage; b.mid = allMid; skillView = null; phase = null; fxNow = null;
       showHeals(before,0); g.finishBattleCommand(); commandMenuOpen = true;
       if (b.storyFinale) { finish(); return; }
-      finishWave(); paint(); refresh();
+      finishWave(); paint(); holdFinaleExit(b); refresh();
     };
     const executeCommand = async (action, recipient = 'you') => {
-      if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
+      if (phase || g.battle?.storyInterlude === 'th') return;   // case 15: the story is on screen (or about to be) - the closing move waits for it                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       if (COMBAT_SKILLS[action]) { await executeSkill(action,recipient); return; }
       fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
@@ -4844,8 +4872,12 @@ function openBattle(after) {
       paint();
       let cutMs = 0;
       if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS,()=>camera.cue('idle'),battleCutscenes.image(niraHealingCutscene(g.zone))); cutMs = ACTION_CUT_MS; }
+      else if (k === 'flameCharge' && nb.finaleMove === 'flameCharge') {   // case 15 closing move: the two drawings, one after the other
+        cutMs = playActionCutscene(action, null, BREACH_ART.flameCharge[0], 'พุ่งชนเพลิง') ? ACTION_CUT_MS * 2 : 0;
+        if (cutMs) { clearTimeout(finaleCutTimer); finaleCutTimer = setTimeout(() => { if (g.battle === nb && dlg.open) playActionCutscene(action, null, BREACH_ART.flameCharge[1], 'พุ่งชนเพลิง'); }, ACTION_CUT_MS); }
+      }
       else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
-      startActionCue(cutMs); startMoveFx('you', k, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs);
+      startActionCue(cutMs); startMoveFx('you', k, cutMs ? cutMs - 120 : 0, cutMs);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -4853,7 +4885,7 @@ function openBattle(after) {
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
         // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
         const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.crew > 0 || nb.dmg.confuseSelf > 0));
-        if (!counter) { phase = null; fxNow = null; g.finishBattleCommand(); commandMenuOpen=true; finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
+        if (!counter) { phase = null; fxNow = null; g.finishBattleCommand(); commandMenuOpen=true; finishWave(); paint(); holdFinaleExit(nb); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
         // หน่วงเพิ่มอีก ~2 วิ ก่อนเริ่มจังหวะเขาสวนกลับ ผู้เล่นต้องเห็นดาเมจ/แถบเลือดของตัวเองนิ่งอยู่ก่อน
@@ -4874,7 +4906,7 @@ function openBattle(after) {
             if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
           }, nb.ultimate ? ACTION_CUT_MS + 120 : 780);
         }, COUNTER_WAIT_MS);
-      }, ACTION_CUT_MS + 120);
+      }, Math.max(ACTION_CUT_MS, cutMs) + 120);
     };
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
@@ -4882,7 +4914,7 @@ function openBattle(after) {
     // Z1-EVENTS (case 9): the new team move was just unlocked (window closed) -> Yama uses it to close the border boss fight, whoever's turn it was
     if(b.breachFinale==='ready'&&!b.storyInterlude&&!phase&&!b.over&&!b.commandBusy&&!finaleScheduled&&!userPaused&&!pauseDlg.open){
       finaleScheduled=true;
-      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready')executeSkill('teamJudgment','you');},650);
+      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready'){if(b.finaleMove==='flameCharge'){b.actorId='you';b.selectedFoeId=b.foes.find(f=>f.boss&&f.hp>0)?.id||b.selectedFoeId;executeCommand('flameCharge');}else executeSkill('teamJudgment','you');}},650);
     }
     if(currentTurn?.side==='foe'&&b.breachFinale!=='ready'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;

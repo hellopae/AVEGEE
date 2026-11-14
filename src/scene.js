@@ -237,6 +237,14 @@ function pointOnPath(path, progress) {
   return path[path.length - 1];
 }
 
+/** Where the elder brother is on the town map while g.bossWalk plays (case 15: along the real path from the lower border gate; older walks: straight line).
+ *  Shared by the painter and the map camera so the camera can follow him. */
+export function bossWalkPosition(walk, now = Date.now()) {
+  const progress = Math.min(1, Math.max(0, (now - walk.started) / walk.duration));
+  if (walk.path) return pointOnPath(walk.path, progress);
+  return [walk.from[0] + (walk.to[0] - walk.from[0]) * progress, walk.from[1] + (walk.to[1] - walk.from[1]) * progress];
+}
+
 export function afterlifeWalkPosition(walk) {
   return soulWalkPosition(walk);          // ชุด 29C: หักช่วงที่วิญญาณยืนรอยมทูตมารับ (walk.delay) ออกให้แล้ว
 }

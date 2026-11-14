@@ -94,7 +94,7 @@
   },
   {
    "before": "    if (b?.storyInterlude !== 'west-hypnosis') return false;\n",
-   "after": "    if (!['west-hypnosis','th-team-judgment-unlock'].includes(b?.storyInterlude)) return false;\n"
+   "after": "    if (!['west-hypnosis','th-team-judgment-unlock','th'].includes(b?.storyInterlude)) return false;\n    if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again\n"
   },
   {
    "before": "    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>\n",
@@ -126,15 +126,15 @@
   },
   {
    "before": "",
-   "after": "  },\n  /** Z1-EVENTS (case 9): the border boss fight closes with Yama's new team move, whoever's turn it was. Free and always ready (see skillWhy). */\n  breachFinaleStrike() {\n    const b = this.battle, boss = b?.foes.find(f => f.boss && f.hp > 0);\n    if (!b || b.over || b.commandBusy || b.breachFinale !== 'ready' || !boss) return false;\n    b.actorId = 'you'; b.selectedFoeId = boss.id;\n    b.initiativeAction = !!b.turnQueue;\n    let ok; try { ok = this.battleAct('teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }\n    if (!ok) return false;\n    b.commandBusy = true; b.command = null; return true;\n"
+   "after": "  },\n  /** Z1-EVENTS (case 9): the border boss fight closes with Yama's new team move, whoever's turn it was. Free and always ready (see skillWhy). */\n  breachFinaleStrike() {\n    const b = this.battle, boss = b?.foes.find(f => f.boss && f.hp > 0);\n    if (!b || b.over || b.commandBusy || b.breachFinale !== 'ready' || !boss) return false;\n    b.actorId = 'you'; b.selectedFoeId = boss.id;\n    b.initiativeAction = !!b.turnQueue;\n    let ok; try { ok = this.battleAct(b.finaleMove || 'teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }\n    if (!ok) return false;\n    b.commandBusy = true; b.command = null; return true;\n"
   },
   {
    "before": "",
-   "after": "    // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).\n    if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {\n      if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;\n      what = 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };\n    }\n"
+   "after": "    // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).\n    if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {\n      // The UI keeps the comic on screen until it is read (ui.js ignores commands while b.storyInterlude is set); a plain API press (tests / simulations) goes straight to the closing move.\n      if (B.storyInterlude === 'th') { B.storyInterlude = null; this.storySeen.th = true; }\n      if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;\n      what = B.finaleMove || 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };\n    }\n"
   },
   {
    "before": "",
-   "after": "    if (B.breachFinale === 'ready' && what !== 'teamJudgment') return false;   // foes wait\n"
+   "after": "    if (B.breachFinale === 'ready' && what !== (B.finaleMove || 'teamJudgment')) return false;   // foes wait\n"
   },
   {
    "before": "      this.mp -= newSkill.mp;\n",
@@ -143,6 +143,14 @@
   {
    "before": "",
    "after": "      if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }\n"
+  },
+  {
+   "before": "      if (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge) return false;\n",
+   "after": "      const finale = B.breachFinale === 'ready' && B.finaleMove === 'flameCharge';   // Z1-EVENTS (case 15): the story's closing move - free, the power is paid out with the win\n      if (!finale && (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge)) return false;\n      if (finale) { dmg = Math.max(1, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done'; }\n      else {\n"
+  },
+  {
+   "before": "      dmg = 65 + (this.level - 1) * 3;\n      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);\n",
+   "after": "      dmg = 65 + (this.level - 1) * 3;\n      }\n      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);\n"
   },
   {
    "before": "",
@@ -167,6 +175,10 @@
   {
    "before": "",
    "after": "    if (breachFinaleGate(false)) return true;\n"
+  },
+  {
+   "before": "    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {\n",
+   "after": "    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && !B.breachFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {\n      if (storyZone === 'th' && B.kind === 'zoneEvent') {\n        // Z1-EVENTS fixup (case 15): his last move wounds Yama (boss cutscene) -> story-th-01..05 inside the fight -> Yama's new move\n        // \"พุ่งชนเพลิง\" (skill-yama-fire-charge-cut-01/02) ends the fight for real -> reward summary -> the \"new power\" window.\n        // The fight is held (foes wait) exactly like the border boss finale; B.breachFinale === 'ready' + B.finaleMove say what closes it.\n        const hurt = Math.min(Math.max(0, B.youHp - 1), 34);\n        B.youHp -= hurt; B.dmg.you = hurt;\n        storyBoss.hp = Math.max(1, storyBoss.hp);\n        B.breachFinale = 'ready'; B.finaleMove = 'flameCharge'; B.actorId = 'you'; B.selectedFoeId = storyBoss.id;\n        B.thUltimate = { name:BOSS_ULTIMATE.th?.name || 'ดาบเพลิง', image:BOSS_ULTIMATE.th?.image || 'img/zone-boss-cutscene.webp', by:storyBoss.who, damage:hurt };\n        B.storyInterlude = 'th';\n        say('พี่ใหญ่ใช้ดาบเพลิงจนยมบาทน้อยบาดเจ็บ — ยมบาทน้อยรวบพลังไฟแล้วพุ่งชน');\n        this.onChange();\n        return true;\n      }\n"
   },
   {
    "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",

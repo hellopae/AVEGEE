@@ -5,11 +5,12 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS, ZONE_EVENTS, GUARD, FRONTIER } from '../src/data.js';
 import { bossJusticeCase, bossJusticeAnswer, interrogateBoss, mirrorBoss, sentenceBoss, bossJusticeActors, ARENA_STORY } from '../src/boss-justice.js';
-import { SITA, NOTICES, TH_STORY_CASES, Z1_STORIES, BREACH_FINALE_AT } from '../src/z1-events.js';
+import { SITA, NOTICES, TH_STORY_CASES, Z1_STORIES, BREACH_FINALE_AT, BREACH_ART } from '../src/z1-events.js';
 import { storyOf, ABILITY_REWARDS } from '../src/story.js';
 import { COMBAT_SKILLS } from '../src/combat-skills.js';
 import { waitingEvents } from '../src/npc-stand.js';
 import { dungeonEnemyPositions } from '../src/dungeon-view.js';
+import { bossWalkPosition } from '../src/scene.js';
 globalThis.document = { documentElement:{} };
 globalThis.Image = class { set src(value) {} };
 
@@ -193,11 +194,14 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   const brother = fight.foes.find(f => f.boss); brother.hp = Math.floor(brother.maxHp * .25); g.battle.selectedFoeId = brother.id;
   const hpBefore = g.battle.youHp;
   assert.equal(g.battleAct('atk'), true);
-  assert.equal(g.battle.over, 'win'); assert.equal(g.battle.storyFinale, 'th'); assert.ok(g.battle.youHp < hpBefore, 'his last move wounds Yama');
+  assert.equal(g.battle.over, null, 'fixup: the fight is held for the story, it is not over yet'); assert.equal(g.battle.storyInterlude, 'th'); assert.ok(g.battle.youHp < hpBefore, 'his last move wounds Yama');
+  assert.deepEqual(storyOf('th').pages.map(p => p.image), [1, 2, 3, 4, 5].map(n => `img/story-th-0${n}.webp`));
+  assert.ok(!g.abilities.flameCharge, 'the new power is paid out with the win'); assert.equal(g.completeBattleInterlude(), true);
+  assert.deepEqual(BREACH_ART.flameCharge, ['img/z1-events/skill-yama-fire-charge-cut-01.webp', 'img/z1-events/skill-yama-fire-charge-cut-02.webp']);
+  assert.equal(g.breachFinaleStrike(), true); assert.equal(g.battle.over, 'win');
   g.endBattle(); steady(g);
   assert.equal(g.bossCleared.th, true); assert.equal(g.abilities.flameCharge, true);
-  const th = g.storyQueue.find(p => p.key === 'th'); assert.equal(th.reward, 'flameCharge');
-  assert.deepEqual(storyOf('th').pages.map(p => p.image), [1, 2, 3, 4, 5].map(n => `img/story-th-0${n}.webp`));
+  assert.ok(!g.storyQueue.some(p => p.key === 'th'), 'story-th-01..05 were played inside the fight'); assert.equal(g.storySeen.th, true);
   // ---- owner 14 Nov: no court for the elder brother; he waits at the border and takes Yama + Nira to the next land
   assert.equal(bossJusticeCase(g), null, 'the elder brother is not tried'); assert.equal(g.bossJustice?.active || null, null);
   drainStories(g); g = reload(g);
@@ -292,4 +296,14 @@ test('old saves: no repeat, no hang', async t => {
     assert.equal(g.storyCaseOwed(), null); assert.equal(g.queue.some(s => s.case === 'nurse'), false);
     judgeNext(g); judgeNext(g); assert.equal(g.zoneEventStatus('frontierBreach'), 'pending');
   });
+});
+
+test('fixup: the map camera has the brother\'s real position while he walks in from the lower gate', () => {
+  const path = [[0, 0], [100, 0], [100, 100]];
+  const walk = { started:1000, duration:4000, from:[0, 0], to:[100, 100], path, arrival:true };
+  assert.deepEqual(bossWalkPosition(walk, 1000), [0, 0]);
+  assert.deepEqual(bossWalkPosition(walk, 3000), [100, 0], 'half-way = half the path length (follows the real path, not the straight line)');
+  assert.deepEqual(bossWalkPosition(walk, 99999), [100, 100]);
+  const straight = { started:0, duration:100, from:[0, 0], to:[10, 20] };
+  assert.deepEqual(bossWalkPosition(straight, 50), [5, 10]);
 });

@@ -3414,7 +3414,8 @@ const API = {
   },
   completeBattleInterlude() {
     const b=this.battle;
-    if (!['west-hypnosis','th-team-judgment-unlock'].includes(b?.storyInterlude)) return false;
+    if (!['west-hypnosis','th-team-judgment-unlock','th'].includes(b?.storyInterlude)) return false;
+    if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again
     b.storyInterlude=null; this.save(); return true;
   },
   startDevaTest() {
@@ -3635,7 +3636,7 @@ const API = {
     if (!b || b.over || b.commandBusy || b.breachFinale !== 'ready' || !boss) return false;
     b.actorId = 'you'; b.selectedFoeId = boss.id;
     b.initiativeAction = !!b.turnQueue;
-    let ok; try { ok = this.battleAct('teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }
+    let ok; try { ok = this.battleAct(b.finaleMove || 'teamJudgment', { actorId:'you', recipientId:'you' }); } finally { delete b.initiativeAction; }
     if (!ok) return false;
     b.commandBusy = true; b.command = null; return true;
   },
@@ -3654,11 +3655,13 @@ const API = {
     if (typeof what !== 'string') return false;
     // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).
     if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {
+      // The UI keeps the comic on screen until it is read (ui.js ignores commands while b.storyInterlude is set); a plain API press (tests / simulations) goes straight to the closing move.
+      if (B.storyInterlude === 'th') { B.storyInterlude = null; this.storySeen.th = true; }
       if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;
-      what = 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };
+      what = B.finaleMove || 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };
     }
     if (!B || B.over || B.pendingWave || B.storyInterlude === 'west-hypnosis' || B.commandBusy) return false;
-    if (B.breachFinale === 'ready' && what !== 'teamJudgment') return false;   // foes wait
+    if (B.breachFinale === 'ready' && what !== (B.finaleMove || 'teamJudgment')) return false;   // foes wait
     const enemyOnly=command?.enemyOnly===true&&B.initiativeAction===true;
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
     const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
@@ -3837,9 +3840,13 @@ const API = {
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'flameCharge') {
-      if (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge) return false;
+      const finale = B.breachFinale === 'ready' && B.finaleMove === 'flameCharge';   // Z1-EVENTS (case 15): the story's closing move - free, the power is paid out with the win
+      if (!finale && (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge)) return false;
+      if (finale) { dmg = Math.max(1, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done'; }
+      else {
       this.mp -= BATTLE.mpCost.charge;
       dmg = 65 + (this.level - 1) * 3;
+      }
       say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'windFan') {
@@ -4129,7 +4136,21 @@ const API = {
     const storyZone = B.kind === 'zoneEvent' && B.eventKey === 'thBorderBoss' ? 'th'
       : B.kind === 'zoneBoss' && ['th','asia'].includes(B.zone) ? B.zone : null;
     const storyBoss = storyZone && (B.foes.find(f => f.boss) || (B.kind === 'zoneBoss' ? B.foes[0] : null));
-    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {
+    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && !B.breachFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {
+      if (storyZone === 'th' && B.kind === 'zoneEvent') {
+        // Z1-EVENTS fixup (case 15): his last move wounds Yama (boss cutscene) -> story-th-01..05 inside the fight -> Yama's new move
+        // "พุ่งชนเพลิง" (skill-yama-fire-charge-cut-01/02) ends the fight for real -> reward summary -> the "new power" window.
+        // The fight is held (foes wait) exactly like the border boss finale; B.breachFinale === 'ready' + B.finaleMove say what closes it.
+        const hurt = Math.min(Math.max(0, B.youHp - 1), 34);
+        B.youHp -= hurt; B.dmg.you = hurt;
+        storyBoss.hp = Math.max(1, storyBoss.hp);
+        B.breachFinale = 'ready'; B.finaleMove = 'flameCharge'; B.actorId = 'you'; B.selectedFoeId = storyBoss.id;
+        B.thUltimate = { name:BOSS_ULTIMATE.th?.name || 'ดาบเพลิง', image:BOSS_ULTIMATE.th?.image || 'img/zone-boss-cutscene.webp', by:storyBoss.who, damage:hurt };
+        B.storyInterlude = 'th';
+        say('พี่ใหญ่ใช้ดาบเพลิงจนยมบาทน้อยบาดเจ็บ — ยมบาทน้อยรวบพลังไฟแล้วพุ่งชน');
+        this.onChange();
+        return true;
+      }
       B.storyFinale = storyZone;
       if (storyZone === 'th') {
         const hurt = Math.min(Math.max(0, B.youHp - 1), 34);

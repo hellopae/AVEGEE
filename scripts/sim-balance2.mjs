@@ -105,6 +105,8 @@ export function simulate(options) {
     const initial=b.foes.map(({hp,atk,boss})=>({hp,atk,boss:!!boss}));
     let actions=0,round=1,completedRounds=0,healing=0,absorbed=0,ultimates=0,lastUlt=b.ultimateLastTurn;
     while(!b.over&&actions<1000) {
+      // Z1-EVENTS: the story holds the fight at the border boss's last quarter; the closing move (breach: team move, case 15: fire charge) ends it, whoever's turn it was
+      if(b.breachFinale==='ready'){if(b.storyInterlude==='th')g.completeBattleInterlude();if(!g.breachFinaleStrike())throw Error('finale rejected');actions++;g.finishBattleCommand();continue;}
       const turn=g.beginBattleTurns();if(!turn)throw Error('no active turn');
       round=b.turnQueue.round;
       if(turn.side==='foe') {

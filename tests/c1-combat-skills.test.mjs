@@ -211,7 +211,7 @@ for (const reduced of [false,true]) test(`C1 skip/duplicate animation completion
       options.onHit();assert.equal(context.skillView.foes[0].hp,visible,'duplicate callback does not repeat the visual hit');
       options.onFinish();options.onFinish();
     },
-    startMoveFx(){},showHeals(){},finishWave(){},refresh(){},finish(){},setTimeout,Date};
+    startMoveFx(){},showHeals(){},finishWave(){},holdFinaleExit(){},refresh(){},finish(){},setTimeout,Date};
   const execute=vm.runInNewContext(ui.slice(start,end)+'\nexecuteSkill;',context);
   const before=g.battle.foes[0].hp;await execute('teamJudgment','you');
   assert.equal(hits,reduced?0:3);assert.equal(finishes,1);assert.equal(before-g.battle.foes[0].hp,g.battle.comboHits.reduce((sum,h)=>sum+h.dealt,0));
