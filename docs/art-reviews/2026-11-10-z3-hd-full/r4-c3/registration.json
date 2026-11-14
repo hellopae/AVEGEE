@@ -1,0 +1,127 @@
+{
+  "chunk": "r4-c3",
+  "coordinateSystem": "rects [x0,y0,x1,y1], exclusive max; affine native pixels -> context origin or master pixels",
+  "outerRectPx1x": [
+    1984,
+    3008,
+    3136,
+    3277
+  ],
+  "chunkRectPx1x": [
+    2048,
+    3072,
+    3072,
+    3277
+  ],
+  "parts": [
+    {
+      "part": "q11",
+      "coreRectPx1x": [
+        2048,
+        3072,
+        2560,
+        3277
+      ],
+      "contextRectPx1x": [
+        1984,
+        3008,
+        2624,
+        3277
+      ],
+      "nativeFile": "q11-native.webp",
+      "nativeSize": [
+        1935,
+        813
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.3306462490991203,
+          -0.0002836930657603523,
+          0.15911780681824145
+        ],
+        [
+          -0.00021731322952663065,
+          0.33117546170094864,
+          0.5504715590297513
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3306462490991203,
+          -0.0002836930657603523,
+          1984.1591178068181
+        ],
+        [
+          -0.00021731322952663065,
+          0.33117546170094864,
+          3008.5504715590296
+        ]
+      ],
+      "fit": {
+        "matches": 348,
+        "inliers": 305,
+        "inlierResidualMaxPx1x": 3.1408755779266357,
+        "inlierResidualP95Px1x": 1.9417924880981445,
+        "allMatchResidualP95Px1x": 62.07715606689453,
+        "contextCoverage": 0.9965961895910781
+      }
+    },
+    {
+      "part": "q12",
+      "coreRectPx1x": [
+        2560,
+        3072,
+        3072,
+        3277
+      ],
+      "contextRectPx1x": [
+        2496,
+        3008,
+        3136,
+        3277
+      ],
+      "nativeFile": "q12-native.webp",
+      "nativeSize": [
+        1934,
+        813
+      ],
+      "nativeToContextPx1x": [
+        [
+          0.3309436020758369,
+          3.992828573928445e-05,
+          0.10575876213088782
+        ],
+        [
+          5.5034639308442145e-05,
+          0.3288589911098339,
+          0.2363207820085438
+        ]
+      ],
+      "nativeToMasterPx1x": [
+        [
+          0.3309436020758369,
+          3.992828573928445e-05,
+          2496.105758762131
+        ],
+        [
+          5.5034639308442145e-05,
+          0.3288589911098339,
+          3008.2363207820085
+        ]
+      ],
+      "fit": {
+        "matches": 332,
+        "inliers": 320,
+        "inlierResidualMaxPx1x": 2.6561851501464844,
+        "inlierResidualP95Px1x": 1.5619689226150513,
+        "allMatchResidualP95Px1x": 2.1537082195281982,
+        "contextCoverage": 0.9925650557620818
+      }
+    }
+  ],
+  "borderMode": "BORDER_REFLECT_101 for samples outside native support; context coverage recorded per part",
+  "outputScale": 2,
+  "externalChunkBlend": false,
+  "colorCorrectionApplied": false,
+  "sharpeningApplied": false
+}

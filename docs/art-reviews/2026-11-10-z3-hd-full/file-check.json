@@ -1,0 +1,92 @@
+{
+  "scope": "file completeness, decoding, recorded dimensions, lossless WebP, storage and call budget only",
+  "nativeAnd2xImages": [
+    {
+      "file": "r4-c2/r4-c2-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c2/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c2/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c3/r4-c3-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c3/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c3/q12-native.webp",
+      "size": [
+        1934,
+        813
+      ]
+    },
+    {
+      "file": "r4-c4/r4-c4-2x.webp",
+      "size": [
+        2048,
+        410
+      ]
+    },
+    {
+      "file": "r4-c4/q11-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c4/q12-native.webp",
+      "size": [
+        1935,
+        813
+      ]
+    },
+    {
+      "file": "r4-c5/r4-c5-2x.webp",
+      "size": [
+        1638,
+        410
+      ]
+    },
+    {
+      "file": "r4-c5/q11-native.webp",
+      "size": [
+        1774,
+        887
+      ]
+    },
+    {
+      "file": "r4-c5/q12-native.webp",
+      "size": [
+        1663,
+        946
+      ]
+    }
+  ],
+  "imageGenCalls": 8,
+  "bytesAtCheck": 31604910,
+  "qualityApproval": null
+}

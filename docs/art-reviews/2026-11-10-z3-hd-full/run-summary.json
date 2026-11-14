@@ -1,0 +1,220 @@
+{
+  "task": "Z234-HD-FULL zone3 set5/5",
+  "chunks": [
+    {
+      "chunk": "r4-c2",
+      "state": "drawn-needs-review",
+      "parts": 2,
+      "nativeSizes": [
+        [
+          1935,
+          813
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 37.19166626630121,
+        "output": 6869.1339020435635,
+        "ratio": 184.69551358250325,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 2.865748167037964,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null,
+      "visualNotes": [
+        "Fissures and mortar contrast are stronger than v1. Inspect west-style consistency with adjacent chunks."
+      ],
+      "sharpnessGameZoom": {
+        "method": "Pillow Lanczos directly from master v1 and assembled 2x to equal 2.8 screen pixels/world unit; grayscale Laplacian variance ksize=1",
+        "roi": "full chunk",
+        "screenSize": [
+          2240,
+          448
+        ],
+        "baseline": 26.77920020278619,
+        "output": 4155.5765345936225,
+        "ratio": 155.17926237995948,
+        "target": 10
+      }
+    },
+    {
+      "chunk": "r4-c3",
+      "state": "drawn-needs-review",
+      "parts": 2,
+      "nativeSizes": [
+        [
+          1935,
+          813
+        ],
+        [
+          1934,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 31.70983582430124,
+        "output": 7458.589315865969,
+        "ratio": 235.21374746916803,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.1408755779266357,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null,
+      "visualNotes": [
+        "q11 all-match residual P95 is 62.08px. Repeated paving/rail features include rejected correspondences. Inspect the corridor rails and snow boundary.",
+        "The seam crosses the paved corridor close to the right rail. Inspect continuous paving and post shapes at game zoom."
+      ],
+      "sharpnessGameZoom": {
+        "method": "Pillow Lanczos directly from master v1 and assembled 2x to equal 2.8 screen pixels/world unit; grayscale Laplacian variance ksize=1",
+        "roi": "full chunk",
+        "screenSize": [
+          2240,
+          448
+        ],
+        "baseline": 22.87567856538698,
+        "output": 4431.3306470186,
+        "ratio": 193.7136262145077,
+        "target": 10
+      }
+    },
+    {
+      "chunk": "r4-c4",
+      "state": "drawn-needs-review",
+      "parts": 2,
+      "nativeSizes": [
+        [
+          1935,
+          813
+        ],
+        [
+          1935,
+          813
+        ]
+      ],
+      "outputSize": [
+        2048,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 50.952136386574054,
+        "output": 8019.517192038081,
+        "ratio": 157.39314895834735,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.0711731910705566,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null,
+      "visualNotes": [
+        "The frozen blue icicles remain frozen. Rock strata and branch detail are more pronounced than v1."
+      ],
+      "sharpnessGameZoom": {
+        "method": "Pillow Lanczos directly from master v1 and assembled 2x to equal 2.8 screen pixels/world unit; grayscale Laplacian variance ksize=1",
+        "roi": "full chunk",
+        "screenSize": [
+          2240,
+          448
+        ],
+        "baseline": 36.35766792452172,
+        "output": 4857.604857519546,
+        "ratio": 133.6060626221655,
+        "target": 10
+      }
+    },
+    {
+      "chunk": "r4-c5",
+      "state": "drawn-needs-review",
+      "parts": 2,
+      "nativeSizes": [
+        [
+          1774,
+          887
+        ],
+        [
+          1663,
+          946
+        ]
+      ],
+      "outputSize": [
+        1638,
+        410
+      ],
+      "sharpness": {
+        "method": "grayscale Laplacian variance at equal 2x size; baseline Lanczos from v1",
+        "baseline": 45.38339278607833,
+        "output": 9456.737580020232,
+        "ratio": 208.3744074533174,
+        "target": 10
+      },
+      "structureInlierMaxPx1x": 3.6072864532470703,
+      "pending": [
+        "Claude structure/seam/style review"
+      ],
+      "structureMaxPx1x": null,
+      "qualityApproval": null,
+      "visualNotes": [
+        "The Gothic inset tracery and small icicle/rock details are reinterpreted. Inspect silhouette agreement at the right map edge."
+      ],
+      "sharpnessGameZoom": {
+        "method": "Pillow Lanczos directly from master v1 and assembled 2x to equal 2.8 screen pixels/world unit; grayscale Laplacian variance ksize=1",
+        "roi": "full chunk",
+        "screenSize": [
+          1792,
+          448
+        ],
+        "baseline": 32.45285712874362,
+        "output": 5438.3893681737645,
+        "ratio": 167.57813793094238,
+        "target": 10
+      }
+    }
+  ],
+  "imageGenCalls": 8,
+  "budgetCalls": 16,
+  "reviewState": "Awaiting Claude quality decision",
+  "incompleteParts": [],
+  "completedDrawingParts": 8,
+  "qualityApproval": null,
+  "pendingAcceptance": [
+    "Claude decision on structure <=4px, internal seams and west-style consistency",
+    "ASSEMBLE cross-chunk seams using native images and outer overlaps"
+  ],
+  "processingNotes": "One built-in ImageGen call per part, one SIFT affine fit per part, one seam assembly per chunk. No quality-threshold regeneration or refitting. Annotation and source-inventory packaging performed after visual review.",
+  "testsRun": [
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z3-hd-full/scripts/verify.py",
+      "exitCode": 0,
+      "scope": "File completeness, decoding, recorded dimensions, lossless WebP and budgets"
+    },
+    {
+      "command": "Python ast.parse for build.py and verify.py; AST equivalence before/after source-line expansion",
+      "exitCode": 0,
+      "scope": "Syntax and preserved helper semantics"
+    }
+  ],
+  "deliveryDirectory": "docs/art-reviews/2026-11-10-z3-hd-full/",
+  "drawingTool": "built-in ImageGen",
+  "sourceReferenceDecision": "Original prototype worktree paths absent; recovered zone1 scripts read-only from Git and adapted available prior west helper."
+}
