@@ -98,6 +98,7 @@ import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // �
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
+import { Z2_KIN_BY_KEY, Z2_TEXT } from './z2-events.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1847,11 +1848,18 @@ function openZoneEventAlert(ev) {
       const startFight = () => {
         if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(afterBreachBattle); }
       };
+      // Z2-EVENTS: the scene that precedes the test (data.js openStory) plays once, right before the fight
+      const begin = () => {
+        if (ev.openStory && !g.storySeen[ev.openStory] && storyOf(ev.openStory)) {
+          openDlg('intro-comic-dialog');
+          renderStoryComic(dlg, storyOf(ev.openStory), () => { g.storySeen[ev.openStory] = true; g.save(); startFight(); });
+        } else startFight();
+      };
       if (ev.k === 'thBorderBoss' && !g.bossArriveSeen.th) {
         openBossArrive(g.zoneDef(), () => {
-          g.bossArriveSeen.th = true; g.save(); startFight();
+          g.bossArriveSeen.th = true; g.save(); begin();
         });
-      } else startFight();
+      } else begin();
     }, ev.mode === 'waves' || /prison/i.test(ev.k));
 }
 function updateZoneEventFabs() {
@@ -1957,6 +1965,22 @@ function beginBrotherArrival(ev) {
       g.bossArriveSeen.th = true; g.dismissEventAlert('thBorderBoss');
       openZoneEventAlert(ev);
     }, 'ไปพบพี่ใหญ่');
+  };
+  setTimeout(done, 4200);
+}
+
+/** Z2-EVENTS case 15: the zone boss walks in from the lower border gate to the pier (same walk the elder brother takes in Zone 1). */
+let bossWalkingIn = false;
+function beginBossWalkIn(onArrived) {
+  const from = [FRONTIER.x, FRONTIER.y], to = [SPOTS.bossPier.x, SPOTS.bossPier.y], path = findPath(...from, ...to);
+  bossWalkingIn = true;
+  g.bossWalk = { started:Date.now(), duration:4200, from, to, path:path?.length ? [from, ...path] : null, arrival:true };
+  pauseForDlg(); sfx('gong');
+  const done = () => {
+    if (dlg.open) { setTimeout(done, 300); return; }
+    g.bossWalk = null; bossWalkingIn = false;
+    if (g.over || !g.bossPending) { refresh(); return; }
+    onArrived();
   };
   setTimeout(done, 4200);
 }
@@ -2940,7 +2964,7 @@ function openTrial(initialError = '') {
       </div>
 
       <div class="hud-bottom">
-        ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}
+        ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}${kinAssistHtml(s)}
         <div class="port you">
           <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
@@ -2988,6 +3012,7 @@ function openTrial(initialError = '') {
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
     bindKanClue(dlg,g,s,clue=>{kanClueResult=clue.text;sfx('crack');g.save();paint();refresh();});
+    dlg.querySelector('[data-kin-assist]')?.addEventListener('click',()=>{if(g.kinAssist(s)){sfx('crack');paint();refresh();}});   // Z2-EVENTS: the relative tells the truth himself
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
@@ -3369,7 +3394,12 @@ function openNiraOffice() {
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
-    if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
+    if (hireGuardBtn) hireGuardBtn.onclick = () => {
+      if (g.hireGuard()) { sfx('coin'); paint(); refresh(); }
+      else if (g.guardTestNeeded() && g.zoneEventStatus('asiaGuardTest') === 'pending') {   // Z2-EVENTS: he has to be beaten first - the test window opens
+        const ev = ZONE_EVENTS.asia.find(e => e.k === 'asiaGuardTest'); dlg.close(); setTimeout(() => openZoneEventAlert(ev), 0);
+      }
+    };
   };
   paint(); openDlg('nira-office');
   const generation = dlgGen;
@@ -3466,7 +3496,31 @@ function openChallenge(onReturn) {
 }
 
 /** Z1-EVENTS notice window (case 5 nurse ledger · case 12 Sita arrival / PHANTOM-404). Text: src/z1-events.js NOTICES. Shown once (g.ackNotice). */
+/** Z2-EVENTS: after the verdict on a crew member's relative, the crew member asks one question and the player answers with one of two choices (Rae 7.2-7.6). */
+function openKinAfter(k) {
+  const row = Z2_KIN_BY_KEY[k], rec = g.kinDone?.[k], nid = `kin-after-${k}`;
+  if (!row || !rec) { g.ackNotice(nid); return; }
+  pauseForDlg();
+  const lines = arr => arr.map(l => `<p>${esc(l)}</p>`).join('');
+  const paint = () => modal(`<div class="event-alert-main z1-notice kin-after"><h2>${esc(row.notice.title)}</h2>
+      ${rec.choice == null ? lines(row.after) + `<div class="event-alert-actions kin-choices">${row.choices.map((c, i) => `<button class="gold" data-kin-choice="${i}">${esc(c.label)}</button>`).join('')}</div>`
+        : lines(row.choices[rec.choice].lines) + `<div class="event-alert-actions"><button class="gold" data-kin-done>ปิด</button></div>`}</div>`, d => {
+    d.querySelectorAll('[data-kin-choice]').forEach(b => b.onclick = () => { rec.choice = Number(b.dataset.kinChoice); g.save(); paint(); });
+    d.querySelector('[data-kin-done]')?.addEventListener('click', () => { g.ackNotice(nid); dlg.close(); setTimeout(() => g.onChange(), 0); });
+  }, 'event-alert');
+  paint();
+  onDlgClose(() => { if (rec.choice != null && g.notices.includes(nid)) g.ackNotice(nid); });
+}
+/** Z2-EVENTS fakecup: the crew member who knows the cup tells the truth himself (a second orb next to Satori's). */
+function kinAssistHtml(s) {
+  if (!s?.assist) return '';
+  const why = g.kinAssistWhy(s), crew = Z2_KIN_BY_KEY[s.kin]?.crew, src = crew ? artUrl(`crew-${crew}-profile`) : '';
+  return `<div class="kan-orb kin-orb${why ? ' is-off' : ''}" data-kin-orb>
+    <button type="button" class="kan-orb-btn" data-kin-assist ${why ? 'disabled' : ''} aria-label="${esc(s.assist.label + (why ? ' · ' + why : ''))}" title="${esc(s.assist.label + (why ? '\n' + why : '\nไม่เสียพลังเวท ไม่เสียกรรม'))}">${src ? `<img src="${esc(src)}" alt="" onerror="this.remove()">` : '🔎'}</button>
+    <b class="kan-orb-label">${esc(s.assist.label)}</b>${why ? `<small class="keeper-role-why kan-orb-why">${esc(why)}</small>` : ''}</div>`;
+}
 function openStoryNotice(id) {
+  if (id.startsWith('kin-after-')) { openKinAfter(id.slice('kin-after-'.length)); return; }
   const n = NOTICES[id];
   if (!n) { g.ackNotice(id); return; }
   pauseForDlg();
@@ -3568,6 +3622,12 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       if (g.zone === zone && g.zoneEventStatus(breachKey) === 'pending') openFrontier(false, breachKey, true, true);
       else dlg.close();
     };
+    // Z2-EVENTS (Rae 3.3): Zone 2's border scene is her two-page cutscene (the single line of the old introduction is not played here)
+    if (g.zone === 'asia' && breachKey === 'asiaRageBreach' && storyOf('z2-breach-intro')) {
+      openDlg('intro-comic-dialog');
+      renderStoryComic(dlg, storyOf('z2-breach-intro'), () => { g.storySeen['z2-breach-intro'] = true; g.save(); toPrep(); });
+      return;
+    }
     // Z1-EVENTS (case 9): right after the intro, the green giant who keeps the border gate steps out to help (cutscene, once)
     const proceed = () => {
       const key = 'frontier-th-guard-joins';
@@ -3588,7 +3648,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
     return;
   }
   // Z1-EVENTS: Zone 1's breach = 3 demon waves, then the border boss (his row is not a numbered wave)
-  const waveN = thBreach ? bev.waves.length - 1 : bev?.waves?.length || 2;
+  const waveN = thBreach || bev?.bossApart ? bev.waves.length - 1 : bev?.waves?.length || 2;
   const breachTitle = thBreach ? t('event.frontierBreach.title') : zoneEventText(bev?.title);
   const breachText = thBreach ? t('event.frontierBreach.alert') : zoneEventText(bev?.alert);
   const breachLoot = thBreach ? t('event.frontierBreach.win') : `รางวัล: ${bev?.reward?.coin || 0} เบี้ยกรรม + ของสนามรบ`;
@@ -4161,7 +4221,7 @@ function openBattle(after) {
       const overlay = document.createElement('div');
       overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
       renderStoryComic(overlay, storyOf(key), () => {
-        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock' || key === 'th') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
+        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock' || key === 'th' || key === 'asia-big-fire-unlock') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
         overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
       });
       return;
@@ -4914,7 +4974,7 @@ function openBattle(after) {
     // Z1-EVENTS (case 9): the new team move was just unlocked (window closed) -> Yama uses it to close the border boss fight, whoever's turn it was
     if(b.breachFinale==='ready'&&!b.storyInterlude&&!phase&&!b.over&&!b.commandBusy&&!finaleScheduled&&!userPaused&&!pauseDlg.open){
       finaleScheduled=true;
-      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready'){if(b.finaleMove==='flameCharge'){b.actorId='you';b.selectedFoeId=b.foes.find(f=>f.boss&&f.hp>0)?.id||b.selectedFoeId;executeCommand('flameCharge');}else executeSkill('teamJudgment','you');}},650);
+      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready'){if(b.finaleMove==='flameCharge'||b.finaleMove==='fire'){b.actorId='you';b.selectedFoeId=b.foes.find(f=>f.boss&&f.hp>0)?.id||b.selectedFoeId;executeCommand(b.finaleMove);}else executeSkill('teamJudgment','you');}},650);
     }
     if(currentTurn?.side==='foe'&&b.breachFinale!=='ready'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;
@@ -6879,10 +6939,17 @@ g.onChange = () => {
     // สู้ทันทีไม่มีฉากเปิด (คุณเป้เจอ 25 ก.ย. 2569) ย้ายการติดธง/เซฟไปไว้ใน "onDone" แทน ให้ติดธงหลัง
     // ฉากปิดจริง (ไม่ว่าอ่านจบทุกหน้าหรือกดปิดกลางคัน) ไม่ใช่ก่อนเปิด
     if (!g.bossArriveSeen[g.zone]) {
-      openBossArrive(z, () => {
+      const arrive = () => openBossArrive(z, () => {
         g.bossArriveSeen[g.zone] = true; g.save();
         proceed();
       });
+      // Z2-EVENTS case 15 (Rae 5.1): the notice "the general has come" -> he walks in through the lower border gate to the pier -> his words -> the test window
+      if (z.k === 'asia') {
+        if (!g.storySeen['notice:z2-lian-arrive']) { g.queueNotice('z2-lian-arrive'); g.onChange(); return; }
+        if (!bossWalkingIn) { beginBossWalkIn(arrive); }
+        return;
+      }
+      arrive();
     } else proceed();
     return;
   }

@@ -15,6 +15,7 @@
 //    ไม่ได้อ้างอิงบุคคลจริงคนใดคนหนึ่ง และไม่ใช้ชื่อจริงของใคร
 import { QUEST_CASES } from './quest-cases.js';
 import { ASIA_CASES } from './cases-asia.js';
+import { Z2_CASES } from './z2-events.js';
 
 /** kind ของคดี
  *  twist    — ภาพลักษณ์ดี แต่ความจริงหนักกว่าที่สำนวนเขียนมาก → ต้องขุดให้เจอ
@@ -718,8 +719,8 @@ export const CASES = [
 ];
 
 export const CASES_BY_ZONE = Object.fromEntries(['th','asia','west'].map(zone => [zone,
-  [...({th:CASES,asia:ASIA_CASES,west:[]}[zone]), ...QUEST_CASES.filter(c=>c.zone===zone)]]));
-export const ALL_CASES = [...CASES, ...ASIA_CASES, ...QUEST_CASES];
+  [...({th:CASES,asia:[...ASIA_CASES,...Z2_CASES],west:[]}[zone]), ...QUEST_CASES.filter(c=>c.zone===zone)]]));
+export const ALL_CASES = [...CASES, ...ASIA_CASES, ...Z2_CASES, ...QUEST_CASES];   // Z2-EVENTS: the zone 2 story / relative cases carry `story` - never drawn by chance
 
 /** วิญญาณที่ "ไม่ควรลงทัณฑ์" — ต้องส่งประตูสวรรค์เท่านั้น */
 export const PURE_KINDS = ['innocent', 'deva'];

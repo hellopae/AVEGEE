@@ -11,6 +11,7 @@
 // A "story case" is a named case that is put at the head of the queue when the count is reached (the same mechanism the temple beggar always used).
 // `after` = cases already judged in Zone 1 when it becomes due (after:4 -> it is the 5th case).
 import { SPOTS } from './data.js';
+import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -18,14 +19,24 @@ export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'sitaledger', after:11, needsEvent:'frontierBreach' }),
 ]);
 export const TH_STORY_CASE_KEYS = Object.freeze(TH_STORY_CASES.map(c => c.k));
+/** Zone 2 (Z2-EVENTS): the old ape (7th case) and Satori's father (13th case) - ordinary cases, heard in the ordinary court (z2-events.js). */
+export const STORY_CASE_ROWS = Object.freeze({ th:TH_STORY_CASES, asia:Z2_STORY_CASES });
+export const storyCaseRows = zone => STORY_CASE_ROWS[zone] || [];
+export const storyCaseRow = (zone, k) => storyCaseRows(zone).find(c => c.k === k) || null;
+export const isStoryCaseKey = (zone, k) => storyCaseRows(zone).some(c => c.k === k);
 /** The Zone 1 event that follows a story case (opens only once that case is judged). */
-export const EVENT_AFTER_CASE = Object.freeze({ devaTest:'devaMonk', sitaHanuman:'sitaledger' });
+export const EVENT_AFTER_CASE = Object.freeze({ devaTest:'devaMonk', sitaHanuman:'sitaledger', asiaWukong:'apeelder' });
 
 /** Has this story case been judged (or is the story already past it)? */
-export function storyCaseDone(g, k) {
+export function storyCaseDone(g, k, zone = g.zone) {
   if (g.storyCaseDone?.[k]) return true;
-  const ev = g.zoneEvents?.th || {};
+  const ev = g.zoneEvents?.[zone] || {};
   // Later beats prove earlier ones: an old save must not get a beat again once the story moved on.
+  if (zone === 'asia') {
+    if (k === 'apeelder') return ev.asiaWukong === 'cleared' || !!g.bossCleared?.asia;
+    if (k === 'satorifather') return !!g.bossCleared?.asia;
+    return false;
+  }
   if (k === 'devaMonk') return !!g.devaVisits?.th || !!ev.devaTest;
   if (k === 'nurse') return !!g.devaVisits?.th || !!ev.devaTest;
   if (k === 'sitaledger') return !!ev.sitaHanuman || !!g.bossCleared?.th;
@@ -33,13 +44,14 @@ export function storyCaseDone(g, k) {
 }
 /** The story case that is due now (key), or null. Only one is ever due: they are strictly ordered. */
 export function owedStoryCase(g) {
-  if (g.zone !== 'th') return null;
-  const n = g.zoneCases?.th || 0;
-  for (const row of TH_STORY_CASES) {
-    if (storyCaseDone(g, row.k)) continue;
+  const rows = storyCaseRows(g.zone);
+  if (!rows.length) return null;
+  const n = g.zoneCases?.[g.zone] || 0;
+  for (const row of rows) {
+    if (storyCaseDone(g, row.k, g.zone)) continue;
     if (n < row.after) return null;
-    if (row.needsCase && !storyCaseDone(g, row.needsCase)) return null;
-    if (row.needsEvent && g.zoneEvents?.th?.[row.needsEvent] !== 'cleared') return null;
+    if (row.needsCase && !storyCaseDone(g, row.needsCase, g.zone)) return null;
+    if (row.needsEvent && g.zoneEvents?.[g.zone]?.[row.needsEvent] !== 'cleared') return null;
     return row.k;
   }
   return null;
@@ -132,6 +144,7 @@ export const NOTICES = Object.freeze({
   'nurse-ledger':{ title:'คดีพยาบาลห้องฉุกเฉิน', text:'ลายมือในแฟ้มต้นทางที่สลับเลขเป็นของเพื่อนร่วมโต๊ะเดิมของนิรา', button:'รับทราบ', art:'img/soul-nurse.webp' },
   'sita-arrive':{ ...SITA.notices.arrive, art:SITA.art.portrait },
   'sita-phantom':{ ...SITA.notices.phantom, detail:SITA.journal, art:SITA.art.phantom },
+  ...Z2_NOTICES,
 });
 
 const page = (image, title, line) => ({ image, title, line, fallback:'📜' });
@@ -206,7 +219,8 @@ export const BREACH_STORIES = {
 };
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES };
+/** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...Z2_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

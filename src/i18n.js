@@ -1,3 +1,4 @@
+import { DEVA_ASIA_ARRIVAL } from './z2-events.js';
 // i18n.js — ชั้นแปล UI (ข้อ C ชุด 15) — สลับ TH/ENG ได้ทันทีไม่ต้องรีโหลด
 // ขอบเขต C2: รอบนี้แปลเฉพาะ "กรอบ UI" (ปุ่ม/เมนู/HUD/แท็บ/ป้าย/กล่องยืนยัน/ข้อความระบบ)
 //   ไม่แปลเนื้อเรื่อง (สำนวนคดี บทพูด บทนำ ชื่อวิญญาณ) — ที่ที่ยังไม่มีคำแปล ให้ตกไทยไปก่อน
@@ -1090,7 +1091,7 @@ yama: นายเป็นใคร
   'final.prep.nira':'ไปหานิราจัดทีม',
   'final.prep.tea':'ไปนอนพักที่ศาลาน้ำชา',
   'final.map.continue':'ดูเหตุการณ์ต่อ',
-  'deva.asia.arrival':'ท่านปราบได้สองตนแล้ว ข้าจะจัดการตนสุดท้ายให้ หากท่านพร้อม โปรดมาพบข้าเพื่อทดสอบฝีมือ',
+  'deva.asia.arrival':DEVA_ASIA_ARRIVAL.th,   // Z2-EVENTS: Rae 1.10 (the deva comes down after ONE spirit fell)
 });
 Object.assign(EN, {
   'trial.devaCaseFirst':'Please judge the temple beggar as your sixth case.',
@@ -1116,7 +1117,7 @@ Lumen: I am the representative sent from above to see whether you deserve to rul
   'final.prep.nira':'Walk to Nira to arrange the team',
   'final.prep.tea':'Walk to the tea pavilion to sleep',
   'final.map.continue':'Continue the story',
-  'deva.asia.arrival':'You have defeated two spirits. I shall handle the last. When ready, please approach me for a test of skill.',
+  'deva.asia.arrival':DEVA_ASIA_ARRIVAL.en,
 });
 
 // ---------- G3b · ประลองปีศาจชายแดน 10 ระลอก + อาวุธประจำโซน (9 ต.ค. 2569) ----------

@@ -1,4 +1,5 @@
 import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y,CANTEEN_ART_FLIP,CANTEEN_ART_SCALE_BY_ZONE,CANTEEN_ART_DY} from './canteen-art-layout.js';
+import { Z2_ART_KEY } from './z2-events.js';
 import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
@@ -97,6 +98,8 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (key === 'soul-deva') return 'img/soul-deva.webp'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
   // Z1-EVENTS (case 12): Sita / Hanuman art lives in its own folder under its own names - a new drawing overwrites the file, no code change
   if (/^(soul-sita-th|boss-hanuman-th)(-profile)?$/.test(key)) return `img/z1-events/${key}.webp`;
+  // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
+  if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   if (z === 'west' && (key === 'crew-boon' || key === 'crew-boon-profile')) return `img/West/crew-boon-west${key.endsWith('-profile') ? '-profile' : ''}-f.webp`;
   if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.webp';

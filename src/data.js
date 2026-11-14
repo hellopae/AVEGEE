@@ -1,4 +1,5 @@
 import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
+import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -1891,6 +1892,8 @@ const challengeEvent = (zone, extra) => ({
   alert:{ th:'ผ่านครบ 10 ระลอกเพื่อรับอาวุธประจำโซน', en:'Clear all 10 waves to earn the zone weapon.' },
   waves:CHALLENGE_WAVES[zone], restBeforeWaves:[CHALLENGE_REST_WAVE + 1], lose:{ hp:8 }, ...extra,
 });
+/** Cases judged in a zone before its zone boss arrives (default 10). Zone 2: owner 14 Nov - the boss is the 15th case, after the case 11 and case 13 events. */
+export const ZONE_BOSS_AT = { asia:15 };
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -1933,22 +1936,37 @@ export const ZONE_EVENTS = {
     reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } },
   challengeEvent('th', { betweenWaveHeal:20, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:150, weapon:'fang' } })],
   asia:[
+    // Z2-EVENTS (owner 14 Nov 2026 · Rae's text in z2-events.js Z2_TEXT): case 3 prison fire (the deva Kuroha comes down after ONE spirit fell),
+    // case 7 Wukong (after the old ape's case), case 11 frontier breach (3 waves + Akura), case 15 the zone boss (ZONE_BOSS_AT).
     { k:'asiaPrisonFire', atCases:3, mode:'group',
-      title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },
-      alert:{ th:'วิญญาณสามตนแหกคุกและเผาอาคารไปหนึ่งหลัง เทวดาจะลงมาช่วยหลังปราบสองตน', en:'Three spirits escape and destroy a building. A deva descends after two spirits fall.' },
-      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:2, arrival:'devaArrives',
+      title:Z2_TEXT.prisonFire.title, alert:Z2_TEXT.prisonFire.alert, go:Z2_TEXT.prisonFire.go, banner:Z2_TEXT.prisonFire.banner,
+      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:1, arrival:'devaArrives',
+      winStories:['z2-kuroha-wait'], winNotices:['z2-kuroha-wait'],
       reward:{ coin:90 } },
     { k:'asiaDevaTest', atCases:3, requires:['asiaPrisonFire'], mode:'single',
-      title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },
-      alert:{ th:'เทวดาที่ลงมาช่วยรอทดสอบยมบาทน้อย', en:'The deva who helped now tests Yama.' },
+      title:Z2_TEXT.devaTest.title, alert:Z2_TEXT.devaTest.alert, go:Z2_TEXT.devaTest.go, retry:Z2_TEXT.devaTest.retry, banner:Z2_TEXT.devaTest.banner,
       foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:130, atk:[11,18], boss:true },
+      openStory:'z2-kuroha-open', winStories:['z2-kuroha-win'], loseStory:'z2-kuroha-lose', win:Z2_TEXT.devaTest.win, loseText:Z2_TEXT.devaTest.lose,
       reward:{ coin:110, ability:'windFan' } },
-    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',
-      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },
-      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },
-      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],
+    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).
+    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',
+      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,
+      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:140, atk:[12,19], boss:true },
+      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
+      reward:{ coin:140 }, lose:{ hp:9 } },
+    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).
+    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,
+      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],
+      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],
+        [{ kind:6, count:1, hp:56, atk:[9,14] }, { kind:7, count:1, hp:56, atk:[9,14] }],
         [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
       betweenWaveHeal:18, reward:{ coin:150, ability:'bigFire' } },
+    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.
+    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,
+      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,
+      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:110, atk:[10,16], boss:true },
+      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,
+      reward:{ coin:0 }, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
   west:[
@@ -2070,12 +2088,7 @@ export const ZONES = [
     mobs:[0,1,2,3,4,5], coin:0 },
   { k:'asia', scene:'scene-asia-v3', w:1678, h:937, level:3, name:'โซนบูรพา', sub:'',   // 28A: คุณเป้ตัดคำโปรยประเทศออก — UI ต้องเช็ค sub ว่างก่อนแสดง
     bossName:'เหลียนกัง', bossSub:'แม่ทัพตรวนบูรพา · ผู้ตรวจการท้องถิ่นประจำสาขาบูรพา',
-    bossArrive:[
-      'เหลียนกัง: "เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ"',
-      'เหลียนกัง: "ข้าคือผู้ตรวจการท้องถิ่นแห่งบูรพา ต้องดูให้แน่ก่อนว่า"',
-      'เหลียนกัง: "คนต่างถิ่นอย่างเจ้าคู่ควรจะมาปกครองสาขานี้หรือไม่"',
-      'ยมบาทน้อย: "งั้นก็ตรวจผมให้เต็มที่เลยสิ"',
-    ],
+    bossArrive:LIAN_ARRIVE_LINES,   // Z2-EVENTS: Rae's z2-lian-open (5.3), replaces the four older lines
     bossTalk:'"โซ่เส้นนี้คือระเบียบตรวจแถว เจ้าต้องผ่านให้ได้ก่อนจะบังคับบัญชาที่นี่"',
     bossWin:[ '"วินัยเจ้าไม่แพ้นายทหารที่เกิดในบูรพาเลยสักคน"', '"ข้าส่งมอบการบังคับบัญชาสาขานี้ให้เจ้าแล้ว"' ],
     bossLose:'"เจ้ายังไม่คู่ควร ไปฝึกมาใหม่แล้วค่อยกลับมา"',

@@ -5,12 +5,20 @@
    "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
   },
   {
-   "before": "",
-   "after": "import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';\n"
+   "before": "         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n",
+   "after": "         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n"
   },
   {
    "before": "",
-   "after": "    storyCaseDone: {}, notices: [], z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)\n"
+   "after": "import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';\nimport { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO } from './z2-events.js';\n"
+  },
+  {
+   "before": "const soulFitsZone = (s, zone) => zone !== 'asia' || (/^A(?:[1-9]|1\\d|20)$/.test(s && s.case || '') || ALL_CASES.some(c=>c.quest&&c.k===s?.case&&c.zone===zone));\n",
+   "after": "const soulFitsZone = (s, zone) => zone !== 'asia' || (/^A(?:[1-9]|1\\d|20)$/.test(s && s.case || '') || ALL_CASES.some(c=>(c.quest||c.z2)&&c.k===s?.case&&c.zone===zone));\n"
+  },
+  {
+   "before": "",
+   "after": "    storyCaseDone: {}, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)\n"
   },
   {
    "before": "",
@@ -18,11 +26,11 @@
   },
   {
    "before": "  devaCaseOwed() {\n    return this.zone === 'th' && (this.zoneCases.th || 0) >= 4 && !this.devaVisits.th && this.devaTestStatus() === 'locked';\n",
-   "after": "  devaCaseOwed() { return this.storyCaseOwed() === 'devaMonk'; },\n  /** Z1-EVENTS: the Zone 1 story case that is due now ('nurse' = 5th case, 'devaMonk' = 6th, 'sitaledger' = 12th) or null. See src/z1-events.js. */\n  storyCaseOwed() { return owedStoryCase(this); },\n  /** Is this queued soul the story case that must be heard first? (It cannot be jailed, deferred or skipped.) */\n  storyCaseReserved(soul) {\n    const owed = this.storyCaseOwed();\n    return !!owed && !!soul && soul.case === owed && (!TH_STORY_CASES.find(c => c.k === owed).needsGate || this.gateBuilt());\n"
+   "after": "  devaCaseOwed() { return this.storyCaseOwed() === 'devaMonk'; },\n  /** Z1-EVENTS: the Zone 1 story case that is due now ('nurse' = 5th case, 'devaMonk' = 6th, 'sitaledger' = 12th) or null. See src/z1-events.js. */\n  storyCaseOwed() { return owedStoryCase(this); },\n  /** Is this queued soul the story case that must be heard first? (It cannot be jailed, deferred or skipped.) */\n  storyCaseReserved(soul) {\n    const owed = this.storyCaseOwed();\n    return !!owed && !!soul && soul.case === owed && (!storyCaseRow(this.zone, owed)?.needsGate || this.gateBuilt());\n"
   },
   {
    "before": "  ensureDevaCase() {\n    if (!this.devaCaseOwed()) return;\n",
-   "after": "  ensureDevaCase() { this.ensureStoryCase(); },\n  ensureStoryCase() {\n    const owed = this.storyCaseOwed();\n    if (!owed) return;\n    const row = TH_STORY_CASES.find(c => c.k === owed), def = owed === SITA_CASE.k ? SITA_CASE : ALL_CASES.find(c => c.k === owed);\n    if (!def) return;\n"
+   "after": "  ensureDevaCase() { this.ensureStoryCase(); this.ensureKinCases(); },\n  /** Z2-EVENTS: what a verdict in Zone 2 sets going. The old ape (7th case) opens Wukong's descent, Satori's father (13th) ends with the farewell,\n   *  a relative of the crew ends with its choice window. Never touches the score: these are ordinary cases, judged and scored as any other. */\n  z2AfterVerdict(r, soul) {\n    if (soul.case === 'apeelder') {\n      this.storyCaseDone.apeelder = true; this.apeVerdict = r.right ? 'heaven' : 'punished';   // r.right = a pure soul sent to the gate of heaven (a pure soul at any other station is always `heaven:true, right:false`)\n      this.refreshZoneEvents('asia');\n      this.queueStory(r.right ? 'z2-wukong-open' : 'z2-wukong-open-b');\n      this.bossPending = this.bossReady();\n    } else if (soul.case === 'satorifather') {\n      this.storyCaseDone.satorifather = true;\n      this.queueStory(this.crewOf('kan') ? 'z2-satori-farewell' : 'z2-satori-farewell-b');\n      this.refreshZoneEvents('asia'); this.bossPending = this.bossReady();\n    }\n    if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); }\n  },\n  /** Z2-EVENTS relatives: is the crew member who owns this relative's case hired in Zone 2 right now? */\n  kinHired(row) { return row.crew === 'guard' ? !!this.guard : this.crew.some(c => c.k === row.crew); },\n  /** Each relative's case is unlocked by hiring its crew member (owner 14 Nov): the soul is put in the queue once, with its notice window.\n   *  The old bandit case (A2) is an existing case: when it is in the queue, or is drawn later, the relative is attached to it. */\n  ensureKinCases() {\n    // The relatives come after the zone's opening (the deva's test is passed): Taan is hired from the first day, his relative must not walk in before the fire is out.\n    if (this.zone !== 'asia' || this.over || this.zoneEventStatus('asiaDevaTest') !== 'cleared') return;\n    for (const row of Z2_KIN) {\n      if (this.kinSeen[row.k] || !this.kinHired(row)) continue;\n      let soul = row.existing ? this.queue.find(s => s.case === row.k && !s.kin) : null;\n      if (!soul) {\n        const def = row.def || ALL_CASES.find(c => c.k === row.k);\n        if (!def) continue;\n        soul = applySoulPortrait(mkCaseSoul(def), 'asia');\n        if (def.assist) soul.assist = { ...def.assist, used:false };\n        this.queue.push(soul);\n        if (!this.usedCases.includes(row.k)) this.usedCases.push(row.k);\n      }\n      soul.kin = row.k; this.kinSeen[row.k] = true; this.queueNotice(`kin-${row.k}`);\n    }\n  },\n  /** The relative's lines of the interrogation (\"during\") join the log at the first question, once. */\n  kinSpeaks(soul) {\n    const row = soul?.kin && Z2_KIN_BY_KEY[soul.kin];\n    if (!row || soul.kinSpoke) return;\n    soul.kinSpoke = true;\n    (soul.said ||= []).push(...row.during.map(text => ({ kind:'kin', text })));\n  },\n  /** Fakecup: the relative (Homura) reads the pattern on the cup and tells the truth himself - no hypnosis, no karma. */\n  kinAssistWhy(soul) {\n    if (!soul?.assist || soul.assist.used) return soul?.assist ? 'ใช้ไปแล้วในคดีนี้' : 'ไม่มีให้ในคดีนี้';\n    if (this.over || this.battle) return 'รอให้จบการต่อสู้ก่อน';\n    if (!this.queue.includes(soul) || !this.caseReady(soul)) return 'ต้องมีวิญญาณมาถึงแท่นสอบสวนก่อน';\n    if (!hiddenIssues(soul).length) return 'ไม่มีข้อเท็จจริงที่ยังไม่เปิดเผยเหลือแล้ว';\n    return '';\n  },\n  kinAssist(soul) {\n    if (this.kinAssistWhy(soul)) return null;\n    const deed = soul.deeds.filter(d => !d.known)[soul.assist.reveals || 0] || soul.deeds.find(d => d.known === false);\n    if (deed) { deed.known = true; deed.visible = true; }\n    else revealOneIssue(soul);\n    soul.assist.used = true;\n    (soul.said ||= []).push(...soul.assist.lines.map((text, i) => ({ kind:i ? 'kin' : 'truth', text })));\n    this.log(`🔎 ${soul.assist.by}เฉลยเอง · ไม่ต้องสะกดจิต ไม่เสียกรรม`, 'act');\n    this.save(); this.onChange();\n    return soul.assist;\n  },\n  /** Zone 2: the Guard has to be beaten once before he takes the post (Rae 7.1). Pressing hire opens his test; winning it hires him. */\n  guardTestNeeded() { return this.zone === 'asia' && !this.guard && this.zoneEventStatus('asiaGuardTest') !== 'cleared'; },\n  requestGuardTest() {\n    if (!this.guardTestNeeded() || this.battle) return false;\n    const states = this.zoneEvents.asia ||= {};\n    if (states.asiaGuardTest !== 'pending' && states.asiaGuardTest !== 'active') states.asiaGuardTest = 'pending';\n    this.save(); this.onChange(); return true;\n  },\n  ensureStoryCase() {\n    const owed = this.storyCaseOwed();\n    if (!owed) return;\n    const row = storyCaseRow(this.zone, owed), def = owed === SITA_CASE.k ? SITA_CASE : row.def || ALL_CASES.find(c => c.k === owed);\n    if (!def) return;\n"
   },
   {
    "before": "    const queued = this.queue.find(s => s.case === 'devaMonk' || s.case === 'monk' && s.pure);\n    if (!this.gateBuilt()) {\n",
@@ -38,15 +46,15 @@
   },
   {
    "before": "      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');\n",
-   "after": "      const soul = owed === 'sitaledger' ? mkCaseSoul(def) : applySoulPortrait(mkCaseSoul(def), 'th');\n      if (owed === 'sitaledger') soul.storyHearing = true;\n"
+   "after": "      const soul = owed === 'sitaledger' ? mkCaseSoul(def) : applySoulPortrait(mkCaseSoul(def), this.zone);\n      if (owed === 'sitaledger') soul.storyHearing = true;\n      if (owed === 'satorifather') soul.noKanSupport = true;   // Z2-EVENTS: Satori keeps his promise not to feed the answer\n"
   },
   {
    "before": "      if (!this.usedCases.includes('devaMonk')) this.usedCases.push('devaMonk');\n",
-   "after": "      if (!this.usedCases.includes(owed)) this.usedCases.push(owed);\n      if (owed === 'sitaledger') this.queueNotice('sita-arrive');\n"
+   "after": "      if (!this.usedCases.includes(owed)) this.usedCases.push(owed);\n      if (owed === 'sitaledger') this.queueNotice('sita-arrive');\n      if (row.notice) this.queueNotice(row.notice);                  // Z2-EVENTS: the window that introduces the case\n"
   },
   {
    "before": "",
-   "after": "  },\n  /** e1 (owner 13 Nov): the temple beggar IS the deva. Once he is judged he reveals himself - so no beggar soul waits for an escort, serves a\n   *  sentence, queues at the heaven gate or comes back as a returning case afterwards. Pays what finish() would have paid, once. */\n  revealDevaSoul(soul, r = null) {\n    const id = soul?.id, mine = x => x?.id === id || x?.case === 'devaMonk';\n    for (const st of this.stations || []) {\n      const i = st.slots.findIndex(slot => mine(slot.soul)); if (i < 0) continue;\n      const [slot] = st.slots.splice(i, 1), v = r || slot.verdict;\n      if (Number.isFinite(v?.coin)) this.coin += v.coin;\n      this.closed.unshift({ soul:slot.soul, zone:this.zone, verdict:v, stK:st.def.k, crewK:st.crewK, intensity:slot.intensity, tick:this.tick });\n      if (this.closed.length > 12) this.closed.pop();\n      if (!st.slots.length) { const c = this.crewOf(st.crewK); st.crewK = null; if (c) { c.at = null; c.path = null; } }\n    }\n    this.transits = (this.transits || []).filter(v => {\n      if (v.id !== id) return true;\n      const c = this.crewOf(v.crew); if (c?.escort === id) c.escort = null;\n      return false;\n    });\n    for (let i = (this.afterlifeWalks || []).length - 1; i >= 0; i--) {\n      const walk = this.afterlifeWalks[i]; if (!mine(walk.soul) || walk.zone && walk.zone !== 'th') continue;\n      this.afterlifeWalks.splice(i, 1); this.releaseEscort(walk);\n    }\n    this.sentences = (this.sentences || []).filter(x => !mine(x.soul) || x.zone !== 'th');\n    this.held = (this.held || []).filter(x => !mine(x.soul || x));\n    this.returning = (this.returning || []).filter(x => !mine(x.soul || x));\n    this.queue = this.queue.filter(x => !mine(x) || this.storyCaseOwed() === 'devaMonk');\n    this.courtArrivals = (this.courtArrivals || []).filter(a => this.queue.some(q => q.id === a.soulId));\n  },\n  /** Z1-EVENTS notice windows (case 5 nurse ledger, case 12 Sita arrival / Hanuman / PHANTOM-404). Persisted, shown once each by ui.js. */\n  queueNotice(id) { if (!this.notices.includes(id) && !this.storySeen[`notice:${id}`]) this.notices.push(id); },\n  ackNotice(id) {\n    this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;\n    if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);\n    this.save();\n  },\n  /** Case 12: Sita's hearing closes with choice A or B only. She is never sentenced, escorted or scored against (Rae 3.2 · Claudy's cultural default).\n   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). */\n  resolveSitaCase(choice) {\n    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA.hearing.choices.find(c => c.k === choice)?.k;\n    if (i < 0 || !pickK || this.battle || this.over || this.zone !== 'th') return false;\n    const [soul] = this.queue.splice(i, 1);\n    this.cancelCourtArrival(soul.id);\n    this.casesDone++; this.zoneCases.th = (this.zoneCases.th || 0) + 1;\n    this.storyCaseDone[SITA.caseKey] = true; this.sitaChoice = pickK;\n    this.ledger.push({ id:soul.id, who:soul.who, tick:this.tick, over:0, short:0, karma:0, stars:5, score:null, tham:null,\n      boss:'great', heaven:false, right:true, deserved:0, back:false, story:SITA.caseKey,\n      archiveSoul:{ name:soul.name, who:soul.who, sp:soul.sp, case:soul.case, sex:soul.sex, deeds:[] } });\n    this.log(`⚖️ ${SITA.hearing.choices.find(c => c.k === pickK).label}`, 'good');\n    this.refreshZoneEvents('th');\n    this.queueStory('sita-hanuman-open');\n    this.bossPending = this.bossReady();\n    this.save(); this.onChange();\n    return true;\n"
+   "after": "  },\n  /** e1 (owner 13 Nov): the temple beggar IS the deva. Once he is judged he reveals himself - so no beggar soul waits for an escort, serves a\n   *  sentence, queues at the heaven gate or comes back as a returning case afterwards. Pays what finish() would have paid, once. */\n  revealDevaSoul(soul, r = null) {\n    const id = soul?.id, mine = x => x?.id === id || x?.case === 'devaMonk';\n    for (const st of this.stations || []) {\n      const i = st.slots.findIndex(slot => mine(slot.soul)); if (i < 0) continue;\n      const [slot] = st.slots.splice(i, 1), v = r || slot.verdict;\n      if (Number.isFinite(v?.coin)) this.coin += v.coin;\n      this.closed.unshift({ soul:slot.soul, zone:this.zone, verdict:v, stK:st.def.k, crewK:st.crewK, intensity:slot.intensity, tick:this.tick });\n      if (this.closed.length > 12) this.closed.pop();\n      if (!st.slots.length) { const c = this.crewOf(st.crewK); st.crewK = null; if (c) { c.at = null; c.path = null; } }\n    }\n    this.transits = (this.transits || []).filter(v => {\n      if (v.id !== id) return true;\n      const c = this.crewOf(v.crew); if (c?.escort === id) c.escort = null;\n      return false;\n    });\n    for (let i = (this.afterlifeWalks || []).length - 1; i >= 0; i--) {\n      const walk = this.afterlifeWalks[i]; if (!mine(walk.soul) || walk.zone && walk.zone !== 'th') continue;\n      this.afterlifeWalks.splice(i, 1); this.releaseEscort(walk);\n    }\n    this.sentences = (this.sentences || []).filter(x => !mine(x.soul) || x.zone !== 'th');\n    this.held = (this.held || []).filter(x => !mine(x.soul || x));\n    this.returning = (this.returning || []).filter(x => !mine(x.soul || x));\n    this.queue = this.queue.filter(x => !mine(x) || this.storyCaseOwed() === 'devaMonk');\n    this.courtArrivals = (this.courtArrivals || []).filter(a => this.queue.some(q => q.id === a.soulId));\n  },\n  /** Z1-EVENTS notice windows (case 5 nurse ledger, case 12 Sita arrival / Hanuman / PHANTOM-404). Persisted, shown once each by ui.js. */\n  queueNotice(id) { if (!this.notices.includes(id) && !this.storySeen[`notice:${id}`]) this.notices.push(id); },\n  ackNotice(id) {\n    this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;\n    if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);\n    if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);\n    if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request\n    this.save();\n  },\n  /** Case 12: Sita's hearing closes with choice A or B only. She is never sentenced, escorted or scored against (Rae 3.2 · Claudy's cultural default).\n   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). */\n  resolveSitaCase(choice) {\n    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA.hearing.choices.find(c => c.k === choice)?.k;\n    if (i < 0 || !pickK || this.battle || this.over || this.zone !== 'th') return false;\n    const [soul] = this.queue.splice(i, 1);\n    this.cancelCourtArrival(soul.id);\n    this.casesDone++; this.zoneCases.th = (this.zoneCases.th || 0) + 1;\n    this.storyCaseDone[SITA.caseKey] = true; this.sitaChoice = pickK;\n    this.ledger.push({ id:soul.id, who:soul.who, tick:this.tick, over:0, short:0, karma:0, stars:5, score:null, tham:null,\n      boss:'great', heaven:false, right:true, deserved:0, back:false, story:SITA.caseKey,\n      archiveSoul:{ name:soul.name, who:soul.who, sp:soul.sp, case:soul.case, sex:soul.sex, deeds:[] } });\n    this.log(`⚖️ ${SITA.hearing.choices.find(c => c.k === pickK).label}`, 'good');\n    this.refreshZoneEvents('th');\n    this.queueStory('sita-hanuman-open');\n    this.bossPending = this.bossReady();\n    this.save(); this.onChange();\n    return true;\n"
   },
   {
    "before": "    let left = pool.filter(c => c.k !== 'devaMonk' && !c.quest && !this.usedCases.includes(c.k));\n",
@@ -65,6 +73,14 @@
    "after": "    if (this.storyCaseReserved(this.queue[0])) return false;\n"
   },
   {
+   "before": "",
+   "after": "    this.kinSpeaks(soul);                      // Z2-EVENTS: the relative's lines join the log at the first question\n"
+  },
+  {
+   "before": "",
+   "after": "    if(soul?.noKanSupport)return Z2_TEXT.satori.blocked;   // Z2-EVENTS case 13: Satori promised not to feed the answer about his own father\n"
+  },
+  {
    "before": "    const reservedCase = this.devaCaseOwed() && this.queue.some(s => s.case === 'devaMonk');\n",
    "after": "    const reservedSoul = this.queue.find(s => this.storyCaseReserved(s)), reservedCase = !!reservedSoul;\n"
   },
@@ -74,7 +90,7 @@
   },
   {
    "before": "    this.ensureDevaCase();\n",
-   "after": "    if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;\n    // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.\n    if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');\n"
+   "after": "    if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;\n    if (this.zone === 'asia') this.z2AfterVerdict(r, soul);   // Z2-EVENTS: the old ape / Satori's father / the crew's relatives\n    // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.\n    if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');\n"
   },
   {
    "before": "",
@@ -85,16 +101,40 @@
    "after": "    this.ensureDevaCase();\n"
   },
   {
+   "before": "      (this.zoneCases[this.zone] || 0) >= 10 && this.zoneEventGateReady();\n",
+   "after": "      (this.zoneCases[this.zone] || 0) >= (ZONE_BOSS_AT[this.zone] || 10) && this.zoneEventGateReady();\n"
+  },
+  {
+   "before": "      ev.signal || ev.atCases > 9 || this.zoneEventStatus(ev.k) === 'cleared');\n",
+   "after": "      ev.signal || ev.atCases >= (ZONE_BOSS_AT[this.zone] || 10) || this.zoneEventStatus(ev.k) === 'cleared');\n"
+  },
+  {
+   "before": "      turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,\n",
+   "after": "      turn: 1, over: null, log: [], talk: z.k === 'asia' ? Z2_TEXT.lian.lines.start : z.bossTalk, dmg: null,   // Z2-EVENTS: Rae 5.4 - Lian Gang's own words in the fight\n      ...(z.k === 'asia' ? { halfLine:Z2_TEXT.lian.lines.half } : {}),\n"
+  },
+  {
    "before": "",
    "after": "  /** f1 (owner 13 Nov): the frontier event that is waiting at the border right now, whether or not its alert window was acknowledged.\n   *  Every way into the border scene asks this, so the border boss is there the first time Yama walks down. */\n  breachPending() {\n    if (this.battle || this.over) return null;\n    for (const ev of ZONE_EVENTS[this.zone] || []) {\n      if (ev.team !== 'frontier' || ev.signal || this.zoneEventStatus(ev.k) !== 'pending') continue;\n      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;\n      return { key:ev.k, ev };\n    }\n    return null;\n  },\n"
   },
   {
    "before": "",
-   "after": "      // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)\n      if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;\n"
+   "after": "      // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)\n      if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;\n      // Z2-EVENTS: Wukong comes down only once the old ape's case is judged (z2AfterVerdict)\n      if (zone === 'asia' && ev.k === 'asiaWukong' && !this.storyCaseDone[EVENT_AFTER_CASE.asiaWukong]) continue;\n"
+  },
+  {
+   "before": "        sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',\n",
+   "after": "        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',\n"
+  },
+  {
+   "before": "      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });\n",
+   "after": "      turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });\n"
+  },
+  {
+   "before": "    b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;\n",
+   "after": "    b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}`;\n    // Z2-EVENTS (Rae 3.3 / 3.5): Nira reads the field between the waves; Akura speaks when his row comes\n    if (ev.k === 'asiaRageBreach') b.talk = b.wave === 2 ? Z2_TEXT.breach.afterWave1 : b.wave === 3 ? Z2_TEXT.breach.afterWave2 : b.foes.some(f => f.boss) ? Z2_TEXT.breach.lines.start : b.talk;\n"
   },
   {
    "before": "    if (b?.storyInterlude !== 'west-hypnosis') return false;\n",
-   "after": "    if (!['west-hypnosis','th-team-judgment-unlock','th'].includes(b?.storyInterlude)) return false;\n    if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again\n"
+   "after": "    if (!['west-hypnosis','th-team-judgment-unlock','th','asia-big-fire-unlock'].includes(b?.storyInterlude)) return false;\n    if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again\n"
   },
   {
    "before": "    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>\n",
@@ -130,6 +170,14 @@
   },
   {
    "before": "",
+   "after": "  /** Z2-EVENTS: after every action the foe may say his half-way line (once) - set here, after the whole action, so the foe's own counter-line cannot cover it. */\n"
+  },
+  {
+   "before": "",
+   "after": "    const ok = this.battleActCore(what, command), B = this.battle;\n    if (B?.halfLine && !B.halfSaid && !B.over) {\n      const boss = B.foes.find(f => f.boss && f.hp > 0);\n      if (boss && boss.hp <= boss.maxHp / 2) { B.halfSaid = true; B.talk = B.halfLine; this.onChange(); }\n    }\n    return ok;\n  },\n  battleActCore(what, command = null) {\n"
+  },
+  {
+   "before": "",
    "after": "    // Z1-EVENTS: while the border boss is held for the story's closing move, whatever is pressed IS that move (the fight can never dead-end).\n    if (B?.breachFinale === 'ready' && !B.over && !B.commandBusy && command?.enemyOnly !== true) {\n      // The UI keeps the comic on screen until it is read (ui.js ignores commands while b.storyInterlude is set); a plain API press (tests / simulations) goes straight to the closing move.\n      if (B.storyInterlude === 'th') { B.storyInterlude = null; this.storySeen.th = true; }\n      if (B.storyInterlude === 'th-team-judgment-unlock') B.storyInterlude = null;\n      what = B.finaleMove || 'teamJudgment'; if (command) command = { ...command, actorId:'you', recipientId:'you' };\n    }\n"
   },
   {
@@ -145,6 +193,14 @@
    "after": "      if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }\n"
   },
   {
+   "before": "      if (this.mp < BATTLE.mpCost.fire) return false;\n      this.mp -= BATTLE.mpCost.fire;\n",
+   "after": "      const fireFinale = B.breachFinale === 'ready' && B.finaleMove === 'fire';   // Z2-EVENTS (case 11): the story's closing fireball - free, the power is paid out with the win\n      if (!fireFinale && this.mp < BATTLE.mpCost.fire) return false;\n      if (!fireFinale) this.mp -= BATTLE.mpCost.fire;\n"
+  },
+  {
+   "before": "",
+   "after": "      if (fireFinale) { dmg = Math.max(dmg, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done'; }\n"
+  },
+  {
    "before": "      if (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge) return false;\n",
    "after": "      const finale = B.breachFinale === 'ready' && B.finaleMove === 'flameCharge';   // Z1-EVENTS (case 15): the story's closing move - free, the power is paid out with the win\n      if (!finale && (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge)) return false;\n      if (finale) { dmg = Math.max(1, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done'; }\n      else {\n"
   },
@@ -154,7 +210,7 @@
   },
   {
    "before": "",
-   "after": "    // Z1-EVENTS (case 9): when the border boss is nearly down (or would fall) the fight pauses, Yama learns the team move mid-fight\n    // (window: B.storyInterlude) and that move is the one that ends it. The boss cannot fall to anything else.\n    const breachFinaleGate = force => {\n      if (B.kind !== 'frontierBreach' || B.breachFinale) return false;\n      const boss = B.foes.find(f => f.boss);\n      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;\n      boss.hp = Math.max(1, boss.hp);\n      B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;\n      this.abilities.teamJudgment = true;\n      B.storyInterlude = 'th-team-judgment-unlock';\n      this.onChange();\n      return true;\n    };\n"
+   "after": "    // Z1-EVENTS (case 9): when the border boss is nearly down (or would fall) the fight pauses, Yama learns the team move mid-fight\n    // (window: B.storyInterlude) and that move is the one that ends it. The boss cannot fall to anything else.\n    const breachFinaleGate = force => {\n      // Z2-EVENTS: Zone 2's border boss closes the same way - Yama learns \"ลูกไฟใหญ่\" in the middle of the fight and that fireball ends it\n      const asiaBreach = B.kind === 'zoneEvent' && B.eventKey === 'asiaRageBreach';\n      if ((B.kind !== 'frontierBreach' && !asiaBreach) || B.breachFinale) return false;\n      const boss = B.foes.find(f => f.boss);\n      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;\n      boss.hp = Math.max(1, boss.hp);\n      B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;\n      if (asiaBreach) { this.abilities.bigFire = true; B.finaleMove = 'fire'; B.storyInterlude = 'asia-big-fire-unlock'; }\n      else { this.abilities.teamJudgment = true; B.storyInterlude = 'th-team-judgment-unlock'; }\n      this.onChange();\n      return true;\n    };\n"
   },
   {
    "before": "",
@@ -170,7 +226,15 @@
   },
   {
    "before": "",
-   "after": "        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);\n"
+   "after": "        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);\n        // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him\n        for (const key of ev?.winStories || []) this.queueStory(key);\n        for (const id of ev?.winNotices || []) this.queueNotice(id);\n        if (ev?.guardTest && !this.guard && this.coin >= GUARD.hire) this.hireGuard();\n"
+  },
+  {
+   "before": "        B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;\n",
+   "after": "        B.talk = ev?.win?.text ? `${ev.win.text}${ev.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}` : `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;\n"
+  },
+  {
+   "before": "",
+   "after": "        if (firstWin && B.zone === 'asia') this.queueStory('z2-lian-win');   // Z2-EVENTS: the general accepts him (Rae 5.5) - then the boss-guide system takes over\n"
   },
   {
    "before": "",
@@ -185,6 +249,10 @@
    "after": "    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && !B.breachFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {\n      if (storyZone === 'th' && B.kind === 'zoneEvent') {\n        // Z1-EVENTS fixup (case 15): his last move wounds Yama (boss cutscene) -> story-th-01..05 inside the fight -> Yama's new move\n        // \"พุ่งชนเพลิง\" (skill-yama-fire-charge-cut-01/02) ends the fight for real -> reward summary -> the \"new power\" window.\n        // The fight is held (foes wait) exactly like the border boss finale; B.breachFinale === 'ready' + B.finaleMove say what closes it.\n        const hurt = Math.min(Math.max(0, B.youHp - 1), 34);\n        B.youHp -= hurt; B.dmg.you = hurt;\n        storyBoss.hp = Math.max(1, storyBoss.hp);\n        B.breachFinale = 'ready'; B.finaleMove = 'flameCharge'; B.actorId = 'you'; B.selectedFoeId = storyBoss.id;\n        B.thUltimate = { name:BOSS_ULTIMATE.th?.name || 'ดาบเพลิง', image:BOSS_ULTIMATE.th?.image || 'img/zone-boss-cutscene.webp', by:storyBoss.who, damage:hurt };\n        B.storyInterlude = 'th';\n        say('พี่ใหญ่ใช้ดาบเพลิงจนยมบาทน้อยบาดเจ็บ — ยมบาทน้อยรวบพลังไฟแล้วพุ่งชน');\n        this.onChange();\n        return true;\n      }\n"
   },
   {
+   "before": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < 2) return false;\n",
+   "after": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < (ZONE_EVENTS.asia.find(e => e.k === 'asiaPrisonFire')?.afterKills || 2)) return false;\n"
+  },
+  {
    "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",
    "after": "      if (!ultimate && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
   },
@@ -194,11 +262,19 @@
   },
   {
    "before": "",
-   "after": "        if (B.eventKey === 'sitaHanuman') this.queueStory('sita-hanuman-lose');\n"
+   "after": "        if (B.eventKey === 'sitaHanuman') this.queueStory('sita-hanuman-lose');\n        const loseEv = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);\n        if (loseEv?.loseStory) this.queueStory(loseEv.loseStory);   // Z2-EVENTS: the foe lets Yama rise (once per scene)\n"
+  },
+  {
+   "before": "        B.talk = `${ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey)?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;\n",
+   "after": "        B.talk = loseEv?.loseText?.text || `${loseEv?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;\n"
   },
   {
    "before": "",
-   "after": "    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');\n"
+   "after": "        if (B.zone === 'asia') this.queueStory('z2-lian-lose');\n"
+  },
+  {
+   "before": "",
+   "after": "    if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');\n    if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');   // Z2-EVENTS: the journal window after Nira's scene\n"
   },
   {
    "before": "",
@@ -210,11 +286,11 @@
   },
   {
    "before": "    if (this.guard || this.coin < GUARD.hire) return false;\n",
-   "after": "    if (this.guard || this.coin < GUARD.hire || !guardUnlocked(this)) return false;   // Z1-EVENTS: Zone 1's Guard joins through the frontier breach, not the hire desk\n"
+   "after": "    if (this.guard || this.coin < GUARD.hire || !guardUnlocked(this)) return false;   // Z1-EVENTS: Zone 1's Guard joins through the frontier breach, not the hire desk\n    if (this.guardTestNeeded()) { this.requestGuardTest(); return false; }           // Z2-EVENTS: Zone 2's Guard has to be beaten first (z2-events.js Z2_TEXT.guard)\n"
   },
   {
    "before": "",
-   "after": "    storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],\n    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,\n"
+   "after": "    storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],\n    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,\n"
   },
   {
    "before": "      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });\n",
@@ -222,10 +298,18 @@
   },
   {
    "before": "",
-   "after": "  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];\n  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;\n  migrateZ1Events(this, d);\n  this.benchLockedGuard(); reconcileArenaDocket(this);\n"
+   "after": "  this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];\n  this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;\n  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;\n  migrateZ1Events(this, d);\n  this.benchLockedGuard(); reconcileArenaDocket(this);\n"
   }
  ],
  "data": [
+  {
+   "before": "",
+   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';\n"
+  },
+  {
+   "before": "",
+   "after": "/** Cases judged in a zone before its zone boss arrives (default 10). Zone 2: owner 14 Nov - the boss is the 15th case, after the case 11 and case 13 events. */\nexport const ZONE_BOSS_AT = { asia:15 };\n"
+  },
   {
    "before": "  { k:'frontierBreach', atCases:8, requires:['devaTest'], mode:'waves', team:'frontier',\n",
    "after": "  // Z1-EVENTS (owner 13 Nov 2026): case 9 · three demon waves, then the border boss as the closing encounter.\n  // The last row is the boss; game.js frontierBreachFoes() labels it as the boss, not as a numbered wave.\n  { k:'frontierBreach', atCases:9, requires:['devaTest'], mode:'waves', team:'frontier',\n"
@@ -249,6 +333,34 @@
   {
    "before": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },\n",
    "after": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },\n"
+  },
+  {
+   "before": "",
+   "after": "    // Z2-EVENTS (owner 14 Nov 2026 · Rae's text in z2-events.js Z2_TEXT): case 3 prison fire (the deva Kuroha comes down after ONE spirit fell),\n    // case 7 Wukong (after the old ape's case), case 11 frontier breach (3 waves + Akura), case 15 the zone boss (ZONE_BOSS_AT).\n"
+  },
+  {
+   "before": "      title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },\n      alert:{ th:'วิญญาณสามตนแหกคุกและเผาอาคารไปหนึ่งหลัง เทวดาจะลงมาช่วยหลังปราบสองตน', en:'Three spirits escape and destroy a building. A deva descends after two spirits fall.' },\n      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:2, arrival:'devaArrives',\n",
+   "after": "      title:Z2_TEXT.prisonFire.title, alert:Z2_TEXT.prisonFire.alert, go:Z2_TEXT.prisonFire.go, banner:Z2_TEXT.prisonFire.banner,\n      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:1, arrival:'devaArrives',\n      winStories:['z2-kuroha-wait'], winNotices:['z2-kuroha-wait'],\n"
+  },
+  {
+   "before": "      title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },\n      alert:{ th:'เทวดาที่ลงมาช่วยรอทดสอบยมบาทน้อย', en:'The deva who helped now tests Yama.' },\n",
+   "after": "      title:Z2_TEXT.devaTest.title, alert:Z2_TEXT.devaTest.alert, go:Z2_TEXT.devaTest.go, retry:Z2_TEXT.devaTest.retry, banner:Z2_TEXT.devaTest.banner,\n"
+  },
+  {
+   "before": "",
+   "after": "      openStory:'z2-kuroha-open', winStories:['z2-kuroha-win'], loseStory:'z2-kuroha-lose', win:Z2_TEXT.devaTest.win, loseText:Z2_TEXT.devaTest.lose,\n"
+  },
+  {
+   "before": "    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',\n      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },\n      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },\n      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],\n",
+   "after": "    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).\n    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',\n      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,\n      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:140, atk:[12,19], boss:true },\n      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,\n      reward:{ coin:140 }, lose:{ hp:9 } },\n    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).\n    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,\n      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],\n      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],\n        [{ kind:6, count:1, hp:56, atk:[9,14] }, { kind:7, count:1, hp:56, atk:[9,14] }],\n"
+  },
+  {
+   "before": "",
+   "after": "    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.\n    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,\n      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,\n      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:110, atk:[10,16], boss:true },\n      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,\n      reward:{ coin:0 }, lose:{ hp:9 } },\n"
+  },
+  {
+   "before": "    bossArrive:[\n      'เหลียนกัง: \"เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ\"',\n      'เหลียนกัง: \"ข้าคือผู้ตรวจการท้องถิ่นแห่งบูรพา ต้องดูให้แน่ก่อนว่า\"',\n      'เหลียนกัง: \"คนต่างถิ่นอย่างเจ้าคู่ควรจะมาปกครองสาขานี้หรือไม่\"',\n      'ยมบาทน้อย: \"งั้นก็ตรวจผมให้เต็มที่เลยสิ\"',\n    ],\n",
+   "after": "    bossArrive:LIAN_ARRIVE_LINES,   // Z2-EVENTS: Rae's z2-lian-open (5.3), replaces the four older lines\n"
   }
  ],
  "combat-skills": [

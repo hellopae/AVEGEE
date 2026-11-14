@@ -32,11 +32,11 @@ export const STORY = {
     panel('th-05','พี่ใหญ่ยอมรับ','พี่ใหญ่ยอมรับความแข็งแกร่งของน้อง ยมบาทน้อยชนะและควบคุมพลังพุ่งชนเพลิงได้แล้ว'),
   ]},
   asia: { title:'โซน 2 · เพื่อคนที่ปกป้องเรา', reward:'rage', pages:[
-    panel('asia-01','โจมตีทีเผลอ','บอสบูรพาใกล้หมดแรง แต่แอบปล่อยท่าไม้ตายใส่ยมบาทน้อยในจังหวะที่ไม่ทันระวัง'),
-    panel('asia-02','นิราเข้ารับแทน','นิรากระโดดเข้ามาขวาง รับการโจมตีแทนและบาดเจ็บต่อหน้ายมบาทน้อย'),
-    panel('asia-03','พลังบ้าคลั่ง','ความโกรธปลุกพลัง Rage ให้ตื่นขึ้น ยมบาทน้อยลุกขึ้นปกป้องนิรา'),
-    panel('asia-04','ไม่มีใครทำร้ายเธออีก','ยมบาทน้อยพุ่งเข้าโจมตีด้วยพลังบ้าคลั่ง จนบอสและปีศาจทั้งสองพ่ายแพ้'),
-    panel('asia-05-v2','พักก่อนนะ นิรา','นิราไปพักที่ศาลาน้ำชา แวะไปเยี่ยมเธอได้ พัก 3 วาระก็จะหายและกลับมาช่วยงานตามเดิม'),
+    panel('asia-01','โจมตีทีเผลอ','บอสบูรพาใกล้หมดแรง แต่แอบปล่อยท่าไม้ตายใส่ยมบาทน้อยในจังหวะที่ไม่ทันระวัง\nเหลียนกัง: "ข้าเตือนแล้วว่ายังมีอีกหนึ่งท่า สนามรบไม่เคยมีเวลาให้ใครตั้งตัว"'),
+    panel('asia-02','นิราเข้ารับแทน','นิรากระโดดเข้ามาขวาง รับการโจมตีแทนและบาดเจ็บต่อหน้ายมบาทน้อย\nนิรา: "ท่านคะ ... ดิฉันยังไม่เป็นไรค่ะ"'),
+    panel('asia-03','พลังบ้าคลั่ง','ความโกรธปลุกพลัง Rage ให้ตื่นขึ้น ยมบาทน้อยลุกขึ้นปกป้องนิรา\nยมบาทน้อย: "ไม่มีใครทำร้ายเธออีก ไม่ว่าเขามีเหตุผลอะไรก็ตาม"'),
+    panel('asia-04','ไม่มีใครทำร้ายเธออีก','ยมบาทน้อยพุ่งเข้าโจมตีด้วยพลังบ้าคลั่ง จนบอสและปีศาจทั้งสองพ่ายแพ้\nเหลียนกัง: "ข้าไม่ได้ตั้งใจให้แม่นางผู้นั้นบาดเจ็บ ข้าขออภัย"'),
+    panel('asia-05-v2','พักก่อนนะ นิรา','นิราไปพักที่ศาลาน้ำชา แวะไปเยี่ยมเธอได้ พัก 3 วาระก็จะหายและกลับมาช่วยงานตามเดิม\nยมบาทน้อย: "พักก่อนนะ นิรา"\nนิรา: "ค่ะ ท่านคะ ดิฉันฝากแฟ้มไว้กับท่านสามวาระเท่านั้นนะคะ"'),
   ]},
   'west-hypnosis': { title:'โซน 3 · ลูกทีมที่ถูกสะกดจิต', pages:[
     { image:'img/frontier-west-hypnosis-v1.webp', title:'วาลดริก · เจ้าแห่งแวมไพร์', line:'ลูกน้องสองระลอกล้มลงแล้วหรือ? ถ้าเช่นนั้น จงรับมือคนของเจ้าเอง!\nแวมไพร์สะกดจิตยมทูตและ Guard โซน 3 ทุกคนให้หันอาวุธเข้าหายมบาทน้อย' },
@@ -70,10 +70,13 @@ export const STORY = {
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || Z1_STORIES[key] || (key === TEAM_MOVE_UNLOCK ? teamMoveUnlockStory() : null) || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
+export const storyOf = key => STORY[key] || Z1_STORIES[key] || (key === TEAM_MOVE_UNLOCK ? teamMoveUnlockStory() : key === 'asia-big-fire-unlock' ? bigFireUnlockStory() : null) || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
 // Z1-EVENTS: the window shown in the middle of the border boss fight (owner: "หน้าต่างแจ้งเตือน ยามาได้ท่าไม้ตายใหม่"). Name and text are the ability's own.
 const teamMoveUnlockStory = () => ({ title:'ยามาได้ท่าไม้ตายใหม่', pages:[{ image:'img/z1-events/cut-guard-joins-th.webp', fallback:'⚔️',
   title:ABILITY_REWARDS.teamJudgment.name, line:`${ABILITY_REWARDS.teamJudgment.text}\nใช้ท่านี้ปิดฉากบอสชายแดน` }] });
+// Z2-EVENTS: the same window in the middle of Zone 2's border boss fight (the closing move is the new fireball). Name and text are the ability's own.
+const bigFireUnlockStory = () => ({ title:'ยามาได้ท่าไม้ตายใหม่', pages:[{ image:ABILITY_REWARDS.bigFire.image, fallback:'🔥',
+  title:ABILITY_REWARDS.bigFire.name, line:`${ABILITY_REWARDS.bigFire.text}\nใช้ท่านี้ปิดฉากบอสชายแดน` }] });
 export const ABILITY_REWARDS = {
   teamJudgment:{ name:'บัญชาการประสานยมทูตพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.webp', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะบอสชายแดนโซน 2' },

@@ -3,20 +3,24 @@ import {storyEncounterRole} from './story-progression.js';
 import { STATIONS, SPOTS, FRONTIER, CREW, ZONE_EVENTS, isFrontierBreachEvent } from './data.js';
 import { findPath, nearestWalk } from './walk.js?v=k1d';
 import { pointAtDistance, pathLength } from './escort.js';
+import { AKURA_TRIAL } from './z2-events.js';
 export const JUSTICE_PHASES = ['capture','dais','trial','escort','punishment','sentenceScene','return','aftermath','released'];
 // Z1-EVENTS (owner 13 Nov 2026): Zone 1's border boss is tried in the real trial arena with the answer locked by the mirror, and the
 // walk to the dais / the punishment / the release are cutscenes (no small form, no escort walk on the map - owner e5 e6 e7).
 //   capture --story ARENA_STORY.toDais--> dais -> trial --sentence--> aftermath --stories punished, released--> released
 export const ARENA_STORY = Object.freeze({ toDais:'frontier-th-boss-to-dais', punished:'frontier-th-boss-punished', released:'frontier-th-boss-released' });
-const arenaDocket = (zone, role, final) => !final && zone === 'th' && role === 'frontier';
+// Z2-EVENTS (owner 14 Nov 2026): Zone 2's border boss Akura is tried the same way - the answer is locked by the mirror, here the exercise yard at middle strength (AKURA_TRIAL).
+export const ARENA_STORIES = Object.freeze({ th:ARENA_STORY, asia:Object.freeze({ toDais:'frontier-asia-boss-to-dais', punished:'frontier-asia-boss-punished', released:'frontier-asia-boss-released' }) });
+const arenaStories = c => ARENA_STORIES[c?.zone] || ARENA_STORY;
+const arenaDocket = (zone, role, final) => !final && (zone === 'th' || zone === 'asia') && role === 'frontier';
 /** After a reload: a docket waiting on a cutscene that is no longer queued must not hang. */
 export function reconcileArenaDocket(g) {
   const c = bossJusticeCase(g); if (!c?.arena) return;
-  const queued = key => g.storyQueue?.some(p => p.key === key);
-  if (c.phase === 'capture' && !queued(ARENA_STORY.toDais)) { if (g.storySeen?.[ARENA_STORY.toDais]) c.phase = 'dais'; else g.queueStory(ARENA_STORY.toDais); }
-  if (c.phase === 'aftermath' && !queued(ARENA_STORY.released)) {
-    if (g.storySeen?.[ARENA_STORY.released]) releaseBoss(g);
-    else { g.queueStory(ARENA_STORY.punished); g.queueStory(ARENA_STORY.released); }
+  const queued = key => g.storyQueue?.some(p => p.key === key), st = arenaStories(c);
+  if (c.phase === 'capture' && !queued(st.toDais)) { if (g.storySeen?.[st.toDais]) c.phase = 'dais'; else g.queueStory(st.toDais); }
+  if (c.phase === 'aftermath' && !queued(st.released)) {
+    if (g.storySeen?.[st.released]) releaseBoss(g);
+    else { g.queueStory(st.punished); g.queueStory(st.released); }
   }
 }
 export function initializeBossJustice(g, saved = g.bossJustice) {
@@ -67,7 +71,8 @@ export function queueBossJustice(g,b,{final=false}={}) {
   const boss=b.foes?.find(f=>f.boss)||b.foes?.find(f=>String(f.sp).includes('boss-frontier'));
   const courtResources={temporary:[],construction:[]};
   if(!bossJusticeStations(g).length){
-    const def=STATIONS.find(d=>d.k==='krata'&&!g.stations.some(st=>st.def.k===d.k))||STATIONS.find(d=>!d.heaven&&!['tea','sala','krajok','tarang'].includes(d.k)&&!g.stations.some(st=>st.def.k===d.k));
+    const wanted=zone==='asia'?'lan':'krata';   // the locked answer's station (Z2: the exercise yard)
+    const def=STATIONS.find(d=>d.k===wanted&&!g.stations.some(st=>st.def.k===d.k))||STATIONS.find(d=>d.k==='krata'&&!g.stations.some(st=>st.def.k===d.k))||STATIONS.find(d=>!d.heaven&&!['tea','sala','krajok','tarang'].includes(d.k)&&!g.stations.some(st=>st.def.k===d.k));
     if(def){g.stations.push({def,slots:[],crewK:null,intensity:3,build:0,repair:0,fire:0,bossCourtTemporary:true});courtResources.temporary.push(def.k);}
     else {
       const held=g.stations.find(st=>!st.def.heaven&&!['tea','sala','krajok','tarang'].includes(st.def.k));
@@ -75,7 +80,7 @@ export function queueBossJustice(g,b,{final=false}={}) {
     }
   }
   const throne=SPOTS.throne;
-  const arena=arenaDocket(zone,role,final),toDaisSeen=!!g.storySeen?.[ARENA_STORY.toDais];
+  const arena=arenaDocket(zone,role,final),toDaisSeen=!!g.storySeen?.[arenaStories({zone}).toDais];
   const c={id, encounterRole:final?'final':storyEncounterRole(b), frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, ...(arena?{arena:true}:{}), phase:final||arena&&!toDaisSeen?'capture':'dais', elapsed:0,
     asked:false, mirror:false, pick:{station:null,crew:null,intensity:null}, courtResources,
     dais:[throne.x,throne.y+55], suspendedRoute:g.zoneTravel?.active?structuredClone(g.zoneTravel.active):null};
@@ -83,7 +88,7 @@ export function queueBossJustice(g,b,{final=false}={}) {
   if(g.zoneTravel)g.zoneTravel.active=null;
   Object.assign(g.player,{x:throne.x-45,y:throne.y+20,path:null,tx:null,ty:null});
   g.huntMob=false;g.bossPending=false;
-  if(arena&&!toDaisSeen)g.queueStory?.(ARENA_STORY.toDais);
+  if(arena&&!toDaisSeen)g.queueStory?.(arenaStories({zone}).toDais);
   return true;
 }
 export function bossJusticeCrew(g) { const owned=(g.crew||[]).filter(c=>!c.reader&&!c.self&&c.k!=='nira');return owned.length?owned:[{...CREW.find(c=>c.k==='taan'),name:'ผู้คุมศาล · ทัณฑ์ (รับหมายชั่วคราว)'}]; }
@@ -92,9 +97,11 @@ export function bossJusticeStations(g) {
   return (g.stations||[]).filter(s=>!s.build&&!s.def.heaven&&!['tea','sala','krajok','tarang'].includes(s.def.k));
 }
 export function bossJusticeAnswer(g) {
-  const dest=bossJusticeStations(g), crew=bossJusticeCrew(g);
-  return {station:(dest.find(s=>s.def.k==='krata')||dest[0])?.def.k,
-    crew:(crew.find(c=>c.k==='taan')||crew[0])?.k,intensity:5};
+  const dest=bossJusticeStations(g), crew=bossJusticeCrew(g), c=bossJusticeCase(g);
+  // Z2-EVENTS: Akura's locked answer is the exercise yard at middle strength (owner 14 Nov); every other docket keeps the old one
+  const asia=c?.arena&&c.zone==='asia';
+  return {station:(dest.find(s=>s.def.k===(asia?AKURA_TRIAL.station:'krata'))||dest.find(s=>s.def.k==='krata')||dest[0])?.def.k,
+    crew:(crew.find(c=>c.k==='taan')||crew[0])?.k,intensity:asia?AKURA_TRIAL.intensity:5};
 }
 export function interrogateBoss(g) {
   const c=bossJusticeCase(g);if(!c||!['dais','trial'].includes(c.phase))return false;
@@ -110,12 +117,13 @@ export function sentenceBoss(g,pick) {
   const st=bossJusticeStations(g).find(s=>s.def.k===pick.station),crew=bossJusticeCrew(g).find(a=>a.k===pick.crew);
   if(!st||!crew||!Number.isInteger(pick.intensity)||pick.intensity<1||pick.intensity>5)return false;
   const a=bossJusticeAnswer(g);
-  if((c.final||c.arena)&&(!c.mirror||pick.station!==a.station||pick.crew!==a.crew||pick.intensity!==5))return false;
+  if((c.final||c.arena)&&(!c.mirror||pick.station!==a.station||pick.crew!==a.crew||pick.intensity!==a.intensity))return false;
   if(c.arena){
     c.pick={...pick};c.phase='aftermath';c.elapsed=0;
     g.log(`⚖️ ออกหมาย ${c.name} → ${st.def.name} · ผู้คุม ${crew.name} · ความแรง ${pick.intensity}`,'event');
-    if(g.storySeen?.[ARENA_STORY.released])releaseBoss(g);
-    else{g.queueStory(ARENA_STORY.punished);g.queueStory(ARENA_STORY.released);}
+    const st=arenaStories(c);
+    if(g.storySeen?.[st.released])releaseBoss(g);
+    else{g.queueStory(st.punished);g.queueStory(st.released);}
     return true;
   }
   c.pick={...pick};c.phase='escort';c.elapsed=0;
@@ -158,8 +166,8 @@ export function completeBossJusticeStory(g,key) {
   // A delayed acknowledgement may be delivered again after a saved trial/escort.
   // Capture is a one-way transition; later sentencing phases must never rewind.
   if(c?.final&&c.phase==='capture'&&key==='ending-capture')c.phase='dais';
-  if(c?.arena&&c.phase==='capture'&&key===ARENA_STORY.toDais)c.phase='dais';
-  if(c?.arena&&c.phase==='aftermath'&&key===ARENA_STORY.released)releaseBoss(g);
+  if(c?.arena&&c.phase==='capture'&&key===arenaStories(c).toDais)c.phase='dais';
+  if(c?.arena&&c.phase==='aftermath'&&key===arenaStories(c).released)releaseBoss(g);
 }
 export function bossJusticeActors(g) {
   const c=bossJusticeCase(g);if(!c||c.zone!==g.zone||['capture','aftermath','released'].includes(c.phase))return [];
