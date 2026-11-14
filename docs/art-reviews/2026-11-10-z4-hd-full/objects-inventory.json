@@ -1,0 +1,999 @@
+{
+  "zone": 4,
+  "skin": "cyberhell",
+  "scope": [
+    "r1-c1",
+    "r1-c2",
+    "r1-c3",
+    "r1-c4"
+  ],
+  "coordinateSpace": "full 4915x3277 master 1x pixels; source bbox [x0,y0,x1,y1]",
+  "sources": {
+    "src/town-owner-walkmask-cyberhell.js": "70fcee489d04bc085068e17d4502bb158955511d988b94b35854a87d5b5907e1",
+    "src/z4-poles-data.js": "76e5884881b5319f064e6f678699aaca7a71e21637ea8fecdd3699e10521f001",
+    "src/town-cyberhell-layout.js": "4674723fbdcae4379358660a5ee0f6228e03b22066684ad4bef54ddf40f27df1",
+    "src/zone-skin.js": "2212a18b638233ad7272241afbe569cdc344d3b7acdbaad117f627ab693788b1"
+  },
+  "repairs": false,
+  "runtimeProps": [],
+  "runtimeHouses": [],
+  "limitations": "walkmask is cell-centre sampled at 8 world units, not per-object collision evidence; border ensembles reviewed visually. Scope only these four chunks.",
+  "objects": [
+    {
+      "id": "z4-r1-c3-loose-crystal-west",
+      "chunk": "r1-c3",
+      "bboxPx1x": [
+        2217,
+        860,
+        2252,
+        899
+      ],
+      "footPx1x": [
+        2234,
+        887
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "remove-and-inpaint",
+      "generation": "r1-c3/q21",
+      "reason": "isolated raised crystal on pavement between stair flights"
+    },
+    {
+      "id": "z4-r1-c3-loose-crystal-east",
+      "chunk": "r1-c3",
+      "bboxPx1x": [
+        2368,
+        826,
+        2404,
+        860
+      ],
+      "footPx1x": [
+        2386,
+        852
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "remove-and-inpaint",
+      "generation": "r1-c3/q21",
+      "reason": "isolated raised crystal on pavement between stair flights"
+    },
+    {
+      "id": "z4-r1-c1-border-pylons-crystals-rails",
+      "chunk": "r1-c1",
+      "action": "keep-baked",
+      "reason": "structural border ensemble; retained deck/stair boundaries; no freestanding middle-of-floor objects identified outside two entries",
+      "inspection": "source-contact.jpg and walkmask-contact.jpg; bounding groups are not individual collision masks"
+    },
+    {
+      "id": "z4-r1-c1-background-and-fluid",
+      "chunk": "r1-c1",
+      "action": "keep-baked",
+      "reason": "inaccessible mountains/city, cloud sea, lava and cyan water stay as animation base"
+    },
+    {
+      "id": "z4-r1-c2-border-pylons-crystals-rails",
+      "chunk": "r1-c2",
+      "action": "keep-baked",
+      "reason": "structural border ensemble; retained deck/stair boundaries; no freestanding middle-of-floor objects identified outside two entries",
+      "inspection": "source-contact.jpg and walkmask-contact.jpg; bounding groups are not individual collision masks"
+    },
+    {
+      "id": "z4-r1-c2-background-and-fluid",
+      "chunk": "r1-c2",
+      "action": "keep-baked",
+      "reason": "inaccessible mountains/city, cloud sea, lava and cyan water stay as animation base"
+    },
+    {
+      "id": "z4-r1-c3-border-pylons-crystals-rails",
+      "chunk": "r1-c3",
+      "action": "keep-baked",
+      "reason": "structural border ensemble; retained deck/stair boundaries; no freestanding middle-of-floor objects identified outside two entries",
+      "inspection": "source-contact.jpg and walkmask-contact.jpg; bounding groups are not individual collision masks"
+    },
+    {
+      "id": "z4-r1-c3-background-and-fluid",
+      "chunk": "r1-c3",
+      "action": "keep-baked",
+      "reason": "inaccessible mountains/city, cloud sea, lava and cyan water stay as animation base"
+    },
+    {
+      "id": "z4-r1-c4-border-pylons-crystals-rails",
+      "chunk": "r1-c4",
+      "action": "keep-baked",
+      "reason": "structural border ensemble; retained deck/stair boundaries; no freestanding middle-of-floor objects identified outside two entries",
+      "inspection": "source-contact.jpg and walkmask-contact.jpg; bounding groups are not individual collision masks"
+    },
+    {
+      "id": "z4-r1-c4-background-and-fluid",
+      "chunk": "r1-c4",
+      "action": "keep-baked",
+      "reason": "inaccessible mountains/city, cloud sea, lava and cyan water stay as animation base"
+    },
+    {
+      "id": "runtime-z4-pole-0",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2107.552,
+        397.1724
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[0]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-1",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2241.2400000000002,
+        416.8344
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[1]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-2",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2244.189,
+        371.6118
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[2]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-3",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2340.523,
+        428.6316
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[3]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-4",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3156.413,
+        414.86819999999994
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[4]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-5",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3348.098,
+        383.40900000000005
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[5]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-6",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        426.622,
+        495.4824
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[6]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-7",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        588.817,
+        436.49640000000005
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[7]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-8",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        588.817,
+        485.65139999999997
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[8]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-9",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1958.136,
+        450.2598
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[9]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-10",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2339.54,
+        469.9218
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[10]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-11",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        3015.844,
+        477.7866
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[11]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-12",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3348.098,
+        434.5302
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[12]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-13",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3462.126,
+        483.6852
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[13]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-14",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        296.866,
+        542.6712
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[14]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-15",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        771.655,
+        521.043
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[15]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-16",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1865.734,
+        583.9614
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[16]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-17",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1885.394,
+        546.6036
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[17]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-18",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2486.9900000000002,
+        530.874
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[18]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-19",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        3028.623,
+        558.4008
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[19]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-20",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3461.143,
+        546.6036
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[20]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-21",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3664.6240000000003,
+        572.1642
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[21]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-22",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        4010.64,
+        564.2994
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[22]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-25",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        295.883,
+        591.8262000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[25]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-26",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        416.79200000000003,
+        627.2178
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[26]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-27",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        899.4449999999999,
+        591.8262000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[27]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-28",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        939.748,
+        652.7783999999999
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[28]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-29",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1777.264,
+        625.2515999999999
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[29]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-30",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1865.734,
+        650.8122
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[30]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-31",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1996.473,
+        668.5079999999999
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[31]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-32",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2148.8379999999997,
+        658.677
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[32]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-33",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2298.254,
+        599.691
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[33]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-34",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2298.254,
+        658.677
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[34]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-35",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2443.738,
+        658.677
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[35]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-36",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        3028.623,
+        607.5558
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[36]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-37",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3305.8289999999997,
+        633.1164
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[37]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-38",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3524.055,
+        648.846
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[38]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-41",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        490.517,
+        745.1898
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[41]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-42",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        491.5,
+        692.1024
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[42]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-43",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        939.748,
+        709.7982
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[43]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-44",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1110.79,
+        709.7982
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[44]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-45",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3176.073,
+        692.1024
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[45]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-46",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3304.846,
+        701.9334
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[46]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-47",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3429.687,
+        701.9334
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[47]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-51",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        613.3919999999999,
+        788.4462
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[51]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-52",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        747.0799999999999,
+        788.4462
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[52]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-53",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        872.904,
+        762.8856000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[53]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-54",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1109.807,
+        753.0546
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[54]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-55",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1338.8459999999998,
+        821.5438999999999
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[55]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-56",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1340.812,
+        780.5814
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[56]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-57",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1608.1879999999999,
+        788.4462
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[57]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-61",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1453.857,
+        874.6313000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[61]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-62",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1864.751,
+        833.3411000000001
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[62]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-63",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        1866.717,
+        886.4285000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[63]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-64",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2440.7889999999998,
+        858.9017
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[64]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-65",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2763.213,
+        866.7665000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[65]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-66",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        3063.028,
+        880.5299
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[66]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-67",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3818.955,
+        874.6313000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[67]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-68",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        3936.9150000000004,
+        874.6313000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[68]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-69",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        696.947,
+        970.9751
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[69]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-70",
+      "chunk": "r1-c2",
+      "footPx1x": [
+        2013.1840000000002,
+        904.1243
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[70]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-71",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2266.798,
+        923.7863
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[71]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-72",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2441.772,
+        923.7863
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[72]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-73",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2565.63,
+        913.9553
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[73]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-74",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2590.205,
+        972.9413
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[74]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-75",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2763.213,
+        923.7863
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[75]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-76",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2890.02,
+        965.0764999999999
+      ],
+      "ownerWalkmaskAtFoot": true,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[76]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-79",
+      "chunk": "r1-c1",
+      "footPx1x": [
+        858.159,
+        988.6709000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[79]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-80",
+      "chunk": "r1-c3",
+      "footPx1x": [
+        2479.1259999999997,
+        1020.1301000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[80]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-z4-pole-83",
+      "chunk": "r1-c4",
+      "footPx1x": [
+        4025.3849999999998,
+        988.6709000000001
+      ],
+      "ownerWalkmaskAtFoot": false,
+      "action": "runtime-layer-only",
+      "source": "src/z4-poles-data.js Z4_POLES[83]",
+      "reason": "separate sprite/wire layer via src/z4-poles.js; not a baked terrain removal target"
+    },
+    {
+      "id": "runtime-station-krata",
+      "footPx1x": [
+        598.3756510416666,
+        675.2412109375
+      ],
+      "chunk": "r1-c1",
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "ownerWalkmaskAtFoot": false,
+      "reason": "station drawn separately; reserved floor/flat inlay remains"
+    },
+    {
+      "id": "runtime-station-tarang",
+      "footPx1x": [
+        2124.7135416666665,
+        553.6337890625
+      ],
+      "chunk": "r1-c3",
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "ownerWalkmaskAtFoot": false,
+      "reason": "station drawn separately; reserved floor/flat inlay remains"
+    },
+    {
+      "id": "runtime-station-sawan",
+      "footPx1x": [
+        3247.8678385416665,
+        512.03125
+      ],
+      "chunk": "r1-c4",
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "ownerWalkmaskAtFoot": false,
+      "reason": "station drawn separately; reserved floor/flat inlay remains"
+    },
+    {
+      "id": "runtime-station-canteen",
+      "footPx1x": [
+        2035.1171875,
+        883.25390625
+      ],
+      "chunk": "r1-c2",
+      "action": "runtime-layer-only",
+      "source": "src/town-cyberhell-layout.js",
+      "ownerWalkmaskAtFoot": true,
+      "reason": "station drawn separately; reserved floor/flat inlay remains"
+    }
+  ]
+}

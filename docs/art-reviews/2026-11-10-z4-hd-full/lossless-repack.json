@@ -1,0 +1,12 @@
+{
+  "operation": "Pillow WebP lossless=True, quality=100, method=6; keep smaller encoding only",
+  "nativeImages": 16,
+  "assembledImages": 4,
+  "rgbEqualityChecksBeforeAfterEncoding": 20,
+  "allRgbEqualityAssertionsCompleted": true,
+  "processExitCode": 0,
+  "originalBytesNativeAndAssembled": 67744568,
+  "finalBytesNativeAndAssembled": 67249328,
+  "qualityMeasurementsRepeated": false,
+  "note": "Re-encoding compared full RGB byte arrays before/after for each image. Registration native file hashes refreshed after encoding."
+}

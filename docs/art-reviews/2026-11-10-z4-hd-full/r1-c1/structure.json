@@ -1,0 +1,101 @@
+{
+  "method": "41x41 low-pass grayscale patches, +/-24 px search, delivered output downsampled to 1x",
+  "coordinateSpace": "chunk-local master 1x pixels",
+  "landmarks": [
+    {
+      "name": "north-stair-left-foot",
+      "sourcePx1x": [
+        423,
+        453
+      ],
+      "bestCandidatePx1x": [
+        423,
+        453
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9200142621994019,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "north-stair-right-foot",
+      "sourcePx1x": [
+        559,
+        453
+      ],
+      "bestCandidatePx1x": [
+        559,
+        453
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.953341543674469,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "plaza-east-bridge-junction",
+      "sourcePx1x": [
+        949,
+        737
+      ],
+      "bestCandidatePx1x": [
+        949,
+        737
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.939516544342041,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "south-stair-left-foot",
+      "sourcePx1x": [
+        571,
+        910
+      ],
+      "bestCandidatePx1x": [
+        571,
+        910
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9459406733512878,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "south-stair-right-foot",
+      "sourcePx1x": [
+        703,
+        911
+      ],
+      "bestCandidatePx1x": [
+        703,
+        911
+      ],
+      "displacementPx1x": 0.0,
+      "correlation": 0.9563291072845459,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    },
+    {
+      "name": "lavafall-lip",
+      "sourcePx1x": [
+        206,
+        681
+      ],
+      "bestCandidatePx1x": [
+        207,
+        681
+      ],
+      "displacementPx1x": 1.0,
+      "correlation": 0.975607693195343,
+      "reliableCorrespondence": true,
+      "note": "Local template proxy; inspect structural landmarks visually."
+    }
+  ],
+  "structureMaxProxyPx1x": 1.0,
+  "structureMaxCertifiedPx1x": null,
+  "decision": "NOT CERTIFIED: proxy probes do not prove every plaza/stair/cliff/bank <=4 px; Claude review required",
+  "registrationInlierResidualMaxPx1x": 3.3744006156921387,
+  "affineUncoveredMasterFallbackFraction": 0.0003457069396972656
+}

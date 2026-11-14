@@ -1,0 +1,243 @@
+{
+  "zone": 4,
+  "style": "cyberhell",
+  "source": "img/map-zone4/v3/",
+  "repairs": false,
+  "tool": "built-in image_gen only",
+  "imageGenCalls": 16,
+  "retries": 0,
+  "requestedChunks": [
+    "r1-c1",
+    "r1-c2",
+    "r1-c3",
+    "r1-c4"
+  ],
+  "chunks": [
+    {
+      "chunk": "r1-c1",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1254,
+          1254
+        ],
+        "q12": [
+          1254,
+          1254
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxCertifiedPx1x": null,
+      "structureMaxProxyPx1x": 1.0,
+      "affineUncoveredMasterFallbackFraction": 0.0003457069396972656,
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 114.22199249267578,
+        "baselineLanczos2xLaplacianVariance": 11.17232894897461,
+        "delivered2xLaplacianVariance": 2927.2578125,
+        "deliveredDownsampled1xLaplacianVariance": 4602.6533203125,
+        "ratioAtEqual2xSampling": 262.0096334317709,
+        "ratioAtEqual1xSampling": 40.295684043575356,
+        "note": "Full-chunk grayscale Laplacian variance; no sharpening added. Both sampling conventions reported since unavailable Z1 scripts cannot be verified."
+      },
+      "removedObjectIds": [],
+      "qualityStatus": "pending-review"
+    },
+    {
+      "chunk": "r1-c2",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1388,
+          1133
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxCertifiedPx1x": null,
+      "structureMaxProxyPx1x": 9.219544457292887,
+      "affineUncoveredMasterFallbackFraction": 7.152557373046875e-06,
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 105.21453094482422,
+        "baselineLanczos2xLaplacianVariance": 10.4531888961792,
+        "delivered2xLaplacianVariance": 2357.4375,
+        "deliveredDownsampled1xLaplacianVariance": 3965.574951171875,
+        "ratioAtEqual2xSampling": 225.52328513470943,
+        "ratioAtEqual1xSampling": 37.69037333114635,
+        "note": "Full-chunk grayscale Laplacian variance; no sharpening added. Both sampling conventions reported since unavailable Z1 scripts cannot be verified."
+      },
+      "removedObjectIds": [],
+      "qualityStatus": "pending-review"
+    },
+    {
+      "chunk": "r1-c3",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxCertifiedPx1x": null,
+      "structureMaxProxyPx1x": 0.0,
+      "affineUncoveredMasterFallbackFraction": 0.0,
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 103.34344482421875,
+        "baselineLanczos2xLaplacianVariance": 10.231350898742676,
+        "delivered2xLaplacianVariance": 2342.5654296875,
+        "deliveredDownsampled1xLaplacianVariance": 3736.405517578125,
+        "ratioAtEqual2xSampling": 228.95954335564588,
+        "ratioAtEqual1xSampling": 36.15522517111304,
+        "note": "Full-chunk grayscale Laplacian variance; no sharpening added. Both sampling conventions reported since unavailable Z1 scripts cannot be verified."
+      },
+      "removedObjectIds": [
+        "z4-r1-c3-loose-crystal-west",
+        "z4-r1-c3-loose-crystal-east"
+      ],
+      "qualityStatus": "pending-review"
+    },
+    {
+      "chunk": "r1-c4",
+      "imageGenCalls": 4,
+      "nativeSizes": {
+        "q11": [
+          1323,
+          1189
+        ],
+        "q12": [
+          1323,
+          1189
+        ],
+        "q21": [
+          1254,
+          1254
+        ],
+        "q22": [
+          1254,
+          1254
+        ]
+      },
+      "outputSize": [
+        2048,
+        2048
+      ],
+      "structureMaxCertifiedPx1x": null,
+      "structureMaxProxyPx1x": 1.0,
+      "affineUncoveredMasterFallbackFraction": 0.0,
+      "sharpness": {
+        "baselineMaster1xLaplacianVariance": 121.21054077148438,
+        "baselineLanczos2xLaplacianVariance": 11.633508682250977,
+        "delivered2xLaplacianVariance": 2513.202392578125,
+        "deliveredDownsampled1xLaplacianVariance": 3942.8896484375,
+        "ratioAtEqual2xSampling": 216.0313333854704,
+        "ratioAtEqual1xSampling": 32.529263736814315,
+        "note": "Full-chunk grayscale Laplacian variance; no sharpening added. Both sampling conventions reported since unavailable Z1 scripts cannot be verified."
+      },
+      "removedObjectIds": [],
+      "qualityStatus": "pending-review"
+    }
+  ],
+  "qualityDecision": "Pending Claude review; no QA acceptance asserted",
+  "missingDeliverables": [],
+  "pendingWork": [
+    "Claude decision on all quality criteria; no QA acceptance asserted",
+    "r1-c2 upper-stair-head proxy displacement 9.2195 px at correlation 0.948; structure <=4 px not certified",
+    "Review internal seam texture/light changes and added orange glow against original cyberhell style",
+    "ASSEMBLE neighbour-chunk joins and game installation are outside this art run"
+  ],
+  "referenceAvailability": {
+    "externalZone1ExampleDirectories": "missing at supplied locations",
+    "usedMethods": [
+      "scripts/stitch-border34-redraw.py SIFT/affine precedent",
+      "docs/art-reviews/2026-11-12-z1-v7r-assemble/scripts/assemble-v7r.py band_path recurrence"
+    ]
+  },
+  "acceptanceSelfCheck": {
+    "criterion1": {
+      "parts": "16/16 native images, 4/4 chunk assemblies",
+      "sharpnessAt1x": "32.5293 to 40.2957, measured once",
+      "structure": "not certified; r1-c2 proxy 9.2195 px exceeds 4 px"
+    },
+    "criterion2": {
+      "objects": "two isolated walk-floor crystals removed and visually inspected",
+      "internalSeams": "min-cost assembled; visual decision pending Claude"
+    },
+    "criterion3": {
+      "nativeAndRegistration": "complete for all 16 parts, including 64 px context outside chunk boundaries"
+    }
+  },
+  "inputCrops": "Omitted from final pack to meet byte cap; reconstruct with scripts/assemble.py --prepare-inputs. Original crop hashes in registration.json.",
+  "generationSizeCounts": {
+    "1254x1254": 10,
+    "1323x1189": 5,
+    "1388x1133": 1
+  },
+  "qualityMeasurementsRuns": 1,
+  "deliveryStatus": "all requested files delivered; quality acceptance pending Claude",
+  "losslessRepackReport": "lossless-repack.json",
+  "fileVerificationCommand": "python3 docs/art-reviews/2026-11-10-z4-hd-full/scripts/verify.py",
+  "gameRuntimeTestsRun": false,
+  "sourceHashes": "source-hashes.json",
+  "testsRun": [
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-full/scripts/assemble.py",
+      "exitCode": 0,
+      "scope": "assembly and diagnostic measurement once, not quality acceptance"
+    },
+    {
+      "command": "lossless WebP repack with full RGB byte equality assertions",
+      "exitCode": 0,
+      "imagesCompared": 20
+    },
+    {
+      "command": "python3 docs/art-reviews/2026-11-10-z4-hd-full/scripts/verify.py",
+      "exitCode": 0,
+      "report": "verification.json",
+      "scope": "presence, decode, dimensions, lossless containers and byte cap only"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ]
+}
