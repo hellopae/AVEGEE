@@ -1680,6 +1680,7 @@ Object.assign(TH, {
   'item.phoenixFeather.noYama': 'ขนนกนี้ใช้กับยมทูตในทีมเท่านั้น ยามามีหัวใจสำรองคอยช่วยอยู่แล้ว',
   'item.phoenixFeather.once': 'ขนเส้นนี้ส่งคำฝากไปถึงเขาแล้วหนึ่งครั้งในศึกนี้',
   'item.phoenixFeather.battleOnly': 'ใช้ในศึกเท่านั้น',
+  'item.phoenixFeather.notDown': 'เขายังยืนอยู่ ขนนกนี้ใช้กับคนที่ล้มลงเท่านั้น',
   'item.phoenixFeather.full': 'ถือครบ {n} เส้นแล้ว',
 });
 Object.assign(EN, {
@@ -1692,5 +1693,6 @@ Object.assign(EN, {
   'item.phoenixFeather.noYama': 'The feather works on your reapers only. Yama already has the Spare Heart.',
   'item.phoenixFeather.once': 'The feather has already carried its message to them once this fight.',
   'item.phoenixFeather.battleOnly': 'Battle only',
+  'item.phoenixFeather.notDown': 'They are still on their feet. The feather is for the fallen.',
   'item.phoenixFeather.full': 'Already carrying {n}',
 });

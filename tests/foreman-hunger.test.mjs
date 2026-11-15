@@ -9,6 +9,7 @@ import { resetWalk } from '../src/walk.js?v=k1d';
 import { foremanPhase, foremanStarving, foremanPresent, FOREMAN } from '../src/foreman.js';
 import { zoneWorkers } from '../src/workers.js';
 import { canteenState } from '../src/canteen.js';
+import { teamStatus } from '../src/team-hud.js';
 
 globalThis.Image = class {};
 
@@ -56,6 +57,7 @@ test('hunger 0: he stops (no field job, not a builder, Nira takes the souls), st
   assert.equal(foremanStarving(g), true);
   assert.equal(foremanPresent(g), false);
   assert.equal(foremanPhase(g), 'none');
+  assert.equal(teamStatus(g, d).duty, 'รอข้าวปั้น', 'the team page says what he waits for (the same words a hungry worker shows)');
   assert.equal(g.courtCourier()?.k, 'nira', 'the foreman duty stops: Nira meets the souls again');
   assert.equal(g.builders().some(c => c.k === 'dam'), false, 'he does not build either while starving');
   frames(g, 80);

@@ -57,6 +57,9 @@ test('wakes a fallen teammate at 40 % HP, back in the turn order, out of the fal
   assert.ok(!g.battleActors().some(a => a.id === taan.id));
   assert.equal(g.phoenixWhy(taan.id), '', 'a fallen teammate can receive it');
   assert.equal(g.phoenixTargets().length, 1);
+  assert.equal(g.phoenixWhy(g.crew[1].id), 'เขายังยืนอยู่ ขนนกนี้ใช้กับคนที่ล้มลงเท่านั้น', 'a teammate still standing is refused (and greyed out in the picker) even while someone else is down');
+  allyTurn(g); assert.equal(g.confirmBattleCommand('phoenixFeather', g.crew[1].id), false, 'refused on an ally turn too');
+  assert.equal(g.inventory.phoenixFeather, 2, 'nothing spent');
   assert.equal(useFeather(g, taan.id), true);
   assert.equal(taan.morale, Math.round(100 * PHOENIX_FEATHER.heal), '40 % of the 100 HP a teammate has');
   assert.deepEqual(b.fallen, []); assert.ok(!b.absentActors.includes(taan.id));

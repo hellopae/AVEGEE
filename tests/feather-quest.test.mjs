@@ -166,8 +166,8 @@ test('the merchant sells the feather after the quest: 150 here, max 3, and the s
   assert.equal(g.inventory.phoenixFeather, 1);
 });
 
-test('the pit art: the pit is drawn by the scene code until a picture img/quest-ash-pit.webp exists; the foe pictures are in img/', () => {
+test('the pit is drawn by the scene code (no picture exists for it, so nothing is requested) and the foe pictures are in img/', () => {
   const scene = readFileSync(new URL('../src/scene.js', import.meta.url), 'utf8');
-  assert.match(scene, /img\('quest-ash-pit'\)/, 'a drawn pit overwrites the plain one with no code change');
+  assert.match(scene, /p\.npc==='pit'/); assert.doesNotMatch(scene, /quest-ash-pit/, 'no request for a file that does not exist (it would 404 every 10 s)');
   for (const f of ['mob-q-ashsmoke', 'mob-q-ashsmoke-big', 'item-phoenix-feather']) assert.ok(existsSync(new URL(`../img/${f}.webp`, import.meta.url).pathname), f);
 });

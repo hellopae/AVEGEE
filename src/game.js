@@ -3761,7 +3761,7 @@ const API = {
     if (!(this.inventory.phoenixFeather > 0)) return 'ไม่มีของ / No stock';
     if (id === 'you') return t('item.phoenixFeather.noYama');
     const down = this.battleFallen().find(c => c.id === id);
-    if (!down) return this.battleFallen().length ? '' : t('item.phoenixFeather.noneDown');
+    if (!down) return this.battleFallen().length ? t('item.phoenixFeather.notDown') : t('item.phoenixFeather.noneDown');   // a teammate still on his feet is not a receiver
     if (b.phoenixUsed?.[id]) return t('item.phoenixFeather.once');
     return '';
   },
