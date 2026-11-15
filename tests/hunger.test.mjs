@@ -41,9 +41,19 @@ test('เสบียงกองกลางหมด — ป้อนข้า
   assert.equal(g.feedCrew('taan'), false);
 });
 
-test('นิรา (reader) กินไม่ได้ ป้อนไม่ได้ — เธอไม่ใช่ยมทูตสายทำงาน', () => {
-  const g = createGame();
-  assert.equal(g.feedCrew('nira'), false);
+test('F22: นิรา (reader) หิวแล้วป้อนข้าวปั้นด้วยมือได้ (ปุ่มจัดทีม) แต่ไม่เข้ารายการเสิร์ฟอัตโนมัติ/เดินไปโรงอาหาร', async () => {
+  const {canFeedActor, mealRecipient, canOrderCanteenMeal} = await import('../src/canteen.js');
+  const g = createGame(); g.food = 5;
+  const nira = g.crew.find(c => c.k === 'nira');
+  nira.hunger = 42; nira.morale = 100;
+  assert.ok(canFeedActor(g, nira.id), 'team-page button is enabled for a hungry Nira');
+  assert.equal(g.feedActor(nira.id), true);
+  assert.equal(nira.hunger, 82); assert.equal(g.food, 4);
+  nira.hunger = 100; assert.ok(!canFeedActor(g, nira.id), 'a full Nira cannot be fed');
+  nira.hunger = 50; assert.equal(g.feedCrew('nira'), true, 'field button (data-feed) feeds her too');
+  assert.equal(mealRecipient(g, nira.id), undefined, 'still not in the auto-serve list');
+  assert.equal(canOrderCanteenMeal(g, nira.id), false);
+  assert.equal(g.feedCrew('self'), false);
 });
 
 test('ยมทูตที่กำลังทำงานจริง หิวลดลงทุกวาระ ไม่ทำงาน (ว่าง) หิวไม่ลด', () => {

@@ -5278,7 +5278,7 @@ const API = {
    *  หัก 1 ห่อจากกองเสบียงกลางเดียวกับที่ระบบอัตโนมัติกินอยู่แล้ว (ดูคอมเมนต์ที่ step())
    *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
   feedCrew(k) {
-    const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);
+    const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self);   // F22: Nira (reader) is fed by hand like the others
     if (!actorStanding(c) || this.battle || foodAvailable(this) < BAL.feedFoodCost || !takeFood(this, BAL.feedFoodCost)) return false;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
     c.morale = Math.min(100, c.morale + Math.round(100 * ITEMS.food.hpRatio));

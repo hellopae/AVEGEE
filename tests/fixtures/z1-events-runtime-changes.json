@@ -413,6 +413,10 @@
    "after": "    if (stock?.needs && !this.sideQuests?.[stock.needs]?.done) return false;                    // QUEST-DAM-B: the feather is sold only after the merchant's feather quest\n    if (stock?.cap && (this.inventory[k] || 0) + (stock.qty || 1) > stock.cap) return false;     // ... and only up to 3 in the bag\n"
   },
   {
+   "before": "    const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);\n",
+   "after": "    const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self);   // F22: Nira (reader) is fed by hand like the others\n"
+  },
+  {
    "before": "    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n",
    "after": "    const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen\n    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman && !foremanStarving(this)) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n"
   },

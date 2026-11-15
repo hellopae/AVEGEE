@@ -10,6 +10,9 @@ export function canteenState(g){g.canteenState||={};return g.canteenState[g.zone
 export function mealRecipients(g){return [...g.crew.filter(c=>!c.reader&&!c.self),g.guard,...(g.workerState?.workers||[]).filter(w=>w.homeZone===g.zone)].filter(Boolean);}
 export const needsMeal=c=>!!c&&!c.teaRest&&!c.eatOrder&&(c.stamina!=null?((c.hunger??100)<80||c.stamina<65||(c.morale??100)<55):actorStanding(c)&&((c.hunger??100)<80||(c.morale??100)<55));
 export const mealRecipient=(g,id)=>mealRecipients(g).find(c=>c.id===id);
+// F22 (owner 15 Nov, m2.png): Nira (the reader) is left out of the auto-served / walk-to-the-canteen list (she stays beside the player), but the team page's
+// "give a rice ball" button must feed her too - she shows a hunger bar like everyone else.  Hand feeding looks in this wider list.
+export const feedRecipient=(g,id)=>mealRecipient(g,id)||g.crew?.find(c=>c.reader&&!c.self&&c.id===id);
 const hungry=c=>!!c&&(c.stamina!=null||actorStanding(c))&&!c.teaRest&&((c.hunger??100)<100||(c.morale??100)<100||c.stamina<100||c.supplyRest);
 export function restoreMeal(c){
  c.hunger=Math.min(100,(c.hunger??100)+40);c.morale=Math.min(100,(c.morale??100)+(c.stamina!=null?35:20));
@@ -18,14 +21,14 @@ export function restoreMeal(c){
 // Khun Pae 11 Nov: the give button uses the kitchen's ready meals first, and falls back to the central stock (merchant rice) when the kitchen is empty.
 const fromKitchen=g=>canteenActive(g)&&canteenState(g).meals>=1;
 export const foodAvailable=g=>fromKitchen(g)?canteenState(g).meals:(g.food||0);
-export const canFeedActor=(g,id)=>!g.battle&&!g.over&&hungry(mealRecipient(g,id))&&foodAvailable(g)>=1;
+export const canFeedActor=(g,id)=>!g.battle&&!g.over&&hungry(feedRecipient(g,id))&&foodAvailable(g)>=1;
 export function takeFood(g,n=1){
  if(fromKitchen(g)&&canteenState(g).meals>=n){canteenState(g).meals-=n;canteenState(g).served+=n;return true;}
  if((g.food||0)>=n){g.food-=n;return true;}return false;
 }
 export function feedActor(g,id){
  if(!canFeedActor(g,id)||!takeFood(g,1))return false;
- restoreMeal(mealRecipient(g,id));return true;
+ restoreMeal(feedRecipient(g,id));return true;
 }
 // Old crew cooking API is deliberately closed; unfinished paid queues are refunded on load.
 export const orderRice=()=>false;
