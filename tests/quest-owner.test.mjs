@@ -6,7 +6,7 @@ const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.gameCom
 import {hireFor,hireAll} from './helpers/quest-hire.mjs';
 const meet=(g,q)=>{const p=questTarget(g,q);g.zone=p.zone;syncSceneZone(p.zone);hireFor(g,q);Object.assign(g.player,questTarget(g,q));};
 const reload=g=>{const h=game();assert.ok(h.restore(JSON.parse(JSON.stringify(g.snapshot()))));h.save=()=>true;h.onChange=()=>{};return h;};
-for(const q of QUESTS)test(`${q.id}: acceptance belongs only to its named regional owner and logs title once`,()=>{
+for(const q of QUESTS.filter(x=>!x.feather))test(`${q.id}: acceptance belongs only to its named regional owner and logs title once`,()=>{
  const g=game(),target=questTarget(g,q),zone=q.kin?q.from:q.zone;assert.equal(target.zone,zone);assert.equal(target.npc,q.npc);
  assert.ok(!questsForActor(g,q.npc,zone).some(x=>x.id===q.id)||['nira','merchant'].includes(q.npc)||q.npc==='taan'&&zone==='th','PART-A: hidden until the character is hired');g.zone=zone;syncSceneZone(zone);hireFor(g,q);g.zone='th';syncSceneZone('th');
  assert.ok(questsForActor(g,q.npc,zone).some(x=>x.id===q.id));for(const wrong of ['th','asia','west','cyberhell'].filter(z=>z!==zone))assert.ok(!questsForActor(g,q.npc,wrong).some(x=>x.id===q.id));
@@ -30,8 +30,8 @@ test('journal excludes unaccepted/completed missions, labels pending verdict and
 });
 test('kin from-to-from routing stays intact; paused side missions remain readable but kin retain finale availability',()=>{
  const g=game();g.gameCompleted=false;g.zoneEvents.cyberhell={cyberBreach:'cleared',cyberRescue:'cleared',cyberFinal:'pending'};g.finalEventState().phase='ready';
- hireAll(g);for(const q of QUESTS)g.sideQuests[q.id]={step:1,done:false};const entries=activeQuestEntries(g);assert.equal(entries.length,16);
- for(const q of QUESTS){const e=entries.find(x=>x.id===q.id);assert.equal(e.paused,!q.kin);assert.ok(questsForActor(g,q.npc,e.zone).some(x=>x.id===q.id));}
+ hireAll(g);for(const q of QUESTS)g.sideQuests[q.id]={step:1,done:false};const entries=activeQuestEntries(g);assert.equal(entries.length,16,'the 17th (feather quest) is not open before sqMerchant is done');
+ for(const q of QUESTS.filter(x=>!x.feather)){const e=entries.find(x=>x.id===q.id);assert.equal(e.paused,!q.kin);assert.ok(questsForActor(g,q.npc,e.zone).some(x=>x.id===q.id));}
  for(const q of SIDE_QUESTS){meet(g,q);assert.equal(advanceQuest(g,q.id,0),false);}
  for(const q of KIN_QUESTS){for(const [step,z]of [[0,q.from],[1,q.to],[2,q.from]]){g.sideQuests[q.id].step=step;assert.equal(questTarget(g,q).zone,z);}g.sideQuests[q.id].step=0;meet(g,q);assert.ok(advanceQuest(g,q.id));}
 });

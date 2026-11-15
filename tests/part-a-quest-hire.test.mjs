@@ -40,7 +40,7 @@ const HIRED_FROM_START = { th:['taan'], asia:['taan'], west:['taan'] };   // Taa
 
 test('every quest names the character it belongs to, and only Nira / merchant quests exist without a hire', () => {
   const g = make();
-  for (const q of QUESTS) {
+  for (const q of QUESTS.filter(x => !x.feather)) {   // the feather quest has its own rule (opens after sqMerchant): tests/feather-quest.test.mjs
     const zone = q.kin ? q.from : q.zone, free = ['nira', 'merchant'].includes(q.npc) || (HIRED_FROM_START[zone] || []).includes(q.npc);
     enter(g, zone);
     assert.equal(questCharacterHired(g, q), free, `${q.id} (${q.npc}@${zone}) before hire`);

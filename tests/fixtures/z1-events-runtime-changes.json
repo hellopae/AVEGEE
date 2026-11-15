@@ -2,11 +2,15 @@
  "game": [
   {
    "before": "",
-   "after": "import {foremanCourier,foremanPhase,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
+   "after": "import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
   },
   {
    "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
    "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
+  },
+  {
+   "before": "import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\n",
+   "after": "import { LEGACY_ITEM_IDS, PHOENIX_FEATHER, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\n"
   },
   {
    "before": "         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n",
@@ -130,7 +134,15 @@
   },
   {
    "before": "",
+   "after": "    foremanHungerBeat(this, workingCrew.has('dam'));   // QUEST-DAM-B (owner 15 Nov): Dam hungers while he does the foreman's work, like a worker\n"
+  },
+  {
+   "before": "",
    "after": "\n      // FOREMAN: Dam's own work (field jobs before workers exist / standing at the kitchen after) replaces the ordinary roaming; building and escorting stay with the code below\n      if (c.k === 'dam' && advanceForeman(this, c, dt)) continue;\n"
+  },
+  {
+   "before": "    const ownerCrew = def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);\n    const ownerJoined = def.owner === 'guard' ? this.guardActive() : !!ownerCrew;\n",
+   "after": "    const ownerCrew = !def.owner || def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);\n    const ownerJoined = !def.owner ? true : def.owner === 'guard' ? this.guardActive() : !!ownerCrew;   // no owner (the feather quest): nobody to wait for\n"
   },
   {
    "before": "      (this.zoneCases[this.zone] || 0) >= 10 && this.zoneEventGateReady();\n",
@@ -210,6 +222,10 @@
   },
   {
    "before": "",
+   "after": "  /** QUEST-DAM-B: why the Phoenix Feather cannot go to this teammate right now ('' = it can). Battle only · a fallen teammate only · never Yama (he has the Spare Heart) · once per person per fight. */\n  phoenixWhy(id) {\n    const b = this.battle;\n    if (!b || b.over) return t('item.phoenixFeather.battleOnly');\n    if (!(this.inventory.phoenixFeather > 0)) return 'ไม่มีของ / No stock';\n    if (id === 'you') return t('item.phoenixFeather.noYama');\n    const down = this.battleFallen().find(c => c.id === id);\n    if (!down) return this.battleFallen().length ? '' : t('item.phoenixFeather.noneDown');\n    if (b.phoenixUsed?.[id]) return t('item.phoenixFeather.once');\n    return '';\n  },\n  /** the fallen teammates a feather could still wake right now (the battle menu greys the item out when this is empty) */\n  phoenixTargets() {\n    const b = this.battle;\n    return b && !b.over ? this.battleFallen().filter(c => !b.phoenixUsed?.[c.id]) : [];\n  },\n"
+  },
+  {
+   "before": "",
    "after": "    if (b.breachFinale === 'ready') return this.breachFinaleStrike();\n"
   },
   {
@@ -233,6 +249,18 @@
    "after": "    if (B.breachFinale === 'ready' && what !== (B.finaleMove || 'teamJudgment')) return false;   // foes wait\n"
   },
   {
+   "before": "    const recipient = command && this.battleActors().find(c => c.id === command.recipientId);\n",
+   "after": "    const featherCommand = !!command && what === 'phoenixFeather';   // QUEST-DAM-B: the only item whose receiver is a fallen teammate (not in battleActors)\n    const recipient = command && (this.battleActors().find(c => c.id === command.recipientId) || (featherCommand ? this.battleFallen().find(c => c.id === command.recipientId) : undefined));\n"
+  },
+  {
+   "before": "",
+   "after": "    if (featherCommand && (this.phoenixWhy(command.recipientId) || !recipient || command.recipientId === 'you')) return false;\n"
+  },
+  {
+   "before": "    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;\n",
+   "after": "    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;\n"
+  },
+  {
    "before": "",
    "after": "    B.skillNotice = null;      // BOSS-SKILLS: what the foe announced / did this turn (banner)\n"
   },
@@ -247,6 +275,10 @@
   {
    "before": "",
    "after": "      if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }\n"
+  },
+  {
+   "before": "",
+   "after": "    } else if (featherCommand) {\n      // QUEST-DAM-B (owner 15 Nov): wakes a fallen teammate at 40 % HP (HP of a teammate = morale, 0-100), costs the user's turn like any item; once per person per fight\n      const hp = Math.round(100 * PHOENIX_FEATHER.heal);\n      recipient.morale = hp;\n      B.fallen = (B.fallen || []).filter(id => id !== recipient.id);\n      B.absentActors = (B.absentActors || []).filter(id => id !== recipient.id);\n      (B.phoenixUsed ||= {})[recipient.id] = true;\n      if (--this.inventory.phoenixFeather <= 0) delete this.inventory.phoenixFeather;\n      B.dmg.healActorId = recipient.id; B.dmg.healAmount = hp;\n      B.helper = actor.id === 'you' ? null : { ...actor, lunge:false };\n      B.talk = t('item.phoenixFeather.say', { name:recipient.name });\n      say(B.talk);\n      this.save();\n"
   },
   {
    "before": "      if (this.mp < BATTLE.mpCost.fire) return false;\n      this.mp -= BATTLE.mpCost.fire;\n",
@@ -377,8 +409,12 @@
    "after": "    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him\n"
   },
   {
+   "before": "",
+   "after": "    if (stock?.needs && !this.sideQuests?.[stock.needs]?.done) return false;                    // QUEST-DAM-B: the feather is sold only after the merchant's feather quest\n    if (stock?.cap && (this.inventory[k] || 0) + (stock.qty || 1) > stock.cap) return false;     // ... and only up to 3 in the bag\n"
+  },
+  {
    "before": "    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n",
-   "after": "    const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen\n    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n"
+   "after": "    const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen\n    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman && !foremanStarving(this)) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));\n"
   },
   {
    "before": "",
@@ -401,6 +437,18 @@
   {
    "before": "",
    "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';\nimport { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)\n"
+  },
+  {
+   "before": "",
+   "after": "  // QUEST-DAM-B (owner 14-15 Nov 2026): ขนนกฟีนิกซ์ — ชุบเพื่อนในทีมที่ล้มอยู่ในศึก (ไม่ใช่ยามา · ยามามีหัวใจสำรอง) · ตัวเลขใน PHOENIX_FEATHER ด้านล่าง\n  // ได้จากภารกิจ \"ขนที่ไม่ไหม้\" ของพ่อค้า แล้วซื้อต่อที่แผงพ่อค้าได้ · ข้อความ TH/EN มาจาก Rae ผ่านคีย์ item.phoenixFeather.* ใน i18n.js\n  phoenixFeather: { name:'ขนนกฟีนิกซ์', nameEn:'Phoenix Feather', nameKey:'item.phoenixFeather.name', descKey:'item.phoenixFeather.desc', howToKey:'item.phoenixFeather.howTo', sayKey:'item.phoenixFeather.say',\n            img:'item-phoenix-feather', h:44, glyph:'', placeholder:'ขนนก', battleOnly:true, reviveAlly:true, fallback:'ขนนก',\n            desc:'ขนจากนกควันทองที่ลุกขึ้นจากเถ้าเซ่น ปลุกเพื่อนในทีมที่ล้มลงให้ลุกขึ้นพร้อมพลังส่วนหนึ่ง',\n            howTo:'ในฉากต่อสู้ เลือกไอเท็ม → ขนนกฟีนิกซ์ → เลือกเพื่อนที่ล้มอยู่ (ใช้ 1 เทิร์น)',\n            say:'ขนนกวูบเป็นแสงทอง {name} ลืมตาขึ้นแล้วลุกยืน' },\n"
+  },
+  {
+   "before": "",
+   "after": "/** ขนนกฟีนิกซ์ (คุณเป้ 15 พ.ย. 2569): ชุบ 40% ของ HP สูงสุด · รางวัลภารกิจ 2 เส้น · ขาย 150 เบี้ยกรรม (ฐานโซน 1 คูณตามโซน) · ถือสูงสุด 3 · ใช้ในศึกเท่านั้น · คนเดิมได้ 1 ครั้งต่อศึก */\nexport const PHOENIX_FEATHER = Object.freeze({ heal:.4, questGain:2, price:150, maxCarry:3, perFightEach:1 });\n"
+  },
+  {
+   "before": "",
+   "after": "    // QUEST-DAM-B: ขายหลังจบภารกิจ \"ขนที่ไม่ไหม้\" เท่านั้น (needs) · ถือสูงสุด 3 (cap)\n    { k:'phoenixFeather', cost:150, lv:1, needs:'sqMerchantFeather', cap:3 },\n"
   },
   {
    "before": "",
@@ -485,6 +533,10 @@
   {
    "before": "    bossArrive:[\n      'เหลียนกัง: \"เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ\"',\n      'เหลียนกัง: \"ข้าคือผู้ตรวจการท้องถิ่นแห่งบูรพา ต้องดูให้แน่ก่อนว่า\"',\n      'เหลียนกัง: \"คนต่างถิ่นอย่างเจ้าคู่ควรจะมาปกครองสาขานี้หรือไม่\"',\n      'ยมบาทน้อย: \"งั้นก็ตรวจผมให้เต็มที่เลยสิ\"',\n    ],\n",
    "after": "    bossArrive:LIAN_ARRIVE_LINES,   // Z2-EVENTS: Rae's z2-lian-open (5.3), replaces the four older lines\n"
+  },
+  {
+   "before": "      const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };\n",
+   "after": "      // the feather follows the zone the same way the medicine does: base x the mean of the medkit and holy-water zone ratios, rounded to 5\n      const costs = { health:hpCost, holyWater:mpCost, tea:teaCost, phoenixFeather:Math.round(PHOENIX_FEATHER.price * (hpCost / 55 + mpCost / 45) / 2 / 5) * 5 };\n"
   }
  ],
  "combat-skills": [

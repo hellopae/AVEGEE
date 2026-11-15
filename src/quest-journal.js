@@ -1,7 +1,9 @@
 import {QUESTS,questState,questTarget,questsPaused,questUnlocked,questHandoffNeed} from './side-quests.js';
 import {QUEST_CASES} from './quest-cases.js';
+import {featherObjective} from './feather-quest.js';
 
 function questObjective(q,state,target) {
+  if(q.feather)return featherObjective(state);   // QUEST-DAM-B: Rae's four tracker lines
   if(q.kin)return state.step===1
     ? `นำคำฝากไปคุยกับ${target.name} เพื่อรับคำตอบ`
     : `นำคำตอบกลับไปให้${target.name} เพื่อปิดภารกิจ`;

@@ -646,7 +646,21 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   });
   if(runningMerchant)at(runningMerchant.y,()=>mapStandee(ctx,'merchant',runningMerchant.x,runningMerchant.y,MERCHANT.h,t,'🧳',1,true));
   const questNpcs=new Map(questMarkers(g).map(p=>[p.npc,p]));
-  for(const p of questNpcs.values())if(!['nira','merchant'].includes(p.npc)&&!(p.npc==='guard'?g.guard:g.crew.some(c=>c.k===p.npc)))at(p.y,()=>{
+  for(const p of questNpcs.values())if(p.npc==='pit')at(p.y,()=>{
+    // QUEST-DAM-B: the ash pit by the frontier (the feather quest's step 3). A plain dark hollow with a ring of ash - drawn with canvas paths only.
+    // If a drawn picture is dropped in as img/quest-ash-pit.webp it is used instead (no code change).
+    const art=img('quest-ash-pit');
+    if(art)ctx.drawImage(art,p.x-70,p.y-110,140,140);
+    else{
+      ctx.save();ctx.translate(p.x,p.y);
+      ctx.fillStyle='rgba(22,18,28,.72)';ctx.beginPath();ctx.ellipse(0,0,64,26,0,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='rgba(188,176,168,.55)';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(0,0,66,28,0,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle='rgba(120,108,120,.35)';ctx.beginPath();ctx.ellipse(0,-6,38,14,0,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+    }
+    label(ctx,p.name,p.x,p.y+44,11,'#d9cdbf');
+  });
+  else if(!['nira','merchant'].includes(p.npc)&&!(p.npc==='guard'?g.guard:g.crew.some(c=>c.k===p.npc)))at(p.y,()=>{
     mapStandee(ctx,'crew-'+p.npc,p.x,p.y,72,t,'💬');
   });
 

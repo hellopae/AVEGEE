@@ -4,6 +4,7 @@
 // รูปแบบบท: บรรทัดบรรยายไม่มีป้าย · บรรทัดพูดขึ้นต้นด้วยชื่อผู้พูดและเครื่องหมายคำพูด (เหมือน SIDE_CONTENT)
 // ภาพศัตรู: เงาชุดใหม่ที่ Codex วาด (img/mob-q-*.webp, 13 พ.ย. 2569)
 import { scaleFoeHp, scaleFoeAtk } from './data.js';
+import { featherText } from './feather-quest.js';
 
 const Q = (text) => text;   // marker only: keeps the lines greppable as verbatim Rae copy
 
@@ -121,6 +122,18 @@ export const QUEST_FIGHTS = Object.freeze({
       ];
     },
   },
+  // QUEST-DAM-B (15 Nov): the merchant's feather quest - the bundle set down at the ash pit. No owner fights beside the team (the merchant is a trader), no new ultimate.
+  // Words: Rae, Output/Rae/2026-11-14-avegee-merchant-quest.md (TH + EN in feather-quest.js, picked by the language); foes: Rae's proposal, numbers fitted by scripts/fit-quest-fights.mjs
+  sqMerchantFeather: {
+    zone:'asia', owner:null, ownerName:'', title:'เงาเซ่นไร้ผู้รับ', skill:null, unlockLog:'',
+    text:(kind, lang) => { const x = featherText(); return kind === 'pre' ? x.pre : kind === 'win' ? x.win : x.lose; },
+    foes() {   // the lightest kind, like sqGuard: one big smoke that hits hard, two small ones that go for the support line
+      return [
+        { who:'เงาเซ่นไร้ผู้รับ', sub:'ควันเซ่นก้อนใหญ่ที่ไม่มีปลายทาง', sp:'mob-q-ashsmoke-big', hp:380, atk:[24, 42], speed:6, bigOne:true },
+        ...Array.from({ length:2 }, () => ({ who:'ควันเซ่นตกค้าง', sub:'ถามซ้ำ ๆ ว่า "ถึงใคร"', sp:'mob-q-ashsmoke', hp:110, atk:[13, 23], speed:11, aim:'support', aimChance:.6 })),
+      ];
+    },
+  },
 });
 
 /** ข้อความระบบชั่วคราว (ไม่ใช่บทของ Rae) — Rae ควรเกลา */
@@ -134,6 +147,7 @@ export function fightScene(id, s, kind) {
   const def = QUEST_FIGHTS[id];
   if (!def) return [];
   const choice = [0, 1].includes(s?.choice) ? s.choice : 0;
+  if (def.text) return [...def.text(kind)];   // a fight whose scenes come in both languages (the feather quest)
   if (kind === 'pre') {
     if (id === 'sqBoon') return [def.preFirst[choice], ...def.preShared];
     const lines = [...def.pre[choice]];
@@ -162,5 +176,7 @@ export function questFightFoes(g, id, partySize) {
 }
 // party-size multipliers (whole team incl. Yama, 4-7) fitted by scripts/fit-quest-fights.mjs: the FIRST attempt (no quest ultimate, no trained moves) wins about
 // 92 % (sqGuard) / 85 % (sqKan) / 75 % (sqBoon) at every size — Rae's order: Guard lightest, Kan middle, Boon heaviest. Size 5 = the base numbers above.
-export const HP_PER_PARTY = { sqKan:{ 3:.6, 4:.78, 5:1, 6:1.29, 7:1.47 }, sqBoon:{ 3:.5, 4:.75, 5:1, 6:1.25, 7:1.67 }, sqGuard:{ 3:.6, 4:.82, 5:1, 6:1.17, 7:1.44 } };
-export const ATK_PER_PARTY = { sqKan:{ 3:.9, 4:.95, 5:1, 6:1.1, 7:1.1 }, sqBoon:{ 3:.85, 4:.92, 5:1, 6:1.09, 7:1.15 }, sqGuard:{ 3:.85, 4:.9, 5:1, 6:1.02, 7:1.05 } };
+export const HP_PER_PARTY = { sqKan:{ 3:.6, 4:.78, 5:1, 6:1.29, 7:1.47 }, sqBoon:{ 3:.5, 4:.75, 5:1, 6:1.25, 7:1.67 }, sqGuard:{ 3:.6, 4:.82, 5:1, 6:1.17, 7:1.44 },
+  sqMerchantFeather:{ 3:.6, 4:.82, 5:1, 6:1.17, 7:1.44 } };   // the feather fight starts from sqGuard's shape (the same lightest kind) and is fitted by scripts/fit-quest-fights.mjs
+export const ATK_PER_PARTY = { sqKan:{ 3:.9, 4:.95, 5:1, 6:1.1, 7:1.1 }, sqBoon:{ 3:.85, 4:.92, 5:1, 6:1.09, 7:1.15 }, sqGuard:{ 3:.85, 4:.9, 5:1, 6:1.02, 7:1.05 },
+  sqMerchantFeather:{ 3:.85, 4:.98, 5:1.06, 6:1.18, 7:1.18 } };   // fitted to ~77 % for the first attempt at every size 4-7 (HP follows sqGuard's shape, ATK is what was bisected)

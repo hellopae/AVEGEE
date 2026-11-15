@@ -47,17 +47,18 @@ const TABLE = {
   sqNira:['mid', 40, { health:1, holyWater:1, food:2, tea:2 }], sqTaan:['mid', 40, { health:1, holyWater:1, food:2, ashStone:2 }],
   sqPlerng:['mid', 40, { health:1, holyWater:1, food:2, emberWood:2 }], sqMerchant:['mid', 40, { health:1, holyWater:1, food:2, bladeShard:2 }],
   sqGuard:['hard', 60, { health:2, holyWater:2, bladeShard:2 }, 'gatekeeperStand'],
+  sqMerchantFeather:['hard', 60, { phoenixFeather:2, holyWater:1 }],   // QUEST-DAM-B: a fight but no ultimate
   sqKan:['veryHard', 80, { health:3, holyWater:2, ashStone:2 }, 'eyeAwaitingPermission'], sqBoon:['veryHard', 80, { health:3, holyWater:2, tea:2 }, 'letterDelivered'],
 };
-test('every one of the 16 quests has a tier reward; only the three fight quests carry an ultimate', () => {
-  assert.equal(QUESTS.length, 16); assert.deepEqual(Object.keys(QUEST_REWARDS).sort(), Object.keys(TABLE).sort());
+test('every one of the 17 quests has a tier reward; only the three fight quests carry an ultimate (the feather quest fights but teaches nothing)', () => {
+  assert.equal(QUESTS.length, 17); assert.deepEqual(Object.keys(QUEST_REWARDS).sort(), Object.keys(TABLE).sort());
   for (const q of QUESTS) {
     const [tier, coin, items, skill] = TABLE[q.id], row = QUEST_REWARDS[q.id];
     assert.equal(row.tier, tier, q.id); assert.equal(row.coin, coin, q.id); assert.deepEqual(row.items, items, q.id); assert.equal(row.skill, skill, q.id);
   }
   // Rae's levels: hard / very hard = has a fight; the tier labels are Rae's words
   assert.deepEqual(QUEST_TIER_LABEL, { easy:'ง่าย', mid:'กลาง', hard:'ยาก', veryHard:'ยากมาก' });
-  for (const k of Object.values(QUEST_REWARDS).flatMap(r => Object.keys(r.items))) assert.ok(createGame().inventory !== undefined && ['health','food','holyWater','tea','ashStone','emberWood','bladeShard'].includes(k), k);
+  for (const k of Object.values(QUEST_REWARDS).flatMap(r => Object.keys(r.items))) assert.ok(createGame().inventory !== undefined && ['health','food','holyWater','tea','ashStone','emberWood','bladeShard','phoenixFeather'].includes(k), k);
 });
 test('tiers grow: easy < mid < hard < very hard in coin, and easy rewards are only medicine box / rice ball / holy water', () => {
   const coins = tier => Object.values(QUEST_REWARDS).filter(r => r.tier === tier).map(r => r.coin);
@@ -291,7 +292,7 @@ test('UI: the battle menu lists quest moves next to the trained one and wide mov
 test('cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const m of ['game', 'ui', 'battle-fx-map', 'battle-turns', 'battle-result', 'combat-skills', 'combat-skill-assets', 'side-quests', 'quest-panels', 'e1-content', 'i18n'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?"/);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?(-questdamb)?"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?(-questdamb)?"/);
   assert.ok(!/src\/(game|ui)\.js\?v=20261110-battlefx/.test(html), 'no stale game/ui release left');
 });

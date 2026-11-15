@@ -30,13 +30,15 @@ export const QUEST_REWARDS = Object.freeze({
   sqMerchant:     { tier:'mid', coin:40, items:{ health:1, holyWater:1, food:2, bladeShard:2 } },
   // ---- ยาก (ต้องสู้ + ท่าไม้ตาย) ----
   sqGuard:        { tier:'hard', coin:60, items:{ health:2, holyWater:2, bladeShard:2 }, skill:'gatekeeperStand' },
+  // QUEST-DAM-B (Rae 14 Nov + owner 15 Nov): the merchant's feather quest - a fight but NO new ultimate · 60 coins + Phoenix Feather x2 + holy water x1 (+ EXP 30 from award())
+  sqMerchantFeather: { tier:'hard', coin:60, items:{ phoenixFeather:2, holyWater:1 }, fight:true },
   // ---- ยากมาก (ต้องสู้ + ท่าไม้ตาย) ----
   sqKan:          { tier:'veryHard', coin:80, items:{ health:3, holyWater:2, ashStone:2 }, skill:'eyeAwaitingPermission' },
   sqBoon:         { tier:'veryHard', coin:80, items:{ health:3, holyWater:2, tea:2 }, skill:'letterDelivered' },
 });
 
 export const questSkillOf = id => QUEST_REWARDS[id]?.skill || null;
-export const questNeedsFight = id => !!questSkillOf(id);
+export const questNeedsFight = id => !!questSkillOf(id) || !!QUEST_REWARDS[id]?.fight;
 
 /** ของเพิ่มตามระดับของภารกิจนี้ ณ สถานะนี้ → { coin, items } (ไม่มีของ = {coin:0, items:{}}) */
 export function questBonus(q, s) {
@@ -53,5 +55,5 @@ export function questRewardPreview(g, q) {
   const s = g?.sideQuests?.[q.id];
   const skill = row.skill ? { id:row.skill, name:COMBAT_SKILLS[row.skill].name, known:!!s?.fought || !!s?.reward?.skill } : null;
   return { tier:row.tier, label:QUEST_TIER_LABEL[row.tier], coin:row.coin,
-    items:Object.entries(row.items).map(([k, n]) => ({ k, n, name:ITEMS[k]?.name || k })), skill, fight:!!row.skill };
+    items:Object.entries(row.items).map(([k, n]) => ({ k, n, name:ITEMS[k]?.name || k })), skill, fight:!!row.skill || !!row.fight };
 }

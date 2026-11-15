@@ -19,6 +19,8 @@ const ROSTER = {
   sqKan:['kan', 'nira', 'taan', 'dam', 'plerng', 'boon'],
   sqBoon:['boon', 'nira', 'taan', 'dam', 'plerng', 'kan'],
   sqGuard:['guard', 'nira', 'taan', 'dam', 'plerng', 'boon'],
+  // QUEST-DAM-B: the feather quest has no owner to join: the first team the player has after the merchant's first quest (zone 4 rescue): Nira, Taan, Kan, Dam, Plerng, Boon in that order
+  sqMerchantFeather:['nira', 'taan', 'kan', 'dam', 'plerng', 'boon'],
 };
 export function setup({ id, size, level, variant, privateOpened = false }) {
   const def = QUEST_FIGHTS[id], zone = def.zone;
@@ -37,8 +39,8 @@ export function setup({ id, size, level, variant, privateOpened = false }) {
     const record = records[actor.id] ||= { exp:0, readyAtTick:0, attempts:{} };
     for (const score of [60, 80]) { recordSkillTraining(record, actor, COMBAT_SKILLS[skill].station, score); record.exp += TRAINING_RULES.rewards.find(r => r.score === score).exp; }
   }
-  if (variant === 'retry') unlockQuestSkill(g, def.skill);
-  g.sideQuests = { [id]:{ step:3, choice:0, done:false, verdict:{ right:true, heaven:false, privateOpened } } };
+  if (variant === 'retry' && def.skill) unlockQuestSkill(g, def.skill);
+  g.sideQuests = { [id]:{ step:id === 'sqMerchantFeather' ? 2 : 3, choice:0, done:false, verdict:{ right:true, heaven:false, privateOpened } } };
   if (!g.startQuestFight(id)) throw Error(`cannot start ${id}`);
   const actual = g.battleActors().filter(a => !a.guestGuide).length;
   if (actual !== size) throw Error(`team size ${actual}, expected ${size} (${g.battleActors().map(a => a.id)})`);
@@ -95,9 +97,9 @@ export function simulate(options) {
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const [seeds = '150', which = 'all', lv = '5', label = 'run'] = process.argv.slice(2), count = Number(seeds), level = Number(lv);
-  const ids = which === 'all' ? ['sqKan', 'sqBoon', 'sqGuard'] : which.split(',');
+  const ids = which === 'all' ? ['sqKan', 'sqBoon', 'sqGuard', 'sqMerchantFeather'] : which.split(',');
   const rows = [];
-  for (const id of ids) for (const variant of ['first', 'trained', 'retry']) for (const size of [4, 5, 6, 7]) {
+  for (const id of ids) for (const variant of (QUEST_FIGHTS[id].skill ? ['first', 'trained', 'retry'] : ['first', 'trained'])) for (const size of [4, 5, 6, 7]) {
     const samples = Array.from({ length:count }, (_, i) => simulate({ id, size, level, variant, seed:50000 + i, privateOpened:i % 5 === 0 }));
     const wins = samples.filter(r => r.result === 'win');
     const mean = (set, k) => set.length ? +(set.reduce((a, r) => a + r[k], 0) / set.length).toFixed(2) : null;

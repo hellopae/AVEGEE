@@ -2894,8 +2894,8 @@ const API = {
   startQuestFight(id) {
     const def = QUEST_FIGHTS[id];
     if (!def || this.battle || this.over || bossJusticeActive(this)) return null;
-    const ownerCrew = def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);
-    const ownerJoined = def.owner === 'guard' ? this.guardActive() : !!ownerCrew;
+    const ownerCrew = !def.owner || def.owner === 'guard' ? null : this.crewHelpers().find(c => c.k === def.owner);
+    const ownerJoined = !def.owner ? true : def.owner === 'guard' ? this.guardActive() : !!ownerCrew;   // no owner (the feather quest): nobody to wait for
     const members = (this.party?.members || []).filter(k => k !== def.owner);
     const team = [...(ownerCrew ? [def.owner] : []), ...members].slice(0, this.partyMax());
     this.fights++;

@@ -89,7 +89,7 @@ test('G4 Large items: restore 100%, zone 2+ shelf only, ~1.8x price', () => {
     }
   }
   assert.ok(ratios.length === 6);
-  assert.equal(MERCHANT_STOCK_BY_ZONE.th.length, 5);
+  assert.equal(MERCHANT_STOCK_BY_ZONE.th.length, 6, 'the five old goods + the Phoenix Feather (shown only after the feather quest)');
 });
 
 test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama / reaper / Guard / in battle', () => {

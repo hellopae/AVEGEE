@@ -7,6 +7,7 @@ import { isTownZone } from './zone-skin.js';
 import { questBonus, questSkillOf, questNeedsFight } from './quest-rewards.js';
 import { unlockQuestSkill } from './combat-skills.js';
 import { QUEST_FIGHTS } from './quest-fights.js';
+import { FEATHER_ID, FEATHER_NEED, FEATHER_PIT, featherHas, featherLines, featherText } from './feather-quest.js';
 const sideRules = [
  ['sqNira','th','nira','swapdoc','cyberBreach'],['sqTaan','asia','taan','chainhand','cyberBreach'],
  ['sqPlerng','west','plerng','hirefire','cyberBreach'],['sqKan','asia','kan','silentman','cyberBreach'],
@@ -20,8 +21,12 @@ const kinRules = [
  ['kinDamCousin','th','west','dam','tea'],['kinGuard','cyberhell','th','guard','lotus'],
 ];
 export const SIDE_QUESTS=sideRules.map(([id,zone,npc,caseId,requires])=>({...SIDE_CONTENT.find(c=>c.id===id),id,zone,npc,caseId,requires}));
+// QUEST-DAM-B: the merchant's second quest. It has no judgement case and no choice: take it, bring the ash, set the bundle down at the pit (a fight), come back. Words: feather-quest.js (Rae).
+const FEATHER_QUEST={id:FEATHER_ID,zone:'asia',npc:'merchant',caseId:null,requires:null,feather:true,kin:false,choices:[],responses:[],dialogue:{},get title(){return featherText().title;}};
+/** the step at which a quest ends in a fight (the other fight quests: after the judgement, step 3) */
+export const questFightStep=q=>q?.feather?2:3;
 export const KIN_QUESTS=kinRules.map(([id,from,to,npc,item])=>({...KIN_CONTENT.find(c=>c.id===id),id,from,to,npc,item,kin:true}));
-export const QUESTS=[...SIDE_QUESTS,...KIN_QUESTS];
+export const QUESTS=[...SIDE_QUESTS,FEATHER_QUEST,...KIN_QUESTS];
 function addItems(g,items){for(const[k,n]of Object.entries(items||{}))g.inventory[k]=(g.inventory[k]||0)+n;}
 export function initializeQuests(g,saved={}) {
   g.sideQuests={};
@@ -70,6 +75,7 @@ export const questState=(g,id)=>g.sideQuests?.[id]||{step:0,choice:null,done:fal
 // Show the current conversation and the chosen reply, never both mutually exclusive replies.
 export function questDialogue(g,q){
   const s=questState(g,q.id);
+  if(q.feather)return featherLines(g,s);
   if(!q.kin){
     if(q.id==='sqDam'&&s.step>=3&&s.verdict&&!s.verdict.right)return ['ดำ: "ผมไม่ได้โทษท่านครับ แค่อยากบอกให้ท่านรู้ว่า ลุงคนนั้นไม่ได้ทำอะไรผิดเลย"'];
     const lines=[...(q.dialogue[String(Math.min(s.step+1,5))]||[])];
@@ -120,6 +126,7 @@ export function questUnlocked(g,q){
   if(!q)return false;
   if(!questCharacterHired(g,q))return false;
   if(q.kin)return (g.gameCompleted||g.zoneEvents?.cyberhell?.cyberBreach==='cleared')&&[q.from,q.to].every(z=>g.zoneTravel?.visited?.[z]&&g.zoneTravel?.ports?.[z]);
+  if(q.feather)return !!g.sideQuests?.sqMerchant?.done;   // owner 15 Nov: opens after the merchant's first quest is finished
   return g.gameCompleted||g.zoneEvents?.cyberhell?.[q.requires]==='cleared';
 }
 export function questsPaused(g){
@@ -127,6 +134,10 @@ export function questsPaused(g){
   return !g.gameCompleted && ((phase&&!['locked','completed'].includes(phase))||['pending','active'].includes(g.zoneEvents?.cyberhell?.cyberFinal));
 }
 export function questTarget(g,q){
+  if(q.feather&&questState(g,q.id).step===2){   // the bundle is tied: the target is the ash pit by the frontier (not a person)
+    const pit=nearestWalk(...FEATHER_PIT)||FEATHER_PIT;
+    return {zone:q.zone,npc:'pit',x:pit[0],y:pit[1],name:featherText().pitName,art:'img/mob-q-ashsmoke.webp'};
+  }
   const zone=questTargetZone(g,q);
   const npc=q.npc;
   const actor=npc==='guard'?g.guard:(g.crew||[]).find(c=>c.k===npc);
@@ -144,7 +155,7 @@ export function questsForActor(g,npc,zone=g.zone){
   });
 }
 export const questNear=(g,q)=>{const p=questTarget(g,q);return g.zone===p.zone&&(p.npc!=='merchant'||merchantAvailable(g))&&Math.hypot(g.player.x-p.x,g.player.y-p.y)<=150;};
-export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
+export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!questHandoffNeed(g,q)&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.feather&&questState(g,q.id).step===0?featherText().pin:q.title})).filter(p=>p.zone===g.zone);}
 function award(g,q,s){
   // Claim latch is written before granting anything. Reload and repeated clicks cannot pay twice.
   if(s.done)return false;s.done=true;
@@ -161,6 +172,7 @@ function award(g,q,s){
       if(a){const actor=g.roster?.['th:dam'];if(actor){actor.hunger=100;actor.morale=100;}}
       break;
     case 'sqGuard':coin=a?60:80;items=a?{lotus:1}:{};break;
+    case FEATHER_ID:coin=0;items={};break;   // everything it pays is the tier row in quest-rewards.js: 60 coins + Phoenix Feather x2 + holy water x1 (+ EXP 30 below)
     default:coin=a?100:60;order=a?8:0;items=a?{}:{[q.id==='sqPlerng'?'holyWater':'lotus']:1};
   }
   // W2 §8.10 permitted fallback for the unavailable direct helper EXP grant.
@@ -174,11 +186,29 @@ function award(g,q,s){
   coin+=bonus.coin;
   g.coin+=coin;g.order=Math.min(100,g.order+order);addItems(g,items);addItems(g,bonus.items);g.gainExp(30,'ภารกิจ');
   s.reward={coin,order,exp:30,items:given,skill:questSkillOf(q.id)&&s.fought?questSkillOf(q.id):null,retro:false};
-  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของเพิ่ม':''}`,'good');return true;
+  g.log(`✓ ${q.title} · ${coin} เบี้ยกรรม · EXP 30${Object.keys(bonus.items).length?' · ได้ของเพิ่ม':''}`,'good');
+  if(q.feather){g.discover?.('item','phoenixFeather');g.log(featherText().receipt,'good');}
+  return true;
+}
+/** QUEST-DAM-B: the four steps of "ขนที่ไม่ไหม้" (see feather-quest.js). Each call advances one step, or returns false when the step's condition is not met. */
+function advanceFeather(g,q,s){
+  if(s.step===0){s.step=1;g.log(`รับภารกิจ: ${q.title}`,'act');return true;}
+  if(s.step===1){                                   // the ash: taken from the bag only when the player gives it
+    if(!featherHas(g))return false;
+    for(const [k,n] of Object.entries(FEATHER_NEED)){g.inventory[k]-=n;if(g.inventory[k]<=0)delete g.inventory[k];}
+    s.step=2;g.log('🧳 ส่งเถ้าให้พ่อค้าควันทอง — ได้ห่อเซ่นมาถือไว้','act');return true;
+  }
+  if(s.step===2){                                   // set the bundle down at the pit: the fight (a lost fight keeps step 2 and the bundle)
+    if(g.battle)return false;
+    return !!g.startQuestFight(q.id);
+  }
+  if(s.step===3){s.step=5;return award(g,q,s);}
+  return false;
 }
 export function advanceQuest(g,id,choice=null){
   const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||questHandoffNeed(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
   const s=g.sideQuests[id] ||= {step:0,choice:null,done:false};if(s.done)return false;
+  if(q.feather){if(!advanceFeather(g,q,s))return false;g.save();g.onChange();return true;}
   const accepting=s.step===0;
   const validChoice=[0,1].includes(choice);
   if(q.kin){
@@ -214,7 +244,12 @@ export function advanceQuest(g,id,choice=null){
 /** Called by endBattle() for a questFight. Win: step 3 -> 4 and the quest's ultimate is learned. Lose / flee: nothing is lost, the quest stays at step 3. */
 export function finishQuestFight(g,B){
   const q=QUESTS.find(x=>x.id===B.questId),s=g.sideQuests?.[B.questId];
-  if(!q||!s||s.done||s.step!==3)return false;
+  if(!q||!s||s.done||s.step!==questFightStep(q))return false;
+  if(q.feather){   // the bundle fight: no ultimate to learn; win = step 2 -> 3 (go back to the merchant)
+    if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id].title} ยังไม่สงบ — ตั้งหลักแล้วกลับไปวางห่อเซ่นใหม่ได้`,'bad');g.save();return false;}
+    s.fought=true;s.step=3;delete s.fightLost;
+    g.log(`⚔️ ทำให้${QUEST_FIGHTS[q.id].title}สงบแล้ว`,'good');g.save();return true;
+  }
   // PART-A: a lost / fled fight is remembered (the quest window then offers "สู้อีกครั้ง" instead of the first-time talk button) — the choice and step stay
   if(B.over!=='win'){s.fightLost=true;g.log(`⚔️ ${QUEST_FIGHTS[q.id]?.title||q.title} ยังไม่ยอมไป — ตั้งหลักแล้วกลับไปคุยเพื่อสู้ใหม่ได้`,'bad');g.save();return false;}
   s.fought=true;s.step=4;delete s.fightLost;

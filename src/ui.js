@@ -8,7 +8,8 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
-import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards } from './side-quests.js';
+import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards, questFightStep } from './side-quests.js';
+import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   // QUEST-DAM-B: the merchant's feather quest
 import { questNeedsFight } from './quest-rewards.js';
 import { QUEST_FIGHTS, QUEST_FIGHT_SYSTEM_TEXT, fightScene } from './quest-fights.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
@@ -3351,10 +3352,10 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
   const q=QUESTS.find(q=>q.id===id),s=q&&questState(g,id),p=q&&questTarget(g,q),blocked=(!q||!q.kin)&&questsPaused(g);
   const zoneName=z=>ZONES.find(x=>x.k===z)?.name||z;
   if(!q){openHelp('quests');return;}
-  const waiting=!q.kin&&s.step===2;
+  const waiting=!q.kin&&!q.feather&&s.step===2;   // (the feather quest has no judgement to wait for: its step 2 is the walk to the ash pit)
   const choiceAt=q.kin?(q.id==='kinGuard'?2:1):q.id==='sqBoon'?1:3;
   // QUEST-REWARDS: sqKan / sqBoon / sqGuard end in a fight at step 3. After a lost fight the choice is already saved (retry = no choice buttons)
-  const fightQuest=!q.kin&&questNeedsFight(q.id)&&s.step===3&&!s.fought;
+  const fightQuest=!q.kin&&questNeedsFight(q.id)&&s.step===questFightStep(q)&&!s.fought;
   const retryFight=fightQuest&&(s.fightLost||q.id!=='sqBoon'&&[0,1].includes(s.choice));
   const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right)&&!retryFight;
   const lines=questDialogue(g,q);
@@ -3362,7 +3363,11 @@ function openQuests(id = null,{owner=null,notice='',celebrate=false}={}){
   const handoffNeed=questHandoffNeed(g,q),retryNow=retryFight&&!!s.fightLost;   // retry after a lost fight goes straight back in, no pre-fight scene
   const acceptanceNeedsTalk=s.step===0&&!ownerConversation;
   const art=p.art||artUrl('crew-'+p.npc,'png',p.zone);
-  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?`<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>${questReceiptHtml(s.reward,celebrate)}`:handoffNeed?`<p class="quest-handoff-need" role="status">${esc(handoffNeed.text)}</p>`:g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:'เผชิญหน้า'):'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
+  // QUEST-DAM-B: the feather quest words its own buttons (Rae) and shows the ash it still needs
+  const fb=q.feather?featherText().buttons:null,featherGive=!!q.feather&&s.step===1&&!s.done,
+    featherNeed=featherGive?`<p class="quest-need" role="status">${Object.entries(FEATHER_NEED).map(([k,n])=>esc(featherText().have(k,Math.min(n,g.inventory?.[k]||0),n))).join(' · ')}</p>`:'';
+  const nextLabel=q.feather?(s.step===0?fb.take:featherGive?fb.give:fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:fb.place):fb.talk):(s.step===0?'รับภารกิจ':fightQuest?(retryFight?QUEST_FIGHT_SYSTEM_TEXT.retry:'เผชิญหน้า'):'คุย · ดำเนินภารกิจ');
+  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${featherNeed}${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?`<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>${questReceiptHtml(s.reward,celebrate)}`:handoffNeed?`<p class="quest-handoff-need" role="status">${esc(handoffNeed.text)}</p>`:g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next ${featherGive&&!featherHas(g)?'disabled':''}>${esc(nextLabel)}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
     d.querySelector('[data-quest-list]').onclick=()=>openHelp('quests');
     d.querySelector('[data-quest-talk]')?.addEventListener('click',()=>{if(questNear(g,q))openOwnerQuests(p.npc);});
     d.querySelector('[data-walk-quest]')?.addEventListener('click',()=>{d.close();g.walkTo(p.x,p.y);});
@@ -3410,12 +3415,12 @@ function openQuestFightResult(id,outcome,owner=null){
   const s=questState(g,id),lines=fightScene(id,s,outcome);
   // PART-A: lost / fled → "สู้อีกครั้ง" (same choice, straight back into the fight) or "พักไว้ก่อน" (back to the map; the quest stays at step 3 and can be fought later from the quest window)
   const buttons=outcome==='win'?`<button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button>`:`<button type="button" class="gold" data-quest-fight-retry>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.retry)}</button><button type="button" data-quest-fight-rest>${esc(QUEST_FIGHT_SYSTEM_TEXT.rest)}</button>`;
-  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?(def.unlockLog?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:''):`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
     if(outcome==='win')sfx('star');
     d.querySelector('[data-quest-fight-next]')?.addEventListener('click',()=>openQuests(id,{owner}));
     d.querySelector('[data-quest-fight-rest]')?.addEventListener('click',()=>{dlg.close();refresh();});
     d.querySelector('[data-quest-fight-retry]')?.addEventListener('click',()=>{
-      const retry=createQuestAction(g,id,3);
+      const retry=createQuestAction(g,id,questFightStep(QUESTS.find(x=>x.id===id)));
       if(retry(null)&&g.battle?.kind==='questFight'){refresh();openBattle(afterQuestFight(id,owner));}
       else openQuests(id,{owner});
     });
