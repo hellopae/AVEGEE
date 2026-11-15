@@ -16,7 +16,7 @@ import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor, questSkillsForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
-import { soulPoseForPress, soulPoseForScare, soulPoseAssets } from './soul-poses.js';
+import { soulPoseForPress, soulPoseForScare, soulPoseAssets, soulCardForScare } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
@@ -4608,8 +4608,11 @@ function openBattle(after) {
         </button>
         </div>
       </div>
-      ${view.foes?.length === 1 ? (() => { const f = view.foes[0]; return `<div class="battle-boss-hud">
-        <img src="${esc(bossProfileOverride(f.sp, g.zone) || (String(f.sp ?? '').startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp)))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
+      ${view.foes?.length === 1 ? (() => { const f = view.foes[0];
+        // a soul that has just lost its fight: its profile card (bottom right) turns to the "scared" drawing like the figure on the field (any failure = the normal card)
+        const beatenCard = g.battle?.kind === 'soul' && g.battle.over === 'win' ? soulCardForScare(g.queue.find(x => x.id === g.battle.soulId), storyFoeArt(f.sp)) : null;
+        return `<div class="battle-boss-hud">
+        <img src="${esc(beatenCard || bossProfileOverride(f.sp, g.zone) || (String(f.sp ?? '').startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp)))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
         <div class="battle-boss-status"><b>${esc(f.who)}</b>${meter(f.hp, f.maxHp, 'health', t('battle.morale'))}<small>${esc(t('battle.morale'))} ${Math.round(f.hp)}/${f.maxHp}</small></div>
         ${f.sub ? `<p>${esc(f.sub)}</p>` : ''}
       </div>`; })() : ''/* e4 (owner 13 Nov): no speech box under the enemies - demons, werewolves ... do not talk */}

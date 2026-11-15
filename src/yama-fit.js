@@ -4,7 +4,7 @@ const FITS = {
     "book": [
       {
         "height": 320,
-        "footX": 166.527,
+        "footX": 163.503,
         "footY": 440,
         "walkFootX": 146.849,
         "walkFootY": 440.0
@@ -51,7 +51,7 @@ const FITS = {
     "book": [
       {
         "height": 320,
-        "footX": 152.423,
+        "footX": 152.601,
         "footY": 440,
         "walkFootX": 144.189,
         "walkFootY": 442.0
@@ -98,7 +98,7 @@ const FITS = {
     "book": [
       {
         "height": 310,
-        "footX": 159.087,
+        "footX": 159.409,
         "footY": 440,
         "walkFootX": 152.943,
         "walkFootY": 441.5
@@ -145,7 +145,7 @@ const FITS = {
     "book": [
       {
         "height": 308,
-        "footX": 148.31,
+        "footX": 148.309,
         "footY": 440,
         "walkFootX": 128.233,
         "walkFootY": 440.0

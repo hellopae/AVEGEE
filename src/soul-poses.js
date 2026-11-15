@@ -1,5 +1,5 @@
 import { pressReaction } from './interrogation-ui.js';
-import { SOUL_POSE_FILES } from './soul-pose-manifest.js';
+import { SOUL_POSE_FILES, SOUL_CARD_FILES } from './soul-pose-manifest.js';
 // Narrative review: output/coordination/2026-10-28-s1-soul-poses/case-review.md.
 // Explicit selection, never infer necessity from a verdict, weight or trait colour.
 const caught = ['pol','gen','nun','star','lord','monk','orchard','trader','sister','novice','inspector','hunter','gadget','accountant','prophet','heir',
@@ -75,5 +75,16 @@ export function soulPoseForScare(soul, baseSrc) {
   if (!soul || soul.back || CASE_POSE_TYPES[soul.case] === 'other') return null;
   return genericSoulPose(baseSrc, 'scared');
 }
+// The battle profile card (bottom right) of a soul that has just lost: its own drawn card (img/soul-card-scared/<original name>-scared.webp),
+// else the same scared drawing the field figure uses, else null (the card keeps the standing picture). Same gate as the field figure.
+export const soulCardScaredFile = baseSrc => {
+  const m = /^img\/(Thai|Asia|West|CyberHell)\/(spirit-[a-z-]+-(th|asia|west|cyberhell)-v\d+)\.webp$/.exec(baseSrc || '');
+  const path = m && ZONE_OF_DIR[m[1]] === m[3] && `img/soul-card-scared/${m[2]}-scared.webp`;
+  return path && SOUL_CARD_FILES.has(path) ? path : null;
+};
+export function soulCardForScare(soul, baseSrc) {
+  if (!soul || soul.back || CASE_POSE_TYPES[soul.case] === 'other') return null;
+  return soulCardScaredFile(baseSrc) || genericSoulPose(baseSrc, 'scared');
+}
 export const soulPoseAssets = baseSrc => [...new Set([...Object.values(SOUL_POSE_ASSETS[baseSrc] || {}),
-  ...['scared', 'cry'].map(p => genericSoulPose(baseSrc, p)).filter(Boolean)])];
+  ...['scared', 'cry'].map(p => genericSoulPose(baseSrc, p)).filter(Boolean), soulCardScaredFile(baseSrc)].filter(Boolean))];
