@@ -379,6 +379,15 @@ function drawStrip(ctx,art,row,time,w,height){
  ctx.save();ctx.fillStyle='rgba(14,8,18,.28)';ctx.beginPath();ctx.ellipse(w.x,w.y-2,height*.22,height*.065,0,0,Math.PI*2);ctx.fill();ctx.restore();
  ctx.drawImage(art.im,col*fw,r*fh,fw,fh,w.x-dw/2,w.y-dh,dw,dh);
 }
+// QUEST-DAM-B (15 Nov): Dam's own walking strips (Codex, TH only) - the same strip format as the server's carry walk. kind 'walk' = the sack (cut thorns / shards), 'rice' = the rice tray.
+export const damCarryAssets=(zone,kind)=>zone==='th'?{image:`img/crew-dam-carry-${kind}-v1.webp`,metadata:`img/crew-dam-carry-${kind}-v1.json`}:null;
+export const damCarryReady=(zone,kind)=>{const a=stripArt(`dam:${zone}:${kind}`,damCarryAssets(zone,kind));return !!(a?.im.complete&&a.im.naturalWidth);};
+/** draws Dam carrying (true = drawn). `moving` picks the walking frames, otherwise the first frame stands. Rows follow his heading like the worker's carry walk. */
+export function drawDamCarry(ctx,c,zone,kind,time,height,moving){
+ const art=stripArt(`dam:${zone}:${kind}`,damCarryAssets(zone,kind));
+ if(!art?.im.complete||!art.im.naturalWidth)return false;
+ drawStrip(ctx,art,carryRow(c),moving?time:0,c,height);return true;
+}
 const sheets=new Map();
 export function drawWorker(ctx,w,time,height=48) {
   if(w.job?.kind==='cook'&&w.arrived&&!w.moving){const art=cookArt(w.homeZone);if(art?.im.complete&&art.im.naturalWidth){drawStrip(ctx,art,cookRow(w),time,w,height);return;}}

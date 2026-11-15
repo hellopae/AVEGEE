@@ -57,7 +57,7 @@ import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-
 import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './enemy-pointers.js';   // POINTERS: arrows to every enemy the player has to walk to
-import { foremanDesk } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
+import { foremanDesk, foremanStarving } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
@@ -1012,7 +1012,7 @@ function hungerWidget(c) {
   const canFeed = canFeedActor(g,c.id);
   return `<div class="hunger-line">
     <span class="bar ${tone}" title="หิว ${h}/100"><i style="width:${h}%"></i></span>
-    <small>🍙 หิว ${h}/100${empty ? ` — ทำงานช้าลงอีก ${Math.round((1 - BAL.hungerPenalty) * 100)}%` : ''}</small>
+    <small>🍙 หิว ${h}/100${empty ? (c.k === 'dam' && foremanStarving(g) ? ` — ${esc(t('foreman.hungry.note'))}` : ` — ทำงานช้าลงอีก ${Math.round((1 - BAL.hungerPenalty) * 100)}%`) : ''}</small>
     <button data-feed="${esc(c.k)}" class="sm" ${canFeed ? '' : 'disabled'}
       title="${canFeed ? `อาหารพร้อมให้ ${Math.floor(foodAvailable(g))} ห่อ` : 'ไม่มีอาหารพร้อมให้ — ดูปุ่มจัดทีมหรือโรงอาหาร'}">🍙 ให้ข้าวปั้น</button>
   </div>`;
@@ -2481,7 +2481,7 @@ function openHelp(initialTab = 'guide') {
           พ่อครัวใช้เสบียงปั้นข้าวและซื้อเสบียงเพิ่มอัตโนมัติเมื่อใกล้หมด (ต้องมีเบี้ยกรรม) คนเสิร์ฟเดินส่งให้คนที่หิวที่สุดก่อน หรือเลือกส่งเฉพาะคน · หลายคนส่งได้เร็วขึ้น
           หลังสร้างโรงอาหารแล้ว ปุ่มให้ข้าวใช้คลังพร้อมเสิร์ฟ หรือสั่งเดินไปกินได้จากจัดทีม พร้อมดู HP ความอิ่ม จัดทีมต่อสู้ กำหนดหน้าที่ และสั่งพักศาลาน้ำชา
           นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · เพลิงไม่ปรุงอาหารแล้ว</li>
-      <li><b>ดำ (หัวหน้าคนงาน)</b> — จ้างแล้วดำไป<b>รับวิญญาณที่ท่าเรือแทนนิรา</b> (ถ้าดำล้มหรือไม่ว่าง นิรารับเหมือนเดิม) · <b>ก่อนมีคนงาน</b> ดำทำงานแทนคนงานทั้งหมดคนเดียว: ช่วยสร้างและซ่อม เก็บหนามกับเศษหินไปขายให้พ่อค้า และเอาข้าวปั้นจากเสบียงไปแจกยมทูตที่หิว · <b>จ้างคนงานแล้ว</b> คนงานรับงานเหล่านั้นต่อ ดำไปคุมพ่อครัวที่โรงอาหาร — <b>คุยกับดำ</b>เพื่อจ้างพ่อครัวหรือคนเสิร์ฟ และเลือกว่าข้าวปั้นจะส่งให้ใคร</li>
+      <li><b>${esc(t('guide.foreman.title'))}</b> — ${esc(t('guide.foreman.p1'))} · ${esc(t('guide.foreman.p2'))} · ${esc(t('guide.foreman.p3'))} · ${esc(t('guide.foreman.p4'))}</li>
       ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}${clockUnlocked() ? `<li>${clockGuide}</li>` : ''}
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>

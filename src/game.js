@@ -9,7 +9,7 @@ import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffec
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
-import {foremanCourier,foremanPhase,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
+import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
@@ -1959,6 +1959,7 @@ const API = {
       const c = this.crewOf(k);
       if (c) c.hunger = Math.max(0, (c.hunger ?? 100) - BAL.hungerDrain);
     }
+    foremanHungerBeat(this, workingCrew.has('dam'));   // QUEST-DAM-B (owner 15 Nov): Dam hungers while he does the foreman's work, like a worker
 
     // สถานีทำงาน
     let hasSala = false;
@@ -5375,7 +5376,7 @@ const API = {
 
   builders() {
     const foreman = foremanPhase(this) === 'canteen';   // FOREMAN: once the zone has workers they build and repair; Dam stays with the kitchen
-    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam' && !foreman && !foremanStarving(this)) && !c.eatOrder && !canteenState(this).orders.some(o=>o.cook===c.k));
   },
 
   availableBuilder() {

@@ -8,11 +8,11 @@
 //   'canteen' the zone has workers -> the real workers take over those jobs; Dam stands at the canteen and is talked to for the kitchen orders
 // Job state lives on the crew object (c.fm*) and is never saved: a reload simply picks the next job. Rice leaves the stock only at the hand-over, so a reload can lose nothing.
 import { nearestWalk, findPath, stepTo } from './walk.js?v=k1d';
-import { MERCHANT } from './data.js';
+import { MERCHANT, BAL } from './data.js';
 import { t } from './i18n.js';
 import { actorStanding } from './actor-recovery.js';
 import { canteenBuilt, canteenPoint, mealRecipients, mealRecipient, needsMeal, feedActor, foodAvailable } from './canteen.js';
-import { zoneWorkers, workerStandbyPoint } from './workers.js';
+import { zoneWorkers, workerStandbyPoint, workerHeading } from './workers.js';
 
 export const FOREMAN = Object.freeze({
   k:'dam', workMs:1800,                 // standing time at the thorn / shard station and at the merchant (same as a worker: workers.js gather)
@@ -25,11 +25,25 @@ export const FOREMAN = Object.freeze({
 });
 
 export const foremanCrew = g => g.crew?.find(c => c.k === FOREMAN.k) || null;
-/** hired, on his feet, not tied to a station post the player gave him, not travelling */
-export const foremanPresent = g => { const c = foremanCrew(g); return !!c && actorStanding(c) && !c.self && !c.at && !g.mapTravel; };
+/** hired, on his feet, not tied to a station post the player gave him, not travelling (hunger not looked at) */
+const foremanBase = g => { const c = foremanCrew(g); return !!c && actorStanding(c) && !c.self && !c.at && !g.mapTravel; };
+/** QUEST-DAM-B (owner 15 Nov): Dam gets hungry like a worker. Out of food (hunger 0) he stops the foreman's work and waits for a rice ball - the player gives it
+ *  by hand before the canteen stands (team page), the servers bring it by queue after - and he never dies or leaves. Nira takes the souls meanwhile. */
+export const foremanStarving = g => foremanBase(g) && (foremanCrew(g).hunger ?? 100) <= 0;
+export const foremanPresent = g => foremanBase(g) && !foremanStarving(g);
 /** present and not already walking a soul / building / eating */
 export const foremanFree = (g, c = foremanCrew(g)) => foremanPresent(g) && !c.escort && !c.buildK && !c.eatOrder && !c.cook;
 export const foremanPhase = g => !foremanPresent(g) ? 'none' : zoneWorkers(g).length ? 'canteen' : 'field';
+/** drains his hunger one beat (game.js tick, same BAL.hungerDrain as a crew member at a station) while he is really working: a job / escort / build in the field,
+ *  or the kitchen post once the canteen stands. Idle waiting costs nothing (a worker with no job eats nothing either). */
+export function foremanHungerBeat(g, alreadyDraining = false) {
+  const c = foremanCrew(g), phase = foremanPhase(g);
+  if (!c || alreadyDraining || phase === 'none') return false;
+  const working = phase === 'canteen' ? canteenBuilt(g) : !!(c.fm || c.escort || c.buildK);
+  if (!working) return false;
+  c.hunger = Math.max(0, (c.hunger ?? 100) - BAL.hungerDrain);
+  return true;
+}
 /** the crew member who walks a docked soul to the queue instead of Nira (null = Nira's old rule applies) */
 export const foremanCourier = g => foremanPhase(g) === 'field' && foremanFree(g) ? foremanCrew(g) : null;
 /** the desk where the player talks to him about the kitchen (null = kitchen orders stay at the canteen window) */
@@ -72,6 +86,7 @@ function walk(c, goal, dt) {
       const step = Math.min(d, FOREMAN.speed * Math.min(dt, 120));
       if (!stepTo(c, dx / d * step, dy / d * step)) c.path = null;
       if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
+      c.heading = workerHeading(dx, dy);   // which walking row of the carry sheet is drawn (side / down / up)
     }
   }
   return false;
@@ -106,6 +121,14 @@ function jobValid(g, c, job) {
 export function advanceForeman(g, c, dt) {
   if (c?.k !== FOREMAN.k || !(dt > 0)) return false;
   const phase = foremanPhase(g);
+  if (foremanStarving(g) && !c.escort && !c.buildK && !c.eatOrder && !c.cook && !g.paused && !g.over && !g.battle && c.x != null) {
+    // out of food: the foreman's work stops. He waits on the plaza (never on a bridge or stair) until somebody gives him a rice ball.
+    clear(c);
+    const standby = workerStandbyPoint(0);
+    if (standby) walk(c, standby, dt); else { c.path = null; c.moving = false; }
+    if (c.fmFail >= FOREMAN.giveUpAfter) { c.fmFail = 0; c.path = null; c.moving = false; }
+    return true;
+  }
   if (phase === 'none' || !foremanFree(g, c) || g.paused || g.over || g.battle) { if (c.fm || c.fmWork || c.fmCarry) clear(c); return false; }
   if (c.x == null) return false;
   if (phase === 'canteen') {

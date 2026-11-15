@@ -143,7 +143,7 @@ test('with workers: Dam stands at the canteen, the workers build, and the kitche
   const target = mapInteractions(g, MERCHANT).find(t => t.kind === 'foreman');
   assert.ok(target, 'a button to talk to him');
   assert.equal(target.id, 'foreman');
-  assert.match(target.label, /ดำ/);
+  assert.match(target.label, /สั่งงานครัว/, 'the button over his head says "kitchen orders" (owner decision 15 Nov): short enough for the 88 px phone button');
   assert.equal(g.builders().some(c => c.k === 'dam'), false, 'workers build and repair now; Dam stays with the kitchen');
   assert.equal(d.fm ?? null, null, 'he does no field job any more');
 });
@@ -201,7 +201,9 @@ test('wiring: the talk window, canteen hand-over, help book and both languages a
   assert.match(ui, /function openForeman/);
   assert.match(ui, /now\.kind === 'foreman'/);
   assert.match(ui, /data-open-foreman/, 'the canteen window sends the player to the same single window');
-  assert.match(ui, /ดำ \(หัวหน้าคนงาน\)/, 'the how-to-play book describes the new rules');
+  assert.match(ui, /guide\.foreman\.title/, 'the how-to-play book describes the new rules');
+  const i18n = readFileSync(new URL('../src/i18n.js', import.meta.url), 'utf8');
+  assert.match(i18n, /'guide\.foreman\.title': 'ดำ หัวหน้าคนงาน/); assert.match(EN_DICT['guide.foreman.title'], /Dam, the foreman/);
   assert.doesNotMatch(ui, /ดำและเพลิงไม่ปรุงอาหารแล้ว/, 'the old sentence that put Dam back to his old job is gone');
   for (const k of ['foreman.title', 'foreman.line', 'foreman.talk', 'foreman.done', 'foreman.canteen.hint', 'foreman.canteen.go',
     'foreman.say.feed', 'foreman.say.gather', 'foreman.say.pickup', 'foreman.say.desk', 'foreman.log.fed']) {

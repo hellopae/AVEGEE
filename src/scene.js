@@ -6,7 +6,8 @@ import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.j
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
-import {zoneWorkers,drawWorker,workerCarryReady} from './workers.js';
+import {zoneWorkers,drawWorker,workerCarryReady,drawDamCarry,damCarryReady} from './workers.js';
+import {foremanPhase} from './foreman.js';
 import {bossGuideDismissed,bossPierRetired} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
@@ -497,7 +498,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);if(worker.supplyRest||(worker.hunger??100)<=0)label(ctx,'🍙',worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-6,11,'#ffb4a0');});   // FB2-6: out of food = just stops; a small rice icon over the head is the only sign
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);if(worker.supplyRest||(worker.hunger??100)<=0)hungerMark(ctx,worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-6);});   // FB2-6: out of food = just stops; a small rice icon over the head is the only sign
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -686,7 +687,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || c.cook || c.fmWork || (buildingHere && Math.floor(t / 500) % 2 === 0);   // FOREMAN: c.fmWork = Dam cutting thorns / digging shards / selling
+      // QUEST-DAM-B: Dam's own drawn carry walks (TH) replace the 🪵💎🍙 marker; he stands with folded arms at the kitchen. Other zones keep the marker and the old poses.
+      const damCarry = c.k === 'dam' && g.zone === 'th' && c.fmCarry ? (c.fmCarry === 'rice' ? 'rice' : 'walk') : null;
+      const damDrawn = !!damCarry && damCarryReady('th', damCarry);
+      const damDesk = c.k === 'dam' && g.zone === 'th' && !motion.moving && !damCarry && foremanPhase(g) === 'canteen' && img('crew-dam-supervise-v1');
       shade(c.x, c.y, crewHeight, cx => {
+        if (damDrawn && drawDamCarry(cx, c, 'th', damCarry, t, crewHeight, motion.moving)) return;
+        if (damDesk) { drawStandee(cx, 'crew-dam-supervise-v1', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const cookingPose = c.cook && !motion.moving && g.zone==='th' && img(base+'-cook');
         if (cookingPose) { drawStandee(cx, base+'-cook', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const animated = !buildingHere && motion.moving &&
@@ -696,10 +703,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
           c.x, c.y, crewHeight, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
       if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
-      if(c.fmCarry)label(ctx,{rice:'🍙',wood:'🪵',shards:'💎'}[c.fmCarry]||'📦',c.x,c.y-crewHeight-8,14);   // FOREMAN: what Dam is carrying
+      if(c.fmCarry&&!damDrawn)label(ctx,{rice:'🍙',wood:'🪵',shards:'💎'}[c.fmCarry]||'📦',c.x,c.y-crewHeight-8,14);   // FOREMAN: what Dam is carrying (the drawn carry walk shows it itself)
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
-      if (!c.self && (c.hunger ?? 100) <= 0) label(ctx, '🍙', c.x, c.y - crewHeight - 6, 11, '#ffb4a0');   // FB2-6: small hunger icon over the head (no banner)
+      if (!c.self && (c.hunger ?? 100) <= 0) hungerMark(ctx, c.x, c.y - crewHeight - 6);   // FB2-6: small hunger icon over the head (no banner)
     });
   }
   const camp = finalRestSpot(g);
@@ -1033,6 +1040,14 @@ function bubble(ctx, text, x, y, scale = .74, placed = []) {   // .74 = BUBBLE_S
   ctx.fillStyle = '#f2e6dd'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText(text, w / 2, h / 2 + 1, w - 10 * UI_SCALE_MAP);
   ctx.restore();
+}
+
+/** the hunger sign over a head: Codex's half-eaten rice ball (img/ui/icon-hungry.webp, 15 Nov) - the old 🍙 only while the picture is not loaded */
+function hungerMark(ctx, x, y) {
+  const icon = img('ui/icon-hungry');
+  if (!icon) { label(ctx, '🍙', x, y, 11, '#ffb4a0'); return; }
+  const size = 11 * UI_SCALE_MAP * 1.55;
+  ctx.drawImage(icon, x - size / 2, y - size / 2, size, size);
 }
 
 function mapName(ctx, text, x, y, color) {
