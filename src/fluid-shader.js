@@ -292,9 +292,12 @@ export function drawFluidShader(ctx, st, h) {
   const gl = st.gl, L = st.loc, { m, view, cv, sec, time } = h;
   // FLUID-Z234: zones 2-4 (h.lodMs): when the camera shows many liquid pieces at once (the whole-map view), the shader runs at most every lodMs - the liquid is tiny there, and its pass cost (measured ~4 ms a frame
   // for ~60 pieces) is what the old particle flow never had; in between the last result is blitted again, as in Performance graphics.  Zone 1 (no lodMs) is untouched.
-  let fluidMs = graphicsProfile().fluidIntervalMs;
-  let far = false;
-  if (h.lodMs) { let nVis = 0; for (const sp of st.pieces) if (h.intersect(sp.core, view)) nVis++; if (nVis > LOD_PIECES) { far = true; fluidMs = Math.max(fluidMs, h.lodMs); } }
+  const profMs = graphicsProfile().fluidIntervalMs; let fluidMs = profMs, far = false;
+  if (h.lodMs) {   // zones 2-4: the shader runs at 30 Hz at most even in High graphics (the liquid moves slowly), and at lodMs in the far view
+    fluidMs = Math.max(fluidMs, h.baseMs || 0);
+    let nVis = 0; for (const sp of st.pieces) if (h.intersect(sp.core, view)) nVis++;
+    if (nVis > LOD_PIECES) { far = true; fluidMs = Math.max(fluidMs, h.lodMs); }
+  }
   const mixB = codexCloudWeight(sec * 1000);   // CLOUDS-MIX: same clock as the direct layer under the shader
   const scale = Math.max(m.a, m.d), level = groundLevelFor(scale), wantDetail = scale >= .38;   // .38 = where town-terrain.js leaves the overview painting
   let drawn = 0; st.frame++;
@@ -318,7 +321,7 @@ export function drawFluidShader(ctx, st, h) {
         blit(ctx, st.shared.canvas, prev.sx, prev.sy, prev.geo, prev.geo.dx0 + (m.e - prev.e), prev.geo.dy0 + (m.f - prev.f)); drawn++; continue;
       }
     }
-    const geo = h.geometry(m, vis, cv.width, cv.height, far ? SHADER_MAX_SCALE_FAR : fluidMs ? SHADER_MAX_SCALE_PERFORMANCE : SHADER_MAX_SCALE);
+    const geo = h.geometry(m, vis, cv.width, cv.height, far ? SHADER_MAX_SCALE_FAR : profMs ? SHADER_MAX_SCALE_PERFORMANCE : SHADER_MAX_SCALE);
     if (!geo) continue;
     jobs.push({ sp, id, geo }); sizes.push([geo.lw, geo.lh]);
   }
