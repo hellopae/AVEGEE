@@ -56,7 +56,7 @@ test('three waves and the border boss keep one battle, heal at transition, and r
     g.battleAct('atk'); assert.equal(b.pendingWave, wave + 1); assert.equal(g.coin, beforeCoin);
     assert.equal(g.advanceFrontierBreachWave(), true);
   }
-  assert.deepEqual(b.foes.map(f => f.hp), [scaleFoeHp('th', 90, 'boss')]);   // ชุด 28B: บอสอึดขึ้น · the border boss comes after the three waves
+  assert.deepEqual(b.foes.map(f => f.hp), [scaleFoeHp('th', ZONE_EVENTS.th[1].waves[3][0].hp, 'boss')]);   // BOSS-SKILLS set A: Tanthasura 90 -> 360 hp (see data.js) · ชุด 28B: บอสอึดขึ้น · the border boss comes after the three waves
   b.youHp = b.youMax - 5;
   b.foes.forEach(f => { f.hp = 1; f.atk = [0, 0]; });
   assert.equal(!!g.abilities.teamJudgment, false);

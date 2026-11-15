@@ -14,11 +14,15 @@
   },
   {
    "before": "import { t } from './i18n.js';\n",
-   "after": "import { t, getLang } from './i18n.js';\nimport { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';   // BOSS-SKILLS: data-driven boss moves\n"
+   "after": "import { t, getLang } from './i18n.js';\nimport { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';\nimport { BOSS_SKILLS } from './boss-skills-data.js';\n"
   },
   {
    "before": "",
    "after": "import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';\nimport { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';\n"
+  },
+  {
+   "before": "",
+   "after": "const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves\n"
   },
   {
    "before": "const soulFitsZone = (s, zone) => zone !== 'asia' || (/^A(?:[1-9]|1\\d|20)$/.test(s && s.case || '') || ALL_CASES.some(c=>c.quest&&c.k===s?.case&&c.zone===zone));\n",
@@ -142,6 +146,10 @@
   },
   {
    "before": "",
+   "after": "    const zoneMoves = BOSS_SKILLS[ZONE_BOSS_SKILL_KEY[z.k]];   // BOSS-SKILLS set A: Lian Gang / Severin (and the same table for the other zones' boss cards)\n    if (zoneMoves) this.battle.foes[0].skills = structuredClone(zoneMoves);\n"
+  },
+  {
+   "before": "",
    "after": "  /** f1 (owner 13 Nov): the frontier event that is waiting at the border right now, whether or not its alert window was acknowledged.\n   *  Every way into the border scene asks this, so the border boss is there the first time Yama walks down. */\n  breachPending() {\n    if (this.battle || this.over) return null;\n    for (const ev of ZONE_EVENTS[this.zone] || []) {\n      if (ev.team !== 'frontier' || ev.signal || this.zoneEventStatus(ev.k) !== 'pending') continue;\n      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;\n      return { key:ev.k, ev };\n    }\n    return null;\n  },\n"
   },
   {
@@ -150,7 +158,7 @@
   },
   {
    "before": "        sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',\n        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno,\n",
-   "after": "        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',\n        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),\n"
+   "after": "        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',\n        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...((entry.skillsEach ? entry.skillsEach[i] : entry.skills) ? { skills:structuredClone(entry.skillsEach ? entry.skillsEach[i] : entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),\n"
   },
   {
    "before": "      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });\n",
@@ -165,12 +173,20 @@
    "after": "    if (!['west-hypnosis','th-team-judgment-unlock','th','asia-big-fire-unlock'].includes(b?.storyInterlude)) return false;\n    if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again\n"
   },
   {
+   "before": "      atk:event.foe.atk, stun:0, confuse:0 };\n",
+   "after": "      atk:event.foe.atk, stun:0, confuse:0, ...(event.foe.skills ? { skills:structuredClone(event.foe.skills) } : {}) };   // BOSS-SKILLS: Arunadet's mirror flash\n"
+  },
+  {
    "before": "    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>\n",
    "after": "    const waves = ZONE_EVENTS.th[1].waves, demonWaves = waves.length - 1;   // the last row is the border boss, after the 3 waves\n    return waves[wave - 1].flatMap((entry, group) =>\n"
   },
   {
    "before": "          sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/${ZONE_EVENTS.th[1].waves.length}`,\n",
    "after": "          sub:boss ? t('event.frontierBreach.bossSub') : `ระลอก ${wave}/${demonWaves}`,\n"
+  },
+  {
+   "before": "",
+   "after": "          ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}),   // BOSS-SKILLS: Tanthasura's moves\n"
   },
   {
    "before": "",
@@ -190,7 +206,7 @@
   },
   {
    "before": "",
-   "after": "  },\n  /** BOSS-SKILLS: the boss announces a move it will use on its next turn (warning tag on the foe + banner; the player has a whole round to answer). */\n  announceFoeSkill(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.pending = sp.id; sk.pendingLabel = sp.name;\n    const text = pickText(sp.warnText, lang) || pickText(sp.name, lang);\n    B.skillNotice = { phase:'warn', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    B.talk = text; say(`⚠ ${foe.who}: ${text}`);\n  },\n  /** BOSS-SKILLS: a boss turn with no attack in it - the charge turn of a warned move, a summon, or a heal. */\n  runFoeSkillTurn(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.turns = plan.turn;\n    B.dmg.enemyHits = []; B.dmg.hitActors = []; B.dmg.skillOnly = true;\n    if (plan.mode === 'warn') { this.announceFoeSkill(B, foe, plan, say); return; }\n    sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;\n    const text = pickText(sp.useText, lang);\n    B.skillNotice = { phase:'use', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    if (text) B.talk = text;\n    if (sp.kind === 'summon') {\n      const zone = B.zone || this.zone;\n      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event') });\n      B.dmg.summoned = made.map(f => f.id);\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — เรียก ${made.length} ตนลงสนาม`);\n    } else if (sp.kind === 'heal') {\n      const gain = Math.min(foe.maxHp - foe.hp, Math.max(1, Math.round(foe.maxHp * (sp.heal?.pct ?? .2))));\n      foe.hp += gain; B.dmg.foeHealed = { id:foe.id, amount:gain };\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — ฟื้น ${gain}`);\n    }\n"
+   "after": "  },\n  /** BOSS-SKILLS: the boss announces a move it will use on its next turn (warning tag on the foe + banner; the player has a whole round to answer). */\n  announceFoeSkill(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.pending = sp.id; sk.pendingLabel = sp.name;\n    const text = pickText(sp.warnText, lang) || pickText(sp.name, lang);\n    B.skillNotice = { phase:'warn', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    B.talk = text; say(`⚠ ${foe.who}: ${text}`);\n  },\n  /** BOSS-SKILLS: a boss turn with no attack in it - the charge turn of a warned move, a summon, or a heal. */\n  runFoeSkillTurn(B, foe, plan, say) {\n    const sk = skillState(foe), sp = plan.skill, lang = getLang();\n    sk.turns = plan.turn;\n    B.dmg.enemyHits = []; B.dmg.hitActors = []; B.dmg.skillOnly = true;\n    if (plan.mode === 'warn') { this.announceFoeSkill(B, foe, plan, say); return; }\n    sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;\n    const text = pickText(sp.useText, lang);\n    B.skillNotice = { phase:'use', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };\n    if (text) B.talk = text;\n    if (sp.kind === 'summon') {\n      const zone = B.zone || this.zone;\n      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event'), lang:getLang() });\n      B.dmg.summoned = made.map(f => f.id);\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — เรียก ${made.length} ตนลงสนาม`);\n    } else if (sp.kind === 'heal') {\n      const gain = Math.min(foe.maxHp - foe.hp, Math.max(1, Math.round(foe.maxHp * (sp.heal?.pct ?? .2))));\n      foe.hp += gain; B.dmg.foeHealed = { id:foe.id, amount:gain };\n      say(`${foe.who}ใช้${pickText(sp.name, lang)} — ฟื้น ${gain}`);\n    }\n"
   },
   {
    "before": "",
@@ -309,6 +325,10 @@
    "after": "    else if ((skillPlan = planSkill(B, counter)) && skillPlan.noAttack) {\n      this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack\n    }\n"
   },
   {
+   "before": "      let ultimate = B.kind === 'zoneBoss' && counter.boss\n",
+   "after": "      let ultimate = B.kind === 'zoneBoss' && counter.boss && !hasSkills(counter)   // BOSS-SKILLS: a boss with its own moves does not also use the old unwarned rhythm\n"
+  },
+  {
    "before": "      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n",
    "after": "      if (!ultimate && !hasSkills(counter) && B.eventKey !== 'sitaHanuman' && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&\n"
   },
@@ -380,7 +400,7 @@
  "data": [
   {
    "before": "",
-   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';\n"
+   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';\nimport { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)\n"
   },
   {
    "before": "",
@@ -396,19 +416,23 @@
   },
   {
    "before": "      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],\n",
-   "after": "      [{ kind:2, count:2, hp:36, atk:MOB.fightAtk }],\n      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],\n      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],\n"
+   "after": "      [{ kind:2, count:2, hp:36, atk:MOB.fightAtk }],\n      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],\n      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:360, atk:[28,45], skills:BOSS_SKILLS.tanthasura }]],   // BOSS-SKILLS set A: was 90 / 10-16 (the Thai breach won 100 %); the encounter-balance row th:breach (hp x1.5, atk x1.8) still applies on top\n"
   },
   {
    "before": "  { k:'devaTest', atCases:5, requires:['prisonBreak'], mode:'single',\n",
    "after": "  // Z1-EVENTS: the temple beggar is the 6th case; the deva test opens once he is judged.\n  { k:'devaTest', atCases:6, requires:['prisonBreak'], mode:'single',\n"
   },
   {
-   "before": "  { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',\n",
-   "after": "  // Z1-EVENTS: case 12 · Sita's ledger. Hanuman descends once her hearing is closed (game.js resolveSitaCase) and TESTS Yama - he is not an enemy.\n  // Text: Rae (src/z1-events.js SITA). hp/atk: Toby's first numbers between the deva (case 6) and the elder brother (case 15) - no spec, tune freely.\n  { k:'sitaHanuman', atCases:12, requires:['frontierBreach'], mode:'single',\n    title:{ th:'หนุมานลงมาแล้ว', en:'Hanuman descends' },\n    alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',\n      en:'Rama\\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },\n    go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },\n    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:120, atk:[11,17], boss:true },\n    reward:{}, lose:{ hp:9 } },\n  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.\n  { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',\n"
+   "before": "    foe:{ sp:'boss-tester-th', hp:100, atk:[10,16] },\n",
+   "after": "    foe:{ sp:'boss-tester-th', hp:350, atk:[20,32], skills:BOSS_SKILLS.arunadet },   // BOSS-SKILLS set A: was 100 / 10-16 (won 100 % in 2 rounds); first try, team of 3 ~80 %\n"
   },
   {
-   "before": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },\n",
-   "after": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },\n"
+   "before": "  { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',\n",
+   "after": "  // Z1-EVENTS: case 12 · Sita's ledger. Hanuman descends once her hearing is closed (game.js resolveSitaCase) and TESTS Yama - he is not an enemy.\n  // Text: Rae (src/z1-events.js SITA). hp/atk: Toby's first numbers between the deva (case 6) and the elder brother (case 15) - no spec, tune freely.\n  { k:'sitaHanuman', atCases:12, requires:['frontierBreach'], mode:'single',\n    title:{ th:'หนุมานลงมาแล้ว', en:'Hanuman descends' },\n    alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',\n      en:'Rama\\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },\n    go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },\n    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[25,38], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %\n    reward:{}, lose:{ hp:9 } },\n  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.\n  { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',\n"
+  },
+  {
+   "before": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },\n    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[12,19], boss:true },\n",
+   "after": "    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },\n    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[14,22], boss:true, skills:BOSS_SKILLS.yomathat },   // BOSS-SKILLS set A: atk was 12-19\n"
   },
   {
    "before": "",
@@ -419,20 +443,44 @@
    "after": "      title:Z2_TEXT.prisonFire.title, alert:Z2_TEXT.prisonFire.alert, go:Z2_TEXT.prisonFire.go, banner:Z2_TEXT.prisonFire.banner,\n      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:1, arrival:'devaArrives',\n      winStories:['z2-kuroha-wait'], winNotices:['z2-kuroha-wait'],\n"
   },
   {
-   "before": "      title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },\n      alert:{ th:'เทวดาที่ลงมาช่วยรอทดสอบยมบาทน้อย', en:'The deva who helped now tests Yama.' },\n",
-   "after": "      title:Z2_TEXT.devaTest.title, alert:Z2_TEXT.devaTest.alert, go:Z2_TEXT.devaTest.go, retry:Z2_TEXT.devaTest.retry, banner:Z2_TEXT.devaTest.banner,\n"
+   "before": "      title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },\n      alert:{ th:'เทวดาที่ลงมาช่วยรอทดสอบยมบาทน้อย', en:'The deva who helped now tests Yama.' },\n      foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:130, atk:[11,18], boss:true },\n",
+   "after": "      title:Z2_TEXT.devaTest.title, alert:Z2_TEXT.devaTest.alert, go:Z2_TEXT.devaTest.go, retry:Z2_TEXT.devaTest.retry, banner:Z2_TEXT.devaTest.banner,\n      foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:325, atk:[22,36], boss:true, skills:BOSS_SKILLS.kuroha, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.52,1.52] } },   // BOSS-SKILLS set A: was 130 / 11-18 (100 %); first try, team of 3 ~82 %\n      openStory:'z2-kuroha-open', winStories:['z2-kuroha-win'], loseStory:'z2-kuroha-lose', win:Z2_TEXT.devaTest.win, loseText:Z2_TEXT.devaTest.lose,\n"
+  },
+  {
+   "before": "    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',\n      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },\n      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },\n      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],\n        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],\n",
+   "after": "    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).\n    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',\n      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,\n      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)\n      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,\n      reward:{ coin:140 }, lose:{ hp:9 } },\n    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).\n    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,\n      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],\n      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],\n        [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)\n        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:175, atk:[12,20], boss:true, skills:BOSS_SKILLS.akura, partyScale:{ hp:[1,1,1], atk:[1,1.28,1.28] } }]],   // BOSS-SKILLS set A: was 125 / 12-19\n"
   },
   {
    "before": "",
-   "after": "      openStory:'z2-kuroha-open', winStories:['z2-kuroha-win'], loseStory:'z2-kuroha-lose', win:Z2_TEXT.devaTest.win, loseText:Z2_TEXT.devaTest.lose,\n"
+   "after": "    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.\n    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,\n      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,\n      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:BOSS_SKILLS.gateGuardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %\n      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,\n      reward:{ coin:0 }, lose:{ hp:9 } },\n"
   },
   {
-   "before": "    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',\n      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },\n      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },\n      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],\n",
-   "after": "    // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).\n    { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',\n      title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,\n      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:Z2_BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)\n      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,\n      reward:{ coin:140 }, lose:{ hp:9 } },\n    // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).\n    { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,\n      title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],\n      waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],\n        [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)\n"
+   "before": "        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:150, atk:[13,20], boss:true }]],\n",
+   "after": "        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[14,21], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20\n"
   },
   {
-   "before": "",
-   "after": "    // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.\n    { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,\n      title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,\n      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:Z2_BOSS_SKILLS.guardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %\n      openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,\n      reward:{ coin:0 }, lose:{ hp:9 } },\n"
+   "before": "      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },\n",
+   "after": "      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[24,36], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)\n"
+  },
+  {
+   "before": "      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:105, atk:[12,19], boss:true }],\n",
+   "after": "      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[19,30], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],\n"
+  },
+  {
+   "before": "        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[23,35], boss:true }]],\n",
+   "after": "        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:234, atk:[22,33], boss:true, skills:BOSS_SKILLS.trojan9, partyScale:{ hp:[1,1,1], atk:[.5,.8,1.02] } }]],   // BOSS-SKILLS set A: was 180 / 23-35\n"
+  },
+  {
+   "before": "        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[18,27], boss:true }],\n        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[19,28], boss:true }],\n        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[20,30], boss:true }],\n        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[22,31], boss:true }],\n        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[23,34], boss:true }],\n",
+   "after": "        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:261, atk:[18,27], boss:true, skills:BOSS_SKILLS.yamaPossessed, partyScale:{ hp:[1,1,1], atk:[.58,.88,1.35] } }],\n        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:288, atk:[19,28], boss:true, skills:BOSS_SKILLS.zhaoWenPossessed, partyScale:{ hp:[1,1,1], atk:[1.09,1,.92] } }],\n        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:315, atk:[20,30], boss:true, skills:BOSS_SKILLS.halvarPossessed, partyScale:{ hp:[1,1,1], atk:[.75,.86,.98] } }],\n        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:342, atk:[22,31], boss:true, skills:BOSS_SKILLS.nexarPossessed, partyScale:{ hp:[1,1,1], atk:[.57,.78,1.07] } }],\n        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:264, atk:[23,34], boss:true, skills:BOSS_SKILLS.archonZero, partyScale:{ hp:[1,1,1], atk:[1.05,1.24,1.46] } }],\n"
+  },
+  {
+   "before": "// TODO: รอ Rae ตั้งชื่อจริง\n",
+   "after": "// BOSS-SKILLS (15 Nov): Rae's names (the zone 2 / zone 3 ones were swapped: the zone 2 picture is Lian Gang's chain-weight, the zone 3 one Severin's blue flame)\n"
+  },
+  {
+   "before": "  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.webp' },\n  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.webp' },\n  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.webp' },\n  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.webp' },\n",
+   "after": "  th: { name:BOSS_ULTIMATE_NAMES.th, image:'img/zone-boss-cutscene.webp' },\n  asia: { name:BOSS_ULTIMATE_NAMES.asia, image:'img/Asia/Boss Zone2-asia-cutscene.webp' },\n  west: { name:BOSS_ULTIMATE_NAMES.west, image:'img/West/Boss Zone3-cutscene.webp' },\n  cyberhell: { name:BOSS_ULTIMATE_NAMES.cyberhell, image:'img/CyberHell/Boss Zone4-cutscene.webp' },\n"
   },
   {
    "before": "    bossArrive:[\n      'เหลียนกัง: \"เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ\"',\n      'เหลียนกัง: \"ข้าคือผู้ตรวจการท้องถิ่นแห่งบูรพา ต้องดูให้แน่ก่อนว่า\"',\n      'เหลียนกัง: \"คนต่างถิ่นอย่างเจ้าคู่ควรจะมาปกครองสาขานี้หรือไม่\"',\n      'ยมบาทน้อย: \"งั้นก็ตรวจผมให้เต็มที่เลยสิ\"',\n    ],\n",
@@ -456,7 +504,13 @@
   },
   {
    "before": "",
-   "after": "  // BOSS-SKILLS: a foe may carry its own party-size curve: `partyScale:{ hp:[x3,x5,x7], atk:[x3,x5,x7] }` (multipliers for a team of 3 / 5 / 7, linear in between) - the data lives on the foe in data.js\n  if (boss?.partyScale) {\n    const ps = boss.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);\n    const hpK = at(ps.hp), atkK = at(ps.atk);\n    boss.hp = Math.round(boss.hp * hpK); boss.maxHp = Math.round(boss.maxHp * hpK);\n    if (boss.atk) boss.atk = boss.atk.map(v => Math.max(1, Math.round(v * atkK)));\n  }\n"
+   "after": "  // BOSS-SKILLS: a foe may carry its own party-size curve: `partyScale:{ hp:[x3,x5,x7], atk:[x3,x5,x7] }` (multipliers for a team of 3 / 5 / 7, linear in between) - the data lives on the foe in data.js\n  // (set A, 15 Nov: every boss foe that carries one - the two Lumen of the Zone 4 rescue share the same entry)\n  for (const b of battle.foes.filter(f => f.boss && f.partyScale)) {\n    const ps = b.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);\n    const hpK = at(ps.hp), atkK = at(ps.atk);\n    b.hp = Math.round(b.hp * hpK); b.maxHp = Math.round(b.maxHp * hpK);\n    if (b.atk) b.atk = b.atk.map(v => Math.max(1, Math.round(v * atkK)));\n  }\n"
+  }
+ ],
+ "encounter-balance": [
+  {
+   "before": "",
+   "after": "\n// BOSS-SKILLS set A (15 Nov): the zone bosses of Asia and West (Lian Gang / Severin, built in game.js startZoneBoss) got warned moves that replace the old unwarned cutscene rhythm;\n// the owner wants them harder.  Final rows per team size (hp / atk multipliers incl. the BATTLE-FX split above), fitted one size at a time by scripts/solve-boss-skills.mjs on the\n// production sim: the trained team (all moves unlocked) wins ~70-82 %, the fight lasts 6-7 rounds.  (Before: 86-96 % trained, 2-4 rounds of the old rhythm.)\nexport const BOSS_SKILLS_ROWS = Object.freeze({\n  'asia:boss': { 3:{ hp:1.95, atk:.739 }, 4:{ hp:1.95, atk:.889 }, 5:{ hp:2.145, atk:.825 } },\n  'west:boss': { 3:{ hp:.845, atk:.737 }, 4:{ hp:1.3, atk:.745 }, 5:{ hp:1.3, atk:.739 }, 6:{ hp:1.651, atk:.769 } },\n});\nfor (const [key, sizes] of Object.entries(BOSS_SKILLS_ROWS)) for (const [size, v] of Object.entries(sizes)) Object.assign(ENCOUNTER_BALANCE[key][size], v);\n"
   }
  ]
 }

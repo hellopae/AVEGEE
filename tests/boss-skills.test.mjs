@@ -131,6 +131,7 @@ test('Gate Guard test: the heavy blow is announced a turn ahead and hits one all
 });
 test('a foe without skills plays exactly as before (no state, no notice)', () => {
   const g = setup({ zone:'asia', size:4, kind:'event', eventKey:'asiaDevaTest', moves:false }); g.save = () => true; const b = g.battle;
+  for (const f of b.foes) delete f.skills;   // set A gave Kuroha moves too: take them off for this check
   keepAlive(g); const t = playToBossTurn(g), r = t.run();
   assert.equal(t.boss.sk, undefined); assert.equal(r.notice, null); assert.equal(r.dmg.skillOnly, undefined); assert.equal(hasSkills(t.boss), false);
 });

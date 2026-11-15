@@ -172,6 +172,21 @@ const SCEN = [
   ['cyber rescue', 'cyberhell', 5, 7, 3, g => { g.zoneEvents.cyberhell = { cyberRescue:'pending' }; return g.startZoneEvent('cyberRescue'); }],
   ['cyber breach', 'cyberhell', 5, 8, 3, g => { g.zoneCases.cyberhell = 5; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' }; return g.startZoneEvent('cyberBreach'); }],
 ];
+// BOSS-SKILLS set A (15 Nov): the owner made every boss harder and gave it moves (hp / atk / skills / partyScale in data.js).  This file's two benchmarks are about the RECOVERY ITEMS
+// (G1/G4), not about boss tuning, so they keep running against the boss numbers of the time they were fitted for; the new numbers are measured by scripts/sim-boss-skills.mjs
+// and guarded by tests/boss-skills.test.mjs.
+const LEGACY_BOSSES = [
+  [() => ZONE_EVENTS.th[2].foe, 100, [10, 16]], [() => ZONE_EVENTS.th[1].waves[3][0], 90, [10, 16]], [() => ZONE_EVENTS.th.find(e => e.k === 'thBorderBoss').foes[0], undefined, [12, 19]],
+  [() => ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach').waves[3][0], 125, [12, 19]],
+  [() => ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').waves[3][0], 150, [13, 20]], [() => ZONE_EVENTS.west.find(e => e.k === 'westDevaTest').foe, 165, [14, 21]],
+  [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberRescue').foes[0], 105, [12, 19]], [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves[3][0], 180, [23, 35]],
+  ...[[4, 145, [18, 27]], [5, 160, [19, 28]], [6, 175, [20, 30]], [7, 190, [22, 31]], [8, 220, [23, 34]]].map(([i, hp, atk]) => [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves[i][0], hp, atk]),
+];
+function withLegacyBosses(fn) {
+  const saved = LEGACY_BOSSES.map(([get]) => { const e = get(); return [e, structuredClone({ hp:e.hp, atk:e.atk, skills:e.skills, skillsEach:e.skillsEach, partyScale:e.partyScale })]; });
+  for (const [i, [get, hp, atk]] of LEGACY_BOSSES.entries()) { const e = get(); if (hp) e.hp = hp; e.atk = atk; delete e.skills; delete e.skillsEach; delete e.partyScale; }
+  try { return fn(); } finally { for (const [e, v] of saved) { for (const k of ['hp', 'atk', 'skills', 'skillsEach', 'partyScale']) if (v[k] === undefined) delete e[k]; else e[k] = v[k]; } }
+}
 function winRate([name, zone, level, ab, chests, start], runs, seed) {
   return withSeed(seed, () => {
     let wins = 0;
@@ -184,7 +199,7 @@ function winRate([name, zone, level, ab, chests, start], runs, seed) {
   });
 }
 
-test('G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable', () => {
+test('G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable', () => withLegacyBosses(() => {
   for (const sc of SCEN.filter(x => !x[0].startsWith('cyber breach'))) {
     const rate = winRate(sc, 20, 28);
     if (process.env.BAL_VERBOSE) console.log(sc[0].padEnd(20), rate);
@@ -194,11 +209,11 @@ test('G1 recovery items: prepared parties still win events/bosses; breach benchm
   if (process.env.BAL_VERBOSE) console.log('cyber breach'.padEnd(20), breach);
   // G4: enemy atk raised (cyberBreach x1.5) so the Large-item player is back in the pre-G1 70-90% band
   assert.ok(breach >= 0.7 && breach <= 0.9, `cyber breach win rate ${breach}`);
-});
+}));
 
 // G1 65% HP items increase survival; retain the encounter and preparation sensitivity benchmark.
 // B2b's independent six-member encounters are simulated in scripts/sim-final-event.mjs.
-test('G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity', () => {
+test('G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity', () => withLegacyBosses(() => {
   const source=ZONE_EVENTS.cyberhell.find(e=>e.k==='cyberFinal');
   const legacy={ ...source,k:'legacyFinalBenchmark',restBeforeWaves:[4,8],waves:source.waves.filter((_,i)=>i!==3) };
   ZONE_EVENTS.cyberhell.push(legacy);
@@ -214,7 +229,7 @@ test('G1 recovery items: legacy eight-wave benchmark retains preparation sensiti
     const poor=['legacy cyber FINAL (no chests)','cyberhell',5,8,0,sc[5]];
     assert.ok(winRate(poor,30,28)<rate,'เตรียมตัวน้อยกว่าต้องชนะน้อยกว่า');
   } finally { ZONE_EVENTS.cyberhell.pop(); }
-});
+}));
 
 // ---------------------------------------------------------------- 3. น้ำมนต์
 test('น้ำมนต์: พ่อค้านรกขาย · ราคา/ปริมาณสมเหตุสมผลเทียบหีบยา · ใช้เติม MP ได้จริงจากกระเป๋า', () => {

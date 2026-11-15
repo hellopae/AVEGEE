@@ -52,7 +52,7 @@ test('a failed deva test can be retried, and an active save restarts the test', 
   loaded.restore(saved);
   assert.equal(loaded.battle, null);
   assert.equal(loaded.devaTestStatus(), 'pending');
-  assert.equal(loaded.startDevaTest()?.foes[0].hp, scaleFoeHp('th', 100, 'boss'));   // ชุด 28B: บอสอึดขึ้น
+  assert.equal(loaded.startDevaTest()?.foes[0].hp, scaleFoeHp('th', ZONE_EVENTS.th[2].foe.hp, 'boss'));   // BOSS-SKILLS set A: the deva test is 350 hp now (was 100)   // ชุด 28B: บอสอึดขึ้น
 });
 
 test('case six schedules deva after prison; case nine schedules frontier after deva', () => {

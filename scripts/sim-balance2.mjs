@@ -77,7 +77,7 @@ export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}
   else {g.bossGuarding[zone]=true;g.startZoneBoss('alert');}
   if(!g.battle)throw Error(`cannot start ${zone}/${kind}/${encounter}`);
   const actual=g.battleActors().filter(a=>!a.guestGuide).length;
-  if(actual!==size+(zone==='th'&&kind==='breach'?1:0))throw Error(`team size ${actual}, expected ${size}`);   // BOSS-SKILLS: the Thai breach adds the gate keeper as a guest (Z1-EVENTS), so 3 chosen = 4 in the fight
+  if(actual!==size+(zone==='th'&&kind==='breach'&&fullBreach?1:0))throw Error(`team size ${actual}, expected ${size}`);   // BOSS-SKILLS: the Thai breach adds the gate keeper as a guest (Z1-EVENTS), so 3 chosen = 4 in the fight
   return g;
 }
 function choose(g,moves) {

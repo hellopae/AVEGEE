@@ -89,7 +89,7 @@ test('ตัวเลขสมดุลของอีเวนต์เนื�
   assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest']);
   assert.deepEqual(keys('cyberhell'), ['cyberRescue', 'cyberBreach', 'cyberFinal']);
   for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal).at(-1).challenge, true);
-  assert.equal(ZONE_EVENTS.th[1].waves[3][0].hp, 90);       // บอสชายแดนเนื้อเรื่อง th ยังเป็น 90
+  assert.equal(ZONE_EVENTS.th[1].waves[3][0].hp, 360);      // BOSS-SKILLS set A: Tanthasura 90 -> 360 (with moves)
   assert.equal(ZONE_EVENTS.th[1].betweenWaveHeal, 20);
   assert.equal(ZONE_EVENTS.cyberhell[1].betweenWaveHeal, 25);
 });

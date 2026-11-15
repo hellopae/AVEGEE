@@ -64,7 +64,7 @@ test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foe
   // Arrival ends on the throne spot: Yama must not stand on top of Lumen (Dale fix).
   assert.ok(Math.hypot(g.player.x-DEVA_MAP.cyberhell.x,g.player.y-DEVA_MAP.cyberhell.y)>=90);
   assert.ok(mapInteractions(g,MERCHANT).some(a=>a.key==='cyberRescue'));
-  const ev=ZONE_EVENTS.cyberhell[0];assert.equal(ev.foes[0].count,2);assert.equal(ev.foes[0].hp,105);
+  const ev=ZONE_EVENTS.cyberhell[0];assert.equal(ev.foes[0].count,2);assert.equal(ev.foes[0].hp,184);   // BOSS-SKILLS set A: the two Lumen were 105 hp, 184 now (with moves)
   g.startZoneEvent('cyberRescue');assert.equal(g.devaVisits.cyberhell.phase,'fighting');
   g=roundTrip(g);assert.equal(devaMapActors(g)[0].enabled,true);
   g.startZoneEvent('cyberRescue');g.battle.team=[];g.battle.youHp=1;g.battleAct('atk');
