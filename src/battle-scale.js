@@ -72,6 +72,19 @@ export async function battleSpriteRect(img, mode = 'layout') {
     r:d.left + (b.l+b.w)*d.w, b:d.top + (b.t+b.h)*d.h };
 }
 
+/** Same rectangle as battleSpriteRect, read synchronously from the alpha boxes that are already measured (null when this picture was never measured, or has no box yet).
+ *  F6: the effect of an enemy attack re-reads its targets with this at the moment it starts, from the DOM as it is then (the team is fitted by that time). */
+export function spriteRectSync(img, mode = 'layout') {
+  if (!img) return null;
+  const src = img.currentSrc || img.src;
+  if (!boxes.has(src) || !img.naturalWidth) return null;
+  const raw = boxes.get(src), d = drawnRect(img, mode);
+  if (!(d.w > 4 && d.h > 4)) return null;
+  const mirrored = getComputedStyle(img).transform.startsWith('matrix(-');
+  const b = (mirrored ? mirrorBox(raw) : raw) || { l:0, t:0, w:1, h:1 };
+  return { l:d.left + b.l*d.w, t:d.top + b.t*d.h, r:d.left + (b.l+b.w)*d.w, b:d.top + (b.t+b.h)*d.h };
+}
+
 /** คำนวณแถวยมทูตจากตัวเลขล้วน (ไม่แตะ DOM) — แยกออกมาให้เทสต์ได้
  *  hero = { visH, oLeft, base } ความสูงตัวจริง · ขอบซ้ายตัวจริง · เส้นเท้า (พิกัดเดียวกับ stageLeft)
  *  crew = [{ box:{l,t,w,h}, aspect }] · คืน { items:[{boxW,boxH,left}], fit } (left = x ของกล่องภาพ) */

@@ -593,6 +593,13 @@ export function playBattleFx(spec) {
   if (E.camera && spec.impactAt != null) spec = { ...spec, delay:Math.max(0, spec.impactAt / (E.camera.timeScale || 1) - (RECIPE_META[recipe]?.hit || 0)) };
   E.stats.plays++; (E.stats.log ||= []).push(recipe); if (E.stats.log.length > 60) E.stats.log.shift();
   const go = () => {
+    // F6: re-read where the targets (and the attacker) stand NOW.  The rectangles in `spec` were measured when the move was scheduled, often one repaint before
+    // the team was fitted into its places, so an enemy's slash used to land beside the ally it hit.  `live()` returns a fresh rect or null (keep the old one).
+    try {
+      (spec.targets || []).forEach((t, i) => { const r = t.live && t.live(); if (r && r.r > r.l && r.b > r.t) Object.assign(tg[i], body(r)); });
+      const rs = spec.srcLive && spec.srcLive(); if (rs && rs.r > rs.l && rs.b > rs.t) Object.assign(src, body(rs));
+      X.dir = (tg.reduce((a, t) => a + t.x, 0) / tg.length - src.x) >= 0 ? 1 : -1;
+    } catch (e) { /* keep the measured rects */ }
     preloadTex(WARM.filter(k => k.startsWith('fx-common')));
     const art = SKILL_FX[X.opts.skill];
     // New ranged moves have one 250 ms flight; don't also emit the old slash/fire recipe.

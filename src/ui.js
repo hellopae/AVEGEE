@@ -70,7 +70,7 @@ import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
 import { camera, strikeTime } from './battle-camera.js?v=20261110-battlefx';
-import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, spriteRectSync, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
 import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual, foeRank, FOE_RANK_FX } from './battle-fx-map.js?v=m2';
@@ -4076,6 +4076,16 @@ function openBattle(after) {
     if (!r || !(r.r > r.l)) { if (cam) return cameraRectOf(img); const e = img.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
     return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
   };
+  /** F6 (owner 15 Nov, atk missed): an enemy's effect used to stay aimed at the rect read when the move was scheduled - the ally's hurt-pose picture before
+   *  the team was fitted (Yama's was 100+ px to the right of him).  This is the synchronous twin of fxRect: battle-fx.js calls it when the effect starts, from the
+   *  DOM as it is then (null = not measurable now, keep the earlier rect). */
+  const fxRectSync = img => {
+    const stage = dlg.querySelector('.combat-arena'); if (!stage || !img || !img.isConnected) return null;
+    const r = spriteRectSync(img); if (!r) return null;
+    if (hasBattleCamera()) return { l:r.l, t:r.t, r:r.r, b:r.b };
+    const sr = stage.getBoundingClientRect(), k = sr.width / (stage.offsetWidth || sr.width) || 1;
+    return { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
+  };
   const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
   /** BATTLE-FX: the struck figure is pushed back a little (away from the attacker) and settles. Web Animations on the independent `translate` property,
    *  composited on top of the idle breathing; skipped when camera effects are off / reduced motion (same gate as the screen shake). */
@@ -4128,11 +4138,11 @@ function openBattle(after) {
         } else {
           const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you', damage:d.you || d.crew || 0 }];
           const src = await fxRect(foeImg(d.counterFoeId));
-          const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
+          const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0, live:() => fxRectSync(allyImg(keyOfActor(h.id))) })))).filter(x => x.rect);
           const fi = foeImg(d.counterFoeId), fk = fi && bossSpriteKey(fi.getAttribute('src') || '', b.zone || g.zone);
           const fc = fk ? poseContactMs(poseDurations(fk)) : 0;   // the foe's own attack-pose contact frame (Codex atlas), if it has one
           const rank = foeRank(b, d.counterFoeId, !!b.ultimate);   // BATTLE-FX: normal / lord / boss decides how heavy the hit looks
-          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', opts:{ rank, zone:b.zone || g.zone }, ...(dash ? {numberDelay:-120} : {}), delay:dash ? 0 : delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, srcLive:() => fxRectSync(foeImg(d.counterFoeId)), side:'you', opts:{ rank, zone:b.zone || g.zone }, ...(dash ? {numberDelay:-120} : {}), delay:dash ? 0 : delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
           if (src && targets.length) recoilStruck(hits.filter(h => h.damage > 0).map(h => allyImg(keyOfActor(h.id))), rank, (b.ultimate ? 0 : delay + (fc > 0 ? Math.max(0, fc - 170) : 60)) + (impactIn('foe-attack') || 170));
         }
       }
