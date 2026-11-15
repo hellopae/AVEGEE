@@ -23,3 +23,9 @@
 .town-camera-controls button{min-height:30px;padding:3px 8px;font-size:12px;flex:0 0 auto}
 .town-camera-controls #town-overview{flex:1}
 .town-camera-controls button:disabled{opacity:.4}
+
+/* F2: clicking the minimap opens / closes the whole-map view (ui.js setFullMap). */
+.town-map-panel canvas#town-minimap{cursor:zoom-in}
+.town-map-panel.full-map-on canvas#town-minimap{cursor:zoom-out;outline:2px solid #f0cc89;outline-offset:1px}
+#town-full-close{position:absolute;left:50%;top:76px;transform:translateX(-50%);z-index:8;min-height:36px;padding:6px 22px;font:600 14px 'IBM Plex Sans Thai',sans-serif;background:#382033ef;border:1px solid #d7ad69;border-radius:10px;color:#fff0d3;box-shadow:0 4px 18px #0009;cursor:pointer}
+#town-full-close[hidden]{display:none!important}

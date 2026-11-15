@@ -56,7 +56,7 @@ test('M1: UI camera keeps DOM anchors and pointers aligned through town follow z
     const box={querySelector:()=>fabs,offsetWidth:bw,offsetHeight:bh,offsetLeft:(width-bw)/2,offsetTop:(height-bh)/2,style:{setProperty(){}},getBoundingClientRect(){return {left:this.offsetLeft,top:this.offsetTop};}};
     const stage={clientWidth:width,clientHeight:height,classList:{toggle(){}},getBoundingClientRect:()=>({left:0,top:0})}; const overlay={style:{}};
     const cv={style:{},getBoundingClientRect:()=>({left:0,top:0,width,height})};
-    const mapCam={level:0,z:1,x:SCENE.w/2,y:SCENE.h/2,at:0,init:false};
+    const mapCam={level:0,z:1,x:SCENE.w/2,y:SCENE.h/2,at:0,init:false,full:true};   // F2: starts in the whole-map view
     const g={zone:'th',player:{x:880,y:455}};
     const sandbox={bossJusticeCase:()=>null,bossJusticeActors:()=>[],SCENE,mapCam,g,cv,cameraZone:'th',isTownZone,townZoomLevels,townDefaultZoom,setMapZoom:level=>mapCam.level=level,MAP_ZOOM_LEVELS:townZoomLevels('th'),mapViewport,setMapViewport,matchMedia:()=>({matches:false}),document:{querySelector:s=>s==='.stage'?stage:box,getElementById:()=>overlay}};
     vm.createContext(sandbox);vm.runInContext(source,sandbox);
@@ -80,8 +80,9 @@ test('M1: UI camera keeps DOM anchors and pointers aligned through town follow z
     check();
     for(let i=0;i<100;i++)check();
     g.player={x:SCENE.w,y:SCENE.h};for(let i=0;i<100;i++)check();
-    assert.equal(mapCam.z,1);
-    for(const level of [1,2,3,0]){mapCam.level=level;for(let i=0;i<100;i++)check();assert.ok(Math.abs(mapCam.z-townZoomLevels('th')[level])<.002);}
+    assert.equal(mapCam.z,1);mapCam.full=false;
+    for(const level of [1,0,1]){mapCam.level=level;for(let i=0;i<100;i++)check();assert.ok(Math.abs(mapCam.z-townZoomLevels('th')[level])<.002);}
+    mapCam.full=true;for(let i=0;i<100;i++)check();assert.equal(mapCam.z,1);mapCam.full=false;   // F2: whole-map view
   }
 });
 

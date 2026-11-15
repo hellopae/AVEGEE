@@ -2241,7 +2241,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 <link rel="stylesheet" href="src/z1-events.css?v=20261114-z1-events">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4-map-ui-review"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
-<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots-w1112-label1-questdamb"><link rel="stylesheet" href="src/battle-result.css?v=20261114-boss-skills"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/enemy-pointers.css?v=20261115-pointers"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
+<link rel="stylesheet" href="src/team-hud.css?v=20261031-q3"><link rel="stylesheet" href="src/dungeon-view.css?v=20261030-b12-fx"><link rel="stylesheet" href="src/battle-turns.css?v=20261106-kocrew-home-slots-w1112-label1-questdamb"><link rel="stylesheet" href="src/battle-result.css?v=20261114-boss-skills"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/enemy-pointers.css?v=20261115-pointers"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3-t2map">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2303,7 +2303,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 
     <details id="town-map-panel" class="town-map-panel" open hidden>
       <summary data-t="town.title">เมืองอเวจี · โซน 1</summary>
-      <canvas id="town-minimap" width="240" height="160" aria-label="แผนที่ย่อเมืองอเวจี" role="img"></canvas>
+      <canvas id="town-minimap" width="240" height="160" aria-label="แผนที่ย่อเมืองอเวจี" title="ทั้งแผนที่" role="img"></canvas>
       <div class="town-camera-controls" aria-label="กล้องแผนที่">
         <button id="town-zoom-less" type="button" aria-label="ซูมออก / Zoom out">−</button>
         <button id="town-overview" type="button" data-t="town.overview">ทั้งแผนที่</button>
@@ -2501,7 +2501,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/town-owner-walkmask-cyberhell.js": "./src/town-owner-walkmask-cyberhell.js?v=20261030-z4-town-a",
     "./src/unlocks.js": "./src/unlocks.js?v=20261029-food-a-m1112",
     "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1-w1112",
-    "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8-fbui",
+    "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-m2-m3b-p1-p7-p8-fbui-t2map",
     "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles-w1112",
     "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261112-fluidfull2",
     "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
@@ -2552,7 +2552,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/battle-result.js": "./src/battle-result.js?v=20261110-questrewards",
     "./src/sfx.js": "./src/sfx.js?v=20261110-battlefx",
     "./src/graphics-setting.js": "./src/graphics-setting.js?v=20261110-gfx",
-    "./src/ui.js": "./src/ui.js?v=20261110-questrewards-w1112-cook1-poses-homegate-bossskills-questdamb-cardscared-t1bugs",
+    "./src/ui.js": "./src/ui.js?v=20261110-questrewards-w1112-cook1-poses-homegate-bossskills-questdamb-cardscared-t1bugs-t2map",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261105-z1v5-fx4-w1112-cook1",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261110-questrewards-w1112-bossskills-questdamb-t1bugs-f3",
@@ -2603,7 +2603,8 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
     "./src/training.js?v=minigame-review-20261011": "./src/training.js?v=20261029-c1-v2",
     "./src/canteen.js": "./src/canteen.js?v=20261029-food-a-onboard-food-m1112-t1bugs",
     "./src/ferry-geometry.js": "./src/ferry-geometry.js?v=20261030-z4-town-a",
-    "./src/map-travel.js": "./src/map-travel.js?v=20261103-boat-deck-fit",
+    "./src/map-zoom-controls.js?v=20261030-b12-fx": "./src/map-zoom-controls.js?v=20261030-b12-fx-t2map",
+    "./src/map-travel.js": "./src/map-travel.js?v=20261103-boat-deck-fit-t2map",
     "./src/battle-fx.js": "./src/battle-fx.js?v=20261110-battlefx-t1bugs",
     "./src/battle-fx.js?v=m2": "./src/battle-fx.js?v=20261110-battlefx-t1bugs",
     "./src/battle-fx-map.js": "./src/battle-fx-map.js?v=20261110-questrewards",
@@ -2651,7 +2652,7 @@ dialog.help-modal[open] .guide-card-grid>.guide-card.guide-crew{display:grid}
 </script>
 <script type="module" src="src/preload.js?v=20261105-z1v5-fx3-tiles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261110-questrewards-w1112-cook1-poses-homegate-bossskills-questdamb-cardscared-t1bugs"></script>
+<script type="module" src="src/ui.js?v=20261110-questrewards-w1112-cook1-poses-homegate-bossskills-questdamb-cardscared-t1bugs-t2map"></script>
 <script type="module" src="src/version-check.js?v=20261112-update2"></script>
 </body>
 </html>

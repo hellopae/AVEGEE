@@ -210,20 +210,50 @@ fitSceneBox();
 let cameraZone = g.zone;
 let MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
 const mapCam = { level: townDefaultZoom(g.zone), z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
-const townZoomControl=bindMapZoom({less:document.getElementById('town-zoom-less'),more:document.getElementById('town-zoom-more'),overview:document.getElementById('town-overview'),
-  levels:()=>MAP_ZOOM_LEVELS,level:mapCam.level,onChange:level=>{mapCam.level=level;}});
+// F2 (owner 15 Nov): two zoom steps only (medium / near). The whole map is a temporary view (mapCam.full) opened by clicking the
+// minimap (or the overview button) and closed by clicking it again, the close button or Esc. Any zoom step / wheel turn also closes it.
+const townZoomLess=document.getElementById('town-zoom-less'),townZoomMore=document.getElementById('town-zoom-more'),townOverviewButton=document.getElementById('town-overview');
+const townZoomControl=bindMapZoom({less:townZoomLess,more:townZoomMore,overview:townOverviewButton,onOverview:()=>setFullMap(!mapCam.full),
+  levels:()=>MAP_ZOOM_LEVELS,level:mapCam.level,onChange:level=>{mapCam.level=level;if(mapCam.full)setFullMap(false);}});
 function setMapZoom(level){townZoomControl.set(level);}
+const fullMapClose=document.createElement('button');
+fullMapClose.type='button';fullMapClose.id='town-full-close';fullMapClose.hidden=true;fullMapClose.textContent='ปิด';fullMapClose.setAttribute('aria-label','ปิดแผนที่เต็ม');
+function setFullMap(on){
+  on=!!on&&started&&!g.mapTravel;
+  if(mapCam.full===on)return;
+  mapCam.full=on;
+  document.querySelector('.stage')?.classList.toggle('full-map',on);
+  townMapPanelEl?.classList.toggle('full-map-on',on);
+  fullMapClose.hidden=!on;
+  // In the whole-map view both buttons stay live: pressing either returns to a zoom step (bindMapZoom disables the one at the end of the range).
+  if(on){townZoomLess.disabled=false;townZoomMore.disabled=false;}
+  else{const last=MAP_ZOOM_LEVELS.length-1;townZoomLess.disabled=mapCam.level===0;townZoomMore.disabled=mapCam.level===last;}
+}
+const townMapPanelEl=document.getElementById('town-map-panel');
+fullMapClose.onclick=()=>setFullMap(false);
+document.querySelector('.stage')?.append(fullMapClose);
+document.getElementById('town-minimap')?.addEventListener('click',()=>setFullMap(!mapCam.full));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mapCam.full&&!dlg.open){e.preventDefault();setFullMap(false);}},true);
+// Mouse wheel over the map flips between the two steps (one step per ~220 ms so a trackpad swipe does not skip).
+{ let wheelAt=0;
+  cv.addEventListener('wheel',e=>{
+    if(!started||dlg.open||g.mapTravel||!e.deltaY)return;
+    e.preventDefault();
+    const now=performance.now();if(now-wheelAt<220)return;wheelAt=now;
+    setMapZoom(mapCam.level+(e.deltaY<0?1:-1));
+  },{passive:false});
+}
 function updateMapCamera(now) {
   if (cameraZone !== g.zone) {
     cameraZone = g.zone; MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
-    mapCam.init = false; setMapZoom(townDefaultZoom(g.zone));
+    mapCam.init = false; setFullMap(false); setMapZoom(townDefaultZoom(g.zone));
   }
   const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
   if (!stage || !box) return;
   stage.classList.toggle('town-view',isTownZone(g.zone));
   const dt = Math.max(0, Math.min(250, now - mapCam.at)); mapCam.at = now;
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const target = MAP_ZOOM_LEVELS[mapCam.level];
+  const target = mapCam.full ? 1 : MAP_ZOOM_LEVELS[mapCam.level];
   const blend = !mapCam.init || reduced ? 1 : 1 - Math.exp(-dt / 130);
   mapCam.init = true;
   mapCam.z += (target - mapCam.z) * blend;
@@ -234,7 +264,8 @@ function updateMapCamera(now) {
   // POINTERS: pressing an arrow glances at that enemy for POINTER.peekMs, then the camera glides back to Yama (same exponential follow as every other focus)
   const peek = mapCam.peek && now < mapCam.peek.until ? mapCam.peek : (mapCam.peek = null);
   const focus=g.mapTravel?.focus||peek||escortView||brotherView||g.player;
-  const wantX = mapCam.level > 0 ? focus.x : SCENE.w / 2, wantY = mapCam.level > 0 ? focus.y : SCENE.h / 2;
+  const follow = !mapCam.full && MAP_ZOOM_LEVELS[mapCam.level] > 1;
+  const wantX = follow ? focus.x : SCENE.w / 2, wantY = follow ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
   const cw = stage.clientWidth, ch = stage.clientHeight, bw = box.offsetWidth, bh = box.offsetHeight;
@@ -5407,7 +5438,7 @@ async function startMapJourney(to,mode='boat') {
  const fromZone=g.zone,keepBorder=mode!=='boat';
  // Keep the border backdrop in its top-layer dialog until the zone commits.
  if(!keepBorder)dlg.close();g.paused=false;
- if(!keepBorder)setMapZoom(Math.min(1,MAP_ZOOM_LEVELS.length-1));
+ if(!keepBorder){setFullMap(false);setMapZoom(0);}
  const panel=document.createElement('section');panel.id='map-travel-panel';panel.setAttribute('role','status');
  panel.style='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:10010;width:min(560px,92vw);box-sizing:border-box;background:var(--panel,#281d22);color:var(--text,#ffe7c4);border:1px solid var(--gold,#d4a355);border-radius:12px;padding:12px;text-align:center;line-height:1.65';
  const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');const host=keepBorder?dlg:document.body;host.append(blocker);
