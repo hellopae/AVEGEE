@@ -7,6 +7,7 @@ import {saveSlotMenuHtml,slotMenuError,saveSlotConfirmHtml,slotDeletedNote} from
 import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishment.js';
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
+import {watchGraphicsLoss} from './gpu-recovery.js';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards, questFightStep } from './side-quests.js';
 import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   // QUEST-DAM-B: the merchant's feather quest
@@ -170,6 +171,11 @@ bindZone(() => g.zone);          // รูปประจำโซน — art.js
 bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
+// F4: the GPU was lost and came back - every baked canvas is blank now (ground, sprites ...): save, then reload straight into the saved slot (see gpu-recovery.js)
+watchGraphicsLoss(cv, {recover: () => {
+  if (started) { g.save(); saveAt = Infinity; sessionStorage.setItem('avegee.fresh', '1'); }
+  location.reload();
+}});
 
 /** ข้อ D ชุด 15 — .stage เต็มจอไม่มีกรอบแบบเดิม · .scene-box ต้องล็อกอัตราส่วน 1527:704 อยู่ข้างใน
  *  (letterbox บน/ล่างหรือซ้าย/ขวาแล้วแต่จอ แทนการครอป — ยังไม่ทำ D.1 พิกัดใหม่รอบนี้)
