@@ -98,7 +98,7 @@ test('geometry helpers: piece rectangles in world units, drifting puffs wrap ins
 
 test('wiring: zone 1 owns the layer, the old flow and old cloud banks step aside, the old water/lava layer is not used on top of it', () => {
   assert.deepEqual({ ...skin.ZONE_SKIN.th.fluidFx }, { dir: 'img/map-zone1/v5-fx/' });
-  for (const z of ['asia', 'west', 'cyberhell']) assert.equal(skin.ZONE_SKIN[z].fluidFx, undefined, z + ' keeps its own weather');
+  for (const [z, n] of [['asia', 2], ['west', 3], ['cyberhell', 4]]) assert.deepEqual({ ...skin.ZONE_SKIN[z].fluidFx }, { dir: `img/map-zone${n}/fx/`, shaderOnly: true }, z + ': the shader layer only (FLUID-Z234, no drawn frames)');
   const scene = readFileSync(file('src/scene.js'), 'utf8');
   assert.match(scene, /drawTownFluidFx\(ctx,t,\{reduced,paused:!!g\.paused\}\)/);
   assert.ok(scene.indexOf('drawTownFluidFx(ctx') > scene.indexOf('drawTownTerrain(ctx') && scene.indexOf('drawTownFluidFx(ctx') < scene.indexOf('drawTownGround(ctx, g, t)'), 'after the ground, before props and actors');

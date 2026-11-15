@@ -4,6 +4,7 @@ import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTrac
 import { zoneStyle } from './scene-style.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js?v=k1d';
 import { drawFogField } from './zone3-fog.js';
+import { zoneShadowSprites } from './zone-clouds.js';   // FLUID-Z234: cloud-shaped shadows of zones 2-4 (made in code)
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
 const frac = n => n - Math.floor(n);
@@ -34,6 +35,11 @@ export const MAP_FX = Object.freeze({
       fit:.82,                      // patch width = fit x sqrt(view.w x view.h) x spread; height follows the cloud's own aspect
       spread:[.8,1.25], jitter:.22, oddFill:.5, tallness:[.85,1.2],
       art:Object.freeze({dir:'img/map-zone1/v5-fx/',files:Object.freeze(['cloud-shadow-1.webp','cloud-shadow-2.webp','cloud-shadow-3.webp','cloud-shadow-4.webp','cloud-shadow-5.webp'])}),
+    }),
+    // FLUID-Z234 (owner 15 Nov): the towns of zones 2 / 3 / 4 get the same cloud-shaped shadows as zone 1: same strength (.32), same lattice and drift; the silhouettes are baked in
+    // code per zone (zone-clouds.js) instead of cut from painted clouds.  Only the town map uses them (drawMapWeather option townShadows); every other map keeps the blobs above.
+    town:Object.freeze({
+      peak:.32, cell:[.6,.5], fit:.82, spread:[.8,1.25], jitter:.22, oddFill:.5, tallness:[.85,1.2],
     }),
   }),
   snow: Object.freeze({
@@ -569,7 +575,7 @@ export function weatherLabelBounds(rects){
   }return out;
 }
 export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
-  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true,sceneClouds=false}={}) {
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true,sceneClouds=false,townShadows=false}={}) {
   if(!enabled||!(W>0&&H>0))return;
   const art=weatherArt();if(!art)return;
   let clock=weatherClocks.get(ctx);
@@ -587,9 +593,10 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   const view=viewMetrics(ctx,W,H),base=MAP_FX.cloud;
   // Z1-V5-FX: a map that is only Thai ground uses real-cloud shadows once their textures are loaded (none drawn while they load;
   // old gradient blobs if they cannot load). Frontier halves that mix zones, and every other zone, keep the old blobs and values.
-  const thaiOnly=halves.every(r=>r.zone==='th'),real=thaiOnly?townShadowSprites():false;
+  const thaiOnly=halves.every(r=>r.zone==='th'),townZone=townShadows&&!thaiOnly&&halves.every(r=>r.zone===halves[0].zone)?halves[0].zone:null;   // FLUID-Z234: the town of zone 2 / 3 / 4
+  const real=thaiOnly?townShadowSprites():townZone?zoneShadowSprites(townZone):false;
   const sceneTh=sceneClouds&&real&&thaiOnly?SCENE_CLOUD.th:null;
-  const cloud=real?{...base,...base.th,...(sceneTh||{})}:base;
+  const cloud=real?{...base,...(townZone?base.town:base.th),...(sceneTh||{})}:base;
   let cloudLayer=null;
   if(view&&real!==null&&clouds){
     // Wind speed keeps the old lattice so the drift is the same for every zone.
@@ -603,7 +610,7 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
     const style=WEATHER_ZONES[region.zone];if(!style)continue;
     const left=region.from*W,rw=(region.to-region.from)*W;
     ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
-    if(cloudLayer&&view){ctx.globalAlpha=sceneTh&&region.zone==='th'?sceneTh.peak:cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
+    if(cloudLayer&&view){ctx.globalAlpha=sceneTh&&region.zone==='th'?sceneTh.peak:townZone?base.town.peak:cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
       // Soft textured shafts follow visible scene coordinates and remain clipped to this biome.

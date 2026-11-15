@@ -30,6 +30,7 @@ import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky, drawMapAmbientOver, drawMapWeather, weatherEnabled, weatherViewport, viewMetrics } from './map-ambient.js?v=mapfx-k1d';
 import { addZ3FogLayers } from './zone3-fog.js';
+import { drawZoneClouds, zone234Old } from './zone-clouds.js';
 import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
@@ -294,6 +295,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if(town&&townTerrainImage())drawTownFluidFx(ctx,t,{reduced,paused:!!g.paused});   // Z1-V5-FX: painted lava / river / fall / cloud-sea frames
   if(town&&townTerrainImage()&&cloudsMode()==='overlay')drawCodexClouds(ctx,t,{reduced});   // ?clouds=codex: the 13 Nov comparison (over the shader clouds)
   if(town&&townTerrainImage())drawCodexPuffs(ctx,cloudMs,{reduced});
+  if(town&&townTerrainImage()&&g.zone!=='th')drawZoneClouds(ctx,cloudMs,g.zone,{reduced,enabled:weatherEnabled()});   // FLUID-Z234: floating clouds of zones 2-4 on the ground layer (under every sprite)
   if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground (off while the painted frames own them)
   drawTownGround(ctx, g, t);
   if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
@@ -782,7 +784,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
 
   if(town&&g.zone==='cyberhell')drawMapAmbientOver(ctx,g.zone,ambientTime,SCENE.w,SCENE.h,reduced||!!g.paused);   // Z4-RAIN: over every sprite, under the cloud shadows
-  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,
+  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,townShadows:town&&g.zone!=='th'&&!zone234Old(),
     labels:weatherLabels,sources:town&&g.zone==='th' ? [
       ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>
         [st.def.bx,st.def.by-st.def.bw*.45]),
