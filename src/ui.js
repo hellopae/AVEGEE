@@ -4712,7 +4712,7 @@ function openBattle(after) {
       for (const c of [...g.battleActors(), ...g.battleFallen()]) {
         const isKo = c.id === 'you' ? b.youHp <= 0 : (c.morale ?? 100) <= 0 || (b.fallen || []).includes(c.id);
         const phase = koPhase(koTrack, c.id, isKo, koNow);
-        const key = c.id === 'you' ? `yama:${g.outfit || g.zone}` : c.guestGuide ? null : `crew:${c.homeZone || g.zone}:${c.k}`;
+        const key = c.id === 'you' ? `yama:${g.outfit || g.zone}` : c.guestGuide ? null : `crew:${c.k === 'nira' ? g.zone : c.homeZone || g.zone}:${c.k}`;   // Nira's home zone is 'global': her KO picture is filed under the zone she stands in
         const root = c.id === 'you' ? stage.querySelector('.fig.you') : stage.querySelector(`.battle-squad [data-crew-pick="${crewBattleKey(c)}"], .fig.helper[data-crew-pick="${crewBattleKey(c)}"]`);
         const pose = !!key && hasKoPose(key);
         koInfo.set(c.id, { phase, pose, key });
@@ -4726,12 +4726,14 @@ function openBattle(after) {
       const poseActors = [...g.battleActors(), ...g.battleFallen()];
       if (dash?.actor && !poseActors.some(c => c.id === dash.actor.id)) poseActors.push(dash.actor);
       for(const c of poseActors){
-        if(c.id==='you'||c.k==='nira')continue;
+        if(c.id==='you')continue;
+        // Nira's other poses are drawn by mountNiraCombatSprite; only her lying-down picture (F8, `crew:<zone>:nira:ko` in the pose manifest) goes through this list
+        if(c.k==='nira'&&!(koInfo.get(c.id)?.pose&&['fall','down'].includes(koInfo.get(c.id)?.phase)))continue;
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
         const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id||dash?.actor?.id===c.id)&&fxNow?.key!=='defend';
         const ko=koInfo.get(c.id), koMode=ko?.pose&&(ko.phase==='fall'||ko.phase==='down');
         const mode=koMode?'ko':phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='ko'?koSince(b,c.id):mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
+        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.k==='nira'?g.zone:c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='ko'?koSince(b,c.id):mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       if(koInfo.get('you')?.pose&&['fall','down'].includes(koInfo.get('you').phase))entries.push({root:stage.querySelector('.fig.you'),key:koInfo.get('you').key,mode:'ko',startedAt:koSince(b,'you')});
       else if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});
