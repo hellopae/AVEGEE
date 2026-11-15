@@ -152,6 +152,10 @@
 .arena.combat-arena .foe-group .fig.foe img{height:65%;max-height:100%;width:100%}
 .arena.combat-arena .foe-group .fig.foe .plate{display:block;background:transparent;border:0;
   box-shadow:none;backdrop-filter:none;padding:2px;color:#fff}
+/* F9 (owner 15 Nov, a2): the name + hit-point plate of an enemy must never draw a box (a light translucent rectangle showed behind the name while a menu was open).
+   The plate is only a layout box for the name, the bar and the numbers; the bar keeps its own colours. */
+.arena.combat-arena .foe-group .fig.foe .plate,.arena.combat-arena>:where(.cam-world)>.fig.foe .plate{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;outline:0!important;filter:none!important;mix-blend-mode:normal!important}
+.arena.combat-arena .fig.foe,.arena.combat-arena .fig.foe:disabled,.arena.combat-arena .fig.foe:hover{background:none!important;border:0;box-shadow:none;backdrop-filter:none!important}
 .arena.combat-arena .foe-group .fig.foe .plate b{color:#fff;font-size:clamp(9px,1.1vw,15px)}
 .arena.combat-arena .foe-group .fig.foe .plate .sub{display:none}
 .arena.combat-arena .foe-group .fig.foe .hpbar{border:0;background:#1b191a;height:8px}
