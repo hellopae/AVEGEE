@@ -30,7 +30,7 @@ import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky, drawMapAmbientOver, drawMapWeather, weatherEnabled, weatherViewport, viewMetrics } from './map-ambient.js?v=mapfx-k1d';
 import { addZ3FogLayers } from './zone3-fog.js';
-import { drawZoneClouds, zone234CloudsOff } from './zone-clouds.js';
+import { drawZoneClouds, zone234ShadowsOff } from './zone-clouds.js';
 import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
@@ -784,7 +784,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
 
   if(town&&g.zone==='cyberhell')drawMapAmbientOver(ctx,g.zone,ambientTime,SCENE.w,SCENE.h,reduced||!!g.paused);   // Z4-RAIN: over every sprite, under the cloud shadows
-  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,townShadows:town&&g.zone!=='th'&&!zone234CloudsOff(),
+  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,townShadows:town&&g.zone!=='th'&&!zone234ShadowsOff(),
     labels:weatherLabels,sources:town&&g.zone==='th' ? [
       ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>
         [st.def.bx,st.def.by-st.def.bw*.45]),
