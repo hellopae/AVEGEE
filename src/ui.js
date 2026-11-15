@@ -21,7 +21,7 @@ import { soulPoseForPress, soulPoseForScare, soulPoseAssets, soulCardForScare } 
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
-import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
+import {beginMapTravel,advanceMapTravel,finishMapTravel,skipMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant,bossPierRetired} from './boss-guides.js';
@@ -89,7 +89,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
-import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
+import { preloadZone, prewarmZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
 import { GRAPHICS_MODES, getGraphicsMode, setGraphicsMode, frameDue } from './graphics-setting.js';   // GFX-1110
 import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK, bossWalkPosition } from './scene.js?v=mapfx-m1-l1';
@@ -5432,9 +5432,16 @@ function startBorderExpedition(to) {
 }
 async function startMapJourney(to,mode='boat') {
  if(g.mapTravel||g.travelLoading)return;
- const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,g.outfit||to);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
- if(!dlg.open||travelGeneration!==dlgGen)return;
- if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}))return;
+ // F14 (owner 15 Nov): by boat the order is pick the destination -> the ferry comes -> it floats off to the far right -> loading page -> the
+ // destination map. So nothing is loaded up front: the pictures are fetched quietly during the ferry scene (prewarmZone) and the game's own
+ // loading page (preloadZone) only appears when the boat is gone, if anything is still missing. The border route keeps loading first.
+ const destOutfit=g.outfit||to;
+ if(mode!=='boat'){
+  const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,destOutfit);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
+  if(!dlg.open||travelGeneration!==dlgGen)return;
+ }
+ if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,load:mode==='boat'?()=>preloadZone(to,destOutfit):null}))return;
+ if(mode==='boat')prewarmZone(to,destOutfit);
  const fromZone=g.zone,keepBorder=mode!=='boat';
  // Keep the border backdrop in its top-layer dialog until the zone commits.
  if(!keepBorder)dlg.close();g.paused=false;
@@ -5452,7 +5459,11 @@ async function startMapJourney(to,mode='boat') {
  let last=performance.now(),frame=0,done=false;
  const keyguard=e=>{if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(!g.mapTravel?.committed&&cancelMapTravel(g))close();}else if(e.key!=='Tab'&&!panel.contains(document.activeElement)){e.preventDefault();e.stopImmediatePropagation();}};document.addEventListener('keydown',keyguard,true);skip.focus();
  const close=()=>{if(done)return;done=true;cancelAnimationFrame(frame);panel.remove();blocker.remove();document.removeEventListener('keydown',keyguard,true);if(keepBorder){if(g.zone!==fromZone){if(dlg.open)dlg.close();}else openDungeon();}g.paused=dlg.open;refresh();g.onChange();};
- skip.onclick=()=>{if(finishMapTravel(g))close();else{close();g.log('เดินทางไม่ได้ กรุณาลองใหม่','bad');}};
+ skip.onclick=()=>{
+  const fail=()=>{close();g.log('เดินทางไม่ได้ กรุณาลองใหม่','bad');};
+  if(g.mapTravel?.loaded){if(finishMapTravel(g))close();else fail();return;}
+  skip.disabled=true;skipMapTravel(g).then(ok=>ok?close():fail());   // destination pictures still loading: wait for them (loading page), then change zone
+ };
  cancel.onclick=()=>{if(cancelMapTravel(g))close();};
  const animate=now=>{
   if(done)return;

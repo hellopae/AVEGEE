@@ -10,15 +10,29 @@ const duration={approach:1800,handoff:3600,board:1000,depart:2400,arrive:2400,la
 function pathTo(c,p){const start=nearestWalk(c?.x??c?.hx??p.x,c?.y??c?.hy??p.y)||[p.x,p.y],end=nearestWalk(p.x,p.y)||[p.x,p.y];return [start,...(findPath(...start,...end)||[end])];}
 function length(path){return path.slice(1).reduce((v,p,i)=>v+Math.hypot(p[0]-path[i][0],p[1]-path[i][1]),0);}
 function along(path,p){let d=length(path)*p;for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],n=Math.hypot(b[0]-a[0],b[1]-a[1]);if(d<=n)return {x:lerp(a[0],b[0],n?d/n:0),y:lerp(a[1],b[1],n?d/n:0)};d-=n;}const q=path.at(-1);return {x:q[0],y:q[1]};}
-export function beginMapTravel(g,to,{mode='boat',reduced=false}={}){
+export function beginMapTravel(g,to,{mode='boat',reduced=false,load=null}={}){
  if(g.mapTravel||g.battle||g.over)return false;
  if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;
  const pier=mode==='boat'?g.harbourPoint():{x:g.player.x,y:g.player.y};
  const nira=mode==='boat'?pathTo(g.crewOf('nira'),pier):[];
- g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:ferryBerth(g.zone,pier).y,niraPath:nira,boardingHop:ferryBerth(g.zone,pier).hop,approachMs:Math.max(1800,Math.ceil(length(nira)/TRAVEL_WALK_SPEED)),committed:false,focus:{...pier}};
+ g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:ferryBerth(g.zone,pier).y,niraPath:nira,boardingHop:ferryBerth(g.zone,pier).hop,approachMs:Math.max(1800,Math.ceil(length(nira)/TRAVEL_WALK_SPEED)),committed:false,focus:{...pier},load,loaded:!load,loadPromise:null,loadError:null};
  return true;
 }
 export function cancelMapTravel(g){const a=g.mapTravel;if(!a||a.committed)return false;g.mapTravel=null;return true;}
+/** F14 (owner 15 Nov): the destination's pictures are fetched only after the boat has floated off to the right; if they are not cached yet the
+ *  game's own loading page (preloadZone) shows right there, then the destination map follows. Resolves true when the zone may be entered. */
+export function ensureTravelLoaded(a){
+ if(!a||a.loaded)return Promise.resolve(true);
+ a.loadPromise??=Promise.resolve().then(()=>a.load()).then(()=>{a.loaded=true;return true;},e=>{a.loadError=e||new Error('load failed');return false;});
+ return a.loadPromise;
+}
+/** Skip button: still waits for the destination pictures before the zone changes. */
+export async function skipMapTravel(g){
+ const a=g.mapTravel;if(!a)return false;
+ if(!await ensureTravelLoaded(a)){if(g.mapTravel===a)g.mapTravel=null;return false;}
+ if(g.mapTravel!==a)return false;
+ return finishMapTravel(g);
+}
 function commit(g,a){
  if(a.committed)return true;
  a.committing=true;const ok=g.moveZone(a.to);a.committing=false;
@@ -35,6 +49,12 @@ export function advanceMapTravel(g,dt){
  if(a.progress<1)return true;
  const next={approach:'handoff',handoff:a.mode==='boat'?'board':'depart',board:'depart',depart:'arrive',arrive:'land'}[a.phase];
  if(a.phase==='depart'){
+  // The boat is at the far right: hold it there until the destination is loaded (loading page shows on top), then change zone.
+  if(!a.loaded){
+   ensureTravelLoaded(a);a.progress=1;a.elapsed=ms;
+   if(a.loadError){g.mapTravel=null;g.log?.('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return false;}
+   return true;
+  }
   if(!commit(g,a))return false;
   if(a.mode!=='boat'){finishMapTravel(g);return false;}
  }

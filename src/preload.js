@@ -158,6 +158,14 @@ async function run(zone, outfit, boot) {
   // เข้าเกมแล้ว: ที่เหลือของโซนทยอยโหลดตอนว่าง (ไม่รอ)
   if (tiers) setTimeout(() => warmRest(tiers), 0);
 }
+/** F14: fetch the blocking tier quietly (no loading page) while the ferry animation plays; the gate afterwards finds it all cached and stays out of the way. */
+async function warmCritical(zone, outfit) {
+  try {
+    const tiers = await tiersFor(zone, outfit, { firstRun: !hasSave(), arrival: true });
+    await queue.run(queue.missing(tiers.critical));
+    if (isTownZone(zone)) await preloadTownTerrainPreview(30000, zone);
+  } catch {}
+}
 /** Gate both new branches and returning branches; repeat visits reuse successful URLs. */
 function gateZone(zone, outfit = zone, boot = null) {
   bgToken++;   // หน้าโหลดจริงมาก่อน — หยุดงานเบื้องหลังของโซนเดิม
@@ -169,9 +177,12 @@ function gateZone(zone, outfit = zone, boot = null) {
 // index.html โหลดไฟล์นี้ด้วย ?v=… ส่วน ui.js import แบบไม่มี query → เบราว์เซอร์ถือเป็นโมดูลคนละตัว
 // (เดิมหน้าโหลดทำงานซ้อนสองชุด) · ตัวแรกเป็นเจ้าของ ตัวที่สองส่งต่อไปที่ตัวแรก
 const owner = globalThis.__avegeePreload;
-if (!owner) globalThis.__avegeePreload = { preloadZone: gateZone };
+if (!owner) globalThis.__avegeePreload = { preloadZone: gateZone, prewarmZone: warmCritical };
 export function preloadZone(zone, outfit = zone, boot = null) {
   return (owner?.preloadZone || gateZone)(zone, outfit, boot);
+}
+export function prewarmZone(zone, outfit = zone) {
+  return (owner?.prewarmZone || warmCritical)(zone, outfit);
 }
 
 const boot = document.getElementById('boot');
