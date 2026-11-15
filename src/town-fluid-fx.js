@@ -13,8 +13,9 @@
 import { weatherEnabled } from './map-ambient.js?v=mapfx-k1d';
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
+import { zone234Old } from './zone-clouds.js';
 import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
-import { fluidMode, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
+import { fluidMode, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader, shaderStoreOf } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
 
 export const FLUID_TILE_LEVELS = Object.freeze([2.56, 1.28, .64]);   // pre-scaled tile density, px per world unit
 export const FLUID_MAX_SCALE = 2.56;                                  // the composing layer never exceeds this many px per world unit
@@ -96,9 +97,13 @@ function storeOf(dir) {
   }
   return st;
 }
-const cfgOf = () => activeTownSkin()?.fluidFx || null;
+const cfgOf = () => { const c = activeTownSkin()?.fluidFx || null; return c && c.shaderOnly && zone234Old() ? null : c; };   // ?z234=old: zones 2-4 without the shader layer
 /** True while the painted fluid layer is the one animating water / lava (loading or ready, not failed): the old particle flow must stay off. */
-export const townFluidOwnsFlow = () => { const c = cfgOf(); return !!c && storeOf(c.dir).status !== 'failed'; };
+export const townFluidOwnsFlow = () => {
+  const c = cfgOf(); if (!c) return false;
+  if (c.shaderOnly) { const sh = shaderStoreOf(c.dir); return fluidMode() === 'shader' && sh.status !== 'failed'; }   // FLUID-Z234: no drawn frames behind the shader - the old particle flow takes over again when the shader is off / failed
+  return storeOf(c.dir).status !== 'failed';
+};
 /** True when the painted cloud-sea is actually on screen duty: the old cloud banks over the heaven gate must stay off then. */
 export const townFluidOwnsClouds = (reduced = false) => { const c = cfgOf(); return !!c && !reduced && weatherEnabled() && storeOf(c.dir).status === 'ready'; };
 export const townFluidFxStats = () => { const c = cfgOf(); if (!c) return null; const st = storeOf(c.dir);
@@ -120,6 +125,7 @@ function loadImage(url) {
 }
 function ensureLayout(cfg) {
   const st = storeOf(cfg.dir);
+  if (cfg.shaderOnly && st.status === 'idle') { st.layout = { pieces: [] }; st.plan = []; st.status = 'ready'; return st; }   // FLUID-Z234: zones 2-4 have no drawn layer, only the shader
   if (st.status !== 'idle' || typeof fetch !== 'function') return st;
   st.status = 'loading';
   fetch(cfg.dir + 'fx-layout.json').then(r => { if (!r.ok) throw new Error('fx-layout ' + r.status); return r.json(); })

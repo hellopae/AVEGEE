@@ -144,6 +144,8 @@ export const ZONE_SKIN = {
     terrain: ZONE2_GROUND[ZONE2_GROUND_SET],
     rootAnchors:{'tree-pine-v2.webp':[.567556297,.958841463],'tree-maple-v2.webp':[.569224354,.987804878]},
     flowUrl: 'img/map-zone2/v2/flow-v2.png',
+    // FLUID-Z234 (15 Nov): lava / water flow by the WebGL fluid shader (no drawn frames: shaderOnly).  Masks + flow maps are in world units, so every ground set (v7 / v8) shares them.
+    fluidFx: { dir:'img/map-zone2/fx/', shaderOnly:true },
     use: ['judgment','houses','trees','lamp','torch','rock'],
     // Own Asia tree sprites disable TREE_TINT through finalize().
     stations: { suffix:'asia', facade:{...ASIA_TOWN_SPRITES.stations}, facadeSizes:{ ...FACADE_SIZES } },
@@ -154,6 +156,7 @@ export const ZONE_SKIN = {
     enabled: true,
     terrain: ZONE3_GROUND[ZONE3_GROUND_SET],
     flowUrl: 'img/map-zone3/v1/flow-v1.png',
+    fluidFx: { dir:'img/map-zone3/fx/', shaderOnly:true },   // FLUID-Z234: only the water that is still liquid flows; ice, snow and icicles are outside the mask and stay still
     use: ['judgment','houses','trees','lamp','torch','rock'],
     stations: { suffix:'west', facade:{
       sala:'img/map-v5/st-sala-west-v2.webp',
@@ -170,6 +173,7 @@ export const ZONE_SKIN = {
     enabled: true,
     terrain: ZONE4_GROUND[ZONE4_GROUND_SET],
     flowUrl: null,
+    fluidFx: { dir:'img/map-zone4/fx/', shaderOnly:true },   // FLUID-Z234
     use: ['judgment'],
     stations: { suffix:'cyberhell', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
