@@ -3555,7 +3555,8 @@ function openMerchant() {
   if (!g.zoneCaptivesFree() || !g.merchantAvailable()) return;
   g.markHistory('merchant');   // Q2: เปิดร้านพ่อค้า = เปิดการ์ดคู่มือ
   pauseForDlg();
-  const stock0 = merchantStock(g.zone);
+  const offers = () => merchantStock(g.zone).filter(s => !s.needs || g.sideQuests?.[s.needs]?.done);   // QUEST-DAM-B: an offer with `needs` appears once that quest is done
+  const stock0 = offers();
   const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
@@ -3566,10 +3567,10 @@ function openMerchant() {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
-      <h3>สินค้า</h3><div class="market-grid">${merchantStock(g.zone).map(s => {
-        const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · ${esc(itemText(s.k, 'desc'))}` : ''}</small></span>
-          <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
+      <h3>สินค้า</h3><div class="market-grid">${offers().map(s => {
+        const d = ITEMS[s.k], lock = g.level < s.lv, full = !!s.cap && (g.inventory[s.k] || 0) + (s.qty || 1) > s.cap;
+        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · ${esc(itemText(s.k, 'desc'))}` : ''}${s.k === 'phoenixFeather' ? ` · ${esc(itemText(s.k, 'desc'))} · “${esc(t('item.phoenixFeather.tag'))}” · ${full ? esc(t('item.phoenixFeather.full', { n:s.cap })) : `${g.inventory[s.k] || 0}/${s.cap}`}` : ''}</small></span>
+          <button data-buy="${s.k}" class="gold" ${lock || full || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       <div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
@@ -4470,6 +4471,7 @@ function openBattle(after) {
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
       battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
+      + (g.inventory.phoenixFeather > 0 ? battleChoice('phoenixFeather', itemImg('phoenixFeather'), itemName('phoenixFeather'), g.phoenixTargets().length > 0, g.phoenixTargets().length ? `×${g.inventory.phoenixFeather} · ${itemText('phoenixFeather', 'desc')}` : t('item.phoenixFeather.noneDown')) : '')   // QUEST-DAM-B: the receiver is a FALLEN teammate
       + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.webp', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : `1 ครั้งต่อชุด · ไม่ใช้${t('battle.mp')} · ไม่รีเซ็ตไม้ตายทีม`) : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
@@ -4484,7 +4486,7 @@ function openBattle(after) {
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice('strike', 'img/fx-slash.webp', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
-    const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && (pending === special || pending === unlockedSkill)));
+    const needsReceiver = pending && (pending === 'food' || pending === 'phoenixFeather' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && (pending === special || pending === unlockedSkill)));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
     // L2: choosing a target — enemy OR teammate (items / healing powers) — shows no text box at all.
@@ -4746,17 +4748,18 @@ function openBattle(after) {
       const activate = () => {
         if (phase) return;
         const key = el.dataset.crewPick;
-        const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
+        const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key)
+          || (pending === 'phoenixFeather' ? g.battleFallen().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key) : null);   // the feather's receiver is a fallen teammate
         if (needsReceiver && chosen) {
-          const reason = pending === unlockedSkill ? '' : pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
+          const reason = pending === 'phoenixFeather' ? g.phoenixWhy(chosen.id) : pending === unlockedSkill ? '' : pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
           if (!reason) {b.commandRecipient=chosen.id;executeCommand(pending,chosen.id);}
           return;
         }
         if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
       };
       // L2: only teammates who can actually receive it light up (same "เลือกเป้าหมาย" tag as the enemy side); the others dim
-      const recipient = needsReceiver && !phase ? g.battleActors().find(c => c.id === el.dataset.crewPick || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === el.dataset.crewPick) : null;
-      const why = recipient ? (pending === unlockedSkill ? '' : pending === special ? ((recipient.id === 'you' ? b.youHp >= b.youMax : recipient.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, recipient.id)) : '';
+      const recipient = needsReceiver && !phase ? ([...g.battleActors(), ...(pending === 'phoenixFeather' ? g.battleFallen() : [])].find(c => c.id === el.dataset.crewPick || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === el.dataset.crewPick)) : null;
+      const why = recipient ? (pending === 'phoenixFeather' ? g.phoenixWhy(recipient.id) : pending === unlockedSkill ? '' : pending === special ? ((recipient.id === 'you' ? b.youHp >= b.youMax : recipient.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, recipient.id)) : '';
       el.classList.toggle('choose-recipient', !!recipient && !why);
       el.classList.toggle('recipient-off', !!recipient && !!why);
       if (recipient && !why && !el.classList.contains('battle-portrait')) el.insertAdjacentHTML('beforeend', `<span class="target-prompt">${getLang() === 'en' ? 'Choose target' : 'เลือกเป้าหมาย'}</span>`);
@@ -5062,7 +5065,7 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
+      const effect = ITEMS[k]?.consumable || k === 'phoenixFeather' ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };

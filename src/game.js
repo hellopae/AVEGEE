@@ -34,7 +34,7 @@ import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTrainin
 import { isFrontierDuoBattle } from './nira-combat.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=minigame-review-20261011';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
+import { LEGACY_ITEM_IDS, PHOENIX_FEATHER, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
@@ -3754,6 +3754,22 @@ const API = {
     if (k === 'food') return hp >= max && (id === 'you' || (c.hunger ?? 100) >= 100) ? 'เต็มแล้ว / Full' : '';
     return medicineResult(k, hp, max, id === 'you' ? this.mp : 0, id === 'you' ? this.mpMax : 0, 'battle') ? '' : 'เต็มแล้ว / Full';
   },
+  /** QUEST-DAM-B: why the Phoenix Feather cannot go to this teammate right now ('' = it can). Battle only · a fallen teammate only · never Yama (he has the Spare Heart) · once per person per fight. */
+  phoenixWhy(id) {
+    const b = this.battle;
+    if (!b || b.over) return t('item.phoenixFeather.battleOnly');
+    if (!(this.inventory.phoenixFeather > 0)) return 'ไม่มีของ / No stock';
+    if (id === 'you') return t('item.phoenixFeather.noYama');
+    const down = this.battleFallen().find(c => c.id === id);
+    if (!down) return this.battleFallen().length ? '' : t('item.phoenixFeather.noneDown');
+    if (b.phoenixUsed?.[id]) return t('item.phoenixFeather.once');
+    return '';
+  },
+  /** the fallen teammates a feather could still wake right now (the battle menu greys the item out when this is empty) */
+  phoenixTargets() {
+    const b = this.battle;
+    return b && !b.over ? this.battleFallen().filter(c => !b.phoenixUsed?.[c.id]) : [];
+  },
   confirmBattleCommand(what, recipientId = 'you') {
     const b = this.battle;
     if (!b || b.commandBusy) return false;
@@ -3811,15 +3827,17 @@ const API = {
     if (B.breachFinale === 'ready' && what !== (B.finaleMove || 'teamJudgment')) return false;   // foes wait
     const enemyOnly=command?.enemyOnly===true&&B.initiativeAction===true;
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
-    const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
+    const featherCommand = !!command && what === 'phoenixFeather';   // QUEST-DAM-B: the only item whose receiver is a fallen teammate (not in battleActors)
+    const recipient = command && (this.battleActors().find(c => c.id === command.recipientId) || (featherCommand ? this.battleFallen().find(c => c.id === command.recipientId) : undefined));
     if (command && !actor && !enemyOnly) return false;
     const newSkill = COMBAT_SKILLS[what];
     const skillActor = actor || (what === 'teamJudgment' ? this.battleActors()[0] : this.battleActors().find(a => a.k === newSkill?.actor));
     if (newSkill && this.skillWhy(what, skillActor)) return false;
     const itemCommand = command && (what === 'food' || ITEMS[what]?.consumable);
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
+    if (featherCommand && (this.phoenixWhy(command.recipientId) || !recipient || command.recipientId === 'you')) return false;
     if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
-    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && !enemyOnly && ['boon','nira'].includes(actor.k) && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if (yamaSkillRemaining(B, what)) return false;
@@ -3919,6 +3937,19 @@ const API = {
       dmg=Math.max(8,Math.round((this.allyStats(actor).dmg || 18)*.6));
       B.helper={...actor,at:Date.now(),lunge:true};
       say(`${actor.name}โจมตี — ${dmg} หน่วย`);
+    } else if (featherCommand) {
+      // QUEST-DAM-B (owner 15 Nov): wakes a fallen teammate at 40 % HP (HP of a teammate = morale, 0-100), costs the user's turn like any item; once per person per fight
+      const hp = Math.round(100 * PHOENIX_FEATHER.heal);
+      recipient.morale = hp;
+      B.fallen = (B.fallen || []).filter(id => id !== recipient.id);
+      B.absentActors = (B.absentActors || []).filter(id => id !== recipient.id);
+      (B.phoenixUsed ||= {})[recipient.id] = true;
+      if (--this.inventory.phoenixFeather <= 0) delete this.inventory.phoenixFeather;
+      B.dmg.healActorId = recipient.id; B.dmg.healAmount = hp;
+      B.helper = actor.id === 'you' ? null : { ...actor, lunge:false };
+      B.talk = t('item.phoenixFeather.say', { name:recipient.name });
+      say(B.talk);
+      this.save();
     } else if (itemCommand) {
       const hp = recipient.id === 'you' ? B.youHp : recipient.morale;
       const max = recipient.id === 'you' ? B.youMax : 100;
@@ -5153,6 +5184,8 @@ const API = {
   buyMerchant(k) {
     if(!merchantAvailable(this))return false;
     const stock = merchantStock(this.zone).find(x => x.k === k), def = ITEMS[k];
+    if (stock?.needs && !this.sideQuests?.[stock.needs]?.done) return false;                    // QUEST-DAM-B: the feather is sold only after the merchant's feather quest
+    if (stock?.cap && (this.inventory[k] || 0) + (stock.qty || 1) > stock.cap) return false;     // ... and only up to 3 in the bag
     if (!this.zoneCaptivesFree() || !stock || !def || k === 'mirror' && this.devaTestStatus('th') !== 'cleared' || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.discover('item', k);
     this.coin -= stock.cost;

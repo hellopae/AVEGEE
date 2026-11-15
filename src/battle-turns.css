@@ -234,3 +234,6 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
  .battle9-arena.combat-arena .battle-boss-status small{white-space:nowrap}
  .battle9-arena.combat-arena .battle-scene-talk{top:77%;bottom:auto;max-height:14%;overflow:hidden}
 }
+
+/* QUEST-DAM-B: while a Phoenix Feather waits for its receiver, a fallen teammate is the one thing you can press */
+.arena.combat-arena .battle-squad .is-fallen.choose-recipient,.battle-team-hud .battle-portrait.is-fallen.choose-recipient{pointer-events:auto;opacity:1;cursor:pointer}

@@ -1667,3 +1667,30 @@ Object.assign(EN, {
   'guide.foreman.p4': 'Dam gets hungry like a worker. Before the canteen, give him a rice ball yourself from the team page. After it, the servers bring it by queue, hungriest first. If he runs out, he stops working and waits for a rice ball, then carries on once he has eaten.',
   'foreman.hungry.note': 'stopped, waiting for a rice ball',
 });
+
+// QUEST-DAM-B: the Phoenix Feather item (Rae 15 Nov, Output/Rae/2026-11-14-avegee-merchant-quest.md 2.1). Spelling "ขนนกฟีนิกซ์" by the owner's decision (15 Nov, item 5).
+// battleOnly / full are Toby's short system words - Rae to polish.
+Object.assign(TH, {
+  'item.phoenixFeather.name': 'ขนนกฟีนิกซ์',
+  'item.phoenixFeather.desc': 'ขนจากนกควันทองที่ลุกขึ้นจากเถ้าเซ่น ปลุกเพื่อนในทีมที่ล้มลงให้ลุกขึ้นพร้อมพลังส่วนหนึ่ง',
+  'item.phoenixFeather.howTo': 'ในฉากต่อสู้ เลือกไอเท็ม → ขนนกฟีนิกซ์ → เลือกเพื่อนที่ล้มอยู่ (ใช้ 1 เทิร์น)',
+  'item.phoenixFeather.say': 'ขนนกวูบเป็นแสงทอง {name} ลืมตาขึ้นแล้วลุกยืน',
+  'item.phoenixFeather.tag': 'ไม่มีเจ้าของ แต่ถึงใครสักคนเสมอ',
+  'item.phoenixFeather.noneDown': 'ตอนนี้ไม่มีเพื่อนในทีมที่ล้มอยู่',
+  'item.phoenixFeather.noYama': 'ขนนกนี้ใช้กับยมทูตในทีมเท่านั้น ยามามีหัวใจสำรองคอยช่วยอยู่แล้ว',
+  'item.phoenixFeather.once': 'ขนเส้นนี้ส่งคำฝากไปถึงเขาแล้วหนึ่งครั้งในศึกนี้',
+  'item.phoenixFeather.battleOnly': 'ใช้ในศึกเท่านั้น',
+  'item.phoenixFeather.full': 'ถือครบ {n} เส้นแล้ว',
+});
+Object.assign(EN, {
+  'item.phoenixFeather.name': 'Phoenix Feather',
+  'item.phoenixFeather.desc': 'A feather from the golden smoke-bird that rises from offering ash. Brings a fallen teammate back to their feet with part of their strength.',
+  'item.phoenixFeather.howTo': 'In battle, choose Item → Phoenix Feather → pick a fallen teammate (uses one turn).',
+  'item.phoenixFeather.say': 'The feather flares gold. {name} opens their eyes and stands.',
+  'item.phoenixFeather.tag': 'No owner, yet it always reaches someone',
+  'item.phoenixFeather.noneDown': 'No teammate is down right now.',
+  'item.phoenixFeather.noYama': 'The feather works on your reapers only. Yama already has the Spare Heart.',
+  'item.phoenixFeather.once': 'The feather has already carried its message to them once this fight.',
+  'item.phoenixFeather.battleOnly': 'Battle only',
+  'item.phoenixFeather.full': 'Already carrying {n}',
+});

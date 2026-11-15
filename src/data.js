@@ -628,6 +628,13 @@ export const ITEMS = {
   // พอ Kittanate วาดหัวใจแล้ววาง img/item-heart.png เกมใช้ภาพจริงทันที ไม่ต้องแก้โค้ด (สเปก 128×128 พื้นใส ดูรายงานชุด 30B)
   spareHeart: { name:'หัวใจสำรอง', img:'item-heart', h:44, glyph:'❤️', revive:true,
             desc:'ช่วยให้ลุกขึ้นสู้ต่ออัตโนมัติเมื่อบารมีหมดในศึก', howTo:'เก็บไว้ในกระเป๋า — ถ้าบารมีหมดในศึก ระบบจะใช้ให้เอง', fallback:'ของ', say:'หัวใจสำรองช่วยให้ยืนขึ้นได้อีกครั้งเมื่อพ่ายแพ้' },
+  // QUEST-DAM-B (owner 14-15 Nov 2026): ขนนกฟีนิกซ์ — ชุบเพื่อนในทีมที่ล้มอยู่ในศึก (ไม่ใช่ยามา · ยามามีหัวใจสำรอง) · ตัวเลขใน PHOENIX_FEATHER ด้านล่าง
+  // ได้จากภารกิจ "ขนที่ไม่ไหม้" ของพ่อค้า แล้วซื้อต่อที่แผงพ่อค้าได้ · ข้อความ TH/EN มาจาก Rae ผ่านคีย์ item.phoenixFeather.* ใน i18n.js
+  phoenixFeather: { name:'ขนนกฟีนิกซ์', nameEn:'Phoenix Feather', nameKey:'item.phoenixFeather.name', descKey:'item.phoenixFeather.desc', howToKey:'item.phoenixFeather.howTo', sayKey:'item.phoenixFeather.say',
+            img:'item-phoenix-feather', h:44, glyph:'', placeholder:'ขนนก', battleOnly:true, reviveAlly:true, fallback:'ขนนก',
+            desc:'ขนจากนกควันทองที่ลุกขึ้นจากเถ้าเซ่น ปลุกเพื่อนในทีมที่ล้มลงให้ลุกขึ้นพร้อมพลังส่วนหนึ่ง',
+            howTo:'ในฉากต่อสู้ เลือกไอเท็ม → ขนนกฟีนิกซ์ → เลือกเพื่อนที่ล้มอยู่ (ใช้ 1 เทิร์น)',
+            say:'ขนนกวูบเป็นแสงทอง {name} ลืมตาขึ้นแล้วลุกยืน' },
   // ดอกบัวเป็นทางเดียวที่ "กรรมท่าน" ลดลงได้โดยไม่ต้องรอห้าดาว
   // ตกให้เมื่อกรรมเริ่มสูงเท่านั้น — ไม่งั้นมันจะกลายเป็นใบอนุญาตให้ลงทัณฑ์เกินฟรี ๆ
   lotus:  { name:'ดอกบัวบูชา',      img:'item-lotus',  h:40, karma:-4, glyph:'🪷',
@@ -760,6 +767,8 @@ export const BOON_SHOP = { stock: [] };
 
 /** พ่อค้าริมแม่น้ำ — รับซื้อของสนามรบและขายของใช้/คัมภีร์
  *  hypno ไม่ขายที่นี่ (L3: ได้จากชนะบอสชายแดนโซน 3) */
+/** ขนนกฟีนิกซ์ (คุณเป้ 15 พ.ย. 2569): ชุบ 40% ของ HP สูงสุด · รางวัลภารกิจ 2 เส้น · ขาย 150 เบี้ยกรรม (ฐานโซน 1 คูณตามโซน) · ถือสูงสุด 3 · ใช้ในศึกเท่านั้น · คนเดิมได้ 1 ครั้งต่อศึก */
+export const PHOENIX_FEATHER = Object.freeze({ heal:.4, questGain:2, price:150, maxCarry:3, perFightEach:1 });
 export const MERCHANT = {
   k:'merchant', name:'พ่อค้าควันทอง', glyph:'🧳', img:'merchant',
   x:495, y:680, h:100, reach:110, // ท่าเรือซ้ายของฉาก v2
@@ -770,6 +779,8 @@ export const MERCHANT = {
     { k:'tea', cost:24, lv:1 }, { k:'health', cost:55, lv:1 },
     { k:'food', cost:18, qty:2, lv:1 }, { k:'lotus', cost:65, lv:1 },
     { k:'holyWater', cost:45, lv:1 },   // ชุด 28B — เติม MP 30 (ITEMS.holyWater.mp)
+    // QUEST-DAM-B: ขายหลังจบภารกิจ "ขนที่ไม่ไหม้" เท่านั้น (needs) · ถือสูงสุด 3 (cap)
+    { k:'phoenixFeather', cost:150, lv:1, needs:'sqMerchantFeather', cap:3 },
   ],
 };
 
@@ -2381,7 +2392,8 @@ ITEMS.holyWaterLarge = { ...ITEMS.holyWater, img:'item-holywater' };
 for (const [zone, hpCost, mpCost, teaCost, hpLargeCost, mpLargeCost] of ZONE_PRICES) {
   MERCHANT_STOCK_BY_ZONE[zone] = [
     ...MERCHANT.stock.map(item => {
-      const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };
+      // the feather follows the zone the same way the medicine does: base x the mean of the medkit and holy-water zone ratios, rounded to 5
+      const costs = { health:hpCost, holyWater:mpCost, tea:teaCost, phoenixFeather:Math.round(PHOENIX_FEATHER.price * (hpCost / 55 + mpCost / 45) / 2 / 5) * 5 };
       return costs[item.k] ? { ...item, cost:costs[item.k] } : { ...item };
     }),
     { k:'healthLarge', cost:hpLargeCost, lv:1 }, { k:'holyWaterLarge', cost:mpLargeCost, lv:1 },
