@@ -400,7 +400,7 @@
  "data": [
   {
    "before": "",
-   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';\nimport { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)\n"
+   "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';\nimport { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)\n"
   },
   {
    "before": "",

@@ -11,7 +11,6 @@
 //
 // A "story case" is a named case that is put at the head of the queue when the count is reached (the same mechanism as Zone 1, z1-events.js).
 // This module is data only: it imports nothing from the game, so z1-events.js / story.js / data.js can all read it without a cycle.
-import { BOSS_SKILLS } from './boss-skills-data.js';
 import { Z2_STORIES_RAW, WUKONG_CAMEO, CASE_APEELDER, CASE_AKURA, CASE_SATORIFATHER, CASE_DESERTER, CASE_CHAINCMD, CASE_FAKECUP, CASE_A2, CASE_GRANARYSISTER } from './z2-events-text.js';
 export { WUKONG_CAMEO };
 
@@ -225,10 +224,6 @@ export const Z2_CASES = Object.freeze([APE_CASE, SATORI_CASE, ...Z2_KIN.filter(k
 export const Z2_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z2_KIN.map(k => [k.k, k])));
 /** The old A2 (existing case) with Rae's rewrite: the soul keeps the case key 'A2', only the wording changes (cases-asia.js uses this). */
 export const A2_REWRITE = Object.freeze({ ...CASE_A2 });
-/** BOSS-SKILLS: the moves of Wukong (case 7) and of the Gate Guard's test.  The data of every boss moved to src/boss-skills-data.js (15 Nov, set A; Rae's polished lines);
- *  this name stays because data.js / tests / sim scripts read it. */
-export const Z2_BOSS_SKILLS = Object.freeze({ wukong:BOSS_SKILLS.wukong, guardTest:BOSS_SKILLS.gateGuardTest });
-
 /** The Akura trial: what Nira reads and what the verdict says (Rae 3.8). The arena shows these instead of the generic Zone 1 lines. */
 export const AKURA_TRIAL = Object.freeze({
   name:CASE_AKURA.name, face:CASE_AKURA.face, who:CASE_AKURA.who,
