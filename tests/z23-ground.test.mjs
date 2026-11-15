@@ -11,8 +11,8 @@ const webpSize = file => { const b = readFileSync(file), k = b.toString('latin1'
   if (k === 'VP8L') { const v = b.readUInt32LE(21); return [1 + (v & 0x3fff), 1 + ((v >> 14) & 0x3fff)]; }
   throw Error('unexpected WebP ' + k); };
 
-// 15 Nov: zone 2 plays v8 (Codex's sharpened v7, installed with --name v8); v7 stays registered and on disk.  The tests follow the active set's name.
-const KEYS = { asia: [ 'v7', 'v8' ], west: [ 'v7' ], cyberhell: [ 'v7' ] };
+// 15 Nov: zone 3 plays v8 (v7 + snow drawn by code, scripts/build-z3-snow.py); zone 2 plays v8 (Codex's sharpened v7, installed with --name v8); v7 stays registered and on disk.  The tests follow the active set's name.
+const KEYS = { asia: [ 'v7', 'v8' ], west: [ 'v7', 'v8' ], cyberhell: [ 'v7' ] };
 for (const [zone, folder, sets, active, old, prev] of [['asia', 'map-zone2', ZONE2_GROUND, ZONE2_GROUND_SET, 'v2', 'zone2'], ['west', 'map-zone3', ZONE3_GROUND, ZONE3_GROUND_SET, 'v1', 'zone3'], ['cyberhell', 'map-zone4', ZONE4_GROUND, ZONE4_GROUND_SET, 'v3', 'zone4']]) {
   test(`Z23-GROUND ${zone}: the 2x ground v7 is the default, the old 1x ground stays registered and on disk`, () => {
     assert.equal(active, KEYS[zone].at(-1));

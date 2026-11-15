@@ -1,0 +1,33 @@
+{
+ "zone": "west",
+ "version": 8,
+ "generator": "scripts/build-z3-snow.py",
+ "params": {
+  "warp1": 0.22,
+  "warp2": 0.1,
+  "warp3": 0.045,
+  "pillow": 9.0,
+  "bump": 0.1,
+  "bump2": 0.05,
+  "relief": 7.0,
+  "contrast": 0.55,
+  "glint": 0.8,
+  "grain": 24.0,
+  "crev": 56.0,
+  "ripamp": 30.0,
+  "rip": 2.2,
+  "base": 0.72,
+  "keep7": 0.7,
+  "lip": 4.0,
+  "drip": 11.0,
+  "shx": 3,
+  "shy": 5,
+  "shblur": 3.0,
+  "shadow": 0.38
+ },
+ "fullPx": {
+  "w": 9830,
+  "h": 6554
+ },
+ "chunk": 2048
+}

@@ -111,13 +111,15 @@ export const ZONE1_GROUND_SET = 'v7r';
 //   v2 / v1  the 1x ground of each zone (4915 x 3277, 1024 px chunks), kept on disk so the old look is one constant away.
 //   v7       Codex's 2x ground (Z234-HD-ASSEMBLE, 9830 x 6554, cut to 1024 px tiles, WebP q88).  ACTIVE.  It carries its own list of spots restored from the 1x art (15 in Asia, 1 in West),
 //            see docs/art-reviews/2026-11-14-z23-ground-integrate/.  No runtime repairs, no ground sprites.
+//   Zone 3 v8 (15 Nov 2026, scripts/build-z3-snow.py): v7 + snow drawn by code where v7's cliff tops and road edges were thinner than v1's (a drift only grows out of v7's own snow, 2x, lit from the upper left,
+//            colours sampled from v1's snow) + Codex round 1's repainted central bridge head.  Nothing else of v7 is touched.  ACTIVE for zone 3.  v7 stays on disk: ZONE3_GROUND_SET = 'v7' goes back.
 // To go back: set ZONE2_GROUND_SET = 'v2' / ZONE3_GROUND_SET = 'v1'.
 const ground1x = (folder, name, ver) => Object.freeze({ dir:`img/${folder}/${ver}/`, preview:`img/${folder}/${ver}/${name}-terrain-${ver}-preview.webp`,
   fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:false });
 export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false), v8: hd2x('v8', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
 export const ZONE2_GROUND_SET = 'v8';
-export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
-export const ZONE3_GROUND_SET = 'v7';
+export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false), v8: hd2x('v8', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
+export const ZONE3_GROUND_SET = 'v8';
 // Zone 4 (Cyberhell), 14 Nov 2026: same switch.  v3 = the old 1x ground (4915 x 3277, 1024 px chunks, still on disk, also read by the legacy src/cyberhell-terrain.js);
 //   v7 = Codex's 2x ground (Z4-HD-ASSEMBLE, 9830 x 6554, 1024 px tiles WebP q88).  ACTIVE.  No runtime repairs, no ground sprites.  To go back: set ZONE4_GROUND_SET = 'v3'.
 export const ZONE4_GROUND = Object.freeze({ v3: ground1x('map-zone4', 'zone4', 'v3'), v7: hd2x('v7', 'map-zone4', 'zone4-terrain-v7-preview.webp', false) });
