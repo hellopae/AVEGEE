@@ -230,6 +230,8 @@ function ensurePieceTexture(st, sp) {
 /** The shader layer is rendered at no more than this many px per world unit and then stretched (bilinear) onto the map: liquid is smooth paint, and it halves the fragments at the sharpest zoom.
  *  (The drawn-frames layer used 2.56.)  Measured: fps in the river / pan scenes. */
 export const SHADER_MAX_SCALE = 1.7;
+export const SHADER_MAX_SCALE_FAR = .5;        // FLUID-Z234: the far view renders the liquid at no more than this many px per world unit and stretches it
+export const LOD_PIECES = 22;                  // FLUID-Z234: more visible pieces than this = the far view
 export const SHADER_MAX_SCALE_PERFORMANCE = 1.28;   // Performance graphics: lower again
 const rawDraw = typeof CanvasRenderingContext2D !== 'undefined' ? CanvasRenderingContext2D.prototype.drawImage : null;
 const pow2 = n => 2 ** Math.ceil(Math.log2(Math.max(2, n)));
@@ -288,7 +290,11 @@ function sweep(st, time) {
 export function drawFluidShader(ctx, st, h) {
   if (!fluidShaderActive(st)) return 0;
   const gl = st.gl, L = st.loc, { m, view, cv, sec, time } = h;
-  const fluidMs = graphicsProfile().fluidIntervalMs;
+  // FLUID-Z234: zones 2-4 (h.lodMs): when the camera shows many liquid pieces at once (the whole-map view), the shader runs at most every lodMs - the liquid is tiny there, and its pass cost (measured ~4 ms a frame
+  // for ~60 pieces) is what the old particle flow never had; in between the last result is blitted again, as in Performance graphics.  Zone 1 (no lodMs) is untouched.
+  let fluidMs = graphicsProfile().fluidIntervalMs;
+  let far = false;
+  if (h.lodMs) { let nVis = 0; for (const sp of st.pieces) if (h.intersect(sp.core, view)) nVis++; if (nVis > LOD_PIECES) { far = true; fluidMs = Math.max(fluidMs, h.lodMs); } }
   const mixB = codexCloudWeight(sec * 1000);   // CLOUDS-MIX: same clock as the direct layer under the shader
   const scale = Math.max(m.a, m.d), level = groundLevelFor(scale), wantDetail = scale >= .38;   // .38 = where town-terrain.js leaves the overview painting
   let drawn = 0; st.frame++;
@@ -312,7 +318,7 @@ export function drawFluidShader(ctx, st, h) {
         blit(ctx, st.shared.canvas, prev.sx, prev.sy, prev.geo, prev.geo.dx0 + (m.e - prev.e), prev.geo.dy0 + (m.f - prev.f)); drawn++; continue;
       }
     }
-    const geo = h.geometry(m, vis, cv.width, cv.height, fluidMs ? SHADER_MAX_SCALE_PERFORMANCE : SHADER_MAX_SCALE);
+    const geo = h.geometry(m, vis, cv.width, cv.height, far ? SHADER_MAX_SCALE_FAR : fluidMs ? SHADER_MAX_SCALE_PERFORMANCE : SHADER_MAX_SCALE);
     if (!geo) continue;
     jobs.push({ sp, id, geo }); sizes.push([geo.lw, geo.lh]);
   }
@@ -327,15 +333,20 @@ export function drawFluidShader(ctx, st, h) {
       gl.viewport(slot.x, slot.y, geo.lw, geo.lh);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, gr.tex);
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, sp.tex);
-      gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, gr.texB || gr.tex); gl.uniform1f(L.uMixB, gr.texB ? mixB : 0);   // CLOUDS-MIX
+      gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, gr.texB || gr.tex); const mixNow = gr.texB ? mixB : 0; if (st.mixSet !== mixNow) { gl.uniform1f(L.uMixB, mixNow); st.mixSet = mixNow; }   // CLOUDS-MIX
       gl.uniform2f(L.uSize, geo.lw, geo.lh); gl.uniform2f(L.uView, slot.x, slot.y); gl.uniform2f(L.uCapSize, gr.size[0], gr.size[1]);
       gl.uniform2f(L.uOrigin, geo.wx0, geo.wy0); gl.uniform2f(L.uCapOrigin, gr.origin[0], gr.origin[1]); gl.uniform2f(L.uGScale, gr.ppu[0], gr.ppu[1]); gl.uniform2f(L.uScale, geo.sx, geo.sy);
       gl.uniform4f(L.uRect, sp.rect[0], sp.rect[1], sp.rect[2], sp.rect[3]);
       gl.uniform4f(L.uCore, sp.core[0] - 1.2, sp.core[1] - 1.2, sp.core[2] + 2.4, sp.core[3] + 2.4);   // a hair of overlap with the neighbouring cell: no seam
-      gl.uniform1f(L.uTime, sec); gl.uniform1f(L.uSpeed, p.speed); gl.uniform1f(L.uCycle, p.cycle); gl.uniform1f(L.uWarp, p.warp); gl.uniform1f(L.uPulse, p.pulse);
-      gl.uniform2f(L.uHot, p.hot[0], p.hot[1]); gl.uniform1f(L.uSparkLum, p.sparkLum); gl.uniform1f(L.uShimmer, p.shimmer);
-      gl.uniform3f(L.uSpark, p.spark[0], p.spark[1], p.spark[2]); gl.uniform1f(L.uCell, p.sparkCell); gl.uniform1f(L.uDensity, p.sparkDensity); gl.uniform1f(L.uSparkR, p.sparkSize);
-      gl.uniform2f(L.uDrift, p.drift[0], p.drift[1]);
+      // FLUID-Z234: the look uniforms are the same for every piece of one liquid (and the clock is the same all frame): set them only when they change - 13 GL calls fewer for most pieces
+      if (st.timeSet !== sec) { gl.uniform1f(L.uTime, sec); st.timeSet = sec; }
+      const key = p.lookKey || (p.lookKey = [p.speed, p.cycle, p.warp, p.pulse, p.hot, p.sparkLum, p.shimmer, p.spark, p.sparkCell, p.sparkDensity, p.sparkSize, p.drift].join());
+      if (st.lookSet !== key) {
+        gl.uniform1f(L.uSpeed, p.speed); gl.uniform1f(L.uCycle, p.cycle); gl.uniform1f(L.uWarp, p.warp); gl.uniform1f(L.uPulse, p.pulse);
+        gl.uniform2f(L.uHot, p.hot[0], p.hot[1]); gl.uniform1f(L.uSparkLum, p.sparkLum); gl.uniform1f(L.uShimmer, p.shimmer);
+        gl.uniform3f(L.uSpark, p.spark[0], p.spark[1], p.spark[2]); gl.uniform1f(L.uCell, p.sparkCell); gl.uniform1f(L.uDensity, p.sparkDensity); gl.uniform1f(L.uSparkR, p.sparkSize);
+        gl.uniform2f(L.uDrift, p.drift[0], p.drift[1]); st.lookSet = key;
+      }
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     });
     // Performance graphics: ONE copy of the packed GL canvas serves every piece until the next shader run (N copies were measured slower than the drawn frames in the overview / pan scenes)

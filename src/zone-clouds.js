@@ -11,12 +11,12 @@
 import { zoneCloudDensity } from './zone-clouds-density.js';
 
 /** `?z234=old` puts the towns of zones 2-4 back to how they were before this round (old particle flow, old gradient cloud banks, old blob shadows): an A/B switch for evidence captures. */
-let oldMode = null;
-export function zone234Old() {
-  if (oldMode === null) { try { oldMode = new URLSearchParams(globalThis.location?.search ?? '').get('z234') === 'old'; } catch { oldMode = false; } }
-  return oldMode;
-}
-export function setZone234OldForTest(v) { oldMode = v === null ? null : !!v; }
+let oldMode = null, cloudsOff = null;
+const q = () => { try { return new URLSearchParams(globalThis.location?.search ?? '').get('z234'); } catch { return null; } };
+export function zone234Old() { if (oldMode === null) oldMode = q() === 'old'; return oldMode; }
+/** `?z234=nocloud` = the new fluid shader without the new clouds / shadows (measurements: which part costs what); `old` also has no clouds. */
+export function zone234CloudsOff() { if (cloudsOff === null) cloudsOff = q() === 'nocloud' || zone234Old(); return cloudsOff; }
+export function setZone234OldForTest(v) { oldMode = v === null ? null : !!v; cloudsOff = null; }
 export const ZONE_CLOUD_ZONES = Object.freeze(['asia', 'west', 'cyberhell']);
 const WORLD = [3840, 2560];
 
@@ -46,13 +46,13 @@ function lobes(zone, variant) {
   const h = k => hash(variant * 97.3 + k * 13.7 + (zone === 'asia' ? 1 : zone === 'west' ? 2 : 3) * 331), out = [];
   if (zone === 'asia') {        // the scroll cloud: a round head of 3-4 lobes and a tail of shrinking lobes that curls up and over
     const n = 3 + (variant % 2);
-    for (let i = 0; i < n; i++) out.push([.3 + .17 * i + (h(i) - .5) * .05, .58 - .05 * Math.sin(i * 1.6) + (h(i + 9) - .5) * .06, .15 + .06 * h(i + 3), .17 + .07 * h(i + 5)]);
-    let a = .2 * variant, r = .13;
-    for (let i = 0; i < 6; i++) { a += .9; r *= .8; out.push([.86 - .16 * Math.cos(a * .6) * (i / 6) - .02 * i, .5 - .26 * Math.sin(a * .6) * (i / 5) * (variant % 2 ? 1 : -.4) - .02, r * .9, r * .8]); }
+    for (let i = 0; i < n; i++) out.push([.26 + .13 * i + (h(i) - .5) * .05, .58 - .05 * Math.sin(i * 1.6) + (h(i + 9) - .5) * .06, .13 + .05 * h(i + 3), .16 + .06 * h(i + 5)]);
+    const hx = .26 + .13 * (n - 1) + .08; let r = .12;
+    for (let i = 0; i < 5; i++) { r *= .88; out.push([Math.min(.82, hx + .035 * i + .02 * Math.sin(i * 1.3)), .56 - .045 * i + (variant % 2 ? .012 * i * i : -.004 * i * i), r * .95, r * .85]); }   // the tail rises and curls back
   } else if (zone === 'west') { // cumulus: many lumpy lobes with the biggest in the middle, a flat base
-    for (let i = 0; i < 9; i++) { const u = (i + .5) / 9, big = 1 - Math.abs(u - .5) * 1.5; out.push([.1 + .8 * u + (h(i) - .5) * .05, .66 - .24 * big * h(i + 4) - .03, .09 + .12 * big * (.6 + .6 * h(i + 2)), .1 + .16 * big * (.6 + .6 * h(i + 6))]); }
+    for (let i = 0; i < 9; i++) { const u = (i + .5) / 9, big = 1 - Math.abs(u - .5) * 1.5; out.push([.2 + .6 * u + (h(i) - .5) * .05, .66 - .24 * big * h(i + 4) - .03, .08 + .1 * big * (.6 + .6 * h(i + 2)), .1 + .16 * big * (.6 + .6 * h(i + 6))]); }
   } else {                      // smog / rain cloud: long and low, overlapping flat ellipses
-    for (let i = 0; i < 8; i++) { const u = (i + .5) / 8; out.push([.08 + .84 * u + (h(i) - .5) * .06, .5 + (h(i + 8) - .5) * .22, .15 + .1 * h(i + 3), .09 + .08 * h(i + 5)]); }
+    for (let i = 0; i < 8; i++) { const u = (i + .5) / 8; out.push([.2 + .6 * u + (h(i) - .5) * .05, .5 + (h(i + 8) - .5) * .3, .1 + .08 * h(i + 3), .1 + .1 * h(i + 5)]); }
   }
   return out;
 }
@@ -65,7 +65,7 @@ function field(zone, variant) {
     for (const [cx, cy, rx, ry] of L) { const d = Math.hypot((u - cx) / rx, (v - cy) / ry); if (d < 1.4) f = Math.max(f, 1 - d * d * .5 - .0); }
     f += (fbm(u * 9, v * 9, seed) - .5) * edge;
     if (zone === 'west') f *= smooth(.98, .74, v);                         // flat base
-    const border = Math.min(smooth(0, .12, u), smooth(1, .88, u), smooth(0, .14, v), smooth(1, .86, v));   // never touches the sprite edge: no hard rectangle
+    const border = Math.min(smooth(.02, .2, u), smooth(.98, .8, u), smooth(.02, .18, v), smooth(.98, .82, v));   // never touches the sprite edge: no hard rectangle
     a[y * SW + x] = Math.min(1, Math.max(0, smooth(.06, .62, f))) * border;
   }
   return a;
@@ -136,22 +136,42 @@ export function zoneCloudAt(zone, i, j, sec, aspect = 2) {
   const breath = 1 - fx.breathe + fx.breathe * Math.sin(sec * .05 + cellHash(i, j, 7) * 6.28);
   return { x, y, w, h, alpha: fx.peak * d * edge * breath * (.85 + .15 * cellHash(i, j, 8)), flip: cellHash(i, j, 9) };
 }
-let lastDrawn = 0;
+let lastDrawn = 0, layer = null, last = null;
 export const zoneCloudsDrawn = () => lastDrawn;
-/** Draw the floating clouds of `zone` onto `ctx` (world transform active), on the ground layer.  `ms` = the game's FX clock (stops with pause).  Returns how many were drawn. */
+export const CLOUD_LAYER_SCALE = .5, CLOUD_REUSE_MS = 100;   // the clouds are composed at half resolution (they are soft), and again only every 100 ms while the camera stands still
+const hit = (a, b) => a[0] < b[0] + b[2] && a[0] + a[2] > b[0] && a[1] < b[1] + b[3] && a[1] + a[3] > b[1];
+/** Draw the floating clouds of `zone` onto `ctx` (world transform active), on the ground layer.  `ms` = the game's FX clock (stops with pause).  Returns how many were drawn.
+ *  All clouds are composed into one half-resolution layer (source-over, so the result equals drawing them one by one) and that layer is blitted once; a still camera re-blits the last one for up to 100 ms. */
 export function drawZoneClouds(ctx, ms, zone, { reduced = false, enabled = true } = {}) {
   lastDrawn = 0;
-  if (!enabled || reduced || zone234Old() || !ZONE_CLOUD_FX[zone] || typeof ctx.getTransform !== 'function') return 0;
+  if (!enabled || reduced || zone234CloudsOff() || !ZONE_CLOUD_FX[zone] || typeof ctx.getTransform !== 'function' || typeof document === 'undefined') return 0;
   const sp = zoneCloudSprites(zone); if (!sp) return 0;
   const m = ctx.getTransform(); if (!(m.a > 0 && m.d > 0) || m.b || m.c) return 0;
-  const cv = ctx.canvas, view = [-m.e / m.a, -m.f / m.d, cv.width / m.a, cv.height / m.d], fx = ZONE_CLOUD_FX[zone], sec = ms / 1000;
-  const cols = Math.ceil((WORLD[0] + 1400) / fx.cell[0]) + 1, rows = Math.ceil(WORLD[1] / fx.cell[1]) + 1;
-  ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'low'; ctx.globalCompositeOperation = 'source-over';
-  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-    const s = sp[Math.floor(cellHash(i, j, 10) * sp.length) % sp.length], c = zoneCloudAt(zone, i, j, sec, s.aspect); if (!c || c.alpha < .01) continue;
-    if (c.x + c.w < view[0] || c.x > view[0] + view[2] || c.y + c.h < view[1] || c.y > view[1] + view[3]) continue;
-    ctx.globalAlpha = Math.min(1, c.alpha); ctx.drawImage(s, c.x, c.y, c.w, c.h); lastDrawn++;
+  const cv = ctx.canvas, k = CLOUD_LAYER_SCALE;
+  if (last && last.zone === zone && layer && last.w === cv.width && last.h === cv.height && last.e === m.e && last.f === m.f && last.a === m.a && last.d === m.d && ms >= last.ms && ms - last.ms < CLOUD_REUSE_MS) {
+    const b = last.box; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(layer, b[0] * k, b[1] * k, (b[2] - b[0]) * k, (b[3] - b[1]) * k, b[0], b[1], b[2] - b[0], b[3] - b[1]); ctx.restore(); lastDrawn = last.n; return last.n;
   }
-  ctx.restore();
+  last = null;
+  const view = [-m.e / m.a, -m.f / m.d, cv.width / m.a, cv.height / m.d], fx = ZONE_CLOUD_FX[zone], sec = ms / 1000;
+  const cols = Math.ceil((WORLD[0] + 1400) / fx.cell[0]) + 1, rows = Math.ceil(WORLD[1] / fx.cell[1]) + 1, todo = []; let box = null;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const s = sp[Math.floor(cellHash(i, j, 10) * sp.length) % sp.length], c = zoneCloudAt(zone, i, j, sec, s.aspect); if (!c || c.alpha < .04) continue;   // too faint to see: not drawn at all
+    if (!hit([c.x, c.y, c.w, c.h], view)) continue;
+    const b = [Math.max(0, Math.floor(m.e + c.x * m.a) - 2), Math.max(0, Math.floor(m.f + c.y * m.d) - 2), Math.min(cv.width, Math.ceil(m.e + (c.x + c.w) * m.a) + 2), Math.min(cv.height, Math.ceil(m.f + (c.y + c.h) * m.d) + 2)];
+    if (b[2] <= b[0] || b[3] <= b[1]) continue;
+    todo.push([s, c]); box = box ? [Math.min(box[0], b[0]), Math.min(box[1], b[1]), Math.max(box[2], b[2]), Math.max(box[3], b[3])] : b;
+  }
+  if (!todo.length) return 0;
+  if (!layer) layer = document.createElement('canvas');
+  const lw = Math.ceil(cv.width * k), lh = Math.ceil(cv.height * k); if (layer.width !== lw || layer.height !== lh) { layer.width = lw; layer.height = lh; }
+  const L = layer.getContext('2d'); L.setTransform(1, 0, 0, 1, 0, 0); L.globalCompositeOperation = 'source-over'; L.globalAlpha = 1;
+  L.clearRect(Math.floor(box[0] * k), Math.floor(box[1] * k), Math.ceil((box[2] - box[0]) * k) + 1, Math.ceil((box[3] - box[1]) * k) + 1);
+  L.imageSmoothingEnabled = true; L.imageSmoothingQuality = 'low'; L.setTransform(m.a * k, 0, 0, m.d * k, m.e * k, m.f * k);
+  for (const [s, c] of todo) { L.globalAlpha = Math.min(1, c.alpha); L.drawImage(s, c.x, c.y, c.w, c.h); }
+  L.globalAlpha = 1;
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(layer, box[0] * k, box[1] * k, (box[2] - box[0]) * k, (box[3] - box[1]) * k, box[0], box[1], box[2] - box[0], box[3] - box[1]); ctx.restore();
+  last = { zone, ms, e: m.e, f: m.f, a: m.a, d: m.d, w: cv.width, h: cv.height, box, n: todo.length }; lastDrawn = todo.length;
   return lastDrawn;
 }

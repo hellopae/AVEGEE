@@ -18,6 +18,7 @@ import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
 import { fluidMode, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader, shaderStoreOf } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
 
 export const FLUID_TILE_LEVELS = Object.freeze([2.56, 1.28, .64]);   // pre-scaled tile density, px per world unit
+export const SHADER_LOD_MS = 200;                                     // FLUID-Z234: zones 2-4, whole-map view: the shader runs this often at most
 export const FLUID_MAX_SCALE = 2.56;                                  // the composing layer never exceeds this many px per world unit
 const LOAD_PAD = 520;            // world units around the camera in which pieces start loading
 const MAX_LOADING = 3;
@@ -347,7 +348,7 @@ export function drawTownFluidFx(ctx, time, { reduced = false, paused = false } =
   let drawn = 0;
   // FLUID-SHADER: the default, before the drawn layers (so its copy of the ground is clean).  Any failure leaves st.shader.status 'failed' = drawn frames only.
   st.shader = fluidMode() === 'shader' ? ensureFluidShader(cfg.dir) : null;
-  if (fluidShaderActive(st.shader)) drawn += drawFluidShader(ctx, st.shader, { m, view, cv, sec, time, geometry: layerGeometry, intersect });
+  if (fluidShaderActive(st.shader)) drawn += drawFluidShader(ctx, st.shader, { m, view, cv, sec, time, geometry: layerGeometry, intersect, lodMs: cfg.shaderOnly ? SHADER_LOD_MS : 0 });
   const shaderOwns = fluidMode() === 'none' || fluidShaderActive(st.shader) || fluidShaderPending(st.shader);   // loading: the painted ground holds the liquid for the moment - no frames, no flip
   for (const item of st.plan) {
     const p = item.piece || item.puffs[0], rect = item.rect;

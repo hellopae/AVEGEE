@@ -77,7 +77,7 @@ test('wiring: scene.js draws the direct layer BEFORE the fluid layer in mix mode
   assert.match(sh, /sp\.p\.group === 'clouds' && cloudsMode\(\) === 'mix' && codexCloudsApply\(\)/);
   assert.match(sh, /uniform sampler2D uGroundB;/); assert.match(sh, /if \(uMixB > \.002\)/);
   assert.match(sh, /paintCodexClouds\(g, 'A', rect\); paintCodexClouds\(g2, 'B', rect\);/);
-  assert.match(sh, /gl\.uniform1f\(L\.uMixB, gr\.texB \? mixB : 0\)/);
+  assert.match(sh, /gr\.texB \? mixB : 0; if \(st\.mixSet !== mixNow\) \{ gl\.uniform1f\(L\.uMixB, mixNow\)/);   // FLUID-Z234: only when it changes
   assert.match(sh, /codexCloudWeight\(sec \* 1000\)/);
   const map = JSON.parse(read('index.html').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   assert.match(map['./src/town-clouds-codex.js'], /town-clouds-codex\.js\?v=/);
