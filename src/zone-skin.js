@@ -114,8 +114,8 @@ export const ZONE1_GROUND_SET = 'v7r';
 // To go back: set ZONE2_GROUND_SET = 'v2' / ZONE3_GROUND_SET = 'v1'.
 const ground1x = (folder, name, ver) => Object.freeze({ dir:`img/${folder}/${ver}/`, preview:`img/${folder}/${ver}/${name}-terrain-${ver}-preview.webp`,
   fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:false });
-export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
-export const ZONE2_GROUND_SET = 'v7';
+export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false), v8: hd2x('v8', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
+export const ZONE2_GROUND_SET = 'v8';
 export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
 export const ZONE3_GROUND_SET = 'v7';
 // Zone 4 (Cyberhell), 14 Nov 2026: same switch.  v3 = the old 1x ground (4915 x 3277, 1024 px chunks, still on disk, also read by the legacy src/cyberhell-terrain.js);
