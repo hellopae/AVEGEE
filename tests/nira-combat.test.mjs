@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
 import {isFrontierDuoBattle,niraCombatFrame,niraCombatSheet,niraHealingCutscene,playNiraHealingCutscene} from '../src/nira-combat.js';
+import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: this file tests mechanics on the old one-turn-each order (tests/battle-turns.test.mjs covers the new rule)
 
 function setup() {
   const game=createGame();game.save=()=>true;game.onChange=()=>{};game.coin=10000;

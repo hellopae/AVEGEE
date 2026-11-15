@@ -1921,7 +1921,7 @@ export const ZONE_EVENTS = {
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
       [{ kind:2, count:2, hp:36, atk:MOB.fightAtk }],
       [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],
-      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:360, atk:[28,45], skills:BOSS_SKILLS.tanthasura }]],   // BOSS-SKILLS set A: was 90 / 10-16 (the Thai breach won 100 %); the encounter-balance row th:breach (hp x1.5, atk x1.8) still applies on top
+      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:360, atk:[25,40], skills:BOSS_SKILLS.tanthasura }]],   // BOSS-SKILLS set A: was 90 / 10-16 (the Thai breach won 100 %); the encounter-balance row th:breach (hp x1.5, atk x1.8) still applies on top   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
     betweenWaveHeal:20, reward:{ coin:120, drop:1, ability:'teamJudgment' }, lose:{ hp:8 } },
   // Z1-EVENTS: the temple beggar is the 6th case; the deva test opens once he is judged.
   { k:'devaTest', atCases:6, requires:['prisonBreak'], mode:'single',
@@ -1937,7 +1937,7 @@ export const ZONE_EVENTS = {
     alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',
       en:'Rama\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },
     go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },
-    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[25,38], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %
+    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[17,26], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
     reward:{}, lose:{ hp:9 } },
   // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.
   { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',
@@ -1963,7 +1963,7 @@ export const ZONE_EVENTS = {
     // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).
     { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',
       title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,
-      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)
+      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[13,20], boss:true, skills:BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
       reward:{ coin:140 }, lose:{ hp:9 } },
     // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).
@@ -1971,7 +1971,7 @@ export const ZONE_EVENTS = {
       title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],
       waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],
         [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)
-        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:175, atk:[12,20], boss:true, skills:BOSS_SKILLS.akura, partyScale:{ hp:[1,1,1], atk:[1,1.28,1.28] } }]],   // BOSS-SKILLS set A: was 125 / 12-19
+        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:175, atk:[9,15], boss:true, skills:BOSS_SKILLS.akura, partyScale:{ hp:[1,1,1], atk:[1,1.28,1.28] } }]],   // BOSS-SKILLS set A: was 125 / 12-19   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       betweenWaveHeal:18, reward:{ coin:150, ability:'bigFire' } },
     // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.
     { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,
@@ -1991,12 +1991,12 @@ export const ZONE_EVENTS = {
       alert:{ th:'ปีศาจทรงพลังบุกชายแดน ทำให้วิญญาณทั่วดินแดนหยุดนิ่ง! เดินลงชายแดนเพื่อปราบลูกน้องสองระลอก ช่วยยมทูตและ Guard ในทีมจากการสะกดจิต แล้วปราบแวมไพร์', en:'A powerful demon has invaded the frontier, freezing every spirit in the realm! Head down to defeat two minion waves, free your hypnotized party and Guard, then defeat the vampire.' },
       waves:[[{ kind:10, count:2, hp:55, atk:[9,14] }], [{ kind:10, count:2, hp:60, atk:[10,15] }],
         [{ crew:'taan', count:1, hp:65, atk:[10,15] }, { crew:'dam', count:1, hp:65, atk:[10,15] }],
-        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[14,21], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20
+        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[12,18], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
     { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
       title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
       alert:{ th:'เทวดามาปราบแวมไพร์ แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
-      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[24,36], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)
+      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[19,28], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       reward:{ coin:130, ability:'valkyrieSpear' } },
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
@@ -2004,7 +2004,7 @@ export const ZONE_EVENTS = {
     { k:'cyberRescue', atCases:0, mode:'group',
       title:{ th:'ช่วยทัณฑ์และพ่อค้านรก', en:'Rescue Taan and the merchant' },
       alert:{ th:'เทวดาจับทัณฑ์กับพ่อค้านรกไว้ในคุก ต้องชนะจึงจะช่วยออกมาได้', en:'Devas imprisoned Taan and the merchant. Defeat them to free the captives.' },
-      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[19,30], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],
+      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[18,28], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       reward:{ coin:130, ability:'cooldownClock', releaseCaptives:true } },
     { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
       title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },

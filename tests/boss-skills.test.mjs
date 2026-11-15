@@ -68,11 +68,11 @@ function playToBossTurn(g, { maxSteps = 60 } = {}) {
   throw Error('no boss turn');
 }
 const keepAlive = g => { for (const a of g.battleActors()) if (a.id !== 'you') a.morale = 100; g.battle.youHp = g.battle.youMax; };
-test('Wukong: the sweep is announced one turn ahead (with the usual attack), then hits every ally once, with a card', () => {
+test('Wukong: the sweep is announced a round ahead (with the usual attack), then hits every ally once, with a card', () => {
   const g = startWukong(4), b = g.battle, allies = g.battleActors().length;
   for (const f of b.foes) f.skills = f.skills.filter(s => s.id === 'staffSweep');     // isolate the sweep
   let warn = null, use = null;
-  for (let i = 0; i < 9 && !use; i++) {
+  for (let i = 0; i < 30 && !use; i++) {   // F3: the boss acts several times a round and uses a warned move on the first act of the NEXT round
     keepAlive(g);
     const t = playToBossTurn(g), r = t.run();
     if (r.notice?.phase === 'warn') { warn = { r, pending:skillState(t.boss).pending, hits:r.dmg.enemyHits.length }; }
@@ -119,7 +119,7 @@ test('Gate Guard test: the heavy blow is announced a turn ahead and hits one all
   const g = setup({ zone:'asia', size:4, kind:'event', eventKey:'asiaGuardTest', moves:false }); g.save = () => true;
   const b = g.battle; let warn = false, heavy = null; const normals = [];
   const rnd = Math.random; Math.random = () => .5;      // fixed rolls: only the move itself changes the number
-  try { for (let i = 0; i < 12 && !heavy; i++) {
+  try { for (let i = 0; i < 40 && !heavy; i++) {   // F3: used on the first act of the round after the warning
     keepAlive(g); for (const f of b.foes) f.hp = f.maxHp;
     const t = playToBossTurn(g), r = t.run(), hit = r.dmg.enemyHits[0];
     if (r.notice?.phase === 'warn') { warn = true; normals.push(hit.damage); }
@@ -138,4 +138,16 @@ test('a foe without skills plays exactly as before (no state, no notice)', () =>
 test('the live state of a warned move survives a save (plain JSON)', () => {
   const foe = mkFoe([sweep]); const sk = skillState(foe); sk.pending = 'sweep'; sk.pendingLabel = sweep.name; sk.turns = 3;
   const back = JSON.parse(JSON.stringify(foe)); assert.equal(planSkill(battleOf(back), back).mode, 'run');
+});
+
+// F3: with several turns a round, boss move timing is counted in rounds and a warned move waits for the next round
+test('F3: planSkill counts firstAct/everyActs in rounds and uses a warned move only in a later round (perRound 3)', () => {
+  const foe = { hp:100, maxHp:100, skills:[{ id:'blow', kind:'heavyHit', warn:1, when:{ firstAct:2 } }] }, battle = { foes:[foe] };
+  const act = () => { const p = planSkill(battle, foe, 3); const sk = foe.sk ||= { turns:0, pending:null, used:{}, lastUse:{} }; return p && { ...p, apply() { sk.turns = p.act; if (p.mode === 'warn') { sk.pending = p.skill.id; sk.pendingAt = p.turn; } else { sk.pending = null; sk.pendingAt = null; sk.used[p.skill.id] = 1; sk.lastUse[p.skill.id] = p.turn; } } }; };
+  const seen = [];
+  for (let i = 0; i < 9; i++) { const p = act(); seen.push(p ? `${p.mode}@r${p.turn}` : '-'); if (p) p.apply(); else (foe.sk ||= { turns:0, pending:null, used:{}, lastUse:{} }).turns++; }
+  // acts 1-3 = round 1 (firstAct 2: nothing yet), acts 4-6 = round 2: warn on act 4, normal attacks on 5-6 (same round), use on act 7 = round 3
+  assert.deepEqual(seen.slice(0, 7), ['-', '-', '-', 'warn@r2', '-', '-', 'run@r3']);
+  const one = { hp:100, maxHp:100, skills:foe.skills.map(s => ({ ...s })) };
+  const p1 = planSkill({ foes:[one] }, one, 1); assert.equal(p1, null, 'one act per round: firstAct 2 is still not due on act 1 (nothing changed)');
 });

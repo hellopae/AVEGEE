@@ -12,6 +12,7 @@ import { SKILL_ICONS, skillScenes, SKILL_CAST_MS, SKILL_FX } from '../src/combat
 import * as fxMapping from '../src/battle-fx-map.js';
 import { specialCooldown } from '../src/actor-recovery.js';
 import { assertModuleRelease, assertStylesheetRelease, readReleaseFile } from './helpers/release-imports.mjs';
+import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: this file tests mechanics on the old one-turn-each order (tests/battle-turns.test.mjs covers the new rule)
 
 function game(zone='th', kinds=['taan','plerng']) {
   const g=createGame(); g.zone=zone; g.save=()=>true;

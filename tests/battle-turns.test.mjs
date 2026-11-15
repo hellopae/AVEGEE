@@ -8,7 +8,9 @@ test('each living ally and enemy gets a distinct turn; commands cannot bypass th
  assert.equal(g.confirmBattleCommand('atk'),false,'duplicate locked');g.finishBattleCommand();
  assert.equal(g.currentBattleTurn().side,'foe');assert.equal(g.confirmBattleCommand('atk'),false);
  assert.equal(g.runEnemyTurn(),true);assert.equal(b.dmg.counterFoeId,b.foes[0].id);g.finishBattleCommand();
+ // F3: the lone enemy acts as often as the team (2 standing = 2 enemy turns a round), woven between the team's turns
  assert.equal(g.currentBattleTurn().id,c.id);assert.equal(g.confirmBattleCommand('strike'),true);g.finishBattleCommand();
+ assert.equal(g.currentBattleTurn().side,'foe');assert.equal(g.runEnemyTurn(),true);g.finishBattleCommand();
  assert.equal(g.currentBattleTurn().id,'you');assert.equal(b.turnQueue.round,2);
 });
 test('dead foes drop out and every remaining enemy acts once per round',()=>{
@@ -42,4 +44,31 @@ test('queued hypnosis redirects each enemy on its own turn, and burns tick only 
 test('retreat cannot skip a dungeon checkpoint or bypass a story boss',()=>{
  const g=setup(),b=g.battle;g.beginBattleTurns();b.kind='zoneBoss';assert.equal(g.confirmBattleCommand('flee'),false);assert.equal(b.over,null);
  b.kind='mob';assert.equal(g.confirmBattleCommand('flee'),true);assert.equal(b.over,'flee');
+});
+
+// F3 (owner 15 Nov): the enemy side acts as many times per round as the team has members standing.
+import {orderRound,foeTurnTotal,TURN_RULE} from '../src/battle-turns.js';
+const units=(a,f,fs=9)=>[...Array.from({length:a},(_,i)=>({id:'a'+i,side:'ally',speed:12-i})),...Array.from({length:f},(_,i)=>({id:'f'+i,side:'foe',speed:fs-i}))];
+const ids=q=>q.map(x=>x.id).join(' ');
+test('F3: foe turns per round = team size (never fewer than one each); the old rule is ratio 0',()=>{
+ assert.equal(TURN_RULE.ratio,1);
+ assert.equal(foeTurnTotal(4,1),4);assert.equal(foeTurnTotal(5,2),5);assert.equal(foeTurnTotal(1,1),1);assert.equal(foeTurnTotal(2,3),3,'more foes than team: one turn each, nothing added');assert.equal(foeTurnTotal(4,1,0),1);
+ assert.equal(ids(orderRound(units(3,1))),'a0 f0 a1 f0 a2 f0');
+ assert.equal(ids(orderRound(units(5,2))),'a0 f0 a1 f1 a2 f0 a3 f1 a4 f0','extra turns go to the fastest foe, round-robin');
+ assert.equal(ids(orderRound(units(1,1))),'a0 f0','1 v 1 is unchanged');
+ assert.equal(ids(orderRound(units(2,3))),'a0 a1 f0 f1 f2','more foes than team: the old speed order');
+ assert.equal(ids(orderRound(units(4,1),0)),'a0 a1 a2 a3 f0','ratio 0 = old rule');
+});
+test('F3: no two turns of the foe side touch each other when the team can keep them apart (a warned move always leaves us a turn), also across the round change',()=>{
+ for(let a=2;a<=8;a++)for(let f=1;f<a;f++)for(const fs of [5,9,20]){
+  const q=orderRound(units(a,f,fs));
+  assert.equal(q.length,a+Math.max(f,a),`${a}v${f}`);
+  for(let i=0;i<q.length-1;i++)assert.ok(!(q[i].side==='foe'&&q[i+1].side==='foe'),`${a}v${f} speed ${fs}: ${ids(q)}`);
+  assert.ok(!(q[0].side==='foe'&&q.at(-1).side==='foe'),`round change ${a}v${f}: ${ids(q)}`);
+ }
+});
+test('F3: the visible timeline lists the repeated turns and a lone boss warned on one turn is used only after one of our turns',()=>{
+ const g=setup(),b=g.battle;g.party.members=['taan'];g.beginBattleTurns();
+ const line=g.battleTimeline();assert.equal(line.filter(u=>u.side==='foe').length,4,'two rounds of the queue = 2 + 2 enemy turns');
+ for(let i=0;i<line.length-1;i++)assert.ok(!(line[i].side==='foe'&&line[i+1].side==='foe'));
 });

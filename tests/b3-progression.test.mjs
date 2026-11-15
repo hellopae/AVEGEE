@@ -6,6 +6,7 @@ import { effectiveAllyStats, actorTraining, normalizeTraining, merchantStock } f
 import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS, ITEMS, BATTLE, ZONE_EVENTS, ZONE_BOSS_AT, SPOTS } from '../src/data.js';
 import { crewAbility } from '../src/command-wheel.js';
 import { setLang } from '../src/i18n.js';
+import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: this file tests mechanics on the old one-turn-each order (tests/battle-turns.test.mjs covers the new rule)
 
 globalThis.Image ??= class {};
 globalThis.document ??= { documentElement:{} };

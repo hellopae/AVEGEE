@@ -7,8 +7,45 @@ export function combatUnits(game) {
     ...b.foes.filter(f=>f.hp>0).map(f=>({id:f.id,side:'foe',name:f.who,k:f.sp,
       speed:Number.isFinite(f.speed)?f.speed:9}))];
 }
-const ordered=units=>units.slice().sort((a,b)=>b.speed-a.speed||a.side.localeCompare(b.side)||String(a.id).localeCompare(String(b.id)))
-  .map(({id,side})=>({id,side}));
+const bySpeed=(a,b)=>b.speed-a.speed||a.side.localeCompare(b.side)||String(a.id).localeCompare(String(b.id));
+const legacyOrder=units=>units.slice().sort(bySpeed).map(({id,side})=>({id,side}));
+
+// F3 (owner 15 Nov): "the enemy is alone, the team is many - by the time the round comes round the enemy is far too weak".
+// RULE (one sentence for the player): in every round the enemy side acts as many times as the team has members standing (never fewer than one turn each).
+//   * the extra turns go to the enemies in speed order, spread evenly (1 foe vs 4 = 4 turns; 2 foes vs 5 = 3 + 2), the same foe is never given two turns in a row while another foe could act
+//   * the turns are woven BETWEEN the team's turns, so a foe never acts twice in a row while it has a team member to wait for: the move a boss announces on one of its turns is always
+//     followed by at least one of OUR turns before it is used (BOSS-SKILLS "the player gets a whole round in between" still holds)
+//   * the queue shows every one of them: the "next" strip lists the repeated portraits.
+// TURN_RULE.ratio = share of the team size the foes get (1 = as many turns as the team, 0 = the old rule: one turn each). Tests / sims set FOE_TURN_RATIO to compare.
+// DAMAGE: the extra turns come with lighter blows - a foe that acts n times a round hits for 1/n^damageExp of its blow (1 = its damage per ROUND stays what it was, the fights keep
+// their difficulty and only the rhythm changes; the owner's balance targets of BOSS-SKILLS set A are measured against that).  Per-fight corrections live in the data (hp / atk) as before.
+export const TURN_RULE={ratio:1,damageExp:1};
+if(typeof process!=='undefined'&&process.env?.FOE_TURN_RATIO!=null&&process.env.FOE_TURN_RATIO!=='')TURN_RULE.ratio=Number(process.env.FOE_TURN_RATIO)||0;
+if(typeof process!=='undefined'&&process.env?.FOE_TURN_DAMAGE_EXP!=null&&process.env.FOE_TURN_DAMAGE_EXP!=='')TURN_RULE.damageExp=Number(process.env.FOE_TURN_DAMAGE_EXP)||0;
+/** blow scale of a foe that acts `perRound` times in a round */
+export const foeHitScale=(perRound,exp=TURN_RULE.damageExp)=>Math.max(1,perRound||1)**-exp;
+/** how many turns the foe side gets in a round (pure) */
+export const foeTurnTotal=(allies,foes,ratio=TURN_RULE.ratio)=>foes<=0?0:Math.max(foes,Math.round(allies*ratio));
+/** one round's order (pure, deterministic): units = [{id,side,speed}] */
+export function orderRound(units,ratio=TURN_RULE.ratio){
+  const allies=units.filter(u=>u.side==='ally').sort(bySpeed),foes=units.filter(u=>u.side==='foe').sort(bySpeed);
+  const total=foeTurnTotal(allies.length,foes.length,ratio);
+  if(!allies.length||total<=foes.length)return legacyOrder(units);
+  const per=foes.map((_,i)=>Math.floor(total/foes.length)+(i<total%foes.length?1:0)),seq=[];
+  for(let r=0;r<Math.max(...per);r++)foes.forEach((f,i)=>{if(per[i]>r)seq.push(f);});   // round-robin: A B A B ..., never A A while B is also owed a turn
+  const slots=[...allies.map((u,j)=>({u,t:(j+.5)/allies.length})),...seq.map((u,m)=>({u,t:(m+.5)/seq.length}))].sort((a,b)=>a.t-b.t||bySpeed(a.u,b.u));
+  let q=slots.map(x=>({id:x.u.id,side:x.u.side}));
+  if(total<=allies.length){   // enough team turns to keep every foe turn apart: no two foe turns side by side, in the round or across the round change
+    for(let i=0;i<q.length-1;i++)if(q[i].side==='foe'&&q[i+1].side==='foe'){const j=q.findIndex((x,k)=>k>i+1&&x.side==='ally');if(j>0){const [a]=q.splice(j,1);q.splice(i+1,0,a);}}
+    if(q[0].side==='foe'&&q.at(-1).side==='foe'){const j=q.findLastIndex((x,k)=>k<q.length-1&&x.side==='ally');if(j>=0){const [a]=q.splice(j,1);q.push(a);}}
+  }
+  return q;
+}
+const ordered=units=>orderRound(units);
+/** turns one foe gets in a round at the current team size (pure view of orderRound) */
+export function foeTurnsOf(game,id){
+  const q=orderRound(combatUnits(game));return Math.max(1,q.filter(t=>t.side==='foe'&&t.id===id).length);
+}
 export function ensureTurnQueue(game) {
   const b=game.battle;
   if(!b||b.over||['dad','yama'].includes(b.kind)||b.pendingWave)return null;

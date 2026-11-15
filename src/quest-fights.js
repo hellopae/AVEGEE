@@ -178,5 +178,5 @@ export function questFightFoes(g, id, partySize) {
 // 92 % (sqGuard) / 85 % (sqKan) / 75 % (sqBoon) at every size — Rae's order: Guard lightest, Kan middle, Boon heaviest. Size 5 = the base numbers above.
 export const HP_PER_PARTY = { sqKan:{ 3:.6, 4:.78, 5:1, 6:1.29, 7:1.47 }, sqBoon:{ 3:.5, 4:.75, 5:1, 6:1.25, 7:1.67 }, sqGuard:{ 3:.6, 4:.82, 5:1, 6:1.17, 7:1.44 },
   sqMerchantFeather:{ 3:.6, 4:.82, 5:1, 6:1.17, 7:1.44 } };   // the feather fight starts from sqGuard's shape (the same lightest kind) and is fitted by scripts/fit-quest-fights.mjs
-export const ATK_PER_PARTY = { sqKan:{ 3:.9, 4:.95, 5:1, 6:1.1, 7:1.1 }, sqBoon:{ 3:.85, 4:.92, 5:1, 6:1.09, 7:1.15 }, sqGuard:{ 3:.85, 4:.9, 5:1, 6:1.02, 7:1.05 },
-  sqMerchantFeather:{ 3:.85, 4:.98, 5:1.06, 6:1.18, 7:1.18 } };   // fitted to ~77 % for the first attempt at every size 4-7 (HP follows sqGuard's shape, ATK is what was bisected)
+export const ATK_PER_PARTY = { sqKan:{ 3:.9, 4:.98, 5:1.01, 6:1.07, 7:1.15 }, sqBoon:{ 3:.85, 4:.94, 5:1.02, 6:1.13, 7:1.1 }, sqGuard:{ 3:.85, 4:.86, 5:.92, 6:1.1, 7:1.1 },
+  sqMerchantFeather:{ 3:.85, 4:.97, 5:1.08, 6:1.18, 7:1.21 } };   // F3 (15 Nov): sizes 4-7 refitted by scripts/fit-quest-fights.mjs for the new turn rule (battle-turns.js: the enemy side acts as often as the team) - same first-try win %.  Before F3: sqKan 4-7 .95/1/1.1/1.1 · sqBoon .92/1/1.09/1.15 · sqGuard .9/1/1.02/1.05 · feather .98/1.06/1.18/1.18.   // fitted to ~77 % for the first attempt at every size 4-7 (HP follows sqGuard's shape, ATK is what was bisected)

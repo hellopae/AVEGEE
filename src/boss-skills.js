@@ -53,19 +53,25 @@ export function skillDue(battle, foe, skill, turn) {
 }
 
 /** What does `foe` do with its moves this turn?  Pure: returns null (a normal attack) or
- *  { skill, mode:'warn'|'run', turn, noAttack }.  game.js applies it (applySkillPlan) and counts the turn. */
-export function planSkill(battle, foe) {
+ *  { skill, mode:'warn'|'run', turn, act, noAttack }.  game.js applies it (applySkillPlan) and counts the act.
+ *  F3: a foe can act several times in one round (battle-turns.js).  Every number of `when` (firstAct / everyActs / gap) and the warning are counted in ROUNDS of the foe
+ *  (`turn` = floor(acts done / acts per round) + 1, so with one act per round nothing changes), `act` = the plain act counter.  A warned move is used on the first act
+ *  of a LATER round - the player always gets the rest of the round (every team member's turn) to answer, however many times the boss acts. */
+export function planSkill(battle, foe, perRound = 1) {
   if (!hasSkills(foe)) return null;
-  const sk = skillState(foe), turn = sk.turns + 1;
+  const sk = skillState(foe), per = Math.max(1, Math.round(perRound) || 1), act = sk.turns + 1, turn = Math.floor(sk.turns / per) + 1;
   if (sk.pending) {
     const skill = foe.skills.find(s => s.id === sk.pending);
-    if (skill) return { skill, mode:'run', turn, noAttack:skill.kind === 'summon' || skill.kind === 'heal' };
-    sk.pending = null; sk.pendingLabel = null;
+    if (skill) {
+      if (sk.pendingAt != null && turn <= sk.pendingAt) return null;   // still the round of the warning: a normal attack, the move waits for the next round
+      return { skill, mode:'run', turn, act, noAttack:skill.kind === 'summon' || skill.kind === 'heal' };
+    }
+    sk.pending = null; sk.pendingLabel = null; sk.pendingAt = null;
   }
   for (const skill of foe.skills) {
     if (!skillDue(battle, foe, skill, turn)) continue;
-    if ((skill.warn ?? 1) > 0) return { skill, mode:'warn', turn, noAttack:!!skill.charge };
-    return { skill, mode:'run', turn, noAttack:skill.kind === 'summon' || skill.kind === 'heal' };
+    if ((skill.warn ?? 1) > 0) return { skill, mode:'warn', turn, act, noAttack:!!skill.charge };
+    return { skill, mode:'run', turn, act, noAttack:skill.kind === 'summon' || skill.kind === 'heal' };
   }
   return null;
 }

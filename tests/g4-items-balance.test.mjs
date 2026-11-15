@@ -10,6 +10,7 @@ import { actorStanding } from '../src/actor-recovery.js';
 import { meleeSwing, weaponOnHit, weaponCooldownState, weaponEffectLines } from '../src/weapons.js';
 import { setLang, t, englishKeys } from '../src/i18n.js';
 import { readFileSync } from 'node:fs';
+import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: legacy benchmark numbers belong to the old one-turn-each order (the live fights are measured in the F3 report)
 
 globalThis.Image ??= class {};
 globalThis.document ??= { documentElement:{} };
@@ -183,9 +184,9 @@ test('G4 enemy atk: cyber breach and the final-line waves hit harder than before
   fin.forEach((atk, i) => { assert.ok(atk[0] > OLD_FINAL[i][0] && atk[1] > OLD_FINAL[i][1], `final wave ${i + 1}`); });
   // other zones' breach fights untouched
   const atks = (zone, key) => ZONE_EVENTS[zone].find(e => e.k === key).waves.map(w => w[0].atk);
-  assert.deepEqual(atks('th', 'frontierBreach'), [[6, 13], [6, 13], [6, 13], [28, 45]]);   // Z1-EVENTS: 3 waves at the old demon atk · BOSS-SKILLS set A: the border boss hits [28,45] (was [10,16]) with 360 hp and his moves
-  assert.deepEqual(atks('asia', 'asiaRageBreach'), [[8, 13], [9, 14], [9, 14], [12, 20]]);   // Z2-EVENTS: 3 waves (the third is a mixed pair) · BOSS-SKILLS set A: Akura [12,20] (was [12,19])
-  assert.deepEqual(atks('west', 'westVampireBreach'), [[9, 14], [10, 15], [10, 15], [14, 21]]);   // BOSS-SKILLS set A: Valdric [14,21] (was [13,20])
+  assert.deepEqual(atks('th', 'frontierBreach'), [[6, 13], [6, 13], [6, 13], [25, 40]]);   // F3: the border boss hits [25,40] (was [28,45]) · Z1-EVENTS: 3 waves at the old demon atk · BOSS-SKILLS set A: the border boss hits [28,45] (was [10,16]) with 360 hp and his moves
+  assert.deepEqual(atks('asia', 'asiaRageBreach'), [[8, 13], [9, 14], [9, 14], [9, 15]]);   // F3: Akura [9,15] (was [12,20]) · Z2-EVENTS: 3 waves (the third is a mixed pair) · BOSS-SKILLS set A: Akura [12,20] (was [12,19])
+  assert.deepEqual(atks('west', 'westVampireBreach'), [[9, 14], [10, 15], [10, 15], [12, 18]]);   // F3: Valdric [12,18] (was [14,21]) · BOSS-SKILLS set A: Valdric [14,21] (was [13,20])
 });
 
 // ---------------------------------------------------------------- 5. weapon cooldown

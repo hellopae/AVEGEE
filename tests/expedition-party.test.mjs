@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
 import {initializeBossGuides,bossGuideCombatant,completeBossGuideStory} from '../src/boss-guides.js';
 import {isFrontierDuoBattle} from '../src/nira-combat.js';
+import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: this file tests mechanics on the old one-turn-each order (tests/battle-turns.test.mjs covers the new rule)
 const setup=(zone='th')=>{
  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
  g.zoneEvents.th={frontierBreach:'cleared'};g.hire('taan');g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.party.members=['taan','boon'];

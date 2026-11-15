@@ -15,6 +15,7 @@ const make = () => { const g = createGame(); g.save = () => true; g.onChange = (
   g.zoneTravel.visited = { th:true, asia:true, west:true, cyberhell:true }; g.zoneTravel.ports = { th:true, asia:true, west:true, cyberhell:true };
   g.merchantJourney = { asia:{ arrived:true }, west:{ arrived:true }, cyberhell:{ arrived:true } }; return g; };
 import {hireFor,hireAll} from './helpers/quest-hire.mjs';
+import { TURN_RULE } from '../src/battle-turns.js';
 const meet = (g, q) => { const p = questTarget(g, q); g.zone = p.zone; syncSceneZone(p.zone); hireFor(g, q); Object.assign(g.player, questTarget(g, q)); };
 const reload = g => { const h = make(); assert.ok(h.restore(JSON.parse(JSON.stringify(g.snapshot())))); h.save = () => true; h.onChange = () => {}; return h; };
 function win(g) {
@@ -206,6 +207,8 @@ test('a Kan of another zone cannot cast the move even if its record is forged; t
 // ---------- the moves ----------
 function turnOf(g, id) { const b = g.battle; for (let n = 0; n < 50; n++) { const t = g.beginBattleTurns(); if (t.side === 'ally' && t.id === id) return t; if (t.side === 'foe') g.runEnemyTurn(); else g.confirmBattleCommand('defend', 'you'); g.finishBattleCommand(); } throw Error('no turn for ' + id); }
 test('เนตรรอคำอนุญาต: no damage, the chosen foe turns on itself harder than Satori\'s normal hypnosis, the whole team gets a thin shield', () => {
+  const keepRatio = TURN_RULE.ratio; TURN_RULE.ratio = 0;   // F3: this check walks the old one-turn-each order to Kan's turn
+  try {
   const g = setup({ id:'sqKan', size:5, level:5, variant:'retry' }), b = g.battle, kan = g.battleActors().find(a => a.k === 'kan');
   for (const f of b.foes) f.atk = [1, 2];
   for (let n = 0; n < 40; n++) { const t = g.beginBattleTurns(); if (t.side === 'ally' && t.id === kan.id) break; if (t.side === 'foe') g.runEnemyTurn(); else g.confirmBattleCommand('defend', 'you'); g.finishBattleCommand(); }
@@ -218,6 +221,7 @@ test('เนตรรอคำอนุญาต: no damage, the chosen foe turn
   // the reflected hit really lands on the foe itself, harder than its own roll range allows from a plain hit
   g.finishBattleCommand(); for (let n = 0; n < 40 && foe.confuse > 0; n++) { const t = g.beginBattleTurns(); if (t.side === 'foe') g.runEnemyTurn(); else g.confirmBattleCommand('defend', 'you'); g.finishBattleCommand(); }
   assert.ok(foe.hp < hp || foe.hp <= 0, 'the foe hurt itself');
+  } finally { TURN_RULE.ratio = keepRatio; }
 });
 test('คำฝากถึงมือ: heals every ally, clears rope/gauze, gives a small attack buff, and still works for a sealed Grace', () => {
   const g = setup({ id:'sqBoon', size:5, level:5, variant:'retry' }), b = g.battle, boon = g.battleActors().find(a => a.k === 'boon');
@@ -292,7 +296,7 @@ test('UI: the battle menu lists quest moves next to the trained one and wide mov
 test('cache-busting: every changed module moved to the 20261110-questrewards release string (import map + entry script)', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const m of ['game', 'ui', 'battle-fx-map', 'battle-turns', 'battle-result', 'combat-skills', 'combat-skill-assets', 'side-quests', 'quest-panels', 'e1-content', 'i18n'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?"/);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?"/);
   assert.ok(!/src\/(game|ui)\.js\?v=20261110-battlefx/.test(html), 'no stale game/ui release left');
 });

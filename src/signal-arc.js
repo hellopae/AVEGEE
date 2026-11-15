@@ -5,11 +5,12 @@ export const signalStory = (key, phase) => key === 'cyberSignal' ? `cyber-signal
 // party-size curve of the hypnotised lord (team of 3 / 5 / 7): fitted by scripts/solve-boss-skills.mjs (first try, team of 3, ~67 %; the real teams of the zone about the same)
 const SIGNAL_SCALE = { th:{ hp:[1,1,1], atk:[1,1,1] }, asia:{ hp:[1,2.29,2.5], atk:[1,1.3,1.3] }, west:{ hp:[1,1,2.87], atk:[1,1.3,1.5] }, cyberhell:{ hp:[1,1,2.06], atk:[1,1.3,1.5] } };
 const SIGNAL_SKILLS = { th:'tanthasura', asia:'akura', west:'valdric', cyberhell:'trojan9' };
+// F3 (15 Nov): boss atk x0.66-0.85 (was 32-49 / 25-39 / 15-24 / 30-46): the enemy side now acts as often as the team (battle-turns.js); fitted back to the same first-try win %
 const configs = [
-  ['cyberhell','โทรจัน-9',340,[32,49],11,150,{holyWater:2},0],   // BOSS-SKILLS set A: boss hp / atk were 170 / 18-28, 140 / 13-20, 175 / 13-20, 190 / 14-21 (all won 100 %)
-  ['th','ทัณฑสูร',210,[25,39],0,120,{bladeShard:2,lotus:1},8],
-  ['asia','อากุระ',263,[15,24],6,140,{health:2},8],
-  ['west','วาลดริก',285,[30,46],10,160,{holyWater:1,lotus:1},8],
+  ['cyberhell','โทรจัน-9',340,[23,36],11,150,{holyWater:2},0],   // BOSS-SKILLS set A: boss hp / atk were 170 / 18-28, 140 / 13-20, 175 / 13-20, 190 / 14-21 (all won 100 %)
+  ['th','ทัณฑสูร',210,[16,26],0,120,{bladeShard:2,lotus:1},8],
+  ['asia','อากุระ',263,[12,19],6,140,{health:2},8],
+  ['west','วาลดริก',285,[25,39],10,160,{holyWater:1,lotus:1},8],
 ];
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
   k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?7:0,

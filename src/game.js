@@ -22,7 +22,8 @@ import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dung
 import {retreatS} from './dungeon-chase.js?v=l5';
 import { routeBossCave, routeCaptainCave, captainCaveForZone } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
-import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
+import {foeFit} from './foe-turn-fit.js';
+import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
@@ -3673,6 +3674,8 @@ const API = {
       ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : [])];
   },
   battleTimeline() { return combatTimeline(this); },
+  /** F3: how many turns this foe gets in one round (1 = the old rule) - boss moves count their timing in rounds */
+  foeActsPerRound(id) { return foeTurnsOf(this, id); },
   currentBattleTurn() { return activeCombatUnit(this); },
   beginBattleTurns() {
     this.prepareEncounter();
@@ -3695,7 +3698,7 @@ const API = {
   /** BOSS-SKILLS: the boss announces a move it will use on its next turn (warning tag on the foe + banner; the player has a whole round to answer). */
   announceFoeSkill(B, foe, plan, say) {
     const sk = skillState(foe), sp = plan.skill, lang = getLang();
-    sk.pending = sp.id; sk.pendingLabel = sp.name;
+    sk.pending = sp.id; sk.pendingLabel = sp.name; sk.pendingAt = plan.turn;
     const text = pickText(sp.warnText, lang) || pickText(sp.name, lang);
     B.skillNotice = { phase:'warn', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };
     B.talk = text; say(`⚠ ${foe.who}: ${text}`);
@@ -3703,10 +3706,10 @@ const API = {
   /** BOSS-SKILLS: a boss turn with no attack in it - the charge turn of a warned move, a summon, or a heal. */
   runFoeSkillTurn(B, foe, plan, say) {
     const sk = skillState(foe), sp = plan.skill, lang = getLang();
-    sk.turns = plan.turn;
+    sk.turns = plan.act;
     B.dmg.enemyHits = []; B.dmg.hitActors = []; B.dmg.skillOnly = true;
     if (plan.mode === 'warn') { this.announceFoeSkill(B, foe, plan, say); return; }
-    sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;
+    sk.pending = null; sk.pendingLabel = null; sk.pendingAt = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = plan.turn;
     const text = pickText(sp.useText, lang);
     B.skillNotice = { phase:'use', foeId:foe.id, skillId:sp.id, name:pickText(sp.name, lang), text };
     if (text) B.talk = text;
@@ -4435,7 +4438,7 @@ const API = {
         const groupVictims=B.foes.filter(f=>f.hp>0&&f.id!==foe.id);
         const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length]
           : enemyOnly&&foe.confuseKind==='group'&&groupVictims.length?groupVictims[0]:foe;
-        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));
+        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));   // F3: a confused foe's blow on itself is NOT made lighter: confusion lasts a fixed number of that foe's turns, the total stays what it was
         if (!foe.confuse) {delete foe.confuseMultiplier;delete foe.confuseKind;}
         return { attackerId:foe.id, id:victim.id, damage };
       });
@@ -4470,14 +4473,15 @@ const API = {
       counter.stun--;
       say('ศัตรูถูกผนึกน้ำแข็ง ขยับไม่ได้ทั้งตา');
     }
-    else if ((skillPlan = planSkill(B, counter)) && skillPlan.noAttack) {
+    else if ((skillPlan = planSkill(B, counter, this.foeActsPerRound(counter.id))) && skillPlan.noAttack) {
       this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack
     }
     else {
-      const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
+      const blow = Math.round(foeAtkRoll() * this.teamPressure(B) * foeFit(B, this.battleActors().length));   // F3: foe-turn-fit.js corrects the blow per fight and team size                     // the foe's full blow: boss moves (group / heavy) are built on it
+      const normal = Math.round(blow * foeHitScale(this.foeActsPerRound(counter.id)));   // F3: an ordinary attack of a foe with several turns a round is lighter per turn
       const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
       // A group strike must not apply the single-target team-pressure bonus to every ally.
-      const groupBase = Math.round(normal / this.teamPressure(B));
+      const groupBase = Math.round(blow / this.teamPressure(B));
       let ultimate = B.kind === 'zoneBoss' && counter.boss && !hasSkills(counter)   // BOSS-SKILLS: a boss with its own moves does not also use the old unwarned rhythm
         ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp,bossAct}, groupBase) : null;
       // Story foes use their own cutscene when their stronger counterattack
@@ -4520,12 +4524,12 @@ const API = {
           ultimate = { name:pickText(sp.name, getLang()), image:sp.image || BOSS_ULTIMATE[B.zone || this.zone]?.image, damage:Math.round(groupBase * (sp.power ?? .8)), skill:sp.id };
           B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };
         } else if (skillPlan.mode === 'run' && sp.kind === 'heavyHit') {
-          heavy = { skill:sp, damage:Math.round(normal * (sp.power ?? 1.6)) };
+          heavy = { skill:sp, damage:Math.round(blow * (sp.power ?? 1.6)) };
           B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };
         }
-        if (skillPlan.mode === 'run') { sk.pending = null; sk.pendingLabel = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = skillPlan.turn; }
+        if (skillPlan.mode === 'run') { sk.pending = null; sk.pendingLabel = null; sk.pendingAt = null; sk.used[sp.id] = (sk.used[sp.id] || 0) + 1; sk.lastUse[sp.id] = skillPlan.turn; }
         else this.announceFoeSkill(B, counter, skillPlan, say);
-        sk.turns = skillPlan.turn;
+        sk.turns = skillPlan.act;
       } else if (hasSkills(counter)) skillState(counter).turns++;
       const d = ultimate ? ultimate.damage : heavy ? heavy.damage : normal;
       if (ultimate) {
