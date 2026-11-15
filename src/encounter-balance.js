@@ -72,3 +72,12 @@ for (const [key, sizes] of Object.entries(BATTLE_FX_FRONTIER_ATK)) for (const [s
   const row = ENCOUNTER_BALANCE[key][size];
   for (const field of ['atk', 'atkLow', 'atkHigh']) if (row[field] != null) row[field] = +(row[field] * m).toFixed(2);
 }
+
+// BOSS-SKILLS set A (15 Nov): the zone bosses of Asia and West (Lian Gang / Severin, built in game.js startZoneBoss) got warned moves that replace the old unwarned cutscene rhythm;
+// the owner wants them harder.  Final rows per team size (hp / atk multipliers incl. the BATTLE-FX split above), fitted one size at a time by scripts/solve-boss-skills.mjs on the
+// production sim: the trained team (all moves unlocked) wins ~70-82 %, the fight lasts 6-7 rounds.  (Before: 86-96 % trained, 2-4 rounds of the old rhythm.)
+export const BOSS_SKILLS_ROWS = Object.freeze({
+  'asia:boss': { 3:{ hp:1.95, atk:.739 }, 4:{ hp:1.95, atk:.889 }, 5:{ hp:2.145, atk:.825 } },
+  'west:boss': { 3:{ hp:.845, atk:.737 }, 4:{ hp:1.3, atk:.745 }, 5:{ hp:1.3, atk:.739 }, 6:{ hp:1.651, atk:.769 } },
+});
+for (const [key, sizes] of Object.entries(BOSS_SKILLS_ROWS)) for (const [size, v] of Object.entries(sizes)) Object.assign(ENCOUNTER_BALANCE[key][size], v);

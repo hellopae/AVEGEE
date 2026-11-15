@@ -58,12 +58,14 @@ import { DEVA_MAP } from './deva-map.js';
 import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t, getLang } from './i18n.js';
-import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';   // BOSS-SKILLS: data-driven boss moves
+import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';
+import { BOSS_SKILLS } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
+const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
 export const DEFEND_DAMAGE_RATIO = 0.5;
 /** L2: battle kinds the team may run away from (everything else is a boss / story / event fight). One list, used by battleAct and the UI. */
@@ -3027,6 +3029,8 @@ const API = {
     }
     prepareBattle(this.battle, hp - (this.miniGoals[z.k]?.earned ? 24 : 0), hp);
     this.battle.foes[0].boss = true;
+    const zoneMoves = BOSS_SKILLS[ZONE_BOSS_SKILL_KEY[z.k]];   // BOSS-SKILLS set A: Lian Gang / Severin (and the same table for the other zones' boss cards)
+    if (zoneMoves) this.battle.foes[0].skills = structuredClone(zoneMoves);
     this.prepareEncounter(); this.onChange();
     return this.battle;
   },
@@ -3222,7 +3226,7 @@ const API = {
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
       return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
-        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
+        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...((entry.skillsEach ? entry.skillsEach[i] : entry.skills) ? { skills:structuredClone(entry.skillsEach ? entry.skillsEach[i] : entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
     }));
   },
@@ -3529,7 +3533,7 @@ const API = {
     const devaHp = scaleFoeHp('th', event.foe.hp, 'boss');   // ชุด 28B
     const foe = { id:'deva-test', who:BOSS_NAMES.th.tester, sub:t('event.devaTest.sub'),
       sp:event.foe.sp, boss:true, hp:devaHp, maxHp:devaHp,
-      atk:event.foe.atk, stun:0, confuse:0 };
+      atk:event.foe.atk, stun:0, confuse:0, ...(event.foe.skills ? { skills:structuredClone(event.foe.skills) } : {}) };   // BOSS-SKILLS: Arunadet's mirror flash
     this.zoneEvents.th.devaTest = 'active';
     this.fights++;
     this.battle = prepareBattle({ kind:'devaTest', zone:'th', foes:[foe],
@@ -3548,6 +3552,7 @@ const API = {
         return { id:`breach-${wave}-${group}-${i}`, who:boss ? BOSS_NAMES.th.frontier : kind.name,
           sub:boss ? t('event.frontierBreach.bossSub') : `ระลอก ${wave}/${demonWaves}`,
           sp:boss ? entry.sp : kind.img, boss,
+          ...(entry.skills ? { skills:structuredClone(entry.skills) } : {}),   // BOSS-SKILLS: Tanthasura's moves
           hp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), maxHp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), atk:entry.atk, stun:0, confuse:0 };
       }));
   },
@@ -3706,7 +3711,7 @@ const API = {
     if (text) B.talk = text;
     if (sp.kind === 'summon') {
       const zone = B.zone || this.zone;
-      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event') });
+      const made = summonFoes(B, foe, sp, { scaleHp:hp => scaleFoeHp(zone, hp, 'event'), scaleAtk:atk => scaleFoeAtk(zone, atk, 'event'), lang:getLang() });
       B.dmg.summoned = made.map(f => f.id);
       say(`${foe.who}ใช้${pickText(sp.name, lang)} — เรียก ${made.length} ตนลงสนาม`);
     } else if (sp.kind === 'heal') {
@@ -4441,7 +4446,7 @@ const API = {
       const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
       // A group strike must not apply the single-target team-pressure bonus to every ally.
       const groupBase = Math.round(normal / this.teamPressure(B));
-      let ultimate = B.kind === 'zoneBoss' && counter.boss
+      let ultimate = B.kind === 'zoneBoss' && counter.boss && !hasSkills(counter)   // BOSS-SKILLS: a boss with its own moves does not also use the old unwarned rhythm
         ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp,bossAct}, groupBase) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.

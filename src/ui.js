@@ -4005,6 +4005,7 @@ function openBattle(after) {
       ? ['fire',...POWERS.filter(p => ['ice','hypno'].includes(p.k) && !g.powerLocked(p)).map(p => p.k),...['flameCharge','windFan','rage','valkyrieSpear','cooldownClock'].filter(k => g.abilities?.[k])].map(k => actionCutsceneSrc(k))
       : [actor.k === 'nira' ? niraHealingCutscene(g.zone) : crewCutsceneSrc(crewBattleKey(actor))?.src]);
     if (g.battle?.eventKey === 'thBorderBoss') sources.push('img/zone-boss-cutscene.webp', ...BREACH_ART.flameCharge);   // case 15: his last move + Yama's closing move
+    sources.push(...(g.battle?.foes || []).flatMap(f => (f.skills || []).map(s => s.image).filter(Boolean)));   // BOSS-SKILLS: the full-screen cards of the foes' moves are decoded before the first one is used
     void battleCutscenes.warm([...sources, ...g.battleActors().flatMap(a => [skillForActor(a), ...questSkillsForActor(a).filter(k => g.skillUnlocked(a, k))].flatMap(k => skillScenes(k, a.homeZone === 'global' ? g.zone : a.homeZone || g.zone)))]);
   };
   warmBattleCutscenes();

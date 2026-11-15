@@ -11,6 +11,7 @@
 //
 // A "story case" is a named case that is put at the head of the queue when the count is reached (the same mechanism as Zone 1, z1-events.js).
 // This module is data only: it imports nothing from the game, so z1-events.js / story.js / data.js can all read it without a cycle.
+import { BOSS_SKILLS } from './boss-skills-data.js';
 import { Z2_STORIES_RAW, WUKONG_CAMEO, CASE_APEELDER, CASE_AKURA, CASE_SATORIFATHER, CASE_DESERTER, CASE_CHAINCMD, CASE_FAKECUP, CASE_A2, CASE_GRANARYSISTER } from './z2-events-text.js';
 export { WUKONG_CAMEO };
 
@@ -78,9 +79,9 @@ export const Z2_STORIES = Object.freeze({
 // Notice windows (Rae N3-1 ... N15-1) - game.js queueNotice / ackNotice · ui.js openStoryNotice. `detail` = shown when the button is pressed.
 const BASE_NOTICES = {
   'z2-kuroha-wait':{ title:'เทวดาผู้ตรวจรอท่านอยู่', text:'คุโรฮะ ผู้ตรวจแห่งวายุ รออยู่ที่ลานหน้าศาลเพื่อทดสอบท่าน เตรียมทีมให้พร้อมแล้วเดินไปคุยกับเขา', button:'รับทราบ', art:DEVA_INTRO },
-  'z2-ape-arrive':{ title:'วิญญาณจากเขาฮั้งกัวซัน', text:'วิญญาณลิงเฒ่าจากเขาฮั้งกัวซันมาถึงคิวพิจารณา ตามบัญชีระบุว่าต้องรับโทษ แต่รอยหมึกในแฟ้มดูไม่น่าไว้ใจ โปรดไต่สวนอย่างรอบคอบ', button:'เริ่มไต่สวน', art:A('soul-ape-elder-asia-profile') },
-  'z2-ape-phantom':{ title:'พบรหัสผู้แก้ที่ไม่มีในทะเบียนอีกครั้ง', text:'นิราพบว่าแฟ้มฝูงลิงเขาฮั้งกัวซันถูกแก้ด้วยรหัสเดียวกับแฟ้มนางสีดา คือ [PHANTOM-404] เพิ่มบันทึกลงสมุดแล้ว', button:'ดูบันทึก',
-    detail:'PHANTOM-404 (ครั้งที่ 2): ช่องวันตายในแฟ้มฝูงลิงเขาฮั้งกัวซันถูกแก้ด้วยมือเดียวกับแฟ้มนางสีดา วิญญาณยังไม่ถึงกำหนด นิราแก้บัญชีคืนแล้วและจะตรวจแฟ้มอื่นต่อ', art:Z2_ART.apePhantom },
+  'z2-ape-arrive':{ title:'วิญญาณจากเขาฮวยก๊วย', text:'วิญญาณลิงเฒ่าจากเขาฮวยก๊วยมาถึงคิวพิจารณา ตามบัญชีระบุว่าต้องรับโทษ แต่รอยหมึกในแฟ้มดูไม่น่าไว้ใจ โปรดไต่สวนอย่างรอบคอบ', button:'เริ่มไต่สวน', art:A('soul-ape-elder-asia-profile') },
+  'z2-ape-phantom':{ title:'พบรหัสผู้แก้ที่ไม่มีในทะเบียนอีกครั้ง', text:'นิราพบว่าแฟ้มฝูงลิงเขาฮวยก๊วยถูกแก้ด้วยรหัสเดียวกับแฟ้มนางสีดา คือ [PHANTOM-404] เพิ่มบันทึกลงสมุดแล้ว', button:'ดูบันทึก',
+    detail:'PHANTOM-404 (ครั้งที่ 2): ช่องวันตายในแฟ้มฝูงลิงเขาฮวยก๊วยถูกแก้ด้วยมือเดียวกับแฟ้มนางสีดา วิญญาณยังไม่ถึงกำหนด นิราแก้บัญชีคืนแล้วและจะตรวจแฟ้มอื่นต่อ', art:Z2_ART.apePhantom },
   'z2-satori-arrive':{ title:'วิญญาณจากตระกูลของซาโตริ', text:'วิญญาณที่ถึงคิวคือบิดาของซาโตริ ขุนนางผู้ถูกกล่าวหาว่าโกงกินบ้านเมือง ซาโตริขอพบท่านก่อนเริ่มคดี', button:'ฟังซาโตริ', art:A('soul-satori-father-asia-profile') },
   // Rae N11-5 / N11-6: the window after Akura has fallen (leads to the dais) and the one after his sentence (he is back in the cave, can be talked to)
   'z2-akura-to-dais':{ title:'อากุระยอมเดินไปแท่น', text:'อากุระพ่ายแล้ว เขาไม่ขอให้ใครล่าม และเลือกเดินไปที่แท่นตัดสินด้วยตัวเอง', button:'ไปที่แท่น', art:'img/Asia/boss-frontier-asia.webp' },
@@ -97,7 +98,7 @@ export const Z2_TEXT = Object.freeze({
     go:{ th:'รับการทดสอบ', en:'Take the test' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Test again' }, banner:{ th:'ศึกทดสอบแห่งวายุ · คุโรฮะ', en:'Wind test · Kuroha' },
     win:{ title:'ผ่านการทดสอบของคุโรฮะ', text:'ท่านผ่านการทดสอบของคุโรฮะ ลมสงบลงแล้ว' }, lose:{ title:'ลมสงบชั่วคราว', text:'คุโรฮะเก็บพัดไว้ก่อน ท่านตั้งหลักแล้วลองอีกครั้งได้' } },
   wukong:{ title:{ th:'หงอคงบุกลงมาแล้ว', en:'Wukong has come down' },
-    alert:{ th:'เจ้าแห่งเขาฮั้งกัวซันลงมาทวงบัญชีของฝูงลิง เขาไม่ใช่ศัตรูของยมโลก แต่โกรธแทนพวกพ้อง และจะไม่ฟังจนกว่าจะเห็นฝีมือท่าน', en:'The lord of the Mountain of Flowers and Fruit has come for his troop\'s ledger. He is no enemy of the underworld, only angry for his own - and he will not listen until he sees your skill.' },
+    alert:{ th:'เจ้าแห่งเขาฮวยก๊วยลงมาทวงบัญชีของฝูงลิง เขาไม่ใช่ศัตรูของยมโลก แต่โกรธแทนพวกพ้อง และจะไม่ฟังจนกว่าจะเห็นฝีมือท่าน', en:'The lord of the Mountain of Flowers and Fruit has come for his troop\'s ledger. He is no enemy of the underworld, only angry for his own - and he will not listen until he sees your skill.' },
     go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'สู้อีกครั้ง', en:'Fight again' }, banner:{ th:'ศึกรักษาบัญชี · หงอคง', en:'Keeping the ledger · Wukong' },
     lines:{ start:'หงอคง: "ลงมือเลย ข้าไม่อยากให้เจ้าบอกทีหลังว่าข้ายังไม่ได้ใช้แรง"', half:'หงอคง: "มือเจ้าไม่เบา! ข้ายังไม่เคยเจอผู้ถือบัญชีที่ยืนได้นานเท่านี้"' },
     win:{ title:'หงอคงหยุดมือ', text:'หงอคงวางไม้เท้าลงแล้ว เขายอมฟังนิราอ่านบัญชีของฝูงลิงต่อหน้า' }, lose:{ title:'หงอคงรอท่านอยู่', text:'หงอคงหยุดไม้เท้าไว้ก่อน ท่านตั้งหลักแล้วลองอีกครั้งได้' } },
@@ -224,31 +225,9 @@ export const Z2_CASES = Object.freeze([APE_CASE, SATORI_CASE, ...Z2_KIN.filter(k
 export const Z2_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z2_KIN.map(k => [k.k, k])));
 /** The old A2 (existing case) with Rae's rewrite: the soul keeps the case key 'A2', only the wording changes (cases-asia.js uses this). */
 export const A2_REWRITE = Object.freeze({ ...CASE_A2 });
-/** BOSS-SKILLS (14 Nov, owner: "ปรับให้ยากขึ้น เพิ่มท่าไม้ตาย เป่าขนเพิ่มลูกน้อง โจมตีหมู่ เพิ่มความแรง"): the special moves of Wukong (case 7) and of the Gate Guard's test, as DATA for src/boss-skills.js.
- *  TEMPORARY wording (names, warning and "used" lines are Toby's placeholders - Rae to polish, list in Output/Toby/2026-11-14-avegee-wukong-harder.md).
- *  data.js copies these onto the foe definitions (`skills`). Numbers come from scripts/sim-z2-events.mjs. */
-export const Z2_BOSS_SKILLS = Object.freeze({
-  wukong:Object.freeze([
-    { id:'hairClones', kind:'summon', warn:1,
-      name:{ th:'เป่าขนแยกร่าง', en:'Hair-clone blast' },
-      warnText:{ th:'หงอคงถอนขนขึ้นมาหนึ่งกำ เตรียมเป่าเรียกร่างแยก!', en:'Wukong plucks a tuft of hair, ready to blow out clones!' },
-      useText:{ th:'หงอคง: "ออกมา พวกเรา!"', en:'Wukong: "Come out, all of you!"' },
-      when:{ hpBelow:.8, firstAct:2, everyActs:5, maxUses:2 },
-      summon:{ count:[2, 3], hp:26, atk:[6, 10], sp:'boss-wukong-clone-asia', name:'ร่างแยกหงอคง', sub:'ร่างแยกจากขน', max:3 } },
-    { id:'staffSweep', kind:'groupHit', warn:1, power:.75,
-      name:{ th:'กระบองกวาดสิบทิศ', en:'Ten-direction sweep' },
-      warnText:{ th:'หงอคงหมุนกระบองรอบตัว — รอบหน้าจะกวาดทั้งทีม!', en:'Wukong spins his staff — next turn it sweeps the whole team!' },
-      useText:{ th:'หงอคง: "รับไปทั้งหมด!"', en:'Wukong: "Take it, all of you!"' },
-      when:{ firstAct:3, everyActs:3 }, image:Z2_ART.wukongSweep },
-  ]),
-  guardTest:Object.freeze([
-    { id:'gateSmash', kind:'heavyHit', warn:1, power:1.8,
-      name:{ th:'ฟาดประตูหนัก', en:'Gate smash' },
-      warnText:{ th:'ยักษ์ทวารบาลยกกระบองเหนือหัว — รอบหน้าจะฟาดหนัก!', en:'The Gate Guard raises his club overhead — a heavy blow comes next turn!' },
-      useText:{ th:'ยักษ์ทวารบาล: "ยืนให้มั่น!"', en:'Gate Guard: "Stand firm!"' },
-      when:{ firstAct:3, everyActs:3 } },
-  ]),
-});
+/** BOSS-SKILLS: the moves of Wukong (case 7) and of the Gate Guard's test.  The data of every boss moved to src/boss-skills-data.js (15 Nov, set A; Rae's polished lines);
+ *  this name stays because data.js / tests / sim scripts read it. */
+export const Z2_BOSS_SKILLS = Object.freeze({ wukong:BOSS_SKILLS.wukong, guardTest:BOSS_SKILLS.gateGuardTest });
 
 /** The Akura trial: what Nira reads and what the verdict says (Rae 3.8). The arena shows these instead of the generic Zone 1 lines. */
 export const AKURA_TRIAL = Object.freeze({

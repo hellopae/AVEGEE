@@ -1,5 +1,6 @@
 import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES, Z2_BOSS_SKILLS } from './z2-events.js';
+import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -1909,14 +1910,14 @@ export const ZONE_EVENTS = {
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
       [{ kind:2, count:2, hp:36, atk:MOB.fightAtk }],
       [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],
-      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],
+      [{ name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:360, atk:[28,45], skills:BOSS_SKILLS.tanthasura }]],   // BOSS-SKILLS set A: was 90 / 10-16 (the Thai breach won 100 %); the encounter-balance row th:breach (hp x1.5, atk x1.8) still applies on top
     betweenWaveHeal:20, reward:{ coin:120, drop:1, ability:'teamJudgment' }, lose:{ hp:8 } },
   // Z1-EVENTS: the temple beggar is the 6th case; the deva test opens once he is judged.
   { k:'devaTest', atCases:6, requires:['prisonBreak'], mode:'single',
     title:{ th:'เทวดามาทดสอบ', en:'A deva comes to test you' },
     alert:{ th:'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมบาทน้อย',
       en:'A deva has heard of the new warden and has come to test them.' },
-    foe:{ sp:'boss-tester-th', hp:100, atk:[10,16] },
+    foe:{ sp:'boss-tester-th', hp:350, atk:[20,32], skills:BOSS_SKILLS.arunadet },   // BOSS-SKILLS set A: was 100 / 10-16 (won 100 % in 2 rounds); first try, team of 3 ~80 %
     reward:{ coin:90 }, lose:{ hp:9 } },
   // Z1-EVENTS: case 12 · Sita's ledger. Hanuman descends once her hearing is closed (game.js resolveSitaCase) and TESTS Yama - he is not an enemy.
   // Text: Rae (src/z1-events.js SITA). hp/atk: Toby's first numbers between the deva (case 6) and the elder brother (case 15) - no spec, tune freely.
@@ -1925,13 +1926,13 @@ export const ZONE_EVENTS = {
     alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',
       en:'Rama\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },
     go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },
-    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:120, atk:[11,17], boss:true },
+    foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[25,38], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %
     reward:{}, lose:{ hp:9 } },
   // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.
   { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',
     title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },
-    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[12,19], boss:true },
+    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[14,22], boss:true, skills:BOSS_SKILLS.yomathat },   // BOSS-SKILLS set A: atk was 12-19
       { kind:6, count:2, hp:52, atk:[7,12] }],
     reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } },
   challengeEvent('th', { betweenWaveHeal:20, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:150, weapon:'fang' } })],
@@ -1945,13 +1946,13 @@ export const ZONE_EVENTS = {
       reward:{ coin:90 } },
     { k:'asiaDevaTest', atCases:3, requires:['asiaPrisonFire'], mode:'single',
       title:Z2_TEXT.devaTest.title, alert:Z2_TEXT.devaTest.alert, go:Z2_TEXT.devaTest.go, retry:Z2_TEXT.devaTest.retry, banner:Z2_TEXT.devaTest.banner,
-      foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:130, atk:[11,18], boss:true },
+      foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:325, atk:[22,36], boss:true, skills:BOSS_SKILLS.kuroha, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.52,1.52] } },   // BOSS-SKILLS set A: was 130 / 11-18 (100 %); first try, team of 3 ~82 %
       openStory:'z2-kuroha-open', winStories:['z2-kuroha-win'], loseStory:'z2-kuroha-lose', win:Z2_TEXT.devaTest.win, loseText:Z2_TEXT.devaTest.lose,
       reward:{ coin:110, ability:'windFan' } },
     // hp/atk: Toby's first numbers between the deva test and the frontier boss - no spec, no balance run yet (tune freely).
     { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',
       title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,
-      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:Z2_BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)
+      foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[18,26], boss:true, skills:BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)
       winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
       reward:{ coin:140 }, lose:{ hp:9 } },
     // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).
@@ -1959,12 +1960,12 @@ export const ZONE_EVENTS = {
       title:Z2_TEXT.breach.title, alert:Z2_TEXT.breach.alert, banner:Z2_TEXT.breach.banner, lines:{ half:Z2_TEXT.breach.lines.half }, winStories:['z2-akura-down'],
       waves:[[{ kind:6, count:2, hp:46, atk:[8,13] }], [{ kind:7, count:2, hp:52, atk:[9,14] }],
         [{ kind:6, count:1, hp:38, atk:[9,14] }, { kind:7, count:1, hp:38, atk:[9,14] }],   // wave 3 (new in Z2-EVENTS): hp 56 -> 38 after scripts/sim-z2-breach-compare.mjs (size-3 first try 73 % -> ~88 %)
-        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
+        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:175, atk:[12,20], boss:true, skills:BOSS_SKILLS.akura, partyScale:{ hp:[1,1,1], atk:[1,1.28,1.28] } }]],   // BOSS-SKILLS set A: was 125 / 12-19
       betweenWaveHeal:18, reward:{ coin:150, ability:'bigFire' } },
     // The Guard's proving fight (Rae 7.1): opened by the hire button, never by the case count (atCases 999). Win = he joins; lose = try again.
     { k:'asiaGuardTest', atCases:999, mode:'single', guardTest:true,
       title:Z2_TEXT.guard.title, alert:Z2_TEXT.guard.alert, go:Z2_TEXT.guard.go, retry:Z2_TEXT.guard.retry, banner:Z2_TEXT.guard.banner,
-      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:Z2_BOSS_SKILLS.guardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %
+      foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:BOSS_SKILLS.gateGuardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %
       openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,
       reward:{ coin:0 }, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
@@ -1979,12 +1980,12 @@ export const ZONE_EVENTS = {
       alert:{ th:'ปีศาจทรงพลังบุกชายแดน ทำให้วิญญาณทั่วดินแดนหยุดนิ่ง! เดินลงชายแดนเพื่อปราบลูกน้องสองระลอก ช่วยยมทูตและ Guard ในทีมจากการสะกดจิต แล้วปราบแวมไพร์', en:'A powerful demon has invaded the frontier, freezing every spirit in the realm! Head down to defeat two minion waves, free your hypnotized party and Guard, then defeat the vampire.' },
       waves:[[{ kind:10, count:2, hp:55, atk:[9,14] }], [{ kind:10, count:2, hp:60, atk:[10,15] }],
         [{ crew:'taan', count:1, hp:65, atk:[10,15] }, { crew:'dam', count:1, hp:65, atk:[10,15] }],
-        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:150, atk:[13,20], boss:true }]],
+        [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[14,21], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20
       betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
     { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
       title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
       alert:{ th:'เทวดามาปราบแวมไพร์ แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
-      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },
+      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[24,36], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)
       reward:{ coin:130, ability:'valkyrieSpear' } },
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
@@ -1992,13 +1993,13 @@ export const ZONE_EVENTS = {
     { k:'cyberRescue', atCases:0, mode:'group',
       title:{ th:'ช่วยทัณฑ์และพ่อค้านรก', en:'Rescue Taan and the merchant' },
       alert:{ th:'เทวดาจับทัณฑ์กับพ่อค้านรกไว้ในคุก ต้องชนะจึงจะช่วยออกมาได้', en:'Devas imprisoned Taan and the merchant. Defeat them to free the captives.' },
-      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:105, atk:[12,19], boss:true }],
+      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[19,30], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],
       reward:{ coin:130, ability:'cooldownClock', releaseCaptives:true } },
     { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
       title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },
       alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
       waves:[[{ kind:11, count:2, hp:60, atk:[15,24] }], [{ kind:12, count:2, hp:65, atk:[17,26] }],
-        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[23,35], boss:true }]],
+        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:234, atk:[22,33], boss:true, skills:BOSS_SKILLS.trojan9, partyScale:{ hp:[1,1,1], atk:[.5,.8,1.02] } }]],   // BOSS-SKILLS set A: was 180 / 23-35
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach','signalClose'], mode:'waves',
@@ -2011,11 +2012,11 @@ export const ZONE_EVENTS = {
         [{ kind:15, count:2, hp:65, atk:[15,23] }],
         [{ kind:16, count:2, hp:70, atk:[16,24] }],
         [{ kind:16, count:2, hp:75, atk:[18,26] }],
-        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[18,27], boss:true }],
-        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[19,28], boss:true }],
-        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[20,30], boss:true }],
-        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[22,31], boss:true }],
-        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[23,34], boss:true }],
+        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:261, atk:[18,27], boss:true, skills:BOSS_SKILLS.yamaPossessed, partyScale:{ hp:[1,1,1], atk:[.58,.88,1.35] } }],
+        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:288, atk:[19,28], boss:true, skills:BOSS_SKILLS.zhaoWenPossessed, partyScale:{ hp:[1,1,1], atk:[1.09,1,.92] } }],
+        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:315, atk:[20,30], boss:true, skills:BOSS_SKILLS.halvarPossessed, partyScale:{ hp:[1,1,1], atk:[.75,.86,.98] } }],
+        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:342, atk:[22,31], boss:true, skills:BOSS_SKILLS.nexarPossessed, partyScale:{ hp:[1,1,1], atk:[.57,.78,1.07] } }],
+        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:264, atk:[23,34], boss:true, skills:BOSS_SKILLS.archonZero, partyScale:{ hp:[1,1,1], atk:[1.05,1.24,1.46] } }],
       ],
       // ชุด 28B: 25 → 40 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — บอส 4 ระลอกติดกันไม่มีจุดพักคั่น
       // ชุด 28E: 40 → 30 หลังมีน้ำมนต์กลางศึกและ HP ศัตรูอีเวนต์เพิ่มตามโซน (จำลองศึกสุดท้ายชนะ ~85%)
@@ -2026,12 +2027,12 @@ export const ZONE_EVENTS = {
 for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);
 ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
 
-// TODO: รอ Rae ตั้งชื่อจริง
+// BOSS-SKILLS (15 Nov): Rae's names (the zone 2 / zone 3 ones were swapped: the zone 2 picture is Lian Gang's chain-weight, the zone 3 one Severin's blue flame)
 export const BOSS_ULTIMATE = {
-  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.webp' },
-  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.webp' },
-  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.webp' },
-  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.webp' },
+  th: { name:BOSS_ULTIMATE_NAMES.th, image:'img/zone-boss-cutscene.webp' },
+  asia: { name:BOSS_ULTIMATE_NAMES.asia, image:'img/Asia/Boss Zone2-asia-cutscene.webp' },
+  west: { name:BOSS_ULTIMATE_NAMES.west, image:'img/West/Boss Zone3-cutscene.webp' },
+  cyberhell: { name:BOSS_ULTIMATE_NAMES.cyberhell, image:'img/CyberHell/Boss Zone4-cutscene.webp' },
 };
 // BATTLE-FX (10 พ.ย. 2569, คุณเป้: "บอสใช้ท่า cutscene ให้บ่อยขึ้น") — จังหวะใหม่นับจาก "ครั้งที่บอสโจมตีจริง" ของบอสตัวนั้น (foe.attacks)
 // เดิม: ใช้ได้เมื่อ HP บอส < 50% และห่างจากครั้งก่อน ≥ 4 ตาของทั้งสนาม (B.turn) → หลายศึกเห็นแค่ 0–1 ครั้ง

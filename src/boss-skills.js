@@ -11,7 +11,7 @@
 //     charge:false,                     // true = the warning turn is spent charging (the boss does not attack that turn)
 //     power:.8,                         // groupHit / heavyHit: multiple of the boss's normal hit
 //     image:'img/....webp',             // groupHit: the full-screen card (falls back to the zone's boss card)
-//     summon:{ count:[2,3], hp:30, atk:[5,8], sp:'boss-wukong-clone-asia', name:'ร่างแยก', max:3 },     // summon only
+//     summon:{ count:[2,3], hp:30, atk:[5,8], sp:'boss-wukong-clone-asia', name:{ th, en } (or a plain string), sub:{ th, en }, max:3 },     // summon only
 //     heal:{ pct:.25 },                 // heal only
 //   }
 //
@@ -71,7 +71,7 @@ export function planSkill(battle, foe) {
 }
 
 /** Make the summoned foes of one summon move (not yet scaled: the caller passes the zone's scaling functions).  Count is rolled from skill.summon.count. */
-export function summonFoes(battle, foe, skill, { scaleHp, scaleAtk, rand = Math.random }) {
+export function summonFoes(battle, foe, skill, { scaleHp, scaleAtk, rand = Math.random, lang = 'th' }) {
   const s = skill.summon || {}, sk = skillState(foe);
   const [lo, hi] = Array.isArray(s.count) ? s.count : [s.count ?? 2, s.count ?? 2];
   const room = Math.max(0, (s.max ?? 3) - livingSummons(battle, foe));
@@ -79,7 +79,7 @@ export function summonFoes(battle, foe, skill, { scaleHp, scaleAtk, rand = Math.
   const made = [];
   for (let i = 0; i < n; i++) {
     const hp = scaleHp(s.hp ?? 30);
-    made.push({ id:`${foe.id}-sum-${++sk.spawned}`, who:s.name || 'ลูกน้อง', sub:s.sub || 'ร่างแยก', sp:s.sp || foe.sp, boss:false, summoned:true, summonerId:foe.id,
+    made.push({ id:`${foe.id}-sum-${++sk.spawned}`, who:pickText(s.name, lang) || 'ลูกน้อง', sub:pickText(s.sub, lang) || 'ร่างแยก', sp:s.sp || foe.sp, boss:false, summoned:true, summonerId:foe.id,
       hp, maxHp:hp, atk:scaleAtk(s.atk || [5, 8]), stun:0, confuse:0, speed:s.speed ?? 10 });
   }
   battle.foes.push(...made);

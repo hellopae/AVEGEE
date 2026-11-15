@@ -27,11 +27,12 @@ export function scaleEncounter(battle, count) {
   const boss = battle.foes.find(f => f.boss), ordinary = battle.foes.find(f => !f.boss);
   if (boss) { boss.hp = Math.round(boss.hp * profile.hp); boss.maxHp = Math.round(boss.maxHp * profile.hp); }
   // BOSS-SKILLS: a foe may carry its own party-size curve: `partyScale:{ hp:[x3,x5,x7], atk:[x3,x5,x7] }` (multipliers for a team of 3 / 5 / 7, linear in between) - the data lives on the foe in data.js
-  if (boss?.partyScale) {
-    const ps = boss.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);
+  // (set A, 15 Nov: every boss foe that carries one - the two Lumen of the Zone 4 rescue share the same entry)
+  for (const b of battle.foes.filter(f => f.boss && f.partyScale)) {
+    const ps = b.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);
     const hpK = at(ps.hp), atkK = at(ps.atk);
-    boss.hp = Math.round(boss.hp * hpK); boss.maxHp = Math.round(boss.maxHp * hpK);
-    if (boss.atk) boss.atk = boss.atk.map(v => Math.max(1, Math.round(v * atkK)));
+    b.hp = Math.round(b.hp * hpK); b.maxHp = Math.round(b.maxHp * hpK);
+    if (b.atk) b.atk = b.atk.map(v => Math.max(1, Math.round(v * atkK)));
   }
   const source = ordinary || (boss && { ...boss, boss:false, hp:Math.max(1,Math.round(boss.maxHp / 4)), maxHp:Math.max(1,Math.round(boss.maxHp / 4)) });
   // Breach additions belong only to its boss wave; preserve earlier story waves.
