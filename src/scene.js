@@ -373,6 +373,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  const lateTags = [];   // F19: labels that must stay readable above everything in the actor layer (drawn right after it)
   // FB-UI 5 (owner 10 Nov): the judgement dais is sorted by its BACK edge (top of the back rail) - anyone walking on the ring road
   // behind the platform is drawn first and is covered by the dais; anyone on the platform, the stairs or in front is drawn after it.
   if(drawDais)at(daisDepthY(g.zone),drawDais);
@@ -431,13 +432,17 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if(arriving.has(s.id))return;
     const p = QUEUE_LINE[i];
     if (!p) return;
-    if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
     const qh = i === 0 ? SOUL_H * 1.12 : SOUL_H;
     spot_(p[0], p[1], qh);
-    shade(p[0], p[1], qh, c => drawSoul(c, p[0], p[1], qh, soulTime + s.id * 300,
+    // F19 (owner 15 Nov): the queue stands in the actor layer (sorted by its feet) and its labels are drawn after the whole layer -
+    // before, souls and their "waiting" tag were painted under the judgement dais, which cut the tag at the lowest step.
+    at(p[1], () => {
+      if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
+      shade(p[0], p[1], qh, c => drawSoul(c, p[0], p[1], qh, soulTime + s.id * 300,
              '#bfe9ff', s.sp || 7));
-    if(s.waited > 40) tag(ctx,p[0],p[1]-qh-10,t,['⏳ รอสอบสวน','#f7c371']);
-    if (frozen) tag(ctx, p[0], p[1]-SOUL_H-16, 0, ['!!!','#ff9a7a']);
+    });
+    if(s.waited > 40) lateTags.push(() => tag(ctx,p[0],p[1]-qh-10,t,['⏳ รอสอบสวน','#f7c371']));
+    if (frozen) lateTags.push(() => tag(ctx, p[0], p[1]-SOUL_H-16, 0, ['!!!','#ff9a7a']));
   });
 
   // วิญญาณที่เพิ่งออกหมายเดินไปสถานีตามเส้นทางที่หาไว้ใน game.js
@@ -781,6 +786,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+  lateTags.forEach(fn => fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
   if(town)drawTownNightEffects(ctx,t,reduced);
 
