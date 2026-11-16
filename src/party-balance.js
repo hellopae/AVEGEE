@@ -13,6 +13,8 @@ export function encounterProfile(battle, count) {
   const n = Math.max(3, Math.min(7, count));
   // BATTLE-FX: a frontier fight rolls its own 1-3 demons (battle.frontierCount, built in startFrontierBattle) so nothing is added by party size; an older saved fight without the field keeps the old rule
   if (battle.kind === 'frontier') return { hp:1, adds:battle.frontierCount ? 0 : Math.floor((n-3)/2), kind:'frontier' };
+  // T1b: the wandering ghosts (mob) and the resisting spirits (soul) have rows of their own (<zone>:mob / <zone>:soul) - hp / atk by team size
+  if (battle.kind === 'mob' || battle.kind === 'soul') return { hp:1, adds:0, kind:battle.kind };
   const breach = battle.kind === 'frontierBreach' || /Breach$/.test(battle.eventKey || '');
   if (breach) return { hp:interpolate(n,1,1.35,1.7), adds:Math.floor((n-3)/2), kind:'breach' };
   if (battle.eventKey === 'thBorderBoss') return { hp:interpolate(n,1,1.25,1.55), adds:n >= 7 ? 1 : 0, kind:'boss' };
@@ -40,7 +42,10 @@ export function scaleEncounter(battle, count) {
   const adds = profile.kind === 'breach' && !boss ? 0 : profile.adds;
   if (source) for (let i=0;i<adds;i++) battle.foes.push({ ...source, id:`c1-${wave}-${i}`, stun:0, confuse:0, speed:Math.min(8,source.speed || 8) });
   // Keep approach waves intact; hypnosis is its own solo-Yama enemy group.
-  const tuning = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)]?.[count];
+  const tuningRow = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)];
+  // T1b: the mob / soul rows are fitted for the team sizes a zone really has; any other size (a fallen team, a small team) takes the nearest fitted one
+  const nearest = row => { const sizes = Object.keys(row || {}).map(Number); return sizes.length ? row[sizes.reduce((a, b) => Math.abs(b - count) < Math.abs(a - count) ? b : a)] : undefined; };
+  const tuning = tuningRow?.[count] ?? (battle.kind === 'mob' || battle.kind === 'soul' ? nearest(tuningRow) : undefined);
   const split = battle.kind === 'frontier' && battle.frontierCount ? frontierSplit(count, battle.frontierCount) : null;   // share the tuned total out among the rolled demons
   if (tuning) for (const foe of battle.foes) {
     // Preserve existing pre-damage (e.g. evidence prep) while tuning full HP.

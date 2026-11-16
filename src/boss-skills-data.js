@@ -247,3 +247,32 @@ export const BOSS_ULTIMATE_NAMES = Object.freeze({
 });
 /** A fresh copy of the moves (a foe owns its list: game.js clones it, tests can edit a copy). */
 export const bossSkillsFor = key => BOSS_SKILLS[key] ? structuredClone(BOSS_SKILLS[key]) : undefined;
+
+// T1b (owner 16 Nov: "the ordinary spirits are not tuned - make them harder: group attacks, stronger blows, more turns"): the wandering ghosts of the map (`mob`) and the spirits that resist
+// at the court (`soul`) get two moves of the central rulebook (src/boss-skills.js) like a boss does - one hits the whole team, one is a heavy single blow - each announced one turn ahead.
+// `noCard:true` = no full-screen card for these small foes (the group move still shows its name and hits everybody).  The names / lines are TEMPORARY (Rae polishes them).
+// Strength and fight length of these foes are fitted per zone and team size by the `<zone>:mob` / `<zone>:soul` rows of encounter-balance.js (scripts/fit-t1b-crowd.mjs).
+export const CROWD_SKILLS = Object.freeze({
+  mob:Object.freeze([
+    { id:'wailSwarm', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('เสียงหอนระงม', 'Wailing Swarm'),
+      warnText:T('วิญญาณเหล่านั้นหอนขึ้นพร้อมกัน — รอบหน้าเสียงจะกระแทกทั้งทีม!', 'The ghosts begin to wail together — next turn the sound hits the whole team!'),
+      useText:T('เสียงหอนซัดใส่ทั้งทีม', 'The wail crashes over the whole team'),
+      when:{ firstAct:2, everyActs:4 } },
+    { id:'frenzyBlow', kind:'heavyHit', warn:1, power:1.7, name:T('ฟาดคลั่ง', 'Frenzied Blow'),
+      warnText:T('มันกำมือแน่นจนสั่น — รอบหน้าจะฟาดหนักใส่คนเดียว!', 'It clenches its fists until they shake — next turn a heavy blow lands on one of you!'),
+      useText:T('มันฟาดลงมาสุดแรง', 'It brings its fists down with everything it has'),
+      when:{ hpBelow:.7, firstAct:3, everyActs:3 } },
+  ]),
+  soul:Object.freeze([
+    { id:'curseChorus', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('คำสาปแช่งก้องห้อง', 'Chorus of Curses'),
+      warnText:T('เสียงสาปแช่งดังขึ้นเรื่อย ๆ — รอบหน้าจะกระแทกทั้งทีม!', 'The curses grow louder — next turn they crash over the whole team!'),
+      useText:T('เสียงสาปแช่งก้องใส่ทั้งทีม', 'The curses ring out over the whole team'),
+      when:{ firstAct:2, everyActs:4 } },
+    { id:'lastStand', kind:'heavyHit', warn:1, power:1.8, name:T('ฟาดสุดแรงเฮือกสุดท้าย', 'Last Desperate Blow'),
+      warnText:T('วิญญาณดวงนั้นสูดลมหายใจลึก — รอบหน้าจะฟาดสุดแรงใส่คนเดียว!', 'The spirit draws a deep breath — next turn it strikes one of you with all it has left!'),
+      useText:T('มันฟาดสุดแรงที่เหลืออยู่', 'It strikes with all the strength it has left'),
+      when:{ hpBelow:.55, firstAct:3, everyActs:3 } },
+  ]),
+});
+/** A fresh copy of the ordinary foes' moves (`mob` | `soul`). */
+export const crowdSkillsFor = kind => CROWD_SKILLS[kind] ? structuredClone(CROWD_SKILLS[kind]) : undefined;

@@ -34,7 +34,7 @@ test('every regional boss ultimate hits Yama, both companions and Guard; ordinar
  }
 });
 test('zone-one event boss uses its own cutscene rather than frontier artwork',()=>{
- const g=game();g.startBattle({id:99,who:'test',deserved:4});const B=g.battle;B.kind='zoneEvent';B.zone='th';B.eventKey='test';
+ const g=game();g.startBattle({id:99,who:'test',deserved:4});const B=g.battle;g.prepareEncounter();B.foes[0].skills=undefined;B.kind='zoneEvent';B.zone='th';B.eventKey='test';   // T1b: see new-battle-abilities
  B.foes[0].sp='zone-boss';B.foes[0].boss=true;B.foes[0].maxHp=1000;B.foes[0].hp=400;B.foes[0].atk=[10,10];
  g.battleAct('atk');assert.equal(B.ultimate.image,'img/zone-boss-cutscene.webp');
 });

@@ -2829,6 +2829,7 @@ function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverri
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
   const src = imageOverride || ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));   // imageOverride: Kittanate's picture for one story moment (case 15 closing move) - same card, same right-facing rule
+  if (ultimate?.noCard) return false;   // T1b: the small foes' group move has no card - its name + the hit effects carry it
   if (!src || !dlg.open) return false;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
@@ -5162,7 +5163,7 @@ function openBattle(after) {
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
             if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
-          }, nb.ultimate ? ACTION_CUT_MS + 120 : 780);
+          }, nb.ultimate && !nb.ultimate.noCard ? ACTION_CUT_MS + 120 : 780);
         }, COUNTER_WAIT_MS);
       }, Math.max(ACTION_CUT_MS, cutMs) + 120);
     };
@@ -5182,7 +5183,7 @@ function openBattle(after) {
         const attacker = b.foes.find(f => f.id === currentTurn.id);
         // A solo receiver is known without drawing an extra random target. Boss ultimates,
         // confusion, burns and skipped turns retain their existing choreography.
-        if (g.battleActors().length === 1 && attacker && !attacker.boss && !attacker.stun && !attacker.confuse && !attacker.burn) {
+        if (g.battleActors().length === 1 && attacker && !attacker.boss && !attacker.skills?.length && !attacker.stun && !attacker.confuse && !attacker.burn) {   // T1b: a foe with moves keeps the full choreography (banner / group hit)
           const image = foeImg(attacker.id), atlas = image && bossSpriteKey(image.getAttribute('src') || '', b.zone || g.zone);
           const durations = atlas && poseDurations(atlas), vitalsBeforeDash = vitalsOf(g);
           runDash({ side:'foe', key:attacker.id, targetImage:allyImg('you'),
@@ -5205,8 +5206,8 @@ function openBattle(after) {
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         fxHandled=true;
         sfx('hurt');paint();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
-        if(b.skillNotice&&!b.ultimate)showSkillBanner(b.skillNotice);      // BOSS-SKILLS: warning of a move / a heavy blow
-        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:b.skillNotice?2200:900);
+        if(b.skillNotice&&(!b.ultimate||b.ultimate.noCard))showSkillBanner(b.skillNotice);      // BOSS-SKILLS: warning of a move / a heavy blow (T1b: also the small foes' card-less group move)
+        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate&&!b.ultimate.noCard?ACTION_CUT_MS+120:b.skillNotice?2200:900);
       },600);
     }
     if (b.kind === 'dad' && !b.over && !authorityAttackScheduled) {

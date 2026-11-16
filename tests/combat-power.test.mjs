@@ -112,6 +112,7 @@ test('ระบบฝึก "แรง" (upgradeCrew) ยังเพิ่ม�
 // เดิมเช็คแพ้ชนะแค่จังหวะที่ยมบาทน้อยฟาดเอง ไม่เช็คซ้ำตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย
 test('สะกดจิตฆ่าศัตรูตายพอดี — ประกาศชนะทันทีในคอลเดียวกัน ไม่ต้องรอกดโจมตีอีกครั้ง', () => {
   const g = battleWith(['kan']);
+  g.prepareEncounter(); // T1b: the spirit's HP row is applied first, then the test sets its HP
   g.battle.foeHp = 5; // ต่ำกว่าดาเมจต่ำสุดที่สะกดจิตทำได้แน่นอน (BATTLE.foeAtk = [7,15])
   assert.equal(g.battleAct('crew:kan'), true);
   assert.equal(g.battle.over, 'win', 'ต้องชนะทันทีในคอลนี้ ไม่ใช่รอเทิร์นถัดไป');

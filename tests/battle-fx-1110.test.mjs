@@ -97,7 +97,7 @@ test('a real zone-boss fight shows the cutscene move on its 2nd and 4th attack, 
 test('other story bosses keep the old rule (under half HP, 4 turns apart): border lords, deva tests and possessed rulers do not move', () => {
   const g = game(); g.startBattle({ id: 99, who: 'x', deserved: 4 }); const B = g.battle;
   Object.assign(B, { kind: 'zoneEvent', zone: 'th', eventKey: 'test' });
-  Object.assign(B.foes[0], { boss: true, sp: 'zone-boss', maxHp: 1000, hp: 900, atk: [3, 3] }); B.youHp = B.youMax = 99999;
+  Object.assign(B.foes[0], { boss: true, sp: 'zone-boss', maxHp: 1000, hp: 900, atk: [3, 3], skills: undefined }); B.youHp = B.youMax = 99999;   // T1b: startBattle's spirit carries the ordinary foes' moves - this stand-in boss has none
   g.battleAct('atk'); g.battleAct('atk'); assert.equal(B.ultimate, null, 'attack 2 at 90 % HP: no cutscene move');
   B.foes[0].hp = 400; g.battleAct('atk'); assert.ok(B.ultimate, 'under half HP: the old rule fires');
   assert.equal(B.ultimate.damage, Math.round(Math.round(3 * 1) * 1.7) || B.ultimate.damage);

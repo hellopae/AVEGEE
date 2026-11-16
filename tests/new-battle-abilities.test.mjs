@@ -84,6 +84,7 @@ test('event hypnosis can be used before the old level gate', () => {
 test('event boss stronger counter exposes its cutscene metadata', () => {
   const g = battle();
   const b = g.battle;
+  g.prepareEncounter(); b.foes[0].skills = undefined;   // T1b: startBattle's spirit is balanced + carries the ordinary foes' moves - this stand-in boss is neither
   b.kind = 'zoneEvent';
   b.zone = 'asia';
   b.eventKey = 'asiaDevaTest';

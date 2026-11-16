@@ -33,7 +33,7 @@ export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}
   g.level=index+2;g.hp=g.hpMax=LEVELS[g.level-1].hpMax;g.mp=g.mpMax=LEVELS[g.level-1].mpMax;
   g.inventory={health:Math.ceil(size/2),holyWater:Math.ceil(size/2)};
   g.zoneEvents[zone]=Object.fromEntries(ZONE_EVENTS[zone].map(ev=>[ev.k,'cleared']));
-  if(zone==='th'&&kind!=='boss')g.zoneEvents.th.frontierBreach='pending';
+  if(zone==='th'&&kind!=='boss'&&!((kind==='mob'||kind==='soul')&&size>=4))g.zoneEvents.th.frontierBreach='pending';   // T1b: a team of 4 in zone 1 is the one after the breach (the gate keeper has joined)
   else g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'};
   g.abilities.bigFire=zone!=='th'||kind==='boss';
   g.abilities.teamJudgment=!!moves&&(zone!=='th'||kind==='boss');
@@ -46,6 +46,9 @@ export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}
     }
   }
   if(kind==='frontier')g.startFrontierBattle({kindIdx:0,level:1,id:'balance2'});
+  // T1b: the ordinary single foes - a wandering ghost of the zone's own pool (`mob`) and a resisting spirit at the court (`soul`, 'deserved' 3-6 = HP 54-108 before the zone factor)
+  else if(kind==='mob'){const pool=g.zoneDef().mobs;g.mobs.push({id:'sim-mob',x:0,y:0,hp:3,kind:pool[Math.floor(Math.random()*pool.length)]});const ga=g.guardActive;g.guardActive=()=>false;try{g.startMobBattle(g.mobs.length-1);}finally{g.guardActive=ga;}}   // the gate keeper's watch only blocks mobs on the map, not the fight itself
+  else if(kind==='soul')g.startBattle({id:900,who:'simulation',name:'simulation',deserved:3+Math.floor(Math.random()*4),resist:true,sp:1});
   else if(kind==='breach'&&fullBreach) {
     const key={th:'frontierBreach',asia:'asiaRageBreach',west:'westVampireBreach',cyberhell:'cyberBreach'}[zone];
     g.zoneEvents[zone][key]='pending';

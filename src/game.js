@@ -60,7 +60,7 @@ import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t, getLang } from './i18n.js';
 import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';
-import { BOSS_SKILLS } from './boss-skills-data.js';
+import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
@@ -2846,7 +2846,7 @@ const API = {
     const hp = scaleFoeHp(this.zone, Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv)));
     this.fights++;
     this.battle = {
-      kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',
+      kind: 'soul', zone: this.zone, soulId: soul.id, sex: soul.sex || 'm',   // T1b: `zone` so the balance rows (<zone>:soul) find the fight
       foeAtk: scaleFoeAtk(this.zone, BATTLE.foeAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
       // ชื่อสำนวนเป็นคำบรรยายลักษณะแล้ว (ไม่มีชื่อ-นามสกุลจริง 10 ก.ย. 2569)
       // บางเรื่องจึงซ้ำกับ who เกือบทั้งบรรทัด — ซ้ำเมื่อไหร่ไม่ต้องโชว์บรรทัดล่าง
@@ -2858,6 +2858,7 @@ const API = {
       dmg: null,                                            // เลขความเสียหายรอบล่าสุด {foe,you}
     };
     prepareBattle(this.battle, hp);
+    this.battle.foes[0].skills = crowdSkillsFor('soul');   // T1b: a resisting spirit has a group move and a heavy blow (boss-skills-data.js CROWD_SKILLS)
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -2872,7 +2873,7 @@ const API = {
     const kind = MOB.kinds[m.kind ?? 0] || MOB;
     this.fights++;
     this.battle = {
-      kind: 'mob', mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
+      kind: 'mob', zone: this.zone, mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
       expeditionParty:!!m.dungeonToken&&(bossGuideFollowing(this)||bossGuideDismissed(this)),// O1: first escort = Yama+Nira+guide; walking the route again after the farewell = Yama+Nira only
       worldBackground:m.dungeonToken?dungeonBackground(this.zone,this.zoneTravel?.active?.route,this.zoneTravel?.active?.checkpoint):null,
       ...(m.dungeonToken?{team:[...this.frontierOf().team]}:{}),
@@ -2885,6 +2886,7 @@ const API = {
       dmg: null,
     };
     prepareBattle(this.battle, scaleFoeHp(this.zone, MOB.fightHp));
+    this.battle.foes[0].skills = crowdSkillsFor('mob');   // T1b: same for the wandering ghosts
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -4525,7 +4527,7 @@ const API = {
       if (skillPlan && !ultimate) {
         const sk = skillState(counter), sp = skillPlan.skill;
         if (skillPlan.mode === 'run' && sp.kind === 'groupHit') {
-          ultimate = { name:pickText(sp.name, getLang()), image:sp.image || BOSS_ULTIMATE[B.zone || this.zone]?.image, damage:Math.round(groupBase * (sp.power ?? .8)), skill:sp.id };
+          ultimate = { name:pickText(sp.name, getLang()), image:sp.noCard ? null : (sp.image || BOSS_ULTIMATE[B.zone || this.zone]?.image), damage:Math.round(groupBase * (sp.power ?? .8)), skill:sp.id, ...(sp.noCard ? { noCard:true } : {}) };   // T1b: noCard = the small foes' group move has no full-screen card
           B.skillNotice = { phase:'use', foeId:counter.id, skillId:sp.id, name:pickText(sp.name, getLang()), text:pickText(sp.useText, getLang()) };
         } else if (skillPlan.mode === 'run' && sp.kind === 'heavyHit') {
           heavy = { skill:sp, damage:Math.round(blow * (sp.power ?? 1.6)) };
