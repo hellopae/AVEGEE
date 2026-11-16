@@ -143,6 +143,7 @@ void main(){
   gl_FragColor = vec4(col * mask, mask);
 }`;
 
+import { registerGpuCache } from './gpu-budget.js';
 // ------------------------------------------------------------------------------------------------ state
 const stores = new Map();
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; };
@@ -192,7 +193,7 @@ function initGL(st) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
   gl.activeTexture(gl.TEXTURE0);
-  cv.addEventListener('webglcontextlost', e => { e.preventDefault(); st.status = 'failed'; st.error = 'context lost'; });
+  cv.addEventListener('webglcontextlost', st.onLost = e => { e.preventDefault(); st.status = 'failed'; st.error = 'context lost'; });
   st.glCanvas = cv; st.gl = gl; st.prog = prog; st.loc = loc;
 }
 function texParams(gl) {
@@ -220,7 +221,8 @@ function ensurePieceTexture(st, sp) {
   if (sp.state !== 'idle' || st.loading >= 6) return;
   sp.state = 'loading'; st.loading++;
   loadImage(st.base + sp.p.flow).then(flow => {
-    const gl = st.gl, tex = gl.createTexture();
+    const gl = st.gl; if (!gl) return;   // GPU-BUDGET: the store was given back while the file was loading
+    const tex = gl.createTexture();
     gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tex); texParams(gl);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, flow);
     sp.tex = tex; sp.state = 'ready';
@@ -279,6 +281,24 @@ function buildGround(st, sp, now, level, wantDetail) {
   c.width = c.height = 1; if (c2) c2.width = c2.height = 1;
   return true;
 }
+/** GPU-BUDGET: give a whole store back - every texture, the drawing buffer and the GL context itself (a deliberate loss, not a failure).  The store goes back to 'idle', so the next
+ *  ensureFluidShader() of that zone builds it again exactly like the first visit. */
+export function disposeShaderStore(st) {
+  if (!st || st.status === 'idle') return 0;
+  const cv = st.glCanvas, gl = st.gl; let mb = 0;
+  try {
+    if (cv) { mb = cv.width * cv.height * 4 / 1048576; cv.removeEventListener('webglcontextlost', st.onLost); }
+    if (gl) { for (const sp of st.pieces) { if (sp.tex) gl.deleteTexture(sp.tex); if (sp.ground) { gl.deleteTexture(sp.ground.tex); if (sp.ground.texB) gl.deleteTexture(sp.ground.texB); mb += sp.ground.size[0] * sp.ground.size[1] * 4 * 1.33 / 1048576; } }
+      gl.getExtension('WEBGL_lose_context')?.loseContext(); }
+    if (cv) cv.width = cv.height = 1;
+  } catch { /* already lost */ }
+  Object.assign(st, { status:'idle', gl:null, glCanvas:null, prog:null, loc:null, pieces:[], layout:null, last:new Map(), layers:new Map(), loading:0, error:null, onLost:null, composites:0 });
+  return mb;
+}
+registerGpuCache('fluid-shader', (keep, now) => {   // every store that was not drawn in the last 15 s (the current zone is drawn every frame)
+  let mb = 0; for (const st of stores.values()) if (st.status === 'ready' && (keep == null || now - (st.lastDraw || 0) > 15000)) mb += disposeShaderStore(st);
+  return mb;
+});
 /** Free the ground texture of pieces that have not been on screen for a while (GPU memory on phones). */
 function sweep(st, time) {
   if (st.frame % 120) return;
@@ -289,6 +309,7 @@ function sweep(st, time) {
  *  `h` = { m, view, cv, sec, time, geometry(m, vis, cw, ch), intersect(a, b) } from town-fluid-fx.js. Returns how many pieces were drawn. */
 export function drawFluidShader(ctx, st, h) {
   if (!fluidShaderActive(st)) return 0;
+  st.lastDraw = performance.now();   // GPU-BUDGET: a store nobody has drawn for a while is given back (disposeShaderStore)
   const gl = st.gl, L = st.loc, { m, view, cv, sec, time } = h;
   // FLUID-Z234: zones 2-4 (h.lodMs): when the camera shows many liquid pieces at once (the whole-map view), the shader runs at most every lodMs - the liquid is tiny there, and its pass cost (measured ~4 ms a frame
   // for ~60 pieces) is what the old particle flow never had; in between the last result is blitted again, as in Performance graphics.  Zone 1 (no lodMs) is untouched.

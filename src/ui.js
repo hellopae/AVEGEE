@@ -8,6 +8,7 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import {watchGraphicsLoss} from './gpu-recovery.js';
+import {gpuBudgetTick} from './gpu-budget.js';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards, questFightStep } from './side-quests.js';
 import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   // QUEST-DAM-B: the merchant's feather quest
@@ -442,6 +443,7 @@ function frame(now) {
     const step = BAL.tickMs;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
+  gpuBudgetTick(now, g.zone);   // T1b: after a stay in a zone, the graphics memory of the other zones is given back
   updateMapCamera(now);
   render(ctx, g, now, hover, sel, mapCam.view);
   updateTownHud(now);

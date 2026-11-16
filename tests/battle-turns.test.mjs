@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
-const setup=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.hire('taan');g.party.members=['taan'];g.startBattle({id:99,who:'test',deserved:4,resist:true});g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});return g;};
+const setup=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.hire('taan');g.party.members=['taan'];g.startBattle({id:99,who:'test',deserved:4,resist:true});g.prepareEncounter();g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});return g;};
 test('each living ally and enemy gets a distinct turn; commands cannot bypass the active unit',()=>{
  const g=setup(),b=g.battle,c=g.crewOf('taan');g.beginBattleTurns();
  assert.equal(g.currentBattleTurn().id,'you');assert.equal(g.selectBattleActor(c.id),false);

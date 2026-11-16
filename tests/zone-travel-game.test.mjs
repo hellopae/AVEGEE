@@ -8,7 +8,7 @@ const visit=game=>{
  game.bossCleared[game.zone]=true;game.player.x=FRONTIER.x;game.player.y=FRONTIER.y;
  const target=({th:'asia',asia:'west',west:'cyberhell'})[game.zone];
  assert.equal(game.beginBorderDungeon(target),true);
- for(const [x,y] of DUNGEON_CHECKPOINTS){game.zoneTravel.active.position={x,y};const b=game.startDungeonEncounter();assert.ok(b);b.foes.forEach(f=>{f.hp=1;f.atk=[0,0];});game.beginBattleTurns();assert.ok(game.confirmBattleCommand('atk'));game.finishBattleCommand();assert.equal(b.over,'win');game.endBattle();}
+ for(const [x,y] of DUNGEON_CHECKPOINTS){game.zoneTravel.active.position={x,y};const b=game.startDungeonEncounter();assert.ok(b);game.prepareEncounter();b.foes.forEach(f=>{f.hp=1;f.atk=[0,0];});game.beginBattleTurns();assert.ok(game.confirmBattleCommand('atk'));game.finishBattleCommand();assert.equal(b.over,'win');game.endBattle();}
  assert.equal(game.moveZone(target),false,'clearing fights alone is not exit proximity');
  game.zoneTravel.active.position={x:DUNGEON_EXIT[0],y:DUNGEON_EXIT[1]};assert.equal(game.moveZone(target),true);return target;
 };

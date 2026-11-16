@@ -103,6 +103,7 @@ test('ภาพ cutscene ท่าไม้ตายบอส/เทวดาอ
       g.zone = zone;
       g.startBattle({ id:900, name:'x', who:'x', sp:1, deserved:20 });
       const b = g.battle;
+      g.prepareEncounter(); b.foes[0].skills = undefined;   // T1b: the spirit's HP row / ordinary moves are not part of this stand-in boss
       Object.assign(b, { kind:'zoneEvent', zone, eventKey:ev.k });
       b.foes[0].boss = true; b.foes[0].sp = boss.sp || 'spirit'; b.foes[0].maxHp = 1000; b.foes[0].hp = 400;
       b.foeHp = 400; g.mp = 100; g.mpMax = 100;

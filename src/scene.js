@@ -1,4 +1,5 @@
 import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
+import {registerGpuCache} from './gpu-budget.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
 import {canteenCookPose} from './canteen.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
@@ -140,7 +141,13 @@ function installSpriteCache(ctx) {
     return plain(this, c, [0, 0, qw, qh, dx, dy, dw, dh]);
   };
 }
-const groundCache = new WeakMap();
+const groundCache = new WeakMap(), groundZoneBg = new Map();
+// GPU-BUDGET: the full-map ground canvas of every zone visited used to stay for ever (one per zone, up to 4096 px wide) - the ones of the other zones are given back after a stay
+registerGpuCache('scene-ground', keep => {
+  let mb = 0;
+  for (const [z, bg] of [...groundZoneBg]) { if (z === keep) continue; const c = groundCache.get(bg); if (c) { mb += c.width * c.height * 4 / 1048576; c.width = c.height = 0; groundCache.delete(bg); } groundZoneBg.delete(z); }
+  return mb;
+});
 /** Map ground at the exact device size. Per-frame 'high' quality resampling of a 1678px image to a 2x
  *  display is ~7x slower than a 1:1 blit, so resample once per (bg, size) and copy pixels afterwards.
  *  Falls back to a direct draw when the transform is not a plain scale+translate. */
@@ -161,7 +168,7 @@ function drawMapGround(ctx, bg, zone) {
     const g2 = c.getContext('2d');
     g2.imageSmoothingEnabled = true; g2.imageSmoothingQuality = 'high';
     g2.drawImage(bg, 0, 0, w, h);
-    groundCache.set(bg, c);
+    groundCache.set(bg, c); groundZoneBg.set(zone, bg);
   }
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, Math.round(m.e), Math.round(m.f));

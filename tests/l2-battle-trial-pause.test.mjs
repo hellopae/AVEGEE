@@ -6,7 +6,7 @@ import {planTurnStep} from '../src/battle-turn-step.js';
 import {TH_DICT,EN_DICT} from './helpers/i18n-dicts.mjs';
 const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const mk=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.party.members=[];
- g.startBattle({id:99,who:'test',deserved:4,resist:true});
+ g.startBattle({id:99,who:'test',deserved:4,resist:true});g.prepareEncounter();   // T1b: the spirit's HP / ATK row first, then the fixed test numbers
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});g.beginBattleTurns();return g;};   // the battle UI opens the turn queue on first paint
 const rect=(l,t,w,h)=>({l,t,r:l+w,b:t+h});
 const hits=(a,b,gap=0)=>a.l<b.r+gap&&a.r>b.l-gap&&a.t<b.b+gap&&a.b>b.t-gap;
