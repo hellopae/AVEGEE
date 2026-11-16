@@ -174,5 +174,5 @@ test('index.html: every module this round changed carries a new ?v= in the impor
   const html = read('index.html'), map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   for (const k of ['scene', 'art', 'workers', 'data', 'town-layout', 'town-cyberhell-layout']) assert.match(map[`./src/${k}.js`], /-(fbui|gfx|battlefx)(-w1112)?(-cook1)?(-poses)?(-homegate)?(-clouds|-cmix)?(-z3fog)?(-z234)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?$/, k);
   assert.match(map['./src/town-map.js?v=l1'], /-fbui(-w1112)?(-t2map)?$/);
-  assert.match(map['./src/town-layout.js?v=k1d'], /-fbui(-w1112)?$/);
+  assert.match(map['./src/town-layout.js?v=k1d'], /-fbui(-w1112)?(-t2map)?$/);
 });

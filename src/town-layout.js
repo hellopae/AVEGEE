@@ -12,6 +12,7 @@ import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkma
 import { ASIA_TREE_POINTS } from './town-asia-trees.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { daisBlocks, daisFloorAt } from './town-dais-geometry.js';
+import { bridgeSurface } from './town-bridge-rails.js';
 import { WEST_TREE_POINTS } from './town-west-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
@@ -94,6 +95,7 @@ const PATCH_POLYS=[TOWN_UPPER_BRIDGE_STAIRS,TOWN_UPPER_BRIDGE_LANDING,TOWN_LAVA_
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  { const deck=bridgeSurface(appliedZone,x,y); if(deck>=0)return deck===1; }   // F13: a bridge is a narrow deck strip; rails / beams are not floor (town-bridge-rails.js)
   if(daisBlocks(x,y,appliedZone,TOWN_DAIS))return false;
   if(daisFloorAt(x,y,appliedZone,TOWN_DAIS))return true;
   // An owner-complete floor must never be reopened by legacy door/UI pads.
