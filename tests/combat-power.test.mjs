@@ -97,7 +97,7 @@ test('กานต์สะกดจิต — เทิร์นถัดไป
   assert.ok(g.battle.dmg.confuseSelf > 0, 'ต้องมีดาเมจที่ศัตรูฟาดใส่ตัวเอง');
   assert.equal(g.battle.youHp, youHpBefore, 'ยมบาทน้อยต้องไม่โดนแตะเลยเทิร์นนี้');
   assert.equal(g.battle.foeHp, foeHpBefore - g.battle.dmg.confuseSelf, 'ดาเมจต้องตกที่ศัตรูเอง');
-  assert.equal(g.battle.confuse, 0, 'ใช้ผลไปแล้วในเทิร์นถัดมาที่ตามมาทันที');
+  assert.equal(g.battle.confuse, g.foeActsPerRound(g.battle.foes[0].id) - 1, 'T1b: สะกดจิตมึนทั้งรอบของศัตรู — ใช้ไปแล้ว 1 เทิร์น ที่เหลืออยู่ในรอบนี้');
 });
 
 test('ระบบฝึก "แรง" (upgradeCrew) ยังเพิ่มดาเมจต่อยอดบนฐานใหม่ได้ตามเดิม', () => {

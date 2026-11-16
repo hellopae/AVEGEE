@@ -66,7 +66,7 @@ test('Kan applies hypnosis to the selected enemy',()=>{
  const c=g.crewOf('kan');g.battle.foes.push({...g.battle.foes[0],id:'chosen',confuse:0});
  g.selectBattleActor(c.id);g.selectFoe('chosen');
  assert.equal(g.confirmBattleCommand('crew:kan'),true);
- assert.equal(g.battle.dmg.foeId,'chosen');assert.equal(g.battle.foes[1].confuse,1);
+ assert.equal(g.battle.dmg.foeId,'chosen');assert.equal(g.battle.foes[1].confuse,g.foeActsPerRound('chosen'),'T1b: hypnosis lasts the foe\'s whole round');
  assert.equal(g.battle.foes[0].confuse,0);
 });
 

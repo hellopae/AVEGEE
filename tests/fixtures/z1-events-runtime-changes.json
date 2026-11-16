@@ -181,6 +181,10 @@
    "after": "      turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });\n"
   },
   {
+   "before": "    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns, dmg:ignite.dmg };\n",
+   "after": "    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns * this.foeActsPerRound(target.id), dmg:ignite.dmg };   // T1b: the fire lasts its rounds (x the foe's turns per round)\n"
+  },
+  {
    "before": "    b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;\n",
    "after": "    b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}`;\n    // Z2-EVENTS (Rae 3.3 / 3.5): Nira reads the field between the waves; Akura speaks when his row comes\n    if (ev.k === 'asiaRageBreach') b.talk = b.wave === 2 ? Z2_TEXT.breach.afterWave1 : b.wave === 3 ? Z2_TEXT.breach.afterWave2 : b.foes.some(f => f.boss) ? Z2_TEXT.breach.lines.start : b.talk;\n"
   },
@@ -305,6 +309,18 @@
    "after": "      dmg = 65 + (this.level - 1) * 3;\n      }\n      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);\n"
   },
   {
+   "before": "      if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;\n",
+   "after": "      // T1b (owner 16 Nov): a status the player puts on a foe lasts that many ROUNDS of the foe, not that many of its turns - with several turns a round (battle-turns.js) one frozen\n      // turn would be nothing, so the count is multiplied by the foe's turns per round (1 foe turn per round = exactly what it was)\n      const perRound = (stunFoe || confuseFoe) ? this.foeActsPerRound(foe.id) : 1;\n      if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe * perRound;\n"
+  },
+  {
+   "before": "        foe.confuse = (foe.confuse || 0) + confuseFoe;\n",
+   "after": "        foe.confuse = (foe.confuse || 0) + confuseFoe * perRound;\n"
+  },
+  {
+   "before": "    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn};\n",
+   "after": "    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn,turns:hit.burn.turns*this.foeActsPerRound(target.id)};   // T1b: x the foe's turns per round (see tickFoeBurn)\n"
+  },
+  {
    "before": "",
    "after": "    // Z1-EVENTS (case 9): when the border boss is nearly down (or would fall) the fight pauses, Yama learns the team move mid-fight\n    // (window: B.storyInterlude) and that move is the one that ends it. The boss cannot fall to anything else.\n    const breachFinaleGate = force => {\n      // Z2-EVENTS: Zone 2's border boss closes the same way - Yama learns \"ลูกไฟใหญ่\" in the middle of the fight and that fireball ends it\n      const asiaBreach = B.kind === 'zoneEvent' && B.eventKey === 'asiaRageBreach';\n      if ((B.kind !== 'frontierBreach' && !asiaBreach) || B.breachFinale) return false;\n      const boss = B.foes.find(f => f.boss);\n      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;\n      boss.hp = Math.max(1, boss.hp);\n      B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;\n      if (asiaBreach) { this.abilities.bigFire = true; B.finaleMove = 'fire'; B.storyInterlude = 'asia-big-fire-unlock'; }\n      else { this.abilities.teamJudgment = true; B.storyInterlude = 'th-team-judgment-unlock'; }\n      this.onChange();\n      return true;\n    };\n"
   },
@@ -357,8 +373,12 @@
    "after": "          settleSummons(B);\n"
   },
   {
+   "before": "      say('น้ำแข็งผนึกศัตรูทุกคน หยุดสวนกลับ 1 เทิร์น');\n",
+   "after": "      say('น้ำแข็งผนึกศัตรูทุกคน หยุดสวนกลับ 1 รอบ');\n"
+  },
+  {
    "before": "        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));\n",
-   "after": "        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));   // F3: a confused foe's blow on itself is NOT made lighter: confusion lasts a fixed number of that foe's turns, the total stays what it was\n"
+   "after": "        // T1b: confusion now lasts a whole round of the foe (its turns per round), so each self-blow is the 1/n share - the total over the round stays what it was before F3\n        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1) * foeHitScale(this.foeActsPerRound(foe.id), 1));\n"
   },
   {
    "before": "      // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง\n      if (B.foes.some(f => f.hp <= 0)) {\n",
@@ -459,6 +479,14 @@
    "after": "import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';\nimport { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)\n"
   },
   {
+   "before": "  // สะกดจิต — ไม่ได้ทำดาเมจตรง แต่ทำให้ศัตรูมึน 1 เทิร์น (ฟาดใส่ตัวเองแทนฟาดยมบาทน้อย)\n  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น',\n",
+   "after": "  // สะกดจิต — ไม่ได้ทำดาเมจตรง แต่ทำให้ศัตรูมึน 1 รอบ (ฟาดใส่ตัวเองแทนฟาดยมบาทน้อย · ศัตรูลงมือกี่เทิร์นต่อรอบก็มึนทุกเทิร์นของรอบนั้น)\n  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 รอบ',\n"
+  },
+  {
+   "before": "    howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้พลังเวท', desc:'น้ำแข็งซัดศัตรูทุกคน เลือดลด 30 และหยุด 1 เทิร์น' },\n",
+   "after": "    howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้พลังเวท', desc:'น้ำแข็งซัดศัตรูทุกคน เลือดลด 30 และหยุด 1 รอบ' },\n"
+  },
+  {
    "before": "",
    "after": "  // QUEST-DAM-B (owner 14-15 Nov 2026): ขนนกฟีนิกซ์ — ชุบเพื่อนในทีมที่ล้มอยู่ในศึก (ไม่ใช่ยามา · ยามามีหัวใจสำรอง) · ตัวเลขใน PHOENIX_FEATHER ด้านล่าง\n  // ได้จากภารกิจ \"ขนที่ไม่ไหม้\" ของพ่อค้า แล้วซื้อต่อที่แผงพ่อค้าได้ · ข้อความ TH/EN มาจาก Rae ผ่านคีย์ item.phoenixFeather.* ใน i18n.js\n  phoenixFeather: { name:'ขนนกฟีนิกซ์', nameEn:'Phoenix Feather', nameKey:'item.phoenixFeather.name', descKey:'item.phoenixFeather.desc', howToKey:'item.phoenixFeather.howTo', sayKey:'item.phoenixFeather.say',\n            img:'item-phoenix-feather', h:44, glyph:'', placeholder:'ขนนก', battleOnly:true, reviveAlly:true, fallback:'ขนนก',\n            desc:'ขนจากนกควันทองที่ลุกขึ้นจากเถ้าเซ่น ปลุกเพื่อนในทีมที่ล้มลงให้ลุกขึ้นพร้อมพลังส่วนหนึ่ง',\n            howTo:'ในฉากต่อสู้ เลือกไอเท็ม → ขนนกฟีนิกซ์ → เลือกเพื่อนที่ล้มอยู่ (ใช้ 1 เทิร์น)',\n            say:'ขนนกวูบเป็นแสงทอง {name} ลืมตาขึ้นแล้วลุกยืน' },\n"
   },
@@ -469,6 +497,14 @@
   {
    "before": "",
    "after": "    // QUEST-DAM-B: ขายหลังจบภารกิจ \"ขนที่ไม่ไหม้\" เท่านั้น (needs) · ถือสูงสุด 3 (cap)\n    { k:'phoenixFeather', cost:150, lv:1, needs:'sqMerchantFeather', cap:3 },\n"
+  },
+  {
+   "before": "    // ข้อ B ชุด 13 — น้ำแข็ง 30 คงที่ (เดิมสุ่ม [12,20]) + ยังหยุดศัตรู 1 เทิร์นเหมือนเดิม\n",
+   "after": "    // ข้อ B ชุด 13 — น้ำแข็ง 30 คงที่ (เดิมสุ่ม [12,20]) + ยังหยุดศัตรู 1 รอบ (ทุกเทิร์นของศัตรูในรอบนั้น · T1b)\n"
+  },
+  {
+   "before": "      say:'น้ำแข็งซัดศัตรูทุกคน เลือดลดคนละ 30 และหยุด 1 เทิร์น' },\n",
+   "after": "      say:'น้ำแข็งซัดศัตรูทุกคน เลือดลดคนละ 30 และหยุด 1 รอบ' },\n"
   },
   {
    "before": "",

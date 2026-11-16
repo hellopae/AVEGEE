@@ -3376,7 +3376,7 @@ const API = {
         if (f.burn.turns <= 0) delete f.burn;
       }
     }
-    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns, dmg:ignite.dmg };
+    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns * this.foeActsPerRound(target.id), dmg:ignite.dmg };   // T1b: the fire lasts its rounds (x the foe's turns per round)
     if (!B.foes.some(f => f.id === B.selectedFoeId && f.hp > 0)) {
       const next = B.foes.find(f => f.hp > 0);
       if (next) B.selectedFoeId = next.id;
@@ -4122,9 +4122,12 @@ const API = {
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
-      if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
+      // T1b (owner 16 Nov): a status the player puts on a foe lasts that many ROUNDS of the foe, not that many of its turns - with several turns a round (battle-turns.js) one frozen
+      // turn would be nothing, so the count is multiplied by the foe's turns per round (1 foe turn per round = exactly what it was)
+      const perRound = (stunFoe || confuseFoe) ? this.foeActsPerRound(foe.id) : 1;
+      if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe * perRound;
       if (confuseFoe) {
-        foe.confuse = (foe.confuse || 0) + confuseFoe;
+        foe.confuse = (foe.confuse || 0) + confuseFoe * perRound;
         if (newSkill?.reflect) foe.confuseMultiplier = newSkill.reflect;   // เนตรรอคำอนุญาต: the foe's next attack comes back at it, harder
         else if (what !== 'crew:kan') foe.confuseMultiplier = 1;
         if(what==='hypno'&&B.initiativeAction)foe.confuseKind='group';
@@ -4132,7 +4135,7 @@ const API = {
     }
     // ไฟที่ติดมาจากตาก่อนหน้าลวกต่อ (ตาที่เพิ่งติดไฟยังไม่ลวกในตานี้) · ติดไฟใหม่จากฟาดนี้
     const burns = B.initiativeAction || what === 'teamJudgment' ? [] : this.tickFoeBurn(B, target, hit?.burn || null);
-    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn};
+    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn,turns:hit.burn.turns*this.foeActsPerRound(target.id)};   // T1b: x the foe's turns per round (see tickFoeBurn)
     if (burns.length) B.weaponNote = { k:'burn', n:burns.reduce((a, x) => a + x.damage, 0), hits:burns };
     if (hit?.burn && target.hp > 0) B.weaponNote = { k:'ignite', n:hit.burn.dmg, turns:hit.burn.turns };
     if (hit?.heal) {
@@ -4429,7 +4432,7 @@ const API = {
     // ต่างจาก B.stun (แค่ข้ามตา ไม่มีความเสียหาย) เช็คก่อน stun เพราะถือเป็นผลที่แรงกว่า
     if (what === 'ice') {
       for (const foe of affected) foe.stun = Math.max(0, foe.stun - 1);
-      say('น้ำแข็งผนึกศัตรูทุกคน หยุดสวนกลับ 1 เทิร์น');
+      say('น้ำแข็งผนึกศัตรูทุกคน หยุดสวนกลับ 1 รอบ');
     } else if (counter.confuse > 0 || what === 'hypno') {
       const confused = what === 'hypno' ? B.foes.filter(f => f.hp > 0) : [counter];
       // เลือกเป้าหมายจากภาพก่อนโจมตี ทุกคนออกท่าพร้อมกัน แม้โดนเพื่อนตีล้มในตานี้
@@ -4438,7 +4441,8 @@ const API = {
         const groupVictims=B.foes.filter(f=>f.hp>0&&f.id!==foe.id);
         const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length]
           : enemyOnly&&foe.confuseKind==='group'&&groupVictims.length?groupVictims[0]:foe;
-        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));   // F3: a confused foe's blow on itself is NOT made lighter: confusion lasts a fixed number of that foe's turns, the total stays what it was
+        // T1b: confusion now lasts a whole round of the foe (its turns per round), so each self-blow is the 1/n share - the total over the round stays what it was before F3
+        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1) * foeHitScale(this.foeActsPerRound(foe.id), 1));
         if (!foe.confuse) {delete foe.confuseMultiplier;delete foe.confuseKind;}
         return { attackerId:foe.id, id:victim.id, damage };
       });

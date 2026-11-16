@@ -43,7 +43,8 @@ test('area kills finish battle; hypnosis handles simultaneous kills and a single
   assert.equal(b.over,'win');assert.ok(b.foes.every(f=>f.hp===0));
  }
  const g=fight();g.battle.foes=g.battle.foes.slice(1,2);
- g.battleAct('hypno');assert.equal(g.battle.foes[0].hp,92);
+ const acts=g.foeActsPerRound('foe-1');   // T1b: hypnosis lasts the foe's whole round (acts turns); each self-blow is the 1/acts share of its 8
+ g.battleAct('hypno');assert.equal(g.battle.foes[0].hp,100-Math.round(8/acts));assert.equal(g.battle.foes[0].confuse,acts-1);
 });
 
 test('Valkyrie spear hits every living target at the original damage, MP cost and cooldown',async()=>{
