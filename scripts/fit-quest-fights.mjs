@@ -3,7 +3,7 @@
 import { HP_PER_PARTY, ATK_PER_PARTY } from '../src/quest-fights.js';
 import { simulate } from './sim-quest-fights.mjs';
 const count = Number(process.argv[2] || 120);
-const TARGET = { sqGuard:92, sqKan:85, sqBoon:75, sqMerchantFeather:77 };   // QUEST-DAM-B: the feather fight is fitted to the middle of the owner's 70-85 % band
+const TARGET = { sqGuard:82, sqKan:75, sqBoon:65, sqMerchantFeather:67 };   // T1b (16 Nov): the owner asked for harder fights - 10 points below the F3 targets (92 / 85 / 75 / 77)   // QUEST-DAM-B: the feather fight is fitted to the middle of the owner's 70-85 % band
 const ONLY = process.argv[3] ? process.argv[3].split(',') : Object.keys(TARGET);   // usage: node scripts/fit-quest-fights.mjs [seeds] [sqMerchantFeather]
 const rate = (id, size, hp, atk) => {
   HP_PER_PARTY[id][size] = hp; ATK_PER_PARTY[id][size] = atk;

@@ -274,8 +274,8 @@ test('the new moves are in the same strength class as the trained ones (replay w
   for (const id of ['sqKan', 'sqBoon', 'sqGuard']) {
     const rate = variant => Array.from({ length:60 }, (_, i) => simulate({ id, size:5, level:5, variant, seed:9000 + i, privateOpened:false }).result === 'win').filter(Boolean).length / 60 * 100;
     const first = rate('first'), retry = rate('retry'), trained = rate('trained');
-    assert.ok(retry >= first - 5, `${id} retry ${retry} first ${first}`); assert.ok(retry <= 100); assert.ok(retry - first <= 35, `${id} move adds ${retry - first} points`);
-    assert.ok(trained - first <= 35);
+    assert.ok(retry >= first - 5, `${id} retry ${retry} first ${first}`); assert.ok(retry <= 100); assert.ok(retry - first <= 50, `${id} move adds ${retry - first} points`);   // T1b: 35 -> 50 - the owner made the first attempts 10 points harder (16 Nov), the move's absolute strength is unchanged
+    assert.ok(trained - first <= 50);
   }
 });
 test('every new move has its own icon + 2 cutscene frames + effect that exist (QUEST-ART) and never touches the art files', () => {

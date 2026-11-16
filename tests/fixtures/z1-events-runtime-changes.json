@@ -603,6 +603,10 @@
  ],
  "party-balance": [
   {
+   "before": "",
+   "after": "import { foeHpFit } from './foe-turn-fit.js';\n"
+  },
+  {
    "before": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' ? 4 : 3);\n",
    "after": "  return Math.min(7, reached > 0 ? 4 + reached : game.zoneEvents?.th?.frontierBreach === 'cleared' || game.guard?.breachGuest ? 4 : 3);   // Z1-EVENTS: the gate keeper who steps out for the breach fight is the 4th member\n"
   },
@@ -613,28 +617,32 @@
   {
    "before": "",
    "after": "  // BOSS-SKILLS: a foe may carry its own party-size curve: `partyScale:{ hp:[x3,x5,x7], atk:[x3,x5,x7] }` (multipliers for a team of 3 / 5 / 7, linear in between) - the data lives on the foe in data.js\n  // (set A, 15 Nov: every boss foe that carries one - the two Lumen of the Zone 4 rescue share the same entry)\n  for (const b of battle.foes.filter(f => f.boss && f.partyScale)) {\n    const ps = b.partyScale, at = (row = [1, 1, 1]) => interpolate(n, row[0], row[1], row[2]);\n    const hpK = at(ps.hp), atkK = at(ps.atk);\n    b.hp = Math.round(b.hp * hpK); b.maxHp = Math.round(b.maxHp * hpK);\n    if (b.atk) b.atk = b.atk.map(v => Math.max(1, Math.round(v * atkK)));\n  }\n"
+  },
+  {
+   "before": "",
+   "after": "  // T1b: the HP correction of the fits table (a handful of fights; 1 = nothing)\n  const hpFit = foeHpFit(battle, n);\n  if (hpFit !== 1) for (const foe of battle.foes) { const hurt = foe.maxHp - foe.hp; foe.maxHp = Math.max(1, Math.round(foe.maxHp * hpFit)); foe.hp = Math.max(1, foe.maxHp - hurt); }\n"
   }
  ],
  "encounter-balance": [
   {
    "before": "",
-   "after": "// F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.\n"
+   "after": "// T1b (16 Nov 2026): the :frontier rows' atk refitted again (scripts/fit-t1b-frontier.mjs) for the harder rule: the first try drops ~10 points but never below 70 %; a row already under 70 % keeps its first-try win %.\n// F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.\n"
   },
   {
    "before": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.91}},\n",
-   "after": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.921}},\n"
+   "after": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.6}},\n"
   },
   {
    "before": "  \"asia:frontier\": {\"3\":{\"hp\":2,\"atk\":4.59},\"4\":{\"hp\":2,\"atk\":4.53},\"5\":{\"hp\":3.4,\"atk\":2.45}},\n",
-   "after": "  \"asia:frontier\": {\"3\":{\"hp\":2,\"atk\":4.934},\"4\":{\"hp\":2,\"atk\":7.757},\"5\":{\"hp\":3.4,\"atk\":2.909}},\n"
+   "after": "  \"asia:frontier\": {\"3\":{\"hp\":2,\"atk\":4.445},\"4\":{\"hp\":2,\"atk\":7.115},\"5\":{\"hp\":3.4,\"atk\":2.384}},\n"
   },
   {
    "before": "  \"west:frontier\": {\"3\":{\"hp\":2,\"atk\":4.53},\"4\":{\"hp\":2,\"atk\":4.53},\"5\":{\"hp\":2.5,\"atk\":2.15,\"atkLow\":0.32,\"atkHigh\":3.87},\"6\":{\"hp\":2.5,\"atk\":3.83}},\n",
-   "after": "  \"west:frontier\": {\"3\":{\"hp\":2,\"atk\":4.81},\"4\":{\"hp\":2,\"atk\":5.83},\"5\":{\"hp\":2.5,\"atk\":2.981,\"atkLow\":0.444,\"atkHigh\":5.366},\"6\":{\"hp\":2.5,\"atk\":5.213}},\n"
+   "after": "  \"west:frontier\": {\"3\":{\"hp\":2,\"atk\":4.452},\"4\":{\"hp\":2,\"atk\":6.011},\"5\":{\"hp\":2.5,\"atk\":2.477,\"atkLow\":0.369,\"atkHigh\":4.458},\"6\":{\"hp\":2.5,\"atk\":4.049}},\n"
   },
   {
    "before": "  \"cyberhell:frontier\": {\"3\":{\"hp\":2,\"atk\":4.53},\"4\":{\"hp\":2,\"atk\":4.53},\"5\":{\"hp\":2.5,\"atk\":2.15,\"atkLow\":0.32,\"atkHigh\":3.87},\"6\":{\"hp\":1.53,\"atk\":4.34},\"7\":{\"hp\":2.5,\"atk\":2.64}},\n",
-   "after": "  \"cyberhell:frontier\": {\"3\":{\"hp\":2,\"atk\":4.78},\"4\":{\"hp\":2,\"atk\":5.582},\"5\":{\"hp\":2.5,\"atk\":2.767,\"atkLow\":0.412,\"atkHigh\":4.981},\"6\":{\"hp\":1.53,\"atk\":6.246},\"7\":{\"hp\":2.5,\"atk\":3.484}},\n"
+   "after": "  \"cyberhell:frontier\": {\"3\":{\"hp\":2,\"atk\":4.424},\"4\":{\"hp\":2,\"atk\":5.807},\"5\":{\"hp\":2.5,\"atk\":2.299,\"atkLow\":0.342,\"atkHigh\":4.138},\"6\":{\"hp\":1.53,\"atk\":5.283},\"7\":{\"hp\":2.5,\"atk\":2.622}},\n"
   },
   {
    "before": "",

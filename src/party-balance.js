@@ -1,4 +1,5 @@
 import { ENCOUNTER_BALANCE, encounterBalanceKey, frontierSplit } from './encounter-balance.js';
+import { foeHpFit } from './foe-turn-fit.js';
 // C1: caps refer to the whole team, including Yama and the automatic Guard.
 export function partyCap(game) {
   const zones = ['th','asia','west','cyberhell'];
@@ -53,5 +54,8 @@ export function scaleEncounter(battle, count) {
     const baseAtk = foe.atk || (battle.kind === 'zoneBoss' ? [14, 22 + ['th','asia','west','cyberhell'].indexOf(battle.zone) * 3] : battle.foeAtk);
     if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index] * (split?.atk ?? 1))));
   }
+  // T1b: the HP correction of the fits table (a handful of fights; 1 = nothing)
+  const hpFit = foeHpFit(battle, n);
+  if (hpFit !== 1) for (const foe of battle.foes) { const hurt = foe.maxHp - foe.hp; foe.maxHp = Math.max(1, Math.round(foe.maxHp * hpFit)); foe.hp = Math.max(1, foe.maxHp - hurt); }
   battle.balance = { version:1, wave, partySize:count, ...profile, adds };
 }

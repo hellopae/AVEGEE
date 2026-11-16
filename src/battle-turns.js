@@ -18,8 +18,11 @@ const legacyOrder=units=>units.slice().sort(bySpeed).map(({id,side})=>({id,side}
 //   * the queue shows every one of them: the "next" strip lists the repeated portraits.
 // TURN_RULE.ratio = share of the team size the foes get (1 = as many turns as the team, 0 = the old rule: one turn each). Tests / sims set FOE_TURN_RATIO to compare.
 // DAMAGE: the extra turns come with lighter blows - a foe that acts n times a round hits for 1/n^damageExp of its blow (1 = its damage per ROUND stays what it was, the fights keep
-// their difficulty and only the rhythm changes; the owner's balance targets of BOSS-SKILLS set A are measured against that).  Per-fight corrections live in the data (hp / atk) as before.
-export const TURN_RULE={ratio:1,damageExp:1};
+// their difficulty and only the rhythm changes).  T1b (owner 16 Nov: "make it harder"): damageExp 0.8 = a foe with n turns a round deals n^0.2 times what it did (x1.25 at 3 turns, x1.48 at 7),
+// so the enemy's total strength per round really goes up with the team; the fights listed in foe-turn-fit.js / encounter-balance.js are then re-fitted to their new win % targets
+// (scripts/fit-t1b-harder.mjs, fit-t1b-frontier.mjs) and the fights that were not fitted (mobs, souls) get their own rows (crowd rows of encounter-balance.js).
+// Per-fight corrections live in the data (hp / atk) as before.
+export const TURN_RULE={ratio:1,damageExp:0.8};
 if(typeof process!=='undefined'&&process.env?.FOE_TURN_RATIO!=null&&process.env.FOE_TURN_RATIO!=='')TURN_RULE.ratio=Number(process.env.FOE_TURN_RATIO)||0;
 if(typeof process!=='undefined'&&process.env?.FOE_TURN_DAMAGE_EXP!=null&&process.env.FOE_TURN_DAMAGE_EXP!=='')TURN_RULE.damageExp=Number(process.env.FOE_TURN_DAMAGE_EXP)||0;
 /** blow scale of a foe that acts `perRound` times in a round */

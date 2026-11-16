@@ -1,19 +1,20 @@
+// T1b (16 Nov 2026): the :frontier rows' atk refitted again (scripts/fit-t1b-frontier.mjs) for the harder rule: the first try drops ~10 points but never below 70 %; a row already under 70 % keeps its first-try win %.
 // F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.
 // BALANCE-2 enemy HP/ATK multipliers by whole party size; measured scope: balance.md.
 // atkLow/atkHigh override the endpoint multipliers when the ordinary fight needs wider variance.
 // Applied once to new waves; basic damage formulas and saved ongoing waves remain unchanged.
 export const ENCOUNTER_BALANCE = {
   "west:hypnosis": {"3":{"hp":0.25,"atk":0.25},"4":{"hp":0.25,"atk":0.25},"5":{"hp":0.25,"atk":0.25},"6":{"hp":0.25,"atk":0.25}},
-  "th:frontier": {"3":{"hp":3.6,"atk":2.921}},
+  "th:frontier": {"3":{"hp":3.6,"atk":2.6}},
   "th:breach": {"3":{"hp":1.5,"atk":1.8}},
   "th:boss": {"3":{"hp":0.55,"atk":1.11},"4":{"hp":1,"atk":1.04}},
-  "asia:frontier": {"3":{"hp":2,"atk":4.934},"4":{"hp":2,"atk":7.757},"5":{"hp":3.4,"atk":2.909}},
+  "asia:frontier": {"3":{"hp":2,"atk":4.445},"4":{"hp":2,"atk":7.115},"5":{"hp":3.4,"atk":2.384}},
   "asia:breach": {"3":{"hp":2,"atk":1.89},"4":{"hp":3,"atk":1.71},"5":{"hp":2,"atk":1.52}},
   "asia:boss": {"3":{"hp":1.5,"atk":0.87},"4":{"hp":1.5,"atk":1.05},"5":{"hp":1.65,"atk":0.96}},
-  "west:frontier": {"3":{"hp":2,"atk":4.81},"4":{"hp":2,"atk":5.83},"5":{"hp":2.5,"atk":2.981,"atkLow":0.444,"atkHigh":5.366},"6":{"hp":2.5,"atk":5.213}},
+  "west:frontier": {"3":{"hp":2,"atk":4.452},"4":{"hp":2,"atk":6.011},"5":{"hp":2.5,"atk":2.477,"atkLow":0.369,"atkHigh":4.458},"6":{"hp":2.5,"atk":4.049}},
   "west:breach": {"3":{"hp":1.5,"atk":1.98},"4":{"hp":2,"atk":1.98},"5":{"hp":2,"atk":1.43},"6":{"hp":2,"atk":1.71}},
   "west:boss": {"3":{"hp":0.65,"atk":1.17},"4":{"hp":1,"atk":1.05},"5":{"hp":1,"atk":0.93},"6":{"hp":1.27,"atk":0.84}},
-  "cyberhell:frontier": {"3":{"hp":2,"atk":4.78},"4":{"hp":2,"atk":5.582},"5":{"hp":2.5,"atk":2.767,"atkLow":0.412,"atkHigh":4.981},"6":{"hp":1.53,"atk":6.246},"7":{"hp":2.5,"atk":3.484}},
+  "cyberhell:frontier": {"3":{"hp":2,"atk":4.424},"4":{"hp":2,"atk":5.807},"5":{"hp":2.5,"atk":2.299,"atkLow":0.342,"atkHigh":4.138},"6":{"hp":1.53,"atk":5.283},"7":{"hp":2.5,"atk":2.622}},
   "cyberhell:breach": {"3":{"hp":1.5,"atk":0.14},"4":{"hp":1.5,"atk":0.6},"5":{"hp":1.5,"atk":0.79},"6":{"hp":2,"atk":0.79},"7":{"hp":1.5,"atk":0.88}},
   "cyberhell:minion:1": {"3":{"hp":1.8,"atk":1.51},"4":{"hp":1.53,"atk":1.91},"5":{"hp":2,"atk":1.91},"6":{"hp":3,"atk":1.63},"7":{"hp":3,"atk":1.66}},
   "cyberhell:minion:2": {"3":{"hp":2,"atk":1.02,"atkLow":0.15,"atkHigh":1.83},"4":{"hp":2,"atk":1.06,"atkLow":0.16,"atkHigh":1.9},"5":{"hp":2,"atk":1.91},"6":{"hp":2,"atk":1.75},"7":{"hp":2,"atk":1.75}},

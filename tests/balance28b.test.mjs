@@ -6,6 +6,7 @@ import { merchantStock } from '../src/progression.js';
 import { createGame } from '../src/game.js';
 import { win } from './final-event-helpers.mjs';
 import { BATTLE, BOSS_BALANCE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
+import {FOE_TURN_FIT,FOE_HP_FIT} from '../src/foe-turn-fit.js';delete FOE_TURN_FIT.cyberBreach;delete FOE_HP_FIT.cyberBreach;   // T1b: the legacy benchmark is the pre-turn-rule fight, without the re-fitted per-size correction of the live one
 import {TURN_RULE} from '../src/battle-turns.js';TURN_RULE.ratio=0;   // F3: legacy benchmark numbers belong to the old one-turn-each order (the live fights are measured in the F3 report)
 
 globalThis.Image ??= class {};
