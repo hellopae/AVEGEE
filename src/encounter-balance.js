@@ -1,11 +1,12 @@
 // T1b (16 Nov 2026): the :frontier rows' atk refitted again (scripts/fit-t1b-frontier.mjs) for the harder rule: the first try drops ~10 points but never below 70 %; a row already under 70 % keeps its first-try win %.
+// (th:frontier is stored before the BATTLE_FX_FRONTIER_ATK x0.95 below: 2.79 x 0.95 = the 2.65 that gives ~72 %.)
 // F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.
 // BALANCE-2 enemy HP/ATK multipliers by whole party size; measured scope: balance.md.
 // atkLow/atkHigh override the endpoint multipliers when the ordinary fight needs wider variance.
 // Applied once to new waves; basic damage formulas and saved ongoing waves remain unchanged.
 export const ENCOUNTER_BALANCE = {
   "west:hypnosis": {"3":{"hp":0.25,"atk":0.25},"4":{"hp":0.25,"atk":0.25},"5":{"hp":0.25,"atk":0.25},"6":{"hp":0.25,"atk":0.25}},
-  "th:frontier": {"3":{"hp":3.6,"atk":2.6}},
+  "th:frontier": {"3":{"hp":3.6,"atk":2.79}},
   "th:breach": {"3":{"hp":1.5,"atk":1.8}},
   "th:boss": {"3":{"hp":0.55,"atk":1.11},"4":{"hp":1,"atk":1.04}},
   "asia:frontier": {"3":{"hp":2,"atk":4.445},"4":{"hp":2,"atk":7.115},"5":{"hp":3.4,"atk":2.384}},

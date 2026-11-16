@@ -650,11 +650,11 @@
  "encounter-balance": [
   {
    "before": "",
-   "after": "// T1b (16 Nov 2026): the :frontier rows' atk refitted again (scripts/fit-t1b-frontier.mjs) for the harder rule: the first try drops ~10 points but never below 70 %; a row already under 70 % keeps its first-try win %.\n// F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.\n"
+   "after": "// T1b (16 Nov 2026): the :frontier rows' atk refitted again (scripts/fit-t1b-frontier.mjs) for the harder rule: the first try drops ~10 points but never below 70 %; a row already under 70 % keeps its first-try win %.\n// (th:frontier is stored before the BATTLE_FX_FRONTIER_ATK x0.95 below: 2.79 x 0.95 = the 2.65 that gives ~72 %.)\n// F3 (15 Nov 2026): the :frontier rows' atk was refitted (first try, locked: x0.9-1.9 of the old numbers) for the new turn rule (battle-turns.js: the enemy side acts as often as the team, each blow lighter) - same first-try win % as before.\n"
   },
   {
    "before": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.91}},\n",
-   "after": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.6}},\n"
+   "after": "  \"th:frontier\": {\"3\":{\"hp\":3.6,\"atk\":2.79}},\n"
   },
   {
    "before": "  \"asia:frontier\": {\"3\":{\"hp\":2,\"atk\":4.59},\"4\":{\"hp\":2,\"atk\":4.53},\"5\":{\"hp\":3.4,\"atk\":2.45}},\n",
