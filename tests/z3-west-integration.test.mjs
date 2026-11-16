@@ -1,3 +1,4 @@
+import {bridgeSurface} from '../src/town-bridge-rails.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -31,7 +32,8 @@ test('Z3: owner grid preserves27328 cells, one component, small blocked reserves
  const start=data.findIndex(x=>x),seen=new Set([start]),q=[start];
  for(let h=0;h<q.length;h++){const c=q[h],x=c%cols,y=c/cols|0;for(const n of [x?c-1:-1,x+1<cols?c+1:-1,y?c-cols:-1,y+1<rows?c+cols:-1])if(n>=0&&data[n]&&!seen.has(n)){seen.add(n);q.push(n);}}
  assert.equal(seen.size,27328);
- const runtimeFloor=(x,y)=>!daisBlocks(x,y,'west',L.TOWN_DAIS)&&(daisFloorAt(x,y,'west',L.TOWN_DAIS)||data[(y/8|0)*cols+(x/8|0)]===1);
+ const runtimeFloor=(x,y)=>{const deck=bridgeSurface('west',x,y);if(deck>=0)return deck===1;   // F13: bridge decks are narrow strips of their own
+  return !daisBlocks(x,y,'west',L.TOWN_DAIS)&&(daisFloorAt(x,y,'west',L.TOWN_DAIS)||data[(y/8|0)*cols+(x/8|0)]===1);};
  for(let y=4;y<2560;y+=8)for(let x=4;x<3840;x+=8)assert.equal(L.townFloorAt(x,y),runtimeFloor(x,y),'owner mask stays authoritative outside the judgement sprite floor/rails');
  const points=JSON.parse(readFileSync(new URL('./fixtures/z3-owner-floor-points.json',import.meta.url)));
  for(const p of points){const [x,y]=p.preview_xy.map(v=>v*2.5);assert.equal(data[(y/8|0)*cols+(x/8|0)]===1,p.expected_walkable,p.point);assert.equal(L.townFloorAt(x,y),runtimeFloor(x,y),p.point+' runtime');}
