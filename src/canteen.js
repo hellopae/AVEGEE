@@ -8,12 +8,12 @@ export function canteenSite(g){const d=SPOTS;const st=g.stations?.find(s=>s.def.
 export function canteenPoint(g){const s=g.stations?.find(s=>s.def.k==='canteen')?.def;return s?(nearestWalk(s.x,s.y)||[s.x,s.y]):nearestWalk(SPOTS.bench.x,SPOTS.bench.y);}
 export function canteenState(g){g.canteenState||={};return g.canteenState[g.zone]||= {meals:0,served:0,orders:[]};}
 export function mealRecipients(g){return [...g.crew.filter(c=>!c.reader&&!c.self),g.guard,...(g.workerState?.workers||[]).filter(w=>w.homeZone===g.zone)].filter(Boolean);}
-export const needsMeal=c=>!!c&&!c.teaRest&&!c.eatOrder&&(c.stamina!=null?((c.hunger??100)<80||c.stamina<65||(c.morale??100)<55):actorStanding(c)&&((c.hunger??100)<80||(c.morale??100)<55));
+export const needsMeal=c=>!!c&&!c.teaRest&&!c.eatOrder&&!c.mealSeq&&(c.stamina!=null?((c.hunger??100)<80||c.stamina<65||(c.morale??100)<55):actorStanding(c)&&((c.hunger??100)<80||(c.morale??100)<55));
 export const mealRecipient=(g,id)=>mealRecipients(g).find(c=>c.id===id);
 // F22 (owner 15 Nov, m2.png): Nira (the reader) is left out of the auto-served / walk-to-the-canteen list (she stays beside the player), but the team page's
 // "give a rice ball" button must feed her too - she shows a hunger bar like everyone else.  Hand feeding looks in this wider list.
 export const feedRecipient=(g,id)=>mealRecipient(g,id)||g.crew?.find(c=>c.reader&&!c.self&&c.id===id);
-const hungry=c=>!!c&&(c.stamina!=null||actorStanding(c))&&!c.teaRest&&((c.hunger??100)<100||(c.morale??100)<100||c.stamina<100||c.supplyRest);
+const hungry=c=>!!c&&!c.mealSeq&&(c.stamina!=null||actorStanding(c))&&!c.teaRest&&((c.hunger??100)<100||(c.morale??100)<100||c.stamina<100||c.supplyRest);
 export function restoreMeal(c){
  c.hunger=Math.min(100,(c.hunger??100)+40);c.morale=Math.min(100,(c.morale??100)+(c.stamina!=null?35:20));
  if(c.stamina!=null){c.stamina=Math.min(100,c.stamina+35);c.supplyRest=false;c.reason='';}
@@ -51,7 +51,7 @@ export function advanceCanteenDiner(g,c,dt){
  if(g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return true;
  if(order.zone!==g.zone||!canteenActive(g)||!hungry(c)){c.eatOrder=null;c.moving=false;return false;}
  const [x,y]=order.dest;c.moving=false;
- if(Math.hypot(c.x-x,c.y-y)<24){if(canteenState(g).meals>0)feedActor(g,c.id)&&(c.eatOrder=null);return true;}
+ if(Math.hypot(c.x-x,c.y-y)<24){if(canteenState(g).meals>0&&isMealActor(c)&&takeFood(g,1)){c.eatOrder=null;beginMeal(g,c,{receive:false})||restoreMeal(c);}else if(canteenState(g).meals>0&&!isMealActor(c))feedActor(g,c.id)&&(c.eatOrder=null);return true;}
  order.retry=Math.max(0,(order.retry||0)-Math.min(dt,120));
  if(!order.path?.length&&!order.retry){order.path=findPath(c.x,c.y,x,y);order.retry=600;}
  const next=order.path?.[0];if(next){const dx=next[0]-c.x,dy=next[1]-c.y,d=Math.hypot(dx,dy);if(d<2)order.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);c.moving=stepTo(c,dx/d*speed,dy/d*speed);c.face=dx<0?-1:1;if(!c.moving)order.path=null;}}
@@ -59,7 +59,8 @@ export function advanceCanteenDiner(g,c,dt){
 }
 export function stepCanteen(g,dt){
  if(g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return;
- if(g.guard)advanceCanteenDiner(g,g.guard,dt);
+ for(const c of g.crew||[])advanceMeal(g,c,dt);   // T3/12: the receive / eat sequence of every reaper runs here (stepWorld skips a reaper who has one)
+ if(g.guard&&!advanceMeal(g,g.guard,dt))advanceCanteenDiner(g,g.guard,dt);
  if(!canteenActive(g))return;
  const s=canteenState(g),at=canteenPoint(g);
  for(const w of (g.workerState?.workers||[]).filter(w=>w.homeZone===g.zone&&w.mode==='cook')){
@@ -71,9 +72,40 @@ export function stepCanteen(g,dt){
 }
 export function serveMeal(g,w){
  const c=mealRecipient(g,w.job?.recipient);if(!c||!w.meal||!needsMeal(c))return false;
+ if(isMealActor(c)){if(!beginMeal(g,c,{from:[w.x,w.y]}))return false;w.meal=false;canteenState(g).served++;return true;}   // T3/12: crew / Guard stop, receive and eat (restoreMeal runs when he has eaten)
  restoreMeal(c);w.meal=false;canteenState(g).served++;return true;
 }
 export function canteenCookPose(g,c){
  if(c?.homeZone!==g.zone||c?.job?.kind!=='cook'||!c.arrived||!canteenActive(g))return null;
  return {point:[.51,.55],moving:false,distance:0,face:-1};   // T3/6 (F17, owner b3.png): the cook stands ~10 % of the room width further left (was [.61,.59])
+}
+
+// T3/12 (F1, owner 15 Nov: "ท่ารับข้าวปั้นจากดำ/คนงานแล้วหยิบกิน"): a reaper / the Guard who is handed a rice ball STOPS, takes it (receive), then eats it (eat) before the meal counts -
+// the rice leaves the stock at the hand-over, the hunger / morale come back when he has eaten.  Placeholder look: the standing pose + a rice ball floating over him (scene.js) until Codex draws
+// img/crew-<k>-receive-v1.webp / crew-<k>-eat-v1.webp (spec in Output/Toby/2026-11-19-avegee-t3.md).  Workers keep the instant hand-over (they are not in the owner's list).
+export const MEAL_SEQ=Object.freeze({receiveMs:800,eatMs:1800});
+export const isMealActor=c=>!!c&&c.stamina==null;   // crew + Guard (workers carry stamina)
+/** start the receive -> eat sequence; `from` = where the deliverer stands (the receiver turns to him) ; receive:false = he fetched it himself at the canteen (eat only) */
+export function beginMeal(g,c,{from=null,receive=true}={}){
+ if(!isMealActor(c)||c.mealSeq||!actorStanding(c))return false;
+ c.mealSeq={phase:receive?'receive':'eat',ms:0,from:from?[...from]:null};c.path=null;c.moving=false;
+ if(from&&Number.isFinite(from[0])&&c.x!=null&&Math.abs(from[0]-c.x)>1)c.face=from[0]<c.x?-1:1;
+ return true;
+}
+/** one frame of the sequence; true = the actor is busy with it (the caller must not move him) */
+export function advanceMeal(g,c,dt){
+ const m=c?.mealSeq;if(!m)return false;
+ if(!actorStanding(c)){c.mealSeq=null;return false;}
+ if(g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return true;
+ m.ms+=Math.min(dt,120);
+ if(m.phase==='receive'&&m.ms>=MEAL_SEQ.receiveMs){m.phase='eat';m.ms=0;}
+ else if(m.phase==='eat'&&m.ms>=MEAL_SEQ.eatMs){restoreMeal(c);c.mealSeq=null;return false;}
+ return true;
+}
+/** a deliverer (Dam / a server) hands a rice ball to `r`: crew / Guard get the sequence (food leaves the stock now), workers are fed at once */
+export function deliverMeal(g,r,from=null,{viaKitchen=false}={}){
+ if(!isMealActor(r))return viaKitchen?false:feedActor(g,r.id);
+ if(r.mealSeq||!needsMeal(r)||g.battle||g.over||!takeFood(g,1))return false;
+ if(!beginMeal(g,r,{from}))restoreMeal(r);
+ return true;
 }

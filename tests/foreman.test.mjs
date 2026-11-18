@@ -104,7 +104,7 @@ test('before workers: Dam carries a rice ball to the hungriest crew member; the 
   let steps = 0; while (taan.hunger <= before && steps++ < 1500) g.stepWorld(100);
   assert.ok(taan.hunger > before, 'the rice reached him');
   assert.equal(g.food, 9, 'exactly one ball left the stock');
-  assert.equal(d.fm ?? null, null);
+  assert.ok(!d.fm || d.fm.kind === 'feed', 'T3/12: he may already set out with the next ball (the meal counts after the eating, Taan is still under 80)');
 });
 
 test('before workers: no food in the stock = no feeding trip', () => {

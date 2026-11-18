@@ -2281,6 +2281,7 @@ const API = {
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       if (!actorStanding(c)) continue;
+      if(c.mealSeq)continue;                              // T3/12: handed a rice ball - he stops, takes it, eats it (stepCanteen runs the clock)
       if(advanceCanteenDiner(this,c,dt))continue;
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
@@ -2513,7 +2514,8 @@ const API = {
     // ชุดที่ 10 (ข้อ C1) — เอาโหมด "เดินตามผู้เล่น" ออก (คุณเป้สั่ง 25 ก.ย. 2569) เหลือแค่สองสถานะ:
     // ไล่ปราบเปรตที่อยู่ในโซน หรือไม่งั้นกลับไปยืนเฝ้าหัวสะพาน — เซฟเก่าที่ guard.x ค้างอยู่ใกล้ผู้เล่น
     // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
-    const guardTarget = this.mobs.find(m => !m.eventKey);
+    const guardTarget = this.mobs.find(m => !m.eventKey), guardEating = !!this.guard?.mealSeq;   // T3/12: the Guard stands still while he takes and eats the rice ball
+    if (guardEating) return;
     if (this.guardActive() && guardTarget) {
       const G = this.guard, m = guardTarget;
       if (!canWalk(G.x, G.y)) {

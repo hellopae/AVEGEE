@@ -1,7 +1,7 @@
 import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
 import {registerGpuCache,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
-import {canteenCookPose} from './canteen.js';
+import {canteenCookPose,MEAL_SEQ} from './canteen.js';
 import {mapBodyDrawn} from './crew-presence.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.js';
@@ -64,6 +64,11 @@ export function setMapCharScale(zone) {
   CREW_H = 82 * CHAR_SCALE_MAP; HERO_H = mapActorHeight('yama') * CHAR_SCALE_MAP; SOUL_H = 64 * CHAR_SCALE_MAP;
 }
 const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
+/** T3/12: placeholder look of 'receive / eat a rice ball' (the standing pose + a floating rice ball) until the drawn poses exist: the ball slides in from the giver's side, then bobs over the head */
+function mealMark(ctx, x, y, m, t) {
+  const slide = m.phase === 'receive' ? 1 - Math.min(1, m.ms / MEAL_SEQ.receiveMs) : 0, side = m.from && Math.abs(m.from[0] - x) > 1 ? Math.sign(m.from[0] - x) : 0;
+  label(ctx, '🍙', x + side * 30 * slide, y - 8 + Math.sin(t / 170) * (m.phase === 'eat' ? 4 : 1.5), 16);
+}
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
@@ -683,6 +688,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
     spot_(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP);
     at(g.guard.y, () => {
+      if (g.guard.mealSeq) mealMark(ctx, g.guard.x, g.guard.y - mapActorHeight('guard') * CHAR_SCALE_MAP, g.guard.mealSeq, t);
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
       shade(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP, c => {
         if (motion.moving && drawCrewWalk(c, GUARD.img, g.guard.x, g.guard.y,
@@ -729,6 +735,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
       if(c.fmCarry&&!damDrawn)label(ctx,{rice:'🍙',wood:'🪵',shards:'💎'}[c.fmCarry]||'📦',c.x,c.y-crewHeight-8,14);   // FOREMAN: what Dam is carrying (the drawn carry walk shows it itself)
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
+      if (c.mealSeq) mealMark(ctx, c.x, c.y - crewHeight, c.mealSeq, t);
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
       if (!c.self && (c.hunger ?? 100) <= 0) hungerMark(ctx, c.x, c.y - crewHeight - 6);   // FB2-6: small hunger icon over the head (no banner)
     });

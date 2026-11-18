@@ -11,7 +11,7 @@ import { nearestWalk, findPath, stepTo } from './walk.js?v=k1d';
 import { MERCHANT, BAL } from './data.js';
 import { t } from './i18n.js';
 import { actorStanding } from './actor-recovery.js';
-import { canteenBuilt, canteenPoint, mealRecipients, mealRecipient, needsMeal, feedActor, foodAvailable } from './canteen.js';
+import { canteenBuilt, canteenPoint, mealRecipients, mealRecipient, needsMeal, feedActor, deliverMeal, foodAvailable } from './canteen.js';
 import { zoneWorkers, workerStandbyPoint, workerHeading } from './workers.js';
 
 export const FOREMAN = Object.freeze({
@@ -162,7 +162,7 @@ export function advanceForeman(g, c, dt) {
     const r = mealRecipient(g, job.id), [rx, ry] = posOf(r);
     c.fmCarry = 'rice'; c.fmWork = false;
     if (Math.hypot(rx - c.x, ry - c.y) < FOREMAN.meet) {
-      if (feedActor(g, r.id)) g.log?.(t('foreman.log.fed', { name:c.name, who:r.name }), 'good');
+      if (deliverMeal(g, r, [c.x, c.y])) g.log?.(t('foreman.log.fed', { name:c.name, who:r.name }), 'good');
       clear(c); c.fmCool = 600; return true;
     }
     const goal = c.fmGoalFor === r.id && Math.hypot(c.fmGoalSrc[0] - rx, c.fmGoalSrc[1] - ry) <= 24 ? c.fmGoal : nearestWalk(rx, ry);

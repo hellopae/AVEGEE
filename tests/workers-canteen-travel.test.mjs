@@ -41,7 +41,7 @@ test('worker cook makes food after arrival and server delivers without consuming
  for(let i=0;i<25;i++)stepCanteen(g,120);assert.equal(canteenState(g).meals,1);
  const taan=g.crewOf('taan');taan.hunger=15;taan.morale=35;g.setWorkerMode(w.id,'serve');stepWorkers(g);assert.equal(w.job.kind,'food');assert.equal(taan.hunger,15);
  place(w,at);advanceWorkers(g,120);assert.equal(w.meal,true);assert.equal(taan.hunger,15);
- place(w,nearestWalk(taan.x??taan.hx,taan.y??taan.hy));advanceWorkers(g,120);assert.equal(taan.hunger,55);assert.equal(taan.morale,55);assert.equal(w.meal,false);assert.equal(g.inventory.food,9);assert.equal(canteenState(g).served,1);
+ place(w,nearestWalk(taan.x??taan.hx,taan.y??taan.hy));advanceWorkers(g,120);for(let i=0;i<60&&taan.mealSeq;i++)stepCanteen(g,120);assert.equal(taan.hunger,55);assert.equal(taan.morale,55);assert.equal(w.meal,false);assert.equal(g.inventory.food,9);assert.equal(canteenState(g).served,1);
 });
 test('worker with zero morale walks to rest seats, sits and recovers; seated art exists for all zones',()=>{
  const g=game(),w=g.hireWorker();w.morale=0;stepWorkers(g);assert.equal(w.recovering,true);const at=canteenPoint(g);place(w,nearestWalk(at[0]-80,at[1]+50));advanceWorkers(g,120);assert.equal(w.sitting,true);assert.ok(w.morale>0);

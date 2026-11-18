@@ -7,6 +7,8 @@ import {STATIONS,BAL} from '../src/data.js';
 import {resetWalk,setBlocks,setNpcDiscs,nearestWalk} from '../src/walk.js?v=k1d';
 import {stepWorkers,advanceWorkers,normalizeWorkers,workerRow,workerCookAssets,workerCarryAssets,carryRow,workerCarryReady,workerHireCost} from '../src/workers.js';
 import {canteenActive,canteenPoint,canteenState,stepCanteen,canteenCookPose} from '../src/canteen.js';
+// T3/12: a reaper / the Guard handed a rice ball receives and eats it first - the meal counts when he has eaten
+const eaten=(g,c)=>{for(let i=0;i<60&&c.mealSeq;i++)stepCanteen(g,120);};
 import {canteenPanelHtml,workersPanelHtml} from '../src/worker-ui.js';
 import {teamManageHtml} from '../src/team-hud.js';
 globalThis.Image??=class{};
@@ -37,7 +39,7 @@ test('servers target the hungriest available recipient, respect explicit selecti
  const w=g.hireWorker();g.setWorkerMode(w.id,'serve');canteenState(g).meals=3;stepWorkers(g);assert.equal(w.job.recipient,b.id);assert.equal(w.meal,undefined);
  place(w,canteenPoint(g));advanceWorkers(g,120);assert.equal(w.meal,true);assert.equal(b.hunger,10);assert.equal(canteenState(g).meals,2);
  assert.equal(g.setWorkerServeTarget(w.id,a.id),true);assert.equal(w.meal,true);stepWorkers(g);assert.equal(w.job.recipient,a.id);
- place(w,nearestWalk(a.x??a.hx,a.y??a.hy));advanceWorkers(g,120);assert.equal(a.hunger,60);assert.equal(b.hunger,10);assert.equal(w.meal,false);
+ place(w,nearestWalk(a.x??a.hx,a.y??a.hy));advanceWorkers(g,120);assert.equal(a.mealSeq.phase,'receive');assert.equal(a.hunger,20);eaten(g,a);assert.equal(a.hunger,60);assert.equal(b.hunger,10);assert.equal(w.meal,false);
  assert.equal(g.setWorkerServeTarget(w.id,'missing'),false);
 });
 function deliveryTime(count){
@@ -58,7 +60,7 @@ test('reload preserves cook progress, delivery cargo, selected recipient and sto
  for(let i=0;i<50&&!g.workers().find(a=>a.id===w.id).meal;i++)tick(g);
  const held=g.workers().find(a=>a.id===w.id);assert.equal(held.meal,true);assert.equal(g.crewOf('dam').hunger,0);
  const before=canteenState(g).meals;g=reload(g);const resumed=g.workers().find(a=>a.id===w.id);assert.equal(resumed.meal,true);assert.deepEqual(resumed.serveTargets,[dam.id]);assert.equal(resumed.job.phase,'deliver');assert.equal(canteenState(g).meals,before);
- stepWorkers(g);place(resumed,nearestWalk(g.crewOf('dam').x??dam.hx,g.crewOf('dam').y??dam.hy));advanceWorkers(g,120);assert.equal(g.crewOf('dam').hunger,40);assert.equal(canteenState(g).served,1);
+ stepWorkers(g);place(resumed,nearestWalk(g.crewOf('dam').x??dam.hx,g.crewOf('dam').y??dam.hy));advanceWorkers(g,120);eaten(g,g.crewOf('dam'));assert.equal(g.crewOf('dam').hunger,40);assert.equal(canteenState(g).served,1);
  const saved=normalizeWorkers(g.workerState);assert.equal(saved.workers.find(a=>a.id===w.id).meal,false);
 });
 test('crew, guard and workers walk to eat, wait for ready food, and consume once; no kitchen rejects the order',()=>{
@@ -68,7 +70,7 @@ test('crew, guard and workers walk to eat, wait for ready food, and consume once
  for(let i=0;i<1000&&Math.hypot(c.x-canteenPoint(g)[0],c.y-canteenPoint(g)[1])>=24;i++){if(type==='worker')advanceWorkers(g,120);else if(type==='guard')stepCanteen(g,120);else g.stepWorld(120);}
  assert.ok(Math.hypot(c.x-canteenPoint(g)[0],c.y-canteenPoint(g)[1])<24,type);assert.equal(c.hunger,0);assert.equal(g.food,stock);
  canteenState(g).meals=1;if(type==='worker')advanceWorkers(g,120);else if(type==='guard')stepCanteen(g,120);else g.stepWorld(120);
- assert.equal(c.hunger,40);assert.equal(c.eatOrder,null);assert.equal(canteenState(g).meals,0);assert.equal(canteenState(g).served,1);
+ eaten(g,c);assert.equal(c.hunger,40);assert.equal(c.eatOrder,null);assert.equal(canteenState(g).meals,0);assert.equal(canteenState(g).served,1);
  }
 });
 test('Nira has hire controls only; canteen exposes persistent worker modes and recipient selection; team has food/rest/party controls',()=>{
