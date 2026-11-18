@@ -12,7 +12,7 @@ test('crew cooking stays disabled and only arrived worker cooks appear inside th
  const g=game();g.bossCleared.th=true;g.stations.push({def:STATIONS.find(s=>s.k==='canteen'),slots:[],build:0,fire:0});
  assert.equal(g.orderRice('dam',1),false);prepareCooks(g);assert.equal(canteenCookPose(g,g.crewOf('taan')),null);
  const w=g.hireWorker();g.setWorkerMode(w.id,'cook');assert.equal(canteenCookPose(g,w),null);
- w.job={kind:'cook',ms:0};w.arrived=true;[w.x,w.y]=canteenPoint(g);assert.deepEqual(canteenCookPose(g,w).point,[.61,.59]);
+ w.job={kind:'cook',ms:0};w.arrived=true;[w.x,w.y]=canteenPoint(g);assert.deepEqual(canteenCookPose(g,w).point,[.51,.55]);   // T3/6: moved left
 });
 test('merchant buys pooled rice without Nira; worker cook hidden outside and rendered inside',()=>{
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),room=readFileSync(new URL('../src/room.js',import.meta.url),'utf8'),scene=readFileSync(new URL('../src/scene.js',import.meta.url),'utf8');
