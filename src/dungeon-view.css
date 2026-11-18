@@ -32,7 +32,7 @@ dialog.dungeon-dialog #dungeon-root{height:100%}.dungeon-dialog .dungeon-view{he
 dialog#dlg.dungeon-dialog>.modal-corner-close{display:none!important}
 /* B12: same minimap control row as town; HUD remains in DOM above all FX. */
 .b12-fx .dungeon-menu{display:none}
-.b12-fx .dungeon-zoom{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 122px);width:180px;margin:0;z-index:3;display:grid;grid-template-columns:44px minmax(0,1fr) 44px}
+.b12-fx .dungeon-zoom{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 122px);width:180px;margin:0;z-index:3;display:grid;grid-template-columns:44px 44px;justify-content:end;gap:6px}   /* T3/2: − and + only */
 .b12-fx .dungeon-zoom button{min-width:44px;min-height:44px;padding:3px 6px}
 .b12-fx .dungeon-zoom [data-zoom=overview]{min-width:0;font-size:12px;white-space:nowrap}
 .b12-fx .dungeon-status{top:calc(env(safe-area-inset-top,0px) + 174px)}

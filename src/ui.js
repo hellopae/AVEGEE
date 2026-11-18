@@ -5373,6 +5373,9 @@ function openDungeon() {
   modal('<div id="dungeon-root"></div>',d=>{
     destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
       onGuide:()=>{destroy?.();destroy=null;runBossGuideStory('welcome',()=>openDungeon());},
+      onMerchant:()=>{destroy?.();destroy=null;openMerchant();   // T3/2: the same shop as in town; closing it puts Yama back on the route
+        const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
+        dlg.addEventListener('close',back);},
       onChallenge:()=>{destroy?.();destroy=null;openCaveInterior(()=>{if(!g.pendingRecovery)openDungeon();});},
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;

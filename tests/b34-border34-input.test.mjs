@@ -80,7 +80,7 @@ test('redraw native renderer: zoom buttons and five HUD actions work at 390 and 
   const imageWidth=()=>{drawn.length=0;captureDraw=true;tick();captureDraw=false;return drawn.find(a=>a.length===5&&a[0]?.src===row.background)?.[3];};
   const ordinary=imageWidth();assert.ok(ordinary>0);
   root.controls.more.handlers.click();assert.ok(imageWidth()>ordinary);
-  root.controls.overview.handlers.click();assert.ok(imageWidth()<=size+1e-7);
+  root.controls.less.handlers.click();assert.ok(Math.abs(imageWidth()-ordinary)<1e-6,'T3/2: two zoom levels only (medium / near), the minus button goes back to the medium one');
   for(const button of root.hud)button.handlers.click();assert.deepEqual(actions,['profile','manual','bag','pause','settings']);
   destroy();
  }

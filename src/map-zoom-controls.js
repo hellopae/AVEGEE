@@ -3,7 +3,7 @@ export function bindMapZoom({less,more,overview,surface,levels,level=0,onChange=
   const off=[],pointers=new Map();let distance=0;
   const listen=(node,event,fn,options)=>{node.addEventListener(event,fn,options);off.push(()=>node.removeEventListener(event,fn,options));};
   const set=n=>{level=Math.max(0,Math.min((typeof levels==='function'?levels():levels).length-1,n));less.disabled=level===0;more.disabled=level===(typeof levels==='function'?levels():levels).length-1;onChange(level,(typeof levels==='function'?levels():levels)[level]);};
-  listen(less,'click',()=>set(level-1));listen(more,'click',()=>set(level+1));listen(overview,'click',()=>onOverview?onOverview():set(0));
+  listen(less,'click',()=>set(level-1));listen(more,'click',()=>set(level+1));if(overview)listen(overview,'click',()=>onOverview?onOverview():set(0));   // T3/2: the border routes have no overview button
   if(gestures&&surface){
     listen(surface,'wheel',e=>{e.preventDefault();if(e.deltaY)set(level+(e.deltaY<0?1:-1));},{passive:false});
     listen(surface,'pointerdown',e=>{surface.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,[e.clientX,e.clientY]);if(pointers.size===2){distance=span();onGesture();}},{capture:true});
