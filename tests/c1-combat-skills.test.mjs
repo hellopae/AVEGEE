@@ -94,7 +94,7 @@ test('C1 damage/heal formula uses existing effective stats and fire bonus exactl
   assert.match(g.crewHelpWhy(a),/120/);assert.equal(g.battleAct('crew:plerng'),false);
   const h=game('th',['guard']);unlock(h,h.guard,'abyssGatebreaker');battle(h);command(h,'abyssGatebreaker',h.guard.id);
   assert.equal(h.guard.helpRemainingMs,120000);assert.equal(specialCooldown(h.guard),120);h.advanceBattleTime(120000);
-  command(h,'guard',h.guard.id);assert.equal(specialCooldown(h.guard),20);assert.equal(h.guard.helpRemainingMs,20000);
+  command(h,'guard',h.guard.id);assert.equal(specialCooldown(h.guard),60);assert.equal(h.guard.helpRemainingMs,60000);   // T3/14: 1 minute (was 20 s)
 });
 
 test('C1 support skills target full HP, shield takes post-defend damage, stronger effects replace rather than add',()=>{

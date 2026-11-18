@@ -3562,7 +3562,7 @@ function openNiraOffice() {
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — นับรวมในทีม</small>
         ${hireTag('guard', !!g.guard)}
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small></span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs % 60000 === 0 ? GUARD.helpCdMs / 60000 + ' นาที' : GUARD.helpCdMs / 1000 + ' วินาที'}</small></span>
         ${g.guard
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อทีมปลดช่องที่ 4">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(นับรวมยามาและยักษ์ ${g.partyCap()} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}

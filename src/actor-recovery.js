@@ -1,7 +1,9 @@
 // Recovery uses wall time; special moves use explicitly advanced battle time.
 export const RECOVERY_MS = 120000;
 export const actorStanding = actor => !!actor && !actor.recoverUntil && !actor.teaRest && (actor.morale ?? 100) > 0;
-export const specialCooldown = actor => actor?.k === 'guard' ? (actor.helpCooldownSeconds || 20) : 120;
+/** T3/14 (owner 19 Nov): the Guard's special move rests 1 minute between uses in every zone (was 20 s) - data.js GUARD.helpCdMs is built from this */
+export const GUARD_COOLDOWN_SECONDS = 60;
+export const specialCooldown = actor => actor?.k === 'guard' ? (actor.helpCooldownSeconds || GUARD_COOLDOWN_SECONDS) : 120;
 export function weightedTarget(crew, guard, random = Math.random) {
   const targets = [{id:'you',weight:2}, ...crew.filter(actorStanding).map(actor => ({id:actor.id,actor,weight:1})),
     ...(actorStanding(guard) ? [{id:guard.id,actor:guard,weight:3}] : [])];

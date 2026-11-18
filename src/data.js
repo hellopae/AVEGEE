@@ -1,6 +1,7 @@
 import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
+import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -731,9 +732,9 @@ export const MOB = {
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
   hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,
-  // ค่าที่ battleAct('guard') ใช้จริง (ย้ายจากเลขลอยใน game.js มาไว้ที่นี่ — ค่าเดิมทุกตัว): คูลดาวน์ 20 วินาที · กำลังใจ −8 ต่อครั้ง · ต้องมีกำลังใจ ≥ 8
+  // ค่าที่ battleAct('guard') ใช้จริง (ย้ายจากเลขลอยใน game.js มาไว้ที่นี่ — ค่าเดิมทุกตัว): คูลดาวน์ 1 นาที (T3/14: เดิม 20 วินาที) · กำลังใจ −8 ต่อครั้ง · ต้องมีกำลังใจ ≥ 8
   // (battleCd:120 ข้างบนเป็นค่าเก่า ไม่ได้ใช้ตั้งคูลดาวน์จริง — เหลือไว้เพราะเทสต์ combat-power ยังอ้าง · การ์ด แถบ และแผ่นพลังอ่าน helpCdMs)
-  helpCdMs:20000, helpMorale:8,
+  helpCdMs:GUARD_COOLDOWN_SECONDS*1000, helpMorale:8,
   line:'"ข้าเฝ้าประตูนี้มาก่อนที่ท่านจะเกิด ปล่อยเรื่องพวกเปรตให้ข้า"',
   desc:'ไล่ปราบเปรตให้เอง ไม่ต้องเดินไปเอง แต่กินค่าแรงทุกงวด · เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ',
 };

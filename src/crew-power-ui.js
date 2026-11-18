@@ -33,7 +33,7 @@ export function powerSheetHtml(g, k) {
   // นิรา: ท่า "แสงฟื้นบารมี" ฟื้นบารมีให้ยามา/ยมทูต (CREW_POWER.nira.heal) — ผลแสดงตัวฟื้นก่อน แล้วต่อด้วยบรรทัดระเบียบเดิม
   const base = crewAbility(actor || k, g.zone);
   const ability = k === 'nira' ? `${t('power.heal', { n: g.allyStats(actor || 'nira').heal })} · ${base}` : base;
-  const cd = k === 'guard' ? GUARD.helpCdMs / 1000 : BATTLE.crewCd;      // ค่าที่ battleAct ใช้จริง (ยักษ์ 20 วิ · ยมทูต 120 วิ)
+  const cd = k === 'guard' ? GUARD.helpCdMs / 1000 : BATTLE.crewCd;      // ค่าที่ battleAct ใช้จริง (ยักษ์ 60 วิ · ยมทูต 120 วิ)
   const moraleCost = k === 'guard' ? GUARD.helpMorale : BATTLE.crewMorale;
   const reader = !!def?.reader;                                           // นิรา: อ่านสำนวนให้ท่าน ไม่รับเวร — ไม่มีหน้าที่คุมงาน
   const role = k === 'guard' || reader ? null : keeperRole(k);
