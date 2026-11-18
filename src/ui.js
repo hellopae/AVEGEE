@@ -6618,6 +6618,7 @@ function openStation(k, emergency = false) {
         cleanup = game.run(stage, {
           level: stx.speedLv || 0, alive: () => !closed && active(), paused: () => g.paused,
           reward: () => Math.max(0,Math.min(8,100-g.order)),
+          bonus: () => { const b = g.documentPuzzleBonus(); return { ...b, itemName: b.item ? itemName(b.item) : '' }; },
           onWin: () => finish(true), onLose: () => finish(false),
         });
       } catch (error) { quit(); throw error; }

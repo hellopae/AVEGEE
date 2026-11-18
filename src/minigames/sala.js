@@ -11,7 +11,7 @@ function bookArt(color) {
 export default {
  get name() { return t('room.sala.action2'); }, icon:'',
  get tip() { return t('mg.sala.tip'); },
- run(host, { alive = () => true, paused = () => false, onWin, reward = () => 8, seed = Date.now() }) {
+ run(host, { alive = () => true, paused = () => false, onWin, reward = () => 8, bonus = () => null, seed = Date.now() }) {
   const COLORS = ['red','yellow','blue','purple'].map(k => t(`doc.${k}`));
   const game = createPuzzle(seed), root = document.createElement('div');
   root.className = 'doc-puzzle';
@@ -137,7 +137,9 @@ export default {
    busy = false; controls();
    if (state.won) {
     victory.hidden = false;
-    root.querySelector('[data-claim]').textContent = `${t('doc.claim')} +${Math.max(0,Math.min(8,reward()))}`;
+    const extra = bonus();   // T3/9 (F23): order already full -> the surplus comes back as coins (+ a medicine chest when the whole win would be wasted)
+    root.querySelector('[data-claim]').textContent = `${t('doc.claim')} +${Math.max(0,Math.min(8,reward()))}`
+      + (extra?.coin ? t('doc.claimCoin', { coin: extra.coin }) : '') + (extra?.item ? t('doc.claimItem', { item: extra.itemName || extra.item }) : '');
     status.textContent = t('doc.winStatus');
    } else {
     status.textContent = result.reshuffled ? t('doc.reshuffled') : t('doc.continue');

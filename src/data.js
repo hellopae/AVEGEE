@@ -729,6 +729,8 @@ export const MOB = {
 // ชุดที่ 10 (ข้อ C2) คุณเป้ 25 ก.ย. 2569 — เข้าร่วมฉากต่อสู้แบบผลัดตา (g.battle) ได้แล้ว
 // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — battleAtk/battleCd ยึด CREW_POWER.guard ที่เดียวกับยมทูต
 // B5: ฟาดแรง 60, เสียกำลังใจ 8, คูลดาวน์ 120 วินาทีสนามรบ
+/** T3/9 (F23): paid back when the document puzzle's +8 order does not fit (order near / at 100) */
+export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
   hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,

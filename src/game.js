@@ -46,7 +46,7 @@ import { calcRemorse, remorseOf, isRepentant } from './remorse.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
-         POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS,
+         POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS, DOC_BONUS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
@@ -5343,15 +5343,25 @@ const API = {
   // คงเงื่อนไข "ขั้นยมบาทต้องถึง" ของเดิมไว้ด้วย กันขั้น 5 ตั้งแต่ต้นเกมเพราะตอนนี้ไม่มีค่าเบี้ยกั้นแล้ว
   mgLevelNeed(lv) { return Math.min(5, 1 + Math.floor(lv / 2)); },
   documentPuzzleReady(st) { return !!st && st.def.k === 'sala' && !st.build && this.tick >= (st.documentCd || 0); },
+  /** T3/9 (F23, owner m3.png): the part of the +8 order the city has no room for (order already near 100) is paid back as coins, and a whole wasted win (order full) adds a medicine chest.
+   *  gain = what the order bar really takes (0-8) · coin = DOC_BONUS.coinPerLost x (8 - gain) · item only when gain is 0.  Numbers are a proposal for the owner. */
+  documentPuzzleBonus() {
+    const gain = Math.max(0, Math.min(8, 100 - this.order)), lost = 8 - gain;
+    return { gain, coin: lost * DOC_BONUS.coinPerLost, item: gain === 0 ? DOC_BONUS.item : null };
+  },
   finishDocumentPuzzle(won) {
     const st=this.stations.find(s=>s.def.k==='sala');
     if (!this.documentPuzzleReady(st) || !won) return false;
-    const before=this.order, cooldown=st.documentCd, logs=[...this.logs];
+    const before=this.order, cooldown=st.documentCd, logs=[...this.logs], coinBefore=this.coin, itemBefore=this.inventory[DOC_BONUS.item];
+    const bonus=this.documentPuzzleBonus();
     this.order=clamp(this.order+8,0,100);
     st.documentCd=this.tick+UPGRADES.mgCooldown;
     this.log(`📚 จัดเอกสารครบหมวด — ระเบียบ +${Math.round(this.order-before)} (${Math.round(this.order)}/100)`,'good');
+    if (bonus.coin>0) { this.coin+=bonus.coin; this.log(`💰 ระเบียบเต็มแล้ว — ได้เบี้ยกรรมแทน +${bonus.coin}`,'good'); }
+    if (bonus.item) { this.inventory[bonus.item]=(this.inventory[bonus.item]||0)+1; this.log(`🎁 ได้${ITEMS[bonus.item].name} +1`,'good'); }
     if (!this.save()) {
-      this.order=before; this.logs=logs;
+      this.order=before; this.logs=logs; this.coin=coinBefore;
+      if (bonus.item) { if (itemBefore===undefined) delete this.inventory[bonus.item]; else this.inventory[bonus.item]=itemBefore; }
       if (cooldown === undefined) delete st.documentCd; else st.documentCd=cooldown;
       return false;
     }
