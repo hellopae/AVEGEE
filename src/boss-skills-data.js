@@ -250,27 +250,29 @@ export const bossSkillsFor = key => BOSS_SKILLS[key] ? structuredClone(BOSS_SKIL
 
 // T1b (owner 16 Nov: "the ordinary spirits are not tuned - make them harder: group attacks, stronger blows, more turns"): the wandering ghosts of the map (`mob`) and the spirits that resist
 // at the court (`soul`) get two moves of the central rulebook (src/boss-skills.js) like a boss does - one hits the whole team, one is a heavy single blow - each announced one turn ahead.
-// `noCard:true` = no full-screen card for these small foes (the group move still shows its name and hits everybody).  The names / lines are TEMPORARY (Rae polishes them).
+// `noCard:true` = no full-screen card for these small foes (the group move still shows its name and hits everybody).  Names / lines: Rae's R1 section D1 (T3/11).
 // Strength and fight length of these foes are fitted per zone and team size by the `<zone>:mob` / `<zone>:soul` rows of encounter-balance.js (scripts/fit-t1b-crowd.mjs).
 export const CROWD_SKILLS = Object.freeze({
+  // T3/11: names + lines from Rae's R1 section D1 (no speech marks: ordinary foes do not talk).  "รอบหน้า" is the real mechanic: a warned move is used on the foe's FIRST act of the NEXT ROUND (boss-skills.js, warn counted in rounds),
+  // so TH keeps "รอบหน้า"; EN says "next round" (not "next turn": a foe with 3 acts a round would otherwise look like it strikes at once).
   mob:Object.freeze([
-    { id:'wailSwarm', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('เสียงหอนระงม', 'Wailing Swarm'),
-      warnText:T('วิญญาณเหล่านั้นหอนขึ้นพร้อมกัน — รอบหน้าเสียงจะกระแทกทั้งทีม!', 'The ghosts begin to wail together — next turn the sound hits the whole team!'),
-      useText:T('เสียงหอนซัดใส่ทั้งทีม', 'The wail crashes over the whole team'),
+    { id:'wailSwarm', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('เสียงหอนระงม', 'Wailing Horde'),
+      warnText:T('พวกมันอ้าปากหอนพร้อมกัน เสียงกำลังก่อตัวขึ้น — รอบหน้าจะกระแทกทั้งทีม!', 'They throw back their heads as one, the howl swelling — next round it will crash over the whole team!'),
+      useText:T('เสียงหอนซัดเข้าใส่ทั้งทีม', 'The howl crashes over the whole team'),
       when:{ firstAct:2, everyActs:4 } },
-    { id:'frenzyBlow', kind:'heavyHit', warn:1, power:1.7, name:T('ฟาดคลั่ง', 'Frenzied Blow'),
-      warnText:T('มันกำมือแน่นจนสั่น — รอบหน้าจะฟาดหนักใส่คนเดียว!', 'It clenches its fists until they shake — next turn a heavy blow lands on one of you!'),
+    { id:'frenzyBlow', kind:'heavyHit', warn:1, power:1.7, name:T('ฟาดคลั่ง', 'Frenzied Smash'),
+      warnText:T('มันกำหมัดแน่นจนสั่น — รอบหน้าจะฟาดหนักใส่คนเดียว!', 'It clenches its fists until they shake — next round a heavy blow lands on one of you!'),
       useText:T('มันฟาดลงมาสุดแรง', 'It brings its fists down with everything it has'),
       when:{ hpBelow:.7, firstAct:3, everyActs:3 } },
   ]),
   soul:Object.freeze([
-    { id:'curseChorus', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('คำสาปแช่งก้องห้อง', 'Chorus of Curses'),
-      warnText:T('เสียงสาปแช่งดังขึ้นเรื่อย ๆ — รอบหน้าจะกระแทกทั้งทีม!', 'The curses grow louder — next turn they crash over the whole team!'),
-      useText:T('เสียงสาปแช่งก้องใส่ทั้งทีม', 'The curses ring out over the whole team'),
+    { id:'curseChorus', kind:'groupHit', warn:1, power:.55, noCard:true, name:T('เสียงอาฆาตก้องศาล', 'Echoing Spite'),
+      warnText:T('เสียงอาฆาตทบกันดังขึ้นทุกที — รอบหน้าจะก้องใส่ทั้งทีม!', 'The spite swells louder with every breath — next round it will ring out over the whole team!'),
+      useText:T('เสียงอาฆาตก้องใส่ทั้งทีม', 'The spite rings out over the whole team'),
       when:{ firstAct:2, everyActs:4 } },
-    { id:'lastStand', kind:'heavyHit', warn:1, power:1.8, name:T('ฟาดสุดแรงเฮือกสุดท้าย', 'Last Desperate Blow'),
-      warnText:T('วิญญาณดวงนั้นสูดลมหายใจลึก — รอบหน้าจะฟาดสุดแรงใส่คนเดียว!', 'The spirit draws a deep breath — next turn it strikes one of you with all it has left!'),
-      useText:T('มันฟาดสุดแรงที่เหลืออยู่', 'It strikes with all the strength it has left'),
+    { id:'lastStand', kind:'heavyHit', warn:1, power:1.8, name:T('ฟาดเฮือกสุดท้าย', 'Last Gasp Strike'),
+      warnText:T('วิญญาณดวงนั้นสูดลมหายใจลึกจนตัวสั่น — รอบหน้าจะฟาดสุดแรงใส่คนเดียว!', 'The spirit draws a deep, shuddering breath — next round it strikes one of you with all it has left!'),
+      useText:T('มันฟาดด้วยแรงทั้งหมดที่เหลืออยู่', 'It strikes with all the strength it has left'),
       when:{ hpBelow:.55, firstAct:3, everyActs:3 } },
   ]),
 });
