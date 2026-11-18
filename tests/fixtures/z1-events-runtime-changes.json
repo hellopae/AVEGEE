@@ -10,7 +10,7 @@
   },
   {
    "before": "import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';\n",
-   "after": "import {foeFit} from './foe-turn-fit.js';\nimport {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale} from './battle-turns.js';\n"
+   "after": "import {foeFit} from './foe-turn-fit.js';\nimport {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale,makeFoeBurn,burnTickDamage} from './battle-turns.js';\n"
   },
   {
    "before": "import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\n",
@@ -197,8 +197,12 @@
    "after": "      turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });\n"
   },
   {
+   "before": "        const damage = Math.min(f.hp, f.burn.dmg);\n",
+   "after": "        const damage = Math.min(f.hp, burnTickDamage(f.burn));\n"
+  },
+  {
    "before": "    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns, dmg:ignite.dmg };\n",
-   "after": "    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns * this.foeActsPerRound(target.id), dmg:ignite.dmg };   // T1b: the fire lasts its rounds (x the foe's turns per round)\n"
+   "after": "    if (ignite && target.hp > 0) target.burn = makeFoeBurn(ignite, this.foeActsPerRound(target.id));   // T1c: lasts its rounds (x the foe's turns per round) but the TOTAL stays what it was before F3\n"
   },
   {
    "before": "    b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;\n",
@@ -334,7 +338,7 @@
   },
   {
    "before": "    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn};\n",
-   "after": "    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn,turns:hit.burn.turns*this.foeActsPerRound(target.id)};   // T1b: x the foe's turns per round (see tickFoeBurn)\n"
+   "after": "    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn=makeFoeBurn(hit.burn,this.foeActsPerRound(target.id));   // T1c (see tickFoeBurn)\n"
   },
   {
    "before": "",
@@ -383,6 +387,10 @@
   {
    "before": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < 2) return false;\n",
    "after": "      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < (ZONE_EVENTS.asia.find(e => e.k === 'asiaPrisonFire')?.afterKills || 2)) return false;\n"
+  },
+  {
+   "before": "        const damage=Math.min(acting.hp,acting.burn.dmg);acting.hp-=damage;acting.burn.turns--;\n",
+   "after": "        const damage=Math.min(acting.hp,burnTickDamage(acting.burn));acting.hp-=damage;acting.burn.turns--;\n"
   },
   {
    "before": "",

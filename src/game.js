@@ -23,7 +23,7 @@ import {retreatS} from './dungeon-chase.js?v=l5';
 import { routeBossCave, routeCaptainCave, captainCaveForZone } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {foeFit} from './foe-turn-fit.js';
-import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale} from './battle-turns.js';
+import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale,makeFoeBurn,burnTickDamage} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
@@ -3373,12 +3373,12 @@ const API = {
     const out = [];
     for (const f of B.foes) {
       if (f.hp > 0 && f.burn?.turns > 0) {
-        const damage = Math.min(f.hp, f.burn.dmg);
+        const damage = Math.min(f.hp, burnTickDamage(f.burn));
         f.hp -= damage; f.burn.turns--; out.push({ id:f.id, damage });
         if (f.burn.turns <= 0) delete f.burn;
       }
     }
-    if (ignite && target.hp > 0) target.burn = { turns:ignite.turns * this.foeActsPerRound(target.id), dmg:ignite.dmg };   // T1b: the fire lasts its rounds (x the foe's turns per round)
+    if (ignite && target.hp > 0) target.burn = makeFoeBurn(ignite, this.foeActsPerRound(target.id));   // T1c: lasts its rounds (x the foe's turns per round) but the TOTAL stays what it was before F3
     if (!B.foes.some(f => f.id === B.selectedFoeId && f.hp > 0)) {
       const next = B.foes.find(f => f.hp > 0);
       if (next) B.selectedFoeId = next.id;
@@ -4137,7 +4137,7 @@ const API = {
     }
     // ไฟที่ติดมาจากตาก่อนหน้าลวกต่อ (ตาที่เพิ่งติดไฟยังไม่ลวกในตานี้) · ติดไฟใหม่จากฟาดนี้
     const burns = B.initiativeAction || what === 'teamJudgment' ? [] : this.tickFoeBurn(B, target, hit?.burn || null);
-    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn,turns:hit.burn.turns*this.foeActsPerRound(target.id)};   // T1b: x the foe's turns per round (see tickFoeBurn)
+    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn=makeFoeBurn(hit.burn,this.foeActsPerRound(target.id));   // T1c (see tickFoeBurn)
     if (burns.length) B.weaponNote = { k:'burn', n:burns.reduce((a, x) => a + x.damage, 0), hits:burns };
     if (hit?.burn && target.hp > 0) B.weaponNote = { k:'ignite', n:hit.burn.dmg, turns:hit.burn.turns };
     if (hit?.heal) {
@@ -4405,7 +4405,7 @@ const API = {
     if(enemyOnly){
       const acting=B.foes.find(f=>f.id===B.enemyActorId&&f.hp>0);
       if(acting?.burn?.turns>0){
-        const damage=Math.min(acting.hp,acting.burn.dmg);acting.hp-=damage;acting.burn.turns--;
+        const damage=Math.min(acting.hp,burnTickDamage(acting.burn));acting.hp-=damage;acting.burn.turns--;
         if(!acting.burn.turns)delete acting.burn;
         B.dmg.burnSelf=damage;B.dmg.counterFoeId=acting.id;say(`${acting.who}ถูกไฟลวก — ${damage} หน่วย`);
         if(acting.hp<=0){

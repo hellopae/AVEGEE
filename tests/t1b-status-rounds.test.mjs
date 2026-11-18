@@ -27,10 +27,21 @@ test('T1b: hypnosis lasts the foe\'s whole round and each self-blow is its 1/n s
  }
  hit=hp0-b.foes[0].hp;assert.ok(hit>0&&hit<=10,'a confused blow on itself is ~10/3, not 10 ('+hit+')');
 });
-test('T1b: fire lasts the foe\'s rounds too (turns x the foe\'s turns per round)',()=>{
- const g=setup(['taan','dam']),b=g.battle;
- g.tickFoeBurn(b,b.foes[0],{turns:2,dmg:5});
- assert.equal(b.foes[0].burn.turns,6);
+test('T1c: fire lasts the foe\'s rounds (ticks = turns x its turns per round) but the TOTAL is what it was before F3',()=>{
+ for(const [members,n] of [[[],1],[['taan'],2],[['taan','dam'],3]]){
+  const g=setup(members),b=g.battle,f=b.foes[0];
+  assert.equal(g.foeActsPerRound(f.id),n);
+  g.tickFoeBurn(b,f,{turns:2,dmg:5});
+  assert.equal(f.burn.turns,2*n,'lasts 2 rounds');
+  const hp0=f.hp;let ticks=0;
+  while(f.burn){g.tickFoeBurn(b,f,null);ticks++;assert.ok(ticks<=2*n);}
+  assert.equal(ticks,2*n);assert.equal(hp0-f.hp,10,'total fire damage = turns x dmg = 10, as before F3 (n='+n+')');
+ }
+});
+test('T1c: the same total holds for an odd split (7 x 3 turns a round = 14, no rounding drift)',()=>{
+ const g=setup(['taan','dam']),b=g.battle,f=b.foes[0];
+ g.tickFoeBurn(b,f,{turns:2,dmg:7});const hp0=f.hp;while(f.burn)g.tickFoeBurn(b,f,null);
+ assert.equal(hp0-f.hp,14);
 });
 test('T1b: the texts say rounds, not a fixed number of turns',async()=>{
  const {t}=await import('../src/i18n.js');

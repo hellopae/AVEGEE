@@ -319,7 +319,7 @@ test('ดาบเขี้ยวทัณฑสูร: ฟาดแรงขึ
   const { b } = swingOn('fang', [0.5, 0.9, 0.1]);      // สุ่มติดไฟผ่าน (0.1 < 0.15)
   assert.equal(b.dmg.foe, Math.round(swingBase() * 1.2));
   const target = b.foes.find(f => f.id === b.dmg.foeId);
-  assert.deepEqual(target.burn, { turns:2, dmg:8 }, '5% ของ 9999 เกินเพดาน → 8');
+  assert.deepEqual({ turns:target.burn.turns, dmg:target.burn.dmg, total:target.burn.total }, { turns:2, dmg:8, total:16 }, '5% ของ 9999 เกินเพดาน → 8 · รวม 16 (T1c: ฟังก์ชันรวมเท่าเดิม)');
   assert.equal(target.hp, 9999 - b.dmg.foe, 'ตานี้ยังไม่ลวก');
   assert.equal(b.weaponNote.k, 'ignite');
   // ตาถัดไป: ลวก 8 แล้วอีกตา แล้วดับ — ลูกไฟ (fire) ไม่ผ่านอาวุธ แต่ไฟที่ติดไว้ลวกต่อ

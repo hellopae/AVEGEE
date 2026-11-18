@@ -87,3 +87,16 @@ export function combatTimeline(game) {
   const units=combatUnits(game),resolve=(t,round)=>({...units.find(u=>u.id===t.id&&u.side===t.side),round});
   return [...q.remaining.map(t=>resolve(t,q.round)),...ordered(units).map(t=>resolve(t,q.round+1))];
 }
+
+// T1c (owner 18 Nov): fire on a foe lasts in ROUNDS of the foe (ticks = rounds x its turns per round) but its TOTAL stays what it was before F3 (turns x dmg).
+// The total is split over the ticks (whole numbers, the rounding is carried so the sum is exact).
+export function makeFoeBurn(ignite,perRound=1){
+ const n=Math.max(1,perRound||1),ticks=Math.max(1,ignite.turns*n);
+ return {turns:ticks,dmg:ignite.dmg,ticks,total:Math.round(ignite.turns*ignite.dmg),paid:0};
+}
+/** damage of the NEXT tick of a burn made by makeFoeBurn (call before decrementing burn.turns) */
+export function burnTickDamage(burn){
+ if(!burn||!burn.ticks)return burn?.dmg||0;
+ const k=burn.ticks-burn.turns+1,due=Math.round(burn.total*k/burn.ticks),dmg=Math.max(0,due-burn.paid);
+ burn.paid=due;return dmg;
+}
