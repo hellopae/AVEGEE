@@ -16,7 +16,7 @@ test('T3/2: two zoom levels, medium (default, = the old 1x) and near, and the wh
 test('T3/2 (G3): the hell merchant has a spot on the floor in front of the cave of every border route, and the route view has his talk button', async () => {
   globalThis.Image = class {}; globalThis.window = { matchMedia: () => ({ matches: true }), devicePixelRatio: 1, addEventListener() {} };
   globalThis.document = { documentElement: {}, createElement() { return { getContext() { return {}; } }; } };
-  const { routeMerchant } = await import('../src/route-geometry.js');
+  const { routeMerchant } = await import('../src/route-merchant.js');
   const { dungeonWalkable } = await import('../src/dungeon-view.js');
   for (const id of ['th:asia', 'asia:west', 'west:cyberhell']) {
     const spot = routeMerchant(id);

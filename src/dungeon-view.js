@@ -11,7 +11,8 @@ import {drawFrontierAmbient,drawFrontierTree,drawFrontierWeather} from './fronti
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget,FRONTIER_CINEMATIC} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
-import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave, routeMerchant } from './route-geometry.js';
+import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
+import { routeMerchant } from './route-merchant.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
