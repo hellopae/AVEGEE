@@ -21,6 +21,7 @@ import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownFluidFx, townFluidFxClock } from './town-fluid-fx.js?v=v5fx';
 import { mapDprCap } from './graphics-setting.js';   // GFX-1110
 import { addGroundSpriteLayers } from './town-ground-sprites.js';
+import { addBridgeRailFrontLayers } from './town-bridge-rail-front.js';
 import { drawConstruction } from './construction-sheets.js';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawCodexClouds, drawCodexPuffs, cloudsMode } from './town-clouds-codex.js';   // CLOUDS-MIX: Codex's drawn clouds + the cloud shader (?clouds=shader = the original, ?clouds=codex = laid over it)
@@ -402,6 +403,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
+  if(town)addBridgeRailFrontLayers(at,ctx,g.zone,t);   // T3/5: the near rail of every bridge is drawn again over the legs of whoever stands on the deck
   if(town&&g.zone==='th')addGroundSpriteLayers(at,ctx);   // Z1-V5-FX2: trees / beds / rocks / bridge rails painted out of the HD chunks, drawn again as sprites
   if(town&&g.zone==='west'&&weatherEnabled()&&!reduced&&!g.paused)addZ3FogLayers(at,ctx,viewMetrics(ctx,SCENE.w,SCENE.h),ambientTime);   // Z3-FOG: banks sorted with the sprites, so they veil whatever stands behind them
   if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
