@@ -26,3 +26,12 @@ test('T1b: border and quest rows are refitted and complete',()=>{
  for(const [zone,sizes] of Object.entries({th:[3],asia:[3,4,5],west:[3,4,5,6],cyberhell:[3,4,5,6,7]}))for(const s of sizes)assert.ok(ENCOUNTER_BALANCE[`${zone}:frontier`][s].atk>0,`${zone}/${s}`);
  for(const q of ['sqKan','sqBoon','sqGuard','sqMerchantFeather'])for(const s of [4,5,6,7])assert.ok(ATK_PER_PARTY[q][s]>0.5&&ATK_PER_PARTY[q][s]<2,`${q}/${s}`);
 });
+// T1c (owner 18 Nov): the side fights (test devas, Hanuman, Wukong, the zone 2 gate giant, zone 4 Lumen) are met at 8-12 points below their pre-T1b first-try rate, never under 50 %.
+test('T1c: side fights - the first try (team 3, 400 fresh seeds) sits 8-12 points under the F3 value and above 50 %',async()=>{
+ const {measure}=await import('../scripts/sim-boss-skills.mjs');
+ const F3={thDeva:79.7,thHanuman:75.8,asiaDeva:85.2,asiaWukong:66.3,asiaGuard:77.9,westDeva:83.2,cyberRescue:78.4};
+ for(const [key,before] of Object.entries(F3)){
+  const row=measure(key,{count:400,sizes:[3],modes:['locked']}).find(r=>r.size===3&&r.mode==='locked');
+  assert.ok(row.winPct>=50&&row.winPct<=before-5.5&&row.winPct>=before-15,`${key}: ${row.winPct} (F3 ${before})`);   // +-2.5 sampling noise around the 8-12 band
+ }
+});

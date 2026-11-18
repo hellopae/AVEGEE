@@ -70,7 +70,7 @@ const run = (sc, size, moves, seed) => {
 export function measure(key, { count = 100, sizes = [3], modes = ['locked'] } = {}) {
   const sc = SCENARIOS[key], rows = [];
   for (const size of sizes) for (const mode of modes) {
-    const samples = Array.from({ length:count }, (_, i) => run(sc, size, mode === 'unlocked', 30000 + i));
+    const samples = Array.from({ length:count }, (_, i) => run(sc, size, mode === 'unlocked', Number(process.env.SEED0 || 30000) + i));
     const wins = samples.filter(r => r.result === 'win'), err = samples.filter(r => r.result === 'error');
     const mean = (set, k) => set.length ? +(set.reduce((a, r) => a + r[k], 0) / set.length).toFixed(2) : null;
     rows.push({ key, size, mode, winPct:+(100 * wins.length / count).toFixed(1), target:sc.target, rounds:mean(samples, 'rounds'), winRounds:mean(wins, 'rounds'), bossRounds:mean(samples, 'bossRounds'), skillUses:mean(samples, 'skillUses'),

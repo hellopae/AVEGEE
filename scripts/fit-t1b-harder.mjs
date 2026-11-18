@@ -9,6 +9,7 @@ import { SCENARIOS } from './sim-boss-skills.mjs';
 import { FOE_TURN_FIT, FOE_HP_FIT } from '../src/foe-turn-fit.js';
 const [beforeFile, which = 'all', n = '300', outFile] = process.argv.slice(2), N = Number(n);
 const DROP = Number(process.env.DROP || 10), DROP_T = Number(process.env.DROP_T || 6.5), MARGIN = Number(process.env.MARGIN || 1.5);
+const SEED0 = Number(process.env.SEED0 || 50000);   // T1c: SEED0=30000 fits on the seeds the 'before' sweep used (same random numbers, the change is measured without sampling noise)
 const before = {}; for (const l of readFileSync(beforeFile, 'utf8').split('\n')) if (l.startsWith('{')) { const r = JSON.parse(l); before[`${r.key}/${r.size}/${r.mode}`] = r.winPct; }
 const keys = which === 'all' ? Object.keys(SCENARIOS) : which.split(',');
 function fitKeyOf(k) {
@@ -28,7 +29,7 @@ for (const key of keys) {
   for (const size of sizes) {
     let probe; try { probe = setup(opt.kind === 'signal' ? { ...opt, kind:'event', fullBreach:true, size, moves:false, seed:1 } : { ...opt, size, moves:false, seed:1 }); } catch (e) { continue; }   // a size the team cannot have in this zone
     const actors = Math.max(3, Math.min(7, probe.battleActors().length));
-    const bl = before[`${key}/${size}/locked`], bt = before[`${key}/${size}/unlocked`], floor = target[0];
+    const bl = before[`${key}/${size}/locked`], bt = before[`${key}/${size}/unlocked`], floor = Number(process.env.FLOOR ?? target[0]);   // T1c: FLOOR=50 lets a side fight (not on the story path) go below the plan's lower bound, never below 50 %
     // th breach / signal: the gate keeper joins the team mid-fight, so the fight is met at `actors` and `actors + 1`
     const keys = opt.zone === 'th' && (opt.kind === 'breach' || opt.kind === 'signal') ? [actors, Math.min(7, actors + 1)] : [actors];
     // locked  = the first try is inside the plan's band: it drops by DROP (not below the band + margin), the trained run falls where it falls
@@ -41,7 +42,7 @@ for (const key of keys) {
     const put = () => { const kn = { ...done, [size]:{ mult:curM, hp:curH } }; for (let k = Math.min(...keys, ...Object.keys(kn).map(Number)); k <= Math.max(...keys); k++) { (FOE_TURN_FIT[fitKey] ||= {})[Math.min(7, k)] = interp(kn, k, 'mult'); (FOE_HP_FIT[fitKey] ||= {})[Math.min(7, k)] = interp(kn, k, 'hp'); } };
     const setM = m => { curM = m; put(); };
     const setH = h => { curH = h; put(); };
-    const rate = (md) => 100 * Array.from({ length:N }, (_, i) => run(opt, size, md === 'unlocked', 50000 + i)).filter(r => r.result === 'win').length / N;
+    const rate = (md) => 100 * Array.from({ length:N }, (_, i) => run(opt, size, md === 'unlocked', SEED0 + i)).filter(r => r.result === 'win').length / N;
     const bisect = (f, target, lo0, hi0, it) => { let lo = lo0, hi = hi0; for (let i = 0; i < it; i++) { const mid = Math.sqrt(lo * hi); if (f(mid) > target) lo = mid; else hi = mid; } return Math.sqrt(lo * hi); };   // f falls as the argument rises
     let mult = 1, hpm = 1;
     const fitM = (md, t, it = 9) => bisect(m => { setM(m); return rate(md); }, t, .3, 3.5, it);
