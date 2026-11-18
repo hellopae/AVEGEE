@@ -23,7 +23,7 @@ test('T1b: a mob and a soul fight start with the moves, the zone and a fitted HP
  for(const kind of ['mob','soul'])for(const [zone,list] of Object.entries(sizes))for(const size of list){
   const g=setup({zone,size,kind,moves:false,seed:7}),b=g.battle;g.prepareEncounter();
   assert.equal(b.kind,kind);assert.equal(b.zone,zone);assert.ok(hasSkills(b.foes[0]),`${kind}/${zone}/${size} has moves`);
-  const row=ENCOUNTER_BALANCE[`${zone}:${kind}`]?.[size];assert.ok(row&&row.hp>1&&row.atk>0,`${kind}/${zone}/${size} fitted row`);
+  const row=ENCOUNTER_BALANCE[`${zone}:${kind}`]?.[size];assert.ok(row&&row.hp>0&&row.atk>0,`${kind}/${zone}/${size} fitted row`);
   assert.equal(b.balance.partySize,size);
  }
 });
@@ -57,4 +57,13 @@ test('T1b: the battle screen treats a card-less group move like a banner move (n
  assert.match(ui,/if \(ultimate\?\.noCard\) return false;/);
  assert.match(ui,/b\.skillNotice&&\(!b\.ultimate\|\|b\.ultimate\.noCard\)/);
  assert.match(ui,/!attacker\.skills\?\.length/);
+});
+// T1c (owner 18 Nov): zones 1-3 fights last 3-4 rounds; zone 4 (cyberhell) stays longer
+test('T1c: zones 1-3 mob / soul fights last 3-4 rounds (real sim, first try), zone 4 stays longer',async()=>{
+ const {simulate}=await import('../scripts/sim-balance2.mjs');
+ const mean=(zone,size,kind)=>{const rs=Array.from({length:120},(_,i)=>simulate({zone,size,kind,moves:false,seed:900+i}));return rs.reduce((a,r)=>a+r.rounds,0)/rs.length;};
+ for(const kind of ['mob','soul']){
+  for(const [zone,size] of [['th',3],['asia',3],['west',4]]){const r=mean(zone,size,kind);assert.ok(r>=3&&r<=4.4,`${zone}/${size}/${kind} ${r.toFixed(2)} rounds`);}
+  const c=mean('cyberhell',5,kind);assert.ok(c>=4.6,`cyberhell/${kind} stays longer (${c.toFixed(2)})`);
+ }
 });

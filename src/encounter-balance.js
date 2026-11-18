@@ -27,14 +27,15 @@ export const ENCOUNTER_BALANCE = {
   "cyberhell:ruler:cyberhell": {"3":{"hp":1,"atk":1.11},"4":{"hp":1,"atk":1.11},"5":{"hp":1.5,"atk":1.11},"6":{"hp":2,"atk":0.99},"7":{"hp":2,"atk":1.11}},
   "cyberhell:boss": {"3":{"hp":0.65,"atk":0.81},"4":{"hp":1,"atk":0.75},"5":{"hp":1.03,"atk":0.73},"6":{"hp":1.5,"atk":0.63},"7":{"hp":1.5,"atk":0.69}},
   // T1b (owner 16 Nov): the wandering ghosts (kind 'mob') and the resisting spirits (kind 'soul') - fitted by scripts/fit-t1b-crowd.mjs so the first try wins ~89 % (inside the owner's 85-95 band) and a fight lasts about 5 (mob) / 6 (soul) rounds
+  // T1c (owner 18 Nov): zones 1-3 (th / asia / west) refitted to 3-4 rounds a fight (cyberhell, zone 4, keeps its longer 5 / 6 rounds) - same ~89 % first-try win, scripts/fit-t1b-crowd.mjs with ROUNDS=3.5
   // (team sizes a zone really has; any other size takes the nearest row, see party-balance.js).  hp / atk are multipliers of the foe's own numbers.
-  "th:mob": {"1":{"hp":1.73,"atk":3.88},"2":{"hp":3.8,"atk":2.04},"3":{"hp":4.43,"atk":2.2},"4":{"hp":7.94,"atk":2.11}},
-  "asia:mob": {"2":{"hp":4.07,"atk":2.04},"3":{"hp":4.83,"atk":2.18},"4":{"hp":8.35,"atk":2.11},"5":{"hp":10.08,"atk":2.25}},
-  "west:mob": {"3":{"hp":4.83,"atk":2.08},"4":{"hp":8.35,"atk":2.08},"5":{"hp":10.26,"atk":2.35},"6":{"hp":12.6,"atk":2.27}},
+  "th:mob": {"1":{"hp":1.21,"atk":6.21},"2":{"hp":2.61,"atk":4.14},"3":{"hp":3.2,"atk":4.05},"4":{"hp":5.54,"atk":3.56}},
+  "asia:mob": {"2":{"hp":2.94,"atk":3.92},"3":{"hp":3.37,"atk":4.27},"4":{"hp":5.93,"atk":3.45},"5":{"hp":7.54,"atk":3.76}},
+  "west:mob": {"3":{"hp":3.31,"atk":3.96},"4":{"hp":5.93,"atk":3.34},"5":{"hp":7.67,"atk":3.34},"6":{"hp":9.42,"atk":3.64}},
   "cyberhell:mob": {"4":{"hp":8.64,"atk":2.06},"5":{"hp":10.62,"atk":2.18},"6":{"hp":13.04,"atk":2.27},"7":{"hp":13.26,"atk":2.56}},
-  "th:soul": {"1":{"hp":1.48,"atk":1.83},"2":{"hp":3.15,"atk":1.3},"3":{"hp":3.87,"atk":1.56},"4":{"hp":6.92,"atk":1.36}},
-  "asia:soul": {"2":{"hp":3.37,"atk":1.21},"3":{"hp":4.21,"atk":1.43},"4":{"hp":7.28,"atk":1.26},"5":{"hp":9.1,"atk":1.39}},
-  "west:soul": {"3":{"hp":4.21,"atk":1.42},"4":{"hp":7.54,"atk":1.19},"5":{"hp":8.95,"atk":1.43},"6":{"hp":10.98,"atk":1.46}},
+  "th:soul": {"1":{"hp":0.84,"atk":3.92},"2":{"hp":1.85,"atk":1.98},"3":{"hp":2.16,"atk":2.18},"4":{"hp":3.74,"atk":2.35}},
+  "asia:soul": {"2":{"hp":2.09,"atk":1.85},"3":{"hp":2.39,"atk":2.06},"4":{"hp":4,"atk":2.15},"5":{"hp":5.08,"atk":2.27}},
+  "west:soul": {"3":{"hp":2.35,"atk":2.06},"4":{"hp":4,"atk":2.2},"5":{"hp":5,"atk":2.47},"6":{"hp":6.35,"atk":2.47}},
   "cyberhell:soul": {"4":{"hp":7.8,"atk":1.07},"5":{"hp":9.42,"atk":1.27},"6":{"hp":11.56,"atk":1.27},"7":{"hp":11.37,"atk":1.58}},
 };
 export function encounterBalanceKey(battle, profile) {
