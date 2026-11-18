@@ -5460,7 +5460,7 @@ async function startMapJourney(to,mode='boat') {
   const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,destOutfit);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
   if(!dlg.open||travelGeneration!==dlgGen)return;
  }
- if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,load:mode==='boat'?()=>preloadZone(to,destOutfit):null}))return;
+ if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,load:mode==='boat'?()=>preloadZone(to,destOutfit,null,{minMs:900}):null}))return;
  if(mode==='boat')prewarmZone(to,destOutfit);
  const fromZone=g.zone,keepBorder=mode!=='boat';
  // Keep the border backdrop in its top-layer dialog until the zone commits.

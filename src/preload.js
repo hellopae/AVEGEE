@@ -125,11 +125,13 @@ function warmRest(tiers) {
   return Promise.all([lane(), lane()]).catch(() => {});
 }
 
-async function run(zone, outfit, boot) {
+async function run(zone, outfit, boot, show = null) {
   const opts = { firstRun: !hasSave(), arrival: !boot };
+  const shownAt = Date.now();
   let tiers;
   try { tiers = await tiersFor(zone, outfit, opts); } catch {}
-  if (tiers && !queue.missing(tiers.critical).length) { try { if(isTownZone(zone))await preloadTownTerrainPreview(30000,zone); boot?.remove(); warmRest(tiers); return; } catch {} }
+  // T3/4 (owner 16 Nov, "ได้ครับ"): after the ferry the loading page shows for a moment EVERY time (show.minMs), even when the pictures are already cached
+  if (!show?.minMs && tiers && !queue.missing(tiers.critical).length) { try { if(isTownZone(zone))await preloadTownTerrainPreview(30000,zone); boot?.remove(); warmRest(tiers); return; } catch {} }
   const el = screen(boot);
   const notes = rotateNotes(el, zone);
   const siblings = boot ? [...document.body.children].filter(n => n !== boot && !n.inert) : [];
@@ -146,10 +148,11 @@ async function run(zone, outfit, boot) {
         });
         if(!failed.length&&isTownZone(zone)){try{await preloadTownTerrainPreview(30000,zone);}catch{failed.push(townSkinOf(zone).terrain.preview);}}
       } catch { failed = ['catalog']; }
-      if (!failed.length) break;
+      if (!failed.length) { el.querySelector('.bar i').style.width = '100%'; el.querySelector('.pct').textContent = '100%'; break; }
       if (!await choose(el, `ยังโหลดไม่สำเร็จ ${failed.length} รายการ ตรวจการเชื่อมต่อแล้วลองใหม่ได้ครับ`, notes)) break;
     }
   } finally {
+    if (show?.minMs) { const left = show.minMs - (Date.now() - shownAt); if (left > 0) await new Promise(r => setTimeout(r, left)); }
     notes.stop();
     siblings.forEach(n => { n.inert = false; });
     if (el.tagName === 'DIALOG') el.close();
@@ -167,10 +170,10 @@ async function warmCritical(zone, outfit) {
   } catch {}
 }
 /** Gate both new branches and returning branches; repeat visits reuse successful URLs. */
-function gateZone(zone, outfit = zone, boot = null) {
+function gateZone(zone, outfit = zone, boot = null, show = null) {
   bgToken++;   // หน้าโหลดจริงมาก่อน — หยุดงานเบื้องหลังของโซนเดิม
-  if (active) return active.then(() => gateZone(zone, outfit, boot));
-  active = run(zone, outfit, boot).finally(() => { active = null; });
+  if (active) return active.then(() => gateZone(zone, outfit, boot, show));
+  active = run(zone, outfit, boot, show).finally(() => { active = null; });
   return active;
 }
 
@@ -178,8 +181,9 @@ function gateZone(zone, outfit = zone, boot = null) {
 // (เดิมหน้าโหลดทำงานซ้อนสองชุด) · ตัวแรกเป็นเจ้าของ ตัวที่สองส่งต่อไปที่ตัวแรก
 const owner = globalThis.__avegeePreload;
 if (!owner) globalThis.__avegeePreload = { preloadZone: gateZone, prewarmZone: warmCritical };
-export function preloadZone(zone, outfit = zone, boot = null) {
-  return (owner?.preloadZone || gateZone)(zone, outfit, boot);
+/** `show = { minMs }` keeps the loading page up for at least that long even when everything is cached (the ferry arrival) */
+export function preloadZone(zone, outfit = zone, boot = null, show = null) {
+  return (owner?.preloadZone || gateZone)(zone, outfit, boot, show);
 }
 export function prewarmZone(zone, outfit = zone) {
   return (owner?.prewarmZone || warmCritical)(zone, outfit);
