@@ -10,7 +10,7 @@
   },
   {
    "before": "import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';\n",
-   "after": "import {foeFit} from './foe-turn-fit.js';\nimport {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale,makeFoeBurn,burnTickDamage} from './battle-turns.js';\n"
+   "after": "import {foeFit} from './foe-turn-fit.js';\nimport {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale,makeFoeBurn,burnTickDamage} from './battle-turns.js';\nimport { CREW_HOME_STATION } from './crew-presence.js';\n"
   },
   {
    "before": "import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';\n",
@@ -138,7 +138,23 @@
   },
   {
    "before": "",
+   "after": "    if (walk.courier && !walk.escort) {                    // T3/1: the courier finishes where the soul does, then walks back to his post by himself\n      const d = this.crewOf(walk.courier), end = walk.path?.at(-1);\n      if (actorStanding(d) && end) { d.x = end[0]; d.y = end[1]; d.path = null; d.wait = 0; }\n      return;\n    }\n"
+  },
+  {
+   "before": "        const c = walk.escort && this.crewOf(walk.escort.k);\n",
+   "after": "        const c = (walk.escort || walk.courier) && this.crewOf(walk.escort?.k || walk.courier);   // T3/1: a courier (Dam walking a soul back to the queue) moves its real body too, so there is only one Dam\n"
+  },
+  {
+   "before": "          const pos = escortCrewPosition(walk);\n",
+   "after": "          const pos = escortCrewPosition(walk.courier && !walk.escort ? { ...walk, escort:{ k:walk.courier } } : walk);\n"
+  },
+  {
+   "before": "",
    "after": "    foremanHungerBeat(this, workingCrew.has('dam'));   // QUEST-DAM-B (owner 15 Nov): Dam hungers while he does the foreman's work, like a worker\n"
+  },
+  {
+   "before": "        : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===(c.k==='dam'?'ngiw':'krata')):null);\n",
+   "after": "        : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===CREW_HOME_STATION[c.k]):null);   // T3/1 (G6): idle Dam waits at the canteen (was the thorn grove), Plerng at the kettle hall\n"
   },
   {
    "before": "",

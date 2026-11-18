@@ -2,6 +2,7 @@ import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
 import {registerGpuCache,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
 import {canteenCookPose} from './canteen.js';
+import {mapBodyDrawn} from './crew-presence.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
@@ -693,11 +694,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of (rescue ? [] : g.crew)) {
-    if(canteenCookPose(g,c))continue;
-    if(g.mapTravel&&['nira','kan'].includes(c.k))continue;
-    if(justice && (c.k===justice.pick?.crew || c.k==='nira' && ['dais','trial'].includes(justice.phase)))continue;
-    if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
-    if (c.x == null || c.escort) continue;
+    // T3/1 (G6): one shared rule (crew-presence.js) decides whether this reaper's map body is drawn - cooking / travelling / court / tea rest (G4: the walk to the tea
+    // pavilion stays visible) / escorting or fetching a soul / a courier walk all hide the standing body, so a reaper is never drawn twice
+    if(!mapBodyDrawn(g,c,{justice}))continue;
     const crewHeight=CREW_H*characterScale(c.k);
     const motion = actorWalkMotion(c, t, g.zone);
     spot_(c.x, c.y, crewHeight);

@@ -60,6 +60,7 @@ import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-
 import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './enemy-pointers.js';   // POINTERS: arrows to every enemy the player has to walk to
+import { residentPresent, keeperPresent } from './crew-presence.js';
 import { foremanDesk, foremanStarving } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
@@ -6332,11 +6333,13 @@ function openStation(k, emergency = false) {
       if (['ngiw','dab'].includes(k) && room.crew) {
         const at = st.crewK === 'dam' ? room.guard || [room.crew[0]+.13,room.crew[1]] : room.crew;
         const [ax,ay] = R.anchor(...at,R.crewHeight+.025);
-        tags.push({id:'sword-training',ax,ay,pos:'above',label:k==='ngiw'?'ฝึกฟันดาบ':'ฝึกวิชาดาบ',hint:'คุยกับดำ · เพิ่มพลังดาบ',keep:true,disabled:mgOpen});
+        const damHere = residentPresent(g, k);   // T3/1 (G6): Dam is drawn here only while he is free - the button follows him
+        tags.push({id:'sword-training',ax,ay,pos:'above',label:k==='ngiw'?'ฝึกฟันดาบ':'ฝึกวิชาดาบ',hint:damHere?'คุยกับดำ · เพิ่มพลังดาบ':`${crewName(g.crewOf('dam'),g.zone)}ไม่อยู่ที่นี่ตอนนี้`,keep:true,disabled:mgOpen||!damHere});
       }
       if (k === 'krata' && g.crew.some(c => c.k === 'plerng')) {
         const [ax,ay] = R.anchor(...room.crew,R.crewHeight+.025);
-        tags.push({id:'fire-training',ax,ay,pos:'above',label:t('g5.train'),hint:t('g5.trainHint'),keep:true,disabled:mgOpen});
+        const plerngHere = residentPresent(g, 'krata') || st.crewK === 'plerng' && keeperPresent(g, st);
+        tags.push({id:'fire-training',ax,ay,pos:'above',label:t('g5.train'),hint:plerngHere?t('g5.trainHint'):`${crewName(g.crewOf('plerng'),g.zone)}ไม่อยู่ที่นี่ตอนนี้`,keep:true,disabled:mgOpen||!plerngHere});
       }
       if (k === 'tarang' && room.crew) {
         const [ax, ay] = R.anchor(room.crew[0], room.crew[1], R.crewHeight + 0.012);
@@ -6347,7 +6350,10 @@ function openStation(k, emergency = false) {
         const why = lotus <= 0 ? t('room.lotusNone') : !(g.karma > 0) ? t('room.lotusNoKarma') : '';
         const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
-        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:Math.round(g.karma*10)/10, disabled:!!why });
+        const boonHere = residentPresent(g, 'sawan') || st.crewK === 'boon' && keeperPresent(g, st);
+        const lotusTag = { id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:Math.round(g.karma*10)/10, disabled:!!why || !boonHere };
+        if (!boonHere) lotusTag.hint = `${crewName(g.crewOf('boon'),g.zone)}ไม่อยู่ที่นี่ตอนนี้`;
+        tags.push(lotusTag);
       }
       // P4: ปุ่ม "ใบวินิจฉัย" ลอยเหนือหัววิญญาณที่ยืนรออยู่บนจอ (สูงสุด 3 ดวง — เกินนั้นใช้แผงรายชื่อ)
       if (diag) for (const sub of diagnosisSubjects(g, k)) {

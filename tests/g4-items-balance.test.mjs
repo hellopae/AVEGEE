@@ -170,7 +170,7 @@ test('G4 tea rest: Guard keeps working through the same method (restGuard alias)
   const team=readFileSync(new URL('../src/team-hud.js',import.meta.url),'utf8');
   assert.match(team,/data-team-rest/, 'rest control on every team card');
   assert.match(ui, /dlg\.querySelectorAll\('\[data-guard-status\]'\)/, 'live refresh for all cards');
-  const scene = readFileSync(new URL('../src/scene.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../src/crew-presence.js', import.meta.url), 'utf8');   // T3/1: the map-body rule lives in crew-presence.js (scene.js calls mapBodyDrawn)
   assert.match(scene, /c\.teaRest\?\.phase !== 'travel'/, 'walking reaper is drawn on the map');
 });
 

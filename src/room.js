@@ -1,5 +1,6 @@
 import {punishmentLevel,punishmentRemaining} from './punishment.js';
 import {canteenCookPose} from './canteen.js';
+import {residentPresent,keeperPresent} from './crew-presence.js';
 import {characterScale} from './character-scale.js';
 import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
@@ -571,13 +572,14 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // (ตะราง/หอส่องกรรมไม่เจอเคสนี้: นิราเป็น reader ห้ามมอบหมาย · กานต์ที่หอส่องกรรม pow:0 ไม่เคยมี crewK)
     // ซ้ำกับผู้คุมเข้าเวรด้านล่างเฉพาะตอน "ตัวเดียวกัน" เข้าเวรอยู่จริง (เช่น บุญเข้าเวรที่ sawan เอง)
     // ถ้าเข้าเวรเป็นคนอื่น (เช่น ดำมาคุมแทน) NPC ประจำห้องยังต้องยืนอยู่ตามปกติ ไม่ใช่หายไปด้วย
-    if (def.k === 'krata' && g.crew?.some(c=>c.k==='plerng') && st?.crewK !== 'plerng') {
+    // T3/1 (G6): the resident stands in his room only while he is free and home - never a second copy of a reaper who is away (see crew-presence.js)
+    if (def.k === 'krata' && g.crew?.some(c=>c.k==='plerng') && st?.crewK !== 'plerng' && residentPresent(g, 'krata')) {
       acts.push({y:room.crew[1],fn:()=>drawStandee(ctx,'crew-plerng',px(room.crew[0]),py(room.crew[1]),U*CREW_H,t,'')});
     }
     if (['tarang','sawan','krajok','ngiw','dab'].includes(def.k)) {
       const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : def.k === 'krajok' ? 'kan' : 'dam';
       const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : def.k === 'krajok' ? 'กานต์' : 'ดำ';
-      if (!(st && st.crewK === key)) {
+      if (!(st && st.crewK === key) && residentPresent(g, def.k)) {
         const a = room.crew || [0.30,0.80];
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
@@ -589,7 +591,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
       const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (['sawan','tarang','ngiw','dab'].includes(def.k) ? 0.13 : 0), room.crew[1]];
-      if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
+      if (actorStanding(c) && !c.self && keeperPresent(g, st)) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H * characterScale(c.k), t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
       } });

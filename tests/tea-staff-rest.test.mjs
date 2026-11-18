@@ -16,10 +16,10 @@ for(const zone of ['th','asia','west','cyberhell'])test(`A2 ${zone}: shared seat
   const g=game(zone),crew=g.crew.filter(c=>!c.reader&&!c.self);assert.equal(crew.length,5);
   const actors=[...crew,g.guard];const workers=Array.from({length:6},()=>g.hireWorker());assert.ok(workers.every(Boolean));
   const origins=new Map([...actors,...workers].map(c=>[c.id,[c.x??c.hx,c.y??c.hy]]));
-  for(const c of actors){c.morale=20;assert.ok(g.restActor(c.id,now));assert.equal(actorStanding(c),false);assert.equal(g.restActor(c.id,now),false);}
+  for(const c of actors){c.morale=20;assert.ok(g.restActor(c.id,now),zone+' '+c.k+' '+c.x+','+c.y);assert.equal(actorStanding(c),false);assert.equal(g.restActor(c.id,now),false);}
   for(const w of workers){w.stamina=10;w.morale=20;w.hunger=0;w.supplyRest=true;assert.ok(g.restWorkerAtTea(w.id));assert.equal(g.restWorkerAtTea(w.id),false);}
   const seats=[...actors,...workers].map(c=>c.teaRest.seat);assert.equal(new Set(seats).size,12);assert.equal(teaRoomStaff(g).length,0);
-  now+=30000;g.updateActorRecovery(now);assert.equal(teaRoomStaff(g).length,12);const points=teaRoomStaff(g).map(c=>c.point.join());assert.equal(new Set(points).size,12);
+  now+=70000;g.updateActorRecovery(now);assert.equal(teaRoomStaff(g).length,12);const points=teaRoomStaff(g).map(c=>c.point.join());assert.equal(new Set(points).size,12);
   for(const c of [...actors,...workers])assert.equal(c.teaRest.until-c.teaRest.startedAt,120000);
   const clone=createGame();clone.save=()=>true;clone.onChange=()=>{};assert.ok(clone.restore(JSON.parse(JSON.stringify(g.snapshot()))));
   const remaining=[...Object.values(clone.roster).filter(c=>c.teaRest),...clone.workerState.workers];assert.equal(remaining.length,12);

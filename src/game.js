@@ -24,6 +24,7 @@ import { routeBossCave, routeCaptainCave, captainCaveForZone } from './route-geo
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {foeFit} from './foe-turn-fit.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline,foeTurnsOf,foeHitScale,makeFoeBurn,burnTickDamage} from './battle-turns.js';
+import { CREW_HOME_STATION } from './crew-presence.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
@@ -1659,6 +1660,11 @@ const API = {
 
   /** ส่งตัวเสร็จ (หรือเลิกกลางคัน) — คืนยมทูตให้ระบบเดินปกติ: ยืนที่ปลายทางแล้วเดินกลับจุดประจำเอง */
   releaseEscort(walk) {
+    if (walk.courier && !walk.escort) {                    // T3/1: the courier finishes where the soul does, then walks back to his post by himself
+      const d = this.crewOf(walk.courier), end = walk.path?.at(-1);
+      if (actorStanding(d) && end) { d.x = end[0]; d.y = end[1]; d.path = null; d.wait = 0; }
+      return;
+    }
     if (releaseWorkerEscort(this,walk)) return;
     const c = walk.escort && this.crewOf(walk.escort.k);
     if (!actorStanding(c) || c.self) return;
@@ -1702,9 +1708,9 @@ const API = {
       walk.elapsed += dt;
       if (walk.elapsed < walk.duration) {
         advanceWorkerEscort(this,walk);
-        const c = walk.escort && this.crewOf(walk.escort.k);
+        const c = (walk.escort || walk.courier) && this.crewOf(walk.escort?.k || walk.courier);   // T3/1: a courier (Dam walking a soul back to the queue) moves its real body too, so there is only one Dam
         if (actorStanding(c) && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
-          const pos = escortCrewPosition(walk);
+          const pos = escortCrewPosition(walk.courier && !walk.escort ? { ...walk, escort:{ k:walk.courier } } : walk);
           c.x = pos.x; c.y = pos.y; c.face = pos.face; c.path = null;
         }
         continue;
@@ -2279,7 +2285,7 @@ const API = {
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
       const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
-        : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===(c.k==='dam'?'ngiw':'krata')):null);
+        : building || (c.at ? STATIONS.find(d => d.k === c.at) : ['dam','plerng'].includes(c.k)?STATIONS.find(d=>d.k===CREW_HOME_STATION[c.k]):null);   // T3/1 (G6): idle Dam waits at the canteen (was the thorn grove), Plerng at the kettle hall
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
       // ปล่อยไว้ยมทูตจะยืนจมอยู่ในอาคาร มองไม่เห็นทั้งเกม (เจ้าของเจอ 10 ก.ย. 2569)

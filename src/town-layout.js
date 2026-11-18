@@ -47,8 +47,10 @@ export const TOWN_NIRA_STAGE = [1914,934,1962,968];
 export const TOWN_TAAN_STAGE = [1650,1040,1668,1054];
 export const TOWN_CREW_STAGE = { nira:TOWN_NIRA_STAGE, taan:TOWN_TAAN_STAGE };
 export const TOWN_CREW = {
-  nira:[1938,950], taan:[1662,1052], dam:[470,1092],
-  plerng:[542,640], kan:[2304,1397], boon:[2460,470],
+  // T3/1 (owner 18 Nov, G6): every reaper waits by his own building - Dam beside the canteen, Kan beside the mirror tower (was beside the registry hall), Plerng by the kettle hall,
+  // Boon by the heaven gate; Nira and Taan on the plaza in front of the judgement dais.  Points measured on the walk mask of each zone (reachable from the plaza).
+  nira:[1938,950], taan:[1662,1052], dam:[1613,698],
+  plerng:[542,640], kan:[3542,1583], boon:[2460,470],
 };
 export const TOWN_GUARD_POST = [1720,2190];
 export const TOWN_CHALLENGE = [2100,2195];
@@ -252,8 +254,8 @@ export const TOWN_ZONE_LAYOUT = {
   // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
   // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
-    spots:{throne:{x:1862,y:966}},entry:{niraGoal:[1938,968]},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982],taan:TOWN_TAAN_STAGE} },
-  west:      { spots:{throne:{x:1862,y:970}}, entry:{niraGoal:[1938,974]}, crewStage:{nira:[1914,964,1950,982],taan:TOWN_TAAN_STAGE}, crew:{nira:[1938,974],boon:[2460,468]}, walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}} },
+    spots:{throne:{x:1862,y:966}},entry:{niraGoal:[1938,968]},crew:{nira:[1938,968],dam:[1620,692]},crewStage:{nira:[1914,956,1956,982],taan:TOWN_TAAN_STAGE} },
+  west:      { spots:{throne:{x:1862,y:970}}, entry:{niraGoal:[1938,974]}, crewStage:{nira:[1914,964,1950,982],taan:TOWN_TAAN_STAGE}, crew:{nira:[1938,974],boon:[2460,468],dam:[1620,708]}, walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}} },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);
