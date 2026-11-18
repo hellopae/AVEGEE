@@ -81,7 +81,7 @@
 .st-hud .canteen-buttons .btn-gold:disabled{opacity:.5}
 :is(.st-hud,dialog.foreman-office) .canteen-panel small{font-size:12px;color:#ffb4a0;min-height:0}
 :is(.st-hud,dialog.foreman-office) .canteen-panel .canteen-hire{display:flex;flex-wrap:wrap;gap:6px}
-:is(.st-hud,dialog.foreman-office) .canteen-panel .canteen-hire button{flex:1 1 220px;min-height:44px;white-space:normal;line-height:1.6}
+:is(.st-hud,dialog.foreman-office) .canteen-panel .canteen-hire button{flex:1 1 0;min-width:0;min-height:44px;white-space:normal;line-height:1.4;padding-inline:8px}   /* T3/6 (F17): hire cook / hire server share one row at every width */
 :is(.st-hud,dialog.foreman-office) .canteen-panel .canteen-hire small{flex:1 1 100%}
 /* FB2-11: โรงอาหารเป็นการ์ด — สถานะ 2 ช่อง (ไอคอนคนงาน / ไอคอนข้าวปั้น) · การ์ดคนงานรูป+หน้าที่+ผู้รับ · ทั้งแผงเลื่อนได้ มีแถบเลื่อนทอง (เดิมยาวทะลุขอบจอและไม่มีแถบเลื่อน) */
 .st-hud .st-card:has(.canteen-panel){overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#e8b65e rgba(0,0,0,.4)}

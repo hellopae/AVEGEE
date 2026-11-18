@@ -75,5 +75,5 @@ export function serveMeal(g,w){
 }
 export function canteenCookPose(g,c){
  if(c?.homeZone!==g.zone||c?.job?.kind!=='cook'||!c.arrived||!canteenActive(g))return null;
- return {point:[.61,.59],moving:false,distance:0,face:-1};
+ return {point:[.51,.55],moving:false,distance:0,face:-1};   // T3/6 (F17, owner b3.png): the cook stands ~10 % of the room width further left (was [.61,.59])
 }
