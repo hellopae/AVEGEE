@@ -8,6 +8,8 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import {watchGraphicsLoss} from './gpu-recovery.js';
+import {createFrameHold} from './gpu-hold.js';
+import {townTerrainViewStats,townTerrainImage} from './town-terrain.js?v=k1d';
 import {gpuBudgetTick,resetAfterGpuLoss} from './gpu-budget.js';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards, questFightStep } from './side-quests.js';
@@ -174,12 +176,16 @@ bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นราง
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 // F4: the GPU was lost and came back - every baked canvas is blank now (ground, sprites ...): save, then reload straight into the saved slot (see gpu-recovery.js)
+// T3/13 (owner 19 Nov): no black screen while the ground is baked again - the last picture stays over the canvas (gpu-hold.js) and fades out when the ground is back
+const gpuHold = createFrameHold(cv);
+const groundPainted = () => { const m = townTerrainViewStats().mode; return m === 'detail' || (m === 'overview' && !!townTerrainImage()); };
 watchGraphicsLoss(cv, {recover: () => {
   if (started) { g.save(); saveAt = Infinity; sessionStorage.setItem('avegee.fresh', '1'); }
   location.reload();
 },
 // T1c: first try - drop every baked picture and let the next frames bake it again (no reload); a failure / a screen that still has holes falls back to the save + reload above
 rebuild: () => resetAfterGpuLoss(),
+onLost: () => gpuHold.show(), onRebuilt: () => gpuHold.hideWhen(groundPainted),   // T3/13
 // ... and 2.5 s later the map must have painted itself again: a map canvas that is still (mostly) transparent while nothing covers it means a hole the rebuild did not reach -> reload (measured in
 // Chromium: without any recovery the canvas stays 100 % transparent after a GPU crash, with the rebuild it is painted again within ~1 s)
 verifyMs: 2500,

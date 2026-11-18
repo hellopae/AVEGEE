@@ -25,6 +25,7 @@ const REVIEWED={
  'walk.js':'CPU read-back mask (willReadFrequently): gameplay data, not a picture',
  'yama-sword.js':'live overlay canvases (repainted every frame) and a CPU measuring canvas',
  'yama-trial-idle.js':'frames are object URLs / data (CPU); the canvases are scratch',
+ 'gpu-hold.js':'T3/13: the last-picture copy is a CPU canvas (willReadFrequently) published as a JPEG blob behind a <div> - it must NOT be lost with the GPU, that is its whole purpose',
  'ui.js':'one 24x24 CPU scratch canvas (willReadFrequently) for the post-recovery check',
 };
 const files=readdirSync(SRC).filter(f=>f.endsWith('.js'));

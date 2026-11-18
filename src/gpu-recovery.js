@@ -16,9 +16,9 @@ export function shouldReloadAfterLoss(now, last, guardMs = GPU_RELOAD_GUARD_MS) 
 }
 
 /** Watch one canvas; `recover()` runs once the context is back (the cached canvases are blank by then).  Returns a function that stops watching. */
-export function watchGraphicsLoss(canvas, { recover, rebuild, verify, verifyMs = 1500, setTimer = globalThis.setTimeout, storage = globalThis.sessionStorage, now = () => Date.now(), guardMs = GPU_RELOAD_GUARD_MS } = {}) {
+export function watchGraphicsLoss(canvas, { recover, rebuild, verify, onLost: lostHook, onRebuilt, verifyMs = 1500, setTimer = globalThis.setTimeout, storage = globalThis.sessionStorage, now = () => Date.now(), guardMs = GPU_RELOAD_GUARD_MS } = {}) {
   if (!canvas?.addEventListener) return () => {};
-  const onLost = () => { gpuLossStats.lost++; };   // no preventDefault: Chrome restores an un-cancelled 2D context by itself; a cancelled one stayed lost in the measurement
+  const onLost = () => { gpuLossStats.lost++; try { lostHook?.(); } catch {} };   // T3/13: the frame hold covers the transparent canvas from this moment   // no preventDefault: Chrome restores an un-cancelled 2D context by itself; a cancelled one stayed lost in the measurement
   const reload = () => {
     let last = 0; try { last = Number(storage?.getItem(GPU_RESET_KEY)) || 0; } catch {}
     const t = now();
@@ -38,6 +38,7 @@ export function watchGraphicsLoss(canvas, { recover, rebuild, verify, verifyMs =
       try { const r = rebuild(); good = !(r && r.failed && r.failed.length); } catch { good = false; }
       if (good) {
         gpuLossStats.rebuilds++;
+        try { onRebuilt?.(); } catch {}   // T3/13: the hold fades out once the ground is painted again
         if (verify) setTimer(() => { let fine = true; try { fine = verify() !== false; } catch { fine = true; } if (!fine) { gpuLossStats.verifyFailed++; reload(); } }, verifyMs);
         return;
       }
