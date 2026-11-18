@@ -15,8 +15,8 @@ test('decorations have unique ids, art or a placeholder height, and a small soli
   const count=(kind,biome)=>TOWN_PROP_SITES.filter(p=>p.kind===kind&&(!biome||p.biome===biome)).length;
   assert.equal(count('lamp'),10,'ten gold lanterns round the heaven gate');
   assert.equal(count('torch'),24,'fourteen courtyard torches and ten civic/entry fire pillars');
-  assert.equal(count('tree','lava'),8,'red trees by the lava');
-  assert.equal(count('tree','ice'),2,'snow trees by the ice gate');
+  assert.equal(count('tree','lava'),14,'red trees by the lava (G1: 8, two crossed out, eight drawn)');
+  assert.equal(count('tree','ice'),6,'snow trees by the ice gate (G1: 2 + 4 drawn)');
   for(const p of TOWN_PROP_SITES){
     assert.ok([p.x,p.y,p.w,p.rx,p.ry].every(Number.isFinite),p.id);
     assert.ok(p.key||p.h>0,p.id+' has art or a placeholder height (see the K1d asset list)');

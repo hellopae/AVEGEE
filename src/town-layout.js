@@ -14,6 +14,7 @@ import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { daisBlocks, daisFloorAt } from './town-dais-geometry.js';
 import { bridgeSurface } from './town-bridge-rails.js';
 import { WEST_TREE_POINTS } from './town-west-trees.js';
+import { G1_HOUSES, G1_STATION_K, G1_TREES, G1_TREE_MOVES, G1_TREE_REMOVED, G1_ROCKS } from './town-zone1-g1.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -249,8 +250,27 @@ const WEST_PROPS = [
     treeKind:p.kind, species:p.species, ownerFoot:true,
   })),
 ];
+// G1 (owner 18-19 Nov): zone 1 only.  Zones 2-4 restore BASE (the layout above), so nothing here reaches them.
+const G1_HOUSE_SITES = TOWN_HOUSE_SITES.map((h,i)=>{
+  const g=G1_HOUSES[i];if(!g)return {...h};
+  const w=Math.round(h.w*(g.k??1)*10)/10;
+  return {...h,w,flip:g.flip===undefined?h.flip:g.flip,h:w*HOUSE_RATIO[h.key]};
+});
+const G1_PROP_SITES = [
+  ...TOWN_PROP_SITES.filter(p=>!G1_TREE_REMOVED.includes(p.id)).map(p=>{
+    const m=G1_TREE_MOVES[p.id];return m?{...p,x:m[0],y:m[1],w:m[2]}:{...p};
+  }),
+  // biome 'heaven' = the owner's yellow trees (gold tree near the heaven gate): there is no gold tree art yet, so they draw the green banyan until Codex draws one
+  // (spec in the G1 report; then map biome 'heaven' to the new file in townPropArtKey)
+  ...G1_TREES.map(([id,x,y,w,biome])=>deco(id,'tree',x,y,w,biome,16,11)),
+  ...G1_ROCKS.map(([x,y,w],i)=>deco(`g1-rock-${i}`,'rock',x,y,w,'ice',w*.34,w*.14)),
+];
+const G1_STATIONS = {
+  tea:site(1527,1398,215*G1_STATION_K.tea,.86*G1_STATION_K.tea,0,14),
+  sala:site(2252,1382,209*G1_STATION_K.sala,.68*G1_STATION_K.sala,-8,36),
+};
 export const TOWN_ZONE_LAYOUT = {
-  th:        {},
+  th:        { stations:G1_STATIONS, houses:G1_HOUSE_SITES, props:G1_PROP_SITES },
   // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
   // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
@@ -310,3 +330,5 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   for (const fn of layoutListeners) fn(zone);
   return true;
 }
+// G1: zone 1 is the layout the module starts in, so its own entry is applied once here (BASE above stays the old layout for zones 2-4).
+applyTownZoneLayout('th', TOWN_ZONE_LAYOUT, true);

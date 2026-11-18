@@ -65,7 +65,7 @@ test('Z3: NPC avoidance takes a valid detour on the entry plaza',()=>{
 });
 
 test('Z3: leaving west restores Zone1/Asia geometry and original house/lamp/torch feet',()=>{
- const snap=()=>JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES]);setup('th');const th=snap();const buildings=JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);
+ const snap=()=>JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES]);setup('th');const th=snap();L.applyTownZoneLayout('th',{th:{}},true);const buildings=JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);L.applyTownZoneLayout('th',L.TOWN_ZONE_LAYOUT,true);   // G1: zones 2-4 keep the base layout, Zone 1 has the owner's 19 Nov sizes
  setup('asia');const asia=snap();setup('west');const westExpected=JSON.parse(buildings);westExpected[0].ngiw.x=532;westExpected[0].ngiw.y=1508;assert.deepEqual([L.TOWN_STATION_SITES.ngiw.x,L.TOWN_STATION_SITES.ngiw.y],[532,1508]);assert.equal(JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]),JSON.stringify(westExpected));
  setup('th');assert.equal(L.TOWN_CREW.boon[1],470);assert.equal(snap(),th);assert.equal(L.townPathCell(),16);setup('asia');assert.equal(snap(),asia);setup('th');
 });

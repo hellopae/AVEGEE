@@ -99,7 +99,14 @@ test('syncSceneZone puts a skin-enabled zone on the 3840x2560 city, same station
     assert.deepEqual([SCENE.w, SCENE.h], [3840, 2560]);
     assert.equal(activeTownZone(), 'asia');
     const [stations,spots]=JSON.parse(snap()),[baseStations,baseSpots]=JSON.parse(zone1);
-    assert.deepEqual(stations,baseStations,'ART-DAIS2 changes no station sites');
+    // G1 (owner 19 Nov): Zone 1 alone draws the Tea and Sala halls 12% smaller; zones 2-4 keep the old size, every other station site is shared
+    const rest=l=>l.filter(s=>!['tea','sala'].includes(s[0]));
+    assert.deepEqual(rest(stations),rest(baseStations),'ART-DAIS2 changes no station sites');
+    for(const [k,bw,scale] of [['tea',215,.86],['sala',209,.68]]){
+      const z=stations.find(s=>s[0]===k),o=baseStations.find(s=>s[0]===k);
+      assert.deepEqual([z[3],z[4]],[bw,scale],k+' keeps the old size outside Zone 1');
+      assert.ok(o[3]<bw&&o[4]<scale,k+' is smaller in Zone 1 (G1)');
+    }
     assert.deepEqual(spots,{...baseSpots,throne:{x:1862,y:966}},'Asia interaction anchor stays in front of the solid seat');
     assert.deepEqual(L.TOWN_CREW.nira,[1938,968]);
     assert.deepEqual(L.TOWN_CREW_STAGE.nira,[1914,956,1956,982]);
@@ -115,7 +122,7 @@ test('town layout per zone: overrides apply in place and Zone 1 comes back exact
   const base = grid(), stations = JSON.stringify(L.TOWN_STATION_SITES), houses = JSON.stringify(L.TOWN_HOUSE_SITES), props = L.TOWN_PROP_SITES.length;
   const sitesRef = L.TOWN_STATION_SITES, houseRef = L.TOWN_HOUSE_SITES, propRef = L.TOWN_PROP_SITES;
   let notified = 0; const off = L.onTownLayoutChange(() => notified++);
-  const table = { th:{}, asia:{
+  const table = { th:L.TOWN_ZONE_LAYOUT.th, asia:{
     walkRuns:[480 * 320], patches:false,                    // an empty mask: nothing walkable except pads
     stations:{ krata:{ bx:480, by:580, x:480, y:600 } },
     houses:[{ key:'front-one', x:1551, y:655, w:142 }],

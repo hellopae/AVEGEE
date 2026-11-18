@@ -8,8 +8,8 @@ import { townPropArtKey, addTownSceneryLayers } from '../src/town-scenery.js';
 const expected = [
   ['town-prop-palm', 'palm', 0],   // FB2-1 (13 Nov): the zone-1 palm prop was replaced by a banyan; the art file stays shipped
   ['town-prop-lamp-gold', 'lamp-gold', 10],
-  ['town-tree-red-th', 'tree-red', 8],
-  ['town-tree-snow-th', 'tree-snow', 2],
+  ['town-tree-red-th', 'tree-red', 14],   // G1 (19 Nov): 8 - 2 crossed out + 8 drawn (one of them an old tree moved) = 14
+  ['town-tree-snow-th', 'tree-snow', 6],  // G1: 2 + 4 drawn
 ];
 
 test('K1e: all placed replacement sprites resolve to shipped and preloaded art', () => {

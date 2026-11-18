@@ -64,9 +64,11 @@ test('Z2: optional willow files fall back; cold pine primary through the actual 
 test('Z2: buildings, all 11 house placements (four types), lamps and torches retain Zone 1 coordinates and restore',()=>{
   setup('th');
   const snap=()=>structuredClone([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);
-  const baseline=snap();
+  const zone1=snap();
+  // G1 (owner 19 Nov): Zone 1 has its own sizes now; zones 2-4 keep the layout they always shared (th:{} = the base)
+  L.applyTownZoneLayout('th',{th:{}},true);const baseline=snap();L.applyTownZoneLayout('th',L.TOWN_ZONE_LAYOUT,true);
   setup('asia');assert.deepEqual(snap(),baseline);assert.equal(L.townPathCell(),8);
-  setup('th');assert.deepEqual(snap(),baseline);assert.equal(L.townPathCell(),16);
+  setup('th');assert.deepEqual(snap(),zone1);assert.equal(L.townPathCell(),16);
 });
 
 test('Z2: actual 8-unit routes reach spawn, exits, NPCs and station/sign anchors with every building built',()=>{
