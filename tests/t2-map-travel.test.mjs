@@ -35,6 +35,6 @@ test('F14: a failed load drops the journey without changing zone; skip waits for
 test('F14: ui starts the ferry before loading anything (boat) and keeps loading first for the border route',()=>{
   const ui=read('src/ui.js');const body=ui.slice(ui.indexOf('async function startMapJourney'),ui.indexOf('function openOutfit()'));
   assert.match(body,/if\(mode!=='boat'\)\{[\s\S]*await preloadZone/);
-  assert.match(body,/load:mode==='boat'\?\(\)=>preloadZone\(to,destOutfit\):null/);
+  assert.match(body,/load:mode==='boat'\?\(\)=>preloadZone\(to,destOutfit(,null,\{minMs:900\})?\):null/);
   assert.match(body,/if\(mode==='boat'\)prewarmZone/);
 });
