@@ -263,8 +263,8 @@ test('W3 merchant has actual story dialogue and a walkable route; legacy arrival
     const story=storyOf(key);assert.ok(story.pages[0].line.length>150);assert.match(story.pages[0].line,/นิรา:/);
     const g=createGame();zone(g,z);g.merchantJourney[z]={running:true,runMs:0,arrived:false};
     // T2 (F13): this test never rebuilds the walk grid after switching zone, so west is searched on the zone-1 16-unit grid, where the new 14-unit
-    // bridge decks (the real game uses an 8-unit grid for zones 2-4) cannot be crossed and the route falls back to a straight line.  On the real
-    // 8-unit grid the west start [230,500] has no route to the merchant before or after this change (pre-existing), so west checks the waypoints only.
+    // bridge decks (the real game uses an 8-unit grid for zones 2-4) cannot be crossed and the route falls back to a straight line.  T3/3 fixed the west start (every zone now starts at its border gate);
+    // the real-grid check of all four zones is tests/t3-merchant-run.test.mjs, so west here still checks the waypoints only.
     for(let ms=0;ms<=6000;ms+=100){g.merchantJourney[z].runMs=ms;const p=merchantRun(g);if(z==='west')continue;assert.ok(canWalk(p.x,p.y),`${z} ${ms}: ${JSON.stringify(p)}`);}
     if(z==='west')for(const [x,y] of g.merchantJourney[z].path)assert.ok(canWalk(x,y),`west waypoint ${x},${y}`);
   }

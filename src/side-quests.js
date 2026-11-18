@@ -272,7 +272,7 @@ export function merchantRun(g){
   const cyberTown=g.zone==='cyberhell'&&isTownZone(g.zone);
   // An interrupted arrival may have serialized a route on the retired map.
   if(cyberTown&&s.z4TownVersion!==3){delete s.path;s.z4TownVersion=3;}
-  const start=g.zone==='asia'||cyberTown?ZONE_ENTRY.gate:g.zone==='west'?[230,500]:[1038,350];
+  const start=ZONE_ENTRY.gate;   // T3/3: every zone's merchant arrives from its border gate (west used [230,500] and th [1038,350] - no walkable route from there to the stall)
   const from=nearestWalk(...start)||start,to=nearestWalk(MERCHANT.x,MERCHANT.y)||[MERCHANT.x,MERCHANT.y];
   const path=s.path ||= [from,...(findPath(...from,...to)||[]),to];
   const lengths=path.slice(1).map((v,i)=>Math.hypot(v[0]-path[i][0],v[1]-path[i][1]));
