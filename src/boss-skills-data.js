@@ -17,6 +17,7 @@ const IMG = Object.freeze({
   deleteRow:A('z4-events/cut-phantom404-delete-cyberhell'), archon:'img/CyberHell/Boss Zone4-cutscene.webp', nexar:A('z4-events/cut-nexar-logsweep-cyberhell'),
 });
 export const BOSS_CARD_IMAGES = IMG;
+// T3 (owner 19 Nov: story foes / bosses use their special more than once when the fight is long): the one-move test foes (Arunadet, Kuroha, Lumen-01/02) warn at round 2 and every 3rd round after (was round 3 then every 4th -> ~1 use in a 6-round fight, now ~2: rounds 3 and 6)
 const T = (th, en) => ({ th, en });
 
 export const BOSS_SKILLS = Object.freeze({
@@ -25,7 +26,7 @@ export const BOSS_SKILLS = Object.freeze({
     { id:'karmaMirror', kind:'groupHit', warn:1, power:.6, name:T('แสงกระจกกรรม', 'Karma-Mirror Flash'),
       warnText:T('อรุณเดชยกกระจกรับแสง — รอบหน้าแสงจะสาดทั้งทีม!', 'Arunadet raises his mirror to the light — next turn it floods the whole team!'),
       useText:T('อรุณเดช: "ดูตัวท่านเองในกระจกเถิด"', 'Arunadet: "Look at yourselves in the mirror."'),
-      when:{ firstAct:3, everyActs:4 }, image:IMG.arunadet },
+      when:{ firstAct:2, everyActs:3 }, image:IMG.arunadet },
   ]),
   tanthasura:Object.freeze([
     { id:'armyCharge', kind:'groupHit', warn:1, power:.7, name:T('ทัพปีศาจบุกพร้อมกัน', 'Army Charge'),
@@ -72,7 +73,7 @@ export const BOSS_SKILLS = Object.freeze({
     { id:'featherGale', kind:'groupHit', warn:1, power:.6, name:T('พายุขนนกวายุ', 'Feather Gale'),
       warnText:T('คุโรฮะกางพัดขนนกออกเต็มที่ — รอบหน้าลมจะซัดทั้งทีม!', 'Kuroha spreads his feather fan wide — next turn the gale hits the whole team!'),
       useText:T('คุโรฮะ: "ตั้งสติไว้ ลมกำลังเปลี่ยนทิศ"', 'Kuroha: "Keep your head. The wind is turning."'),
-      when:{ firstAct:3, everyActs:4 }, image:IMG.kuroha },
+      when:{ firstAct:2, everyActs:3 }, image:IMG.kuroha },
   ]),
   akura:Object.freeze([
     { id:'thornStorm', kind:'groupHit', warn:1, power:.75, name:T('พายุกระบองหนาม', 'Thorn-Club Storm'),
@@ -189,13 +190,13 @@ export const BOSS_SKILLS = Object.freeze({
     { id:'scanBeam', kind:'groupHit', warn:1, power:.6, name:T('ลำแสงตรวจสิทธิ์', 'Credential Scan'),
       warnText:T('ลูเมน-01 เปิดตาแสง เส้นสแกนไล่ข้ามพื้น — รอบหน้าจะกวาดทั้งทีม!', 'Lumen-01 opens its eyes of light, scan-lines crossing the floor — next turn they sweep the whole team!'),
       useText:T('ลูเมน-01: "ตรวจสิทธิ์ของนายก่อน!"', 'Lumen-01: "Credentials first!"'),
-      when:{ firstAct:3, everyActs:4 }, image:IMG.lumen },
+      when:{ firstAct:2, everyActs:3 }, image:IMG.lumen },
   ]),
   lumen02:Object.freeze([
     { id:'lockOn', kind:'heavyHit', warn:1, power:1.6, name:T('ล็อกเป้าประตู', 'Gate Lock-On'),
       warnText:T('ลูเมน-02 ล็อกวงแสงบนเป้าหมายเดียว — รอบหน้าจะพุ่งตรง!', 'Lumen-02 fixes a ring of light on one target — next turn the strike lands.'),
       useText:T('ลูเมน-02: "เป้าหมายล็อกแล้ว"', 'Lumen-02: "Target locked."'),
-      when:{ firstAct:3, everyActs:4 } },
+      when:{ firstAct:2, everyActs:3 } },
   ]),
   trojan9:Object.freeze([
     { id:'gateRush', kind:'groupHit', warn:1, power:.7, name:T('พุ่งชนประตูหลัง', 'Backdoor Rush'),
