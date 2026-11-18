@@ -1,3 +1,4 @@
+import {LossMap} from './gpu-budget.js';
 // Blend restored ground only over earlier object-removal patches. Original borders
 // remain untouched so generated artwork cannot move a neighboring tile or staircase.
 export const TOWN_TERRAIN_REPAIRS=Object.freeze([
@@ -5,7 +6,7 @@ export const TOWN_TERRAIN_REPAIRS=Object.freeze([
   {row:3,col:3,url:'img/map-zone1/repairs/r3-c3-pier-v1.webp',border:16,fade:16,boxes:[[630,40,1000,360]]},
   {row:1,col:3,url:'img/map-zone1/repairs/r1-c3-v1.webp',border:16,fade:16,boxes:[[290,775,850,1024]]},
 ].map(d=>Object.freeze({...d,boxes:Object.freeze(d.boxes.map(Object.freeze))})));
-const loads=new Map(),overlays=new Map();
+const loads=new Map(),overlays=new LossMap();
 function loadRepair(url){
   if(!loads.has(url))loads.set(url,new Promise((resolve,reject)=>{
     const im=new Image(),timer=setTimeout(()=>{im.onload=im.onerror=null;reject(new Error('ground repair timeout'));},8000);

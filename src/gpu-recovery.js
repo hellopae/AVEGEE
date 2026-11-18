@@ -7,7 +7,8 @@
 // on a machine whose GPU keeps dying); it is only counted.
 export const GPU_RELOAD_GUARD_MS = 20000;
 export const GPU_RESET_KEY = 'avegee.gpuReset';
-export const gpuLossStats = { lost: 0, restored: 0, reloads: 0, skipped: 0 };
+export const GPU_MODE_KEY = 'avegee.gpuRecoverMode';   // dev / test switch in sessionStorage: 'reload' = the T1 path only, 'none' = do nothing (to see what a loss does)
+export const gpuLossStats = { lost: 0, restored: 0, reloads: 0, skipped: 0, rebuilds: 0, rebuildFailed: 0, verifyFailed: 0 };
 
 /** Pure decision: reload now?  `last` = ms timestamp of the previous recovery reload (or 0). */
 export function shouldReloadAfterLoss(now, last, guardMs = GPU_RELOAD_GUARD_MS) {
@@ -15,17 +16,34 @@ export function shouldReloadAfterLoss(now, last, guardMs = GPU_RELOAD_GUARD_MS) 
 }
 
 /** Watch one canvas; `recover()` runs once the context is back (the cached canvases are blank by then).  Returns a function that stops watching. */
-export function watchGraphicsLoss(canvas, { recover, storage = globalThis.sessionStorage, now = () => Date.now(), guardMs = GPU_RELOAD_GUARD_MS } = {}) {
+export function watchGraphicsLoss(canvas, { recover, rebuild, verify, verifyMs = 1500, setTimer = globalThis.setTimeout, storage = globalThis.sessionStorage, now = () => Date.now(), guardMs = GPU_RELOAD_GUARD_MS } = {}) {
   if (!canvas?.addEventListener) return () => {};
   const onLost = () => { gpuLossStats.lost++; };   // no preventDefault: Chrome restores an un-cancelled 2D context by itself; a cancelled one stayed lost in the measurement
-  const onRestored = () => {
-    gpuLossStats.restored++;
+  const reload = () => {
     let last = 0; try { last = Number(storage?.getItem(GPU_RESET_KEY)) || 0; } catch {}
     const t = now();
-    if (!shouldReloadAfterLoss(t, last, guardMs)) { gpuLossStats.skipped++; return; }
+    if (!shouldReloadAfterLoss(t, last, guardMs)) { gpuLossStats.skipped++; return false; }
     try { storage?.setItem(GPU_RESET_KEY, String(t)); } catch {}
     gpuLossStats.reloads++;
     recover();
+    return true;
+  };
+  const onRestored = () => {
+    gpuLossStats.restored++;
+    let mode = null; try { mode = storage?.getItem(GPU_MODE_KEY); } catch {}
+    if (mode === 'none') return;
+    // T1c: rebuild every baked picture in place (no reload).  Anything that throws, or a screen that still has holes a moment later, falls back to save + reload (T1 path).
+    if (rebuild && mode !== 'reload') {
+      let good = false;
+      try { const r = rebuild(); good = !(r && r.failed && r.failed.length); } catch { good = false; }
+      if (good) {
+        gpuLossStats.rebuilds++;
+        if (verify) setTimer(() => { let fine = true; try { fine = verify() !== false; } catch { fine = true; } if (!fine) { gpuLossStats.verifyFailed++; reload(); } }, verifyMs);
+        return;
+      }
+      gpuLossStats.rebuildFailed++;
+    }
+    reload();
   };
   canvas.addEventListener('contextlost', onLost);
   canvas.addEventListener('contextrestored', onRestored);

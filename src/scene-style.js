@@ -1,3 +1,4 @@
+import {LossMap} from './gpu-budget.js';
 // Shared 2.5D art contract: feet are anchors; light falls from upper left.
 export const ZONE_STYLE = Object.freeze({
   th: { light: '255,173,79', particle: '#ffc674', weather: 'embers', fog: false },
@@ -32,7 +33,7 @@ export function drawContactShadow(ctx, x, y, h) {
   ctx.restore();
 }
 
-const glows = new Map();
+const glows = new LossMap();
 export function drawLocalLight(ctx, zone, x, y, radius, time = 0, reduced = false) {
   if (!(radius > 0)) return;
   const style = zoneStyle(zone);

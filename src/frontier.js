@@ -28,6 +28,7 @@ import { drawStandee, drawHeroWalk } from './art.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS } from './walk-motion.js';
 import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } from './frontier-navigation.js';
+import {gpuLossEpoch} from './gpu-budget.js';
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
 const ADULT_H = 0.085;
@@ -282,12 +283,12 @@ export function makeFrontierWalk(cv, g, opts) {
       // = ค้างที่ ~12fps ตามวิดีโอของเจ้าของ) ตอนนี้ปรับขนาดครั้งเดียวลง canvas นอกจอ แล้วคัดลอก 1:1 ทุกเฟรม
       // คุณภาพภาพเท่าเดิม (ยังเป็น smoothing 'high' ครั้งเดียว) เปลี่ยนเฉพาะเมื่อขนาดจอเปลี่ยน
       const bw2 = Math.max(1, Math.round(w)), bh2 = Math.max(1, Math.round(h));
-      if (!bgCache || bgCache.key !== `${bw2}x${bh2}:${bgRec.el.src}`) {
+      if (!bgCache || bgCache.key !== `${bw2}x${bh2}:${bgRec.el.src}:${gpuLossEpoch()}`) {   // T1c: the epoch changes after a GPU loss (the baked picture is blank)
         const c = document.createElement('canvas'); c.width = bw2; c.height = bh2;
         const cc = c.getContext('2d');
         cc.imageSmoothingEnabled = true; cc.imageSmoothingQuality = 'high';
         cc.drawImage(im, 0, 0, sw, sh, 0, 0, bw2, bh2);
-        bgCache = { key: `${bw2}x${bh2}:${bgRec.el.src}`, c };
+        bgCache = { key: `${bw2}x${bh2}:${bgRec.el.src}:${gpuLossEpoch()}`, c };
       }
       ctx.drawImage(bgCache.c, 0, 0, bw2, bh2, box.ox, box.oy, box.w, box.h);
     } else {

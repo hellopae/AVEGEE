@@ -4,6 +4,7 @@ import { t } from './i18n.js';
 import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 import { isTownZone } from './zone-skin.js';
+import {LossMap} from './gpu-budget.js';
 
 // M2: which zones use the painted-town map system is decided by the zone skin table (zone-skin.js), not by a zone name.
 export { isTownZone };
@@ -63,7 +64,7 @@ export function townNearbyAction(g, interaction, build, reach = 105) {
 // FB-UI 2 (owner 10 Nov): the "locked site" sign is a Thai-style plaque - gold double frame with a kranok crest, dark-red lacquer
 // panel, a gold padlock and gold lettering with a dark outline (readable on every ground colour). Drawn with canvas paths only (no
 // image to recolour); rendered once into a 4x offscreen canvas per text, then stamped with drawImage so the map loop stays cheap.
-const PLAQUE_FONT='700 13px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif', PLAQUE_K=4, PLAQUE_H=32, PLAQUE_S=.68, plaqueCache=new Map();   // PLAQUE_S: FB2-7 shown at 68% of the painted size
+const PLAQUE_FONT='700 13px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif', PLAQUE_K=4, PLAQUE_H=32, PLAQUE_S=.68, plaqueCache=new LossMap();   // PLAQUE_S: FB2-7 shown at 68% of the painted size
 function paintLockPlaque(c,text,w,h) {
   const goldEdge=c.createLinearGradient(0,0,0,h);
   goldEdge.addColorStop(0,'#fbe3a0');goldEdge.addColorStop(.5,'#c8963a');goldEdge.addColorStop(1,'#8f6422');

@@ -14,6 +14,7 @@ import { weatherEnabled } from './map-ambient.js?v=mapfx-k1d';
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
 import { zone234Old } from './zone-clouds.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 import { graphicsProfile } from './graphics-setting.js';   // GFX-1110
 import { fluidMode, ensureFluidShader, fluidShaderActive, fluidShaderPending, drawFluidShader, shaderStoreOf } from './fluid-shader.js';   // FLUID-SHADER (default; ?fluid=frames = the drawn frames)
 
@@ -90,6 +91,8 @@ export function fluidDrawPlan(layout) {
 
 // ------------------------------------------------------------------------------------------------ state
 const stores = new Map();    // dir -> store
+// T1c: the pre-scaled sheets (tile / mip canvases) and the composed layers are blank after a GPU loss; the next frame requests the sheets again (the pictures are cached <img>)
+registerGpuLossReset('town-fluid-fx', () => { for (const st of stores.values()) { st.sheets.clear(); st.layers.clear(); st.last?.clear?.(); } });
 function storeOf(dir) {
   let st = stores.get(dir);
   if (!st) {

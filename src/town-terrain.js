@@ -6,6 +6,7 @@ import {repairTownTerrain} from './town-terrain-repair.js';
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain,prepareTownLighting,releaseTownLighting,townLightingBakedPixels,townLightingBakeStats} from './town-lighting.js?v=fire-v2';
 import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 
 // Zone 1 constants stay exported (preload, tests); every function below reads the ACTIVE zone skin (zone-skin.js)
 // so a zone with its own painted ground reuses the same chunk loader.
@@ -42,6 +43,15 @@ const store = (zone=activeTownZone()) => {
   return st;
 };
 let loading = 0, frame = 0;
+// T1c: after a GPU loss the graded ground of every chunk and the preview are blank: every chunk goes back to 'idle' (the camera asks for the visible ones again and they are
+// fetched / graded exactly like a first visit), in-flight loads are made stale, the preview is requested again.
+registerGpuLossReset('town-terrain', () => {
+  for (const st of stores.values()) {
+    for (const c of st.chunks.values()) { c.generation++; c.image = null; c.state = 'idle'; c.failures = 0; c.retryAt = 0; }
+    if (!st.previewWait) st.preview = null;
+  }
+  loading = 0;
+});
 // A chunk the camera is already waiting for (the sharp view is held back on the overview until every visible chunk is ready) is graded with a bigger slice
 // per frame than one that is only being prefetched.
 const bakeBudget = () => store().urgent ? 10 : 4;

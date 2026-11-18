@@ -4,9 +4,10 @@ import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTrac
 import { zoneStyle } from './scene-style.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js?v=k1d';
 import { drawFogField } from './zone3-fog.js';
+import {LossMap,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 import { zoneShadowSprites } from './zone-clouds.js';   // FLUID-Z234: cloud-shaped shadows of zones 2-4 (made in code)
 // Decorative motion over painted map art. Never changes collision or gameplay state.
-const cache = new WeakMap();
+const cache = new LossWeakMap();
 const frac = n => n - Math.floor(n);
 const seed = n => frac(Math.sin(n * 127.1 + 311.7) * 43758.5453);
 const mod = (n, d) => ((n % d) + d) % d;
@@ -469,7 +470,7 @@ export function cloudPatchSize(spec,view,aspect,widthFactor,tallFactor,breath=1)
   const pw=Math.sqrt(view.w*view.h)*spec.fit*widthFactor*breath;
   return [pw,pw/aspect*tallFactor];
 }
-const sprites=new Map();
+const sprites=new LossMap();
 function blobSprites(rgb,kind='shadow'){
   const key=kind+'|'+rgb;
   if(sprites.has(key))return sprites.get(key);
@@ -656,3 +657,6 @@ export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false, town =
 export function drawMapAmbientOver(ctx, zone, time, W, H, reduced = false) {
   if(zone==='cyberhell')drawBiomeWeather(ctx,zone,time,W,H,reduced,undefined,null,{layer:'over'});
 }
+
+// T1c: the shared sprites (lantern glow, weather puff, fog puff, the real-cloud shadow textures) are blank after a GPU loss: forget them, the next frame bakes them again
+registerGpuLossReset('map-ambient',()=>{lanternSprite=undefined;weatherSprites=undefined;fogCache=undefined;townShadow={state:'idle',sprites:null};});

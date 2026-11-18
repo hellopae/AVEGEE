@@ -12,6 +12,7 @@
 // Nothing here recolours or filters the drawn layers.  Recipe from clouds.json: weight of B = 0.5 - 0.5 cos(2 pi t / 24), mixed in premultiplied RGBA; layer drift = sine of period 48 s, amplitude [1.5, 0.3] world units.
 import { TOWN_SIZE } from './town-layout.js?v=k1d';
 import { activeTownSkin } from './zone-skin.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 
 const DIR = 'img/map-zone1/v7r-clouds/';
 const FULL = [9830, 6554], CHUNK = 2048, ROWS = 4, COLS = 5;
@@ -169,6 +170,8 @@ export function codexPuffPos(p, ms) {
   return [p.origin[0] + p.drift[0] * k * s, p.origin[1] + p.drift[1] * k * s];
 }
 const puffEls = new Map(); let maskRec = null, puffLayer = null, puffDrawn = 0, puffLast = null;
+// T1c: the composed layers are blank after a GPU loss (the chunk / puff pictures are plain <img>, the browser decodes them again by itself)
+registerGpuLossReset('town-clouds-codex', () => { layer = null; last = null; puffLayer = null; puffLast = null; });
 export const codexPuffStats = () => ({ drawn: puffDrawn, maskReady: !!(maskRec && maskRec.ok) });
 function puffImage(id) {
   let rec = puffEls.get(id);

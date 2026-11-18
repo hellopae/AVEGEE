@@ -53,10 +53,11 @@ HOOK = r"""
 })();
 """
 
-def boot(p, w=int(os.environ.get('W', 390)), h=int(os.environ.get('H', 844))):
+def boot(p, w=int(os.environ.get('W', 390)), h=int(os.environ.get('H', 844)), init=None):
     browser = p.chromium.launch(args=['--autoplay-policy=no-user-gesture-required', '--js-flags=--expose-gc'])
     ctx = browser.new_context(viewport={'width': w, 'height': h}, device_scale_factor=float(os.environ.get('DPR', 1)))
     ctx.add_init_script(HOOK)
+    if init: ctx.add_init_script(init)
     pg = ctx.new_page(); errs = []
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.goto(BASE); pg.wait_for_timeout(3000)

@@ -9,6 +9,7 @@
 //               cyberhell dark rain clouds / violet-cyan data smog, wide and ragged, matching the rain
 //  Nothing here recolours or filters the ground art.  No imports of map-ambient.js (it imports this file); the caller passes `enabled` / `reduced`.
 import { zoneCloudDensity } from './zone-clouds-density.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 
 /** `?z234=old` puts the towns of zones 2-4 back to how they were before this round (old particle flow, old gradient cloud banks, old blob shadows): an A/B switch for evidence captures. */
 let oldMode = null, cloudsOff = null;
@@ -120,6 +121,8 @@ function sprites(zone, kind) {
 export const zoneShadowSprites = zone => ZONE_CLOUD_FX[zone] ? sprites(zone, 'shadow') : false;
 export const zoneCloudSprites = zone => ZONE_CLOUD_FX[zone] ? sprites(zone, 'cloud') : false;
 export function resetZoneCloudsForTest() { for (const k of Object.keys(baked)) delete baked[k]; }
+// T1c: the baked silhouettes and the composed layer are blank after a GPU loss
+registerGpuLossReset('zone-clouds', () => { resetZoneCloudsForTest(); layer = null; last = null; });
 export const zoneCloudsApply = zone => ZONE_CLOUD_ZONES.includes(zone);
 
 // ------------------------------------------------------------------------------------------------ floating clouds

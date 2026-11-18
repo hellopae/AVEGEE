@@ -1,5 +1,6 @@
 import {z3FogDensity} from './z3-fog-density.js';
 import {getGraphicsMode} from './graphics-setting.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 // Z3-FOG (owner 15 Nov): drifting fog banks of the frozen zone.
 //  - Every bank is a handful of soft puffs that slide against each other, so a bank rolls and billows instead of sliding as one flat strip.
 //  - A bank is placed in the SAME depth-sorted list as buildings, trees and characters (addZ3FogLayers, scene.js): whatever stands behind a bank
@@ -25,6 +26,7 @@ const smooth = x => x * x * (3 - 2 * x);
 
 /** Four baked puff clusters (320 x 160): ~18 overlapping soft discs of uneven size, a few wisps carved out, no hard edge anywhere. */
 let puffs = null, puffsBroken = false;
+registerGpuLossReset('zone3-fog', () => { puffs = null; puffsBroken = false; });
 function puffSprites() {
   if (puffs) return puffs;
   if (puffsBroken) return null;

@@ -2,6 +2,7 @@ import {dischargePath,dischargeBranches,drawDischarge} from './electric-fx.js';
 import {startupImage} from './town-startup.js';
 import {Z4_POLE_ART,z4PoleArtRect} from './z4-pole-art.js';
 import {Z4_POLES,Z4_WIRES} from './z4-poles-data.js?v=z4-poles';
+import {LossMap,registerGpuLossReset} from './gpu-budget.js';
 // Z4-POLES: electric poles, drooping wires and blue lightning over the Zone 4 town.
 // Painted pole sprites share the original foot/cable anchors. Wires, lightning
 // and actors keep their existing depth-sorted geometry; code art is a loading/error fallback.
@@ -120,7 +121,9 @@ function paintPoleBody(ctx, pole, x, y, pulse) {
   }
 }
 // The static body is baked once per (variant, height bucket) into a small canvas and blitted; only the glow pulses per frame.
-const BAKE = 2, bodies = new Map();
+const BAKE = 2, bodies = new LossMap();
+// T1c: the glow / violet sprites are blank after a GPU loss (the pole bodies live in a LossMap)
+registerGpuLossReset('z4-poles', () => { glow = null; violet = null; });
 function bodySprite(pole) {
   const hb = Math.max(20, Math.round(pole.h / 3) * 3), key = pole.variant + ':' + hb + ':' + Math.round(pole.arm);
   let e = bodies.get(key); if (e !== undefined) return e;

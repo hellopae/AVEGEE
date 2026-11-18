@@ -159,7 +159,7 @@ test('SCENE-FX ground canvases blend with the painted picture and stay under the
 test('every module this round changed has a new ?v= in the import map (lesson of review 451678f6)', () => {
   const html = readFileSync(file('index.html'), 'utf8');
   const map = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  for (const m of ['scene-fluid-fx', 'scene-atmosphere']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5$/, m);
-  for (const k of ['./src/map-ambient.js', './src/map-ambient.js?v=mapfx-k1d']) assert.match(map[k], /\?v=(20261106-fx5|20261115-z3fog(-z234)?)$/, k);
+  for (const m of ['scene-fluid-fx', 'scene-atmosphere']) assert.match(map[`./src/${m}.js`], /\?v=20261106-fx5(-t1b-[a-z]+)*$/, m);
+  for (const k of ['./src/map-ambient.js', './src/map-ambient.js?v=mapfx-k1d']) assert.match(map[k], /\?v=(20261106-fx5|20261115-z3fog(-z234)?)(-t1b-[a-z]+)*$/, k);
   for (const m of ['ui', 'battle-camera']) { /* ui.js / css not edited in this round */ }
 });

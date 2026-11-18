@@ -296,7 +296,7 @@ export function disposeShaderStore(st) {
   return mb;
 }
 registerGpuCache('fluid-shader', (keep, now) => {   // every store that was not drawn in the last 15 s (the current zone is drawn every frame)
-  let mb = 0; for (const st of stores.values()) if (st.status === 'ready' && (keep == null || now - (st.lastDraw || 0) > 15000)) mb += disposeShaderStore(st);
+  let mb = 0; for (const st of stores.values()) if ((st.status === 'ready' || (keep == null && st.status === 'failed')) && (keep == null || now - (st.lastDraw || 0) > 15000)) mb += disposeShaderStore(st);   // T1c: after a GPU loss the stores are 'failed' (context lost) - dispose them too so they build again
   return mb;
 });
 /** Free the ground texture of pieces that have not been on screen for a while (GPU memory on phones). */

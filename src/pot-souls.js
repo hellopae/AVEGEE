@@ -1,3 +1,4 @@
+import {registerGpuLossReset} from './gpu-budget.js';
 // pot-souls.js — กระทะทองแดง: วิญญาณที่กำลังรับทัณฑ์ยืนอยู่ "ในกระทะ" มีไฟลุกใต้ตัว (F2 ข้อ 5, คุณเป้ 9 ต.ค. 2569)
 //
 // ใช้ภาพฉากเดิม img/rooms-wide/<zone>-krata.webp ไม่แตะไฟล์ภาพ — ไฟเป็นโค้ดวาด (canvas) ล้วน
@@ -36,6 +37,7 @@ const fxImg = name => {
 const FLAMES = ['fx-fire-flame-a', 'fx-fire-flame-b', 'fx-fire-flame-c'];
 const SWEAT_CELLS = [0, 1, 3];      // แผ่นเหงื่อ 512×128 = 4 ช่อง 128×128: 0 หยดคู่ · 1 หยดใหญ่ · 2 กระเด็น · 3 หยดตก
 let haze = null;                    // ไอร้อน: วงแสงนุ่มวาดครั้งเดียว ใช้ซ้ำ
+registerGpuLossReset('pot-souls', () => { haze = null; bufs.length = 0; });   // T1c: blank after a GPU loss
 const hazeSprite = () => {
   if (haze !== null) return haze;
   haze = false;

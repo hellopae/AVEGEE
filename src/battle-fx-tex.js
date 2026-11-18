@@ -1,4 +1,5 @@
 import { SKILL_FX } from './combat-skill-assets.js';
+import {registerGpuLossReset} from './gpu-budget.js';
 // M2: texture manager for battle effects.
 // Real art lives in img/fx/<key>.webp (spec: Output/Toby/2026-10-16-avegee-m2-art-spec.md). Until a file exists (or if it fails to
 // load) the SAME key resolves to a texture drawn here with plain gradients/paths — so Kittanate/Codex dropping a file over the name
@@ -409,6 +410,8 @@ GEN['fx-mirror-glint'] = (c, W, H) => {
 // ---------------------------------------------------------------- loading + lookup
 const records = new Map();
 let suffix = '';
+// T1c: the gradient stand-in canvases are blank after a GPU loss (the real pictures are <img> / CPU canvases): make them again on the next use
+registerGpuLossReset('battle-fx-tex', () => { for (const r of records.values()) r.procCanvas = null; });
 /** optional cache-bust query, e.g. '?v=m2' */
 export const setTexSuffix = s => { suffix = s || ''; };
 

@@ -8,7 +8,7 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import {watchGraphicsLoss} from './gpu-recovery.js';
-import {gpuBudgetTick} from './gpu-budget.js';
+import {gpuBudgetTick,resetAfterGpuLoss} from './gpu-budget.js';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor, questHandoffNeed, pendingRetroQuestRewards, ackRetroQuestRewards, questFightStep } from './side-quests.js';
 import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   // QUEST-DAM-B: the merchant's feather quest
@@ -176,6 +176,19 @@ let tab = 'queue', hover = null, acc = 0, last = performance.now();
 watchGraphicsLoss(cv, {recover: () => {
   if (started) { g.save(); saveAt = Infinity; sessionStorage.setItem('avegee.fresh', '1'); }
   location.reload();
+},
+// T1c: first try - drop every baked picture and let the next frames bake it again (no reload); a failure / a screen that still has holes falls back to the save + reload above
+rebuild: () => resetAfterGpuLoss(),
+// ... and 2.5 s later the map must have painted itself again: a map canvas that is still (mostly) transparent while nothing covers it means a hole the rebuild did not reach -> reload (measured in
+// Chromium: without any recovery the canvas stays 100 % transparent after a GPU crash, with the rebuild it is painted again within ~1 s)
+verifyMs: 2500,
+verify: () => {
+  if (!started || g.battle || document.querySelector('dialog[open]')) return true;   // the map is not on show: nothing to judge
+  const t = document.createElement('canvas'); t.width = t.height = 24;
+  const x = t.getContext('2d', {willReadFrequently: true}); x.drawImage(cv, 0, 0, 24, 24);
+  const d = x.getImageData(0, 0, 24, 24).data; let hole = 0;
+  for (let i = 3; i < d.length; i += 4) if (d[i] < 250) hole++;
+  return hole / 576 < .25;
 }});
 
 /** ข้อ D ชุด 15 — .stage เต็มจอไม่มีกรอบแบบเดิม · .scene-box ต้องล็อกอัตราส่วน 1527:704 อยู่ข้างใน

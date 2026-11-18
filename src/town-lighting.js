@@ -4,7 +4,8 @@ import {clamp,fireStrength,hueStrength,emitAt,hellColor,gradeStrip,lightColumns}
 // Pixel grading and fixture falloff are cached; animation only blits two layers.
 import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES,TOWN_DAIS,TOWN_SIZE,onTownLayoutChange} from './town-layout.js?v=k1d';
 import {activeTownSkin} from './zone-skin.js';
-const GLOW_DIV=4,cache=new WeakMap();
+import {registerGpuLossReset} from './gpu-budget.js';
+const GLOW_DIV=4;let cache=new WeakMap();
 export {fireStrength,hueStrength,emitAt,hellColor};
 const CELL=32,COLS=Math.ceil(TOWN_SIZE.w/CELL),ROWS=Math.ceil(TOWN_SIZE.h/CELL),field=new Float32Array(COLS*ROWS);
 // The pools of light follow the placed lamps / torches / houses / stations / dais of the active zone layout.
@@ -78,7 +79,9 @@ function startBake(image,rect,source=image){
  }
  return {run,finish};
 }
-const pending=new WeakMap();
+let pending=new WeakMap();
+// T1c: after a GPU loss every graded ground canvas / bitmap is blank - forget them all (town-terrain.js re-streams the chunks, which grades them again)
+registerGpuLossReset('town-lighting',()=>{cache=new WeakMap();pending=new WeakMap();});
 function layers(image,rect){
  let entry=cache.get(image);if(entry)return entry;
  const job=pending.get(image)||startBake(image,rect);pending.delete(image);

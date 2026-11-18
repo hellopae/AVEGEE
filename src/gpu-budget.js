@@ -13,6 +13,34 @@ export function releaseGpuCaches(keepZone, now = (typeof performance !== 'undefi
   gpuBudgetStats.releases++; gpuBudgetStats.lastFreedMB = freed; gpuBudgetStats.lastNames = done;
   return freed;
 }
+// T1c: GPU-loss recovery without a reload.  A module that keeps baked canvases / ImageBitmaps / textures registers a reset here: it drops EVERYTHING it baked (and any "built" flag),
+// so the next frame rebuilds it with the same code the first draw used.  A module that bakes things must either register here or be on the audited list in tests/t1c-gpu-cache-audit.test.mjs.
+const lossResets = new Map();
+export function registerGpuLossReset(name, reset) { lossResets.set(name, reset); }
+// Drop-in caches that forget everything on a GPU loss: `new LossMap()` / `new LossWeakMap()` instead of `new Map()` / `new WeakMap()` for anything that holds baked canvases / bitmaps.
+// (A WeakMap has no clear(), so LossWeakMap swaps its inner map.)  They register themselves, so a module needs no extra line.
+const lossMaps = new Set();   // WeakRefs of LossMap / LossWeakMap instances (a cache that is no longer referenced simply disappears)
+const track = o => { lossMaps.add(new WeakRef(o)); return o; };
+export class LossMap extends Map { constructor(it) { super(it); track(this); } }
+export class LossWeakMap {
+  constructor() { this.m = new WeakMap(); track(this); }
+  get(k) { return this.m.get(k); } set(k, v) { this.m.set(k, v); return this; } has(k) { return this.m.has(k); } delete(k) { return this.m.delete(k); }
+  clear() { this.m = new WeakMap(); }
+}
+export const gpuLossMapCount = () => { let n = 0; for (const r of lossMaps) { if (r.deref()) n++; else lossMaps.delete(r); } return n; };
+/** Counts GPU losses: a cache that lives inside a closure / a per-scene object keeps the epoch it was baked in and bakes again when it differs. */
+export let gpuLossEpochValue = 0;
+export const gpuLossEpoch = () => gpuLossEpochValue;
+export const gpuLossResetNames = () => [...lossResets.keys()];
+/** After the GPU came back: release every zone cache, then run every registered reset.  Returns { ok:[names], failed:[{name,error}] } - a failure means the caller should reload instead. */
+export function resetAfterGpuLoss() {
+  const ok = [], failed = [];
+  gpuLossEpochValue++;
+  try { releaseGpuCaches(null); } catch (error) { failed.push({ name:'releaseGpuCaches', error:String(error) }); }
+  for (const r of [...lossMaps]) { const m = r.deref(); if (!m) { lossMaps.delete(r); continue; } try { m.clear(); } catch (error) { failed.push({ name:'LossMap', error:String(error) }); } }
+  for (const [name, reset] of lossResets) { try { reset(); ok.push(name); } catch (error) { failed.push({ name, error:String(error) }); } }
+  return { ok, failed };
+}
 export const gpuBudgetStats = { releases: 0, lastFreedMB: 0, lastNames: [] };
 export const ZONE_STAY_MS = 12000;
 let zone = null, since = 0, released = false;

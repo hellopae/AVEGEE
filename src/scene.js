@@ -1,5 +1,5 @@
 import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
-import {registerGpuCache} from './gpu-budget.js';
+import {registerGpuCache,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
 import {canteenCookPose} from './canteen.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
@@ -108,6 +108,8 @@ export function prepareMapCanvas(ctx) {
  *  once with 'high' quality, then blit the cached canvas ~1:1. Only plain scale/translate draws qualify. */
 const SPRITE_CACHE_MAX = 900;
 let spriteCache = new WeakMap(), spriteCacheCount = 0;
+// T1c: every downscaled sprite is a canvas - all blank after a GPU loss
+registerGpuLossReset('scene-sprite-cache', () => { spriteCache = new WeakMap(); spriteCacheCount = 0; });
 export const spriteCacheStats = { built: 0, hits: 0 };
 function installSpriteCache(ctx) {
   const raw = ctx.drawImage;
@@ -141,7 +143,7 @@ function installSpriteCache(ctx) {
     return plain(this, c, [0, 0, qw, qh, dx, dy, dw, dh]);
   };
 }
-const groundCache = new WeakMap(), groundZoneBg = new Map();
+const groundCache = new LossWeakMap(), groundZoneBg = new Map();
 // GPU-BUDGET: the full-map ground canvas of every zone visited used to stay for ever (one per zone, up to 4096 px wide) - the ones of the other zones are given back after a stay
 registerGpuCache('scene-ground', keep => {
   let mb = 0;

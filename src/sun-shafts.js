@@ -1,5 +1,7 @@
+import {registerGpuLossReset} from './gpu-budget.js';
 // Volumetric light baked once. Per-frame work is two small blits, not a triangle fan or pixel readback.
 let texture;
+registerGpuLossReset('sun-shafts',()=>{texture=undefined;});   // T1c: blank after a GPU loss
 export const SUN_SHAFTS=Object.freeze({width:384,height:512,peak:.24});
 function shaftTexture(){
  if(texture!==undefined)return texture;texture=null;if(typeof document==='undefined')return null;

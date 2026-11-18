@@ -15,6 +15,7 @@ import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js'
 import { crewWalkSheet } from './crew-walk-assets.js';
 import { heroWalkSheet } from './hero-walk-assets.js';
 import { drawYamaBook } from './yama-animation.js?v=20261015-live-v1';
+import {LossMap,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 
 const CACHE = new Map();
 const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
@@ -187,7 +188,7 @@ export const hash = (x, y) => {
 
 // ---------- พื้นสำรอง (ใช้ตอนยังไม่มี img/scene.webp) ----------
 export const PAT = 256;
-const PATS = new Map();
+const PATS = new LossMap();
 
 function patternFor(ctx, type) {
   if (PATS.has(type)) return PATS.get(type);
@@ -595,7 +596,7 @@ export const SPIRIT_KINDS = 10;
 export const soulKey = (sp = 7) =>
   typeof sp === 'string' ? sp : 'spirit' + ((sp - 1) % SPIRIT_KINDS + 1);
 
-const soulTintCache=new WeakMap();
+const soulTintCache=new LossWeakMap();
 function tintedSoul(im,tint){
  if(tint==='#bfe9ff'||tint==='#d9eaff'||tint==='#ffd9c0')return im;
  let variants=soulTintCache.get(im);if(!variants){variants=new Map();soulTintCache.set(im,variants);}
@@ -703,7 +704,7 @@ export function drawEmbers(ctx, w, h, t) {
 
 // PERF-1110: the vignette is the same smooth gradient every frame; it is baked once into a small canvas per (w,h) and stretched over the rect
 // (a gradient shader pass over the rect cost ~1.5 ms/frame on an iGPU at DPR 2).  Skipped when the rect is off screen.
-const vignetteBake = new Map();
+const vignetteBake = new LossMap();
 function vignetteCanvas(w, h) {
   const key = w + 'x' + h; let cv = vignetteBake.get(key);
   if (cv === undefined) {
@@ -725,6 +726,7 @@ function vignetteCanvas(w, h) {
 // rectangle in the top-left corner of the world.  The town vignette is now a screen-space overlay pinned to the camera: same gradient formula
 // (inner .34 / outer 1.05 of the height, max alpha .52) applied to the visible canvas, baked once at half size and rebuilt only when the canvas size changes.
 let screenVignette = null;   // {key, cv}
+registerGpuLossReset('art-vignette', () => { screenVignette = null; });
 export function screenVignetteCanvas(cw, ch) {
   const key = cw + 'x' + ch;
   if (screenVignette && screenVignette.key === key) return screenVignette.cv;

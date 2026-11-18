@@ -3,10 +3,12 @@ import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES} from './town-layout
 import {activeTownZone} from './zone-skin.js';
 import {drawLocalLight} from './scene-style.js';
 import {townFluidOwnsClouds} from './town-fluid-fx.js?v=v5fx';
+import {registerGpuLossReset} from './gpu-budget.js';
 const windows=[...TOWN_HOUSE_SITES,...Object.values(TOWN_STATION_SITES)];
 const frac=n=>n-Math.floor(n),seed=n=>frac(Math.sin(n*127.1+311.7)*43758.5453),mod=(n,d)=>((n%d)+d)%d;
 function view(ctx){const m=ctx.getTransform?.()||{a:1,d:1,e:0,f:0};return{x:-m.e/m.a,y:-m.f/m.d,w:ctx.canvas.width/m.a,h:ctx.canvas.height/m.d};}
 let cloudArt=null;
+registerGpuLossReset('town-night-effects',()=>{cloudArt=null;});   // T1c: blank after a GPU loss
 function cloudSprite(){
  if(cloudArt||typeof document==='undefined')return cloudArt;
  const c=document.createElement('canvas');c.width=256;c.height=96;const p=c.getContext('2d');

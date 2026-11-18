@@ -19,6 +19,7 @@ import { exitStep, drawExitMarker } from './exit-marker.js';
 import { MOB } from './data.js';
 import { enemyWalkReady } from './enemy-walk-assets.js';
 import { CHASE, newChase, stepChase, chaseAlerted, chaseInReach } from './dungeon-chase.js?v=l5';
+import {gpuLossEpoch} from './gpu-budget.js';
 
 // M2 R1: trails, checkpoint vertices, pads and boss caves are rows of ROUTE_GEOMETRY (route-geometry.js); a route whose row is
 // not enabled keeps the original vertical corridor.
@@ -291,8 +292,12 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   }
   const nav=dungeonNavigation(routeId);
   const miniMask=document.createElement('canvas');miniMask.width=nav.cols;miniMask.height=nav.rows;
-  const maskCtx=miniMask.getContext('2d');maskCtx.fillStyle='#ffd27a88';
-  for(let y=0;y<nav.rows;y++){for(let x=0;x<nav.cols;){if(!nav.cells[y*nav.cols+x]){x++;continue;}const start=x;while(x<nav.cols&&nav.cells[y*nav.cols+x])x++;maskCtx.fillRect(start,y,x-start,1);}}
+  let maskEpoch=-1;
+  const paintMask=()=>{   // T1c: painted again when a GPU loss blanked it (gpuLossEpoch changes)
+   const maskCtx=miniMask.getContext('2d');maskCtx.clearRect(0,0,miniMask.width,miniMask.height);maskCtx.fillStyle='#ffd27a88';
+   for(let y=0;y<nav.rows;y++){for(let x=0;x<nav.cols;){if(!nav.cells[y*nav.cols+x]){x++;continue;}const start=x;while(x<nav.cols&&nav.cells[y*nav.cols+x])x++;maskCtx.fillRect(start,y,x-start,1);}}
+   maskEpoch=gpuLossEpoch();
+  };paintMask();
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
   let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0,fxTime=0;
@@ -464,6 +469,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     });
     drawFrontierWeather(ctx,{routeId,time:t,paused:enhanced?isPaused():g.paused,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
+    if(maskEpoch!==gpuLossEpoch())paintMask();
     mc.drawImage(miniMask,0,0,180,110);
     mc.fillStyle='#fff';mc.beginPath();mc.arc(hero[0]*180,hero[1]*110,3,0,Math.PI*2);mc.fill();
     points.forEach((v,i)=>{const p=point(v);mc.fillStyle=status.defeated.includes(status.route.checkpoints[i].id)?'#8cffad':'#ff7b71';mc.fillRect(p[0]*180-2,p[1]*110-2,4,4);});

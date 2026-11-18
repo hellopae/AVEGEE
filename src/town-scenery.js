@@ -4,13 +4,14 @@ import { TOWN_HOUSE_SITES, TOWN_PROP_SITES, onTownLayoutChange } from './town-la
 import { activeTownSkin, activeTownZone, ZONE1_TOWN_ART, townArtFoot } from './zone-skin.js';
 import { drawLocalLight } from './scene-style.js';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
+import {LossWeakMap} from './gpu-budget.js';
 
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 export const TOWN_TREES = TOWN_PROP_SITES.filter(p=>p.kind==='tree');
 onTownLayoutChange(()=>TOWN_TREES.splice(0,TOWN_TREES.length,...TOWN_PROP_SITES.filter(p=>p.kind==='tree')));
 export const TOWN_WATERFALL = null; // the waterfalls are painted into the ground now
 export const TOWN_EDGE_HOMES = [];
-const variants = new WeakMap();
+const variants = new LossWeakMap();
 function cachedSprite(image,kind) {
   let cache=variants.get(image);if(!cache){cache=new Map();variants.set(image,cache);}
   if(cache.has(kind))return cache.get(kind);
@@ -32,7 +33,7 @@ const TREE_TINT = {
   city:'brightness(.78) saturate(1.08)',
   heaven:'saturate(.7) brightness(1.12)',
 };
-const tinted = new WeakMap();
+const tinted = new LossWeakMap();
 function tintedArt(image,biome) {
   const filter=activeTownSkin().treeTint?TREE_TINT[biome]:null;   // M2: a zone with its own tree art is not darkened in code
   if(!filter||!image||!image.naturalWidth)return image;

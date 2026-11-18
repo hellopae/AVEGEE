@@ -1,3 +1,4 @@
+import {registerGpuLossReset} from './gpu-budget.js';
 // Resample decoded ground/glow once at the camera's device scale; bound memory,
 // and never allocate a full-world canvas for the zoomed overview fallback.
 // PERF-1110: the budget used to be one hard LRU of 16 M px.  A 1792x958 window at DPR 2 shows 8 chunks = 16 cache tiles of ~36 M px, so every frame
@@ -6,6 +7,8 @@
 // cold tiles (chunks the camera left).  HARD_PIXELS bounds the working set itself (huge window / extreme zoom): past it a tile is blitted straight
 // from the source image instead of allocating, so memory stays bounded and nothing churns.
 const entries=new Map(),ids=new WeakMap();let nextId=0,pixels=0;
+// T1c: the resampled tiles are blank after a GPU loss - drop them all, the next frame resamples the ones it needs
+registerGpuLossReset('terrain-detail',()=>{entries.clear();pixels=0;});
 const MAX_PIXELS=16_000_000,HARD_PIXELS=72_000_000,HOT_MS=1500,MAX_TILE_PIXELS=3_000_000;
 const clock=()=>(typeof performance!=='undefined'?performance.now():Date.now());
 export function drawTerrainDetail(ctx,image,rect){

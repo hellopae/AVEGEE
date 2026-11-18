@@ -1,3 +1,4 @@
+import {gpuLossEpoch} from './gpu-budget.js';
 // SCENE-FX: the painted lava / waterfall / pond / torch frames played over the battle + interrogation backdrops.
 //
 // Same rule as the town map (town-fluid-fx.js): code only places, clips, blends and plays frames that were DRAWN (img/map-zone1/v5-fx/sheets, Codex);
@@ -121,6 +122,7 @@ export function createSceneFluid(scene, layout, background) {
   /** Build the pre-scaled frames / mask for `k` canvas px per picture px. false while an image is still loading. */
   function prepare(pc, k) {
     const sp = pc.spec;
+    if (pc.state === 'ready' && pc.epoch !== gpuLossEpoch()) pc.state = 'idle';   // T1c: baked before a GPU loss = blank now, bake again
     if (sp.kind === 'pulse' && (!background || !background.naturalWidth)) return false;
     const mEntry = maskEntry(sp.mask);
     if (mEntry.state !== 'ready') return false;
@@ -145,7 +147,7 @@ export function createSceneFluid(scene, layout, background) {
       g.drawImage(background, rx, ry, rw, rh, 0, 0, lw, lh); g.globalCompositeOperation = 'destination-in'; g.drawImage(pc.maskCanvas, 0, 0);
       pc.fixed = c;
     }
-    pc.state = 'ready';
+    pc.state = 'ready'; pc.epoch = gpuLossEpoch();
     return true;
   }
 

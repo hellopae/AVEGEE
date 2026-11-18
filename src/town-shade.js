@@ -13,6 +13,7 @@
 import { stationBox } from './art.js';
 import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE, onTownLayoutChange } from './town-layout.js?v=k1d';
 import { activeTownZone, townArtFoot } from './zone-skin.js';
+import {LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 
 // Shadow offset per unit of height. A point H above the foot lands (KX*H, KY*H) right/below the foot.
 export const SUN = { kx:.42, ky:.3 };
@@ -23,7 +24,7 @@ const SHADE_RGB = '16,8,34';
 const GROUND = { tight:'rgba(14,8,26,.20)', soft:'rgba(14,8,26,.15)' };
 
 // ---------- baked silhouettes ----------
-const sil = new WeakMap();
+const sil = new LossWeakMap();
 function silhouette(art, level) {          // level: 'tight' (~192 px) | 'soft' (~40 px, upscaled = blurry)
   let per = sil.get(art); if (!per) { per = {}; sil.set(art, per); }
   if (per[level]) return per[level];
@@ -108,7 +109,7 @@ function contourProfile(art) {
   contourProfiles.set(art, out); return out;
 }
 const BAKE = .6;                        // baked shadow pixels per world unit
-const contourCache = new WeakMap();     // art -> Map(key -> baked | null)
+const contourCache = new LossWeakMap();     // art -> Map(key -> baked | null)
 /** Pure core of the contour shadow (exported for tests): inverse-maps every shadow pixel to the sprite.
  *  a shadow pixel (x,y) relative to the foot comes from the sprite point (X, yb(X) - v) with v = (y - yb(X)) / ky, X = x - kx*v,
  *  where yb(X) is the ground-contact row of the sprite column under X (no per-column strips, so no hatching).
@@ -219,6 +220,8 @@ function paintCaster(ctx, c, level, fill) {
 
 // ---------- state: caster list + shadow field, rebuilt only when the set of ready art changes ----------
 let casters = [], signature = '', field = null, fieldAlpha = null, fieldTint = null;
+// T1c: the shadow tint canvas and the small scratch canvases are blank after a GPU loss; the signature check rebuilds the field on the next frame
+registerGpuLossReset('town-shade', () => { signature = ''; field = null; fieldAlpha = null; fieldTint = null; layer = null; aoSprite = null; });
 function sig(resolve, houseKey, stations, propArt) {
   let s = activeTownZone() + '|' + stations.map(d => d.k).join(',') + '|';   // M2: the zone is part of the signature (each zone has its own sprites)
   if (propArt) { const t = TOWN_PROP_SITES.find(p => p.kind === 'torch'); const a = t && propArt(t); s += a && (a.naturalWidth || a.width) ? 'T1' : 'T0'; }
@@ -301,7 +304,7 @@ export function drawTownShadows(ctx) {
   ctx.restore();
 }
 // Silhouettes are baked white; tint them dark with one small scratch canvas per level instead of per-sprite colour variants.
-const dark = new WeakMap();
+const dark = new LossWeakMap();
 function paintTinted(ctx, c, level) {
   const b = c.contour ? bakeContour(c, level) : null;
   if (b) {
