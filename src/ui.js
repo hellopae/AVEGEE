@@ -107,6 +107,7 @@ import { pickText } from './boss-skills.js';   // BOSS-SKILLS   // ข้อ C �
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
+import { YOMATHAT, PIER_TALK } from './z1-yomathat.js';
 import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
 import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
@@ -3823,7 +3824,24 @@ function openCaveInterior(onLeave) {
   dlg.addEventListener('close', back);
 }
 
+/** T5'/2 (Rae 5.4): Zone 1 only - Yomathat waits at the harbor and asks to come with Yama. First talk: his short speech + two answers; "together" -> the scene, he joins the team (NY-2);
+ *  "let me prepare" -> he says he will wait, and every later tap gives one of two lines. */
+function openYomathatPier() {
+  const en = getLang() === 'en', first = !g.storySeen[YOMATHAT.pierSeen];
+  pauseForDlg();
+  const line = first ? (en ? PIER_TALK.firstEn : PIER_TALK.first) : [(PIER_TALK.again[Math.floor(Math.random() * PIER_TALK.again.length)])[en ? 'en' : 'th']];
+  modal(`<h2>👑 ${esc(g.zoneDef().bossName)}</h2><div class="pier-talk">${line.map(l => `<p>${esc(l)}</p>`).join('')}</div>
+    <div class="row"><button class="gold" data-yomathat-go>${esc(PIER_TALK.go[en ? 'en' : 'th'])}</button><button data-yomathat-wait>${esc(PIER_TALK.wait[en ? 'en' : 'th'])}</button></div>`, d => {
+    d.querySelector('[data-yomathat-go]').onclick = () => { g.storySeen[YOMATHAT.pierSeen] = true; if (g.inviteBossGuide()) dlg.close(); };
+    d.querySelector('[data-yomathat-wait]').onclick = () => {
+      g.storySeen[YOMATHAT.pierSeen] = true; g.save();
+      const say = en ? PIER_TALK.notYetEn : PIER_TALK.notYet;
+      modal(`<h2>👑 ${esc(g.zoneDef().bossName)}</h2><div class="pier-talk">${say.map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-close>${esc(PIER_TALK.later[en ? 'en' : 'th'])}</button></div>`);
+    };
+  });
+}
 function openBossPier() {
+  if (g.zone === 'th' && g.bossGuideWaiting?.()) return openYomathatPier();
   const z = g.zoneDef();
   pauseForDlg();
   modal(`<h2>👑 ${esc(z.bossName)}</h2><p class="hint">${esc(z.bossWin?.[1] || 'เขายืนดูแลท่าเรืออยู่')}</p>
@@ -3998,7 +4016,7 @@ function openFrontierWalk(invasionKey = null) {
   let FW = null;
   const leaveToZone = () => { FW.destroy(); dlg.close(); };
   const leaveToRoute = () => {
-    if(g.bossGuideWaiting?.()){askGuide();return;}
+    if(g.bossGuideWaiting?.()){if(g.zone==='th'){FW.destroy();openStoryNotice(YOMATHAT.remindNotice);const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);return;}askGuide();return;}   // T5'/2 (Rae 5.6): in Zone 1 he is at the harbor - speak to him first
     const route=openDungeonRoutes(g)[0];
     if(!route){
       FW.destroy();
@@ -5430,6 +5448,17 @@ function openBorder() {
   if(pending){if(!g.eventMapClosed[`${g.zone}:${pending.key}`])g.dismissEventAlert(pending.key);openFrontier(false,pending.key);return;}
   openFrontierWalk();
 }
+/** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
+function playCaveScene(onDone) {
+  g.queueNotice(YOMATHAT.caveNotice); g.save();
+  openStoryNotice(YOMATHAT.caveNotice);
+  const resume = () => {
+    if (g.over || g.battle) return;
+    if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(resume, 250); return; }
+    onDone?.();
+  };
+  setTimeout(resume, 400);
+}
 function openDungeon() {
   if(!dungeonStatus(g)||g.battle||g.pendingRecovery)return;
   let destroy=null;
@@ -5442,6 +5471,8 @@ function openDungeon() {
       onChallenge:()=>{destroy?.();destroy=null;openCaveInterior(()=>{if(!g.pendingRecovery)openDungeon();});},
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
+        // T5'/3 (Rae 6.1): the middle of the cave on the walk with Yomathat - NF-1, then the cage scene, then the checkpoint goes on as before
+        if(!opts?.chased&&!location?.patrol&&g.caveSceneDue(location?.checkpoint)){playCaveScene(()=>openDungeon());return;}
         if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
         else{g.dungeonChaseCooldown=true;openDungeon();}
       },

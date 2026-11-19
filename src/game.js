@@ -10,6 +10,7 @@ import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';
 import { WANTHONG } from './z1-wanthong.js';   // T5'/1
+import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
@@ -714,6 +715,7 @@ const API = {
     this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;
     if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
+    if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
     if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request
     this.save();
   },
@@ -4939,6 +4941,13 @@ const API = {
     }
     this.save(); return true;
   },
+  /** T5'/3 (Rae 6.1): the first time the walk to Border 1-2 reaches the middle of the cave with Yomathat beside Yama - the cage scene plays before that checkpoint's fight. */
+  caveSceneDue(idx = null) {
+    const st = dungeonStatus(this);
+    if (!st || this.zone !== 'th' || st.route.id !== 'th:asia' || !bossGuideFollowing(this) || this.storySeen[YOMATHAT.fatherStory] || this.battle) return false;
+    const cave = routeBossCave(st.route.id), i = Number.isInteger(idx) ? idx : st.checkpoint;
+    return !!cave && i === cave.checkpoint;
+  },
   bossGuideWaiting() {return bossGuideWaiting(this);},
   bossGuideFollowing() {return bossGuideFollowing(this);},
   inviteBossGuide() {if(!queueBossGuideStory(this,'welcome'))return false;this.save();this.onChange();return true;},
@@ -4966,6 +4975,8 @@ const API = {
     }
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
+    if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
+    if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);   // T5'/2 (NY-2): he is in the team
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');

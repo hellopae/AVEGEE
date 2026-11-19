@@ -140,7 +140,7 @@ test('farewell dismisses the guide from the city pier (talk spot, rematch menu, 
     assert.equal(waiting.bossPierCanTalk(),true,`${zone}: boss still at the pier until the farewell`);
     assert.equal(gone.bossPierCanTalk(),false,`${zone}: pier talk spot is gone`);
     const at=(g)=>standPoints(g).some(p=>p[0]===SPOTS.bossPier.x&&p[1]===SPOTS.bossPier.y);
-    assert.equal(at(waiting),zone!=='th',`${zone}: Zone 1's elder brother waits at the border gate (not the pier), so no blocker stands at the pier`);assert.equal(at(gone),false,`${zone}: no invisible blocker at the pier`);   // Z1-EVENTS owner 14 Nov
+    assert.equal(at(waiting),true,`${zone}: T5'/2 - Zone 1's elder brother now waits at the harbor pier too, like the other bosses`);assert.equal(at(gone),false,`${zone}: no invisible blocker at the pier`);   // Z1-EVENTS owner 14 Nov
   }
 });
 

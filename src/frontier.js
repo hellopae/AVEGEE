@@ -124,7 +124,7 @@ export function makeFrontierWalk(cv, g, opts) {
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
-  const guideBoss=!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
+  const guideBoss=!invasion.length&&g.zone!=='th'&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;   // T5'/2: in Zone 1 he waits at the harbor, not at the frontier gate
   // Zone 1's captain stays at the cave after the invasion, including after the guide farewell.
   const challengeBoss = !guideBoss&&g.zone!=='th'&&!captainCaveForZone(g.zone) && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const releasedBoss=g.zone==='th'||captainCaveForZone(g.zone)?null:releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});

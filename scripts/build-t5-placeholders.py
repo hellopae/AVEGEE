@@ -9,6 +9,9 @@ ROOT = Path(__file__).resolve().parent.parent / 'img'
 CUT = (1672, 941)
 # group -> [(path under img/, (w, h), kind, label)]   kind: cut | sprite | square
 GROUPS = {
+ 'frontier12': [
+  ('z1-events/cut-frontier12-stop-th.webp', CUT, 'cut', 'PLACEHOLDER cut-frontier12-stop-th  (E2: Yomathat\'s hand on Yama\'s shoulder, same cave as E1)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),
