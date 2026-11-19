@@ -1980,7 +1980,7 @@ function storyFoeArt(sp) {
   return artUrl(sp) || `img/${sp}.webp`;
 }
 function pendingZoneEvents() {
-  return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !ev.gate && !LEGACY_ZONE_EVENTS.has(ev.k) &&
+  return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !ev.gate && !ev.noAlert && !LEGACY_ZONE_EVENTS.has(ev.k) &&
     g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }

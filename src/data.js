@@ -2107,7 +2107,7 @@ export const ZONE_EVENTS = {
       foe:{ name:'AI Scammer Robot', nameEn:'AI Scammer Robot', sp:'boss-phantom404-cyberhell', hp:300, atk:[22,32], boss:true, skills:[...BOSS_SKILLS.phantom404, Z4S_VOICE_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
       reward:{ coin:200 }, lose:{ hp:9 } },
     // T8b/6 (Rae R2 D 9): HOME-67's quest - Lupin caught at the canteen. Never by the case count (atCases 999): game.js startLupinFight opens it. The team = Yama + Nira + HOME-67. Numbers are Toby's first ones (not simulated).
-    { k:Z4L.eventKey, atCases:999, mode:'single',
+    { k:Z4L.eventKey, atCases:999, mode:'single', noAlert:true,   // noAlert: a lost fight puts it back to `pending` - no alert window / marker may pop up for it (the quest talk is the door)
       title:Z4L_TEXT.title, alert:Z4L_TEXT.alert, go:Z4L_TEXT.go, retry:Z4L_TEXT.retry, banner:Z4L_TEXT.banner, lines:Z4L_TEXT.lines, linesEn:Z4L_TEXT.linesEn,
       winStories:[Z4L.winStory], winNotices:[Z4L.doneNotice], loseText:Z4L_TEXT.lose,
       foe:{ name:'ลูแปง', nameEn:'Lupin', sp:'char-lupin', hp:280, atk:[20,30], boss:true, skills:[Z4L_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
