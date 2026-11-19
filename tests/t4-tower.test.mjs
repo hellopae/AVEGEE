@@ -48,3 +48,14 @@ test('tower texts: TH + EN exactly as Rae wrote them', () => {
   assert.equal(lt('tower.upDone', { n:3 }, 'en'), 'The Lamp burns brighter · it now holds 3 helpers.');
   assert.equal(lt('tower.noItem', { item:'นาฬิกาวิเศษ' }, 'th'), 'ยังไม่ได้รับนาฬิกาวิเศษ');
 });
+
+test('g.placeHelper (the bag tab): only unlocked helpers, only inside the lamp level, one slot each, can be emptied', () => {
+  const g = createGame(); g.giveLamp(); g.unlockHelper('kumanthong');
+  assert.equal(g.placeHelper(1, 'kumanthong'), false, 'slot 2 is locked at level 1');
+  assert.equal(g.placeHelper(0, 'thor'), false, 'not met');
+  g.upgradeLampDev('asia');
+  assert.equal(g.placeHelper(1, 'kumanthong'), true); assert.deepEqual(g.magic.lamp.slots.slice(0, 2), ['hanuman', 'kumanthong']);
+  assert.equal(g.placeHelper(0, 'kumanthong'), true); assert.deepEqual(g.magic.lamp.slots.slice(0, 2), ['kumanthong', 'hanuman'], 'moving him swaps, never two copies');
+  assert.equal(g.placeHelper(0, null), true); assert.deepEqual(L.slottedSummoners(g), ['hanuman']);
+  assert.equal(L.lampSlotCount(g), 2);
+});

@@ -65,7 +65,7 @@ import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
-import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
+import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
@@ -740,6 +740,11 @@ const API = {
     const done = rechargeTreasures(this, item);
     if (done.length) { this.log(`🪞 เติมพลัง ${done.join(' · ')}`, 'good'); this.save(); this.onChange(); }
     return done;
+  },
+  /** T4: put helper `k` in lamp slot `i` (k = null empties it). Returns true when it was done. */
+  placeHelper(i, k) {
+    if (setSlot(this, i, k)) return false;
+    this.save(); this.onChange(); return true;
   },
   /** T4 TEMPORARY (LAMP_DEV_UPGRADE_BUTTON): the Mirror Tower of `zone` lifts the lamp to that zone's level. '' = done · 'noLamp' · 'already' · 'off'. */
   upgradeLampDev(zone = this.zone) {

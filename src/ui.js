@@ -3730,6 +3730,7 @@ function openStoryNotice(id) {
     d.querySelector('[data-notice-ok]').onclick = () => {
       if (n.detail && !detail) { detail = true; paint(); return; }
       g.ackNotice(id); dlg.close(); setTimeout(() => g.onChange(), 0);
+      if (n.openLamp) setTimeout(() => { bagSection = 'lamp'; lampPickSlot = null; openBag(); }, 80);   // T4: "ดูตะเกียง" opens the bag's lamp tab
     };
   }, 'event-alert');
   paint();
@@ -5654,6 +5655,41 @@ function weaponCards() {
 }
 
 let bagSection = 'items', bagFilter = 'all';
+/** T4 (R2 A 2.2): the bag's "ตะเกียงวิเศษ" tab - the three treasure cards, then the lamp's slots (filled / empty / locked) and the helpers that can be placed in them. */
+let lampPickSlot = null, lampMsg = '';
+const lampLang = () => getLang();
+const summonIcon = (k, cls = '') => {
+  const d = LAMP.summonerOf(k);
+  return `<span class="sum-icon ${cls}"><img src="${esc(d?.art?.icon || '')}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'tre-glyph',textContent:'${d?.glyph || '✦'}'}))"></span>`;
+};
+function lampTabHtml() {
+  const L = LAMP.ensureMagic(g).lamp, lang = lampLang(), cap = LAMP.lampSlotCount(g);
+  const cards = LAMP.TREASURES.map(it => {
+    const s = LAMP.treasureState(g, it), name = lt(`item.${it}.name`);
+    const stateTxt = s.state === 'none' ? lt('state.notFound') : s.state === 'charged' ? lt('state.charged') : s.state === 'partial' ? lt('state.partial', { n:s.n, max:s.max }) : lt('state.spent');
+    const icon = it === 'mirror' ? '<img src="img/item-mirror.webp" alt="">' : it === 'clock' ? '<img src="img/fx-clock-reset.webp" alt="">'
+      : LAMP.LAMP_ICON_SRC ? `<img src="${esc(LAMP.LAMP_ICON_SRC)}" alt="">` : '<span class="tre-glyph" aria-hidden="true">🪔</span>';
+    return `<div class="bag-item tre-card tre-${s.state}"><span class="tre-icon">${icon}</span><span class="n"><b>${esc(name)}</b><small>${esc(lt(`item.${it}.desc`))}</small><em class="tre-state">${esc(stateTxt)}</em></span></div>`;
+  }).join('');
+  if (!L.owned) return `<div class="lamp-tab">${cards}<div class="bag-empty">${esc(lt('none.lamp'))}</div></div>`;
+  const slots = Array.from({ length:LAMP.LAMP_MAX_SLOTS }, (_, i) => {
+    if (i >= cap) return `<div class="lamp-slot is-locked"><span class="sum-icon"><img src="img/ui/icon-lock.webp" alt=""></span><span class="n"><b>${esc(lt('bag.slot', { n:i + 1 }))}</b><small>${esc(lt('bag.locked', { n:i + 1 }))}</small></span></div>`;
+    const k = L.slots[i], d = k && LAMP.summonerOf(k);
+    if (!d) return `<div class="lamp-slot is-empty"><span class="sum-icon"><span class="tre-glyph" aria-hidden="true">＋</span></span><span class="n"><b>${esc(lt('bag.slot', { n:i + 1 }))}</b><small>${esc(lt('bag.empty'))}</small></span>
+      <button class="gold" data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.place'))}</button></div>`;
+    const left = LAMP.summonUsesLeft(g, k);
+    return `<div class="lamp-slot is-filled${left ? '' : ' is-spent'}">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))}</small><em class="tre-state">${esc(lt('bag.movesLeft', { n:left }))}</em></span>
+      <span class="lamp-btns"><button data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.swap'))}</button><button data-lamp-remove="${i}">${esc(lt('bag.remove'))}</button></span></div>`;
+  }).join('');
+  const pool = lampPickSlot == null ? '' : `<div class="lamp-pool" role="group" aria-label="${esc(lt('bag.pool'))}"><div class="st-pane-title">${esc(lt('bag.pool'))}</div>${LAMP.unlockedSummoners(g).map(k => {
+    const here = L.slots.indexOf(k), left = LAMP.summonUsesLeft(g, k);
+    return `<div class="lamp-slot is-pool">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('bag.movesLeft', { n:left }))}</small></span>
+      <button class="gold" data-lamp-place="${k}" ${here === lampPickSlot ? 'disabled' : ''}>${esc(lt('bag.place'))}</button></div>`;
+  }).join('') || `<div class="bag-empty">${esc(lt('bag.unmet'))}</div>`}</div>`;
+  const low = LAMP.lampAllSpent(g) ? `<div class="lamp-low" role="status">${esc(lt('bag.low'))}</div>` : '';
+  return `<div class="lamp-tab">${cards}<h3 class="lamp-h">${esc(lt('bag.heading'))}</h3><p class="lamp-note">${esc(lt('bag.note'))}</p>${low}${slots}
+    ${lampMsg ? `<div class="lamp-msg" role="status">${esc(lampMsg)}</div>` : ''}${pool}</div>`;
+}
 function openBag() {
   pauseForDlg();
   const allCarried = carriedItems(g.inventory, ITEMS);
@@ -5669,31 +5705,41 @@ function openBag() {
     </div>`;
   }).join('') : `<div class="bag-empty">${esc(allCarried.length ? t('menu.emptyFilter') : t('profile.emptyBag'))}</div>`;
   const counts = { items:allCarried.reduce((sum, [, n]) => sum + n, 0), outfits:g.outfitsOpen().length,
-    weapons:Object.values(g.weapons?.owned || {}).filter(Boolean).length };
+    weapons:Object.values(g.weapons?.owned || {}).filter(Boolean).length, lamp:LAMP.slottedSummoners(g).length };
+  const sections = LAMP.lampOwned(g) ? [...BAG_SECTIONS, 'lamp'] : BAG_SECTIONS;   // T4: the lamp tab exists once Sita has given the lamp
+  if (!sections.includes(bagSection)) bagSection = 'items';
 
   modal(`<div class="menu-heading"><img src="img/ui/icon-bag.webp" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
-    <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${BAG_SECTIONS.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
+    <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${sections.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(key === 'lamp' ? lt('bag.tab') : t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
     <section id="bag-panel-items" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-items" ${bagSection === 'items' ? '' : 'hidden'}>
       <div class="bag-filters" role="group" aria-label="${esc(t('menu.items'))}">${['all','recovery','material','other'].map(key => `<button data-bag-filter="${key}" aria-pressed="${bagFilter === key}">${esc(t('menu.' + key))}</button>`).join('')}</div>
       <div class="bag-list">${itemCards}</div>
     </section>
     <section id="bag-panel-outfits" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-outfits" ${bagSection === 'outfits' ? '' : 'hidden'}><div class="outfit-list">${outfitCards()}</div></section>
     <section id="bag-panel-weapons" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-weapons" ${bagSection === 'weapons' ? '' : 'hidden'}><div class="outfit-list weapon-list">${weaponCards()}</div></section>
+    ${sections.includes('lamp') ? `<section id="bag-panel-lamp" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-lamp" ${bagSection === 'lamp' ? '' : 'hidden'}>${lampTabHtml()}</section>` : ''}
     <div class="menu-footer"><button class="gold" data-close>${esc(t('menu.closeBag'))}</button></div>`, d => {
       const selectSection = key => {
-        if (!BAG_SECTIONS.includes(key)) return;
+        if (!sections.includes(key)) return;
         bagSection = key;
         d.querySelectorAll('[data-menu-tab]').forEach(button => {
           const active = button.dataset.menuTab === key;
           button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
         });
-        BAG_SECTIONS.forEach(section => { d.querySelector('#bag-panel-' + section).hidden = section !== key; });
+        sections.forEach(section => { d.querySelector('#bag-panel-' + section).hidden = section !== key; });
       };
       bindMenuTabs(d, '[data-menu-tab]', selectSection);
       d.querySelectorAll('[data-bag-filter]').forEach(button => button.onclick = () => {
         bagFilter = button.dataset.bagFilter; openBag();
         dlg.querySelector(`[data-bag-filter="${bagFilter}"]`).focus();
       });
+      // T4: the lamp tab - pick a slot, then who stands in it · remove · a helper stands in one slot at most
+      d.querySelectorAll('[data-lamp-slot]').forEach(b => b.onclick = () => { const i = Number(b.dataset.lampSlot); lampPickSlot = lampPickSlot === i ? null : i; lampMsg = ''; sfx('gong'); openBag(); });
+      d.querySelectorAll('[data-lamp-place]').forEach(b => b.onclick = () => {
+        const k = b.dataset.lampPlace; if (g.placeHelper(lampPickSlot, k)) { lampMsg = lt('bag.placed', { name:LAMP.summonerName(k, lampLang()) }); lampPickSlot = null; sfx('gong'); }
+        openBag(); refresh();
+      });
+      d.querySelectorAll('[data-lamp-remove]').forEach(b => b.onclick = () => { g.placeHelper(Number(b.dataset.lampRemove), null); lampPickSlot = null; lampMsg = ''; sfx('gong'); openBag(); refresh(); });
       d.querySelectorAll('[data-bag-weapon]').forEach(b => b.onclick = () => {
         if (!g.equipWeapon(b.dataset.bagWeapon || null)) return;
         sfx('gong'); openBag(); refresh();
