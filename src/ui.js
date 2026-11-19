@@ -7937,7 +7937,7 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
-window.__gateScene = playGateScene; window.__ryujinScene = playRyujinScene; window.__cerberusScene = playCerberusScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
+window.__gateScene = playGateScene; window.__ryujinScene = playRyujinScene; window.__cerberusScene = playCerberusScene; window.__bossPier = openBossPier;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
 window.__caveScene = playCaveScene;
 window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
   const v = mapCam.viewport, r = cv.getBoundingClientRect();
