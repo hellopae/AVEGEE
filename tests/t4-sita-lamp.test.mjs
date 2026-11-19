@@ -48,7 +48,7 @@ test('a later helper (D4: its own event passed) queues the "new helper" window w
   assert.equal(NOTICES['lamp-helper-kumanthong'].en.text, 'Kuman Thong has accepted you and left a flame in the Magic Lamp. Place them in a slot from the bag menu.');
   for (const k of Object.keys(SUMMONERS)) assert.ok(NOTICES[`lamp-helper-${k}`], k);
   assert.equal(NOTICES['lamp-helper-kumanthong'].art, SUMMONERS.kumanthong.art.icon);   // T5'/1: his (placeholder) picture exists now
-  assert.equal(NOTICES['lamp-helper-lupin'].art, '', 'a helper with no drawing yet -> no picture, never another character\'s');   // T8a/2: Thor has his (placeholder) picture now; Lupin is still to come
+  assert.equal(NOTICES['lamp-helper-lupin'].art, SUMMONERS.lupin.art.icon);   // T8b/6: Lupin has his (placeholder) picture now, like Thor
   assert.equal(NOTICES['lamp-helper-hanuman'].art, SUMMONERS.hanuman.art.icon);
   assert.equal(NOTICES['lamp-low'].title, 'ไฟในตะเกียงริบหรี่');
 });

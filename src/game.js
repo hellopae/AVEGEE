@@ -23,6 +23,7 @@ import { COL } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { Z4S } from './z4e-sala.js';   // T8b/5
+import { Z4L } from './z4f-lupin.js';   // T8b/6
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -198,7 +199,7 @@ export function createGame() {
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     magic: freshMagic(),               // T4: Magic Lamp / summon state (src/lamp.js) - one for the whole game, saved at the top level of a save
-    storyCaseDone: {}, home67: null, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
+    storyCaseDone: {}, home67: null, lupin: null, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
     bossGuides:{version:1,zones:{}}, bossGuarding: {}, bossWalk: null, zoneEntry: null,
@@ -3425,6 +3426,7 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:evLines(ev).start || ev.banner?.th || ev.alert.th, ...(evLines(ev).half ? { halfLine:evLines(ev).half } : {}), ...(evLines(ev).first ? { firstLine:evLines(ev).first } : {}) });
+    if (key === Z4L.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:false });   // T8b/6 (Rae D 9.1): Yama + Nira + HOME-67 (the Guard is not in this one)
     if (key === Z4S.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:!!this.guard });   // T8b/5 (Rae D 6.1): Yama + Nira + WATSON-03 - HOME-67 stands behind Yama and does not fight
     if (key === Z4T.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:!!this.guard });   // T8b/2 (Rae D 4.1): Yama + Nira + HOME-67 (from the pier, for this fight only) + WATSON-03
     if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
@@ -4082,7 +4084,7 @@ const API = {
       dmg = summonDamage(this, summonKey);
       if (d.move.weaken?.target) { const tf = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0); if (tf) tf.weak = d.move.weaken.rounds * this.foeActsPerRound(tf.id); }   // T8a/2: the Founder's Decree - only the foe it points at hits lighter
       else if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
-      if (d.move.stun) for (const f of B.foes) if (f.hp > 0 && Math.random() < (d.move.stun.chance ?? 1)) f.stun = Math.max(f.stun || 0, d.move.stun.rounds);   // T8a/2: the Hammer Commands the Field - struck foes lose their next act
+      if (d.move.stun) for (const f of d.move.stun.target ? B.foes.filter(x => x.id === B.selectedFoeId) : B.foes) if (f.hp > 0 && Math.random() < (d.move.stun.chance ?? 1)) f.stun = Math.max(f.stun || 0, d.move.stun.rounds);   // T8b/6: `target` = only the foe it points at (Lupin: the beat is turned for one foe)   // T8a/2: the Hammer Commands the Field - struck foes lose their next act
       if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
       const guardMove = summonGuard(this, summonKey);
       if (guardMove) {
@@ -5191,6 +5193,7 @@ const API = {
     if (next?.key === 'deva-west') this.queueNotice(EIRLIN.waitNotice);   // T7b/4 (N10-1): she waits for the test
     if (next?.key === SEV.winStory && !(this.journalNotes ||= []).includes(SEV_JOURNAL.th)) this.journalNotes.push(SEV_JOURNAL.th);   // T7b-2/5: the clue on his last page
     if (next?.key === SEV.collateralStory) { this.unlockHelper(SEV.helper); this.home67 ||= { phase:'waiting' }; this.queueNotice(SEV.home67Notice); }   // T7b-2/5 (D4: NS-1 = lamp-helper-jormungandr; NS-2 is CUT) - Severin's ship has left, HOME-67 stands on the pier (NH-1)
+    if (next?.key === Z4L.winStory && this.lupin?.phase === 'taken') { this.lupin = { phase:'done' }; this.unlockHelper(Z4L.helper); }   // T8b/6: the quest ends (NQ-2 came with the win) and helper no. 12 is in the lamp (NU-1 = lamp-helper-lupin)
     if (next?.key === Z4T.joinStory && !(this.journalNotes ||= []).includes(Z4T_JOURNAL.th)) this.journalNotes.push(Z4T_JOURNAL.th);   // T8b/2: WATSON-03 in the journal
     if (next?.key === EIRLIN.winStory) { this.queueNotice(EIRLIN.crateNotice); this.unlockHelper(EIRLIN.helper); }   // T7b/4 (N10-4' the crate = the valkyrieSpear reward; D4: her own event is passed -> helper no. 8, NE-1)
     if (next?.key === 'deva-cyberhell') {
@@ -5278,6 +5281,18 @@ const API = {
     if (this.home67?.phase !== 'harbor' || this.home67.gift) return false;
     this.home67.gift = true; this.coin += Z4A_ZONE4.gift; this.outfitsOwned = [...new Set(['th', ...(this.outfitsOwned || []), Z4A_ZONE4.outfit])];
     this.log(`💰 HOME-67 มอบเงิน ${Z4A_ZONE4.gift} เบี้ยกรรม และชุดประจำโซน 4`, 'good'); this.queueNotice(Z4A_ZONE4.giftNotice); this.save(); this.onChange(); return true;
+  },
+  /** T8b/6 (Rae D 9.1): HOME-67's side quest. He offers it on the pier of Zone 4 (after the gift scene); NQ-1 = taking the job; the stranger stands near the canteen until he is caught. The state is saved and never closed by the ending. */
+  lupinOffer() { return this.zone === 'cyberhell' && this.home67?.phase === 'harbor' && !!this.home67.gift && !this.lupin?.phase; },
+  takeLupinQuest() { if (!this.lupinOffer()) return false; this.lupin = { phase:'taken' }; this.queueNotice(Z4L.takeNotice); this.save(); this.onChange(); return true; },
+  /** where the strange worker stands: beside the canteen of this zone (the site is the station's own coordinates) */
+  lupinWorkerPoint() { const st = STATIONS.find(s => s.k === 'canteen'); return { x:Math.round((st?.x ?? 720) + 95), y:Math.round((st?.y ?? 438) + 36) }; },
+  lupinWorkerOn() { return this.zone === 'cyberhell' && this.lupin?.phase === 'taken'; },
+  /** the fight with Lupin (he is caught): the event is opened by hand, like the colosseum bouts */
+  startLupinFight() {
+    if (!this.lupinWorkerOn() || this.battle || this.over) return null;
+    const states = this.zoneEvents.cyberhell ||= {}; if (states[Z4L.eventKey] !== 'pending' && states[Z4L.eventKey] !== 'active') states[Z4L.eventKey] = 'pending';
+    return this.startZoneEvent(Z4L.eventKey);
   },
   home67Guest() { return !!this.home67Joined && this.home67?.phase === 'joined' && bossGuideFollowing(this); },
   /** T8a (Rae part D 1.1): the first step of the walk (checkpoint 0) - `z34-arrive`, once */
@@ -5958,7 +5973,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
-    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guanyuEarned:!!this.guanyuEarned, home67:this.home67 ? { ...this.home67 } : null, home67Joined:!!this.home67Joined, boatman:structuredClone(ensureBoatman(this)), guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
+    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guanyuEarned:!!this.guanyuEarned, lupin:this.lupin ? { ...this.lupin } : null, home67:this.home67 ? { ...this.home67 } : null, home67Joined:!!this.home67Joined, boatman:structuredClone(ensureBoatman(this)), guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -6425,7 +6440,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
-  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guanyuEarned = !!d.guanyuEarned; this.home67 = d.home67 || null; this.home67Joined = !!d.home67Joined; this.boatman = d.boatman || null; ensureBoatman(this); this.guardReserve = d.guardReserve || null;
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guanyuEarned = !!d.guanyuEarned; this.home67 = d.home67 || null; this.lupin = d.lupin ? { ...d.lupin } : null; this.home67Joined = !!d.home67Joined; this.boatman = d.boatman || null; ensureBoatman(this); this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
   // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
   this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);

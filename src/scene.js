@@ -622,6 +622,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     spot_(hx, hy, hh);
     at(1e5 + hy, () => { ring(ctx, hx, hy, t, 32); shade(hx, hy, hh, c => drawStandee(c, 'char-home67', hx, hy, hh, t, '🕵️', 1, false, 'west')); });
   }
+  // T8b/6 (Rae R2 D 9.1): the strange worker (Lupin in disguise) stands idle beside the canteen of Zone 4 until he is caught - placeholder drawing until Codex draws char-worker-lupin
+  if (g.lupinWorkerOn?.()) {
+    const { x:lx, y:ly } = g.lupinWorkerPoint(), lh = 92 * CHAR_SCALE_MAP * 1.12;
+    spot_(lx, ly, lh);
+    at(1e5 + ly, () => { ring(ctx, lx, ly, t, 28); shade(lx, ly, lh, c => drawStandee(c, 'char-worker-lupin', lx, ly, lh, t, '🧢', -1, false, 'cyberhell')); });
+  }
   // T6/6 (Rae R2 B 6.6): Cerberus stands by the western gate once he has bowed - no talk (he does not speak), he is not the Guard
   if (g.zone === 'west' && g.cerberusGuarding?.()) {
     const gx = ZONE_ENTRY.gate[0] + 120, gy = ZONE_ENTRY.gate[1] - 96, gh = 150 * CHAR_SCALE_MAP;   // T7/2: bigger and higher - he was a small dot hidden behind the buttons at 390px (T6 note)

@@ -174,6 +174,15 @@ GROUPS['z4c4'] = [   # T8b/3 - Rae sec. 11 Z8 (WATSON-03's quest: an adult, no b
 GROUPS['z4c5'] = [   # T8b/5 - Rae sec. 11 group R: the record hall seized (R2). R1 (a polite round white robot) is NOT drawn here: the game uses the existing drawn PHANTOM-404 (owner 15 Nov) - see the report.
   ('z4-events/cut-reveal-name.webp', CUT, 'cut', 'PLACEHOLDER cut-reveal-name  (R2: the record hall, tall cabinets sealed with mint-green sheets of light, the AI Scammer Robot in the middle, HOME-67 pointing, Yama stepping in front of him, a green beam hitting Yama\'s chest, Nira lifting her file and WATSON-03 lifting his log-plate like shields)'),
 ]
+GROUPS['z4c6'] = [   # T8b/6 - Rae sec. 11 groups L (Lupin: a polite thief of the future, dark sleek hair, bright eyes, a thin smile, a dark-grey cloak edged in violet-blue light, a translucent mask in one hand; NOT green / red clothes, NOT any film / cartoon thief) + SUM S3 S6
+  ('z4-events/char-lupin.webp', (512, 512), 'sprite', 'PLACEHOLDER char-lupin (L1: young man, sleek dark hair, bright eyes, thin smile, dark-grey cloak edged with violet-blue light, one hand holding a translucent mask; not green or red clothes, not any existing thief)'),
+  ('z4-events/char-lupin-profile.webp', (512, 512), 'square', 'PLACEHOLDER char-lupin-profile'),
+  ('z4-events/char-worker-lupin.webp', (512, 512), 'sprite', 'PLACEHOLDER char-worker-lupin (L2: a Zone 4 worker in a hooded cap, clean hands, standing still and looking at the back door of the canteen)'),
+  ('z4-events/cut-lupin-catch.webp', CUT, 'cut', 'PLACEHOLDER cut-lupin-catch  (L3: Lupin pulls back his hood, a translucent mask slips into his palm, HOME-67 points at him, Yama and Nira beside, the canteen behind)'),
+  ('summon/icon-lupin.webp', (512, 512), 'square', 'PLACEHOLDER icon-lupin (S3: half a face, then a translucent mask; gold frame)'),
+  ('summon/battle-lupin.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-lupin (S3: leaning with a smile, the cloak flying)'),
+  ('summon/cut-lupin-mask-beat.webp', CUT, 'cut', 'PLACEHOLDER cut-lupin-mask-beat  (S6: Lupin in the translucent mask copies a foe\'s stance; the foe stops mid-beat)'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

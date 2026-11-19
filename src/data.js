@@ -11,6 +11,7 @@ import { COL_EVENTS } from './z4b-colosseum.js';   // T8a/2
 import { Z4A, Z4A_LUMEN, Z4A_ZONE4 } from './z4a-border.js';   // T8a/3
 import { Z4T_TEXT, Z4T_GUARD, Z4T } from './z4d-trojan.js';   // T8b/2
 import { Z4S, Z4S_TEXT, Z4S_VOICE_MOVE } from './z4e-sala.js';   // T8b/5
+import { Z4L, Z4L_TEXT, Z4L_MOVE } from './z4f-lupin.js';   // T8b/6
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2098,18 +2099,24 @@ export const ZONE_EVENTS = {
       // ชุด 28B: 25 → 40 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — บอส 4 ระลอกติดกันไม่มีจุดพักคั่น
       // ชุด 28E: 40 → 30 หลังมีน้ำมนต์กลางศึกและ HP ศัตรูอีเวนต์เพิ่มตามโซน (จำลองศึกสุดท้ายชนะ ~85%)
       betweenWaveHeal:30, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
+    // T8b/5 (Rae R2 D 6): case 10 - the record hall is seized. The AI Scammer Robot (the existing PHANTOM-404 drawing + moves) with Rae's half-way voice move; the team = Yama + Nira + WATSON-03 (HOME-67 stays behind Yama, he does not fight - game.js startZoneEvent).
+    // Placed just before the zone's challenge row (the challenge stays the last story-less row; the older indexes 0 / 1 do not move). Numbers are Toby's first ones (no spec, not simulated): between Loki and the possessed rulers.
+    { k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], mode:'single',
+      title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,
+      openStory:Z4S.revealStory, winStories:[Z4S.winStory], winNotices:[Z4S.seizedNotice], loseText:Z4S_TEXT.lose,
+      foe:{ name:'AI Scammer Robot', nameEn:'AI Scammer Robot', sp:'boss-phantom404-cyberhell', hp:300, atk:[22,32], boss:true, skills:[...BOSS_SKILLS.phantom404, Z4S_VOICE_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
+      reward:{ coin:200 }, lose:{ hp:9 } },
+    // T8b/6 (Rae R2 D 9): HOME-67's quest - Lupin caught at the canteen. Never by the case count (atCases 999): game.js startLupinFight opens it. The team = Yama + Nira + HOME-67. Numbers are Toby's first ones (not simulated).
+    { k:Z4L.eventKey, atCases:999, mode:'single',
+      title:Z4L_TEXT.title, alert:Z4L_TEXT.alert, go:Z4L_TEXT.go, retry:Z4L_TEXT.retry, banner:Z4L_TEXT.banner, lines:Z4L_TEXT.lines, linesEn:Z4L_TEXT.linesEn,
+      winStories:[Z4L.winStory], winNotices:[Z4L.doneNotice], loseText:Z4L_TEXT.lose,
+      foe:{ name:'ลูแปง', nameEn:'Lupin', sp:'char-lupin', hp:280, atk:[20,30], boss:true, skills:[Z4L_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
+      reward:{ coin:150 }, lose:{ hp:9 } },
     challengeEvent('cyberhell', { betweenWaveHeal:28, waveCoin:[12,12,14,14,16,16,18,18,20,0], reward:{ coin:240, weapon:'trojan' } }),
   ],
 };
 for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);
 ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
-// T8b/5 (Rae R2 D 6): case 10 - the record hall is seized. The AI Scammer Robot (the existing PHANTOM-404 drawing + moves) with Rae's half-way voice move; the team = Yama + Nira + WATSON-03 (HOME-67 stays behind Yama, he does not fight - game.js startZoneEvent).
-// Pushed at the END of the list so the indexes of the older events do not move. Numbers are Toby's first ones (no spec, not simulated): between Loki and the possessed rulers.
-ZONE_EVENTS.cyberhell.push({ k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], mode:'single',
-  title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,
-  openStory:Z4S.revealStory, winStories:[Z4S.winStory], winNotices:[Z4S.seizedNotice], loseText:Z4S_TEXT.lose,
-  foe:{ name:'AI Scammer Robot', nameEn:'AI Scammer Robot', sp:'boss-phantom404-cyberhell', hp:300, atk:[22,32], boss:true, skills:[...BOSS_SKILLS.phantom404, Z4S_VOICE_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
-  reward:{ coin:200 }, lose:{ hp:9 } });
 
 // BOSS-SKILLS (15 Nov): Rae's names (the zone 2 / zone 3 ones were swapped: the zone 2 picture is Lian Gang's chain-weight, the zone 3 one Severin's blue flame)
 export const BOSS_ULTIMATE = {

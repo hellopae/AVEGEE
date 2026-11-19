@@ -30,6 +30,7 @@ import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
 import { EIRLIN_HELPER, EIRLIN_ART } from './z3e-eirlin.js';   // T7b/4
 import { JORM_HELPER, SEV_ART } from './z3f-severin.js';   // T7b-2/5
 import { THOR_HELPER, LUCIFER_HELPER, COL_ART } from './z4b-colosseum.js';   // T8a/2
+import { LUPIN_HELPER, Z4L_ART } from './z4f-lupin.js';   // T8b/6
 import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
@@ -75,7 +76,9 @@ export const SUMMONERS = Object.freeze({
   // T8a/2 (Rae R2 D 1.7-a): The Founder's Decree = ONE foe, a heavy blow + that foe's next blow(s) of the round are lighter (`weaken` on the target only)
   lucifer:{ k:'lucifer', no:11, name:LUCIFER_HELPER.name, glyph:'🌟', event:'col-lucifer-win', ready:true, art:{ icon:COL_ART.luciferIcon, battle:COL_ART.luciferBattle, cut:COL_ART.luciferCut },
     move:{ ...LUCIFER_HELPER.move, kind:'strike', hits:1, damage:{ base:78, perLevel:3 }, weaken:{ rounds:1, mult:.6, target:true } }, say:LUCIFER_HELPER.say },
-  lupin:{ k:'lupin', no:12, name:{ th:'ลูแปง', en:'Lupin' }, glyph:'🎩', event:'z4-lupin-win', ready:false, move:{ name:{ th:'หน้ากากพลิกจังหวะ', en:'The Mask Turns the Beat' } } },
+  // T8b/6 (Rae R2 D 9.4): The Mask Turns the Beat = ONE foe, a light-medium blow + that foe loses its next act (`stun`, target only). Under Thor (66 on every foe) and Lucifer (78 on one foe).
+  lupin:{ k:'lupin', no:12, name:LUPIN_HELPER.name, glyph:'🎩', event:'z4-lupin-win', ready:true, art:{ icon:Z4L_ART.icon, battle:Z4L_ART.battle, cut:Z4L_ART.moveCut },
+    move:{ ...LUPIN_HELPER.move, kind:'strike', hits:1, damage:{ base:58, perLevel:2 }, stun:{ rounds:1, chance:1, target:true } }, say:LUPIN_HELPER.say },
 });
 export const SUMMONER_KEYS = Object.freeze(Object.keys(SUMMONERS));
 export const summonerOf = k => SUMMONERS[k] || null;

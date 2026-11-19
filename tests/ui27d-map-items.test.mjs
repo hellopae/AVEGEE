@@ -287,7 +287,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 36, seen.join());   // T7b/3: + Loki · T7b-2/5: + the serpent   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
+  assert.ok(seen.length === 38, seen.join());   // T8b/5 + 6: + the record hall (cyberSala) + Lupin (z4Lupin)   // T7b/3: + Loki · T7b-2/5: + the serpent   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

@@ -124,6 +124,7 @@ import { Z4A, HOME67_HARBOR_LINES } from './z4a-border.js';   // T8a
 import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_ART_KEY } from './z4c-cases.js';   // T8b
 import { Z4T } from './z4d-trojan.js';   // T8b/2
+import { Z4L, Z4L_TALK } from './z4f-lupin.js';   // T8b/6
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -368,7 +369,7 @@ setInterval(() => {
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
   updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
-  updateBossFab();
+  updateBossFab(); updateLupinFab();
   updateFrontierFab();
   updateRepairFabs();
   updateTalk();
@@ -483,7 +484,7 @@ function frame(now) {
   updateMapCamera(now);
   render(ctx, g, now, hover, sel, mapCam.view);
   updateTownHud(now);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); updateEnemyPointers(now); updateTalk(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateLupinFab(); updateFrontierFab(); updateRepairFabs(); updateEnemyPointers(now); updateTalk(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -1410,7 +1411,7 @@ function drawOverlay() {
   // ถูกล้างแล้วสร้างใหม่ทุกรอบ refresh (ราว 0.7 วินาทีครั้ง) ผู้เล่นที่กดคาบเกี่ยวจังหวะนั้น
   // จะ "กดแล้วไม่ติด" เพราะปุ่มที่รับ mousedown ถูกถอดออกไปก่อน mouseup
   const keepFab = ov.querySelector('.mobfab');
-  const keepBossFab = ov.querySelector('.bossfab');
+  const keepBossFab = ov.querySelector('.bossfab:not(.lupinfab)');
   const keepFrontierFab = ov.querySelector('.frontierfab');
   const keepRepairFabs = [...ov.querySelectorAll('.repairfab')];
   const keepPrisonFab = ov.querySelector('.prisonfab');
@@ -1522,12 +1523,36 @@ function updateMobFab() {
   place(f);
 }
 
+/** T8b/6 (Rae D 9.1): the strange worker beside the canteen - a yellow talk button over his head while Yama stands near him (the quest of HOME-67; saved in g.lupin) */
+function updateLupinFab() {
+  const gone = () => { const e = ov.querySelector('.lupinfab'); if (e) e.remove(); };
+  const w = g.lupinWorkerOn?.() ? g.lupinWorkerPoint() : null;
+  if (!w || g.over || g.battle || dlg.open || Math.hypot(g.player.x - w.x, g.player.y - w.y) > 170) return gone();
+  let f = ov.querySelector('.lupinfab');
+  if (!f) { f = document.createElement('button'); f.className = 'bossfab lupinfab'; f.onclick = ev => { ev.stopPropagation(); if (!dlg.open) openLupinWorker(); }; ov.appendChild(f); }
+  f.textContent = getLang() === 'en' ? '💬 Talk to the strange worker' : '💬 คุยกับคนงานแปลกหน้า';
+  f.dataset.sx = w.x; f.dataset.sy = w.y - 92 * 1.12 * CHAR_SCALE_MAP - 12;
+  place(f);
+}
+/** the worker's talk + the two choices; "You are not a worker here" -> z4-lupin-catch (once) -> the fight (HOME-67 helps); the other choice: he laughs and stays (the quest is not closed) */
+function openLupinWorker() {
+  const en = getLang() === 'en'; pauseForDlg();
+  const talk = Z4L_TALK.lines.map(l => `<p>${esc(en ? l.en : l.th)}</p>`).join('');
+  modal(`<h2>${esc(en ? 'The Strange Worker' : 'คนงานแปลกหน้า')}</h2><div class="pier-talk">${talk}</div><div class="row">${Z4L_TALK.choices.map((c, i) => `<button class="gold" data-lupin-choice="${i}">${esc(en ? c.en : c.th)}</button>`).join('')}</div>`, d => {
+    d.querySelector('[data-lupin-choice="0"]').onclick = () => { dlg.close(); lupinCatch(); };
+    d.querySelector('[data-lupin-choice="1"]').onclick = () => { dlg.close(); setTimeout(() => modal(`<div class="pier-talk"><p>${esc(en ? 'Lupin laughs softly and does nothing. He is still standing where he was.' : 'ลูแปงหัวเราะเบา ๆ แล้วไม่ทำอะไร เขายังยืนอยู่ที่เดิม')}</p></div><div class="row"><button class="gold" data-close>${esc(en ? 'Later' : 'ไว้คราวหน้า')}</button></div>`), 0); };   // TODO(Rae): her line for "let him go" (she describes it, no text)
+  });
+}
+function lupinCatch() {
+  const go = () => { if (g.startLupinFight()) { zoneEventTried.add(`cyberhell:${Z4L.eventKey}`); openBattle(afterBreachBattle); } };
+  if (!g.storySeen[Z4L.catchStory] && storyOf(Z4L.catchStory)) { openDlg('intro-comic-dialog'); renderStoryComic(dlg, storyOf(Z4L.catchStory), () => { g.storySeen[Z4L.catchStory] = true; g.save(); go(); }); } else go();
+}
 /** บอสที่แพ้แล้วเฝ้าสะพาน ไม่กลับมาเองตามวาระ — เดินเข้าไปใกล้จึงเลือกท้าสู้ได้ */
 function updateBossFab() {
-  const gone = () => { const e = ov.querySelector('.bossfab'); if (e) e.remove(); };
+  const gone = () => { const e = ov.querySelector('.bossfab:not(.lupinfab)'); if (e) e.remove(); };
   const pier = g.bossPierCanTalk() && !bossPierRetired(g);
   if (g.zone==='th'&&g.bossCleared.th || g.over || g.battle || dlg.open || (!g.bossCanChallenge() && !pier)) return gone();
-  let f = ov.querySelector('.bossfab');
+  let f = ov.querySelector('.bossfab:not(.lupinfab)');
   if (!f) {
     f = document.createElement('button');
     f.className = 'bossfab';
@@ -3883,6 +3908,7 @@ function openHome67Pier() {
 function openHome67Harbor() {
   const en = getLang() === 'en';
   if (!g.storySeen[Z4A.harborStory] && storyOf(Z4A.harborStory)) { g.queueStory(Z4A.harborStory); g.onChange(); return; }
+  if (g.lupinOffer?.()) { g.takeLupinQuest(); return; }   // T8b/6 (NQ-1): the first talk after the gift scene offers HOME-67's quest - the window is queued by takeLupinQuest
   pauseForDlg();
   const pool = [...HOME67_HARBOR_LINES, ...(g.home67HintLines?.() || [])];   // T8b: + one line per judged clue case
   const line = pool[Math.floor(Math.random() * pool.length)];
