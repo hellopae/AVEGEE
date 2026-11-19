@@ -725,6 +725,16 @@ const API = {
     this.save(); this.onChange();
     return true;
   },
+  /** T4: the end of `sita-lamp` - the lamp is in Yama's hands, Hanuman is its first flame (NA-1 says so). Once. */
+  giveLamp() {
+    if (!receiveLamp(this)) return false;
+    this.queueNotice('lamp-received'); this.save(); this.onChange(); return true;
+  },
+  /** T4 (D4): a helper's own event has been passed - he is unlocked and the window "a new helper in the lamp" shows once. The lamp itself can come later. */
+  unlockHelper(k) {
+    if (!unlockSummoner(this, k)) return false;
+    this.queueNotice(`lamp-helper-${k}`); this.save(); this.onChange(); return true;
+  },
   advanceQuest(id, choice = null) { return advanceQuest(this,id,choice); },
   merchantAvailable() { return merchantAvailable(this); },
   continueAfterEnding() {
@@ -4268,7 +4278,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
-        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);
+        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);   // R2 A 3.1: the lamp comes after the PHANTOM-404 scene, before Sita is sent home
         // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him
         for (const key of ev?.winStories || []) this.queueStory(key);
         for (const id of ev?.winNotices || []) this.queueNotice(id);
@@ -4879,6 +4889,7 @@ const API = {
     }
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
+    if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
     if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene

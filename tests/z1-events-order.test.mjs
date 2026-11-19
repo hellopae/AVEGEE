@@ -177,8 +177,11 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   g = reload(g); drainStories(g);
   const hb = g.startZoneEvent('sitaHanuman'); assert.equal(hb.foes.length, 1); assert.equal(hb.foes[0].sp, 'boss-hanuman-th'); assert.equal(hb.foes[0].who, 'หนุมาน');
   winFight(g); assert.equal(status(g, 'sitaHanuman'), 'cleared');
-  assert.deepEqual(drainStories(g).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-return-hold']);
-  assert.deepEqual(g.notices, ['sita-phantom']); assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);
+  assert.deepEqual(g.storyQueue.map(p => p.key).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold'], 'T4: the lamp comes after the PHANTOM-404 scene and before Sita goes home');
+  assert.equal(g.magic.lamp.owned, false, 'no lamp before its scene');
+  assert.deepEqual(drainStories(g).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold']);
+  assert.deepEqual(g.notices, ['sita-phantom', 'lamp-received']); assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);
+  assert.equal(g.magic.lamp.owned, true); assert.deepEqual(g.magic.lamp.slots.slice(0, 1), ['hanuman']);
   g.ackNotice('sita-phantom'); assert.deepEqual(g.journalNotes, [SITA.journal]);
   // ---- cases 13-15 -> elder brother Yommathat (case 15), at the pier
   for (let n = 13; n <= 15; n++) { assert.equal(status(g, 'thBorderBoss'), 'locked', `the elder brother must wait for case 15 (at ${n - 1})`); judgeNext(g); }

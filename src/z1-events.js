@@ -12,6 +12,8 @@
 // `after` = cases already judged in Zone 1 when it becomes due (after:4 -> it is the 5th case).
 import { SPOTS } from './data.js';
 import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
+import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
+import { LAMP_TEXT } from './lamp-text.js';
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -150,12 +152,28 @@ export const SITA_CASE = Object.freeze({ k:'sitaledger', story:true, zone:'th', 
   merits:SITA.hearing.merits.map((t, i) => ({ t, v:i ? 1 : 2, fake:false })),
   line:SITA.hearing.line, claims:SITA.hearing.claims.map(c => ({ ...c })), secret:SITA.hearing.secret, reward:SITA.hearing.reward, fail:null });
 
+/** T4 (R2 A 2.6): the three lamp windows. NA-1 = the lamp arrives (its last sentence names Hanuman in the first slot - only when the first slot comes with the lamp, LAMP_FIRST_SLOT_ON) ·
+ *  NA-2 = a new helper has accepted you (one per helper, `{name}` filled in) · NA-3 = the first time every flame is spent (after a fight). `openLamp` = the button opens the bag's lamp tab. */
+function lampNotices() {
+  const T = LAMP_TEXT, slot = LAMP_FIRST_SLOT_ON === 'receive';
+  const out = {
+    'lamp-received':{ title:T['notice.received.title'].th, text:T['notice.received.text'].th + (slot ? T['notice.received.slot'].th : ''), button:T['notice.received.button'].th, openLamp:true, art:SUMMONERS.hanuman.art.icon,
+      en:{ title:T['notice.received.title'].en, text:T['notice.received.text'].en + (slot ? T['notice.received.slot'].en : ''), button:T['notice.received.button'].en } },
+    'lamp-low':{ title:T['notice.low.title'].th, text:T['notice.low.text'].th, button:T['notice.low.button'].th, art:SUMMONERS.hanuman.art.icon,
+      en:{ title:T['notice.low.title'].en, text:T['notice.low.text'].en, button:T['notice.low.button'].en } },
+  };
+  for (const k of Object.keys(SUMMONERS)) out[`lamp-helper-${k}`] = { title:T['notice.helper.title'].th, text:T['notice.helper.text'].th.replace('{name}', SUMMONERS[k].name.th), button:T['notice.received.button'].th, openLamp:true,
+    art:SUMMONERS[k].art?.icon || SUMMONERS.hanuman.art.icon,
+    en:{ title:T['notice.helper.title'].en, text:T['notice.helper.text'].en.replace('{name}', SUMMONERS[k].name.en), button:T['notice.received.button'].en } };
+  return out;
+}
 /** Notice windows of Zone 1's story (game.js queueNotice / ackNotice · ui.js openStoryNotice). `detail` = shown when the button is pressed. */
 export const NOTICES = Object.freeze({
   // Case 5 — the owner's own sentence (spec 13 Nov 2026)
   'nurse-ledger':{ title:'คดีพยาบาลห้องฉุกเฉิน', text:'ลายมือในแฟ้มต้นทางที่สลับเลขเป็นของเพื่อนร่วมโต๊ะเดิมของนิรา', button:'รับทราบ', art:'img/soul-nurse.webp' },
   'sita-arrive':{ ...SITA.notices.arrive, art:SITA.art.portrait },
   'sita-phantom':{ ...SITA.notices.phantom, detail:SITA.journal, art:SITA.art.phantom },
+  ...lampNotices(),
   ...Z2_NOTICES,
 });
 
@@ -204,6 +222,21 @@ export const SITA_STORIES = {
     page(SITA.art.yield, 'ขออภัย',
       'บรรยาย: หนุมานลดมือลง ถอยหนึ่งก้าว แล้วก้มศีรษะต่ำ ประนมมือขอโทษยมบาทน้อยและทุกคนในห้องพิพากษา\n'
       + 'หนุมาน: "ขออภัยท่านยมบาทน้อย ข้ายกมือใส่ผู้ที่ปกป้องพระนาง ข้าไม่ควรเลย ข้าขอโทษ"'),
+  ]},
+  // R2 A 3.3 (G14): Sita gives the lamp. Page 1 may be cut by the owner if it repeats the thanks of `sita-return` (Rae 3.1). Picture = Codex slot (cut-hanuman-yields-th stands in).
+  'sita-lamp':{ title:'ประทีปของพระนาง', pages:[
+    page(SITA.art.lamp, 'สิ่งเดียวที่หม่อมฉันมี',
+      'บรรยาย: แสงสุดท้ายของเหตุการณ์ในห้องพิพากษาจางลง นางสีดาเดินมาหยุดตรงหน้าแท่น ในมือถือตะเกียงทองดวงเล็กที่ฐานเป็นกลีบบัว ไส้ตะเกียงยังไม่มีเปลว\n'
+      + 'นางสีดา: "ท่านยมบาทน้อย หม่อมฉันไม่ได้นำสิ่งใดมาด้วยนอกจากประทีปดวงนี้ ท่านไม่ตัดสินจากบัญชีเพียงอย่างเดียว และยอมให้หม่อมฉันรอจนเห็นความจริง หม่อมฉันไม่มีสิ่งใดตอบแทนได้เท่าไร ขอท่านรับสิ่งนี้ไว้เจ้าค่ะ"'),
+    page(SITA.art.lamp, 'ไฟของผู้ที่ยอมรับ',
+      'นางสีดา: "ประทีปดวงนี้หม่อมฉันจุดทุกค่ำตลอดวันที่หม่อมฉันรอคอย ไฟของมันไม่จุดด้วยไม้ขีดหรือน้ำมัน มันจุดติดเมื่อมีผู้ที่ยอมรับผู้ถือ ฝากไฟของเขาไว้ ท่านหนุมานเป็นผู้แรกที่ยอมรับท่านต่อหน้าหม่อมฉัน"\n'
+      + 'หนุมาน: "พระนาง ข้ายินดี"\n'
+      + 'บรรยาย: หนุมานคุกเข่าลงข้างหนึ่ง ประนมมือเหนือไส้ตะเกียง เปลวสีทองไหลจากระหว่างฝ่ามือลงมาจุดไส้ตะเกียงที่ว่างอยู่ เปลวสั่นครั้งเดียวแล้วนิ่ง'),
+    page(SITA.art.lamp, 'เรียกข้าเมื่อต้องการ',
+      'หนุมาน: "ท่านยมบาทน้อย ข้ายกมือใส่ท่านเมื่อครู่ ข้าไม่ลืม แต่ท่านไม่ถือโทษ เมื่อใดที่ท่านจุดตะเกียงนี้แล้วเรียกชื่อข้า ข้าจะมาช่วยท่านปกป้องผู้ที่ท่านต้องปกป้อง แต่ไฟของข้ามีจำกัด จงใช้ให้คุ้ม"\n'
+      + 'นางสีดา: "ไฟของใครที่ฝากไว้ จะดับเมื่อผู้ถือทิ้งสิ่งที่เขายอมรับ หม่อมฉันเชื่อว่าท่านไม่ทิ้งเจ้าค่ะ"\n'
+      + 'ยมบาทน้อย: "ผมรับไว้ด้วยความเคารพครับ และจะใช้อย่างระวัง"\n'
+      + 'บรรยาย: ยามารับตะเกียงจากสองมือของนางสีดา ไส้ตะเกียงอุ่นขึ้นเล็กน้อยในมือเขา เหมือนมีใครหายใจอยู่ข้างใน'),
   ]},
   'sita-hanuman-lose':{ title:'หนุมานรอท่านอยู่', pages:[
     page(SITA.art.yield, 'หนุมานรอท่านอยู่',

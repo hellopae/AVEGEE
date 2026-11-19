@@ -72,12 +72,12 @@ for (const [k, lead, yama, sita, yamaBack] of [
     assert.match(win.pages[0].line, /พอเถิดหนุมาน ท่านทำเพื่อหม่อมฉันมาตลอด/); assert.match(win.pages[1].line, /ข้าขอโทษ/);
     const ret = storyOf(`sita-return-${k}`);
     assert.ok(ret.pages[0].line.includes(sita), 'Sita\'s first line'); assert.ok(ret.pages[1].line.includes(yamaBack), 'Yama\'s first line');
-    // after the fight: win -> phantom -> the verdict's own return scene (this step: no lamp yet)
+    // after the fight: win -> phantom -> the lamp -> the verdict's own return scene
     g.startZoneEvent('sitaHanuman');
     for (const f of g.battle.foes) f.atk = [0, 0];
     const f = g.battle.foes[0]; f.hp = 1; g.battle.selectedFoeId = f.id; assert.equal(g.battleAct('atk'), true);
     assert.equal(g.battle.over, 'win'); g.endBattle();
-    assert.deepEqual(g.storyQueue.map(p => p.key).filter(x => x.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', `sita-return-${k}`]);
+    assert.deepEqual(g.storyQueue.map(p => p.key).filter(x => x.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${k}`]);
   });
 }
 
