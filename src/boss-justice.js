@@ -160,7 +160,7 @@ export function releaseBoss(g) {
     g.zoneEvents.cyberhell.cyberFinal='cleared';g.bossCleared.cyberhell=true;g.bossGuarding.cyberhell=false;
     g.queueStory('ending');
     g.over={k:'finalWin',title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา',text:'บอสโซน 4 รับคำตัดสินแล้ว ทั้งสี่โซนกลับคืนสู่ความสงบ'};
-  } else g.log(`✓ ${c.name} รับทัณฑ์ครบแล้ว ผู้คุมปล่อยกลับไปประจำชายแดน`,'good');
+  } else { g.log(`✓ ${c.name} รับทัณฑ์ครบแล้ว ผู้คุมปล่อยกลับไปประจำชายแดน`,'good'); g.refreshZoneEvents?.(c.zone); }   // T8c: events that waited for this court (the record hall of Zone 4) may open now
   return true;
 }
 export function completeBossJusticeStory(g,key) {

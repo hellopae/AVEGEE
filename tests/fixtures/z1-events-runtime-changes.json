@@ -6,7 +6,7 @@
   },
   {
    "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
-   "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
+   "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,bossJusticePending,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
   },
   {
    "before": "import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';\n",
@@ -251,6 +251,14 @@
   {
    "before": "",
    "after": "  /** f1 (owner 13 Nov): the frontier event that is waiting at the border right now, whether or not its alert window was acknowledged.\n   *  Every way into the border scene asks this, so the border boss is there the first time Yama walks down. */\n  breachPending() {\n    if (this.battle || this.over) return null;\n    for (const ev of ZONE_EVENTS[this.zone] || []) {\n      if (ev.team !== 'frontier' || ev.signal || this.zoneEventStatus(ev.k) !== 'pending') continue;\n      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;\n      return { key:ev.k, ev };\n    }\n    return null;\n  },\n"
+  },
+  {
+   "before": "",
+   "after": "    // T8c (owner 19 Nov): the record hall (case 10) waits until the field court of Trojan-9 is over - the alert N10-1 used to come up while the court was open and the button did nothing (startZoneEvent refuses during a court)\n    if (zone === 'cyberhell' && states[Z4S.eventKey] === 'pending' && bossJusticePending(this, zone)) delete states[Z4S.eventKey];\n"
+  },
+  {
+   "before": "",
+   "after": "      if (zone === 'cyberhell' && ev.k === Z4S.eventKey && bossJusticePending(this, zone)) continue;   // T8c: not while the court of Trojan-9 sits\n"
   },
   {
    "before": "",

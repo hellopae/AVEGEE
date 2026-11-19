@@ -38,7 +38,7 @@ const evLines = ev => (getLang() === 'en' && ev.linesEn) ? ev.linesEn : (ev.line
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
-import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
+import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,bossJusticePending,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
 import {PLERNG_WARRANT_FOOD,spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideState,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
@@ -3344,8 +3344,11 @@ const API = {
       delete states.cyberFinal;
       if(this.finalEvent?.phase==='ready')this.finalEvent.phase='locked';
     }
+    // T8c (owner 19 Nov): the record hall (case 10) waits until the field court of Trojan-9 is over - the alert N10-1 used to come up while the court was open and the button did nothing (startZoneEvent refuses during a court)
+    if (zone === 'cyberhell' && states[Z4S.eventKey] === 'pending' && bossJusticePending(this, zone)) delete states[Z4S.eventKey];
     for (const ev of ZONE_EVENTS[zone] || []) {
       if (states[ev.k] || (this.zoneCases[zone] || 0) < ev.atCases) continue;
+      if (zone === 'cyberhell' && ev.k === Z4S.eventKey && bossJusticePending(this, zone)) continue;   // T8c: not while the court of Trojan-9 sits
       // ด่านเทวดาโซนไทยเริ่มหลังตัดสินคดีขอทานในวัดแล้วเท่านั้น (คดีนั้นรอประตูสวรรค์ — applyVerdict เป็นคนเปิดด่าน)
       if (zone === 'th' && ev.k === 'devaTest' && !this.devaVisits.th) continue;
       // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)
