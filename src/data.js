@@ -8,6 +8,7 @@ import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
 import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
 import { SEV, JORM_TEXT, SEV_ARRIVE_LINES } from './z3f-severin.js';   // T7b-2/5
 import { COL_EVENTS } from './z4b-colosseum.js';   // T8a/2
+import { Z4A, Z4A_LUMEN, Z4A_ZONE4 } from './z4a-border.js';   // T8a/3
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2061,7 +2062,8 @@ export const ZONE_EVENTS = {
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
   cyberhell:[
-    { k:'cyberRescue', atCases:0, mode:'group',
+    // T8a/3 (Rae R2 D 2.1-2.4): Lumen-01 - the team is Yama + Nira + HOME-67 (`gate`), his scene z4-lumen-open plays before the fight (after the existing deva-cyberhell), z4-lumen-win + the clock window (NW-1) + the release window (NZ-2) after it, then HOME-67 leaves for the harbour (game.js)
+    { k:'cyberRescue', atCases:0, mode:'group', gate:true, banner:Z4A_LUMEN.banner, openStory:Z4A.lumenOpen, winStories:[Z4A.lumenWin], winNotices:[Z4A_ZONE4.clockNotice, Z4A_ZONE4.releasedNotice],
       title:{ th:'ช่วยทัณฑ์และพ่อค้านรก', en:'Rescue Taan and the merchant' },
       alert:{ th:'เทวดาจับทัณฑ์กับพ่อค้านรกไว้ในคุก ต้องชนะจึงจะช่วยออกมาได้', en:'Devas imprisoned Taan and the merchant. Defeat them to free the captives.' },
       foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[18,28], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %

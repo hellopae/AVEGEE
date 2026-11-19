@@ -120,7 +120,7 @@ import { Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
 import { KIN_BY_KEY as Z2_KIN_BY_KEY } from './z3g-kin.js';   // T7c/6: the relatives of Zone 2 and Zone 3
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
-import { Z4A } from './z4a-border.js';   // T8a
+import { Z4A, HOME67_HARBOR_LINES } from './z4a-border.js';   // T8a
 import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
@@ -1537,7 +1537,7 @@ function updateBossFab() {
     };
     ov.appendChild(f);
   }
-  f.textContent = pier ? `💬 คุยกับ${g.home67Waiting?.() ? 'HOME-67' : g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;   // T7b-2/5: HOME-67 stands where Severin stood
+  f.textContent = pier ? `💬 คุยกับ${g.home67Talk?.() ? 'HOME-67' : g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;   // T7b-2/5: HOME-67 stands where Severin stood
   // N1: ขอบล่างปุ่ม (translate -100%) ชิดเหนือหัวบอส — ตำแหน่งเดียวกับที่ป้ายดำเดิมเคยอยู่ (ความสูงบอส = 92*1.12 เท่าของยมบาท ดู scene.js)
   f.dataset.sx = SPOTS.bossPier.x;
   f.dataset.sy = SPOTS.bossPier.y - 92 * 1.12 * CHAR_SCALE_MAP - 12;
@@ -3877,7 +3877,16 @@ function openHome67Pier() {
   };
   if (first && storyOf(SEV.home67Intro)) { openDlg('intro-comic-dialog'); renderStoryComic(dlg, storyOf(SEV.home67Intro), () => { g.storySeen[SEV.pierSeen] = true; g.save(); ask(); }); } else ask();
 }
+/** T8a/3 (Rae 2.5): HOME-67 on the pier of Zone 4 - the first talk is the 2-page scene (the gift follows it), later taps give one of three lines */
+function openHome67Harbor() {
+  const en = getLang() === 'en';
+  if (!g.storySeen[Z4A.harborStory] && storyOf(Z4A.harborStory)) { g.queueStory(Z4A.harborStory); g.onChange(); return; }
+  pauseForDlg();
+  const line = HOME67_HARBOR_LINES[Math.floor(Math.random() * HOME67_HARBOR_LINES.length)];
+  modal(`<h2>HOME-67</h2><div class="pier-talk"><p>${esc(en ? line.en : line.th)}</p></div><div class="row"><button class="gold" data-close>${esc(en ? 'Later' : 'ไว้คราวหน้า')}</button></div>`);
+}
 function openBossPier() {
+  if (g.zone === 'cyberhell' && g.home67Talk?.()) return openHome67Harbor();   // T8a/3
   if (g.home67Waiting?.()) return openHome67Pier();   // T7b-2/5
   if (HARBOR_ZONES.includes(g.zone) && g.bossGuideWaiting?.()) return openYomathatPier();
   const z = g.zoneDef();

@@ -18,7 +18,7 @@ import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-
 import { LOKI } from './z3d-cases.js';   // T7b/3
 import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
-import { Z4A } from './z4a-border.js';   // T8a
+import { Z4A, Z4A_ZONE4 } from './z4a-border.js';   // T8a
 import { COL } from './z4b-colosseum.js';   // T8a/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
@@ -770,6 +770,7 @@ const API = {
     if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
     if (id === GATE.arriveNotice) this.queueStory('z2-guanyu-open');   // T5'/4 (NG-1): the button leads into the scene, then the fight
+    if (id === Z4A_ZONE4.giftNotice) this.setOutfit(Z4A_ZONE4.outfit);   // T8a/3: "the robes change over automatically when you press Understood"
     if (id === CERBERUS.arriveNotice) this.queueStory(CERBERUS.openStory);   // T6/6 (NC-1): the button leads into the scene, then the fight
     if (id === RYUJIN.arriveNotice) this.queueStory('z2-ryujin-open');   // T6/5 (NR-1): the button leads into the scene, then the fight
     if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
@@ -3125,7 +3126,7 @@ const API = {
     this.queueStory(SEV.home67Join); this.queueNotice(SEV.home67JoinNotice); this.save(); this.onChange(); return true;
   },
   bossPierCanTalk() {
-    if (this.home67Waiting() && !this.battle && !this.over && Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150) return true;
+    if (this.home67Talk() && !this.battle && !this.over && Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150) return true;
     return !this.battle && !this.over && !!this.bossCleared[this.zone] && !bossGuideDismissed(this) &&
       Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
@@ -5195,6 +5196,8 @@ const API = {
     if (next?.key === Z3_ARRIVE.clearStory && !(this.journalNotes ||= []).includes(Z3_PHANTOM_NOTE.th)) this.journalNotes.push(Z3_PHANTOM_NOTE.th);   // T7/1: PHANTOM-404 on Poena's roster
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     // T7/2 (Rae R2 C 2): Valdric falls -> NV-1 (Hypnosis) after the 3rd page; Van Helsing's scene -> NV-2 (he is the Gate Guard of the West), then N5-5 "to the dais" (moved here from the fall scene, Reese 4.3) + the journal line; after his release -> N5-6
+    if (next?.key === Z4A.lumenWin) this.home67Leaves();   // T8a/3 (NH-6): the page where he asks to step out of the team has been read
+    if (next?.key === Z4A.harborStory) this.home67Gift();   // T8a/3 (NH-5): the gift of the harbour scene
     if (next?.key === COL.thorWin) this.unlockHelper(COL.helperThor);   // T8a/2 (D4: his own bout is won -> helper no. 10, NT-1 = lamp-helper-thor)
     if (next?.key === COL.luciferWin) this.unlockHelper(COL.helperLucifer);   // T8a/2: helper no. 11, NL-1
     if (next?.key === Z3_FRONTIER.downStory) this.queueNotice(Z3_FRONTIER.powerNotice);
@@ -5240,6 +5243,20 @@ const API = {
   atHarbour() { const p=this.harbourPoint();return Math.hypot(this.player.x-p.x,this.player.y-p.y)<=105; },
   activatePort() {if(!this.atHarbour()||!activateHarbour(this))return false;this.save();this.onChange();return true;},
   /** T8a: HOME-67 walks with the team through Frontier 3-4 (and Zone 4's entry). Not before he has answered "I am ready" (NH-4 says so). */
+  /** T8a/3 (Rae 2.1 step 6): after Lumen-01 HOME-67 steps out of the team and waits on the pier of Zone 4 (he is no longer the guest of the walk) */
+  home67Leaves() {
+    if (!this.home67Joined || this.home67?.phase !== 'joined') return false;
+    this.home67 = { phase:'harbor' }; Object.assign(bossGuideState(this, 'west'), { following:false, farewell:true });
+    this.queueNotice(Z4A_ZONE4.leftNotice); this.save(); this.onChange(); return true;
+  },
+  /** he can be talked to on a pier: Zone 3 until Yama has answered, Zone 4 from the moment he leaves the team */
+  home67Talk() { return this.home67Waiting?.() || (this.zone === 'cyberhell' && this.home67?.phase === 'harbor'); },
+  /** NH-5: 1,200 coins + the Zone 4 robes (the robes are put on when the window is acknowledged); once */
+  home67Gift() {
+    if (this.home67?.phase !== 'harbor' || this.home67.gift) return false;
+    this.home67.gift = true; this.coin += Z4A_ZONE4.gift; this.outfitsOwned = [...new Set(['th', ...(this.outfitsOwned || []), Z4A_ZONE4.outfit])];
+    this.log(`💰 HOME-67 มอบเงิน ${Z4A_ZONE4.gift} เบี้ยกรรม และชุดประจำโซน 4`, 'good'); this.queueNotice(Z4A_ZONE4.giftNotice); this.save(); this.onChange(); return true;
+  },
   home67Guest() { return !!this.home67Joined && this.home67?.phase === 'joined' && bossGuideFollowing(this); },
   /** T8a (Rae part D 1.1): the first step of the walk (checkpoint 0) - `z34-arrive`, once */
   z34ArriveDue(idx = null) {
