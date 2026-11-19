@@ -161,6 +161,12 @@ GROUPS['z4c2'] = [   # T8b/2 - Rae sec. 11 group W: WATSON-03 (a robot, tall sle
   ('z4-events/guard-watson03-profile.webp', (512, 512), 'square', 'PLACEHOLDER guard-watson03-profile'),
   ('z4-events/cut-wat-assist.webp', CUT, 'cut', 'PLACEHOLDER cut-wat-assist  (W2: the lower frontier of Zone 4, the demonic wooden horse in the middle with its belly hatch open, four rows of demons frozen behind it, WATSON-03 stepping out of a metal door at the roadside, HOME-67 pointing at his glass pane, Yama and Nira on the left)'),
 ]
+GROUPS['z4c3'] = [   # T8b/4 - Rae sec. 11 Z6 / Z7 (cases 8 and 9: adults, no blood, no religious symbol)
+  ('z4-events/soul-singer-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-singer-cyber (Z6: Cypher\'s elder sister, a woman of fifty, short plain hair, no make-up, holding an old microphone as if it were a doll)'),
+  ('z4-events/soul-singer-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-singer-cyber-profile'),
+  ('z4-events/soul-archivist-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-archivist-cyber (Z7: Buffer\'s uncle, a man of sixty in dust-stained white cotton gloves, a large ring of keys)'),
+  ('z4-events/soul-archivist-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-archivist-cyber-profile'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

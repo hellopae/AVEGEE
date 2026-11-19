@@ -7,7 +7,7 @@ import { NOTICES, STORY_CASE_ROWS } from '../src/z1-events.js';
 import { Z4_STORY_CASES } from '../src/z4c-cases.js';
 import { zone4, drain, judge } from './helpers/zone4.mjs';
 test('position + data: the 5th case of Zone 4 (after:4), a story case, English on every field', () => {
-  assert.deepEqual(Z4_STORY_CASES.map(r => [r.k, r.after]), [['aiscam', 4]]); assert.equal(STORY_CASE_ROWS.cyberhell, Z4_STORY_CASES);
+  assert.deepEqual(Z4_STORY_CASES.filter(r => r.k === 'aiscam').map(r => [r.k, r.after]), [['aiscam', 4]]); assert.equal(STORY_CASE_ROWS.cyberhell, Z4_STORY_CASES);
   const c = CASES_BY_ZONE.cyberhell.find(x => x.k === 'aiscam'); assert.ok(c.story && c.zone === 'cyberhell' && !c.quest && c.kind === 'twist');
   for (const f of ['en_name', 'en_who', 'en_face', 'en_line', 'en_reward', 'en_fail', 'en_secret']) assert.ok(c[f], f);
   for (const list of ['seen', 'hidden', 'merits']) for (const x of c[list]) assert.ok(x.en, `${list} has English`); for (const cl of c.claims) assert.ok(cl.en, 'claim has English');
@@ -18,7 +18,7 @@ test('the order: nothing due before 4 cases are judged; then the teacher (with N
   const g = zone4(); for (const n of [0, 1, 2, 3]) { g.zoneCases.cyberhell = n; assert.equal(g.storyCaseOwed(), null, `after ${n} cases`); }
   g.zoneCases.cyberhell = 4; assert.equal(g.storyCaseOwed(), 'aiscam'); g.ensureStoryCase(); assert.ok(g.notices.includes('z4-aiscam-arrive'), 'NAS-1'); const soul = g.queue.find(s => s.case === 'aiscam'); assert.ok(soul); assert.equal(soul.sp, 'soul-aiscam-cyber');
   assert.equal(g.home67HintLines().length, 0, 'no clue before the case');
-  judge(g, 'aiscam'); assert.ok(g.storyCaseDone.aiscam); assert.equal(g.storyCaseOwed(), null, 'nothing else is due');
+  judge(g, 'aiscam'); assert.ok(g.storyCaseDone.aiscam); assert.equal(g.storyCaseOwed(), null, 'nothing else is due before case 8');
   assert.ok(g.journalNotes.some(x => /^PHANTOM-404: ครูเกษียณโดนแก้บัญชีจากภายนอก/.test(x)), 'journal'); assert.equal(g.journalNotes.filter(x => /ครูเกษียณ/.test(x)).length, 1);
   const hints = g.home67HintLines(); assert.equal(hints.length, 1); assert.match(hints[0].th, /ป้ายเดียวกัน แปลว่ามือเดียวกัน/); assert.match(hints[0].en, /The same tag means the same hand/);
   g.ensureStoryCase(); assert.ok(!g.queue.some(s => s.case === 'aiscam'), 'not queued again');
