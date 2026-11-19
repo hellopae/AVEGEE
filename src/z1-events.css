@@ -19,6 +19,12 @@ dialog.sita-hearing-dialog[open]{width:min(980px,calc(100% - 20px));max-width:98
 .sita-questions,.sita-choices{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 .sita-questions button{text-align:left}
 .sita-questions button.asked{opacity:.72}
+.sita-questions button.sita-nira{border-style:dashed}
+.sita-choices .tag.nira-tag{display:inline-block;margin-left:6px;padding:0 8px;border-radius:999px;background:var(--warning);color:var(--gold-foreground);font-size:12px}
+.sita-sentence{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.sita-sentence small{color:var(--muted-foreground)}
+.sita-pick{display:flex;flex-wrap:wrap;gap:6px}
+.sita-pick button[aria-pressed="true"]{outline:2px solid var(--gold)}
 .sita-choices small{color:var(--muted-foreground)}
 .sita-hearing .row{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
 @media (max-width:640px){.sita-hearing-body{grid-template-columns:1fr}.sita-hearing figure{max-width:200px;margin:0 auto}}

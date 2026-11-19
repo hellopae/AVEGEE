@@ -1936,9 +1936,9 @@ export const ZONE_EVENTS = {
   // Z1-EVENTS: case 12 · Sita's ledger. Hanuman descends once her hearing is closed (game.js resolveSitaCase) and TESTS Yama - he is not an enemy.
   // Text: Rae (src/z1-events.js SITA). hp/atk: Toby's first numbers between the deva (case 6) and the elder brother (case 15) - no spec, tune freely.
   { k:'sitaHanuman', atCases:12, requires:['frontierBreach'], mode:'single',
-    title:{ th:'หนุมานลงมาแล้ว', en:'Hanuman descends' },
-    alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',
-      en:'Rama\'s champion has come for the lady. He is no enemy; he wants to see that you can protect her.' },
+    title:{ th:'หนุมานลงมาแล้ว', en:'Hanuman Has Descended' },
+    alert:{ th:'ทหารเอกของพระรามลงมารับพระนางกลับ ไม่ว่าท่านจะตัดสินอย่างไร เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง',   // R1 A5 N2
+      en:'Rama\'s chief warrior has come to take her home, whatever you ruled. He is no enemy, but he wants to see that you can truly protect her.' },
     go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },
     foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[17,26], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
     reward:{}, lose:{ hp:9 } },

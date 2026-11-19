@@ -63,7 +63,7 @@ import { t, getLang } from './i18n.js';
 import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText } from './boss-skills.js';
 import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
-import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE } from './z1-events.js';
+import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
@@ -702,10 +702,11 @@ const API = {
     if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request
     this.save();
   },
-  /** Case 12: Sita's hearing closes with choice A or B only. She is never sentenced, escorted or scored against (Rae 3.2 · Claudy's cultural default).
-   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). */
-  resolveSitaCase(choice) {
-    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA.hearing.choices.find(c => c.k === choice)?.k;
+  /** Case 12 (R1 A): Sita's hearing closes with one of THREE verdicts - 'punish' / 'free' / 'hold' (Nira advises the last). Whatever is chosen Hanuman comes down:
+   *  a sentence is never carried out (he arrives before the writ reaches a guard), she is never escorted or scored against, the three paths score the same (Rae A4).
+   *  It counts as the 12th case; Hanuman then descends (story -> notice -> the test fight sitaHanuman). `sentence` = what the player picked for 'punish' (station, guard, level) - only logged. */
+  resolveSitaCase(choice, sentence = null) {
+    const i = this.queue.findIndex(s => s.case === SITA.caseKey), pickK = SITA_CHOICE_KEYS.includes(choice) ? choice : null;
     if (i < 0 || !pickK || this.battle || this.over || this.zone !== 'th') return false;
     const [soul] = this.queue.splice(i, 1);
     this.cancelCourtArrival(soul.id);
@@ -714,9 +715,10 @@ const API = {
     this.ledger.push({ id:soul.id, who:soul.who, tick:this.tick, over:0, short:0, karma:0, stars:5, score:null, tham:null,
       boss:'great', heaven:false, right:true, deserved:0, back:false, story:SITA.caseKey,
       archiveSoul:{ name:soul.name, who:soul.who, sp:soul.sp, case:soul.case, sex:soul.sex, deeds:[] } });
-    this.log(`⚖️ ${SITA.hearing.choices.find(c => c.k === pickK).label}`, 'good');
+    const pick = SITA.hearing.choices.find(c => c.k === pickK);
+    this.log(`⚖️ ${pick.label}${pickK === 'punish' && sentence?.station ? ` · ${sentence.station}` : ''}`, 'good');
     this.refreshZoneEvents('th');
-    this.queueStory('sita-hanuman-open');
+    this.queueStory(`sita-hanuman-open-${pickK}`);
     this.bossPending = this.bossReady();
     this.save(); this.onChange();
     return true;
@@ -4264,7 +4266,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
-        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-return']) this.queueStory(key);
+        if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);
         // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him
         for (const key of ev?.winStories || []) this.queueStory(key);
         for (const id of ev?.winNotices || []) this.queueNotice(id);
@@ -5775,6 +5777,12 @@ API.restore = function (d) {
   if (this.devaVisits.west?.phase === 'fighting')
     this.devaVisits.west = { phase:'waiting', arrived:true, elapsed:WEST_DEVA_EXIT_MS };
   this.storyQueue = d.storyQueue || []; this.storySeen = d.storySeen || {}; this.niraRest = d.niraRest || null;
+  // T4 (R1 A): Sita's verdicts are now punish / free / hold and her two scenes exist once per verdict - a save from before keeps its place
+  const SITA_OLD_CHOICE = { suspend:'hold', pavilion:'free' };
+  for (const [from, to] of [['sita-hanuman-open', 'sita-hanuman-open-hold'], ['sita-return', 'sita-return-hold']]) {
+    for (const p of this.storyQueue) if (p?.key === from) p.key = to;
+    if (this.storySeen[from]) { this.storySeen[to] = true; delete this.storySeen[from]; }
+  }
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
   // พลังพร้อมใช้ทันทีแทน ไม่ให้ผู้เล่นเสียของที่เก็บมาแล้วเพราะปุ่มหายไป (ตัวเลข/เพดานเดิมทุกอย่าง)
@@ -6014,7 +6022,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
-  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
   // Z2-EVENTS: a save from before the new order may hold the border breach as "pending" from case 6 - it now waits for Wukong (case 7) and case 11
   const az = this.zoneEvents.asia;

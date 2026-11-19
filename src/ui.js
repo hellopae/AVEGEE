@@ -3721,6 +3721,7 @@ function openStoryNotice(id) {
   if (repeat) n = { ...n, detail:`${repeat}\n${n.detail}` };
   pauseForDlg();
   let detail = false;
+  if (n.en && getLang() === 'en') n = { ...n, ...n.en };   // T4: notices that carry an English block (R1 A / R2 A) show it
   const paint = () => modal(`<div class="event-alert-main z1-notice"><h2>${esc(n.title)}</h2><p>${esc(detail ? n.detail : n.text)}</p>
       <img class="event-alert-foe" src="${esc(n.art)}" alt="" onerror="this.remove()">
       <div class="event-alert-actions"><button class="gold" data-notice-ok>${esc(detail || !n.detail ? (detail ? 'ปิด' : n.button) : n.button)}</button></div></div>`, d => {
@@ -3733,38 +3734,61 @@ function openStoryNotice(id) {
   onDlgClose(() => { if (g.notices.includes(id)) g.ackNotice(id); });
 }
 
-/** Z1-EVENTS case 12 — Sita's hearing. Text: Rae (src/z1-events.js SITA.hearing). Questions are asked one by one; the verdict buttons (A / B only -
- *  choice C is cut) open once the question that shows the ledger was tampered with has been asked. No path sentences, escorts or scores against her. */
+/** Z1-EVENTS case 12 — Sita's hearing (R1 A: Output/Rae/2026-11-16-avegee-r1.md). Her four claims are pressed one by one (the `deny` one shows what Nira sees), "ช่วยเปิดความจริง · นิรา" makes
+ *  Nira advise putting the case on hold, and the verdict is ONE of three: sentence her (station / guard / level, then "ออกหมาย") · do not sentence her · hold the case.
+ *  Whatever is chosen Hanuman comes down before anything is carried out - no path sentences, escorts or scores against her (see game.js resolveSitaCase). */
 function openSitaHearing() {
-  const h = SITA.hearing, asked = new Set();
-  let last = null, chosen = null;
+  const h = SITA.hearing, asked = new Set(), en = () => getLang() === 'en';
+  let last = null, chosen = null, niraSaid = false, sentencing = false;
+  const pickSt = { st:null, crew:null, level:0 };
+  const soulId = String(g.queue[0]?.id ?? 0).padStart(3, '0');
   pauseForDlg(); bgm('bgm-trial');
+  const choiceLabel = c => (en() && c.labelEn) || c.label;
   const paint = () => {
-    const truth = h.questions.some((q, i) => q.truth && asked.has(i));
     const said = chosen ? chosen.lines.map(l => `<p>${esc(l)}</p>`).join('')
-      : last == null ? `<p>${esc(h.opening)}</p><p>${esc(h.line)}</p>`
-      : `<p><b>ยมบาทน้อย:</b> ${esc(h.questions[last].q)}</p><p><b>${esc(h.name)}:</b> ${esc(h.questions[last].a)}</p>${h.questions[last].reveal ? `<p class="hint">${esc(h.questions[last].reveal)}</p>` : ''}`;
+      : niraSaid && last == null ? `<p>${esc(en() ? h.nira.sayEn : h.nira.say)}</p>`
+      : last == null ? `<p>${esc(h.line)}</p>`
+      : `<p><b>${esc(h.name)}:</b> ${esc(h.claims[last].t)}</p>${h.claims[last].reveal ? `<p class="hint">${esc(h.claims[last].reveal)}</p>` : ''}${niraSaid ? `<p>${esc(en() ? h.nira.sayEn : h.nira.say)}</p>` : ''}`;
+    const stations = g.trialDestinations().filter(x => !x.build), crew = g.crew.filter(c => !c.reader);
+    const sentenceForm = `<div class="sita-sentence"><small>${esc(en() ? 'Pick station, guard, level' : 'เลือกที่ไหน · ใครคุม · ระดับทัณฑ์')}</small>
+        <div class="sita-pick" data-pick="st">${stations.map(x => `<button data-st="${x.def.k}" aria-pressed="${pickSt.st === x.def.k}">${esc(x.def.name)}</button>`).join('') || `<span class="idle">${esc(t('trial.noDestinations'))}</span>`}</div>
+        <div class="sita-pick" data-pick="crew">${crew.map(c => `<button data-crew="${c.k}" aria-pressed="${pickSt.crew === c.k}">${esc(c.name)}</button>`).join('')}</div>
+        <div class="sita-pick" data-pick="level">${[1, 2, 3].map(n => `<button data-level="${n}" aria-pressed="${pickSt.level === n}">${esc(en() ? 'Level' : 'ระดับ')} ${n}</button>`).join('')}</div>
+        <div class="row"><button data-sita-back>${esc(en() ? 'Back' : 'ย้อนกลับ')}</button><button class="gold" data-sita-writ ${(pickSt.st || !stations.length) && (pickSt.crew || !crew.length) && pickSt.level ? '' : 'disabled'}>${esc(en() ? 'Issue the Writ' : 'ออกหมาย')}</button></div></div>`;
     dlg.innerHTML = `<div class="sita-hearing">
-      <header><small>${esc(SITA.caseTitle)}</small><h2>${esc(h.title)}</h2></header>
+      <header><small>${esc(SITA.caseTitle)}</small><h2>${esc(`${t('trial.caseNo')} : ${soulId}`)}</h2></header>
       <div class="sita-hearing-body">
         <figure><img src="${esc(SITA.art.portrait)}" alt="${esc(h.name)}"><figcaption><b>${esc(h.name)}</b><small>${esc(h.who)}</small></figcaption></figure>
         <section>
           <p class="sita-face">${esc(h.face)}</p>
-          <div class="sita-charge"><span class="tag">${esc(h.chargeTag)}</span> ${esc(h.charge)}</div>
+          <div class="sita-charge"><span class="tag">${esc(en() ? h.chargeTagEn : h.chargeTag)}</span> ${esc(h.charge)}</div>
           <ul class="sita-merits">${h.merits.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
           <div class="sita-said">${said}</div>
         </section>
       </div>
       ${chosen ? `<div class="row"><button class="gold" data-sita-done>ต่อ</button></div>`
-        : `<div class="sita-questions">${h.questions.map((q, i) => `<button data-sita-q="${i}" class="${asked.has(i) ? 'asked' : ''}">${asked.has(i) ? '✓ ' : ''}${esc(q.q)}</button>`).join('')}</div>
-      <div class="sita-choices"><small>${truth ? 'คำตัดสิน' : 'ไต่สวนแฟ้มต้นฉบับก่อน จึงตัดสินได้'}</small>
-        ${h.choices.map(c => `<button class="gold" data-sita-choice="${c.k}" ${truth ? '' : 'disabled'}>${esc(c.label)}</button>`).join('')}</div>
+        : sentencing ? sentenceForm
+        : `<div class="sita-questions">${h.claims.map((c, i) => `<button data-sita-q="${i}" class="${asked.has(i) ? 'asked' : ''}">${asked.has(i) ? '✓ ' : ''}${esc(c.t)}</button>`).join('')}
+          <button data-sita-nira class="sita-nira">${esc(en() ? h.nira.buttonEn : h.nira.button)}</button></div>
+      <div class="sita-choices"><small>${esc(en() ? 'Verdict' : 'คำตัดสิน')}</small>
+        ${h.choices.map(c => `<button class="gold" data-sita-choice="${c.k}">${esc(choiceLabel(c))}${c.advised && niraSaid ? ` <span class="tag nira-tag">${esc(en() ? h.nira.tagEn : h.nira.tag)}</span>` : ''}</button>`).join('')}</div>
       <div class="row"><button data-close>ไว้ก่อน</button></div>`}
     </div>`;
     dlg.querySelectorAll('[data-sita-q]').forEach(b => b.onclick = () => { last = Number(b.dataset.sitaQ); asked.add(last); sfx('crack'); paint(); });
+    dlg.querySelector('[data-sita-nira]')?.addEventListener('click', () => { niraSaid = true; sfx('crack'); paint(); });
     dlg.querySelectorAll('[data-sita-choice]').forEach(b => b.onclick = () => {
       const c = h.choices.find(x => x.k === b.dataset.sitaChoice);
+      if (c.k === 'punish') { sentencing = true; paint(); return; }
       if (!g.resolveSitaCase(c.k)) return;
+      chosen = c; sfx('stamp'); paint();
+    });
+    dlg.querySelectorAll('[data-st]').forEach(b => b.onclick = () => { pickSt.st = b.dataset.st; paint(); });
+    dlg.querySelectorAll('[data-crew]').forEach(b => b.onclick = () => { pickSt.crew = b.dataset.crew; paint(); });
+    dlg.querySelectorAll('[data-level]').forEach(b => b.onclick = () => { pickSt.level = Number(b.dataset.level); paint(); });
+    dlg.querySelector('[data-sita-back]')?.addEventListener('click', () => { sentencing = false; paint(); });
+    dlg.querySelector('[data-sita-writ]')?.addEventListener('click', () => {
+      const c = h.choices.find(x => x.k === 'punish'), stName = STATIONS.find(d => d.k === pickSt.st)?.name || pickSt.st;
+      if (!g.resolveSitaCase('punish', { station:stName, crew:pickSt.crew, level:pickSt.level })) return;
       chosen = c; sfx('stamp'); paint();
     });
     const done = dlg.querySelector('[data-sita-done]');

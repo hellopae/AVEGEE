@@ -67,18 +67,14 @@ export const BREACH_FINALE_AT = 0.3;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Case 12 · Sita / Hanuman / [PHANTOM-404]
-// Text: Rae, Output/Rae/2026-11-13-avegee-sita-hanuman.md (13 Nov 2026). NOT yet through chris-culture.
-// Claudy's temporary cultural defaults (owner may change them):
-//   · charge = Rae's safer alternative "ผิดวาระ ค้างโทษจากภพก่อน เก้าวาระ" (not "ต้นเหตุศึกกรุงลงกา")
-//   · choice C (stamp the ledger) is cut: only A / B, and no path ever sentences or escorts her
-//   · Hanuman does not speak during the fight, buttons say "ทดสอบ" (test), never "สู้" (fight)
-//   · the closing Hanuman cameo line is cut (SITA_CAMEO) so the story makes no promise yet
-// Rae's question 2 and the wording "ผู้ลักพา" in question 3 belong to the Lanka charge. Question 2 is left out here and question 3 is kept as written:
-// Rae owes one small pass on these two strings (her own note, section 8.1). Every string of the beat lives in this object.
+// Text: Rae R1 part A (Output/Rae/2026-11-16-avegee-r1.md, A1-A6: owner feedback F10-F12 of 15 Nov) + R2 part A section 3 (the lamp). Reese checked both.
+// R1 A replaces the 13 Nov text: no "suspicious" headline/tag, charge = "บัญชีผิดปกติ", four short claims in Sita's own voice, THREE verdicts
+// (sentence / do not sentence / put on hold - Nira advises the last) and all three end with Hanuman coming down. Her pictures are Codex slots (e2 / e3 not drawn yet:
+// the old Hanuman pictures stand in). Every string of the beat lives in this object.
 export const SITA_CAMEO = false;
 export const SITA = Object.freeze({
   caseKey:'sitaledger', eventKey:'sitaHanuman',
-  caseTitle:'คดีที่ 12 · บัญชีที่ผิดที่',
+  caseTitle:'คดีที่ 12 · นางสีดา',
   art:Object.freeze({
     sprite:'img/z1-events/soul-sita-th.webp',            // map / court standee
     portrait:'img/z1-events/soul-sita-th-profile.webp',  // hearing card
@@ -87,11 +83,16 @@ export const SITA = Object.freeze({
     descend:'img/z1-events/cut-hanuman-descends-th.webp',
     yield:'img/z1-events/cut-hanuman-yields-th.webp',
     phantom:'img/z1-events/cut-sita-phantom-ledger-th.webp',
+    lamp:'img/z1-events/cut-sita-lamp-th.webp',          // R2 A4: Codex slot - a copy of cut-hanuman-yields-th stands in until it is drawn
     return:'img/z1-events/cut-sita-return-th.webp',
   }),
   notices:Object.freeze({
-    arrive:{ title:'วิญญาณนามสูงมาถึงแล้ว', text:'วิญญาณนางสีดามาถึงคิวพิจารณา ตามบัญชีระบุว่าต้องรับโทษ แต่รายละเอียดในแฟ้มมีข้อน่าสงสัย โปรดไต่สวนอย่างรอบคอบ', button:'เริ่มไต่สวน' },
-    hanuman:{ title:'หนุมานลงมาแล้ว', text:'ทหารเอกของพระรามลงมารับพระนางกลับ เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง', button:'รับมือ' },
+    // A1 N1 (replaces the 13 Nov text, which gave the plot away)
+    arrive:{ title:'วิญญาณนามสูงมาถึงแล้ว', text:'วิญญาณนางสีดามาถึงคิวพิจารณา แฟ้มระบุให้รับโทษเก้าวาระ', button:'เริ่มไต่สวน',
+      en:{ title:'A Revered Soul Has Arrived', text:'Lady Sita has reached the queue. Her file orders nine terms of penance.', button:'Begin the hearing' } },
+    // A5 N2: reads right whatever was ruled
+    hanuman:{ title:'หนุมานลงมาแล้ว', text:'ทหารเอกของพระรามลงมารับพระนางกลับ ไม่ว่าท่านจะตัดสินอย่างไร เขาไม่ใช่ศัตรู แต่ต้องการเห็นว่าท่านปกป้องพระนางได้จริง', button:'รับมือ',
+      en:{ title:'Hanuman Has Descended', text:'Rama\'s chief warrior has come to take her home, whatever you ruled. He is no enemy, but he wants to see that you can truly protect her.', button:'Face him' } },
     win:{ title:'หนุมานยอมรับ', text:'ท่านผ่านการทดสอบของหนุมาน พระนางยังปลอดภัย', button:'ต่อ' },
     lose:{ title:'หนุมานรอท่านอยู่', text:'หนุมานหยุดมือไว้ก่อน ท่านตั้งหลักแล้วลองอีกครั้งได้', button:'ทดสอบอีกครั้ง' },
     phantom:{ title:'พบรหัสผู้แก้ที่ไม่มีในทะเบียน', text:'นิราพบว่าแฟ้มของนางสีดาถูกแก้จากด้านนอก รหัสผู้แก้คือ [PHANTOM-404] เพิ่มบันทึกลงสมุดแล้ว', button:'ดูบันทึก' },
@@ -99,44 +100,55 @@ export const SITA = Object.freeze({
   journal:'PHANTOM-404: แฟ้มนางสีดาถูกแก้โดยผู้ไม่อยู่ในทะเบียนสาขาใด วิญญาณยังไม่ถึงกำหนดแต่ถูกเรียกลงมา นิราจะตรวจแฟ้มเก่าย้อนหลังต่อ',
   banner:'ศึกปกป้องพระนาง · ท่านหนุมาน',
   hearing:Object.freeze({
-    title:'บัญชีที่ไม่ชอบมาพากล',
     name:'นางสีดา', who:'ชายาแห่งพระราม ผู้ถูกเรียกลงมาตามบัญชี',
-    face:'ใครเห็นก็ก้มศีรษะให้โดยไม่ต้องบอก สงบ นิ่ง ไม่แสดงความหวั่นไหวแม้ถูกเรียกลงมายังที่นี่',
-    opening:'"หม่อมฉันไม่ได้มาเพื่อให้ใครเชื่อเจ้าค่ะ หม่อมฉันมาเพื่อให้ท่านดูความจริงด้วยตัวเอง"',
-    line:'"หม่อมฉันมาตามที่บัญชีเรียกเจ้าค่ะ ขอท่านโปรดอ่านให้จบก่อนตัดสิน"',
-    charge:'ตามบัญชี ระบุว่า ผิดวาระ ค้างโทษจากภพก่อน เก้าวาระ',
-    chargeTag:'ข้อมูลน่าสงสัย',
+    face:'สงบ นิ่ง ใครเห็นก็อยากก้มศีรษะให้โดยไม่ต้องบอก',
+    // A2 (the `sitaledger` block): the charge line + its tag, merits, her opening line, four claims (one `deny` = the only one that clashes with the file)
+    charge:'แฟ้มสั่งให้รับโทษเก้าวาระ ไม่ระบุความผิด',
+    chargeTag:'บัญชีผิดปกติ',
+    chargeTagEn:'Irregular ledger',
     merits:Object.freeze([
       'ยึดมั่นในสัจจะตลอดเวลาที่ถูกกักตัว ไม่ยอมอ่อนข้อต่อการบังคับ',
       'ยังเมตตาต่อผู้ที่เฝ้าคุมตน แม้ในวันที่ตนเองทุกข์ที่สุด',
-      'ไม่เคยเอ่ยโทษผู้ใดว่าเป็นต้นเหตุของสิ่งที่ตนต้องเผชิญ',
+      'ไม่เคยเอ่ยโทษผู้เฝ้าคุมว่าเป็นต้นเหตุของความทุกข์ที่ตนได้รับ',
     ]),
-    // q = the judge's question, a = her answer, reveal = what Yama sees. `truth:true` is the one that opens the verdict.
-    questions:Object.freeze([
-      { q:'พระนางทราบไหมครับว่าบัญชีเขียนข้อหาอะไรไว้',
-        a:'"หม่อมฉันทราบเพียงว่าถูกเรียก จึงมาตามที่เรียกเจ้าค่ะ ข้อหาที่ท่านอ่านให้ฟัง หม่อมฉันเพิ่งได้ยินเป็นครั้งแรก"' },
-      { q:'ผมขอดูแฟ้มต้นฉบับพร้อมกันกับพระนาง ช่อง "ผู้กระทำ" กับ "ผู้ถูกกระทำ" ในหน้านี้ พระนางเห็นอะไรครับ', truth:true,
-        a:'"ถ้าหม่อมฉันอ่านไม่ผิด ชื่อของหม่อมฉันอยู่ในช่องที่ควรเป็นชื่อของผู้ลักพาเจ้าค่ะ"',
-        reveal:'ยมบาทน้อยส่องแฟ้มใกล้ ๆ หมึกตรงสองช่องนั้นเป็นสีเดียวกับตราประทับของสำนักคัดกรรม แต่ไม่มีเลขรับรองกำกับแม้แต่บรรทัดเดียว และสองช่องถูกสลับที่กัน' },
-      { q:'พระนางต้องการสิ่งใดจากศาลนี้ครับ',
-        a:'"หม่อมฉันไม่ขอให้ใครยกโทษเพราะหม่อมฉันเป็นใคร ขอเพียงให้ตัดสินจากความจริง หากความจริงว่าหม่อมฉันต้องรับ หม่อมฉันก็รับเจ้าค่ะ"' },
+    line:'"หม่อมฉันมาตามที่บัญชีเรียกเจ้าค่ะ ท่านจะตัดสินอย่างไร หม่อมฉันขอฟัง"',
+    claims:Object.freeze([
+      { kind:'solid', t:'หม่อมฉันไม่ทราบว่าแฟ้มเขียนความผิดอะไรไว้เจ้าค่ะ ทราบเพียงว่าถูกเรียกมา' },
+      { kind:'deny', t:'หม่อมฉันไม่เคยทำสิ่งใดที่ต้องรับโทษเก้าวาระเจ้าค่ะ',
+        reveal:'นิราเทียบกับแฟ้มต้นฉบับ หมึกในช่องผู้กระทำเข้มกว่าบรรทัดอื่นของหน้าเดียวกัน' },
+      { kind:'solid', t:'หม่อมฉันไม่ขอให้ท่านเมตตาเพราะหม่อมฉันเป็นใครเจ้าค่ะ ขอเพียงให้ตัดสินจากความจริง' },
+      { kind:'solid', t:'ถ้าท่านจะถามสิ่งใดอีก หม่อมฉันยินดีตอบเจ้าค่ะ' },
     ]),
-    secret:'ส่องกระจกแล้ว ไม่พบเรื่องใดซ่อนอยู่ในใจพระนางเลย พบเพียงรอยหมึกบนช่อง "ผู้กระทำ" ที่ไม่ใช่ลายมือของสำนักคัดกรรม',
-    choices:Object.freeze([
-      { k:'suspend', label:'ระงับโทษไว้ก่อน เพราะบัญชีไม่ชอบมาพากล',
-        lines:['ยมบาทน้อย: "ผมขอระงับโทษไว้ก่อนครับ บัญชีที่มีรอยแก้ไม่มีเลขรับรอง ผมไม่ตัดสินจากบัญชีที่ผมเชื่อไม่ได้"', 'นางสีดา: "ขอบพระคุณเจ้าค่ะ หม่อมฉันจะรอ"'] },
-      { k:'pavilion', label:'ให้พระนางพักที่ศาลาระหว่างรอตรวจบัญชี',
-        lines:['ยมบาทน้อย: "ขอเชิญพระนางพักที่ศาลาก่อนครับ ระหว่างที่นิราตรวจต้นฉบับ"', 'นางสีดา: "หม่อมฉันขอบพระคุณเจ้าค่ะ"'] },
-    ]),
+    secret:'ส่องกระจกแล้ว ไม่พบเรื่องใดซ่อนอยู่ในใจพระนางเลย',
     reward:'ยมบาทน้อยมองพระนางเดินกลับขึ้นไปพร้อมหนุมาน แล้วนิราก็ปิดแฟ้มเล่มนั้นลงช้า ๆ ด้วยสองมือ',
+    // A3: Nira's advice (the "ช่วยเปิดความจริง" button) - puts the "Nira advises" tag on the hold verdict
+    nira:Object.freeze({
+      button:'ช่วยเปิดความจริง · นิรา', buttonEn:'Open the truth · Nira',
+      say:'นิรา: "ท่านคะ ดิฉันอ่านแฟ้มเล่มนี้แล้วยังไม่สบายใจค่ะ ขอแนะนำให้พักคดีไว้ก่อนเพื่อตรวจสอบ ท่านไม่ต้องรีบตัดสินค่ะ"',
+      sayEn:'Nira: "Sir, I am not easy about this file. I suggest putting the case on hold while it is checked. There is no need to rule in haste."',
+      tag:'นิราแนะนำ', tagEn:'Nira advises',
+    }),
+    // A4: three verdicts, all end with Hanuman. `lines` = what is said when the verdict is pressed. `punish` first asks the usual three things (station / who guards / level) and
+    // "ออกหมาย" - but Hanuman comes down BEFORE the writ reaches the guard, so no sentence is ever carried out and nothing is scored (Rae: the three paths score the same).
+    choices:Object.freeze([
+      { k:'punish', label:'ลงโทษ', labelEn:'Sentence her', hint:'เลือกที่ไหน · ใครคุม · ระดับทัณฑ์ แล้วกด "ออกหมาย"', hintEn:'Pick station, guard, level, then Issue the Writ',
+        lines:['ยมบาทน้อย: "ผมออกหมายตามระดับที่เลือกครับ"', 'นางสีดา: "หม่อมฉันรับฟังเจ้าค่ะ"', 'บรรยาย: ตราหมายกดลงบนกระดาษ ผู้คุมยังไม่ทันก้าวเข้ามา แสงสีทองแหวกเพดานห้องพิพากษาลงมา'] },
+      { k:'free', label:'ไม่ลงโทษ', labelEn:'Do not sentence her',
+        lines:['ยมบาทน้อย: "ผมไม่ลงโทษครับ เชิญพระนางรอที่ประตูสวรรค์"', 'นางสีดา: "ขอบพระคุณเจ้าค่ะ"', 'บรรยาย: ประตูสวรรค์ยังไม่ทันเปิด แสงสีทองแหวกเพดานห้องพิพากษาลงมา'] },
+      { k:'hold', label:'พักคดีไว้ก่อนเพื่อตรวจสอบ', labelEn:'Put the case on hold for checking', advised:true,
+        lines:['ยมบาทน้อย: "ผมขอพักคดีนี้ไว้ก่อนครับ เพื่อตรวจสอบแฟ้ม"', 'นิรา: "รับทราบค่ะ ดิฉันจะเปิดแฟ้มต้นฉบับทันที"', 'นางสีดา: "ขอบพระคุณเจ้าค่ะ หม่อมฉันจะรอ"', 'บรรยาย: นิราเริ่มพลิกหน้าแฟ้ม แล้วแสงสีทองก็แหวกเพดานห้องพิพากษาลงมา'] },
+    ]),
   }),
 });
+/** The verdict keys, in the order of the buttons. */
+export const SITA_CHOICE_KEYS = Object.freeze(SITA.hearing.choices.map(c => c.k));
 
 /** The soul that stands in the queue for case 12. Not part of cases.js: it is never drawn by chance and never sentenced (see game.js resolveSitaCase). */
 export const SITA_CASE = Object.freeze({ k:'sitaledger', story:true, zone:'th', sex:'f', sp:'soul-sita-th', kind:'innocent', calm:true,
-  name:SITA.hearing.name, who:SITA.hearing.who, face:SITA.hearing.face, seen:[], hidden:[],
+  name:SITA.hearing.name, who:SITA.hearing.who, face:SITA.hearing.face,
+  seen:[{ t:SITA.hearing.charge, tag:SITA.hearing.chargeTag, w:0 }], hidden:[],
   merits:SITA.hearing.merits.map((t, i) => ({ t, v:i ? 1 : 2, fake:false })),
-  line:SITA.hearing.line, claims:[], secret:SITA.hearing.secret, reward:SITA.hearing.reward, fail:null });
+  line:SITA.hearing.line, claims:SITA.hearing.claims.map(c => ({ ...c })), secret:SITA.hearing.secret, reward:SITA.hearing.reward, fail:null });
 
 /** Notice windows of Zone 1's story (game.js queueNotice / ackNotice · ui.js openStoryNotice). `detail` = shown when the button is pressed. */
 export const NOTICES = Object.freeze({
@@ -149,21 +161,49 @@ export const NOTICES = Object.freeze({
 
 const page = (image, title, line) => ({ image, title, line, fallback:'📜' });
 /** Story pages of the beat. Pictures are Codex slots (16:9); until they exist the comic shows its normal "no picture" fallback. */
+/** A5: the Hanuman-descends scene exists in three versions, one per verdict - the first narration line and Yama's first line change, the rest is shared. */
+const OPEN_BY_CHOICE = Object.freeze({
+  punish:{ lead:'บรรยาย: หลังคาห้องพิพากษาสั่นสะเทือน แสงสีทองแหวกเมฆดำลงมาก่อนหมายจะถึงมือผู้คุม วานรร่างขาวสง่าลงยืนขวางหน้านางสีดา มือหนึ่งถือจดหมายประทับตราพระราม',
+    yama:'ยมบาทน้อย: "ท่านหนุมาน หมายนั้นผมยังไม่ได้บังคับใช้ครับ ขอผมตรวจแฟ้มก่อนได้ไหมครับ"' },
+  free:{ lead:'บรรยาย: หลังคาห้องพิพากษาสั่นสะเทือน แสงสีทองแหวกเมฆดำลงมาก่อนประตูสวรรค์จะเปิด วานรร่างขาวสง่าลงยืนขวางหน้านางสีดา มือหนึ่งถือจดหมายประทับตราพระราม',
+    yama:'ยมบาทน้อย: "ท่านหนุมาน ผมเพิ่งตัดสินให้พระนางไม่ต้องรับโทษครับ ท่านไม่ต้องห่วง"' },
+  hold:{ lead:'บรรยาย: หลังคาห้องพิพากษาสั่นสะเทือน แสงสีทองแหวกเมฆดำลงมาขณะนิราพลิกแฟ้ม วานรร่างขาวสง่าลงยืนขวางหน้านางสีดา มือหนึ่งถือจดหมายประทับตราพระราม',
+    yama:'ยมบาทน้อย: "ท่านหนุมาน ผมกำลังตรวจแฟ้มของพระนางอยู่พอดีครับ ขอเวลาอีกหน่อย"' },
+});
+const openStory = k => ({ title:'คำบัญชาจากพระราม', pages:[
+  page(SITA.art.descend, 'คำบัญชาจากพระราม',
+    OPEN_BY_CHOICE[k].lead + '\n'
+    + 'หนุมาน: "ข้าชื่อหนุมาน ทหารเอกของพระราม ท่านจะตัดสินพระนางอย่างไร ข้าไม่ได้มาฟังคำตัดสิน ข้ามาตามพระบัญชา ให้รับพระนางกลับไปให้พ้นจากที่แห่งนี้ พระรามเจ้าทรงรู้สึกว่ามีสิ่งผิดปกติ"'),
+  page(SITA.art.descend, 'ข้าเชื่อพระบัญชาก่อน',
+    OPEN_BY_CHOICE[k].yama + '\n'
+    + 'หนุมาน: "ข้าไม่ได้สงสัยท่าน แต่ข้าสาบานต่อพระรามไว้แล้วว่าจะไม่ปล่อยให้พระนางอยู่ในที่ที่ข้ายังไม่แน่ใจว่าปลอดภัย ท่านอยากให้ข้าเชื่อ ก็จงแสดงให้ข้าเห็นว่าท่านปกป้องพระนางได้จริง"\n'
+    + 'บรรยาย: หนุมานยกมือตั้งท่า ไม่ใช่เพื่อทำลาย แต่เพื่อทดสอบผู้ที่จะยืนเคียงพระนางแทนเขา'),
+] });
+/** `sita-return` (R1 A6): Sita's first line (page 1) and Yama's first line (page 2) follow the verdict; the rest is the 13 Nov text. */
+const RETURN_BY_CHOICE = Object.freeze({
+  punish:{ sita:'นางสีดา: "หม่อมฉันไม่ถือโทษท่านเจ้าค่ะ ท่านทำตามบัญชีที่ท่านได้รับ"', yama:'ยมบาทน้อย: "ผมต่างหากที่ต้องขออภัยพระนางครับ ที่เกือบออกหมายโดยไม่ตรวจก่อน"' },
+  free:{ sita:'นางสีดา: "ขอบพระคุณที่ท่านไม่ตัดสินจากบัญชีเพียงอย่างเดียวเจ้าค่ะ"', yama:'ยมบาทน้อย: "ผมต่างหากที่ต้องขอบคุณครับ ที่พระนางใจเย็นพอให้ผมตรวจ"' },
+  hold:{ sita:'นางสีดา: "ขอบพระคุณที่ท่านฟังหม่อมฉันก่อนอ่านบัญชีเจ้าค่ะ"', yama:'ยมบาทน้อย: "ผมต่างหากที่ต้องขอบคุณครับ ที่พระนางใจเย็นพอให้ผมตรวจ"' },
+});
+const returnStory = k => ({ title:'ส่งพระนางกลับ', pages:[
+  page(SITA.art.return, 'คืนบัญชี',
+    'บรรยาย: นิราประทับตรายกเลิกข้อหา แล้วเขียนกำกับท้ายแฟ้มว่า "ผู้ถูกเรียกก่อนกำหนด คืนอายุขัยเต็ม" ประตูสวรรค์เปิดออกช้า ๆ\n' + RETURN_BY_CHOICE[k].sita),
+  page(SITA.art.return, 'ขอบคุณที่ไม่ตัดสินจากบัญชี',
+    RETURN_BY_CHOICE[k].yama + '\n'
+    + 'หนุมาน: "ข้าค้อมศีรษะให้ศาลแห่งนี้ ข้าขอพระนางกลับไปหาพระรามเจ้า เจ้านายของข้าคงรออยู่"\n'
+    + 'บรรยาย: หนุมานประคองพระนางขึ้นไปตามแสงทอง ประตูสวรรค์ปิดลงเบา ๆ นิรายังยืนมองแฟ้มเล่มนั้นอยู่อีกครู่'),
+] });
 export const SITA_STORIES = {
-  'sita-hanuman-open':{ title:'คำบัญชาจากพระราม', pages:[
-    page(SITA.art.descend, 'คำบัญชาจากพระราม',
-      'บรรยาย: หลังคาห้องพิพากษาสั่นสะเทือน แสงสีทองแหวกเมฆดำลงมากลางโถง วานรร่างขาวสง่าลงยืนขวางหน้านางสีดา มือหนึ่งถือจดหมายประทับตราพระราม\n'
-      + 'หนุมาน: "ข้าชื่อหนุมาน ทหารเอกของพระราม ข้ามาตามพระบัญชา ให้รับพระนางกลับไปให้พ้นจากที่แห่งนี้ พระรามเจ้าทรงรู้สึกว่ามีสิ่งผิดปกติ"'),
-    page(SITA.art.descend, 'ข้าเชื่อพระบัญชาก่อน',
-      'ยมบาทน้อย: "ท่านหนุมาน ผมให้เกียรติท่านและพระนางเสมอครับ บัญชีฉบับนี้มีข้อน่าสงสัย ขอเวลาผมตรวจก่อนได้ไหมครับ"\n'
-      + 'หนุมาน: "ข้าไม่ได้สงสัยท่าน แต่ข้าสาบานต่อพระรามไว้แล้วว่าจะไม่ปล่อยให้พระนางอยู่ในที่ที่ข้ายังไม่แน่ใจว่าปลอดภัย ท่านอยากให้ข้าเชื่อ ก็จงแสดงให้ข้าเห็นว่าท่านปกป้องพระนางได้จริง"\n'
-      + 'บรรยาย: หนุมานยกมือตั้งท่า ไม่ใช่เพื่อทำลาย แต่เพื่อทดสอบผู้ที่จะยืนเคียงพระนางแทนเขา'),
-  ]},
+  ...Object.fromEntries(SITA_CHOICE_KEYS.map(k => [`sita-hanuman-open-${k}`, openStory(k)])),
+  // A6 · e2: Sita tells Hanuman to stop, he accepts and bows (the picture is a Codex slot: cut-hanuman-yields-th stands in)
   'sita-hanuman-win':{ title:'หนุมานยอมรับ', pages:[
-    page(SITA.art.yield, 'หนุมานยอมรับ',
-      'หนุมาน: "พอแล้ว ข้าเห็นแล้วว่าท่านสู้เพื่อปกป้อง ไม่ได้สู้เพื่อให้ชนะ ข้านับถือ"\n'
-      + 'บรรยาย: หนุมานลดมือ ถอยหนึ่งก้าว แล้วโค้งศีรษะให้ยมบาทน้อยอย่างสงบ\n'
-      + 'นางสีดา: "พอเถิดหนุมาน ท่านไม่ต้องกังวลแทนหม่อมฉันขนาดนั้นเจ้าค่ะ"'),
+    page(SITA.art.yield, 'พอเถิดหนุมาน',
+      'บรรยาย: หนุมานตั้งท่าจะพุ่งเข้าใส่อีกครั้ง นางสีดาก้าวออกมายืนกลางโถง ยกมือขึ้นเบา ๆ\n'
+      + 'นางสีดา: "พอเถิดหนุมาน ท่านทำเพื่อหม่อมฉันมาตลอด หม่อมฉันขอบใจเจ้าค่ะ แต่ผู้ที่ยืนอยู่ตรงหน้าท่านไม่ใช่ศัตรูของหม่อมฉัน โปรดหยุดมือเถิด"\n'
+      + 'หนุมาน: "ข้าน้อมรับคำของพระนาง ข้าผิดเองที่ใจร้อน"'),
+    page(SITA.art.yield, 'ขออภัย',
+      'บรรยาย: หนุมานลดมือลง ถอยหนึ่งก้าว แล้วก้มศีรษะต่ำ ประนมมือขอโทษยมบาทน้อยและทุกคนในห้องพิพากษา\n'
+      + 'หนุมาน: "ขออภัยท่านยมบาทน้อย ข้ายกมือใส่ผู้ที่ปกป้องพระนาง ข้าไม่ควรเลย ข้าขอโทษ"'),
   ]},
   'sita-hanuman-lose':{ title:'หนุมานรอท่านอยู่', pages:[
     page(SITA.art.yield, 'หนุมานรอท่านอยู่',
@@ -182,15 +222,7 @@ export const SITA_STORIES = {
       + 'นิรา: "คนที่เลือกแก้ชื่อพระนาง ไม่ได้เลือกเพราะบังเอิญนะคะ เขาเลือกชื่อที่รู้อยู่แล้วว่าต้องมีคนตามลงมาทวงถามแน่ ๆ ดิฉันขอเก็บแฟ้มเล่มนี้เป็นหลักฐาน และขอตรวจแฟ้มเก่าย้อนหลังต่อ เล่มนี้อาจไม่ใช่เล่มแรกค่ะ"'
       + (SITA_CAMEO ? '\nหนุมาน: "ผู้ใดเอาชื่อพระนางมาเป็นเหยื่อ ข้าจะตามไปคุยด้วยเอง ถ้าท่านต้องการกำลัง ส่งข่าวมาได้"' : '')),
   ]},
-  'sita-return':{ title:'ส่งพระนางกลับ', pages:[
-    page(SITA.art.return, 'คืนบัญชี',
-      'บรรยาย: นิราประทับตรายกเลิกข้อหา แล้วเขียนกำกับท้ายแฟ้มว่า "ผู้ถูกเรียกก่อนกำหนด คืนอายุขัยเต็ม" ประตูสวรรค์เปิดออกช้า ๆ\n'
-      + 'นางสีดา: "ขอบพระคุณที่ท่านฟังหม่อมฉันก่อนอ่านบัญชีเจ้าค่ะ"'),
-    page(SITA.art.return, 'ขอบคุณที่ไม่ตัดสินจากบัญชี',
-      'ยมบาทน้อย: "ผมต่างหากที่ต้องขอบคุณครับ ที่พระนางใจเย็นพอให้ผมตรวจ"\n'
-      + 'หนุมาน: "ข้าค้อมศีรษะให้ศาลแห่งนี้ ข้าขอพระนางกลับไปหาพระรามเจ้า เจ้านายของข้าคงรออยู่"\n'
-      + 'บรรยาย: หนุมานประคองพระนางขึ้นไปตามแสงทอง ประตูสวรรค์ปิดลงเบา ๆ นิรายังยืนมองแฟ้มเล่มนั้นอยู่อีกครู่'),
-  ]},
+  ...Object.fromEntries(SITA_CHOICE_KEYS.map(k => [`sita-return-${k}`, returnStory(k)])),
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
