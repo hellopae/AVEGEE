@@ -1,0 +1,13 @@
+/* T4 (19 Nov 2026) - Magic Lamp: Mirror Tower treasure pane, bag tab, battle summon window. Layout only: colours are the game's tokens (index.html :root). Pictures are never recoloured or stretched. */
+.st-pane .tre-card{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center}
+.st-pane .tre-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.st-pane .tre-icon img{max-width:100%;max-height:100%;object-fit:contain}
+.tre-glyph{font-size:30px;line-height:1}
+.st-pane .tre-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.st-pane .tre-text small{color:var(--muted-foreground)}
+.st-pane .tre-text em{font-style:normal;color:var(--gold)}
+.st-pane .tre-none .tre-text em{color:var(--muted-foreground)}
+.st-pane .tre-spent .tre-text em{color:var(--destructive,#e0735c)}
+.st-pane .tre-all{justify-content:flex-end}
+.st-pane .tre-msg{color:var(--gold)}
+.st-pane .dev-tag{display:inline-block;padding:1px 8px;border-radius:999px;border:1px dashed var(--warning);color:var(--warning);font-size:11px}

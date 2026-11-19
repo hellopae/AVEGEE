@@ -107,6 +107,8 @@ import { pickText } from './boss-skills.js';   // BOSS-SKILLS   // ข้อ C �
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
+import { lt } from './lamp-text.js';
+import * as LAMP from './lamp.js';   // T4: Magic Lamp
 import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
@@ -6183,6 +6185,12 @@ function roomFor(k) {
 function openStation(k, emergency = false) {
   const def = STATIONS.find(d => d.k === k);
   if(k==='canteen'&&!g.stations.some(st=>st.def.k===k&&!st.build&&!st.repair&&!st.fire))return;
+  // T4 (R2 A 2.5): the first time Yama walks into the Mirror Tower with the lamp, Kan explains it (one page) - then the room opens as usual
+  if (k === 'krajok' && LAMP.lampOwned(g) && !g.storySeen['z1-kan-lamp'] && !dlg.open && !g.battle) {
+    g.queueStory('z1-kan-lamp'); showPendingStory();
+    dlg.addEventListener('close', () => setTimeout(() => { if (!dlg.open) openStation(k, emergency); }, 60), { once:true });
+    return;
+  }
   const room = roomFor(k);
   // Only krajok gains access to the new stand; other rooms keep their paths.
   if(k === 'krajok')room.walk=[{poly:[[.17,.51],[.81,.51],[.81,.81],[.68,.81],[.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}];
@@ -6193,6 +6201,33 @@ function openStation(k, emergency = false) {
   let trainingQuit = null, minigameQuit = null, mirrorCharge = null;
   let diag = null;                      // P4: ใบวินิจฉัยวิญญาณ (เฉพาะตะราง/ประตูสวรรค์) — mountDiagnosis() ตอนสร้างห้องเสร็จ
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
+  let treasureMsg = '';                 // T4: the last line the Mirror Tower panel said (refilled / upgraded / refused)
+  const itemIcon = it => it === 'mirror' ? '<img src="img/item-mirror.webp" alt="">' : it === 'clock' ? '<img src="img/fx-clock-reset.webp" alt="">'
+    : LAMP.LAMP_ICON_SRC ? `<img src="${esc(LAMP.LAMP_ICON_SRC)}" alt="">` : '<span class="tre-glyph" aria-hidden="true">🪔</span>';   // no drawing of the lamp yet: a glyph, no 404
+  /** T4: Mirror Tower pane - one card per treasure (state + refill) and, once the lamp is owned, the lamp upgrade (a TEMPORARY button while LAMP_DEV_UPGRADE_BUTTON). Text: Rae R2 A 2.1 / 2.4. */
+  const treasurePaneHtml = () => {
+    const cards = LAMP.TREASURES.map(it => {
+      const s = LAMP.treasureState(g, it), name = lt(`item.${it}.name`);
+      const stateTxt = s.state === 'none' ? lt('state.notFound') : s.state === 'charged' ? lt('state.charged')
+        : s.state === 'partial' ? lt('state.partial', { n:s.n, max:s.max }) : lt('state.spent');
+      const can = s.state === 'partial' || s.state === 'spent';
+      return `<div class="st-row tre-card tre-${s.state}"><span class="tre-icon">${itemIcon(it)}</span><span class="tre-text"><b>${esc(name)}</b><small>${esc(lt(`item.${it}.desc`))}</small><em>${esc(stateTxt)}</em></span>
+        <button class="btn-gold" data-recharge="${it}" ${can ? '' : 'disabled'} ${s.state === 'none' ? `title="${esc(lt('tower.noItem', { item:name }))}"` : ''}>${esc(lt('tower.recharge'))}</button></div>`;
+    }).join('');
+    const owned = LAMP.lampOwned(g), lvl = LAMP.lampSlotCount(g), zoneUp = !!LAMP.ensureMagic(g).lamp.towers[g.zone];
+    const upgrade = !owned ? `<div class="st-pane-note">${esc(lt('tower.upNoLamp'))}</div>`
+      : `<div class="st-pane-title">${esc(lt('tower.upHeading'))}</div><div class="st-pane-note">${esc(lt('tower.upNow', { n:lvl }))}</div>`
+        + (LAMP.LAMP_DEV_UPGRADE_BUTTON ? `<div class="st-row tre-dev"><span><small class="dev-tag">${esc(lt('tower.devTag'))}</small></span>
+          <button class="btn-gold" data-lamp-dev-upgrade ${zoneUp ? 'disabled' : ''}>${esc(lt('tower.upTemp'))}</button></div>${zoneUp ? `<div class="st-pane-note">${esc(lt('tower.upAlready'))}</div>` : ''}` : '');
+    return `<div class="st-pane" data-pane="treasure">
+      <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
+      <div class="st-pane-title">${esc(lt('tower.heading'))}</div><div class="st-pane-note">${esc(lt('tower.note'))}</div>
+      ${cards}
+      <div class="st-row tre-all"><span></span><button class="btn-gold" data-recharge="all">${esc(lt('tower.rechargeAll'))}</button></div>
+      ${treasureMsg ? `<div class="st-pane-note tre-msg" role="status">${esc(treasureMsg)}</div>` : ''}
+      ${upgrade}
+    </div>`;
+  };
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
 
@@ -6272,6 +6307,7 @@ function openStation(k, emergency = false) {
           ${!sentenced.length && !g.held.length ? note(t('room.noneHeld')) : ''}
         </div>`;
     }
+    if (k === 'krajok') drawer = treasurePaneHtml();
     if (k === 'sawan') {
       const arrivals = g.sentences.filter(x => x.zone === g.zone && x.stage === 'gate');
       const rows = arrivals.map(x => {
@@ -6330,6 +6366,7 @@ function openStation(k, emergency = false) {
           mirrorCharge?.placed() && !nearMirror(R?.pos() || [0,0]) ? t('h4.mirrorNear') : ''],
         ['room.krajok.place', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
           g.powerLocked(mp) ? t('room.krajok.needMirror') : ''],
+        ['lt:tower.button', null, toggle('treasure')],   // T4: refill the three treasures + upgrade the lamp
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
       if (k === 'tea') {
         // P1 (22 ต.ค. 2569): ไม่มีปุ่มซื้อที่นอนแล้ว — สร้างศาลาน้ำชาเสร็จก็นอนได้เลย (ปุ่มนี้อยู่ในห้องศาลา จึงมีเฉพาะหลังสร้างเสร็จ)
@@ -6341,12 +6378,12 @@ function openStation(k, emergency = false) {
           asleep ? 'HP ค่อย ๆ ฟื้นระหว่างนอน' : g.hp >= g.hpMax ? 'บารมีเต็มแล้ว' : R?.nearBed() ? 'HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที' : 'เดินไปที่นอนก่อน']);
       }
       put(A, specs.map(([label, hint, , disabled, why], i) => {
-        const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_ROOM_LAYOUT.pivot[0], MIRROR_ROOM_LAYOUT.pivot[1]-.15] : [MIRROR_ROOM_LAYOUT.target[0], MIRROR_ROOM_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
+        const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_ROOM_LAYOUT.pivot[0], MIRROR_ROOM_LAYOUT.pivot[1]-.15] : i === 1 ? [MIRROR_ROOM_LAYOUT.target[0], MIRROR_ROOM_LAYOUT.target[1]-.07] : [room.crew[0], room.crew[1]-.30]) : room.actions?.[i] || [0.5, 0.5];
         const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala' || k === 'krata') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
-          <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(t(label))}</button>
+          <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(label.startsWith('lt:') ? lt(label.slice(3)) : t(label))}</button>
           ${sub ? `<small>${esc(sub)}</small>` : ''}
         </div>`;
       }).join(''));
@@ -6408,6 +6445,16 @@ function openStation(k, emergency = false) {
       };
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
+    dlg.querySelectorAll('[data-recharge]').forEach(b => b.onclick = () => {
+      const what = b.dataset.recharge, done = g.rechargeMagic(what);
+      treasureMsg = !done.length ? lt('tower.already') : what === 'all' ? lt('tower.doneAll') : lt('tower.doneOne', { item:lt(`item.${what}.name`) });
+      if (done.length) sfx('gong'); panels(); refresh();
+    });
+    dlg.querySelector('[data-lamp-dev-upgrade]')?.addEventListener('click', () => {
+      const r = g.upgradeLampDev(g.zone);
+      treasureMsg = r === 'already' ? lt('tower.upAlready') : r === 'noLamp' ? lt('tower.upNoLamp') : r ? '' : lt('tower.upDone', { n:LAMP.lampSlotCount(g) });
+      if (!r) sfx('gong'); panels(); refresh();
+    });
     dlg.querySelectorAll('[data-diag]').forEach(el => {
       const open = () => diag?.show(el.dataset.diag, el);
       el.onclick = open;

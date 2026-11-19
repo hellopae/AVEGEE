@@ -19,6 +19,9 @@ export const SUMMON_USES = 3;
 /** Which lamp level the Mirror Tower of each zone gives (owner: minigame Zone 1 -> 1 helper ... Zone 4 -> 4). */
 export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:4 });
 
+/** The lamp's own icon (Rae R2 A, table A1: `img/ui/item-magic-lamp.webp`, plus `-lit` for the lit one). Not drawn yet -> null = the UI shows the 🪔 glyph and asks for no file.
+ *  When Kittanate's drawing is saved at that path, set this to the path (one line). */
+export const LAMP_ICON_SRC = null;
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
