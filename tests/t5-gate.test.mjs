@@ -33,7 +33,7 @@ test('the gate fight is due only with Yomathat in the team on the border walk; R
   assert.equal(storyOf('z2-guanyu-open').pages.length, 3); assert.match(storyOf('z2-guanyu-open').pages[1].line, /ประตูเมืองไม่เคยถูกบุกจากข้างนอก/);
   assert.equal(storyOf('z2-guanyu-win').pages.length, 2); assert.equal(storyOf('z2-guanyu-lose').pages.length, 1);
   assert.deepEqual(BOSS_SKILLS.guanyu.map(m => [m.id, m.kind, m.name.th]), [['greenDragonSweep', 'groupHit', 'ง้าวมังกรเขียวกวาดลาน'], ['oneCutNoRetreat', 'heavyHit', 'ฟันเดียวไม่ถอย']]);
-  assert.equal(guardName('asia'), 'กวนอู'); assert.equal(guardTitle('asia'), 'ผู้เฝ้าด่านบูรพา'); assert.equal(guardName('west'), 'แวน เฮลซิง', 'T7/2: Zone 3 has Van Helsing'); assert.equal(guardName('cyberhell'), 'ยักษ์ทวารบาล', 'the last zone keeps the old word until its event');
+  assert.equal(guardName('asia'), 'กวนอู'); assert.equal(guardTitle('asia'), 'ผู้เฝ้าด่านบูรพา'); assert.equal(guardName('west'), 'แวน เฮลซิง', 'T7/2: Zone 3 has Van Helsing'); assert.equal(guardName('cyberhell'), 'WATSON-03', 'T8b/2: Zone 4 has WATSON-03');
   const row = ZONE_EVENTS.th.find(e => e.k === GATE.eventKey); assert.ok(row.gate); assert.equal(row.atCases, 999); assert.equal(row.foe.sp, 'boss-guanyu-asia');
 });
 

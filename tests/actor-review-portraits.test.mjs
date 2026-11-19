@@ -15,6 +15,6 @@ for(const homeZone of ['th','asia','west','cyberhell'])test(`${homeZone}: Guard 
  const context={g:{zone:'cyberhell',battleActors:()=>[actor],battleTimeline:()=>[unit,unit]},artUrl,esc:String,bossProfileOverride:()=>null,storyFoeArt:()=>null};
  vm.createContext(context);vm.runInContext(source,context);
  const html=context.battleTurnOrderHtml({turnQueue:{round:1}}),urls=[...html.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]);
- assert.equal(urls.length,2);for(const url of urls){assert.ok(existsSync(url),url);assert.notEqual(url,'null');if(homeZone!=='th')assert.ok(url.toLowerCase().includes(homeZone));}
+ assert.equal(urls.length,2);for(const url of urls){assert.ok(existsSync(url),url);assert.notEqual(url,'null');if(homeZone!=='th')assert.ok(url.toLowerCase().includes(homeZone)||homeZone==='cyberhell'&&/watson03/.test(url));}
  assert.equal(context.battleTurnOrderHtml({turnQueue:{round:1},over:'win'}),'');
 });

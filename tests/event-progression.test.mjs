@@ -93,7 +93,7 @@ test('Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retri
   assert.equal(g.buyMerchant('tea'), true);
   assert.equal(g.crew.some(c => c.k === 'taan'), true);
   assert.equal(g.abilities.cooldownClock, true);
-  g.zoneCases.cyberhell = 5; g.refreshZoneEvents();
+  g.zoneCases.cyberhell = 7; g.refreshZoneEvents();   // T8b/2: case 5 -> 7
   g.startZoneEvent('cyberBreach');
   g.battle.youHp = 1; g.enemyTarget=()=>({id:'you'});
   g.battleAct('atk');
@@ -103,5 +103,5 @@ test('Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retri
   assert.equal(g.zoneEventStatus('cyberBreach'), 'pending');
   g.startZoneEvent('cyberBreach'); winBattle(g);
   assert.equal(g.inventory.spareHeart, 1);
-  assert.equal(ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves.length, 4);
+  assert.equal(ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves.length, 5);   // T8b/2: four waves of demons + the boss row
 });

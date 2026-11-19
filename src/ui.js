@@ -123,6 +123,7 @@ import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
 import { Z4A, HOME67_HARBOR_LINES } from './z4a-border.js';   // T8a
 import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_ART_KEY } from './z4c-cases.js';   // T8b
+import { Z4T } from './z4d-trojan.js';   // T8b/2
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -2016,7 +2017,7 @@ function openZoneEventAlert(ev) {
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
   // Z1-EVENTS (owner e8): the elder brother stands at the pier and can be talked to - this window IS that talk (prepare / fight), no cave walk
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
-    openEventAlert(ev.k, title, ev.k === 'westVampireBreach' || ev.k === 'asiaRageBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);   // Z2-EVENTS: Rae N11-1 for Zone 2
+    openEventAlert(ev.k, title, ev.k === 'westVampireBreach' || ev.k === 'asiaRageBreach' || ev.k === Z4T.eventKey ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);   // Z2-EVENTS: Rae N11-1 for Zone 2
     return;
   }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
@@ -3931,6 +3932,12 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
     }
     // Z1-EVENTS (case 9): right after the intro, the green giant who keeps the border gate steps out to help (cutscene, once)
     const proceed = () => {
+      // T8b/2 (Rae D 4.1 / 4.3): after Trojan-9's old scene, HOME-67 runs in (one line) and calls the Guard of Zone 4 (z4-troj-pre) - once, before the team is prepared for wave 1
+      if (g.zone === 'cyberhell' && breachKey === Z4T.eventKey && !g.storySeen[Z4T.preStory]) {
+        const chain = [Z4T.runStory, Z4T.preStory].filter(k => !g.storySeen[k] && storyOf(k));
+        const next = () => { const k = chain.shift(); if (!k) { g.save(); toPrep(); return; } openDlg('intro-comic-dialog'); renderStoryComic(dlg, storyOf(k), () => { g.storySeen[k] = true; next(); }); };
+        next(); return;
+      }
       const key = 'frontier-th-guard-joins';
       if (!thBreach || g.storySeen[key]) { toPrep(); return; }
       openDlg('intro-comic-dialog');

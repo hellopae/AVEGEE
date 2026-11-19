@@ -16,7 +16,7 @@ test('names: Zone 1 = กุมภัณฑ์ / Kumphan with his title; every o
   assert.equal(guardTitle('th'), 'ยักษ์ทวารบาลประจำสุวรรณภูมิ'); assert.equal(guardTitle('th', 'en'), 'Gate Guard of Suvarnabhumi');
   assert.equal(guardName('asia'), 'กวนอู'); assert.equal(guardTitle('asia'), 'ผู้เฝ้าด่านบูรพา');   // T5'/4: Zone 2's Guard is Guan Yu
   assert.equal(guardName('west'), 'แวน เฮลซิง'); assert.equal(guardName('west', 'en'), 'Van Helsing'); assert.equal(guardTitle('west'), 'ผู้เฝ้าด่านปัจฉิม'); assert.equal(guardTitle('west', 'en'), 'Gate Guard of the West');   // T7/2: Zone 3's Guard is Van Helsing
-  for (const z of ['cyberhell']) { assert.equal(guardName(z), GUARD.name, z); assert.equal(guardTitle(z), ''); }
+  assert.equal(guardName('cyberhell'), 'WATSON-03'); assert.equal(guardName('cyberhell', 'en'), 'WATSON-03'); assert.equal(guardTitle('cyberhell'), 'ผู้เฝ้าด่านนรกเครือข่าย'); assert.equal(guardTitle('cyberhell', 'en'), 'Gate Guard of the Network Hell');   // T8b/2: Zone 4's Guard is WATSON-03
   assert.equal(GUARD.name, 'ยักษ์ทวารบาล');
 });
 

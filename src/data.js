@@ -9,6 +9,7 @@ import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
 import { SEV, JORM_TEXT, SEV_ARRIVE_LINES } from './z3f-severin.js';   // T7b-2/5
 import { COL_EVENTS } from './z4b-colosseum.js';   // T8a/2
 import { Z4A, Z4A_LUMEN, Z4A_ZONE4 } from './z4a-border.js';   // T8a/3
+import { Z4T_TEXT, Z4T_GUARD, Z4T } from './z4d-trojan.js';   // T8b/2
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -744,7 +745,7 @@ export const MOB = {
 export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
 /** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard
  *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */
-export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
+export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03
 export const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;
 export const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';
 export const GUARD = {
@@ -2068,11 +2069,13 @@ export const ZONE_EVENTS = {
       alert:{ th:'เทวดาจับทัณฑ์กับพ่อค้านรกไว้ในคุก ต้องชนะจึงจะช่วยออกมาได้', en:'Devas imprisoned Taan and the merchant. Defeat them to free the captives.' },
       foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:184, atk:[18,28], boss:true, partyScale:{ hp:[1,1.6,2.6], atk:[1,1.1,1.48] }, skillsEach:[BOSS_SKILLS.lumen01, BOSS_SKILLS.lumen02] }],   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       reward:{ coin:130, ability:'cooldownClock', releaseCaptives:true } },
-    { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
-      title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },
-      alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
+    // T8b/2 (Rae R2 D 4): case 7 (atCases 5 -> 7) - the demons break through the lower frontier: 4 waves of demons, then Trojan-9 (his row is counted apart, like Akura / Valdric). The team = Yama + Nira + HOME-67 (guest of the fight) + WATSON-03 (guest Guard,
+    // stays when it is won) - game.js startZoneEvent. Reward `spareHeart` as before. Numbers are the old ones + a 4th wave (one kind-13 foe, hp 85, atk 19-28 - chosen so that tests/balance28b's breach benchmark stays at 70-90 %; two foes gave 56-59 %).
+    { k:Z4T.eventKey, atCases:7, requires:['cyberRescue'], mode:'waves', team:'frontier', bossApart:true,
+      title:Z4T_TEXT.title, alert:Z4T_TEXT.alert, ack:Z4T_TEXT.ack, banner:Z4T_TEXT.boss, banners:Z4T_TEXT.banners, winStories:[Z4T.joinStory], winNotices:[Z4T.guardNotice],
       waves:[[{ kind:11, count:2, hp:60, atk:[15,24] }], [{ kind:12, count:2, hp:65, atk:[17,26] }],
-        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:234, atk:[22,33], boss:true, skills:BOSS_SKILLS.trojan9, partyScale:{ hp:[1,1,1], atk:[.5,.8,1.02] } }]],   // BOSS-SKILLS set A: was 180 / 23-35
+        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ kind:13, count:1, hp:85, atk:[19,28] }],
+        [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:234, atk:[22,33], boss:true, skills:BOSS_SKILLS.trojan9, partyScale:{ hp:[1,1,1], atk:[.5,.8,1.02] } }]],   // BOSS-SKILLS set A: was 180 / 23-35
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach','signalClose'], mode:'waves',

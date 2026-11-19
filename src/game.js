@@ -21,6 +21,7 @@ import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
 import { Z4A, Z4A_ZONE4 } from './z4a-border.js';   // T8a
 import { COL } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_JOURNAL, Z4C_HINT_AFTER } from './z4c-cases.js';   // T8b
+import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -908,7 +909,7 @@ const API = {
     return def.cleanse && why && why === this.sealWhy(actor) ? '' : why;
   },
   teamJudgmentRemaining() { const b = this.battle; return Math.max(0, (b?.teamReadyTurn || 0) - (b?.actorTurns?.you || 0)); },
-  guardActive() { return !isFrontierDuoBattle(this.battle) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
+  guardActive() { return (!isFrontierDuoBattle(this.battle) || !!this.battle?.guardGuest) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
   enemyGuard() {
     const b = this.battle;
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
@@ -3410,6 +3411,9 @@ const API = {
     // 29C: ศึกระลอกชายแดนใช้ทีมที่จัดไว้ในหน้าต่างเตรียมทีมที่ชายแดน (เดิมใช้ทีมของโต๊ะนิรา ทำให้ที่เลือกไว้ไม่มีผล)
     const frontierTeam = ev.team === 'frontier'
       ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
+    if (key === Z4T.eventKey && !this.guard) {   // T8b/2: WATSON-03 steps out as the Guard of this fight; he stays only if it is won (benchLockedGuard)
+      this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'cyberhell', 'guard'); this.guard.breachGuest = true; syncRoster(this);
+    }
     if (key === 'westVampireBreach' && !frontierTeam.length) frontierTeam.push(...this.crewHelpers().slice(0,2).map(c => c.k));
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
       ...(key === 'westHypnotized' ? { team:['taan'] } : key === 'cyberFinal' ? { team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0, this.teamLimits.finalTeamMax) }
@@ -3418,6 +3422,7 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:evLines(ev).start || ev.banner?.th || ev.alert.th, ...(evLines(ev).half ? { halfLine:evLines(ev).half } : {}), ...(evLines(ev).first ? { firstLine:evLines(ev).first } : {}) });
+    if (key === Z4T.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:!!this.guard });   // T8b/2 (Rae D 4.1): Yama + Nira + HOME-67 (from the pier, for this fight only) + WATSON-03
     if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
@@ -3679,6 +3684,7 @@ const API = {
     b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}`;
     // Z2-EVENTS (Rae 3.3 / 3.5): Nira reads the field between the waves; Akura speaks when his row comes
     if (ev.k === 'asiaRageBreach') b.talk = b.wave === 2 ? Z2_TEXT.breach.afterWave1 : b.wave === 3 ? Z2_TEXT.breach.afterWave2 : b.foes.some(f => f.boss) ? Z2_TEXT.breach.lines.start : b.talk;
+    if (ev.k === Z4T.eventKey) b.talk = langPick(Z4T_TEXT.between[`afterWave${b.wave - 1}`]) || b.talk;   // T8b/2 (Rae D 4.3): Nira after waves 1, 3 and 4, WATSON-03 after wave 2
     if (ev.k === 'westVampireBreach') {   // T7/2 (Rae 2.4 / 2.6): Nira and Van Helsing between the waves, the wake-up lines after the team, Valdric's first line; his half-way line (+ Van Helsing's) is set for the boss row
       const lines = Z3_FRONTIER_TEXT.between;
       b.talk = b.wave === 2 ? langPick(lines[1]) : b.wave === 3 ? langPick(lines[2]) : b.wave === 4 ? langPick(Z3_FRONTIER_TEXT.banners).split('\n')[3] : `${langPick(lines[4])}\n${langPick(Z3_FRONTIER_TEXT.valdricStart)}`;
@@ -3797,7 +3803,7 @@ const API = {
   battleCrew() {
     if (isFrontierDuoBattle(this.battle)) {
       const nira = this.crewOf('nira');
-      return [nira,bossGuideCombatant(this)].filter(c=>actorStanding(c)&&!(this.battle.absentActors||[]).includes(c.id));
+      return [nira,bossGuideCombatant(this,!!this.battle.home67Guest)].filter(c=>actorStanding(c)&&!(this.battle.absentActors||[]).includes(c.id));
     }
     const keys = this.battle?.team || this.party?.members || [];
     if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
@@ -4462,7 +4468,8 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
-        if (B.eventKey === Z3_FRONTIER.eventKey && this.guard) delete this.guard.breachGuest;   // T7/2: Van Helsing stays as the Gate Guard of the West
+        if (B.eventKey === Z3_FRONTIER.eventKey && this.guard) delete this.guard.breachGuest;
+        if (B.eventKey === Z4T.eventKey && this.guard) delete this.guard.breachGuest;   // T8b/2: WATSON-03 stays as the Gate Guard of the Network Hell   // T7/2: Van Helsing stays as the Gate Guard of the West
         if (B.eventKey === GATE.eventKey) this.guanyuEarned = true;   // T5'/4: Zone 2 will have its Guard
         if (B.eventKey === WANTHONG.eventKey) this.queueStory(`z1-khunphaen-win-${this.wanthongPath || 'punish'}`);   // T5'/1: the end of that scene hands over Kuman Thong (completeStory)
         if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);   // R2 A 3.1: the lamp comes after the PHANTOM-404 scene, before Sita is sent home
@@ -4822,7 +4829,7 @@ const API = {
         const loseEv = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
         if (loseEv?.loseStory) this.queueStory(loseEv.loseStory);   // Z2-EVENTS: the foe lets Yama rise (once per scene)
         this.zoneEvents[B.zone][B.eventKey] = 'pending';
-        if (B.eventKey === Z3_FRONTIER.eventKey) this.benchLockedGuard();   // T7/2: the guest Guard goes back until the fight is won
+        if (B.eventKey === Z3_FRONTIER.eventKey || B.eventKey === Z4T.eventKey) this.benchLockedGuard();   // T7/2: the guest Guard goes back until the fight is won
         this.hp = 1;
         B.talk = loseEv?.loseText?.text || `${loseEv?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;
         say(B.talk);
@@ -5180,6 +5187,7 @@ const API = {
     if (next?.key === 'deva-west') this.queueNotice(EIRLIN.waitNotice);   // T7b/4 (N10-1): she waits for the test
     if (next?.key === SEV.winStory && !(this.journalNotes ||= []).includes(SEV_JOURNAL.th)) this.journalNotes.push(SEV_JOURNAL.th);   // T7b-2/5: the clue on his last page
     if (next?.key === SEV.collateralStory) { this.unlockHelper(SEV.helper); this.home67 ||= { phase:'waiting' }; this.queueNotice(SEV.home67Notice); }   // T7b-2/5 (D4: NS-1 = lamp-helper-jormungandr; NS-2 is CUT) - Severin's ship has left, HOME-67 stands on the pier (NH-1)
+    if (next?.key === Z4T.joinStory && !(this.journalNotes ||= []).includes(Z4T_JOURNAL.th)) this.journalNotes.push(Z4T_JOURNAL.th);   // T8b/2: WATSON-03 in the journal
     if (next?.key === EIRLIN.winStory) { this.queueNotice(EIRLIN.crateNotice); this.unlockHelper(EIRLIN.helper); }   // T7b/4 (N10-4' the crate = the valkyrieSpear reward; D4: her own event is passed -> helper no. 8, NE-1)
     if (next?.key === 'deva-cyberhell') {
       this.devaVisits.cyberhell = { phase:'waiting' };
@@ -5540,6 +5548,9 @@ const API = {
   /** Zone 1: a Guard who is with the team before the frontier breach is won goes back to his gate (lost breach / reload mid-fight). */
   benchLockedGuard() {
     if (this.zone === 'west' && this.guard?.breachGuest && this.zoneEventStatus(Z3_FRONTIER.eventKey) !== 'cleared') {   // T7/2: Van Helsing steps in for the case-5 fight only; a lost fight / reload sends him back
+      delete this.roster[this.guard.id]; this.guard = null; return true;
+    }
+    if (this.zone === 'cyberhell' && this.guard?.breachGuest && this.zoneEventStatus(Z4T.eventKey) !== 'cleared') {   // T8b/2: WATSON-03 steps in for the case-7 fight only
       delete this.roster[this.guard.id]; this.guard = null; return true;
     }
     if (this.zone !== 'th' || !this.guard || guardUnlocked(this, 'th')) return false;

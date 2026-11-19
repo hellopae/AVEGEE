@@ -75,8 +75,8 @@ test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foe
   assert.equal(g.startZoneEvent('cyberRescue'),null);
 });
 test('E5 cyber breach uses walk-to-boss before existing intro; four waves and spare heart unchanged',()=>{
-  const ev=ZONE_EVENTS.cyberhell[1];assert.equal(ev.atCases,5);assert.equal(ev.waves.length,4);
-  assert.equal(ev.waves[3][0].name,'โทรจัน-9');assert.equal(ev.reward.item,'spareHeart');
+  const ev=ZONE_EVENTS.cyberhell[1];assert.equal(ev.atCases,7);assert.equal(ev.waves.length,5);   // T8b/2: case 7, four waves of demons + the boss row
+  assert.equal(ev.waves[4][0].name,'โทรจัน-9');assert.equal(ev.reward.item,'spareHeart');
   assert.equal(breachApproachActors('cyberhell','cyberBreach')[0].art,'boss-frontier');
   assert.equal(frontierIntroduction('cyberhell','en').image,'img/frontier-cyberhell-intro-v1.webp');
   const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');

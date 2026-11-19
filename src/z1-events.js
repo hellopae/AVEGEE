@@ -30,6 +30,7 @@ import { Z3_KIN_NOTICES } from './z3g-kin.js';   // T7c/6
 import { Z4A_STORIES, Z4A_NOTICES } from './z4a-border.js';   // T8a
 import { COL_NOTICES } from './z4b-colosseum.js';   // T8a/2
 import { Z4_STORY_CASES, Z4C_CASE_NOTICES } from './z4c-cases.js';   // T8b
+import { Z4T_STORIES, Z4T_NOTICES } from './z4d-trojan.js';   // T8b/2
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -82,6 +83,7 @@ export function owedStoryCase(g) {
 /** Guard (green giant): in Zone 1 he is the gate keeper of the border and joins the team only after the frontier breach (owner e2 / e3).
  *  Other zones keep their own rule. */
 export const guardUnlocked = (g, zone = g.zone) =>
+  zone === 'cyberhell' ? g.zoneEvents?.cyberhell?.cyberBreach === 'cleared' :   // T8b/2: WATSON-03 joins through the case-7 fight, not the hire desk
   zone === 'west' ? g.zoneEvents?.west?.westVampireBreach === 'cleared' :   // T7/2: Zone 3's Guard (Van Helsing) joins through the case-5 event, not the hire desk
   zone !== 'th' || g.zoneEvents?.th?.frontierBreach === 'cleared' || !!g.bossCleared?.th;
 
@@ -209,6 +211,7 @@ export const NOTICES = Object.freeze({
   ...COL_NOTICES,   // T8a/2 (N-COL-1, NT-1, NL-1)
   ...Z4A_NOTICES,   // T8a/3 (NW-1, NZ-2, NH-5, NH-6)
   ...Z4C_CASE_NOTICES,   // T8b (NAS-1 ...)
+  ...Z4T_NOTICES,   // T8b/2 (NV-W)
   'lamp-helper-ryujin':{ ...RYUJIN_TEXT.win, openLamp:true, art:RYUJIN_ART.icon },   // T6/5 (NR-3): the win window IS the unlock window
   'lamp-helper-musashi':MUSASHI_FLAME_NOTICE,   // T6/7 (NM-1)
   'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one
@@ -338,7 +341,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z4T_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

@@ -111,6 +111,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   // T7/2: Zone 3's Guard is Van Helsing - his own picture slot (placeholder until Codex draws it); walking / cutscene variants of the generic guard stay as they are
+  if (z === 'cyberhell' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z4-events/guard-watson03${key.endsWith('-profile') ? '-profile' : ''}.webp`;   // T8b/2: Zone 4's Guard is WATSON-03
   if (z === 'west' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z3-events/guard-vanhelsing-west${key.endsWith('-profile') ? '-profile' : ''}.webp`;
   if (z === 'west' && (key === 'crew-boon' || key === 'crew-boon-profile')) return `img/West/crew-boon-west${key.endsWith('-profile') ? '-profile' : ''}-f.webp`;
   if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.webp';

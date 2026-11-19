@@ -172,7 +172,7 @@ const SCEN = [
   ['west devaTest', 'west', 4, 5, 3, g => { g.zoneCases.west = 7; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'pending' }; return g.startZoneEvent('westDevaTest'); }],
   ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 15; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared', westLoki:'cleared', westJorm:'cleared' }   /* T7b-2/5: Zone 3's boss is the case-15 beat, the serpent is fought before him */; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['cyber rescue', 'cyberhell', 5, 7, 3, g => { g.zoneEvents.cyberhell = { cyberRescue:'pending' }; return g.startZoneEvent('cyberRescue'); }],
-  ['cyber breach', 'cyberhell', 5, 8, 3, g => { g.zoneCases.cyberhell = 5; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' }; return g.startZoneEvent('cyberBreach'); }],
+  ['cyber breach', 'cyberhell', 5, 8, 3, g => { g.zoneCases.cyberhell = 7; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' }; return g.startZoneEvent('cyberBreach'); }],
 ];
 // BOSS-SKILLS set A (15 Nov): the owner made every boss harder and gave it moves (hp / atk / skills / partyScale in data.js).  This file's two benchmarks are about the RECOVERY ITEMS
 // (G1/G4), not about boss tuning, so they keep running against the boss numbers of the time they were fitted for; the new numbers are measured by scripts/sim-boss-skills.mjs
@@ -181,7 +181,7 @@ const LEGACY_BOSSES = [
   [() => ZONE_EVENTS.th[2].foe, 100, [10, 16]], [() => ZONE_EVENTS.th[1].waves[3][0], 90, [10, 16]], [() => ZONE_EVENTS.th.find(e => e.k === 'thBorderBoss').foes[0], undefined, [12, 19]],
   [() => ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach').waves[3][0], 125, [12, 19]],
   [() => ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').waves[4][0], 150, [13, 20]], [() => ZONE_EVENTS.west.find(e => e.k === 'westDevaTest').foe, 165, [14, 21]],
-  [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberRescue').foes[0], 105, [12, 19]], [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves[3][0], 180, [23, 35]],
+  [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberRescue').foes[0], 105, [12, 19]], [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves[4][0], 180, [23, 35]],
   ...[[4, 145, [18, 27]], [5, 160, [19, 28]], [6, 175, [20, 30]], [7, 190, [22, 31]], [8, 220, [23, 34]]].map(([i, hp, atk]) => [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves[i][0], hp, atk]),
 ];
 function withLegacyBosses(fn) {
@@ -348,14 +348,14 @@ test('สรุปรางวัล: แพ้ไม่มี · วิญญ�
 
 test('สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป', () => {
   const g = createGame(); g.party.members = [];   // C1: keep the 4-wave drill deterministic (Yama alone, as before)
-  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 5;
+  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 7;   // T8b/2: case 7, four waves of demons + the boss row (5 rows)
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' };
   g.startZoneEvent('cyberBreach');
-  for (let w = 1; w <= 4; w++) {
+  for (let w = 1; w <= 5; w++) {
     assert.equal(g.battle.summary, undefined, `ระลอก ${w} ยังไม่สรุป`);
     g.battle.foes.forEach(f => { f.hp = 1; });
     while (g.battle.foes.some(f => f.hp > 0)) { g.battle.selectedFoeId = g.battle.foes.find(f => f.hp > 0).id; g.battleAct('atk'); }
-    if (w < 4) assert.equal(g.advanceZoneEventWave(), true);
+    if (w < 5) assert.equal(g.advanceZoneEventWave(), true);
   }
   assert.equal(g.battle.over, 'win');
   const items = Object.fromEntries(g.battle.summary.items.map(i => [i.k, i.n]));

@@ -57,7 +57,7 @@ test('BOSS_ULTIMATE names are Rae\'s (zone 2 = the chain-weight, zone 3 = the bl
 test('the data reaches the foes: every fight of the set carries its moves (events, breach bosses, hypnotised lords, the Lumen, the four possessed rulers, the zone bosses)', () => {
   const foes = { devaTh:ev('th', 'devaTest').foe, tanthasura:ev('th', 'frontierBreach').waves[3][0], hanuman:ev('th', 'sitaHanuman').foe, yomathat:ev('th', 'thBorderBoss').foes[0],
     kuroha:ev('asia', 'asiaDevaTest').foe, akura:ev('asia', 'asiaRageBreach').waves[3][0], wukong:ev('asia', 'asiaWukong').foe, guard:ev('asia', 'asiaGuardTest').foe,
-    eirlin:ev('west', 'westDevaTest').foe, valdric:ev('west', 'westVampireBreach').waves[4][0], trojan:ev('cyberhell', 'cyberBreach').waves[3][0],
+    eirlin:ev('west', 'westDevaTest').foe, valdric:ev('west', 'westVampireBreach').waves[4][0], trojan:ev('cyberhell', 'cyberBreach').waves[4][0],
     yama:final(4), zhao:final(5), halvar:final(6), nexar:final(7), archon:final(8),
     sigTh:ev('th', 'signalTh').waves[1][0], sigAsia:ev('asia', 'signalAsia').waves[1][0], sigWest:ev('west', 'signalWest').waves[1][0], sigCyber:ev('cyberhell', 'cyberSignal').waves[1][0] };
   for (const [k, f] of Object.entries(foes)) assert.ok(f.skills?.length, k);

@@ -156,6 +156,11 @@ GROUPS['z4c1'] = [
   ('z4-events/soul-aiscam-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-aiscam-cyber (Z5: retired teacher, 72, white hair combed flat, black-framed glasses, pressed shirt with the second button missing, an old phone gripped in one hand)'),
   ('z4-events/soul-aiscam-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-aiscam-cyber-profile'),
 ]
+GROUPS['z4c2'] = [   # T8b/2 - Rae sec. 11 group W: WATSON-03 (a robot, tall slender silver-grey, double-lens eyes, a thin log-plate on the left forearm; NO hat, NO pipe, no film / series robot or detective) + the assist cut
+  ('z4-events/guard-watson03.webp', (512, 512), 'sprite', 'PLACEHOLDER guard-watson03 (W1: tall slender silver-grey robot, double-lensed eyes, a thin log-plate on the left forearm with glowing characters scrolling up, upright but loose shoulders; NO detective hat, NO pipe)'),
+  ('z4-events/guard-watson03-profile.webp', (512, 512), 'square', 'PLACEHOLDER guard-watson03-profile'),
+  ('z4-events/cut-wat-assist.webp', CUT, 'cut', 'PLACEHOLDER cut-wat-assist  (W2: the lower frontier of Zone 4, the demonic wooden horse in the middle with its belly hatch open, four rows of demons frozen behind it, WATSON-03 stepping out of a metal door at the roadside, HOME-67 pointing at his glass pane, Yama and Nira on the left)'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

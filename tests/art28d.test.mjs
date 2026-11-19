@@ -42,7 +42,7 @@ test('ruler lookup selects v2 in both zones, with an old-manifest fallback', asy
         ['th','img/crew-guard-v2.webp'],
         ['asia','img/Asia/crew-guard-asia-v2.webp'],
         ['west','img/z3-events/guard-vanhelsing-west.webp'],   // T7/2: Zone 3 Guard is Van Helsing (placeholder picture slot)
-        ['cyberhell','img/CyberHell/crew-guard-cyberhell-v2.webp'],
+        ['cyberhell','img/z4-events/guard-watson03.webp'],   // T8b/2: Zone 4 Guard is WATSON-03 (placeholder picture slot)
       ]) {
         art.bindZone(() => z);
         assert.equal(art.artUrl('crew-guard'), path, `Guard must match ${z}`);

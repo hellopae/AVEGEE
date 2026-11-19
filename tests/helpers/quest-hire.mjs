@@ -1,4 +1,4 @@
-// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him.
+// Z1-EVENTS (13 Nov 2026): Zone 1's Guard joins through the frontier breach, so fixtures mark it cleared before hiring him. T8b/2: Zone 4's Guard (WATSON-03) joins through the case-7 fight the same way.
 // PART-A (10 พ.ย. 2569): a quest exists only when its character is hired in the zone it points at.
 // Tests that set g.zone directly (no harbour travel) use these to hire the quest's character the way the game does (coin-neutral).
 import assert from 'node:assert/strict';
@@ -10,14 +10,14 @@ export const QUEST_NPCS = ['taan', 'plerng', 'kan', 'boon', 'dam', 'guard'];
 export function hireFor(g, q) {
   const p = questTarget(g, q);
   if (['nira', 'merchant'].includes(p.npc)) return;
-  if (p.npc === 'guard') { if (!g.guard) { g.coin += GUARD.hire; assert.ok((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard())); } }
+  if (p.npc === 'guard') { if (!g.guard) { g.coin += GUARD.hire; assert.ok((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.zoneEvents.cyberhell={...g.zoneEvents.cyberhell,cyberBreach:'cleared'},g.hireGuard())); } }
   else if (!g.crew.some(c => c.k === p.npc)) { g.coin += CREW.find(c => c.k === p.npc).hire; assert.ok(g.hire(p.npc)); }
   syncRoster(g);   // the game re-binds crew ids on zone travel; tests that jump g.zone need the same binding
 }
 /** every quest character owned in every zone (for tests that script all 16 quests at once) */
 export function hireAll(g) {
   for (const k of QUEST_NPCS) {
-    if (k === 'guard') { if (!g.guard) { g.coin += GUARD.hire; assert.ok((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.hireGuard())); } }
+    if (k === 'guard') { if (!g.guard) { g.coin += GUARD.hire; assert.ok((g.zoneEvents.th={...g.zoneEvents.th,frontierBreach:'cleared'},g.zoneEvents.cyberhell={...g.zoneEvents.cyberhell,cyberBreach:'cleared'},g.hireGuard())); } }
     else if (!g.crew.some(c => c.k === k)) { g.coin += CREW.find(c => c.k === k).hire; assert.ok(g.hire(k)); }
     for (const z of ['th', 'asia', 'west', 'cyberhell']) g.roster[rosterId(z, k)] ||= actorFromLegacy({ k }, z, k);
   }

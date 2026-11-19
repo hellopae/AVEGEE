@@ -9,7 +9,7 @@ import {STAFF_TEA_REST_MS,teaRoomStaff,teaRestSprite,reserveTeaSeat,TEA_SEAT_COU
 import {harbourTravel} from './helpers/travel.mjs';
 import {resetWalk} from '../src/walk.js?v=k1d';
 globalThis.Image??=class{};
-const game=zone=>{resetWalk();const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=100000;g.level=5;g.bossCleared={th:true,asia:true,west:true};g.zoneEvents.th={frontierBreach:'cleared'};(g.zoneEvents.west ||= {}).westVampireBreach='cleared';/* T7/2: Zone 3's Guard joins through the case-5 event */g.zoneEvents.asia={...g.zoneEvents.asia,asiaGuardTest:'cleared'};if(zone!=='th')assert.ok(harbourTravel(g,zone));g.hireGuard();for(const k of ['taan','plerng','boon','dam','kan'])if(!g.crewOf(k))g.hire(k);g.stations.push({def:STATIONS.find(s=>s.k==='tea'),build:0,repair:0,slots:[]});return g;};
+const game=zone=>{resetWalk();const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=100000;g.level=5;g.bossCleared={th:true,asia:true,west:true};g.zoneEvents.th={frontierBreach:'cleared'};(g.zoneEvents.cyberhell ||= {}).cyberBreach='cleared';/* T8b/2: Zone 4's Guard (WATSON-03) joins through the case-7 fight */(g.zoneEvents.west ||= {}).westVampireBreach='cleared';/* T7/2: Zone 3's Guard joins through the case-5 event */g.zoneEvents.asia={...g.zoneEvents.asia,asiaGuardTest:'cleared'};if(zone!=='th')assert.ok(harbourTravel(g,zone));g.hireGuard();for(const k of ['taan','plerng','boon','dam','kan'])if(!g.crewOf(k))g.hire(k);g.stations.push({def:STATIONS.find(s=>s.k==='tea'),build:0,repair:0,slots:[]});return g;};
 for(const zone of ['th','asia','west','cyberhell'])test(`A2 ${zone}: shared seats, two minutes on arrival, no drift and save/reload`,()=>{
  const nativeNow=Date.now;let now=nativeNow();Date.now=()=>now;
  try{

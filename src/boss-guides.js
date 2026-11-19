@@ -71,9 +71,9 @@ export const bossPierRetired=(g,zone=g.zone)=>zone==='cyberhell'&&!!g.bossCleare
 export const guideZone=g=>g.zone==='cyberhell'&&g.bossGuides?.zones?.west?.following?'west':g.zone;
 export function bossGuideFollowing(g,zone=guideZone(g)){const s=bossGuideState(g,zone);return !!(s?.won&&s.following&&!s.farewell&&!justiceHolding(g,zone));}
 /** A guest combatant belongs to the journey, never to the hireable office roster. */
-export function bossGuideCombatant(g) {
-  if(!bossGuideFollowing(g))return null;
-  const gz=guideZone(g),state=bossGuideState(g,gz),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
+export function bossGuideCombatant(g,force=false) {
+  if(!force&&!bossGuideFollowing(g))return null;   // T8b/2: `force` = HOME-67 comes down from the Zone 4 pier for the lower-frontier fight (he is not in the team any more, he is the guest of that fight)
+  const gz=force?'west':guideZone(g),state=bossGuideState(g,gz),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
   if(actor.recoverUntil&&Date.now()>=actor.recoverUntil){actor.recoverUntil=0;actor.morale=50;}
   return Object.assign(actor,{id:`guide:${gz}`,k:'guide',kind:'guide',guestGuide:true,homeZone:gz,
     name:gz==='asia'?MUSASHI.name:gz==='west'?'HOME-67':ZONES.find(z=>z.k===gz)?.bossName || 'ผู้ตรวจการนำทาง',speed:9,...(gz==='asia'?{artKey:MUSASHI.artKey,profileArt:MUSASHI.profile}:gz==='west'?{artKey:'char-home67',profileArt:'img/z3-events/char-home67-profile.webp'}:{})});   // T6/4: Zone 2's guest is Musashi · T8a: Zone 3's is HOME-67

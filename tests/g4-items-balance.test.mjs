@@ -177,8 +177,10 @@ test('G4 tea rest: Guard keeps working through the same method (restGuard alias)
 // ---------------------------------------------------------------- 4. endgame enemy attack
 test('G4 enemy atk: cyber breach and the final-line waves hit harder than before G4', () => {
   const OLD_BREACH = [[10, 16], [11, 17], [12, 18], [15, 23]];
-  const breach = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves.map(w => w[0].atk);
+  // T8b/2: case 7 now has FOUR waves of demons + the boss row (5 rows); the old four rows are waves 1-3 and the boss row (index 4), the new 4th wave (index 3) is compared with the old 3rd wave
+  const breachRows = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves.map(w => w[0].atk), breach = [breachRows[0], breachRows[1], breachRows[2], breachRows[4]];
   breach.forEach((atk, i) => { assert.ok(atk[0] >= OLD_BREACH[i][0] * 1.4 && atk[1] >= OLD_BREACH[i][1] * 1.4, `breach wave ${i + 1}`); });
+  assert.ok(breachRows[3][0] >= OLD_BREACH[2][0] * 1.4 && breachRows[3][1] >= OLD_BREACH[2][1] * 1.4, 'breach new wave 4');
   const OLD_FINAL = [[10, 16], [11, 17], [12, 18], [13, 19], [13, 20], [14, 21], [15, 22], [16, 23], [17, 25]];
   const fin = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves.map(w => w[0].atk);
   fin.forEach((atk, i) => { assert.ok(atk[0] > OLD_FINAL[i][0] && atk[1] > OLD_FINAL[i][1], `final wave ${i + 1}`); });
