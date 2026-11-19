@@ -57,24 +57,26 @@ export function recordBossGuideWin(g,battle){
   // T6/4 (Rae R2 B 4.2): Zone 2 has no praise scene - z2-lian-win (his last line changed) is it, then NL-1 says he waits at the harbor
   if(zone==='asia'){state.won=true;state.praised=true;g.queueNotice?.(HARBOR.waitNotice);return true;}
   // T7b-2/5 (Rae R2 C 5.1): Zone 3 has no praise / welcome / farewell scenes and no money + robes here (NS-2 is cut - HOME-67 gives them in part D): Severin's scenes are z3-sev-win and z3-sev-collateral, his ship leaves, he is gone from the pier
-  if(zone==='west'){state.won=true;state.praised=true;state.welcomed=true;state.farewell=true;return true;}
+  if(zone==='west'){Object.assign(state,{won:true,praised:true,welcomed:true,farewell:true,grantPaid:true,outfitGranted:true});return true;}   // T8a: outfitGranted / grantPaid on purpose - the Zone 4 robes + 1,200 come from HOME-67 (z4-home67-harbor), never from the old farewell migration
   state.won=true;g.queueStory?.(`boss-guide-${zone}-praise`);return true;
 }
 const justiceHolding=(g,zone)=>Object.values(g.bossJustice?.ledger||{}).some(entry=>entry.zone===zone&&entry.phase!=='released');
 export function bossGuideWaiting(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&!s.following&&!s.farewell&&!justiceHolding(g,zone));}
 /** O1: once the guide has said farewell at the new land's gate the boss is gone for good — route, frontier stand, city pier and every hidden hit spot. */
-export function bossGuideDismissed(g,zone=g.zone){return zone!=='asia'&&!!bossGuideState(g,zone)?.farewell;}   // T6/4: Lian Gang stays at the harbor for good (Musashi is the one who says farewell at the western gate)
+export function bossGuideDismissed(g,zone=g.zone){if(zone==='west')return !!g.bossCleared?.west;return zone!=='asia'&&!!bossGuideState(g,zone)?.farewell;}   // T8a: Severin is gone from Zone 3 for good once beaten (HOME-67 is the one who walks with the team now)   // T6/4: Lian Gang stays at the harbor for good (Musashi is the one who says farewell at the western gate)
 /** Q4-5: zone 4 has no next land to escort to, so once its boss is beaten he leaves the pier for good (no standee, no hit spot, no talk button).
  *  Game rules (rematch via game.startZoneBoss) are untouched; only what the player sees and can press is retired. */
 export const bossPierRetired=(g,zone=g.zone)=>zone==='cyberhell'&&!!g.bossCleared?.cyberhell;
-export function bossGuideFollowing(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&s.following&&!s.farewell&&!justiceHolding(g,zone));}
+/** T8a: HOME-67 walks with the team through Frontier 3-4 AND stays in Zone 4 until he leaves for the harbour - his record is the Zone 3 one */
+export const guideZone=g=>g.zone==='cyberhell'&&g.bossGuides?.zones?.west?.following?'west':g.zone;
+export function bossGuideFollowing(g,zone=guideZone(g)){const s=bossGuideState(g,zone);return !!(s?.won&&s.following&&!s.farewell&&!justiceHolding(g,zone));}
 /** A guest combatant belongs to the journey, never to the hireable office roster. */
 export function bossGuideCombatant(g) {
   if(!bossGuideFollowing(g))return null;
-  const state=bossGuideState(g),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
+  const gz=guideZone(g),state=bossGuideState(g,gz),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
   if(actor.recoverUntil&&Date.now()>=actor.recoverUntil){actor.recoverUntil=0;actor.morale=50;}
-  return Object.assign(actor,{id:`guide:${g.zone}`,k:'guide',kind:'guide',guestGuide:true,homeZone:g.zone,
-    name:g.zone==='asia'?MUSASHI.name:ZONES.find(z=>z.k===g.zone)?.bossName || 'ผู้ตรวจการนำทาง',speed:9,...(g.zone==='asia'?{artKey:MUSASHI.artKey,profileArt:MUSASHI.profile}:{})});   // T6/4: Zone 2's guest is Musashi
+  return Object.assign(actor,{id:`guide:${gz}`,k:'guide',kind:'guide',guestGuide:true,homeZone:gz,
+    name:gz==='asia'?MUSASHI.name:gz==='west'?'HOME-67':ZONES.find(z=>z.k===gz)?.bossName || 'ผู้ตรวจการนำทาง',speed:9,...(gz==='asia'?{artKey:MUSASHI.artKey,profileArt:MUSASHI.profile}:gz==='west'?{artKey:'char-home67',profileArt:'img/z3-events/char-home67-profile.webp'}:{})});   // T6/4: Zone 2's guest is Musashi · T8a: Zone 3's is HOME-67
 }
 export function queueBossGuideStory(g,beat,zone=g.zone){
   const state=bossGuideState(g,zone);if(!state?.won||justiceHolding(g,zone))return false;

@@ -18,6 +18,7 @@ import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-
 import { LOKI } from './z3d-cases.js';   // T7b/3
 import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
+import { Z4A } from './z4a-border.js';   // T8a
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -35,7 +36,7 @@ import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-un
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';
 import {PLERNG_WARRANT_FOOD,spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,setWorkerServeTarget,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
-import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
+import {initializeBossGuides,bossGuideState,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
@@ -3119,6 +3120,7 @@ const API = {
   joinHome67() {
     if (!this.home67Waiting() || this.battle) return false;
     this.home67 = { phase:'joined' }; this.home67Joined = true;
+    Object.assign(bossGuideState(this, 'west'), { following:true, farewell:false });   // T8a: he is the guest of the walk through Frontier 3-4 (the guide record of Zone 3) and stays in Zone 4 until the harbour
     this.queueStory(SEV.home67Join); this.queueNotice(SEV.home67JoinNotice); this.save(); this.onChange(); return true;
   },
   bossPierCanTalk() {
@@ -5232,7 +5234,20 @@ const API = {
   harbourPoint() { return {x:SPOTS.ferry.from[0],y:SPOTS.ferry.from[1]}; },
   atHarbour() { const p=this.harbourPoint();return Math.hypot(this.player.x-p.x,this.player.y-p.y)<=105; },
   activatePort() {if(!this.atHarbour()||!activateHarbour(this))return false;this.save();this.onChange();return true;},
+  /** T8a: HOME-67 walks with the team through Frontier 3-4 (and Zone 4's entry). Not before he has answered "I am ready" (NH-4 says so). */
+  home67Guest() { return !!this.home67Joined && this.home67?.phase === 'joined' && bossGuideFollowing(this); },
+  /** T8a (Rae part D 1.1): the first step of the walk (checkpoint 0) - `z34-arrive`, once */
+  z34ArriveDue(idx = null) {
+    const st = dungeonStatus(this);
+    return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.arriveStory] && (Number.isInteger(idx) ? idx : st.checkpoint) === 0;
+  },
+  /** T8a (1.8): the end of the walk - the gate nobody keeps (`z4-gate-silent`, once) before Zone 4 */
+  silentGateDue() {
+    const st = dungeonStatus(this);
+    return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.silentStory];
+  },
   beginBorderDungeon(to) {
+    if (this.zone === 'west' && this.home67Waiting?.()) { this.queueNotice(SEV.home67WarnNotice); this.onChange(); return false; }   // T8a (NH-4): the man in the light-banded cap is still waiting on the pier
     if(Math.hypot(this.player.x-FRONTIER.x,this.player.y-FRONTIER.y)>FRONTIER.reach||!beginDungeon(this,to))return false;
     this.player.path=null;this.save();this.onChange();return true;
   },
@@ -5298,7 +5313,7 @@ const API = {
     const z = ZONES.find(x => x.k === k);
     if (!z || !canTravelZone(this,k)) return false;
     const from=this.zone,travelMode=dungeonStatus(this)?.ready?'dungeon':'boat';
-    if(travelMode==='dungeon'&&(bossGuideFollowing(this)||bossGuideWaiting(this)))return false;
+    if(travelMode==='dungeon'&&((bossGuideFollowing(this)&&!(this.zone==='west'&&this.home67Guest()))||bossGuideWaiting(this)))return false;   // T8a: HOME-67 does not say farewell at the gate of Zone 4 - he goes in with the team
     if(travelMode==='boat'&&!this.atHarbour()||travelMode==='dungeon'&&!dungeonAtExit(this))return false;
 
     // A branch cannot keep drawing its walkers once another map is active.
@@ -5422,6 +5437,7 @@ const API = {
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     finishZoneArrival(this,from,k,travelMode);
+    if (k === 'cyberhell' && !back && this.home67Joined && !this.storySeen[Z4A.zone4Story]) this.queueStory(Z4A.zone4Story);   // T8a (2.3): the city with nobody in it
     if (k === 'west' && !back && this.zoneEventStatus(Z3_ARRIVE.eventKey) === 'pending') this.queueStory(Z3_ARRIVE.arriveStory);   // T7/1: the first arrival in Zone 3 (Rae R2 C 1.4)
     if (travelMode === 'boat') this.boatArrived();   // T5'/7
     if(travelMode==='boat'){

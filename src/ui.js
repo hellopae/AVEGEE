@@ -120,6 +120,7 @@ import { Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
 import { KIN_BY_KEY as Z2_KIN_BY_KEY } from './z3g-kin.js';   // T7c/6: the relatives of Zone 2 and Zone 3
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
+import { Z4A } from './z4a-border.js';   // T8a
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -5546,6 +5547,16 @@ function playCerberusScene(onDone) {
   });
 }
 /** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
+/** T8a: queue one scene, wait until it and everything else has closed, then `onDone` */
+function playStoryScene(key, onDone) {
+  g.queueStory(key); g.save(); g.onChange();
+  const w = () => {
+    if (g.over || g.battle) return;
+    if (dlg.open || storyPlaying || g.storyQueue.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; }
+    onDone?.();
+  };
+  setTimeout(w, 300);
+}
 function playCaveScene(onDone) {
   g.queueNotice(YOMATHAT.caveNotice); g.save();
   openStoryNotice(YOMATHAT.caveNotice);
@@ -5569,6 +5580,7 @@ function openDungeon() {
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
         // T5'/3 (Rae 6.1): the middle of the cave on the walk with Yomathat - NF-1, then the cage scene, then the checkpoint goes on as before
+        if(!opts?.chased&&!location?.patrol&&g.z34ArriveDue?.(location?.checkpoint)){playStoryScene(Z4A.arriveStory,()=>openDungeon());return;}   // T8a: the cave of Frontier 3-4 (z34-arrive), then the checkpoint goes on
         if(!opts?.chased&&!location?.patrol&&g.ryujinFightDue?.(location?.checkpoint)){playRyujinScene(()=>openDungeon());return;}   // T6/5: the water cave (NR-1, the scene, the fight, the win scene) comes before that checkpoint's own fight
         if(!opts?.chased&&!location?.patrol&&g.caveSceneDue(location?.checkpoint)){playCaveScene(()=>openDungeon());return;}
         if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
@@ -5578,13 +5590,14 @@ function openDungeon() {
         destroy?.();destroy=null;
         const arrive=()=>startMapJourney(to,'dungeon');
         const proceed=()=>{
-          if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
+          if(g.bossGuideFollowing?.()&&!g.home67Guest?.())runBossGuideStory('farewell',arrive);   // T8a: HOME-67 never says farewell at the gate
           else if(g.bossGuideWaiting?.()){
             const place=routeBossCave(dungeonStatus(g)?.route.id)?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
             modal(`<h2>ผู้ตรวจการรอที่${place}</h2><p>ย้อนกลับไปคุยกับผู้ตรวจการที่${place} เพื่อให้เขาพาเดินทางไปยังดินแดนใหม่</p><button data-return-guide>กลับไปตามหา</button>`,d=>{d.querySelector('[data-return-guide]').onclick=()=>openDungeon();});
           }
           else arrive();
         };
+        if(g.silentGateDue?.()){playStoryScene(Z4A.silentStory,proceed);return;}   // T8a (1.8): the gate nobody keeps, then Zone 4 - HOME-67 goes in with the team (no farewell)
         if(g.cerberusFightDue?.()){playCerberusScene(proceed);return;}   // T6/6: the western gate - NC-1, the scene, the fight, his bow (NC-3) - and only then Musashi's farewell
         if(g.gateFightDue?.()){playGateScene(proceed);return;}   // T5'/4: Guan Yu keeps the gate - NG-1, the scene, the fight, his win scene - and only then Yomathat's gift (the farewell)
         proceed();

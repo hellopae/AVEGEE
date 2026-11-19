@@ -27,6 +27,7 @@ import { Z3_STORY_CASES, Z3_CASE_NOTICES, Z3_CASE_STORIES } from './z3d-cases.js
 import { EIRLIN_NOTICES, EIRLIN_STORIES } from './z3e-eirlin.js';   // T7b/4
 import { SEV_NOTICES, SEV_STORIES } from './z3f-severin.js';   // T7b-2/5
 import { Z3_KIN_NOTICES } from './z3g-kin.js';   // T7c/6
+import { Z4A_STORIES } from './z4a-border.js';   // T8a
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -332,7 +333,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

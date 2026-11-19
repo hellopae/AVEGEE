@@ -116,6 +116,14 @@ GROUPS = {
   ('z3-events/soul-gate-sentry-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-gate-sentry-west-profile'),
   ('z3-events/soul-soup-cook-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-soup-cook-west-profile'),
  ],
+ 'z4a': [   # T8a - Rae R2 part D sec. 1-2 (groups COL C1 C2 + Z1 Z3). The bout pictures / Zone 4 souls are added by the later T8a items.
+  ('z4-events/cut-z34-arrive.webp', CUT, 'cut', 'PLACEHOLDER cut-z34-arrive  (C1: iron-grey mouth of the Frontier 3-4 cave, the hell merchant at a small stall, name-plaques of fighters hung in rows on the walls, Yama (Zone 3 robes) + Nira + HOME-67 stepping in under the high ceiling)'),
+  ('z4-events/cut-col-gate.webp', CUT, 'cut', 'PLACEHOLDER cut-col-gate  (C2: round stone arena with tiered stands, silent shades of spectators, Lucifer: long silver hair, black coat with gold trim, NO horns, NO wings, a straight staff, on a high balcony; NO religious symbol; NO piano / nightclub / suit)'),
+  ('z4-events/cut-col-s9.webp', CUT, 'cut', 'PLACEHOLDER cut-col-s9  (bout 9: Thor raises the thunder-hammer, lightning running along the shaft; plain clothes, NOT a red cape; arena stands behind)'),
+  ('z4-events/cut-col-s10.webp', CUT, 'cut', 'PLACEHOLDER cut-col-s10  (bout 10: Lucifer points the end of his staff, a curtain of light closing over the arena; NO horns, NO wings, NO religious symbol)'),
+  ('z4-events/cut-z4-arrive.webp', CUT, 'cut', 'PLACEHOLDER cut-z4-arrive  (Z1: an iron city, every window with blue-green light in rows, empty streets, a harbour with no ship, Yama + Nira + HOME-67 walking; two golden cages of light in the northern square with Sysop and the hell merchant inside)'),
+  ('z4-events/cut-home67-harbor-gift.webp', CUT, 'cut', 'PLACEHOLDER cut-home67-harbor-gift  (Z3: the Zone 4 harbour, HOME-67 leaning on a post hands Yama a silver-grey bundle edged with thin blue light, Nira standing beside)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

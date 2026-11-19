@@ -2,11 +2,15 @@
  "game": [
   {
    "before": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';\n",
-   "after": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';\nimport { WANTHONG } from './z1-wanthong.js';   // T5'/1\nimport { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3\nimport { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5\nimport { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2\nimport { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1\nimport { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2\nimport { LOKI } from './z3d-cases.js';   // T7b/3\nimport { EIRLIN } from './z3e-eirlin.js';   // T7b/4\nimport { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5\nimport { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3\nimport { HARBOR } from './z2b-harbor.js';   // T6/4\nimport { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5\nimport { CERBERUS, GUARD_LINES } from './z2b-cerberus.js';   // T6/6-7\nimport { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7\n/** T5'/0: a lost side-quest fight also ends at the tea house (owner: \"every kind of fight\"). Set false to go back to \"a lost quest fight costs nothing and stays on the map\". */\nexport const QUEST_FIGHT_LOSE_TO_TEA = true;\n/** T7: the lines of a zone event in the language of the game (data.js `lines` = Thai, `linesEn` = English when the script has it). */\n/** T7/2: one of Rae's {th,en} texts in the language of the game (a list of lines is joined with a newline). */\nconst langPick = o => { const v = o ? (getLang() === 'en' ? o.en : o.th) : ''; return Array.isArray(v) ? v.join('\\n') : v; };\nconst evLines = ev => (getLang() === 'en' && ev.linesEn) ? ev.linesEn : (ev.lines || {});\nimport {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
+   "after": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';\nimport { WANTHONG } from './z1-wanthong.js';   // T5'/1\nimport { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3\nimport { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5\nimport { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2\nimport { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1\nimport { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2\nimport { LOKI } from './z3d-cases.js';   // T7b/3\nimport { EIRLIN } from './z3e-eirlin.js';   // T7b/4\nimport { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5\nimport { Z4A } from './z4a-border.js';   // T8a\nimport { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3\nimport { HARBOR } from './z2b-harbor.js';   // T6/4\nimport { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5\nimport { CERBERUS, GUARD_LINES } from './z2b-cerberus.js';   // T6/6-7\nimport { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7\n/** T5'/0: a lost side-quest fight also ends at the tea house (owner: \"every kind of fight\"). Set false to go back to \"a lost quest fight costs nothing and stays on the map\". */\nexport const QUEST_FIGHT_LOSE_TO_TEA = true;\n/** T7: the lines of a zone event in the language of the game (data.js `lines` = Thai, `linesEn` = English when the script has it). */\n/** T7/2: one of Rae's {th,en} texts in the language of the game (a list of lines is joined with a newline). */\nconst langPick = o => { const v = o ? (getLang() === 'en' ? o.en : o.th) : ''; return Array.isArray(v) ? v.join('\\n') : v; };\nconst evLines = ev => (getLang() === 'en' && ev.linesEn) ? ev.linesEn : (ev.lines || {});\nimport {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
   },
   {
    "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
    "after": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice,reconcileArenaDocket} from './boss-justice.js';\n"
+  },
+  {
+   "before": "import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';\n",
+   "after": "import {initializeBossGuides,bossGuideState,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';\n"
   },
   {
    "before": "import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';\n",
@@ -222,7 +226,7 @@
   },
   {
    "before": "",
-   "after": "  /** T7b-2/5 (Rae 5.5): after Severin has left, HOME-67 stands on the pier of Zone 3 until Yama has answered \"I am ready\" */\n  home67Waiting() { return this.zone === 'west' && this.home67?.phase === 'waiting'; },\n  /** \"I am ready\": the join scene + NH-3; `home67Joined` stays on for part D (the walk to Frontier 3-4 with Yama + Nira + HOME-67 is T8). */\n  joinHome67() {\n    if (!this.home67Waiting() || this.battle) return false;\n    this.home67 = { phase:'joined' }; this.home67Joined = true;\n    this.queueStory(SEV.home67Join); this.queueNotice(SEV.home67JoinNotice); this.save(); this.onChange(); return true;\n  },\n"
+   "after": "  /** T7b-2/5 (Rae 5.5): after Severin has left, HOME-67 stands on the pier of Zone 3 until Yama has answered \"I am ready\" */\n  home67Waiting() { return this.zone === 'west' && this.home67?.phase === 'waiting'; },\n  /** \"I am ready\": the join scene + NH-3; `home67Joined` stays on for part D (the walk to Frontier 3-4 with Yama + Nira + HOME-67 is T8). */\n  joinHome67() {\n    if (!this.home67Waiting() || this.battle) return false;\n    this.home67 = { phase:'joined' }; this.home67Joined = true;\n    Object.assign(bossGuideState(this, 'west'), { following:true, farewell:false });   // T8a: he is the guest of the walk through Frontier 3-4 (the guide record of Zone 3) and stays in Zone 4 until the harbour\n    this.queueStory(SEV.home67Join); this.queueNotice(SEV.home67JoinNotice); this.save(); this.onChange(); return true;\n  },\n"
   },
   {
    "before": "",
@@ -606,7 +610,19 @@
   },
   {
    "before": "",
+   "after": "  /** T8a: HOME-67 walks with the team through Frontier 3-4 (and Zone 4's entry). Not before he has answered \"I am ready\" (NH-4 says so). */\n  home67Guest() { return !!this.home67Joined && this.home67?.phase === 'joined' && bossGuideFollowing(this); },\n  /** T8a (Rae part D 1.1): the first step of the walk (checkpoint 0) - `z34-arrive`, once */\n  z34ArriveDue(idx = null) {\n    const st = dungeonStatus(this);\n    return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.arriveStory] && (Number.isInteger(idx) ? idx : st.checkpoint) === 0;\n  },\n  /** T8a (1.8): the end of the walk - the gate nobody keeps (`z4-gate-silent`, once) before Zone 4 */\n  silentGateDue() {\n    const st = dungeonStatus(this);\n    return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.silentStory];\n  },\n"
+  },
+  {
+   "before": "",
+   "after": "    if (this.zone === 'west' && this.home67Waiting?.()) { this.queueNotice(SEV.home67WarnNotice); this.onChange(); return false; }   // T8a (NH-4): the man in the light-banded cap is still waiting on the pier\n"
+  },
+  {
+   "before": "",
    "after": "    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits at the pier (case 15)\n"
+  },
+  {
+   "before": "    if(travelMode==='dungeon'&&(bossGuideFollowing(this)||bossGuideWaiting(this)))return false;\n",
+   "after": "    if(travelMode==='dungeon'&&((bossGuideFollowing(this)&&!(this.zone==='west'&&this.home67Guest()))||bossGuideWaiting(this)))return false;   // T8a: HOME-67 does not say farewell at the gate of Zone 4 - he goes in with the team\n"
   },
   {
    "before": "",
@@ -618,7 +634,7 @@
   },
   {
    "before": "",
-   "after": "    if (k === 'west' && !back && this.zoneEventStatus(Z3_ARRIVE.eventKey) === 'pending') this.queueStory(Z3_ARRIVE.arriveStory);   // T7/1: the first arrival in Zone 3 (Rae R2 C 1.4)\n    if (travelMode === 'boat') this.boatArrived();   // T5'/7\n"
+   "after": "    if (k === 'cyberhell' && !back && this.home67Joined && !this.storySeen[Z4A.zone4Story]) this.queueStory(Z4A.zone4Story);   // T8a (2.3): the city with nobody in it\n    if (k === 'west' && !back && this.zoneEventStatus(Z3_ARRIVE.eventKey) === 'pending') this.queueStory(Z3_ARRIVE.arriveStory);   // T7/1: the first arrival in Zone 3 (Rae R2 C 1.4)\n    if (travelMode === 'boat') this.boatArrived();   // T5'/7\n"
   },
   {
    "before": "",
