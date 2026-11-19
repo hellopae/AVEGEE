@@ -3,6 +3,7 @@ import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
+import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
 import { GATE_TEXT } from './z2-gate.js';   // T5'/4: the gate of Zone 2 (Rae R2 A 7)   // T5'/1: case 13 text (Rae R2 A 4)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
@@ -2001,6 +2002,13 @@ export const ZONE_EVENTS = {
       foe:{ name:'ยักษ์ทวารบาล', sp:'crew-guard', hp:290, atk:[21,31], boss:true, skills:BOSS_SKILLS.gateGuardTest, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS: was 110 / 10-16 (100 %); now 3-member first try ~75 %
       openStory:'z2-guard-test-open', winStories:['z2-guard-test-win'], loseStory:'z2-guard-test-lose', win:Z2_TEXT.guard.win, loseText:Z2_TEXT.guard.lose,
       reward:{ coin:0 }, lose:{ hp:9 } },
+    // T6/5 (Rae R2 B 5): the dragon of the water cave on the walk to Border 2-3 - fought with Yama + Nira + Musashi (`gate`: the guest of the walk fights), never by the case count; the fight is closed by Musashi's strike
+    // when Ryujin falls to ~25 % (game.js breachFinaleGate). hp / atk: Toby's first numbers (a little above Guan Yu), no spec.
+    { k:'z2Ryujin', atCases:999, mode:'single', gate:true,
+      title:RYUJIN_TEXT.title, alert:RYUJIN_TEXT.alert, go:RYUJIN_TEXT.go, retry:RYUJIN_TEXT.retry, banner:RYUJIN_TEXT.banner, lines:RYUJIN_TEXT.lines,
+      win:{ title:RYUJIN_TEXT.win.title, text:RYUJIN_TEXT.win.text }, loseText:{ title:RYUJIN_TEXT.lose.title, text:RYUJIN_TEXT.lose.text }, loseStory:'z2-ryujin-lose', winStories:['z2-ryujin-win'],
+      foe:{ name:'ริวจิน', sp:'boss-ryujin-asia', hp:340, atk:[20,31], boss:true, skills:BOSS_SKILLS.ryujin },
+      reward:{}, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
   west:[

@@ -46,6 +46,16 @@ GROUPS = {
   ('summon/battle-musashi.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-musashi (M2: ready to draw both swords, hands crossed)'),
   ('summon/cut-musashi-two-blades.webp', CUT, 'cut', 'PLACEHOLDER cut-musashi-two-blades  (M3: Musashi half-turned, both swords crossed over his shoulder, two silver streaks cut a glowing blue wall of water apart, a single thin line of light across the dragon far off - NO blood, NO wound on the scales; Yama + Nira step back at left)'),
  ],
+ 'ryujin': [   # T6/5 - Rae R2 part B, group R
+  ('z2-events/boss-ryujin-asia.webp', (512, 512), 'sprite', 'PLACEHOLDER boss-ryujin-asia (R1: jade-green eastern dragon rising half out of glowing blue water, long whiskers, branching horns, pale pearl under the jaw, calm heavy eyes - no beast fury)'),
+  ('z2-events/boss-ryujin-asia-profile.webp', (512, 512), 'square', 'PLACEHOLDER boss-ryujin-asia-profile'),
+  ('z2-events/cut-ryujin-open-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-ryujin-open-asia  (R3: the lake swells, the dragon arches like a bridge, pearl under the jaw; Yama (Zone 2 robes) + Nira + Musashi (hand on hilt, not drawn) on the shore bottom left)'),
+  ('z2-events/cut-ryujin-yields-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-ryujin-yields-asia  (R4: dragon lowers to the water, head bowed, a single blue spark from the pearl drifts into the lamp at Yama\'s side; Yama + Musashi + Nira stand respectfully)'),
+  ('z2-events/cut-ryujin-tide-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-ryujin-tide-asia  (R7: card of the boss move Tide of Wrath - the dragon rises, every wave leans toward the camera, glowing spray, team bottom left)'),
+  ('summon/icon-ryujin.webp', (512, 512), 'square', 'PLACEHOLDER icon-ryujin (R5: jade dragon face, pearl under the jaw, gold frame)'),
+  ('summon/battle-ryujin.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-ryujin (R5: smaller dragon curve over blue waves, fits the fight)'),
+  ('summon/cut-ryujin-dragon-beneath.webp', CUT, 'cut', 'PLACEHOLDER cut-ryujin-dragon-beneath  (R6: a tall blue wave rushing at the camera with the shadow of a jade dragon coiled inside it, foes thrown back; NOT the full dragon smashing anyone)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

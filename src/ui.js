@@ -109,6 +109,7 @@ import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
 import { YOMATHAT, PIER_TALK } from './z1-yomathat.js';
 import { HARBOR, PIER_TALK as LIAN_TALK } from './z2b-harbor.js';   // T6/4
+import { RYUJIN } from './z2b-ryujin.js';   // T6/5
 import { HARBOR_ZONES } from './boss-guides.js';
 import { GATE } from './z2-gate.js';
 import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
@@ -2849,6 +2850,7 @@ function powerSound(k) {
 }
 let battleCutscenes = createCutsceneReadiness();
 function cutsceneSource(k, ultimate = null) {
+  if (k === 'musashiStrike') return null;   // T6/5: the strike was shown by the scene itself (z2-ryujin-musashi-strike)
   if (k.startsWith('summon:')) return LAMP.summonerOf(k.slice(7))?.art?.cut || null;   // T4: the helper's special-move picture
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   if (crewKey === 'nira') return niraHealingCutscene(g.zone);
@@ -4498,7 +4500,7 @@ function openBattle(after) {
       const overlay = document.createElement('div');
       overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
       renderStoryComic(overlay, storyOf(key), () => {
-        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock' || key === 'th' || key === 'asia-big-fire-unlock') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
+        if (key === 'west-hypnosis' || key === 'th-team-judgment-unlock' || key === 'th' || key === 'asia-big-fire-unlock' || key === RYUJIN.strikeStory) g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
         overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
       });
       return;
@@ -5283,7 +5285,7 @@ function openBattle(after) {
     // Z1-EVENTS (case 9): the new team move was just unlocked (window closed) -> Yama uses it to close the border boss fight, whoever's turn it was
     if(b.breachFinale==='ready'&&!b.storyInterlude&&!phase&&!b.over&&!b.commandBusy&&!finaleScheduled&&!userPaused&&!pauseDlg.open){
       finaleScheduled=true;
-      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready'){if(b.finaleMove==='flameCharge'||b.finaleMove==='fire'){b.actorId='you';b.selectedFoeId=b.foes.find(f=>f.boss&&f.hp>0)?.id||b.selectedFoeId;executeCommand(b.finaleMove);}else executeSkill('teamJudgment','you');}},650);
+      setTimeout(()=>{finaleScheduled=false;if(g.battle===b&&dlg.open&&!phase&&!b.over&&b.breachFinale==='ready'){if(b.finaleMove==='flameCharge'||b.finaleMove==='fire'||b.finaleMove==='musashiStrike'){b.actorId='you';b.selectedFoeId=b.foes.find(f=>f.boss&&f.hp>0)?.id||b.selectedFoeId;executeCommand(b.finaleMove);}else executeSkill('teamJudgment','you');}},650);
     }
     if(currentTurn?.side==='foe'&&b.breachFinale!=='ready'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;
@@ -5479,6 +5481,24 @@ function playGateScene(onDone) {
     openBattle(() => idle(onDone));
   });
 }
+/** T6/5 (Rae R2 B 5.1): NR-1 -> its button leads into z2-ryujin-open (game.js ackNotice) -> the fight (Musashi's strike closes it at ~25 %) -> the win scene + NR-3 -> `onDone`. A lost fight = its lose scene, then the tea house (T5'/0). */
+function playRyujinScene(onDone) {
+  const idle = cb => {
+    const w = () => {
+      if (g.over || g.battle) return;
+      if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; }
+      cb();
+    };
+    setTimeout(w, 300);
+  };
+  g.queueNotice(RYUJIN.arriveNotice); g.save();
+  openStoryNotice(RYUJIN.arriveNotice);
+  idle(() => {
+    if (g.pendingRecovery) return;
+    if (!g.startRyujinFight()) { onDone(); return; }
+    openBattle(() => idle(onDone));
+  });
+}
 /** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
 function playCaveScene(onDone) {
   g.queueNotice(YOMATHAT.caveNotice); g.save();
@@ -5503,6 +5523,7 @@ function openDungeon() {
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
         // T5'/3 (Rae 6.1): the middle of the cave on the walk with Yomathat - NF-1, then the cage scene, then the checkpoint goes on as before
+        if(!opts?.chased&&!location?.patrol&&g.ryujinFightDue?.(location?.checkpoint)){playRyujinScene(()=>openDungeon());return;}   // T6/5: the water cave (NR-1, the scene, the fight, the win scene) comes before that checkpoint's own fight
         if(!opts?.chased&&!location?.patrol&&g.caveSceneDue(location?.checkpoint)){playCaveScene(()=>openDungeon());return;}
         if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
         else{g.dungeonChaseCooldown=true;openDungeon();}
@@ -7896,7 +7917,7 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
-window.__gateScene = playGateScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
+window.__gateScene = playGateScene; window.__ryujinScene = playRyujinScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
 window.__caveScene = playCaveScene;
 window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
   const v = mapCam.viewport, r = cv.getBoundingClientRect();

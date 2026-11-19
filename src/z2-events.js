@@ -15,6 +15,7 @@ import { Z2_STORIES_RAW, WUKONG_CAMEO, CASE_APEELDER, CASE_AKURA, CASE_SATORIFAT
 import { GUANYIN, GUANYIN_CASE, GUANYIN_NOTICES, GUANYIN_STORIES } from './z2b-guanyin.js';   // T6/2: case 12
 import { WUKONG_STORIES, WUKONG_FLAME } from './z2b-wukong.js';   // T6/3: the flame in the lamp
 import { HARBOR_NOTICES, HARBOR_STORIES, LIAN_WIN_OLD_LAST, LIAN_WIN_NEW_LAST } from './z2b-harbor.js';   // T6/4: Lian Gang at the harbor
+import { RYUJIN, RYUJIN_TEXT, RYUJIN_STORIES } from './z2b-ryujin.js';   // T6/5: the water cave
 export { WUKONG_CAMEO };
 
 const A = name => `img/z2-events/${name}.webp`;
@@ -37,7 +38,7 @@ export const Z2_SOUL_SPRITE = Object.freeze({
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
   A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
-export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|guanyin-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia|char-musashi-asia)(-profile|-guard)?$/;
+export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|guanyin-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia|boss-ryujin-asia|char-musashi-asia)(-profile|-guard)?$/;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Story pages. Rae's text is copied verbatim (z2-events-text.js); here only the pictures are attached - one picture per page, the last one repeats.
@@ -78,6 +79,7 @@ export const Z2_STORIES = Object.freeze({
   ...GUANYIN_STORIES,   // T6/2
   ...WUKONG_STORIES,    // T6/3
   ...HARBOR_STORIES,    // T6/4
+  ...RYUJIN_STORIES,    // T6/5
   // T6/4 (Rae R2 B 4.2): the last line of z2-lian-win - he stands at the harbor, not at the frontier gate
   'z2-lian-win':dress('z2-lian-win', { ...Z2_STORIES_RAW['z2-lian-win'], pages:Z2_STORIES_RAW['z2-lian-win'].pages.map(p => ({ ...p, line:p.line.replace(LIAN_WIN_OLD_LAST, LIAN_WIN_NEW_LAST) })) }),
   'z2-wukong-return':dress('z2-wukong-return', { title:RETURN_RAW.title, pages:[RETURN_RAW.pages[0], { ...RETURN_RAW.pages[1], line:RETURN_LINES.join('\n') }] }),
@@ -277,7 +279,7 @@ export const AKURA_TRIAL = Object.freeze({
 const KIN_NOTICES = Object.fromEntries(Z2_KIN.map(r => [`kin-${r.k}`, { title:r.notice.title, text:r.notice.text, button:r.notice.button, detail:r.before.join('\n'), ...(r.notice.en ? { en:{ ...r.notice.en, detail:(r.beforeEn || r.before).join('\n') } } : {}),
   art:Z2_SOUL_SPRITE[r.k] ? A(`${Z2_SOUL_SPRITE[r.k]}-profile`) : 'img/Asia/spirit-worker-asia-v2.webp' }]));
 /** Notice windows (Rae N3-4, N7-1, N7-6, N13-1, N15-1 and the relatives'): game.js queueNotice / ackNotice · ui.js openStoryNotice. */
-export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES, ...GUANYIN_NOTICES, ...HARBOR_NOTICES });
+export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES, ...GUANYIN_NOTICES, ...HARBOR_NOTICES, [RYUJIN.arriveNotice]:RYUJIN_TEXT.arrive });
 
 /** Rae's three-page opening of the zone boss (5.3) as the lines of the arrival scene (data.js ZONES.asia.bossArrive): one line per page, the speaker before the colon. */
 export const LIAN_ARRIVE_LINES = Object.freeze(Z2_STORIES_RAW['z2-lian-open'].pages.flatMap(p => p.line.split('\n')).filter(Boolean));

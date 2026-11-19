@@ -7,7 +7,7 @@
 const A = name => `img/${name}.webp`;
 const IMG = Object.freeze({
   arunadet:A('z1-events/cut-arunadet-mirror-th'), tanthasura:A('z1-events/cut-tanthasura-army-th'), hanuman:A('z1-events/cut-hanuman-sweep-th'),
-  khunphaen:A('z1-events/cut-khunphaen-arrives-th'), guanyu:A('z2-events/cut-guanyu-sweep-asia'),
+  khunphaen:A('z1-events/cut-khunphaen-arrives-th'), guanyu:A('z2-events/cut-guanyu-sweep-asia'), ryujin:A('z2-events/cut-ryujin-tide-asia'),
   yomathat:'img/zone-boss-cutscene.webp', yamaLedger:A('z4-events/cut-yama-ledger-tide-th'),
   kuroha:A('z2-events/cut-kuroha-gale-asia'), akura:A('z2-events/cut-akura-thornstorm-asia'), wukong:A('z2-events/cut-wukong-sweep-asia'),
   wukongClones:A('z2-events/cut-wukong-clones-asia'),
@@ -59,6 +59,17 @@ export const BOSS_SKILLS = Object.freeze({
       warnText:T('กวนอูยืนนิ่งและยกง้าวขึ้นเหนือไหล่ — รอบหน้าจะฟันหนักใส่คนเดียว!', 'Guan Yu stands still and raises his polearm over his shoulder — next turn a heavy cut falls on one of you!'),
       useText:T('กวนอูฟันลงครั้งเดียวด้วยแรงทั้งหมด แล้วตั้งท่าเหมือนเดิม', 'Guan Yu cuts down once with all his strength, then resumes his stance'),
       when:{ hpBelow:.5, everyActs:3 } },
+  ]),
+  // T6/5 (Rae R2 B 5.4): Ryujin - no status moves, nothing that hits a fallen one twice. Starting numbers, not run through the sim yet.
+  ryujin:Object.freeze([
+    { id:'wrathTide', kind:'groupHit', warn:1, power:.75, name:T('คลื่นสายน้ำโกรธ', 'Tide of Wrath'),
+      warnText:T('ริวจินยกตัวขึ้นเหนือผิวน้ำ คลื่นทั้งถ้ำเริ่มเอนตามมัน — รอบหน้าคลื่นจะซัดทั้งทีม!', 'Ryujin rises above the surface and every wave in the cave leans after him — next turn the tide crashes over the whole team!'),
+      useText:T('ริวจิน: "น้ำจำได้ว่าใครเดินผ่าน!"', 'Ryujin: "The water remembers who walked through!"'),
+      when:{ firstAct:3, everyActs:4 }, image:IMG.ryujin },
+    { id:'cliffTail', kind:'heavyHit', warn:1, power:1.8, name:T('หางมังกรทุบผา', 'Tail Against the Cliff'),
+      warnText:T('ริวจินม้วนหางสูงเหนือศีรษะ — รอบหน้าจะทุบลงหนักใส่คนเดียว!', 'Ryujin coils his tail high above his head — next turn it comes down hard on one of you!'),
+      useText:T('ริวจินฟาดหางลงหนึ่งครั้ง น้ำแตกกระจายเป็นละอองทั่วถ้ำ', 'Ryujin brings his tail down once and the water bursts into spray across the cave.'),
+      when:{ hpBelow:.55, everyActs:3 } },
   ]),
   // T5'/1 (Rae R2 A 4.5): Khun Phaen - a horse and a sword only, nothing of charms or spells. Starting numbers (power / when), not run through the sim yet.
   khunphaen:Object.freeze([

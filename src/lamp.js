@@ -25,7 +25,8 @@ export const LAMP_ICON_SRC = null;
 import { KUMAN_THONG } from './z1-wanthong.js';
 import { YOMATHAT_HELPER } from './z2-gate.js';
 import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3
-import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4   // T5'/1: the second helper's text lives with his story
+import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4
+import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
@@ -52,7 +53,9 @@ export const SUMMONERS = Object.freeze({
   // T6/4 (Rae R2 B 4.6): Chain Line = a light hit on every foe + their attacks are weaker for one round (`weaken`: x0.6 for that foe's next blow(s) of the round). The chain is a line across the field - it binds no one.
   liangang:{ k:'liangang', no:5, name:LIANGANG_HELPER.name, glyph:'⛓️', event:'boss-guide-asia-welcome', ready:true, art:{ icon:HARBOR_ART.icon, battle:HARBOR_ART.battle, cut:HARBOR_ART.cut },
     move:{ ...LIANGANG_HELPER.move, kind:'group', damage:{ base:22, perLevel:1 }, weaken:{ rounds:1, mult:.6 } }, say:LIANGANG_HELPER.say },
-  ryujin:{ k:'ryujin', no:6, name:{ th:'ริวจิน', en:'Ryujin' }, glyph:'🐉', event:'z2-ryujin-win', ready:false, move:{ name:{ th:'มังกรสะท้านถ้ำ', en:'Dragon Beneath the Cave' } } },
+  // T6/5 (Rae R2 B 5.8): Dragon Beneath the Cave = a strong group hit (a blue wave with the dragon's shadow in it), above Hanuman, under the Valkyrie spear (88)
+  ryujin:{ k:'ryujin', no:6, name:RYUJIN_HELPER.name, glyph:'🐉', event:'z2-ryujin-win', ready:true, art:{ icon:RYUJIN_ART.icon, battle:RYUJIN_ART.battle, cut:RYUJIN_ART.cut },
+    move:{ ...RYUJIN_HELPER.move, kind:'group', damage:{ base:62, perLevel:3 } }, say:RYUJIN_HELPER.say },
   musashi:{ k:'musashi', no:7, name:{ th:'มูซาชิ', en:'Musashi' }, glyph:'⚔️', event:'z3gate-musashi-farewell', ready:false, move:{ name:{ th:'สองดาบหนึ่งวิถี', en:'Two Blades, One Way' } } },
   eirlin:{ k:'eirlin', no:8, name:{ th:'เอียร์ลิน', en:'Eirlin' }, glyph:'🔱', event:'z3-eirlin-win', ready:false, move:{ name:{ th:'หอกตามเสียงศึก', en:'Spear to the Sound of Battle' } } },
   jormungandr:{ k:'jormungandr', no:9, name:{ th:'ยอร์มุนกันดร์', en:'Jormungandr' }, glyph:'🐍', event:'z3-sev-collateral', ready:false, move:{ name:{ th:'ขดล้อมโลก', en:'Coil Around the World' } } },

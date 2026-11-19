@@ -15,6 +15,7 @@ import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
+import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
@@ -739,6 +740,7 @@ const API = {
     if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
     if (id === GATE.arriveNotice) this.queueStory('z2-guanyu-open');   // T5'/4 (NG-1): the button leads into the scene, then the fight
+    if (id === RYUJIN.arriveNotice) this.queueStory('z2-ryujin-open');   // T6/5 (NR-1): the button leads into the scene, then the fight
     if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
     if (id === GUANYIN.afterNotice) this.queueStory(`${GUANYIN.thanksStory}-${this.storyCaseDone.guanyinfather === 'off' ? 'off' : 'ok'}`);   // T6/2 (NGY-2): the button leads into her scene
     if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request
@@ -3617,7 +3619,7 @@ const API = {
   },
   completeBattleInterlude() {
     const b=this.battle;
-    if (!['west-hypnosis','th-team-judgment-unlock','th','asia-big-fire-unlock'].includes(b?.storyInterlude)) return false;
+    if (!['west-hypnosis','th-team-judgment-unlock','th','asia-big-fire-unlock',RYUJIN.strikeStory].includes(b?.storyInterlude)) return false;
     if (b.storyInterlude === 'th') this.storySeen.th = true;   // story-th-01..05 were played inside the fight: the win does not queue them again
     b.storyInterlude=null; this.save(); return true;
   },
@@ -4147,6 +4149,12 @@ const API = {
       if (fireFinale) { dmg = Math.max(dmg, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done'; }
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);
 
+    } else if (what === 'musashiStrike') {
+      // T6/5: only ever Musashi's closing strike (a light across the dragon, no wound) - free, ends the fight as a win
+      if (!(B.breachFinale === 'ready' && B.finaleMove === 'musashiStrike')) return false;
+      dmg = Math.max(1, target.hp); B.foes.forEach(f => { if (f !== target) f.hp = 0; }); B.breachFinale = 'done';
+      say(RYUJIN_STRIKE_LOG);
+
     } else if (what === 'flameCharge') {
       const finale = B.breachFinale === 'ready' && B.finaleMove === 'flameCharge';   // Z1-EVENTS (case 15): the story's closing move - free, the power is paid out with the win
       if (!finale && (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge)) return false;
@@ -4292,12 +4300,14 @@ const API = {
     const breachFinaleGate = force => {
       // Z2-EVENTS: Zone 2's border boss closes the same way - Yama learns "ลูกไฟใหญ่" in the middle of the fight and that fireball ends it
       const asiaBreach = B.kind === 'zoneEvent' && B.eventKey === 'asiaRageBreach';
-      if ((B.kind !== 'frontierBreach' && !asiaBreach) || B.breachFinale) return false;
+      const ryujin = B.kind === 'zoneEvent' && B.eventKey === RYUJIN.eventKey;   // T6/5 (Rae R2 B 5.6): the dragon is stopped by Musashi's strike at ~25 % HP
+      if ((B.kind !== 'frontierBreach' && !asiaBreach && !ryujin) || B.breachFinale) return false;
       const boss = B.foes.find(f => f.boss);
-      if (!boss || !force && boss.hp > boss.maxHp * BREACH_FINALE_AT) return false;
+      if (!boss || !force && boss.hp > boss.maxHp * (ryujin ? RYUJIN.strikeAt : BREACH_FINALE_AT)) return false;
       boss.hp = Math.max(1, boss.hp);
       B.breachFinale = 'ready'; B.actorId = 'you'; B.selectedFoeId = boss.id; B.teamReadyTurn = 0;
-      if (asiaBreach) { this.abilities.bigFire = true; B.finaleMove = 'fire'; B.storyInterlude = 'asia-big-fire-unlock'; }
+      if (ryujin) { B.finaleMove = 'musashiStrike'; B.storyInterlude = RYUJIN.strikeStory; }
+      else if (asiaBreach) { this.abilities.bigFire = true; B.finaleMove = 'fire'; B.storyInterlude = 'asia-big-fire-unlock'; }
       else { this.abilities.teamJudgment = true; B.storyInterlude = 'th-team-judgment-unlock'; }
       this.onChange();
       return true;
@@ -4978,6 +4988,19 @@ const API = {
     const cave = routeBossCave(st.route.id), i = Number.isInteger(idx) ? idx : st.checkpoint;
     return !!cave && i === cave.checkpoint;
   },
+  /** T6/5 (Rae R2 B 5.1): the first time the walk to Border 2-3 reaches its middle checkpoint with Musashi beside Yama, the water cave comes first (NR-1 -> z2-ryujin-open -> the fight). */
+  ryujinFightDue(idx = null) {
+    const st = dungeonStatus(this);
+    if (!st || this.zone !== 'asia' || st.route.id !== 'asia:west' || !bossGuideFollowing(this) || this.battle || this.ryujinDone()) return false;
+    return (Number.isInteger(idx) ? idx : st.checkpoint) === RYUJIN.checkpoint;
+  },
+  ryujinDone() { return this.zoneEventStatus(RYUJIN.eventKey) === 'cleared' || !!this.storySeen[RYUJIN.winStory]; },
+  startRyujinFight() {
+    if (this.battle || this.zone !== 'asia' || !bossGuideFollowing(this) || this.ryujinDone()) return null;
+    const states = this.zoneEvents.asia ||= {};
+    if (states[RYUJIN.eventKey] !== 'pending' && states[RYUJIN.eventKey] !== 'active') states[RYUJIN.eventKey] = 'pending';
+    return this.startZoneEvent(RYUJIN.eventKey);
+  },
   /** T5'/4 (Rae 7.1): the end of the border walk reached with Yomathat beside Yama and Guan Yu not yet convinced - the gate scene + fight come first. */
   gateFightDue() {
     const st = dungeonStatus(this);
@@ -5049,6 +5072,7 @@ const API = {
     if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
     if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);
     if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
+    if (next?.key === RYUJIN.winStory) this.unlockHelper(RYUJIN.helper);   // T6/5 (D4): NR-3 = lamp-helper-ryujin
     if (next?.key === HARBOR.giftStory) { this.queueNotice(HARBOR.joinNotice); this.unlockHelper('liangang'); }   // T6/4: NL-2 is the grant receipt, NL-3 Musashi joins, NL-4 (lamp-helper-liangang) the flame (D4)
     if (next?.key === WUKONG_FLAME.story) this.unlockHelper('wukong');   // T6/3 (D4): his own event is passed - NA-2 (the generic helper window) follows
     if (next?.key === 'sita-lamp') this.giveLamp();
