@@ -108,6 +108,8 @@ import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
 import { YOMATHAT, PIER_TALK } from './z1-yomathat.js';
+import { HARBOR, PIER_TALK as LIAN_TALK } from './z2b-harbor.js';   // T6/4
+import { HARBOR_ZONES } from './boss-guides.js';
 import { GATE } from './z2-gate.js';
 import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
 import { lt } from './lamp-text.js';
@@ -2639,7 +2641,7 @@ const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id 
 /** FB2-15: the time-rewind clock is only described once the player owns it (same test the battle item menu uses) */
 const clockUnlocked = () => !!(g.abilities?.cooldownClock || g.inventory?.cooldownClock);
 const crewArt = (c, pose = '') => c.k==='guide'
-  ? artUrl('zone-boss','png',c.homeZone)
+  ? (c.artKey ? artUrl(c.artKey + (pose === '-profile' ? '-profile' : ''), 'png', c.homeZone) : artUrl('zone-boss','png',c.homeZone))   // T6/4: Zone 2's guest is Musashi (his own drawing)
   : artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
 function battleTurnOrderHtml(b) {
   if(!b.turnQueue||b.over)return '';
@@ -3836,24 +3838,26 @@ function openCaveInterior(onLeave) {
 /** T5'/2 (Rae 5.4): Zone 1 only - Yomathat waits at the harbor and asks to come with Yama. First talk: his short speech + two answers; "together" -> the scene, he joins the team (NY-2);
  *  "let me prepare" -> he says he will wait, and every later tap gives one of two lines. */
 function openYomathatPier() {
-  const en = getLang() === 'en', first = !g.storySeen[YOMATHAT.pierSeen];
+  const asia = g.zone === 'asia', TALK = asia ? LIAN_TALK : PIER_TALK, SEEN = asia ? HARBOR.pierSeen : YOMATHAT.pierSeen;   // T6/4: Zone 2's Lian Gang uses the same talk (Rae R2 B 4.4)
+  const en = getLang() === 'en', first = !g.storySeen[SEEN];
   pauseForDlg();
-  const line = first ? (en ? PIER_TALK.firstEn : PIER_TALK.first) : [(PIER_TALK.again[Math.floor(Math.random() * PIER_TALK.again.length)])[en ? 'en' : 'th']];
+  const line = first ? (en ? TALK.firstEn : TALK.first) : [(TALK.again[Math.floor(Math.random() * TALK.again.length)])[en ? 'en' : 'th']];
   modal(`<h2>👑 ${esc(g.zoneDef().bossName)}</h2><div class="pier-talk">${line.map(l => `<p>${esc(l)}</p>`).join('')}</div>
-    <div class="row"><button class="gold" data-yomathat-go>${esc(PIER_TALK.go[en ? 'en' : 'th'])}</button><button data-yomathat-wait>${esc(PIER_TALK.wait[en ? 'en' : 'th'])}</button></div>`, d => {
-    d.querySelector('[data-yomathat-go]').onclick = () => { g.storySeen[YOMATHAT.pierSeen] = true; if (g.inviteBossGuide()) dlg.close(); };
+    <div class="row"><button class="gold" data-yomathat-go>${esc(TALK.go[en ? 'en' : 'th'])}</button><button data-yomathat-wait>${esc(TALK.wait[en ? 'en' : 'th'])}</button></div>`, d => {
+    d.querySelector('[data-yomathat-go]').onclick = () => { g.storySeen[SEEN] = true; if (g.inviteBossGuide()) dlg.close(); };
     d.querySelector('[data-yomathat-wait]').onclick = () => {
-      g.storySeen[YOMATHAT.pierSeen] = true; g.save();
-      const say = en ? PIER_TALK.notYetEn : PIER_TALK.notYet;
-      modal(`<h2>👑 ${esc(g.zoneDef().bossName)}</h2><div class="pier-talk">${say.map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-close>${esc(PIER_TALK.later[en ? 'en' : 'th'])}</button></div>`);
+      g.storySeen[SEEN] = true; g.save();
+      const say = en ? TALK.notYetEn : TALK.notYet;
+      modal(`<h2>👑 ${esc(g.zoneDef().bossName)}</h2><div class="pier-talk">${say.map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-close>${esc(TALK.later[en ? 'en' : 'th'])}</button></div>`);
     };
   });
 }
 function openBossPier() {
-  if (g.zone === 'th' && g.bossGuideWaiting?.()) return openYomathatPier();
+  if (HARBOR_ZONES.includes(g.zone) && g.bossGuideWaiting?.()) return openYomathatPier();
   const z = g.zoneDef();
   pauseForDlg();
-  modal(`<h2>👑 ${esc(z.bossName)}</h2><p class="hint">${esc(z.bossWin?.[1] || 'เขายืนดูแลท่าเรืออยู่')}</p>
+  const after = g.zone === 'asia' && g.bossGuides?.zones?.asia?.welcomed ? LIAN_TALK.after[0][getLang() === 'en' ? 'en' : 'th'] : null;   // T6/4: after the gift he stays at the harbor for good
+  modal(`<h2>👑 ${esc(z.bossName)}</h2><p class="hint">${esc(after || z.bossWin?.[1] || 'เขายืนดูแลท่าเรืออยู่')}</p>
     <div class="row"><button data-rematch>⚔️ ประลองใหม่</button><button data-zone-menu>🗺️ เปลี่ยนโซน</button><button class="gold" data-close>ไว้คราวหน้า</button></div>`, d => {
       d.querySelector('[data-rematch]').onclick = () => { if (g.startZoneBoss('rematch')) { dlg.close(); openBattle(); } };
       d.querySelector('[data-zone-menu]').onclick = () => { dlg.close(); openZone(); };
@@ -4025,7 +4029,7 @@ function openFrontierWalk(invasionKey = null) {
   let FW = null;
   const leaveToZone = () => { FW.destroy(); dlg.close(); };
   const leaveToRoute = () => {
-    if(g.bossGuideWaiting?.()){if(g.zone==='th'){FW.destroy();openStoryNotice(YOMATHAT.remindNotice);const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);return;}askGuide();return;}   // T5'/2 (Rae 5.6): in Zone 1 he is at the harbor - speak to him first
+    if(g.bossGuideWaiting?.()){if(HARBOR_ZONES.includes(g.zone)){FW.destroy();openStoryNotice(g.zone==='asia'?HARBOR.remindNotice:YOMATHAT.remindNotice);const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);return;}askGuide();return;}   // T5'/2 (Rae 5.6): in Zone 1 he is at the harbor - speak to him first
     const route=openDungeonRoutes(g)[0];
     if(!route){
       FW.destroy();
@@ -4860,7 +4864,7 @@ function openBattle(after) {
         const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id||dash?.actor?.id===c.id)&&fxNow?.key!=='defend';
         const ko=koInfo.get(c.id), koMode=ko?.pose&&(ko.phase==='fall'||ko.phase==='down');
         const mode=koMode?'ko':phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.k==='nira'?g.zone:c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='ko'?koSince(b,c.id):mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
+        entries.push({root,key:c.guestGuide?(c.artKey?`boss:${c.homeZone}:musashi`:`boss:${c.homeZone}:zone-boss`):`crew:${c.k==='nira'?g.zone:c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='ko'?koSince(b,c.id):mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       if(koInfo.get('you')?.pose&&['fall','down'].includes(koInfo.get('you').phase))entries.push({root:stage.querySelector('.fig.you'),key:koInfo.get('you').key,mode:'ko',startedAt:koSince(b,'you')});
       else if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});

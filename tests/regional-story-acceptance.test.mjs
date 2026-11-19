@@ -57,7 +57,8 @@ for(const [zone,to] of [['th','asia'],['asia','west'],['west','cyberhell']])test
  else b=g.startZoneBoss('alert');
  assert.ok(b);winBattle(g);g.endBattle();assert.equal(bossGuideState(g).won,true);assert.equal(bossJusticeCase(g),null,'zone bosses are not tried');
  stories(g);assert.equal(g.bossGuideWaiting(),true);assert.equal(g.inviteBossGuide(),true);stories(g);assert.equal(g.bossGuideFollowing(),true);
- const before=g.coin;assert.equal(g.farewellBossGuide(),true);g=reload(g);assert.equal(g.coin,before);stories(g);
+ const paid=zone==='asia'?BOSS_GUIDE_GRANTS.asia:0,before=g.coin-paid;   // T6/4: Zone 2's gift is paid at the harbor with the welcome scene
+ assert.equal(g.farewellBossGuide(),true);g=reload(g);assert.equal(g.coin,before+paid);stories(g);
  assert.equal(g.coin,before+BOSS_GUIDE_GRANTS[zone]);assert.ok(g.outfitsOwned.includes(to));assert.equal(g.pendingReward.guideZone,zone);
  g=reload(g);assert.equal(g.coin,before+BOSS_GUIDE_GRANTS[zone]);assert.equal(g.pendingReward.outfit,to);
  assert.equal(acknowledgeBossGuideGrant(g,zone),true);g.pendingReward=null;g=reload(g);

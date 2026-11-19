@@ -132,15 +132,15 @@ test('wiring: both route views enter by the latch and neither can be triggered b
 test('farewell dismisses the guide from the city pier (talk spot, rematch menu, walk blocker)',()=>{
   for(const zone of ['th','asia','west']){
     const waiting=game(zone,'waiting'),following=game(zone,'following'),gone=game(zone,'farewell');
-    assert.equal(bossGuideDismissed(waiting),false);assert.equal(bossGuideDismissed(following),false);assert.equal(bossGuideDismissed(gone),true,zone);
+    assert.equal(bossGuideDismissed(waiting),false);assert.equal(bossGuideDismissed(following),false);assert.equal(bossGuideDismissed(gone),zone!=='asia',zone);   // T6/4: Lian Gang stays at the harbor for good
     assert.equal(bossGuideWaiting(gone),false);assert.equal(bossGuideFollowing(gone),false);
     // City pier (talk spot, rematch, zone menu) and its walking blocker.
     assert.equal(waiting.bossPierCanTalk()||true,true);
     waiting.player.x=SPOTS.bossPier.x;waiting.player.y=SPOTS.bossPier.y;gone.player.x=SPOTS.bossPier.x;gone.player.y=SPOTS.bossPier.y;
     assert.equal(waiting.bossPierCanTalk(),true,`${zone}: boss still at the pier until the farewell`);
-    assert.equal(gone.bossPierCanTalk(),false,`${zone}: pier talk spot is gone`);
+    assert.equal(gone.bossPierCanTalk(),zone==='asia',`${zone}: pier talk spot is gone (T6/4: not Lian Gang - he stays at the harbor for good)`);
     const at=(g)=>standPoints(g).some(p=>p[0]===SPOTS.bossPier.x&&p[1]===SPOTS.bossPier.y);
-    assert.equal(at(waiting),true,`${zone}: T5'/2 - Zone 1's elder brother now waits at the harbor pier too, like the other bosses`);assert.equal(at(gone),false,`${zone}: no invisible blocker at the pier`);   // Z1-EVENTS owner 14 Nov
+    assert.equal(at(waiting),true,`${zone}: T5'/2 - Zone 1's elder brother now waits at the harbor pier too, like the other bosses`);assert.equal(at(gone),zone==='asia',`${zone}: no invisible blocker at the pier (T6/4: Lian Gang still stands there)`);   // Z1-EVENTS owner 14 Nov
   }
 });
 

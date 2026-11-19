@@ -13,6 +13,7 @@
 import { SPOTS } from './data.js';
 import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
 import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
+import { HARBOR_FLAME_NOTICE } from './z2b-harbor.js';
 import { LAMP_TEXT } from './lamp-text.js';
 import { WANTHONG, WANTHONG_CASE, WANTHONG_STORIES, WANTHONG_NOTICES } from './z1-wanthong.js';
 import { YOMATHAT_STORIES, YOMATHAT_NOTICES } from './z1-yomathat.js';
@@ -187,6 +188,7 @@ export const NOTICES = Object.freeze({
   ...GATE_NOTICES,
   ...BOATMAN_NOTICES,
   ...Z2_NOTICES,
+  'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one
 });
 
 const page = (image, title, line) => ({ image, title, line, fallback:'📜' });

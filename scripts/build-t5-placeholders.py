@@ -35,6 +35,17 @@ GROUPS = {
   ('z2-events/cut-guanyin-descends-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyin-descends-asia  (H2: white light in the hall, lotus petals, Guanyin in plain white with a willow vase; Yama + Nira bow, the father kneels bottom right)'),
   ('z2-events/cut-guanyin-father-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyin-father-asia  (H3: she bows to her father who is bent to the floor; light from behind, petals fading)'),
  ],
+ 'lian': [   # T6/4 - Rae R2 part B, groups L + M1
+  ('z2-events/cut-lian-gift-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-lian-gift-asia  (L2: Eastern harbor at dusk, Lian Gang hands Yama (Zone 2 robes) a bundle + purse with both hands, chain on his belt binds no one; Musashi bows at back right, Nira beside Yama, small wooden boat, Lung Chaew a silhouette at the stern)'),
+  ('summon/cut-liangang-chain-line.webp', CUT, 'cut', 'PLACEHOLDER cut-liangang-chain-line  (L4: links of chain floating in a line across the field between team and foes; nobody bound, nobody fallen near it; iron-grey light, hell battlefield)'),
+ ],
+ 'musashi': [
+  ('z2-events/char-musashi-asia.webp', (512, 512), 'sprite', 'PLACEHOLDER char-musashi-asia (M1: Musashi standing, ink-coloured long coat, hair tied loosely, long + short sword paired at the waist, calm, no drawn sword)'),
+  ('z2-events/char-musashi-asia-profile.webp', (512, 512), 'square', 'PLACEHOLDER char-musashi-asia-profile'),
+  ('summon/icon-musashi.webp', (512, 512), 'square', 'PLACEHOLDER icon-musashi (M2: half figure, two sword hilts crossed, gold frame)'),
+  ('summon/battle-musashi.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-musashi (M2: ready to draw both swords, hands crossed)'),
+  ('summon/cut-musashi-two-blades.webp', CUT, 'cut', 'PLACEHOLDER cut-musashi-two-blades  (M3: Musashi half-turned, both swords crossed over his shoulder, two silver streaks cut a glowing blue wall of water apart, a single thin line of light across the dragon far off - NO blood, NO wound on the scales; Yama + Nira step back at left)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

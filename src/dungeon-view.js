@@ -461,7 +461,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale,routeId),animationTime=reduced.matches?0:t;
       if(a.kind==='tree'){drawFrontierTree(ctx,a.tree,{x:p[0],y:p[1],height:w.h*cam.scale,image:treeImages[a.tree.kind],anchor:treeImages[a.tree.kind]?.frontierAnchor});return;}
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
-      if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',a.following?guideMotion.face:face,!!a.following&&guideMotion.moving,g.zone);return;}
+      if(a.kind==='guide'){drawStandee(ctx,a.following&&g.zone==='asia'?'char-musashi-asia':'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',a.following?guideMotion.face:face,!!a.following&&guideMotion.moving,g.zone);return;}
       if(a.kind==='merchant'){drawStandee(ctx,MERCHANT.img,p[0],p[1],h*1.15,animationTime,MERCHANT.glyph,-1,false,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,g.zone==='th'?'boss-frontier-th':'boss-frontier',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
       if(a.kind==='enemy'){
@@ -656,7 +656,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092*routeCharacterScale(routeId)*(a.kind==='yama'||a.kind==='nira'?mapActorHeight(a.kind)/82:1),animationTime=reduced.matches?0:t;
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
-      if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);if(!a.following){ctx.fillStyle='#ffe2a0';ctx.fillText('ผู้ตรวจการ · คุยเพื่อออกเดินทาง',p[0],p[1]+21);}return;}
+      if(a.kind==='guide'){drawStandee(ctx,a.following&&g.zone==='asia'?'char-musashi-asia':'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);if(!a.following){ctx.fillStyle='#ffe2a0';ctx.fillText('ผู้ตรวจการ · คุยเพื่อออกเดินทาง',p[0],p[1]+21);}return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
         if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();if(alertArt.complete&&alertArt.naturalWidth){ctx.drawImage(alertArt,p[0]-17,p[1]-h*1.15-35+bob,34,34);ctx.restore();}else{ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}}
         return;}

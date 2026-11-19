@@ -55,7 +55,7 @@ test('the cave: the cage scene is due once, in the middle of the cave, only whil
 
 test('every picture exists as a .webp; the old frontier-gate guide is not drawn in Zone 1; the lines match Rae', () => {
   for (const f of ['img/z1-events/cut-yomathat-harbor-th.webp', 'img/z1-events/cut-frontier12-cage-th.webp', 'img/z1-events/cut-frontier12-stop-th.webp']) assert.ok(existsSync(new URL('../' + f, import.meta.url)), f);
-  assert.ok(readFileSync(new URL('../src/frontier.js', import.meta.url), 'utf8').includes("g.zone!=='th'&&bossGuideWaiting(g)"));
+  assert.ok(readFileSync(new URL('../src/frontier.js', import.meta.url), 'utf8').includes("!HARBOR_ZONES.includes(g.zone)&&bossGuideWaiting(g)"));
   for (const k of Object.keys(YOMATHAT_STORIES)) assert.ok(storyOf(k));
   assert.match(NOTICES[YOMATHAT.caveNotice].en.text, /metal rings on metal/);
 });

@@ -1,5 +1,8 @@
 import {storyEncounterRole} from './story-progression.js';
 import {ZONES} from './data.js';
+import {HARBOR,MUSASHI,ART as HARBOR_ART} from './z2b-harbor.js';   // T6/4: Zone 2's boss waits at the harbor, Musashi walks with the team
+/** T5'/2 + T6/4: the zones whose boss waits at the harbor and has to be spoken to before the walk (Zone 1: the elder brother, Zone 2: Lian Gang). */
+export const HARBOR_ZONES=Object.freeze(['th','asia']);
 export const BOSS_GUIDE_ZONES=Object.freeze(['th','asia','west']);
 export const BOSS_GUIDE_GRANTS=Object.freeze({th:800,asia:800,west:1200});   // T5'/5 (Rae R2 A 8): Yomathat's gift at the gate of Zone 2 is 800 coins
 const nextZone={th:'asia',asia:'west',west:'cyberhell'};
@@ -51,12 +54,14 @@ export function recordBossGuideWin(g,battle){
   const zone=battle?.zone||g.zone;
   if(battle?.over!=='win'||!BOSS_GUIDE_ZONES.includes(zone)||storyEncounterRole(battle)!=='ruler')return false;
   const state=bossGuideState(g,zone);if(state.won)return false;
+  // T6/4 (Rae R2 B 4.2): Zone 2 has no praise scene - z2-lian-win (his last line changed) is it, then NL-1 says he waits at the harbor
+  if(zone==='asia'){state.won=true;state.praised=true;g.queueNotice?.(HARBOR.waitNotice);return true;}
   state.won=true;g.queueStory?.(`boss-guide-${zone}-praise`);return true;
 }
 const justiceHolding=(g,zone)=>Object.values(g.bossJustice?.ledger||{}).some(entry=>entry.zone===zone&&entry.phase!=='released');
 export function bossGuideWaiting(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&!s.following&&!s.farewell&&!justiceHolding(g,zone));}
 /** O1: once the guide has said farewell at the new land's gate the boss is gone for good — route, frontier stand, city pier and every hidden hit spot. */
-export function bossGuideDismissed(g,zone=g.zone){return !!bossGuideState(g,zone)?.farewell;}
+export function bossGuideDismissed(g,zone=g.zone){return zone!=='asia'&&!!bossGuideState(g,zone)?.farewell;}   // T6/4: Lian Gang stays at the harbor for good (Musashi is the one who says farewell at the western gate)
 /** Q4-5: zone 4 has no next land to escort to, so once its boss is beaten he leaves the pier for good (no standee, no hit spot, no talk button).
  *  Game rules (rematch via game.startZoneBoss) are untouched; only what the player sees and can press is retired. */
 export const bossPierRetired=(g,zone=g.zone)=>zone==='cyberhell'&&!!g.bossCleared?.cyberhell;
@@ -67,7 +72,7 @@ export function bossGuideCombatant(g) {
   const state=bossGuideState(g),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
   if(actor.recoverUntil&&Date.now()>=actor.recoverUntil){actor.recoverUntil=0;actor.morale=50;}
   return Object.assign(actor,{id:`guide:${g.zone}`,k:'guide',kind:'guide',guestGuide:true,homeZone:g.zone,
-    name:ZONES.find(z=>z.k===g.zone)?.bossName || 'ผู้ตรวจการนำทาง',speed:9});
+    name:g.zone==='asia'?MUSASHI.name:ZONES.find(z=>z.k===g.zone)?.bossName || 'ผู้ตรวจการนำทาง',speed:9,...(g.zone==='asia'?{artKey:MUSASHI.artKey,profileArt:MUSASHI.profile}:{})});   // T6/4: Zone 2's guest is Musashi
 }
 export function queueBossGuideStory(g,beat,zone=g.zone){
   const state=bossGuideState(g,zone);if(!state?.won||justiceHolding(g,zone))return false;
@@ -79,7 +84,17 @@ export function completeBossGuideStory(g,key){
   const match=/^boss-guide-(th|asia|west)-(praise|welcome|farewell)$/.exec(key||'');if(!match)return false;
   const state=bossGuideState(g,match[1]);if(state.farewell&&match[2]!=='praise')return false;state.won=true;
   if(match[2]==='praise')state.praised=true;
-  if(match[2]==='welcome')Object.assign(state,{welcomed:true,following:true});
+  if(match[2]==='welcome'){
+    Object.assign(state,{welcomed:true,following:true});
+    // T6/4 (Rae R2 B 4.1): Zone 2's gift is given at the harbor, with the "I am ready" scene (not at the new land's gate): 800 coins + the Zone 3 robes now
+    if(match[1]==='asia'&&!state.grantPaid){
+      Object.assign(state,{grantPaid:true,grantNotice:true,grantAmount:HARBOR.grant,outfitGranted:true});
+      g.outfitsOwned=[...new Set(['th',...(g.outfitsOwned||[]),nextZone.asia])];
+      g.coin=(Number.isFinite(g.coin)?g.coin:0)+HARBOR.grant;
+      g.log?.(`💰 เหลียนกังมอบเงิน ${HARBOR.grant} เบี้ยกรรม และชุดประจำปัจฉิม`,'good');
+      if(!g.pendingReward)g.pendingReward=pendingBossGuideGrant(g);
+    }
+  }
   if(match[2]==='farewell'){
     Object.assign(state,{farewell:true,following:false});
     const outfit=nextZone[match[1]];
@@ -119,6 +134,7 @@ export function pendingBossGuideGrant(g){
     const state=bossGuideState(g,zone);if(!state?.grantPaid||!state.grantNotice||state.grantAmount<=0)continue;
     const name=ZONES.find(z=>z.k===zone).bossName;
     // T5'/5 (Rae NY-3): Zone 1's gift is the elder brother's own - the receipt window says it in her words
+    if(zone==='asia')return {guideZone:zone,title:'ของฝากจากแม่ทัพ',who:`เหลียนกังมอบชุดประจำปัจฉิมและเงิน ${state.grantAmount} เบี้ยกรรมให้ยามา`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำปัจฉิมแล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};   // T6/4 (NL-2)
     if(zone==='th')return {guideZone:zone,title:'ของฝากจากพี่ชาย',who:`ยมทัตมอบชุดประจำบูรพาและเงิน ${state.grantAmount} เบี้ยกรรมให้ยามา`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำบูรพาแล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};
     return {guideZone:zone,title:'ทุนและชุดสำหรับดินแดนใหม่',who:`${name} มอบเงินและชุดประจำดินแดนใหม่`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำดินแดนใหม่แล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};
   }

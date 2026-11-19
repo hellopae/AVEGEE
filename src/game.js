@@ -14,6 +14,7 @@ import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
+import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
@@ -3995,6 +3996,7 @@ const API = {
       // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
       const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
       dmg = summonDamage(this, summonKey);
+      if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
       if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
       const guardMove = summonGuard(this, summonKey);
       if (guardMove) {
@@ -4605,7 +4607,8 @@ const API = {
       this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack
     }
     else {
-      const blow = Math.round(foeAtkRoll() * this.teamPressure(B) * foeFit(B, this.battleActors().length));   // F3: foe-turn-fit.js corrects the blow per fight and team size                     // the foe's full blow: boss moves (group / heavy) are built on it
+      let blow = Math.round(foeAtkRoll() * this.teamPressure(B) * foeFit(B, this.battleActors().length));
+      if (counter.weak > 0) { blow = Math.round(blow * (summonerOf('liangang').move.weaken.mult)); counter.weak--; }   // T6/4: Chain Line (lamp.js) - a weakened foe strikes lighter   // F3: foe-turn-fit.js corrects the blow per fight and team size                     // the foe's full blow: boss moves (group / heavy) are built on it
       const normal = Math.round(blow * foeHitScale(this.foeActsPerRound(counter.id)));   // F3: an ordinary attack of a foe with several turns a round is lighter per turn
       const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
       // A group strike must not apply the single-target team-pressure bonus to every ally.
@@ -5046,6 +5049,7 @@ const API = {
     if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
     if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);
     if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
+    if (next?.key === HARBOR.giftStory) { this.queueNotice(HARBOR.joinNotice); this.unlockHelper('liangang'); }   // T6/4: NL-2 is the grant receipt, NL-3 Musashi joins, NL-4 (lamp-helper-liangang) the flame (D4)
     if (next?.key === WUKONG_FLAME.story) this.unlockHelper('wukong');   // T6/3 (D4): his own event is passed - NA-2 (the generic helper window) follows
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp

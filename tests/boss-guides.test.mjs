@@ -48,7 +48,7 @@ test('acknowledged guide stories repair a partial guide save instead of locking 
  assert.equal(bossGuideFollowing(g),false);assert.equal(bossGuideWaiting(g),false);assert.equal(bossGuideState(g).farewell,true);
 });
 
-for(const [zone,amount] of Object.entries(BOSS_GUIDE_GRANTS))test(`${zone} farewell grants ${amount} once on acknowledgment, with a persistent receipt`,()=>{
+for(const [zone,amount] of Object.entries(BOSS_GUIDE_GRANTS).filter(([z])=>z!=='asia'))test(`${zone} farewell grants ${amount} once on acknowledgment, with a persistent receipt`,()=>{
  const g=fixture();g.zone=zone;g.coin=100;g.logs=[];g.log=(text)=>g.logs.push(text);
  recordBossGuideWin(g,{zone,kind:'zoneBoss',over:'win'});
  completeBossGuideStory(g,`boss-guide-${zone}-welcome`);
@@ -101,7 +101,8 @@ for(const [zone,to] of [['asia','west'],['west','cyberhell']])test(`a restored a
  assert.equal(restored.moveZone(to),true);assert.equal(restored.zone,to);
 });
 
-for(const [zone,amount] of Object.entries(BOSS_GUIDE_GRANTS))test(`${zone} actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries`,()=>{
+// T6/4: Zone 2's gift is given at the harbor with the welcome scene (tests/t6-harbor.test.mjs); the other zones still pay at the farewell
+for(const [zone,amount] of Object.entries(BOSS_GUIDE_GRANTS).filter(([z])=>z!=='asia'))test(`${zone} actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries`,()=>{
  let g=createGame();g.zone=zone;g.save=()=>true;g.onChange=()=>{};g.bossCleared[zone]=true;
  const before=g.coin;
  const reload=()=>{const h=createGame();h.save=()=>true;h.onChange=()=>{};assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);g=h;};
