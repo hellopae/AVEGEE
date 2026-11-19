@@ -53,7 +53,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, BOSS_NAMES,
-         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
+         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent, guardName } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid, clearLine } from './walk.js?v=k1d';
 import { DEVA_MAP } from './deva-map.js';
@@ -345,7 +345,7 @@ function migrateZ1Events(g, d) {
   if (active && g.guard && !guardUnlocked(g, 'th')) {
     g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];
     delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;
-    g.log(`🛡️ ${GUARD.name}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');
+    g.log(`🛡️ ${guardName('th')}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');
   }
   if (active && g.devaVisits?.th) g.revealDevaSoul(null);
   if (active) g.refreshZoneEvents('th');
@@ -2557,7 +2557,7 @@ const API = {
       const d = Math.hypot(m.x - G.x, m.y - G.y);
       if (d < MOB.reach) {
         G.path = null;
-        this.strike(this.mobs.indexOf(m), GUARD.name);
+        this.strike(this.mobs.indexOf(m), guardName(this.zone));
       } else {
         // The mob moves and may stop against a building; follow a walkable route instead of the blocked straight line.
         if (!G.path?.length || !G.target || Math.hypot(m.x - G.target[0], m.y - G.target[1]) > 32) {
@@ -2571,7 +2571,7 @@ const API = {
           else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
         }
         if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) {
-          this.strike(this.mobs.indexOf(m), GUARD.name);
+          this.strike(this.mobs.indexOf(m), guardName(this.zone));
           G.morale = Math.max(0, G.morale - 2); if (!G.morale) this.downActor(G);
         }
       }
@@ -3299,7 +3299,7 @@ const API = {
       turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });
     if (key === 'westVampireBreach') {
       const allies = [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])];
-      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? GUARD.name : crewName(c,'west') }));
+      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? guardName(this.zone) : crewName(c,'west') }));
     }
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
@@ -4062,10 +4062,10 @@ const API = {
       this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = GUARD.helpCdMs; this.guard.helpCooldownSeconds = GUARD.helpCdMs / 1000;
       this.guard.morale = Math.max(0, this.guard.morale - GUARD.helpMorale);
       if (!this.guard.morale) this.downActor(this.guard);
-      B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
+      B.helper = { k: 'guard', name: guardName(this.zone), at: Date.now(), lunge: true };
       dmg = this.allyStats(this.guard).dmg;
-      say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
-      B.talk = `${GUARD.name}: "ถอยไปเถอะท่าน ข้าจัดการเอง"`;
+      say(`${guardName(this.zone)}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
+      B.talk = `${guardName(this.zone)}: "ถอยไปเถอะท่าน ข้าจัดการเอง"`;
       this.save();
 
     } else if (what === 'fire') {
@@ -4266,6 +4266,7 @@ const API = {
         }
         delete this.guard.breachGuest; this.guardReserve = null;
         this.queueStory('c1-guard-arrival');
+        this.queueStory('z1-guard-name');      // R2 A 1.2: he says his name (Zone 1 only: this is the case 9 event)
         const item = pick(FRONTIER.drops);
         this.coin += event.reward.coin;
         this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
@@ -5209,7 +5210,7 @@ const API = {
     this.guard = actorFromLegacy({ x: GUARD_POST[0], y: GUARD_POST[1] }, this.zone, 'guard');
     syncRoster(this);
     if (this.huntMob) { this.huntMob = false; this.player.path = null; this.player.tx = null; }
-    this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
+    this.log(`🛡️ จ้าง${guardName(this.zone)}แล้ว ${GUARD.line}`, 'good');
     this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him
     return true;
   },

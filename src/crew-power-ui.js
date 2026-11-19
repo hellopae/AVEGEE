@@ -1,7 +1,7 @@
 // crew-power-ui.js — ไอคอนพลังยมทูต + แผ่นรายละเอียดพลัง (P4 §3)
 // ป้ายกลมมุมล่างขวาของรูปโปรไฟล์ = ท่าสู้ (CREW_POWER[k].icon) · ป้ายเล็กมุมล่างซ้าย = หน้าที่คุมงาน (CREW_POWER[k].jobIcon)
 // ไฟล์ภาพจริงของ Codex อยู่ที่ img/ui/power-*.webp / job-*.webp — เปลี่ยนไอคอนที่ CREW_POWER[k].icon ที่เดียว ไม่ต้องแตะโค้ดตรงนี้
-import { CREW, CREW_POWER, BATTLE, GUARD, crewName } from './data.js';
+import { CREW, CREW_POWER, BATTLE, GUARD, guardName, crewName } from './data.js';
 import { keeperRole } from './interrogation.js';
 import { crewAbility } from './command-wheel.js';
 import { t, getLang } from './i18n.js';
@@ -10,7 +10,7 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 export const POWER_KEYS = Object.freeze(Object.keys(CREW_POWER));
 export const powerName = k => getLang() === 'en' ? t(`power.${k}.name`) : CREW_POWER[k]?.name || '';
-const crewLabel = (k, zone) => k === 'guard' ? GUARD.name : crewName(CREW.find(c => c.k === k), zone);
+const crewLabel = (k, zone) => k === 'guard' ? guardName(zone) : crewName(CREW.find(c => c.k === k), zone);
 
 /** ป้ายไอคอน (span role=button เพื่อซ้อนในปุ่ม/การ์ดที่เป็น <button> ได้) — ผูกคลิกด้วย bindPowerBadges() ครั้งเดียวระดับเอกสาร */
 export function powerBadgeHtml(k, { zone = 'th', job = true, actor = null } = {}) {

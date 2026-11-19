@@ -731,6 +731,11 @@ export const MOB = {
 // B5: ฟาดแรง 60, เสียกำลังใจ 8, คูลดาวน์ 120 วินาทีสนามรบ
 /** T3/9 (F23): paid back when the document puzzle's +8 order does not fit (order near / at 100) */
 export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
+/** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard
+ *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */
+export const GUARD_NAMES = Object.freeze({ th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
+export const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;
+export const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
   hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,

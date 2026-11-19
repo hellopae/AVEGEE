@@ -1,6 +1,6 @@
 import {actorStanding} from './actor-recovery.js';
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
-import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, ZONES, crewName } from './data.js';
+import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, ZONES, crewName, guardName } from './data.js';
 import { rosterId } from './roster.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
 import { isTownZone } from './zone-skin.js';
@@ -146,7 +146,7 @@ export function questTarget(g,q){
     npc==='nira'?[STATIONS.find(st=>st.k==='sala').x,STATIONS.find(st=>st.k==='sala').y]:[def?.hx||300,def?.hy||380];
   if(zone===g.zone&&actor&&(npc!=='nira'||actorStanding(actor)&&!g.niraRest&&Number.isFinite(actor.x)&&Number.isFinite(actor.y)))point=[actor.x??actor.hx??point[0],actor.y??actor.hy??point[1]];
   if(zone===g.zone)point=nearestWalk(...point)||point;
-  return {zone,npc,x:point[0],y:point[1],name:npc==='merchant'?'พ่อค้าควันทอง':npc==='guard'?'ยักษ์ทวารบาล':npc==='nira'?'นิรา':crewName(def,zone),art:npc==='merchant'?'img/merchant.webp':null};
+  return {zone,npc,x:point[0],y:point[1],name:npc==='merchant'?'พ่อค้าควันทอง':npc==='guard'?guardName(zone):npc==='nira'?'นิรา':crewName(def,zone),art:npc==='merchant'?'img/merchant.webp':null};
 }
 // Current target ownership includes later cross-zone replies; paused quests remain readable.
 export function questsForActor(g,npc,zone=g.zone){

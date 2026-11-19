@@ -22,7 +22,7 @@
   },
   {
    "before": "         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n",
-   "after": "         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';\n"
+   "after": "         syncSceneZone, ZONE_EVENTS, ZONE_BOSS_AT, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent, guardName } from './data.js';\n"
   },
   {
    "before": "import { t } from './i18n.js';\n",
@@ -46,7 +46,7 @@
   },
   {
    "before": "",
-   "after": "/** Z1-EVENTS (13 Nov 2026) — bring a save written before the new Zone 1 order into it without replaying or stranding anything:\n *   · Zone 1 already finished -> the Sita / Hanuman beat is marked done (never replayed)\n *   · elder brother already announced under the old order (case 10) but not fought -> he steps back until Sita's case and case 15 are done\n *   · nurse already heard by chance -> counted as heard\n *   · Guard hired at Nira's desk before the border event -> back to his gate, hire refunded, training kept for when he joins\n *   · a beggar soul still standing around after the deva revealed himself (owner e1) -> gone */\nfunction migrateZ1Events(g, d) {\n  if (d.z1EventsVersion === 1) return;\n  const th = g.zoneEvents.th ||= {};\n  if (g.bossCleared?.th || th.thBorderBoss === 'cleared') {\n    th.sitaHanuman = 'cleared'; g.storyCaseDone.sitaledger = true; g.storyCaseDone.nurse = true;\n  } else if (th.thBorderBoss && th.sitaHanuman !== 'cleared') {\n    delete th.thBorderBoss; delete g.eventMapClosed['th:thBorderBoss'];\n    g.bossGuarding.th = false; g.bossPending = false; if (g.bossArriveSeen) delete g.bossArriveSeen.th;\n  }\n  const active = g.zone === 'th';\n  if (active && g.usedCases?.includes('nurse') && !g.queue.some(s => s.case === 'nurse')) g.storyCaseDone.nurse = true;\n  if (active && g.guard && !guardUnlocked(g, 'th')) {\n    g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];\n    delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;\n    g.log(`🛡️ ${GUARD.name}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');\n  }\n  if (active && g.devaVisits?.th) g.revealDevaSoul(null);\n  if (active) g.refreshZoneEvents('th');\n}\n\n"
+   "after": "/** Z1-EVENTS (13 Nov 2026) — bring a save written before the new Zone 1 order into it without replaying or stranding anything:\n *   · Zone 1 already finished -> the Sita / Hanuman beat is marked done (never replayed)\n *   · elder brother already announced under the old order (case 10) but not fought -> he steps back until Sita's case and case 15 are done\n *   · nurse already heard by chance -> counted as heard\n *   · Guard hired at Nira's desk before the border event -> back to his gate, hire refunded, training kept for when he joins\n *   · a beggar soul still standing around after the deva revealed himself (owner e1) -> gone */\nfunction migrateZ1Events(g, d) {\n  if (d.z1EventsVersion === 1) return;\n  const th = g.zoneEvents.th ||= {};\n  if (g.bossCleared?.th || th.thBorderBoss === 'cleared') {\n    th.sitaHanuman = 'cleared'; g.storyCaseDone.sitaledger = true; g.storyCaseDone.nurse = true;\n  } else if (th.thBorderBoss && th.sitaHanuman !== 'cleared') {\n    delete th.thBorderBoss; delete g.eventMapClosed['th:thBorderBoss'];\n    g.bossGuarding.th = false; g.bossPending = false; if (g.bossArriveSeen) delete g.bossArriveSeen.th;\n  }\n  const active = g.zone === 'th';\n  if (active && g.usedCases?.includes('nurse') && !g.queue.some(s => s.case === 'nurse')) g.storyCaseDone.nurse = true;\n  if (active && g.guard && !guardUnlocked(g, 'th')) {\n    g.guardReserve = snapshotRoster({ [g.guard.id]:g.guard })[g.guard.id];\n    delete g.roster[g.guard.id]; g.guard = null; g.coin += GUARD.hire;\n    g.log(`🛡️ ${guardName('th')}กลับไปเฝ้าประตูชายแดน — คืนค่าจ้าง ${GUARD.hire} เบี้ยกรรม (จะมาร่วมทีมหลังเหตุปีศาจบุกชายแดน)`, 'event');\n  }\n  if (active && g.devaVisits?.th) g.revealDevaSoul(null);\n  if (active) g.refreshZoneEvents('th');\n}\n\n"
   },
   {
    "before": "",
@@ -173,6 +173,14 @@
    "after": "    const guardTarget = this.mobs.find(m => !m.eventKey), guardEating = !!this.guard?.mealSeq;   // T3/12: the Guard stands still while he takes and eats the rice ball\n    if (guardEating) return;\n"
   },
   {
+   "before": "        this.strike(this.mobs.indexOf(m), GUARD.name);\n",
+   "after": "        this.strike(this.mobs.indexOf(m), guardName(this.zone));\n"
+  },
+  {
+   "before": "          this.strike(this.mobs.indexOf(m), GUARD.name);\n",
+   "after": "          this.strike(this.mobs.indexOf(m), guardName(this.zone));\n"
+  },
+  {
    "before": "      kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',\n",
    "after": "      kind: 'soul', zone: this.zone, soulId: soul.id, sex: soul.sex || 'm',   // T1b: `zone` so the balance rows (<zone>:soul) find the fight\n"
   },
@@ -223,6 +231,10 @@
   {
    "before": "      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });\n",
    "after": "      turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });\n"
+  },
+  {
+   "before": "      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? GUARD.name : crewName(c,'west') }));\n",
+   "after": "      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? guardName(this.zone) : crewName(c,'west') }));\n"
   },
   {
    "before": "        const damage = Math.min(f.hp, f.burn.dmg);\n",
@@ -349,6 +361,14 @@
    "after": "    } else if (featherCommand) {\n      // QUEST-DAM-B (owner 15 Nov): wakes a fallen teammate at 40 % HP (HP of a teammate = morale, 0-100), costs the user's turn like any item; once per person per fight\n      const hp = Math.round(100 * PHOENIX_FEATHER.heal);\n      recipient.morale = hp;\n      B.fallen = (B.fallen || []).filter(id => id !== recipient.id);\n      B.absentActors = (B.absentActors || []).filter(id => id !== recipient.id);\n      (B.phoenixUsed ||= {})[recipient.id] = true;\n      if (--this.inventory.phoenixFeather <= 0) delete this.inventory.phoenixFeather;\n      B.dmg.healActorId = recipient.id; B.dmg.healAmount = hp;\n      B.helper = actor.id === 'you' ? null : { ...actor, lunge:false };\n      B.talk = t('item.phoenixFeather.say', { name:recipient.name });\n      say(B.talk);\n      this.save();\n"
   },
   {
+   "before": "      B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };\n",
+   "after": "      B.helper = { k: 'guard', name: guardName(this.zone), at: Date.now(), lunge: true };\n"
+  },
+  {
+   "before": "      say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);\n      B.talk = `${GUARD.name}: \"ถอยไปเถอะท่าน ข้าจัดการเอง\"`;\n",
+   "after": "      say(`${guardName(this.zone)}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);\n      B.talk = `${guardName(this.zone)}: \"ถอยไปเถอะท่าน ข้าจัดการเอง\"`;\n"
+  },
+  {
    "before": "      if (this.mp < BATTLE.mpCost.fire) return false;\n      this.mp -= BATTLE.mpCost.fire;\n",
    "after": "      const fireFinale = B.breachFinale === 'ready' && B.finaleMove === 'fire';   // Z2-EVENTS (case 11): the story's closing fireball - free, the power is paid out with the win\n      if (!fireFinale && this.mp < BATTLE.mpCost.fire) return false;\n      if (!fireFinale) this.mp -= BATTLE.mpCost.fire;\n"
   },
@@ -402,7 +422,7 @@
   },
   {
    "before": "        this.queueStory('c1-guard-arrival', 'teamJudgment');\n",
-   "after": "        delete this.guard.breachGuest; this.guardReserve = null;\n        this.queueStory('c1-guard-arrival');\n"
+   "after": "        delete this.guard.breachGuest; this.guardReserve = null;\n        this.queueStory('c1-guard-arrival');\n        this.queueStory('z1-guard-name');      // R2 A 1.2: he says his name (Zone 1 only: this is the case 9 event)\n"
   },
   {
    "before": "",
@@ -517,8 +537,8 @@
    "after": "    if (this.guard || this.coin < GUARD.hire || !guardUnlocked(this)) return false;   // Z1-EVENTS: Zone 1's Guard joins through the frontier breach, not the hire desk\n    if (this.guardTestNeeded()) { this.requestGuardTest(); return false; }           // Z2-EVENTS: Zone 2's Guard has to be beaten first (z2-events.js Z2_TEXT.guard)\n"
   },
   {
-   "before": "",
-   "after": "    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him\n"
+   "before": "    this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');\n",
+   "after": "    this.log(`🛡️ จ้าง${guardName(this.zone)}แล้ว ${GUARD.line}`, 'good');\n    this.ensureKinCases();   // Z2-EVENTS: his relative's case is unlocked by hiring him\n"
   },
   {
    "before": "",
@@ -588,7 +608,7 @@
   },
   {
    "before": "",
-   "after": "/** T3/9 (F23): paid back when the document puzzle's +8 order does not fit (order near / at 100) */\nexport const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });\n"
+   "after": "/** T3/9 (F23): paid back when the document puzzle's +8 order does not fit (order near / at 100) */\nexport const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });\n/** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard\n *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */\nexport const GUARD_NAMES = Object.freeze({ th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });\nexport const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;\nexport const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';\n"
   },
   {
    "before": "  // ค่าที่ battleAct('guard') ใช้จริง (ย้ายจากเลขลอยใน game.js มาไว้ที่นี่ — ค่าเดิมทุกตัว): คูลดาวน์ 20 วินาที · กำลังใจ −8 ต่อครั้ง · ต้องมีกำลังใจ ≥ 8\n",

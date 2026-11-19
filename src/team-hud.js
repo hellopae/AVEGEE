@@ -1,5 +1,5 @@
 import {canteenBuilt,canteenState,canFeedActor,canOrderCanteenMeal} from './canteen.js';
-import {GUARD} from './data.js';
+import {GUARD,guardName} from './data.js';
 import {actorStanding} from './actor-recovery.js';
 import {WORKER_MODES,workerSheet} from './workers.js';
 import {PLERNG_WARRANT_FOOD} from './interrogation.js';
@@ -18,7 +18,7 @@ export function teamStatus(g,a,worker=false){
  }
  return {hp,hunger,duty,starved:hunger===0,busy:worker?!!(a.eatOrder||a.job||a.resting||a.mode==='rest'||a.supplyRest||a.teaRest):!!(a.eatOrder||!actorStanding(a)||a.at||a.buildK||a.escort||a.cook)};
 }
-export function teamMembers(g){return [...(g.workers?.()||[]).map(a=>({a,worker:true})),...g.crew.filter(a=>!a.self).map(a=>({a,worker:false})),...(g.guard?[{a:{...g.guard,name:g.guard.name||GUARD.name},worker:false}]:[])];}
+export function teamMembers(g){return [...(g.workers?.()||[]).map(a=>({a,worker:true})),...g.crew.filter(a=>!a.self).map(a=>({a,worker:false})),...(g.guard?[{a:{...g.guard,name:g.guard.name||guardName(g.zone)},worker:false}]:[])];}
 const portrait=(a,worker,art)=>worker?`<span class="team-face worker-face" style="background-image:url('${esc(workerSheet(a.homeZone))}')"></span>`:`<img class="team-face" src="${esc(art(a))}" alt="">`;
 const bars=(s)=>`<span class="team-meter hp" role="meter" aria-label="HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${s.hp}"><i style="width:${s.hp}%"></i></span><span class="team-meter hunger" role="meter" aria-label="ความอิ่ม" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${s.hunger}"><i style="width:${s.hunger}%"></i></span>`;
 // Q3: คนงานหนึ่งแถว · ยมทูต(+ผู้เฝ้า)อีกแถว — เดิมเรียง 5 คอลัมน์ต่อกันเป็นสายเดียว คนงานคนที่ 6 ล้นลงไปแถวยมทูตและแถวสุดท้ายถูกตัดทิ้ง

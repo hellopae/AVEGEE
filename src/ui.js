@@ -86,7 +86,7 @@ import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1'
 import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
-         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
+         GUARD, guardName, guardTitle, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';
@@ -722,7 +722,7 @@ function drawTab() {
       + (!(g.guard || g.guardUnlocked()) ? '' : `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
         <span class="pw-av">${face(GUARD.img, '🛡️')}${powerBadgeHtml('guard', { zone: g.zone })}</span>
-        <span class="n"><b>${GUARD.name}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
+        <span class="n"><b>${guardName(g.zone)}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
           <div class="st">${esc(GUARD.line)}</div></span>
         ${g.guard ? '<button class="sm" disabled>จ้างแล้ว</button>'
@@ -950,7 +950,7 @@ function sideBody() {
   // ---- ยักษ์ทวารบาล ----
   if (sel.kind === 'guard') {
     if (!g.guard) return '<div class="empty">ยังไม่ได้จ้างยักษ์ทวารบาล</div>';
-    return profile(GUARD.img, GUARD.name, 'ยามประจำโซน',
+    return profile(GUARD.img, guardName(g.zone), guardTitle(g.zone) || 'ยามประจำโซน',
         g.mobs.length ? `กำลังไล่เปรต ${g.mobs.length} ตน` : 'ไม่มีเปรต — เฝ้าท่าเรือฝั่งขวาอยู่')
       + think(GUARD.line)
       + kv([`ค่าแรง ${GUARD.pay}/งวด`])
@@ -1056,7 +1056,7 @@ function guardRestWidget(c, showName = false) {
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
   const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/(rest.until-rest.startedAt))) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
-    ${showName ? `<b class="rest-name">${esc(c.name || (c.k === 'guard' ? GUARD.name : c.k))}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
+    ${showName ? `<b class="rest-name">${esc(c.name || (c.k === 'guard' ? guardName(g.zone) : c.k))}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase !== 'rest' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
       : (() => {
         // L3: ปุ่มพักมีทุกคนที่ไม่ใช่ผู้อ่าน — จางพร้อมบอกเหตุผลเมื่อ HP เต็ม / ยังไม่มีศาลาน้ำชา / ล้มอยู่ / อยู่ในศึก
@@ -2866,7 +2866,7 @@ function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverri
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
-  const actorName = actorOverride ? actorOverride : crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
+  const actorName = actorOverride ? actorOverride : crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? guardName(g.zone) : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = nameOverride || ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>${lineOverride ? `<span class="cutscene-line">${esc(lineOverride)}</span>` : ''}`;
@@ -3569,7 +3569,7 @@ function openNiraOffice() {
     // e2 (owner 13 Nov): Zone 1's Guard is not for hire - he joins through the frontier event, so his card appears only once he is with the team
     if (g.guard || g.guardUnlocked()) cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
-        <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — นับรวมในทีม</small>
+        <span><b>${esc(guardName(g.zone))}</b><small>${esc(guardTitle(g.zone) || 'ยามประจำโซน')} — นับรวมในทีม</small>
         ${hireTag('guard', !!g.guard)}
         <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs % 60000 === 0 ? GUARD.helpCdMs / 60000 + ' นาที' : GUARD.helpCdMs / 1000 + ' วินาที'}</small></span>
         ${g.guard
@@ -4492,14 +4492,14 @@ function openBattle(after) {
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าร่วมทุกฉากต่อสู้ให้เองถ้าจ้างไว้แล้ว ไม่กินโควตา
     // ใช้ลำดับยักษ์ → ยมทูต → ยมบาทน้อย ให้ตรงกับการ์ด (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
-    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name: GUARD.name }, ...battleHelpers] : [...battleHelpers];
+    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name: guardName(g.zone) }, ...battleHelpers] : [...battleHelpers];
     if (dash?.actor && dash.actor.id !== 'you' && !squadMembers.some(c => c.id === dash.actor.id)) squadMembers.push(dash.actor);
     if (phase === 'foe') for (const c of b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])) {
-      if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || GUARD.name});
+      if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || guardName(g.zone)});
     }
     // KO-CREW: teammates who fell stay in the scene (lying down) in the slot they had - same order all battle long. They are not in battleActors(), so they
     // get no turn, no target and no hit; the squad list and the cards only DRAW them.
-    for (const c of g.battleFallen()) if (!squadMembers.some(s => s.id === c.id)) squadMembers.push(c.k === 'guard' ? { ...c, name: GUARD.name } : c);
+    for (const c of g.battleFallen()) if (!squadMembers.some(s => s.id === c.id)) squadMembers.push(c.k === 'guard' ? { ...c, name: guardName(g.zone) } : c);
     { const order = (b.squadOrder ||= []); for (const c of squadMembers) if (!order.includes(c.id)) order.push(c.id);
       squadMembers.sort((a, z) => order.indexOf(a.id) - order.indexOf(z.id)); }
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
@@ -6008,7 +6008,7 @@ function drawHeroProfile() {
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
   const crew = g.crew.map(c => `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
-  const guard = `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
+  const guard = `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span><span class="profile-row-text"><b>${esc(guardName(g.zone))}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]
@@ -6623,7 +6623,7 @@ function openStation(k, emergency = false) {
     const select = ov.querySelector('select');
     for (const actor of g.trainingTargets(sk)) {
       const option = document.createElement('option'); option.value = actor.id;
-      option.textContent = actor.kind === 'guard' ? GUARD.name : actor.name || actor.kind; select.append(option);
+      option.textContent = actor.kind === 'guard' ? guardName(g.zone) : actor.name || actor.kind; select.append(option);
     }
     const reason = ov.querySelector('.training-why'), start = ov.querySelector('.mg-start');
     const check = () => {
