@@ -163,7 +163,7 @@ function lampNotices() {
       en:{ title:T['notice.low.title'].en, text:T['notice.low.text'].en, button:T['notice.low.button'].en } },
   };
   for (const k of Object.keys(SUMMONERS)) out[`lamp-helper-${k}`] = { title:T['notice.helper.title'].th, text:T['notice.helper.text'].th.replace('{name}', SUMMONERS[k].name.th), button:T['notice.received.button'].th, openLamp:true,
-    art:SUMMONERS[k].art?.icon || SUMMONERS.hanuman.art.icon,
+    art:SUMMONERS[k].art?.icon || '',   // a helper that has no drawing yet shows the window without a picture (never another character's)
     en:{ title:T['notice.helper.title'].en, text:T['notice.helper.text'].en.replace('{name}', SUMMONERS[k].name.en), button:T['notice.received.button'].en } };
   return out;
 }

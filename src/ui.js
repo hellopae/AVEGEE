@@ -3726,7 +3726,7 @@ function openStoryNotice(id) {
   let detail = false;
   if (n.en && getLang() === 'en') n = { ...n, ...n.en };   // T4: notices that carry an English block (R1 A / R2 A) show it
   const paint = () => modal(`<div class="event-alert-main z1-notice"><h2>${esc(n.title)}</h2><p>${esc(detail ? n.detail : n.text)}</p>
-      <img class="event-alert-foe" src="${esc(n.art)}" alt="" onerror="this.remove()">
+      ${n.art ? `<img class="event-alert-foe" src="${esc(n.art)}" alt="" onerror="this.remove()">` : ''}
       <div class="event-alert-actions"><button class="gold" data-notice-ok>${esc(detail || !n.detail ? (detail ? 'ปิด' : n.button) : n.button)}</button></div></div>`, d => {
     d.querySelector('[data-notice-ok]').onclick = () => {
       if (n.detail && !detail) { detail = true; paint(); return; }

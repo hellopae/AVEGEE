@@ -47,5 +47,7 @@ test('a later helper (D4: its own event passed) queues the "new helper" window w
   assert.equal(NOTICES['lamp-helper-kumanthong'].text, 'กุมารทอง ยอมรับท่านแล้ว และฝากไฟไว้ในตะเกียงวิเศษ เลือกใส่ในช่องได้ที่เมนูกระเป๋า');
   assert.equal(NOTICES['lamp-helper-kumanthong'].en.text, 'Kuman Thong has accepted you and left a flame in the Magic Lamp. Place them in a slot from the bag menu.');
   for (const k of Object.keys(SUMMONERS)) assert.ok(NOTICES[`lamp-helper-${k}`], k);
+  assert.equal(NOTICES['lamp-helper-kumanthong'].art, '', 'no drawing yet -> no picture, never another character\'s');
+  assert.equal(NOTICES['lamp-helper-hanuman'].art, SUMMONERS.hanuman.art.icon);
   assert.equal(NOTICES['lamp-low'].title, 'ไฟในตะเกียงริบหรี่');
 });

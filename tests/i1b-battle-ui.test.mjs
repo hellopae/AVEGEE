@@ -135,7 +135,7 @@ for (const [name, sc] of Object.entries(FIN_SCENES)) {
 test('battle selection uses visible battlefield bounds and one roster for sprites and portraits', () => {
   const ui = read('src/ui.js');
   assert.match(ui, /const team = squadMembers;/);
-  assert.match(ui, /\? \[\{ \.\.\.g.guard, name: GUARD.name \}, \.\.\.battleHelpers\]/);
+  assert.match(ui, /\? \[\{ \.\.\.g.guard, name: guardName\(g\.zone\) \}, \.\.\.battleHelpers\]/);   // T4: the Guard's name follows the zone (Zone 1 = กุมภัณฑ์)
   assert.match(ui, /\.fig\[data-crew-pick=/);
   assert.match(ui, /battleSpriteRect\(im\)/);
   assert.doesNotMatch(ui, /reference:courtWheelReference/);
