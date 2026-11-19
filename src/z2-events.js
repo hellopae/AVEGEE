@@ -34,7 +34,7 @@ export const Z2_SOUL_SPRITE = Object.freeze({
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
   A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
-export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia)(-profile)?$/;
+export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia)(-profile|-guard)?$/;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Story pages. Rae's text is copied verbatim (z2-events-text.js); here only the pictures are attached - one picture per page, the last one repeats.
@@ -140,21 +140,44 @@ export const Z2_STORY_CASES = Object.freeze([
 // `before` = said when the soul arrives (the window after the notice) · `during` = said in the interrogation log at the first question
 // `after` = said after the verdict, with the choice · each choice has its own lines.
 export const Z2_KIN = Object.freeze([
+  // T5'/6 (Rae R2 A 9): the Guard of Zone 2 is Guan Yu - the case `deserter` is kept (face / seen / hidden / merits / claims), only its `line` and the speaker change; the talk that accepts the request (9.2) opens
+  // the window, the closing talk (9.5) and the reward follow the choice. The reward is of the `hard` tier of the quest table (the story badge is not an inventory item: Rae allows coins instead).
   { k:'deserter', crew:'guard', def:caseDef(CASE_DESERTER), image:Z2_ART.guardTest,
-    notice:{ title:'ทหารเก่าของยักษ์ทวารบาล', text:'วิญญาณดวงหนึ่งในคิวคืออดีตทหารร่วมกองของยักษ์ทวารบาล เขาหนีทัพในคืนสุดท้ายของศึก ยักษ์ทวารบาลจำเขาได้และขอพบท่านก่อนเริ่มคดี', button:'ฟังยักษ์ทวารบาล' },
+    notice:{ title:'ทหารเก่าของกวนอู', text:'วิญญาณดวงหนึ่งในคิวคืออดีตทหารร่วมกองของกวนอู เขาหนีทัพในคืนสุดท้ายของศึก กวนอูจำเขาได้และขอพบท่านก่อนเริ่มคดี', button:'ฟังกวนอู',
+      en:{ title:"Guan Yu's Old Comrade", text:'One soul in the queue is a former comrade of Guan Yu\'s, who deserted on the last night before the final battle. Guan Yu recognises him and asks to speak with you before the hearing.', button:'Hear Guan Yu' } },
     before:[
-      'ยักษ์ทวารบาล: "ท่านอย่าเพิ่งหัวเราะนะ ข้าแค่หน้านิ่ง แต่มือข้าสั่น (กระแอม) คนที่กำลังจะขึ้นแท่น เคยนอนข้างข้าในค่ายสามปี เขาคือคนที่ข้าไว้ใจให้ถือกุญแจประตูหลังค่าย"',
-      'ยักษ์ทวารบาล: "ข้าไม่ขอให้ท่านเบา ไม่ขอให้ท่านหนัก ข้าโกรธเขามายี่สิบปี ข้าไม่ไว้ใจความโกรธของข้าเองแล้ว ท่านตัดสินเอง ส่วนข้าขอยืนข้างแท่นเงียบ ๆ ได้ไหม"'],
+      'กวนอู: "ท่านผู้ถือบัญชี ข้ามีเรื่องจะขอ ข้าไม่ชอบขอ แต่เรื่องนี้ข้าขอ"',
+      'กวนอู: "ข้าเคยมีทหารร่วมกองคนหนึ่งที่หายไปในคืนก่อนศึกสุดท้าย ข้าโกรธเขามายี่สิบปี ข้าบอกตัวเองว่านั่นคือการทิ้งด่าน เท่ากับเปิดประตูให้ข้าศึก ข้าไม่เคยถามว่าเขาไปไหน"',
+      'กวนอู: "ถ้าวิญญาณของเขามาถึงคิวของท่าน ข้าไม่ขอให้ท่านตัดสินเบาหรือหนัก ข้าขอเพียงให้ท่านอ่านบรรทัดสุดท้ายให้จบ และให้ข้ายืนฟังอยู่ข้างแท่น"',
+      'กวนอู: "ท่านอย่าเพิ่งมองว่าข้านิ่ง ข้าแค่สงบ มือข้าไม่สั่นแม้ในศึก แต่วันนี้สั่น คนที่กำลังจะขึ้นแท่นเคยนอนข้างข้าในค่ายสามปี เขาเป็นคนที่ข้าไว้ใจให้ถือกุญแจประตูหลังค่าย"',
+      'กวนอู: "ข้าไม่ขอให้ท่านเบา ไม่ขอให้ท่านหนัก ข้าโกรธเขามายี่สิบปี ข้าไม่ไว้ใจความโกรธของข้าเองแล้ว ท่านตัดสินเอง ข้าขอยืนข้างแท่นเงียบ ๆ ได้ไหม"'],
+    beforeEn:[
+      'Guan Yu: "Keeper of the ledger, I have a request. I dislike making requests, but I make this one."',
+      'Guan Yu: "I once had a comrade in my unit who vanished the night before the final battle. I have been angry at him for twenty years. I told myself it was desertion of the post, the same as opening the gate to the enemy. I never asked where he had gone."',
+      'Guan Yu: "If his soul reaches your queue, I do not ask you to judge him lightly or harshly. I ask only that you read the last line to the end, and let me stand beside the dais and listen."',
+      'Guan Yu: "Do not mistake me for unmoved. I am only calm. My hands did not shake even in battle, but today they do. The man about to take the dais slept beside me in camp for three years. He was the one I trusted with the key to the back gate of the camp."',
+      'Guan Yu: "I do not ask you to be lenient or harsh. I have been angry at him for twenty years, and I no longer trust my own anger. You judge. May I stand beside the dais in silence?"'],
     during:[
-      'ยักษ์ทวารบาล: "เสบียงเช้าวันนั้นหายไปจริง ข้ากับเพื่อนอีกสามคนกินน้ำเปล่ากับรากไม้เฝ้าประตูหน้า ข้าไม่ได้บอกเพื่อให้ท่านหนักมือนะ ข้าบอกเพราะข้าไม่อยากโกหกตัวเอง"',
-      'ยักษ์ทวารบาล: "เรื่องลูกสาวเขา ข้าไม่เคยถาม เพราะข้ากลัวคำตอบ ถ้าเขาบอกข้าคืนนั้น ข้าอาจเปิดประตูหลังให้เขาเองก็ได้"'],
-    after:['ยักษ์ทวารบาล: "ท่านตัดสินแล้ว ข้าขอยืนหน้าเขาสักครู่ได้ไหม ถ้าจะให้พูด ข้าขอพูดแค่ชื่อของเพื่อนสามคนที่ไม่ได้กลับมา"'],
+      'กวนอู: "เสบียงเช้าวันนั้นหายไปจริง ข้ากับเพื่อนอีกสามคนกินน้ำเปล่ากับรากไม้เฝ้าประตูหน้า ข้าไม่ได้พูดเพื่อให้ท่านหนักมือ ข้าพูดเพราะข้าไม่อยากโกหกตัวเอง"',
+      'กวนอู: "เรื่องลูกสาวเขา ข้าไม่เคยถาม เพราะข้ากลัวคำตอบ ถ้าเขามาบอกข้าคืนนั้น ข้าอาจเปิดประตูหลังให้เขาเองก็ได้"'],
+    after:['กวนอู: "ท่านตัดสินแล้ว ข้าขอยืนหน้าเขาสักครู่ได้ไหม ข้าขอพูดแค่ชื่อของเพื่อนสามคนที่ไม่ได้กลับมา"'],
+    afterEn:['Guan Yu: "You have ruled. May I stand before him for a moment? I want to speak only the names of the three comrades who did not come back."'],
     choices:[
-      { label:'ให้ยักษ์เอ่ยชื่อเพื่อนสามคนให้เขาฟัง', lines:[
-        'บรรยาย: ยักษ์ทวารบาลเอ่ยสามชื่อช้า ๆ ชายผู้หนีทัพหลับตา', 'ทหารเก่า: "ข้าจำได้ทุกชื่อ"',
-        'ยักษ์ทวารบาล: "ข้ารู้ว่าเจ้าจำได้ ข้าไม่อภัยเจ้าวันนี้ แต่ข้าไม่ลืมที่เจ้าส่งเงินให้บ้านพวกเขา ข้าเห็นหมด"'] },
-      { label:'ให้ยักษ์ยืนเงียบจนเขาผ่านประตูไป', lines:[
-        'บรรยาย: ชายผู้หนีทัพก้มศีรษะต่ำที่สุดเท่าที่เคยก้ม', 'ยักษ์ทวารบาล: "ข้าไม่มีคำพูดให้เขาวันนี้ แต่ข้ายืนอยู่ตรงนี้ เขารู้ว่าข้ายังอยู่"'] }] },
+      { label:'ให้กวนอูเอ่ยชื่อเพื่อนสามคนให้เขาฟัง', labelEn:'Let Guan Yu speak the three names', lines:[
+        'บรรยาย: กวนอูเอ่ยสามชื่อช้า ๆ ชายผู้หนีทัพหลับตา', 'ทหารเก่า: "ข้าจำได้ทุกชื่อ"',
+        'กวนอู: "ข้ารู้ว่าเจ้าจำได้ ข้าไม่ยกโทษให้เจ้าวันนี้ แต่ข้าไม่ลืมที่เจ้าส่งเงินให้บ้านพวกเขา ข้าเห็นหมด"'],
+        linesEn:['Narration: Guan Yu speaks the three names slowly. The deserter closes his eyes.', 'Old comrade: "I remember every name."', 'Guan Yu: "I know you do. I do not forgive you today, but I do not forget that you sent money to their homes. I saw it all."'] },
+      { label:'ให้กวนอูยืนเงียบจนเขาผ่านประตูไป', labelEn:'Let Guan Yu stand silent until he passes the gate', lines:[
+        'บรรยาย: ชายผู้หนีทัพก้มศีรษะต่ำที่สุดเท่าที่เคยก้ม', 'กวนอู: "ข้าไม่มีคำพูดให้เขาวันนี้ แต่ข้ายืนอยู่ตรงนี้ เขารู้ว่าข้ายังอยู่"'],
+        linesEn:['Narration: The deserter bows lower than he has ever bowed.', 'Guan Yu: "I have no words for him today. But I stand here. He knows I am still here."'] }],
+    // 9.5 the closing talk with Guan Yu, said after either choice; then the reward (`hard` tier: coins + two medicines, no new move)
+    closing:[
+      'กวนอู: "ท่านอ่านบรรทัดสุดท้ายจริง ข้าเพิ่งเข้าใจว่าข้าเหมารวมผู้ที่ทิ้งด่านทุกคนไว้ในกล่องเดียวกับผู้ที่เปิดประตูให้ข้าศึก ทั้งที่คนที่หนีเพราะลูกป่วยกับคนที่เปิดประตูเพราะผลประโยชน์ไม่ใช่คนเดียวกัน"',
+      'กวนอู: "ข้าไม่สาบานว่าจะไม่โกรธอีก ข้าสาบานว่าจะถามก่อนโกรธ ท่านถือคำสัตย์ของท่าน ข้าถือคำสัตย์ของข้า"'],
+    closingEn:[
+      'Guan Yu: "You did read the last line. I only now understand that I put everyone who left a post in the same box as the one who opens the gate to the enemy. A man who runs because his child is ill and a man who opens the gate for profit are not the same."',
+      'Guan Yu: "I do not swear that I will never be angry again. I swear that I will ask before I am angry. You keep your sworn word. I keep mine."'],
+    reward:{ coin:60, items:{ health:2, holyWater:2 }, badge:{ th:'ตราประจำกองของกวนอู · ตราไม้เก่าประจำกองของกวนอู เขามอบให้เพื่อขอบคุณที่ท่านอ่านจนถึงบรรทัดสุดท้าย', en:"Guan Yu's Unit Badge · An old wooden badge from Guan Yu's unit, given in thanks for reading to the last line." } } },
   { k:'chaincmd', crew:'taan', def:caseDef(CASE_CHAINCMD), image:Z2_ART.shacklePair,
     notice:{ title:'ผู้สั่งล่ามอากุระมาถึงแท่น', text:'วิญญาณอดีตผู้บังคับการด่านบูรพามาถึงคิว เขาเคยสั่งล่ามนักรบอากุระ โกคุจำตรวนที่เขาถือติดตัวมาได้ และขอพบท่านก่อนเริ่มคดี', button:'ฟังโกคุ' },
     before:[
@@ -235,7 +258,7 @@ export const AKURA_TRIAL = Object.freeze({
 });
 
 /** The notice that introduces each relative: the window (N7K-x) and, behind its button, what the crew member says before the bench. */
-const KIN_NOTICES = Object.fromEntries(Z2_KIN.map(r => [`kin-${r.k}`, { title:r.notice.title, text:r.notice.text, button:r.notice.button, detail:r.before.join('\n'),
+const KIN_NOTICES = Object.fromEntries(Z2_KIN.map(r => [`kin-${r.k}`, { title:r.notice.title, text:r.notice.text, button:r.notice.button, detail:r.before.join('\n'), ...(r.notice.en ? { en:{ ...r.notice.en, detail:(r.beforeEn || r.before).join('\n') } } : {}),
   art:Z2_SOUL_SPRITE[r.k] ? A(`${Z2_SOUL_SPRITE[r.k]}-profile`) : 'img/Asia/spirit-worker-asia-v2.webp' }]));
 /** Notice windows (Rae N3-4, N7-1, N7-6, N13-1, N15-1 and the relatives'): game.js queueNotice / ackNotice · ui.js openStoryNotice. */
 export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES });

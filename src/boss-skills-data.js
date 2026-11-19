@@ -7,7 +7,7 @@
 const A = name => `img/${name}.webp`;
 const IMG = Object.freeze({
   arunadet:A('z1-events/cut-arunadet-mirror-th'), tanthasura:A('z1-events/cut-tanthasura-army-th'), hanuman:A('z1-events/cut-hanuman-sweep-th'),
-  khunphaen:A('z1-events/cut-khunphaen-arrives-th'),
+  khunphaen:A('z1-events/cut-khunphaen-arrives-th'), guanyu:A('z2-events/cut-guanyu-sweep-asia'),
   yomathat:'img/zone-boss-cutscene.webp', yamaLedger:A('z4-events/cut-yama-ledger-tide-th'),
   kuroha:A('z2-events/cut-kuroha-gale-asia'), akura:A('z2-events/cut-akura-thornstorm-asia'), wukong:A('z2-events/cut-wukong-sweep-asia'),
   wukongClones:A('z2-events/cut-wukong-clones-asia'),
@@ -48,6 +48,17 @@ export const BOSS_SKILLS = Object.freeze({
       warnText:T('ท่านหนุมานขยายกายสูงขึ้นเรื่อย ๆ — รอบหน้าจะฟาดฝ่ามือลงมาหนึ่งครั้ง!', 'Hanuman swells to a towering size — next turn a great palm comes down on one of you!'),
       useText:T('ท่านหนุมานฟาดฝ่ามือใหญ่ลงมา แล้วหดกายกลับเท่าเดิม', 'Hanuman brings his great palm down, then shrinks back to his usual size.'),
       when:{ hpBelow:.6, everyActs:4 } },
+  ]),
+  // T5'/4 (Rae R2 A 7.4): Guan Yu at the gate of Zone 2 - a polearm and a stance only. Starting numbers.
+  guanyu:Object.freeze([
+    { id:'greenDragonSweep', kind:'groupHit', warn:1, power:.8, name:T('ง้าวมังกรเขียวกวาดลาน', 'Green Dragon Sweep'),
+      warnText:T('กวนอูหมุนง้าวช้า ๆ ปลายง้าวเริ่มมีแสงเขียว — รอบหน้าจะกวาดทั้งทีม!', 'Guan Yu turns his polearm slowly, its tip taking on a green glow — next turn it sweeps the whole team!'),
+      useText:T('กวนอู: "ข้ายังไม่ถอย!" แล้วกวาดง้าวผ่านทั้งทีม', 'Guan Yu: "I do not retreat!" and he sweeps through the whole team'),
+      when:{ firstAct:3, everyActs:4 }, image:IMG.guanyu },
+    { id:'oneCutNoRetreat', kind:'heavyHit', warn:1, power:1.8, name:T('ฟันเดียวไม่ถอย', 'One Cut, No Retreat'),
+      warnText:T('กวนอูยืนนิ่งและยกง้าวขึ้นเหนือไหล่ — รอบหน้าจะฟันหนักใส่คนเดียว!', 'Guan Yu stands still and raises his polearm over his shoulder — next turn a heavy cut falls on one of you!'),
+      useText:T('กวนอูฟันลงครั้งเดียวด้วยแรงทั้งหมด แล้วตั้งท่าเหมือนเดิม', 'Guan Yu cuts down once with all his strength, then resumes his stance'),
+      when:{ hpBelow:.5, everyActs:3 } },
   ]),
   // T5'/1 (Rae R2 A 4.5): Khun Phaen - a horse and a sword only, nothing of charms or spells. Starting numbers (power / when), not run through the sim yet.
   khunphaen:Object.freeze([

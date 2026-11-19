@@ -19,6 +19,7 @@ function namedSouls(){
   g.zone=c.zone||'th';g.casesDone=1;g.spawns=3;g.storyCaseDone={...g.storyCaseDone,nurse:true};   // Z1-EVENTS: the nurse is a story case (5th) - drawn by chance only once the story is past her
 g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
   let s;if(c.k==='devaMonk'){g.queue=[];g.storyCaseDone={...g.storyCaseDone,nurse:true};g.zoneCases.th=5;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}
+  else if(c.k==='wanthong'){g.queue=[];g.zoneCases.th=12;g.storyCaseDone={sitaledger:true};g.zoneEvents.th={...g.zoneEvents.th,devaTest:'cleared',frontierBreach:'cleared',sitaHanuman:'cleared'};g.ensureStoryCase();s=g.queue.find(x=>x.case===c.k);}   // T5'/1: the 13th case comes through its own door
   else if(c.z2){   // Z2-EVENTS: the story / relative cases come through their own doors (story case at its number · relative when its crew member is hired)
    g.zone='asia';g.queue=[];g.kinSeen={};g.storyCaseDone=c.k==='satorifather'?{apeelder:true}:{};g.coin=99999;g.zoneEvents.asia={asiaDevaTest:'cleared',asiaRageBreach:'cleared'};g.zoneCases.asia=14;
    const row=Z2_KIN.find(r=>r.k===c.k);

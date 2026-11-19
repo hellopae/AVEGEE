@@ -6,3 +6,8 @@
 .nira-wakeup p{margin:0;font-size:.95rem;line-height:1.35}
 @keyframes niraWakeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @media (prefers-reduced-motion:reduce){.nira-wakeup{animation:none}}
+
+/* T5'/7 - the boatman's quest line in the harbor window (small portrait + the log line) */
+.boatman-quest{display:flex;align-items:center;gap:.6rem;margin:.4rem 0;padding:.4rem .5rem;border:1px solid #c9a24f55;border-radius:12px;background:#201326aa}
+.boatman-quest img{flex:0 0 auto;width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #c9a24f}
+.boatman-quest p{margin:0;font-size:.9rem;line-height:1.35}

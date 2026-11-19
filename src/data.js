@@ -2,7 +2,8 @@ import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
-import { WANTHONG_TEXT } from './z1-wanthong.js';   // T5'/1: case 13 text (Rae R2 A 4)
+import { WANTHONG_TEXT } from './z1-wanthong.js';
+import { GATE_TEXT } from './z2-gate.js';   // T5'/4: the gate of Zone 2 (Rae R2 A 7)   // T5'/1: case 13 text (Rae R2 A 4)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -734,7 +735,7 @@ export const MOB = {
 export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
 /** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard
  *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */
-export const GUARD_NAMES = Object.freeze({ th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
+export const GUARD_NAMES = Object.freeze({ asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
 export const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;
 export const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';
 export const GUARD = {
@@ -1961,6 +1962,12 @@ export const ZONE_EVENTS = {
     foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[14,22], boss:true, skills:BOSS_SKILLS.yomathat },   // BOSS-SKILLS set A: atk was 12-19
       { kind:6, count:2, hp:52, atk:[7,12] }],
     reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } },
+  // T5'/4 (Rae R2 A 7): the keeper of Zone 2's gate - fought at the end of the border walk (Zone 1 map), never by the case count (atCases 999); winning it gives Zone 2 its Guard (game.js moveZone).
+  { k:'z2Gate', atCases:999, mode:'single', gate:true,
+    title:GATE_TEXT.title, alert:GATE_TEXT.alert, go:GATE_TEXT.go, retry:GATE_TEXT.retry, banner:GATE_TEXT.banner, lines:GATE_TEXT.lines,
+    win:{ title:GATE_TEXT.win.title, text:GATE_TEXT.win.text }, loseText:{ title:GATE_TEXT.lose.title, text:GATE_TEXT.lose.text }, loseStory:'z2-guanyu-lose', winStories:['z2-guanyu-win'],
+    foe:{ name:'กวนอู', sp:'boss-guanyu-asia', hp:330, atk:[19,30], boss:true, skills:BOSS_SKILLS.guanyu },
+    reward:{}, lose:{ hp:9 } },
   challengeEvent('th', { betweenWaveHeal:20, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:150, weapon:'fang' } })],
   asia:[
     // Z2-EVENTS (owner 14 Nov 2026 · Rae's text in z2-events.js Z2_TEXT): case 3 prison fire (the deva Kuroha comes down after ONE spirit fell),

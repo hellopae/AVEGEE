@@ -16,6 +16,8 @@ import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
 import { LAMP_TEXT } from './lamp-text.js';
 import { WANTHONG, WANTHONG_CASE, WANTHONG_STORIES, WANTHONG_NOTICES } from './z1-wanthong.js';
 import { YOMATHAT_STORIES, YOMATHAT_NOTICES } from './z1-yomathat.js';
+import { GATE_ALL_STORIES, GATE_NOTICES } from './z2-gate.js';
+import { BOATMAN_STORIES, BOATMAN_NOTICES } from './boatman.js';
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -181,6 +183,8 @@ export const NOTICES = Object.freeze({
   ...lampNotices(),
   ...WANTHONG_NOTICES,
   ...YOMATHAT_NOTICES,
+  ...GATE_NOTICES,
+  ...BOATMAN_NOTICES,
   ...Z2_NOTICES,
 });
 
@@ -308,7 +312,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...Z2_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

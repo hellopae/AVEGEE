@@ -276,7 +276,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       else if (ev.k === 'frontierBreach') b = (g.zoneEvents.th.devaTest = 'cleared', g.startFrontierBreach());
       else b = g.startZoneEvent(ev.k,ev.signal?'call':null);
       assert.ok(b, `${zone}/${ev.k} starts`);
-      if (ev.k === 'sitaHanuman') { seen.push(`${zone}/${ev.k}`); winBattle(g); assert.equal(b.over, 'win'); continue; }   // Z1-EVENTS: Hanuman tests Yama - Rae/owner set no reward, so no EXP rule is pinned here
+      if (['sitaHanuman', 'khunPhaen', 'z2Gate'].includes(ev.k)) { seen.push(`${zone}/${ev.k}`); winBattle(g); assert.equal(b.over, 'win'); continue; }   // Z1-EVENTS: Hanuman tests Yama - Rae/owner set no reward, so no EXP rule is pinned here
       const exp0 = g.exp, lvl0 = g.level;
       const itemsBefore = total(g);
       winBattle(g);
@@ -287,7 +287,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 20, seen.join());   // Z2-EVENTS: + Wukong and the Guard's proving fight
+  assert.ok(seen.length === 22, seen.join());   // Z2-EVENTS: + Wukong and the Guard's proving fight
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

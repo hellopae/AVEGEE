@@ -228,11 +228,11 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   g.completeStory(); assert.equal(g.bossGuideFollowing(), true, 'after the talk he travels with the team (Yama + Nira + him)');
   const coinBefore = g.coin;
   assert.equal(g.farewellBossGuide(), true); assert.equal(g.storyQueue.at(-1).key, 'boss-guide-th-farewell');
-  g.completeStory(); assert.equal(g.bossGuideFollowing(), false); assert.equal(g.coin, coinBefore + 500, 'farewell at the new land\'s gate pays the boss-guide grant');
+  g.completeStory(); assert.equal(g.bossGuideFollowing(), false); assert.equal(g.coin, coinBefore + 800, 'farewell at the new land\'s gate pays the boss-guide grant (T5\'/5: 800)');
   assert.equal(g.outfitsOwned.includes('asia'), true);
   // ---- nothing replays
   g = reload(g); drainStories(g); g.ackNotice('lamp-received'); g = reload(g);   // T4: the lamp window (NA-1) is the one notice that is still waiting here
-  assert.deepEqual(g.notices, ['z1-yomathat-wait', 'z1-yomathat-join'], "T5'/2: NY-1 / NY-2 wait to be read"); g.ackNotice('z1-yomathat-wait'); g.ackNotice('z1-yomathat-join');
+  assert.deepEqual(g.notices, ['z1-yomathat-wait', 'z1-yomathat-join', 'z2-yomathat-flame'], "T5'/2-5: NY-1 / NY-2 / NY-4 wait to be read"); for (const n of [...g.notices]) g.ackNotice(n);
   assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, []);
   for (const k of ['prisonBreak', 'devaTest', 'frontierBreach', 'sitaHanuman', 'thBorderBoss']) assert.equal(status(g, k), 'cleared', k);
   assert.equal(g.startZoneEvent('sitaHanuman'), null); assert.equal(g.startFrontierBreach(), null);

@@ -22,7 +22,8 @@ export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:
 /** The lamp's own icon (Rae R2 A, table A1: `img/ui/item-magic-lamp.webp`, plus `-lit` for the lit one). Not drawn yet -> null = the UI shows the 🪔 glyph and asks for no file.
  *  When Kittanate's drawing is saved at that path, set this to the path (one line). */
 export const LAMP_ICON_SRC = null;
-import { KUMAN_THONG } from './z1-wanthong.js';   // T5'/1: the second helper's text lives with his story
+import { KUMAN_THONG } from './z1-wanthong.js';
+import { YOMATHAT_HELPER } from './z2-gate.js';   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
@@ -39,7 +40,10 @@ export const SUMMONERS = Object.freeze({
   kumanthong:{ k:'kumanthong', no:2, name:KUMAN_THONG.name, glyph:'👦', event:'z1-khunphaen-win', ready:true,
     art:{ icon:art('kuman-thong-icon'), battle:art('kuman-thong-battle'), cut:art('cut-kuman-golden-aegis') },
     move:{ ...KUMAN_THONG.move, kind:'guard', shield:{ base:22, perLevel:2 }, heal:{ base:14, perLevel:1 }, raise:25 }, say:KUMAN_THONG.say },
-  yomathat:{ k:'yomathat', no:3, name:{ th:'ยมทัต', en:'Yomathat' }, glyph:'🔥', event:'z2-yomathat-gift', ready:false, move:{ name:{ th:'ดาบเพลิงคุ้มน้อง', en:"Flame Blade, Brother's Guard" } } },
+  // T5'/5 (Rae R2 A 8.4): Flame Blade, Brother's Guard = one heavy hit on the chosen foe + the whole team takes less damage until their next turn (the existing "defend" rule)
+  yomathat:{ k:'yomathat', no:3, name:YOMATHAT_HELPER.name, glyph:'🔥', event:'z2-yomathat-gift', ready:true,
+    art:{ icon:art('icon-yomathat'), battle:art('battle-yomathat'), cut:art('cut-yomathat-flame-guard') },
+    move:{ ...YOMATHAT_HELPER.move, kind:'strike', damage:{ base:78, perLevel:3 }, guardTeam:true }, say:YOMATHAT_HELPER.say },
   wukong:{ k:'wukong', no:4, name:{ th:'หงอคง', en:'Wukong' }, glyph:'🐵', event:'z2-wukong-flame', ready:false, move:{ name:{ th:'ขนวิเศษรุมซัด', en:'Strand Barrage' } } },
   liangang:{ k:'liangang', no:5, name:{ th:'เหลียนกัง', en:'Liangang' }, glyph:'⛓️', event:'z2-lian-gift', ready:false, move:{ name:{ th:'ตรวนกั้นแถว', en:'Chain Line' } } },
   ryujin:{ k:'ryujin', no:6, name:{ th:'ริวจิน', en:'Ryujin' }, glyph:'🐉', event:'z2-ryujin-win', ready:false, move:{ name:{ th:'มังกรสะท้านถ้ำ', en:'Dragon Beneath the Cave' } } },

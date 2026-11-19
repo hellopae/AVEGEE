@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
-import { TEA_SLEEP_MS, teaRoom } from '../src/tea-recovery.js';
+import { RECOVERY_SLEEP_MS, TEA_SLEEP_MS, teaRoom } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
 // own file = own process: art.js remembers a lost picture for 10 s, so this must not share a process with a test that loses the same file
 const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; return g; };
@@ -20,6 +20,6 @@ test('FB2-13: sleeping waits (max 8 s) for the lying picture so the bed is never
   const R=makeRoom(cv,g,STATIONS.find(d=>d.k==='tea'),teaRoom('asia'),'img/tea-asia-recovery.webp',null);
   const bed=teaRoom('asia').bed;R.setSleep(true);
   R.tick(3000);assert.equal(g.hp,10,'the sleep clock waits while the picture is still loading');assert.equal(R.sleeping(),true);
-  R.tick(5200);R.tick(TEA_SLEEP_MS);assert.equal(g.hp,g.hpMax,'after the 8 s cap the sleep goes on without the picture');
+  R.tick(5200);R.tick(RECOVERY_SLEEP_MS);   // T5'/0: the defeat wake-up (emergency sleep) is longer than the ordinary napassert.equal(g.hp,g.hpMax,'after the 8 s cap the sleep goes on without the picture');
  } finally {globalThis.window=prevWindow;globalThis.document=prevDocument;globalThis.Image=PrevImage;}
 });

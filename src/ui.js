@@ -108,6 +108,8 @@ import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
 import { YOMATHAT, PIER_TALK } from './z1-yomathat.js';
+import { GATE } from './z2-gate.js';
+import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
 import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
 import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
@@ -1942,7 +1944,7 @@ function storyFoeArt(sp) {
   return artUrl(sp) || `img/${sp}.webp`;
 }
 function pendingZoneEvents() {
-  return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !LEGACY_ZONE_EVENTS.has(ev.k) &&
+  return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !ev.gate && !LEGACY_ZONE_EVENTS.has(ev.k) &&
     g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }
@@ -3703,10 +3705,12 @@ function openKinAfter(k) {
   if (!row || !rec) { g.ackNotice(nid); return; }
   pauseForDlg();
   const lines = arr => arr.map(l => `<p>${esc(l)}</p>`).join('');
-  const paint = () => modal(`<div class="event-alert-main z1-notice kin-after"><h2>${esc(row.notice.title)}</h2>
-      ${rec.choice == null ? lines(row.after) + `<div class="event-alert-actions kin-choices">${row.choices.map((c, i) => `<button class="gold" data-kin-choice="${i}">${esc(c.label)}</button>`).join('')}</div>`
-        : lines(row.choices[rec.choice].lines) + `<div class="event-alert-actions"><button class="gold" data-kin-done>ปิด</button></div>`}</div>`, d => {
-    d.querySelectorAll('[data-kin-choice]').forEach(b => b.onclick = () => { rec.choice = Number(b.dataset.kinChoice); g.save(); paint(); });
+  const en = getLang() === 'en', pickL = (th, e) => (en && e) || th;
+  const paint = () => modal(`<div class="event-alert-main z1-notice kin-after"><h2>${esc(pickL(row.notice.title, row.notice.en?.title))}</h2>
+      ${rec.choice == null ? lines(pickL(row.after, row.afterEn)) + `<div class="event-alert-actions kin-choices">${row.choices.map((c, i) => `<button class="gold" data-kin-choice="${i}">${esc(pickL(c.label, c.labelEn))}</button>`).join('')}</div>`
+        : lines(pickL(row.choices[rec.choice].lines, row.choices[rec.choice].linesEn)) + (row.closing ? lines(pickL(row.closing, row.closingEn)) : '')   // T5'/6 (Rae 9.5): the closing talk, then what he gives
+          + (row.reward ? `<p class="hint">${esc(g.kinRewardText(k, en))}</p>` : '') + `<div class="event-alert-actions"><button class="gold" data-kin-done>ปิด</button></div>`}</div>`, d => {
+    d.querySelectorAll('[data-kin-choice]').forEach(b => b.onclick = () => { rec.choice = Number(b.dataset.kinChoice); g.payKinReward(k); g.save(); paint(); });
     d.querySelector('[data-kin-done]')?.addEventListener('click', () => { g.ackNotice(nid); dlg.close(); setTimeout(() => g.onChange(), 0); });
   }, 'event-alert');
   paint();
@@ -3724,6 +3728,11 @@ function openStoryNotice(id) {
   if (id.startsWith('kin-after-')) { openKinAfter(id.slice('kin-after-'.length)); return; }
   let n = NOTICES[id];
   if (!n) { g.ackNotice(id); return; }
+  if (id === BOATMAN.heardNotice) {      // T5'/7 NB-2: the verse number and the count are filled in
+    const k = VERSE_OF_ZONE[g.zone] ?? '', m = heardCount(g);
+    const f = s => s?.replace('{k}', k).replace('{m}', m);
+    n = { ...n, text:f(n.text), ...(n.en ? { en:{ ...n.en, text:f(n.en.text) } } : {}) };
+  }
   const repeat = id.startsWith('kin-') ? g.kinRepeatLine(id.slice(4)) : '';      // Z2: the same soul a second time (old bandit case)
   if (repeat) n = { ...n, detail:`${repeat}\n${n.detail}` };
   pauseForDlg();
@@ -5448,6 +5457,24 @@ function openBorder() {
   if(pending){if(!g.eventMapClosed[`${g.zone}:${pending.key}`])g.dismissEventAlert(pending.key);openFrontier(false,pending.key);return;}
   openFrontierWalk();
 }
+/** T5'/4 (Rae 7.1): NG-1 -> z2-guanyu-open -> the fight -> z2-guanyu-win (queued by the win) -> `onDone`. A lost fight sends Yama to the tea house as any lost fight; he comes back and walks the route again. */
+function playGateScene(onDone) {
+  const idle = cb => {
+    const w = () => {
+      if (g.over || g.battle) return;
+      if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; }
+      cb();
+    };
+    setTimeout(w, 300);
+  };
+  g.queueNotice(GATE.arriveNotice); g.save();
+  openStoryNotice(GATE.arriveNotice);
+  idle(() => {
+    if (g.pendingRecovery) return;
+    if (!g.startGateFight()) { onDone(); return; }
+    openBattle(() => idle(onDone));
+  });
+}
 /** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
 function playCaveScene(onDone) {
   g.queueNotice(YOMATHAT.caveNotice); g.save();
@@ -5479,12 +5506,16 @@ function openDungeon() {
       onArrival:to=>{
         destroy?.();destroy=null;
         const arrive=()=>startMapJourney(to,'dungeon');
-        if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
-        else if(g.bossGuideWaiting?.()){
-          const place=routeBossCave(dungeonStatus(g)?.route.id)?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
-          modal(`<h2>ผู้ตรวจการรอที่${place}</h2><p>ย้อนกลับไปคุยกับผู้ตรวจการที่${place} เพื่อให้เขาพาเดินทางไปยังดินแดนใหม่</p><button data-return-guide>กลับไปตามหา</button>`,d=>{d.querySelector('[data-return-guide]').onclick=()=>openDungeon();});
-        }
-        else arrive();
+        const proceed=()=>{
+          if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
+          else if(g.bossGuideWaiting?.()){
+            const place=routeBossCave(dungeonStatus(g)?.route.id)?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
+            modal(`<h2>ผู้ตรวจการรอที่${place}</h2><p>ย้อนกลับไปคุยกับผู้ตรวจการที่${place} เพื่อให้เขาพาเดินทางไปยังดินแดนใหม่</p><button data-return-guide>กลับไปตามหา</button>`,d=>{d.querySelector('[data-return-guide]').onclick=()=>openDungeon();});
+          }
+          else arrive();
+        };
+        if(g.gateFightDue?.()){playGateScene(proceed);return;}   // T5'/4: Guan Yu keeps the gate - NG-1, the scene, the fight, his win scene - and only then Yomathat's gift (the farewell)
+        proceed();
       },
       onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())openFrontierWalk();},
       isPaused:()=>dungeonStatus(g)?.route.id==='th:asia'&&(pauseDlg.open||userPaused||autoPausePending),
@@ -5520,13 +5551,33 @@ function openHarbour() {
   if(!g.atHarbour()||g.battle)return;
   if(!g.zoneTravel.ports[g.zone])g.activatePort();
   const destinations=harbourDestinations(g);
-  modal(`<h2>ท่าเรือรับวิญญาณ</h2><p>Yama และ Nira เดินทางด้วยเรือไปเมืองที่เปิดท่าเรือแล้ว</p>
-    <div class="row">${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>'}
+  // T5'/7 (Rae R2 A 10): the boatman's quest lives at the end of the landing - this window is that place
+  const en=getLang()==='en',pickL=x=>x[en?'en':'th'],bm=ensureBoatman(g);
+  const quest=bm.quest==='active'?`<div class="boatman-quest"><img src="${esc(BOAT_ART.portrait)}" alt="" onerror="this.remove()"><p>${esc(pickL(BOATMAN.name))} · ${esc(pickL(BOATMAN_TEXT.log).replace('{m}',heardCount(g)))}</p></div>`:'';
+  modal(`<h2>ท่าเรือรับวิญญาณ</h2><p>Yama และ Nira เดินทางด้วยเรือไปเมืองที่เปิดท่าเรือแล้ว</p>${quest}
+    <div class="row">${canListen(g)?`<button class="gold" data-boat-listen>${esc(pickL(BOATMAN_TEXT.listen))}</button>`:''}${canSing(g)?`<button class="gold" data-boat-sing>${esc(pickL(BOATMAN_TEXT.talk))}</button>`:''}
+    ${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>'}
     <button data-close>ปิด</button></div>`,d=>{
       d.querySelectorAll('[data-sail]').forEach(btn=>btn.onclick=()=>sailTo(btn.dataset.sail));
+      d.querySelector('[data-boat-listen]')?.addEventListener('click',()=>{if(g.boatListen())dlg.close();});
+      d.querySelector('[data-boat-sing]')?.addEventListener('click',()=>{if(g.boatSing())dlg.close();});
     });
 }
-function sailTo(to) { startMapJourney(to,'boat'); }
+/** wait until nothing is open / playing, then run `cb` (the scenes of this package chain this way) */
+function whenIdle(cb) {
+  const w = () => {
+    if (g.over || g.battle) return;
+    if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; }
+    cb();
+  };
+  setTimeout(w, 300);
+}
+function sailTo(to) {
+  // T5'/7 (Rae 10.2): the very first ride starts with the boatman's one-page greeting; every ride starts with one of his three boarding lines
+  const go = () => { g.log(`🚣 ${boatLine(g, 'board', getLang())}`, 'event'); startMapJourney(to, 'boat'); };
+  if (g.boatFirstRide()) { if (dlg.open) dlg.close(); g.onChange(); whenIdle(go); return; }
+  go();
+}
 function kanTravelPortrait() {
  return `<img src="${esc(crewArt(g.crewOf('kan')||{k:'kan'},'-profile'))}" alt="กาญ" style="width:72px;height:88px;object-fit:contain;flex:none"><div style="min-width:0;overflow-wrap:anywhere;font-size:15px;line-height:1.65"><b>กาญ</b><p style="margin:4px 0 0">${esc(KAN_HANDOFF)}</p></div>`;
 }
@@ -7841,6 +7892,8 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+window.__gateScene = playGateScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
+window.__caveScene = playCaveScene;
 window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
   const v = mapCam.viewport, r = cv.getBoundingClientRect();
   return v?.sx ? [r.left + (x * v.sx + v.tx) / v.width * r.width, r.top + (y * v.sy + v.ty) / v.height * r.height]

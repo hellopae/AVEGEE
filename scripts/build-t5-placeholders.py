@@ -12,6 +12,23 @@ GROUPS = {
  'frontier12': [
   ('z1-events/cut-frontier12-stop-th.webp', CUT, 'cut', 'PLACEHOLDER cut-frontier12-stop-th  (E2: Yomathat\'s hand on Yama\'s shoulder, same cave as E1)'),
  ],
+ 'guanyu': [
+  ('z2-events/boss-guanyu-asia.webp', (512, 512), 'sprite', 'PLACEHOLDER boss-guanyu-asia (F1: Guan Yu, standing, polearm upright)'),
+  ('z2-events/boss-guanyu-asia-profile.webp', (512, 512), 'square', 'PLACEHOLDER boss-guanyu-asia-profile'),
+  ('z2-events/boss-guanyu-asia-guard.webp', (512, 512), 'sprite', 'PLACEHOLDER boss-guanyu-asia-guard (map sprite of the Zone 2 Guard)'),
+  ('z2-events/cut-guanyu-gate-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyu-gate-asia  (F2: the red gate in haze, Guan Yu before it)'),
+  ('z2-events/cut-guanyu-sweep-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyu-sweep-asia  (F3: Green Dragon Sweep, half circle with green glints)'),
+  ('z2-events/cut-guanyu-yields-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyu-yields-asia  (F4: haft planted, hands before chest, bow)'),
+  ('z2-events/cut-yomathat-gift-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-yomathat-gift-asia  (D2: the half-open red gate, the bundle and purse; D2b: the flame lights the lamp)'),
+  ('summon/cut-yomathat-flame-guard.webp', CUT, 'cut', 'PLACEHOLDER cut-yomathat-flame-guard  (D4: heavy flame-blade cut, wall of flame behind him)'),
+ ],
+ 'boatman': [
+  ('boat/boatman-lung-chaew.webp', (512, 512), 'sprite', 'PLACEHOLDER boatman-lung-chaew (G1: old boatman at the stern, straw hat, long oar)'),
+  ('boat/boatman-lung-chaew-profile.webp', (512, 512), 'square', 'PLACEHOLDER boatman-lung-chaew-profile'),
+  ('boat/cut-boatman-song-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-boatman-song-asia  (G2: the boat on still water, Lung Chaew singing, Yama and Nira at the bow)'),
+  ('boat/fx-water-song.webp', CUT, 'cut', 'PLACEHOLDER fx-water-song (G3: ripples at the end of the landing, faint gold motes; Zone 2 adds a small red lantern)'),
+  ('boat/item-oar.webp', (512, 512), 'square', 'PLACEHOLDER item-oar (G4: small hand-carved oar with a faded blue ribbon)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

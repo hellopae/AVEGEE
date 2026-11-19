@@ -138,7 +138,7 @@ test('UI: the lose window has exactly the two buttons (retry / rest) and the win
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   assert.equal(QUEST_FIGHT_SYSTEM_TEXT.retry, 'สู้อีกครั้ง'); assert.equal(QUEST_FIGHT_SYSTEM_TEXT.rest, 'พักไว้ก่อน');
   assert.ok(ui.includes('data-quest-fight-retry') && ui.includes('data-quest-fight-rest') && ui.includes('data-quest-fight-next'));
-  assert.ok(/outcome==='win'\?`<button[^`]*data-quest-fight-next[^`]*`:`<button[^`]*data-quest-fight-retry[^`]*data-quest-fight-rest/.test(ui), 'win → one button · lose → retry + rest');
+  assert.ok(/outcome==='win'\?`<button[^`]*data-quest-fight-next/.test(ui) && ui.includes("${toTea?'':`<button") && /data-quest-fight-retry[\s\S]{0,200}data-quest-fight-rest/.test(ui), "win → one button · lose → retry + rest (T5'/0: no retry when the loss goes to the tea house, only rest)");
   assert.ok(ui.includes("retryFight=fightQuest&&(s.fightLost||"), 'sqBoon shows สู้อีกครั้ง once a fight was lost');
   assert.ok(/if\(retryNow\)openBattle\(afterQuestFight\(id,owner\)\);else openQuestFightScene/.test(ui), 'retry after a loss skips the pre-fight scene (11 Nov)');
   assert.ok(ui.includes('handoffNeed.text'), 'quest window shows the hand-off hire message');

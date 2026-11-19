@@ -11,6 +11,8 @@ import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';
 import { WANTHONG } from './z1-wanthong.js';   // T5'/1
 import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
+import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
+import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
@@ -618,6 +620,20 @@ const API = {
     if (this.zone !== 'asia' || !rec || rec.choice == null || rec.followSeen || !row?.followUp?.length) return null;
     return row.followUp;
   },
+  /** T5'/6: a relative's case that carries a `reward` (Guan Yu's old comrade) pays it once, when the choice is made. */
+  payKinReward(k) {
+    const row = Z2_KIN_BY_KEY[k], rec = this.kinDone?.[k];
+    if (!row?.reward || !rec || rec.paid) return false;
+    rec.paid = true; this.coin += row.reward.coin || 0;
+    for (const [item, n] of Object.entries(row.reward.items || {})) this.inventory[item] = (this.inventory[item] || 0) + n;
+    if (row.reward.badge && !(this.journalNotes ||= []).includes(row.reward.badge.th)) this.journalNotes.push(row.reward.badge.th);
+    this.save(); return true;
+  },
+  kinRewardText(k, en = false) {
+    const r = Z2_KIN_BY_KEY[k]?.reward; if (!r) return '';
+    const items = Object.entries(r.items || {}).map(([i, n]) => `${ITEMS[i]?.name || i} ×${n}`).join(' · ');
+    return `${en ? 'Received' : 'ได้รับ'}: ${r.coin} ${en ? 'karma coins' : 'เบี้ยกรรม'}${items ? ' · ' + items : ''}${r.badge ? ' · ' + (en ? r.badge.en : r.badge.th) : ''}`;
+  },
   kinFollowUpSeen() { const rec = this.kinDone?.chaincmd; if (rec && !rec.followSeen) { rec.followSeen = true; this.save(); } },
   /** The relative's lines of the interrogation ("during") join the log at the first question, once. */
   kinSpeaks(soul) {
@@ -715,6 +731,7 @@ const API = {
     this.notices = this.notices.filter(n => n !== id); this.storySeen[`notice:${id}`] = true;
     if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
+    if (id === GATE.arriveNotice) this.queueStory('z2-guanyu-open');   // T5'/4 (NG-1): the button leads into the scene, then the fight
     if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
     if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request
     this.save();
@@ -3330,6 +3347,7 @@ const API = {
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
     if(ev.signal)this.battle.signalChoice=this.signalChoices[key];
+    if (ev.gate) this.battle.expeditionParty = bossGuideFollowing(this);   // T5'/4: Yama + Nira + Yomathat fight together (D7)
     this.prepareEncounter(); this.save(); this.onChange(); return this.battle;
   },
   // ---------- G3b · ประลองปีศาจชายแดน 10 wave + อาวุธประจำโซน ----------
@@ -3970,6 +3988,7 @@ const API = {
       // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
       const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
       dmg = summonDamage(this, summonKey);
+      if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
       const guardMove = summonGuard(this, summonKey);
       if (guardMove) {
         // T5'/1 'guard' move (Golden Aegis): a shield for every teammate standing + a small heal, and the fallen are helped back to their feet. No damage.
@@ -4350,6 +4369,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
+        if (B.eventKey === GATE.eventKey) this.guanyuEarned = true;   // T5'/4: Zone 2 will have its Guard
         if (B.eventKey === WANTHONG.eventKey) this.queueStory(`z1-khunphaen-win-${this.wanthongPath || 'punish'}`);   // T5'/1: the end of that scene hands over Kuman Thong (completeStory)
         if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);   // R2 A 3.1: the lamp comes after the PHANTOM-404 scene, before Sita is sent home
         // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him
@@ -4948,6 +4968,47 @@ const API = {
     const cave = routeBossCave(st.route.id), i = Number.isInteger(idx) ? idx : st.checkpoint;
     return !!cave && i === cave.checkpoint;
   },
+  /** T5'/4 (Rae 7.1): the end of the border walk reached with Yomathat beside Yama and Guan Yu not yet convinced - the gate scene + fight come first. */
+  gateFightDue() {
+    const st = dungeonStatus(this);
+    return !!st && this.zone === 'th' && st.route.id === 'th:asia' && !this.guanyuEarned && !this.battle && bossGuideFollowing(this);
+  },
+  /** Opens the fight of the gate (the event row `z2Gate` lives in Zone 1's table); `null` when it cannot start. */
+  startGateFight() {
+    if (!this.gateFightDue()) return null;
+    const states = this.zoneEvents.th ||= {};
+    if (states[GATE.eventKey] !== 'pending' && states[GATE.eventKey] !== 'active') states[GATE.eventKey] = 'pending';
+    return this.startZoneEvent(GATE.eventKey);
+  },
+  // ---------- T5'/7 · the boatman and his quest (src/boatman.js) ----------
+  /** called when a boat journey STARTS (ui.js sailTo): the first ever ride plays his one-page greeting first. Returns true when that scene was queued. */
+  boatFirstRide() {
+    const b = ensureBoatman(this); if (b.firstSeen) return false;
+    b.firstSeen = true; this.queueStory('boatman-first'); this.save(); return true;
+  },
+  /** called when a boat journey has ARRIVED (moveZone): counts the ride; after the second one he stops Yama (step 1) and the quest is open. */
+  boatArrived() {
+    const b = ensureBoatman(this); b.rides++;
+    this.log(`🚣 ${boatLine(this, 'mid')}`, 'event'); this.log(`🚣 ${boatLine(this, 'arrive')}`, 'event');   // 10.2: the lines of the crossing (after the quest: the "I sing every evening" line)
+    if (b.quest === 'none' && b.rides >= BOATMAN.askAfterRides) { b.quest = 'active'; this.queueStory('boatman-ask'); this.queueNotice(BOATMAN.askNotice); }
+  },
+  /** step 2: Yama stands at the end of the landing and listens - this zone's verse (Zone 1 = verse 2, Zone 2 = verse 3). */
+  boatListen() {
+    if (!canListen(this)) return false;
+    const b = ensureBoatman(this); b.heard[this.zone] = true;
+    this.queueStory(`boatman-verse-${this.zone}`);
+    this.notices.push(BOATMAN.heardNotice);   // not deduplicated: it is said once per verse (NB-2)
+    this.save(); this.onChange(); return true;
+  },
+  /** step 3 + 4: he is sung to; 60 coins and the keepsake (a journal line). */
+  boatSing() {
+    if (!canSing(this)) return false;
+    const b = ensureBoatman(this); b.quest = 'done'; this.coin += BOATMAN.reward.coin;
+    const note = BOATMAN_TEXT.keepsake.th; if (!(this.journalNotes ||= []).includes(note)) this.journalNotes.push(note);
+    this.queueStory('boatman-sing'); this.queueNotice(BOATMAN.doneNotice);
+    this.log(`🎶 ลุงแจวฟังเพลงจนจบ — ได้ ${BOATMAN.reward.coin} เบี้ยกรรม และ ไม้แจวเพลงเรือ`, 'good');
+    this.save(); this.onChange(); return true;
+  },
   bossGuideWaiting() {return bossGuideWaiting(this);},
   bossGuideFollowing() {return bossGuideFollowing(this);},
   inviteBossGuide() {if(!queueBossGuideStory(this,'welcome'))return false;this.save();this.onChange();return true;},
@@ -4976,7 +5037,8 @@ const API = {
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
     if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
-    if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);   // T5'/2 (NY-2): he is in the team
+    if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);
+    if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
@@ -5175,6 +5237,11 @@ const API = {
       c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
       c.at = null; c.path = null;
     });
+    // T5'/4: Zone 2's Guard is Guan Yu once he has accepted Yama at the gate (no hire, no proving fight) - first arrival only; he stands at his post
+    if (k === 'asia' && !back && this.guanyuEarned && !this.guard) {
+      this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'asia', 'guard');
+      this.queueNotice(GATE.guardNotice);
+    }
     syncRoster(this);
     this.refreshZoneEvents(k);
     this.restoreBuilders();
@@ -5202,6 +5269,7 @@ const API = {
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     finishZoneArrival(this,from,k,travelMode);
+    if (travelMode === 'boat') this.boatArrived();   // T5'/7
     if(travelMode==='boat'){
       const p=this.harbourPoint(),at=nearestWalk(p.x,p.y)||[p.x,p.y];
       Object.assign(this.player,{x:at[0],y:at[1],tx:null,ty:null,path:null});
@@ -5657,7 +5725,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
-    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
+    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guanyuEarned:!!this.guanyuEarned, boatman:structuredClone(ensureBoatman(this)), guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -6124,7 +6192,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
-  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guardReserve = d.guardReserve || null;
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guanyuEarned = !!d.guanyuEarned; this.boatman = d.boatman || null; ensureBoatman(this); this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
   // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
   this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);

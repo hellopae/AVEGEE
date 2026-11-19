@@ -14,7 +14,8 @@ globalThis.Image = class { set src(value) {} };
 test('names: Zone 1 = กุมภัณฑ์ / Kumphan with his title; every other zone keeps the old word', () => {
   assert.equal(guardName('th'), 'กุมภัณฑ์'); assert.equal(guardName('th', 'en'), 'Kumphan');
   assert.equal(guardTitle('th'), 'ยักษ์ทวารบาลประจำสุวรรณภูมิ'); assert.equal(guardTitle('th', 'en'), 'Gate Guard of Suvarnabhumi');
-  for (const z of ['asia', 'west', 'cyberhell']) { assert.equal(guardName(z), GUARD.name, z); assert.equal(guardTitle(z), ''); }
+  assert.equal(guardName('asia'), 'กวนอู'); assert.equal(guardTitle('asia'), 'ผู้เฝ้าด่านบูรพา');   // T5'/4: Zone 2's Guard is Guan Yu
+  for (const z of ['west', 'cyberhell']) { assert.equal(guardName(z), GUARD.name, z); assert.equal(guardTitle(z), ''); }
   assert.equal(GUARD.name, 'ยักษ์ทวารบาล');
 });
 

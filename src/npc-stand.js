@@ -12,7 +12,7 @@ import { Z2_ART_KEY } from './z2-events.js';
 export const waitingEvents = g => {
   const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
     ev.k !== 'westHypnotized' && ev.k !== 'devaTest' && ev.k !== DEVA_MAP[g.zone]?.key && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
-    ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach' && !ev.guardTest);
+    ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach' && !ev.guardTest && !ev.gate);
   if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
     events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
   return events.map((ev, i) => ({ key:ev.k, x:SPOTS.bossPier.x + (i % 3 - 1) * 86,

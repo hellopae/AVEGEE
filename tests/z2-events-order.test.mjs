@@ -366,7 +366,7 @@ test('A2 judged BEFORE Kuro is hired: the copy that comes for the relative carri
 
 test('old saves and Zone 1 are untouched', () => {
   // Zone 1: nothing of Zone 2's tables is read
-  const th = createGame(); assert.equal(th.storyCaseOwed(), null); assert.deepEqual(storyCaseRows('th').map(r => r.k), ['nurse', 'devaMonk', 'sitaledger']);
+  const th = createGame(); assert.equal(th.storyCaseOwed(), null); assert.deepEqual(storyCaseRows('th').map(r => r.k), ['nurse', 'devaMonk', 'sitaledger', 'wanthong']);   // T5'/1: + Lady Wanthong (case 13)
   // an old Zone 2 save in the middle of the zone: ape already judged under no rule -> the story catches up in order, never twice
   const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' }; g.zoneCases.asia = 9;
   const loaded = reload(g); assert.equal(loaded.storyCaseOwed(), 'apeelder');

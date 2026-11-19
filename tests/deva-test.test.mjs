@@ -31,7 +31,7 @@ test('the zone-one border boss waits for deva and frontier events', () => {
   g.zoneEvents.th.frontierBreach = 'cleared';
   g.refreshZoneEvents('th');
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'locked');   // Z1-EVENTS: he also waits for Sita / Hanuman (case 12) and case 15
-  g.zoneEvents.th.sitaHanuman = 'cleared'; g.zoneCases.th = 15;
+  g.zoneEvents.th.sitaHanuman = 'cleared'; g.zoneEvents.th.khunPhaen = 'cleared'; g.zoneCases.th = 15;   // T5'/1: Khun Phaen (case 13) comes before the elder brother
   g.refreshZoneEvents('th');
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
   assert.equal(g.startZoneEvent('thBorderBoss')?.kind, 'zoneEvent');

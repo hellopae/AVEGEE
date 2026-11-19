@@ -1,7 +1,7 @@
 import {storyEncounterRole} from './story-progression.js';
 import {ZONES} from './data.js';
 export const BOSS_GUIDE_ZONES=Object.freeze(['th','asia','west']);
-export const BOSS_GUIDE_GRANTS=Object.freeze({th:500,asia:800,west:1200});
+export const BOSS_GUIDE_GRANTS=Object.freeze({th:800,asia:800,west:1200});   // T5'/5 (Rae R2 A 8): Yomathat's gift at the gate of Zone 2 is 800 coins
 const nextZone={th:'asia',asia:'west',west:'cyberhell'};
 const blank=()=>({won:false,praised:false,welcomed:false,following:false,farewell:false,grantPaid:false,grantNotice:false,grantAmount:0,outfitGranted:false});
 export function initializeBossGuides(g,saved){
@@ -118,6 +118,8 @@ export function pendingBossGuideGrant(g){
   for(const zone of BOSS_GUIDE_ZONES){
     const state=bossGuideState(g,zone);if(!state?.grantPaid||!state.grantNotice||state.grantAmount<=0)continue;
     const name=ZONES.find(z=>z.k===zone).bossName;
+    // T5'/5 (Rae NY-3): Zone 1's gift is the elder brother's own - the receipt window says it in her words
+    if(zone==='th')return {guideZone:zone,title:'ของฝากจากพี่ชาย',who:`ยมทัตมอบชุดประจำบูรพาและเงิน ${state.grantAmount} เบี้ยกรรมให้ยามา`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำบูรพาแล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};
     return {guideZone:zone,title:'ทุนและชุดสำหรับดินแดนใหม่',who:`${name} มอบเงินและชุดประจำดินแดนใหม่`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำดินแดนใหม่แล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};
   }
   return null;
