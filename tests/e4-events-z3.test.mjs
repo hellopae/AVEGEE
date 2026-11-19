@@ -28,12 +28,12 @@ function win(g) {
  }
  assert.equal(g.battle.over,'win');g.endBattle();
 }
-function rescued() {const g=west();g.startZoneEvent('westHypnotized');win(g);return g;}
+function rescued() {const g=west();g.startZoneEvent('westHypnotized');win(g);g.storyQueue.length=0;g.notices.length=0;return g;}   // T7/1: the win queues z3-clear + N0-4' (those scenes are tested in t7-arrival)
 test('arrival: only rescue actors/interactions; yama + Taan; unchanged stats/reward; building unlocks',()=>{
  const g=west();g.party.members=['nira','plerng'];
  assert.equal(westRescuePending(g),true);
  const actors=westRescueActors(g);
- assert.deepEqual(actors.map(a=>a.art),['crew-taan',MERCHANT.img,'mob-skeleton','mob-skeleton','mob-werewolf']);
+ assert.deepEqual(actors.map(a=>a.art),['crew-taan',MERCHANT.img,'spirit1','spirit2','spirit3']);
  assert.ok(actors.every(a=>a.x<500));assert.equal(waitingEvents(g).length,0);
  assert.deepEqual(standPoints(g),actors.map(a=>[a.x,a.y]));
  assert.deepEqual(mapInteractions(g,MERCHANT).map(a=>a.key),['westHypnotized']);
@@ -43,8 +43,8 @@ test('arrival: only rescue actors/interactions; yama + Taan; unchanged stats/rew
  assert.equal(g.build('tea'),false);
  const coin=g.coin;const b=g.startZoneEvent('westHypnotized');
  assert.deepEqual(b.team,['taan']);assert.deepEqual(g.battleActors().map(a=>a.k),['yama','taan']);
- assert.deepEqual(b.foes.map(f=>f.sp),['mob-skeleton','mob-skeleton','mob-werewolf']);
- const ev=ZONE_EVENTS.west[0];assert.ok(ev.foes.every(f=>f.hp===45 && String(f.atk)==='8,13'));
+ assert.deepEqual(b.foes.map(f=>f.sp),['spirit1','spirit1','spirit1']);
+ const ev=ZONE_EVENTS.west[0];assert.ok(ev.foes.every(f=>f.hp===42 && String(f.atk)==='8,12'));
  win(g);assert.equal(g.coin,coin+70);assert.equal(westRescueActors(g).length,0);
  assert.ok(mapInteractions(g,MERCHANT).some(a=>a.kind==='nira'));
  g.level=5;g.coin=9999;assert.ok(g.build('tea'));

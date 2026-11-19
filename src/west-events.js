@@ -8,9 +8,9 @@ export function westRescueActors(g) {
   return [
     { id:'rescue:taan', art:'crew-taan', x:310, y:460 },
     { id:'rescue:merchant', art:MERCHANT.img, x:230, y:500 },
-    { id:'rescue:skeleton:1', art:'mob-skeleton', x:375, y:380 },
-    { id:'rescue:skeleton:2', art:'mob-skeleton', x:460, y:450 },
-    { id:'rescue:werewolf', art:'mob-werewolf', x:440, y:555 },
+    { id:'rescue:spirit:1', art:'spirit1', x:375, y:380 },
+    { id:'rescue:spirit:2', art:'spirit2', x:460, y:450 },
+    { id:'rescue:spirit:3', art:'spirit3', x:440, y:555 },
   ];
 }
 export function westSpiritsFrozen(g) {

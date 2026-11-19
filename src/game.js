@@ -13,6 +13,7 @@ import { WANTHONG } from './z1-wanthong.js';   // T5'/1
 import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
+import { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -20,6 +21,8 @@ import { CERBERUS, GUARD_LINES } from './z2b-cerberus.js';   // T6/6-7
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
+/** T7: the lines of a zone event in the language of the game (data.js `lines` = Thai, `linesEn` = English when the script has it). */
+const evLines = ev => (getLang() === 'en' && ev.linesEn) ? ev.linesEn : (ev.lines || {});
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
@@ -3324,7 +3327,7 @@ const API = {
       const mob = MOB.kinds[entry.kind ?? 0];
       const kindOf = entry.boss ? 'boss' : 'event';   // ชุด 28B
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
-      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
+      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : (getLang() === 'en' && entry.nameEn) || entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...((entry.skillsEach ? entry.skillsEach[i] : entry.skills) ? { skills:structuredClone(entry.skillsEach ? entry.skillsEach[i] : entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
@@ -3352,7 +3355,7 @@ const API = {
       wave:1, pendingWave:null, foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
-      turn:1, over:null, log:[], dmg:null, talk:ev.lines?.start || ev.banner?.th || ev.alert.th, ...(ev.lines?.half ? { halfLine:ev.lines.half } : {}) });
+      turn:1, over:null, log:[], dmg:null, talk:evLines(ev).start || ev.banner?.th || ev.alert.th, ...(evLines(ev).half ? { halfLine:evLines(ev).half } : {}), ...(evLines(ev).first ? { firstLine:evLines(ev).first } : {}) });
     if (key === 'westVampireBreach') {
       const allies = [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])];
       this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? guardName(this.zone) : crewName(c,'west') }));
@@ -3909,6 +3912,8 @@ const API = {
   /** Z2-EVENTS: after every action the foe may say his half-way line (once) - set here, after the whole action, so the foe's own counter-line cannot cover it. */
   battleAct(what, command = null) {
     const ok = this.battleActCore(what, command), B = this.battle;
+    // T7/1: a line said once after the FIRST foe falls (data.js lines.first) while others still stand
+    if (B?.firstLine && !B.firstSaid && !B.over && B.foes.some(f => f.hp <= 0) && B.foes.some(f => f.hp > 0)) { B.firstSaid = true; B.talk = B.firstLine; this.onChange(); }
     if (B?.halfLine && !B.halfSaid && !B.over) {
       const boss = B.foes.find(f => f.boss && f.hp > 0);
       if (boss && boss.hp <= boss.maxHp / 2) { B.halfSaid = true; B.talk = B.halfLine; this.onChange(); }
@@ -5104,6 +5109,7 @@ const API = {
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
     if (next?.key?.startsWith(GUANYIN.thanksStory)) { this.queueNotice(GUANYIN.petalNotice); if (!(this.journalNotes ||= []).includes(PETAL_NOTE)) this.journalNotes.push(PETAL_NOTE); }   // T6/2 (NGY-3): a keepsake, no stat
+    if (next?.key === Z3_ARRIVE.clearStory && !(this.journalNotes ||= []).includes(Z3_PHANTOM_NOTE.th)) this.journalNotes.push(Z3_PHANTOM_NOTE.th);   // T7/1: PHANTOM-404 on Poena's roster
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
     if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene
@@ -5334,6 +5340,7 @@ const API = {
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     finishZoneArrival(this,from,k,travelMode);
+    if (k === 'west' && !back && this.zoneEventStatus(Z3_ARRIVE.eventKey) === 'pending') this.queueStory(Z3_ARRIVE.arriveStory);   // T7/1: the first arrival in Zone 3 (Rae R2 C 1.4)
     if (travelMode === 'boat') this.boatArrived();   // T5'/7
     if(travelMode==='boat'){
       const p=this.harbourPoint(),at=nearestWalk(p.x,p.y)||[p.x,p.y];

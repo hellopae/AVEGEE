@@ -4,6 +4,7 @@ import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // B
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
+import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
 import { GATE_TEXT } from './z2-gate.js';   // T5'/4: the gate of Zone 2 (Rae R2 A 7)   // T5'/1: case 13 text (Rae R2 A 4)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
@@ -2019,10 +2020,11 @@ export const ZONE_EVENTS = {
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
   west:[
+    // T7/1 (Rae R2 C 1): spirits under a spell pace the square - break the spell on all of them before anything can be built. NO Cerberus (he keeps the western gate); Poena's roster carries PHANTOM-404 (z3-clear).
     { k:'westHypnotized', atCases:0, mode:'group',
-      title:{ th:'ช่วยทัณฑ์และพ่อค้านรก', en:'Rescue Taan and the hell merchant' },
-      alert:{ th:'ทัณฑ์และพ่อค้านรกถูกปีศาจสามตนรุมอยู่ฝั่งซ้าย เดินเข้าไปช่วยก่อนจึงจะสร้างสถานที่ได้', en:'Three demons surround Taan and the hell merchant on the left. Approach and rescue them before building.' },
-      foes:[{ kind:10, count:2, hp:45, atk:[8,13] }, { kind:2, count:1, hp:45, atk:[8,13] }], reward:{ coin:70 } },
+      title:Z3A.title, alert:Z3A.alert, go:Z3A.go, banner:Z3A.banner, lines:Z3A.lines, linesEn:Z3A.linesEn,
+      foes:[{ name:Z3A.foe.th, nameEn:Z3A.foe.en, sp:'spirit1', count:3, hp:42, atk:[8,12] }],
+      winStories:[Z3_ARRIVE.clearStory], winNotices:[Z3_ARRIVE.clearedNotice], win:{ title:Z3A.win.title, text:Z3A.lines.last }, reward:{ coin:70 } },
     { k:'westVampireBreach', atCases:3, requires:['westHypnotized'], mode:'waves', team:'frontier',
       title:{ th:'แวมไพร์ที่ชายแดน', en:'Vampire at the frontier' },
       alert:{ th:'ปีศาจทรงพลังบุกชายแดน ทำให้วิญญาณทั่วดินแดนหยุดนิ่ง! เดินลงชายแดนเพื่อปราบลูกน้องสองระลอก ช่วยยมทูตและ Guard ในทีมจากการสะกดจิต แล้วปราบแวมไพร์', en:'A powerful demon has invaded the frontier, freezing every spirit in the realm! Head down to defeat two minion waves, free your hypnotized party and Guard, then defeat the vampire.' },

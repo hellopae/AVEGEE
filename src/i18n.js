@@ -406,7 +406,7 @@ const TH = {
   'profile.training': 'ฝึกขั้น',
   'profile.guardTeam': 'ยามประจำโซน อยู่ในทีมเสมอ',
   'profile.more': 'เมนูเพิ่มเติม',
-  'build.westBlocked': 'ยังสร้างที่นี่ไม่ได้ — เดินไปช่วยทัณฑ์และพ่อค้านรกที่ถูกปีศาจรุมฝั่งซ้ายก่อน',
+  'build.westBlocked': 'ยังสร้างที่นี่ไม่ได้ — ปลดสะกดวิญญาณหลงทางในลานให้หมดก่อน',
   'build.captivesBlocked': 'ยังสร้างที่นี่ไม่ได้ — ต้องช่วยทัณฑ์และพ่อค้านรกที่ถูกจับก่อน',
   'trial.missing': 'ออกหมายไม่ได้ — ยังไม่ได้เลือก',
   'trial.stationMissing': 'ไม่พบสถานีนี้',
@@ -931,7 +931,7 @@ const EN = {
   'profile.training': 'Training',
   'profile.guardTeam': 'Zone guard — always on the team',
   'profile.more': 'More menu',
-  'build.westBlocked': 'Cannot build here yet — rescue Taan and the hell merchant from the demons on the left first',
+  'build.westBlocked': 'Cannot build here yet — break the spell on the wandering spirits in the square first',
   'build.captivesBlocked': 'Cannot build here yet — rescue the captured Taan and the merchant first',
   'trial.missing': 'Cannot issue warrant — still choose',
   'trial.stationMissing': 'Station unavailable',
@@ -1111,7 +1111,7 @@ yama: .......
 วาลคีรี: อ้าว! ปีศาจแวมไพร์ หายไปไหนแล้ว..
 yama: !!-"-"
 วาลคีรี: ..... เจ้าตัวเล็ก ฝีมือไม่ธรรมดานิ`,
-  'west.rescue.approach':'เดินเข้าไปช่วยทัณฑ์และพ่อค้านรก',
+  'west.rescue.approach':'เดินเข้าไปปลดสะกดวิญญาณหลงทาง',
   'deva.cyberhell.arrival':`ลูเมน: นายเองสินะ ที่กล้าจะมาคุมดินแดนนี้ ที่นี่ไม่ง่ายเหมือนที่อื่นๆหรอกนะ
 yama: นายเป็นใคร
 ลูเมน: ข้าคือตัวแทน ที่เบื้องบนส่งมา เพื่อมาดูว่าเจ้าคู่ควรจะปกครองดินแดนนี้หรือไม่??`,
@@ -1137,7 +1137,7 @@ Yama: .......
 Valkyrie: Oh! Where has the vampire demon gone?
 Yama: !!-"-"
 Valkyrie: ..... Little one, you are quite skilled.`,
-  'west.rescue.approach':'Approach Taan and the hell merchant to help',
+  'west.rescue.approach':'Approach the wandering spirits and break the spell',
   'deva.cyberhell.arrival':`Lumen: So you are the one who dares to rule this realm. It is not as easy here as elsewhere.
 Yama: Who are you?
 Lumen: I am the representative sent from above to see whether you deserve to rule this realm.`,
