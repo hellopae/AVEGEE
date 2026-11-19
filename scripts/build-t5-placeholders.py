@@ -77,6 +77,18 @@ GROUPS = {
   ('z3-events/guard-vanhelsing-west.webp', (512, 512), 'sprite', 'PLACEHOLDER guard-vanhelsing-west (V1: elderly physician, long dark-grey coat, grey hair, trimmed white moustache, cold white lantern in left hand, old leather bag + sheathed short stake + beeswax lump at belt, upright with slightly dropped shoulders, no smile; NO cross, NO religious symbol)'),
   ('z3-events/guard-vanhelsing-west-profile.webp', (512, 512), 'square', 'PLACEHOLDER guard-vanhelsing-west-profile'),
  ],
+ 'z3d-cases': [   # T7b/3 - Rae R2 part C sec. 3 (groups L + G). NO religious symbols, NO child in any picture.
+  ('z3-events/soul-redhood-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-redhood-west (G1: elderly woman, white hair tied low, faded thin red headcloth, old wicker basket with an empty bottom, calm face, eyes still on a forest path; NO wolf, NO child)'),
+  ('z3-events/soul-redhood-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-redhood-west-profile'),
+  ('z3-events/soul-witch-bread-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-witch-bread-west (G2: hunched old woman, apron smudged with flour and burnt sugar, thick dry palms, reddened tired eyes; NO prominent nose, NO broom, NO pointed hat, NO child, NO cage with a child, NO oven with a person)'),
+  ('z3-events/soul-witch-bread-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-witch-bread-west-profile'),
+  ('z3-events/soul-loki-priest-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-loki-priest-west (L1: middle-aged man in a plain black robe too clean to be real, hair combed smooth, gentle smile, hands folded, pale green eyes, a floor shadow that does not match his pose (it laughs); NO cross, NO religious symbol, NO comic priest)'),
+  ('z3-events/soul-loki-priest-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-loki-priest-west-profile'),
+  ('z3-events/boss-loki-west.webp', (512, 512), 'sprite', 'PLACEHOLDER boss-loki-west (L2: smooth black hair, pale green eyes, dark green coat embroidered with silver thread, sly but not cruel smile, three shadows standing around him; NO horned helmet, one man not a demon)'),
+  ('z3-events/boss-loki-west-profile.webp', (512, 512), 'square', 'PLACEHOLDER boss-loki-west-profile'),
+  ('z3-events/cut-loki-shadows-west.webp', CUT, 'cut', 'PLACEHOLDER cut-loki-shadows-west  (card of the boss move Three Shadows: Loki\'s shadow splits into three that circle the team; no weapon in the shadows\' hands)'),
+  ('z3-events/cut-loki-reveal-west.webp', CUT, 'cut', 'PLACEHOLDER cut-loki-reveal-west  (L3: the Zone 3 judgment hall, the shadow on the floor stands up apart from the man on the dais, the black robe falls away as thin cloth, under it Loki in the green silver-embroidered coat; Yama + Nira step back at the left; NO religious symbol)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

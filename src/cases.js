@@ -16,6 +16,7 @@
 import { QUEST_CASES } from './quest-cases.js';
 import { ASIA_CASES } from './cases-asia.js';
 import { Z2_CASES } from './z2-events.js';
+import { Z3_CASES } from './z3d-cases.js';   // T7b/3
 import { WANTHONG_CASE } from './z1-wanthong.js';
 
 /** kind ของคดี
@@ -720,8 +721,8 @@ export const CASES = [
 ];
 
 export const CASES_BY_ZONE = Object.fromEntries(['th','asia','west'].map(zone => [zone,
-  [...({th:CASES,asia:[...ASIA_CASES,...Z2_CASES],west:[]}[zone]), ...QUEST_CASES.filter(c=>c.zone===zone)]]));
-export const ALL_CASES = [...CASES, WANTHONG_CASE, ...ASIA_CASES, ...Z2_CASES, ...QUEST_CASES];   // T5'/1: Lady Wanthong (Zone 1 case 13) is a story case - found by key, never drawn by chance   // Z2-EVENTS: the zone 2 story / relative cases carry `story` - never drawn by chance
+  [...({th:CASES,asia:[...ASIA_CASES,...Z2_CASES],west:[...Z3_CASES]}[zone]), ...QUEST_CASES.filter(c=>c.zone===zone)]]));
+export const ALL_CASES = [...CASES, WANTHONG_CASE, ...ASIA_CASES, ...Z2_CASES, ...Z3_CASES, ...QUEST_CASES];   // T5'/1: Lady Wanthong (Zone 1 case 13) is a story case - found by key, never drawn by chance   // Z2-EVENTS: the zone 2 story / relative cases carry `story` - never drawn by chance
 
 /** วิญญาณที่ "ไม่ควรลงทัณฑ์" — ต้องส่งประตูสวรรค์เท่านั้น */
 export const PURE_KINDS = ['innocent', 'deva'];

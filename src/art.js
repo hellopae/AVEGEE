@@ -1,5 +1,6 @@
 import {CANTEEN_ART_SCALE,CANTEEN_ART_FOOT_Y,CANTEEN_ART_FLIP,CANTEEN_ART_SCALE_BY_ZONE,CANTEEN_ART_DY} from './canteen-art-layout.js';
 import { Z2_ART_KEY } from './z2-events.js';
+import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
@@ -101,6 +102,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (/^(soul-sita-th|boss-hanuman-th|soul-wanthong-th|boss-khunphaen-th)(-profile)?$/.test(key)) return `img/z1-events/${key}.webp`;
   // T6/6: Cerberus of the western gate (img/z3-events)
   if (/^(boss-cerberus-west|boss-cerberus-gate-west|guard-cerberus-west)(-profile)?$/.test(key)) return `img/z3-events/${key}.webp`;
+  if (Z3_ART_KEY.test(key)) return `img/z3-events/${key}.webp`;   // T7b/3: the fairy-tale souls of Zone 3 and Loki
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());

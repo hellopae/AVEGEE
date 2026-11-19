@@ -287,7 +287,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 24, seen.join());   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
+  assert.ok(seen.length === 25, seen.join());   // T7b/3: + Loki   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

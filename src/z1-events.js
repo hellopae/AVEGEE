@@ -23,6 +23,7 @@ import { GATE_ALL_STORIES, GATE_NOTICES } from './z2-gate.js';
 import { BOATMAN_STORIES, BOATMAN_NOTICES } from './boatman.js';
 import { Z3_ARRIVE_STORIES, Z3_ARRIVE_NOTICES } from './z3c-arrival.js';   // T7/1
 import { Z3_FRONTIER_STORIES, Z3_FRONTIER_NOTICES } from './z3c-frontier.js';   // T7/2
+import { Z3_STORY_CASES, Z3_CASE_NOTICES, Z3_CASE_STORIES } from './z3d-cases.js';   // T7b/3
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -33,7 +34,7 @@ export const TH_STORY_CASES = Object.freeze([
 ]);
 export const TH_STORY_CASE_KEYS = Object.freeze(TH_STORY_CASES.map(c => c.k));
 /** Zone 2 (Z2-EVENTS): the old ape (7th case) and Satori's father (13th case) - ordinary cases, heard in the ordinary court (z2-events.js). */
-export const STORY_CASE_ROWS = Object.freeze({ th:TH_STORY_CASES, asia:Z2_STORY_CASES });
+export const STORY_CASE_ROWS = Object.freeze({ th:TH_STORY_CASES, asia:Z2_STORY_CASES, west:Z3_STORY_CASES });
 export const storyCaseRows = zone => STORY_CASE_ROWS[zone] || [];
 export const storyCaseRow = (zone, k) => storyCaseRows(zone).find(c => c.k === k) || null;
 export const isStoryCaseKey = (zone, k) => storyCaseRows(zone).some(c => c.k === k);
@@ -195,6 +196,7 @@ export const NOTICES = Object.freeze({
   ...Z2_NOTICES,
   ...Z3_ARRIVE_NOTICES,   // T7/1
   ...Z3_FRONTIER_NOTICES,   // T7/2
+  ...Z3_CASE_NOTICES,   // T7b/3
   'lamp-helper-ryujin':{ ...RYUJIN_TEXT.win, openLamp:true, art:RYUJIN_ART.icon },   // T6/5 (NR-3): the win window IS the unlock window
   'lamp-helper-musashi':MUSASHI_FLAME_NOTICE,   // T6/7 (NM-1)
   'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one
@@ -324,7 +326,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z3_CASE_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

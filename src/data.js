@@ -4,6 +4,7 @@ import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // B
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
+import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2039,6 +2040,12 @@ export const ZONE_EVENTS = {
       alert:{ th:'เทวดามาปราบแวมไพร์ แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
       foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[19,28], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       reward:{ coin:130, ability:'valkyrieSpear' } },
+    // T7b/3 (Rae R2 C 3.2): Loki posing as a charitable priest (case 7) drops the robe after the verdict - the window of this event is NLK-2, its button plays z3-loki-reveal, then the fight. Opened by the verdict (game.js refreshZoneEvents), never by the case count.
+    { k:'westLoki', atCases:0, requires:['westHypnotized'], mode:'single',
+      title:LOKI_TEXT.title, alert:LOKI_TEXT.alert, go:LOKI_TEXT.go, retry:LOKI_TEXT.retry, banner:LOKI_TEXT.banner, lines:LOKI_TEXT.lines, linesEn:LOKI_TEXT.linesEn,
+      openStory:LOKI.revealStory, winStories:[LOKI.winStory], loseStory:LOKI.loseStory, win:{ title:LOKI_TEXT.win.title, text:LOKI_TEXT.win.text }, loseText:{ title:LOKI_TEXT.lose.title, text:LOKI_TEXT.lose.text },
+      foe:{ name:'โลกิ', nameEn:'Loki', sp:LOKI.sprite, hp:310, atk:[17,27], boss:true, skills:BOSS_SKILLS.loki, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.4] } },   // first numbers (no spec): between the deva (355 / 19-28) and Akura
+      reward:{ coin:120 }, lose:{ hp:9 } },
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
   cyberhell:[

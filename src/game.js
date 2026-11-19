@@ -15,6 +15,7 @@ import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2
+import { LOKI } from './z3d-cases.js';   // T7b/3
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -594,6 +595,11 @@ const API = {
       this.refreshZoneEvents('asia'); this.bossPending = this.bossReady();
     }
     if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); }
+  },
+  /** T7b/3 (Rae R2 C 3): the fairy-tale cases are ordinary cases (judged and scored as any other). Loki's priest (case 7) is the one that goes on: whatever is ruled, the man on the dais drops the robe - the fight westLoki opens (its window is NLK-2). */
+  z3AfterVerdict(r, soul) {
+    if (soul.case === 'redhood' || soul.case === 'gingerwitch') this.storyCaseDone[soul.case] = true;
+    if (soul.case === LOKI.caseKey) { this.storyCaseDone[LOKI.caseKey] = true; this.refreshZoneEvents('west'); }
   },
   /** T5'/1 (Rae R2 A 4.4): Lady Wanthong (case 13) has been ruled. The writ is out, the guard has not stepped in yet - Khun Phaen kicks the doors open. Two versions of the scene:
    *  `punish` = she was sent to a punishment station (any level) · `free` = she was sent to the gate of heaven (not sentenced). The soul goes on to where the player sent her (no special removal);
@@ -1654,6 +1660,7 @@ const API = {
     if (this.ledger.length > 300) this.ledger.shift();
     if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;
     if (this.zone === 'th' && soul.case === WANTHONG.caseKey) this.wanthongAfterVerdict(r);   // T5'/1: whatever was ruled, Khun Phaen comes
+    if (this.zone === 'west') this.z3AfterVerdict(r, soul);   // T7b/3: Loki's reveal / the fairy-tale cases
     if (this.zone === 'asia') this.z2AfterVerdict(r, soul);   // Z2-EVENTS: the old ape / Satori's father / the crew's relatives
     // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.
     if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');
@@ -3294,6 +3301,7 @@ const API = {
       if (zone === 'th' && ev.k === 'khunPhaen' && !this.storyCaseDone[EVENT_AFTER_CASE.khunPhaen]) continue;
       // Z2-EVENTS: Wukong comes down only once the old ape's case is judged (z2AfterVerdict)
       if (zone === 'asia' && ev.k === 'asiaWukong' && !this.storyCaseDone[EVENT_AFTER_CASE.asiaWukong]) continue;
+      if (zone === 'west' && ev.k === LOKI.eventKey && !this.storyCaseDone[LOKI.caseKey]) continue;   // T7b/3: Loki shows himself only once the priest has been ruled
       if (signalRequirements(this,ev,zone)) {
         states[ev.k] = 'pending';
         if (zone === this.zone && ev.k === 'asiaPrisonFire') {

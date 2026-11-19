@@ -25,6 +25,9 @@ g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
    const row=Z2_KIN.find(r=>r.k===c.k);
    if(row){if(row.crew==='guard'){g.zoneEvents.asia.asiaGuardTest='cleared';g.hireGuard();}else if(!g.crew.some(x=>x.k===row.crew))g.hire(row.crew);g.ensureKinCases();}else g.ensureStoryCase();
    s=g.queue.find(x=>x.case===c.k);}
+  else if(c.z3){   // T7b/3: Zone 3's fairy-tale cases come through the story-case door at their own numbers (3 / 7 / 12)
+   g.zone='west';g.queue=[];g.storyCaseDone={redhood:c.k!=='redhood',lokipriest:c.k==='gingerwitch'};g.zoneEvents.west={westHypnotized:'cleared',westVampireBreach:'cleared'};g.zoneCases.west=c.k==='redhood'?2:c.k==='lokipriest'?6:11;g.ensureStoryCase();
+   s=g.queue.find(x=>x.case===c.k);}
   else s=g.nextNamedCase([]);
   assert.equal(s.case,c.k);out.push(s);
  }

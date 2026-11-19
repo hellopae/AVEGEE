@@ -117,6 +117,7 @@ import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount,
 import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
 import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
+import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1942,7 +1943,7 @@ function storyFoeArt(sp) {
   if (typeof sp !== 'string') return `img/spirit${sp || 7}.webp`;
   // Possessed rulers keep their home-zone identity in the CyberHell arena.
   if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.webp`;
-  if (Z2_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
+  if (Z2_ART_KEY.test(sp) || Z3_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
   const z = sp.match(/-(asia|west|cyberhell)$/)?.[1];
   if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.webp`;
   return artUrl(sp) || `img/${sp}.webp`;

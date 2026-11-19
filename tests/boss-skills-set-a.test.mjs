@@ -16,7 +16,7 @@ const final = i => ev('cyberhell', 'cyberFinal').waves[i][0];
 test('Rae table: 24 bosses (PHANTOM-404 = the AI Scammer Robot, one boss) each have the moves of the table', () => {
   const want = { arunadet:['groupHit'], tanthasura:['groupHit', 'heavyHit'], hanuman:['groupHit', 'heavyHit'], khunphaen:['groupHit', 'heavyHit'], guanyu:['groupHit', 'heavyHit'], ryujin:['groupHit', 'heavyHit'], yomathat:['groupHit', 'heavyHit'], yamaPossessed:['groupHit', 'heavyHit'],
     kuroha:['groupHit'], akura:['groupHit', 'heavyHit'], wukong:['summon', 'groupHit'], gateGuardTest:['heavyHit'], lianGang:['groupHit', 'heavyHit'], zhaoWenPossessed:['groupHit', 'heavyHit'],
-    eirlin:['groupHit', 'heavyHit'], valdric:['groupHit', 'heal'], cerberus:['groupHit', 'heavyHit'], jormungandr:['groupHit', 'heavyHit'], severin:['groupHit', 'heavyHit'], halvarPossessed:['groupHit', 'heavyHit'],
+    eirlin:['groupHit', 'heavyHit'], loki:['groupHit', 'heavyHit'], valdric:['groupHit', 'heal'], cerberus:['groupHit', 'heavyHit'], jormungandr:['groupHit', 'heavyHit'], severin:['groupHit', 'heavyHit'], halvarPossessed:['groupHit', 'heavyHit'],
     lumen01:['groupHit'], lumen02:['heavyHit'], trojan9:['groupHit', 'summon'], phantom404:['groupHit', 'groupHit'], archonZero:['groupHit', 'heal'], nexarPossessed:['groupHit', 'heavyHit'] };
   assert.deepEqual(Object.keys(BOSS_SKILLS).sort(), Object.keys(want).sort());
   for (const [k, kinds] of Object.entries(want)) assert.deepEqual(BOSS_SKILLS[k].map(s => s.kind), kinds, k);

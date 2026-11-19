@@ -4,6 +4,7 @@
 // Numbers here are the STARTING numbers (Rae's table); the final power / when values are the ones this file holds after the sim pass (scripts/sim-boss-skills.mjs).
 // Each list is attached to its foe in data.js (ZONE_EVENTS / SIGNAL_EVENTS), in game.js startZoneBoss (zone bosses of Asia / West), and by `bossSkillsFor` below.
 // Every move has `warn:1`: announced one boss turn ahead.  Cards (`image`) are Kittanate's / Codex's real pictures, paths fixed by Rae's table section 4.2.
+import { RAW_LOKI_SKILLS } from './z3d-raw.js';
 const A = name => `img/${name}.webp`;
 const IMG = Object.freeze({
   arunadet:A('z1-events/cut-arunadet-mirror-th'), tanthasura:A('z1-events/cut-tanthasura-army-th'), hanuman:A('z1-events/cut-hanuman-sweep-th'),
@@ -168,6 +169,7 @@ export const BOSS_SKILLS = Object.freeze({
       useText:T('เอียร์ลิน: "หอกนี้เลือกผู้ที่ไม่ถอย"', 'Eirlin: "This spear picks those who do not retreat."'),
       when:{ hpBelow:.5, everyActs:4 } },
   ]),
+  loki:Object.freeze(RAW_LOKI_SKILLS.loki.map(m => Object.freeze({ ...m, name:Object.freeze(m.name), ...(m.kind === 'groupHit' ? { image:A('z3-events/cut-loki-shadows-west') } : {}) }))),   // T7b/3 (Rae R2 C 3.2-ง): Three Shadows + Silver Tongue, verbatim
   valdric:Object.freeze([
     { id:'batStorm', kind:'groupHit', warn:1, power:.7, name:T('พายุค้างคาวราตรี', 'Night Bat Storm'),
       warnText:T('วาลดริกยกไม้เท้า เงาค้างคาวหมุนรอบตัว — รอบหน้าจะพุ่งใส่ทั้งทีม!', 'Valdric lifts his cane, bat-shadows circling him — next turn they swarm the whole team!'),

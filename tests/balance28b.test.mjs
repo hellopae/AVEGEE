@@ -170,7 +170,7 @@ const SCEN = [
   ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 15; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['west vampireBreach', 'west', 4, 4, 3, g => { g.zoneCases.west = 3; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'pending' }; return g.startZoneEvent('westVampireBreach'); }],
   ['west devaTest', 'west', 4, 5, 3, g => { g.zoneCases.west = 7; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'pending' }; return g.startZoneEvent('westDevaTest'); }],
-  ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 10; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
+  ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 10; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared', westLoki:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['cyber rescue', 'cyberhell', 5, 7, 3, g => { g.zoneEvents.cyberhell = { cyberRescue:'pending' }; return g.startZoneEvent('cyberRescue'); }],
   ['cyber breach', 'cyberhell', 5, 8, 3, g => { g.zoneCases.cyberhell = 5; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' }; return g.startZoneEvent('cyberBreach'); }],
 ];
@@ -180,7 +180,7 @@ const SCEN = [
 const LEGACY_BOSSES = [
   [() => ZONE_EVENTS.th[2].foe, 100, [10, 16]], [() => ZONE_EVENTS.th[1].waves[3][0], 90, [10, 16]], [() => ZONE_EVENTS.th.find(e => e.k === 'thBorderBoss').foes[0], undefined, [12, 19]],
   [() => ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach').waves[3][0], 125, [12, 19]],
-  [() => ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').waves[3][0], 150, [13, 20]], [() => ZONE_EVENTS.west.find(e => e.k === 'westDevaTest').foe, 165, [14, 21]],
+  [() => ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').waves[4][0], 150, [13, 20]], [() => ZONE_EVENTS.west.find(e => e.k === 'westDevaTest').foe, 165, [14, 21]],
   [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberRescue').foes[0], 105, [12, 19]], [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves[3][0], 180, [23, 35]],
   ...[[4, 145, [18, 27]], [5, 160, [19, 28]], [6, 175, [20, 30]], [7, 190, [22, 31]], [8, 220, [23, 34]]].map(([i, hp, atk]) => [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves[i][0], hp, atk]),
 ];
@@ -420,7 +420,7 @@ test('น้ำมนต์ดื่มได้กลางศึกทุก�
   ev.startZoneEvent('asiaRageBreach'); huge(ev);
   drinkChecks(ev, 'zoneEvent wave 1');
   const bs = createGame(); bs.zone = 'west'; bs.zoneCases.west = 10;
-  bs.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared' };
+  bs.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared', westLoki:'cleared' };
   bs.startZoneBoss(); bs.startBossFight(); huge(bs);
   drinkChecks(bs, 'zoneBoss');
   const fin = createGame(); fin.zone = 'cyberhell'; fin.zoneCases.cyberhell = 10;
