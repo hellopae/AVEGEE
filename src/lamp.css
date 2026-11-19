@@ -37,3 +37,18 @@
 .lamp-slot button{min-height:44px}
 .lamp-pool{display:flex;flex-direction:column;gap:6px;margin-top:6px}
 @media(max-width:420px){.lamp-slot{grid-template-columns:44px 1fr}.lamp-slot>button,.lamp-slot .lamp-btns{grid-column:1 / -1;flex-direction:row}.lamp-slot .lamp-btns button{flex:1}}
+
+/* ---- battle: the "อัญเชิญ" window (shares .flee-layer / .flee-card) + the helper's line on its cutscene ---- */
+.summon-card{display:flex;flex-direction:column;gap:8px;text-align:left}
+.summon-card h3{text-align:center;margin:0}
+.summon-pick{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;min-height:56px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--muted);color:inherit;text-align:left}
+.summon-pick[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.summon-pick[disabled]{opacity:.55}
+.summon-pick .sum-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.summon-pick .sum-icon img{max-width:100%;max-height:100%;object-fit:contain;border-radius:50%}
+.summon-pick .n{display:flex;flex-direction:column;gap:1px;min-width:0}
+.summon-pick .n small{color:var(--muted-foreground)}
+.summon-pick .n em{font-style:normal;color:var(--gold)}
+.summon-note{margin:0;color:var(--warning);text-align:center}
+.summon-card .flee-actions{margin-top:4px}
+.action-cutscene .cutscene-line{position:absolute;z-index:4;left:clamp(14px,5vw,72px);right:12px;top:clamp(14px,6%,48px);padding:6px 12px;border-radius:10px;background:#0b060acc;color:#fff1d2;font:600 clamp(13px,1.6vw,18px)/1.4 var(--font-sans)}

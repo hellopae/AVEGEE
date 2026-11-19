@@ -2844,11 +2844,12 @@ function powerSound(k) {
 }
 let battleCutscenes = createCutsceneReadiness();
 function cutsceneSource(k, ultimate = null) {
+  if (k.startsWith('summon:')) return LAMP.summonerOf(k.slice(7))?.art?.cut || null;   // T4: the helper's special-move picture
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   if (crewKey === 'nira') return niraHealingCutscene(g.zone);
   return ultimate?.image || (crewKey ? crewCutsceneSrc(crewKey)?.src : actionCutsceneSrc(k));
 }
-function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverride = '') {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
+function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverride = '', actorOverride = '', lineOverride = '') {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
@@ -2859,16 +2860,16 @@ function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverri
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
   cut.className = ultimate ? 'action-cutscene enemy-facing'
-    : ['hypno', 'mirror', 'roar', 'ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
+    : ['hypno', 'mirror', 'roar', 'ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k) || k.startsWith('summon:')
       ? 'action-cutscene right-facing' : 'action-cutscene';
   // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
-  const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
+  const actorName = actorOverride ? actorOverride : crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? (ultimate.by || 'ศัตรู') : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = nameOverride || ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
-  cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
+  cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>${lineOverride ? `<span class="cutscene-line">${esc(lineOverride)}</span>` : ''}`;
   if (ultimate && g.battle) {   // BATTLE-FX: dark vignette · speed lines · hit flash · shaking picture · big name · charge-and-boom sound
     cut.classList.add('boss-cut');
     if (!camera.motion) cut.classList.add('calm');
@@ -4140,6 +4141,7 @@ function openBattle(after) {
   let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false, finaleCutTimer = 0;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
+  let summonLayer = false, summonPick = null;   // T4: the "อัญเชิญ" window (replaces Flee once the lamp is owned) is showing / which helper is picked in it
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
   // ---- M2: battle effects (src/battle-fx.js). Rects are measured after the paint that follows, in stage-local px. ----
@@ -4604,7 +4606,9 @@ function openBattle(after) {
       {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:specialChoice},
       {id:'item',label:'ไอเท็ม / Items',choices:itemChoices},
       {id:'defense',label:'ป้องกัน / Defend',action:'defend'},
-      {id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy},
+      // T4 (H2): once Sita has given the lamp the Flee row is replaced by "อัญเชิญ" - before that it is exactly the old Flee row
+      ...(LAMP.lampOwned(g) ? [{id:'summon',label:`${lt('battle.button')} / ${lt('battle.button','',  'en')}`,summon:true,disabled:LAMP.SUMMON_BLOCKED_KINDS.includes(b.kind)||b.breachFinale==='ready',reason:lt('battle.cannot')}]
+        : [{id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy}]),
     ];
     const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
@@ -4639,7 +4643,19 @@ function openBattle(after) {
       ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     if (fleeConfirm && (b.over || phase || prepOn || fleeWhy)) fleeConfirm = false;
+    if (summonLayer && (b.over || phase || prepOn)) { summonLayer = false; summonPick = null; }
     const fleeLayer = fleeConfirm ? fleeConfirmHtml(b.kind) : '';
+    const summonLayerHtml = !summonLayer ? '' : (() => {
+      const keys = LAMP.slottedSummoners(g), lang = getLang();
+      const rows = keys.map(k => {
+        const why = LAMP.summonWhy(g, k, b), name = LAMP.summonerName(k, lang), left = LAMP.summonUsesLeft(g, k);
+        return `<button class="summon-pick" data-summon-pick="${k}" aria-pressed="${summonPick === k}" ${why ? 'disabled' : ''}>${summonIcon(k)}<span class="n"><b>${esc(name)}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('battle.groupHit'))}</small><em>${esc(why === 'spent' ? lt('battle.helperSpent', { name }) : lt('bag.movesLeft', { n:left }))}</em></span></button>`;
+      }).join('');
+      const note = !keys.length ? lt('battle.lampEmpty') : LAMP.lampAllSpent(g) ? lt('battle.allSpent') : '';
+      return `<div class="flee-layer summon-layer" data-summon-layer><div class="flee-card summon-card" role="dialog" aria-modal="true" aria-labelledby="summon-title">
+        <h3 id="summon-title">${esc(lt('battle.title'))}</h3>${rows}${note ? `<p class="summon-note">${esc(note)}</p>` : ''}
+        <div class="flee-actions"><button data-summon-cancel>${esc(lt('battle.cancel'))}</button><button class="gold" data-summon-call ${summonPick ? '' : 'disabled'}>${esc(lt('battle.call'))}</button></div></div></div>`;
+    })();
     dlg.innerHTML =
       arena(b.kind === 'yama' ? 'พญายมลงมาเอง'
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นหัวหน้าที่บัลลังก์ของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
@@ -4663,7 +4679,7 @@ function openBattle(after) {
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? (fxNow?.key === 'defend' ? '🛡️ ' + t('battle.defend.on') : '⚔️ ตาของท่าน') : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
-      </div>${prep}${prepLayer}${fleeLayer}`;
+      </div>${prep}${prepLayer}${fleeLayer}${summonLayerHtml}`;
 
     const stage = dlg.querySelector('.combat-arena');
     camera.attach(stage);
@@ -4900,6 +4916,7 @@ function openBattle(after) {
       const setCommand = (action,label) => { b.command=action;b.commandLabel=label;b.commandTarget=null;b.commandRecipient=null;paint(); };
       wheel.querySelectorAll('[data-command]').forEach(button => button.onclick = () => {
         if(phase||button.disabled)return;
+        if(button.dataset.command==='summon'){commandPanel=null;g.cancelBattleCommand();summonLayer=true;summonPick=null;paint();return;}   // T4: opens the "อัญเชิญ" window
         if(button.dataset.primaryAction){commandPanel=null;
           const action=button.dataset.primaryAction;
           if(action==='flee'){fleeConfirm=true;paint();}                      // L2: ask first, never an attack
@@ -5032,6 +5049,12 @@ function openBattle(after) {
     }
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     // L2: flee confirmation — confirm leaves the fight (no reward), cancel / backdrop just closes the layer
+    const summonLayerEl = dlg.querySelector('[data-summon-layer]');
+    if (summonLayerEl) {
+      summonLayerEl.querySelectorAll('[data-summon-pick]').forEach(bn => bn.onclick = () => { summonPick = bn.dataset.summonPick; paint(); });
+      summonLayerEl.querySelector('[data-summon-cancel]').onclick = () => { summonLayer = false; summonPick = null; paint(); };
+      summonLayerEl.querySelector('[data-summon-call]').onclick = () => { const k = summonPick; summonLayer = false; summonPick = null; if (k) executeCommand('summon:' + k, 'you'); else paint(); };
+    }
     const fleeLayerEl = dlg.querySelector('[data-flee-layer]');
     if (fleeLayerEl) bindFleeConfirm(fleeLayerEl, { onCancel:() => { fleeConfirm = false; paint(); }, onConfirm:() => { fleeConfirm = false; performFlee(); } });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
@@ -5175,7 +5198,7 @@ function openBattle(after) {
       const effect = ITEMS[k]?.consumable || k === 'phoenixFeather' ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
-      fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: k.startsWith('summon:') ? null : crewNow, recipient };
       fxHandled = true;                         // M2: the canvas effect owns the numbers + old static image from this paint on
       paint();
       let cutMs = 0;
@@ -5183,6 +5206,10 @@ function openBattle(after) {
       else if (k === 'flameCharge' && nb.finaleMove === 'flameCharge') {   // case 15 closing move: the two drawings, one after the other
         cutMs = playActionCutscene(action, null, BREACH_ART.flameCharge[0], 'พุ่งชนเพลิง') ? ACTION_CUT_MS * 2 : 0;
         if (cutMs) { clearTimeout(finaleCutTimer); finaleCutTimer = setTimeout(() => { if (g.battle === nb && dlg.open) playActionCutscene(action, null, BREACH_ART.flameCharge[1], 'พุ่งชนเพลิง'); }, ACTION_CUT_MS); }
+      }
+      else if (k.startsWith('summon:')) {   // T4: the helper's picture (Codex slot - the old Hanuman sweep picture stands in), its name + move + the line it says
+        const sk = k.slice(7), sd = LAMP.summonerOf(sk), lang = getLang();
+        cutMs = playActionCutscene(action, null, sd.art.cut, LAMP.summonerMoveName(sk, lang), LAMP.summonerName(sk, lang), (nb.summon?.use || sd.say.use)[lang === 'en' ? 'en' : 'th']) ? ACTION_CUT_MS : 0;
       }
       else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
       startActionCue(cutMs); startMoveFx('you', k, cutMs ? cutMs - 120 : 0, cutMs);

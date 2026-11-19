@@ -65,7 +65,8 @@ import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
-import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
+import { LAMP_TEXT } from './lamp-text.js';
+import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, spendSummon, lampAllSpent, lampOwned, SUMMON_USES } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
@@ -3881,7 +3882,9 @@ const API = {
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
     if (featherCommand && (this.phoenixWhy(command.recipientId) || !recipient || command.recipientId === 'you')) return false;
     if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
-    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    const isSummon = what.startsWith('summon:'), summonKey = isSummon ? what.slice(7) : null;   // T4: the lamp - any actor's turn can be spent calling a helper
+    if (isSummon && (enemyOnly || summonWhy(this, summonKey, B))) return false;
+    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && !isSummon && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && !enemyOnly && ['boon','nira'].includes(actor.k) && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if (yamaSkillRemaining(B, what)) return false;
@@ -3900,6 +3903,7 @@ const API = {
     B.ultimate = null;
     B.skillNotice = null;      // BOSS-SKILLS: what the foe announced / did this turn (banner)
     B.helper = null;
+    B.summon = null;           // T4: the helper called from the lamp this turn (ui.js reads it for the banner / cutscene)
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
     // ทั้งสองฉากพ่อเป็นบทลงโทษระดับสุดท้าย: แพ้แล้วจบโซนนี้
@@ -3936,6 +3940,15 @@ const API = {
       if (finale) { B.foes.forEach(f => { f.hp = 0; }); B.breachFinale = 'done'; }
       B.dmg.comboHits = B.comboHits;
       B.talk = newSkill.name;
+    } else if (isSummon) {
+      // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
+      const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
+      dmg = summonDamage(this, summonKey);
+      B.summon = { key:summonKey, name:d.name.th, move:d.move.name.th, used:r.used, left:r.left, out:r.out, at:Date.now(), call:d.say.call, use:d.say.use, end:d.say.end };   // the lines ride on B.summon: the foe's own reply (B.talk) comes after and overwrites the speech bubble
+      say(LAMP_TEXT['battle.logCall'].th.replace('{name}', d.name.th).replace('{move}', d.move.name.th));
+      say(LAMP_TEXT['battle.logUsed'].th.replace('{name}', d.name.th).replace('{k}', r.used));
+      if (r.out) say(LAMP_TEXT['battle.logOut'].th.replace('{name}', d.name.th));
+      this.save();
     } else if (newSkill) {
       const c = skillActor, effect = skillEffect(this, c, what);
       const receiver = recipient || { id:'you' };
@@ -4144,13 +4157,13 @@ const API = {
 
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
-    if (dmg > 0 && B.rageTurns > 0 && (!actor || actor.id === 'you')) {
+    if (dmg > 0 && B.rageTurns > 0 && !isSummon && (!actor || actor.id === 'you')) {
       dmg = Math.round(dmg * 1.5); rageMult = 1.5;
       B.rageTurns--;
 
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
-    if (dmg > 0) dmg = attackBuff(B, (actor || skillActor)?.id || 'you', dmg);
+    if (dmg > 0 && !isSummon) dmg = attackBuff(B, (actor || skillActor)?.id || 'you', dmg);
     // G3b — เพดานรวมเมื่อซ้อนคริ/rage แล้วค่อยคิดผลพิเศษจากดาเมจจริงที่เข้าเป้า
     let hit = null;
     if (swing && what === 'atk' && this.weapons?.equipped) {
@@ -4159,7 +4172,7 @@ const API = {
       if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
-    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area;
+    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area || (isSummon && summonerOf(summonKey)?.move?.kind === 'group');
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
@@ -4682,6 +4695,7 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
+    if (lampOwned(this) && lampAllSpent(this)) this.queueNotice('lamp-low');   // T4 NA-3: the first time every flame is spent, said once after the fight
     this.updateActorRecovery();      // KO-CREW: teammates who fell in this battle walk to the tea house now (win, lose or flee), not at the moment they fell
     if(B.dungeonToken){
       resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);
