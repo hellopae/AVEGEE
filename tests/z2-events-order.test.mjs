@@ -128,8 +128,8 @@ for (const heaven of [true, false]) test(`case 7 (${heaven ? 'ape sent to heaven
   g = reload(g);
   g.startZoneEvent('asiaWukong'); winFight(g);
   assert.equal(status(g, 'asiaWukong'), 'cleared');
-  assert.deepEqual(drainStories(g), ['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return']);
-  assert.deepEqual(plain(g), ['z2-ape-phantom']); assert.ok(NOTICES['z2-ape-phantom'].text.includes('[PHANTOM-404]'));
+  assert.deepEqual(drainStories(g), ['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return', 'z2-wukong-flame', 'z2-wukong-leave']);   // T6/3: the flame (helper no. 4) goes between his promise and the golden cloud
+  assert.deepEqual(plain(g), ['z2-ape-phantom', 'lamp-helper-wukong']); assert.ok(NOTICES['z2-ape-phantom'].text.includes('[PHANTOM-404]'));
   ackAll(g); assert.ok(g.journalNotes.some(n => n.includes('PHANTOM-404 (ครั้งที่ 2)')));
   assert.equal(g.storyCaseOwed(), null); g = reload(g); assert.equal(g.storyCaseOwed(), null);
   assert.equal(g.startZoneEvent('asiaWukong'), null, 'he never comes down twice');

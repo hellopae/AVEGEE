@@ -13,6 +13,7 @@ import { WANTHONG } from './z1-wanthong.js';   // T5'/1
 import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
+import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
@@ -5045,6 +5046,7 @@ const API = {
     if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
     if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);
     if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
+    if (next?.key === WUKONG_FLAME.story) this.unlockHelper('wukong');   // T6/3 (D4): his own event is passed - NA-2 (the generic helper window) follows
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
     if (next?.key?.startsWith(GUANYIN.thanksStory)) { this.queueNotice(GUANYIN.petalNotice); if (!(this.journalNotes ||= []).includes(PETAL_NOTE)) this.journalNotes.push(PETAL_NOTE); }   // T6/2 (NGY-3): a keepsake, no stat
@@ -6206,6 +6208,8 @@ API.restore = function (d) {
   if (this.zoneEvents.th?.sitaHanuman === 'cleared' && !this.magic.lamp.owned) {
     receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received');
   }
+  // T6/3: a save that already heard Wukong's return scene (before the flame existed) gets the flame scene once
+  if (this.storySeen['z2-wukong-return'] && !this.storySeen[WUKONG_FLAME.story] && !this.magic.unlocked.wukong) this.queueStory(WUKONG_FLAME.story);
   // Z2-EVENTS: a save from before the new order may hold the border breach as "pending" from case 6 - it now waits for Wukong (case 7) and case 11
   const az = this.zoneEvents.asia;
   if (az?.asiaRageBreach && az.asiaRageBreach !== 'cleared' && az.asiaWukong !== 'cleared') { delete az.asiaRageBreach; delete this.eventMapClosed['asia:asiaRageBreach']; this.refreshZoneEvents('asia'); }

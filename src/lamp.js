@@ -23,7 +23,8 @@ export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:
  *  When Kittanate's drawing is saved at that path, set this to the path (one line). */
 export const LAMP_ICON_SRC = null;
 import { KUMAN_THONG } from './z1-wanthong.js';
-import { YOMATHAT_HELPER } from './z2-gate.js';   // T5'/1: the second helper's text lives with his story
+import { YOMATHAT_HELPER } from './z2-gate.js';
+import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
@@ -44,7 +45,9 @@ export const SUMMONERS = Object.freeze({
   yomathat:{ k:'yomathat', no:3, name:YOMATHAT_HELPER.name, glyph:'🔥', event:'z2-yomathat-gift', ready:true,
     art:{ icon:art('icon-yomathat'), battle:art('battle-yomathat'), cut:art('cut-yomathat-flame-guard') },
     move:{ ...YOMATHAT_HELPER.move, kind:'strike', damage:{ base:78, perLevel:3 }, guardTeam:true }, say:YOMATHAT_HELPER.say },
-  wukong:{ k:'wukong', no:4, name:{ th:'หงอคง', en:'Wukong' }, glyph:'🐵', event:'z2-wukong-flame', ready:false, move:{ name:{ th:'ขนวิเศษรุมซัด', en:'Strand Barrage' } } },
+  // T6/3 (Rae R2 B 3.3): Strand Barrage = ONE foe (the chosen one), 3 quick hits of moderate power (`hits`: the sum is applied at once, like the other helpers' single move)
+  wukong:{ k:'wukong', no:4, name:WUKONG_HELPER.name, glyph:'🐵', event:'z2-wukong-flame', ready:true, art:{ icon:WUKONG_ART.icon, battle:WUKONG_ART.battle, cut:WUKONG_ART.cut },
+    move:{ ...WUKONG_HELPER.move, kind:'strike', hits:3, damage:{ base:28, perLevel:1 } }, say:WUKONG_HELPER.say },
   liangang:{ k:'liangang', no:5, name:{ th:'เหลียนกัง', en:'Liangang' }, glyph:'⛓️', event:'z2-lian-gift', ready:false, move:{ name:{ th:'ตรวนกั้นแถว', en:'Chain Line' } } },
   ryujin:{ k:'ryujin', no:6, name:{ th:'ริวจิน', en:'Ryujin' }, glyph:'🐉', event:'z2-ryujin-win', ready:false, move:{ name:{ th:'มังกรสะท้านถ้ำ', en:'Dragon Beneath the Cave' } } },
   musashi:{ k:'musashi', no:7, name:{ th:'มูซาชิ', en:'Musashi' }, glyph:'⚔️', event:'z3gate-musashi-farewell', ready:false, move:{ name:{ th:'สองดาบหนึ่งวิถี', en:'Two Blades, One Way' } } },
@@ -145,7 +148,7 @@ export function summonGuard(g, k) {
 /** Damage of a helper's move at Yama's level (group hit: every living foe takes this). */
 export function summonDamage(g, k) {
   const d = SUMMONERS[k]?.move?.damage; if (!d) return 0;
-  return Math.max(1, Math.round(d.base + (Math.max(1, g.level || 1) - 1) * d.perLevel));
+  return Math.max(1, Math.round(d.base + (Math.max(1, g.level || 1) - 1) * d.perLevel)) * Math.max(1, SUMMONERS[k].move.hits || 1);   // `hits` = quick blows in one go (the sum lands at once)
 }
 
 /** Spend one use. Returns { used, left, out } - `out` = true when that was the last one. */

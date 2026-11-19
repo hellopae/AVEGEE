@@ -1986,7 +1986,7 @@ export const ZONE_EVENTS = {
     { k:'asiaWukong', atCases:7, requires:['asiaDevaTest'], mode:'single',
       title:Z2_TEXT.wukong.title, alert:Z2_TEXT.wukong.alert, go:Z2_TEXT.wukong.go, retry:Z2_TEXT.wukong.retry, banner:Z2_TEXT.wukong.banner, lines:Z2_TEXT.wukong.lines,
       foe:{ name:'หงอคง', sp:'boss-wukong-asia', hp:360, atk:[13,20], boss:true, skills:BOSS_SKILLS.wukong, partyScale:{ hp:[1,2.1,2.7], atk:[1,1.1,1.25] } },   // BOSS-SKILLS 14 Nov (owner: harder): was 140 / 12-19 (won 100 % in 2.4 rounds); now 3-member first try ~70 % (scripts/sim-z2-boss-tune.mjs)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
-      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
+      winStories:['z2-wukong-win', 'z2-ape-phantom', 'z2-wukong-return', 'z2-wukong-flame', 'z2-wukong-leave'], loseStory:'z2-wukong-lose', win:Z2_TEXT.wukong.win, loseText:Z2_TEXT.wukong.lose,
       reward:{ coin:140 }, lose:{ hp:9 } },
     // The last row is Akura (the border boss), counted apart from the 3 numbered waves (ui.js / game.js zoneEventFoes read bossApart).
     { k:'asiaRageBreach', atCases:11, requires:['asiaWukong'], mode:'waves', team:'frontier', bossApart:true,

@@ -10,7 +10,7 @@ const reload = g => { const n = createGame(); n.restore(JSON.parse(JSON.stringif
 
 test('12 helpers in the data, the owner\'s list; only Hanuman has an event yet and only a `ready` helper is ever shown', () => {
   assert.deepEqual(L.SUMMONER_KEYS, ['hanuman', 'kumanthong', 'yomathat', 'wukong', 'liangang', 'ryujin', 'musashi', 'eirlin', 'jormungandr', 'thor', 'lucifer', 'lupin']);
-  assert.deepEqual(L.SUMMONER_KEYS.filter(k => L.SUMMONERS[k].ready), ['hanuman', 'kumanthong', 'yomathat']);   // T5'/1: Kuman Thong (case 13) · T5'/5: Yomathat (the gate of Zone 2)
+  assert.deepEqual(L.SUMMONER_KEYS.filter(k => L.SUMMONERS[k].ready), ['hanuman', 'kumanthong', 'yomathat', 'wukong']);   // T5'/1: Kuman Thong (case 13) · T5'/5: Yomathat (the gate of Zone 2) · T6/3: Wukong
   assert.equal(L.SUMMONERS.hanuman.move.name.th, 'เหาะเหนือเมฆ'); assert.equal(L.SUMMONERS.hanuman.move.name.en, 'Beyond the Clouds');
   for (const k of L.SUMMONER_KEYS) { const s = L.SUMMONERS[k]; assert.ok(s.name.th && s.name.en && s.move.name.th && s.move.name.en && s.event, k); }
   const g = createGame(); L.unlockSummoner(g, 'thor');

@@ -13,6 +13,7 @@
 // This module is data only: it imports nothing from the game, so z1-events.js / story.js / data.js can all read it without a cycle.
 import { Z2_STORIES_RAW, WUKONG_CAMEO, CASE_APEELDER, CASE_AKURA, CASE_SATORIFATHER, CASE_DESERTER, CASE_CHAINCMD, CASE_FAKECUP, CASE_A2, CASE_GRANARYSISTER } from './z2-events-text.js';
 import { GUANYIN, GUANYIN_CASE, GUANYIN_NOTICES, GUANYIN_STORIES } from './z2b-guanyin.js';   // T6/2: case 12
+import { WUKONG_STORIES, WUKONG_FLAME } from './z2b-wukong.js';   // T6/3: the flame in the lamp
 export { WUKONG_CAMEO };
 
 const A = name => `img/z2-events/${name}.webp`;
@@ -50,6 +51,9 @@ const IMAGES = {
   'z2-lian-open':[LIAN_INTRO], 'z2-lian-win':[LIAN_INTRO], 'z2-lian-lose':[LIAN_INTRO],
   'z2-guard-test-open':[Z2_ART.guardTest], 'z2-guard-test-win':[Z2_ART.guardTest], 'z2-guard-test-lose':[Z2_ART.guardTest],
 };
+// T6/3 (Rae R2 B 3.1): the flame scene goes between "ผมสัญญาครับ" and the golden-cloud narration of z2-wukong-return -> that scene keeps page 1 + page 2 up to his promise, the cloud line becomes z2-wukong-leave
+const RETURN_RAW = Z2_STORIES_RAW['z2-wukong-return'], RETURN_LINES = RETURN_RAW.pages[1].line.split('\n'), CLOUD_LINE = RETURN_LINES.pop();
+IMAGES[WUKONG_FLAME.leaveStory] = [Z2_ART.wukongReturns];
 const dress = (key, raw) => ({ title:raw.title, pages:raw.pages.map((p, i) => ({ image:IMAGES[key][Math.min(i, IMAGES[key].length - 1)], title:p.title, line:p.line, fallback:'📜' })) });
 
 // Wukong's first scene has two second pages in Rae's file (version A: the old ape was sent to heaven · version B: he was punished). Two stories, one per version.
@@ -71,6 +75,9 @@ export const Z2_STORIES = Object.freeze({
   'z2-satori-ask-b':dress('z2-satori-ask-b', satoriAskB()),
   'z2-satori-farewell-b':dress('z2-satori-farewell-b', satoriFarewellB()),
   ...GUANYIN_STORIES,   // T6/2
+  ...WUKONG_STORIES,    // T6/3
+  'z2-wukong-return':dress('z2-wukong-return', { title:RETURN_RAW.title, pages:[RETURN_RAW.pages[0], { ...RETURN_RAW.pages[1], line:RETURN_LINES.join('\n') }] }),
+  [WUKONG_FLAME.leaveStory]:dress(WUKONG_FLAME.leaveStory, { title:RETURN_RAW.title, pages:[{ title:'เมฆสีทอง', line:CLOUD_LINE }] }),
 });
 // The raw scenes that are NOT played, and why (kept honest in the report, not silently dropped):
 //  · z2-kuroha-descends - the existing 'deva-asia' scene (picture + video of the deva coming down) IS this moment; the owner decided "same scene, no second one". It carries the new deva.asia.arrival text.
