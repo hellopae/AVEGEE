@@ -36,8 +36,9 @@ test('the order in Zone 3: case 3 Little Red, case 7 the priest (whatever is rul
   b.youHp = 99999; b.foes[0].atk = [0, 0]; b.foes[0].hp = 1; g.battleAct('atk'); assert.equal(b.over, 'win'); g.endBattle();
   assert.equal(g.zoneEventStatus('westLoki'), 'cleared'); assert.ok(g.storyQueue.some(s => s.key === 'z3-loki-win'));
   // a lost fight: he waits, the fight can be tried again (z3-loki-lose)
-  const g2 = west(); opened(g2); g2.storyCaseDone.redhood = true; g2.zoneCases.west = 6; judge(g2, 'lokipriest'); const b2 = g2.startZoneEvent('westLoki'); b2.team = []; b2.youHp = 1; g2.battleAct('atk');
-  if (b2.over === 'lose') { g2.endBattle(); assert.equal(g2.zoneEventStatus('westLoki'), 'pending'); assert.ok(g2.storyQueue.some(s => s.key === 'z3-loki-lose')); }
+  const g2 = west(); opened(g2); g2.storyCaseDone.redhood = true; g2.zoneCases.west = 6; judge(g2, 'lokipriest'); const b2 = g2.startZoneEvent('westLoki'); b2.team = []; b2.absentActors = g2.battleActors().filter(x => x.id !== 'you').map(x => x.id); b2.youHp = 1;   // only Yama can be hit; the dice are fixed so the loss does not depend on a roll
+  const realRandom = Math.random; Math.random = () => .5; try { g2.battleAct('atk'); } finally { Math.random = realRandom; }
+  assert.equal(b2.over, 'lose'); g2.endBattle(); assert.equal(g2.zoneEventStatus('westLoki'), 'pending'); assert.ok(g2.storyQueue.some(s => s.key === 'z3-loki-lose'));
   g.zoneCases.west = 11; assert.equal(g.storyCaseOwed(), 'gingerwitch'); judge(g, 'gingerwitch'); assert.ok(g.storyCaseDone.gingerwitch); assert.equal(g.storyCaseOwed(), null);
 });
 test('English on every page of the Loki scenes and on the three arrival notices; the Loki window is bilingual', () => {

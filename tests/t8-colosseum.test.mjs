@@ -39,7 +39,9 @@ test('ten bouts in order, Rae\'s lines, the winner\'s line after each, Yama + Ni
 });
 test('a lost bout: the tea house, the same bout again at no cost; Thor stuns, the Founder\'s Decree weakens only the foe it points at; TH + EN', () => {
   const g = onTheWalk(); const b = g.startColosseumBout(); win(g, b);
-  const b2 = g.startColosseumBout(); assert.equal(b2.eventKey, 'colS2'); b2.team = []; b2.absentActors = []; b2.youHp = 1; g.battleAct('atk'); assert.equal(b2.over, 'lose'); g.endBattle();
+  const b2 = g.startColosseumBout(); assert.equal(b2.eventKey, 'colS2'); b2.team = []; b2.absentActors = g.battleActors().filter(x => x.id !== 'you').map(x => x.id); b2.youHp = 1;   // only Yama can be hit and the dice are fixed (the foe's target / hit roll no longer decide the loss)
+  const realRandom = Math.random; Math.random = () => .5; try { g.battleAct('atk'); } finally { Math.random = realRandom; }
+  assert.equal(b2.over, 'lose'); g.endBattle();
   assert.equal(g.zoneEventStatus('colS2'), 'pending'); assert.equal(g.colosseumNext(), 2, 'the same bout'); assert.equal(g.zoneEventStatus('colS1'), 'cleared', 'nothing lost');
   assert.equal(L.SUMMONERS.thor.move.stun.chance, .6); assert.equal(L.SUMMONERS.lucifer.move.weaken.target, true); assert.equal(L.SUMMONERS.lucifer.move.kind, 'strike'); assert.equal(L.SUMMONERS.thor.move.kind, 'group');
   for (const lang of ['th', 'en']) { setLang(lang); for (const [k, n] of [['col-gate', 2], ['col-thor-win', 1], ['col-lucifer-open', 1], ['col-lucifer-win', 1]]) { const s = storyOf(k); assert.equal(s.pages.length, n, k); for (const p of s.pages) { assert.ok(p.line && p.title); if (lang === 'en') assert.ok(!/[฀-๿]/.test(p.line + p.title), `${k} English page has no Thai`); } } }
