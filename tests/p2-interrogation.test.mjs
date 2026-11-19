@@ -6,7 +6,7 @@ import {createGame} from '../src/game.js';
 import {ALL_CASES,CASES} from '../src/cases.js';
 import {Z2_KIN} from '../src/z2-events.js';
 import {Z3_KIN} from '../src/z3g-kin.js';
-import {Z4_STORY_CASES} from '../src/z4c-cases.js';   // T8b
+import {Z4_STORY_CASES,Z4_KIN} from '../src/z4c-cases.js';   // T8b
 import {spiritTrait,traitKeyFor,lockSoulTrait,keeperWorkPlan,hiddenIssues,revealOneIssue,TRAIT_KEYS} from '../src/interrogation.js';
 import {kanOrbHtml} from '../src/interrogation-ui.js';
 import {soulTraitGuide,keeperTeamGuide,firstInterrogationLesson,sentencingChapters} from '../src/sentencing-guide.js';
@@ -30,7 +30,8 @@ g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
   else if(c.z4){   // T8b: Zone 4's story cases come through the story-case door at their own numbers (the earlier ones are marked judged)
    g.zone='cyberhell';g.queue=[];g.storyCaseDone={};g.zoneEvents.cyberhell={cyberRescue:'cleared',cyberBreach:'cleared',cyberSala:'cleared'};g.zoneCases.cyberhell=99;
    for(const r of Z4_STORY_CASES){if(r.k===c.k)break;g.storyCaseDone[r.k]=true;}
-   g.ensureStoryCase();s=g.queue.find(x=>x.case===c.k);}
+   if(Z4_KIN.some(r=>r.k===c.k)){g.guard=g.guard||{id:'cyberhell:guard',k:'guard',kind:'guard',homeZone:'cyberhell',morale:100};g.ensureKinCases();}else g.ensureStoryCase();   // WATSON-03's quest comes through the Guard (a relative of the Guard)
+   s=g.queue.find(x=>x.case===c.k);}
   else if(c.z3kin){   // T7c/6: a relative of Zone 3's crew comes when its crew member is hired and Eirlin's test is passed
    g.zone='west';g.queue=[];g.kinSeen={};g.coin=99999;g.zoneEvents.west={westHypnotized:'cleared',westVampireBreach:'cleared',westDevaTest:'cleared'};
    const row=Z3_KIN.find(r=>r.k===c.k);

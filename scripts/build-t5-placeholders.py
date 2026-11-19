@@ -167,6 +167,10 @@ GROUPS['z4c3'] = [   # T8b/4 - Rae sec. 11 Z6 / Z7 (cases 8 and 9: adults, no bl
   ('z4-events/soul-archivist-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-archivist-cyber (Z7: Buffer\'s uncle, a man of sixty in dust-stained white cotton gloves, a large ring of keys)'),
   ('z4-events/soul-archivist-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-archivist-cyber-profile'),
 ]
+GROUPS['z4c4'] = [   # T8b/3 - Rae sec. 11 Z8 (WATSON-03's quest: an adult, no blood)
+  ('z4-events/soul-admin-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-admin-cyber (Z8: the former administrator, a man of fifty in thick glasses holding a long-cold cup of coffee in both hands)'),
+  ('z4-events/soul-admin-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-admin-cyber-profile'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

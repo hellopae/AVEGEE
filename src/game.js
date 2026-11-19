@@ -20,7 +20,7 @@ import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
 import { Z4A, Z4A_ZONE4 } from './z4a-border.js';   // T8a
 import { COL } from './z4b-colosseum.js';   // T8a/2
-import { Z4C_JOURNAL, Z4C_HINT_AFTER } from './z4c-cases.js';   // T8b
+import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
@@ -605,6 +605,7 @@ const API = {
   },
   /** T8b (Rae R2 D 3 / 5): the story cases of Zone 4 are ordinary cases (judged and scored as any other). Each leaves its [PHANTOM-404] line in the journal (once) and counts as judged for the cases that come after it. */
   z4AfterVerdict(r, soul) {
+    if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); return; }   // WATSON-03's quest: his question + the two choices (ui.js openKinAfter)
     const k = soul.case; if (!Z4C_JOURNAL[k]) return;
     this.storyCaseDone[k] = true;
     if (!(this.journalNotes ||= []).includes(Z4C_JOURNAL[k].th)) this.journalNotes.push(Z4C_JOURNAL[k].th);
@@ -633,10 +634,11 @@ const API = {
   ensureKinCases() {
     // The relatives come after the zone's opening (the deva's test is passed): Taan is hired from the first day, his relative must not walk in before the fire is out.
     // T7c/6: Zone 3's relatives come after Eirlin's test (case 10), at the tail of the queue (Rae part C 6.1)
-    const rows = this.zone === 'asia' ? Z2_KIN : this.zone === 'west' ? Z3_KIN : null;
-    if (!rows || this.over || this.zoneEventStatus(this.zone === 'asia' ? 'asiaDevaTest' : 'westDevaTest') !== 'cleared') return;
+    // T8b: Zone 4's relative (WATSON-03's quest) comes after the record hall (case 10) is won and twelve cases are judged (Rae 4.4 `after:12`)
+    const rows = this.zone === 'asia' ? Z2_KIN : this.zone === 'west' ? Z3_KIN : this.zone === 'cyberhell' ? Z4_KIN : null;
+    if (!rows || this.over || this.zoneEventStatus(this.zone === 'asia' ? 'asiaDevaTest' : this.zone === 'west' ? 'westDevaTest' : 'cyberSala') !== 'cleared') return;
     for (const row of rows) {
-      if (this.kinSeen[row.k] || !this.kinHired(row)) continue;
+      if (this.kinSeen[row.k] || !this.kinHired(row) || (this.zoneCases[this.zone] || 0) < (row.atCases || 0)) continue;
       let soul = row.existing ? this.queue.find(s => s.case === row.k && !s.kin) : null;
       // A2 already drawn (and judged) before Kuro was hired: the copy that comes now is the same soul a second time - the notice says so (kinRepeatLine)
       const repeat = !!row.existing && !soul && this.usedCases.includes(row.k);

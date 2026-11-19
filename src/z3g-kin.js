@@ -5,6 +5,7 @@
 // Two choices have an effect in the game: relative 3's second choice sends Sibyl away to serve a penalty and she comes back (Rae 5.3 B, owner 16 Nov) - done with the crew's tea-house recovery; relative 6's first choice is a journal line.
 import { RAW_KIN, RAW_KINCASE_FALSEORDER, RAW_KINCASE_YOUNGERBROTHER, RAW_KINCASE_DOOMCLIENT, RAW_KINCASE_CARERDAUGHTER, RAW_KINCASE_GATESENTRY, RAW_KINCASE_SOUPCOOK } from './z3g-raw-kin.js';
 import { Z2_KIN_BY_KEY } from './z2-events.js';
+import { Z4_KIN_BY_KEY } from './z4c-cases.js';   // T8b: WATSON-03's quest of Zone 4
 const A = n => `img/z3-events/${n}.webp`;
 const caseDef = raw => { const { quest, ...rest } = raw; return Object.freeze({ ...rest, story:true, z3kin:true }); };   // `quest` would put it in the side-quest pools; `story` keeps it out of the random draw
 const RAW = { falseorder:RAW_KINCASE_FALSEORDER, youngerbrother:RAW_KINCASE_YOUNGERBROTHER, doomclient:RAW_KINCASE_DOOMCLIENT, carerdaughter:RAW_KINCASE_CARERDAUGHTER, gatesentry:RAW_KINCASE_GATESENTRY, soupcook:RAW_KINCASE_SOUPCOOK };
@@ -29,7 +30,7 @@ export const Z3_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z3_KIN.map(r => [r
 export const Z3_KIN_SPRITE = Object.freeze({ falseorder:'soul-false-judge-west', youngerbrother:'soul-younger-brother-west', doomclient:'soul-prophecy-client-west', carerdaughter:'soul-carer-daughter-west', gatesentry:'soul-gate-sentry-west', soupcook:'soul-soup-cook-west' });
 export const Z3_KIN_ART_KEY = /^soul-(false-judge|younger-brother|prophecy-client|carer-daughter|gate-sentry|soup-cook)-west(-profile)?$/;
 /** one lookup for the relatives of Zone 2 and Zone 3 (game.js / ui.js read this instead of Z2_KIN_BY_KEY) */
-export const KIN_BY_KEY = Object.freeze({ ...Z2_KIN_BY_KEY, ...Z3_KIN_BY_KEY });
+export const KIN_BY_KEY = Object.freeze({ ...Z2_KIN_BY_KEY, ...Z3_KIN_BY_KEY, ...Z4_KIN_BY_KEY });
 
 /** `kin-<k>`: the window when the relative comes to the queue (behind its button = what the crew member says before the hearing) */
 export const Z3_KIN_NOTICES = Object.freeze({
