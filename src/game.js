@@ -65,6 +65,7 @@ import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
+import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
@@ -169,6 +170,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    magic: freshMagic(),               // T4: Magic Lamp / summon state (src/lamp.js) - one for the whole game, saved at the top level of a save
     storyCaseDone: {}, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
@@ -5555,7 +5557,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
-    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null,
+    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -6024,6 +6026,11 @@ API.restore = function (d) {
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
   this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
+  // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
+  this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);
+  if (this.zoneEvents.th?.sitaHanuman === 'cleared' && !this.magic.lamp.owned) {
+    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received');
+  }
   // Z2-EVENTS: a save from before the new order may hold the border breach as "pending" from case 6 - it now waits for Wukong (case 7) and case 11
   const az = this.zoneEvents.asia;
   if (az?.asiaRageBreach && az.asiaRageBreach !== 'cleared' && az.asiaWukong !== 'cleared') { delete az.asiaRageBreach; delete this.eventMapClosed['asia:asiaRageBreach']; this.refreshZoneEvents('asia'); }

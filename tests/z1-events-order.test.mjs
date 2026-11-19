@@ -214,7 +214,7 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   g.completeStory(); assert.equal(g.bossGuideFollowing(), false); assert.equal(g.coin, coinBefore + 500, 'farewell at the new land\'s gate pays the boss-guide grant');
   assert.equal(g.outfitsOwned.includes('asia'), true);
   // ---- nothing replays
-  g = reload(g); drainStories(g); g = reload(g);
+  g = reload(g); drainStories(g); g.ackNotice('lamp-received'); g = reload(g);   // T4: the lamp window (NA-1) is the one notice that is still waiting here
   assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, []);
   for (const k of ['prisonBreak', 'devaTest', 'frontierBreach', 'sitaHanuman', 'thBorderBoss']) assert.equal(status(g, k), 'cleared', k);
   assert.equal(g.startZoneEvent('sitaHanuman'), null); assert.equal(g.startFrontierBreach(), null);
@@ -250,7 +250,7 @@ test('old saves: no repeat, no hang', async t => {
     old.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'cleared' };
     const d = JSON.parse(JSON.stringify(old.snapshot())); delete d.z1EventsVersion; delete d.storyCaseDone;
     const g = createGame(); g.restore(d);
-    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, []);
+    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, ['lamp-received'], 'T4: a save that is past Sita gets the lamp window once');
     assert.equal(g.zoneEventStatus('thBorderBoss'), 'cleared');
   });
   await t.test('elder brother announced under the old order (case 10) -> waits for Sita and case 15', () => {
