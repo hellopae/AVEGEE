@@ -9,6 +9,7 @@ const other = ['nurse','devaMonk','scapegoat','A5','A11','A13','A19','campelder'
 // W2 quest cases: denial/fake boast, plea with mitigation, or a truthful/innocent account.
 caught.push('swapdoc','chainhand','hospice','smokeheir');
 // Z2-EVENTS: the old ape tells the plain truth (other); the rest deny or boast about a merit that is not real
+caught.push('wanthong');   // T5'/1: a `deny` and a false boast, like the other twist cases (her sprite has no pose drawing yet -> no pose)
 caught.push('satorifather','deserter','chaincmd','fakecup','granarysister');
 other.push('apeelder');
 necessity.push('feudgran','hirefire');

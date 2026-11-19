@@ -2,6 +2,7 @@ import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
+import { WANTHONG_TEXT } from './z1-wanthong.js';   // T5'/1: case 13 text (Rae R2 A 4)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -1947,8 +1948,14 @@ export const ZONE_EVENTS = {
     go:{ th:'รับมือ', en:'Face him' }, retry:{ th:'ทดสอบอีกครั้ง', en:'Try again' },
     foe:{ name:'หนุมาน', sp:'boss-hanuman-th', hp:240, atk:[17,26], boss:true, skills:BOSS_SKILLS.hanuman },   // BOSS-SKILLS set A: was 120 / 11-17; first try, team of 3 ~72 %   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
     reward:{}, lose:{ hp:9 } },
+  // T5'/1: case 13 · Lady Wanthong's verdict (any) brings Khun Phaen, who TESTS Yama - he is no enemy (Rae R2 A 4). hp/atk: Toby's first numbers a little above Hanuman (case 12), below the elder brother - no spec, tune freely.
+  { k:'khunPhaen', atCases:13, requires:['sitaHanuman'], mode:'single',
+    title:WANTHONG_TEXT.title, alert:WANTHONG_TEXT.alert, go:WANTHONG_TEXT.go, retry:WANTHONG_TEXT.retry, banner:WANTHONG_TEXT.banner,
+    lines:WANTHONG_TEXT.lines, win:{ title:WANTHONG_TEXT.win.title, text:WANTHONG_TEXT.win.text }, loseText:{ title:WANTHONG_TEXT.lose.title, text:WANTHONG_TEXT.lose.text }, loseStory:'z1-khunphaen-lose',
+    foe:{ name:'ขุนแผน', sp:'boss-khunphaen-th', hp:270, atk:[18,28], boss:true, skills:BOSS_SKILLS.khunphaen },
+    reward:{}, lose:{ hp:9 } },
   // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.
-  { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman'], mode:'group',
+  { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman','khunPhaen'], mode:'group',
     title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },
     foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[14,22], boss:true, skills:BOSS_SKILLS.yomathat },   // BOSS-SKILLS set A: atk was 12-19

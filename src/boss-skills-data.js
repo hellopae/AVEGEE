@@ -7,6 +7,7 @@
 const A = name => `img/${name}.webp`;
 const IMG = Object.freeze({
   arunadet:A('z1-events/cut-arunadet-mirror-th'), tanthasura:A('z1-events/cut-tanthasura-army-th'), hanuman:A('z1-events/cut-hanuman-sweep-th'),
+  khunphaen:A('z1-events/cut-khunphaen-arrives-th'),
   yomathat:'img/zone-boss-cutscene.webp', yamaLedger:A('z4-events/cut-yama-ledger-tide-th'),
   kuroha:A('z2-events/cut-kuroha-gale-asia'), akura:A('z2-events/cut-akura-thornstorm-asia'), wukong:A('z2-events/cut-wukong-sweep-asia'),
   wukongClones:A('z2-events/cut-wukong-clones-asia'),
@@ -47,6 +48,17 @@ export const BOSS_SKILLS = Object.freeze({
       warnText:T('ท่านหนุมานขยายกายสูงขึ้นเรื่อย ๆ — รอบหน้าจะฟาดฝ่ามือลงมาหนึ่งครั้ง!', 'Hanuman swells to a towering size — next turn a great palm comes down on one of you!'),
       useText:T('ท่านหนุมานฟาดฝ่ามือใหญ่ลงมา แล้วหดกายกลับเท่าเดิม', 'Hanuman brings his great palm down, then shrinks back to his usual size.'),
       when:{ hpBelow:.6, everyActs:4 } },
+  ]),
+  // T5'/1 (Rae R2 A 4.5): Khun Phaen - a horse and a sword only, nothing of charms or spells. Starting numbers (power / when), not run through the sim yet.
+  khunphaen:Object.freeze([
+    { id:'simoCharge', kind:'groupHit', warn:1, power:.7, name:T('ม้าสีหมอกควบทะลวง', "Si Mok's Charge"),
+      warnText:T('ม้าสีหมอกข้างนอกประตูตะกุยเท้า ขุนแผนหันดาบเข้าหาทีม — รอบหน้าจะควบทะลวงทั้งทีม!', 'The mist-grey horse Si Mok paws at the door as Khun Phaen turns his blade toward the team — next turn he charges through all of you!'),
+      useText:T('ขุนแผน: "ตามข้ามา!" แล้วควบทะลวงผ่านทั้งทีม', 'Khun Phaen: "With me!" and he charges through the whole team'),
+      when:{ firstAct:3, everyActs:4 }, image:IMG.khunphaen },
+    { id:'faFuenSlash', kind:'heavyHit', warn:1, power:1.8, name:T('ดาบฟ้าฟื้นฟาดเดี่ยว', 'Fa Fuen Strike'),
+      warnText:T('ขุนแผนกำด้ามดาบฟ้าฟื้นสองมือ — รอบหน้าจะฟันหนักใส่คนเดียว!', 'Khun Phaen grips the Fa Fuen blade in both hands — next turn a heavy cut falls on one of you!'),
+      useText:T('ขุนแผนฟันเต็มแรงเพียงครั้งเดียว แล้วถอยหนึ่งก้าว', 'Khun Phaen strikes once with everything he has, then steps back'),
+      when:{ hpBelow:.55, everyActs:3 } },
   ]),
   yomathat:Object.freeze([
     { id:'blazeBlade', kind:'groupHit', warn:1, power:.9, name:T('ดาบเพลิงพี่ใหญ่', "Elder Brother's Flame Blade"),

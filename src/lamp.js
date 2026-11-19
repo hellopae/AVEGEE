@@ -22,6 +22,7 @@ export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:
 /** The lamp's own icon (Rae R2 A, table A1: `img/ui/item-magic-lamp.webp`, plus `-lit` for the lit one). Not drawn yet -> null = the UI shows the 🪔 glyph and asks for no file.
  *  When Kittanate's drawing is saved at that path, set this to the path (one line). */
 export const LAMP_ICON_SRC = null;
+import { KUMAN_THONG } from './z1-wanthong.js';   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
@@ -34,7 +35,10 @@ export const SUMMONERS = Object.freeze({
     say:{ call:{ th:'หนุมาน: "พระนางฝากข้ามา ท่านยมบาทน้อย ถอยหลังข้าไว้"', en:'Hanuman: "My lady sent me. Lord Yama, stand behind me."' },
       use:{ th:'หนุมาน: "ข้าไม่ชักอาวุธ แต่ข้าไม่ออมมือ!"', en:'Hanuman: "I draw no weapon, but I hold nothing back!"' },
       end:{ th:'หนุมาน: "ไฟของข้าเหลือเท่านี้ ท่านใช้ให้คุ้ม"', en:'Hanuman: "That is all my flame allows. Spend it well."' } } },
-  kumanthong:{ k:'kumanthong', no:2, name:{ th:'กุมารทอง', en:'Kuman Thong' }, glyph:'👦', event:'z1-khunphaen-win', ready:false, move:{ name:{ th:'แสงทองคุ้มกาย', en:'Golden Aegis' } } },
+  // T5'/1 (Rae R2 A 4.7): Golden Aegis = a team shield for about one round + a small heal, and the fallen are helped back to their feet. File names are Rae's table C6 / C7.
+  kumanthong:{ k:'kumanthong', no:2, name:KUMAN_THONG.name, glyph:'👦', event:'z1-khunphaen-win', ready:true,
+    art:{ icon:art('kuman-thong-icon'), battle:art('kuman-thong-battle'), cut:art('cut-kuman-golden-aegis') },
+    move:{ ...KUMAN_THONG.move, kind:'guard', shield:{ base:22, perLevel:2 }, heal:{ base:14, perLevel:1 }, raise:25 }, say:KUMAN_THONG.say },
   yomathat:{ k:'yomathat', no:3, name:{ th:'ยมทัต', en:'Yomathat' }, glyph:'🔥', event:'z2-yomathat-gift', ready:false, move:{ name:{ th:'ดาบเพลิงคุ้มน้อง', en:"Flame Blade, Brother's Guard" } } },
   wukong:{ k:'wukong', no:4, name:{ th:'หงอคง', en:'Wukong' }, glyph:'🐵', event:'z2-wukong-flame', ready:false, move:{ name:{ th:'ขนวิเศษรุมซัด', en:'Strand Barrage' } } },
   liangang:{ k:'liangang', no:5, name:{ th:'เหลียนกัง', en:'Liangang' }, glyph:'⛓️', event:'z2-lian-gift', ready:false, move:{ name:{ th:'ตรวนกั้นแถว', en:'Chain Line' } } },
@@ -128,6 +132,12 @@ export function summonWhy(g, k, battle = g.battle) {
 /** Fights where the lamp stays still: the two "Yama himself" scenes end the run at once, they are not fights to help in. */
 export const SUMMON_BLOCKED_KINDS = Object.freeze(['yama', 'dad']);
 
+/** T5'/1: a 'guard' move (Kuman Thong's Golden Aegis) - how much shield / heal it gives at Yama's level, and how much HP a fallen teammate is helped up with. */
+export function summonGuard(g, k) {
+  const m = SUMMONERS[k]?.move; if (m?.kind !== 'guard') return null;
+  const lv = Math.max(1, g.level || 1) - 1, at = d => Math.max(1, Math.round(d.base + lv * d.perLevel));
+  return { shield:at(m.shield), heal:at(m.heal), raise:m.raise || 25 };
+}
 /** Damage of a helper's move at Yama's level (group hit: every living foe takes this). */
 export function summonDamage(g, k) {
   const d = SUMMONERS[k]?.move?.damage; if (!d) return 0;

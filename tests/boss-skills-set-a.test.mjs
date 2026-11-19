@@ -14,7 +14,7 @@ const ev = (zone, k) => ZONE_EVENTS[zone].find(e => e.k === k);
 const final = i => ev('cyberhell', 'cyberFinal').waves[i][0];
 
 test('Rae table: 23 bosses (PHANTOM-404 = the AI Scammer Robot, one boss) each have the moves of the table', () => {
-  const want = { arunadet:['groupHit'], tanthasura:['groupHit', 'heavyHit'], hanuman:['groupHit', 'heavyHit'], yomathat:['groupHit', 'heavyHit'], yamaPossessed:['groupHit', 'heavyHit'],
+  const want = { arunadet:['groupHit'], tanthasura:['groupHit', 'heavyHit'], hanuman:['groupHit', 'heavyHit'], khunphaen:['groupHit', 'heavyHit'], yomathat:['groupHit', 'heavyHit'], yamaPossessed:['groupHit', 'heavyHit'],
     kuroha:['groupHit'], akura:['groupHit', 'heavyHit'], wukong:['summon', 'groupHit'], gateGuardTest:['heavyHit'], lianGang:['groupHit', 'heavyHit'], zhaoWenPossessed:['groupHit', 'heavyHit'],
     eirlin:['groupHit', 'heavyHit'], valdric:['groupHit', 'heal'], cerberus:['groupHit', 'heavyHit'], jormungandr:['groupHit', 'heavyHit'], severin:['groupHit', 'heavyHit'], halvarPossessed:['groupHit', 'heavyHit'],
     lumen01:['groupHit'], lumen02:['heavyHit'], trojan9:['groupHit', 'summon'], phantom404:['groupHit', 'groupHit'], archonZero:['groupHit', 'heal'], nexarPossessed:['groupHit', 'heavyHit'] };

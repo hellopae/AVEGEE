@@ -14,11 +14,14 @@ import { SPOTS } from './data.js';
 import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
 import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
 import { LAMP_TEXT } from './lamp-text.js';
+import { WANTHONG, WANTHONG_CASE, WANTHONG_STORIES, WANTHONG_NOTICES } from './z1-wanthong.js';
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
   Object.freeze({ k:'devaMonk', after:5, needsGate:true, needsCase:'nurse' }),
   Object.freeze({ k:'sitaledger', after:11, needsEvent:'frontierBreach' }),
+  // T5'/1 (Rae R2 A 4.1): case 13 - Lady Wanthong, an ordinary case in the ordinary court; whatever is ruled, Khun Phaen comes (the event khunPhaen)
+  Object.freeze({ k:'wanthong', after:12, needsEvent:'sitaHanuman', def:WANTHONG_CASE, notice:WANTHONG.arriveNotice }),
 ]);
 export const TH_STORY_CASE_KEYS = Object.freeze(TH_STORY_CASES.map(c => c.k));
 /** Zone 2 (Z2-EVENTS): the old ape (7th case) and Satori's father (13th case) - ordinary cases, heard in the ordinary court (z2-events.js). */
@@ -27,7 +30,7 @@ export const storyCaseRows = zone => STORY_CASE_ROWS[zone] || [];
 export const storyCaseRow = (zone, k) => storyCaseRows(zone).find(c => c.k === k) || null;
 export const isStoryCaseKey = (zone, k) => storyCaseRows(zone).some(c => c.k === k);
 /** The Zone 1 event that follows a story case (opens only once that case is judged). */
-export const EVENT_AFTER_CASE = Object.freeze({ devaTest:'devaMonk', sitaHanuman:'sitaledger', asiaWukong:'apeelder' });
+export const EVENT_AFTER_CASE = Object.freeze({ devaTest:'devaMonk', sitaHanuman:'sitaledger', khunPhaen:'wanthong', asiaWukong:'apeelder' });
 
 /** Has this story case been judged (or is the story already past it)? */
 export function storyCaseDone(g, k, zone = g.zone) {
@@ -42,6 +45,7 @@ export function storyCaseDone(g, k, zone = g.zone) {
   if (k === 'devaMonk') return !!g.devaVisits?.th || !!ev.devaTest;
   if (k === 'nurse') return !!g.devaVisits?.th || !!ev.devaTest;
   if (k === 'sitaledger') return !!ev.sitaHanuman || !!g.bossCleared?.th;
+  if (k === 'wanthong') return !!ev.khunPhaen || !!ev.thBorderBoss || !!g.bossCleared?.th;   // later beats prove it: a save that is already past case 13 never gets her late
   return false;
 }
 /** The story case that is due now (key), or null. Only one is ever due: they are strictly ordered. */
@@ -174,6 +178,7 @@ export const NOTICES = Object.freeze({
   'sita-arrive':{ ...SITA.notices.arrive, art:SITA.art.portrait },
   'sita-phantom':{ ...SITA.notices.phantom, detail:SITA.journal, art:SITA.art.phantom },
   ...lampNotices(),
+  ...WANTHONG_NOTICES,
   ...Z2_NOTICES,
 });
 
@@ -301,7 +306,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...Z2_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...Z2_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

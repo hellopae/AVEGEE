@@ -58,6 +58,7 @@ export function soulArchetype(soul) {
 export function soulPortrait(soul, zone = 'th') {
   if (soulIdentity(soul).key === 'devaMonk') return 'soul-deva';
   if (Z2_SOUL_SPRITE[soul?.case]) return Z2_SOUL_SPRITE[soul.case];   // Z2-EVENTS: the story / relative souls of Zone 2 have their own drawings (img/z2-events)
+  if (soul?.case === 'wanthong') return 'soul-wanthong-th';   // T5'/1: Lady Wanthong's own drawing (img/z1-events)
   if (soul?.case === 'sitaledger') return 'soul-sita-th';   // Z1-EVENTS: her own drawing (img/z1-events), never an archetype
   // All four branches resolve the semantic key through their own art aliases.
   // Keeping old numeric or soul-* keys would reintroduce the original mismatch

@@ -9,6 +9,7 @@ import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffec
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
 import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';
+import { WANTHONG } from './z1-wanthong.js';   // T5'/1
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
@@ -68,7 +69,7 @@ import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
 import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { LAMP_TEXT } from './lamp-text.js';
-import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, spendSummon, lampAllSpent, lampOwned, SUMMON_USES } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
+import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, summonGuard, spendSummon, lampAllSpent, lampOwned, SUMMON_USES } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
@@ -575,6 +576,15 @@ const API = {
       this.refreshZoneEvents('asia'); this.bossPending = this.bossReady();
     }
     if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); }
+  },
+  /** T5'/1 (Rae R2 A 4.4): Lady Wanthong (case 13) has been ruled. The writ is out, the guard has not stepped in yet - Khun Phaen kicks the doors open. Two versions of the scene:
+   *  `punish` = she was sent to a punishment station (any level) · `free` = she was sent to the gate of heaven (not sentenced). The soul goes on to where the player sent her (no special removal);
+   *  the scene is queued once, then the fight khunPhaen opens (refreshZoneEvents). Scoring is the ordinary court's: a twist case sent to the gate scores as a wrong destination (open question for the owner). */
+  wanthongAfterVerdict(r) {
+    this.storyCaseDone[WANTHONG.caseKey] = true; this.wanthongPath = r.heaven ? 'free' : 'punish';
+    this.refreshZoneEvents('th');
+    this.queueStory(`z1-khunphaen-open-${this.wanthongPath}`);
+    this.bossPending = this.bossReady();
   },
   /** Z2-EVENTS relatives: is the crew member who owns this relative's case hired in Zone 2 right now? */
   kinHired(row) { return row.crew === 'guard' ? !!this.guard : this.crew.some(c => c.k === row.crew); },
@@ -1606,6 +1616,7 @@ const API = {
                          deeds:(soul.deeds || []).map(d=>({t:d.t}))} });
     if (this.ledger.length > 300) this.ledger.shift();
     if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;
+    if (this.zone === 'th' && soul.case === WANTHONG.caseKey) this.wanthongAfterVerdict(r);   // T5'/1: whatever was ruled, Khun Phaen comes
     if (this.zone === 'asia') this.z2AfterVerdict(r, soul);   // Z2-EVENTS: the old ape / Satori's father / the crew's relatives
     // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.
     if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');
@@ -3241,6 +3252,8 @@ const API = {
       if (zone === 'th' && ev.k === 'devaTest' && !this.devaVisits.th) continue;
       // Z1-EVENTS: Hanuman descends only after Sita's hearing is closed (resolveSitaCase)
       if (zone === 'th' && ev.k === 'sitaHanuman' && !this.storyCaseDone[EVENT_AFTER_CASE.sitaHanuman]) continue;
+      // T5'/1: Khun Phaen comes down only once Lady Wanthong has been ruled (wanthongAfterVerdict)
+      if (zone === 'th' && ev.k === 'khunPhaen' && !this.storyCaseDone[EVENT_AFTER_CASE.khunPhaen]) continue;
       // Z2-EVENTS: Wukong comes down only once the old ape's case is judged (z2AfterVerdict)
       if (zone === 'asia' && ev.k === 'asiaWukong' && !this.storyCaseDone[EVENT_AFTER_CASE.asiaWukong]) continue;
       if (signalRequirements(this,ev,zone)) {
@@ -3955,6 +3968,21 @@ const API = {
       // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
       const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
       dmg = summonDamage(this, summonKey);
+      const guardMove = summonGuard(this, summonKey);
+      if (guardMove) {
+        // T5'/1 'guard' move (Golden Aegis): a shield for every teammate standing + a small heal, and the fallen are helped back to their feet. No damage.
+        let healed = 0;
+        for (const a of this.battleActors()) {
+          const room = a.id === 'you' ? B.youMax - B.youHp : 100 - a.morale, gain = Math.max(0, Math.min(guardMove.heal, room));
+          if (a.id === 'you') B.youHp += gain; else a.morale += gain;
+          healed += gain; grantProtection(B, a.id, { shield:guardMove.shield, buff:0 });
+        }
+        for (const f of this.battleFallen()) {
+          f.morale = Math.max(f.morale, guardMove.raise);
+          B.fallen = (B.fallen || []).filter(id => id !== f.id); B.absentActors = (B.absentActors || []).filter(id => id !== f.id);
+        }
+        B.dmg.healActorId = 'you'; B.dmg.healAmount = healed;
+      }
       B.summon = { key:summonKey, name:d.name.th, move:d.move.name.th, used:r.used, left:r.left, out:r.out, at:Date.now(), call:d.say.call, use:d.say.use, end:d.say.end };   // the lines ride on B.summon: the foe's own reply (B.talk) comes after and overwrites the speech bubble
       say(LAMP_TEXT['battle.logCall'].th.replace('{name}', d.name.th).replace('{move}', d.move.name.th));
       say(LAMP_TEXT['battle.logUsed'].th.replace('{name}', d.name.th).replace('{k}', r.used));
@@ -4320,6 +4348,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
+        if (B.eventKey === WANTHONG.eventKey) this.queueStory(`z1-khunphaen-win-${this.wanthongPath || 'punish'}`);   // T5'/1: the end of that scene hands over Kuman Thong (completeStory)
         if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);   // R2 A 3.1: the lamp comes after the PHANTOM-404 scene, before Sita is sent home
         // Z2-EVENTS: the cutscenes / notices a Zone 2 event ends with (data.js winStories / winNotices) and the Guard's proof: winning it hires him
         for (const key of ev?.winStories || []) this.queueStory(key);
@@ -4938,6 +4967,7 @@ const API = {
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key === 'sita-phantom') this.queueNotice('sita-phantom');
     if (next?.key === 'sita-lamp') this.giveLamp();
+    if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
     if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene
@@ -5616,7 +5646,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
-    sitaChoice:this.sitaChoice||null, guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
+    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -6083,7 +6113,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
-  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.guardReserve = d.guardReserve || null;
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
   // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
   this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);

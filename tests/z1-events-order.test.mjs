@@ -49,10 +49,10 @@ const drainStories = g => { const seen = []; for (let i = 0; i < 20 && g.storyQu
 const soulAnywhere = (g, k) => g.queue.some(s => s.case === k) || g.stations.some(st => st.slots.some(x => x.soul.case === k)) ||
   g.sentences.some(x => x.soul.case === k) || g.afterlifeWalks.some(w => w.soul.case === k) || g.transits.some(v => v.case === k);
 
-test('the table itself: case 3 / 5 / 6 / 9 / 12 / 15', () => {
+test('the table itself: case 3 / 5 / 6 / 9 / 12 / 13 / 15', () => {
   const at = k => ZONE_EVENTS.th.find(e => e.k === k).atCases;
-  assert.deepEqual([at('prisonBreak'), at('devaTest'), at('frontierBreach'), at('sitaHanuman'), at('thBorderBoss')], [3, 6, 9, 12, 15]);
-  assert.deepEqual(TH_STORY_CASES.map(c => [c.k, c.after + 1]), [['nurse', 5], ['devaMonk', 6], ['sitaledger', 12]]);
+  assert.deepEqual([at('prisonBreak'), at('devaTest'), at('frontierBreach'), at('sitaHanuman'), at('khunPhaen'), at('thBorderBoss')], [3, 6, 9, 12, 13, 15]);
+  assert.deepEqual(TH_STORY_CASES.map(c => [c.k, c.after + 1]), [['nurse', 5], ['devaMonk', 6], ['sitaledger', 12], ['wanthong', 13]]);
   assert.deepEqual(ZONE_EVENTS.th.slice(0, 3).map(e => e.k), ['prisonBreak', 'frontierBreach', 'devaTest']);   // game.js reads these three by index
   assert.equal(ZONE_EVENTS.th.find(e => e.k === 'frontierBreach').waves.length, 4);                              // 3 demon waves + the border boss
   assert.deepEqual(ZONE_EVENTS.th.find(e => e.k === 'frontierBreach').waves.map(w => w.some(f => f.boss)), [false, false, false, true]);
@@ -183,8 +183,22 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   assert.deepEqual(g.notices, ['sita-phantom', 'lamp-received']); assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);
   assert.equal(g.magic.lamp.owned, true); assert.deepEqual(g.magic.lamp.slots.slice(0, 1), ['hanuman']);
   g.ackNotice('sita-phantom'); assert.deepEqual(g.journalNotes, [SITA.journal]);
-  // ---- cases 13-15 -> elder brother Yommathat (case 15), at the pier
-  for (let n = 13; n <= 15; n++) { assert.equal(status(g, 'thBorderBoss'), 'locked', `the elder brother must wait for case 15 (at ${n - 1})`); judgeNext(g); }
+  // ---- case 13 = Lady Wanthong (T5'/1) -> Khun Phaen (the fight) -> Kuman Thong
+  g.ensureStoryCase(); assert.equal(g.storyCaseOwed(), 'wanthong'); assert.equal(g.queue[0].case, 'wanthong'); assert.equal(g.queue[0].sp, 'soul-wanthong-th');
+  assert.ok(g.notices.includes('z1-wanthong-arrive')); g.ackNotice('z1-wanthong-arrive');
+  assert.equal(status(g, 'khunPhaen'), 'locked'); assert.equal(status(g, 'thBorderBoss'), 'locked');
+  const wan = judgeNext(g); assert.equal(wan.case, 'wanthong'); assert.equal(g.zoneCases.th, 13);
+  assert.equal(g.storyQueue[0].key, 'z1-khunphaen-open-punish'); assert.equal(status(g, 'khunPhaen'), 'pending');
+  assert.equal(status(g, 'thBorderBoss'), 'locked', 'the elder brother still waits (case 15 AND Khun Phaen)');
+  g = reload(g); drainStories(g);
+  const kb = g.startZoneEvent('khunPhaen'); assert.equal(kb.foes.length, 1); assert.equal(kb.foes[0].sp, 'boss-khunphaen-th'); assert.equal(kb.foes[0].who, 'ขุนแผน');
+  winFight(g); assert.equal(status(g, 'khunPhaen'), 'cleared');
+  assert.deepEqual(g.storyQueue.map(p => p.key).filter(k => k.startsWith('z1-khunphaen')), ['z1-khunphaen-win-punish']);
+  assert.equal(g.magic.unlocked.kumanthong, undefined, 'Kuman Thong comes with the scene, not with the fight');
+  drainStories(g); assert.ok(g.magic.unlocked.kumanthong, 'D4: his own event is passed'); assert.ok(g.notices.includes('lamp-helper-kumanthong'));
+  g.ackNotice('lamp-helper-kumanthong');
+  // ---- cases 14-15 -> elder brother Yommathat (case 15), at the pier
+  for (let n = 14; n <= 15; n++) { assert.equal(status(g, 'thBorderBoss'), 'locked', `the elder brother must wait for case 15 (at ${n - 1})`); judgeNext(g); }
   assert.equal(g.zoneCases.th, 15); assert.equal(status(g, 'thBorderBoss'), 'pending');
   g = reload(g); assert.equal(status(g, 'thBorderBoss'), 'pending');
   g.dismissEventAlert('thBorderBoss');
@@ -267,7 +281,8 @@ test('old saves: no repeat, no hang', async t => {
     judgeNext(g); assert.equal(g.storyCaseOwed(), 'sitaledger');
     g = reload(g); assert.equal(g.zoneEventStatus('thBorderBoss'), 'locked'); assert.equal(g.queue[0].case, 'sitaledger');
     g.resolveSitaCase('hold'); drainStories(g); g.startZoneEvent('sitaHanuman'); winFight(g); drainStories(g);
-    for (let n = 13; n <= 15; n++) judgeNext(g);
+    judgeNext(g); drainStories(g); g.startZoneEvent('khunPhaen'); winFight(g); drainStories(g);   // T5'/1: case 13 = Lady Wanthong, then Khun Phaen
+    for (let n = 14; n <= 15; n++) judgeNext(g);
     assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
   });
   await t.test('Guard hired at the desk before the frontier event -> back to the gate, hire refunded', () => {
