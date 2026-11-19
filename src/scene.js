@@ -618,7 +618,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
 
   // T6/6 (Rae R2 B 6.6): Cerberus stands by the western gate once he has bowed - no talk (he does not speak), he is not the Guard
   if (g.zone === 'west' && g.cerberusGuarding?.()) {
-    const gx = ZONE_ENTRY.gate[0] + 84, gy = ZONE_ENTRY.gate[1] - 52, gh = 92 * CHAR_SCALE_MAP * 1.12;
+    const gx = ZONE_ENTRY.gate[0] + 120, gy = ZONE_ENTRY.gate[1] - 96, gh = 150 * CHAR_SCALE_MAP;   // T7/2: bigger and higher - he was a small dot hidden behind the buttons at 390px (T6 note)
     at(1e5 + gy, () => { shade(gx, gy, gh, c => drawStandee(c, 'guard-cerberus-west', gx, gy, gh, t, '🐕', -1, false, 'west')); });
   }
 

@@ -100,7 +100,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   // Z1-EVENTS (case 12): Sita / Hanuman art lives in its own folder under its own names - a new drawing overwrites the file, no code change
   if (/^(soul-sita-th|boss-hanuman-th|soul-wanthong-th|boss-khunphaen-th)(-profile)?$/.test(key)) return `img/z1-events/${key}.webp`;
   // T6/6: Cerberus of the western gate (img/z3-events)
-  if (/^(boss-cerberus-west|guard-cerberus-west)(-profile)?$/.test(key)) return `img/z3-events/${key}.webp`;
+  if (/^(boss-cerberus-west|boss-cerberus-gate-west|guard-cerberus-west)(-profile)?$/.test(key)) return `img/z3-events/${key}.webp`;
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());

@@ -5,7 +5,7 @@
 // Pictures: C1 sprite + profile and the howl card are the existing drawings (img/z3-events); C2 / C3 / C4 / M4 are labelled placeholders.
 export const CERBERUS = Object.freeze({ eventKey:'z3Cerberus', arriveNotice:'z3gate-cerberus-gate', winNotice:'z3gate-cerberus-won', openStory:'z3gate-cerberus-open', winStory:'z3gate-cerberus-win', loseStory:'z3gate-cerberus-lose', farewellStory:'boss-guide-asia-farewell', helper:'musashi', reach:150 });
 export const ART = Object.freeze({
-  sprite:'img/z3-events/boss-cerberus-west.webp', portrait:'img/z3-events/boss-cerberus-west-profile.webp', gate:'img/z3-events/cut-cerberus-gate-west.webp', yields:'img/z3-events/cut-cerberus-yields-west.webp',
+  sprite:'img/z3-events/boss-cerberus-gate-west.webp', portrait:'img/z3-events/boss-cerberus-gate-west-profile.webp', gate:'img/z3-events/cut-cerberus-gate-west.webp', yields:'img/z3-events/cut-cerberus-yields-west.webp',
   guard:'guard-cerberus-west', farewell:'img/z3-events/cut-musashi-farewell-west.webp',
   icon:'img/summon/icon-musashi.webp', battle:'img/summon/battle-musashi.webp', cut:'img/summon/cut-musashi-two-blades.webp',
 });

@@ -35,7 +35,7 @@ test('the gate fight is due at the end of the walk to Border 2-3 only with Musas
   g.queueNotice(CERBERUS.arriveNotice); g.ackNotice(CERBERUS.arriveNotice); assert.equal(g.storyQueue.at(-1).key, CERBERUS.openStory);
   const s = storyOf(CERBERUS.openStory); assert.equal(s.pages.length, 2); assert.match(s.pages[0].line, /สุนัขสามเศียรร่างใหญ่เท่าเกวียน/); assert.ok(s.pages[1].en.line.includes('It sees the flames in your lamp'));
   assert.ok(!/"[^"]*เซอร์เบอรัส[^"]*"/.test(JSON.stringify(s.pages.map(p => p.line.split('\n').filter(l => l.startsWith('เซอร์เบอรัส:'))))), 'he does not speak');
-  const row = ZONE_EVENTS.asia.find(e => e.k === CERBERUS.eventKey); assert.ok(row.gate); assert.equal(row.foe.sp, 'boss-cerberus-west'); assert.equal(row.lines.start, CERBERUS_TEXT.lines.start); assert.ok(!row.lines.start.includes('"'), 'narration, no quotation marks');
+  const row = ZONE_EVENTS.asia.find(e => e.k === CERBERUS.eventKey); assert.ok(row.gate); assert.equal(row.foe.sp, 'boss-cerberus-gate-west'); assert.equal(row.lines.start, CERBERUS_TEXT.lines.start); assert.ok(!row.lines.start.includes('"'), 'narration, no quotation marks');
   assert.deepEqual(BOSS_SKILLS.cerberus.map(m => [m.id, m.kind]), [['triHowl', 'groupHit'], ['triBite', 'heavyHit']]);
   assert.equal(BOSS_SKILLS.cerberus[1].useText.th, 'ทั้งสามเศียรงับลงพร้อมกัน แล้วถอยหนึ่งก้าวกลับมาตั้งท่าที่เดิม'); assert.equal(BOSS_SKILLS.cerberus[1].useText.en, 'All three heads snap down together, then take one step back to hold their ground.');
   assert.ok(!JSON.stringify(BOSS_SKILLS.cerberus).includes('สะดุ้งตื่น'));
