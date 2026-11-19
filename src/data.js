@@ -7,6 +7,7 @@ import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2
 import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
 import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
 import { SEV, JORM_TEXT, SEV_ARRIVE_LINES } from './z3f-severin.js';   // T7b-2/5
+import { COL_EVENTS } from './z4b-colosseum.js';   // T8a/2
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2055,6 +2056,8 @@ export const ZONE_EVENTS = {
       winStories:[SEV.yieldsStory], winNotices:[SEV.yieldsNotice], loseStory:SEV.jormLoseStory, win:{ title:JORM_TEXT.win.title, text:JORM_TEXT.win.text }, loseText:{ title:JORM_TEXT.lose.title, text:JORM_TEXT.lose.text },
       foe:{ name:'ยอร์มุนกันดร์', nameEn:'Jörmungandr', sp:'boss-jormungandr-west', hp:330, atk:[19,30], boss:true, skills:BOSS_SKILLS.jormungandr, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.4] } },
       reward:{ coin:0 }, lose:{ hp:9 } },
+    // T8a/2 (Rae R2 D 1.5-1.7): the ten bouts of Lucifer's colosseum on the walk of Frontier 3-4 (gate events with HOME-67 as the guest) - game.js startColosseumBout opens them in order
+    ...COL_EVENTS,
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
   cyberhell:[

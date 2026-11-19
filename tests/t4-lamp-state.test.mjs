@@ -10,10 +10,10 @@ const reload = g => { const n = createGame(); n.restore(JSON.parse(JSON.stringif
 
 test('12 helpers in the data, the owner\'s list; only Hanuman has an event yet and only a `ready` helper is ever shown', () => {
   assert.deepEqual(L.SUMMONER_KEYS, ['hanuman', 'kumanthong', 'yomathat', 'wukong', 'liangang', 'ryujin', 'musashi', 'eirlin', 'jormungandr', 'thor', 'lucifer', 'lupin']);
-  assert.deepEqual(L.SUMMONER_KEYS.filter(k => L.SUMMONERS[k].ready), ['hanuman', 'kumanthong', 'yomathat', 'wukong', 'liangang', 'ryujin', 'musashi', 'eirlin', 'jormungandr']);   // T7b-2/5: the serpent (case 15) · T7b/4: Eirlin (case 10) · T5'/1: Kuman Thong (case 13) · T5'/5: Yomathat (the gate of Zone 2) · T6/3: Wukong
+  assert.deepEqual(L.SUMMONER_KEYS.filter(k => L.SUMMONERS[k].ready), ['hanuman', 'kumanthong', 'yomathat', 'wukong', 'liangang', 'ryujin', 'musashi', 'eirlin', 'jormungandr', 'thor', 'lucifer']);   // T8a/2: Thor + Lucifer (the colosseum) ·   // T7b-2/5: the serpent (case 15) · T7b/4: Eirlin (case 10) · T5'/1: Kuman Thong (case 13) · T5'/5: Yomathat (the gate of Zone 2) · T6/3: Wukong
   assert.equal(L.SUMMONERS.hanuman.move.name.th, 'เหาะเหนือเมฆ'); assert.equal(L.SUMMONERS.hanuman.move.name.en, 'Beyond the Clouds');
   for (const k of L.SUMMONER_KEYS) { const s = L.SUMMONERS[k]; assert.ok(s.name.th && s.name.en && s.move.name.th && s.move.name.en && s.event, k); }
-  const g = createGame(); L.unlockSummoner(g, 'thor');
+  const g = createGame(); L.unlockSummoner(g, 'lupin');   // T8a/2: Thor is ready now - Lupin is the one still to come
   assert.deepEqual(L.unlockedSummoners(g), [], 'a helper whose event is not in the game yet is never listed');
 });
 

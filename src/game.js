@@ -19,6 +19,7 @@ import { LOKI } from './z3d-cases.js';   // T7b/3
 import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
 import { Z4A } from './z4a-border.js';   // T8a
+import { COL } from './z4b-colosseum.js';   // T8a/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -4058,7 +4059,9 @@ const API = {
       // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
       const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
       dmg = summonDamage(this, summonKey);
-      if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
+      if (d.move.weaken?.target) { const tf = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0); if (tf) tf.weak = d.move.weaken.rounds * this.foeActsPerRound(tf.id); }   // T8a/2: the Founder's Decree - only the foe it points at hits lighter
+      else if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
+      if (d.move.stun) for (const f of B.foes) if (f.hp > 0 && Math.random() < (d.move.stun.chance ?? 1)) f.stun = Math.max(f.stun || 0, d.move.stun.rounds);   // T8a/2: the Hammer Commands the Field - struck foes lose their next act
       if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
       const guardMove = summonGuard(this, summonKey);
       if (guardMove) {
@@ -5192,6 +5195,8 @@ const API = {
     if (next?.key === Z3_ARRIVE.clearStory && !(this.journalNotes ||= []).includes(Z3_PHANTOM_NOTE.th)) this.journalNotes.push(Z3_PHANTOM_NOTE.th);   // T7/1: PHANTOM-404 on Poena's roster
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     // T7/2 (Rae R2 C 2): Valdric falls -> NV-1 (Hypnosis) after the 3rd page; Van Helsing's scene -> NV-2 (he is the Gate Guard of the West), then N5-5 "to the dais" (moved here from the fall scene, Reese 4.3) + the journal line; after his release -> N5-6
+    if (next?.key === COL.thorWin) this.unlockHelper(COL.helperThor);   // T8a/2 (D4: his own bout is won -> helper no. 10, NT-1 = lamp-helper-thor)
+    if (next?.key === COL.luciferWin) this.unlockHelper(COL.helperLucifer);   // T8a/2: helper no. 11, NL-1
     if (next?.key === Z3_FRONTIER.downStory) this.queueNotice(Z3_FRONTIER.powerNotice);
     if (next?.key === Z3_FRONTIER.guardStory) { this.queueNotice(Z3_FRONTIER.guardNotice); this.queueNotice(Z3_FRONTIER.daisNotice); if (!(this.journalNotes ||= []).includes(VH_JOURNAL.th)) this.journalNotes.push(VH_JOURNAL.th); }
     if (next?.key === 'frontier-west-boss-released') this.queueNotice(Z3_FRONTIER.manorNotice);
@@ -5240,6 +5245,19 @@ const API = {
   z34ArriveDue(idx = null) {
     const st = dungeonStatus(this);
     return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.arriveStory] && (Number.isInteger(idx) ? idx : st.checkpoint) === 0;
+  },
+  /** T8a/2 (Rae 1.1): the colosseum - ten bouts in a row at the middle checkpoint; the next one not yet won (null = all ten won) */
+  colosseumNext() { for (let n = 1; n <= COL.bouts; n++) if (this.zoneEventStatus(COL.key(n)) !== 'cleared') return n; return null; },
+  colosseumDue(idx = null) {
+    const st = dungeonStatus(this);
+    return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && this.colosseumNext() !== null && (Number.isInteger(idx) ? idx : st.checkpoint) === COL.checkpoint;
+  },
+  startColosseumBout() {
+    const n = this.colosseumNext();
+    if (n === null || this.battle || this.zone !== 'west' || !this.home67Guest()) return null;
+    const states = this.zoneEvents.west ||= {}, key = COL.key(n);
+    if (states[key] !== 'pending' && states[key] !== 'active') states[key] = 'pending';
+    return this.startZoneEvent(key);
   },
   /** T8a (1.8): the end of the walk - the gate nobody keeps (`z4-gate-silent`, once) before Zone 4 */
   silentGateDue() {

@@ -138,6 +138,19 @@ GROUPS = {
   ('summon/cut-kuman-golden-aegis.webp', CUT, 'cut', 'PLACEHOLDER cut-kuman-golden-aegis  (C7: golden dome over the team)'),
  ],
 }
+
+# T8a/2 - the ten colosseum bouts (Rae R2 part D sec. 11 group COL C3-C32 + SUM S4 S5): sprite + profile per bout, a card per bout 1-8 (9 and 10 are in group z4a), the two big move cards. icon / battle of Thor and Lucifer are cut from col-s9 / col-s10 (Rae S1 S2 allow it).
+_BOUT = ['the masterless samurai (plain old clothes, NOT Musashi)', 'the plain ninja (plain black, no named cartoon ninja)', 'Nai Khanom Tom the Muay Thai fighter (old boxing shorts, prajioud armbands, NO mongkol on the head during the bout; a wai-khru picture may hold or set the mongkol in a corner; sacred objects: never dropped, never mocked)',
+         'the Minotaur keeper of the maze (half man half bull, leather armour)', 'Medusa (small snakes for hair, eyes half closed, sorrowful, not evil)', 'Captain Silverwave the pirate', 'the visitor from an old star (translucent person-shape, NOT a xenomorph)',
+         'C-8, the Steel Colossus (a big robot, no named anime / film robot)', 'Thor (plain clothes, NOT a red cape, thunder-hammer)', 'Lucifer (silver hair, NO horns, NO wings, NO religious symbol, a straight staff)']
+_CARD = ['One-Draw Flash: the samurai draws one single flash of light', 'Shadow Behind the Curtain: the ninja leaps from behind a curtain of shadow', 'Reverse Elbow: the elbow strike (the wai khru bow in a corner of the picture)', 'Labyrinth Charge: the Minotaur charging',
+         'Gaze of Stone: a silver-blue light from the eyes (never show anyone turning to stone)', 'Broadside: the cannon with white smoke', 'Scanning Beam: a beam sweeping the team', 'Iron Fist From Above: the steel fist coming down']
+GROUPS['z4b'] = []
+for _i in range(10):
+    GROUPS['z4b'] += [(f'z4-events/col-s{_i + 1}.webp', (512, 512), 'sprite', f'PLACEHOLDER col-s{_i + 1} (bout {_i + 1}: {_BOUT[_i]}; standing)'), (f'z4-events/col-s{_i + 1}-profile.webp', (512, 512), 'square', f'PLACEHOLDER col-s{_i + 1}-profile')]
+for _i in range(8):
+    GROUPS['z4b'].append((f'z4-events/cut-col-s{_i + 1}.webp', CUT, 'cut', f'PLACEHOLDER cut-col-s{_i + 1}  (bout {_i + 1} move card - {_CARD[_i]}; no blood)'))
+GROUPS['z4b'] += [('summon/cut-thor-hammer-rules.webp', CUT, 'cut', 'PLACEHOLDER cut-thor-hammer-rules  (S4: Thor raises the hammer over the field, lightning in a ring around the foes)'), ('summon/cut-lucifer-decree.webp', CUT, 'cut', 'PLACEHOLDER cut-lucifer-decree  (S5: the staff points at ONE foe, glowing rule-lines (no real letters) float round it; no horns, no religious symbol)')]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

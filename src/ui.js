@@ -121,6 +121,7 @@ import { KIN_BY_KEY as Z2_KIN_BY_KEY } from './z3g-kin.js';   // T7c/6: the rela
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
 import { Z4A } from './z4a-border.js';   // T8a
+import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1946,7 +1947,7 @@ function storyFoeArt(sp) {
   if (typeof sp !== 'string') return `img/spirit${sp || 7}.webp`;
   // Possessed rulers keep their home-zone identity in the CyberHell arena.
   if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.webp`;
-  if (Z2_ART_KEY.test(sp) || Z3_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
+  if (Z2_ART_KEY.test(sp) || Z3_ART_KEY.test(sp) || Z4_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
   const z = sp.match(/-(asia|west|cyberhell)$/)?.[1];
   if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.webp`;
   return artUrl(sp) || `img/${sp}.webp`;
@@ -5548,6 +5549,26 @@ function playCerberusScene(onDone) {
 }
 /** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
 /** T8a: queue one scene, wait until it and everything else has closed, then `onDone` */
+/** T8a/2 (Rae 1.1): the colosseum - col-gate (once) -> N-COL-1 -> bout after bout; after a won bout the player may go on or rest outside; a lost bout = the tea house and the same bout later. */
+function playColosseumScene(onDone) {
+  const idle = cb => { const w = () => { if (g.over || g.battle) return; if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; } cb(); }; setTimeout(w, 300); };
+  const bout = () => {
+    if (g.pendingRecovery || g.over) return;
+    const n = g.colosseumNext(); if (n === null) { onDone(); return; }
+    const fight = () => { if (!g.startColosseumBout()) { onDone(); return; } openBattle(() => idle(() => { if (g.pendingRecovery) return; if (g.zoneEventStatus(COL.key(n)) !== 'cleared') { onDone(); return; } more(n); })); };
+    if (n === COL.bouts && !g.storySeen[COL.luciferOpen]) playStoryScene(COL.luciferOpen, fight); else fight();
+  };
+  const more = n => {   // between bouts: on, or out to the mouth of the cave to rest
+    if (g.colosseumNext() === null) { onDone(); return; }
+    const en = getLang() === 'en';
+    modal(`<h2>${esc(en ? `Bout ${n} won` : `ผ่านด่านที่ ${n}`)}</h2><div class="row"><button class="gold" data-col-next>${esc(en ? 'Next bout' : 'ต่อด่านถัดไป')}</button><button data-col-rest>${esc(en ? 'Rest at the mouth of the cave' : 'ออกไปพักที่ปากถ้ำ')}</button></div>`, d => {
+      d.querySelector('[data-col-next]').onclick = () => { dlg.close(); idle(bout); };
+      d.querySelector('[data-col-rest]').onclick = () => { dlg.close(); onDone(); };
+    });
+  };
+  const start = () => { g.queueNotice(COL.noticeMouth); g.save(); openStoryNotice(COL.noticeMouth); idle(bout); };
+  if (!g.storySeen[Z4A.gateStory]) playStoryScene(Z4A.gateStory, start); else if (g.storySeen['notice:' + COL.noticeMouth]) bout(); else start();
+}
 function playStoryScene(key, onDone) {
   g.queueStory(key); g.save(); g.onChange();
   const w = () => {
@@ -5581,6 +5602,7 @@ function openDungeon() {
         destroy?.();destroy=null;
         // T5'/3 (Rae 6.1): the middle of the cave on the walk with Yomathat - NF-1, then the cage scene, then the checkpoint goes on as before
         if(!opts?.chased&&!location?.patrol&&g.z34ArriveDue?.(location?.checkpoint)){playStoryScene(Z4A.arriveStory,()=>openDungeon());return;}   // T8a: the cave of Frontier 3-4 (z34-arrive), then the checkpoint goes on
+        if(!opts?.chased&&!location?.patrol&&g.colosseumDue?.(location?.checkpoint)){playColosseumScene(()=>openDungeon());return;}   // T8a/2: Lucifer's colosseum comes before that checkpoint's own fight
         if(!opts?.chased&&!location?.patrol&&g.ryujinFightDue?.(location?.checkpoint)){playRyujinScene(()=>openDungeon());return;}   // T6/5: the water cave (NR-1, the scene, the fight, the win scene) comes before that checkpoint's own fight
         if(!opts?.chased&&!location?.patrol&&g.caveSceneDue(location?.checkpoint)){playCaveScene(()=>openDungeon());return;}
         if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});

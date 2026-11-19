@@ -29,6 +29,7 @@ import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4
 import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
 import { EIRLIN_HELPER, EIRLIN_ART } from './z3e-eirlin.js';   // T7b/4
 import { JORM_HELPER, SEV_ART } from './z3f-severin.js';   // T7b-2/5
+import { THOR_HELPER, LUCIFER_HELPER, COL_ART } from './z4b-colosseum.js';   // T8a/2
 import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
@@ -68,8 +69,12 @@ export const SUMMONERS = Object.freeze({
   // T7b-2/5 (Rae R2 C 5.4): Coil Around the World = a moderate group hit (under Ryujin's 62); "slows every foe for one round" is not in the engine yet
   jormungandr:{ k:'jormungandr', no:9, name:JORM_HELPER.name, glyph:'🐍', event:'z3-sev-collateral', ready:true, art:{ icon:SEV_ART.icon, battle:SEV_ART.battle, cut:SEV_ART.cut },
     move:{ ...JORM_HELPER.move, kind:'group', damage:{ base:52, perLevel:2 } }, say:JORM_HELPER.say },
-  thor:{ k:'thor', no:10, name:{ th:'ธอร์', en:'Thor' }, glyph:'🔨', event:'col-thor-win', ready:false, move:{ name:{ th:'ค้อนฟ้าสั่งสนาม', en:'The Hammer Commands the Field' } } },
-  lucifer:{ k:'lucifer', no:11, name:{ th:'ลูซิเฟอร์', en:'Lucifer' }, glyph:'🌟', event:'col-lucifer-win', ready:false, move:{ name:{ th:'ประกาศิตผู้ก่อตั้ง', en:"The Founder's Decree" } } },
+  // T8a/2 (Rae R2 D 1.6-a): The Hammer Commands the Field = a medium-high group hit + every foe loses its next act with a 60 % chance (`stun`)
+  thor:{ k:'thor', no:10, name:THOR_HELPER.name, glyph:'🔨', event:'col-thor-win', ready:true, art:{ icon:COL_ART.thorIcon, battle:COL_ART.thorBattle, cut:COL_ART.thorCut },
+    move:{ ...THOR_HELPER.move, kind:'group', damage:{ base:66, perLevel:3 }, stun:{ rounds:1, chance:.6 } }, say:THOR_HELPER.say },
+  // T8a/2 (Rae R2 D 1.7-a): The Founder's Decree = ONE foe, a heavy blow + that foe's next blow(s) of the round are lighter (`weaken` on the target only)
+  lucifer:{ k:'lucifer', no:11, name:LUCIFER_HELPER.name, glyph:'🌟', event:'col-lucifer-win', ready:true, art:{ icon:COL_ART.luciferIcon, battle:COL_ART.luciferBattle, cut:COL_ART.luciferCut },
+    move:{ ...LUCIFER_HELPER.move, kind:'strike', hits:1, damage:{ base:78, perLevel:3 }, weaken:{ rounds:1, mult:.6, target:true } }, say:LUCIFER_HELPER.say },
   lupin:{ k:'lupin', no:12, name:{ th:'ลูแปง', en:'Lupin' }, glyph:'🎩', event:'z4-lupin-win', ready:false, move:{ name:{ th:'หน้ากากพลิกจังหวะ', en:'The Mask Turns the Beat' } } },
 });
 export const SUMMONER_KEYS = Object.freeze(Object.keys(SUMMONERS));
