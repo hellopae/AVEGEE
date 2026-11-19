@@ -16,7 +16,7 @@ export const Z4_STORY_CASES = Object.freeze([
 ]);
 export const Z4C_SOUL_SPRITE = Object.freeze({ aiscam:'soul-aiscam-cyber', kin8:'soul-singer-cyber', kin9:'soul-archivist-cyber', watkin:'soul-admin-cyber' });
 /** every picture of this package lives in img/z4-events under its own name (a real drawing saved over a placeholder needs no code change) */
-export const Z4C_ART_KEY = /^(soul-(aiscam|singer|archivist|admin)-cyber|guard-watson03|boss-aiscam|char-lupin|char-worker-lupin)(-profile)?$/;
+export const Z4C_ART_KEY = /^(soul-(aiscam|singer|archivist|admin)-cyber|guard-watson03|boss-aiscam|boss-phantom404-cyberhell|char-lupin|char-worker-lupin)(-profile)?$/;
 
 const win = (raw, art) => ({ title:raw.th.title, text:raw.th.text, button:raw.th.button, ...(art ? { art } : {}), en:raw.en });
 export const Z4C_CASE_NOTICES = Object.freeze({

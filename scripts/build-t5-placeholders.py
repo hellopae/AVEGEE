@@ -171,6 +171,9 @@ GROUPS['z4c4'] = [   # T8b/3 - Rae sec. 11 Z8 (WATSON-03's quest: an adult, no b
   ('z4-events/soul-admin-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-admin-cyber (Z8: the former administrator, a man of fifty in thick glasses holding a long-cold cup of coffee in both hands)'),
   ('z4-events/soul-admin-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-admin-cyber-profile'),
 ]
+GROUPS['z4c5'] = [   # T8b/5 - Rae sec. 11 group R: the record hall seized (R2). R1 (a polite round white robot) is NOT drawn here: the game uses the existing drawn PHANTOM-404 (owner 15 Nov) - see the report.
+  ('z4-events/cut-reveal-name.webp', CUT, 'cut', 'PLACEHOLDER cut-reveal-name  (R2: the record hall, tall cabinets sealed with mint-green sheets of light, the AI Scammer Robot in the middle, HOME-67 pointing, Yama stepping in front of him, a green beam hitting Yama\'s chest, Nira lifting her file and WATSON-03 lifting his log-plate like shields)'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

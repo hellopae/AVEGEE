@@ -22,6 +22,7 @@ import { Z4A, Z4A_ZONE4 } from './z4a-border.js';   // T8a
 import { COL } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
+import { Z4S } from './z4e-sala.js';   // T8b/5
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -3424,6 +3425,7 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:evLines(ev).start || ev.banner?.th || ev.alert.th, ...(evLines(ev).half ? { halfLine:evLines(ev).half } : {}), ...(evLines(ev).first ? { firstLine:evLines(ev).first } : {}) });
+    if (key === Z4S.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:!!this.guard });   // T8b/5 (Rae D 6.1): Yama + Nira + WATSON-03 - HOME-67 stands behind Yama and does not fight
     if (key === Z4T.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:!!this.guard });   // T8b/2 (Rae D 4.1): Yama + Nira + HOME-67 (from the pier, for this fight only) + WATSON-03
     if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
