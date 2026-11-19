@@ -6,6 +6,7 @@ import * as data from '../src/data.js';
 import { Z2_ART_KEY } from '../src/z2-events.js';
 import { Z3_ART_KEY } from '../src/z3d-cases.js';
 import { Z4_ART_KEY } from '../src/z4b-colosseum.js';
+import { Z4C_ART_KEY } from '../src/z4c-cases.js';
 import {imageMeta} from './helpers/image-meta.mjs';
 
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
@@ -35,7 +36,7 @@ for (const loaded of [false, true]) {
       await new Promise(resolve => setImmediate(resolve));
       for (const {k:zone} of data.ZONES) {
         bindZone(() => zone);
-        const context = vm.createContext({artUrl, Z2_ART_KEY, Z3_ART_KEY, Z4_ART_KEY});
+        const context = vm.createContext({artUrl, Z2_ART_KEY, Z3_ART_KEY, Z4_ART_KEY, Z4C_ART_KEY});
         vm.runInContext(storyResolver, context);
         for (const key of keys) {
           shipped(artUrl(key), `${zone}/${key}/map`);

@@ -29,6 +29,7 @@ import { SEV_NOTICES, SEV_STORIES } from './z3f-severin.js';   // T7b-2/5
 import { Z3_KIN_NOTICES } from './z3g-kin.js';   // T7c/6
 import { Z4A_STORIES, Z4A_NOTICES } from './z4a-border.js';   // T8a
 import { COL_NOTICES } from './z4b-colosseum.js';   // T8a/2
+import { Z4_STORY_CASES, Z4C_CASE_NOTICES } from './z4c-cases.js';   // T8b
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -39,7 +40,7 @@ export const TH_STORY_CASES = Object.freeze([
 ]);
 export const TH_STORY_CASE_KEYS = Object.freeze(TH_STORY_CASES.map(c => c.k));
 /** Zone 2 (Z2-EVENTS): the old ape (7th case) and Satori's father (13th case) - ordinary cases, heard in the ordinary court (z2-events.js). */
-export const STORY_CASE_ROWS = Object.freeze({ th:TH_STORY_CASES, asia:Z2_STORY_CASES, west:Z3_STORY_CASES });
+export const STORY_CASE_ROWS = Object.freeze({ th:TH_STORY_CASES, asia:Z2_STORY_CASES, west:Z3_STORY_CASES, cyberhell:Z4_STORY_CASES });
 export const storyCaseRows = zone => STORY_CASE_ROWS[zone] || [];
 export const storyCaseRow = (zone, k) => storyCaseRows(zone).find(c => c.k === k) || null;
 export const isStoryCaseKey = (zone, k) => storyCaseRows(zone).some(c => c.k === k);
@@ -207,6 +208,7 @@ export const NOTICES = Object.freeze({
   ...Z3_KIN_NOTICES,   // T7c/6 (NK1-NK6 + Sibyl away / back)
   ...COL_NOTICES,   // T8a/2 (N-COL-1, NT-1, NL-1)
   ...Z4A_NOTICES,   // T8a/3 (NW-1, NZ-2, NH-5, NH-6)
+  ...Z4C_CASE_NOTICES,   // T8b (NAS-1 ...)
   'lamp-helper-ryujin':{ ...RYUJIN_TEXT.win, openLamp:true, art:RYUJIN_ART.icon },   // T6/5 (NR-3): the win window IS the unlock window
   'lamp-helper-musashi':MUSASHI_FLAME_NOTICE,   // T6/7 (NM-1)
   'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one

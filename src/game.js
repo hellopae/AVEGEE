@@ -20,6 +20,7 @@ import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
 import { Z4A, Z4A_ZONE4 } from './z4a-border.js';   // T8a
 import { COL } from './z4b-colosseum.js';   // T8a/2
+import { Z4C_JOURNAL, Z4C_HINT_AFTER } from './z4c-cases.js';   // T8b
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -601,6 +602,14 @@ const API = {
     }
     if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); }
   },
+  /** T8b (Rae R2 D 3 / 5): the story cases of Zone 4 are ordinary cases (judged and scored as any other). Each leaves its [PHANTOM-404] line in the journal (once) and counts as judged for the cases that come after it. */
+  z4AfterVerdict(r, soul) {
+    const k = soul.case; if (!Z4C_JOURNAL[k]) return;
+    this.storyCaseDone[k] = true;
+    if (!(this.journalNotes ||= []).includes(Z4C_JOURNAL[k].th)) this.journalNotes.push(Z4C_JOURNAL[k].th);
+  },
+  /** T8b: HOME-67's extra lines on the Zone 4 pier - one for each of Rae's clue cases that has been judged (aiscam: "the same tag means the same hand", kin9: "its name has AI in it") */
+  home67HintLines() { return Object.entries(Z4C_HINT_AFTER).filter(([k]) => this.storyCaseDone?.[k]).map(([, v]) => v); },
   /** T7b/3 (Rae R2 C 3): the fairy-tale cases are ordinary cases (judged and scored as any other). Loki's priest (case 7) is the one that goes on: whatever is ruled, the man on the dais drops the robe - the fight westLoki opens (its window is NLK-2). */
   z3AfterVerdict(r, soul) {
     if (soul.case === 'redhood' || soul.case === 'gingerwitch') this.storyCaseDone[soul.case] = true;
@@ -1683,6 +1692,7 @@ const API = {
     if (this.zone === 'th' && TH_STORY_CASE_KEYS.includes(soul.case)) this.storyCaseDone[soul.case] = true;
     if (this.zone === 'th' && soul.case === WANTHONG.caseKey) this.wanthongAfterVerdict(r);   // T5'/1: whatever was ruled, Khun Phaen comes
     if (this.zone === 'west') this.z3AfterVerdict(r, soul);   // T7b/3: Loki's reveal / the fairy-tale cases
+    if (this.zone === 'cyberhell') this.z4AfterVerdict(r, soul);   // T8b: Zone 4's story cases (the teacher, the relatives)
     if (this.zone === 'asia') this.z2AfterVerdict(r, soul);   // Z2-EVENTS: the old ape / Satori's father / the crew's relatives
     // Case 5 (owner spec): the nurse's file was mis-numbered by Nira's former desk mate - said once, when the case closes.
     if (this.zone === 'th' && soul.case === 'nurse' && !this.devaVisits.th) this.queueNotice('nurse-ledger');

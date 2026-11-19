@@ -1,0 +1,23 @@
+// T8b (Rae R2 part D, sections 3 / 5): the story cases of Zone 4 - case 4 AI Scammer's victim (the retired teacher), cases 8 and 9 (relatives of two reapers). The relatives are ordinary story cases here (Rae gives them a notice + a case, no crew talk);
+// every one of them carries the code [PHANTOM-404] on its ledger and adds a line to the journal. Case / notice / journal text and HOME-67's hints are Rae's, copied VERBATIM by scripts/extract-rae-z4b.py into z4c-raw.js (TH + EN: the case
+// objects carry her `en_*` fields; the court screen shows Thai only, like every other case of the game).
+// Positions: `after:` = cases already judged in Zone 4 (Rae's "case 4" = after:4, the same count her events use). Content rule [R]: the victims are never made fools of, no method of fraud is described, no blood / death shown.
+import { RAW_Z4CASE_AISCAM, RAW_Z4C_NOTICES, RAW_Z4C_JOURNAL, RAW_Z4C_HINTS } from './z4c-raw.js';
+const A = n => `img/z4-events/${n}.webp`;
+const caseDef = raw => { const { quest, ...rest } = raw; return Object.freeze({ ...rest, story:true, z4:true }); };   // `quest` would put it in the side-quest pools; these are story cases found by key
+export const CASE_AISCAM = caseDef(RAW_Z4CASE_AISCAM);
+export const Z4_CASES = Object.freeze([CASE_AISCAM]);
+export const Z4_STORY_CASES = Object.freeze([
+  Object.freeze({ k:'aiscam', after:4, needsEvent:'cyberRescue', def:CASE_AISCAM, notice:'z4-aiscam-arrive' }),
+]);
+export const Z4C_SOUL_SPRITE = Object.freeze({ aiscam:'soul-aiscam-cyber' });
+/** every picture of this package lives in img/z4-events under its own name (a real drawing saved over a placeholder needs no code change) */
+export const Z4C_ART_KEY = /^(soul-(aiscam|singer|archivist|admin)-cyber|guard-watson03|boss-aiscam|char-lupin|char-worker-lupin)(-profile)?$/;
+
+const win = (raw, art) => ({ title:raw.th.title, text:raw.th.text, button:raw.th.button, ...(art ? { art } : {}), en:raw.en });
+export const Z4C_CASE_NOTICES = Object.freeze({
+  'z4-aiscam-arrive':win(RAW_Z4C_NOTICES['NAS-1'], A('soul-aiscam-cyber-profile')),
+});
+/** the journal line each of these cases leaves (Rae: "บันทึกสมุด") · HOME-67's extra line at the harbour once the case has been judged (Rae: "ระดับใบ้เพิ่ม") */
+export const Z4C_JOURNAL = Object.freeze({ aiscam:RAW_Z4C_JOURNAL.aiscam });
+export const Z4C_HINT_AFTER = Object.freeze({ aiscam:RAW_Z4C_HINTS.aiscam });

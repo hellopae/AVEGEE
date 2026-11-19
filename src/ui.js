@@ -122,6 +122,7 @@ import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
 import { Z4A, HOME67_HARBOR_LINES } from './z4a-border.js';   // T8a
 import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
+import { Z4C_ART_KEY } from './z4c-cases.js';   // T8b
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1947,7 +1948,7 @@ function storyFoeArt(sp) {
   if (typeof sp !== 'string') return `img/spirit${sp || 7}.webp`;
   // Possessed rulers keep their home-zone identity in the CyberHell arena.
   if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.webp`;
-  if (Z2_ART_KEY.test(sp) || Z3_ART_KEY.test(sp) || Z4_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
+  if (Z2_ART_KEY.test(sp) || Z3_ART_KEY.test(sp) || Z4_ART_KEY.test(sp) || Z4C_ART_KEY.test(sp)) return artUrl(sp);   // Z2-EVENTS: Wukong has his own folder (img/z2-events)
   const z = sp.match(/-(asia|west|cyberhell)$/)?.[1];
   if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.webp`;
   return artUrl(sp) || `img/${sp}.webp`;
@@ -3882,7 +3883,8 @@ function openHome67Harbor() {
   const en = getLang() === 'en';
   if (!g.storySeen[Z4A.harborStory] && storyOf(Z4A.harborStory)) { g.queueStory(Z4A.harborStory); g.onChange(); return; }
   pauseForDlg();
-  const line = HOME67_HARBOR_LINES[Math.floor(Math.random() * HOME67_HARBOR_LINES.length)];
+  const pool = [...HOME67_HARBOR_LINES, ...(g.home67HintLines?.() || [])];   // T8b: + one line per judged clue case
+  const line = pool[Math.floor(Math.random() * pool.length)];
   modal(`<h2>HOME-67</h2><div class="pier-talk"><p>${esc(en ? line.en : line.th)}</p></div><div class="row"><button class="gold" data-close>${esc(en ? 'Later' : 'ไว้คราวหน้า')}</button></div>`);
 }
 function openBossPier() {

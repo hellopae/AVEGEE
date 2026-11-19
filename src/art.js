@@ -3,6 +3,7 @@ import { Z2_ART_KEY } from './z2-events.js';
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { Z3_KIN_ART_KEY } from './z3g-kin.js';   // T7c/6
 import { Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
+import { Z4C_ART_KEY } from './z4c-cases.js';   // T8b
 import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
@@ -105,7 +106,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   // T6/6: Cerberus of the western gate (img/z3-events)
   if (/^(boss-cerberus-west|boss-cerberus-gate-west|guard-cerberus-west)(-profile)?$/.test(key)) return `img/z3-events/${key}.webp`;
   if (Z3_ART_KEY.test(key) || Z3_KIN_ART_KEY.test(key)) return `img/z3-events/${key}.webp`;
-  if (Z4_ART_KEY.test(key)) return `img/z4-events/${key}.webp`;   // T8a/2: the colosseum fighters   // T7b/3: the fairy-tale souls of Zone 3 and Loki
+  if (Z4_ART_KEY.test(key) || Z4C_ART_KEY.test(key)) return `img/z4-events/${key}.webp`;   // T8a/2: the colosseum fighters   // T7b/3: the fairy-tale souls of Zone 3 and Loki
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());

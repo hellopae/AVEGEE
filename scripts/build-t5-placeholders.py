@@ -151,6 +151,11 @@ for _i in range(10):
 for _i in range(8):
     GROUPS['z4b'].append((f'z4-events/cut-col-s{_i + 1}.webp', CUT, 'cut', f'PLACEHOLDER cut-col-s{_i + 1}  (bout {_i + 1} move card - {_CARD[_i]}; no blood)'))
 GROUPS['z4b'] += [('summon/cut-thor-hammer-rules.webp', CUT, 'cut', 'PLACEHOLDER cut-thor-hammer-rules  (S4: Thor raises the hammer over the field, lightning in a ring around the foes)'), ('summon/cut-lucifer-decree.webp', CUT, 'cut', 'PLACEHOLDER cut-lucifer-decree  (S5: the staff points at ONE foe, glowing rule-lines (no real letters) float round it; no horns, no religious symbol)')]
+# T8b - Rae R2 part D sec. 11 groups Z (souls Z5-Z8), W (WATSON-03), R (AI Scammer Robot), L (Lupin). Souls = 1254 sprite + square profile; no blood, no child, no religious symbol.
+GROUPS['z4c1'] = [
+  ('z4-events/soul-aiscam-cyber.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-aiscam-cyber (Z5: retired teacher, 72, white hair combed flat, black-framed glasses, pressed shirt with the second button missing, an old phone gripped in one hand)'),
+  ('z4-events/soul-aiscam-cyber-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-aiscam-cyber-profile'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)
