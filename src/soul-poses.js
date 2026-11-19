@@ -10,6 +10,7 @@ const other = ['nurse','devaMonk','scapegoat','A5','A11','A13','A19','campelder'
 caught.push('swapdoc','chainhand','hospice','smokeheir');
 // Z2-EVENTS: the old ape tells the plain truth (other); the rest deny or boast about a merit that is not real
 caught.push('wanthong');   // T5'/1: a `deny` and a false boast, like the other twist cases (her sprite has no pose drawing yet -> no pose)
+caught.push('falseorder','youngerbrother','doomclient','carerdaughter','gatesentry','soupcook');   // T7c/6: the relatives' cases (a `deny` and a false boast each; no pose drawing yet -> no pose)
 caught.push('redhood','lokipriest','gingerwitch');   // T7b/3: every one has a `deny` and a false boast (no pose drawing yet -> no pose)
 caught.push('guanyinfather');   // T6/2: a `deny` and a false boast, no pose drawing yet
 caught.push('satorifather','deserter','chaincmd','fakecup','granarysister');

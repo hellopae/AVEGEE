@@ -84,7 +84,8 @@ import { planSkill, skillState, summonFoes, settleSummons, hasSkills, pickText }
 import { BOSS_SKILLS, crowdSkillsFor } from './boss-skills-data.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, owedStoryCase, storyCaseRow, isStoryCaseKey, guardUnlocked, BREACH_FINALE_AT, SITA, SITA_CASE, SITA_CHOICE_KEYS } from './z1-events.js';
-import { Z2_KIN, Z2_KIN_BY_KEY, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
+import { KIN_BY_KEY as Z2_KIN_BY_KEY, Z3_KIN, Z3_KIN_AWAY } from './z3g-kin.js';   // T7c/6: one lookup for the relatives of Zone 2 and Zone 3
+import { Z2_KIN, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { LAMP_TEXT } from './lamp-text.js';
 import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, summonGuard, spendSummon, lampAllSpent, lampOwned, SUMMON_USES } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
@@ -602,6 +603,7 @@ const API = {
   z3AfterVerdict(r, soul) {
     if (soul.case === 'redhood' || soul.case === 'gingerwitch') this.storyCaseDone[soul.case] = true;
     if (soul.case === LOKI.caseKey) { this.storyCaseDone[LOKI.caseKey] = true; this.refreshZoneEvents('west'); }
+    if (soul.kin) { this.kinDone[soul.kin] = { verdict:r.right ? 'heaven' : 'punished', choice:null }; this.queueNotice(`kin-after-${soul.kin}`); }   // T7c/6: a relative of the crew - the crew member's question + the two choices (ui.js openKinAfter)
   },
   /** T5'/1 (Rae R2 A 4.4): Lady Wanthong (case 13) has been ruled. The writ is out, the guard has not stepped in yet - Khun Phaen kicks the doors open. Two versions of the scene:
    *  `punish` = she was sent to a punishment station (any level) · `free` = she was sent to the gate of heaven (not sentenced). The soul goes on to where the player sent her (no special removal);
@@ -618,8 +620,10 @@ const API = {
    *  The old bandit case (A2) is an existing case: when it is in the queue, or is drawn later, the relative is attached to it. */
   ensureKinCases() {
     // The relatives come after the zone's opening (the deva's test is passed): Taan is hired from the first day, his relative must not walk in before the fire is out.
-    if (this.zone !== 'asia' || this.over || this.zoneEventStatus('asiaDevaTest') !== 'cleared') return;
-    for (const row of Z2_KIN) {
+    // T7c/6: Zone 3's relatives come after Eirlin's test (case 10), at the tail of the queue (Rae part C 6.1)
+    const rows = this.zone === 'asia' ? Z2_KIN : this.zone === 'west' ? Z3_KIN : null;
+    if (!rows || this.over || this.zoneEventStatus(this.zone === 'asia' ? 'asiaDevaTest' : 'westDevaTest') !== 'cleared') return;
+    for (const row of rows) {
       if (this.kinSeen[row.k] || !this.kinHired(row)) continue;
       let soul = row.existing ? this.queue.find(s => s.case === row.k && !s.kin) : null;
       // A2 already drawn (and judged) before Kuro was hired: the copy that comes now is the same soul a second time - the notice says so (kinRepeatLine)
@@ -627,7 +631,7 @@ const API = {
       if (!soul) {
         const def = row.def || ALL_CASES.find(c => c.k === row.k);
         if (!def) continue;
-        soul = applySoulPortrait(mkCaseSoul(def), 'asia');
+        soul = applySoulPortrait(mkCaseSoul(def), this.zone);
         if (def.assist) soul.assist = { ...def.assist, used:false };
         this.queue.push(soul);
         if (!this.usedCases.includes(row.k)) this.usedCases.push(row.k);
@@ -656,6 +660,15 @@ const API = {
     const r = Z2_KIN_BY_KEY[k]?.reward; if (!r) return '';
     const items = Object.entries(r.items || {}).map(([i, n]) => `${ITEMS[i]?.name || i} ×${n}`).join(' · ');
     return `${en ? 'Received' : 'ได้รับ'}: ${r.coin} ${en ? 'karma coins' : 'เบี้ยกรรม'}${items ? ' · ' + items : ''}${r.badge ? ' · ' + (en ? r.badge.en : r.badge.th) : ''}`;
+  },
+  /** T7c/6 (Rae 5.3 B, 7.1): what a relative's closing choice sets going. Sibyl's second choice sends her to serve a penalty beside the spirit (she cannot work until she is back: the crew's tea-house recovery, then NH back-window);
+   *  Noir's first choice is a journal line. Other choices are only words. */
+  kinChoiceMade(k, idx) {
+    if (k === Z3_KIN_AWAY.choiceOf && idx === Z3_KIN_AWAY.choiceIndex) {
+      const c = this.crewOf(Z3_KIN_AWAY.crew), rec = this.kinDone?.[k];
+      if (c && rec && !rec.away) { rec.away = true; this.queueNotice(Z3_KIN_AWAY.awayNotice); this.downActor(c); this.save(); }
+    }
+    if (k === 'soupcook' && idx === 0 && !(this.journalNotes ||= []).includes(Z3_KIN_AWAY.journalCook)) { this.journalNotes.push(Z3_KIN_AWAY.journalCook); this.save(); }
   },
   kinFollowUpSeen() { const rec = this.kinDone?.chaincmd; if (rec && !rec.followSeen) { rec.followSeen = true; this.save(); } },
   /** The relative's lines of the interrogation ("during") join the log at the first question, once. */
@@ -1007,6 +1020,10 @@ const API = {
         const point = nearestWalk(actor.k === 'guard' ? GUARD_POST[0] : actor.hx || GUARD_POST[0],
           actor.k === 'guard' ? GUARD_POST[1] : actor.hy || GUARD_POST[1]);
         changed = recoverActor(actor, now, point || GUARD_POST) || changed;
+      }
+      // T7c/6: Sibyl has served her penalty and is back on her feet -> the "back at work" window (once)
+      if (actor.k === Z3_KIN_AWAY.crew && this.kinDone?.[Z3_KIN_AWAY.choiceOf]?.away && !actor.recoverUntil && !actor.teaRest && actor.morale > 0) {
+        this.kinDone[Z3_KIN_AWAY.choiceOf].away = false; this.queueNotice(Z3_KIN_AWAY.backNotice); changed = true;
       }
     }
     for(const worker of this.workerState?.workers || []) if(worker.teaRest && typeof worker.teaRest==='object') changed=advanceTeaRest(this,worker,now)||changed;
@@ -4437,7 +4454,7 @@ const API = {
         for (const key of ev?.winStories || []) this.queueStory(key);
         for (const id of ev?.winNotices || []) this.queueNotice(id);
         if (ev?.guardTest && !this.guard && this.coin >= GUARD.hire) this.hireGuard();
-        if (B.zone === 'asia') this.ensureKinCases();   // the relatives wait for the end of the zone opening (the deva's test)
+        if (B.zone === 'asia' || B.zone === 'west') this.ensureKinCases();   // the relatives wait for the end of the zone opening (the deva's test) · T7c/6: Zone 3's wait for Eirlin's
         // ศึกชายแดนของโซน 2–4 (team:'frontier') ได้ของสุ่มเพิ่มต่อชัยชนะทั้งศึกครั้งเดียว · บอส/เทวดา/แหกคุก ไม่ได้
         B.loot = ev?.team === 'frontier' ? this.winLoot() : '';
         B.talk = ev?.win?.text ? `${ev.win.text}${ev.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}` : `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;

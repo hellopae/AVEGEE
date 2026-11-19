@@ -3,6 +3,7 @@ import { lockSoulTrait } from './interrogation.js';
 import { SEX_OF } from './data.js';
 import { Z2_SOUL_SPRITE } from './z2-events.js';
 import { Z3_SOUL_SPRITE } from './z3d-cases.js';   // T7b/3
+import { Z3_KIN_SPRITE } from './z3g-kin.js';   // T7c/6
 
 const CASE_BY_KEY = new Map(ALL_CASES.map(c => [c.k, c]));
 // Handwritten identities take precedence over their old numbered fallback art.
@@ -59,7 +60,7 @@ export function soulArchetype(soul) {
 export function soulPortrait(soul, zone = 'th') {
   if (soulIdentity(soul).key === 'devaMonk') return 'soul-deva';
   if (Z2_SOUL_SPRITE[soul?.case]) return Z2_SOUL_SPRITE[soul.case];   // Z2-EVENTS: the story / relative souls of Zone 2 have their own drawings (img/z2-events)
-  if (Z3_SOUL_SPRITE[soul?.case]) return Z3_SOUL_SPRITE[soul.case];   // T7b/3: Zone 3's fairy-tale souls (img/z3-events)
+  if (Z3_SOUL_SPRITE[soul?.case] || Z3_KIN_SPRITE[soul?.case]) return Z3_SOUL_SPRITE[soul.case] || Z3_KIN_SPRITE[soul.case];   // T7b/3: Zone 3's fairy-tale souls (img/z3-events)
   if (soul?.case === 'wanthong') return 'soul-wanthong-th';   // T5'/1: Lady Wanthong's own drawing (img/z1-events)
   if (soul?.case === 'sitaledger') return 'soul-sita-th';   // Z1-EVENTS: her own drawing (img/z1-events), never an archetype
   // All four branches resolve the semantic key through their own art aliases.

@@ -26,6 +26,7 @@ import { Z3_FRONTIER_STORIES, Z3_FRONTIER_NOTICES } from './z3c-frontier.js';   
 import { Z3_STORY_CASES, Z3_CASE_NOTICES, Z3_CASE_STORIES } from './z3d-cases.js';   // T7b/3
 import { EIRLIN_NOTICES, EIRLIN_STORIES } from './z3e-eirlin.js';   // T7b/4
 import { SEV_NOTICES, SEV_STORIES } from './z3f-severin.js';   // T7b-2/5
+import { Z3_KIN_NOTICES } from './z3g-kin.js';   // T7c/6
 
 export const TH_STORY_CASES = Object.freeze([
   Object.freeze({ k:'nurse', after:4, needsGate:true }),
@@ -201,6 +202,7 @@ export const NOTICES = Object.freeze({
   ...Z3_CASE_NOTICES,   // T7b/3
   ...EIRLIN_NOTICES,   // T7b/4 (N10-1, N10-4', NE-1)
   ...SEV_NOTICES,   // T7b-2/5 (N15-1, N15-4, NS-1, NH-1 / 3 / 4)
+  ...Z3_KIN_NOTICES,   // T7c/6 (NK1-NK6 + Sibyl away / back)
   'lamp-helper-ryujin':{ ...RYUJIN_TEXT.win, openLamp:true, art:RYUJIN_ART.icon },   // T6/5 (NR-3): the win window IS the unlock window
   'lamp-helper-musashi':MUSASHI_FLAME_NOTICE,   // T6/7 (NM-1)
   'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one

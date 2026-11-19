@@ -5,6 +5,7 @@ import {existsSync,readFileSync} from 'node:fs';
 import {createGame} from '../src/game.js';
 import {ALL_CASES,CASES} from '../src/cases.js';
 import {Z2_KIN} from '../src/z2-events.js';
+import {Z3_KIN} from '../src/z3g-kin.js';
 import {spiritTrait,traitKeyFor,lockSoulTrait,keeperWorkPlan,hiddenIssues,revealOneIssue,TRAIT_KEYS} from '../src/interrogation.js';
 import {kanOrbHtml} from '../src/interrogation-ui.js';
 import {soulTraitGuide,keeperTeamGuide,firstInterrogationLesson,sentencingChapters} from '../src/sentencing-guide.js';
@@ -25,6 +26,11 @@ g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
    const row=Z2_KIN.find(r=>r.k===c.k);
    if(row){if(row.crew==='guard'){g.zoneEvents.asia.asiaGuardTest='cleared';g.hireGuard();}else if(!g.crew.some(x=>x.k===row.crew))g.hire(row.crew);g.ensureKinCases();}else g.ensureStoryCase();
    s=g.queue.find(x=>x.case===c.k);}
+  else if(c.z3kin){   // T7c/6: a relative of Zone 3's crew comes when its crew member is hired and Eirlin's test is passed
+   g.zone='west';g.queue=[];g.kinSeen={};g.coin=99999;g.zoneEvents.west={westHypnotized:'cleared',westVampireBreach:'cleared',westDevaTest:'cleared'};
+   const row=Z3_KIN.find(r=>r.k===c.k);
+   if(row.crew==='guard'){g.guard=g.guard||{id:'west:guard',k:'guard',kind:'guard',homeZone:'west',morale:100};}else if(!g.crew.some(x=>x.k===row.crew))g.hire(row.crew);
+   g.ensureKinCases();s=g.queue.find(x=>x.case===c.k);}
   else if(c.z3){   // T7b/3: Zone 3's fairy-tale cases come through the story-case door at their own numbers (3 / 7 / 12)
    g.zone='west';g.queue=[];g.storyCaseDone={redhood:c.k!=='redhood',lokipriest:c.k==='gingerwitch'};g.zoneEvents.west={westHypnotized:'cleared',westVampireBreach:'cleared'};g.zoneCases.west=c.k==='redhood'?2:c.k==='lokipriest'?6:11;g.ensureStoryCase();
    s=g.queue.find(x=>x.case===c.k);}

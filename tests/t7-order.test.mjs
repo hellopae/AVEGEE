@@ -1,5 +1,5 @@
 // T7a+b - the order of Zone 3's story in ONE run, every scene in the order it plays (Rae R2 part C 0.1): arrive (case 0) -> Little Red (3) -> the frontier (5: freeze, Van Helsing, 3 demon waves, the team + Cerberus under the spell, Valdric,
-// Hypnosis, the Gate Guard, the arena trial) -> Loki (7: reveal + fight) -> Eirlin (10: test, crate, flame) -> the witch (12) -> the zone boss (15: serpent, Severin, collateral, HOME-67). Case 15 (the serpent, Severin, the collateral, HOME-67 joins) is in. The relatives' cases (part 6, T7c) and the walk to Frontier 3-4 (T8) are not.
+// Hypnosis, the Gate Guard, the arena trial) -> Loki (7: reveal + fight) -> Eirlin (10: test, crate, flame) -> the witch (12) -> the zone boss (15: serpent, Severin, collateral, HOME-67). Case 15 (the serpent, Severin, the collateral, HOME-67 joins) is in. The relatives' cases (part 6) are in (after Eirlin's test); the walk to Frontier 3-4 (T8) is not.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -29,6 +29,9 @@ test('Zone 3 from the arrival to the case-12 witch: every scene plays in order; 
   g.zoneCases.west = 10; g.refreshZoneEvents(); g.queueStory('deva-west'); g.devaVisits.west.phase = 'intro'; drain(); fight('westDevaTest'); assert.equal(g.abilities.valkyrieSpear, true);
   // case 12 · the witch
   g.zoneCases.west = 11; assert.equal(g.storyCaseOwed(), 'gingerwitch'); judge('gingerwitch');
+  // the relatives of the crew (part 6): after Eirlin's test, for the crew that is hired; Poena is hired from the first day, the Guard is Van Helsing
+  g.hire('plerng'); g.ensureKinCases(); assert.deepEqual(g.queue.filter(x => x.kin).map(x => x.kin).sort(), ['falseorder', 'gatesentry', 'youngerbrother'], 'Poena\'s, Ognien\'s and Van Helsing\'s relatives'); assert.ok(g.notices.includes('kin-gatesentry'));
+  judge('gatesentry'); assert.ok(g.notices.includes('kin-after-gatesentry')); g.kinDone.gatesentry.choice = 0; g.kinChoiceMade('gatesentry', 0);
   // case 15 · the zone boss: the serpent first, then Severin; z3-sev-win -> the ice panels -> the collateral; HOME-67 asks for help and joins
   g.zoneCases.west = 14; g.refreshZoneEvents(); assert.equal(g.bossReady(), false); g.zoneCases.west = 15; g.bossPending = g.bossReady(); assert.equal(g.bossReady(), true);
   const jb = g.startZoneBoss('alert'); assert.equal(jb.eventKey, 'westJorm'); jb.youHp = 99999; for (let i = 0; i < 20 && !jb.over; i++) { for (const f of jb.foes) if (f.hp > 0) { f.hp = 1; f.atk = [0, 0]; } g.selectFoe(jb.foes.find(v => v.hp > 0).id); g.battleAct('atk'); } assert.equal(jb.over, 'win'); g.endBattle(); drain();

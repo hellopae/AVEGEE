@@ -78,6 +78,7 @@ GROUPS = {
   ('z3-events/guard-vanhelsing-west-profile.webp', (512, 512), 'square', 'PLACEHOLDER guard-vanhelsing-west-profile'),
  ],
  'z3d-cases': [   # T7b/3 - Rae R2 part C sec. 3 (groups L + G). NO religious symbols, NO child in any picture.
+  ('z3-events/soul-soup-cook-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-soup-cook-west (relative 6 version B: middle-aged woman, faded apron with stains, holding a worn wooden ladle in both hands, red eyes from stove smoke; NO child, NO sick person)'),
   ('z3-events/soul-redhood-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-redhood-west (G1: elderly woman, white hair tied low, faded thin red headcloth, old wicker basket with an empty bottom, calm face, eyes still on a forest path; NO wolf, NO child)'),
   ('z3-events/soul-redhood-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-redhood-west-profile'),
   ('z3-events/soul-witch-bread-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-witch-bread-west (G2: hunched old woman, apron smudged with flour and burnt sugar, thick dry palms, reddened tired eyes; NO prominent nose, NO broom, NO pointed hat, NO child, NO cage with a child, NO oven with a person)'),
@@ -101,6 +102,19 @@ GROUPS = {
   ('z3-events/char-home67.webp', (512, 512), 'sprite', 'PLACEHOLDER char-home67 (H1: slender man, long silver-grey coat, low cap with a thin band of blue light round the brim, holding a thin clear glass pane with glowing figures running in rows, relaxed stance with quick eyes, high-tech but plain; NOT a deerstalker, NO pipe, copied from no existing film or series)'),
   ('z3-events/char-home67-profile.webp', (512, 512), 'square', 'PLACEHOLDER char-home67-profile'),
   ('z3-events/cut-home67-pier-west.webp', CUT, 'cut', 'PLACEHOLDER cut-home67-pier-west  (H2: the Western pier in thin snow, HOME-67 leaning on a pier post holding the glass pane of glowing figures and looking at Nira who stands beside Yama; Severin\'s flagless merchant ship far away at the edge; one image for z3-home67-intro (2 pages) + z3-home67-join)'),
+ ],
+ 'z3g-kin': [   # T7c/6 - the six relatives' souls (Rae part C sec. 8 #7-#11, #20 soul-soup-cook-west). No child in any picture, no religious symbol.
+  ('z3-events/soul-false-judge-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-false-judge-west (relative 1: former judge in a charcoal-grey robe, straight back, clutching a rolled writ he dares not put down)'),
+  ('z3-events/soul-false-judge-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-false-judge-west-profile'),
+  ('z3-events/soul-younger-brother-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-younger-brother-west (relative 2: tall thin young man, soot on his fingertips, leaning left as if someone walks beside him; an adult, not a child)'),
+  ('z3-events/soul-younger-brother-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-younger-brother-west-profile'),
+  ('z3-events/soul-prophecy-client-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-prophecy-client-west (relative 3: head of a merchant family in an old fur coat, red eyes, a small ship ledger gripped tight)'),
+  ('z3-events/soul-prophecy-client-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-prophecy-client-west-profile'),
+  ('z3-events/soul-carer-daughter-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-carer-daughter-west (relative 4: neat woman, coat buttoned wrong, a bunch of wilted flowers)'),
+  ('z3-events/soul-carer-daughter-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-carer-daughter-west-profile'),
+  ('z3-events/soul-gate-sentry-west.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-gate-sentry-west (relative 5: old leather-armoured gate sentry, right hand clenched round a big iron key, eyes on the gate)'),
+  ('z3-events/soul-gate-sentry-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-gate-sentry-west-profile'),
+  ('z3-events/soul-soup-cook-west-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-soup-cook-west-profile'),
  ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),

@@ -116,7 +116,8 @@ import { GATE } from './z2-gate.js';
 import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
 import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
-import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
+import { Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
+import { KIN_BY_KEY as Z2_KIN_BY_KEY } from './z3g-kin.js';   // T7c/6: the relatives of Zone 2 and Zone 3
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
 import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
@@ -3717,7 +3718,7 @@ function openKinAfter(k) {
       ${rec.choice == null ? lines(pickL(row.after, row.afterEn)) + `<div class="event-alert-actions kin-choices">${row.choices.map((c, i) => `<button class="gold" data-kin-choice="${i}">${esc(pickL(c.label, c.labelEn))}</button>`).join('')}</div>`
         : lines(pickL(row.choices[rec.choice].lines, row.choices[rec.choice].linesEn)) + (row.closing ? lines(pickL(row.closing, row.closingEn)) : '')   // T5'/6 (Rae 9.5): the closing talk, then what he gives
           + (row.reward ? `<p class="hint">${esc(g.kinRewardText(k, en))}</p>` : '') + `<div class="event-alert-actions"><button class="gold" data-kin-done>ปิด</button></div>`}</div>`, d => {
-    d.querySelectorAll('[data-kin-choice]').forEach(b => b.onclick = () => { rec.choice = Number(b.dataset.kinChoice); g.payKinReward(k); g.save(); paint(); });
+    d.querySelectorAll('[data-kin-choice]').forEach(b => b.onclick = () => { rec.choice = Number(b.dataset.kinChoice); g.payKinReward(k); g.kinChoiceMade?.(k, rec.choice); g.save(); paint(); });
     d.querySelector('[data-kin-done]')?.addEventListener('click', () => { g.ackNotice(nid); dlg.close(); setTimeout(() => g.onChange(), 0); });
   }, 'event-alert');
   paint();
