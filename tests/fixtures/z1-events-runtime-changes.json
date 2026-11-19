@@ -1,8 +1,8 @@
 {
  "game": [
   {
-   "before": "",
-   "after": "import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
+   "before": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';\n",
+   "after": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';\n/** T5'/0: a lost side-quest fight also ends at the tea house (owner: \"every kind of fight\"). Set false to go back to \"a lost quest fight costs nothing and stays on the map\". */\nexport const QUEST_FIGHT_LOSE_TO_TEA = true;\nimport {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)\n"
   },
   {
    "before": "import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';\n",
@@ -179,6 +179,14 @@
   {
    "before": "          this.strike(this.mobs.indexOf(m), GUARD.name);\n",
    "after": "          this.strike(this.mobs.indexOf(m), guardName(this.zone));\n"
+  },
+  {
+   "before": "",
+   "after": "  /** T5'/0: Nira wakes the tea house - every fallen teammate resting here (recovery rest, not an ordinary \"go and rest\") stands up at once and goes back to their post. */\n  releaseRecoveryTeam() {\n    let n = 0;\n    for (const actor of Object.values(this.roster || {}))\n      if (actor.teaRest?.recovery && actor.teaRest.zone === this.zone && finishRecoveryRest(actor)) n++;\n    if (n) this.save();\n    return n;\n  },\n"
+  },
+  {
+   "before": "",
+   "after": "    this.releaseRecoveryTeam();\n"
   },
   {
    "before": "      kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',\n",
@@ -519,6 +527,14 @@
   {
    "before": "",
    "after": "    if (lampOwned(this) && lampAllSpent(this)) this.queueNotice('lamp-low');   // T4 NA-3: the first time every flame is spent, said once after the fight\n"
+  },
+  {
+   "before": "    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no tea-house recovery, no penalty)\n",
+   "after": "    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no penalty, the quest keeps its step).\n    // T5'/0 (owner 19 Nov, \"every kind of fight\"): a LOST quest fight also ends with the tea-house wake-up scene (Nira wakes everybody) - the scene is not a penalty, it only moves Yama there.\n"
+  },
+  {
+   "before": "",
+   "after": "      if (B.over === 'lose' && QUEST_FIGHT_LOSE_TO_TEA) {\n        this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };\n        this.player.tx = null; this.player.ty = null; this.player.path = null;\n      }\n"
   },
   {
    "before": "",

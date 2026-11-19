@@ -33,13 +33,17 @@ export function startRecoveryTeaRest(g,c,zone,now) {
     startedAt:c.recoverUntil-STAFF_TEA_REST_MS,until:c.recoverUntil,
     returnAt:[c.hx??c.x??0,c.hy??c.y??0]};
 }
+/** A knocked-out teammate gets up: back at their post with half morale (same result whether the timer ran out or Nira woke everybody - T5'/0). */
+export function finishRecoveryRest(c){
+  const rest=c.teaRest;if(!rest||typeof rest!=='object'||!rest.recovery)return false;
+  c.morale=50;c.recoverUntil=0;[c.x,c.y]=rest.returnAt;c.path=null;c.target=null;c.teaRest=null;return true;
+}
 export function advanceTeaRest(g,c,now) {
   const rest=c.teaRest;if(!rest||typeof rest!=='object')return false;
   let changed=false;
   if(rest.recovery){
-    if(now>=rest.until){
-      c.morale=50;c.recoverUntil=0;[c.x,c.y]=rest.returnAt;c.path=null;c.target=null;c.teaRest=null;return true;
-    }
+    // T5'/0: while Yama's own defeat wake-up is playing in this zone the fallen teammates wait for Nira - they all stand up together, never one by one before her line
+    if(now>=rest.until && !(g.pendingRecovery && rest.zone===g.zone)) return finishRecoveryRest(c);
     if(rest.seat==null){const seat=reserveTeaSeat(g,rest.zone,c);if(seat!=null){rest.seat=seat;rest.phase='rest';return true;}}
     return false;
   }

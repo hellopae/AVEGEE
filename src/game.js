@@ -8,7 +8,9 @@ import { QUEST_FIGHTS, questFightFoes } from './quest-fights.js';
 import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import { rollFrontierFoeCount, FRONTIER_REWARD_SCALE } from './encounter-balance.js';
-import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
+import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} from './tea-staff-rest.js';
+/** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
+export const QUEST_FIGHT_LOSE_TO_TEA = true;
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
@@ -2862,7 +2864,16 @@ const API = {
   finishTeaSleep() {
     if (this.pendingRecovery) { this.pendingRecovery.stage = 'wake'; this.save(); this.onChange(); }
   },
+  /** T5'/0: Nira wakes the tea house - every fallen teammate resting here (recovery rest, not an ordinary "go and rest") stands up at once and goes back to their post. */
+  releaseRecoveryTeam() {
+    let n = 0;
+    for (const actor of Object.values(this.roster || {}))
+      if (actor.teaRest?.recovery && actor.teaRest.zone === this.zone && finishRecoveryRest(actor)) n++;
+    if (n) this.save();
+    return n;
+  },
   completeTeaRecovery() {
+    this.releaseRecoveryTeam();
     this.hp = this.hpMax;
     this.pendingRecovery = null;
     this.save(); this.onChange();
@@ -4704,9 +4715,14 @@ const API = {
       if(B.over!=='win')this.retreatFromDungeonFoe(B.dungeonRetreatProgress);
       this.save();
     }
-    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no tea-house recovery, no penalty)
+    // QUEST-REWARDS: a quest fight is a story duel — win moves the quest on, lose / flee costs nothing (no penalty, the quest keeps its step).
+    // T5'/0 (owner 19 Nov, "every kind of fight"): a LOST quest fight also ends with the tea-house wake-up scene (Nira wakes everybody) - the scene is not a penalty, it only moves Yama there.
     if (B.kind === 'questFight') {
       if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+      if (B.over === 'lose' && QUEST_FIGHT_LOSE_TO_TEA) {
+        this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };
+        this.player.tx = null; this.player.ty = null; this.player.path = null;
+      }
       finishQuestFight(this, B);
       this.pendingReward = null;
       this.save(); this.onChange(); return B;

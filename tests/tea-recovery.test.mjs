@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
-import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, RECOVERY_SLEEP_MS, RECOVERY_TOTAL_MS, RECOVERY_LIE_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
 // FB2-13: the lying-pose picture is waited for while it is 'loading'. This stub answers every request with an error (a lost file) so the older tests do not wait; the hold test below uses a picture that never answers.
 globalThis.Image ??= class { set src(v){ this._src=v; this.onerror?.(); } get src(){ return this._src; } };
@@ -62,14 +62,15 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
   assert.equal(R.setSleep(),false);assert.equal(R.setSleep(true),true);
   assert.equal(R.setSit(true),false);
   assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);
-  R.tick(TEA_SLEEP_MS/2);assert.ok(g.hp>1 && g.hp<g.hpMax);assert.equal(R.sleepPhase(),'sleep');
-  R.tick(TEA_SLEEP_MS/2);assert.equal(TEA_BLACKOUT_MS,0);assert.equal(R.sleepPhase(),'wake');assert.equal(g.pendingRecovery.stage,'wake');assert.equal(g.hp,g.hpMax);
+  // T5'/0: the defeat wake-up is longer than the ordinary nap - it has Nira's run and line in it (see tests/t5-defeat-tea.test.mjs for the beats)
+  R.tick(RECOVERY_SLEEP_MS/2);assert.ok(g.hp>1 && g.hp<g.hpMax);assert.equal(R.sleepPhase(),'sleep');
+  R.tick(RECOVERY_SLEEP_MS/2);assert.equal(TEA_BLACKOUT_MS,0);assert.equal(R.sleepPhase(),'wake');assert.equal(g.pendingRecovery.stage,'wake');assert.equal(g.hp,g.hpMax);
   R.tick(TEA_WAKE_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
   for (const stage of ['sleep','wake']) {
    const resumed=game();g.hp=1;g.pendingRecovery={zone:'th',stage};resumed.restore(g.snapshot());
    const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.webp',null);
    assert.equal(room.setSleep(true),true);
-   const remaining=stage==='wake'?TEA_WAKE_MS:TEA_REST_TOTAL_MS;
+   const remaining=stage==='wake'?RECOVERY_TOTAL_MS-RECOVERY_LIE_MS:RECOVERY_TOTAL_MS;
    room.tick(remaining-1);assert.ok(resumed.hp>1);assert.equal(room.sleeping(),true);room.tick(1);
    assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
   }

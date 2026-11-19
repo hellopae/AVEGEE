@@ -67,7 +67,7 @@ import { foremanDesk, foremanStarving } from './foreman.js';   // FOREMAN: Dam l
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
-import { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
+import { DEFEAT_SCENE_MS, NIRA_WAKE_LINE, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';
 import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';
 import { exitStep } from './exit-marker.js';
@@ -3477,11 +3477,14 @@ function openQuestFightResult(id,outcome,owner=null){
   const def=QUEST_FIGHTS[id];if(!def)return;
   const s=questState(g,id),lines=fightScene(id,s,outcome);
   // PART-A: lost / fled → "สู้อีกครั้ง" (same choice, straight back into the fight) or "พักไว้ก่อน" (back to the map; the quest stays at step 3 and can be fought later from the quest window)
-  const buttons=outcome==='win'?`<button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button>`:`<button type="button" class="gold" data-quest-fight-retry>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.retry)}</button><button type="button" data-quest-fight-rest>${esc(QUEST_FIGHT_SYSTEM_TEXT.rest)}</button>`;
-  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?(def.unlockLog?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:''):`<p>${esc(QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
+  // T5'/0: a lost fight now ends at the tea house (g.pendingRecovery) - no instant retry from the scene; the quest keeps its step and is fought again from the quest window
+  const toTea=outcome!=='win'&&!!g.pendingRecovery;
+  const buttons=outcome==='win'?`<button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button>`:`${toTea?'':`<button type="button" class="gold" data-quest-fight-retry>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.retry)}</button>`}<button type="button" ${toTea?'class="gold" ':''}data-quest-fight-rest>${esc(QUEST_FIGHT_SYSTEM_TEXT.rest)}</button>`;
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?(def.unlockLog?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:''):`<p>${esc(toTea?QUEST_FIGHT_SYSTEM_TEXT.loseNoteTea:QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
     if(outcome==='win')sfx('star');
+    if(toTea)dlg.addEventListener('close',()=>setTimeout(()=>{if(g.pendingRecovery&&!dlg.open)g.onChange();},0),{once:true});   // closed with the X: the tea-house wake-up still follows
     d.querySelector('[data-quest-fight-next]')?.addEventListener('click',()=>openQuests(id,{owner}));
-    d.querySelector('[data-quest-fight-rest]')?.addEventListener('click',()=>{dlg.close();refresh();});
+    d.querySelector('[data-quest-fight-rest]')?.addEventListener('click',()=>{dlg.close();refresh();if(g.pendingRecovery)g.onChange();});
     d.querySelector('[data-quest-fight-retry]')?.addEventListener('click',()=>{
       const retry=createQuestAction(g,id,questFightStep(QUESTS.find(x=>x.id===id)));
       if(retry(null)&&g.battle?.kind==='questFight'){refresh();openBattle(afterQuestFight(id,owner));}
@@ -5321,7 +5324,7 @@ function openBattle(after) {
     updatePlay();
     refresh();
     // ชุด 28B — ถ้ามีหน้าต่างรางวัลรออยู่ ให้ฟังก์ชันต่อท้าย (เช่นกลับแผนที่ชายแดน) รอจนปิดหน้าต่างรางวัลก่อน
-    if (done?.over === 'lose' && done.kind !== 'questFight') return;
+    if (done?.over === 'lose' && done.kind !== 'questFight') return;   // T5'/0: a lost quest fight still shows its own lost scene first (Rae's text); that scene then hands over to the tea-house wake-up
     if (after) afterReward(() => after(done ? done.over : null, done));
   }
 
@@ -6866,7 +6869,7 @@ function openStation(k, emergency = false) {
     onDlgClose(() => diag?.close(true));
   }
   if (emergency) R.setSleep(true);
-  let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping();
+  let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping(), wasRecoveryWake = false;
   const exit = roomExit(k, g.zone, room);
   // P5: ไม่มีปุ่ม "ออกไปแผนที่" แล้ว — เดินถึงวงทางออกบนพื้น (บันไดล่างของห้อง) = ออกเลย
   // latch: เข้าห้องแล้วยืนตรงทางออกอยู่ (ห้องส่วนใหญ่เกิดที่ทางออกเอง) ไม่เด้งออก ต้องเดินออกจากวงก่อน
@@ -6894,13 +6897,22 @@ function openStation(k, emergency = false) {
       const outer = document.querySelector('#res-hp-chip');
       if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
-    if (g.pendingRecovery?.stage === 'wake' && !dlg.querySelector('.nira-wakeup')) {
-      const wake = document.createElement('div'); wake.className = 'nira-wakeup';
-      wake.style.cssText = 'position:absolute;inset:20% 25%;z-index:20;text-align:center;pointer-events:none;background:#201326dd;border-radius:20px;padding:1rem';
-      wake.innerHTML = `<img src="${artUrl('crew-nira')}" alt="" style="height:180px"><p>นิรา: ตื่นได้แล้วค่ะ ไปทำงานกัน / Nira: Wake up. Time to get back to work.</p>`;
-      (dlg.querySelector('.st-main') || dlg).append(wake);
+    // T5'/0: Nira runs in (drawn in the room, room.js) and says ONE line - shown as a bubble at the foot of the scene from the moment she arrives until everybody is up
+    const beat = R.recoveryBeat?.();
+    const speaking = !!g.pendingRecovery && (beat === 'say' || beat === 'wake');
+    if (speaking && !dlg.querySelector('.nira-wakeup')) {
+      const wake = document.createElement('div'); wake.className = 'nira-wakeup'; wake.setAttribute('role', 'status');
+      wake.innerHTML = `<img src="${artUrl('crew-nira-profile') || artUrl('crew-nira')}" alt=""><p>${esc(NIRA_WAKE_LINE[getLang()] || NIRA_WAKE_LINE.th)}</p>`;
+      const host = dlg.querySelector('.st-main') || dlg; host.append(wake);
+      const cv = dlg.querySelector('canvas');       // the bubble sits right under the room picture (Nira is in it) - the CSS bottom edge is the fallback
+      if (cv) { const hr = host.getBoundingClientRect(), cr = cv.getBoundingClientRect(); if (cr.bottom - hr.top > 0 && cr.bottom < hr.bottom - 60) { wake.style.top = `${Math.round(cr.bottom - hr.top + 10)}px`; wake.style.bottom = 'auto'; } }
     }
-    if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
+    if (!speaking) dlg.querySelector('.nira-wakeup')?.remove();
+    if (beat) wasRecoveryWake = true;
+    else if (wasRecoveryWake && !g.pendingRecovery && !g.battle) {     // everybody is up: Yama is on his own again - back to the map in front of the tea house
+      wasRecoveryWake = false;
+      setTimeout(() => { if (mine() && dlg.open && !R?.sleeping()) dlg.close(); }, 350);
+    }
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (k === 'tea') {   // FB2-13: HP/MP live under the profile (bottom-left), no bars inside the window
@@ -7262,7 +7274,8 @@ g.onChange = () => {
   refresh();
   if (g.battle?.kind === 'devaTest' && g.devaVisits?.th?.phase === 'fighting' && !dlg.open) { openBattle(); return; }
   if (storyPlaying) return;
-  if (g.pendingRecovery && !g.battle && !g.pendingDadPunish) {
+  // T5'/0: the defeat scene of the fight itself (a boss / event / frontier line already queued) plays first; the tea-house wake-up follows when it closes
+  if (g.pendingRecovery && !g.battle && !g.pendingDadPunish && !(g.pendingRecovery.stage === 'return' && g.storyQueue.length)) {
     if (!dlg.open) openDefeatRecovery();
     return;
   }

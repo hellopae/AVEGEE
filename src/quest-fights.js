@@ -140,6 +140,7 @@ export const QUEST_FIGHTS = Object.freeze({
 export const QUEST_FIGHT_SYSTEM_TEXT = Object.freeze({
   standby:name => `${name}ไม่ได้อยู่ในทีมสู้ จึงยืนเชียร์อยู่ข้างสนาม`,
   loseNote:'แพ้ไม่เป็นไร ความคืบหน้าไม่หาย · สู้ใหม่ได้ทันที หรือพักก่อนแล้วกลับมาคุยก็ได้',
+  loseNoteTea:'แพ้ไม่เป็นไร ความคืบหน้าไม่หาย · ไปพักที่ศาลาน้ำชาก่อน แล้วกลับมาคุยเพื่อสู้ใหม่ได้',   // T5'/0 TODO(Rae): temporary system line for the lost quest fight that now ends at the tea house
   enter:'เข้าสู้', back:'ไปต่อ', retry:'สู้อีกครั้ง', rest:'พักไว้ก่อน',
 });
 

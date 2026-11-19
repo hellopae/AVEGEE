@@ -47,6 +47,10 @@ test('KO-CREW: when the battle is over (win, lose or flee) the fallen go to the 
     assert.ok(taan.recoverUntil >= before + RECOVERY_MS && taan.recoverUntil <= after + RECOVERY_MS + 50, result + ': recovery clock = battle end + RECOVERY_MS (' + RECOVERY_MS + ')');
     assert.ok(taan.teaRest?.recovery, result + ': at the tea house'); assert.equal(taan.recoveryVersion, 2);
     assert.ok(!actorStanding(taan));
+    if (result === 'lose') {   // T5'/0: Yama's own defeat wake-up is pending - the fallen wait for Nira and stand up with him (never before her line)
+      g.updateActorRecovery(taan.recoverUntil + 1); assert.ok(taan.teaRest?.recovery, 'lose: still sitting until Nira wakes the tea house'); assert.equal(g.releaseRecoveryTeam(), 1); assert.ok(!taan.teaRest);
+      assert.equal(taan.morale, 50); assert.equal(taan.recoverUntil, 0); continue;
+    }
     g.updateActorRecovery(taan.recoverUntil + 1); assert.equal(taan.morale, 50, 'back after the rest, like before'); assert.ok(!taan.teaRest);
   }
 });

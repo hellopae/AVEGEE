@@ -3,9 +3,36 @@ export const TEA_SLEEP_MS = 5000;
 export const TEA_BLACKOUT_MS = 0;
 export const TEA_WAKE_MS = 600;
 export const TEA_REST_TOTAL_MS = TEA_SLEEP_MS + TEA_BLACKOUT_MS + TEA_WAKE_MS;
-export const teaSleepPhase = elapsed => elapsed < TEA_SLEEP_MS ? 'sleep'
-  : elapsed < TEA_REST_TOTAL_MS ? 'wake' : 'done';
-export const teaRecoveredHp = (start, max, elapsed) => Math.min(max, Math.round(start + (max-start) * Math.min(1, Math.max(0,elapsed) / TEA_SLEEP_MS)));
+// T5'/0 (owner 19 Nov): after a LOST fight Yama wakes on the tea-house bed like this - lies a moment (RECOVERY_LIE_MS), Nira runs in (RECOVERY_NIRA_RUN_MS) and
+// says one line (RECOVERY_NIRA_SAY_MS), then Yama and the fallen teammates stand up together (TEA_WAKE_MS). The ordinary nap on the bed keeps TEA_SLEEP_MS.
+export const RECOVERY_LIE_MS = 1800;
+export const RECOVERY_NIRA_RUN_MS = 1300;
+export const RECOVERY_NIRA_SAY_MS = 2000;
+export const RECOVERY_SLEEP_MS = RECOVERY_LIE_MS + RECOVERY_NIRA_RUN_MS + RECOVERY_NIRA_SAY_MS;   // "sleep" span of the defeat wake-up = Yama still lying
+export const RECOVERY_TOTAL_MS = RECOVERY_SLEEP_MS + TEA_WAKE_MS;
+export const teaSleepPhase = (elapsed, sleepMs = TEA_SLEEP_MS) => elapsed < sleepMs ? 'sleep'
+  : elapsed < sleepMs + TEA_WAKE_MS ? 'wake' : 'done';
+export const teaRecoveredHp = (start, max, elapsed, sleepMs = TEA_SLEEP_MS) => Math.min(max, Math.round(start + (max-start) * Math.min(1, Math.max(0,elapsed) / sleepMs)));
+/** The defeat wake-up in five beats: 'lie' (Yama alone) -> 'run' (Nira runs in) -> 'say' (Nira's line) -> 'wake' (everyone stands up) -> 'done'. */
+export const recoveryPhase = elapsed => elapsed < RECOVERY_LIE_MS ? 'lie'
+  : elapsed < RECOVERY_LIE_MS + RECOVERY_NIRA_RUN_MS ? 'run'
+  : elapsed < RECOVERY_SLEEP_MS ? 'say'
+  : elapsed < RECOVERY_TOTAL_MS ? 'wake' : 'done';
+/** Where Nira stands beside the bed while she wakes Yama (fractions of the room picture), and the door she runs in from. */
+export const NIRA_DOOR = [0.50, 0.86];
+export const niraBedside = room => [room.wake[0] - 0.05, room.wake[1] + 0.09];
+/** Nira's pose at `elapsed` ms after the lie phase ended: running in a straight line from the door to the bedside, then standing facing the bed. `distance` feeds the walk-cycle. */
+export function niraRunPose(elapsed, room) {
+  const to = niraBedside(room), f = Math.min(1, Math.max(0, elapsed) / RECOVERY_NIRA_RUN_MS);
+  const point = [NIRA_DOOR[0] + (to[0] - NIRA_DOOR[0]) * f, NIRA_DOOR[1] + (to[1] - NIRA_DOOR[1]) * f];
+  return { point, face: room.bed[0] < point[0] ? -1 : 1, running: f < 1,
+    distance: Math.hypot(point[0] - NIRA_DOOR[0], point[1] - NIRA_DOOR[1]) };
+}
+/** TODO(Rae): placeholder wording for the line (owner 19 Nov asked for ONE line from Nira) - Rae to write the final TH/EN. */
+export const NIRA_WAKE_LINE = Object.freeze({
+  th: 'นิรา: ยมบาทน้อย ตื่นเถอะค่ะ ทุกคนลุกได้แล้ว!',
+  en: 'Nira: Little Yama, wake up! Everyone, on your feet!',
+});
 export const DEFEAT_SCENE_MS = 1600;
 export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.webp`;
 export const teaBackground = zone => `img/tea-${zone || 'th'}-recovery.webp`;

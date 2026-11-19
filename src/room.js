@@ -10,7 +10,7 @@ import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { potLayout, drawPotSoul } from './pot-souls.js';
-import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox, sleepSpriteWidth } from './tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_WAKE_MS, RECOVERY_LIE_MS, RECOVERY_SLEEP_MS, RECOVERY_TOTAL_MS, teaSleepPhase, teaRecoveredHp, recoveryPhase, niraRunPose, roomImageBox, sleepSpriteWidth } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
@@ -199,6 +199,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
   let lying = false, sleepElapsed = 0, recoverySleep = false, sleepStartHp = 0, sleepHoldMs = 0;
+  let wakeTeam = null;       // T5'/0: the fallen teammates sitting in the tea house when the defeat wake-up reaches its last beat - they stand up with Yama (captured once, drawn standing)
+  const sleepMs = () => recoverySleep ? RECOVERY_SLEEP_MS : TEA_SLEEP_MS;    // how long Yama stays lying before the wake beat (the defeat wake-up has Nira's run + line in it)
+  const restTotalMs = () => sleepMs() + TEA_WAKE_MS;
   const mpAcc = { frac:0 };   // เศษ MP ที่ยังไม่ครบหน่วย (ข้อ 5 ชุด 30B)
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
@@ -310,7 +313,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (!canSit || lying || sitting || (!emergency &&
         (Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
-    sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
+    sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? RECOVERY_LIE_MS : 0;    // a save made while Nira was coming replays her arrival
+    wakeTeam = null;
     sleepStartHp = g.hp; sleepHoldMs = 0;
     img('hero-yama-unconscious');       // FB2-13: start loading the lying pose now (it is lazy - on a slow link the bed stayed empty for the whole 5 s sleep)
     P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
@@ -322,9 +326,14 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // FB2-13: the sleep clock waits (max 8 s) until the lying picture has loaded, so the player always sees Yama on the bed
       if (imgState('hero-yama-unconscious') === 'loading' && sleepHoldMs < 8000) { sleepHoldMs += dt; return; }
       sleepElapsed += dt;
-      g.hp = teaRecoveredHp(sleepStartHp, g.hpMax, sleepElapsed);
-      if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
-      if (sleepElapsed >= TEA_REST_TOTAL_MS) {
+      g.hp = teaRecoveredHp(sleepStartHp, g.hpMax, sleepElapsed, sleepMs());
+      if (sleepElapsed >= RECOVERY_LIE_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();     // Nira is on her way
+      if (recoverySleep && sleepElapsed >= RECOVERY_SLEEP_MS && !wakeTeam) {
+        // everybody stands up at the same moment: the sitting teammates are released (they go back to their posts) and drawn standing for the wake beat
+        wakeTeam = teaRoomStaff(g).filter(r => r.actor.teaRest?.recovery && !r.actor.id.startsWith('worker:'));
+        g.releaseRecoveryTeam?.();
+      }
+      if (sleepElapsed >= restTotalMs()) {
         lying = false;
         [P.x, P.y] = snap(...wakePoint()); P.tx = null; P.ty = null;
         if (recoverySleep) g.completeTeaRecovery();
@@ -545,6 +554,21 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         const [x,y]=pose.point;acts.push({y,fn:()=>drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false,face:pose.face},t,U*CREW_H*characterScale('worker'))});
       }
     }
+    if (def.k === 'tea' && lying && recoverySleep && sleepElapsed >= RECOVERY_LIE_MS) {
+      // T5'/0: Nira runs in from the door, stops at the bedside and stays there until everybody is up
+      const pose = niraRunPose(sleepElapsed - RECOVERY_LIE_MS, room);
+      acts.push({y:pose.point[1],fn:()=>{
+        const h=U*CREW_H*characterScale('nira'),atX=px(pose.point[0]),atY=py(pose.point[1]);
+        ctx.save();drawContactShadow(ctx,atX,atY,h);ctx.restore();
+        if(!(pose.running&&drawCrewWalk(ctx,'crew-nira',atX,atY,h,pose.distance*U*2.4,pose.face)))drawStandee(ctx,'crew-nira',atX,atY,h,t,'',pose.face);
+      }});
+    }
+    if (def.k === 'tea' && wakeTeam && lying) {
+      for (const {actor:c,point:[x,y]} of wakeTeam) acts.push({y,fn:()=>{
+        const h=U*CREW_H*characterScale(c.k||'worker');
+        drawStandee(ctx,'crew-'+c.k,px(x),py(y),h,t,'',x<room.bed[0]?1:-1);
+      }});
+    }
     if (def.k === 'tea') {
       for (const {actor:c,point:[x,y],face,distance} of teaRoomArrivals(g)) {
         acts.push({y,fn:()=>{
@@ -666,9 +690,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
       // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
-      if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
+      if (lying && teaSleepPhase(sleepElapsed, sleepMs()) === 'wake') {
         ctx.save();
-        ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
+        ctx.globalAlpha = Math.min(1,(sleepElapsed-sleepMs())/TEA_WAKE_MS);
         drawStandee(ctx,'hero-yama',px(wakePoint()[0]),py(wakePoint()[1]),U*HERO_H,t,'👑',P.face);
         ctx.restore(); return;
       }
@@ -811,7 +835,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
     sleeping: () => lying,
-    sleepPhase: () => lying ? teaSleepPhase(sleepElapsed) : null,
+    sleepPhase: () => lying ? teaSleepPhase(sleepElapsed, sleepMs()) : null,
+    /** T5'/0: which beat of the defeat wake-up is on screen ('lie' | 'run' | 'say' | 'wake') - null when Yama is not in a defeat wake-up */
+    recoveryBeat: () => lying && recoverySleep ? recoveryPhase(sleepElapsed) : null,
     nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) <= REACH,
     setSleep,
     setSit,

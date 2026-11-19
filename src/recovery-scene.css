@@ -1,0 +1,8 @@
+/* T5'/0 - the defeat wake-up in the tea house: Nira's one line, a bubble at the foot of the scene (she is drawn in the room canvas, room.js) */
+.nira-wakeup{position:absolute;left:50%;bottom:13%;transform:translateX(-50%);z-index:20;pointer-events:none;
+  display:flex;align-items:center;gap:.6rem;box-sizing:border-box;width:min(88%,380px);padding:.55rem .8rem .55rem .55rem;
+  background:#201326ee;border:1px solid #c9a24f;border-radius:16px;color:#fff3d6;box-shadow:0 6px 18px #000a;animation:niraWakeIn .22s ease-out}
+.nira-wakeup img{flex:0 0 auto;width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #c9a24f;background:#3a2748}
+.nira-wakeup p{margin:0;font-size:.95rem;line-height:1.35}
+@keyframes niraWakeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@media (prefers-reduced-motion:reduce){.nira-wakeup{animation:none}}

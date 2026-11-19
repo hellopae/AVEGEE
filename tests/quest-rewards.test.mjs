@@ -128,7 +128,7 @@ for (const [id, zone] of [['sqKan', 'asia'], ['sqBoon', 'west'], ['sqGuard', 'th
   assert.equal(g.battle, null); assert.equal(questState(g, id).step, 3); assert.equal(g.pendingRecovery, null); assert.equal(g.coin, coin);
   // lost → retry with NO new choice (sqBoon never needed one)
   meet(g, q); assert.ok(advanceQuest(g, id)); lose(g);
-  assert.equal(questState(g, id).step, 3); assert.equal(questState(g, id).done, false); assert.equal(g.pendingRecovery, null, 'a lost quest fight is not a defeat that sends the team to the tea house');
+  assert.equal(questState(g, id).step, 3); assert.equal(questState(g, id).done, false); assert.equal(g.pendingRecovery?.stage, 'return', "T5'/0: a lost quest fight ends at the tea house too (the wake-up scene) - but costs nothing"); assert.equal(g.coin, coin); g.completeTeaRecovery();
   assert.equal(g.skillUnlocked({ id:`${zone}:${q.npc}`, k:q.npc, kind:q.npc, homeZone:zone }, QUEST_FIGHTS[id].skill), false);
   meet(g, q); assert.ok(advanceQuest(g, id)); win(g);
   assert.equal(questState(g, id).step, 4); assert.equal(questState(g, id).fought, true); assert.equal(g.battle, null);
