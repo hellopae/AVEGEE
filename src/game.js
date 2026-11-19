@@ -12,6 +12,7 @@ import {startTeaRest,advanceTeaRest,startRecoveryTeaRest,finishRecoveryRest} fro
 import { WANTHONG } from './z1-wanthong.js';   // T5'/1
 import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
+import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
@@ -573,6 +574,10 @@ const API = {
       this.refreshZoneEvents('asia');
       this.queueStory(r.right ? 'z2-wukong-open' : 'z2-wukong-open-b');
       this.bossPending = this.bossReady();
+    } else if (soul.case === GUANYIN.caseKey) {
+      // T6/2 (Rae R2 B 2.1): she comes down whatever was ruled - two versions of her first line (the ordinary court's `right`), never a score for pleasing her
+      this.storyCaseDone.guanyinfather = r.right ? 'ok' : 'off';
+      this.queueNotice(GUANYIN.afterNotice);
     } else if (soul.case === 'satorifather') {
       this.storyCaseDone.satorifather = true;
       this.queueStory(this.crewOf('kan') ? 'z2-satori-farewell' : 'z2-satori-farewell-b');
@@ -733,6 +738,7 @@ const API = {
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
     if (id === GATE.arriveNotice) this.queueStory('z2-guanyu-open');   // T5'/4 (NG-1): the button leads into the scene, then the fight
     if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
+    if (id === GUANYIN.afterNotice) this.queueStory(`${GUANYIN.thanksStory}-${this.storyCaseDone.guanyinfather === 'off' ? 'off' : 'ok'}`);   // T6/2 (NGY-2): the button leads into her scene
     if (id === 'z2-satori-arrive') this.queueStory(this.crewOf('kan') ? 'z2-satori-ask' : 'z2-satori-ask-b');   // the notice leads into Satori's request
     this.save();
   },
@@ -5041,6 +5047,7 @@ const API = {
     if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
     if (next?.key === 'sita-lamp') this.giveLamp();
     if (next?.key?.startsWith('z1-khunphaen-win-')) this.unlockHelper('kumanthong');   // T5'/1 (D4): his own event is passed - Kuman Thong is the second flame of the lamp
+    if (next?.key?.startsWith(GUANYIN.thanksStory)) { this.queueNotice(GUANYIN.petalNotice); if (!(this.journalNotes ||= []).includes(PETAL_NOTE)) this.journalNotes.push(PETAL_NOTE); }   // T6/2 (NGY-3): a keepsake, no stat
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
     if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
     if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene

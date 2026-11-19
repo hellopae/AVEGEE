@@ -42,6 +42,7 @@ export function storyCaseDone(g, k, zone = g.zone) {
   // Later beats prove earlier ones: an old save must not get a beat again once the story moved on.
   if (zone === 'asia') {
     if (k === 'apeelder') return ev.asiaWukong === 'cleared' || !!g.bossCleared?.asia;
+    if (k === 'guanyinfather') return !!g.bossCleared?.asia || !!g.storyCaseDone?.satorifather;   // T6/2: a save already past case 12 never gets her late
     if (k === 'satorifather') return !!g.bossCleared?.asia;
     return false;
   }

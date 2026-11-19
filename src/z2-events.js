@@ -12,6 +12,7 @@
 // A "story case" is a named case that is put at the head of the queue when the count is reached (the same mechanism as Zone 1, z1-events.js).
 // This module is data only: it imports nothing from the game, so z1-events.js / story.js / data.js can all read it without a cycle.
 import { Z2_STORIES_RAW, WUKONG_CAMEO, CASE_APEELDER, CASE_AKURA, CASE_SATORIFATHER, CASE_DESERTER, CASE_CHAINCMD, CASE_FAKECUP, CASE_A2, CASE_GRANARYSISTER } from './z2-events-text.js';
+import { GUANYIN, GUANYIN_CASE, GUANYIN_NOTICES, GUANYIN_STORIES } from './z2b-guanyin.js';   // T6/2: case 12
 export { WUKONG_CAMEO };
 
 const A = name => `img/z2-events/${name}.webp`;
@@ -30,11 +31,11 @@ export const Z2_ART = Object.freeze({
 });
 /** Own drawings of the story souls / the Wukong boss (soul-portraits.js · art.js read these keys). */
 export const Z2_SOUL_SPRITE = Object.freeze({
-  apeelder:'soul-ape-elder-asia', satorifather:'soul-satori-father-asia', deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia',
+  apeelder:'soul-ape-elder-asia', satorifather:'soul-satori-father-asia', guanyinfather:'soul-guanyin-father-asia', deserter:'soul-deserter-asia', chaincmd:'soul-commander-asia',
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
   A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
-export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia)(-profile|-guard)?$/;
+export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|guanyin-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia)(-profile|-guard)?$/;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Story pages. Rae's text is copied verbatim (z2-events-text.js); here only the pictures are attached - one picture per page, the last one repeats.
@@ -69,6 +70,7 @@ export const Z2_STORIES = Object.freeze({
   'z2-wukong-open-b':dress('z2-wukong-open-b', wukongOpen(WUKONG_PAGES[2])),
   'z2-satori-ask-b':dress('z2-satori-ask-b', satoriAskB()),
   'z2-satori-farewell-b':dress('z2-satori-farewell-b', satoriFarewellB()),
+  ...GUANYIN_STORIES,   // T6/2
 });
 // The raw scenes that are NOT played, and why (kept honest in the report, not silently dropped):
 //  · z2-kuroha-descends - the existing 'deva-asia' scene (picture + video of the deva coming down) IS this moment; the owner decided "same scene, no second one". It carries the new deva.asia.arrival text.
@@ -130,8 +132,11 @@ export const DEVA_ASIA_ARRIVAL = Object.freeze({
 const caseDef = (def, extra = {}) => { const { quest, ...rest } = def; return { ...rest, story:true, z2:true, zone:'asia', ...extra }; };
 export const APE_CASE = caseDef(CASE_APEELDER);
 export const SATORI_CASE = caseDef(CASE_SATORIFATHER, { noKanSupport:true });
+export const GUANYIN_FATHER_CASE = caseDef(GUANYIN_CASE);   // T6/2 (Rae R2 B 2): case 12
 export const Z2_STORY_CASES = Object.freeze([
   Object.freeze({ k:'apeelder', after:6, needsEvent:'asiaDevaTest', def:APE_CASE, notice:'z2-ape-arrive' }),
+  // T6/2 (Rae R2 B 2.1): case 12, between Akura (11, the breach) and Satori's father (13). Rae writes `after:12` but means "the 12th case" = after:11 here (after:6 is the 7th).
+  Object.freeze({ k:'guanyinfather', after:11, needsEvent:'asiaRageBreach', def:GUANYIN_FATHER_CASE, notice:GUANYIN.arriveNotice }),
   Object.freeze({ k:'satorifather', after:12, needsEvent:'asiaRageBreach', def:SATORI_CASE, notice:'z2-satori-arrive' }),
 ]);
 
@@ -243,7 +248,7 @@ export const Z2_KIN = Object.freeze([
  *  after the same soul was already judged once. Rae to replace; the game reads only this constant. */
 export const Z2_KIN_REPEAT_LINE = 'บรรยาย: วิญญาณดวงนี้เคยขึ้นแท่นของท่านมาแล้วครั้งหนึ่ง วันนี้เขากลับมาที่คิวอีกครั้งเพราะคุโรขอให้ท่านฟังเรื่องของเขาอีกด้าน';
 /** Every hand-written case of this package that the court can hold (cases.js ALL_CASES / the Zone 2 pool; `story` keeps them out of the random draw). */
-export const Z2_CASES = Object.freeze([APE_CASE, SATORI_CASE, ...Z2_KIN.filter(k => k.def).map(k => k.def)]);
+export const Z2_CASES = Object.freeze([APE_CASE, GUANYIN_FATHER_CASE, SATORI_CASE, ...Z2_KIN.filter(k => k.def).map(k => k.def)]);
 export const Z2_KIN_BY_KEY = Object.freeze(Object.fromEntries(Z2_KIN.map(k => [k.k, k])));
 /** The old A2 (existing case) with Rae's rewrite: the soul keeps the case key 'A2', only the wording changes (cases-asia.js uses this). */
 export const A2_REWRITE = Object.freeze({ ...CASE_A2 });
@@ -261,7 +266,7 @@ export const AKURA_TRIAL = Object.freeze({
 const KIN_NOTICES = Object.fromEntries(Z2_KIN.map(r => [`kin-${r.k}`, { title:r.notice.title, text:r.notice.text, button:r.notice.button, detail:r.before.join('\n'), ...(r.notice.en ? { en:{ ...r.notice.en, detail:(r.beforeEn || r.before).join('\n') } } : {}),
   art:Z2_SOUL_SPRITE[r.k] ? A(`${Z2_SOUL_SPRITE[r.k]}-profile`) : 'img/Asia/spirit-worker-asia-v2.webp' }]));
 /** Notice windows (Rae N3-4, N7-1, N7-6, N13-1, N15-1 and the relatives'): game.js queueNotice / ackNotice · ui.js openStoryNotice. */
-export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES });
+export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES, ...GUANYIN_NOTICES });
 
 /** Rae's three-page opening of the zone boss (5.3) as the lines of the arrival scene (data.js ZONES.asia.bossArrive): one line per page, the speaker before the colon. */
 export const LIAN_ARRIVE_LINES = Object.freeze(Z2_STORIES_RAW['z2-lian-open'].pages.flatMap(p => p.line.split('\n')).filter(Boolean));

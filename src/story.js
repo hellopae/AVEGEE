@@ -1,6 +1,6 @@
 import { SIGNAL_STORIES, MERCHANT_STORIES } from './e1-content.js';
 import {bossGuideStory} from './boss-guides.js';
-import { t } from './i18n.js';
+import { t, getLang } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
 import { Z1_STORIES, TEAM_MOVE_UNLOCK } from './z1-events.js';
@@ -70,7 +70,11 @@ export const STORY = {
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || Z1_STORIES[key] || (key === TEAM_MOVE_UNLOCK ? teamMoveUnlockStory() : key === 'asia-big-fire-unlock' ? bigFireUnlockStory() : null) || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
+/** T6: a scene whose pages carry `en:{title,line}` (and `en:{title}` on the scene) is shown in English when the game is in English; every older (Thai only) scene comes back as it is. */
+const localizeStory = story => (story && getLang() === 'en' && (story.en || story.pages?.some(p => p.en)))
+  ? { ...story, title:story.en?.title || story.title, pages:story.pages.map(p => (p.en ? { ...p, ...p.en } : p)) } : story;
+export const storyOf = key => localizeStory(storyOfThai(key));
+const storyOfThai = key => STORY[key] || Z1_STORIES[key] || (key === TEAM_MOVE_UNLOCK ? teamMoveUnlockStory() : key === 'asia-big-fire-unlock' ? bigFireUnlockStory() : null) || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.webp',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
 // Z1-EVENTS: the window shown in the middle of the border boss fight (owner: "หน้าต่างแจ้งเตือน ยามาได้ท่าไม้ตายใหม่"). Name and text are the ability's own.
 const teamMoveUnlockStory = () => ({ title:'ยามาได้ท่าไม้ตายใหม่', pages:[{ image:'img/z1-events/cut-guard-joins-th.webp', fallback:'⚔️',
   title:ABILITY_REWARDS.teamJudgment.name, line:`${ABILITY_REWARDS.teamJudgment.text}\nใช้ท่านี้ปิดฉากบอสชายแดน` }] });

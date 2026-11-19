@@ -52,7 +52,7 @@ const ackAll = g => { const seen = []; for (let i = 0; i < 30 && plain(g).length
 test('the table itself: case 3 / 7 / 11 / 13 / 15', () => {
   const at = k => ZONE_EVENTS.asia.find(e => e.k === k).atCases;
   assert.deepEqual([at('asiaPrisonFire'), at('asiaDevaTest'), at('asiaWukong'), at('asiaRageBreach')], [3, 3, 7, 11]);
-  assert.deepEqual(Z2_STORY_CASES.map(c => [c.k, c.after + 1]), [['apeelder', 7], ['satorifather', 13]]);
+  assert.deepEqual(Z2_STORY_CASES.map(c => [c.k, c.after + 1]), [['apeelder', 7], ['guanyinfather', 12], ['satorifather', 13]]);   // T6/2: case 12 = the father of Guanyin
   assert.equal(ZONE_BOSS_AT.asia, 15);
   assert.equal(ZONE_EVENTS.asia.find(e => e.k === 'asiaPrisonFire').afterKills, 1, 'the deva comes down after ONE spirit fell');
   const breach = ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach');
@@ -192,7 +192,7 @@ test('case 11: 3 waves -> Akura -> the closing fireball -> court with the locked
   assert.equal(bossJusticeCase(g).phase, 'aftermath');
   g = reload(g); assert.equal(bossJusticeCase(g).phase, 'aftermath');
   assert.deepEqual(g.storyQueue.map(p => p.key), [ARENA_STORIES.asia.punished, ARENA_STORIES.asia.released]);
-  drainStories(g); assert.deepEqual(plain(g), ['z2-akura-cave']); assert.equal(NOTICES['z2-akura-cave'].text, 'อากุระรับโทษเสร็จแล้วและกลับไปยืนอยู่ในถ้ำริมชายแดน แวะไปคุยกับเขาได้'); ackAll(g);
+  drainStories(g); assert.deepEqual(plain(g), ['z2-guanyin-arrive', 'z2-akura-cave']);   // T6/2: case 12 is due the moment the breach is over assert.equal(NOTICES['z2-akura-cave'].text, 'อากุระรับโทษเสร็จแล้วและกลับไปยืนอยู่ในถ้ำริมชายแดน แวะไปคุยกับเขาได้'); ackAll(g);
   assert.equal(bossJusticeCase(g), null); assert.equal(Object.values(g.bossJustice.ledger)[0].phase, 'released');
   assert.equal(storyOf(ARENA_STORIES.asia.released).pages[0].line.includes('เจ้าไม่ได้ล่ามข้า ข้าจำไว้'), true);
   g.refreshZoneEvents('asia'); assert.equal(status(g, 'asiaRageBreach'), 'cleared'); assert.equal(g.abilities.bigFire, true);
@@ -209,8 +209,8 @@ function passCase11(g) {
 for (const hired of [true, false]) test(`case 13 (Satori ${hired ? 'hired' : 'not hired'}): his father always comes · the clue button is off · farewell`, () => {
   let g = fresh(); passCase11(g);
   if (hired) { assert.ok(g.hire('kan')); } else assert.ok(!g.crew.some(c => c.k === 'kan'));
-  assert.equal(g.storyCaseOwed(), null, 'case 12 is still an ordinary case');
-  const n12 = judgeNext(g); assert.notEqual(n12.case, 'satorifather'); assert.equal(g.zoneCases.asia, 12);
+  assert.equal(g.storyCaseOwed(), 'guanyinfather', 'T6/2: case 12 is the father of Guanyin');
+  const n12 = judgeNext(g); assert.equal(n12.case, 'guanyinfather'); assert.equal(g.zoneCases.asia, 12); for (const id of ['z2-guanyin-arrive', 'z2-guanyin-after']) g.ackNotice(id); drainStories(g); g.ackNotice('z2-guanyin-petal');
   assert.equal(g.storyCaseOwed(), 'satorifather'); g = reload(g);
   const father = g.queue.find(s => s.case === 'satorifather'); assert.ok(father); assert.equal(father.sp, 'soul-satori-father-asia'); assert.equal(father.sex, 'm');
   assert.equal(g.queue.filter(s => s.case === 'satorifather').length, 1); assert.deepEqual(plain(g), ['z2-satori-arrive']);
@@ -386,7 +386,7 @@ test('an old Zone 2 save with the border breach already pending (old case 6) wai
 
 test('the clue orb of the court shows Satori\'s own words on the father\'s case (and not on any other)', async () => {
   const { kanOrbHtml } = await import('../src/interrogation-ui.js');
-  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; g.zoneCases.asia = 12; g.storyCaseDone.apeelder = true;
+  const g = fresh(); g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; g.zoneCases.asia = 12; g.storyCaseDone.apeelder = true; g.storyCaseDone.guanyinfather = 'ok';
   assert.ok(g.hire('kan')); g.ensureStoryCase();
   const father = g.queue.find(s => s.case === 'satorifather');
   const html = kanOrbHtml(g, father, 'img/x.webp');

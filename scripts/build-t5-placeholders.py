@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """T5': labelled placeholder pictures for the story slots of Rae R2 part A (sections 4-10) that Codex has not drawn yet (right file name, right pixel size, never stretched).
 A real drawing saved under the same name replaces a placeholder with no code change.  Cutscenes: 1672x941 · sprites: transparent RGBA · profiles / icons: square.
-  python3 scripts/build-t5-placeholders.py <group> [<group> ...]      groups: wanthong yomathat frontier12 guanyu boatman   (an existing file is never overwritten)"""
+  python3 scripts/build-t5-placeholders.py <group> [<group> ...]      groups: wanthong yomathat frontier12 guanyu boatman guanyin wukong lian musashi ryujin cerberus   (an existing file is never overwritten)"""
 import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -28,6 +28,12 @@ GROUPS = {
   ('boat/cut-boatman-song-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-boatman-song-asia  (G2: the boat on still water, Lung Chaew singing, Yama and Nira at the bow)'),
   ('boat/fx-water-song.webp', CUT, 'cut', 'PLACEHOLDER fx-water-song (G3: ripples at the end of the landing, faint gold motes; Zone 2 adds a small red lantern)'),
   ('boat/item-oar.webp', (512, 512), 'square', 'PLACEHOLDER item-oar (G4: small hand-carved oar with a faded blue ribbon)'),
+ ],
+ 'guanyin': [   # T6/2 - Rae R2 part B, group H
+  ('z2-events/soul-guanyin-father-asia.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-guanyin-father-asia (H1: the father, an old king in faded robes, shoulders down, hands clasped)'),
+  ('z2-events/soul-guanyin-father-asia-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-guanyin-father-asia-profile'),
+  ('z2-events/cut-guanyin-descends-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyin-descends-asia  (H2: white light in the hall, lotus petals, Guanyin in plain white with a willow vase; Yama + Nira bow, the father kneels bottom right)'),
+  ('z2-events/cut-guanyin-father-asia.webp', CUT, 'cut', 'PLACEHOLDER cut-guanyin-father-asia  (H3: she bows to her father who is bent to the floor; light from behind, petals fading)'),
  ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
