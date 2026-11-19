@@ -41,7 +41,7 @@ test('ruler lookup selects v2 in both zones, with an old-manifest fallback', asy
       for (const [z, path] of [
         ['th','img/crew-guard-v2.webp'],
         ['asia','img/Asia/crew-guard-asia-v2.webp'],
-        ['west','img/West/crew-guard-west.webp'],
+        ['west','img/z3-events/guard-vanhelsing-west.webp'],   // T7/2: Zone 3 Guard is Van Helsing (placeholder picture slot)
         ['cyberhell','img/CyberHell/crew-guard-cyberhell-v2.webp'],
       ]) {
         art.bindZone(() => z);
