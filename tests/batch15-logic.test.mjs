@@ -70,7 +70,7 @@ test('ทีมยมบาทน้อย ทัณฑ์ เพลิง ใ�
       // This test enters the ordinary zone-boss arena directly; story events
       // are covered separately and must be cleared before that arena opens.
       g.zoneEvents[z.k] = Object.fromEntries((ZONE_EVENTS[z.k] || [])
-        .filter(event => event.atCases < (ZONE_BOSS_AT[z.k] || 10))
+        .filter(event => event.atCases < (ZONE_BOSS_AT[z.k] || 10) || (z.k === 'west' && event.k === 'westJorm'))   // T7b-2/5: the serpent is fought before Severin
         .map(event => [event.k, 'cleared']));
       if (z.k === 'th' || z.k === 'cyberhell') {
         // These zones now use story battles at case ten; the old arena remains

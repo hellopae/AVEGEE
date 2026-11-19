@@ -28,6 +28,7 @@ import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3
 import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4
 import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
 import { EIRLIN_HELPER, EIRLIN_ART } from './z3e-eirlin.js';   // T7b/4
+import { JORM_HELPER, SEV_ART } from './z3f-severin.js';   // T7b-2/5
 import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
@@ -64,7 +65,9 @@ export const SUMMONERS = Object.freeze({
   // T7b/4 (Rae R2 C 4.4): Spear to the Sound of Battle = ONE foe, one strong hit (above Ryujin's 62, under the Valkyrie spear's 88 on every foe)
   eirlin:{ k:'eirlin', no:8, name:EIRLIN_HELPER.name, glyph:'🔱', event:'z3-eirlin-win', ready:true, art:{ icon:EIRLIN_ART.icon, battle:EIRLIN_ART.battle, cut:EIRLIN_ART.cut },
     move:{ ...EIRLIN_HELPER.move, kind:'strike', hits:1, damage:{ base:72, perLevel:3 } }, say:EIRLIN_HELPER.say },
-  jormungandr:{ k:'jormungandr', no:9, name:{ th:'ยอร์มุนกันดร์', en:'Jormungandr' }, glyph:'🐍', event:'z3-sev-collateral', ready:false, move:{ name:{ th:'ขดล้อมโลก', en:'Coil Around the World' } } },
+  // T7b-2/5 (Rae R2 C 5.4): Coil Around the World = a moderate group hit (under Ryujin's 62); "slows every foe for one round" is not in the engine yet
+  jormungandr:{ k:'jormungandr', no:9, name:JORM_HELPER.name, glyph:'🐍', event:'z3-sev-collateral', ready:true, art:{ icon:SEV_ART.icon, battle:SEV_ART.battle, cut:SEV_ART.cut },
+    move:{ ...JORM_HELPER.move, kind:'group', damage:{ base:52, perLevel:2 } }, say:JORM_HELPER.say },
   thor:{ k:'thor', no:10, name:{ th:'ธอร์', en:'Thor' }, glyph:'🔨', event:'col-thor-win', ready:false, move:{ name:{ th:'ค้อนฟ้าสั่งสนาม', en:'The Hammer Commands the Field' } } },
   lucifer:{ k:'lucifer', no:11, name:{ th:'ลูซิเฟอร์', en:'Lucifer' }, glyph:'🌟', event:'col-lucifer-win', ready:false, move:{ name:{ th:'ประกาศิตผู้ก่อตั้ง', en:"The Founder's Decree" } } },
   lupin:{ k:'lupin', no:12, name:{ th:'ลูแปง', en:'Lupin' }, glyph:'🎩', event:'z4-lupin-win', ready:false, move:{ name:{ th:'หน้ากากพลิกจังหวะ', en:'The Mask Turns the Beat' } } },

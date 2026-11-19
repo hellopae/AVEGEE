@@ -49,7 +49,8 @@ for(const [zone,eventKey] of regions)test(`${zone}: real border-challenge victor
  g=reload(g);assert.equal(releasedFrontierBoss(g).docket,npc.docket);assert.equal(g.coin,money);assert.equal(releaseBoss(g),false);
 });
 
-for(const [zone,to] of [['th','asia'],['asia','west'],['west','cyberhell']])test(`${zone}: actual ruler victory unlocks the guide at once (no court - owner 14 Nov), then pays money/outfit once`,()=>{
+// T7b-2/5 (Rae R2 C 5, owner 19-20 Nov): Zone 3 has NO boss-guide scenes and NO 1,200 coins / Zone 4 robes at its pier (NS-2 cut: HOME-67 gives them in part D) - the west rows of this loop moved to tests/t7-severin.test.mjs + the west test at the end of this file
+for(const [zone,to] of [['th','asia'],['asia','west']])test(`${zone}: actual ruler victory unlocks the guide at once (no court - owner 14 Nov), then pays money/outfit once`,()=>{
  let g=setup(zone);g.zoneCases[zone]=zone==='asia'?15:10;   // Z2-EVENTS: Zone 2's ruler is the 15th case
  g.zoneEvents[zone]=Object.fromEntries((ZONE_EVENTS[zone]||[]).map(ev=>[ev.k,'cleared']));
  let b;

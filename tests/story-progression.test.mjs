@@ -30,7 +30,7 @@ test('story sources resolve ruler, frontier and tester independently in every zo
 test('level ups never unlock or announce Ice, but a real West ruler win unlocks it at any level',()=>{
  const g=game();g.gainExp(10000);assert.equal(g.powerLocked(g.powerOf('ice')),true);g.syncDiscoveries();assert.ok(!g.discoveryQueue.some(k=>k.endsWith(':ice')));
  g.mp=100;g.startBattle({id:1,who:'test',deserved:2});assert.equal(g.battleAct('ice'),false);
- const h=game();h.zone='west';h.zoneCases.west=15;h.legacyBossGate=true;h.zoneEventGateReady=()=>true;h.bossGuarding.west=true;h.player.x=0;h.player.y=0;
+ const h=game();h.zone='west';h.zoneCases.west=15;h.legacyBossGate=true;h.zoneEventGateReady=()=>true;h.zoneEvents.west={...h.zoneEvents.west,westJorm:'cleared'};   /* T7b-2/5: the serpent first */h.bossGuarding.west=true;h.player.x=0;h.player.y=0;
  // The alert path uses the same ordinary ruler battle, with story gates satisfied above.
  assert.ok(h.startZoneBoss('alert'));h.battle.youHp=h.battle.youMax=10000;kill(h);
  assert.equal(h.abilities.ice,true);assert.equal(h.powerLocked(h.powerOf('ice')),false);assert.equal(h.storyQueue.filter(p=>p.key==='west').length,1);

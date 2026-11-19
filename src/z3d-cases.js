@@ -14,7 +14,7 @@ export const Z3_STORY_CASES = Object.freeze([
 ]);
 export const Z3_SOUL_SPRITE = Object.freeze({ redhood:'soul-redhood-west', lokipriest:'soul-loki-priest-west', gingerwitch:'soul-witch-bread-west' });
 /** every picture of this package lives in img/z3-events under its own name (a real drawing saved over a placeholder needs no code change) */
-export const Z3_ART_KEY = /^(soul-(redhood|loki-priest|witch-bread)-west|boss-loki-west)(-profile)?$/;
+export const Z3_ART_KEY = /^(soul-(redhood|loki-priest|witch-bread)-west|boss-(loki|jormungandr)-west|char-home67)(-profile)?$/;
 export const LOKI = Object.freeze({ eventKey:'westLoki', caseKey:'lokipriest', revealStory:'z3-loki-reveal', winStory:'z3-loki-win', loseStory:'z3-loki-lose', sprite:'boss-loki-west', portrait:A('boss-loki-west-profile'), reveal:A('cut-loki-reveal-west') });
 
 // ---- notices: NRH-1 / NLK-1 / NWB-1 (the case comes to the queue) · NLK-2 = the event window of the fight (below) · NLK-3 banner · NLK-4 win · NLK-5 lose

@@ -56,7 +56,7 @@ test('build helpers only accelerate a real Taan construction after physical arri
  assert.equal(w.arrived,true);const now=Date.now();st.build=now+60000;advanceWorkers(g,100,now);assert.equal(st.build,now+59980);
 });
 test('each farewell grants next-zone outfit once, with no money replay during old-save migration',()=>{
- for(const [zone,next] of [['th','asia'],['asia','west'],['west','cyberhell']]){
+ for(const [zone,next] of [['th','asia'],['asia','west']]){   // T7b-2/5: Zone 3 gives no robes at its pier any more (NS-2 cut, part D)
   const g={zone,coin:10,outfitsOwned:['th'],queueStory(){}};initializeBossGuides(g);recordBossGuideWin(g,{zone,kind:'zoneBoss',over:'win'});
   completeBossGuideStory(g,`boss-guide-${zone}-welcome`);completeBossGuideStory(g,`boss-guide-${zone}-farewell`);
   assert.ok(g.outfitsOwned.includes(next));const coin=g.coin;completeBossGuideStory(g,`boss-guide-${zone}-farewell`);assert.equal(g.coin,coin);

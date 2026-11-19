@@ -56,6 +56,8 @@ export function recordBossGuideWin(g,battle){
   const state=bossGuideState(g,zone);if(state.won)return false;
   // T6/4 (Rae R2 B 4.2): Zone 2 has no praise scene - z2-lian-win (his last line changed) is it, then NL-1 says he waits at the harbor
   if(zone==='asia'){state.won=true;state.praised=true;g.queueNotice?.(HARBOR.waitNotice);return true;}
+  // T7b-2/5 (Rae R2 C 5.1): Zone 3 has no praise / welcome / farewell scenes and no money + robes here (NS-2 is cut - HOME-67 gives them in part D): Severin's scenes are z3-sev-win and z3-sev-collateral, his ship leaves, he is gone from the pier
+  if(zone==='west'){state.won=true;state.praised=true;state.welcomed=true;state.farewell=true;return true;}
   state.won=true;g.queueStory?.(`boss-guide-${zone}-praise`);return true;
 }
 const justiceHolding=(g,zone)=>Object.values(g.bossJustice?.ledger||{}).some(entry=>entry.zone===zone&&entry.phase!=='released');

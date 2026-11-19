@@ -93,6 +93,15 @@ GROUPS = {
   ('z3-events/cut-eirlin-crate-west.webp', CUT, 'cut', 'PLACEHOLDER cut-eirlin-crate-west  (E2: the stone square just clear of mist, a long wooden crate open on the ground, blue-white light from spears laid in rows, Eirlin touches a spear tip over the lamp at Yama\'s side, one white feather drifting in a corner; NO religious symbol)'),
   ('summon/cut-eirlin-spear-call.webp', CUT, 'cut', 'PLACEHOLDER cut-eirlin-spear-call  (E3: Eirlin dives from the sky with a blue-white spear into ONE foe in the middle, wings fully spread, a spiral of snow around the spear, a Zone 3 hell battlefield)'),
  ],
+ 'z3f-severin': [   # T7b-2/5 - Rae R2 part C sec. 5 (groups J + H + the old z3 list #6 #14). icon/battle-jormungandr are cut from his own drawing boss-jormungandr-west (Rae J1 allows it) - not generated here
+  ('z3-events/cut-sev-jorm-arrive-west.webp', CUT, 'cut', 'PLACEHOLDER cut-sev-jorm-arrive-west  (z3-sev-open: Severin in silver armour with blue skulls on the right-hand pier holding a thick ledger, the river of souls rising behind him, the tail of the world-serpent high above the water; Yama + Nira very small at the lower left)'),
+  ('z3-events/cut-jorm-yields-west.webp', CUT, 'cut', 'PLACEHOLDER cut-jorm-yields-west  (z3-jorm-yields: the serpent loosens its coils and sinks, the tail tip free of the water, Severin opens his ledger with a surprised face, Yama + Nira at the pier)'),
+  ('z3-events/cut-sev-collateral-west.webp', CUT, 'cut', 'PLACEHOLDER cut-sev-collateral-west  (J2: the right-hand harbour in day snow, the water lifts, a pale yellow serpent eye looks down, Severin stands holding the ledger and looks at it still, one blue-grey scale glows and drifts across the water into the lamp at Yama\'s side, Nira beside Yama)'),
+  ('summon/cut-jorm-coil-world.webp', CUT, 'cut', 'PLACEHOLDER cut-jorm-coil-world  (J3: blue-grey coils rise from the battlefield and ring the foes in one loop - only the coils and a pale yellow eye at the edge, NOT the whole serpent striking anyone; Zone 3 hell battlefield)'),
+  ('z3-events/char-home67.webp', (512, 512), 'sprite', 'PLACEHOLDER char-home67 (H1: slender man, long silver-grey coat, low cap with a thin band of blue light round the brim, holding a thin clear glass pane with glowing figures running in rows, relaxed stance with quick eyes, high-tech but plain; NOT a deerstalker, NO pipe, copied from no existing film or series)'),
+  ('z3-events/char-home67-profile.webp', (512, 512), 'square', 'PLACEHOLDER char-home67-profile'),
+  ('z3-events/cut-home67-pier-west.webp', CUT, 'cut', 'PLACEHOLDER cut-home67-pier-west  (H2: the Western pier in thin snow, HOME-67 leaning on a pier post holding the glass pane of glowing figures and looking at Nira who stands beside Yama; Severin\'s flagless merchant ship far away at the edge; one image for z3-home67-intro (2 pages) + z3-home67-join)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

@@ -86,7 +86,7 @@ test('ตัวเลขสมดุลของอีเวนต์เนื�
   const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge && !e.signal).map(e => e.k);
   assert.deepEqual(keys('th'), ['prisonBreak', 'frontierBreach', 'devaTest', 'sitaHanuman', 'khunPhaen', 'thBorderBoss', 'z2Gate']);   // Z1-EVENTS: + Sita / Hanuman (case 12) · T5'/1: + Khun Phaen (case 13)
   assert.deepEqual(keys('asia'), ['asiaPrisonFire', 'asiaDevaTest', 'asiaWukong', 'asiaRageBreach', 'asiaGuardTest', 'z2Ryujin', 'z3Cerberus']);   // T6/5: + the water cave dragon (fought on the walk to Border 2-3)   // Z2-EVENTS: + Wukong (case 7) and the Guard's proving fight (opened by the hire button)
-  assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest', 'westLoki']);   // T7b/3: + Loki (case 7)
+  assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest', 'westLoki', 'westJorm']);   // T7b/3: + Loki (case 7) · T7b-2/5: + the serpent (case 15)
   assert.deepEqual(keys('cyberhell'), ['cyberRescue', 'cyberBreach', 'cyberFinal']);
   for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal).at(-1).challenge, true);
   assert.equal(ZONE_EVENTS.th[1].waves[3][0].hp, 360);      // BOSS-SKILLS set A: Tanthasura 90 -> 360 (with moves)

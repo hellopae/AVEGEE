@@ -118,6 +118,7 @@ import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
 import { Z2_KIN_BY_KEY, Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
+import { SEV, HOME67_TALK } from './z3f-severin.js';   // T7b-2/5
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1533,7 +1534,7 @@ function updateBossFab() {
     };
     ov.appendChild(f);
   }
-  f.textContent = pier ? `💬 คุยกับ${g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;
+  f.textContent = pier ? `💬 คุยกับ${g.home67Waiting?.() ? 'HOME-67' : g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;   // T7b-2/5: HOME-67 stands where Severin stood
   // N1: ขอบล่างปุ่ม (translate -100%) ชิดเหนือหัวบอส — ตำแหน่งเดียวกับที่ป้ายดำเดิมเคยอยู่ (ความสูงบอส = 92*1.12 เท่าของยมบาท ดู scene.js)
   f.dataset.sx = SPOTS.bossPier.x;
   f.dataset.sy = SPOTS.bossPier.y - 92 * 1.12 * CHAR_SCALE_MAP - 12;
@@ -3856,7 +3857,25 @@ function openYomathatPier() {
     };
   });
 }
+/** T7b-2/5 (Rae 5.5): HOME-67 on the pier of Zone 3 after Severin has left - the first talk is the 2-page scene, then the question: "I am ready" = the join scene + NH-3 (g.joinHome67), "let me prepare first" = his answer, and every later tap gives one of two lines. */
+function openHome67Pier() {
+  const en = getLang() === 'en', T = HOME67_TALK, L = o => (en ? o.en : o.th), first = !g.storySeen[SEV.pierSeen], waited = !!g.storySeen[`${SEV.pierSeen}:wait`];
+  pauseForDlg();
+  const ask = () => {
+    const again = waited ? `<p class="hint">${esc(L(T.again[Math.floor(Math.random() * T.again.length)]))}</p>` : '';
+    modal(`<h2>HOME-67</h2><div class="pier-talk">${again}<p>${esc(L(T.ask))}</p></div>
+      <div class="row"><button class="gold" data-h67-go>${esc(L(T.ready))}</button><button data-h67-wait>${esc(L(T.wait))}</button></div>`, d => {
+      d.querySelector('[data-h67-go]').onclick = () => { dlg.close(); g.joinHome67(); };
+      d.querySelector('[data-h67-wait]').onclick = () => {
+        g.storySeen[`${SEV.pierSeen}:wait`] = true; g.save();
+        modal(`<h2>HOME-67</h2><div class="pier-talk">${(en ? T.notYet.en : T.notYet.th).map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-close>${esc(L(T.later))}</button></div>`);
+      };
+    });
+  };
+  if (first && storyOf(SEV.home67Intro)) { openDlg('intro-comic-dialog'); renderStoryComic(dlg, storyOf(SEV.home67Intro), () => { g.storySeen[SEV.pierSeen] = true; g.save(); ask(); }); } else ask();
+}
 function openBossPier() {
+  if (g.home67Waiting?.()) return openHome67Pier();   // T7b-2/5
   if (HARBOR_ZONES.includes(g.zone) && g.bossGuideWaiting?.()) return openYomathatPier();
   const z = g.zoneDef();
   pauseForDlg();
@@ -7485,6 +7504,8 @@ g.onChange = () => {
         g.bossArriveSeen[g.zone] = true; g.save();
         proceed();
       });
+      // T7b-2/5 (Rae R2 C 5.1): N15-1 "the auditor has arrived" first, then his arrival scene (z3-sev-open), then the serpent's fight
+      if (z.k === 'west' && !g.storySeen['notice:' + SEV.arriveNotice]) { g.queueNotice(SEV.arriveNotice); g.onChange(); return; }
       // Z2-EVENTS case 15 (Rae 5.1): the notice "the general has come" -> he walks in through the lower border gate to the pier -> his words -> the test window
       if (z.k === 'asia') {
         if (!g.storySeen['notice:z2-lian-arrive']) { g.queueNotice('z2-lian-arrive'); g.onChange(); return; }

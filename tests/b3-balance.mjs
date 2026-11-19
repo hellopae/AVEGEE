@@ -70,7 +70,7 @@ const SCEN = [
   ['asia zoneBoss', 'asia', 3, 3, 3, g => { g.zoneCases.asia = 15; g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaWukong:'cleared', asiaRageBreach:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['west vampireBreach', 'west', 4, 4, 3, g => { g.zoneCases.west = 3; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'pending' }; return g.startZoneEvent('westVampireBreach'); }],
   ['west devaTest', 'west', 4, 5, 3, g => { g.zoneCases.west = 7; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'pending' }; return g.startZoneEvent('westDevaTest'); }],
-  ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 10; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared', westLoki:'cleared' }; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
+  ['west zoneBoss', 'west', 4, 6, 3, g => { g.zoneCases.west = 15; g.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared', westLoki:'cleared', westJorm:'cleared' }   /* T7b-2/5: Zone 3's boss is the case-15 beat, the serpent is fought before him */; const b = g.startZoneBoss(); g.startBossFight(); return b; }],
   ['cyber rescue', 'cyberhell', 5, 7, 3, g => { g.zoneEvents.cyberhell = { cyberRescue:'pending' }; return g.startZoneEvent('cyberRescue'); }],
   ['cyber breach', 'cyberhell', 5, 8, 3, g => { g.zoneCases.cyberhell = 5; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' }; return g.startZoneEvent('cyberBreach'); }],
 ];

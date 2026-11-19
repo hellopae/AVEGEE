@@ -6,6 +6,7 @@ import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
 import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
 import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
+import { SEV, JORM_TEXT, SEV_ARRIVE_LINES } from './z3f-severin.js';   // T7b-2/5
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -1921,7 +1922,7 @@ const challengeEvent = (zone, extra) => ({
   waves:CHALLENGE_WAVES[zone], restBeforeWaves:[CHALLENGE_REST_WAVE + 1], lose:{ hp:8 }, ...extra,
 });
 /** Cases judged in a zone before its zone boss arrives (default 10). Zone 2: owner 14 Nov - the boss is the 15th case, after the case 11 and case 13 events. */
-export const ZONE_BOSS_AT = { asia:15 };
+export const ZONE_BOSS_AT = { asia:15, west:15 };   // T7b-2/5 (Rae R2 C 5): Zone 3's boss is the case-15 beat (Severin + the serpent); was the default 10
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -2047,6 +2048,13 @@ export const ZONE_EVENTS = {
       openStory:LOKI.revealStory, winStories:[LOKI.winStory], loseStory:LOKI.loseStory, win:{ title:LOKI_TEXT.win.title, text:LOKI_TEXT.win.text }, loseText:{ title:LOKI_TEXT.lose.title, text:LOKI_TEXT.lose.text },
       foe:{ name:'โลกิ', nameEn:'Loki', sp:LOKI.sprite, hp:310, atk:[17,27], boss:true, skills:BOSS_SKILLS.loki, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.4] } },   // first numbers (no spec): between the deva (355 / 19-28) and Akura
       reward:{ coin:120 }, lose:{ hp:9 } },
+    // T7b-2/5 (Rae R2 C 5.1): the serpent is fought BEFORE Severin - game.js startZoneBoss opens this event on the first engagement and the boss fight comes on the second (the serpent never dies: it yields).
+    // Never by the case count (atCases 999 = outside the zone-boss gate). Numbers: Toby's first ones, between the deva and Severin.
+    { k:'westJorm', atCases:999, mode:'single',
+      title:JORM_TEXT.title, alert:JORM_TEXT.alert, go:JORM_TEXT.go, retry:JORM_TEXT.retry, banner:JORM_TEXT.banner, lines:JORM_TEXT.lines, linesEn:JORM_TEXT.linesEn,
+      winStories:[SEV.yieldsStory], winNotices:[SEV.yieldsNotice], loseStory:SEV.jormLoseStory, win:{ title:JORM_TEXT.win.title, text:JORM_TEXT.win.text }, loseText:{ title:JORM_TEXT.lose.title, text:JORM_TEXT.lose.text },
+      foe:{ name:'ยอร์มุนกันดร์', nameEn:'Jörmungandr', sp:'boss-jormungandr-west', hp:330, atk:[19,30], boss:true, skills:BOSS_SKILLS.jormungandr, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.4] } },
+      reward:{ coin:0 }, lose:{ hp:9 } },
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
   cyberhell:[
@@ -2159,12 +2167,7 @@ export const ZONES = [
     mobs:[6,7,8,9], coin:400 },
   { k:'west', scene:'scene-west-v2', w:1678, h:937, level:4, name:'โซนปัจฉิม', sub:'ยุโรป · อเมริกา · รัสเซีย',
     bossName:'เซเวอริน', bossSub:'อัศวินบัญชีปัจฉิม · ผู้ตรวจการบัญชีประจำสาขาปัจฉิม',
-    bossArrive:[
-      'เซเวอริน: "ข้าเป็นคู่แข่งของฮาลวาร์ หัวหน้าโซน 3 และบัลลังก์ปัจฉิมควรเป็นของข้า"',
-      'เซเวอริน: "เจ้าก็แค่เด็กน้อย จะมีฝีมือปกครองดินแดนนี้ได้อย่างไร ข้าไม่ยอมรับ!"',
-      'ยมบาทน้อย: "ถ้าอยากรู้ว่าข่าวจริงแค่ไหน ก็มาลองดูสิ"',
-      'เซเวอริน: "ตามนั้น เตรียมตัวให้ดี"',
-    ],
+    bossArrive:SEV_ARRIVE_LINES,   // T7b-2/5: Rae's z3-sev-open (4 pages) replaces the four older lines (its two [เดิม] lines are inside)
     bossTalk:'"บัญชีนี้จะสอบทานฝีมือเจ้าเอง ว่าสมกับข่าวลือหรือไม่"',
     bossWin:[ '"ยอดตรวจสอบออกมาสมกับที่เขาลือกันจริง ๆ"', '"ข้าขอปิดบัญชีนี้ด้วยการยกปัจฉิมให้เจ้าปกครอง"' ],
     bossLose:'"ยังไม่สมกับข่าวลือเลยนะ กลับมาท้าใหม่เมื่อพร้อม"',

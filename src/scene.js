@@ -616,6 +616,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     });
   }
 
+  // T7b-2/5 (Rae 5.5): HOME-67 waits on the pier of Zone 3 (Severin's ship has left) - placeholder drawing until Codex draws char-home67
+  if (g.zone === 'west' && g.home67?.phase === 'waiting') {
+    const hx = SPOTS.bossPier.x, hy = SPOTS.bossPier.y, hh = 92 * CHAR_SCALE_MAP * 1.12;
+    spot_(hx, hy, hh);
+    at(1e5 + hy, () => { ring(ctx, hx, hy, t, 32); shade(hx, hy, hh, c => drawStandee(c, 'char-home67', hx, hy, hh, t, '🕵️', 1, false, 'west')); });
+  }
   // T6/6 (Rae R2 B 6.6): Cerberus stands by the western gate once he has bowed - no talk (he does not speak), he is not the Guard
   if (g.zone === 'west' && g.cerberusGuarding?.()) {
     const gx = ZONE_ENTRY.gate[0] + 120, gy = ZONE_ENTRY.gate[1] - 96, gh = 150 * CHAR_SCALE_MAP;   // T7/2: bigger and higher - he was a small dot hidden behind the buttons at 390px (T6 note)

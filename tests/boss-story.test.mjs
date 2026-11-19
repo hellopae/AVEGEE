@@ -7,8 +7,9 @@ import { STORY } from '../src/story.js';
 globalThis.Image = class {};
 function boss(zone) {
   const g = createGame();
-  g.zone = zone; g.zoneCases[zone] = (zone === 'th' || zone === 'asia') ? 15 : 10;   // Z1-EVENTS: Zone 1's ruler is the case-15 beat
-  g.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].filter(e => e.atCases < ((zone === 'th' || zone === 'asia') ? 15 : 10)).map(e => [e.k,'cleared']));
+  const at = (zone === 'th' || zone === 'asia' || zone === 'west') ? 15 : 10;   // Z1-EVENTS: Zone 1's ruler is the case-15 beat · T7b-2/5: so is Zone 3's
+  g.zone = zone; g.zoneCases[zone] = at;
+  g.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].filter(e => e.atCases < at || (zone === 'west' && e.k === 'westJorm')).map(e => [e.k,'cleared']));   // the serpent (fought before Severin) counts as done here: the boss arena is what is tested
   const b = zone === 'th' ? (g.refreshZoneEvents(),g.startZoneEvent('thBorderBoss')) : g.startZoneBoss();
   assert.ok(b); b.youHp = b.youMax;
   return g;
@@ -66,7 +67,7 @@ test('Zone 3 wins grant ice and queue its two story panels', () => {
   b.foes.forEach(f => { f.hp = 1; });
   while (!b.over) { b.selectedFoeId = b.foes.find(f => f.hp > 0).id; g.battleAct('atk'); }
   assert.equal(b.over,'win'); assert.equal(g.abilities.ice,true);
-  assert.equal(g.storyQueue[0].key,'west'); assert.equal(STORY.west.pages.length,2);
+  assert.deepEqual(g.storyQueue.map(p => p.key).slice(0, 3), ['z3-sev-win', 'west', 'z3-sev-collateral']); assert.equal(STORY.west.pages.length,2);   // T7b-2/5: Severin's yielding first, the two ice panels, then the collateral
 });
 
 test('Rage requires 60 active seconds and three boosted attacks before reuse', () => {

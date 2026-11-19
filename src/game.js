@@ -17,6 +17,7 @@ import { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2
 import { LOKI } from './z3d-cases.js';   // T7b/3
 import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
+import { SEV, SEV_LINES, SEV_JOURNAL } from './z3f-severin.js';   // T7b-2/5
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -191,7 +192,7 @@ export function createGame() {
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     magic: freshMagic(),               // T4: Magic Lamp / summon state (src/lamp.js) - one for the whole game, saved at the top level of a save
-    storyCaseDone: {}, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
+    storyCaseDone: {}, home67: null, notices: [], kinSeen: {}, kinDone: {}, apeVerdict: null, z1EventsVersion: 1,   // Z1-EVENTS: judged story cases · queued notice windows (ui.js openStoryNotice)
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
     bossGuides:{version:1,zones:{}}, bossGuarding: {}, bossWalk: null, zoneEntry: null,
@@ -3095,7 +3096,16 @@ const API = {
       Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
 
+  /** T7b-2/5 (Rae 5.5): after Severin has left, HOME-67 stands on the pier of Zone 3 until Yama has answered "I am ready" */
+  home67Waiting() { return this.zone === 'west' && this.home67?.phase === 'waiting'; },
+  /** "I am ready": the join scene + NH-3; `home67Joined` stays on for part D (the walk to Frontier 3-4 with Yama + Nira + HOME-67 is T8). */
+  joinHome67() {
+    if (!this.home67Waiting() || this.battle) return false;
+    this.home67 = { phase:'joined' }; this.home67Joined = true;
+    this.queueStory(SEV.home67Join); this.queueNotice(SEV.home67JoinNotice); this.save(); this.onChange(); return true;
+  },
   bossPierCanTalk() {
+    if (this.home67Waiting() && !this.battle && !this.over && Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150) return true;
     return !this.battle && !this.over && !!this.bossCleared[this.zone] && !bossGuideDismissed(this) &&
       Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
@@ -3106,6 +3116,12 @@ const API = {
     if (this.battle || !(rematch ? this.bossPierCanTalk() : retry === 'alert'
       ? (this.bossReady() || (!!this.bossGuarding[this.zone] && this.zoneEventGateReady()))
       : retry ? this.bossCanChallenge() : this.bossReady())) return null;
+    // T7b-2/5 (Rae R2 C 5.1): Severin brings the serpent as collateral - the first engagement is the serpent's fight (nothing of the boss state is touched; it yields and the boss fight comes next)
+    if (this.zone === 'west' && !rematch && this.zoneEventStatus(SEV.jormKey) !== 'cleared') {
+      const states = this.zoneEvents.west ||= {};
+      if (states[SEV.jormKey] !== 'pending' && states[SEV.jormKey] !== 'active') states[SEV.jormKey] = 'pending';
+      return this.startZoneEvent(SEV.jormKey);
+    }
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
     const hp = scaleFoeHp(z.k, (['asia','west'].includes(z.k) ? BOSS_BALANCE[z.k].hp : 200 + n * 35), 'boss');   // ชุด 28B — ตัวคูณบอส
     this.bossPending = false;
@@ -3122,8 +3138,8 @@ const API = {
       // คือภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก) ตัด "ยมทูตคุ้มกัน" (แทนด้วยปุ่มนิรา — จัดทีมจริงดีกว่าโบนัส
       // สถิติลอย ๆ) กับ "เตรียมลูกไฟ" ออก (ซื้อลูกไฟที่พ่อค้าได้แล้ว ดู MERCHANT.stock/buyMerchant)
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
-      turn: 1, over: null, log: [], talk: z.k === 'asia' ? Z2_TEXT.lian.lines.start : z.bossTalk, dmg: null,   // Z2-EVENTS: Rae 5.4 - Lian Gang's own words in the fight
-      ...(z.k === 'asia' ? { halfLine:Z2_TEXT.lian.lines.half } : {}),
+      turn: 1, over: null, log: [], talk: z.k === 'asia' ? Z2_TEXT.lian.lines.start : z.k === 'west' ? langPick(SEV_LINES.start) : z.bossTalk, dmg: null,   // Z2-EVENTS: Rae 5.4 - Lian Gang's own words in the fight · T7b-2/5: Severin's (Rae 4.4)
+      ...(z.k === 'asia' ? { halfLine:Z2_TEXT.lian.lines.half } : z.k === 'west' ? { halfLine:langPick(SEV_LINES.half) } : {}),
       ultimateUsed:false, ultimateLastTurn:0, ultimate:null,
       prepStarted: false, proofBonus: this.miniGoals[z.k]?.earned ? 24 : 0,
     };
@@ -4451,7 +4467,9 @@ const API = {
       } else if (B.kind === 'zoneBoss') {
         const firstWin = !this.bossCleared[B.zone];
         this.bossCleared[B.zone] = true;
+        if (firstWin && B.zone === 'west') this.queueStory(SEV.winStory);   // T7b-2/5: Severin's yielding (3 pages, the PHANTOM-404 clue on the last) comes before the old ice panels
         if (firstWin && ['th','asia','west'].includes(B.zone)) this.queueStory(B.zone, STORY[B.zone].reward);
+        if (firstWin && B.zone === 'west') this.queueStory(SEV.collateralStory);   // T7b-2/5: then the collateral scene (helper no. 9, HOME-67 on the pier)
         if (firstWin && B.zone === 'asia') this.queueStory('z2-lian-win');   // Z2-EVENTS: the general accepts him (Rae 5.5) - then the boss-guide system takes over
         this.bossRetryAt[B.zone] = 0;
         this.bossGuarding[B.zone] = false;
@@ -4786,6 +4804,7 @@ const API = {
       } else if (B.kind === 'zoneBoss') {
         this.hp = 1;
         if (B.zone === 'asia') this.queueStory('z2-lian-lose');
+        if (B.zone === 'west') this.queueStory(SEV.sevLoseStory);   // T7b-2/5: Severin closes his ledger for now (Rae z3-sev-lose); the serpent is not fought again
         this.bossRetryAt[B.zone] = 0;
         this.bossGuarding[B.zone] = true;
         say(`${B.who}ยืนรอที่สะพาน — ท่านพร้อมเมื่อไหร่เดินเข้าไปท้าสู้`);
@@ -5126,6 +5145,8 @@ const API = {
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
       Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
     if (next?.key === 'deva-west') this.queueNotice(EIRLIN.waitNotice);   // T7b/4 (N10-1): she waits for the test
+    if (next?.key === SEV.winStory && !(this.journalNotes ||= []).includes(SEV_JOURNAL.th)) this.journalNotes.push(SEV_JOURNAL.th);   // T7b-2/5: the clue on his last page
+    if (next?.key === SEV.collateralStory) { this.unlockHelper(SEV.helper); this.home67 ||= { phase:'waiting' }; this.queueNotice(SEV.home67Notice); }   // T7b-2/5 (D4: NS-1 = lamp-helper-jormungandr; NS-2 is CUT) - Severin's ship has left, HOME-67 stands on the pier (NH-1)
     if (next?.key === EIRLIN.winStory) { this.queueNotice(EIRLIN.crateNotice); this.unlockHelper(EIRLIN.helper); }   // T7b/4 (N10-4' the crate = the valkyrieSpear reward; D4: her own event is passed -> helper no. 8, NE-1)
     if (next?.key === 'deva-cyberhell') {
       this.devaVisits.cyberhell = { phase:'waiting' };
@@ -5844,7 +5865,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     storyCaseDone:{...this.storyCaseDone}, notices:[...this.notices], kinSeen:{...this.kinSeen}, kinDone:structuredClone(this.kinDone), apeVerdict:this.apeVerdict||null, z1EventsVersion:1, journalNotes:[...(this.journalNotes||[])],
-    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guanyuEarned:!!this.guanyuEarned, boatman:structuredClone(ensureBoatman(this)), guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
+    sitaChoice:this.sitaChoice||null, wanthongPath:this.wanthongPath||null, guanyuEarned:!!this.guanyuEarned, home67:this.home67 ? { ...this.home67 } : null, home67Joined:!!this.home67Joined, boatman:structuredClone(ensureBoatman(this)), guardReserve:this.guardReserve||null, magic:structuredClone(ensureMagic(this)),
     gameCompleted: !!this.gameCompleted,
     e1Version:1, sideQuests:structuredClone(this.sideQuests),
     merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
@@ -6311,7 +6332,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.storyCaseDone = { ...(d.storyCaseDone || {}) }; this.notices = [...(d.notices || [])];
   this.kinSeen = { ...(d.kinSeen || {}) }; this.kinDone = structuredClone(d.kinDone || {}); this.apeVerdict = d.apeVerdict || null;
-  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guanyuEarned = !!d.guanyuEarned; this.boatman = d.boatman || null; ensureBoatman(this); this.guardReserve = d.guardReserve || null;
+  this.journalNotes = [...(d.journalNotes || [])]; this.sitaChoice = SITA_OLD_CHOICE[d.sitaChoice] || d.sitaChoice || null; this.wanthongPath = d.wanthongPath || null; this.guanyuEarned = !!d.guanyuEarned; this.home67 = d.home67 || null; this.home67Joined = !!d.home67Joined; this.boatman = d.boatman || null; ensureBoatman(this); this.guardReserve = d.guardReserve || null;
   migrateZ1Events(this, d);
   // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
   this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);
