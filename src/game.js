@@ -14,6 +14,7 @@ import { YOMATHAT } from './z1-yomathat.js';   // T5'/2-3
 import { GATE, GATE_GRANT } from './z2-gate.js';   // T5'/4-5
 import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1
+import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -22,6 +23,8 @@ import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
 /** T7: the lines of a zone event in the language of the game (data.js `lines` = Thai, `linesEn` = English when the script has it). */
+/** T7/2: one of Rae's {th,en} texts in the language of the game (a list of lines is joined with a newline). */
+const langPick = o => { const v = o ? (getLang() === 'en' ? o.en : o.th) : ''; return Array.isArray(v) ? v.join('\n') : v; };
 const evLines = ev => (getLang() === 'en' && ev.linesEn) ? ev.linesEn : (ev.lines || {});
 import {foremanCourier,foremanPhase,foremanStarving,foremanHungerBeat,advanceForeman,foremanSay} from './foreman.js';   // FOREMAN: Dam leads the workers (owner 14 Nov)
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice,feedActor,orderCanteenMeal,advanceCanteenDiner,foodAvailable,takeFood} from './canteen.js';
@@ -3301,6 +3304,7 @@ const API = {
     }
     if (zone === 'west') {
       if (['pending','active'].includes(states.westVampireBreach)) this.westFreezeAt ||= Date.now();
+      if (states.westVampireBreach === 'pending' && zone === this.zone) this.queueStory(Z3_FRONTIER.freezeStory);   // T7/2 (Rae 2.3): the square falls silent (N5-1 is the event alert that follows)
       if (states.westDevaTest === 'pending' && !this.devaVisits.west)
         this.devaVisits.west = { phase:'descending', elapsed:0 };
     }
@@ -3313,12 +3317,12 @@ const API = {
     return states;
   },
   zoneEventFoes(ev, wave = 1) {
-    if (ev.k === 'westVampireBreach' && wave === 3) {
-      const chosen = this.battle?.hypnotizedTeam || this.battleCrew();
-      return chosen.map((c,i) => {
-        const hp = scaleFoeHp('west', 65, 'event');
-        return { id:`west-hypnotized-${i}`, who:`${c.name || crewName(c,'west')} · ถูกสะกดจิต`, sub:'ปลดปล่อยลูกทีม', sp:`crew-${c.k}-west`,
-          crewK:c.k, boss:false, hp, maxHp:hp, atk:scaleFoeAtk('west',[10,15],'event'), stun:0, confuse:0 };
+    if (ev.k === 'westVampireBreach' && wave === 4) {
+      // T7/2 (Rae R2 C 2.1 + owner 19 Nov): wave 4 is a FIXED team under Valdric's spell - Poena + Noir + Nira + Cerberus (green eyes). Van Helsing is not touched and fights beside Yama.
+      return Z3_HYPNO_TEAM.map((c, i) => {
+        const hp = scaleFoeHp('west', c.k === 'cerberus' ? 85 : 65, 'event');
+        return { id:`west-hypnotized-${i}`, who:`${getLang() === 'en' ? c.en : c.th} · ${langPick(Z3_FRONTIER_TEXT.hypnoFoe)}`, sub:langPick(Z3_FRONTIER_TEXT.banners).split('\n')[3], sp:c.sp,
+          crewK:c.k, boss:false, hp, maxHp:hp, atk:scaleFoeAtk('west', c.k === 'cerberus' ? [12,18] : [10,15], 'event'), stun:0, confuse:0 };
       });
     }
     const groups = ev.mode === 'waves' ? ev.waves[wave - 1] : ev.foes || [ev.foe];
@@ -3328,7 +3332,7 @@ const API = {
       const kindOf = entry.boss ? 'boss' : 'event';   // ชุด 28B
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
       return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : (getLang() === 'en' && entry.nameEn) || entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
-        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
+        sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.banners ? (getLang() === 'en' ? ev.banners.en : ev.banners.th)[wave - 1] : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...((entry.skillsEach ? entry.skillsEach[i] : entry.skills) ? { skills:structuredClone(entry.skillsEach ? entry.skillsEach[i] : entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
     }));
@@ -3340,11 +3344,13 @@ const API = {
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
     if(ev.signal && (ev.mode==='story' || !signalRequirements(this,ev) || !this.storySeen[signalStory(key,'open')] || !['call','rush'].includes(signalChoice || this.signalChoices[key]))) return null;
     if(ev.signal)this.signalChoices[key]=signalChoice || this.signalChoices[key];
-    if (key === 'westVampireBreach' && !this.crewHelpers().length && !this.guardActive()) return null;
     const foes = this.zoneEventFoes(ev, 1);
     if (!foes.length) return null;
     const state = this.zoneEvents[this.zone];
     state[key] = 'active'; this.fights++;
+    if (key === 'westVampireBreach' && !this.guard) {   // T7/2: Van Helsing steps in as the Guard of this fight; he stays only if it is won (benchLockedGuard)
+      this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'west', 'guard'); this.guard.breachGuest = true; syncRoster(this);
+    }
     // 29C: ศึกระลอกชายแดนใช้ทีมที่จัดไว้ในหน้าต่างเตรียมทีมที่ชายแดน (เดิมใช้ทีมของโต๊ะนิรา ทำให้ที่เลือกไว้ไม่มีผล)
     const frontierTeam = ev.team === 'frontier'
       ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
@@ -3356,10 +3362,7 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:evLines(ev).start || ev.banner?.th || ev.alert.th, ...(evLines(ev).half ? { halfLine:evLines(ev).half } : {}), ...(evLines(ev).first ? { firstLine:evLines(ev).first } : {}) });
-    if (key === 'westVampireBreach') {
-      const allies = [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])];
-      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? guardName(this.zone) : crewName(c,'west') }));
-    }
+    if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
     if(ev.signal)this.battle.signalChoice=this.signalChoices[key];
@@ -3606,12 +3609,11 @@ const API = {
     if (this.zoneEventRestReady() && !resume) return false;
     b.wave = b.pendingWave; b.pendingWave = null;
     if (ev.k === 'westVampireBreach') {
-      if (b.wave === 3) {
-        b.hypnotizedTeam ||= [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])].map(c => ({k:c.k || 'guard',id:c.id,name:c.name}));
+      if (b.wave === 4) {   // T7/2: the hypnosis scene, then our helpers stand aside (their place is the fixed wave-4 foes); the Guard (Van Helsing) is not touched
         b.hypnosisAbsentBefore = [...(b.absentActors || [])];
-        b.absentActors = [...new Set([...b.hypnosisAbsentBefore, ...b.hypnotizedTeam.map(c => c.id).filter(Boolean)])];
+        b.absentActors = [...new Set([...b.hypnosisAbsentBefore, ...this.battleCrew().map(c => c.id).filter(Boolean)])];
         b.storyInterlude = 'west-hypnosis';
-      } else if (b.wave === 4 && b.hypnosisAbsentBefore) b.absentActors = b.hypnosisAbsentBefore;
+      } else if (b.wave === 5 && b.hypnosisAbsentBefore) b.absentActors = b.hypnosisAbsentBefore;
     }
     b.foes = this.zoneEventFoes(ev, b.wave);
     b.selectedFoeId = b.foes[0].id; b.counterIndex = 0;
@@ -3621,6 +3623,11 @@ const API = {
     b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}`;
     // Z2-EVENTS (Rae 3.3 / 3.5): Nira reads the field between the waves; Akura speaks when his row comes
     if (ev.k === 'asiaRageBreach') b.talk = b.wave === 2 ? Z2_TEXT.breach.afterWave1 : b.wave === 3 ? Z2_TEXT.breach.afterWave2 : b.foes.some(f => f.boss) ? Z2_TEXT.breach.lines.start : b.talk;
+    if (ev.k === 'westVampireBreach') {   // T7/2 (Rae 2.4 / 2.6): Nira and Van Helsing between the waves, the wake-up lines after the team, Valdric's first line; his half-way line (+ Van Helsing's) is set for the boss row
+      const lines = Z3_FRONTIER_TEXT.between;
+      b.talk = b.wave === 2 ? langPick(lines[1]) : b.wave === 3 ? langPick(lines[2]) : b.wave === 4 ? langPick(Z3_FRONTIER_TEXT.banners).split('\n')[3] : `${langPick(lines[4])}\n${langPick(Z3_FRONTIER_TEXT.valdricStart)}`;
+      if (b.wave === 5) { b.halfLine = `${langPick(Z3_FRONTIER_TEXT.valdricHalf)}\n${langPick(Z3_FRONTIER_TEXT.vhHalf)}`; b.halfSaid = false; }
+    }
     this.onChange(); return true;
   },
   completeBattleInterlude() {
@@ -3912,6 +3919,7 @@ const API = {
   /** Z2-EVENTS: after every action the foe may say his half-way line (once) - set here, after the whole action, so the foe's own counter-line cannot cover it. */
   battleAct(what, command = null) {
     const ok = this.battleActCore(what, command), B = this.battle;
+    this.cerberusAssist(B);   // T7/2 (owner 19 Nov, item 7)
     // T7/1: a line said once after the FIRST foe falls (data.js lines.first) while others still stand
     if (B?.firstLine && !B.firstSaid && !B.over && B.foes.some(f => f.hp <= 0) && B.foes.some(f => f.hp > 0)) { B.firstSaid = true; B.talk = B.firstLine; this.onChange(); }
     if (B?.halfLine && !B.halfSaid && !B.over) {
@@ -4396,6 +4404,7 @@ const API = {
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
+        if (B.eventKey === Z3_FRONTIER.eventKey && this.guard) delete this.guard.breachGuest;   // T7/2: Van Helsing stays as the Gate Guard of the West
         if (B.eventKey === GATE.eventKey) this.guanyuEarned = true;   // T5'/4: Zone 2 will have its Guard
         if (B.eventKey === WANTHONG.eventKey) this.queueStory(`z1-khunphaen-win-${this.wanthongPath || 'punish'}`);   // T5'/1: the end of that scene hands over Kuman Thong (completeStory)
         if (B.eventKey === 'sitaHanuman') for (const key of ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', `sita-return-${this.sitaChoice || 'hold'}`]) this.queueStory(key);   // R2 A 3.1: the lamp comes after the PHANTOM-404 scene, before Sita is sent home
@@ -4753,6 +4762,7 @@ const API = {
         const loseEv = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
         if (loseEv?.loseStory) this.queueStory(loseEv.loseStory);   // Z2-EVENTS: the foe lets Yama rise (once per scene)
         this.zoneEvents[B.zone][B.eventKey] = 'pending';
+        if (B.eventKey === Z3_FRONTIER.eventKey) this.benchLockedGuard();   // T7/2: the guest Guard goes back until the fight is won
         this.hp = 1;
         B.talk = loseEv?.loseText?.text || `${loseEv?.title.th || 'ศัตรู'}ยังรออยู่ที่ชายแดน — ไปพักศาลาน้ำชาแล้วกลับมาท้าสู้ใหม่`;
         say(B.talk);
@@ -5030,6 +5040,25 @@ const API = {
     m.cerbSaid = true; this.log(`🐕 ${GUARD_LINES[Math.floor(Math.random() * GUARD_LINES.length)].th}`, 'act');
     m.hp = Math.min(m.hp, 1); this.strike(this.mobs.indexOf(m), 'เซอร์เบอรัส'); return true;
   },
+  /** T7/2 (owner 19 Nov, item 7): once he stands at the western gate, Cerberus also steps into the FRONTIER fights of Zone 3 and helps like a Guard - one lunge at the chosen foe after Yama's action, then the Guard's 1-minute wait
+   *  (GUARD.helpCdMs, real time). Simplified: he is not a commandable actor, and his lunge never kills (it leaves the foe on 1 hp at least) so the fight's own win / wave bookkeeping stays untouched. He is NOT the Guard and NOT a helper of the lamp.
+   *  Not in the case-5 waves 1-4 (he is a foe in wave 4 and wakes only for Valdric's wave 5). */
+  cerberusAssistReady(B = this.battle, now = Date.now()) {
+    if (this.zone !== 'west' || !B || B.over || B.pendingWave || B.storyInterlude || !this.cerberusGuarding() || now < (this.cerberusReadyAt || 0)) return false;
+    if (B.kind === 'frontier') return true;
+    if (B.kind !== 'zoneEvent') return false;
+    const ev = ZONE_EVENTS.west.find(e => e.k === B.eventKey);
+    return !!ev && ev.team === 'frontier' && (B.eventKey !== Z3_FRONTIER.eventKey || B.wave === 5);
+  },
+  cerberusAssist(B = this.battle, now = Date.now()) {
+    if (!this.cerberusAssistReady(B, now)) return false;
+    const foe = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 1) || B.foes.find(f => f.hp > 1);
+    if (!foe) return false;
+    const dmg = Math.min(foe.hp - 1, GUARD.battleAtk);
+    foe.hp -= dmg; this.cerberusReadyAt = now + GUARD.helpCdMs;
+    B.cerberusStrike = { foeId:foe.id, dmg, at:now }; B.talk = `${langPick(GUARD_LINES[Math.floor(Math.random() * GUARD_LINES.length)])}`;
+    this.onChange(); return true;
+  },
   /** T5'/4 (Rae 7.1): the end of the border walk reached with Yomathat beside Yama and Guan Yu not yet convinced - the gate scene + fight come first. */
   gateFightDue() {
     const st = dungeonStatus(this);
@@ -5111,6 +5140,10 @@ const API = {
     if (next?.key?.startsWith(GUANYIN.thanksStory)) { this.queueNotice(GUANYIN.petalNotice); if (!(this.journalNotes ||= []).includes(PETAL_NOTE)) this.journalNotes.push(PETAL_NOTE); }   // T6/2 (NGY-3): a keepsake, no stat
     if (next?.key === Z3_ARRIVE.clearStory && !(this.journalNotes ||= []).includes(Z3_PHANTOM_NOTE.th)) this.journalNotes.push(Z3_PHANTOM_NOTE.th);   // T7/1: PHANTOM-404 on Poena's roster
     if (next?.key === 'z2-ape-phantom') this.queueNotice('z2-ape-phantom');
+    // T7/2 (Rae R2 C 2): Valdric falls -> NV-1 (Hypnosis) after the 3rd page; Van Helsing's scene -> NV-2 (he is the Gate Guard of the West), then N5-5 "to the dais" (moved here from the fall scene, Reese 4.3) + the journal line; after his release -> N5-6
+    if (next?.key === Z3_FRONTIER.downStory) this.queueNotice(Z3_FRONTIER.powerNotice);
+    if (next?.key === Z3_FRONTIER.guardStory) { this.queueNotice(Z3_FRONTIER.guardNotice); this.queueNotice(Z3_FRONTIER.daisNotice); if (!(this.journalNotes ||= []).includes(VH_JOURNAL.th)) this.journalNotes.push(VH_JOURNAL.th); }
+    if (next?.key === 'frontier-west-boss-released') this.queueNotice(Z3_FRONTIER.manorNotice);
     if (next?.key === 'z2-akura-down') this.queueNotice('z2-akura-to-dais');             // Rae N11-5
     if (next?.key === 'frontier-asia-boss-released') this.queueNotice('z2-akura-cave');   // Rae N11-6   // Z2-EVENTS: the journal window after Nira's scene
     if (next?.key?.startsWith('deva-th-')) {
@@ -5396,6 +5429,9 @@ const API = {
   guardUnlocked(zone = this.zone) { return guardUnlocked(this, zone); },
   /** Zone 1: a Guard who is with the team before the frontier breach is won goes back to his gate (lost breach / reload mid-fight). */
   benchLockedGuard() {
+    if (this.zone === 'west' && this.guard?.breachGuest && this.zoneEventStatus(Z3_FRONTIER.eventKey) !== 'cleared') {   // T7/2: Van Helsing steps in for the case-5 fight only; a lost fight / reload sends him back
+      delete this.roster[this.guard.id]; this.guard = null; return true;
+    }
     if (this.zone !== 'th' || !this.guard || guardUnlocked(this, 'th')) return false;
     if (!this.guard.breachGuest) this.guardReserve = snapshotRoster({ [this.guard.id]:this.guard })[this.guard.id];
     delete this.roster[this.guard.id]; this.guard = null; return true;

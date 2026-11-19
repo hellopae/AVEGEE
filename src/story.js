@@ -4,6 +4,7 @@ import { t, getLang } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
 import { Z1_STORIES, TEAM_MOVE_UNLOCK } from './z1-events.js';
+import { Z3_FRONTIER_STORIES } from './z3c-frontier.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.webp`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
@@ -38,10 +39,7 @@ export const STORY = {
     panel('asia-04','ไม่มีใครทำร้ายเธออีก','ยมบาทน้อยพุ่งเข้าโจมตีด้วยพลังบ้าคลั่ง จนบอสและปีศาจทั้งสองพ่ายแพ้\nเหลียนกัง: "ข้าไม่ได้ตั้งใจให้แม่นางผู้นั้นบาดเจ็บ ข้าขออภัย"'),
     panel('asia-05-v2','พักก่อนนะ นิรา','นิราไปพักที่ศาลาน้ำชา แวะไปเยี่ยมเธอได้ พัก 3 วาระก็จะหายและกลับมาช่วยงานตามเดิม\nยมบาทน้อย: "พักก่อนนะ นิรา"\nนิรา: "ค่ะ ท่านคะ ดิฉันฝากแฟ้มไว้กับท่านสามวาระเท่านั้นนะคะ"'),
   ]},
-  'west-hypnosis': { title:'โซน 3 · ลูกทีมที่ถูกสะกดจิต', pages:[
-    { image:'img/frontier-west-hypnosis-v1.webp', title:'วาลดริก · เจ้าแห่งแวมไพร์', line:'ลูกน้องสองระลอกล้มลงแล้วหรือ? ถ้าเช่นนั้น จงรับมือคนของเจ้าเอง!\nแวมไพร์สะกดจิตยมทูตและ Guard โซน 3 ทุกคนให้หันอาวุธเข้าหายมบาทน้อย' },
-    { image:'img/frontier-west-hypnosis-v1.webp', title:'ช่วยทุกคนกลับมา', line:'ยมบาทน้อย: ตั้งสติไว้! ข้าจะทำลายมนต์สะกดและพาพวกเจ้ากลับมา\nเอาชนะยมทูตที่จัดทีมมาและ Guard ในระลอก 3 เพื่อปลดปล่อย ก่อนเข้าต่อสู้กับแวมไพร์' },
-  ]},
+  'west-hypnosis': Z3_FRONTIER_STORIES['z3-hypnosis-v2'],   // T7/2: the new scene (the team + Cerberus under the spell, Van Helsing untouched) replaces the old two-wave text; same key so the battle interlude / history unlock keep working
   west: { title:'โซน 3 · ของขวัญจากผู้พ่ายแพ้', reward:'ice', pages:[
     panel('west-01','ผู้ท้าชิงยอมรับ','เซเวอริน คู่แข่งของฮาลวาร์ที่เคยคิดยึดอำนาจ ยอมรับฝีมือยมบาทน้อยหลังพ่ายแพ้ และยอมให้ปกครองโซน 3'),
     panel('west-02','ผนึกน้ำแข็ง','ความเย็นรวมตัวในฝ่ามือ ยมบาทน้อยได้รับพลังน้ำแข็งไว้ใช้ในการต่อสู้'),

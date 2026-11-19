@@ -25,21 +25,20 @@ function defeatWave(g) {
    assert.equal(g.battleAct('atk'),true);
  }
 }
-test('hypnosis enemies match selected party and Guard; freed allies return before vampire',()=>{
- for(const [pair,guard] of [[['taan','dam'],true],[['boon','kan'],true],[['plerng','dam'],false]]) {
-  const g=west(pair,guard), allies=g.battle.hypnotizedTeam.map(c=>c.k);
-  assert.deepEqual(allies,[...pair,...(guard?['guard']:[])]);
-  defeatWave(g);assert.equal(g.advanceZoneEventWave(),true);
-  defeatWave(g);assert.equal(g.advanceZoneEventWave(),true);
-  assert.equal(g.battle.wave,3);assert.equal(g.battle.storyInterlude,'west-hypnosis');
-  assert.deepEqual(g.battle.foes.map(f=>f.crewK),allies);
-  assert.deepEqual(g.battleCrew(),[]);assert.equal(g.enemyGuard(),null);
+test('T7/2 wave 4 = the fixed team under the spell (Poena + Noir + Nira + Cerberus), Van Helsing fights on; the chosen helpers stand aside and return before Valdric',()=>{
+ for(const pair of [['taan','dam'],['boon','kan'],['plerng','dam']]) {
+  const g=west(pair,false);
+  assert.ok(g.guard?.breachGuest,'Van Helsing steps in as the guest Guard');
+  for(const w of [1,2,3]){assert.equal(g.battle.wave,w);defeatWave(g);assert.equal(g.advanceZoneEventWave(),true);}
+  assert.equal(g.battle.wave,4);assert.equal(g.battle.storyInterlude,'west-hypnosis');
+  assert.deepEqual(g.battle.foes.map(f=>f.crewK),['taan','dam','nira','cerberus']);
+  assert.deepEqual(g.battleCrew(),[]);assert.ok(g.enemyGuard(),'Van Helsing is not hypnotized and stays on our side');
   assert.equal(g.battleAct('atk'),false);
   assert.equal(g.completeBattleInterlude(),true);assert.equal(g.completeBattleInterlude(),false);
   const morale=g.crew.filter(c=>pair.includes(c.k)).map(c=>c.morale);
   defeatWave(g);assert.deepEqual(g.crew.filter(c=>pair.includes(c.k)).map(c=>c.morale),morale);
-  assert.equal(g.advanceZoneEventWave(),true);assert.equal(g.battle.wave,4);
-  assert.deepEqual(g.battleCrew().map(c=>c.k),pair);assert.equal(!!g.enemyGuard(),guard);
+  assert.equal(g.advanceZoneEventWave(),true);assert.equal(g.battle.wave,5);
+  assert.deepEqual(g.battleCrew().map(c=>c.k),pair);assert.ok(g.enemyGuard());
   assert.equal(g.battle.foes[0].sp,'boss-frontier-west');
   assert.equal(g.abilities.hypno,undefined);
   defeatWave(g);assert.equal(g.battle.over,'win');assert.equal(g.abilities.hypno,true);

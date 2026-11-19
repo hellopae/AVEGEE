@@ -4,6 +4,7 @@ import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // B
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
+import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
 import { GATE_TEXT } from './z2-gate.js';   // T5'/4: the gate of Zone 2 (Rae R2 A 7)   // T5'/1: case 13 text (Rae R2 A 4)
@@ -738,7 +739,7 @@ export const MOB = {
 export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
 /** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard
  *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */
-export const GUARD_NAMES = Object.freeze({ asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
+export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } } });
 export const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;
 export const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';
 export const GUARD = {
@@ -2015,7 +2016,7 @@ export const ZONE_EVENTS = {
     { k:'z3Cerberus', atCases:999, mode:'single', gate:true,
       title:CERBERUS_TEXT.title, alert:CERBERUS_TEXT.alert, go:CERBERUS_TEXT.go, retry:CERBERUS_TEXT.retry, banner:CERBERUS_TEXT.banner, lines:CERBERUS_TEXT.lines,
       win:{ title:CERBERUS_TEXT.win.title, text:CERBERUS_TEXT.win.text }, loseText:{ title:CERBERUS_TEXT.lose.title, text:CERBERUS_TEXT.lose.text }, loseStory:'z3gate-cerberus-lose', winStories:['z3gate-cerberus-win'],
-      foe:{ name:'เซอร์เบอรัส', sp:'boss-cerberus-west', hp:380, atk:[22,34], boss:true, skills:BOSS_SKILLS.cerberus },
+      foe:{ name:'เซอร์เบอรัส', sp:'boss-cerberus-gate-west', hp:380, atk:[22,34], boss:true, skills:BOSS_SKILLS.cerberus },
       reward:{}, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
@@ -2025,14 +2026,15 @@ export const ZONE_EVENTS = {
       title:Z3A.title, alert:Z3A.alert, go:Z3A.go, banner:Z3A.banner, lines:Z3A.lines, linesEn:Z3A.linesEn,
       foes:[{ name:Z3A.foe.th, nameEn:Z3A.foe.en, sp:'spirit1', count:3, hp:42, atk:[8,12] }],
       winStories:[Z3_ARRIVE.clearStory], winNotices:[Z3_ARRIVE.clearedNotice], win:{ title:Z3A.win.title, text:Z3A.lines.last }, reward:{ coin:70 } },
-    { k:'westVampireBreach', atCases:3, requires:['westHypnotized'], mode:'waves', team:'frontier',
-      title:{ th:'แวมไพร์ที่ชายแดน', en:'Vampire at the frontier' },
-      alert:{ th:'ปีศาจทรงพลังบุกชายแดน ทำให้วิญญาณทั่วดินแดนหยุดนิ่ง! เดินลงชายแดนเพื่อปราบลูกน้องสองระลอก ช่วยยมทูตและ Guard ในทีมจากการสะกดจิต แล้วปราบแวมไพร์', en:'A powerful demon has invaded the frontier, freezing every spirit in the realm! Head down to defeat two minion waves, free your hypnotized party and Guard, then defeat the vampire.' },
-      waves:[[{ kind:10, count:2, hp:55, atk:[9,14] }], [{ kind:10, count:2, hp:60, atk:[10,15] }],
-        [{ crew:'taan', count:1, hp:65, atk:[10,15] }, { crew:'dam', count:1, hp:65, atk:[10,15] }],
+    // T7/2 (Rae R2 C 2): case 5 - the spirits stop; Van Helsing (a guest in the fight, then the Gate Guard of the West) holds the frontier against Valdric. 3 demon waves, then wave 4 = our own team under the spell
+    // (fixed: Poena + Noir + Nira + Cerberus - game.js zoneEventFoes), then Valdric (his row is counted apart, like Akura). Reward `hypno` as before; atCases 3 -> 5.
+    { k:'westVampireBreach', atCases:5, requires:['westHypnotized'], mode:'waves', team:'frontier', bossApart:true,
+      title:Z3F.title, alert:Z3F.alert, ack:Z3F.ack, banner:Z3F.boss, banners:Z3F.banners, winStories:[Z3_FRONTIER.downStory, Z3_FRONTIER.guardStory],
+      waves:[[{ kind:10, count:2, hp:55, atk:[9,14] }], [{ kind:10, count:2, hp:60, atk:[10,15] }], [{ kind:10, count:1, hp:55, atk:[9,14] }, { kind:2, count:1, hp:55, atk:[9,14] }],
+        [{ name:'ลูกทีมถูกสะกด', count:4, hp:65, atk:[10,15] }],   // wave 4: placeholder row, the foes are built from Z3_HYPNO_TEAM (game.js zoneEventFoes)
         [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[12,18], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
-    { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
+    { k:'westDevaTest', atCases:10, requires:['westVampireBreach'], mode:'single',
       title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
       alert:{ th:'เทวดามาปราบแวมไพร์ แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
       foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[19,28], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %

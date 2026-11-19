@@ -113,7 +113,7 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     }
     const { width, height } = imageMeta(png);   // PNG / lossy / lossless / alpha WebP
     const layout = comicImageLayout(panel.image, width, height);
-    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v1.webp' || panel.image === 'img/crew-guard-cutscene.webp') {   // guard cutscene was a JPEG before 12 Nov: full frame, no letterbox
+    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v2.webp' || panel.image === 'img/crew-guard-cutscene.webp') {   // guard cutscene was a JPEG before 12 Nov: full frame, no letterbox
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
     }

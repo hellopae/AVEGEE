@@ -4,15 +4,17 @@ import { STATIONS, SPOTS, FRONTIER, CREW, ZONE_EVENTS, isFrontierBreachEvent } f
 import { findPath, nearestWalk } from './walk.js?v=k1d';
 import { pointAtDistance, pathLength } from './escort.js';
 import { AKURA_TRIAL } from './z2-events.js';
+import { WEST_TRIAL } from './z3c-frontier.js';   // T7/2: Zone 3's border boss Valdric is tried the same way
 export const JUSTICE_PHASES = ['capture','dais','trial','escort','punishment','sentenceScene','return','aftermath','released'];
 // Z1-EVENTS (owner 13 Nov 2026): Zone 1's border boss is tried in the real trial arena with the answer locked by the mirror, and the
 // walk to the dais / the punishment / the release are cutscenes (no small form, no escort walk on the map - owner e5 e6 e7).
 //   capture --story ARENA_STORY.toDais--> dais -> trial --sentence--> aftermath --stories punished, released--> released
 export const ARENA_STORY = Object.freeze({ toDais:'frontier-th-boss-to-dais', punished:'frontier-th-boss-punished', released:'frontier-th-boss-released' });
 // Z2-EVENTS (owner 14 Nov 2026): Zone 2's border boss Akura is tried the same way - the answer is locked by the mirror, here the exercise yard at middle strength (AKURA_TRIAL).
-export const ARENA_STORIES = Object.freeze({ th:ARENA_STORY, asia:Object.freeze({ toDais:'frontier-asia-boss-to-dais', punished:'frontier-asia-boss-punished', released:'frontier-asia-boss-released' }) });
+export const ARENA_STORIES = Object.freeze({ th:ARENA_STORY, asia:Object.freeze({ toDais:'frontier-asia-boss-to-dais', punished:'frontier-asia-boss-punished', released:'frontier-asia-boss-released' }),
+  west:Object.freeze({ toDais:'frontier-west-boss-to-dais', punished:'frontier-west-boss-punished', released:'frontier-west-boss-released' }) });
 const arenaStories = c => ARENA_STORIES[c?.zone] || ARENA_STORY;
-const arenaDocket = (zone, role, final) => !final && (zone === 'th' || zone === 'asia') && role === 'frontier';
+const arenaDocket = (zone, role, final) => !final && (zone === 'th' || zone === 'asia' || zone === 'west') && role === 'frontier';
 /** After a reload: a docket waiting on a cutscene that is no longer queued must not hang. */
 export function reconcileArenaDocket(g) {
   const c = bossJusticeCase(g); if (!c?.arena) return;
@@ -99,9 +101,9 @@ export function bossJusticeStations(g) {
 export function bossJusticeAnswer(g) {
   const dest=bossJusticeStations(g), crew=bossJusticeCrew(g), c=bossJusticeCase(g);
   // Z2-EVENTS: Akura's locked answer is the exercise yard at middle strength (owner 14 Nov); every other docket keeps the old one
-  const asia=c?.arena&&c.zone==='asia';
-  return {station:(dest.find(s=>s.def.k===(asia?AKURA_TRIAL.station:'krata'))||dest.find(s=>s.def.k==='krata')||dest[0])?.def.k,
-    crew:(crew.find(c=>c.k==='taan')||crew[0])?.k,intensity:asia?AKURA_TRIAL.intensity:5};
+  const trial=c?.arena?(c.zone==='asia'?AKURA_TRIAL:c.zone==='west'?WEST_TRIAL:null):null;   // T7/2: Valdric = the copper pan, heavy (4 of 5)
+  return {station:(dest.find(s=>s.def.k===(trial?trial.station:'krata'))||dest.find(s=>s.def.k==='krata')||dest[0])?.def.k,
+    crew:(crew.find(c=>c.k==='taan')||crew[0])?.k,intensity:trial?trial.intensity:5};
 }
 export function interrogateBoss(g) {
   const c=bossJusticeCase(g);if(!c||!['dais','trial'].includes(c.phase))return false;

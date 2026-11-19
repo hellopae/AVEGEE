@@ -39,7 +39,7 @@ export const Z2_SOUL_SPRITE = Object.freeze({
   fakecup:'soul-cupdealer-asia', granarysister:'soul-granary-sister-asia',
   A2:'soul-bandit-chief-asia',      // the old bandit case (Kuro's relative): his own drawing wherever A2 stands (Z2-ART-C)
 });
-export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|guanyin-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia|boss-ryujin-asia|char-musashi-asia|boss-cerberus-west|guard-cerberus-west)(-profile|-guard)?$/;
+export const Z2_ART_KEY = /^(soul-(ape-elder|satori-father|guanyin-father|deserter|commander|cupdealer|granary-sister|bandit-chief)-asia|boss-wukong-asia|boss-wukong-clone-asia|boss-guanyu-asia|boss-ryujin-asia|char-musashi-asia|boss-cerberus-west|boss-cerberus-gate-west|guard-cerberus-west)(-profile|-guard)?$/;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Story pages. Rae's text is copied verbatim (z2-events-text.js); here only the pictures are attached - one picture per page, the last one repeats.

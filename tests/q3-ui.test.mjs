@@ -51,7 +51,8 @@ test('Q3 team HUD: one row of workers, one row of yamatoot + guard, every member
 });
 
 test('Q3 vampire is spelled with the thanthakhat in the frontier event copy', () => {
-  assert.match(data,/th:'แวมไพร์ที่ชายแดน'/);
+  // T7/2: the event title is Rae's 'ปัจฉิมหยุดนิ่ง' now (z3c-frontier.js); the vampire is still spelled with the thanthakhat where he is named
+  assert.match(data,/name:'แวมไพร์'/);
   assert.match(data,/เทวดามาปราบแวมไพร์ แต่/);
   assert.doesNotMatch(data,/แวมไพร(?![์])/);
 });

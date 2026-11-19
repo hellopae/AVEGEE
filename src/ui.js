@@ -3889,6 +3889,12 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       renderStoryComic(dlg, storyOf('z2-breach-intro'), () => { g.storySeen['z2-breach-intro'] = true; g.save(); toPrep(); });
       return;
     }
+    // T7/2 (Rae R2 C 2.3): Zone 3's frontier scene is the three-page meeting of Van Helsing and Valdric (the single line of the old introduction is not played here)
+    if (g.zone === 'west' && breachKey === 'westVampireBreach' && storyOf('z3-vh-frontier')) {
+      openDlg('intro-comic-dialog');
+      renderStoryComic(dlg, storyOf('z3-vh-frontier'), () => { g.storySeen['z3-vh-frontier'] = true; g.save(); toPrep(); });
+      return;
+    }
     // Z1-EVENTS (case 9): right after the intro, the green giant who keeps the border gate steps out to help (cutscene, once)
     const proceed = () => {
       const key = 'frontier-th-guard-joins';

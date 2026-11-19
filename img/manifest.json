@@ -385,7 +385,12 @@
 "z2-events/boss-ryujin-asia-profile.webp",
 "z3-events/guard-cerberus-west.webp",
 "z3-events/boss-cerberus-west.webp",
-"z3-events/boss-cerberus-west-profile.webp"
+"z3-events/boss-cerberus-west-profile.webp",
+"z3-events/guard-vanhelsing-west.webp",
+"z3-events/guard-vanhelsing-west-profile.webp",
+"frontier-west-hypnosis-v2.webp",
+"z3-events/boss-cerberus-gate-west.webp",
+"z3-events/boss-cerberus-gate-west-profile.webp"
 ],
 "zones": {
 "asia": [

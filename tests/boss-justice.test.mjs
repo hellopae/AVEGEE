@@ -47,7 +47,7 @@ test('all four frontier bosses receive one persistent docket and rematches do no
   const g=game();g.zone=zone;syncSceneZone(zone);
   const b={kind:zone==='th'?'frontierBreach':'zoneEvent',zone,eventKey,over:'win',foes:[{who:'ลูกน้อง',sp:'spirit1'},{who:'หัวหน้าชายแดน',sp:`boss-frontier-${zone}`,boss:true}]};
   assert.equal(queueBossJustice(g,b),true);assert.equal(bossJusticeCase(g).name,'หัวหน้าชายแดน');
-  if(zone==='th'||zone==='asia'){   // Z1-EVENTS / Z2-EVENTS: cutscene to the dais -> trial arena with the mirror-locked answer -> cutscenes (no escort walk)
+  if(zone==='th'||zone==='asia'||zone==='west'){   // T7/2: Zone 3's Valdric is tried in the arena too   // Z1-EVENTS / Z2-EVENTS: cutscene to the dais -> trial arena with the mirror-locked answer -> cutscenes (no escort walk)
    assert.equal(bossJusticeCase(g).phase,'capture');while(g.storyQueue.length)g.completeStory();
    interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),false);mirrorBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);
    assert.equal(bossJusticeCase(g).phase,'aftermath');while(g.storyQueue.length)g.completeStory();
@@ -84,7 +84,7 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const source=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
  const start=source.indexOf('function releaseDlgPause() {'),end=source.indexOf('\n}',start)+2;
  // Z1/Z2-EVENTS: Zone 1's and Zone 2's border bosses no longer walk an escort (cutscenes) - the map escort is exercised with Zone 3's
- const g=game();g.zone='west';syncSceneZone('west');queueBossJustice(g,{kind:'zoneEvent',zone:'west',eventKey:'westVampireBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-west'}]});
+ const g=game();g.zone='cyberhell';syncSceneZone('cyberhell');queueBossJustice(g,{kind:'zoneEvent',zone:'cyberhell',eventKey:'cyberBreach',over:'win',foes:[{boss:true,who:'หัวหน้าชายแดน',sp:'boss-frontier-cyberhell'}]});   // T7/2: Zone 3 moved to the arena; the map escort is exercised with Zone 4's border boss
  interrogateBoss(g);assert.equal(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}),true);
  const c=bossJusticeCase(g),first=bossJusticeActors(g)[0];g.paused=true;
  const dlg={open:true},pauseDlg={open:false};let playUpdates=0;
@@ -96,7 +96,7 @@ test('actual stepWorld drives court escort, punishment and release; dialog pause
  const phases=[];g.onChange=()=>phases.push(bossJusticeCase(g)?.phase||'released');
  for(let i=0;i<2000&&g.bossJustice.active;i++)g.stepWorld(100);
  assert.equal(g.bossJustice.active,null);assert.deepEqual(phases,['punishment','return','released']);
- const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-west');assert.equal(post.name,'หัวหน้าชายแดน');
+ const post=releasedFrontierBoss(g);assert.equal(post.art,'boss-frontier-cyberhell');assert.equal(post.name,'หัวหน้าชายแดน');
  const h=createGame();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
  assert.equal(releasedFrontierBoss(h).docket,post.docket);
 });
@@ -167,7 +167,7 @@ for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],
   assert.equal(bossJusticeCase(copy)?.phase,phase);assert.deepEqual(bossJusticeCase(copy),before);assert.equal(copy.coin,money);
   assert.equal(copy.stations.find(st=>st.def.k===(zone==='asia'?'lan':'krata')).bossCourtTemporary,true);g=copy;
  };
- if(zone==='th'||zone==='asia'){   // Z1/Z2-EVENTS: capture (cutscene) -> dais -> trial (mirror-locked answer) -> aftermath (cutscenes) -> released
+ if(zone==='th'||zone==='asia'||zone==='west'){   // T7/2: Zone 3's Valdric is tried in the arena too   // Z1/Z2-EVENTS: capture (cutscene) -> dais -> trial (mirror-locked answer) -> aftermath (cutscenes) -> released
   reload('capture');while(g.storyQueue.length)g.completeStory();reload('dais');interrogateBoss(g);reload('trial');mirrorBoss(g);reload('trial');
   const pick=bossJusticeAnswer(g);assert.equal(sentenceBoss(g,{...pick,intensity:2}),false,'the answer is locked');assert.equal(sentenceBoss(g,pick),true);
   reload('aftermath');assert.equal(sentenceBoss(g,pick),false,'saved sentence cannot be issued twice');

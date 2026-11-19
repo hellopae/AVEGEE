@@ -211,3 +211,15 @@ export const Z3_FRONTIER_STORIES = Object.freeze({
       + 'Yama: "I agree."' }),
   ] },
 });
+
+/** The Valdric trial (Rae 2.9 / 2.10, 5 points fixed after Cerberus stopped being under the spell): what Nira reads and the verdict, shown in the arena like Akura's (boss-court-view.js). The locked answer: the copper pan
+ *  (`krata`), heavy = 4 of 5, keeper Taan (boss-justice.js). The long case (seen / hidden / merits / claims) is NOT shown in the arena of any zone - kept in Rae's file only. */
+export const WEST_TRIAL = Object.freeze({
+  name:'วาลดริก — เคานต์โลหิตรัตติกาล', who:'เจ้าแห่งคฤหาสน์ราตรีริมชายแดนปัจฉิม',
+  face:'ชายชราผมขาว หนวดยาวเรียบร้อย โค้ตดำซับแดง ไม้เท้าหัวค้างคาวอยู่ในมือ ยืนตัวตรงเยือกเย็น แต่แก้วไวน์ที่ถืออยู่สั่นนิดเดียวเวลาถูกเอ่ยถึงผู้เช่า',
+  line:'"ราตรียังยาวนัก ท่านผู้มาเยือน ข้าเพียงรักษาไม่ให้ใครต้องตื่นไปพบสิ่งที่เขายังไม่พร้อมพบ"',
+  reading:'ความผิดของวาลดริก คือใช้หมอกราตรีสะกดวิญญาณหลายสิบดวงให้หลับเกินวาระ ปล่อยหมอกลอยลงไปถึงลานปัจฉิมจนวิญญาณหลงวน และสะกดยมทูตของผู้ถือบัญชีให้หันอาวุธใส่กัน แม้ไม่มีผู้ใดถึงชีวิต ข้อที่ทำให้หนักคือเขารู้ว่าหมอกลอยไปถึงลานปัจฉิมแล้วเพิกเฉยมานานหลายวัน ความดีที่นำมาหักได้ คือไม่ดื่มเลือดผู้ใดมาสองร้อยปี ไม่ปล่อยให้ผู้เช่าหนาวหรืออด และหมอกของเขาไม่เคยสั่งใครให้ทำร้ายกันค่ะ',
+  readingEn:'Valdric\'s offences are these: using the night mist to keep dozens of spirits asleep past their term, letting it drift down to the square of the West until spirits wandered in circles, and binding the ledger-keeper\'s reapers against one another. No one was killed. What weighs heaviest is that he knew the mist had reached the square of the West and ignored it for days. The good that may be set against it is that he drank no blood for two hundred years, let no tenant go cold or hungry, and that his mist never ordered anyone to harm another.',
+  verdict:['ยมบาทน้อย: "ผมสั่งทัณฑ์ระดับหนักที่กระทะทองแดงครับ ท่านรู้ว่าหมอกไปถึงลานปัจฉิมแล้วไม่ทำอะไรหลายวัน ผมไม่ลดให้ในข้อนี้ ให้ท่านได้รู้สึกร้อนจริง ๆ จนสุด แล้วเปิดหน้าต่างของท่านเอง"', 'วาลดริก: "ความร้อนที่ทำให้ข้ารู้สึกอีกครั้ง และหนักเท่าที่ข้าควรรับ ข้ารับ โทษนี้ข้ามองหน้าตัวเองได้"'],
+  station:'krata', intensity:4,
+});

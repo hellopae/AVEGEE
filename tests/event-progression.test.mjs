@@ -1,4 +1,4 @@
-import {bossJusticeCase,interrogateBoss,bossJusticeAnswer,sentenceBoss,advanceBossJustice} from '../src/boss-justice.js';
+import {bossJusticeCase,interrogateBoss,mirrorBoss,bossJusticeAnswer,sentenceBoss,advanceBossJustice} from '../src/boss-justice.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -65,15 +65,16 @@ test('Zone 3 blocks building until hypnotized spirits are freed, then awards hyp
   assert.equal(g.zoneEventStatus('westHypnotized'), 'pending');
   assert.equal(g.build('tea'), false);
   g.startZoneEvent('westHypnotized'); winBattle(g);
-  g.zoneCases.west = 3; g.refreshZoneEvents();
+  g.zoneCases.west = 5; g.refreshZoneEvents();
   g.startZoneEvent('westVampireBreach'); winBattle(g);
   assert.equal(g.abilities.hypno, true);
   assert.ok(bossJusticeCase(g));g.paused=false;
   while(g.storyQueue.length)g.completeStory();
-  interrogateBoss(g);assert.equal(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}),true);
+  interrogateBoss(g);mirrorBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);   // T7/2: Valdric is tried in the arena (mirror-locked answer, cutscenes)
+  while(g.storyQueue.length)g.completeStory();
   for(let i=0;i<2000&&bossJusticeCase(g);i++)advanceBossJustice(g,100);
   assert.equal(g.bossJustice.active,null);
-  g.zoneCases.west = 7; g.refreshZoneEvents();
+  g.zoneCases.west = 10; g.refreshZoneEvents();
   g.startZoneEvent('westDevaTest'); winBattle(g);
   assert.equal(g.abilities.valkyrieSpear, true);
 });
