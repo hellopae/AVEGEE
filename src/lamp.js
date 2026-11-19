@@ -27,6 +27,7 @@ import { YOMATHAT_HELPER } from './z2-gate.js';
 import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3
 import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4
 import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
+import { EIRLIN_HELPER, EIRLIN_ART } from './z3e-eirlin.js';   // T7b/4
 import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
@@ -60,7 +61,9 @@ export const SUMMONERS = Object.freeze({
   // T6/7 (Rae R2 B 7.4): Two Blades, One Way = ONE foe, 2 quick hits, high power (the sum lands at once)
   musashi:{ k:'musashi', no:7, name:MUSASHI_HELPER.name, glyph:'⚔️', event:'boss-guide-asia-farewell', ready:true, art:{ icon:CERBERUS_ART.icon, battle:CERBERUS_ART.battle, cut:CERBERUS_ART.cut },
     move:{ ...MUSASHI_HELPER.move, kind:'strike', hits:2, damage:{ base:48, perLevel:2 } }, say:MUSASHI_HELPER.say },
-  eirlin:{ k:'eirlin', no:8, name:{ th:'เอียร์ลิน', en:'Eirlin' }, glyph:'🔱', event:'z3-eirlin-win', ready:false, move:{ name:{ th:'หอกตามเสียงศึก', en:'Spear to the Sound of Battle' } } },
+  // T7b/4 (Rae R2 C 4.4): Spear to the Sound of Battle = ONE foe, one strong hit (above Ryujin's 62, under the Valkyrie spear's 88 on every foe)
+  eirlin:{ k:'eirlin', no:8, name:EIRLIN_HELPER.name, glyph:'🔱', event:'z3-eirlin-win', ready:true, art:{ icon:EIRLIN_ART.icon, battle:EIRLIN_ART.battle, cut:EIRLIN_ART.cut },
+    move:{ ...EIRLIN_HELPER.move, kind:'strike', hits:1, damage:{ base:72, perLevel:3 } }, say:EIRLIN_HELPER.say },
   jormungandr:{ k:'jormungandr', no:9, name:{ th:'ยอร์มุนกันดร์', en:'Jormungandr' }, glyph:'🐍', event:'z3-sev-collateral', ready:false, move:{ name:{ th:'ขดล้อมโลก', en:'Coil Around the World' } } },
   thor:{ k:'thor', no:10, name:{ th:'ธอร์', en:'Thor' }, glyph:'🔨', event:'col-thor-win', ready:false, move:{ name:{ th:'ค้อนฟ้าสั่งสนาม', en:'The Hammer Commands the Field' } } },
   lucifer:{ k:'lucifer', no:11, name:{ th:'ลูซิเฟอร์', en:'Lucifer' }, glyph:'🌟', event:'col-lucifer-win', ready:false, move:{ name:{ th:'ประกาศิตผู้ก่อตั้ง', en:"The Founder's Decree" } } },

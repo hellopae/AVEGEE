@@ -121,6 +121,6 @@ test('deva defeat returns to waiting actor and permits another challenge without
  g.advanceWestDeva(WEST_DEVA_RUN_MS);g.completeStory();g.advanceWestDeva(WEST_DEVA_EXIT_MS);
  g.startZoneEvent('westDevaTest');g.battle.team=[];g.battle.youHp=1;g.battleAct('atk');
  assert.equal(g.battle.over,'lose');g.endBattle();assert.equal(g.devaVisits.west.phase,'waiting');
- assert.equal(devaMapActors(g)[0].enabled,true);assert.equal(g.storyQueue.length,0);
+ assert.equal(devaMapActors(g)[0].enabled,true);assert.deepEqual(g.storyQueue.map(p=>p.key),['z3-eirlin-lose'],'T7b/4: she lowers the spear (Rae lose scene), no replay of the arrival');
  assert.ok(g.startZoneEvent('westDevaTest'));win(g);assert.equal(g.abilities.valkyrieSpear,true);
 });

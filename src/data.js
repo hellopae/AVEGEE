@@ -5,6 +5,7 @@ import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
 import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
+import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2036,8 +2037,8 @@ export const ZONE_EVENTS = {
         [{ name:'แวมไพร์', sp:'boss-frontier-west', count:1, hp:195, atk:[12,18], boss:true, skills:BOSS_SKILLS.valdric, partyScale:{ hp:[1,1,1], atk:[.88,1,.95] } }]],   // BOSS-SKILLS set A: was 150 / 13-20   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
     { k:'westDevaTest', atCases:10, requires:['westVampireBreach'], mode:'single',
-      title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
-      alert:{ th:'เทวดามาปราบแวมไพร์ แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
+      title:EIRLIN_TEXT.title, alert:EIRLIN_TEXT.alert, go:EIRLIN_TEXT.go, retry:EIRLIN_TEXT.retry, banner:EIRLIN_TEXT.banner, lines:EIRLIN_TEXT.lines, linesEn:EIRLIN_TEXT.linesEn,   // T7b/4 (Rae R2 C 4): N10-2 / N10-3 / her two lines
+      openStory:EIRLIN.openStory, winStories:[EIRLIN.winStory], loseStory:EIRLIN.loseStory, win:EIRLIN_TEXT.win, loseText:EIRLIN_TEXT.lose,
       foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:355, atk:[19,28], boss:true, skills:BOSS_SKILLS.eirlin, partyScale:{ hp:[1,1.6,2.2], atk:[1,1.1,1.98] } },   // BOSS-SKILLS set A: was 165 / 14-21 (100 %)   // F3 (15 Nov): atk x0.7-0.9 - the enemy side now acts as often as the team (battle-turns.js), fitted back to the same first-try win %
       reward:{ coin:130, ability:'valkyrieSpear' } },
     // T7b/3 (Rae R2 C 3.2): Loki posing as a charitable priest (case 7) drops the robe after the verdict - the window of this event is NLK-2, its button plays z3-loki-reveal, then the fight. Opened by the verdict (game.js refreshZoneEvents), never by the case count.

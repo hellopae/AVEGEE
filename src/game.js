@@ -16,6 +16,7 @@ import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { Z3_ARRIVE, Z3_PHANTOM_NOTE } from './z3c-arrival.js';   // T7/1
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT, Z3_HYPNO_TEAM, VH_JOURNAL } from './z3c-frontier.js';   // T7/2
 import { LOKI } from './z3d-cases.js';   // T7b/3
+import { EIRLIN } from './z3e-eirlin.js';   // T7b/4
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -5124,6 +5125,8 @@ const API = {
     completeBossJusticeStory(this,next?.key);
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
       Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
+    if (next?.key === 'deva-west') this.queueNotice(EIRLIN.waitNotice);   // T7b/4 (N10-1): she waits for the test
+    if (next?.key === EIRLIN.winStory) { this.queueNotice(EIRLIN.crateNotice); this.unlockHelper(EIRLIN.helper); }   // T7b/4 (N10-4' the crate = the valkyrieSpear reward; D4: her own event is passed -> helper no. 8, NE-1)
     if (next?.key === 'deva-cyberhell') {
       this.devaVisits.cyberhell = { phase:'waiting' };
       // Arrival walk ends on the same throne spot as Lumen and hides him; step Yama down to the stairs.

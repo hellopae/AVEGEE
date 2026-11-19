@@ -89,6 +89,10 @@ GROUPS = {
   ('z3-events/cut-loki-shadows-west.webp', CUT, 'cut', 'PLACEHOLDER cut-loki-shadows-west  (card of the boss move Three Shadows: Loki\'s shadow splits into three that circle the team; no weapon in the shadows\' hands)'),
   ('z3-events/cut-loki-reveal-west.webp', CUT, 'cut', 'PLACEHOLDER cut-loki-reveal-west  (L3: the Zone 3 judgment hall, the shadow on the floor stands up apart from the man on the dais, the black robe falls away as thin cloth, under it Loki in the green silver-embroidered coat; Yama + Nira step back at the left; NO religious symbol)'),
  ],
+ 'z3e-eirlin': [   # T7b/4 - Rae R2 part C sec. 4 (group E). icon-eirlin / battle-eirlin are cut from her own drawing boss-tester-west (Rae E1 allows it) - not generated here
+  ('z3-events/cut-eirlin-crate-west.webp', CUT, 'cut', 'PLACEHOLDER cut-eirlin-crate-west  (E2: the stone square just clear of mist, a long wooden crate open on the ground, blue-white light from spears laid in rows, Eirlin touches a spear tip over the lamp at Yama\'s side, one white feather drifting in a corner; NO religious symbol)'),
+  ('summon/cut-eirlin-spear-call.webp', CUT, 'cut', 'PLACEHOLDER cut-eirlin-spear-call  (E3: Eirlin dives from the sky with a blue-white spear into ONE foe in the middle, wings fully spread, a spiral of snow around the spear, a Zone 3 hell battlefield)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

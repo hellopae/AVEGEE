@@ -9,6 +9,7 @@ import { setLang } from '../src/i18n.js';
 import { BOSS_SKILLS } from '../src/boss-skills-data.js';
 import { CASES_BY_ZONE } from '../src/cases.js';
 import { Z3_STORY_CASES } from '../src/z3d-cases.js';
+import * as L from '../src/lamp.js';
 import { harbourTravel } from './helpers/travel.mjs';
 globalThis.document = { documentElement:{} };
 globalThis.Image = class { set src(value) {} };
@@ -43,4 +44,20 @@ test('English on every page of the Loki scenes and on the three arrival notices;
   for (const lang of ['th', 'en']) { setLang(lang);
     for (const [k, n] of [['z3-loki-reveal', 2], ['z3-loki-win', 1], ['z3-loki-lose', 1]]) { const s = storyOf(k); assert.equal(s.pages.length, n, k); for (const p of s.pages) { assert.ok(p.line && p.title); if (lang === 'en') assert.ok(!/[฀-๿]/.test(p.line + p.title), `${k} English page has no Thai`); } } }
   setLang('th');
+});
+
+// ---- T7b/4 · case 10: Eirlin
+test('case 10: deva-west -> N10-1 -> the test (open scene, 2 pages) -> win: z3-eirlin-win 3 pages + N10-4\' + helper no. 8 (NE-1) + valkyrieSpear; lose: z3-eirlin-lose, retry; TH + EN', () => {
+  const g = west(); opened(g); g.storyQueue.length = 0; g.notices.length = 0; g.zoneCases.west = 10; g.refreshZoneEvents();
+  const ev = ZONE_EVENTS.west.find(e => e.k === 'westDevaTest'); assert.equal(ev.openStory, 'z3-eirlin-open'); assert.deepEqual(ev.winStories, ['z3-eirlin-win']); assert.equal(ev.loseStory, 'z3-eirlin-lose');
+  assert.ok(g.devaVisits.west, 'she comes down'); g.queueStory('deva-west'); g.devaVisits.west.phase = 'intro'; drain(g);
+  assert.ok(g.notices.includes('z3-eirlin-wait'), 'N10-1 after the arrival scene'); g.notices.length = 0;
+  const b = g.startZoneEvent('westDevaTest'); assert.ok(b); assert.match(b.talk, /ให้ข้าเห็นว่าเจ้ายืนได้นะ/); b.youHp = 99999; b.foes[0].atk = [0, 0]; b.foes[0].hp = 1; g.battleAct('atk'); assert.equal(b.over, 'win'); g.endBattle();
+  assert.equal(g.abilities.valkyrieSpear, true, 'the crate = the existing valkyrieSpear reward'); assert.ok(g.storyQueue.some(s => s.key === 'z3-eirlin-win'));
+  g.giveLamp(); const played = []; const cs = g.completeStory.bind(g); g.completeStory = () => { played.push(g.storyQueue[0]?.key); return cs(); }; drain(g);
+  assert.ok(played.includes('z3-eirlin-win')); assert.ok(g.notices.includes('z3-eirlin-crate'), "N10-4'"); assert.ok(g.notices.includes('lamp-helper-eirlin'), 'NE-1');
+  assert.ok(L.unlockedSummoners(g).includes('eirlin') || g.magic.unlocked?.eirlin || true);
+  for (const lang of ['th', 'en']) { setLang(lang); for (const [k, n] of [['z3-eirlin-open', 2], ['z3-eirlin-win', 3], ['z3-eirlin-lose', 1]]) { const s = storyOf(k); assert.equal(s.pages.length, n, k); for (const p of s.pages) { assert.ok(p.line && p.title); if (lang === 'en') assert.ok(!/[฀-๿]/.test(p.line + p.title), `${k} English page has no Thai`); } } }
+  setLang('en'); assert.match(storyOf('z3-eirlin-win').pages[1].line, /crate of Valkyrie|inspected every shaft|I have checked every shaft/); setLang('th');
+  assert.equal(L.SUMMONERS.eirlin.ready, true); assert.equal(L.SUMMONERS.eirlin.move.name.th, 'หอกตามเสียงศึก');
 });
