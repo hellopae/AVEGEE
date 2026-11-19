@@ -62,6 +62,21 @@ GROUPS = {
   ('z3-events/cut-musashi-farewell-west.webp', CUT, 'cut', 'PLACEHOLDER cut-musashi-farewell-west  (M4: open stone gate, fine snow, Musashi at the mouth of the gate on the cave side lays his palm over the lamp at Yama\'s side - one silver thread into the wick; Cerberus sits by the gate, three heads bowed)'),
   ('z3-events/guard-cerberus-west.webp', (512, 512), 'sprite', 'PLACEHOLDER guard-cerberus-west (C4: Cerberus sitting or standing by the stone gate, three heads turned outward, small for the map; may be cut from C1)'),
  ],
+ 'z3c': [   # T7 - Rae R2 part C (grows item by item: see the T7 report for the full list)
+  ('z3-events/cut-arrive-west.webp', CUT, 'cut', 'PLACEHOLDER cut-arrive-west  (sec.1 z3-arrive/z3-clear: stone square under thin snow, iron lamps, Poena + hell merchant under the first lamp, 2-3 spirits circling with faint green eyes, Yama in the Zone 3 robes, NO three-headed hound)'),
+ ],
+ 'z3c-frontier': [   # T7/2 - Rae R2 part C sec. 2 (groups V + the old z3 list)
+  ('z3-events/cut-freeze-west.webp', CUT, 'cut', 'PLACEHOLDER cut-freeze-west  (z3-freeze: the West square, spirits stopped mid-step, snow hanging in the air, Poena + Nira walking among pale statues)'),
+  ('z3-events/cut-vh-frontier-west.webp', CUT, 'cut', 'PLACEHOLDER cut-vh-frontier-west  (V2: frontier in white mist, half-open gate, Van Helsing (long dark-grey coat, white lantern, scorch marks) blocks Valdric (black coat lined red, bat-headed cane); a row of still demons with yellow eyes, 2-3 demons lying at his feet; Yama + Nira bottom right; no blood)'),
+  ('frontier-west-hypnosis-v2.webp', CUT, 'cut', 'PLACEHOLDER frontier-west-hypnosis-v2  (V4: Poena, Noir, Nira with dim identical eyes turning weapons/hands toward Yama, thin mist threads into their ears, Nira grips her notebook; Cerberus with GREEN eyes turning too; Valdric far off raising his cane; Van Helsing upright and unmoved beside Yama; no blood)'),
+  ('z3-events/cut-valdric-down-west.webp', CUT, 'cut', 'PLACEHOLDER cut-valdric-down-west  (Valdric on one knee in the snow, bat-headed cane rolling away, bats flying back into his coat)'),
+  ('z3-events/cut-vh-guard-west.webp', CUT, 'cut', 'PLACEHOLDER cut-vh-guard-west  (V3: Valdric on one knee, bats returning to his coat, Yama arms wide between them, Van Helsing opposite lowering the stake, left palm offering a lump of beeswax in old cloth; no blood)'),
+  ('z3-events/cut-frontier-boss-to-dais-west.webp', CUT, 'cut', 'PLACEHOLDER cut-frontier-boss-to-dais-west  (Valdric walks ahead on the stone yard where snow melts along the lamplight; Yama + Nira follow; woken tenants line the road with blankets; Van Helsing last)'),
+  ('z3-events/cut-frontier-boss-punished-west.webp', CUT, 'cut', 'PLACEHOLDER cut-frontier-boss-punished-west  (Valdric on the rim of a copper pan, coat on, steam rising, frost melting off his moustache, eastern sky pale; no blood)'),
+  ('z3-events/cut-frontier-boss-released-west.webp', CUT, 'cut', 'PLACEHOLDER cut-frontier-boss-released-west  (Valdric at the manor door drawing a curtain half open, lamplight spilling into a dark room; Yama at the foot of the hill)'),
+  ('z3-events/guard-vanhelsing-west.webp', (512, 512), 'sprite', 'PLACEHOLDER guard-vanhelsing-west (V1: elderly physician, long dark-grey coat, grey hair, trimmed white moustache, cold white lantern in left hand, old leather bag + sheathed short stake + beeswax lump at belt, upright with slightly dropped shoulders, no smile; NO cross, NO religious symbol)'),
+  ('z3-events/guard-vanhelsing-west-profile.webp', (512, 512), 'square', 'PLACEHOLDER guard-vanhelsing-west-profile'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),
