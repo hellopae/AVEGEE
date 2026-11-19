@@ -16,6 +16,7 @@ import { GUANYIN, PETAL_NOTE } from './z2b-guanyin.js';   // T6/2
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
+import { CERBERUS, GUARD_LINES } from './z2b-cerberus.js';   // T6/6-7
 import { BOATMAN, ensureBoatman, heardCount, canListen, canSing, boatLine, VERSE_OF_ZONE, BOATMAN_TEXT } from './boatman.js';   // T5'/7
 /** T5'/0: a lost side-quest fight also ends at the tea house (owner: "every kind of fight"). Set false to go back to "a lost quest fight costs nothing and stays on the map". */
 export const QUEST_FIGHT_LOSE_TO_TEA = true;
@@ -740,6 +741,7 @@ const API = {
     if (id === 'sita-phantom' && !(this.journalNotes ||= []).includes(SITA.journal)) this.journalNotes.push(SITA.journal);
     if (id === 'z2-ape-phantom' && !(this.journalNotes ||= []).includes(Z2_JOURNAL.phantom2)) this.journalNotes.push(Z2_JOURNAL.phantom2);
     if (id === GATE.arriveNotice) this.queueStory('z2-guanyu-open');   // T5'/4 (NG-1): the button leads into the scene, then the fight
+    if (id === CERBERUS.arriveNotice) this.queueStory(CERBERUS.openStory);   // T6/6 (NC-1): the button leads into the scene, then the fight
     if (id === RYUJIN.arriveNotice) this.queueStory('z2-ryujin-open');   // T6/5 (NR-1): the button leads into the scene, then the fight
     if (id === YOMATHAT.caveNotice) this.queueStory(YOMATHAT.fatherStory);   // T5'/3 (NF-1): the button leads into the cage scene
     if (id === GUANYIN.afterNotice) this.queueStory(`${GUANYIN.thanksStory}-${this.storyCaseDone.guanyinfather === 'off' ? 'off' : 'ok'}`);   // T6/2 (NGY-2): the button leads into her scene
@@ -2588,6 +2590,7 @@ const API = {
     // ชุดที่ 10 (ข้อ C1) — เอาโหมด "เดินตามผู้เล่น" ออก (คุณเป้สั่ง 25 ก.ย. 2569) เหลือแค่สองสถานะ:
     // ไล่ปราบเปรตที่อยู่ในโซน หรือไม่งั้นกลับไปยืนเฝ้าหัวสะพาน — เซฟเก่าที่ guard.x ค้างอยู่ใกล้ผู้เล่น
     // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
+    this.cerberusGuardTick();   // T6/6: the guardian of the western gate
     const guardTarget = this.mobs.find(m => !m.eventKey), guardEating = !!this.guard?.mealSeq;   // T3/12: the Guard stands still while he takes and eats the rice ball
     if (guardEating) return;
     if (this.guardActive() && guardTarget) {
@@ -5001,6 +5004,27 @@ const API = {
     if (states[RYUJIN.eventKey] !== 'pending' && states[RYUJIN.eventKey] !== 'active') states[RYUJIN.eventKey] = 'pending';
     return this.startZoneEvent(RYUJIN.eventKey);
   },
+  /** T6/6 (Rae R2 B 6.1): the end of the walk to Border 2-3 reached with Musashi beside Yama and the western gate not yet opened - NC-1, the scene, the fight, his bow come first, then Musashi's farewell. */
+  cerberusFightDue() {
+    const st = dungeonStatus(this);
+    return !!st && this.zone === 'asia' && st.route.id === 'asia:west' && !this.battle && bossGuideFollowing(this) && !this.cerberusGuarding();
+  },
+  /** he has bowed and keeps the gate (a save without the Musashi walk - an old one that reached Zone 3 - never gets him standing there) */
+  cerberusGuarding() { return this.zoneEventStatus(CERBERUS.eventKey) === 'cleared' || !!this.storySeen[CERBERUS.winStory]; },
+  startCerberusFight() {
+    if (!this.cerberusFightDue()) return null;
+    const states = this.zoneEvents.asia ||= {};
+    if (states[CERBERUS.eventKey] !== 'pending' && states[CERBERUS.eventKey] !== 'active') states[CERBERUS.eventKey] = 'pending';
+    return this.startZoneEvent(CERBERUS.eventKey);
+  },
+  /** T6/6 (Rae 6.6, owner 15 Nov item 4): while he stands at the western gate a foe that comes near the gate is driven off (one of Rae's three lines, once per foe). Called from the map tick. */
+  cerberusGuardTick() {
+    if (this.zone !== 'west' || !this.cerberusGuarding() || this.battle) return false;
+    const gate = ZONE_ENTRY.gate, m = this.mobs.find(x => !x.eventKey && !x.cerbSaid && Math.hypot(x.x - gate[0], x.y - gate[1]) < CERBERUS.reach);
+    if (!m) return false;
+    m.cerbSaid = true; this.log(`🐕 ${GUARD_LINES[Math.floor(Math.random() * GUARD_LINES.length)].th}`, 'act');
+    m.hp = Math.min(m.hp, 1); this.strike(this.mobs.indexOf(m), 'เซอร์เบอรัส'); return true;
+  },
   /** T5'/4 (Rae 7.1): the end of the border walk reached with Yomathat beside Yama and Guan Yu not yet convinced - the gate scene + fight come first. */
   gateFightDue() {
     const st = dungeonStatus(this);
@@ -5072,6 +5096,8 @@ const API = {
     if (next?.key === 'boss-guide-th-praise') this.queueNotice(YOMATHAT.waitNotice);   // T5'/2 (NY-1): he waits at the harbor
     if (next?.key === 'boss-guide-th-welcome') this.queueNotice(YOMATHAT.joinNotice);
     if (next?.key === GATE.giftStory) { this.queueNotice(GATE.flameNotice); unlockSummoner(this, 'yomathat'); this.save(); }   // NY-4 says it, so no second "new helper" window   // T5'/5 (NY-4, D4; NY-3 is the grant receipt of boss-guides.js): he leaves the team and leaves a flame (the grant + outfit come from boss-guides.js)   // T5'/2 (NY-2): he is in the team
+    if (next?.key === CERBERUS.winStory) this.queueNotice(CERBERUS.winNotice);   // T6/6 (NC-3)
+    if (next?.key === CERBERUS.farewellStory) this.unlockHelper(CERBERUS.helper);   // T6/7 (D4): Musashi leaves the team and a flame in the lamp (NM-1 = lamp-helper-musashi)
     if (next?.key === RYUJIN.winStory) this.unlockHelper(RYUJIN.helper);   // T6/5 (D4): NR-3 = lamp-helper-ryujin
     if (next?.key === HARBOR.giftStory) { this.queueNotice(HARBOR.joinNotice); this.unlockHelper('liangang'); }   // T6/4: NL-2 is the grant receipt, NL-3 Musashi joins, NL-4 (lamp-helper-liangang) the flame (D4)
     if (next?.key === WUKONG_FLAME.story) this.unlockHelper('wukong');   // T6/3 (D4): his own event is passed - NA-2 (the generic helper window) follows
@@ -5222,6 +5248,8 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    // T6/4 (NL-2: "the robes change over by themselves when you walk into Zone 3"): the first time Yama enters Zone 3 owning its robes he puts them on (later he changes by hand as always)
+    if (k === 'west' && this.outfitsOwned?.includes('west') && !this.storySeen['outfit-west-auto']) { this.storySeen['outfit-west-auto'] = true; this.outfit = 'west'; }
     this.bossWalk = null; // bridge animation belongs to the previous map
     this.huntMob = false;
     this.player.path = null;

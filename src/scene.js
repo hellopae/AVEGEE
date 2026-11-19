@@ -39,7 +39,7 @@ import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS, ZONE_ENTRY } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawVignette, drawScreenVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk,canWalk } from './walk.js?v=k1d';
@@ -614,6 +614,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if (!cleared) tag(ctx, x, y - 92 * CHAR_SCALE_MAP * 1.12 - 15, t,
           [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
+  }
+
+  // T6/6 (Rae R2 B 6.6): Cerberus stands by the western gate once he has bowed - no talk (he does not speak), he is not the Guard
+  if (g.zone === 'west' && g.cerberusGuarding?.()) {
+    const gx = ZONE_ENTRY.gate[0] + 84, gy = ZONE_ENTRY.gate[1] - 52, gh = 92 * CHAR_SCALE_MAP * 1.12;
+    at(1e5 + gy, () => { shade(gx, gy, gh, c => drawStandee(c, 'guard-cerberus-west', gx, gy, gh, t, '🐕', -1, false, 'west')); });
   }
 
   for (const ev of waitingEvents(g)) at(1e5 + ev.y, () => {

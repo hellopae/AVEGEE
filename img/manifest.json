@@ -382,7 +382,10 @@
 "z2-events/char-musashi-asia.webp",
 "z2-events/char-musashi-asia-profile.webp",
 "z2-events/boss-ryujin-asia.webp",
-"z2-events/boss-ryujin-asia-profile.webp"
+"z2-events/boss-ryujin-asia-profile.webp",
+"z3-events/guard-cerberus-west.webp",
+"z3-events/boss-cerberus-west.webp",
+"z3-events/boss-cerberus-west-profile.webp"
 ],
 "zones": {
 "asia": [

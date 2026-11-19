@@ -110,6 +110,7 @@ import { SITA, NOTICES, BREACH_ART } from './z1-events.js';
 import { YOMATHAT, PIER_TALK } from './z1-yomathat.js';
 import { HARBOR, PIER_TALK as LIAN_TALK } from './z2b-harbor.js';   // T6/4
 import { RYUJIN } from './z2b-ryujin.js';   // T6/5
+import { CERBERUS } from './z2b-cerberus.js';   // T6/6
 import { HARBOR_ZONES } from './boss-guides.js';
 import { GATE } from './z2-gate.js';
 import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
@@ -5499,6 +5500,24 @@ function playRyujinScene(onDone) {
     openBattle(() => idle(onDone));
   });
 }
+/** T6/6 (Rae R2 B 6.1): NC-1 -> its button leads into z3gate-cerberus-open (game.js ackNotice) -> the fight -> z3gate-cerberus-win + NC-3 -> `onDone` (Musashi's farewell follows in the caller). */
+function playCerberusScene(onDone) {
+  const idle = cb => {
+    const w = () => {
+      if (g.over || g.battle) return;
+      if (dlg.open || storyPlaying || g.storyQueue.length || g.notices.length || g.pendingReward || rewardOpen) { setTimeout(w, 250); return; }
+      cb();
+    };
+    setTimeout(w, 300);
+  };
+  g.queueNotice(CERBERUS.arriveNotice); g.save();
+  openStoryNotice(CERBERUS.arriveNotice);
+  idle(() => {
+    if (g.pendingRecovery) return;
+    if (!g.startCerberusFight()) { onDone(); return; }
+    openBattle(() => idle(onDone));
+  });
+}
 /** T5'/3: NF-1 (the sound in the cave) -> its button leads into z1-frontier12-father (game.js ackNotice) -> `onDone` once both are closed. */
 function playCaveScene(onDone) {
   g.queueNotice(YOMATHAT.caveNotice); g.save();
@@ -5539,6 +5558,7 @@ function openDungeon() {
           }
           else arrive();
         };
+        if(g.cerberusFightDue?.()){playCerberusScene(proceed);return;}   // T6/6: the western gate - NC-1, the scene, the fight, his bow (NC-3) - and only then Musashi's farewell
         if(g.gateFightDue?.()){playGateScene(proceed);return;}   // T5'/4: Guan Yu keeps the gate - NG-1, the scene, the fight, his win scene - and only then Yomathat's gift (the farewell)
         proceed();
       },
@@ -7917,7 +7937,7 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
-window.__gateScene = playGateScene; window.__ryujinScene = playRyujinScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
+window.__gateScene = playGateScene; window.__ryujinScene = playRyujinScene; window.__cerberusScene = playCerberusScene;   // T5'/4: Playwright handle - the end of the border walk without walking it (like window.__camera)
 window.__caveScene = playCaveScene;
 window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
   const v = mapCam.viewport, r = cv.getBoundingClientRect();

@@ -4,6 +4,7 @@ import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // B
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
+import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
 import { GATE_TEXT } from './z2-gate.js';   // T5'/4: the gate of Zone 2 (Rae R2 A 7)   // T5'/1: case 13 text (Rae R2 A 4)
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
@@ -2008,6 +2009,12 @@ export const ZONE_EVENTS = {
       title:RYUJIN_TEXT.title, alert:RYUJIN_TEXT.alert, go:RYUJIN_TEXT.go, retry:RYUJIN_TEXT.retry, banner:RYUJIN_TEXT.banner, lines:RYUJIN_TEXT.lines,
       win:{ title:RYUJIN_TEXT.win.title, text:RYUJIN_TEXT.win.text }, loseText:{ title:RYUJIN_TEXT.lose.title, text:RYUJIN_TEXT.lose.text }, loseStory:'z2-ryujin-lose', winStories:['z2-ryujin-win'],
       foe:{ name:'ริวจิน', sp:'boss-ryujin-asia', hp:340, atk:[20,31], boss:true, skills:BOSS_SKILLS.ryujin },
+      reward:{}, lose:{ hp:9 } },
+    // T6/6 (Rae R2 B 6): the three-headed guardian of the western gate - fought at the end of the walk to Border 2-3 with Yama + Nira + Musashi; winning it makes him the guardian of the gate (game.js cerberusGuarding).
+    { k:'z3Cerberus', atCases:999, mode:'single', gate:true,
+      title:CERBERUS_TEXT.title, alert:CERBERUS_TEXT.alert, go:CERBERUS_TEXT.go, retry:CERBERUS_TEXT.retry, banner:CERBERUS_TEXT.banner, lines:CERBERUS_TEXT.lines,
+      win:{ title:CERBERUS_TEXT.win.title, text:CERBERUS_TEXT.win.text }, loseText:{ title:CERBERUS_TEXT.lose.title, text:CERBERUS_TEXT.lose.text }, loseStory:'z3gate-cerberus-lose', winStories:['z3gate-cerberus-win'],
+      foe:{ name:'เซอร์เบอรัส', sp:'boss-cerberus-west', hp:380, atk:[22,34], boss:true, skills:BOSS_SKILLS.cerberus },
       reward:{}, lose:{ hp:9 } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],

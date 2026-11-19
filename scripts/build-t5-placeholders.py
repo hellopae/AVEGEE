@@ -56,6 +56,12 @@ GROUPS = {
   ('summon/battle-ryujin.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-ryujin (R5: smaller dragon curve over blue waves, fits the fight)'),
   ('summon/cut-ryujin-dragon-beneath.webp', CUT, 'cut', 'PLACEHOLDER cut-ryujin-dragon-beneath  (R6: a tall blue wave rushing at the camera with the shadow of a jade dragon coiled inside it, foes thrown back; NOT the full dragon smashing anyone)'),
  ],
+ 'cerberus': [   # T6/6-7 - Rae R2 part B, groups C + M4 (C1 and the howl card already exist in img/z3-events)
+  ('z3-events/cut-cerberus-gate-west.webp', CUT, 'cut', 'PLACEHOLDER cut-cerberus-gate-west  (C2: half-snowed stone gate, Cerberus across the road, three plumes of white breath; Yama (Zone 2 robes) + Nira + Musashi bottom left; middle head stares at Yama, side heads at the lamp. EYES: deep red, NO green spell glow)'),
+  ('z3-events/cut-cerberus-yields-west.webp', CUT, 'cut', 'PLACEHOLDER cut-cerberus-yields-west  (C3: three heads bowed together, the middle one lowest, nose near the snow before Yama; the open gate behind; Yama + Nira + Musashi calm)'),
+  ('z3-events/cut-musashi-farewell-west.webp', CUT, 'cut', 'PLACEHOLDER cut-musashi-farewell-west  (M4: open stone gate, fine snow, Musashi at the mouth of the gate on the cave side lays his palm over the lamp at Yama\'s side - one silver thread into the wick; Cerberus sits by the gate, three heads bowed)'),
+  ('z3-events/guard-cerberus-west.webp', (512, 512), 'sprite', 'PLACEHOLDER guard-cerberus-west (C4: Cerberus sitting or standing by the stone gate, three heads turned outward, small for the map; may be cut from C1)'),
+ ],
  'wanthong': [
   ('z1-events/soul-wanthong-th.webp', (1254, 1254), 'sprite', 'PLACEHOLDER soul-wanthong-th (Lady Wanthong, court sprite)'),
   ('z1-events/soul-wanthong-th-profile.webp', (1254, 1254), 'square', 'PLACEHOLDER soul-wanthong-th-profile'),

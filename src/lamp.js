@@ -26,7 +26,8 @@ import { KUMAN_THONG } from './z1-wanthong.js';
 import { YOMATHAT_HELPER } from './z2-gate.js';
 import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3
 import { LIANGANG_HELPER, ART as HARBOR_ART } from './z2b-harbor.js';   // T6/4
-import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5   // T5'/1: the second helper's text lives with his story
+import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
+import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
 /** The 12 summonable helpers (Rae R2 A-D "สรุปตัวอัญเชิญ"). `event` = the story beat that unlocks it (D4). `ready` = that beat exists in the game now.
  *  Pictures: `img/summon/{icon,battle,cut}-<key>.webp` - a real drawing saved under that name replaces the placeholder, no code change. */
@@ -56,7 +57,9 @@ export const SUMMONERS = Object.freeze({
   // T6/5 (Rae R2 B 5.8): Dragon Beneath the Cave = a strong group hit (a blue wave with the dragon's shadow in it), above Hanuman, under the Valkyrie spear (88)
   ryujin:{ k:'ryujin', no:6, name:RYUJIN_HELPER.name, glyph:'🐉', event:'z2-ryujin-win', ready:true, art:{ icon:RYUJIN_ART.icon, battle:RYUJIN_ART.battle, cut:RYUJIN_ART.cut },
     move:{ ...RYUJIN_HELPER.move, kind:'group', damage:{ base:62, perLevel:3 } }, say:RYUJIN_HELPER.say },
-  musashi:{ k:'musashi', no:7, name:{ th:'มูซาชิ', en:'Musashi' }, glyph:'⚔️', event:'z3gate-musashi-farewell', ready:false, move:{ name:{ th:'สองดาบหนึ่งวิถี', en:'Two Blades, One Way' } } },
+  // T6/7 (Rae R2 B 7.4): Two Blades, One Way = ONE foe, 2 quick hits, high power (the sum lands at once)
+  musashi:{ k:'musashi', no:7, name:MUSASHI_HELPER.name, glyph:'⚔️', event:'boss-guide-asia-farewell', ready:true, art:{ icon:CERBERUS_ART.icon, battle:CERBERUS_ART.battle, cut:CERBERUS_ART.cut },
+    move:{ ...MUSASHI_HELPER.move, kind:'strike', hits:2, damage:{ base:48, perLevel:2 } }, say:MUSASHI_HELPER.say },
   eirlin:{ k:'eirlin', no:8, name:{ th:'เอียร์ลิน', en:'Eirlin' }, glyph:'🔱', event:'z3-eirlin-win', ready:false, move:{ name:{ th:'หอกตามเสียงศึก', en:'Spear to the Sound of Battle' } } },
   jormungandr:{ k:'jormungandr', no:9, name:{ th:'ยอร์มุนกันดร์', en:'Jormungandr' }, glyph:'🐍', event:'z3-sev-collateral', ready:false, move:{ name:{ th:'ขดล้อมโลก', en:'Coil Around the World' } } },
   thor:{ k:'thor', no:10, name:{ th:'ธอร์', en:'Thor' }, glyph:'🔨', event:'col-thor-win', ready:false, move:{ name:{ th:'ค้อนฟ้าสั่งสนาม', en:'The Hammer Commands the Field' } } },

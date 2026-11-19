@@ -15,6 +15,7 @@ import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
 import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
 import { HARBOR_FLAME_NOTICE } from './z2b-harbor.js';
 import { RYUJIN_TEXT, ART as RYUJIN_ART } from './z2b-ryujin.js';
+import { MUSASHI_FLAME_NOTICE } from './z2b-cerberus.js';
 import { LAMP_TEXT } from './lamp-text.js';
 import { WANTHONG, WANTHONG_CASE, WANTHONG_STORIES, WANTHONG_NOTICES } from './z1-wanthong.js';
 import { YOMATHAT_STORIES, YOMATHAT_NOTICES } from './z1-yomathat.js';
@@ -190,6 +191,7 @@ export const NOTICES = Object.freeze({
   ...BOATMAN_NOTICES,
   ...Z2_NOTICES,
   'lamp-helper-ryujin':{ ...RYUJIN_TEXT.win, openLamp:true, art:RYUJIN_ART.icon },   // T6/5 (NR-3): the win window IS the unlock window
+  'lamp-helper-musashi':MUSASHI_FLAME_NOTICE,   // T6/7 (NM-1)
   'lamp-helper-liangang':HARBOR_FLAME_NOTICE,   // T6/4 (NL-4): Lian Gang's own window instead of the generic one
 });
 

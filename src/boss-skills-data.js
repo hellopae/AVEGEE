@@ -178,7 +178,7 @@ export const BOSS_SKILLS = Object.freeze({
       useText:T('วาลดริก: "ขออภัย ขอข้าจิบสักนิด"', 'Valdric: "Forgive me. A sip, if you please."'),
       when:{ hpBelow:.45, once:true } },
   ]),
-  // not in the game yet (the zone 3 events are a later job): ready for that day
+  // T6/6: Cerberus now guards the western gate (Rae R2 B 6) - the fight on the walk to Border 2-3's end. Numbers = Rae's table, unchanged.
   cerberus:Object.freeze([
     { id:'triHowl', kind:'groupHit', warn:1, power:.6, name:T('เสียงหอนสามเศียร', 'Three-Headed Howl'),
       warnText:T('เซอร์เบอรัสทั้งสามเศียรสูดลมหายใจลึก — รอบหน้าเสียงหอนจะกระแทกทั้งทีม!', 'All three heads of Cerberus draw a deep breath — next turn the howl slams the whole team!'),
@@ -186,7 +186,7 @@ export const BOSS_SKILLS = Object.freeze({
       when:{ firstAct:3, everyActs:4 }, image:IMG.cerberus },
     { id:'triBite', kind:'heavyHit', warn:1, power:1.8, name:T('สามเศียรงับพร้อมกัน', 'Triple Bite'),
       warnText:T('เซอร์เบอรัสหันทั้งสามเศียรมาที่เป้าหมายเดียว — รอบหน้าจะงับพร้อมกัน!', 'Cerberus turns all three heads on a single target — next turn they bite as one!'),
-      useText:T('ทั้งสามเศียรงับลงพร้อมกัน แล้วชะงักราวกับสะดุ้งตื่น', 'All three heads snap down together, then flinch as if waking.'),
+      useText:T('ทั้งสามเศียรงับลงพร้อมกัน แล้วถอยหนึ่งก้าวกลับมาตั้งท่าที่เดิม', 'All three heads snap down together, then take one step back to hold their ground.'),   // T6/6 (Rae R2 B 6.4): he was never under a spell
       when:{ hpBelow:.6, everyActs:3 } },
   ]),
   jormungandr:Object.freeze([
