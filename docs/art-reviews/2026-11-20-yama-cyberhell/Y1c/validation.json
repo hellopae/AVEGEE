@@ -1,0 +1,728 @@
+{
+  "scope": "Y1c",
+  "builtInImageGenCalls": 7,
+  "generator": "built-in image_gen",
+  "reference": "docs/art-reviews/2026-11-20-design-approval/yama-cyberhell-costume-v1.webp",
+  "rows": [
+    {
+      "path": "img/CyberHell/hero-yama-sit-cyberhell.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        63,
+        0,
+        449,
+        512
+      ],
+      "cell": [
+        512,
+        512
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 38924,
+      "originalOpaqueBBox": [
+        64,
+        1,
+        447,
+        510
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        62,
+        5,
+        450,
+        511
+      ],
+      "protectedRegions": [
+        [
+          180,
+          275,
+          259,
+          340
+        ],
+        [
+          171,
+          389,
+          274,
+          468
+        ],
+        [
+          184,
+          159,
+          305,
+          232
+        ]
+      ],
+      "footRegions": [
+        [
+          171,
+          389,
+          274,
+          468
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        512,
+        512
+      ],
+      "originalSha256": "07d7b5ad2b7a34de0f24c8de472bf75386736c3bdfef51a2454eb3e11b844168",
+      "updatedSha256": "16c498d66dcee5640eab5c487c6a8b79cffee97c005d0999f95fb109767b76e5",
+      "decodedSizeAfter": [
+        512,
+        512
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          171,
+          389,
+          274,
+          468
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        184,
+        159,
+        305,
+        232
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 2594
+    },
+    {
+      "path": "img/CyberHell/hero-yama-sit-sip-cyberhell.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        63,
+        0,
+        449,
+        512
+      ],
+      "cell": [
+        512,
+        512
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 40201,
+      "originalOpaqueBBox": [
+        65,
+        1,
+        447,
+        509
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        64,
+        3,
+        447,
+        510
+      ],
+      "protectedRegions": [
+        [
+          177,
+          235,
+          262,
+          318
+        ],
+        [
+          171,
+          389,
+          274,
+          468
+        ],
+        [
+          184,
+          159,
+          305,
+          232
+        ]
+      ],
+      "footRegions": [
+        [
+          171,
+          389,
+          274,
+          468
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        512,
+        512
+      ],
+      "originalSha256": "ba3f3e292b9273b8dee24bc36de3019e330e45af0b37f56255ed3d6c19ad5f42",
+      "updatedSha256": "f32975e3ce2bd9afbb1b45fef9361d0e461725bee9787f1f382f55de6e1d8569",
+      "decodedSizeAfter": [
+        512,
+        512
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          171,
+          389,
+          274,
+          468
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        184,
+        159,
+        305,
+        232
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 2460
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-cry.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        94,
+        0,
+        418,
+        512
+      ],
+      "cell": [
+        512,
+        512
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 45586,
+      "originalOpaqueBBox": [
+        95,
+        0,
+        416,
+        510
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        93,
+        3,
+        420,
+        510
+      ],
+      "protectedRegions": [
+        [
+          90,
+          198,
+          158,
+          273
+        ],
+        [
+          248,
+          246,
+          312,
+          307
+        ],
+        [
+          193,
+          447,
+          398,
+          512
+        ],
+        [
+          216,
+          122,
+          347,
+          207
+        ]
+      ],
+      "footRegions": [
+        [
+          193,
+          447,
+          278,
+          501
+        ],
+        [
+          337,
+          447,
+          398,
+          512
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        512,
+        512
+      ],
+      "originalSha256": "e3faa330d86c789eabd2b8d9a54324dd5e0b9cd270295bf6e8e3eb41bc0fef07",
+      "updatedSha256": "da763c16e1a41299cfb7e6ac883be1aa6dbde1f2e35baf30610126a7e0f64dcb",
+      "decodedSizeAfter": [
+        512,
+        512
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          193,
+          447,
+          278,
+          501
+        ],
+        [
+          337,
+          447,
+          398,
+          512
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        216,
+        122,
+        347,
+        207
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 2983
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-rage.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        47,
+        0,
+        495,
+        511
+      ],
+      "cell": [
+        512,
+        512
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 40399,
+      "originalOpaqueBBox": [
+        47,
+        0,
+        494,
+        510
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        44,
+        0,
+        496,
+        511
+      ],
+      "protectedRegions": [
+        [
+          142,
+          241,
+          195,
+          301
+        ],
+        [
+          402,
+          279,
+          454,
+          350
+        ],
+        [
+          84,
+          448,
+          165,
+          512
+        ],
+        [
+          347,
+          446,
+          437,
+          512
+        ],
+        [
+          231,
+          147,
+          355,
+          232
+        ]
+      ],
+      "footRegions": [
+        [
+          84,
+          448,
+          165,
+          512
+        ],
+        [
+          347,
+          446,
+          437,
+          512
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        512,
+        512
+      ],
+      "originalSha256": "3271af782f2f0b6d4df5f45eba87258ad3c0d7830638d23d741ee281d4aa7019",
+      "updatedSha256": "9973764eec8e2b0678a1489cc3dff489c54d9895a78fa8a62afda34333bd8d05",
+      "decodedSizeAfter": [
+        512,
+        512
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          84,
+          448,
+          165,
+          512
+        ],
+        [
+          347,
+          446,
+          437,
+          512
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        231,
+        147,
+        355,
+        232
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 3186
+    },
+    {
+      "path": "img/hero-yama-cyberhell-tea-clean.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        91,
+        60,
+        1218,
+        1222
+      ],
+      "cell": [
+        1254,
+        1254
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 235157,
+      "originalOpaqueBBox": [
+        327,
+        63,
+        909,
+        1184
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        324,
+        56,
+        910,
+        1184
+      ],
+      "protectedRegions": [
+        [
+          179,
+          297,
+          264,
+          359
+        ],
+        [
+          173,
+          419,
+          273,
+          488
+        ],
+        [
+          184,
+          183,
+          308,
+          246
+        ]
+      ],
+      "footRegions": [
+        [
+          173,
+          419,
+          273,
+          488
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        512,
+        512
+      ],
+      "originalSha256": "f26d7cd021b089af2fbf5e0ff7b7dfa5474413e6f5beae94646ec47f855044ee",
+      "updatedSha256": "56a18949078da96cd0aed037d6f48a950abdfe94ca1df21703c6eec93b3038cc",
+      "decodedSizeAfter": [
+        1254,
+        1254
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          424,
+          1027,
+          669,
+          1196
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        451,
+        449,
+        755,
+        603
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 14330
+    },
+    {
+      "path": "img/hero-yama-cyberhell-unconscious.webp",
+      "size": [
+        1642,
+        958
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        0,
+        17,
+        1612,
+        936
+      ],
+      "cell": [
+        1642,
+        958
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 281119,
+      "originalOpaqueBBox": [
+        64,
+        98,
+        1572,
+        846
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        56,
+        97,
+        1572,
+        846
+      ],
+      "protectedRegions": [
+        [
+          184,
+          270,
+          292,
+          314
+        ],
+        [
+          509,
+          233,
+          616,
+          322
+        ],
+        [
+          70,
+          192,
+          232,
+          260
+        ]
+      ],
+      "footRegions": [
+        [
+          509,
+          233,
+          616,
+          322
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        640,
+        373
+      ],
+      "originalSha256": "293386108af1df76e5b253367b1eb8a637bf999ab8ec1b00676e3d93e32d190c",
+      "updatedSha256": "b0320165bbc6f43703f9c9140d39a435f286d39ff38ab49e117bd7d26235cd76",
+      "decodedSizeAfter": [
+        1642,
+        958
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          1306,
+          599,
+          1581,
+          828
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        180,
+        494,
+        596,
+        668
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 19793
+    },
+    {
+      "path": "img/ko-pose-v1/cyberhell/yama.webp",
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "bbox": [
+        175,
+        115,
+        465,
+        272
+      ],
+      "cell": [
+        640,
+        320
+      ],
+      "layout": "1x1",
+      "alphaChangedPixels": 0,
+      "protectedChangedVisiblePixels": 0,
+      "footRegionChangedVisiblePixels": 0,
+      "changedCostumePixels": 12275,
+      "originalOpaqueBBox": [
+        176,
+        116,
+        463,
+        270
+      ],
+      "generatedOpaqueBBoxBeforeRegistration": [
+        173,
+        92,
+        463,
+        250
+      ],
+      "protectedRegions": [
+        [
+          344,
+          151,
+          387,
+          177
+        ],
+        [
+          272,
+          237,
+          306,
+          270
+        ],
+        [
+          410,
+          177,
+          469,
+          261
+        ],
+        [
+          302,
+          248,
+          466,
+          277
+        ],
+        [
+          234,
+          166,
+          273,
+          187
+        ]
+      ],
+      "footRegions": [
+        [
+          410,
+          177,
+          469,
+          261
+        ]
+      ],
+      "regionCoordinateCanvas": [
+        640,
+        320
+      ],
+      "originalSha256": "7e0dbec2b47a4ed7fb3795ed3f0634c1f21cb1e0b4ee8453479f70ab9c646d6c",
+      "updatedSha256": "de39539e8ccb4cd77685d5eafe0bd888ad3b7b60cdfec64d76a5cad3bcc485fb",
+      "decodedSizeAfter": [
+        640,
+        320
+      ],
+      "decodedModeAfter": "RGBA",
+      "decodedFramesAfter": 1,
+      "nativeFootRegions": [
+        [
+          410,
+          177,
+          469,
+          261
+        ]
+      ],
+      "independentCheck": "Pillow decode against git HEAD: dimensions/mode/frame count/alpha identical; visible RGBA in foot regions identical",
+      "independentVisibleFootDifferences": 0,
+      "nativeFaceCoreRegion": [
+        234,
+        166,
+        273,
+        187
+      ],
+      "independentVisibleFaceCoreDifferences": 0,
+      "independentRedHornPixelDifferences": 0,
+      "independentRedHornPixelsChecked": 955
+    }
+  ],
+  "baselineCommit": "d0d57c3c05a55e8a1b7a5fc1eb862f41c2ddb693"
+}
