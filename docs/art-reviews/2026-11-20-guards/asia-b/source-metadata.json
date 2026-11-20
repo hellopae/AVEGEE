@@ -1,0 +1,56 @@
+[
+  {
+    "name": "combat",
+    "path": "img/crew-combat-v1/asia/guard.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      2
+    ],
+    "cell": [
+      384,
+      512
+    ],
+    "frames": 8
+  },
+  {
+    "name": "idle",
+    "path": "img/crew-combat-v1/asia/guard-idle.webp",
+    "size": [
+      1024,
+      384
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      256,
+      384
+    ],
+    "frames": 4
+  },
+  {
+    "name": "walk",
+    "path": "img/Asia/crew-guard-asia-walk-v2.webp",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      543,
+      724
+    ],
+    "frames": 4
+  }
+]

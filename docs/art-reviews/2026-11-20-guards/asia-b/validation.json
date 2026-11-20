@@ -1,0 +1,1180 @@
+{
+  "scope": "asia-b only",
+  "alpha_threshold": 127,
+  "foot_definition": "Center x of bottom twenty opaque rows inside annotated contact-boot ROI; y is exclusive boot bottom. Anatomical head ROI excludes weapon/cross-frame debris. Coordinates are local to original cell or runtime atlas rectangle.",
+  "generation_calls": 12,
+  "files": [
+    {
+      "name": "combat",
+      "path": "img/crew-combat-v1/asia/guard.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": [
+        384,
+        512
+      ],
+      "frames": 8,
+      "saved_size": [
+        1536,
+        1024
+      ],
+      "saved_mode": "RGBA",
+      "metadata_equal": true,
+      "sha256": "d0666de31c1ea3fa5981304bc6c471056520192419dfe62c79daea002e073dd6",
+      "frames_measured": [
+        {
+          "source_head_roi": [
+            80,
+            190
+          ],
+          "source_boot_roi": [
+            30,
+            450,
+            215,
+            490
+          ],
+          "new_head_roi": [
+            75,
+            161
+          ],
+          "new_boot_roi": [
+            63,
+            439,
+            188,
+            484
+          ],
+          "source_body_top": 122,
+          "source_foot": [
+            125.5,
+            484
+          ],
+          "generated": "combat-0",
+          "horizontal_scale": 0.268657,
+          "body_vertical_scale": 0.374741,
+          "upper_weapon_compressed": true,
+          "offset": [
+            -14,
+            97
+          ],
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "old_alpha_bbox": [
+            26,
+            97,
+            242,
+            484
+          ],
+          "new_alpha_bbox": [
+            14,
+            97,
+            231,
+            484
+          ],
+          "new_body_top": 122,
+          "new_foot": [
+            125.0,
+            484
+          ],
+          "old_body_height": 362,
+          "new_body_height": 362,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            40,
+            200
+          ],
+          "source_boot_roi": [
+            150,
+            450,
+            240,
+            490
+          ],
+          "new_head_roi": [
+            110,
+            179
+          ],
+          "new_boot_roi": [
+            169,
+            448,
+            229,
+            483
+          ],
+          "source_body_top": 135,
+          "source_foot": [
+            196.5,
+            483
+          ],
+          "generated": "combat-1",
+          "horizontal_scale": 0.264368,
+          "body_vertical_scale": 0.339512,
+          "upper_weapon_compressed": false,
+          "offset": [
+            -1,
+            135
+          ],
+          "frame": 1,
+          "rect": [
+            384,
+            0,
+            768,
+            512
+          ],
+          "old_alpha_bbox": [
+            19,
+            135,
+            251,
+            483
+          ],
+          "new_alpha_bbox": [
+            2,
+            135,
+            315,
+            483
+          ],
+          "new_body_top": 135,
+          "new_foot": [
+            196.5,
+            483
+          ],
+          "old_body_height": 348,
+          "new_body_height": 348,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            50,
+            210
+          ],
+          "source_boot_roi": [
+            135,
+            450,
+            230,
+            490
+          ],
+          "new_head_roi": [
+            102,
+            178
+          ],
+          "new_boot_roi": [
+            149,
+            438,
+            213,
+            484
+          ],
+          "source_body_top": 152,
+          "source_foot": [
+            181.5,
+            484
+          ],
+          "generated": "combat-2",
+          "horizontal_scale": 0.26,
+          "body_vertical_scale": 0.340513,
+          "upper_weapon_compressed": false,
+          "offset": [
+            -85,
+            152
+          ],
+          "frame": 2,
+          "rect": [
+            768,
+            0,
+            1152,
+            512
+          ],
+          "old_alpha_bbox": [
+            19,
+            152,
+            345,
+            484
+          ],
+          "new_alpha_bbox": [
+            0,
+            152,
+            341,
+            484
+          ],
+          "new_body_top": 152,
+          "new_foot": [
+            181.5,
+            484
+          ],
+          "old_body_height": 332,
+          "new_body_height": 332,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            40,
+            210
+          ],
+          "source_boot_roi": [
+            135,
+            450,
+            230,
+            490
+          ],
+          "new_head_roi": [
+            103,
+            160
+          ],
+          "new_boot_roi": [
+            159,
+            437,
+            207,
+            484
+          ],
+          "source_body_top": 157,
+          "source_foot": [
+            181.5,
+            484
+          ],
+          "generated": "combat-3",
+          "horizontal_scale": 0.227423,
+          "body_vertical_scale": 0.405204,
+          "upper_weapon_compressed": false,
+          "offset": [
+            12,
+            157
+          ],
+          "frame": 3,
+          "rect": [
+            1152,
+            0,
+            1536,
+            512
+          ],
+          "old_alpha_bbox": [
+            19,
+            157,
+            360,
+            484
+          ],
+          "new_alpha_bbox": [
+            14,
+            157,
+            359,
+            484
+          ],
+          "new_body_top": 157,
+          "new_foot": [
+            182.0,
+            484
+          ],
+          "old_body_height": 327,
+          "new_body_height": 327,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            40,
+            260
+          ],
+          "source_boot_roi": [
+            240,
+            450,
+            335,
+            490
+          ],
+          "new_head_roi": [
+            139,
+            225
+          ],
+          "new_boot_roi": [
+            253,
+            442,
+            325,
+            483
+          ],
+          "source_body_top": 141,
+          "source_foot": [
+            288.0,
+            483
+          ],
+          "generated": "combat-4",
+          "horizontal_scale": 0.2875,
+          "body_vertical_scale": 0.386441,
+          "upper_weapon_compressed": false,
+          "offset": [
+            24,
+            141
+          ],
+          "frame": 4,
+          "rect": [
+            0,
+            512,
+            384,
+            1024
+          ],
+          "old_alpha_bbox": [
+            27,
+            141,
+            365,
+            483
+          ],
+          "new_alpha_bbox": [
+            36,
+            141,
+            381,
+            483
+          ],
+          "new_body_top": 141,
+          "new_foot": [
+            288.5,
+            483
+          ],
+          "old_body_height": 342,
+          "new_body_height": 342,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            130,
+            250
+          ],
+          "source_boot_roi": [
+            85,
+            450,
+            270,
+            490
+          ],
+          "new_head_roi": [
+            129,
+            215
+          ],
+          "new_boot_roi": [
+            117,
+            438,
+            242,
+            484
+          ],
+          "source_body_top": 116,
+          "source_foot": [
+            179.0,
+            484
+          ],
+          "generated": "combat-0",
+          "horizontal_scale": 0.268657,
+          "body_vertical_scale": 0.380952,
+          "upper_weapon_compressed": true,
+          "offset": [
+            40,
+            91
+          ],
+          "frame": 5,
+          "rect": [
+            384,
+            512,
+            768,
+            1024
+          ],
+          "old_alpha_bbox": [
+            19,
+            91,
+            294,
+            484
+          ],
+          "new_alpha_bbox": [
+            68,
+            91,
+            285,
+            484
+          ],
+          "new_body_top": 116,
+          "new_foot": [
+            179.0,
+            484
+          ],
+          "old_body_height": 368,
+          "new_body_height": 368,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            20,
+            180
+          ],
+          "source_boot_roi": [
+            265,
+            450,
+            358,
+            490
+          ],
+          "new_head_roi": [
+            116,
+            198
+          ],
+          "new_boot_roi": [
+            283,
+            441,
+            344,
+            483
+          ],
+          "source_body_top": 135,
+          "source_foot": [
+            311.5,
+            483
+          ],
+          "generated": "combat-6",
+          "horizontal_scale": 0.258716,
+          "body_vertical_scale": 0.375,
+          "upper_weapon_compressed": false,
+          "offset": [
+            82,
+            135
+          ],
+          "frame": 6,
+          "rect": [
+            768,
+            512,
+            1152,
+            1024
+          ],
+          "old_alpha_bbox": [
+            19,
+            135,
+            365,
+            483
+          ],
+          "new_alpha_bbox": [
+            85,
+            135,
+            383,
+            483
+          ],
+          "new_body_top": 135,
+          "new_foot": [
+            312.0,
+            483
+          ],
+          "old_body_height": 348,
+          "new_body_height": 348,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            90,
+            250
+          ],
+          "source_boot_roi": [
+            210,
+            450,
+            288,
+            490
+          ],
+          "new_head_roi": [
+            188,
+            266
+          ],
+          "new_boot_roi": [
+            224,
+            446,
+            280,
+            481
+          ],
+          "source_body_top": 151,
+          "source_foot": [
+            252.0,
+            481
+          ],
+          "generated": "combat-7",
+          "horizontal_scale": 0.244792,
+          "body_vertical_scale": 0.341615,
+          "upper_weapon_compressed": true,
+          "offset": [
+            58,
+            104
+          ],
+          "frame": 7,
+          "rect": [
+            1152,
+            512,
+            1536,
+            1024
+          ],
+          "old_alpha_bbox": [
+            72,
+            104,
+            306,
+            484
+          ],
+          "new_alpha_bbox": [
+            81,
+            104,
+            316,
+            481
+          ],
+          "new_body_top": 151,
+          "new_foot": [
+            252.0,
+            481
+          ],
+          "old_body_height": 330,
+          "new_body_height": 330,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        }
+      ]
+    },
+    {
+      "name": "idle",
+      "path": "img/crew-combat-v1/asia/guard-idle.webp",
+      "size": [
+        1024,
+        384
+      ],
+      "mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "cell": [
+        256,
+        384
+      ],
+      "frames": 4,
+      "saved_size": [
+        1024,
+        384
+      ],
+      "saved_mode": "RGBA",
+      "metadata_equal": true,
+      "sha256": "445c1a230d599e47839b58f043ec714ab65735ef50c7bd0af761a098929f1630",
+      "frames_measured": [
+        {
+          "source_head_roi": [
+            90,
+            200
+          ],
+          "source_boot_roi": [
+            75,
+            325,
+            230,
+            365
+          ],
+          "new_head_roi": [
+            129,
+            191
+          ],
+          "new_boot_roi": [
+            93,
+            325,
+            207,
+            356
+          ],
+          "source_body_top": 80,
+          "source_foot": [
+            150.0,
+            356
+          ],
+          "generated": "idle",
+          "horizontal_scale": 0.207792,
+          "body_vertical_scale": 0.255083,
+          "upper_weapon_compressed": false,
+          "offset": [
+            52,
+            80
+          ],
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            256,
+            384
+          ],
+          "old_alpha_bbox": [
+            50,
+            80,
+            235,
+            356
+          ],
+          "new_alpha_bbox": [
+            67,
+            80,
+            255,
+            356
+          ],
+          "new_body_top": 80,
+          "new_foot": [
+            149.5,
+            356
+          ],
+          "old_body_height": 276,
+          "new_body_height": 276,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            90,
+            200
+          ],
+          "source_boot_roi": [
+            75,
+            325,
+            230,
+            365
+          ],
+          "new_head_roi": [
+            129,
+            192
+          ],
+          "new_boot_roi": [
+            93,
+            324,
+            208,
+            356
+          ],
+          "source_body_top": 77,
+          "source_foot": [
+            149.5,
+            356
+          ],
+          "generated": "idle",
+          "horizontal_scale": 0.208791,
+          "body_vertical_scale": 0.257856,
+          "upper_weapon_compressed": false,
+          "offset": [
+            52,
+            77
+          ],
+          "frame": 1,
+          "rect": [
+            256,
+            0,
+            512,
+            384
+          ],
+          "old_alpha_bbox": [
+            47,
+            77,
+            237,
+            356
+          ],
+          "new_alpha_bbox": [
+            67,
+            77,
+            256,
+            356
+          ],
+          "new_body_top": 77,
+          "new_foot": [
+            150.0,
+            356
+          ],
+          "old_body_height": 279,
+          "new_body_height": 279,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            90,
+            200
+          ],
+          "source_boot_roi": [
+            75,
+            325,
+            230,
+            365
+          ],
+          "new_head_roi": [
+            128,
+            191
+          ],
+          "new_boot_roi": [
+            91,
+            324,
+            207,
+            356
+          ],
+          "source_body_top": 77,
+          "source_foot": [
+            149.0,
+            356
+          ],
+          "generated": "idle",
+          "horizontal_scale": 0.20979,
+          "body_vertical_scale": 0.257856,
+          "upper_weapon_compressed": false,
+          "offset": [
+            50,
+            77
+          ],
+          "frame": 2,
+          "rect": [
+            512,
+            0,
+            768,
+            384
+          ],
+          "old_alpha_bbox": [
+            42,
+            77,
+            233,
+            356
+          ],
+          "new_alpha_bbox": [
+            65,
+            77,
+            255,
+            356
+          ],
+          "new_body_top": 77,
+          "new_foot": [
+            148.5,
+            356
+          ],
+          "old_body_height": 279,
+          "new_body_height": 279,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            90,
+            200
+          ],
+          "source_boot_roi": [
+            75,
+            325,
+            230,
+            365
+          ],
+          "new_head_roi": [
+            124,
+            187
+          ],
+          "new_boot_roi": [
+            88,
+            324,
+            203,
+            356
+          ],
+          "source_body_top": 78,
+          "source_foot": [
+            145.5,
+            356
+          ],
+          "generated": "idle",
+          "horizontal_scale": 0.210177,
+          "body_vertical_scale": 0.256932,
+          "upper_weapon_compressed": false,
+          "offset": [
+            46,
+            78
+          ],
+          "frame": 3,
+          "rect": [
+            768,
+            0,
+            1024,
+            384
+          ],
+          "old_alpha_bbox": [
+            41,
+            78,
+            227,
+            356
+          ],
+          "new_alpha_bbox": [
+            61,
+            78,
+            251,
+            356
+          ],
+          "new_body_top": 78,
+          "new_foot": [
+            145.0,
+            356
+          ],
+          "old_body_height": 278,
+          "new_body_height": 278,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        }
+      ]
+    },
+    {
+      "name": "walk",
+      "path": "img/Asia/crew-guard-asia-walk-v2.webp",
+      "size": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "cell": [
+        543,
+        724
+      ],
+      "frames": 4,
+      "saved_size": [
+        2172,
+        724
+      ],
+      "saved_mode": "RGBA",
+      "metadata_equal": true,
+      "sha256": "d0ec5ab640cfc819e07750e3cb91fb69e5919adc090fcb9a4df00962aba92238",
+      "frames_measured": [
+        {
+          "source_head_roi": [
+            130,
+            350
+          ],
+          "source_boot_roi": [
+            0,
+            650,
+            160,
+            700
+          ],
+          "new_head_roi": [
+            164,
+            279
+          ],
+          "new_boot_roi": [
+            45,
+            596,
+            132,
+            694
+          ],
+          "source_body_top": 16,
+          "source_foot": [
+            99.0,
+            694
+          ],
+          "generated": "walk-0",
+          "horizontal_scale": 0.395884,
+          "body_vertical_scale": 0.620879,
+          "upper_weapon_compressed": true,
+          "offset": [
+            6,
+            0
+          ],
+          "frame": 0,
+          "rect": [
+            115,
+            9,
+            543,
+            703
+          ],
+          "old_alpha_bbox": [
+            1,
+            0,
+            428,
+            694
+          ],
+          "new_alpha_bbox": [
+            47,
+            0,
+            428,
+            694
+          ],
+          "new_body_top": 16,
+          "new_foot": [
+            99.0,
+            694
+          ],
+          "old_body_height": 678,
+          "new_body_height": 678,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            110,
+            320
+          ],
+          "source_boot_roi": [
+            130,
+            650,
+            300,
+            705
+          ],
+          "new_head_roi": [
+            164,
+            284
+          ],
+          "new_boot_roi": [
+            166,
+            632,
+            264,
+            699
+          ],
+          "source_body_top": 16,
+          "source_foot": [
+            212.5,
+            699
+          ],
+          "generated": "walk-1-fixed",
+          "horizontal_scale": 0.429952,
+          "body_vertical_scale": 0.554833,
+          "upper_weapon_compressed": true,
+          "offset": [
+            5,
+            0
+          ],
+          "frame": 1,
+          "rect": [
+            649,
+            9,
+            1086,
+            709
+          ],
+          "old_alpha_bbox": [
+            1,
+            0,
+            437,
+            699
+          ],
+          "new_alpha_bbox": [
+            23,
+            0,
+            435,
+            699
+          ],
+          "new_body_top": 16,
+          "new_foot": [
+            212.5,
+            699
+          ],
+          "old_body_height": 683,
+          "new_body_height": 683,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            125,
+            340
+          ],
+          "source_boot_roi": [
+            0,
+            650,
+            160,
+            700
+          ],
+          "new_head_roi": [
+            170,
+            293
+          ],
+          "new_boot_roi": [
+            42,
+            596,
+            135,
+            694
+          ],
+          "source_body_top": 16,
+          "source_foot": [
+            99.5,
+            694
+          ],
+          "generated": "walk-0",
+          "horizontal_scale": 0.424334,
+          "body_vertical_scale": 0.620879,
+          "upper_weapon_compressed": true,
+          "offset": [
+            0,
+            0
+          ],
+          "frame": 2,
+          "rect": [
+            1177,
+            9,
+            1629,
+            704
+          ],
+          "old_alpha_bbox": [
+            1,
+            0,
+            452,
+            694
+          ],
+          "new_alpha_bbox": [
+            44,
+            0,
+            452,
+            694
+          ],
+          "new_body_top": 16,
+          "new_foot": [
+            100.0,
+            694
+          ],
+          "old_body_height": 678,
+          "new_body_height": 678,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        },
+        {
+          "source_head_roi": [
+            110,
+            320
+          ],
+          "source_boot_roi": [
+            100,
+            650,
+            265,
+            705
+          ],
+          "new_head_roi": [
+            170,
+            288
+          ],
+          "new_boot_roi": [
+            132,
+            632,
+            231,
+            699
+          ],
+          "source_body_top": 16,
+          "source_foot": [
+            181.5,
+            699
+          ],
+          "generated": "walk-3",
+          "horizontal_scale": 0.419702,
+          "body_vertical_scale": 0.561216,
+          "upper_weapon_compressed": true,
+          "offset": [
+            15,
+            0
+          ],
+          "frame": 3,
+          "rect": [
+            1718,
+            9,
+            2155,
+            709
+          ],
+          "old_alpha_bbox": [
+            0,
+            0,
+            437,
+            699
+          ],
+          "new_alpha_bbox": [
+            33,
+            0,
+            435,
+            699
+          ],
+          "new_body_top": 16,
+          "new_foot": [
+            181.5,
+            699
+          ],
+          "old_body_height": 683,
+          "new_body_height": 683,
+          "body_height_delta_percent": 0.0,
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "within_foot_tolerance": true,
+          "within_height_tolerance": true
+        }
+      ]
+    }
+  ],
+  "automated_numeric_checks_ok": true,
+  "runtime_playtest": "not run; art-only task, no source/test edits",
+  "visual_review": "manual review of decoded sheets, contact sheets and GIF frames; see README for limitations"
+}
