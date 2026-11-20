@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "scope": {
+    "zone": "cyberhell",
+    "set": "a",
+    "assets_expected": 6,
+    "assets_written": 6,
+    "sheet_count": 0,
+    "sheet_gifs": [],
+    "sheet_gifs_reason": "all assets are single-frame images, no sheets in set a"
+  },
+  "generation": {
+    "tool": "built-in image_gen.imagegen",
+    "calls": 8,
+    "limit": 12,
+    "approved_reference_attached_every_call": true,
+    "external_generation_used": false
+  },
+  "measurement_policy": {
+    "alpha_threshold": 8,
+    "note": "Discarded generated alpha values below 8 as background speckle; foot anchor means sprite ground pivot from the foot envelope, not preservation of every toe coordinate. Cutscene original landmarks are manually annotated. No game/runtime QA was performed."
+  },
+  "files": [
+    {
+      "path": "img/CyberHell/crew-guard-cyberhell-v2.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "e8ce531d119bf1f95dffd43733bd5531f1084a2bb573f1521f54a0956213fe58",
+      "original": {
+        "size": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "sha256": "582e4d60d3f4e78a53c8c3d1b131d9aef016fedd0d4bd295f4b77868a77ec228"
+      },
+      "visible_alpha_bbox_threshold_8": [
+        302,
+        22,
+        970,
+        1249
+      ],
+      "fully_transparent_pixels": 1153290,
+      "foot_anchor": {
+        "method": "midpoint of foot-envelope x extent in bottom 8% of visible figure; y = last row alpha >=8; original map ROI x>=350 excludes staff",
+        "original_xy": [
+          698.0,
+          1248
+        ],
+        "new_xy": [
+          698.0,
+          1248
+        ],
+        "delta_xy_px": [
+          0.0,
+          0
+        ],
+        "tolerance_px": 2,
+        "original_roi": [
+          350,
+          1150,
+          1108,
+          1254
+        ]
+      },
+      "character_height": {
+        "original_px": 1217,
+        "new_px": 1227,
+        "delta_percent": 0.8217,
+        "tolerance_percent": 3,
+        "method": "visible alpha threshold 8; cutscene uses character layer; map excludes staff from original body height"
+      }
+    },
+    {
+      "path": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp",
+      "size": [
+        177,
+        219
+      ],
+      "mode": "RGBA",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "11944c71900cb807eecc052c19914f8534798d64aaafc26e6e93a0378bb5b8b7",
+      "original": {
+        "size": [
+          177,
+          219
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "sha256": "2b72011e35b27711ca0931a556b859b1a6c611fa1381d51b8c0ede242f6b63b9"
+      },
+      "visible_alpha_bbox_threshold_8": [
+        10,
+        0,
+        168,
+        219
+      ],
+      "fully_transparent_pixels": 16837,
+      "foot_anchor": {
+        "method": "midpoint of horizontal alpha extent in bottom 8% of visible figure; y = last row alpha >=8",
+        "original_xy": [
+          89.0,
+          218
+        ],
+        "new_xy": [
+          89.0,
+          218
+        ],
+        "delta_xy_px": [
+          0.0,
+          0
+        ],
+        "tolerance_px": 2,
+        "original_roi": null
+      },
+      "character_height": {
+        "original_px": 219,
+        "new_px": 219,
+        "delta_percent": 0.0,
+        "tolerance_percent": 3,
+        "method": "visible alpha threshold 8; cutscene uses character layer; map excludes staff from original body height"
+      }
+    },
+    {
+      "path": "img/z4-events/guard-watson03.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "cb975424ddb8f128f6f582e4cce5134b35da369ff907eec4266e0d08d576e72f",
+      "original": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "sha256": "73f49451d178b9bc18c2da2fc09c7b3dcad13022e3dc9fe19b3359d9501210e7"
+      },
+      "visible_alpha_bbox_threshold_8": [
+        161,
+        30,
+        396,
+        498
+      ],
+      "fully_transparent_pixels": 206268,
+      "foot_anchor": {
+        "method": "midpoint of horizontal alpha extent in bottom 8% of visible figure; y = last row alpha >=8",
+        "original_xy": [
+          256.0,
+          497
+        ],
+        "new_xy": [
+          256.0,
+          497
+        ],
+        "delta_xy_px": [
+          0.0,
+          0
+        ],
+        "tolerance_px": 2,
+        "original_roi": null
+      },
+      "character_height": {
+        "original_px": 468,
+        "new_px": 468,
+        "delta_percent": 0.0,
+        "tolerance_percent": 3,
+        "method": "visible alpha threshold 8; cutscene uses character layer; map excludes staff from original body height"
+      }
+    },
+    {
+      "path": "img/z4-events/guard-watson03-profile.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "469fb7a9d1c229e2960d97830b680309668480ceaaeb4ce8315ab3ff4ae7e36b",
+      "original": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "sha256": "595477172a2c759bddcaff1bb721f25e1983e42237ebc5cf1e8698fc83f223aa"
+      },
+      "foot_anchor": {
+        "applicable": false,
+        "reason": "original is opaque portrait placeholder without anatomical feet"
+      },
+      "character_height": {
+        "applicable": false,
+        "reason": "original portrait placeholder contains no character to measure"
+      }
+    },
+    {
+      "path": "img/CyberHell/crew-guard-cyberhell-cutscene.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "f26d03dd79e854aef9137a7eba0c4879f6bc7902e89fd4c5df59447424e33070",
+      "original": {
+        "size": [
+          1375,
+          768
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "sha256": "51d2ebc67f4fa6f91d0f2be59e284d62d7cdf9ed16a44077994575eb4d79b2a9"
+      },
+      "original_landmark_source": "manual annotation on original cutscene, body top y=185; baseline y=658; staff excluded; no runtime test",
+      "foot_anchor": {
+        "method": "manual original character foot-envelope anchor, replacement layer measured with alpha >=8; staff excluded",
+        "original_xy": [
+          495,
+          658
+        ],
+        "new_xy": [
+          494.5,
+          658
+        ],
+        "delta_xy_px": [
+          -0.5,
+          0
+        ],
+        "tolerance_px": 2,
+        "original_roi": null
+      },
+      "character_height": {
+        "original_px": 474,
+        "new_px": 474,
+        "delta_percent": 0.0,
+        "tolerance_percent": 3,
+        "method": "visible alpha threshold 8; cutscene uses character layer; map excludes staff from original body height"
+      }
+    },
+    {
+      "path": "img/ko-pose-v1/cyberhell/guard.webp",
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "grid": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "sha256": "9403f82b80185712ef6d1c7c1b81e05cefe06091d044eb26146fe0e786181c9f",
+      "visible_alpha_bbox_threshold_8": [
+        97,
+        57,
+        542,
+        300
+      ],
+      "fully_transparent_pixels": 149764,
+      "ko_length": {
+        "new_px": 445,
+        "standing_reference": "img/z4-events/guard-watson03.webp",
+        "standing_height_px": 468,
+        "ratio": 0.950855,
+        "allowed_ratio": [
+          0.9,
+          1.0
+        ],
+        "note": "event standing reference uses 512px canvas; map sprite uses a different pixel scale"
+      }
+    }
+  ],
+  "scene_preservation": {
+    "replacement_mask": "cutscene-replacement-mask.png",
+    "character_mask": "cutscene-character-mask.png",
+    "outside_replacement_changed_pixels": 0,
+    "outside_replacement_total_pixels": 824657,
+    "portrait_outer_9px_changed_pixels": 0
+  },
+  "visual_review": {
+    "robot_identity": "silver slender robot, cyan twin lenses, cyan/purple trim, glowing log tablet",
+    "poses": [
+      "standing",
+      "cross-legged sitting",
+      "standing event",
+      "bust portrait",
+      "wide defensive stance",
+      "supine KO head-left feet-right"
+    ],
+    "no_text_blood_hat_pipe_observed": true,
+    "ko_direction": "head left, feet right",
+    "limitation": "visual inspection and file measurements only; no in-engine review or QA claim"
+  },
+  "checks": [
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp canvas unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp mode unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp one frame / 1x1 grid",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp content replaced",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp has transparent background",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp original anchor reproduced",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp foot anchor <=2px",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-v2.webp height change <=3%",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp canvas unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp mode unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp one frame / 1x1 grid",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp content replaced",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp has transparent background",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp original anchor reproduced",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp foot anchor <=2px",
+      "satisfied": true
+    },
+    {
+      "check": "img/tea-rest/crew-guard-cyberhell-sit-v1.webp height change <=3%",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp canvas unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp mode unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp one frame / 1x1 grid",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp content replaced",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp has transparent background",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp original anchor reproduced",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp foot anchor <=2px",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03.webp height change <=3%",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03-profile.webp canvas unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03-profile.webp mode unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03-profile.webp one frame / 1x1 grid",
+      "satisfied": true
+    },
+    {
+      "check": "img/z4-events/guard-watson03-profile.webp content replaced",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp canvas unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp mode unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp one frame / 1x1 grid",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp content replaced",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp foot anchor <=2px",
+      "satisfied": true
+    },
+    {
+      "check": "img/CyberHell/crew-guard-cyberhell-cutscene.webp height change <=3%",
+      "satisfied": true
+    },
+    {
+      "check": "img/ko-pose-v1/cyberhell/guard.webp has transparent background",
+      "satisfied": true
+    },
+    {
+      "check": "img/ko-pose-v1/cyberhell/guard.webp required new canvas/mode",
+      "satisfied": true
+    },
+    {
+      "check": "img/ko-pose-v1/cyberhell/guard.webp one frame",
+      "satisfied": true
+    },
+    {
+      "check": "img/ko-pose-v1/cyberhell/guard.webp KO length 0.9-1.0 standing height",
+      "satisfied": true
+    },
+    {
+      "check": "cutscene original scene pixels outside replacement mask unchanged",
+      "satisfied": true
+    },
+    {
+      "check": "portrait original outer 9px border unchanged",
+      "satisfied": true
+    }
+  ],
+  "check_count": 40,
+  "failed_checks": []
+}
