@@ -981,6 +981,14 @@
   {
    "before": "",
    "after": "  boundPosition:[1940,872],   // T8d: HOME-67 bound beside Archon-Zero (enemyPositions[4])\n"
+  },
+  {
+   "before": "",
+   "after": "import { SEV_ARRIVE_LINES_EN } from './z3f-severin.js';   // T9: the English lines of Severin's arrival scene\n"
+  },
+  {
+   "before": "",
+   "after": "    bossArriveEn:SEV_ARRIVE_LINES_EN,   // T9: the same lines in English (optional field: a zone without it shows the Thai lines; Lian Gang's z2-lian-open has no English yet)\n"
   }
  ],
  "combat-skills": [

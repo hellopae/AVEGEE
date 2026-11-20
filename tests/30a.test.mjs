@@ -72,7 +72,7 @@ test('30A: zones 2–4 choose real arrival scenes even with a loaded boss profil
   for (const z of ZONES) {
     const dlg = fakeRoot(); let done = 0;
     const fallback = `img/Intro-Boss-Zone${ZONES.indexOf(z) + 1}.webp`;
-    renderer('openBossArrive', { ZONES, dlg, dlgGen:1, esc, bossArrivalScene, pauseForDlg() {},
+    renderer('openBossArrive', { ZONES, dlg, dlgGen:1, esc, bossArrivalScene, pauseForDlg() {}, getLang:() => 'th',   // T9: the presenter reads the language
       zoneImg:() => ({src:'loaded-closeup.webp'}), artUrl:() => fallback,
       openDlg() { dlg.open = true; }, prepareComicImages() {} })(z, () => done++);
     const expected = bossArrivalScene(z.k) || (z.k === 'th' ? fallback : 'loaded-closeup.webp');
