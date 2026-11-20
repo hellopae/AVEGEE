@@ -3072,6 +3072,644 @@
           ]
         }
       }
+    },
+    "yama:th:ko": {
+      "src": "img/ko-pose-v1/th/yama.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 323,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:taan:ko": {
+      "src": "img/ko-pose-v1/th/taan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 331,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:kan:ko": {
+      "src": "img/ko-pose-v1/th/kan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 376,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:dam:ko": {
+      "src": "img/ko-pose-v1/th/dam.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 355,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:boon:ko": {
+      "src": "img/ko-pose-v1/th/boon.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 357,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:plerng:ko": {
+      "src": "img/ko-pose-v1/th/plerng.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 387,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:guard:ko": {
+      "src": "img/ko-pose-v1/th/guard.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        299
+      ],
+      "bodyHeight": 380,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:th:nira:ko": {
+      "src": "img/ko-pose-v1/th/nira.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        299
+      ],
+      "bodyHeight": 377,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "yama:asia:ko": {
+      "src": "img/ko-pose-v1/asia/yama.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 325,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:taan:ko": {
+      "src": "img/ko-pose-v1/asia/taan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 334,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:kan:ko": {
+      "src": "img/ko-pose-v1/asia/kan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 393,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:dam:ko": {
+      "src": "img/ko-pose-v1/asia/dam.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 352,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:boon:ko": {
+      "src": "img/ko-pose-v1/asia/boon.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 356,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:plerng:ko": {
+      "src": "img/ko-pose-v1/asia/plerng.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 353,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:asia:nira:ko": {
+      "src": "img/ko-pose-v1/asia/nira.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        288
+      ],
+      "bodyHeight": 395,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "yama:west:ko": {
+      "src": "img/ko-pose-v1/west/yama.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 328,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:taan:ko": {
+      "src": "img/ko-pose-v1/west/taan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 360,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:kan:ko": {
+      "src": "img/ko-pose-v1/west/kan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 419,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:dam:ko": {
+      "src": "img/ko-pose-v1/west/dam.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 376,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:boon:ko": {
+      "src": "img/ko-pose-v1/west/boon.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 411,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:plerng:ko": {
+      "src": "img/ko-pose-v1/west/plerng.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 382,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:west:nira:ko": {
+      "src": "img/ko-pose-v1/west/nira.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        308
+      ],
+      "bodyHeight": 377,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "yama:cyberhell:ko": {
+      "src": "img/ko-pose-v1/cyberhell/yama.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        272
+      ],
+      "bodyHeight": 311,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:taan:ko": {
+      "src": "img/ko-pose-v1/cyberhell/taan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        269
+      ],
+      "bodyHeight": 329,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:kan:ko": {
+      "src": "img/ko-pose-v1/cyberhell/kan.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        318,
+        272
+      ],
+      "bodyHeight": 383,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:dam:ko": {
+      "src": "img/ko-pose-v1/cyberhell/dam.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        271
+      ],
+      "bodyHeight": 389,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:boon:ko": {
+      "src": "img/ko-pose-v1/cyberhell/boon.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        271
+      ],
+      "bodyHeight": 389,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:plerng:ko": {
+      "src": "img/ko-pose-v1/cyberhell/plerng.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        271
+      ],
+      "bodyHeight": 421,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:nira:ko": {
+      "src": "img/ko-pose-v1/cyberhell/nira.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        271
+      ],
+      "bodyHeight": 381,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
     }
   }
 }
