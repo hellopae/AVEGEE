@@ -8,7 +8,7 @@ import { finalEventActors, finalPreparationTargets, migrateFinalEvent } from '..
 import { devaMapActors, DEVA_MAP } from '../src/deva-map.js';
 import { breachApproachActors } from '../src/breach-approach.js';
 import { frontierIntroduction } from '../src/narrative-cutscenes.js';
-import { STORY } from '../src/story.js';
+import { STORY, storyOf } from '../src/story.js';
 import { ZONE_EVENTS, MERCHANT, STATIONS, SPOTS, syncSceneZone } from '../src/data.js';
 import { setLang } from '../src/i18n.js';
 import { mapInteractions } from '../src/proximity.js';
@@ -16,21 +16,24 @@ globalThis.Image ??= class {};
 globalThis.document ??= { documentElement:{} };
 function story(g, key, images) {
   assert.equal(g.storyQueue[0]?.key,key);
-  images.push(...STORY[key].pages.map(p=>p.image.split('/').at(-1)));
+  images.push(...new Set(storyOf(key).pages.map(p=>p.image.split('/').at(-1))));   // T8d: storyOf (z4-final-open lives in the event table, not in STORY)
   g.completeStory();
 }
 function encounter(g, id) {
   assert.ok(g.startFinalEncounter(id), id); win(g); g.endBattle(); assert.ok(g.acknowledgeFinalReward());
+  if (id.startsWith('ruler:')) story(g, `z4-ruler-free-${id.slice(6)}`, []);   // T8d (Rae 8.4): the lord's thanks come first
 }
-test('E5 a→e: warp before approach/preparation, four waves, reinforcement map, control, four rulers, duel and ending exactly once',()=>{
+test('E5 a→e (T8d order): warp, NF-2 gate, opening scene, preparation, THREE waves, approach after wave 3, reinforcement map, control, four rulers, duel and ending exactly once',()=>{
   let g=finalGame();const images=[];
   assert.ok(g.beginFinalArrival());assert.equal(g.finalEvent.presentation,'warp');
   assert.ok(finalEventActors(g).some(a=>a.id==='boss'));assert.equal(g.startFinalEncounter(),null);
   g.advanceFinalArrival(600);g=roundTrip(g);assert.equal(g.finalEvent.warpElapsed,600);
-  g.advanceFinalArrival(600);story(g,'cyber-approach',images);
+  g.advanceFinalArrival(600);assert.equal(g.finalEvent.presentation,'gate');assert.equal(g.storyQueue.length,0);g=roundTrip(g);   // NF-2 asks first
+  assert.ok(g.beginFinalChapter());story(g,'z4-final-open',images);
   assert.equal(g.finalEvent.presentation,'prepare');assert.equal(g.startFinalEncounter(),null);
   g.dismissFinalPreparation();
-  for(let i=1;i<=4;i++) encounter(g,`minion:${i}`);
+  for(let i=1;i<=3;i++) encounter(g,`minion:${i}`);
+  assert.equal(g.finalEvent.presentation,'approach');g=roundTrip(g);story(g,'cyber-approach',images);   // after the THIRD wave
   assert.equal(g.finalEvent.presentation,'reinforcementIntro');g=roundTrip(g);
   story(g,'cyber-reinforcements',images);
   assert.equal(g.finalEvent.presentation,'reinforcementMap');assert.equal(g.storyQueue.length,0);
@@ -45,11 +48,11 @@ test('E5 a→e: warp before approach/preparation, four waves, reinforcement map,
   assert.equal(g.finalEvent.presentation,'prepare');g.dismissFinalPreparation();
   for(const z of ['th','asia','west','cyberhell']) encounter(g,`ruler:${z}`);
   g=roundTrip(g);story(g,'cyber-duel',images);assert.equal(g.finalEvent.presentation,'prepare');
-  assert.deepEqual(finalEventActors(g).filter(a=>!a.reinforcement).map(a=>a.id),['boss']);
-  g.dismissFinalPreparation();encounter(g,'boss');story(g,'ending-capture',images);
+  assert.deepEqual(finalEventActors(g).filter(a=>!a.reinforcement&&!a.bound).map(a=>a.id),['boss']);   // T8d: HOME-67 stands bound beside him (a.bound)
+  g.dismissFinalPreparation();encounter(g,'boss');story(g,'z4-archon-down',[]);story(g,'ending-capture',images);   // T8d: the three lines after the win first
   assert.equal(g.gameCompleted,false);
   finishBossJustice(g);story(g,'ending',images);
-  assert.deepEqual(images,['story-cyberhell-01-v2.webp','story-cyberhell-reinforcements-01.webp',
+  assert.deepEqual(images,['cut-final-open.webp','story-cyberhell-01-v2.webp','story-cyberhell-reinforcements-01.webp',
     'story-cyberhell-reinforcements-02.webp','story-cyberhell-02-v3.webp','story-cyberhell-03-v4.webp',
     'story-ending-01-v4.webp','story-ending-02-v3.webp','story-ending-03-v1.webp']);
   assert.equal(new Set(images).size,images.length);assert.equal(g.gameCompleted,true);
@@ -115,6 +118,7 @@ test('E5 every legacy final phase normalizes to a resumable map, reward, story o
       g.beginFinalArrival();
       for(let n=0;n<8;n++) {
         if(s.presentation==='warp')g.advanceFinalArrival(1200);
+        if(s.presentation==='gate')g.beginFinalChapter();   // T8d: NF-2 "Begin"
         if(g.storyQueue.length)g.completeStory();
         if(s.presentation==='reinforcementMap')g.continueFinalMapScene();
         if(s.presentation==='prepare')g.dismissFinalPreparation();
@@ -124,10 +128,10 @@ test('E5 every legacy final phase normalizes to a resumable map, reward, story o
   }
 });
 test('E5 interrupted presentation reloads each cutscene and map/preparation without repeating rewards',()=>{
-  for(const presentation of ['warp','approach','reinforcementIntro','reinforcementMap','reinforcementAdvance','control','duel','prepare']) {
-    const g=finalGame(),save=g.snapshot();Object.assign(save.finalEvent,{choreography:true,presentation});
+  for(const presentation of ['warp','gate','opening','approach','reinforcementIntro','reinforcementMap','reinforcementAdvance','control','duel','prepare']) {
+    const g=finalGame(),save=g.snapshot();Object.assign(save.finalEvent,{choreography:true,presentation},presentation==='approach'?{phase:'reinforcementCutscene',minionsCleared:3}:{});   // T8d: 'approach' now belongs to the cutscene after wave 3
     save.storyQueue=[];save.storySeen={};assert.ok(g.restore(save));
-    const keys={approach:'cyber-approach',reinforcementIntro:'cyber-reinforcements',reinforcementAdvance:'cyber-reinforcements-advance',control:'cyber-control',duel:'cyber-duel'};
+    const keys={opening:'z4-final-open',approach:'cyber-approach',reinforcementIntro:'cyber-reinforcements',reinforcementAdvance:'cyber-reinforcements-advance',control:'cyber-control',duel:'cyber-duel'};
     if(keys[presentation])assert.equal(g.storyQueue[0].key,keys[presentation]);
     else assert.equal(g.finalEvent.presentation,presentation);
     assert.deepEqual(g.finalEvent.rewardLedger,{});
@@ -166,7 +170,7 @@ test('E5 old nonempty rewards acknowledge once; serialized battles resume; seen 
   }
   const g=finalGame(),save=g.snapshot();Object.assign(save.finalEvent,{phase:'reinforcementCutscene',minionsCleared:4,migrationVersion:1});
   save.storySeen={'cyber-reinforcements':true};assert.ok(g.restore(save));
-  assert.equal(g.storyQueue[0].key,'cyber-reinforcements');g.completeStory();assert.equal(g.finalEvent.phase,'staging');
+  assert.deepEqual(g.storyQueue.map(p=>p.key),['cyber-approach','cyber-reinforcements']);g.completeStory();g.completeStory();assert.equal(g.finalEvent.phase,'staging');   // T8d: the new approach story is not seen yet (the old one played before wave 1)
 });
 test('E5 restore outside Zone 4 must queue Lumen intro on later arrival, and preserve cleared rescue on return',()=>{
   let g=createGame();g=roundTrip(g);g.bossCleared.west=true;

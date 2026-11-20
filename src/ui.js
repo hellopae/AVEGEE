@@ -66,6 +66,7 @@ import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './e
 import { residentPresent, keeperPresent } from './crew-presence.js';
 import { foremanDesk, foremanStarving } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
+import { Z4H_NF2, finalBannerLabel } from './z4h-final.js';   // T8d (NF-2 window, NF-3 banner)
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { DEFEAT_SCENE_MS, NIRA_WAKE_LINE, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
@@ -2004,7 +2005,18 @@ function openFinalEncounter(id) {
   const a = finalEventActors(g).find(a => a.id === id);
   if (!a?.enabled || nextFinalEncounter(g.finalEventState()) !== id) return;
   if (Math.hypot(g.player.x-a.x,g.player.y-a.y) > INTERACTION_REACH) { g.walkTo(a.x,a.y); return; }
+  if (id === 'minion:1' && !g.finalEventState().openSeen) { openFinalGate(); return; }   // T8d: first time at the army - NF-2 "The Final Chapter" (Begin / Not yet)
   openFinalPreparation(id);
+}
+/** T8d (Rae NF-2): "You are about to enter the final chapter ... ready your team" - Begin plays z4-final-open, Not yet lets the player rest and shop first; the warning shows only while HOME-67's side job is pending */
+function openFinalGate() {
+  const en = getLang() === 'en', pick = v => (en ? v.en : v.th);
+  const warn = g.lupinPending?.() ? `<p class="final-gate-warn">${esc(pick(Z4H_NF2.warn))}</p>` : '';
+  modal(`<h2>${esc(pick(Z4H_NF2.title))}</h2><p>${esc(pick(Z4H_NF2.text))}</p>${warn}<div class="row"><button data-final-notyet>${esc(pick(Z4H_NF2.notYet))}</button><button class="gold" data-final-begin>${esc(pick(Z4H_NF2.begin))}</button></div>`, d => {
+    d.querySelector('[data-final-begin]').onclick = () => { g.beginFinalChapter(); dlg.close(); };
+    d.querySelector('[data-final-notyet]').onclick = () => { g.declineFinalChapter(); dlg.close(); };
+  });
+  onDlgClose(() => g.declineFinalChapter());
 }
 function openFinalPreparation(id = null) {
   const targets = finalPreparationTargets(g);
@@ -2026,7 +2038,7 @@ function openZoneEventAlert(ev) {
   if (ev.k === 'cyberFinal') {
     const id = nextFinalEncounter(g.finalEventState());
     const a = finalEventActors(g).find(a => a.id === id);
-    modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><p>${esc(t('final.map.walk'))}</p><button class="gold" data-final-map>${esc(t('common.close'))}</button>`, d => {
+    modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><button class="gold" data-final-map>${esc(zoneEventText(ev.go) || t('common.close'))}</button>`, d => {   // T8d: NF-1 (title / text / button "Go there" are Rae's)
       d.querySelector('[data-final-map]').onclick = () => { g.eventMapClosed['cyberhell:cyberFinal'] = true; dlg.close(); if (a) g.walkTo(a.x,a.y); g.save(); };
     });
     return;
@@ -4779,7 +4791,7 @@ function openBattle(after) {
           : b.kind === 'frontier' ? `ชายแดนนรก — ระลอกที่ ${b.wave}`
           // จำนวนระลอกอ่านจากข้อมูล event จริง ไม่ฮาร์ดโค้ด (frontierBreach โซน 1 มี 2 ระลอก)
           : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · ${b.foes.some(f => f.boss) ? t('event.frontierBreach.bossSub') : `Wave ${b.wave}/${ZONE_EVENTS.th.find(x => x.k === 'frontierBreach').waves.length - 1}`}`
-          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return g.isFinalBattle(b) ? `${zoneEventText(ev?.title)} · ${b.encounter.startsWith('minion:') ? `Wave ${b.wave}/4` : b.who}` : `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
+          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return g.isFinalBattle(b) ? finalBannerLabel(b.encounter, b.wave, getLang()) : `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
           : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? 'ผีบุกเข้าโซน'
@@ -7557,7 +7569,8 @@ g.onChange = () => {
   if (!g.battle && !dlg.open && g.finalEventOnMap()) {
     if (g.beginFinalArrival()) { refresh(); return; }
     const s = g.finalEventState();
-    if (s.presentation === 'prepare') { openFinalPreparation(); return; }
+    if (s.presentation === 'gate') { openFinalGate(); return; }   // T8d: the army has appeared in front of him - NF-2
+    if (s.presentation === 'prepare') { openFinalPreparation(s.minionsCleared === 0 ? nextFinalEncounter(s) : null); return; }   // T8d: after z4-final-open the window carries the fight button for wave 1
     if (s.presentation === 'reinforcementMap') {
       let button = ov.querySelector('.final-continue');
       if (!button) {

@@ -12,6 +12,7 @@ import { Z4A, Z4A_LUMEN, Z4A_ZONE4 } from './z4a-border.js';   // T8a/3
 import { Z4T_TEXT, Z4T_GUARD, Z4T } from './z4d-trojan.js';   // T8b/2
 import { Z4S, Z4S_TEXT, Z4S_VOICE_MOVE } from './z4e-sala.js';   // T8b/5
 import { Z4L, Z4L_TEXT, Z4L_MOVE } from './z4f-lupin.js';   // T8b/6
+import { Z4H_NF1 } from './z4h-final.js';   // T8d (NF-1: the invasion window of case 15)
 import { Z3_FRONTIER, Z3_FRONTIER_TEXT as Z3F } from './z3c-frontier.js';   // T7/2: case 5 (Rae R2 C 2)
 import { Z3_ARRIVE, Z3_ARRIVE_TEXT as Z3A } from './z3c-arrival.js';   // T7/1: case 0 of Zone 3 (Rae R2 C 1)
 import { CERBERUS_TEXT } from './z2b-cerberus.js';   // T6/6: the western gate (Rae R2 B 6)
@@ -2081,15 +2082,13 @@ export const ZONE_EVENTS = {
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach','signalClose'], mode:'waves',
-      title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
-      alert:{ th:'ชนะลูกน้อง 4 ระลอก แล้วช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน ก่อนสู้บอส',
-        en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
+      // T8d: NF-1 (Rae R2 D 8.2) - "An Invader at the Heart of Zone 4 ... Go there" (the button walks to the army); NF-2 / NF-3 are in z4h-final.js
+      title:Z4H_NF1.title, alert:Z4H_NF1.text, go:Z4H_NF1.button,
 
       waves:[
         [{ kind:14, count:2, hp:60, atk:[14,22] }],
         [{ kind:15, count:2, hp:65, atk:[15,23] }],
         [{ kind:16, count:2, hp:70, atk:[16,24] }],
-        [{ kind:16, count:2, hp:75, atk:[18,26] }],
         [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:261, atk:[18,27], boss:true, skills:BOSS_SKILLS.yamaPossessed, partyScale:{ hp:[1,1,1], atk:[.58,.88,1.35] } }],
         [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:288, atk:[19,28], boss:true, skills:BOSS_SKILLS.zhaoWenPossessed, partyScale:{ hp:[1,1,1], atk:[1.09,1,.92] } }],
         [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:315, atk:[20,30], boss:true, skills:BOSS_SKILLS.halvarPossessed, partyScale:{ hp:[1,1,1], atk:[.75,.86,.98] } }],
@@ -2512,15 +2511,17 @@ for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
 // ลำดับค้นหา key: encounter (เช่น ruler:west) → eventKey (เช่น cyberBreach) → kind (zoneBoss/zoneEvent/...) → default
 export const TEAM_PRESSURE = {
   share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 },
-  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:2.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
+  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:2.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25 },
 };
 // B2b: encounter additions and receipts, without changing existing enemy stats.
 export const FINAL_EVENT = {
-  waveRewards:[40,50,60,70].map(coin => ({ coin, item:'holyWater', exp:5 })),
+  minionWaves:3,   // T8d (Rae R2 D 8.1 / owner: '3 wave'): the soldiers of Archon-Zero come in THREE waves (was four) - waves[0..2] of cyberFinal; the rulers are waves[3..6], the boss waves[7]
+  waveRewards:[40,50,60].map(coin => ({ coin, item:'holyWater', exp:5 })),
   rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
   rulerAdds:[1,1,2,2], bossAdds:3,
   add:{ kind:14, hp:60, atk:[10,16] },
   enemyPositions:[[1760,965],[1840,950],[2000,950],[2080,960],[1862.5,865]],
+  boundPosition:[1940,872],   // T8d: HOME-67 bound beside Archon-Zero (enemyPositions[4])
   restPosition:[1550,1442.5],
   reinforcementPositions:[[1570,930],[1600,990],[1680,1000],[1650,950]],
 };

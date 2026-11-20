@@ -19,11 +19,11 @@ test('all story and deva panels exist in the project and preload manifest', () =
   }
 });
 
-test('four opening waves use existing CyberHell minions and assets', () => {
+test('three opening waves (T8d: Rae 3 waves, was four) use existing CyberHell minions and assets', () => {
   const event=ZONE_EVENTS.cyberhell.find(e=>e.k==='cyberFinal');
-  assert.deepEqual(event.waves.slice(0,4).map(w=>w[0].kind),[14,15,16,16]);
+  assert.deepEqual(event.waves.slice(0,3).map(w=>w[0].kind),[14,15,16]);
   const zone=ZONES.find(z=>z.k==='cyberhell'), g=finalGame();
-  for (const [i,kind] of [14,15,16,16].entries()) {
+  for (const [i,kind] of [14,15,16].entries()) {
     assert.ok(g.startFinalEncounter(`minion:${i+1}`)); assert.ok(zone.mobs.includes(kind));
     const name=MOB.kinds[kind].img, path=`CyberHell/${name}-cyberhell.webp`;
     assert.ok(manifest.zones.cyberhell.includes(path)); assert.ok(existsSync(new URL('../img/'+path,import.meta.url)));
@@ -33,13 +33,13 @@ test('four opening waves use existing CyberHell minions and assets', () => {
   }
 });
 
-test('reinforcements follow wave four rewards; independent ruler fights preserve the roster', () => {
+test('reinforcements follow wave three rewards (T8d); independent ruler fights preserve the roster', () => {
   const g=finalGame(); g.finalTeamCandidates(); const roster=JSON.stringify({crew:g.crew,guard:g.guard});
-  for (let wave=1;wave<=4;wave++) {
+  for (let wave=1;wave<=3;wave++) {
     g.startFinalEncounter(`minion:${wave}`); win(g);
     assert.ok(!g.storyQueue.some(p=>p.key==='cyber-reinforcements'));
     g.endBattle(); acknowledge(g);
-    if (wave<4) assert.equal(g.finalEvent.reinforcementsSeen,false);
+    if (wave<3) assert.equal(g.finalEvent.reinforcementsSeen,false);
   }
   assert.equal(g.finalEvent.reinforcementsSeen,true);
   for (const zone of ['th','asia','west','cyberhell']) {

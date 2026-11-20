@@ -182,7 +182,7 @@ const LEGACY_BOSSES = [
   [() => ZONE_EVENTS.asia.find(e => e.k === 'asiaRageBreach').waves[3][0], 125, [12, 19]],
   [() => ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').waves[4][0], 150, [13, 20]], [() => ZONE_EVENTS.west.find(e => e.k === 'westDevaTest').foe, 165, [14, 21]],
   [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberRescue').foes[0], 105, [12, 19]], [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberBreach').waves[4][0], 180, [23, 35]],
-  ...[[4, 145, [18, 27]], [5, 160, [19, 28]], [6, 175, [20, 30]], [7, 190, [22, 31]], [8, 220, [23, 34]]].map(([i, hp, atk]) => [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves[i][0], hp, atk]),
+  ...[[3, 145, [18, 27]], [4, 160, [19, 28]], [5, 175, [20, 30]], [6, 190, [22, 31]], [7, 220, [23, 34]]].map(([i, hp, atk]) => [() => ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves[i][0], hp, atk]),
 ];
 function withLegacyBosses(fn) {
   const saved = LEGACY_BOSSES.map(([get]) => { const e = get(); return [e, structuredClone({ hp:e.hp, atk:e.atk, skills:e.skills, skillsEach:e.skillsEach, partyScale:e.partyScale })]; });
@@ -217,7 +217,7 @@ test('G1 recovery items: prepared parties still win events/bosses; breach benchm
 // B2b's independent six-member encounters are simulated in scripts/sim-final-event.mjs.
 test('G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity', () => withLegacyBosses(() => {
   const source=ZONE_EVENTS.cyberhell.find(e=>e.k==='cyberFinal');
-  const legacy={ ...source,k:'legacyFinalBenchmark',restBeforeWaves:[4,8],waves:source.waves.filter((_,i)=>i!==3) };
+  const legacy={ ...source,k:'legacyFinalBenchmark',restBeforeWaves:[4,8],waves:source.waves };   // T8d: the finale has three minion waves again, so its waves ARE the legacy eight (before: the fourth minion wave was filtered out)
   ZONE_EVENTS.cyberhell.push(legacy);
   try {
     const sc = ['legacy cyber FINAL', 'cyberhell', 5, 8, 5, g => {

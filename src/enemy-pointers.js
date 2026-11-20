@@ -51,7 +51,7 @@ export function enemyPointerTargets(g) {
   // เทวดาทดสอบที่ลงมา / ศึกสุดท้ายโซน 4 (เฉพาะตัวที่ถึงคิวสู้)
   for (const a of devaMapActors(g)) if (a.enabled) out.push({ id:a.id, kind:'deva', x:a.x, y:a.y, h:100, priority:2,
     icon:{ art:a.art, zone:a.sourceZone }, boss:true });
-  for (const a of finalEventActors(g)) if (a.enabled && !a.reinforcement) out.push({ id:`final:${a.id}`, kind:'final', x:a.x, y:a.y, h:78, priority:2,
+  for (const a of finalEventActors(g)) if (a.enabled && !a.reinforcement && !a.bound) out.push({ id:`final:${a.id}`, kind:'final', x:a.x, y:a.y, h:78, priority:2,
     icon:{ art:a.art, zone:a.sourceZone }, boss:true });
   // ช่วยทัณฑ์/พ่อค้า (โซน 3): ปีศาจรุมอยู่จุดเดียว
   if (rescue) out.push({ id:'rescue:west', kind:'raider', x:WEST_RESCUE.x, y:WEST_RESCUE.y, h:72, priority:1,

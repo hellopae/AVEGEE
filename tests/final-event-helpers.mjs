@@ -29,12 +29,13 @@ export function roundTrip(g) {
 export function acknowledge(g) {
   assert.equal(g.acknowledgeFinalReward(), true);
   if (g.finalEvent.phase === 'reinforcementCutscene') {
+    assert.equal(g.storyQueue[0].key, 'cyber-approach'); g.completeStory();   // T8d: "three waves down" first (after the third wave), then the reinforcements
     assert.equal(g.storyQueue[0].key, 'cyber-reinforcements'); g.completeStory();
     assert.equal(g.finalEvent.phase, g.finalEvent.rulersCleared.length === 4 ? 'bossReady' : 'staging');
   }
 }
 export function clearMinions(g) {
-  for (let i=1;i<=4;i++) { assert.ok(g.startFinalEncounter(`minion:${i}`)); win(g); g.endBattle(); acknowledge(g); }
+  for (let i=1;i<=3;i++) { assert.ok(g.startFinalEncounter(`minion:${i}`)); win(g); g.endBattle(); acknowledge(g); }
 }
 
 export function finishBossJustice(g) {

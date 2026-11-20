@@ -94,7 +94,7 @@ for(const [zone] of regions)test(`${zone}: Kan opens mitigation, Boon completes 
 
 test('full final gauntlet ends in ending01, forced-mirror ordinary court, actual punishment, then ending02 exactly once',()=>{
  let g=finalGame();g.save=()=>true;g.onChange=()=>{};g.paused=false;
- for(const id of ['minion:1','minion:2','minion:3','minion:4','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss']){
+ for(const id of ['minion:1','minion:2','minion:3','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss']){
   assert.ok(g.startFinalEncounter(id));winBattle(g);g.endBattle();
   if(id!=='boss')acknowledge(g);
  }

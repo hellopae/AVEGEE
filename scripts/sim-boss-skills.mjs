@@ -43,7 +43,7 @@ export const entryOf = {
   asiaDeva:() => ev('asia', 'asiaDevaTest').foe, asiaWukong:() => ev('asia', 'asiaWukong').foe, asiaGuard:() => ev('asia', 'asiaGuardTest').foe, asiaBreach:() => ev('asia', 'asiaRageBreach').waves[3][0],
   westDeva:() => ev('west', 'westDevaTest').foe, westBreach:() => ev('west', 'westVampireBreach').waves[3][0],
   cyberRescue:() => ev('cyberhell', 'cyberRescue').foes[0], cyberBreach:() => ev('cyberhell', 'cyberBreach').waves[3][0],
-  finalTh:() => final(4), finalAsia:() => final(5), finalWest:() => final(6), finalCyber:() => final(7), finalBoss:() => final(8),
+  finalTh:() => final(3), finalAsia:() => final(4), finalWest:() => final(5), finalCyber:() => final(6), finalBoss:() => final(7),   // T8d: three minion waves, so the rulers are waves[3..6] and the boss waves[7]
   sigTh:() => ev('th', 'signalTh').waves[1][0], sigAsia:() => ev('asia', 'signalAsia').waves[1][0], sigWest:() => ev('west', 'signalWest').waves[1][0], sigCyber:() => ev('cyberhell', 'cyberSignal').waves[1][0],
 };
 export function applyTune(raw = process.env.BOSS_TUNE) {

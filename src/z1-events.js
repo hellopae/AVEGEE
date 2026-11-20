@@ -33,6 +33,7 @@ import { Z4_STORY_CASES, Z4C_CASE_NOTICES } from './z4c-cases.js';   // T8b
 import { Z4T_STORIES, Z4T_NOTICES } from './z4d-trojan.js';   // T8b/2
 import { Z4S_STORIES, Z4S_NOTICES } from './z4e-sala.js';   // T8b/5
 import { Z4G_STORIES, Z4G_NOTICES } from './z4g-return.js';   // T8c
+import { Z4H_STORIES } from './z4h-final.js';   // T8d (the opening scene, the free-from-control pages, the page after Archon-Zero, the ending coda)
 import { Z4L_STORIES, Z4L_NOTICES } from './z4f-lupin.js';   // T8b/6
 
 export const TH_STORY_CASES = Object.freeze([
@@ -347,7 +348,7 @@ export const BREACH_STORIES = {
 /** Mid-fight window (case 9): Yama learns the team move while the border boss is nearly down, and closes the fight with it. Name/text come from ABILITY_REWARDS. */
 export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
-export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z4T_STORIES, ...Z4S_STORIES, ...Z4L_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES, ...Z4G_STORIES };
+export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z4T_STORIES, ...Z4S_STORIES, ...Z4L_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES, ...Z4G_STORIES, ...Z4H_STORIES };
 
 /** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
 export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });

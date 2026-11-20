@@ -9,9 +9,9 @@ import { hitActor } from '../src/scene.js';
 import { makeRoom } from '../src/room.js';
 globalThis.Image ??= class {};
 
-test('four minion waves pay coin and an item exactly once; wave 4 reward precedes cutscene then map', () => {
+test('three minion waves (T8d: was four) pay coin and an item exactly once; wave 3 reward precedes the cutscenes then map', () => {
   let g = finalGame(); const initial = g.coin, exp = g.exp;
-  for (let i=1;i<=4;i++) {
+  for (let i=1;i<=3;i++) {
     assert.equal(g.startFinalEncounter('boss'), null);
     assert.ok(g.startFinalEncounter(`minion:${i}`)); win(g);
     const balance = g.coin, items = g.inventory.holyWater;
@@ -27,16 +27,17 @@ test('four minion waves pay coin and an item exactly once; wave 4 reward precede
     g = roundTrip(g); assert.equal(g.pendingReward.encounter,`minion:${i}`);
     assert.equal(g.acknowledgeFinalReward(),true); assert.equal(g.acknowledgeFinalReward(),false);
     assert.equal(g.coin,balance);
-    if (i===4) {
+    if (i===3) {
       assert.equal(g.finalEvent.phase,'reinforcementCutscene');
       assert.equal(nextFinalEncounter(g.finalEvent),null);
-      g=roundTrip(g); assert.equal(g.storyQueue[0].key,'cyber-reinforcements');
+      g=roundTrip(g); assert.deepEqual(g.storyQueue.map(p=>p.key),['cyber-approach','cyber-reinforcements']);   // T8d (Rae 8.1): "three waves down" after the THIRD wave, then the reinforcements
+      g.completeStory(); assert.equal(g.finalEvent.approachSeen,true); assert.equal(g.finalEvent.phase,'reinforcementCutscene');
       g.completeStory(); assert.equal(g.finalEvent.phase,'staging');
       assert.equal(g.finalEvent.reinforcementsSeen,true);
       assert.equal(finalEventActors(g).filter(a=>a.reinforcement).length,4);
     } else assert.equal(g.finalEvent.phase,'ready');
   }
-  assert.equal(g.coin-initial,220); assert.equal(g.inventory.holyWater,4); assert.equal(g.exp-exp,20);
+  assert.equal(g.coin-initial,150); assert.equal(g.inventory.holyWater,3); assert.equal(g.exp-exp,15);
 });
 
 test('fixed ruler order, individual persisted wins, boss gate, ending only after boss', () => {
@@ -125,7 +126,7 @@ test('legacy migration is idempotent and keeps the closest explicit Wave x/8 pro
   let g=finalGame(), save=g.snapshot(); delete save.finalEvent; delete save.finalBattle; save.v=3;
   save.battle={eventKey:'cyberFinal',wave:6}; save.coin=123;
   assert.equal(g.restore(save),true); assert.equal(g.coin,123); assert.deepEqual(g.finalEvent.rulersCleared,['th','asia']);
-  assert.equal(nextFinalEncounter(g.finalEvent),'minion:4');
+  assert.equal(nextFinalEncounter(g.finalEvent),'ruler:west');   // T8d: the three legacy minion waves ARE the three waves of the finale - no extra wave to win
   assert.deepEqual(roundTrip(g).finalEvent,g.finalEvent);
 });
 

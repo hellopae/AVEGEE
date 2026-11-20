@@ -617,7 +617,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
 
   // T7b-2/5 (Rae 5.5): HOME-67 waits on the pier of Zone 3 (Severin's ship has left) - placeholder drawing until Codex draws char-home67
-  if ((g.zone === 'west' && g.home67?.phase === 'waiting') || (g.zone === 'cyberhell' && g.home67?.phase === 'harbor')) {   // T8a/3: and on the pier of Zone 4 after he has left the team
+  if ((g.zone === 'west' && g.home67?.phase === 'waiting') || (g.zone === 'cyberhell' && g.home67?.phase === 'harbor' && !g.finalUnderway?.())) {   // T8a/3: and on the pier of Zone 4 after he has left the team
     const hx = SPOTS.bossPier.x, hy = SPOTS.bossPier.y, hh = 92 * CHAR_SCALE_MAP * 1.12;
     spot_(hx, hy, hh);
     at(1e5 + hy, () => { ring(ctx, hx, hy, t, 32); shade(hx, hy, hh, c => drawStandee(c, 'char-home67', hx, hy, hh, t, '🕵️', 1, false, 'west')); });
@@ -1151,7 +1151,7 @@ export function hitActor(g, sx, sy) {
   const rest = finalRestSpot(g);
   if (rest && near(rest.x,rest.y,radius(40))) return { kind:'finalRest', ...rest };
   for (const a of devaMapActors(g)) if (a.enabled && near(a.x,a.y,radius(45))) return { ...a, kind:'devaEncounter' };
-  for (const a of finalEventActors(g)) if (!a.reinforcement && near(a.x,a.y,radius(45))) return { kind:'finalEncounter', key:a.id, x:a.x,y:a.y, enabled:a.enabled };
+  for (const a of finalEventActors(g)) if (!a.reinforcement && !a.bound && near(a.x,a.y,radius(45))) return { kind:'finalEncounter', key:a.id, x:a.x,y:a.y, enabled:a.enabled };
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
     return { kind:'bossPending', key:g.zone };

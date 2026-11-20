@@ -5,7 +5,7 @@ import { BATTLE, LEVELS, TRAINING_RULES } from '../src/data.js';
 import { normalizeTraining } from '../src/progression.js';
 const fixture=JSON.parse(readFileSync(new URL('../tests/fixtures/b1-v3.json',import.meta.url)));
 const ids=['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
-const encounters=['minion:1','minion:2','minion:3','minion:4','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
+const encounters=['minion:1','minion:2','minion:3','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
 const originalRandom=Math.random, originalNow=Date.now;
 let now=1800000000000;
 Date.now=()=>now;

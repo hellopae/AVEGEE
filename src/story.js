@@ -5,6 +5,7 @@ import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
 import { Z1_STORIES, TEAM_MOVE_UNLOCK } from './z1-events.js';
 import { Z3_FRONTIER_STORIES } from './z3c-frontier.js';
+import { Z4H_STORY_OVERRIDES } from './z4h-final.js';   // T8d (Rae R2 D 8): the texts of the finale replace the old ones under the same keys
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.webp`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
@@ -67,6 +68,7 @@ export const STORY = {
     { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.webp' },
   ]},
 };
+Object.assign(STORY, Z4H_STORY_OVERRIDES);   // T8d: cyber-approach (after wave 3) · cyber-reinforcements · -advance · cyber-control - Rae's text, the same pictures
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
 /** T6: a scene whose pages carry `en:{title,line}` (and `en:{title}` on the scene) is shown in English when the game is in English; every older (Thai only) scene comes back as it is. */
 const localizeStory = story => (story && getLang() === 'en' && (story.en || story.pages?.some(p => p.en)))

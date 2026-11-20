@@ -9,6 +9,7 @@ import { actorFromLegacy, syncRoster } from '../src/roster.js';
 import { COMBAT_SKILLS, recordSkillTraining, skillForActor } from '../src/combat-skills.js';
 export const zones = ['th','asia','west','cyberhell'];
 export const teamOrder = ['taan','nira','guard','dam','plerng','boon'];
+// T8d: the finale has THREE minion waves now. `minion:4` stays in this list only because it is the identity of the recorded BALANCE-2 evidence (30 Oct: 200 scenarios, tests/balance2.test.mjs compares the ids); a new run skips it
 export const finalEncounters = ['minion:1','minion:2','minion:3','minion:4','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
 export const outDir = fileURLToPath(new URL('../output/coordination/2026-10-30-balance2/',import.meta.url));
 const seeded = seed => () => ((seed = (Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
@@ -71,8 +72,8 @@ export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}
     delete g.battle.balance;g.prepareEncounter();
   } else if(kind==='final') {
     const position=finalEncounters.indexOf(encounter);
-    g.finalEvent={version:1,migrationVersion:2,phase:encounter==='boss'?'bossReady':'staging',
-      minionsCleared:encounter.startsWith('minion:')?position:4,
+    g.finalEvent={version:1,migrationVersion:3,openSeen:true,warpDone:true,phase:encounter==='boss'?'bossReady':'staging',
+      minionsCleared:encounter.startsWith('minion:')?position:3,
       rulersCleared:finalEncounters.slice(0,position).filter(e=>e.startsWith('ruler:')).map(e=>e.slice(6)),
       reinforcementsSeen:true,approachSeen:true,duelSeen:true,rewardLedger:{}};
     g.startFinalEncounter(encounter);

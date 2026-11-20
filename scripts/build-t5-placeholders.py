@@ -188,6 +188,10 @@ GROUPS['z4g'] = [   # T8c - Rae sec. 11 group K: the seized zones on the way bac
   ('z4-events/cut-z2-fire.webp', CUT, 'cut', 'PLACEHOLDER cut-z2-fire  (K2: the Eastern harbour burning in a long line, red timber posts as black frames, the red paper lanterns dark, Goku / Homura / Satori / Megumi / Kuro standing still with green eyes, Guan Yu at the gate)'),
   ('z4-events/cut-z1-fire.webp', CUT, 'cut', 'PLACEHOLDER cut-z1-fire  (K3: Suvarnabhumi - the first reaper registry hall a black frame, its name-board scorched, thin smoke, Taan / Pleng / Kan / Boon / Dam standing still with green eyes, Kumphan at the gate with his club tip pointed at the ground)'),
 ]
+GROUPS['z4h'] = [   # T8d - Rae sec. 11 group F: the finale (F1 the opening of case 15 - Archon-Zero in the middle of the data square, HOME-67 bound and kneeling; F2 the ending coda, not compulsory)
+  ('z4-events/cut-final-open.webp', CUT, 'cut', 'PLACEHOLDER cut-final-open  (F1: the Zone 4 data square, Archon-Zero in the middle - a tall figure in a grey-black cloak with mint-green light flowing in rows, a smooth mask with no eyes - HOME-67 kneeling beside him bound by lines of green light; Yama and Nira bottom left. No blood.)'),
+  ('z4-events/cut-ending-coda.webp', CUT, 'cut', 'PLACEHOLDER cut-ending-coda  (F2, not compulsory: the Zone 4 harbour, four small ships blowing their horns together, WATSON-03 and HOME-67 standing by a post)'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)

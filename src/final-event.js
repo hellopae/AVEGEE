@@ -1,49 +1,68 @@
-import { t } from './i18n.js';
+import { getLang } from './i18n.js';
+import { finalReinforcementLabel } from './z4h-final.js';
 import { FINAL_EVENT, ZONE_EVENTS, MOB, MERCHANT, STATIONS } from './data.js';
 // Persistent progress for the fixed Zone 4 finale. UI acknowledgement never pays loot.
 export const RULER_ORDER = ['th', 'asia', 'west', 'cyberhell'];
+/** T8d (Rae R2 D 8.1): the soldiers come in THREE waves (the game had four) */
+export const MINION_WAVES = FINAL_EVENT.minionWaves;
+/** the phase the map goes back to after a fight that is not over the whole finale */
+export const finalPhaseAfterBattle = s => s.minionsCleared < MINION_WAVES ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
 export function migrateFinalEvent(save = {}) {
   if (save.finalEvent?.version === 1) {
     const s = structuredClone(save.finalEvent);
     s.minionsCleared ||= 0; s.rulersCleared ||= []; s.rewardLedger ||= {};
     s.pendingReward ||= null; s.activeEncounter ||= null;
     // Interrupted battles without a serialized encounter become map retries.
-    if (!save.finalBattle && ['minions','rulerBattle','finalBoss'].includes(s.phase)) {
+    // (T8d: a battle of the old fourth minion wave that was saved mid-fight no longer exists - the map takes it back)
+    if ((!save.finalBattle || save.finalBattle.encounter === 'minion:4') && ['minions','rulerBattle','finalBoss'].includes(s.phase)) {
       s.activeEncounter = null;
-      s.phase = s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+      s.phase = finalPhaseAfterBattle(s);
     }
     if (s.phase === 'reward' && !s.pendingReward)
-      s.phase = s.minionsCleared < 4 ? 'ready' : !s.reinforcementsSeen ? 'reinforcementCutscene' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+      s.phase = s.minionsCleared < MINION_WAVES ? 'ready' : !s.reinforcementsSeen ? 'reinforcementCutscene' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
     if (s.phase === 'ending' && !s.pendingReward && !save.finalBattle) s.phase = 'completed';
     // v1 presentation had control in the approach panel and no map intermission.
-    if (s.migrationVersion !== 2) {
+    if (!(s.migrationVersion >= 2)) {
       s.presentation = null;
       s.approachSeen = !!save.storySeen?.['cyber-approach'] || s.minionsCleared > 0;
       s.controlSeen = !!s.reinforcementsSeen;
       s.duelSeen = !!save.storySeen?.['cyber-duel'];
       s.migrationVersion = 2;
     }
+    // T8d: three minion waves, and `cyber-approach` now plays AFTER them (Rae R2 D 8.1) - an old save that cleared 3 or 4 waves has cleared them all
+    if (!(s.migrationVersion >= 3)) {
+      const oldMinions = s.minionsCleared;
+      s.minionsCleared = Math.min(MINION_WAVES, s.minionsCleared);
+      s.openSeen = !!save.storySeen?.['z4-final-open'] || oldMinions > 0 || s.approachSeen || s.rulersCleared.length > 0 || !['locked', 'ready'].includes(s.phase);
+      s.warpDone = s.openSeen;
+      s.approachSeen = !!save.storySeen?.['cyber-approach'] && oldMinions >= MINION_WAVES;   // the old story played BEFORE the first wave: the new one (after the third) has not been seen
+      if (s.presentation === 'approach' && s.minionsCleared < MINION_WAVES) s.presentation = null;
+      if (s.minionsCleared >= MINION_WAVES && !s.reinforcementsSeen && s.phase === 'ready') s.phase = 'reinforcementCutscene';
+      s.migrationVersion = 3;
+    }
     return s;
   }
   const status = save.zoneEvents?.cyberhell?.cyberFinal;
-  const state = { version:1, migrationVersion:2, phase:['pending','active'].includes(status) ? 'ready' : 'locked',
+  const state = { version:1, migrationVersion:3, openSeen:false, warpDone:false, phase:['pending','active'].includes(status) ? 'ready' : 'locked',
     minionsCleared:0, rulersCleared:[], activeEncounter:null, pendingReward:null,
     rewardLedger:{}, reinforcementsSeen:false, stagingPosition:null };
   if (save.gameCompleted || status === 'cleared') {
-    Object.assign(state, { phase:'completed', minionsCleared:4, rulersCleared:[...RULER_ORDER], reinforcementsSeen:true });
+    Object.assign(state, { phase:'completed', minionsCleared:MINION_WAVES, rulersCleared:[...RULER_ORDER], reinforcementsSeen:true, openSeen:true, warpDone:true });
   } else if (save.battle?.eventKey === 'cyberFinal') {
     // Old saves normally omitted battle; only use an explicit legacy wave if present.
     const b = save.battle, completed = Math.max(0, Math.min(8, (b.pendingWave || b.wave || 1) - 1 + (b.over === 'win' ? 1 : 0)));
-    state.minionsCleared = Math.min(3, completed);
-    state.rulersCleared = RULER_ORDER.slice(0, Math.max(0, completed - 3));
-    state.phase = 'ready'; // The newly added fourth minion wave must still be won.
+    state.minionsCleared = Math.min(MINION_WAVES, completed);
+    state.rulersCleared = RULER_ORDER.slice(0, Math.max(0, completed - MINION_WAVES));
+    state.openSeen = state.warpDone = completed > 0;
+    state.reinforcementsSeen = completed > MINION_WAVES;   // T8d: the three legacy minion waves ARE the three waves of the finale
+    state.phase = completed < MINION_WAVES ? 'ready' : completed === MINION_WAVES ? 'reinforcementCutscene' : finalPhaseAfterBattle(state);
     for (let i = 1; i <= state.minionsCleared; i++) state.rewardLedger[`minion:${i}`] = { migrated:true };
   }
   return state;
 }
 export function nextFinalEncounter(s) {
   if (!s || !['ready', 'staging', 'bossReady'].includes(s.phase) || s.pendingReward || s.activeEncounter) return null;
-  if (s.minionsCleared < 4) return `minion:${s.minionsCleared + 1}`;
+  if (s.minionsCleared < MINION_WAVES) return `minion:${s.minionsCleared + 1}`;
   if (!s.reinforcementsSeen) return null;
   const ruler = RULER_ORDER.find(k => !s.rulersCleared.includes(k));
   return ruler ? `ruler:${ruler}` : 'boss';
@@ -61,8 +80,7 @@ export function acknowledgeFinalReward(s) {
   if (!s.pendingReward) return false;
   s.pendingReward = null;
   if (s.phase === 'completed' || s.phase === 'ending' || s.phase === 'justice') return true;
-  s.phase = s.minionsCleared === 4 && !s.reinforcementsSeen ? 'reinforcementCutscene'
-    : s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+  s.phase = s.minionsCleared === MINION_WAVES && !s.reinforcementsSeen ? 'reinforcementCutscene' : finalPhaseAfterBattle(s);
   return true;
 }
 
@@ -76,22 +94,24 @@ export function finalEventActors(g) {
   const reinforcements = s.reinforcementsSeen ? RULER_ORDER.map((zone,i) => ({ id:`reinforcement:${zone}`,
     x:FINAL_EVENT.reinforcementPositions[i][0], y:FINAL_EVENT.reinforcementPositions[i][1],
     art:['crew-plerng','crew-dam','crew-boon','crew-guard'][i], sourceZone:zone,
-    name:t('final.reinforcement.' + zone), reinforcement:true })) : [];
-  if (s.minionsCleared < 4 || ['reinforcementIntro','reinforcementMap','reinforcementAdvance'].includes(s.presentation)) {
-    const entry = waves[Math.min(3,s.minionsCleared)][0], [x,y] = FINAL_EVENT.enemyPositions[0];
+    name:finalReinforcementLabel(zone, getLang()), reinforcement:true })) : [];   // T8d: Rae's labels (the Zone 4 one = "Zone 4 Gate Guard", it is the picture crew-guard)
+  // T8d (Rae NF-1 / z4-final-open): HOME-67 kneels bound by lines of green light beside Archon-Zero until the boss falls (he is not on the pier of the harbour meanwhile - scene.js)
+  const bound = s.phase === 'ending' ? [] : [{ id:'home67-bound', x:FINAL_EVENT.boundPosition[0], y:FINAL_EVENT.boundPosition[1], art:'char-home67', sourceZone:'west', name:'HOME-67', bound:true, enabled:false }];
+  if (s.minionsCleared < MINION_WAVES || ['approach','reinforcementIntro','reinforcementMap','reinforcementAdvance'].includes(s.presentation)) {
+    const entry = waves[Math.min(MINION_WAVES - 1,s.minionsCleared)][0], [x,y] = FINAL_EVENT.enemyPositions[0];
     const boss=FINAL_EVENT.enemyPositions[4];
-    return [{ id:'boss', x:boss[0], y:boss[1], art:'zone-boss', name:waves[8][0].name, enabled:false },
-      { id:s.minionsCleared < 4 ? `minion:${s.minionsCleared + 1}` : 'army:front', x,y, art:MOB.kinds[entry.kind].img,
-        name:s.minionsCleared < 4 ? `ลูกน้องระลอก ${s.minionsCleared + 1}/4` : '', enabled:!!next && !s.presentation },
+    return [{ id:'boss', x:boss[0], y:boss[1], art:'zone-boss', name:waves[MINION_WAVES + 4][0].name, enabled:false },
+      { id:s.minionsCleared < MINION_WAVES ? `minion:${s.minionsCleared + 1}` : 'army:front', x,y, art:MOB.kinds[entry.kind].img,
+        name:s.minionsCleared < MINION_WAVES ? `ลูกน้องระลอก ${s.minionsCleared + 1}/${MINION_WAVES}` : '', enabled:!!next && !s.presentation },
       ...[0,1].map(i => ({ id:`army:${i}`, x:FINAL_EVENT.enemyPositions[i+1][0], y:FINAL_EVENT.enemyPositions[i+1][1], art:MOB.kinds[entry.kind].img, name:'', enabled:false })),
-      ...reinforcements];
+      ...bound, ...reinforcements];
   }
   if (!s.reinforcementsSeen) return [];
-  const enemies = [...RULER_ORDER.map((z,i) => ({ id:`ruler:${z}`, entry:waves[i+4][0], i })) , { id:'boss', entry:waves[8][0], i:4 }]
+  const enemies = [...RULER_ORDER.map((z,i) => ({ id:`ruler:${z}`, entry:waves[i+MINION_WAVES][0], i })) , { id:'boss', entry:waves[MINION_WAVES + 4][0], i:4 }]
     .filter(a => !s.rulersCleared.includes(a.id.split(':')[1]))
     .map(a => ({ id:a.id, x:FINAL_EVENT.enemyPositions[a.i][0], y:FINAL_EVENT.enemyPositions[a.i][1],
       art:a.id === 'boss' ? 'zone-boss' : a.entry.sp, name:a.entry.name, enabled:a.id === next && !s.presentation }));
-  return [...enemies, ...reinforcements];
+  return [...enemies, ...bound, ...reinforcements];
 }
 
 export function finalRestSpot(g) {

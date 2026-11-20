@@ -4,13 +4,13 @@ import assert from 'node:assert/strict';
 import { finalGame, win, acknowledge, roundTrip } from './final-event-helpers.mjs';
 import { BAL } from '../src/data.js';
 
-test('case ten runs four minion fights, four fixed rulers, then final boss with map rests', () => {
+test('case ten runs three minion fights (T8d: Rae 3 waves, was four), four fixed rulers, then final boss with map rests', () => {
   const g=finalGame();
   assert.equal(g.zoneEventStatus('cyberFinal'),'pending'); assert.equal(g.bossReady(),false);
   const names=[],sprites=[];
-  for (const id of ['minion:1','minion:2','minion:3','minion:4','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss']) {
+  for (const id of ['minion:1','minion:2','minion:3','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss']) {
     const b=g.startFinalEncounter(id); assert.ok(b);
-    if (id==='minion:1') assert.equal(b.storyInterlude,'cyber-approach');
+    if (id==='minion:1') assert.equal(b.storyInterlude,'z4-final-open');   // T8d: the opening scene (an API caller sees it in the fight); 'cyber-approach' now plays after wave 3
     if (!id.startsWith('minion:')) { names.push(b.foes[0].who); sprites.push(b.foes[0].sp); }
     win(g); assert.equal(g.advanceZoneEventWave(true),false); assert.equal(g.battleAct('atk'),false);
     assert.equal(g.gameCompleted,false); g.endBattle();

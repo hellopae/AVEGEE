@@ -26,6 +26,7 @@ import { Z4S } from './z4e-sala.js';   // T8b/5
 import { Z4G_KEYS } from './seized-keys.js';   // T8c
 import { walkBackTarget, zoneSeized } from './seized.js';   // T8c
 import { Z4L } from './z4f-lupin.js';   // T8b/6
+import { Z4H, Z4H_RULER_START, Z4H_DUEL, finalBannerLabel } from './z4h-final.js';   // T8d
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
 import { RYUJIN, RYUJIN_STRIKE_LOG } from './z2b-ryujin.js';   // T6/5
@@ -63,7 +64,7 @@ import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverAc
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { isFrontierDuoBattle } from './nira-combat.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=minigame-review-20261011';
-import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
+import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER, MINION_WAVES, finalPhaseAfterBattle } from './final-event.js';
 import { LEGACY_ITEM_IDS, PHOENIX_FEATHER, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, BOSS_ULTIMATE_RHYTHM, bossUltimateDue, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
@@ -3590,8 +3591,8 @@ const API = {
     if (s.presentation || !next || (id && id !== next) || !this.persistFinalEvent()) return null;
     id = next;
     const ev = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal');
-    const wave = id === 'boss' ? 9 : id.startsWith('minion:') ? Number(id.split(':')[1]) : 5 + RULER_ORDER.indexOf(id.split(':')[1]);
-    const adds = id === 'boss' ? FINAL_EVENT.bossAdds : id.startsWith('ruler:') ? FINAL_EVENT.rulerAdds[wave - 5] : 0;
+    const wave = id === 'boss' ? MINION_WAVES + 5 : id.startsWith('minion:') ? Number(id.split(':')[1]) : MINION_WAVES + 1 + RULER_ORDER.indexOf(id.split(':')[1]);   // T8d: 3 minion waves, then the 4 rulers, then the boss
+    const adds = id === 'boss' ? FINAL_EVENT.bossAdds : id.startsWith('ruler:') ? FINAL_EVENT.rulerAdds[wave - MINION_WAVES - 1] : 0;
     const groups = [...ev.waves[wave - 1], ...(adds ? [{ ...FINAL_EVENT.add, count:adds }] : [])];
     const foes = this.zoneEventFoes({ ...ev, mode:'encounter', foes:groups }, wave);
     s.activeEncounter = id;
@@ -3603,19 +3604,26 @@ const API = {
       teamReadyTurn:s.teamCooldownTurns || 0,
       team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0,this.teamLimits.finalTeamMax),
       wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sp:foes[0].sp,
-      sub:id.startsWith('minion:') ? `ระลอก ${wave}/4` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
-      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th,
+      sub:id.startsWith('minion:') ? `ระลอก ${wave}/${MINION_WAVES}` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
+      turn:1, over:null, log:[], dmg:null,
+      // T8d (Rae 8.4 / 8.5 / NF-3): a possessed lord speaks in his own broken voice, Archon-Zero his lines (+ the half-way ones); a minion wave carries the banner
+      talk:id.startsWith('ruler:') ? langPick(Z4H_RULER_START[id.split(':')[1]]) : id === 'boss' ? langPick(Z4H_DUEL.start) : finalBannerLabel(id, wave, getLang()),
+      ...(id === 'boss' ? { halfLine:langPick(Z4H_DUEL.half) } : {}),
       // API callers and old battles retain their interlude; map choreography marks it seen first.
-      storyInterlude:wave === 1 && !s.approachSeen ? 'cyber-approach' : id === 'boss' && !s.duelSeen ? 'cyber-duel' : null });
+      // T8d: the opening scene (z4-final-open) replaces the old 'cyber-approach' before wave 1 (that one now plays AFTER wave 3)
+      storyInterlude:wave === 1 && !s.openSeen ? 'z4-final-open' : id === 'boss' && !s.duelSeen ? 'cyber-duel' : null });
+    if (wave === 1) s.openSeen = s.warpDone = true;
     this.prepareEncounter(); this.persistFinalEvent(); this.onChange(); return this.battle;
   },
   acknowledgeFinalReward() {
     if (this.battle) return false;
-    const s = this.finalEventState();
+    const s = this.finalEventState(), paidFor = s.pendingReward?.encounter;
     if (!this.persistFinalEvent() || !acknowledgeFinalReward(s)) return false;
     this.pendingReward = null;
+    if (paidFor?.startsWith('ruler:')) this.queueStory(Z4H.rulerFree[paidFor.split(':')[1]]);   // T8d (Rae 8.4): the lord's thanks once the green lines are cut
     if (s.phase === 'reinforcementCutscene') {
-      if (s.choreography) s.presentation = 'reinforcementIntro';
+      if (!s.approachSeen) this.queueStory('cyber-approach');   // T8d (Rae 8.1): "three waves down, and still so many servants" - after the THIRD wave, then the reinforcements
+      if (s.choreography) s.presentation = s.approachSeen ? 'reinforcementIntro' : 'approach';
       this.queueStory('cyber-reinforcements');
     } else if (s.phase === 'bossReady' && s.choreography && !s.duelSeen) {
       s.presentation = 'duel'; this.queueStory('cyber-duel');
@@ -3636,12 +3644,13 @@ const API = {
     const s = this.finalEventState();
     if (['locked','completed','ending','reward'].includes(s.phase) || s.presentation) return false;
     s.choreography = true;
-    if (s.minionsCleared === 0 && !s.approachSeen) {
+    if (s.minionsCleared === 0 && !s.openSeen && !s.warpDone) {
       s.presentation = 'warp'; s.warpElapsed = 0;
       // A fixed walkable staging spot puts the appearing army in front of Yama.
       Object.assign(this.player, { x:1700, y:980, tx:null, ty:null, path:null });
-    } else if (s.minionsCleared === 4 && !s.reinforcementsSeen) {
-      s.phase = 'reinforcementCutscene'; s.presentation = 'reinforcementIntro';
+    } else if (s.minionsCleared === MINION_WAVES && !s.reinforcementsSeen) {
+      s.phase = 'reinforcementCutscene'; s.presentation = s.approachSeen ? 'reinforcementIntro' : 'approach';
+      if (!s.approachSeen) this.queueStory('cyber-approach');   // T8d: "three waves down" first (after the third wave, not before the first)
       this.queueStory('cyber-reinforcements');
     } else if (s.reinforcementsSeen && !s.controlSeen && s.rulersCleared.length < 4) {
       s.presentation = 'control'; this.queueStory('cyber-control');
@@ -3654,9 +3663,22 @@ const API = {
     const s = this.finalEventState();
     if (this.zone !== 'cyberhell' || s.presentation !== 'warp' || this.battle || this.storyQueue.length || !Number.isFinite(dt) || dt <= 0) return;
     s.warpElapsed = Math.min(1200, (s.warpElapsed || 0) + dt);
-    if (s.warpElapsed === 1200) {
-      s.presentation = 'approach'; this.queueStory('cyber-approach'); this.save(); this.onChange();
+    if (s.warpElapsed === 1200) {   // T8d: the army stands in front of him - NF-2 ("The Final Chapter": Begin / Not yet) asks; Begin plays z4-final-open
+      s.presentation = 'gate'; s.warpDone = true; this.save(); this.onChange();
     }
+  },
+  /** T8d (Rae NF-2, "Begin"): z4-final-open (2 pages), then the first wave is up to the player (the preparation window with a fight button) */
+  beginFinalChapter() {
+    const s = this.finalEventState();
+    if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || s.openSeen || s.minionsCleared > 0) return false;
+    if (s.presentation !== 'gate' && (s.presentation || nextFinalEncounter(s) !== 'minion:1')) return false;
+    s.presentation = 'opening'; s.warpDone = true; this.queueStory('z4-final-open'); this.save(); this.onChange(); return true;
+  },
+  /** T8d (NF-2, "Not yet"): the player goes to rest / shop first; the window comes back when they walk up to the army again */
+  declineFinalChapter() {
+    const s = this.finalEventState();
+    if (s.presentation !== 'gate') return false;
+    s.presentation = null; s.warpDone = true; this.save(); this.onChange(); return true;
   },
   continueFinalMapScene() {
     const s = this.finalEventState();
@@ -4974,11 +4996,11 @@ const API = {
       const s = this.finalEventState();
       if (B.over !== 'win') {
         s.activeEncounter = null;
-        s.phase = s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+        s.phase = finalPhaseAfterBattle(s);
       } else if (B.encounter === 'boss') {
         s.phase = 'justice'; this.gameCompleted = false;
         this.bossGuarding.cyberhell = false;
-        queueBossJustice(this,B,{final:true}); this.queueStory('ending-capture');
+        queueBossJustice(this,B,{final:true}); this.queueStory(Z4H.archonDownStory); this.queueStory('ending-capture');   // T8d (Rae 8.5): the three lines after the win come first
         this.over = null;
       }
       this.pendingReward = s.pendingReward;
@@ -5244,8 +5266,10 @@ const API = {
       this.startDevaTest();
     }
     if (next?.key === 'cyber-reinforcements') this.completeFinalReinforcements();
+    if (next?.key === 'ending') this.queueStory(Z4H.codaStory);   // T8d (Rae 8.6, not compulsory): every harbour open - after the ending, before the end window
     const final = this.finalEventState();
-    if (next?.key === 'cyber-approach') { final.approachSeen = true; final.presentation = 'prepare'; }
+    if (next?.key === 'cyber-approach') { final.approachSeen = true; if (final.presentation === 'approach') final.presentation = 'reinforcementIntro'; }   // T8d: now the first half of the cutscene after wave 3 (no 'prepare' - the reinforcements follow)
+    if (next?.key === 'z4-final-open') { final.openSeen = true; final.warpDone = true; final.presentation = 'prepare'; }   // T8d (Rae 8.1): then the preparation window with the fight button
     if (next?.key === 'cyber-reinforcements-advance') {
       final.presentation = 'control'; this.queueStory('cyber-control');
     }
@@ -5284,7 +5308,11 @@ const API = {
     this.queueNotice(Z4A_ZONE4.leftNotice); this.save(); this.onChange(); return true;
   },
   /** he can be talked to on a pier: Zone 3 until Yama has answered, Zone 4 from the moment he leaves the team */
-  home67Talk() { return this.home67Waiting?.() || (this.zone === 'cyberhell' && this.home67?.phase === 'harbor'); },
+  home67Talk() { return this.home67Waiting?.() || (this.zone === 'cyberhell' && this.home67?.phase === 'harbor' && !this.finalUnderway()); },   // T8d: while the finale is on he is bound beside Archon-Zero, not on the pier
+  /** T8d: the finale is under way (NF-1 up to the end of the dais) - HOME-67 is bound at the arena, the side quest of Lupin waits (it is NOT closed: it goes on after the ending, Claudy 19 Nov) */
+  finalUnderway() { const p = this.finalEventState?.().phase; return !this.gameCompleted && !!p && !['locked', 'completed'].includes(p); },
+  /** T8d (NF-2 warning): HOME-67's side job (the thief who stands still) was offered and is not finished */
+  lupinPending() { return !!this.home67?.gift && this.lupin?.phase !== 'done'; },
   /** NH-5: 1,200 coins + the Zone 4 robes (the robes are put on when the window is acknowledged); once */
   home67Gift() {
     if (this.home67?.phase !== 'harbor' || this.home67.gift) return false;
@@ -5292,11 +5320,11 @@ const API = {
     this.log(`💰 HOME-67 มอบเงิน ${Z4A_ZONE4.gift} เบี้ยกรรม และชุดประจำโซน 4`, 'good'); this.queueNotice(Z4A_ZONE4.giftNotice); this.save(); this.onChange(); return true;
   },
   /** T8b/6 (Rae D 9.1): HOME-67's side quest. He offers it on the pier of Zone 4 (after the gift scene); NQ-1 = taking the job; the stranger stands near the canteen until he is caught. The state is saved and never closed by the ending. */
-  lupinOffer() { return this.zone === 'cyberhell' && this.home67?.phase === 'harbor' && !!this.home67.gift && !this.lupin?.phase; },
+  lupinOffer() { return this.zone === 'cyberhell' && this.home67?.phase === 'harbor' && !!this.home67.gift && !this.lupin?.phase && !this.finalUnderway(); },
   takeLupinQuest() { if (!this.lupinOffer()) return false; this.lupin = { phase:'taken' }; this.queueNotice(Z4L.takeNotice); this.save(); this.onChange(); return true; },
   /** where the strange worker stands: beside the canteen of this zone (the site is the station's own coordinates) */
   lupinWorkerPoint() { const st = STATIONS.find(s => s.k === 'canteen'); return { x:Math.round((st?.x ?? 720) + 95), y:Math.round((st?.y ?? 438) + 36) }; },
-  lupinWorkerOn() { return this.zone === 'cyberhell' && this.lupin?.phase === 'taken'; },
+  lupinWorkerOn() { return this.zone === 'cyberhell' && this.lupin?.phase === 'taken' && !this.finalUnderway(); },
   /** the fight with Lupin (he is caught): the event is opened by hand, like the colosseum bouts */
   startLupinFight() {
     if (!this.lupinWorkerOn() || this.battle || this.over) return null;
@@ -6416,7 +6444,7 @@ API.restore = function (d) {
   this.pendingReward = this.finalEvent.pendingReward;
   restoreStoryAbilities(this);
   if (!this.abilities.hypno) { delete this.discoverySeen['power:hypno']; this.discoveryQueue = this.discoveryQueue.filter(id => id !== 'power:hypno'); }
-  this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
+  this.battle = d.finalBattle?.eventKey === 'cyberFinal' && d.finalBattle.encounter !== 'minion:4' ? prepareBattle(structuredClone(d.finalBattle)) : null;
   if (this.battle && !this.battle.balance) this.battle.balance = { wave:this.battle.wave || 0, partySize:this.battleActors().length, migrated:true };
   if (this.battle?.turnAction) this.finishBattleCommand();
   else if (this.battle) this.battle.commandBusy = false;
@@ -6427,9 +6455,10 @@ API.restore = function (d) {
   }
   if (!this.battle && this.finalEvent.activeEncounter) {
     this.finalEvent.activeEncounter = null;
-    this.finalEvent.phase = this.finalEvent.minionsCleared < 4 ? 'ready' : this.finalEvent.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+    this.finalEvent.phase = finalPhaseAfterBattle(this.finalEvent);
   }
   if (this.finalEvent.phase === 'reinforcementCutscene' && !this.storyQueue.some(p => p.key === 'cyber-reinforcements')) {
+    if (!this.finalEvent.approachSeen && !this.storyQueue.some(p => p.key === 'cyber-approach')) { delete this.storySeen['cyber-approach']; this.queueStory('cyber-approach'); }   // T8d
     delete this.storySeen['cyber-reinforcements']; this.queueStory('cyber-reinforcements');
   }
   if (['ending','completed'].includes(this.finalEvent.phase) && !this.battle) {
@@ -6437,12 +6466,13 @@ API.restore = function (d) {
     this.zoneEvents.cyberhell ||= {}; this.zoneEvents.cyberhell.cyberFinal = 'cleared';
     this.bossCleared.cyberhell = true; this.bossGuarding.cyberhell = false;
   }
-  const finalStory = { approach:'cyber-approach', reinforcementIntro:'cyber-reinforcements',
+  const finalStory = { opening:'z4-final-open', reinforcementIntro:'cyber-reinforcements',
     reinforcementAdvance:'cyber-reinforcements-advance', control:'cyber-control', duel:'cyber-duel' }[this.finalEvent.presentation];
   if (finalStory && !this.storyQueue.some(p => p.key === finalStory)) {
     delete this.storySeen[finalStory]; this.queueStory(finalStory);
   }
   if (this.finalEvent.phase === 'justice' && bossJusticeCase(this)?.phase === 'capture' && !this.storyQueue.some(p=>p.key==='ending-capture')) {
+    if (!this.storySeen[Z4H.archonDownStory]) this.queueStory(Z4H.archonDownStory);   // T8d
     delete this.storySeen['ending-capture']; this.queueStory('ending-capture');
   }
   if (this.finalEvent.phase === 'completed' && !this.storySeen.ending) this.queueStory('ending');

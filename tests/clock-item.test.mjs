@@ -24,9 +24,9 @@ test('clock cannot refresh between ordinary event waves',()=>{
  for(const f of g.battle.foes) {f.hp=1;g.selectFoe(f.id);g.battleAct('atk');}
  assert.ok(g.battle.pendingWave);g.advanceZoneEventWave();assert.equal(useClock(g),false);
 });
-test('finale clock shared by all minions, then all four rulers, then final boss, including save/load',()=>{
+test('finale clock shared by all minions (T8d: three waves), then all four rulers, then final boss, including save/load',()=>{
  let g=finalGame();g.abilities.cooldownClock=true;g.inventory.cooldownClock=1;
- for(let i=1;i<=4;i++){
+ for(let i=1;i<=3;i++){
   g.startFinalEncounter(`minion:${i}`);
   assert.equal(useClock(g),i===1);
   if(i===1) delete g.finalEvent.clockUsedByGroup; // Older active-battle saves still retain the spent use.
