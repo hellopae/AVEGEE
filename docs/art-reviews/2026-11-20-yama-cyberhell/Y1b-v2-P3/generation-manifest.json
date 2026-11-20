@@ -1,0 +1,68 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "scope": "P3",
+  "attempts": 12,
+  "output_count": 8,
+  "orchestration_attempts_without_output": 4,
+  "orchestration_note": "Four invocations produced no output while root/prompt stores in a still-running exec cell were unavailable; they were reissued with explicit inputs. No additional pose retry.",
+  "approved_reference": "docs/art-reviews/2026-11-20-design-approval/yama-cyberhell-costume-v1.webp",
+  "frames": [
+    {
+      "frame": 1,
+      "edit_target": "original-frames/01.png",
+      "output": "generated/01.png",
+      "generation_source_filename": "exec-b507a961-5324-49f5-a09b-c60e282d2f94.png",
+      "prompt": "Use case: precise-object-edit. Edit target image 1 is ONE game animation frame, 640x640 transparent. Image 2 is ONLY the approved costume reference. Change ONLY costume and hat of image 1 to the exact costume design from image 2: black violet silver layered armor, cyan luminous circuit lines on coat panels, cyan hat band, silver angular crest with cyan diamond, silver armored cuffs and boots. Preserve the SMALL chibi character proportions, exact pose, face, red skin, two red horns, ears, hands, black hair, and original TROJAN sword with dark blade/cyan circuitry/magenta outer edge. DO NOT replace sword with the reference sword. Do not change the arms, sword angle, head angle, feet positions or framing. Entire original figure and sword must stay in their original position in the 640 square. No floor, shadow, background, text, other poses, panels or extra weapons. True transparent background. Keep the sprite's original painted pixel edge style and original silhouette as closely as possible. Output just this single edited frame."
+    },
+    {
+      "frame": 2,
+      "edit_target": "original-frames/02.png",
+      "output": "generated/02.png",
+      "generation_source_filename": "exec-dbbf0160-a4af-4d8b-98d3-abdfaf5de75e.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 3,
+      "edit_target": "original-frames/03.png",
+      "output": "generated/03.png",
+      "generation_source_filename": "exec-a6a5dc3f-e57b-4ebc-b2fe-ff949c0163fd.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 4,
+      "edit_target": "original-frames/04.png",
+      "output": "generated/04.png",
+      "generation_source_filename": "exec-a9e81efd-9426-43be-ad1c-b43c6da33485.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 5,
+      "edit_target": "original-frames/05.png",
+      "output": "generated/05.png",
+      "generation_source_filename": "exec-bee50d74-41b5-4af0-bf7a-62239299722b.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 6,
+      "edit_target": "original-frames/06.png",
+      "output": "generated/06.png",
+      "generation_source_filename": "exec-ae85d6a2-688a-49fb-80a0-e338c58f1c34.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 7,
+      "edit_target": "original-frames/07.png",
+      "output": "generated/07.png",
+      "generation_source_filename": "exec-6a0274d8-7195-43a7-b00d-123ba6c752e6.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    },
+    {
+      "frame": 8,
+      "edit_target": "original-frames/08.png",
+      "output": "generated/08.png",
+      "generation_source_filename": "exec-ff283b29-386e-4ba5-9fed-04eaf8df6b5c.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the edit target: ONE transparent 640x640 game animation frame. Image 2 is ONLY approved costume reference. Change ONLY clothes and hat of image 1 to match reference: black violet silver angular layered armor, silver purple trim, cyan circuit lines on both long coat panels, cyan hat band, silver crest with cyan diamond, armored cuffs and boots. Preserve EXACT original chibi proportions, pose and placement: same face, red skin, horns, ears, hair, hands, limb positions, original TROJAN dark sword with cyan circuitry and magenta edge, and every magenta sword trail. Do NOT copy reference pose or reference silver sword. Keep original sword angle, arm angles, face orientation and foot positions; do not enlarge the character. Transparent background, no floor, no cast shadow, no text, no extra characters or panels. Keep original game sprite illustration style, output exactly one edited frame."
+    }
+  ]
+}
