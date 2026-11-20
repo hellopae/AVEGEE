@@ -1,0 +1,57 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 8,
+  "transparent_background": true,
+  "reference": "docs/art-reviews/2026-11-20-design-approval/yama-cyberhell-costume-v1.webp",
+  "note": "Normalized record of the shared constraints and individual pose instructions used across the eight actual edit calls; no sheet generation. Original tool prompts varied in wording.",
+  "frames": [
+    {
+      "frame": 0,
+      "edit_target": "original-frames/cane-0.png",
+      "output": "generated-0.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Ready stance; hands together at chest/waist, slender cane blade diagonal up-right."
+    },
+    {
+      "frame": 1,
+      "edit_target": "original-frames/cane-1.png",
+      "output": "generated-1.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Sword held high across forehead, blade upper-left, both arms raised across upper chest, face partly hidden by forearm."
+    },
+    {
+      "frame": 2,
+      "edit_target": "original-frames/cane-2.png",
+      "output": "generated-2.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Both arms above head, hands above left side of head gripping sword; thin curved silver blade nearly vertical upward."
+    },
+    {
+      "frame": 3,
+      "edit_target": "original-frames/cane-3.png",
+      "output": "generated-3.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Both hands forward at waist, blade diagonal up-right, purple slash crescent above right."
+    },
+    {
+      "frame": 4,
+      "edit_target": "original-frames/cane-4.png",
+      "output": "generated-4.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Both arms straight toward right at waist; cane sword almost horizontal right, large purple crescent above."
+    },
+    {
+      "frame": 5,
+      "edit_target": "original-frames/cane-5.png",
+      "output": "generated-5.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Arms reaching lower-right; sword diagonally DOWN RIGHT; violet slash below tip."
+    },
+    {
+      "frame": 6,
+      "edit_target": "original-frames/cane-6.png",
+      "output": "generated-6.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Both hands extended down-right at belt; curved sword diagonally down-right with settling low slash."
+    },
+    {
+      "frame": 7,
+      "edit_target": "original-frames/cane-7.png",
+      "output": "generated-7.png",
+      "prompt": "Use case: identity-preserve. Image 1 EDIT TARGET: one original cane animation frame. Image 2: approved COSTUME reference ONLY. Change only clothing and hat to black-violet-silver cyberhell armor with cyan circuits on hat, sleeves, coat panels and armored boots. Preserve exact pose, limb positions, face, red skin, eyes, horns, ears, hands, proportions, original slender curved silver cane sword, hilt and slash effects. Do not copy reference pose or reference sword. Match original small painted chibi sprite style. Single square frame, same scale/placement and large transparent top margin; true transparent background, no floor, shadow, text or sheet. Pose constraint: Return ready stance; hands clasped at chest/waist, slender curved cane blade upper-right."
+    }
+  ]
+}

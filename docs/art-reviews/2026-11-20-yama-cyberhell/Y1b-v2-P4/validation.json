@@ -1,0 +1,868 @@
+{
+  "scope": "P4 only",
+  "imagegen_calls": 8,
+  "alpha_bbox_threshold": 0,
+  "opaque_bbox_threshold": 128,
+  "foot_method": "midpoint of min/max x on bottom opaque (alpha>128) boot row; x<370 and y>=540; excludes sword effects",
+  "method": "Registered ImageGen costume RGB inside original silhouette; exact original alpha retained. Original exposed skin/eyes/horns plus union of original weapon differences restored without resampling.",
+  "sheets": [
+    {
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-cane.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ],
+      "cell": [
+        640,
+        640
+      ],
+      "frames": [
+        {
+          "frame": 0,
+          "original_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "new_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "original_opaque_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "new_opaque_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            144.0,
+            569
+          ],
+          "new_foot": [
+            144.0,
+            569
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 14213,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 30154,
+          "fallback_original": false
+        },
+        {
+          "frame": 1,
+          "original_bbox": [
+            59,
+            224,
+            375,
+            580
+          ],
+          "new_bbox": [
+            59,
+            224,
+            375,
+            580
+          ],
+          "original_opaque_bbox": [
+            62,
+            226,
+            372,
+            569
+          ],
+          "new_opaque_bbox": [
+            62,
+            226,
+            372,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            153.0,
+            568
+          ],
+          "new_foot": [
+            153.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 12408,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 33090,
+          "fallback_original": false
+        },
+        {
+          "frame": 2,
+          "original_bbox": [
+            134,
+            126,
+            348,
+            581
+          ],
+          "new_bbox": [
+            134,
+            126,
+            348,
+            581
+          ],
+          "original_opaque_bbox": [
+            139,
+            137,
+            343,
+            569
+          ],
+          "new_opaque_bbox": [
+            139,
+            137,
+            343,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            157.5,
+            568
+          ],
+          "new_foot": [
+            157.5,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 11475,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 34985,
+          "fallback_original": false
+        },
+        {
+          "frame": 3,
+          "original_bbox": [
+            127,
+            189,
+            518,
+            581
+          ],
+          "new_bbox": [
+            127,
+            189,
+            518,
+            581
+          ],
+          "original_opaque_bbox": [
+            133,
+            201,
+            518,
+            569
+          ],
+          "new_opaque_bbox": [
+            133,
+            201,
+            518,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            151.0,
+            568
+          ],
+          "new_foot": [
+            151.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 28540,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 34715,
+          "fallback_original": false
+        },
+        {
+          "frame": 4,
+          "original_bbox": [
+            125,
+            174,
+            579,
+            575
+          ],
+          "new_bbox": [
+            125,
+            174,
+            579,
+            575
+          ],
+          "original_opaque_bbox": [
+            132,
+            187,
+            571,
+            569
+          ],
+          "new_opaque_bbox": [
+            132,
+            187,
+            571,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            143.0,
+            568
+          ],
+          "new_foot": [
+            143.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 47798,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 37266,
+          "fallback_original": false
+        },
+        {
+          "frame": 5,
+          "original_bbox": [
+            120,
+            250,
+            536,
+            595
+          ],
+          "new_bbox": [
+            120,
+            250,
+            536,
+            595
+          ],
+          "original_opaque_bbox": [
+            127,
+            261,
+            522,
+            581
+          ],
+          "new_opaque_bbox": [
+            127,
+            261,
+            522,
+            581
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            149.0,
+            568
+          ],
+          "new_foot": [
+            149.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 24564,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 38349,
+          "fallback_original": false
+        },
+        {
+          "frame": 6,
+          "original_bbox": [
+            112,
+            250,
+            523,
+            588
+          ],
+          "new_bbox": [
+            112,
+            250,
+            523,
+            588
+          ],
+          "original_opaque_bbox": [
+            122,
+            263,
+            520,
+            575
+          ],
+          "new_opaque_bbox": [
+            122,
+            263,
+            520,
+            575
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            140.5,
+            567
+          ],
+          "new_foot": [
+            140.5,
+            567
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 16202,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 36469,
+          "fallback_original": false
+        },
+        {
+          "frame": 7,
+          "original_bbox": [
+            125,
+            250,
+            453,
+            570
+          ],
+          "new_bbox": [
+            125,
+            250,
+            453,
+            570
+          ],
+          "original_opaque_bbox": [
+            125,
+            251,
+            453,
+            570
+          ],
+          "new_opaque_bbox": [
+            125,
+            251,
+            453,
+            570
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            145.5,
+            569
+          ],
+          "new_foot": [
+            145.5,
+            569
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 14330,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 28883,
+          "fallback_original": false
+        }
+      ],
+      "gif_frames": 8,
+      "sha256": "4cb7fd53130c8212750f05b86b4a0720ba4f297b42c14bdafeed96f06902b44b"
+    },
+    {
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-fang.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ],
+      "cell": [
+        640,
+        640
+      ],
+      "frames": [
+        {
+          "frame": 0,
+          "original_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "new_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "original_opaque_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "new_opaque_bbox": [
+            123,
+            250,
+            454,
+            570
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            144.0,
+            569
+          ],
+          "new_foot": [
+            144.0,
+            569
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 19831,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 30154,
+          "fallback_original": false
+        },
+        {
+          "frame": 1,
+          "original_bbox": [
+            59,
+            218,
+            374,
+            580
+          ],
+          "new_bbox": [
+            59,
+            218,
+            374,
+            580
+          ],
+          "original_opaque_bbox": [
+            61,
+            218,
+            373,
+            569
+          ],
+          "new_opaque_bbox": [
+            61,
+            218,
+            373,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            153.0,
+            568
+          ],
+          "new_foot": [
+            153.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 20111,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 33090,
+          "fallback_original": false
+        },
+        {
+          "frame": 2,
+          "original_bbox": [
+            134,
+            126,
+            348,
+            581
+          ],
+          "new_bbox": [
+            134,
+            126,
+            348,
+            581
+          ],
+          "original_opaque_bbox": [
+            139,
+            137,
+            343,
+            569
+          ],
+          "new_opaque_bbox": [
+            139,
+            137,
+            343,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            157.5,
+            568
+          ],
+          "new_foot": [
+            157.5,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 14984,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 34985,
+          "fallback_original": false
+        },
+        {
+          "frame": 3,
+          "original_bbox": [
+            127,
+            189,
+            514,
+            581
+          ],
+          "new_bbox": [
+            127,
+            189,
+            514,
+            581
+          ],
+          "original_opaque_bbox": [
+            133,
+            201,
+            503,
+            569
+          ],
+          "new_opaque_bbox": [
+            133,
+            201,
+            503,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            151.0,
+            568
+          ],
+          "new_foot": [
+            151.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 33815,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 34715,
+          "fallback_original": false
+        },
+        {
+          "frame": 4,
+          "original_bbox": [
+            125,
+            174,
+            579,
+            575
+          ],
+          "new_bbox": [
+            125,
+            174,
+            579,
+            575
+          ],
+          "original_opaque_bbox": [
+            132,
+            187,
+            571,
+            569
+          ],
+          "new_opaque_bbox": [
+            132,
+            187,
+            571,
+            569
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            143.0,
+            568
+          ],
+          "new_foot": [
+            143.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 52613,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 37266,
+          "fallback_original": false
+        },
+        {
+          "frame": 5,
+          "original_bbox": [
+            120,
+            250,
+            536,
+            595
+          ],
+          "new_bbox": [
+            120,
+            250,
+            536,
+            595
+          ],
+          "original_opaque_bbox": [
+            127,
+            261,
+            522,
+            581
+          ],
+          "new_opaque_bbox": [
+            127,
+            261,
+            522,
+            581
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            149.0,
+            568
+          ],
+          "new_foot": [
+            149.0,
+            568
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 29360,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 38349,
+          "fallback_original": false
+        },
+        {
+          "frame": 6,
+          "original_bbox": [
+            112,
+            250,
+            523,
+            588
+          ],
+          "new_bbox": [
+            112,
+            250,
+            523,
+            588
+          ],
+          "original_opaque_bbox": [
+            122,
+            263,
+            520,
+            581
+          ],
+          "new_opaque_bbox": [
+            122,
+            263,
+            520,
+            581
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            140.5,
+            567
+          ],
+          "new_foot": [
+            140.5,
+            567
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 21614,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 36469,
+          "fallback_original": false
+        },
+        {
+          "frame": 7,
+          "original_bbox": [
+            125,
+            250,
+            453,
+            570
+          ],
+          "new_bbox": [
+            125,
+            250,
+            453,
+            570
+          ],
+          "original_opaque_bbox": [
+            125,
+            251,
+            453,
+            570
+          ],
+          "new_opaque_bbox": [
+            125,
+            251,
+            453,
+            570
+          ],
+          "height_delta_percent": 0.0,
+          "original_foot": [
+            145.5,
+            569
+          ],
+          "new_foot": [
+            145.5,
+            569
+          ],
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "alpha_identical": true,
+          "preserved_region_pixels": 20063,
+          "preserved_region_rgb_identical": true,
+          "costume_pixels_changed": 28883,
+          "fallback_original": false
+        }
+      ],
+      "gif_frames": 8,
+      "sha256": "c4bf59fd309c2ce0e89b902994a9ce058ecfeed3c7a658316edf378aa14b0b8b"
+    }
+  ],
+  "registration": [
+    {
+      "frame": 0,
+      "scale_x": 0.5199362041467305,
+      "scale_y": 0.5,
+      "translate": [
+        -5,
+        11
+      ],
+      "generated_hat_top": 478,
+      "generated_boot_row": 1116,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 1,
+      "scale_x": 0.5039872408293461,
+      "scale_y": 0.511164274322169,
+      "translate": [
+        2,
+        -3
+      ],
+      "generated_hat_top": 494,
+      "generated_boot_row": 1116,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 2,
+      "scale_x": 0.5063795853269537,
+      "scale_y": 0.49681020733652315,
+      "translate": [
+        0,
+        13
+      ],
+      "generated_hat_top": 476,
+      "generated_boot_row": 1116,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 3,
+      "scale_x": 0.507177033492823,
+      "scale_y": 0.5135566188197768,
+      "translate": [
+        0,
+        -4
+      ],
+      "generated_hat_top": 494,
+      "generated_boot_row": 1113,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 4,
+      "scale_x": 0.5143540669856459,
+      "scale_y": 0.507177033492823,
+      "translate": [
+        -2,
+        4
+      ],
+      "generated_hat_top": 486,
+      "generated_boot_row": 1113,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 5,
+      "scale_x": 0.5031897926634769,
+      "scale_y": 0.5135566188197768,
+      "translate": [
+        3,
+        -5
+      ],
+      "generated_hat_top": 497,
+      "generated_boot_row": 1116,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 6,
+      "scale_x": 0.5079744816586922,
+      "scale_y": 0.5199362041467305,
+      "translate": [
+        1,
+        -12
+      ],
+      "generated_hat_top": 504,
+      "generated_boot_row": 1114,
+      "resampler": "Pillow LANCZOS"
+    },
+    {
+      "frame": 7,
+      "scale_x": 0.5087719298245614,
+      "scale_y": 0.507177033492823,
+      "translate": [
+        1,
+        3
+      ],
+      "generated_hat_top": 487,
+      "generated_boot_row": 1116,
+      "resampler": "Pillow LANCZOS"
+    }
+  ]
+}
