@@ -1,0 +1,996 @@
+{
+  "scope": "cyberhell-b",
+  "imagegen_calls": 12,
+  "measurement_method": "alpha >=16; occupied silhouette includes held equipment; foot_y=lowest occupied pixel; foot_x=midpoint of occupied x extrema in lowest 12% of silhouette",
+  "limitations": [
+    "Overhead combat frame 1 uses manually inspected crown anchors to exclude the raised recording slate; other frames use occupied silhouette top as crown proxy.",
+    "No game runtime QA performed. Visual review is recorded in README."
+  ],
+  "files": [
+    {
+      "path": "img/crew-combat-v1/cyberhell/guard.webp",
+      "original_size": [
+        1536,
+        1024
+      ],
+      "original_mode": "RGBA",
+      "grid": [
+        4,
+        2
+      ],
+      "frame_count": 8,
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              23,
+              110,
+              365,
+              484
+            ],
+            "height": 374,
+            "foot_x": 168.5,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              20,
+              110,
+              318,
+              484
+            ],
+            "height": 374,
+            "foot_x": 168.5,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 110,
+            "new_top_y": 110,
+            "original_height": 374,
+            "new_height": 374,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            298,
+            374
+          ],
+          "placement_xy": [
+            20,
+            110
+          ]
+        },
+        {
+          "frame": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "generated_frame": 1,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              26,
+              51,
+              332,
+              484
+            ],
+            "height": 433,
+            "foot_x": 180.5,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              42,
+              69,
+              320,
+              484
+            ],
+            "height": 415,
+            "foot_x": 180.5,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "silhouette_height_delta_percent": -4.157,
+          "body_height": {
+            "original_top_y": 137,
+            "new_top_y": 137,
+            "original_height": 347,
+            "new_height": 347,
+            "manual_raw_head_top": 325,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            278,
+            415
+          ],
+          "placement_xy": [
+            42,
+            69
+          ]
+        },
+        {
+          "frame": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "generated_frame": 2,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              19,
+              121,
+              363,
+              484
+            ],
+            "height": 363,
+            "foot_x": 141.5,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              2,
+              121,
+              382,
+              484
+            ],
+            "height": 363,
+            "foot_x": 141.0,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 121,
+            "new_top_y": 121,
+            "original_height": 363,
+            "new_height": 363,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            380,
+            363
+          ],
+          "placement_xy": [
+            2,
+            121
+          ]
+        },
+        {
+          "frame": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "generated_frame": 2,
+          "pillow_variant": 2,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              19,
+              141,
+              365,
+              484
+            ],
+            "height": 343,
+            "foot_x": 129.5,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              0,
+              141,
+              358,
+              484
+            ],
+            "height": 343,
+            "foot_x": 130.0,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 141,
+            "new_top_y": 141,
+            "original_height": 343,
+            "new_height": 343,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            358,
+            343
+          ],
+          "placement_xy": [
+            0,
+            141
+          ]
+        },
+        {
+          "frame": 4,
+          "rect": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "generated_frame": 4,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              19,
+              118,
+              365,
+              485
+            ],
+            "height": 367,
+            "foot_x": 231.0,
+            "foot_y": 484
+          },
+          "new": {
+            "bbox_alpha16": [
+              22,
+              118,
+              377,
+              485
+            ],
+            "height": 367,
+            "foot_x": 231.5,
+            "foot_y": 484
+          },
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 118,
+            "new_top_y": 118,
+            "original_height": 367,
+            "new_height": 367,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            355,
+            367
+          ],
+          "placement_xy": [
+            22,
+            118
+          ]
+        },
+        {
+          "frame": 5,
+          "rect": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "generated_frame": 0,
+          "pillow_variant": -1,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              50,
+              114,
+              365,
+              484
+            ],
+            "height": 370,
+            "foot_x": 198.0,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              52,
+              114,
+              346,
+              484
+            ],
+            "height": 370,
+            "foot_x": 198.5,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 114,
+            "new_top_y": 114,
+            "original_height": 370,
+            "new_height": 370,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            294,
+            370
+          ],
+          "placement_xy": [
+            52,
+            114
+          ]
+        },
+        {
+          "frame": 6,
+          "rect": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "generated_frame": 6,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              46,
+              117,
+              365,
+              484
+            ],
+            "height": 367,
+            "foot_x": 225.5,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              83,
+              117,
+              372,
+              484
+            ],
+            "height": 367,
+            "foot_x": 225.5,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 117,
+            "new_top_y": 117,
+            "original_height": 367,
+            "new_height": 367,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            289,
+            367
+          ],
+          "placement_xy": [
+            83,
+            117
+          ]
+        },
+        {
+          "frame": 7,
+          "rect": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "generated_frame": 7,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              75,
+              131,
+              365,
+              484
+            ],
+            "height": 353,
+            "foot_x": 199.0,
+            "foot_y": 483
+          },
+          "new": {
+            "bbox_alpha16": [
+              70,
+              131,
+              333,
+              484
+            ],
+            "height": 353,
+            "foot_x": 199.5,
+            "foot_y": 483
+          },
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 131,
+            "new_top_y": 131,
+            "original_height": 353,
+            "new_height": 353,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            263,
+            353
+          ],
+          "placement_xy": [
+            70,
+            131
+          ]
+        }
+      ],
+      "cell_size": [
+        384,
+        512
+      ],
+      "new_size": [
+        1536,
+        1024
+      ],
+      "new_mode": "RGBA",
+      "sha256": "c8f3af57fa587346b5aabc94e010b9bd52663c7c61adfed446b0a415295e8b34",
+      "gif_frames": 8
+    },
+    {
+      "path": "img/crew-combat-v1/cyberhell/guard-idle.webp",
+      "original_size": [
+        1024,
+        384
+      ],
+      "original_mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "frame_count": 4,
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            256,
+            384
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              41,
+              76,
+              237,
+              357
+            ],
+            "height": 281,
+            "foot_x": 148.5,
+            "foot_y": 356
+          },
+          "new": {
+            "bbox_alpha16": [
+              62,
+              76,
+              205,
+              357
+            ],
+            "height": 281,
+            "foot_x": 148.0,
+            "foot_y": 356
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 76,
+            "new_top_y": 76,
+            "original_height": 281,
+            "new_height": 281,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            143,
+            281
+          ],
+          "placement_xy": [
+            62,
+            76
+          ]
+        },
+        {
+          "frame": 1,
+          "rect": [
+            256,
+            0,
+            256,
+            384
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 1,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              35,
+              76,
+              237,
+              357
+            ],
+            "height": 281,
+            "foot_x": 146.0,
+            "foot_y": 356
+          },
+          "new": {
+            "bbox_alpha16": [
+              60,
+              76,
+              203,
+              357
+            ],
+            "height": 281,
+            "foot_x": 145.5,
+            "foot_y": 356
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 76,
+            "new_top_y": 76,
+            "original_height": 281,
+            "new_height": 281,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            143,
+            281
+          ],
+          "placement_xy": [
+            60,
+            76
+          ]
+        },
+        {
+          "frame": 2,
+          "rect": [
+            512,
+            0,
+            256,
+            384
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 2,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              26,
+              76,
+              237,
+              357
+            ],
+            "height": 281,
+            "foot_x": 139.5,
+            "foot_y": 356
+          },
+          "new": {
+            "bbox_alpha16": [
+              54,
+              76,
+              197,
+              357
+            ],
+            "height": 281,
+            "foot_x": 139.0,
+            "foot_y": 356
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 76,
+            "new_top_y": 76,
+            "original_height": 281,
+            "new_height": 281,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            143,
+            281
+          ],
+          "placement_xy": [
+            54,
+            76
+          ]
+        },
+        {
+          "frame": 3,
+          "rect": [
+            768,
+            0,
+            256,
+            384
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 1,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              19,
+              76,
+              237,
+              357
+            ],
+            "height": 281,
+            "foot_x": 133.0,
+            "foot_y": 356
+          },
+          "new": {
+            "bbox_alpha16": [
+              48,
+              76,
+              191,
+              357
+            ],
+            "height": 281,
+            "foot_x": 133.5,
+            "foot_y": 356
+          },
+          "foot_delta_px": [
+            0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 76,
+            "new_top_y": 76,
+            "original_height": 281,
+            "new_height": 281,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            143,
+            281
+          ],
+          "placement_xy": [
+            48,
+            76
+          ]
+        }
+      ],
+      "cell_size": [
+        256,
+        384
+      ],
+      "new_size": [
+        1024,
+        384
+      ],
+      "new_mode": "RGBA",
+      "sha256": "477b63ec550c84e59f44e7f174bc9e5a911c163282c6a9789942674e5fb7484a",
+      "gif_frames": 4
+    },
+    {
+      "path": "img/CyberHell/crew-guard-cyberhell-walk-v2.webp",
+      "original_size": [
+        2172,
+        724
+      ],
+      "original_mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "frame_count": 4,
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            50,
+            21,
+            493,
+            665
+          ],
+          "generated_frame": 0,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              0,
+              0,
+              493,
+              665
+            ],
+            "height": 665,
+            "foot_x": 251.5,
+            "foot_y": 664
+          },
+          "new": {
+            "bbox_alpha16": [
+              20,
+              0,
+              447,
+              665
+            ],
+            "height": 665,
+            "foot_x": 251.0,
+            "foot_y": 664
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 0,
+            "new_top_y": 0,
+            "original_height": 665,
+            "new_height": 665,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            427,
+            665
+          ],
+          "placement_xy": [
+            20,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "rect": [
+            608,
+            24,
+            478,
+            662
+          ],
+          "generated_frame": 1,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              0,
+              0,
+              478,
+              662
+            ],
+            "height": 662,
+            "foot_x": 215.0,
+            "foot_y": 661
+          },
+          "new": {
+            "bbox_alpha16": [
+              0,
+              0,
+              336,
+              662
+            ],
+            "height": 662,
+            "foot_x": 215.0,
+            "foot_y": 661
+          },
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 0,
+            "new_top_y": 0,
+            "original_height": 662,
+            "new_height": 662,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            336,
+            662
+          ],
+          "placement_xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "rect": [
+            1182,
+            23,
+            447,
+            665
+          ],
+          "generated_frame": 2,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": true,
+          "original": {
+            "bbox_alpha16": [
+              0,
+              0,
+              447,
+              665
+            ],
+            "height": 665,
+            "foot_x": 233.0,
+            "foot_y": 664
+          },
+          "new": {
+            "bbox_alpha16": [
+              20,
+              0,
+              447,
+              665
+            ],
+            "height": 665,
+            "foot_x": 233.0,
+            "foot_y": 664
+          },
+          "foot_delta_px": [
+            0.0,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 0,
+            "new_top_y": 0,
+            "original_height": 665,
+            "new_height": 665,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            427,
+            665
+          ],
+          "placement_xy": [
+            20,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "rect": [
+            1698,
+            25,
+            457,
+            659
+          ],
+          "generated_frame": 3,
+          "pillow_variant": 0,
+          "pillow_handedness_composite": false,
+          "original": {
+            "bbox_alpha16": [
+              0,
+              0,
+              457,
+              659
+            ],
+            "height": 659,
+            "foot_x": 216.0,
+            "foot_y": 658
+          },
+          "new": {
+            "bbox_alpha16": [
+              50,
+              0,
+              427,
+              659
+            ],
+            "height": 659,
+            "foot_x": 215.5,
+            "foot_y": 658
+          },
+          "foot_delta_px": [
+            -0.5,
+            0
+          ],
+          "silhouette_height_delta_percent": 0.0,
+          "body_height": {
+            "original_top_y": 0,
+            "new_top_y": 0,
+            "original_height": 659,
+            "new_height": 659,
+            "manual_raw_head_top": null,
+            "delta_percent": 0.0
+          },
+          "resize_xy": [
+            377,
+            659
+          ],
+          "placement_xy": [
+            50,
+            0
+          ]
+        }
+      ],
+      "layout": "packed atlas",
+      "runtime_frame_size": [
+        493,
+        667
+      ],
+      "runtime_offsets": [
+        [
+          0,
+          0
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          46,
+          2
+        ],
+        [
+          19,
+          4
+        ]
+      ],
+      "new_size": [
+        2172,
+        724
+      ],
+      "new_mode": "RGBA",
+      "sha256": "fb53d3365b506be6146b51e1544679dfd68bb259f272818a090f2c188459ceea",
+      "gif_frames": 4
+    }
+  ],
+  "assertions_completed": [
+    "file dimensions and RGBA mode",
+    "frame count and runtime rectangles",
+    "support-foot xy tolerance",
+    "body-height tolerance with documented crown proxy",
+    "lossless WebP readback",
+    "GIF frame counts"
+  ]
+}

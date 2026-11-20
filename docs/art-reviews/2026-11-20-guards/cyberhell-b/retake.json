@@ -1,0 +1,13 @@
+{
+  "name": "walk-2",
+  "prompt": "Use case: precise-object-edit. Produce ONE transparent full-body game sprite, never a sheet. Image 1 is approved WATSON-03 identity; image 2 is REQUIRED EXACT POSE; image 3 is matching finished walking sprite for silver robot appearance and FACE DIRECTION and recording-tablet HAND. Match image 3 robot head looking toward LEFT: two cyan eyes at viewer LEFT/front, single round ear disc on viewer RIGHT/back. Silver slender robot, cyan and purple seams, recording tablet held at viewer LEFT of body. But CHANGE THE LEGS TO IMAGE 2: WIDE SPLIT STRIDE, BOTH SOLES FLAT ON THE GROUND, leg on viewer RIGHT extends diagonally down-right, leg on viewer LEFT extends down-left, knees slightly bent, legs widely apart. Do NOT lift either foot, do NOT raise a knee, do NOT repeat the heel-raised trailing leg of image 3. Both complete soles at SAME BASELINE. Free fist at viewer RIGHT slightly swung forward. Keep recording tablet in hand on viewer LEFT side, never viewer right. Face LEFT, ear disc on RIGHT, do not mirror head. Copy approved polished outlined 2D game art. Genuine transparency, no ground, no shadow, no text or symbols, no blood, no mace, no staff, no horns, no hat, no pipe. Single robot, complete body and feet.",
+  "built_in": true,
+  "reference_images": [
+    "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+    "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-2.png",
+    "docs/art-reviews/2026-11-20-guards/cyberhell-b/frames/walk-0-generated.png"
+  ],
+  "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-89468b04-1a9c-45dc-8d82-00aec7490a04.png",
+  "replaces_generation_index_0_based": 9,
+  "postprocess": "Mirror body/legs/tablet arm; preserve left-facing head with a neck cut at raw y=505 and head placement dx=-22. Visually inspected."
+}

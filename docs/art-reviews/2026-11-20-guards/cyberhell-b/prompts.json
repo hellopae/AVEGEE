@@ -1,0 +1,128 @@
+[
+  {
+    "name": "combat-0",
+    "prompt": "Use case: precise-object-edit. Create ONE transparent game sprite frame, not a sheet. Image 1 is approved identity WATSON-03: reproduce its slender silver robot, oversized smooth robot head, two cyan lens eyes, purple and cyan neon seams, black joints and silver boots, glowing cyan recording tablet. Image 2 is pose reference ONLY; replace the entire old demon including all gold armor and mace with WATSON-03. Match pose: right-facing 3/4, feet planted wide, knees bent, both hands hold its long glowing recording slate horizontally across waist ready for combat. Keep the approved head and robot identity, slate as its own weapon. Full body and complete feet, orthographic hand-painted 2D game art crisp dark outlines, no ground, no shadow, genuinely transparent background, no letters, no blood, no hat, no pipe, no horns, no mace. ONE character ONE frame.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-0.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-dd7ebf41-a89f-4945-af21-93388556cada.png"
+  },
+  {
+    "name": "combat-1",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Facing right in 3/4 view. Wide planted feet, knees bent. Both arms lift the glowing recording slate diagonally ABOVE and behind the head to the viewer left, winding up an overhead strike. The slate is the weapon, not a mace. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-1.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-04ec4a1a-c206-41cc-87f5-3920028d2ebe.png"
+  },
+  {
+    "name": "combat-2",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Facing right in 3/4 view, deep forward lunge, back leg extended to viewer left, forward knee bent on right, both arms thrust the glowing recording slate horizontally far forward to the RIGHT at chest height. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-2.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-3b3f66e5-455d-47ff-a455-52a3947ad6e0.png"
+  },
+  {
+    "name": "combat-4",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Facing right in 3/4 view with torso turned away from viewer. Wide lunge, both arms stretch to the LEFT behind the torso carrying the glowing recording slate, backswing at shoulder height. Head looks RIGHT, weapon points LEFT. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-4.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-4094822c-c047-44e1-9caa-fe91505ad80b.png"
+  },
+  {
+    "name": "combat-6",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Facing right in 3/4 view, planted bent legs, torso leans BACK sharply to the LEFT as if hit, head tilts back, one hand open raised in front for balance, other hand holds recording slate diagonally low across hips toward RIGHT. No damage or blood. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-6.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-f3adbfcb-6fc0-45c8-9fb1-80cb8d76eae5.png"
+  },
+  {
+    "name": "combat-7",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Facing right in 3/4 view, squat LOW with both knees deeply bent, torso hunches forward, head down looking RIGHT. Both hands hold the glowing recording slate horizontally across the knees. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/combat-7.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-23b988b8-4592-4405-a4e3-6956d1c41f9b.png"
+  },
+  {
+    "name": "idle-0",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Standing at ease, facing RIGHT in 3/4 view, feet planted apart, straight relaxed torso. One hand holds the glowing cyan recording tablet UPRIGHT vertically at viewer left of body, other arm relaxed at side. No staff or mace. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/idle-0.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-b4961ffa-30ec-4e1f-9cdf-bb9323c47aa2.png"
+  },
+  {
+    "name": "walk-0",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Walking toward LEFT in 3/4 view. RIGHT foot (on viewer left) forward planted, LEFT leg trails diagonally back to viewer right with heel lifted. One hand holds glowing cyan recording tablet upright on viewer LEFT of body, other hand bent at side. Preserve this exact stride. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-0.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-5ff9848c-2438-4baa-8597-4d887c7dc18a.png"
+  },
+  {
+    "name": "walk-1",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Walking toward LEFT in 3/4 view. Knee on viewer LEFT is lifted HIGH in front with its foot suspended, other leg on viewer RIGHT straight and planted under body. One hand holds glowing cyan recording tablet upright on viewer LEFT of body, other hand bent at side. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-1.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-47a41dc7-71a4-4313-bdf5-8a56d7552ad7.png"
+  },
+  {
+    "name": "walk-2",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Walking toward LEFT in 3/4 view. Leg on viewer RIGHT reaches forward diagonally and its foot is planted, leg on viewer LEFT trails behind bent, broad opposite stride. One hand holds glowing cyan recording tablet upright on viewer LEFT of body, free arm swings forward. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-2.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-a3ec2302-ac76-4db5-8685-00bbab41cc0d.png",
+    "selected": false,
+    "rejection_reason": "Wrong stride and recording-tablet hand; preserved as walk-2-rejected.png"
+  },
+  {
+    "name": "walk-3",
+    "prompt": "Use case: precise-object-edit. Output ONE full-body game sprite frame on genuine transparent background, NOT a sprite sheet. Image 1 is the APPROVED CHARACTER IDENTITY: WATSON-03. Copy its slender silver robot body, large smooth round robot head with two cyan circular lens eyes, purple and cyan neon seams, segmented silver armor, black mechanical joints, silver boots, cyan translucent recording tablet with NO LETTERS. Image 2 is ONLY the POSE reference, NOT identity: replace all demon body, horns, gold costume and mace. EXACT POSE: Walking toward LEFT in 3/4 view. Knee on viewer RIGHT is lifted HIGH in front, foot suspended, leg on viewer LEFT supports weight planted beneath body. One hand holds glowing cyan recording tablet upright on viewer LEFT of body, free fist swings forward. Match image 1 proportions and polished hand-painted 2D game art, bold clean dark outlines, full body with complete feet and all equipment inside frame, orthographic camera. Equipment must be its recording slate only. No hat, no pipe, no horns, no demon face, no gold armor, no staff, no mace, no text, no numbers, no blood, no ground, no shadow, no background. One character only.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-3.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-866ece48-e042-429b-bdf0-8257bf0a963d.png"
+  },
+  {
+    "name": "walk-2",
+    "prompt": "Use case: precise-object-edit. Produce ONE transparent full-body game sprite, never a sheet. Image 1 is approved WATSON-03 identity; image 2 is REQUIRED EXACT POSE; image 3 is matching finished walking sprite for silver robot appearance and FACE DIRECTION and recording-tablet HAND. Match image 3 robot head looking toward LEFT: two cyan eyes at viewer LEFT/front, single round ear disc on viewer RIGHT/back. Silver slender robot, cyan and purple seams, recording tablet held at viewer LEFT of body. But CHANGE THE LEGS TO IMAGE 2: WIDE SPLIT STRIDE, BOTH SOLES FLAT ON THE GROUND, leg on viewer RIGHT extends diagonally down-right, leg on viewer LEFT extends down-left, knees slightly bent, legs widely apart. Do NOT lift either foot, do NOT raise a knee, do NOT repeat the heel-raised trailing leg of image 3. Both complete soles at SAME BASELINE. Free fist at viewer RIGHT slightly swung forward. Keep recording tablet in hand on viewer LEFT side, never viewer right. Face LEFT, ear disc on RIGHT, do not mirror head. Copy approved polished outlined 2D game art. Genuine transparency, no ground, no shadow, no text or symbols, no blood, no mace, no staff, no horns, no hat, no pipe. Single robot, complete body and feet.",
+    "built_in": true,
+    "reference_images": [
+      "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/source/walk-2.png",
+      "docs/art-reviews/2026-11-20-guards/cyberhell-b/frames/walk-0-generated.png"
+    ],
+    "generated_path": "/Users/agapae/.codex/generated_images/01a1f95d-0448-7890-a3a6-d34fd707ab48/exec-89468b04-1a9c-45dc-8d82-00aec7490a04.png",
+    "replaces_generation_index_0_based": 9,
+    "postprocess": "Mirror body/legs/tablet arm; preserve left-facing head with a neck cut at raw y=505 and head placement dx=-22. Visually inspected.",
+    "selected": true
+  }
+]

@@ -1,0 +1,276 @@
+[
+  {
+    "name": "combat",
+    "path": "img/crew-combat-v1/cyberhell/guard.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      2
+    ],
+    "cell": [
+      384,
+      512
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox_alpha16": [
+          23,
+          110,
+          365,
+          484
+        ],
+        "height": 374,
+        "foot_y": 483
+      },
+      {
+        "frame": 1,
+        "bbox_alpha16": [
+          26,
+          51,
+          332,
+          484
+        ],
+        "height": 433,
+        "foot_y": 483
+      },
+      {
+        "frame": 2,
+        "bbox_alpha16": [
+          19,
+          121,
+          363,
+          484
+        ],
+        "height": 363,
+        "foot_y": 483
+      },
+      {
+        "frame": 3,
+        "bbox_alpha16": [
+          19,
+          141,
+          365,
+          484
+        ],
+        "height": 343,
+        "foot_y": 483
+      },
+      {
+        "frame": 4,
+        "bbox_alpha16": [
+          19,
+          118,
+          365,
+          485
+        ],
+        "height": 367,
+        "foot_y": 484
+      },
+      {
+        "frame": 5,
+        "bbox_alpha16": [
+          50,
+          114,
+          365,
+          484
+        ],
+        "height": 370,
+        "foot_y": 483
+      },
+      {
+        "frame": 6,
+        "bbox_alpha16": [
+          46,
+          117,
+          365,
+          484
+        ],
+        "height": 367,
+        "foot_y": 483
+      },
+      {
+        "frame": 7,
+        "bbox_alpha16": [
+          75,
+          131,
+          365,
+          484
+        ],
+        "height": 353,
+        "foot_y": 483
+      }
+    ]
+  },
+  {
+    "name": "idle",
+    "path": "img/crew-combat-v1/cyberhell/guard-idle.webp",
+    "size": [
+      1024,
+      384
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      256,
+      384
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox_alpha16": [
+          41,
+          76,
+          237,
+          357
+        ],
+        "height": 281,
+        "foot_y": 356
+      },
+      {
+        "frame": 1,
+        "bbox_alpha16": [
+          35,
+          76,
+          237,
+          357
+        ],
+        "height": 281,
+        "foot_y": 356
+      },
+      {
+        "frame": 2,
+        "bbox_alpha16": [
+          26,
+          76,
+          237,
+          357
+        ],
+        "height": 281,
+        "foot_y": 356
+      },
+      {
+        "frame": 3,
+        "bbox_alpha16": [
+          19,
+          76,
+          237,
+          357
+        ],
+        "height": 281,
+        "foot_y": 356
+      }
+    ]
+  },
+  {
+    "name": "walk",
+    "path": "img/CyberHell/crew-guard-cyberhell-walk-v2.webp",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "rect": [
+          50,
+          21,
+          493,
+          665
+        ],
+        "offset": [
+          0,
+          0
+        ],
+        "bbox_alpha16": [
+          0,
+          0,
+          493,
+          665
+        ],
+        "height": 665,
+        "foot_y": 664
+      },
+      {
+        "frame": 1,
+        "rect": [
+          608,
+          24,
+          478,
+          662
+        ],
+        "offset": [
+          15,
+          3
+        ],
+        "bbox_alpha16": [
+          0,
+          0,
+          478,
+          662
+        ],
+        "height": 662,
+        "foot_y": 661
+      },
+      {
+        "frame": 2,
+        "rect": [
+          1182,
+          23,
+          447,
+          665
+        ],
+        "offset": [
+          46,
+          2
+        ],
+        "bbox_alpha16": [
+          0,
+          0,
+          447,
+          665
+        ],
+        "height": 665,
+        "foot_y": 664
+      },
+      {
+        "frame": 3,
+        "rect": [
+          1698,
+          25,
+          457,
+          659
+        ],
+        "offset": [
+          19,
+          4
+        ],
+        "bbox_alpha16": [
+          0,
+          0,
+          457,
+          659
+        ],
+        "height": 659,
+        "foot_y": 658
+      }
+    ],
+    "layout": "packed atlas; preserve runtime frame rectangles",
+    "runtime_frame_size": [
+      493,
+      667
+    ]
+  }
+]
