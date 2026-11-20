@@ -1,0 +1,134 @@
+{
+  "checked": "2026-11-20",
+  "checks": "Pillow decode, format, exact dimensions, RGBA and transparent pixels, byte-identical review copies; visual content reviewed separately",
+  "assets": [
+    {
+      "path": "img/z1-events/cut-hanuman-yields-th.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 515526,
+      "sha256": "ea06dc9b5f194be514ab59345c3ee4e59fce6be4b822fc66ea145b258cb5afbb",
+      "review_copy_identical": true
+    },
+    {
+      "path": "img/z1-events/cut-sita-phantom-ledger-th.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 666346,
+      "sha256": "5299e38efadd65e407884d66863a465d2bc8c069de26792b90912dddb9c9342b",
+      "review_copy_identical": true
+    },
+    {
+      "path": "img/z1-events/cut-sita-lamp-th.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "format": "WEBP",
+      "bytes": 679374,
+      "sha256": "efbe1b139b62703665877c214ce1aabcc5f7371c5ae86a1b974ff2da6f0a9ec6",
+      "review_copy_identical": true
+    },
+    {
+      "path": "img/ui/item-magic-lamp.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 147628,
+      "sha256": "d2b8133eb4acfc7a79377b7e7785fb8965e94414cd8c6bfc753dd52e62998326",
+      "review_copy_identical": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 184205,
+      "alpha_bbox": [
+        7,
+        8,
+        507,
+        508
+      ]
+    },
+    {
+      "path": "img/ui/item-magic-lamp-lit.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 149366,
+      "sha256": "5cb0af2e27fa6cf22f996f1abc91a6253b8aba7df8ffb45194677b3962b0fe74",
+      "review_copy_identical": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 188095,
+      "alpha_bbox": [
+        40,
+        13,
+        480,
+        496
+      ]
+    },
+    {
+      "path": "img/ui/cmd-summon.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 227284,
+      "sha256": "665acfa07196b624a3763dd349090091d45f89b393b2265500f9cf1f1149d582",
+      "review_copy_identical": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 69897,
+      "alpha_bbox": [
+        0,
+        8,
+        507,
+        508
+      ]
+    },
+    {
+      "path": "img/theme-v4/town-tree-gold-th-v1.webp",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "format": "WEBP",
+      "bytes": 2175220,
+      "sha256": "d9ace3a1d7f255bbc3941e596a3b15cfe31c775978dfde335bbcd16bf2ed4a11",
+      "review_copy_identical": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 525106,
+      "alpha_bbox": [
+        0,
+        0,
+        1199,
+        1312
+      ]
+    }
+  ]
+}
