@@ -133,3 +133,6 @@ Exactly TWO full-body characters, WATSON on LEFT and approved CYBERHELL YAMA on 
 Uniform plain dark charcoal-gray background. Match supplied outlined chibi team illustration, large heads and compact limbs, dark contours and clustered shading. Faithful WATSON design with no added detective motifs. No text anywhere, no labels, letters, numbers, readable glyphs, logos, watermarks, blood or religious symbols. NO hats on robot, NO pipe, no copied franchise robots. Static concept approval plate, NOT a sprite sheet.
 ```
 
+
+## อนุมัติ 20 พ.ย. 2569
+คุณเป้: แวน เฮลซิง "แบบใหม่ โอเคครับ" → ใช้ guard-vanhelsing-west-v2.webp · กวนอูกับ WATSON-03 ใช้ v1 (ไม่มีขอแก้)
