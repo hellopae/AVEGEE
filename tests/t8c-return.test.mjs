@@ -81,7 +81,7 @@ test('a controlled reaper of a seized zone says only Rae\'s one line when touche
 test('the UI is wired (source check - the browser is not opened here): the frontier exit leads back through walkBackTarget, the harbour says it is locked, the walk back is a journey of its own', () => {
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   assert.ok(ui.includes("const back = walkBackTarget(g); if (back) { FW.destroy(); startWalkBack(back); return; }")); assert.ok(ui.includes("startMapJourney(to, 'walk')")); assert.ok(ui.includes("keepBorder=mode==='dungeon'"));
-  assert.ok(ui.includes('Harbour locked from outside')); assert.ok(ui.includes("const routeOpen = () => openDungeonRoutes(g).length > 0 || !!walkBackTarget(g);"));
+  assert.ok(ui.includes('The harbour has been locked from outside.'));   // T9: Rae's text + Reese's EN assert.ok(ui.includes("const routeOpen = () => openDungeonRoutes(g).length > 0 || !!walkBackTarget(g);"));
 });
 test('the walk back goes through the same journey object as the boat / dungeon (beginMapTravel mode "walk" -> finishMapTravel): refused away from the gate or out of order, then the zone changes', async () => {
   const { beginMapTravel, finishMapTravel } = await import('../src/map-travel.js');

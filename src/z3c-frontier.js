@@ -1,5 +1,5 @@
 // T7/2 (Rae R2 part C, section 2): case 5 - the spirits stop, Van Helsing fights Valdric at the frontier, 3 demon waves, the team is put under the spell (wave 4 = Poena + Noir + Nira + Cerberus, only Van Helsing is untouched),
-// Valdric falls, Yama gets Hypnosis, Van Helsing becomes the Gate Guard of the West, Valdric is tried and sent home. Text is Rae's, copied verbatim (TH + EN); the Cerberus lines are Toby's short narration (owner decision 19 Nov, TODO(Rae) to polish).
+// Valdric falls, Yama gets Hypnosis, Van Helsing becomes the Gate Guard of the West, Valdric is tried and sent home. Text is Rae's, copied verbatim (TH + EN); the Cerberus lines are narration (owner decision 19 Nov), worded by Rae (T9); Yama's line on hypnosis page 2 is "ผม...ครับ" (Rae's proposal, Claudy ruling).
 // Keys: `westVampireBreach` (data.js) · `z3-freeze` · `z3-vh-frontier` · `z3-hypnosis-v2` · `z3-valdric-down` · `z3-vh-guard` · `frontier-west-boss-to-dais/punished/released` · notices N5-1 NV-1 NV-2 N5-5 N5-6. Imports nothing.
 const A = n => `img/z3-events/${n}.webp`;
 export const Z3_FRONTIER = Object.freeze({ eventKey:'westVampireBreach', freezeStory:'z3-freeze', frontierStory:'z3-vh-frontier', hypnosisStory:'z3-hypnosis-v2', downStory:'z3-valdric-down', guardStory:'z3-vh-guard',
@@ -27,12 +27,12 @@ export const Z3_FRONTIER_TEXT = Object.freeze({
     4:{ th:['โพเอน่า: "ข้า ... ข้าทำอะไรลงไป ข้าหวดท่านไปกี่ครั้ง ข้าไม่รู้ตัวเลย หมอกเข้าตาข้าก่อนข้าจะทันเตือนใคร"', 'นัวร์: "ผมขอโทษครับ ผมได้ยินเสียงสวดอยู่ในหัว เสียงเดียวบอกว่า \'ทำต่อ ทำต่อ\' ผมก็ทำต่อ ... แต่ไม่รู้เลยว่ามือที่ทำอยู่กำลังยกใส่ใครครับ"',
             'นิรา: "ท่านคะ ดิฉันขออภัย ดิฉันนับเสียงเท้าได้เพียงสามก้าวก่อนเสียงนั้นกลืนไป ดิฉันขอจดไว้ว่าการนับอย่างเดียวไม่พอต้านมนต์นี้ค่ะ"',
             'ยมบาทน้อย: "ไม่เป็นไรครับ ผมไม่เป็นอะไรมาก ขอบคุณที่กลับมา"', 'แวน เฮลซิง: "เสียงกล่อมแบบนั้นทำงานกับคำสั่งที่ค้างอยู่ในหัว ไม่ใช่กับความรู้สึกของผู้ฟัง ท่านทั้งสามไม่ผิดที่โดน"',
-            // TODO(Rae): Cerberus wakes - narration only (he does not speak). Toby's short draft, owner decision 19 Nov
-            'บรรยาย: เซอร์เบอรัสสะบัดสามเศียรพร้อมกัน แสงเขียวในดวงตาหลุดเป็นฝอยแล้วกลับเป็นสีแดงเข้ม มันก้มศีรษะให้ยามาหนึ่งครั้งแล้วถอยกลับไปยืนที่เดิม'],
+            // Cerberus wakes - narration only (he does not speak); Rae's wording (T9)
+            'บรรยาย: เซอร์เบอรัสสะบัดสามเศียรพร้อมกัน แสงเขียวในดวงตาแตกเป็นเส้นบาง ๆ แล้วกลับเป็นสีแดงเข้ม มันก้มศีรษะให้ยามาหนึ่งครั้ง แล้วถอยกลับไปยืนที่ปากทางเหมือนเดิม'],
         en:['Poena: "I ... what did I do? How many times did I strike you? I never knew it. The mist got into my eyes before I could warn anyone."', 'Noir: "I am sorry, sir. A chant was running in my head, one voice saying \'keep going, keep going\', so I kept going. ... I never knew whom my hands were raised against."',
             'Nira: "Forgive me, sir. I counted three footsteps before that voice swallowed the rest. I note for the record that counting alone is not enough to resist this spell."',
             'Yama: "It is all right. I am not badly hurt. Thank you for coming back."', 'Van Helsing: "A lulling voice works on the order already waiting in the head, not on the listener\'s feelings. You three are not at fault for being caught."',
-            'Narration: Cerberus shakes all three heads together. The green light in his eyes breaks into threads and turns back to deep red. He bows to Yama once and steps back to where he stood.'] } },
+            'Narration: Cerberus shakes all three heads together. The green light in his eyes breaks into thin threads and fades back to deep red. He bows to Yama once, then steps back to his post at the mouth of the frontier.'] } },
   valdricStart:{ th:'วาลดริก: "ขออภัยล่วงหน้า ท่านผู้มาเยือน ข้าไม่ถนัดการเป็นฝ่ายแพ้"', en:'Valdric: "My apologies in advance, honoured guest. I am not practised at losing."' },
   valdricHalf:{ th:'วาลดริก: "ท่านยืนได้ดีกว่าที่ข้าคาด ราตรีของข้าเริ่มสั้นลงแล้ว ข้าไม่มีเขี้ยวเหลือให้ใช้ ท่านผู้มาเยือน ข้ามีแต่หมอก และหมอกไม่เคยชนะใคร ได้แต่ทำให้ทุกคนหยุด"',
     en:'Valdric: "You stand better than I expected. My night is beginning to grow short. I have no fangs left to use, honoured guest. I have only the mist, and mist has never won anything. It can only make everyone stop."' },
@@ -109,16 +109,16 @@ export const Z3_FRONTIER_STORIES = Object.freeze({
     page(R.hypnosisV2, 'ลูกน้องสามระลอก',
       'วาลดริก: "ลูกน้องสามระลอกล้มลงแล้วหรือ ท่านผู้มาเยือน ข้าไม่ถนัดการเป็นฝ่ายแพ้ ข้าขออภัยล่วงหน้า ข้าเหลือสิ่งเดียวที่ไม่ต้องใช้เขี้ยว"\n'
       + 'บรรยาย: เขายกไม้เท้าขึ้นอีกครั้ง หมอกบางเป็นเส้นพุ่งผ่านลานเข้าหูของโพเอน่า นัวร์ และนิรา ตาของทั้งสามหมองลงทีละน้อย มือที่เคยถืออาวุธและสมุดบันทึกข้างเดียวกับยามาค่อย ๆ หันปลายมาหาเขา\n'
-      // TODO(Rae): Cerberus under the spell (owner decision 19 Nov) - Toby's short draft, narration only
-      + 'บรรยาย: ที่ปากทางชายแดน เซอร์เบอรัสผู้พิทักษ์ประตูปัจฉิมสะบัดสามเศียร ดวงตาสีแดงเข้มของมันกลายเป็นสีเขียวทีละคู่ แล้วมันก็หันตัวมาหาผู้ที่ยืนอยู่ข้างหลังวาลดริก',
+      // Cerberus under the spell (owner decision 19 Nov) - narration only; Rae's wording (T9)
+      + 'บรรยาย: ที่ปากทางชายแดน เซอร์เบอรัสผู้พิทักษ์ประตูปัจฉิมสะบัดสามเศียร ดวงตาสีแดงเข้มของมันกลายเป็นสีเขียวทีละคู่ แล้วมันก็ก้าวมายืนเคียงวาลดริก หันสามเศียรมาทางยามา',
       { title:'Three Waves of Servants', line:
         'Valdric: "Three waves of servants fallen already, honoured guest? I am not practised at losing. I apologise in advance. I have one thing left that needs no fangs."\n'
       + 'Narration: He raises his cane again. Thin threads of mist shoot across the yard into the ears of Poena, Noir and Nira. Their eyes dim by degrees. The hands that held weapons and the ledger beside Yama slowly turn their points toward him.\n'
-      + 'Narration: At the mouth of the frontier, Cerberus, the Guardian of the Western Gate, shakes all three heads. His deep red eyes turn green pair by pair, and he swings round to face those who stand behind Valdric\'s line.' }),
+      + 'Narration: At the mouth of the frontier, Cerberus, Guardian of the Western Gate, shakes all three heads. His deep red eyes turn green, pair by pair. Then he steps forward to stand beside Valdric and turns all three heads toward Yama.' }),
     page(R.hypnosisV2, 'ข้าสะกดคนไข้มาสี่สิบปี',
       'นิรา: "ท่านคะ ... ดิฉันได้ยินเสียงเดียว บอกว่า \'ปราบ\' ... ดิฉันนับเสียงเท้าอย่างที่ท่านมูซาชิเตือน หนึ่ง สอง ... ขออภัยค่ะท่าน ดิฉัน ... นับไม่ทัน"\n'
       + 'แวน เฮลซิง: "เสียงกล่อมนี้ไม่ได้ผลกับข้า ข้าสะกดคนไข้มาสี่สิบปี ข้ารู้ว่าเสียงแบบนี้ค้นหาอะไรในหัวของคน ข้ารู้ทางต้านมัน"\n'
-      + 'ยมบาทน้อย: "ตั้งสติไว้! ข้าจะทำลายมนต์สะกดและพาพวกเจ้ากลับมา"',
+      + 'ยมบาทน้อย: "ตั้งสติไว้ครับ! ผมจะทำลายมนต์สะกดแล้วพาทุกคนกลับมา"',
       { title:'I Have Mesmerised Patients for Forty Years', line:
         'Nira: "Sir ... I hear one voice saying \'subdue\' ... I am counting footsteps as Lord Musashi warned. One, two ... forgive me, sir. I ... cannot count fast enough."\n'
       + 'Van Helsing: "That lullaby does nothing to me. I mesmerised patients for forty years. I know what a voice like that searches for inside a head. I know the way to resist it."\n'

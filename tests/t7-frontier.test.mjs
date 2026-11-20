@@ -61,7 +61,7 @@ test('English on every page of the case-5 scenes · Van Helsing is not a hypnoti
       for (const p of s.pages) { assert.ok(p.line && p.title); if (lang === 'en') assert.ok(!/[฀-๿]/.test(p.line + p.title), `${k}: no Thai on an English page`); }
     }
   }
-  setLang('en'); assert.match(storyOf('west-hypnosis').pages[0].line, /Cerberus, the Guardian of the Western Gate/); setLang('th');
+  setLang('en'); assert.match(storyOf('west-hypnosis').pages[0].line, /Cerberus, Guardian of the Western Gate/); setLang('th');
   assert.equal(ZONE_EVENTS.west.find(e => e.k === 'westVampireBreach').atCases, 5);
 });
 

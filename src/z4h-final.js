@@ -58,11 +58,18 @@ export const Z4H_STORY_OVERRIDES = Object.freeze({
   'cyber-approach':APPROACH,
   ...Object.fromEntries([['cyber-reinforcements', Z4H_ART.reinforcements], ['cyber-reinforcements-advance', Z4H_ART.reinforcementsAdvance], ['cyber-control', Z4H_ART.control]].map(([k, img]) => [k, fromRae(RAW_Z4H_SCENES[k], img)])),
 });
-const freeStory = zone => { const n = rulerName(zone), line = said(n, RAW_Z4H_RULERS[zone].after);
-  return { title:n.th, en:{ title:n.en }, pages:[{ image:Z4H_ART.control, title:n.th, line:line.th, fallback:'📜', en:{ title:n.en, line:line.en } }] }; };
-/** the page after the fall of Archon-Zero (Rae 8.5 "the line after the win, before ending-capture"; the page title is a label of the game - TODO(Rae)) */
-const ARCHON_DOWN = { title:'อาร์คอน-ศูนย์', en:{ title:'Archon-Zero' }, pages:[{ image:Z4H_ART.duel, title:'ปลายสายที่ปิดไม่ได้', line:RAW_Z4H_AFTER_WIN.map(w => `${w.speaker.th}: "${w.th}"`).join('\n'), fallback:'📜',
-  en:{ title:'The Line That Would Not Close', line:RAW_Z4H_AFTER_WIN.map(w => `${w.speaker.en}: "${w.en}"`).join('\n') } }] };
+/** the page title of each lord's thank-you page (Rae, T9: quoted from the lord's own line; the scene title is the lord's name) */
+const FREE_PAGE_TITLE = Object.freeze({
+  th:Object.freeze({ th:'เสียงเรียกท่านพ่อ', en:'The Word "Father"' }),
+  asia:Object.freeze({ th:'บัลลังก์ที่ไม่ใช่ของใคร', en:'A Throne Nobody Else Holds' }),
+  west:Object.freeze({ th:'ความเย็นของตัวเอง', en:'A Cold of His Own' }),
+  cyberhell:Object.freeze({ th:'สายที่ถูกตัดให้เป็นอิสระ', en:'A Line Cut Free' }),
+});
+const freeStory = zone => { const n = rulerName(zone), line = said(n, RAW_Z4H_RULERS[zone].after), pt = FREE_PAGE_TITLE[zone];
+  return { title:n.th, en:{ title:n.en }, pages:[{ image:Z4H_ART.control, title:pt.th, line:line.th, fallback:'📜', en:{ title:pt.en, line:line.en } }] }; };
+/** the page after the fall of Archon-Zero (Rae 8.5 "the line after the win, before ending-capture"; the titles are Rae's, T9) */
+const ARCHON_DOWN = { title:'อาร์คอน-ศูนย์ล้ม', en:{ title:'Archon-Zero Falls' }, pages:[{ image:Z4H_ART.duel, title:'รายการที่ยังไม่ปิด', line:RAW_Z4H_AFTER_WIN.map(w => `${w.speaker.th}: "${w.th}"`).join('\n'), fallback:'📜',
+  en:{ title:'Item Not Yet Closed', line:RAW_Z4H_AFTER_WIN.map(w => `${w.speaker.en}: "${w.en}"`).join('\n') } }] };
 /** new keys (story.js reads them through Z1_STORIES) */
 export const Z4H_STORIES = Object.freeze({
   [Z4H.openStory]:rae('z4-final-open', Z4H_ART.open),

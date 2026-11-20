@@ -17,8 +17,8 @@ export const Z4L_TEXT = Object.freeze({
   lines:{ start:lupinStart.th, half:[lupinHalf.th, homeHalf.th].join('\n') }, linesEn:{ start:lupinStart.en, half:[lupinHalf.en, homeHalf.en].join('\n') },
   lose:{ title:'ลองใหม่ได้', text:'แพ้แล้วลองใหม่ได้ ไม่เสียอะไร กลับไปคุยกับคนงานแปลกหน้าอีกครั้ง', en:{ title:'Try again', text:'If you lose, you may try again at no cost. Speak to the strange worker once more.' } },
 });
-/** Rae's boss move (9.3): the name / warning are hers, the use line is made from the move name (she gave none) - TODO(Rae). A light-medium single blow: the engine has no "an ally skips a turn" status. */
-export const Z4L_MOVE = Object.freeze({ id:'stealBeat', kind:'heavyHit', warn:1, power:1.2, name:L2(S.move.th, S.move.en), warnText:L2(S.warn.th, S.warn.en), useText:L2(`ลูแปง: "${S.move.th}"`, `Lupin: "${S.move.en}"`), when:{ firstAct:3, everyActs:4 } });
+/** Rae's boss move (9.3): the name / warning / use line are hers (the use line: T9). A light-medium single blow: the engine has no "an ally skips a turn" status. */
+export const Z4L_MOVE = Object.freeze({ id:'stealBeat', kind:'heavyHit', warn:1, power:1.2, name:L2(S.move.th, S.move.en), warnText:L2(S.warn.th, S.warn.en), useText:L2('ลูแปง: "จังหวะของท่าน ข้าขอรับไว้"', 'Lupin: "That beat of yours. I will take it."'), when:{ firstAct:3, everyActs:4 } });
 export const Z4L_STORIES = Object.freeze({
   [Z4L.catchStory]:fromRae(RAW_Z4C_SCENES['z4-lupin-catch'], Z4L_ART.cut),
   [Z4L.winStory]:fromRae(RAW_Z4C_SCENES['z4-lupin-win'], Z4L_ART.cut),
@@ -31,6 +31,11 @@ export const Z4L_NOTICES = Object.freeze({
 });
 /** the worker's first talk (9.3) + the two choices */
 export const Z4L_TALK = Object.freeze({ lines:RAW_Z4C_LUPIN_TALK.talk, choices:RAW_Z4C_LUPIN_TALK.choices });
+/** the worker's answer to the choice "sorry, I made a mistake" (Rae, T9): two lines, one <p> each; the quest stays open */
+export const LUPIN_LET_GO = Object.freeze({
+  th:Object.freeze(['คนงาน: "ไม่เป็นไรครับ ผมไม่รีบ"', 'บรรยาย: เขาหัวเราะเบา ๆ ในลำคอ แล้วหันกลับไปมองประตูหลังโรงอาหารเหมือนเดิม เขายังยืนอยู่ที่เดิม']),
+  en:Object.freeze(['Worker: "No trouble, sir. I am in no hurry."', 'Narration: He gives a soft laugh in his throat and turns back to watch the door behind the canteen. He is still standing where he was.']),
+});
 /** helper no. 12 (Rae 9.4): ONE foe, a light-medium blow + that foe loses its next act (`stun` on the target only) */
 const H = RAW_Z4C_LUPIN_HELPER;
 export const LUPIN_HELPER = Object.freeze({ name:L2(H.name.th, H.name.en), move:{ name:L2(H.move.th, H.move.en), desc:L2(H.desc.th, H.desc.en) }, say:{ call:L2(H.call.th, H.call.en), use:L2(H.use.th, H.use.en), end:L2(H.end.th, H.end.en) } });

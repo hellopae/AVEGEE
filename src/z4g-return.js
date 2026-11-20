@@ -17,7 +17,7 @@ const sigWin = SIGNAL_STORIES['cyber-signal-win'];
 const p2 = RAW_Z4G_SIGNAL_WIN_PAGE2;
 const SIGNAL_WIN = { ...sigWin, pages:[sigWin.pages[0], { image:sigWin.pages[1].image, title:p2.title.th, line:p2.line.th, en:{ title:p2.title.en, line:p2.line.en } }] };
 const L2 = (th, en) => ({ th, en });
-/** the page title of the side gate scene is a label of the game (Rae gave the line only) - TODO(Rae) */
+/** the scene + page title of the side gate (Rae checked them, T9: kept as they were) */
 const PASS = { title:'สังเวียนที่ถูกตัดสาย', en:{ title:'The Arena With Its Lines Cut' }, pages:[{ image:Z4G_ART.pass, title:'ประตูข้างของสังเวียน', line:RAW_Z4G_LUCIFER_PASS.th, fallback:'📜', en:{ title:'The Arena\'s Side Gate', line:RAW_Z4G_LUCIFER_PASS.en } }] };
 export const Z4G_STORIES = Object.freeze({
   'cyber-signal-win':SIGNAL_WIN,

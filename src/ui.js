@@ -126,7 +126,7 @@ import { Z4A, HOME67_HARBOR_LINES } from './z4a-border.js';   // T8a
 import { COL, Z4_ART_KEY } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_ART_KEY } from './z4c-cases.js';   // T8b
 import { Z4T } from './z4d-trojan.js';   // T8b/2
-import { Z4L, Z4L_TALK } from './z4f-lupin.js';   // T8b/6
+import { Z4L, Z4L_TALK, LUPIN_LET_GO } from './z4f-lupin.js';   // T8b/6
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1542,7 +1542,7 @@ function openLupinWorker() {
   const talk = Z4L_TALK.lines.map(l => `<p>${esc(en ? l.en : l.th)}</p>`).join('');
   modal(`<h2>${esc(en ? 'The Strange Worker' : 'คนงานแปลกหน้า')}</h2><div class="pier-talk">${talk}</div><div class="row">${Z4L_TALK.choices.map((c, i) => `<button class="gold" data-lupin-choice="${i}">${esc(en ? c.en : c.th)}</button>`).join('')}</div>`, d => {
     d.querySelector('[data-lupin-choice="0"]').onclick = () => { dlg.close(); lupinCatch(); };
-    d.querySelector('[data-lupin-choice="1"]').onclick = () => { dlg.close(); setTimeout(() => modal(`<div class="pier-talk"><p>${esc(en ? 'Lupin laughs softly and does nothing. He is still standing where he was.' : 'ลูแปงหัวเราะเบา ๆ แล้วไม่ทำอะไร เขายังยืนอยู่ที่เดิม')}</p></div><div class="row"><button class="gold" data-close>${esc(en ? 'Later' : 'ไว้คราวหน้า')}</button></div>`), 0); };   // TODO(Rae): her line for "let him go" (she describes it, no text)
+    d.querySelector('[data-lupin-choice="1"]').onclick = () => { dlg.close(); setTimeout(() => modal(`<div class="pier-talk">${(en ? LUPIN_LET_GO.en : LUPIN_LET_GO.th).map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-close>${esc(en ? 'Later' : 'ไว้คราวหน้า')}</button></div>`), 0); };   // the worker's answer to "sorry, I made a mistake" (Rae's lines, T9)
   });
 }
 function lupinCatch() {
@@ -3533,7 +3533,7 @@ function openQuestFightResult(id,outcome,owner=null){
   // T5'/0: a lost fight now ends at the tea house (g.pendingRecovery) - no instant retry from the scene; the quest keeps its step and is fought again from the quest window
   const toTea=outcome!=='win'&&!!g.pendingRecovery;
   const buttons=outcome==='win'?`<button type="button" class="gold" data-quest-fight-next>${esc(QUEST_FIGHT_SYSTEM_TEXT.back)}</button>`:`${toTea?'':`<button type="button" class="gold" data-quest-fight-retry>⚔️ ${esc(QUEST_FIGHT_SYSTEM_TEXT.retry)}</button>`}<button type="button" ${toTea?'class="gold" ':''}data-quest-fight-rest>${esc(QUEST_FIGHT_SYSTEM_TEXT.rest)}</button>`;
-  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?(def.unlockLog?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:''):`<p>${esc(toTea?QUEST_FIGHT_SYSTEM_TEXT.loseNoteTea:QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
+  modal(`<h2>${esc(def.title)}</h2><div class="quest-fight-scene">${lines.map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${outcome==='win'?(def.unlockLog?`<p class="quest-accepted" role="status">${esc(def.unlockLog)}</p>`:''):`<p>${esc(toTea?(getLang()==='en'?QUEST_FIGHT_SYSTEM_TEXT.loseNoteTeaEn:QUEST_FIGHT_SYSTEM_TEXT.loseNoteTea):QUEST_FIGHT_SYSTEM_TEXT.loseNote)}</p>`}<div class="row">${buttons}</div>`,d=>{
     if(outcome==='win')sfx('star');
     if(toTea)dlg.addEventListener('close',()=>setTimeout(()=>{if(g.pendingRecovery&&!dlg.open)g.onChange();},0),{once:true});   // closed with the X: the tea-house wake-up still follows
     d.querySelector('[data-quest-fight-next]')?.addEventListener('click',()=>openQuests(id,{owner}));
@@ -4111,9 +4111,10 @@ function openFrontierWalk(invasionKey = null) {
   const guide=dlg.querySelector('#frw-guide');
   // P5: ไม่มีปุ่ม "กลับเข้าโซน" / "ออกนอกชายแดน" — เดินถึงลูกศรบนพื้น (ประตูบน / ทางล่าง) แล้วออกเอง (src/frontier.js)
   // ป้ายบนพื้นใช้ข้อความเดิมของปุ่มทุกคำ
-  // T8c (owner D6): while the world is seized the way out of a frontier leads only BACK (walkBackTarget) - and only once this zone's controlled lord is freed; until then the gate is shut with green light (labels: TODO(Rae))
+  // T8c (owner D6): while the world is seized the way out of a frontier leads only BACK (walkBackTarget) - and only once this zone's controlled lord is freed; until then the gate is shut with green light (labels: Rae's, T9)
   const routeOpen = () => openDungeonRoutes(g).length > 0 || !!walkBackTarget(g);
-  const exitLabel = walkBackTarget(g) ? 'เดินกลับผ่านชายแดน · โซนก่อนหน้า' : seizedActive(g) ? 'ประตูถูกปิดด้วยแสงเขียว · ปลดปล่อยผู้ครอบงำของโซนนี้ก่อน' : !routeOpen() ? 'ทางนอกชายแดน · ยังไม่เปิด' : g.zone !== 'th' ? 'ออกนอกชายแดน · ดินแดนถัดไป' : 'ออกนอกชายแดน · เส้นทางโซน 2';
+  const enL = getLang() === 'en';   // the two seized-world labels have EN (Rae); the other frontier labels are Thai only (as they were)
+  const exitLabel = walkBackTarget(g) ? (enL ? 'Walk back through the frontier · previous zone' : 'เดินกลับผ่านชายแดน · ไปโซนก่อนหน้า') : seizedActive(g) ? (enL ? 'Gate sealed with green light · free this zone\'s lord first' : 'ประตูถูกแสงเขียวปิดไว้ · ช่วยผู้ถูกควบคุมของโซนนี้ก่อน') : !routeOpen() ? 'ทางนอกชายแดน · ยังไม่เปิด' : g.zone !== 'th' ? 'ออกนอกชายแดน · ดินแดนถัดไป' : 'ออกนอกชายแดน · เส้นทางโซน 2';
   const cv2 = dlg.querySelector('#frw-cv');
 
   let FW = null;
@@ -5722,7 +5723,7 @@ function openHarbour() {
   const quest=bm.quest==='active'?`<div class="boatman-quest"><img src="${esc(BOAT_ART.portrait)}" alt="" onerror="this.remove()"><p>${esc(pickL(BOATMAN.name))} · ${esc(pickL(BOATMAN_TEXT.log).replace('{m}',heardCount(g)))}</p></div>`:'';
   modal(`<h2>ท่าเรือรับวิญญาณ</h2><p>Yama และ Nira เดินทางด้วยเรือไปเมืองที่เปิดท่าเรือแล้ว</p>${quest}
     <div class="row">${canListen(g)?`<button class="gold" data-boat-listen>${esc(pickL(BOATMAN_TEXT.listen))}</button>`:''}${canSing(g)?`<button class="gold" data-boat-sing>${esc(pickL(BOATMAN_TEXT.talk))}</button>`:''}
-    ${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||(seizedActive(g)?`<p>${esc(en?'Harbour locked from outside · it opens only when the controlling lord of this zone falls.':'ท่าเรือถูกล็อกจากภายนอก · ปลดล็อกได้เมื่อผู้ครอบงำของโซนนี้พ่าย')}</p>`:'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>')}
+    ${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||(seizedActive(g)?`<p>${esc(en?'The harbour has been locked from outside. No boat can sail until the lord of each zone is freed from control. Walk back through the frontiers, one zone at a time.':'ท่าเรือถูกล็อกจากภายนอก เรือยังออกไม่ได้จนกว่าจะช่วยผู้ถูกควบคุมของแต่ละโซนให้เป็นอิสระ ต้องเดินกลับผ่านชายแดนไปทีละโซน')}</p>`:'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>')}
     <button data-close>ปิด</button></div>`,d=>{
       d.querySelectorAll('[data-sail]').forEach(btn=>btn.onclick=()=>sailTo(btn.dataset.sail));
       d.querySelector('[data-boat-listen]')?.addEventListener('click',()=>{if(g.boatListen())dlg.close();});

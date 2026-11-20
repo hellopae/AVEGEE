@@ -20,9 +20,9 @@ export const Z4S_TEXT = Object.freeze({
   lines:{ start:robotStart.th, half:[robotHalf.th, niraHalf.th, watHalf.th].join('\n') }, linesEn:{ start:robotStart.en, half:[robotHalf.en, niraHalf.en, watHalf.en].join('\n') },
   lose:{ title:'ลองใหม่ได้', text:'แพ้แล้วลองใหม่ได้ ไม่เสียอะไร', en:{ title:'Try again', text:'If you lose, you may try again at no cost.' } },
 });
-/** Rae's half-way move (6.4): the name / warning are hers, the use line is made from the move name (she gave none) - TODO(Rae). Power 1.3 = a light-medium single blow. */
+/** Rae's half-way move (6.4): the name / warning are hers, the use line is Rae's too (T9). Power 1.3 = a light-medium single blow. */
 export const Z4S_VOICE_MOVE = Object.freeze({ id:'voiceLikeLove', kind:'heavyHit', warn:1, power:1.3, name:L2(S.move.th, S.move.en), warnText:L2(S.warn.th, S.warn.en),
-  useText:L2(`AI Scammer Robot: "${S.move.th}"`, `AI Scammer Robot: "${S.move.en}"`), when:{ hpBelow:.5, firstAct:2, everyActs:4 } });
+  useText:L2('AI Scammer Robot: "ไม่ต้องกลัวนะ ... ฉันเอง"', 'AI Scammer Robot: "Do not be afraid. ... It is me."'), when:{ hpBelow:.5, firstAct:2, everyActs:4 } });
 export const Z4S_STORIES = Object.freeze({
   [Z4S.revealStory]:fromRae(RAW_Z4C_SCENES['z4-reveal'], Z4S_ART.reveal),
   [Z4S.winStory]:fromRae(RAW_Z4C_SCENES['z4-sala-win'], Z4S_ART.reveal),

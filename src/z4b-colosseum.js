@@ -1,7 +1,7 @@
 // T8a/2 (Rae R2 part D, section 1.5-1.7): Lucifer's colosseum in the cave of Frontier 3-4 - ten bouts in a row at the middle checkpoint of the walk (the team = Yama + Nira + HOME-67). Bouts 1-8 are the table of 1.5 (copied verbatim by
 // scripts/extract-rae-z4a.py), bout 9 = Thor (win -> helper no. 10 "The Hammer Commands the Field", NT-1), bout 10 = Lucifer (win -> helper no. 11 "The Founder's Decree", NL-1, and every signed fighter is free).
 // Each bout is a gate event (`colS1`..`colS10`, never by the case count): banner N-COL-2, one line before, one line after (the winner's), one card move; a lost bout = the tea house, then the SAME bout again at no cost (N-COL-1).
-// Numbers (hp / atk) are Toby's first ones, no spec. The warn / use lines of the bouts' moves are generated from Rae's move names (she gave names only) - TODO(Rae) to polish.
+// Numbers (hp / atk) are Toby's first ones, no spec. The warn / use lines of the bouts' moves are Rae's (MOVE_TEXT, T9; bout 8 uses the name of R2 1.5, Reese's fix).
 import { RAW_BOUTS, RAW_HELPERS } from './z4a-raw.js';
 const A = n => `img/z4-events/${n}.webp`;
 const L2 = (th, en) => ({ th, en });
@@ -26,12 +26,25 @@ export const BOUTS = Object.freeze([
     L2('ข้าแพ้', 'I lose.'), L2('ม่านปิดสังเวียน', 'Final Curtain'),
     { half:L2('ลูซิเฟอร์: "ดี ท่านยังอ่านจังหวะข้าได้ ข้าจะเพิ่มความเร็ว"\nนิรา: "ท่านคะ เขาใช้ไม้เท้าเป็นตัวกำหนดจังหวะ ไม่ใช่ใช้ตีค่ะ"', 'Lucifer: "Good. You can still read my timing. I will speed up."\nNira: "Sir, he uses the staff to set the tempo, not to strike."'), winLine:false, speaker:L2('ลูซิเฟอร์', 'Lucifer') }),
 ]);
+/** warn ("one line, a dash, what happens next turn") and use line of the ten moves - Rae's wording (T9); group moves say "the whole team", single ones "one of you" (as `kind` in the engine). Bout 8 carries the name of R2 1.5 (Reese). */
+const MOVE_TEXT = Object.freeze({
+  1:{ warn:L2('ซามูไรไร้นายวางมือบนด้ามดาบ นิ่งสนิท — รอบหน้าเขาจะชักดาบฟันหนักใส่คนเดียว!', 'The Masterless Samurai rests a hand on his hilt, perfectly still. Next turn he draws and strikes one of you hard!'), use:L2('ซามูไรไร้นาย: "ประกายดาบหนึ่งเดียว!"', 'The Masterless Samurai: "One-Draw Flash!"') },
+  2:{ warn:L2('นินจาธรรมดาหายเข้าเงาหลังม่านสังเวียน — รอบหน้าเขาจะโผล่มาฟันหนักใส่คนเดียว!', 'The Plain Ninja slips into the shadow behind the arena curtain. Next turn he comes out and strikes one of you hard!'), use:L2('นินจาธรรมดาโผล่ออกมาจากเงาหลังฉาก — เงาหลังฉาก!', 'The Plain Ninja steps out of the shadow behind the curtain: Shadow Behind the Curtain!') },
+  3:{ warn:L2('นายขนมต้มตั้งการ์ดต่ำ ตาจับอยู่ที่คนเดียว — รอบหน้าเขาจะส่งศอกกลับหนักใส่คนนั้น!', 'Nai Khanom Tom drops his guard low, his eyes on one of you. Next turn he throws a reverse elbow at that one, hard!'), use:L2('นายขนมต้ม: "ศอกกลับ!"', 'Nai Khanom Tom: "Reverse Elbow!"') },
+  4:{ warn:L2('มิโนทอร์ก้มเขาลงและขูดกีบกับพื้นหิน — รอบหน้ามันจะพุ่งขวิดหนักใส่คนเดียว!', 'The Minotaur lowers his horns and scrapes a hoof on the stone. Next turn he charges one of you hard!'), use:L2('มิโนทอร์: "พุ่งขวิดเขาวงกต!"', 'The Minotaur: "Labyrinth Charge!"') },
+  5:{ warn:L2('ประกายเงินน้ำเงินเริ่มสว่างในดวงตาเมดูซา — รอบหน้าสายตาของเธอจะกวาดทั้งทีม!', 'A silver-blue glow wakes in Medusa\'s eyes. Next turn her gaze sweeps the whole team!'), use:L2('เมดูซา: "สายตาหินแข็ง!"', 'Medusa: "Gaze of Stone!"') },
+  6:{ warn:L2('ปืนใหญ่ทั้งแถวหันปากกระบอกมาทางทีม — รอบหน้ากัปตันคลื่นเงินจะสั่งยิงใส่ทั้งทีม!', 'A whole row of cannon swings round to face your team. Next turn Captain Silverwave orders them to fire on all of you!'), use:L2('กัปตันคลื่นเงิน: "ปืนใหญ่ไล่คลื่น!"', 'Captain Silverwave: "Broadside!"') },
+  7:{ warn:L2('ผู้มาเยือนจากดาวเก่าเงียบลง เส้นแสงบาง ๆ เริ่มสว่างในดวงตา — รอบหน้าลำแสงจะกวาดสแกนทั้งทีม!', 'The Visitor From an Old Star goes quiet, and a thin line of light grows in its eyes. Next turn a beam sweeps and scans the whole team!'), use:L2('ผู้มาเยือนจากดาวเก่า: "ลำแสงสแกนร่าง!"', 'The Visitor From an Old Star: "Scanning Beam!"') },
+  8:{ warn:L2('ยักษ์เหล็กซี-8 ยกกำปั้นเหล็กขึ้นเหนือหัว จอหน้าอกขึ้นว่า [กำลังล็อกเป้าหมาย] — รอบหน้าหมัดจะตกหนักใส่คนเดียว!', 'C-8, the Steel Colossus, raises an iron fist overhead. Its chest display reads [Locking target]. Next turn the fist falls on one of you, hard!'), use:L2('ยักษ์เหล็กซี-8: "[ดำเนินการ] หมัดเหล็กจากฟ้า!"', 'C-8, the Steel Colossus: "[Executing] Iron Fist From Above!"') },
+  9:{ warn:L2('ธอร์ยกค้อนขึ้นเหนือหัว ประกายฟ้าไต่ตามด้าม — รอบหน้าสายฟ้าจะฟาดทั้งทีม!', 'Thor lifts the hammer overhead and sparks climb the haft. Next turn lightning strikes the whole team!'), use:L2('ธอร์: "ค้อนฟ้าคำราม!"', 'Thor: "Roaring Hammer!"') },
+  10:{ warn:L2('ลูซิเฟอร์ยกปลายไม้เท้าชี้ไปที่คนหนึ่ง — รอบหน้าม่านแสงของสังเวียนจะปิดลงใส่คนนั้นอย่างหนัก!', 'Lucifer raises the tip of his staff and points at one of you. Next turn the arena\'s curtain of light falls on that one, hard!'), use:L2('ลูซิเฟอร์: "ม่านปิดสังเวียน"', 'Lucifer: "Final Curtain."') },
+});
 const hpOf = n => (n <= 8 ? 190 + 25 * n : n === 9 ? 440 : 500);
 const atkOf = n => [14 + n, 22 + n];
 /** the move of a bout as a rulebook entry (boss-skills.js): announced one turn ahead, TH + EN, a card for the group moves */
 const skillOf = b => Object.freeze([Object.freeze({ id:`colMove${b.n}`, kind:b.group ? 'groupHit' : 'heavyHit', warn:1, power:b.group ? .7 : 1.6, name:L2(b.move.th, b.move.en),
-  warnText:L2(`${b.name.th}ตั้งท่า${b.move.th} — รอบหน้าจะ${b.group ? 'โจมตีทั้งทีม' : 'โจมตีหนักใส่คนเดียว'}!`, `${b.name.en} readies ${b.move.en} — next turn ${b.group ? 'it strikes the whole team' : 'it strikes one of you hard'}!`),
-  useText:L2(`${b.name.th}: "${b.move.th}!"`, `${b.name.en}: "${b.move.en}!"`), when:{ firstAct:3, everyActs:4 }, ...(b.group ? { image:COL.card(b.n) } : {}) })]);
+  warnText:MOVE_TEXT[b.n].warn,
+  useText:MOVE_TEXT[b.n].use, when:{ firstAct:3, everyActs:4 }, ...(b.group ? { image:COL.card(b.n) } : {}) })]);
 const speaker = b => b.speaker || b.name;
 /** ZONE_EVENTS rows (data.js appends them to Zone 3's list: the walk of Frontier 3-4 starts there) */
 export const COL_EVENTS = Object.freeze(BOUTS.map(b => ({ k:COL.key(b.n), atCases:999, mode:'single', gate:true, colBout:b.n,

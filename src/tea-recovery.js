@@ -28,10 +28,10 @@ export function niraRunPose(elapsed, room) {
   return { point, face: room.bed[0] < point[0] ? -1 : 1, running: f < 1,
     distance: Math.hypot(point[0] - NIRA_DOOR[0], point[1] - NIRA_DOOR[1]) };
 }
-/** TODO(Rae): placeholder wording for the line (owner 19 Nov asked for ONE line from Nira) - Rae to write the final TH/EN. */
+/** Nira's one line (owner 19 Nov); wording by Rae, EN corrected by Reese (T9) */
 export const NIRA_WAKE_LINE = Object.freeze({
-  th: 'นิรา: ยมบาทน้อย ตื่นเถอะค่ะ ทุกคนลุกได้แล้ว!',
-  en: 'Nira: Little Yama, wake up! Everyone, on your feet!',
+  th: 'นิรา: ท่านคะ ตื่นได้แล้วค่ะ ดิฉันอยู่ตรงนี้ ทุกคนลุกได้แล้วนะคะ',
+  en: 'Nira: Sir, it is time to wake. I am right here. Everyone, you may rise now.',
 });
 export const DEFEAT_SCENE_MS = 1600;
 export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.webp`;
