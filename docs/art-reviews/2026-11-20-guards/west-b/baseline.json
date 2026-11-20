@@ -1,0 +1,425 @@
+[
+  {
+    "name": "combat",
+    "path": "img/crew-combat-v1/west/guard.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      2
+    ],
+    "cell_size": [
+      384,
+      512
+    ],
+    "frame_count": 8,
+    "sha256": "a1afc816df15b1e915b55de9aadd7fc2e949902abe33a7fefd7e61b506bad063",
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha128": [
+          36,
+          60,
+          300,
+          483
+        ],
+        "height_alpha128": 423,
+        "foot_y": 482,
+        "foot_x": 177.5,
+        "head_top_y": 157,
+        "character_height": 326,
+        "foot_band_px": 34,
+        "cell_bbox_alpha128": [
+          36,
+          60,
+          300,
+          483
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha128": [
+          24,
+          51,
+          270,
+          483
+        ],
+        "height_alpha128": 432,
+        "foot_y": 482,
+        "foot_x": 140.5,
+        "head_top_y": 165,
+        "character_height": 318,
+        "foot_band_px": 35,
+        "cell_bbox_alpha128": [
+          24,
+          51,
+          270,
+          483
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha128": [
+          24,
+          158,
+          295,
+          480
+        ],
+        "height_alpha128": 322,
+        "foot_y": 479,
+        "foot_x": 158.0,
+        "head_top_y": 158,
+        "character_height": 322,
+        "foot_band_px": 26,
+        "cell_bbox_alpha128": [
+          24,
+          158,
+          295,
+          480
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha128": [
+          24,
+          195,
+          354,
+          483
+        ],
+        "height_alpha128": 288,
+        "foot_y": 482,
+        "foot_x": 202.0,
+        "head_top_y": 195,
+        "character_height": 288,
+        "foot_band_px": 23,
+        "cell_bbox_alpha128": [
+          24,
+          195,
+          354,
+          483
+        ]
+      },
+      {
+        "index": 4,
+        "bbox_alpha128": [
+          35,
+          163,
+          360,
+          483
+        ],
+        "height_alpha128": 320,
+        "foot_y": 482,
+        "foot_x": 186.0,
+        "head_top_y": 163,
+        "character_height": 320,
+        "foot_band_px": 26,
+        "cell_bbox_alpha128": [
+          35,
+          163,
+          360,
+          483
+        ]
+      },
+      {
+        "index": 5,
+        "bbox_alpha128": [
+          24,
+          94,
+          360,
+          483
+        ],
+        "height_alpha128": 389,
+        "foot_y": 482,
+        "foot_x": 218.0,
+        "head_top_y": 152,
+        "character_height": 331,
+        "foot_band_px": 31,
+        "cell_bbox_alpha128": [
+          24,
+          94,
+          360,
+          483
+        ]
+      },
+      {
+        "index": 6,
+        "bbox_alpha128": [
+          24,
+          154,
+          360,
+          484
+        ],
+        "height_alpha128": 330,
+        "foot_y": 483,
+        "foot_x": 228.0,
+        "head_top_y": 154,
+        "character_height": 330,
+        "foot_band_px": 26,
+        "cell_bbox_alpha128": [
+          24,
+          154,
+          360,
+          484
+        ]
+      },
+      {
+        "index": 7,
+        "bbox_alpha128": [
+          34,
+          189,
+          359,
+          483
+        ],
+        "height_alpha128": 294,
+        "foot_y": 482,
+        "foot_x": 200.5,
+        "head_top_y": 189,
+        "character_height": 294,
+        "foot_band_px": 24,
+        "cell_bbox_alpha128": [
+          34,
+          189,
+          359,
+          483
+        ]
+      }
+    ]
+  },
+  {
+    "name": "idle",
+    "path": "img/crew-combat-v1/west/guard-idle.webp",
+    "size": [
+      1024,
+      384
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell_size": [
+      256,
+      384
+    ],
+    "frame_count": 4,
+    "sha256": "c7b646a6dccbddf5ab38558f3516f2eb21eef137e04c3b527bdb139bd26f8983",
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha128": [
+          45,
+          77,
+          237,
+          356
+        ],
+        "height_alpha128": 279,
+        "foot_y": 355,
+        "foot_x": 157.5,
+        "head_top_y": 77,
+        "character_height": 279,
+        "foot_band_px": 22,
+        "cell_bbox_alpha128": [
+          45,
+          77,
+          237,
+          356
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha128": [
+          41,
+          77,
+          237,
+          356
+        ],
+        "height_alpha128": 279,
+        "foot_y": 355,
+        "foot_x": 158.5,
+        "head_top_y": 77,
+        "character_height": 279,
+        "foot_band_px": 22,
+        "cell_bbox_alpha128": [
+          41,
+          77,
+          237,
+          356
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha128": [
+          46,
+          77,
+          237,
+          356
+        ],
+        "height_alpha128": 279,
+        "foot_y": 355,
+        "foot_x": 158.5,
+        "head_top_y": 77,
+        "character_height": 279,
+        "foot_band_px": 22,
+        "cell_bbox_alpha128": [
+          46,
+          77,
+          237,
+          356
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha128": [
+          19,
+          77,
+          236,
+          356
+        ],
+        "height_alpha128": 279,
+        "foot_y": 355,
+        "foot_x": 155.5,
+        "head_top_y": 77,
+        "character_height": 279,
+        "foot_band_px": 22,
+        "cell_bbox_alpha128": [
+          19,
+          77,
+          236,
+          356
+        ]
+      }
+    ]
+  },
+  {
+    "name": "walk",
+    "path": "img/West/crew-guard-west-walk-v2.webp",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell_size": [
+      543,
+      724
+    ],
+    "frame_count": 4,
+    "sha256": "a48df9dbad59b33d847f3ec197fe9010279d06a939834c71ddb074c1ba433c05",
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha128": [
+          21,
+          8,
+          543,
+          690
+        ],
+        "height_alpha128": 682,
+        "foot_y": 689,
+        "foot_x": 352.5,
+        "head_top_y": 55,
+        "character_height": 635,
+        "foot_band_px": 55,
+        "cell_bbox_alpha128": [
+          21,
+          8,
+          543,
+          690
+        ],
+        "runtime_crop_local": [
+          21,
+          7,
+          543,
+          690
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha128": [
+          27,
+          17,
+          540,
+          693
+        ],
+        "height_alpha128": 676,
+        "foot_y": 692,
+        "foot_x": 277.5,
+        "head_top_y": 48,
+        "character_height": 645,
+        "foot_band_px": 54,
+        "cell_bbox_alpha128": [
+          0,
+          17,
+          540,
+          693
+        ],
+        "runtime_crop_local": [
+          27,
+          16,
+          541,
+          694
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha128": [
+          17,
+          15,
+          543,
+          693
+        ],
+        "height_alpha128": 678,
+        "foot_y": 692,
+        "foot_x": 354.5,
+        "head_top_y": 55,
+        "character_height": 638,
+        "foot_band_px": 54,
+        "cell_bbox_alpha128": [
+          17,
+          15,
+          543,
+          693
+        ],
+        "runtime_crop_local": [
+          17,
+          15,
+          543,
+          694
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha128": [
+          17,
+          9,
+          539,
+          694
+        ],
+        "height_alpha128": 685,
+        "foot_y": 693,
+        "foot_x": 284.5,
+        "head_top_y": 54,
+        "character_height": 640,
+        "foot_band_px": 55,
+        "cell_bbox_alpha128": [
+          0,
+          9,
+          539,
+          694
+        ],
+        "runtime_crop_local": [
+          17,
+          9,
+          540,
+          694
+        ]
+      }
+    ]
+  }
+]

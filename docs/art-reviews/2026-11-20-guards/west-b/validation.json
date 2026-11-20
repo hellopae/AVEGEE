@@ -1,0 +1,785 @@
+{
+  "measurement": "alpha>=128; foot_y=last occupied row; foot_x=midpoint of occupied x extent in bottom 8 percent of silhouette (at least 8 rows), covering both boots when planted. Character height=head/horns/hat top to sole, excluding raised equipment. Head landmarks manually inspected; new landmarks transformed with sprite resize. Equipment-inclusive silhouette is also recorded, not used as character height.",
+  "imagegen_calls": 12,
+  "sheets": [
+    {
+      "path": "img/crew-combat-v1/west/guard.webp",
+      "before_size": [
+        1536,
+        1024
+      ],
+      "after_size": [
+        1536,
+        1024
+      ],
+      "before_mode": "RGBA",
+      "after_mode": "RGBA",
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        384,
+        512
+      ],
+      "frame_count": 8,
+      "sha256": "b955545ed977592210e1229bfcae30fb4d110beb2e6a882e241f454907e3abf7",
+      "frames": [
+        {
+          "index": 0,
+          "before": {
+            "index": 0,
+            "bbox_alpha128": [
+              36,
+              60,
+              300,
+              483
+            ],
+            "height_alpha128": 423,
+            "foot_y": 482,
+            "foot_x": 177.5,
+            "head_top_y": 157,
+            "character_height": 326,
+            "foot_band_px": 34,
+            "cell_bbox_alpha128": [
+              36,
+              60,
+              300,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              36,
+              157,
+              319,
+              483
+            ],
+            "height_alpha128": 326,
+            "foot_x": 177.5,
+            "foot_y": 482,
+            "foot_band_px": 26,
+            "head_top_y": 157,
+            "character_height": 326
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 1,
+          "before": {
+            "index": 1,
+            "bbox_alpha128": [
+              24,
+              51,
+              270,
+              483
+            ],
+            "height_alpha128": 432,
+            "foot_y": 482,
+            "foot_x": 140.5,
+            "head_top_y": 165,
+            "character_height": 318,
+            "foot_band_px": 35,
+            "cell_bbox_alpha128": [
+              24,
+              51,
+              270,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              12,
+              106,
+              299,
+              483
+            ],
+            "height_alpha128": 377,
+            "foot_x": 141.0,
+            "foot_y": 482,
+            "foot_band_px": 30,
+            "head_top_y": 165,
+            "character_height": 318
+          },
+          "delta_foot_x": 0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 2,
+          "before": {
+            "index": 2,
+            "bbox_alpha128": [
+              24,
+              158,
+              295,
+              480
+            ],
+            "height_alpha128": 322,
+            "foot_y": 479,
+            "foot_x": 158.0,
+            "head_top_y": 158,
+            "character_height": 322,
+            "foot_band_px": 26,
+            "cell_bbox_alpha128": [
+              24,
+              158,
+              295,
+              480
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              38,
+              158,
+              382,
+              480
+            ],
+            "height_alpha128": 322,
+            "foot_x": 157.5,
+            "foot_y": 479,
+            "foot_band_px": 26,
+            "head_top_y": 158,
+            "character_height": 322
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 3,
+          "before": {
+            "index": 3,
+            "bbox_alpha128": [
+              24,
+              195,
+              354,
+              483
+            ],
+            "height_alpha128": 288,
+            "foot_y": 482,
+            "foot_x": 202.0,
+            "head_top_y": 195,
+            "character_height": 288,
+            "foot_band_px": 23,
+            "cell_bbox_alpha128": [
+              24,
+              195,
+              354,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              96,
+              195,
+              382,
+              483
+            ],
+            "height_alpha128": 288,
+            "foot_x": 202.0,
+            "foot_y": 482,
+            "foot_band_px": 23,
+            "head_top_y": 195,
+            "character_height": 288
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 4,
+          "before": {
+            "index": 4,
+            "bbox_alpha128": [
+              35,
+              163,
+              360,
+              483
+            ],
+            "height_alpha128": 320,
+            "foot_y": 482,
+            "foot_x": 186.0,
+            "head_top_y": 163,
+            "character_height": 320,
+            "foot_band_px": 26,
+            "cell_bbox_alpha128": [
+              35,
+              163,
+              360,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              68,
+              163,
+              382,
+              483
+            ],
+            "height_alpha128": 320,
+            "foot_x": 185.5,
+            "foot_y": 482,
+            "foot_band_px": 26,
+            "head_top_y": 163,
+            "character_height": 320
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 5,
+          "before": {
+            "index": 5,
+            "bbox_alpha128": [
+              24,
+              94,
+              360,
+              483
+            ],
+            "height_alpha128": 389,
+            "foot_y": 482,
+            "foot_x": 218.0,
+            "head_top_y": 152,
+            "character_height": 331,
+            "foot_band_px": 31,
+            "cell_bbox_alpha128": [
+              24,
+              94,
+              360,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              104,
+              152,
+              374,
+              483
+            ],
+            "height_alpha128": 331,
+            "foot_x": 218.5,
+            "foot_y": 482,
+            "foot_band_px": 26,
+            "head_top_y": 152,
+            "character_height": 331
+          },
+          "delta_foot_x": 0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 6,
+          "before": {
+            "index": 6,
+            "bbox_alpha128": [
+              24,
+              154,
+              360,
+              484
+            ],
+            "height_alpha128": 330,
+            "foot_y": 483,
+            "foot_x": 228.0,
+            "head_top_y": 154,
+            "character_height": 330,
+            "foot_band_px": 26,
+            "cell_bbox_alpha128": [
+              24,
+              154,
+              360,
+              484
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              74,
+              154,
+              382,
+              484
+            ],
+            "height_alpha128": 330,
+            "foot_x": 227.5,
+            "foot_y": 483,
+            "foot_band_px": 26,
+            "head_top_y": 154,
+            "character_height": 330
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 7,
+          "before": {
+            "index": 7,
+            "bbox_alpha128": [
+              34,
+              189,
+              359,
+              483
+            ],
+            "height_alpha128": 294,
+            "foot_y": 482,
+            "foot_x": 200.5,
+            "head_top_y": 189,
+            "character_height": 294,
+            "foot_band_px": 24,
+            "cell_bbox_alpha128": [
+              34,
+              189,
+              359,
+              483
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              64,
+              189,
+              375,
+              483
+            ],
+            "height_alpha128": 294,
+            "foot_x": 201.0,
+            "foot_y": 482,
+            "foot_band_px": 24,
+            "head_top_y": 189,
+            "character_height": 294
+          },
+          "delta_foot_x": 0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        }
+      ]
+    },
+    {
+      "path": "img/crew-combat-v1/west/guard-idle.webp",
+      "before_size": [
+        1024,
+        384
+      ],
+      "after_size": [
+        1024,
+        384
+      ],
+      "before_mode": "RGBA",
+      "after_mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        256,
+        384
+      ],
+      "frame_count": 4,
+      "sha256": "c4f1286b0a8c01c2cf2259537dabc74ea3220f56bba9812730447b06a2edf3b8",
+      "frames": [
+        {
+          "index": 0,
+          "before": {
+            "index": 0,
+            "bbox_alpha128": [
+              45,
+              77,
+              237,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_y": 355,
+            "foot_x": 157.5,
+            "head_top_y": 77,
+            "character_height": 279,
+            "foot_band_px": 22,
+            "cell_bbox_alpha128": [
+              45,
+              77,
+              237,
+              356
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              80,
+              77,
+              254,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_x": 157.0,
+            "foot_y": 355,
+            "foot_band_px": 22,
+            "head_top_y": 77,
+            "character_height": 279
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 1,
+          "before": {
+            "index": 1,
+            "bbox_alpha128": [
+              41,
+              77,
+              237,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_y": 355,
+            "foot_x": 158.5,
+            "head_top_y": 77,
+            "character_height": 279,
+            "foot_band_px": 22,
+            "cell_bbox_alpha128": [
+              41,
+              77,
+              237,
+              356
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              82,
+              77,
+              254,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_x": 158.5,
+            "foot_y": 355,
+            "foot_band_px": 22,
+            "head_top_y": 77,
+            "character_height": 279
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 2,
+          "before": {
+            "index": 2,
+            "bbox_alpha128": [
+              46,
+              77,
+              237,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_y": 355,
+            "foot_x": 158.5,
+            "head_top_y": 77,
+            "character_height": 279,
+            "foot_band_px": 22,
+            "cell_bbox_alpha128": [
+              46,
+              77,
+              237,
+              356
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              82,
+              77,
+              254,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_x": 158.5,
+            "foot_y": 355,
+            "foot_band_px": 22,
+            "head_top_y": 77,
+            "character_height": 279
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 3,
+          "before": {
+            "index": 3,
+            "bbox_alpha128": [
+              19,
+              77,
+              236,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_y": 355,
+            "foot_x": 155.5,
+            "head_top_y": 77,
+            "character_height": 279,
+            "foot_band_px": 22,
+            "cell_bbox_alpha128": [
+              19,
+              77,
+              236,
+              356
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              76,
+              77,
+              254,
+              356
+            ],
+            "height_alpha128": 279,
+            "foot_x": 155.0,
+            "foot_y": 355,
+            "foot_band_px": 22,
+            "head_top_y": 77,
+            "character_height": 279
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        }
+      ]
+    },
+    {
+      "path": "img/West/crew-guard-west-walk-v2.webp",
+      "before_size": [
+        2172,
+        724
+      ],
+      "after_size": [
+        2172,
+        724
+      ],
+      "before_mode": "RGBA",
+      "after_mode": "RGBA",
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        543,
+        724
+      ],
+      "frame_count": 4,
+      "sha256": "8eaf1d07c15431ee3e2a4768ede7ff4080a79a3bdb236f21b016e4c04ea3216b",
+      "frames": [
+        {
+          "index": 0,
+          "before": {
+            "index": 0,
+            "bbox_alpha128": [
+              21,
+              8,
+              543,
+              690
+            ],
+            "height_alpha128": 682,
+            "foot_y": 689,
+            "foot_x": 352.5,
+            "head_top_y": 55,
+            "character_height": 635,
+            "foot_band_px": 55,
+            "cell_bbox_alpha128": [
+              21,
+              8,
+              543,
+              690
+            ],
+            "runtime_crop_local": [
+              21,
+              7,
+              543,
+              690
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              144,
+              55,
+              543,
+              690
+            ],
+            "height_alpha128": 635,
+            "foot_x": 352.5,
+            "foot_y": 689,
+            "foot_band_px": 51,
+            "head_top_y": 55,
+            "character_height": 635
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 1,
+          "before": {
+            "index": 1,
+            "bbox_alpha128": [
+              27,
+              17,
+              540,
+              693
+            ],
+            "height_alpha128": 676,
+            "foot_y": 692,
+            "foot_x": 277.5,
+            "head_top_y": 48,
+            "character_height": 645,
+            "foot_band_px": 54,
+            "cell_bbox_alpha128": [
+              0,
+              17,
+              540,
+              693
+            ],
+            "runtime_crop_local": [
+              27,
+              16,
+              541,
+              694
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              48,
+              48,
+              541,
+              693
+            ],
+            "height_alpha128": 645,
+            "foot_x": 277.5,
+            "foot_y": 692,
+            "foot_band_px": 52,
+            "head_top_y": 48,
+            "character_height": 645
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 2,
+          "before": {
+            "index": 2,
+            "bbox_alpha128": [
+              17,
+              15,
+              543,
+              693
+            ],
+            "height_alpha128": 678,
+            "foot_y": 692,
+            "foot_x": 354.5,
+            "head_top_y": 55,
+            "character_height": 638,
+            "foot_band_px": 54,
+            "cell_bbox_alpha128": [
+              17,
+              15,
+              543,
+              693
+            ],
+            "runtime_crop_local": [
+              17,
+              15,
+              543,
+              694
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              148,
+              55,
+              543,
+              693
+            ],
+            "height_alpha128": 638,
+            "foot_x": 354.5,
+            "foot_y": 692,
+            "foot_band_px": 51,
+            "head_top_y": 55,
+            "character_height": 638
+          },
+          "delta_foot_x": 0.0,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        },
+        {
+          "index": 3,
+          "before": {
+            "index": 3,
+            "bbox_alpha128": [
+              17,
+              9,
+              539,
+              694
+            ],
+            "height_alpha128": 685,
+            "foot_y": 693,
+            "foot_x": 284.5,
+            "head_top_y": 54,
+            "character_height": 640,
+            "foot_band_px": 55,
+            "cell_bbox_alpha128": [
+              0,
+              9,
+              539,
+              694
+            ],
+            "runtime_crop_local": [
+              17,
+              9,
+              540,
+              694
+            ]
+          },
+          "after": {
+            "bbox_alpha128": [
+              62,
+              54,
+              540,
+              694
+            ],
+            "height_alpha128": 640,
+            "foot_x": 284.0,
+            "foot_y": 693,
+            "foot_band_px": 51,
+            "head_top_y": 54,
+            "character_height": 640
+          },
+          "delta_foot_x": -0.5,
+          "delta_foot_y": 0,
+          "delta_height_percent": 0.0,
+          "within_numeric_limits": true
+        }
+      ]
+    }
+  ],
+  "imagegen_successful_outputs": 11,
+  "imagegen_rejected_calls": 1,
+  "runtime_walk_crop_source": "src/crew-walk-assets.js west:guard; read only",
+  "visual_review": {
+    "method": "Opened all original sheets, approved reference, all 11 generated outputs, final before/after plate, final per-frame anchor plate.",
+    "findings": "Elderly gray-haired moustached hunter, broad hat, charcoal coat, crossbow and lantern visible throughout. No visible text, blood or religious symbols in delivered sprites.",
+    "limits": "Manual review, not artistic approval; game playback has not been tested."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 12,
+  "successful_outputs": 11,
+  "rejected_calls": 1,
+  "rejected_call": {
+    "number": 12,
+    "reason": "input moderation: violence; no output",
+    "request_id": "766bc531-7e9c-477a-87f2-fc60cf19832b"
+  },
+  "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+  "reference_sha256": "d4445ff56e65754e5753a0e5edc3e97608f40d5b1e66ae58e285f335a12da25b",
+  "outputs": [
+    {
+      "call": 1,
+      "pose_reference": "combat-0",
+      "raw_output_sha256": "65b230d29dd2cf8e52a0df6733848f9d238bb449d493d1edc79970bd15ee0af9",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 2,
+      "pose_reference": "combat-1",
+      "raw_output_sha256": "6f94552b39699520068d3516f478cbb71887ffd686ccacd7c3a153f2243917d7",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 3,
+      "pose_reference": "combat-2",
+      "raw_output_sha256": "3b7e0b52938743f0631c08276da2f7897d1366bb717194cf3542c07d05296f58",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 4,
+      "pose_reference": "combat-3",
+      "raw_output_sha256": "845af18847fc2508889ecb30e4084fe4181857f02d26c21f1269b8999a5b2aaa",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 5,
+      "pose_reference": "combat-4",
+      "raw_output_sha256": "53811feeaf88065bcf1562cbc685d39b568cd74fb825df7c0c50d0f9b81a4706",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 6,
+      "pose_reference": "combat-5",
+      "raw_output_sha256": "fd231f221d30a960d049e0312c103429210291f07c806a093724832f5b5fa2e5",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 7,
+      "pose_reference": "combat-6",
+      "raw_output_sha256": "7ed2a28f75f68b7b576507f8317b1e3f7347508c4295b7dd97e28e33ff33452e",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 8,
+      "pose_reference": "combat-7",
+      "raw_output_sha256": "6a50842ce7342197991d5650911c8ed055ade6a1f3e4f187939e9a1b3eb2e2c3",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 9,
+      "pose_reference": "idle-0",
+      "raw_output_sha256": "0229e850de51a18cb2ca1b4f3aa0fdb7982ae9285aefb4768742f24a450dc8dd",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 10,
+      "pose_reference": "walk-0",
+      "raw_output_sha256": "955a335091e7bfd8794273212d516b3ee6dcf18c9ce02110c77da8520c3d0ebd",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment"
+    },
+    {
+      "call": 11,
+      "pose_reference": "walk-1",
+      "raw_output_sha256": "2d8e02eba0d140d58a18be7bac567e6aea29dc0d51ae42c0a460f9b6e4b85949",
+      "used": true,
+      "postprocess": "Pillow alpha cleanup, resize, boot alignment; walk passing frame also affine shear x += 0.20*y to align torso over planted boot"
+    }
+  ]
+}
