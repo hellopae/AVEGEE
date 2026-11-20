@@ -1,0 +1,67 @@
+{
+  "tool": "built-in image_gen",
+  "calls": 12,
+  "reference": "docs/art-reviews/2026-11-20-guard-designs/guard-watson03-cyberhell-v1.webp",
+  "generations": [
+    {
+      "id": "combat-00",
+      "prompt": "Use case: precise-object-edit. Create exactly ONE isolated full-body 2D game sprite, not a sheet. Input image 1 is approved WATSON-03 identity: faithfully match silver slim robot, oversized round plated head, TWO blue concentric lens eyes, violet armor inserts, cyan circuitry, dark joints, outlined shaded chibi illustration. Input image 2 is ONLY the original single-frame POSE guide. Replace ogre completely with this robot. Keep facing direction, leg stance, torso lean and arm gesture of pose guide. Replace its mace with the robot's own thin cyan glowing rectangular recording slate, wielded as a combat energy device in the same arm gesture; no staff or mace. Preserve full body and both feet; no clipping. Transparent background, no floor shadow, no glow detached from device, no text, no blood, no hat, no pipe, no ogre, no horns, no gold armor, no background glitches. Pose: three-quarter facing screen right, wide planted bent-knee ready stance, hands held across waist supporting recording slate horizontally, neutral guard.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-1962a201-e343-47e2-8c7c-2072e2ab1692.png"
+    },
+    {
+      "id": "combat-01",
+      "prompt": "Use case: precise-object-edit. Create exactly ONE isolated full-body 2D game sprite, not a sheet. Input image 1 is approved WATSON-03 identity: faithfully match silver slim robot, oversized round plated head, TWO blue concentric lens eyes, violet armor inserts, cyan circuitry, dark joints, outlined shaded chibi illustration. Input image 2 is ONLY the original single-frame POSE guide. Replace ogre completely with this robot. Keep facing direction, leg stance, torso lean and arm gesture of pose guide. Replace its mace with the robot's own thin cyan glowing rectangular recording slate, wielded as a combat energy device in the same arm gesture; no staff or mace. Preserve full body and both feet; no clipping. Transparent background, no floor shadow, no glow detached from device, no text, no blood, no hat, no pipe, no ogre, no horns, no gold armor, no background glitches. Pose: three-quarter facing screen right, knees apart, winding up attack with recording slate lifted diagonally OVER HEAD toward screen left, both hands raising device like original overhead mace windup.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-49f475bf-2308-4d51-ab15-12c03de6a89e.png"
+    },
+    {
+      "id": "combat-02",
+      "prompt": "Use case: precise-object-edit. Create exactly ONE isolated full-body 2D game sprite, not a sheet. Input image 1 is approved WATSON-03 identity: faithfully match silver slim robot, oversized round plated head, TWO blue concentric lens eyes, violet armor inserts, cyan circuitry, dark joints, outlined shaded chibi illustration. Input image 2 is ONLY the original single-frame POSE guide. Replace ogre completely with this robot. Keep facing direction, leg stance, torso lean and arm gesture of pose guide. Replace its mace with the robot's own thin cyan glowing rectangular recording slate, wielded as a combat energy device in the same arm gesture; no staff or mace. Preserve full body and both feet; no clipping. Transparent background, no floor shadow, no glow detached from device, no text, no blood, no hat, no pipe, no ogre, no horns, no gold armor, no background glitches. Pose: three-quarter facing screen right, wide low lunge, both arms thrust forward toward screen RIGHT at chest height holding recording slate as attack, rear foot extended screen left.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-813845cf-aa14-44dd-a167-8263f2cd918d.png"
+    },
+    {
+      "id": "combat-03",
+      "prompt": "undefinedthree-quarter facing screen right, forward extended attack follow-through, shoulders turned right, arms fully extended horizontally toward screen RIGHT holding recording slate, legs in wide low lunge, rear leg stretched behind.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-d1379da5-129d-4d0d-8f57-582d697a77ef.png"
+    },
+    {
+      "id": "combat-04",
+      "prompt": "undefinedthree-quarter facing screen right, reverse swing follow-through: torso twisted, BOTH ARMS sweep across body toward screen LEFT with recording slate held behind left shoulder, legs in long planted low lunge. Head still looks screen right.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-a6effa0c-0408-46ed-9a8a-ebc97c4edde0.png"
+    },
+    {
+      "id": "combat-06",
+      "prompt": "undefinedthree-quarter facing screen right, HIT RECOIL: torso and round head lean sharply BACK toward screen left, knees bent, one empty open hand raised screen right in startled defensive gesture, other hand holds recording slate lowered diagonally across waist. Feet stay planted, no blood.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-a9154bb0-1e4d-484a-9438-3e24925f9108.png"
+    },
+    {
+      "id": "combat-07",
+      "prompt": "undefinedthree-quarter facing screen right, LOW CROUCH recovery: both knees deeply bent, head and torso bowed forward looking down-right, both hands holding recording slate horizontally low at knees, feet apart planted, as source crouch.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-403adfd5-25f6-4fe9-9f39-2dbc95a4facf.png"
+    },
+    {
+      "id": "idle-00",
+      "prompt": "undefinedthree-quarter facing screen right, relaxed idle standing straight, feet apart grounded, shoulders relaxed, anatomical left forearm supports its thin glowing recording slate at waist/chest height, right arm relaxed. Match approved design exactly. Device light streaks short and stay BELOW head top.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-f70310b7-f7f2-4709-b76f-30fedb6e5dd8.png"
+    },
+    {
+      "id": "walk-00",
+      "prompt": "undefinedWALK CYCLE contact A, three-quarter facing screen LEFT as source! Robot looks screen LEFT. Legs spread in walking stride, screen LEFT boot forward touching ground and screen RIGHT leg trailing with heel raised, both soles visible. One arm supports recording slate upright close to chest, other arm swings backwards, no staff. Keep same identity viewed from left side.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-cfbd2dce-9883-427c-8e01-0ef5ee47f122.png"
+    },
+    {
+      "id": "walk-01",
+      "prompt": "undefinedWALK CYCLE passing A, three-quarter facing screen LEFT as source! Robot looks screen LEFT. Body upright, screen RIGHT leg straight supporting ground, screen LEFT knee raised forward high and its boot airborne at knee level, matching source raised knee. One arm supports glowing recording slate upright close to torso, other arm swings low. No staff.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-6d3d4f46-5834-4f65-b7b7-aa4b850b7690.png"
+    },
+    {
+      "id": "walk-02",
+      "prompt": "undefinedWALK CYCLE contact B, three-quarter facing screen LEFT as source! Robot looks screen LEFT. Legs spread in opposite stride from contact A: screen RIGHT boot fully extended forward to screen right edge in source silhouette while screen LEFT leg trails planted, both soles near ground, torso counterrotates slightly, same source foot placement. One arm supports glowing recording slate near chest, other arm swings forward. No staff.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-07b5a365-e859-4d28-b8cc-34246ca41b1d.png"
+    },
+    {
+      "id": "walk-03",
+      "prompt": "undefinedWALK CYCLE passing B, three-quarter facing screen LEFT as source! Robot looks screen LEFT. Opposite leg from passing A: NEAR leg on screen LEFT raised high with large sole facing viewer, FAR leg planted underneath toward screen RIGHT. Free fist swings forward at chest height. Other hand supports glowing recording slate upright close to torso, no staff. Match source knee and arm pose.",
+      "path": "/Users/agapae/.codex/generated_images/01a1f88e-ec3d-7c42-a7db-25f68232fa8b/exec-8e0f8253-0428-4614-aece-32a4ec7b5f74.png"
+    }
+  ]
+}

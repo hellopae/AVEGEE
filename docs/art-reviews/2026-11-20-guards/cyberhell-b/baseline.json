@@ -1,0 +1,203 @@
+[
+  {
+    "name": "combat",
+    "path": "img/crew-combat-v1/cyberhell/guard.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      2
+    ],
+    "cell": [
+      384,
+      512
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "alpha_bbox": [
+          20,
+          108,
+          365,
+          486
+        ]
+      },
+      {
+        "frame": 1,
+        "alpha_bbox": [
+          23,
+          49,
+          334,
+          487
+        ]
+      },
+      {
+        "frame": 2,
+        "alpha_bbox": [
+          19,
+          119,
+          365,
+          487
+        ]
+      },
+      {
+        "frame": 3,
+        "alpha_bbox": [
+          19,
+          139,
+          365,
+          486
+        ]
+      },
+      {
+        "frame": 4,
+        "alpha_bbox": [
+          19,
+          116,
+          365,
+          487
+        ]
+      },
+      {
+        "frame": 5,
+        "alpha_bbox": [
+          48,
+          112,
+          365,
+          486
+        ]
+      },
+      {
+        "frame": 6,
+        "alpha_bbox": [
+          22,
+          114,
+          365,
+          486
+        ]
+      },
+      {
+        "frame": 7,
+        "alpha_bbox": [
+          50,
+          129,
+          365,
+          486
+        ]
+      }
+    ]
+  },
+  {
+    "name": "idle",
+    "path": "img/crew-combat-v1/cyberhell/guard-idle.webp",
+    "size": [
+      1024,
+      384
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      256,
+      384
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "alpha_bbox": [
+          39,
+          76,
+          237,
+          359
+        ]
+      },
+      {
+        "frame": 1,
+        "alpha_bbox": [
+          33,
+          76,
+          237,
+          359
+        ]
+      },
+      {
+        "frame": 2,
+        "alpha_bbox": [
+          24,
+          76,
+          237,
+          359
+        ]
+      },
+      {
+        "frame": 3,
+        "alpha_bbox": [
+          19,
+          76,
+          237,
+          359
+        ]
+      }
+    ]
+  },
+  {
+    "name": "walk",
+    "path": "img/CyberHell/crew-guard-cyberhell-walk-v2.webp",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      543,
+      724
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "alpha_bbox": [
+          45,
+          17,
+          543,
+          694
+        ]
+      },
+      {
+        "frame": 1,
+        "alpha_bbox": [
+          0,
+          21,
+          543,
+          694
+        ]
+      },
+      {
+        "frame": 2,
+        "alpha_bbox": [
+          0,
+          15,
+          543,
+          700
+        ]
+      },
+      {
+        "frame": 3,
+        "alpha_bbox": [
+          0,
+          23,
+          528,
+          695
+        ]
+      }
+    ]
+  }
+]
