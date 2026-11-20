@@ -1,0 +1,44 @@
+[
+  {
+    "index": 0,
+    "path": "img/CyberHell/hero-yama-sit-cyberhell.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-431c9f49-d3aa-49c3-a983-16f5964ec9bf.png",
+    "prompt": "Use case: precise-object-edit. Edit target Image 1 is the exact 512x512 transparent game sprite. Image 2 is APPROVED COSTUME REFERENCE ONLY. Repaint ONLY hat and clothing on image 1 to match image 2: black-purple coat, purple metal edging, cyan neon circuitry forming Thai kanok motifs, cyan electric horizontal hat band, faceted bright cyan jewel on front. Keep target's pixel-art style and original pixel density, NOT reference's smooth illustration style. CRITICAL preserve target image composition, exact seated pose, half-open bored eyes, unchanged red face/skin/horns/hair/hands, tea cup, steam, woven orange mat, outlines, character scale, feet positions, full silhouette and all transparent padding. No sword or new props. No text, no blood, no ground shadow. Output exactly 512x512, actual alpha transparent outside original silhouette. Costume must fit inside existing silhouette, do not enlarge the hat or coat. Keep mat identical. Original character feet and mat must not move even one pixel."
+  },
+  {
+    "index": 1,
+    "path": "img/CyberHell/hero-yama-sit-sip-cyberhell.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-6b79a692-06e4-416b-a2d9-98dc70ec8f6a.png",
+    "prompt": "Use case: precise-object-edit. Image 1 is the EDIT TARGET, an exact 512x512 pixel-art game sprite of a red demon seated cross-legged on an orange woven mat, eyes closed, lifting a tea cup to his lips. Image 2 is APPROVED COSTUME REFERENCE ONLY. Change ONLY the existing hat and clothing to reference costume: black-purple coat with purple metallic edges, cyan neon circuit lines forming Thai kanok motifs; hat gets glowing cyan electric horizontal band and bright faceted cyan front jewel. Keep target pixel-art rendering, existing outlines and coarse pixel density. Keep EVERYTHING else unchanged, especially exact face and expression, horns, hair, red skin, hands, tea cup at mouth, steam, mat, feet, seated pose, scale, silhouette, alignment and transparent padding. Do not add sword, objects or background. Output exactly the target's 512x512 square canvas, real transparency. No text, blood or watermark. Repaint inside existing costume boundaries, do not redesign body or move feet."
+  },
+  {
+    "index": 2,
+    "path": "img/CyberHell/hero-yama-cyberhell-cry.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-b1fc40f8-11ed-4cba-a588-a9815c34e68b.png",
+    "prompt": "Use case: precise-object-edit. Image 1 is EDIT TARGET: a 512x512 transparent chibi red demon crying, face looking upward left, open mouth, left hand reaching left and right hand on chest, feet standing. Image 2 is approved COSTUME REFERENCE ONLY. Change ONLY target's hat and coat: black-purple coat with purple metallic trim, glowing cyan electric circuit paths and circuit-shaped Thai kanok ornament; hat has cyan horizontal electric light band and cyan faceted jewel on front. Match approved costume but retain target illustration/pixel texture and exact pose and proportions. Preserve original face, eyes, expression, red skin, horns, ears, hair and hands, silhouette, feet positions, canvas edges and transparent padding exactly. No sword, no new props, no text/blood/watermark. Do not improve or change facial expression or move limbs. Exact 512x512 output, true transparent alpha."
+  },
+  {
+    "index": 3,
+    "path": "img/CyberHell/hero-yama-cyberhell-rage.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-ea341f54-e117-485a-bc4f-a3110d0eda8d.png",
+    "prompt": "Use case: precise-object-edit. Image 1 is EDIT TARGET: exact 512x512 transparent game sprite, red demon in angry fighting stance surrounded by orange/red flames. Image 2 is approved COSTUME REFERENCE ONLY. Repaint ONLY existing hat and coat to match approved design: black-purple coat, purple metallic edging, glowing cyan circuitry with Thai kanok circuit motifs, cyan glowing electric horizontal hat band, cyan faceted front gem. Preserve original target pixel-art style and coarse pixel density. ALL other elements must be IDENTICAL to target: red face/skin, horns, angry eyes, mouth, clenched fists, hair, stance, foot coordinates, body scale, outlines, ALL orange and red fire effects and their placement, canvas bounds and transparent padding. Do not add weapon or props. No text, no blood. Exact target 512x512 canvas and true alpha transparency. Keep costume inside original boundaries, do not move anything."
+  },
+  {
+    "index": 4,
+    "path": "img/hero-yama-cyberhell-tea-clean.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-7877769e-8c81-447f-86d7-9ed0023439f7.png",
+    "prompt": "Use case: precise-object-edit. EDIT TARGET Image 1 is a 1254x1254 transparent coarse pixel-art game sprite: red demon sitting cross-legged holding steaming tea cup, sleepy bored half-open eyes. Image 2 is APPROVED COSTUME REFERENCE ONLY. Repaint only existing hat and coat, preserving target's coarse pixel art and original outlines: black-purple coat with purple metallic edge trim, cyan neon circuit paths with angular Thai kanok ornaments; glowing horizontal cyan electric hat band, front jewel cyan. Maintain EXACT original composition, silhouette, size of character, canvas and transparent margins, all foot positions, face shape/expression and red skin, horns, hair, hands, orange tea cup and steam. Do not add mat, sword, props or shadow. No text or blood. True alpha transparency, exact 1254x1254 output. Do not redraw body or move it; edit costume inside existing silhouette only."
+  },
+  {
+    "index": 5,
+    "path": "img/hero-yama-cyberhell-unconscious.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-a1aceea6-6926-4f40-8535-c20fb9f7332c.png",
+    "prompt": "Use case: precise-object-edit. EDIT TARGET Image 1: exact 1642x958 transparent wide game sprite, coarse pixel-art red demon unconscious curled sideways, HEAD ON LEFT, FEET ON RIGHT, eyes closed, arms under face. Image 2 is approved COSTUME REFERENCE ONLY. Repaint ONLY existing hat and clothing matching approved reference: black-purple coat with purple metallic trim, cyan circuit lines and angular Thai kanok motifs, cyan glowing horizontal hat band and cyan front jewel. Keep ORIGINAL target's pixel-art style and exact outlines; do not use reference standing pose. Keep ALL target composition, pose, head tilt, face expression, horns, red skin, hair, ears and hands pixel-identical; preserve feet coordinates, scale, body silhouette and transparent margins. Do not rotate/recenter/straighten body. No sword or new objects, no text, no blood, no ground/shadow. True alpha transparency, same 1642x958 canvas. Costume must remain inside its original boundaries."
+  },
+  {
+    "index": 6,
+    "path": "img/ko-pose-v1/cyberhell/yama.webp",
+    "generated": "/Users/agapae/.codex/generated_images/01a1f78c-9289-7d91-a0fe-7fc6ab01d37c/exec-d82f4726-e353-4ff6-9531-2a09dd3c6e77.png",
+    "prompt": "Use case: precise-object-edit. Image 1 is EDIT TARGET, a 640x320 transparent single-frame game sprite. A tiny chibi red demon lies unconscious on his side, head LEFT, feet RIGHT, a silver sword lying horizontally BELOW his body. The body is ONLY at x175..464, y115..271; keep all this EMPTY TRANSPARENT PADDING and small character size EXACTLY. Image 2 is APPROVED COSTUME REFERENCE ONLY. Repaint ONLY the tiny character's existing hat and clothing: black-purple coat with purple metallic trim, fine glowing cyan circuit paths with angular Thai kanok motifs, cyan horizontal hat light band, faceted cyan front jewel. Preserve original target's smooth small sprite rendering, not large reference style. ALL else must stay exactly target: face closed eyes, horns/red skin/hair/hands, unconscious pose, scale and all feet positions, sword shape/position, alpha silhouette. Do not enlarge character to fill canvas! No new props, no text or blood. Output exactly 640x320, transparent background. Keep target body horizontal and inside original bounds."
+  }
+]

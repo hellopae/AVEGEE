@@ -1,0 +1,114 @@
+[
+  {
+    "path": "img/CyberHell/hero-yama-sit-cyberhell.webp",
+    "original": "tmp/imagegen/y1c/originals/0.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      63,
+      0,
+      449,
+      512
+    ]
+  },
+  {
+    "path": "img/CyberHell/hero-yama-sit-sip-cyberhell.webp",
+    "original": "tmp/imagegen/y1c/originals/1.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      63,
+      0,
+      449,
+      512
+    ]
+  },
+  {
+    "path": "img/CyberHell/hero-yama-cyberhell-cry.webp",
+    "original": "tmp/imagegen/y1c/originals/2.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      94,
+      0,
+      418,
+      512
+    ]
+  },
+  {
+    "path": "img/CyberHell/hero-yama-cyberhell-rage.webp",
+    "original": "tmp/imagegen/y1c/originals/3.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      47,
+      0,
+      495,
+      511
+    ]
+  },
+  {
+    "path": "img/hero-yama-cyberhell-tea-clean.webp",
+    "original": "tmp/imagegen/y1c/originals/4.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      91,
+      60,
+      1218,
+      1222
+    ]
+  },
+  {
+    "path": "img/hero-yama-cyberhell-unconscious.webp",
+    "original": "tmp/imagegen/y1c/originals/5.webp",
+    "size": [
+      1642,
+      958
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      0,
+      17,
+      1612,
+      936
+    ]
+  },
+  {
+    "path": "img/ko-pose-v1/cyberhell/yama.webp",
+    "original": "tmp/imagegen/y1c/originals/6.webp",
+    "size": [
+      640,
+      320
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "bbox": [
+      175,
+      115,
+      465,
+      272
+    ]
+  }
+]

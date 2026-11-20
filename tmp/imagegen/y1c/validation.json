@@ -1,0 +1,275 @@
+[
+  {
+    "path": "img/CyberHell/hero-yama-sit-cyberhell.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 41541,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      63,
+      0,
+      449,
+      512
+    ],
+    "new_alpha_bbox": [
+      63,
+      0,
+      449,
+      512
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        64,
+        1,
+        448,
+        511
+      ],
+      "generated_bbox_128": [
+        153,
+        12,
+        1101,
+        1254
+      ]
+    }
+  },
+  {
+    "path": "img/CyberHell/hero-yama-sit-sip-cyberhell.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 42673,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      63,
+      0,
+      449,
+      512
+    ],
+    "new_alpha_bbox": [
+      63,
+      0,
+      449,
+      512
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        65,
+        1,
+        448,
+        510
+      ],
+      "generated_bbox_128": [
+        158,
+        7,
+        1096,
+        1253
+      ]
+    }
+  },
+  {
+    "path": "img/CyberHell/hero-yama-cyberhell-cry.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 46376,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      94,
+      0,
+      418,
+      512
+    ],
+    "new_alpha_bbox": [
+      94,
+      0,
+      418,
+      512
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        95,
+        0,
+        417,
+        511
+      ],
+      "generated_bbox_128": [
+        230,
+        9,
+        1013,
+        1254
+      ]
+    }
+  },
+  {
+    "path": "img/CyberHell/hero-yama-cyberhell-rage.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 34423,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      47,
+      0,
+      495,
+      511
+    ],
+    "new_alpha_bbox": [
+      47,
+      0,
+      495,
+      511
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        47,
+        0,
+        495,
+        511
+      ],
+      "generated_bbox_128": [
+        111,
+        0,
+        1215,
+        1254
+      ]
+    }
+  },
+  {
+    "path": "img/hero-yama-cyberhell-tea-clean.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 255817,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      91,
+      60,
+      1218,
+      1222
+    ],
+    "new_alpha_bbox": [
+      91,
+      60,
+      1218,
+      1222
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        327,
+        63,
+        910,
+        1185
+      ],
+      "generated_bbox_128": [
+        328,
+        61,
+        909,
+        1186
+      ]
+    }
+  },
+  {
+    "path": "img/hero-yama-cyberhell-unconscious.webp",
+    "size": [
+      1642,
+      958
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 292768,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      0,
+      17,
+      1612,
+      936
+    ],
+    "new_alpha_bbox": [
+      0,
+      17,
+      1612,
+      936
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        64,
+        98,
+        1573,
+        847
+      ],
+      "generated_bbox_128": [
+        63,
+        99,
+        1577,
+        850
+      ]
+    }
+  },
+  {
+    "path": "img/ko-pose-v1/cyberhell/yama.webp",
+    "size": [
+      640,
+      320
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_changed_pixels": 0,
+    "changed_visible_pixels": 13607,
+    "changed_outside_costume_mask": 0,
+    "changed_protected_pixels": 0,
+    "original_alpha_bbox": [
+      175,
+      115,
+      465,
+      272
+    ],
+    "new_alpha_bbox": [
+      175,
+      115,
+      465,
+      272
+    ],
+    "foreground_alignment": {
+      "original_bbox_128": [
+        176,
+        116,
+        464,
+        271
+      ],
+      "generated_bbox_128": [
+        485,
+        256,
+        1288,
+        699
+      ]
+    }
+  }
+]
