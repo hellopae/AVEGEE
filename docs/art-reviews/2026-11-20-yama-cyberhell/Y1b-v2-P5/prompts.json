@@ -1,0 +1,80 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "image_1": "One 640x640 original frame cropped from inputs/original.webp; never the whole sheet",
+  "image_2": "docs/art-reviews/2026-11-20-design-approval/yama-cyberhell-costume-v1.webp",
+  "calls": [
+    {
+      "frame": 1,
+      "output_id": "946a590f-e894-45f1-8127-82b1fb257367",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1, a single 640x640 game animation frame. Image 2 is approved COSTUME REFERENCE ONLY. Replace only clothing and hat of image 1 with the black-purple armored long coat, ornate purple/silver edges, cyan circuit lines, cyan boot/gauntlet accents and cyan hat band and center jewel of image 2. Preserve EXACTLY image 1's small chibi proportions, face, eyes, red skin, ears, red horns, black hair, pose, arm and leg positions, hand placement, curved serrated black/gold cyan-edge sword, sword direction. Do not substitute the straight sword or pose from image 2. Keep subject at original size and coordinates, feet around y568, top of hat y251. Single character single frame, no text, no extra items, actual transparent background. Full 640x640 square canvas with original empty margins. Preserve original pixel sprite rendering and compact silhouette, do not enlarge head or character. Change only costume/hat."
+    },
+    {
+      "frame": 2,
+      "output_id": "5a0a2151-47a4-4f7b-96cb-4c949004fecd",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit image 1 ONLY, single game sprite frame 02: sword held diagonally behind/over head pointing upper LEFT, both arms raised across in front of face. Image 2 is approved COSTUME ONLY. Replace only clothing and hat with reference 2 black-purple armor long coat with silver purple ornate trim, cyan circuit traces and cyan gauntlet/boot lights, hat cyan band and central cyan jewel. Preserve image 1 exact pose, chibi proportions, red face and skin, eyes, horns, ears, hair, hand/arm/feet positions, curved black/gold serrated cyan edged sword pointing upper left and dangling gold pommel on right. No sword change, no pose change. Keep original subject small and original framing/margins in 640x640 canvas, feet y570 and hat top y250. Actual transparent background; ignore hidden blue/magenta RGB in transparent areas, do not render them. Single isolated character, no labels. Keep compact pixel game sprite style. Do not copy pose or straight sword from costume reference."
+    },
+    {
+      "frame": 3,
+      "output_id": "32c99cca-f0c4-466b-8234-011e8a76cdc0",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1 single sprite frame 03. Both hands raised above head to the LEFT side, sword nearly vertical leaning right, upward point at x260 y137. Image 2 is approved COSTUME ONLY: black-purple armored long coat, silver/purple ornate edging, cyan circuit lines and cyan gauntlet/boot lights, cyan hat band and central cyan jewel. Replace only costume and hat. Preserve exact pose from image 1, face eyes red skin horns ears black hair chibi proportions hand/arm positions, stance and feet. Preserve original curved serrated black/gold cyan edge sword, handle and orientation. Do not copy pose/straight sword of reference. Keep original scale and framing in 640x640 canvas with feet at y570; no enlargement. Transparent background (ignore hidden blue RGB from transparent pixels). Single character single frame, no text. Pixel game sprite style."
+    },
+    {
+      "frame": 4,
+      "output_id": "35b14ea0-e625-4f2f-a611-51ff15660a85",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit image 1 ONLY, single game sprite frame 04. Image 2 approved COSTUME ONLY. Change only hat and clothing to image 2 black/purple long armored coat with ornate silver purple trim, cyan circuit traces, cyan boot and gauntlet accents, hat cyan band and central jewel. Preserve image 1 exact character pose and proportions, red skin face eyes ears horns hair, hands in front of waist on right, sword pointing diagonally upper right, ORIGINAL curved serrated black/gold cyan edged sword, purple/white crescent trail arching behind upper right of head. Keep exact original sword and arc trajectory and size. Keep original framing and 640x640 square canvas, feet around y570. Transparent background; ignore hidden magenta/white RGB in transparent areas. Single small chibi pixel game sprite, no text, do not copy reference pose or straight sword. Costume-only edit."
+    },
+    {
+      "frame": 5,
+      "output_id": "9f64752f-226d-4a12-81dd-deb5c78ff47e",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1 frame 05, single sprite. Reference image 2 is approved COSTUME ONLY. Replace hat/clothes with reference black-purple long armored coat, silver purple ornate trim, cyan circuit lines, cyan gauntlet/boot accents, cyan hat band central jewel. Preserve exact frame 05 pose: both hands extended in front to right at chest/waist height, blade almost horizontal pointing RIGHT with original curved serrated black/gold/cyan blade, broad purple-white crescent swoosh arching overhead from upper-left down to right. Preserve face, horns, red skin, eyes, hair, ears, expression, chibi proportions, stance. Do not copy reference pose or straight sword. Keep character original size/placement in 640x640 canvas, feet y568, hat top y251. Actual transparent background, ignore hidden magenta/blue/white RGB from transparent regions. Pixel game sprite style. Single frame no text."
+    },
+    {
+      "frame": 6,
+      "output_id": "6df7cdef-1b08-4e09-97fc-54c5545f442f",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1 frame 06. Reference image 2 is approved CLOTHING/HAT ONLY. Replace costume with black-purple long armored coat, silver/purple ornate trim, cyan circuit lines, cyan gauntlet/boot accents, hat cyan band central cyan jewel. Preserve EXACT original chibi pose/proportions: hands low in front pointing down-right, curved serrated black/gold/cyan edged sword extending DOWN RIGHT to x500 y560, small purple/white slash crescent at lower-right beneath blade. Preserve original face eyes expression red skin ears horns black hair, arms legs hands stance. Do not use reference pose or straight sword. Keep exact original character small placement in 640x640 canvas feet around y570 hat top y251. Actual transparent background (ignore hidden magenta/white/blue RGB). Pixel game sprite rendering. Single character frame, no text. Change only clothing/hat."
+    },
+    {
+      "frame": 7,
+      "output_id": "ec9a236c-2f2f-4f1b-9066-b9cc515fe6da",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1 single sprite frame 07. Image 2 approved COSTUME ONLY. Replace hat and clothing with approved black-purple long armored coat silver/purple ornate edging cyan circuit lines cyan gauntlet/boot lights, hat cyan band and central jewel. Preserve frame 07 EXACT stance/proportions/pose, both hands extended low to front right at y470, curved serrated black/gold cyan edged sword angled DOWN RIGHT to x516 y570, faint purple slash under tip. Preserve red face/skin/eyes/expression/horns/ears/hair hands and original sword shape. Do not copy pose or straight blade from image 2. Keep original small sprite placement in 640x640 canvas feet around y570, hat top around y260. Actual transparent background; ignore hidden blue/magenta/white RGB from transparent regions. Single character frame, no text, pixel game sprite style."
+    },
+    {
+      "frame": 8,
+      "output_id": "dc7dfd0b-0022-47f4-9841-3275a13d38ea",
+      "output_size": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: identity-preserve. Edit ONLY image 1, a single 640x640 game animation frame 08. Image 2 is approved COSTUME REFERENCE ONLY. Replace only clothing and hat of image 1 with black-purple armored long coat, ornate purple/silver edges, cyan circuit lines, cyan boot/gauntlet accents and cyan hat band and center jewel of image 2. Preserve EXACTLY image 1 small chibi proportions, face, eyes, red skin, ears, red horns, black hair, pose, arm/leg positions, hand placement, curved serrated black/gold cyan-edge sword, sword direction pointing upper right. Do not substitute straight sword or pose from image 2. Keep subject at original size and coordinates, feet around y568, top of hat y251. Single character single frame, no text, no extra items, actual transparent background. Full square canvas original empty margins. Original pixel sprite rendering compact silhouette, do not enlarge head or character. Change only costume/hat."
+    }
+  ]
+}

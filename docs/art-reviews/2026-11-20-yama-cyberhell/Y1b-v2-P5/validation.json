@@ -1,0 +1,459 @@
+{
+  "scope": "P5 only",
+  "sheet": "img/yama-sword-weapons/hero-yama-cyberhell-sword-chain.webp",
+  "source_sha256": "3aa58cd92a6a4e3216f911316559829709bdfede3ac446ccd0d2dac61d42be52",
+  "output_sha256": "15d4abe3769320cb33e6d6cb6f30af7afe326f3edb7ab3b58510075d9ae427fc",
+  "size": [
+    5120,
+    640
+  ],
+  "mode": "RGBA",
+  "grid": [
+    8,
+    1
+  ],
+  "cell": [
+    640,
+    640
+  ],
+  "frame_count": 8,
+  "imagegen_calls": 8,
+  "fallback_original_frames": [],
+  "measurement": {
+    "bbox": "Pillow half-open [left,top,right,bottom]; opaque alpha>=128; also report all alpha>0 including glow",
+    "foot": "For each frame: lowest alpha>=128 row in footwear ROI x=[100,365), y=[530,590); x=(leftmost+rightmost)/2 on that row. This excludes sword/effect below feet in frames 6 and 7. The left boot is lower than the right boot in source.",
+    "registration": "Fit generated costume by hat/sole landmarks; composite only garment masks; retain complete source alpha and source pixels outside garment masks. Fit boots to source silhouette by row.",
+    "limits": "Numeric checks verify layout and protected pixel regions; design match remains a visual review, not an automated QA result."
+  },
+  "frames": [
+    {
+      "frame": 1,
+      "source_bbox_opaque": [
+        123,
+        250,
+        454,
+        570
+      ],
+      "output_bbox_opaque": [
+        123,
+        250,
+        454,
+        570
+      ],
+      "source_bbox_alpha_nonzero": [
+        123,
+        250,
+        454,
+        570
+      ],
+      "output_bbox_alpha_nonzero": [
+        123,
+        250,
+        454,
+        570
+      ],
+      "source_height": 320,
+      "output_height": 320,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        144.0,
+        569
+      ],
+      "output_foot_xy": [
+        144.0,
+        569
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 26852,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 0.9845201238390093,
+      "generated_shift_xy": [
+        0,
+        8.792569659442734
+      ]
+    },
+    {
+      "frame": 2,
+      "source_bbox_opaque": [
+        62,
+        213,
+        413,
+        569
+      ],
+      "output_bbox_opaque": [
+        62,
+        213,
+        413,
+        569
+      ],
+      "source_bbox_alpha_nonzero": [
+        59,
+        212,
+        414,
+        580
+      ],
+      "output_bbox_alpha_nonzero": [
+        59,
+        212,
+        414,
+        580
+      ],
+      "source_height": 356,
+      "output_height": 356,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        153.0,
+        568
+      ],
+      "output_foot_xy": [
+        153.0,
+        568
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 27155,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 1.0,
+      "generated_shift_xy": [
+        0,
+        6.0
+      ]
+    },
+    {
+      "frame": 3,
+      "source_bbox_opaque": [
+        139,
+        137,
+        343,
+        569
+      ],
+      "output_bbox_opaque": [
+        139,
+        137,
+        343,
+        569
+      ],
+      "source_bbox_alpha_nonzero": [
+        134,
+        126,
+        348,
+        581
+      ],
+      "output_bbox_alpha_nonzero": [
+        134,
+        126,
+        348,
+        581
+      ],
+      "source_height": 432,
+      "output_height": 432,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        157.5,
+        568
+      ],
+      "output_foot_xy": [
+        157.5,
+        568
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 28781,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 0.9969040247678018,
+      "generated_shift_xy": [
+        0,
+        3.764705882352928
+      ]
+    },
+    {
+      "frame": 4,
+      "source_bbox_opaque": [
+        133,
+        201,
+        503,
+        569
+      ],
+      "output_bbox_opaque": [
+        133,
+        201,
+        503,
+        569
+      ],
+      "source_bbox_alpha_nonzero": [
+        127,
+        189,
+        514,
+        581
+      ],
+      "output_bbox_alpha_nonzero": [
+        127,
+        189,
+        514,
+        581
+      ],
+      "source_height": 368,
+      "output_height": 368,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        151.5,
+        568
+      ],
+      "output_foot_xy": [
+        151.5,
+        568
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 26482,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 1.0,
+      "generated_shift_xy": [
+        0,
+        4.0
+      ]
+    },
+    {
+      "frame": 5,
+      "source_bbox_opaque": [
+        132,
+        187,
+        571,
+        569
+      ],
+      "output_bbox_opaque": [
+        132,
+        187,
+        571,
+        569
+      ],
+      "source_bbox_alpha_nonzero": [
+        125,
+        174,
+        579,
+        575
+      ],
+      "output_bbox_alpha_nonzero": [
+        125,
+        174,
+        579,
+        575
+      ],
+      "source_height": 382,
+      "output_height": 382,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        144.0,
+        568
+      ],
+      "output_foot_xy": [
+        144.0,
+        568
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 29442,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 0.9906542056074766,
+      "generated_shift_xy": [
+        0,
+        5.308411214953253
+      ]
+    },
+    {
+      "frame": 6,
+      "source_bbox_opaque": [
+        127,
+        261,
+        522,
+        581
+      ],
+      "output_bbox_opaque": [
+        127,
+        261,
+        522,
+        581
+      ],
+      "source_bbox_alpha_nonzero": [
+        120,
+        250,
+        536,
+        595
+      ],
+      "output_bbox_alpha_nonzero": [
+        120,
+        250,
+        536,
+        595
+      ],
+      "source_height": 320,
+      "output_height": 320,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        149.5,
+        568
+      ],
+      "output_foot_xy": [
+        149.5,
+        568
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 30692,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 1.0031847133757963,
+      "generated_shift_xy": [
+        0,
+        -1.81528662420385
+      ]
+    },
+    {
+      "frame": 7,
+      "source_bbox_opaque": [
+        122,
+        263,
+        520,
+        584
+      ],
+      "output_bbox_opaque": [
+        122,
+        263,
+        520,
+        584
+      ],
+      "source_bbox_alpha_nonzero": [
+        112,
+        250,
+        523,
+        588
+      ],
+      "output_bbox_alpha_nonzero": [
+        112,
+        250,
+        523,
+        588
+      ],
+      "source_height": 321,
+      "output_height": 321,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        140.5,
+        567
+      ],
+      "output_foot_xy": [
+        140.5,
+        567
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 27630,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 0.8757062146892656,
+      "generated_shift_xy": [
+        17,
+        92.74011299435028
+      ]
+    },
+    {
+      "frame": 8,
+      "source_bbox_opaque": [
+        125,
+        251,
+        451,
+        570
+      ],
+      "output_bbox_opaque": [
+        125,
+        251,
+        451,
+        570
+      ],
+      "source_bbox_alpha_nonzero": [
+        125,
+        250,
+        453,
+        570
+      ],
+      "output_bbox_alpha_nonzero": [
+        125,
+        250,
+        453,
+        570
+      ],
+      "source_height": 319,
+      "output_height": 319,
+      "height_delta_percent": 0.0,
+      "source_foot_xy": [
+        145.5,
+        569
+      ],
+      "output_foot_xy": [
+        145.5,
+        569
+      ],
+      "foot_delta_xy": [
+        0.0,
+        0
+      ],
+      "source_alpha_identical": true,
+      "changed_pixels": 25077,
+      "changed_pixels_outside_costume_mask": 0,
+      "protected_skin_changed_pixels": 0,
+      "protected_weapon_changed_pixels": 0,
+      "generated_uniform_scale": 0.9578313253012049,
+      "generated_shift_xy": [
+        0,
+        23.95180722891564
+      ]
+    }
+  ],
+  "review_artifacts": {
+    "compare_size": [
+      1280,
+      5376
+    ],
+    "gif_size": [
+      960,
+      504
+    ],
+    "gif_frames": 8,
+    "gif_loop": 0,
+    "gif_frame_duration_ms": 120
+  }
+}
