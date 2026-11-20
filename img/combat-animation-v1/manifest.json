@@ -3381,6 +3381,28 @@
         }
       }
     },
+    "crew:asia:guard:ko": {
+      "src": "img/ko-pose-v1/asia/guard.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        304
+      ],
+      "bodyHeight": 388,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
     "crew:asia:nira:ko": {
       "src": "img/ko-pose-v1/asia/nira.webp",
       "frameWidth": 640,
@@ -3535,6 +3557,28 @@
         }
       }
     },
+    "crew:west:guard:ko": {
+      "src": "img/ko-pose-v1/west/guard.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 428,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
     "crew:west:nira:ko": {
       "src": "img/ko-pose-v1/west/nira.webp",
       "frameWidth": 640,
@@ -3678,6 +3722,28 @@
         271
       ],
       "bodyHeight": 421,
+      "modes": {
+        "ko": {
+          "frames": [
+            0
+          ],
+          "durations": [
+            1000
+          ]
+        }
+      }
+    },
+    "crew:cyberhell:guard:ko": {
+      "src": "img/ko-pose-v1/cyberhell/guard.webp",
+      "frameWidth": 640,
+      "frameHeight": 320,
+      "cols": 1,
+      "rows": 1,
+      "anchor": [
+        320,
+        300
+      ],
+      "bodyHeight": 374,
       "modes": {
         "ko": {
           "frames": [
