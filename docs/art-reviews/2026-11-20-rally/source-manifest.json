@@ -1,0 +1,43 @@
+{
+  "img/story-cyberhell-01-v2.webp": {
+    "size": [
+      1024,
+      1024
+    ],
+    "sha256": "2aa4d69ed314ed7959d9e6231a10ed1459d510cafdc6ff48e2b275d1e224d815"
+  },
+  "img/story-cyberhell-02-v3.webp": {
+    "size": [
+      1280,
+      721
+    ],
+    "sha256": "415ac8b54306ecec3133873772bad23f4d129af32b151382760e71a22bd246a2"
+  },
+  "img/story-cyberhell-03-v4.webp": {
+    "size": [
+      1280,
+      720
+    ],
+    "sha256": "3671cb6fb23c5e0a1febb625940b5437db63d979ab14df15c472f8c8a86eda7e"
+  },
+  "img/story-cyberhell-reinforcements-01.webp": {
+    "size": [
+      1672,
+      941
+    ],
+    "sha256": "d12b87b1b15ba4413ee91c92f9319d424b6671b55e38875beeb36382d9458c4f"
+  },
+  "img/story-cyberhell-reinforcements-02.webp": {
+    "size": [
+      1672,
+      941
+    ],
+    "sha256": "50a5d51565fc94f559a05f1c60fb6ddaf5d23bc583183de79383c112ae9a0b3a"
+  },
+  "img/story-cyberhell-02-v3.mp4": {
+    "sha256": "2886c63a4230147488759a9fcc003e06cd16a7c0d084c0141fb622fc934c756c"
+  },
+  "img/story-cyberhell-03-v4.mp4": {
+    "sha256": "ec1b926a14b55beaf87ce5bb29304c8c676185f3d1374cb13285a91278e567d4"
+  }
+}

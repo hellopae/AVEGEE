@@ -1,0 +1,89 @@
+{
+  "imagegen_calls": 5,
+  "images": [
+    {
+      "file": "img/story-cyberhell-01-v2.webp",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "WEBP",
+      "bytes": 351034,
+      "sha256": "57c3aafda4268d4e7446e39bdf838230d689e081b38c0cae2ce02c1d946b11d2",
+      "before_backup_matches_source": true
+    },
+    {
+      "file": "img/story-cyberhell-02-v3.webp",
+      "size": [
+        1280,
+        721
+      ],
+      "format": "WEBP",
+      "bytes": 344598,
+      "sha256": "d1b89e8ad686b3b78e5f80d2c4833cd2f8f6a6208f465da0709199c86fc95414",
+      "before_backup_matches_source": true
+    },
+    {
+      "file": "img/story-cyberhell-03-v4.webp",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "WEBP",
+      "bytes": 375000,
+      "sha256": "8f9a61573114e9fd7f5eb84fa44b3545cc4ff8c2ad11495532795fb98448c4a1",
+      "before_backup_matches_source": true
+    },
+    {
+      "file": "img/story-cyberhell-reinforcements-01.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "format": "WEBP",
+      "bytes": 743192,
+      "sha256": "bf96590fcc5265b07e94752585cb58e9d4bc76753d897aac92a9cb9a7a4d6c4a",
+      "before_backup_matches_source": true
+    },
+    {
+      "file": "img/story-cyberhell-reinforcements-02.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "format": "WEBP",
+      "bytes": 727732,
+      "sha256": "42cc0a9d4fcf12d11e6a878f30278b2b03619d81dfe4655b22ff50c315cbd75d",
+      "before_backup_matches_source": true
+    }
+  ],
+  "videos": [
+    {
+      "file": "img/story-cyberhell-02-v3.mp4",
+      "sha256": "2886c63a4230147488759a9fcc003e06cd16a7c0d084c0141fb622fc934c756c",
+      "unchanged": true
+    },
+    {
+      "file": "img/story-cyberhell-03-v4.mp4",
+      "sha256": "ec1b926a14b55beaf87ce5bb29304c8c676185f3d1374cb13285a91278e567d4",
+      "unchanged": true
+    }
+  ],
+  "checks": [
+    "5 images decode as WEBP",
+    "5 names and dimensions match original",
+    "5 edited image hashes differ from original",
+    "5 before backups match original hashes",
+    "2 MP4 hashes unchanged",
+    "compare.jpg decodes as JPEG",
+    "git diff --check clean",
+    "tracked changes exactly the 5 requested images",
+    "all added files under requested review folder",
+    "no src/tests/hooks/status.json/worklog.json changes"
+  ],
+  "visual_review": "ตรวจด้วยสายตาครบ 5 ภาพ: ชุดยามาใหม่ทุกภาพ; กวนอู/แวน เฮลซิง/WATSON-03 ในกองหนุนทั้งสองภาพ; ยักษ์เขียวและทีมอื่นยังอยู่ ไม่มีข้อความใหม่ที่อ่านได้ ไม่ใช่การอนุมัติ QA หรืออนุมัติงานศิลป์",
+  "compare_size": [
+    2120,
+    3751
+  ]
+}
