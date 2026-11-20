@@ -1,0 +1,51 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 7,
+  "reference": "docs/art-reviews/2026-11-20-design-approval/yama-cyberhell-costume-v1.webp",
+  "transparent_background": true,
+  "frame_8": "reuse frame 1 costume; independently place against original frame 8 bbox and alpha",
+  "prompts": [
+    {
+      "frame": 1,
+      "edit_target": "original-01.png",
+      "output": "generated-01.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the ONLY edit target: one 640x640 transparent game animation frame. Image 2 is ONLY the approved costume reference, NOT a pose or sword reference. Change only the clothing and hat of image 1 to the black violet silver armor with cyan circuit trim and cyan hat gemstone from image 2. Preserve EXACT original pose, silhouette proportions, small chibi head size, arms, hands, red face, facial features, horns, skin, sword geometry and sword glow. DO NOT add cyan to the sword; sword must remain identical to image 1. Preserve original framing: character occupies x123..454, y250..570 of 640 canvas. Keep feet and head positions fixed. No recentering, no enlargement. Same painted sprite style and linework. Exactly one character in the exact source pose, genuine transparent background, no ground shadow, text or labels. Costume/hat replacement only."
+    },
+    {
+      "frame": 2,
+      "edit_target": "input-02.png",
+      "output": "generated-02.png",
+      "prompt": "Use case: precise-object-edit. Input 1 is the edit target, one transparent game attack animation frame. Input 2 is ONLY costume reference. Replace ONLY outfit and hat with input 2's black/violet/silver layered cyber armor, cyan circuit lines, cyan hat band and gemstone. Keep EXACT input 1 pose: arms raised diagonally across face toward upper right, two hands holding sword hilt at right of head, blade extends diagonally upper LEFT behind hat. DO NOT use the reference pose. Preserve original red face, eyes, horns, skin, hands, blade and hilt. Sword stays plain silver purple, no cyan inset. Same chibi sprite proportions, same framing and character placement, feet at original baseline. No added effects. Transparent background, exactly one character. Match the original pose and limb angles precisely, costume swap only."
+    },
+    {
+      "frame": 3,
+      "edit_target": "input-03.png",
+      "output": "generated-03.png",
+      "prompt": "Use case: precise-object-edit. Input 1 is the ONLY edit target: transparent game attack frame, sword raised vertically above LEFT of head, both arms raised with elbows bending across left side and in front of face. Input 2 is ONLY approved costume. Change ONLY clothing and hat to black violet silver armored coat and boots with cyan circuit lines, cyan hat band and jewel from input 2. Retain input 1 EXACT pose, face, horns, red skin, hands, chibi body proportions, sword and hilt. Keep blade vertical tilted slightly right at original x220..260 above head; no diagonal attack stance from reference. Preserve framing, placement, feet baseline and sword glow. Same illustrated sprite style. Transparent background, one character, no added marks or effects. Do not redesign face or sword. Costume swap only."
+    },
+    {
+      "frame": 4,
+      "edit_target": "input-04.png",
+      "output": "generated-04.png",
+      "prompt": "Use case: precise-object-edit. Input 1 is ONLY edit target, a single transparent sword attack animation frame. Input 2 is ONLY approved costume reference. Replace ONLY clothing and hat with approved black violet silver cyber armor, cyan circuitry, cyan hat band/jewel. Keep EXACT target's stance, red face, eyes, horns, hands, skin, limbs and chibi proportions. Both hands holding sword extended to right at abdomen height, blade diagonal up-right, purple crescent slash overhead on right: preserve this sword and crescent exactly. Do not copy reference pose or sword. Same sprite style, original placement, feet baseline, shape proportions. Transparent background, one frame only. Do not change weapon, glow, facial expression or silhouette. Costume swap only."
+    },
+    {
+      "frame": 5,
+      "edit_target": "input-05.png",
+      "output": "generated-05.png",
+      "prompt": "Use case: precise-object-edit. Image 1 is the ONLY edit target, one transparent attack sprite. Image 2 is ONLY approved costume reference, never copy its pose. Replace ONLY clothes and hat with the reference black violet silver cyber armor and cyan circuit lines, cyan hat band and gemstone. Preserve EXACT original pose: leaning slightly forward, both arms out to RIGHT at waist height, sword held horizontally RIGHT, large purple crescent starts above head and curves down to sword tip. Keep original arms, hands, red skin, face, eyes, horns, blade, hilt, crescent glow and chibi proportions. Do not change sword geometry or glow, no cyan on blade. Same framing and character position, feet baseline and small illustrated sprite style. Exactly one character, transparent background. Costume swap only."
+    },
+    {
+      "frame": 6,
+      "edit_target": "input-06.png",
+      "output": "generated-06.png",
+      "prompt": "Use case: precise-object-edit. Input 1 is the ONLY edit target, one transparent sword attack animation frame. Input 2 is costume reference ONLY. Change ONLY hat and clothing to approved black violet silver cyber armor with cyan circuitry, cyan band and gemstone on hat. Preserve input 1 EXACT pose: head slightly tilted forward/right, arms extended diagonally down-right with hands at waist, sword sloping down-right with purple crescent curling UP at blade tip near lower right. Do not copy the reference pose or weapon. Keep source face, red skin, horns, hands, sword blade/hilt and glowing slash unchanged. Original chibi proportions, illustration style, placement and foot positions. One character, genuine transparent background, no added objects, text or effects. Costume swap only, keep exact arm and sword angles."
+    },
+    {
+      "frame": 7,
+      "edit_target": "input-07.png",
+      "output": "generated-07.png",
+      "prompt": "Use case: precise-object-edit. Input 1 is the ONLY edit target, a single transparent game sword attack recovery frame. Input 2 is ONLY approved costume reference. Change ONLY clothes/hat to black violet silver cyber armor with cyan circuitry and cyan hat band/gemstone. Preserve EXACT original pose: leaning forward slightly, arms stretched diagonally DOWN-RIGHT at waist height, long straight sword aimed down-right, no crescent glow in this frame. Never copy reference stance or sword angle. Keep original face, red skin, eyes, horns, hands, blade, hilt, limb angles and chibi proportions. Same source framing, placement, foot baseline and illustrated sprite style. Genuine transparent background, one character, no added effects or text. Preserve weapon exactly without cyan blade. Costume/hat swap only."
+    }
+  ]
+}

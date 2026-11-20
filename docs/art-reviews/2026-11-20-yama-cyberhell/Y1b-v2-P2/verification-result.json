@@ -1,0 +1,146 @@
+{
+  "checks": "artifact assertions completed",
+  "sheet_size": [
+    5120,
+    640
+  ],
+  "mode": "RGBA",
+  "frames": [
+    {
+      "frame": 1,
+      "bbox_alpha1": [
+        123,
+        250,
+        454,
+        570
+      ],
+      "foot": [
+        144.0,
+        569
+      ],
+      "changed_costume_pixels": 29884,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 2,
+      "bbox_alpha1": [
+        59,
+        221,
+        375,
+        580
+      ],
+      "foot": [
+        153.0,
+        568
+      ],
+      "changed_costume_pixels": 31655,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 3,
+      "bbox_alpha1": [
+        134,
+        126,
+        348,
+        581
+      ],
+      "foot": [
+        157.5,
+        568
+      ],
+      "changed_costume_pixels": 30999,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 4,
+      "bbox_alpha1": [
+        127,
+        189,
+        514,
+        581
+      ],
+      "foot": [
+        151.5,
+        568
+      ],
+      "changed_costume_pixels": 30650,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 5,
+      "bbox_alpha1": [
+        125,
+        174,
+        579,
+        575
+      ],
+      "foot": [
+        144.0,
+        568
+      ],
+      "changed_costume_pixels": 31636,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 6,
+      "bbox_alpha1": [
+        120,
+        250,
+        536,
+        595
+      ],
+      "foot": [
+        149.5,
+        568
+      ],
+      "changed_costume_pixels": 33510,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 7,
+      "bbox_alpha1": [
+        112,
+        250,
+        523,
+        588
+      ],
+      "foot": [
+        140.5,
+        567
+      ],
+      "changed_costume_pixels": 33287,
+      "changed_outside_costume_mask": 0
+    },
+    {
+      "frame": 8,
+      "bbox_alpha1": [
+        125,
+        250,
+        453,
+        570
+      ],
+      "foot": [
+        145.5,
+        569
+      ],
+      "changed_costume_pixels": 29318,
+      "changed_outside_costume_mask": 0
+    }
+  ],
+  "gif_frames": 8,
+  "gif_loop": 0,
+  "gif_durations_ms": [
+    180,
+    130,
+    130,
+    100,
+    100,
+    130,
+    160,
+    220
+  ],
+  "compare_size": [
+    960,
+    3840
+  ]
+}
