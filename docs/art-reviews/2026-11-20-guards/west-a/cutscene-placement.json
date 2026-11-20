@@ -1,0 +1,53 @@
+{
+  "source_landmarks": [
+    [
+      979.0,
+      9.0
+    ],
+    [
+      456.0,
+      925.0
+    ],
+    [
+      980.0,
+      884.0
+    ]
+  ],
+  "target_landmarks": [
+    [
+      760.0,
+      180.0
+    ],
+    [
+      437.0,
+      697.0
+    ],
+    [
+      727.0,
+      682.0
+    ]
+  ],
+  "forward_affine": [
+    [
+      0.5504349665569709,
+      -0.03834335424749362,
+      221.46925792895286
+    ],
+    [
+      0.016262449813648116,
+      0.5736957000573558,
+      158.9158003319224
+    ]
+  ],
+  "original_body_top_y": 180,
+  "original_front_sole": [
+    444,
+    697
+  ],
+  "original_rear_sole": [
+    729,
+    682
+  ],
+  "original_landmark_method": "manual visual measurement in original 1375x768 RGB image; wings and weapon excluded from body height",
+  "body_height_pixels_inclusive": 518
+}

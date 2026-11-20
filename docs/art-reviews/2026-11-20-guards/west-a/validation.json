@@ -1,0 +1,365 @@
+{
+  "scope": "west-a only",
+  "baseline_commit": "4efc2419c4530420aa9fb7d30570de5225eaa1bd",
+  "assets": [
+    {
+      "file": "img/West/crew-guard-west.webp",
+      "after": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          120,
+          32,
+          417,
+          512
+        ],
+        "height_px": 480,
+        "lowest_contact_median_bottom_3_rows": [
+          190.0,
+          511
+        ]
+      },
+      "after_sha256": "1dd06f003b9218b1f6ca59241207baed519ea63df047fa05b3259294b12c086c",
+      "before": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          62,
+          0,
+          450,
+          512
+        ],
+        "height_px": 512,
+        "lowest_contact_median_bottom_3_rows": [
+          189.5,
+          511
+        ]
+      },
+      "before_sha256": "3d00650afcadc8abecb4c5f01318abda823dc75685cc9852b348993592fbd9a3",
+      "structural_checks": {
+        "size": true,
+        "mode": true,
+        "grid": true,
+        "frames": true
+      },
+      "contact_delta_px": [
+        0.5,
+        0.0
+      ],
+      "height_change_percent": -6.25,
+      "body_height_before_manual_px": 480,
+      "body_height_after_px": 480,
+      "body_height_change_percent": 0.0
+    },
+    {
+      "file": "img/West/crew-guard-west-cutscene.webp",
+      "after": {
+        "size": [
+          1375,
+          768
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1
+      },
+      "after_sha256": "eb0267408c523c9fcef86b42b106fb3b05827cc18d51fa6c8de27fdbabfc3b1d",
+      "before": {
+        "size": [
+          1375,
+          768
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1
+      },
+      "before_sha256": "203c0c839521f6746b8c7480ab7ac20216ed84d53950be9803a1dd7507eda8ba",
+      "structural_checks": {
+        "size": true,
+        "mode": true,
+        "grid": true,
+        "frames": true
+      }
+    },
+    {
+      "file": "img/tea-rest/crew-guard-west-sit-v1.webp",
+      "after": {
+        "size": [
+          221,
+          206
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          20,
+          0,
+          220,
+          205
+        ],
+        "height_px": 205,
+        "lowest_contact_median_bottom_3_rows": [
+          116.0,
+          204
+        ]
+      },
+      "after_sha256": "8c2886858567fa723b398beb396821cf629605e36009f3dc5626d2eae7619f79",
+      "before": {
+        "size": [
+          221,
+          206
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          0,
+          0,
+          221,
+          205
+        ],
+        "height_px": 205,
+        "lowest_contact_median_bottom_3_rows": [
+          116.5,
+          204
+        ]
+      },
+      "before_sha256": "c486d75307f83862ca91fa4091da79f0f53966238f8e7753eaff6722c30cb4a0",
+      "structural_checks": {
+        "size": true,
+        "mode": true,
+        "grid": true,
+        "frames": true
+      },
+      "contact_delta_px": [
+        -0.5,
+        0.0
+      ],
+      "height_change_percent": 0.0
+    },
+    {
+      "file": "img/z3-events/guard-vanhelsing-west.webp",
+      "after": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          187,
+          30,
+          477,
+          498
+        ],
+        "height_px": 468,
+        "lowest_contact_median_bottom_3_rows": [
+          256.0,
+          497
+        ]
+      },
+      "after_sha256": "30ad8f6c42fd598d847a128f3262f2b5ab8390ecb2bdf01ddd45ffcd9efa3255",
+      "before": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          6,
+          30,
+          507,
+          498
+        ],
+        "height_px": 468,
+        "lowest_contact_median_bottom_3_rows": [
+          256.0,
+          497
+        ]
+      },
+      "before_sha256": "30cf0161128f3780a0a5a282d1d7dbd07b72251ca3c3b257289440849436170a",
+      "structural_checks": {
+        "size": true,
+        "mode": true,
+        "grid": true,
+        "frames": true
+      },
+      "contact_delta_px": [
+        0.0,
+        0.0
+      ],
+      "height_change_percent": 0.0
+    },
+    {
+      "file": "img/z3-events/guard-vanhelsing-west-profile.webp",
+      "after": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1
+      },
+      "after_sha256": "c4fbaada3758099a199bb8410f06e91232ea054f3e2b8dff2a93924620b70445",
+      "before": {
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1
+      },
+      "before_sha256": "6d179ee974eca34a1289ab62a40b824c3d2f0451565a1c8fd8df85076b2755b5",
+      "structural_checks": {
+        "size": true,
+        "mode": true,
+        "grid": true,
+        "frames": true
+      }
+    },
+    {
+      "file": "img/ko-pose-v1/west/guard.webp",
+      "after": {
+        "size": [
+          640,
+          320
+        ],
+        "mode": "RGBA",
+        "grid": [
+          1,
+          1
+        ],
+        "frames": 1,
+        "bbox_alpha_16": [
+          92,
+          42,
+          548,
+          300
+        ],
+        "height_px": 258,
+        "lowest_contact_median_bottom_3_rows": [
+          286.0,
+          299
+        ]
+      },
+      "after_sha256": "187b78fe6fde60341fa22e8f73a6731c34236f15c5eab002bcbe6ed2a93a5138",
+      "new_file_checks": {
+        "size_640x320": true,
+        "rgba": true,
+        "single_frame": true
+      }
+    }
+  ],
+  "measurement_method": "alpha >=16; lowest contact x is median over final three occupied rows; bbox right/bottom exclusive",
+  "limitations": [
+    "Event original is a placeholder: its bottom silhouette contact is the alignment proxy, not an anatomical foot.",
+    "Cutscene original foot and head landmarks were measured manually from RGB; after values are measured from the composited character mask.",
+    "Profile original is a text placeholder with no anatomical height or foot reference; only canvas/mode/grid/frame invariants apply.",
+    "Map original polearm reaches y=0; body top is manually measured at y=32. Body height is compared without the polearm; the full alpha bbox therefore becomes shorter.",
+    "Automated checks do not judge artistic approval or game runtime behavior."
+  ],
+  "cutscene": {
+    "body_bbox": [
+      296,
+      180,
+      993,
+      698
+    ],
+    "body_height_px": 518,
+    "body_height_change_percent": 0.0,
+    "foot_anchors": [
+      {
+        "before_manual_rgb": [
+          444,
+          697
+        ],
+        "after_mask_measured": [
+          445.0,
+          697
+        ],
+        "delta_px": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "before_manual_rgb": [
+          729,
+          682
+        ],
+        "after_mask_measured": [
+          730.0,
+          682
+        ],
+        "delta_px": [
+          1.0,
+          0.0
+        ]
+      }
+    ],
+    "unchanged_background_pixels_outside_edit_mask": 652032,
+    "changed_pixels_outside_edit_mask": 0
+  },
+  "ko": {
+    "head_left_feet_right": "visually inspected",
+    "visible_length_px": 456,
+    "standing_height_px": 480,
+    "length_ratio": 0.95
+  },
+  "sheets_and_gifs": {
+    "sheets_in_scope": 0,
+    "gifs_required": 0,
+    "reason": "Set a has only single images; set b untouched."
+  },
+  "imagegen_calls": 7,
+  "visual_inspection": {
+    "identity": "elderly gray-haired man, broad-brim hat, crossbow right hand, lantern left hand",
+    "no_visible_text_blood_religious_symbols": true,
+    "status": "inspected exported images; artistic acceptance remains with reviewer"
+  },
+  "game_runtime_tested": false
+}

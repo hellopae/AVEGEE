@@ -1,0 +1,90 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "calls": 7,
+  "limit": 12,
+  "entries": [
+    {
+      "call": 1,
+      "purpose": "standing",
+      "prompt": "Use case: identity-preserve. AVEGEE single transparent standing map sprite. Input 1 is the APPROVED IDENTITY and style: faithfully reproduce this original elderly man, gray swept hair, tidy gray mustache, detailed observant eyes, unsmiling weathered face, broad brim dark brown hat, long charcoal brown coat, belt leather satchel, wooden stake sheath and cloth-wrapped wax. Input 2 is POSE/PLACEMENT target ONLY: replace bird warrior completely with the man, no wings, beak, horns, armor, polearm. One full body chibi figure standing upright in 3/4 facing screen RIGHT, anatomical RIGHT hand on viewer LEFT holds compact conventional wooden crossbow pointing downward, LEFT hand on viewer RIGHT holds separate white-light lantern. Feet staggered as target: viewer-left boot sole lower than viewer-right sole by about 4% of body height; knees straight. Strong dark outlines and clustered pixel-art-inspired shading exactly like approval, not 3D or realistic. Transparent background, no ground plane or shadow, no cropped hat or boots or weapons, generous clear margin. Single sprite, not a sheet. No crosses, religious symbols, text, blood, logos, film likeness or franchise costume. Output portrait with all details readable.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-f3c9b1bb-27e7-4f6e-a936-a8151e4d02d2.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+        "img/West/crew-guard-west.webp (original before replacement)"
+      ],
+      "transparent_background": true
+    },
+    {
+      "call": 2,
+      "purpose": "sit",
+      "prompt": "Use case: identity-preserve. AVEGEE ONE seated tea-rest sprite, transparent background. Input 1 APPROVED character identity and art style: this exact original elderly silver-haired man with trimmed gray moustache, quiet observant eyes, unsmiling, wide-brim dark brown hat, long dark charcoal coat, leather belt satchel, stake sheath, cloth-wrapped wax. Input 2 POSE ONLY: seated cross-legged directly on ground, front 3/4 slightly screen RIGHT, large head above folded knees, both boots visible at lower left and lower right, compact silhouette almost square, soles and coat at shared bottom baseline. Replace bird creature entirely: no horns, wings, beak, armor. His anatomical RIGHT hand on viewer LEFT holds his compact wooden conventional crossbow resting safely horizontally across folded knees with muzzle downward toward screen left, while LEFT hand viewer RIGHT holds separate small white-light lantern beside his knee. Clearly visible gray mustache and hat, peaceful resting eyes open or slightly lowered. Match approved bold dark outline and clustered chibi shading. Full hat and knees and props inside image, no cropping, no ground shadow, no background, no stool, no cup, no lettering, no blood, no crosses or religious symbols, no film or actor likeness. Single full-body seated sprite, not sheet.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-b0f3da64-6e85-4939-b681-9048f4e265ea.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+        "img/tea-rest/crew-guard-west-sit-v1.webp (original before replacement)"
+      ],
+      "transparent_background": true
+    },
+    {
+      "call": 3,
+      "purpose": "cutscene",
+      "prompt": "Use case: precise-object-edit. AVEGEE cutscene REPLACEMENT. Input 1 is EDIT TARGET, landscape original frozen gothic castle stairs and red moon scene. Input 2 is APPROVED character identity/style. Change ONLY the large central bird warrior and his polearm/black wings/red cape into the approved elderly gray-haired man: wide-brim dark brown hat, tidy gray moustache, serious focused observant eyes, long charcoal brown coat, leather satchel and stakes and cloth-wrapped wax at waist. Keep the exact original scene composition, camera, icy stone stair architecture, all background gargoyles, iron gate on left, snowy cliffs/waterfalls, red moon top right, torches, sky and blue-white foreground magic arc in same positions. He is in the SAME central dynamic low battle lunge as old warrior, facing screen RIGHT, left foreground boot centered near x=.30 y=.90, right rear boot near x=.50 y=.88, hat top near x=.50 y=.23. Anatomical RIGHT arm viewer LEFT reaches behind holding a compact conventional wood-and-steel crossbow pointing right/down across his torso; anatomical LEFT hand viewer RIGHT holds a bright WHITE lantern extended toward screen RIGHT. Both props separate and readable; no polearm, no wings, no raven body. Coat trails left with motion, no cape. Chibi game illustration with crisp black outlines and clustered pixel-art-inspired shading, same scene palette, torch and moon rim lighting, blue ice light. No crosses, religious symbols, text, watermark, blood, no actor or film likeness. Single image landscape, preserve exact composition/aspect of target 1375x768.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-100799a7-91ab-46dd-ba41-a6f078d6f0c2.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "img/West/crew-guard-west-cutscene.webp (original before replacement)",
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp"
+      ],
+      "transparent_background": false
+    },
+    {
+      "call": 4,
+      "purpose": "ko",
+      "prompt": "Use case: identity-preserve. AVEGEE single KO unconscious character sprite, transparent. Input 1 is APPROVED identity reference: exactly the elderly gray-haired man with neat gray mustache, broad dark brown brimmed hunter hat, charcoal long coat, leather belt satchel, stake sheath and cloth-wrapped wax, compact chibi proportions, dark outlines and clustered shading. Input 2 is ONLY lying-down pose/layout and game art example, do not copy its green character or clothing. Draw the approved man lying fully unconscious on his back, entire body horizontal diagonal very slightly, HEAD at LEFT and BOOTS at RIGHT. Closed relaxed eyelids, no injury, no blood. Hat remains on his head, silver hair and mustache visible, knees relaxed slightly bent, hands relaxed. His own compact wood-and-steel conventional crossbow lies in his anatomical RIGHT relaxed hand along the lower foreground edge, and his LEFT relaxed hand still holds his white-light lantern beside his torso, lantern upright or tipped naturally. No words, stars or letter effects. Full silhouette from hat at far left to boot toes far right with comfortable margins. Canvas landscape exactly 2:1 ratio, one sprite only, not a sheet. No ground/background/shadow, no religious symbols/crosses, no film or actor likeness, no weapons from example. Same visual identity as approved, serene unconscious expression.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-fcecbc0f-fbe6-448e-89a7-af1d819ea6a5.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+        "img/ko-pose-v1/th/guard.webp"
+      ],
+      "transparent_background": true
+    },
+    {
+      "call": 5,
+      "purpose": "profile",
+      "prompt": "Use case: identity-preserve. AVEGEE single square event character PROFILE portrait. Input 1 is APPROVED character IDENTITY and STYLE, follow this exact original elderly man: gray swept hair, neatly trimmed gray mustache, serious thoughtful observant eyes, broad brim dark brown hat with simple rectangular brass buckle, charcoal brown long coat, brown neck scarf, leather satchel/stake sheath/wrapped wax at belt. Frame from hat top through waist, 3/4 facing screen RIGHT, shoulders and both arms visible, his anatomical RIGHT hand on viewer LEFT holds his small conventional wooden crossbow stock at bottom left, his LEFT hand viewer RIGHT raises his WHITE-light metal lantern to chest level visible at bottom right. One character, large readable face, bold dark outlines, refined clustered chibi game shading exactly like reference. Plain deep dark burgundy background matching a western gothic event UI, no scenery, no frame, no writing or labels, no watermark, blood, religious symbols or crosses, no actor/film likeness. Square 512x512 composition, keep complete hat with small margin, detailed face and mustache, no weapons overlapping his face.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-2456efcb-d9d8-4dd5-a129-004ce25a0d3b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp"
+      ],
+      "transparent_background": false
+    },
+    {
+      "call": 6,
+      "purpose": "cutout",
+      "prompt": "Use case: background-extraction. Input 1 is the EDIT TARGET, the already-approved cutscene hunter image. Extract ONLY the entire central elderly human hunter with ALL his coat tails, hat, gray hair, mustache, crossbow in anatomical RIGHT hand, WHITE lantern in LEFT hand, bags, stakes, wrapped wax, both legs and both boots. Input 2 is required approved identity reference only. DO NOT redesign or change his exact low battle lunge pose, perspective, proportions, colors or details from input 1. Remove all environment, stairs, castle, sky, moon, snow, stones, sparks and blue magic arcs. Output this exact single hunter as a genuinely transparent background cutout, complete silhouette from hat to boot soles and every trailing coat tip, generous small margins, landscape. Preserve all original visual character details, white lamp light may remain inside lamp only. No ground shadow. No text, blood, crosses, religious symbols or extra objects. Not a sheet.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-f05f12f5-cb37-4d68-af33-dc5f80015a6f.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "ImageGen output from call 3 (cutscene)",
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp"
+      ],
+      "transparent_background": true
+    },
+    {
+      "call": 7,
+      "purpose": "background",
+      "prompt": "Use case: precise-object-edit. Input 1 EDIT TARGET is the original AVEGEE frozen gothic castle cutscene. Remove ONLY the ENTIRE central foreground BIRD WARRIOR including its two black wings, red trailing cape, horned bird head, all armor, both boots, and the entire long polearm/axe shaft and blades from left grip all the way to bottom-right tip. Inpaint the empty area naturally with the same icy stone staircase, distant stone buildings and blue mist that were hidden behind him. Keep ALL existing background exactly in the same place and the same style: gate and gargoyle statues on LEFT, snow and ice, torches, castle silhouettes, red moon top RIGHT, cliffs and waterfalls, blue-white foreground circular magic arc, flying stones. No human or creature in the output, no new objects, no designs, NO TYPOGRAPHY. Input 2 is the approved future hunter reference for context ONLY: do NOT render that man in this image; this image is strictly the clean empty scene to composite him in later. Landscape same composition and aspect ratio as input 1, 1375x768, crisp pixel-art-inspired game environment. Preserve source camera, framing, colors and foreground effects. Remove no other objects; reconstruct only the warrior-occluded background, no crosses, no blood.",
+      "output": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97 as /Users/agapae/.codex/generated_images/01a1f86c-de8b-7373-a3d8-d6326d6e2e97/exec-e81abe7c-f142-4988-827c-b169fdae4c3c.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "approved_reference": "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp",
+      "referenced_inputs_in_order": [
+        "img/West/crew-guard-west-cutscene.webp (original before replacement)",
+        "docs/art-reviews/2026-11-20-guard-designs/guard-vanhelsing-west-v2.webp"
+      ],
+      "transparent_background": false
+    }
+  ]
+}
