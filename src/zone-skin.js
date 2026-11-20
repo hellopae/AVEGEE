@@ -19,6 +19,7 @@ const ZONE1_ART = Object.freeze({
   'town-tree-th':            'img/theme-v4/town-tree-th-v1.webp',
   'town-tree-red-th':        'img/theme-v4/town-tree-red-th-v1.webp',
   'town-tree-snow-th':       'img/theme-v4/town-tree-snow-th-v1.webp',
+  'town-tree-gold-th':       'img/theme-v4/town-tree-gold-th-v1.webp',   // G1: gold banyans by the heaven gate (Codex E2, 20 Nov)
   'town-prop-palm':          'img/theme-v4/town-palm-th-v1.webp',
   'town-prop-lamp-gold':     'img/theme-v4/town-lamp-gold-th-v1.webp',
   'town-prop-rock':          'img/map-zone1/prop-rock-v1.webp',

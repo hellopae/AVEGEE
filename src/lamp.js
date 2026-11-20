@@ -21,7 +21,7 @@ export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:
 
 /** The lamp's own icon (Rae R2 A, table A1: `img/ui/item-magic-lamp.webp`, plus `-lit` for the lit one). Not drawn yet -> null = the UI shows the 🪔 glyph and asks for no file.
  *  When Kittanate's drawing is saved at that path, set this to the path (one line). */
-export const LAMP_ICON_SRC = null;
+export const LAMP_ICON_SRC = 'img/ui/item-magic-lamp-lit.webp';   // Codex E2 (20 Nov)
 import { KUMAN_THONG } from './z1-wanthong.js';
 import { YOMATHAT_HELPER } from './z2-gate.js';
 import { WUKONG_HELPER, ART as WUKONG_ART } from './z2b-wukong.js';   // T6/3

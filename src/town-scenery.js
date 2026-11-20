@@ -104,6 +104,7 @@ function torchSprite() {
 export function townPropArtKey(p) {
   if(p.kind==='tree'&&p.biome==='lava')return 'town-tree-red-th';
   if(p.kind==='tree'&&p.biome==='ice')return 'town-tree-snow-th';
+  if(p.kind==='tree'&&p.biome==='heaven')return 'town-tree-gold-th';
   return ({palm:'town-prop-palm',lamp:'town-prop-lamp-gold'})[p.kind]||p.key;
 }
 const propArt = (p,tree,waterfall,resolveArt) => {
