@@ -35,12 +35,14 @@ function verdict(g,q,right=true){
  g.applyVerdict({right,heaven:soul.pure&&right,score:75,stars:3,tham:100,ked:75,over:0,short:0,karma:0},soul,'ทดสอบคำตัดสิน');
  g.queue=g.queue.filter(s=>s!==soul);return soul;
 }
-test('SIG opens at seven CYBER cases, cross-zone visits cannot accelerate it; final waits for all three captains and close acknowledgement',()=>{
- let g=createGame();unlock(g);g.zoneCases.cyberhell=6;g.zoneCases.th=500;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberSignal'),'locked');
- g.zoneCases.cyberhell=7;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberSignal'),'pending');assert.equal(g.startZoneEvent('cyberSignal','call'),null);
+// T8c (owner D6): SIG now opens after the record hall of case 10 (cyberSala) is won, not at seven cases; the three zones are freed in the order 3 -> 2 -> 1
+test('SIG opens after the record hall (case 10) is won, cross-zone visits cannot accelerate it; final waits for all three captains (3 -> 2 -> 1) and close acknowledgement',()=>{
+ let g=createGame();unlock(g);g.zoneCases.cyberhell=7;g.zoneCases.th=500;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberSignal'),'locked','not at 7 cases (the old rule)');
+ g.zoneCases.cyberhell=10;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberSignal'),'locked','10 cases but the record hall is not won');
+ g.zoneEvents.cyberhell.cyberSala='cleared';g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberSignal'),'pending');assert.equal(g.startZoneEvent('cyberSignal','call'),null);
  g.storySeen['cyber-signal-open']=true;assert.ok(g.startZoneEvent('cyberSignal','call'));win(g);assert.ok(!g.bossJustice?.active);
  g=reload(g);assert.equal(g.zoneEventStatus('cyberSignal'),'cleared');
- for(const z of ['th','asia','west']){
+ for(const z of ['west','asia','th']){
   zone(g,z);const key=SIGNAL_KEYS[z];assert.equal(g.zoneEventStatus(key),'pending');
   g.storySeen[signalStory(key,'open')]=true;assert.ok(g.startZoneEvent(key,'call'));win(g);
   assert.ok(!g.bossJustice?.active);assert.equal(g.zoneEvents[z][key],'cleared');g=reload(g);
@@ -62,7 +64,7 @@ test('SIG victims never queue a repeat trial; friendly post remains in its ledge
 });
 test('SIG choice survives defeat/reload; call stuns the returning boss, rush pays 25 percent exactly once',()=>{
  for(const choice of ['call','rush']){
-  let g=createGame();unlock(g);g.zoneCases.cyberhell=7;g.refreshZoneEvents();g.storySeen['cyber-signal-open']=true;
+  let g=createGame();unlock(g);g.zoneCases.cyberhell=10;g.zoneEvents.cyberhell.cyberSala='cleared';g.refreshZoneEvents();g.storySeen['cyber-signal-open']=true;
   g.startZoneEvent('cyberSignal',choice);g.battle.over='lose';g.endBattle();g=reload(g);g.pendingReward=null;
   assert.equal(g.signalChoices.cyberSignal,choice);assert.equal(g.zoneEventStatus('cyberSignal'),'pending');
   g.startZoneEvent('cyberSignal');for(const f of g.battle.foes)f.hp=0;g.battle.pendingWave=2;g.advanceZoneEventWave();
@@ -163,12 +165,16 @@ test('stale pending final gates cannot bypass SIG through the map, either entry 
   }
 });
 test('each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement',()=>{
-  for(const z of ['th','asia','west']){
+  // T8c: the zone above must be freed too - west needs Trojan-9, asia needs Valdric as well, th needs Akura as well
+  const above={west:null,asia:['west','signalWest'],th:['asia','signalAsia']};
+  for(const z of ['west','asia','th']){
     const g=createGame();zone(g,z);g.zoneCases[z]=500;g.refreshZoneEvents();
     assert.equal(g.zoneEventStatus(SIGNAL_KEYS[z]),'locked');
     g.zoneEvents[z][SIGNAL_KEYS[z]]='pending';g.storySeen[signalStory(SIGNAL_KEYS[z],'open')]=true;
     assert.equal(g.startZoneEvent(SIGNAL_KEYS[z],'rush'),null);
-    (g.zoneEvents.cyberhell ||= {}).cyberSignal='cleared';assert.ok(g.startZoneEvent(SIGNAL_KEYS[z],'rush'));
+    (g.zoneEvents.cyberhell ||= {}).cyberSignal='cleared';
+    if(above[z]){assert.equal(g.startZoneEvent(SIGNAL_KEYS[z],'rush'),null,`${z}: the zone above is not freed yet`);(g.zoneEvents[above[z][0]] ||= {})[above[z][1]]='cleared';}
+    assert.ok(g.startZoneEvent(SIGNAL_KEYS[z],'rush'));
   }
   for(const missing of ['th','asia','west']){
     const g=createGame();unlock(g);g.zoneCases.cyberhell=10;g.zoneEvents.cyberhell.cyberSignal='cleared';

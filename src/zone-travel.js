@@ -1,5 +1,6 @@
 /** Persisted travel rules; rendering and combat remain owned by the game. */
 import { ROUTE_GEOMETRY, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
+import { harbourOpen, walkBackTarget, seizedActive } from './seized.js';   // T8c: the seized world (harbours locked, the way back on foot)
 export const TRAVEL_VERSION = 1;
 export const TRAVEL_ZONES = Object.freeze(['th', 'asia', 'west', 'cyberhell']);
 const route = (from, to, name, checkpoints, foes) => Object.freeze({
@@ -72,6 +73,7 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
   return result;
 }
 export function openDungeonRoutes(g) {
+  if (seizedActive(g)) return [];   // T8c: while the world is seized the frontiers lead only back (walkBackTarget), never on to the next zone
   return DUNGEON_ROUTES.filter(r => r.from === g.zone && routeAvailable(g,r));
 }
 export function beginDungeon(g, to) {
@@ -154,7 +156,8 @@ export function activateHarbour(g) {
 export function harbourDestinations(g) {
   const s = state(g);
   if (!s.ports[g.zone] || busy(g) || s.active) return [];
-  return TRAVEL_ZONES.filter(k => k !== g.zone && s.visited[k] && s.ports[k]);
+  if (!harbourOpen(g, g.zone)) return [];   // T8c (D6): while Zones 1-3 are seized every harbour is locked from outside; NR-1 opens them one by one
+  return TRAVEL_ZONES.filter(k => k !== g.zone && s.visited[k] && s.ports[k] && harbourOpen(g, k));
 }
 /** Put this guard in moveZone itself, not only its menu. */
 export function canTravelZone(g, to) {
@@ -162,6 +165,7 @@ export function canTravelZone(g, to) {
   const status = dungeonStatus(g);
   if (status) return status.ready && status.route.to === to && !status.pending;
   if (state(g).active) return false;
+  if (walkBackTarget(g) === to) return true;   // T8c: the walk back through the frontier below (moveZone decides 'walk' or 'boat' by where Yama stands)
   return harbourDestinations(g).includes(to);
 }
 /** Call only after moveZone returned true. Use mode captured before moveZone. */
@@ -174,6 +178,8 @@ export function finishZoneArrival(g, from, to, mode) {
         a.cleared.length !== r.checkpoints.length || !a.cleared.every((id,i) => id === r.checkpoints[i].id)) return false;
   } else if (mode === 'boat') {
     if (a || !s.visited[from] || !s.visited[to] || !s.ports[from] || !s.ports[to]) return false;
+  } else if (mode === 'walk') {   // T8c: back through the frontier on foot - only down the chain Zone 4 -> 3 -> 2 -> 1, from a zone whose lord is freed
+    if (a || walkBackTarget(g, from) !== to) return false;
   } else return false;
   s.visited[to] = true;
   s.active = null;

@@ -23,6 +23,8 @@ import { COL } from './z4b-colosseum.js';   // T8a/2
 import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { Z4S } from './z4e-sala.js';   // T8b/5
+import { Z4G_KEYS } from './seized-keys.js';   // T8c
+import { walkBackTarget, zoneSeized } from './seized.js';   // T8c
 import { Z4L } from './z4f-lupin.js';   // T8b/6
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
 import { HARBOR } from './z2b-harbor.js';   // T6/4
@@ -1821,7 +1823,7 @@ const API = {
   advanceAfterlife(dt) {
     if(this.mapTravel)return;
     if (bossJusticeActive(this)) return;
-    if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
+    if (this.paused || this.over || westSpiritsFrozen(this) || zoneSeized(this) || !Number.isFinite(dt) || dt <= 0) return;   // T8c: a seized zone stands still
     advancePunishments(this,dt);this._punishmentFrameAdvanced=true;
     this.advanceCourtArrivals(dt);
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
@@ -2020,7 +2022,7 @@ const API = {
     if(this.battle)noteBattleHistory(this);   // Q2: เจอบอส/เทวดา/หัวหน้าในฉากต่อสู้ = เปิดการ์ดคู่มือ
     if(this.mapTravel)return;
     this.updateActorRecovery();
-    if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
+    if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this) || zoneSeized(this)) return;   // T8c: a seized zone stands still (no new souls, no work, no order loss)
     if(!this._punishmentFrameAdvanced)advancePunishments(this,BAL.tickMs);
     this._punishmentFrameAdvanced=false;
     this.tick++;
@@ -2394,6 +2396,10 @@ const API = {
       return;
     }
 
+    if (zoneSeized(this)) {   // T8c (Rae R2 D 7): the reapers of a seized zone are controlled and stand still at their posts - nothing runs here until the lord of the zone is freed (Yama and Nira can still walk)
+      for (const c of this.crew) if (c.x == null) { c.x = c.hx; c.y = c.hy; }
+      return;
+    }
     prepareCooks(this);stepCanteen(this,dt);
     this.restoreBuilders();
     advanceWorkers(this,dt);
@@ -5321,6 +5327,20 @@ const API = {
     const st = dungeonStatus(this);
     return !!st && this.zone === 'west' && st.route.id === 'west:cyberhell' && this.home67Guest() && !this.battle && !this.storySeen[Z4A.silentStory];
   },
+  /** T8c: may Yama walk back through the frontier into `to` right now? (the seized world: his own lord freed, the zone below, standing at the frontier gate) */
+  walkBackReady(to = walkBackTarget(this)) {
+    return !!to && walkBackTarget(this) === to && !dungeonStatus(this) && !this.zoneTravel?.active && Math.hypot(this.player.x - FRONTIER.x, this.player.y - FRONTIER.y) <= FRONTIER.reach;
+  },
+  /** T8c (Rae 7.1): before the crossing of Frontier 3-4 back to Zone 3 Lucifer says his one line at the side gate of the colosseum (once, not a fight); the UI waits for the scene, then starts the walk */
+  walkBackPrelude(to = walkBackTarget(this)) {
+    if (!this.walkBackReady(to)) return false;
+    if (this.zone === 'cyberhell') this.queueStory(Z4G_KEYS.passStory);
+    this.save(); this.onChange(); return true;
+  },
+  /** T8c (Rae 7.2): entering a seized zone - the fire scene of that zone plays once (the lord himself is fought at the frontier next) */
+  walkBackArrived(zone) {
+    const key = Z4G_KEYS.fire[zone]; if (key) this.queueStory(key);
+  },
   beginBorderDungeon(to) {
     if (this.zone === 'west' && this.home67Waiting?.()) { this.queueNotice(SEV.home67WarnNotice); this.onChange(); return false; }   // T8a (NH-4): the man in the light-banded cap is still waiting on the pier
     if(Math.hypot(this.player.x-FRONTIER.x,this.player.y-FRONTIER.y)>FRONTIER.reach||!beginDungeon(this,to))return false;
@@ -5387,9 +5407,9 @@ const API = {
   moveZone(k) {
     const z = ZONES.find(x => x.k === k);
     if (!z || !canTravelZone(this,k)) return false;
-    const from=this.zone,travelMode=dungeonStatus(this)?.ready?'dungeon':'boat';
+    const from=this.zone,travelMode=dungeonStatus(this)?.ready?'dungeon':this.walkBackReady(k)?'walk':'boat';   // T8c: 'walk' = back through the frontier below while the world is seized (D6)
     if(travelMode==='dungeon'&&((bossGuideFollowing(this)&&!(this.zone==='west'&&this.home67Guest()))||bossGuideWaiting(this)))return false;   // T8a: HOME-67 does not say farewell at the gate of Zone 4 - he goes in with the team
-    if(travelMode==='boat'&&!this.atHarbour()||travelMode==='dungeon'&&!dungeonAtExit(this))return false;
+    if(travelMode==='boat'&&(!this.atHarbour()||!harbourDestinations(this).includes(k))||travelMode==='dungeon'&&!dungeonAtExit(this))return false;   // T8c: a boat needs an open harbour (canTravelZone also says yes to the walk back)
 
     // A branch cannot keep drawing its walkers once another map is active.
     for (const walk of this.afterlifeWalks) {
@@ -5514,6 +5534,7 @@ const API = {
     finishZoneArrival(this,from,k,travelMode);
     if (k === 'cyberhell' && !back && this.home67Joined && !this.storySeen[Z4A.zone4Story]) this.queueStory(Z4A.zone4Story);   // T8a (2.3): the city with nobody in it
     if (k === 'west' && !back && this.zoneEventStatus(Z3_ARRIVE.eventKey) === 'pending') this.queueStory(Z3_ARRIVE.arriveStory);   // T7/1: the first arrival in Zone 3 (Rae R2 C 1.4)
+    if (travelMode === 'walk') this.walkBackArrived(k);   // T8c: the fire scene of the zone, once
     if (travelMode === 'boat') this.boatArrived();   // T5'/7
     if(travelMode==='boat'){
       const p=this.harbourPoint(),at=nearestWalk(p.x,p.y)||[p.x,p.y];

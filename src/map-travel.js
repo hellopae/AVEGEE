@@ -12,7 +12,7 @@ function length(path){return path.slice(1).reduce((v,p,i)=>v+Math.hypot(p[0]-pat
 function along(path,p){let d=length(path)*p;for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],n=Math.hypot(b[0]-a[0],b[1]-a[1]);if(d<=n)return {x:lerp(a[0],b[0],n?d/n:0),y:lerp(a[1],b[1],n?d/n:0)};d-=n;}const q=path.at(-1);return {x:q[0],y:q[1]};}
 export function beginMapTravel(g,to,{mode='boat',reduced=false,load=null}={}){
  if(g.mapTravel||g.battle||g.over)return false;
- if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;
+ if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):mode==='walk'?!g.walkBackReady(to):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;   // T8c: 'walk' = the way back through a frontier while the world is seized
  const pier=mode==='boat'?g.harbourPoint():{x:g.player.x,y:g.player.y};
  const nira=mode==='boat'?pathTo(g.crewOf('nira'),pier):[];
  g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:ferryBerth(g.zone,pier).y,niraPath:nira,boardingHop:ferryBerth(g.zone,pier).hop,approachMs:Math.max(1800,Math.ceil(length(nira)/TRAVEL_WALK_SPEED)),committed:false,focus:{...pier},load,loaded:!load,loadPromise:null,loadError:null};

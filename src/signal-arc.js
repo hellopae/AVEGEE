@@ -1,4 +1,5 @@
 import { BOSS_SKILLS } from './boss-skills-data.js';   // BOSS-SKILLS set A: the hypnotised border lords use the same moves as at their own border
+import { Z4G_KEYS } from './seized-keys.js';   // T8c
 // SIG victims return to their posts; these keys deliberately are NOT frontier-justice events.
 export const SIGNAL_KEYS = { cyberhell:'cyberSignal', th:'signalTh', asia:'signalAsia', west:'signalWest' };
 export const signalStory = (key, phase) => key === 'cyberSignal' ? `cyber-signal-${phase}` : `signal-${{signalTh:'th',signalAsia:'asia',signalWest:'west'}[key]}-${phase}`;
@@ -12,9 +13,12 @@ const configs = [
   ['asia','อากุระ',263,[12,19],6,140,{health:2},8],
   ['west','วาลดริก',285,[25,39],10,160,{holyWater:1,lotus:1},8],
 ];
+// T8c (Rae R2 D 7 / owner D6): the order of the way back is fixed - Trojan-9 (Zone 4, after the record hall of case 10), then Valdric (Zone 3), Akura (Zone 2), Tanthasura (Zone 1); a zone's lord can be reached only once the one above is freed
+// (the frontier gate is shut with green light). Was: Trojan-9 at 7 cases right after his fight, the three others in any order.
+const SIGNAL_CHAIN = { west:{ cyberhell:['cyberSignal'] }, asia:{ cyberhell:['cyberSignal'], west:['signalWest'] }, th:{ cyberhell:['cyberSignal'], asia:['signalAsia'] } };
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
-  k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?7:0,
-  ...(zone==='cyberhell'?{requires:['cyberBreach']}:{requiresZone:{cyberhell:['cyberSignal']}}),
+  k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?10:0,
+  ...(zone==='cyberhell'?{requires:['cyberSala']}:{requiresZone:SIGNAL_CHAIN[zone], winStories:[Z4G_KEYS.restored[zone]], winNotices:[Z4G_KEYS.harbourNotice[zone]]}),
   mode:'waves',team:'frontier',title:{th:`สัญญาณครอบงำ · ${name}`},
   alert:{th:`${name} ถูกคำสั่งจากระบบครอบงำ ไปที่ชายแดนเพื่อช่วยเขา`},
   waves:[[{kind,count:2,hp:50,atk:[8,12]}],[{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]},

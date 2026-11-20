@@ -57,7 +57,7 @@ export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}
   else if(kind==='event') {   // Z2-FIXUP: a single story fight of the zone (ZONE_EVENTS[zone][eventKey]) on its own, the way the player first meets it
     // BOSS-SKILLS: the signal-arc fights (SIGNAL_EVENTS: the border lords met again, hypnotised) need their opening story seen and a choice made; 'rush' = no free stun on the boss (the harder way)
     const sig=ZONE_EVENTS[zone].find(e=>e.k===eventKey);
-    if(sig?.signal){if(zone!=='cyberhell')g.zoneEvents.cyberhell={...g.zoneEvents.cyberhell,cyberSignal:'cleared'};g.storySeen[eventKey==='cyberSignal'?'cyber-signal-open':`signal-${zone}-open`]=true;g.signalChoices[eventKey]='rush';}
+    if(sig?.signal){if(zone!=='cyberhell'){g.zoneEvents.cyberhell={...g.zoneEvents.cyberhell,cyberSignal:'cleared'};for(const [z,k] of [['west','signalWest'],['asia','signalAsia']])if(z!==zone)(g.zoneEvents[z] ||= {})[k]='cleared';}   /* T8c: the order 3 -> 2 -> 1: the zones above must be freed first */g.storySeen[eventKey==='cyberSignal'?'cyber-signal-open':`signal-${zone}-open`]=true;g.signalChoices[eventKey]='rush';}
     g.zoneEvents[zone][eventKey]='pending';g.startZoneEvent(eventKey);
   }
   else if(kind==='breach') {

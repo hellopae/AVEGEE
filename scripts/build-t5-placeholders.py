@@ -183,6 +183,11 @@ GROUPS['z4c6'] = [   # T8b/6 - Rae sec. 11 groups L (Lupin: a polite thief of th
   ('summon/battle-lupin.webp', (512, 512), 'sprite', 'PLACEHOLDER battle-lupin (S3: leaning with a smile, the cloak flying)'),
   ('summon/cut-lupin-mask-beat.webp', CUT, 'cut', 'PLACEHOLDER cut-lupin-mask-beat  (S6: Lupin in the translucent mask copies a foe\'s stance; the foe stops mid-beat)'),
 ]
+GROUPS['z4g'] = [   # T8c - Rae sec. 11 group K: the seized zones on the way back (K1-K3: burnt, still; the reapers stand with a green line across their eyes; the Gate Guard stands at the gate, unspoken for. No blood.)
+  ('z4-events/cut-z3-fire.webp', CUT, 'cut', 'PLACEHOLDER cut-z3-fire  (K1: the stone square of the West burnt black, ash-grey snow, Poena / Noir / Ognion / Sybil / Grace standing still with a green line of light across their eyes, Van Helsing at the gate)'),
+  ('z4-events/cut-z2-fire.webp', CUT, 'cut', 'PLACEHOLDER cut-z2-fire  (K2: the Eastern harbour burning in a long line, red timber posts as black frames, the red paper lanterns dark, Goku / Homura / Satori / Megumi / Kuro standing still with green eyes, Guan Yu at the gate)'),
+  ('z4-events/cut-z1-fire.webp', CUT, 'cut', 'PLACEHOLDER cut-z1-fire  (K3: Suvarnabhumi - the first reaper registry hall a black frame, its name-board scorched, thin smoke, Taan / Pleng / Kan / Boon / Dam standing still with green eyes, Kumphan at the gate with his club tip pointed at the ground)'),
+]
 def font(size):
     for f in ('/System/Library/Fonts/Supplemental/Arial.ttf', '/System/Library/Fonts/Helvetica.ttc'):
         try: return ImageFont.truetype(f, size)
