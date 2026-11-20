@@ -13,6 +13,8 @@ import { harbourDestinations, openDungeonRoutes } from '../src/zone-travel.js';
 import { zone4, drain } from './helpers/zone4.mjs';
 import { harbourTravel } from './helpers/travel.mjs';
 import { createGame } from '../src/game.js';
+import { readFileSync } from 'node:fs';
+import { pickTalk } from '../src/talk.js';
 const win = g => { const b = g.battle; b.youHp = 99999; for (let i = 0; i < 80 && !b.over; i++) { for (const f of b.foes) if (f.hp > 0) { f.hp = 1; f.atk = [0, 0]; } g.selectFoe(b.foes.find(f => f.hp > 0).id); g.battleAct('atk'); if (!b.over && b.pendingWave) g.advanceZoneEventWave(true); } assert.equal(b.over, 'win'); g.endBattle(); g.pendingReward = null; };
 /** Zone 4 right after the record hall (case 10) fell */
 const seized = () => { const g = zone4(); g.zoneEvents.cyberhell.cyberBreach = 'cleared'; g.zoneEvents.cyberhell.cyberSala = 'cleared'; g.zoneCases.cyberhell = 10; g.refreshZoneEvents(); g.notices = []; g.storyQueue.length = 0;
@@ -67,4 +69,24 @@ test('the texts: Rae\'s fire / restored scenes and NR-1 (the zone name in the ti
   setLang('th'); assert.equal(NOTICES['z3-harbour-open'].title, 'ท่าเรือปัจฉิมเปิดอีกครั้ง'); assert.equal(NOTICES['z2-harbour-open'].title, 'ท่าเรือบูรพาเปิดอีกครั้ง'); assert.equal(NOTICES['z1-harbour-open'].title, 'ท่าเรือสุวรรณภูมิเปิดอีกครั้ง');
   assert.equal(NOTICES['z3-harbour-open'].en.title, 'The Western Harbour Is Open Again'); assert.equal(NOTICES['z2-harbour-open'].en.title, 'The Eastern Harbour Is Open Again'); assert.equal(NOTICES['z1-harbour-open'].en.title, 'The Suvarnabhumi Harbour Is Open Again');
   assert.equal(NOTICES['z3-harbour-open'].text, 'ท่าเรือของโซนนี้กลับมาใช้ได้ ท่านล่องเรือกลับโซนนี้ได้อีกครั้ง'); assert.equal(NOTICES['z3-harbour-open'].en.button, 'Understood');
+});
+test('a controlled reaper of a seized zone says only Rae\'s one line when touched (TH + EN); Nira does not; after the zone is freed the reapers talk as usual', () => {
+  const g = seized(); g.storySeen['cyber-signal-open'] = true; fightLord(g); drain(g); atGate(g); g.moveZone('west'); drain(g);
+  const taan = g.crew.find(c => c.k === 'taan'); assert.ok(taan, 'a reaper stands in Zone 3'); const target = { kind:'crew', key:'taan', name:taan.name, id:'crew:taan' };
+  setLang('th'); const th = pickTalk(g, target); assert.equal(th.text, 'ขวาง ... ไว้ ... ทุก ... ทาง'); assert.equal(th.who, taan.name); assert.equal(th.group, 'controlled');
+  setLang('en'); assert.equal(pickTalk(g, target).text, 'Block ... every ... road.'); setLang('th');
+  const nira = g.crew.find(c => c.k === 'nira'); if (nira) assert.notEqual(pickTalk(g, { kind:'crew', key:'nira', name:nira.name, id:'crew:nira' })?.group, 'controlled');
+  fightLord(g); drain(g); assert.notEqual(pickTalk(g, target)?.group, 'controlled', 'freed: normal talk');
+});
+test('the UI is wired (source check - the browser is not opened here): the frontier exit leads back through walkBackTarget, the harbour says it is locked, the walk back is a journey of its own', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.ok(ui.includes("const back = walkBackTarget(g); if (back) { FW.destroy(); startWalkBack(back); return; }")); assert.ok(ui.includes("startMapJourney(to, 'walk')")); assert.ok(ui.includes("keepBorder=mode==='dungeon'"));
+  assert.ok(ui.includes('Harbour locked from outside')); assert.ok(ui.includes("const routeOpen = () => openDungeonRoutes(g).length > 0 || !!walkBackTarget(g);"));
+});
+test('the walk back goes through the same journey object as the boat / dungeon (beginMapTravel mode "walk" -> finishMapTravel): refused away from the gate or out of order, then the zone changes', async () => {
+  const { beginMapTravel, finishMapTravel } = await import('../src/map-travel.js');
+  const g = seized(); g.storySeen['cyber-signal-open'] = true; fightLord(g); drain(g);
+  Object.assign(g.player, { x:100, y:100 }); assert.equal(beginMapTravel(g, 'west', { mode:'walk' }), false, 'not at the gate'); atGate(g);
+  assert.equal(beginMapTravel(g, 'asia', { mode:'walk' }), false, 'not the next zone'); assert.equal(beginMapTravel(g, 'west', { mode:'boat' }), false, 'no boat');
+  assert.equal(beginMapTravel(g, 'west', { mode:'walk' }), true); assert.equal(finishMapTravel(g), true); assert.equal(g.zone, 'west'); assert.equal(g.mapTravel, null); assert.ok(g.storyQueue.some(s => s.key === 'z3-fire'));
 });

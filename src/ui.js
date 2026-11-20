@@ -39,6 +39,7 @@ import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
+import {seizedActive,walkBackTarget} from './seized.js';   // T8c
 import {routeBossCave} from './route-geometry.js';
 import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';
@@ -4098,13 +4099,15 @@ function openFrontierWalk(invasionKey = null) {
   const guide=dlg.querySelector('#frw-guide');
   // P5: ไม่มีปุ่ม "กลับเข้าโซน" / "ออกนอกชายแดน" — เดินถึงลูกศรบนพื้น (ประตูบน / ทางล่าง) แล้วออกเอง (src/frontier.js)
   // ป้ายบนพื้นใช้ข้อความเดิมของปุ่มทุกคำ
-  const routeOpen = () => openDungeonRoutes(g).length > 0;
-  const exitLabel = !routeOpen() ? 'ทางนอกชายแดน · ยังไม่เปิด' : g.zone !== 'th' ? 'ออกนอกชายแดน · ดินแดนถัดไป' : 'ออกนอกชายแดน · เส้นทางโซน 2';
+  // T8c (owner D6): while the world is seized the way out of a frontier leads only BACK (walkBackTarget) - and only once this zone's controlled lord is freed; until then the gate is shut with green light (labels: TODO(Rae))
+  const routeOpen = () => openDungeonRoutes(g).length > 0 || !!walkBackTarget(g);
+  const exitLabel = walkBackTarget(g) ? 'เดินกลับผ่านชายแดน · โซนก่อนหน้า' : seizedActive(g) ? 'ประตูถูกปิดด้วยแสงเขียว · ปลดปล่อยผู้ครอบงำของโซนนี้ก่อน' : !routeOpen() ? 'ทางนอกชายแดน · ยังไม่เปิด' : g.zone !== 'th' ? 'ออกนอกชายแดน · ดินแดนถัดไป' : 'ออกนอกชายแดน · เส้นทางโซน 2';
   const cv2 = dlg.querySelector('#frw-cv');
 
   let FW = null;
   const leaveToZone = () => { FW.destroy(); dlg.close(); };
   const leaveToRoute = () => {
+    { const back = walkBackTarget(g); if (back) { FW.destroy(); startWalkBack(back); return; } }   // T8c: the walk back through the frontier below
     if(g.bossGuideWaiting?.()){if(HARBOR_ZONES.includes(g.zone)){FW.destroy();openStoryNotice(g.zone==='asia'?HARBOR.remindNotice:YOMATHAT.remindNotice);const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);return;}askGuide();return;}   // T5'/2 (Rae 5.6): in Zone 1 he is at the harbor - speak to him first
     const route=openDungeonRoutes(g)[0];
     if(!route){
@@ -5523,7 +5526,7 @@ function openZone() {
   modal(`<h2>แผนที่อเวจี</h2><img src="img/zone-world-map.webp" alt="สี่ดินแดนอเวจี" style="width:100%;border-radius:12px">
     <p>ชนะบอส → เดินออกชายแดน → ผ่านดันเจี้ยน → ถึงเมืองใหม่ → เปิดท่าเรือ</p>
     <div class="row">${ZONES.map(z=>`<span>${esc(z.name)} · ${g.zoneTravel.visited[z.k]?'ค้นพบแล้ว':'ยังไม่ถึง'}${g.zoneTravel.ports[z.k]?' · ท่าเรือเปิด':''}</span>`).join('')}</div>
-    <div class="row"><button id="walk-border" ${routes.length?'':'disabled'}>เดินไปชายแดน</button><button id="walk-port">เดินไปท่าเรือ</button><button data-close>ปิด</button></div>
+    <div class="row"><button id="walk-border" ${routes.length||walkBackTarget(g)?'':'disabled'}>เดินไปชายแดน</button><button id="walk-port">เดินไปท่าเรือ</button><button data-close>ปิด</button></div>
     <p>${ports.length?'เดินทางเรือได้ '+ports.map(k=>ZONES.find(z=>z.k===k).name).map(esc).join(' · '):'Fast Travel เปิดได้เมื่อค้นพบและเปิดท่าเรือปลายทางแล้ว'}</p>`,d=>{
       d.querySelector('#walk-border').onclick=()=>{dlg.close();g.walkTo(FRONTIER.x,FRONTIER.y);};
       d.querySelector('#walk-port').onclick=()=>{const p=g.harbourPoint();dlg.close();g.walkTo(p.x,p.y);};
@@ -5707,7 +5710,7 @@ function openHarbour() {
   const quest=bm.quest==='active'?`<div class="boatman-quest"><img src="${esc(BOAT_ART.portrait)}" alt="" onerror="this.remove()"><p>${esc(pickL(BOATMAN.name))} · ${esc(pickL(BOATMAN_TEXT.log).replace('{m}',heardCount(g)))}</p></div>`:'';
   modal(`<h2>ท่าเรือรับวิญญาณ</h2><p>Yama และ Nira เดินทางด้วยเรือไปเมืองที่เปิดท่าเรือแล้ว</p>${quest}
     <div class="row">${canListen(g)?`<button class="gold" data-boat-listen>${esc(pickL(BOATMAN_TEXT.listen))}</button>`:''}${canSing(g)?`<button class="gold" data-boat-sing>${esc(pickL(BOATMAN_TEXT.talk))}</button>`:''}
-    ${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>'}
+    ${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||(seizedActive(g)?`<p>${esc(en?'Harbour locked from outside · it opens only when the controlling lord of this zone falls.':'ท่าเรือถูกล็อกจากภายนอก · ปลดล็อกได้เมื่อผู้ครอบงำของโซนนี้พ่าย')}</p>`:'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>')}
     <button data-close>ปิด</button></div>`,d=>{
       d.querySelectorAll('[data-sail]').forEach(btn=>btn.onclick=()=>sailTo(btn.dataset.sail));
       d.querySelector('[data-boat-listen]')?.addEventListener('click',()=>{if(g.boatListen())dlg.close();});
@@ -5746,6 +5749,12 @@ function startBorderExpedition(to) {
  prompt.addEventListener('cancel',e=>{e.preventDefault();finish(false);});
  document.body.append(prompt);prompt.showModal();
 }
+/** T8c (Rae 7.1 / D6): the walk back through the frontier below: close the frontier screen, Lucifer's one line at the 3-4 crossing (the game queues it), then the crossing itself (the zone changes, the fire scene of that zone follows) */
+function startWalkBack(to) {
+  if (!g.walkBackPrelude(to)) { openFrontierWalk(); return; }
+  if (dlg.open) dlg.close();
+  whenIdle(() => { if (g.walkBackReady(to)) startMapJourney(to, 'walk'); else openFrontierWalk(); });
+}
 async function startMapJourney(to,mode='boat') {
  if(g.mapTravel||g.travelLoading)return;
  // F14 (owner 15 Nov): by boat the order is pick the destination -> the ferry comes -> it floats off to the far right -> loading page -> the
@@ -5754,11 +5763,11 @@ async function startMapJourney(to,mode='boat') {
  const destOutfit=g.outfit||to;
  if(mode!=='boat'){
   const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,destOutfit);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
-  if(!dlg.open||travelGeneration!==dlgGen)return;
+  if(mode==='dungeon'&&(!dlg.open||travelGeneration!==dlgGen))return;   // T8c: only the dungeon trip keeps the frontier screen open as its backdrop; the walk back has closed it
  }
  if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,load:mode==='boat'?()=>preloadZone(to,destOutfit,null,{minMs:900}):null}))return;
  if(mode==='boat')prewarmZone(to,destOutfit);
- const fromZone=g.zone,keepBorder=mode!=='boat';
+ const fromZone=g.zone,keepBorder=mode==='dungeon';   // T8c: the walk back ('walk') starts from the frontier screen that startWalkBack already closed - it shows like the boat (panel on the page)
  // Keep the border backdrop in its top-layer dialog until the zone commits.
  if(!keepBorder)dlg.close();g.paused=false;
  if(!keepBorder){setFullMap(false);setMapZoom(0);}
