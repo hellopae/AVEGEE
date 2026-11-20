@@ -21,8 +21,11 @@ export const SEV_STORIES = Object.freeze({
   [SEV.home67Intro]:fromRae(RAW_HOME67['z3-home67-intro'], SEV_ART.home67),
   [SEV.home67Join]:fromRae(RAW_HOME67['z3-home67-join'], SEV_ART.home67),
 });
-/** `z3-sev-open` replaces the four old `ZONES.west.bossArrive` lines: one line per row, the speaker before the colon (the arrival presenter is Thai only, like Lian Gang's) */
+/** `z3-sev-open` replaces the four old `ZONES.west.bossArrive` lines: one line per row, the speaker before the colon (T9: the presenter shows SEV_ARRIVE_LINES_EN when the game is in English) */
 export const SEV_ARRIVE_LINES = Object.freeze(RAW_OLD_Z3_SEV_OPEN['z3-sev-open'].pages.flatMap(p => p.line.th.split('\n')).filter(Boolean).map(l => l.replace(/\s*\/\*.*\*\/\s*$/, '')));
+
+/** the same lines in English (the pages' `en.line` of Rae's z3-sev-open, same count and order as SEV_ARRIVE_LINES); the presenter (ui.js openBossArrive) shows them when the game is in English */
+export const SEV_ARRIVE_LINES_EN = Object.freeze(RAW_OLD_Z3_SEV_OPEN['z3-sev-open'].pages.flatMap(p => p.line.en.split('\n')).filter(Boolean).map(l => l.replace(/\s*\/\*.*\*\/\s*$/, '')));
 
 /** The serpent fight (an event of its own, fought before Severin; opened by game.js startZoneBoss) - narration only, it never speaks. Numbers: Toby's first ones. */
 export const JORM_TEXT = Object.freeze({

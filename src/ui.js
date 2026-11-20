@@ -2223,7 +2223,9 @@ function beginBossBridgeWalk() {
  *  รีแมตช์ (bossArriveSeen ติดไปแล้ว) ข้ามตรงไปสู้เลย · ใช้ภาพ Intro-Boss-Zone<N> เป็นพื้นหลังถ้ามี
  *  บทมาจาก Rae ผ่าน Reese fact-check แล้ว (ดู ZONES[].bossArrive ใน data.js) ห้ามแก้ถ้อยคำ */
 function openBossArrive(z, onDone, lastLabel = '⚔️ สู้เลย') {
-  const lines = z.bossArrive || [];
+  // T9: in English the lines are z.bossArriveEn when the zone has them (one English line per Thai line); otherwise the Thai ones as before
+  const thLines = z.bossArrive || [];
+  const lines = getLang() === 'en' && z.bossArriveEn?.length === thLines.length ? z.bossArriveEn : thLines;
   if (!lines.length) { onDone(); return; }
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
   // 30A: โซน 2–4 ใช้ฉากมาถึงตรง path ที่มีจริง ไม่รอ manifest/ภาพ closeup (closeup จตุรัสทำให้กรอบสูงจนข้อความตกขอบจอ)

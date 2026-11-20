@@ -6,7 +6,7 @@ import { WANTHONG_TEXT } from './z1-wanthong.js';
 import { RYUJIN_TEXT } from './z2b-ryujin.js';   // T6/5: the water cave (Rae R2 B 5)
 import { LOKI, LOKI_TEXT } from './z3d-cases.js';   // T7b/3
 import { EIRLIN, EIRLIN_TEXT } from './z3e-eirlin.js';   // T7b/4
-import { SEV, JORM_TEXT, SEV_ARRIVE_LINES } from './z3f-severin.js';   // T7b-2/5
+import { SEV, JORM_TEXT, SEV_ARRIVE_LINES, SEV_ARRIVE_LINES_EN } from './z3f-severin.js';   // T7b-2/5
 import { COL_EVENTS } from './z4b-colosseum.js';   // T8a/2
 import { Z4A, Z4A_LUMEN, Z4A_ZONE4 } from './z4a-border.js';   // T8a/3
 import { Z4T_TEXT, Z4T_GUARD, Z4T } from './z4d-trojan.js';   // T8b/2
@@ -2189,6 +2189,7 @@ export const ZONES = [
     mobs:[6,7,8,9], coin:400 },
   { k:'west', scene:'scene-west-v2', w:1678, h:937, level:4, name:'โซนปัจฉิม', sub:'ยุโรป · อเมริกา · รัสเซีย',
     bossName:'เซเวอริน', bossSub:'อัศวินบัญชีปัจฉิม · ผู้ตรวจการบัญชีประจำสาขาปัจฉิม',
+    bossArriveEn:SEV_ARRIVE_LINES_EN,   // T9: the same lines in English (optional field: a zone without it shows the Thai lines; Lian Gang's z2-lian-open has no English yet)
     bossArrive:SEV_ARRIVE_LINES,   // T7b-2/5: Rae's z3-sev-open (4 pages) replaces the four older lines (its two [เดิม] lines are inside)
     bossTalk:'"บัญชีนี้จะสอบทานฝีมือเจ้าเอง ว่าสมกับข่าวลือหรือไม่"',
     bossWin:[ '"ยอดตรวจสอบออกมาสมกับที่เขาลือกันจริง ๆ"', '"ข้าขอปิดบัญชีนี้ด้วยการยกปัจฉิมให้เจ้าปกครอง"' ],
