@@ -1,0 +1,107 @@
+[
+  {
+    "path": "img/Asia/crew-guard-asia-v2.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_bbox": [
+      0,
+      0,
+      1226,
+      1254
+    ]
+  },
+  {
+    "path": "img/Asia/crew-guard-asia-profile.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "frames": 1,
+    "alpha_bbox": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  {
+    "path": "img/Asia/crew-guard-asia-cutscene.webp",
+    "size": [
+      1375,
+      768
+    ],
+    "mode": "RGB",
+    "frames": 1,
+    "alpha_bbox": [
+      0,
+      0,
+      1375,
+      768
+    ]
+  },
+  {
+    "path": "img/tea-rest/crew-guard-asia-sit-v1.webp",
+    "size": [
+      170,
+      229
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_bbox": [
+      0,
+      0,
+      170,
+      229
+    ]
+  },
+  {
+    "path": "img/z2-events/boss-guanyu-asia.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_bbox": [
+      6,
+      30,
+      507,
+      498
+    ]
+  },
+  {
+    "path": "img/z2-events/boss-guanyu-asia-profile.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "frames": 1,
+    "alpha_bbox": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  {
+    "path": "img/z2-events/boss-guanyu-asia-guard.webp",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_bbox": [
+      6,
+      30,
+      507,
+      498
+    ]
+  }
+]

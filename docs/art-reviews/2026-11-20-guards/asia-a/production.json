@@ -1,0 +1,66 @@
+{
+  "generator": "built-in image_gen",
+  "imagegen_calls": 5,
+  "sources": {
+    "standing": "exec-09000d4a-c794-4500-89df-93fd7dd38b62.png",
+    "portrait": "exec-c282f0c0-e542-4ede-a47b-5197b90a149d.png",
+    "sitting": "exec-9c0346a7-7736-4ca7-84c1-320aa261ce50.png",
+    "cutscene": "exec-4d7da32c-e27b-4690-a7b6-4cb02a0b1650.png",
+    "ko": "exec-532709f7-caa2-4156-84e0-622d2606a045.png"
+  },
+  "map_offset": [
+    48,
+    81
+  ],
+  "sit_offset": [
+    1,
+    39
+  ],
+  "event_scale": 0.41306266548984993,
+  "event_offset": [
+    84,
+    30
+  ],
+  "cutscene": {
+    "source_landmarks": [
+      [
+        305,
+        669
+      ],
+      [
+        918,
+        714
+      ]
+    ],
+    "baseline_landmarks": [
+      [
+        350,
+        670
+      ],
+      [
+        1000,
+        724
+      ]
+    ],
+    "forward_x_scale": 1.0603588907014683,
+    "forward_x_offset": 26.59053833605219,
+    "forward_y_shear": 0.01468189233278956,
+    "forward_y_offset": -3.4779771615008155,
+    "measurement": "Manual boot/ground landmarks; transformed coordinates, not automatic semantic segmentation."
+  },
+  "ko": {
+    "scale": 0.3065275152166676,
+    "offset": [
+      130,
+      88
+    ],
+    "source_body_horizontal_landmarks": [
+      313,
+      1468
+    ],
+    "standing_body_height_at_512_canvas": 372.9955869373345,
+    "body_length_expected": 354.34580759046776,
+    "ratio_expected": 0.95,
+    "measurement": "Horizontal headwear-to-toe extent excluding ribbons, cape and detached weapon; standing height excludes weapon."
+  }
+}

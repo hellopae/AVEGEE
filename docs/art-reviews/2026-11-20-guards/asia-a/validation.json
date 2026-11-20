@@ -1,0 +1,360 @@
+{
+  "scope": "asia/a only",
+  "generation_tool": "built-in image_gen",
+  "imagegen_calls": 5,
+  "files": [
+    {
+      "path": "img/Asia/crew-guard-asia-v2.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "fbdcc4632721af58e043e61d5ad34a637415d60152216977ec8939b0aee48519",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "img/Asia/crew-guard-asia-profile.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "41ac32b356ed1e51f1d4d5cf67e234c29a80e6634e8ce9e2099536c4cb2fbe0d"
+    },
+    {
+      "path": "img/Asia/crew-guard-asia-cutscene.webp",
+      "size": [
+        1375,
+        768
+      ],
+      "mode": "RGB",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "644c06e1b8334656416d21fb18004da1677ebb2a582228359906e019c0819169"
+    },
+    {
+      "path": "img/tea-rest/crew-guard-asia-sit-v1.webp",
+      "size": [
+        170,
+        229
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "73a283b298e9b267c3df323a94115d739ddfe5049cd3de5609daf89ed68e0b07",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "img/z2-events/boss-guanyu-asia.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "c569e82a4246ea1eef57cf5f9612e125a905b68b4911cbf2e6b1a83d28a5ad5f",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "img/z2-events/boss-guanyu-asia-profile.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "41ac32b356ed1e51f1d4d5cf67e234c29a80e6634e8ce9e2099536c4cb2fbe0d"
+    },
+    {
+      "path": "img/z2-events/boss-guanyu-asia-guard.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "c569e82a4246ea1eef57cf5f9612e125a905b68b4911cbf2e6b1a83d28a5ad5f",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "img/ko-pose-v1/asia/guard.webp",
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "frames": 1,
+      "grid": [
+        1,
+        1
+      ],
+      "sha256": "213b8f0795a032b0aaf967a6283005091b4bbd81ecc0c0cd552e5171a29dd0da",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  ],
+  "automated_assertions": 44,
+  "automated_result": "assertions completed",
+  "base_anchors": [
+    {
+      "path": "img/Asia/crew-guard-asia-v2.webp",
+      "method": "alpha>=128 footprint base anchor",
+      "roi": [
+        440,
+        1220,
+        910,
+        1254
+      ],
+      "footprint_bbox": [
+        461,
+        1220,
+        899,
+        1254
+      ],
+      "baseline_anchor": [
+        679.5,
+        1253
+      ],
+      "actual_anchor": [
+        679.5,
+        1253
+      ],
+      "delta_px": [
+        0.0,
+        0
+      ],
+      "baseline_measurement": {
+        "roi": [
+          370,
+          1180,
+          1000,
+          1254
+        ],
+        "footprint_bbox": [
+          375,
+          1180,
+          985,
+          1254
+        ]
+      }
+    },
+    {
+      "path": "img/tea-rest/crew-guard-asia-sit-v1.webp",
+      "method": "alpha>=128 footprint base anchor",
+      "roi": [
+        0,
+        210,
+        170,
+        229
+      ],
+      "footprint_bbox": [
+        1,
+        210,
+        169,
+        229
+      ],
+      "baseline_anchor": [
+        84.5,
+        228
+      ],
+      "actual_anchor": [
+        84.5,
+        228
+      ],
+      "delta_px": [
+        0.0,
+        0
+      ],
+      "baseline_measurement": {
+        "roi": [
+          0,
+          195,
+          170,
+          229
+        ],
+        "footprint_bbox": [
+          1,
+          195,
+          169,
+          229
+        ]
+      }
+    },
+    {
+      "path": "img/z2-events/boss-guanyu-asia.webp",
+      "method": "alpha>=128 footprint base anchor",
+      "roi": [
+        150,
+        485,
+        350,
+        512
+      ],
+      "footprint_bbox": [
+        166,
+        485,
+        347,
+        498
+      ],
+      "baseline_anchor": [
+        256,
+        497
+      ],
+      "actual_anchor": [
+        256.0,
+        497
+      ],
+      "delta_px": [
+        0.0,
+        0
+      ],
+      "baseline_measurement": {
+        "placeholder_baseline": true,
+        "note": "No anatomical feet in original placeholder."
+      }
+    },
+    {
+      "path": "img/z2-events/boss-guanyu-asia-guard.webp",
+      "method": "alpha>=128 footprint base anchor",
+      "roi": [
+        150,
+        485,
+        350,
+        512
+      ],
+      "footprint_bbox": [
+        166,
+        485,
+        347,
+        498
+      ],
+      "baseline_anchor": [
+        256,
+        497
+      ],
+      "actual_anchor": [
+        256.0,
+        497
+      ],
+      "delta_px": [
+        0.0,
+        0
+      ],
+      "baseline_measurement": {
+        "placeholder_baseline": true,
+        "note": "No anatomical feet in original placeholder."
+      }
+    }
+  ],
+  "cutscene_landmarks": {
+    "method": "Manual boot/ground landmarks; transformed coordinates, not automatic semantic segmentation.",
+    "points": [
+      {
+        "source": [
+          305,
+          669
+        ],
+        "baseline": [
+          350,
+          670
+        ],
+        "transformed": [
+          350.0,
+          670.0
+        ],
+        "delta_px": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": [
+          918,
+          714
+        ],
+        "baseline": [
+          1000,
+          724
+        ],
+        "transformed": [
+          1000.0000000000001,
+          724.0
+        ],
+        "delta_px": [
+          1.1368683772161603e-13,
+          0.0
+        ]
+      }
+    ],
+    "limitation": "Residual verifies the transform of manually selected points; it does not independently locate the final boot pixels."
+  },
+  "ko_body_ratio": {
+    "method": "Manual horizontal headwear-to-toe extent; standing body at event 512px canvas scale.",
+    "standing_reference": "img/z2-events/boss-guanyu-asia-guard.webp",
+    "standing_top_y": 125,
+    "standing_bottom_y": 497,
+    "standing_body_height_px": 373,
+    "ko_head_left_x": 155,
+    "ko_toe_right_x": 509,
+    "ko_body_length_px": 355,
+    "ratio": 0.9517426273458445,
+    "head_side": "left",
+    "feet_side": "right"
+  },
+  "visual_review": {
+    "artifact": "compare.jpg",
+    "observed": [
+      "Human red face and long black beard; green headdress, green cloak and gold dragon armor.",
+      "Standing, portraits and cutscene retain the green-dragon guandao.",
+      "Seated pose holds tea; unconscious pose has closed eyes, head left, feet right, no visible blood.",
+      "Three event placeholders replaced; matching standing and portrait art reused for identity consistency."
+    ]
+  },
+  "limitations": [
+    "No game runtime play-test or QA approval is claimed.",
+    "Footprint base anchors are measured, not the independent position of every individual boot.",
+    "Cutscene contact points and KO body landmarks are manually selected; see measurement definitions."
+  ]
+}
