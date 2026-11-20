@@ -1,0 +1,743 @@
+{
+  "scope": "Y1b only",
+  "tool": "built-in image_gen",
+  "generation_calls": 12,
+  "selected_drafts": 10,
+  "production_replacements": 0,
+  "original_pose_frames": 53,
+  "results": [
+    {
+      "index": 0,
+      "path": "img/CyberHell/hero-yama-cyberhell-atk.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        512,
+        512
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "pose_frames": 1,
+      "cell_alpha_bbox": [
+        [
+          91,
+          2,
+          420,
+          512
+        ]
+      ],
+      "sha256": "44de544dced26f5ff08e2bf66be7f8bb92002b64b6f2afc939d6bc0e6e7ca0cd",
+      "draft": "drafts/CyberHell/hero-yama-cyberhell-atk.png",
+      "draft_size": [
+        1254,
+        1254
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "0retry",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "09ab8e8b831bd967462d5e0113f30ffd78eb98b617d3b643fb3e52a7edc79b3d"
+    },
+    {
+      "index": 1,
+      "path": "img/CyberHell/hero-yama-cyberhell-atk-L.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        512,
+        512
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "pose_frames": 1,
+      "cell_alpha_bbox": [
+        [
+          30,
+          0,
+          481,
+          512
+        ]
+      ],
+      "sha256": "7e255e26f1ddeb0d21fa86208d688218b9fcf4d94a120675dc82f0ccbd22a935",
+      "draft": "drafts/CyberHell/hero-yama-cyberhell-atk-L.png",
+      "draft_size": [
+        1254,
+        1254
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "1",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "331d649ed216aa4bc5bb9d4a2d6a242e62319facb2aed68b33dc153e33d6a096"
+    },
+    {
+      "index": 2,
+      "path": "img/CyberHell/hero-yama-cyberhell-atk-R.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        512,
+        512
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "pose_frames": 1,
+      "cell_alpha_bbox": [
+        [
+          30,
+          0,
+          481,
+          512
+        ]
+      ],
+      "sha256": "a166fc4e2ec09cbe9dc363e823b36b9ed498baf64ded46dc46103a32d5e092cf",
+      "draft": "drafts/CyberHell/hero-yama-cyberhell-atk-R.png",
+      "draft_size": [
+        1254,
+        1254
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "2",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "5191af66d01b7a31c53692707186de620f2c8726fa3b911eb91b5b7877d5a4b3"
+    },
+    {
+      "index": 3,
+      "path": "img/yama-animation-v1/cyberhell/sword-idle.webp",
+      "size": [
+        3840,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        6,
+        1
+      ],
+      "pose_frames": 6,
+      "cell_alpha_bbox": [
+        [
+          80,
+          157,
+          516,
+          570
+        ],
+        [
+          81,
+          156,
+          511,
+          570
+        ],
+        [
+          79,
+          156,
+          498,
+          570
+        ],
+        [
+          80,
+          156,
+          515,
+          570
+        ],
+        [
+          80,
+          158,
+          520,
+          570
+        ],
+        [
+          79,
+          156,
+          504,
+          570
+        ]
+      ],
+      "sha256": "4b65f8b3b45c70b903223e3ebc72cfdf49b7f7c93be58aee51120a2db2fec386",
+      "draft": "drafts/yama-animation-v1/cyberhell/sword-idle.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "3",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "edabbeef280ce1c158405ac2a123004e7946cb2132f5f92722bee080e6902e10"
+    },
+    {
+      "index": 4,
+      "path": "img/yama-animation-v1/cyberhell/sword-hurt.webp",
+      "size": [
+        768,
+        1024
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        384,
+        512
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "pose_frames": 4,
+      "cell_alpha_bbox": [
+        [
+          55,
+          170,
+          357,
+          486
+        ],
+        [
+          42,
+          162,
+          351,
+          486
+        ],
+        [
+          64,
+          160,
+          354,
+          486
+        ],
+        [
+          29,
+          161,
+          351,
+          486
+        ]
+      ],
+      "sha256": "f91018b172a86c990045c2bdabb81187d7980585c0d4438ac217943e89dd7939",
+      "draft": "drafts/yama-animation-v1/cyberhell/sword-hurt.png",
+      "draft_size": [
+        1086,
+        1448
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "4retry",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "0024f55816d7429b1bd8f5d3980a74c9fc10c0b4d905971fa7d94da2e79de024"
+    },
+    {
+      "index": 5,
+      "path": "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "pose_frames": 8,
+      "cell_alpha_bbox": [
+        [
+          123,
+          250,
+          454,
+          570
+        ],
+        [
+          59,
+          221,
+          375,
+          580
+        ],
+        [
+          134,
+          126,
+          348,
+          581
+        ],
+        [
+          127,
+          189,
+          514,
+          581
+        ],
+        [
+          125,
+          174,
+          579,
+          575
+        ],
+        [
+          120,
+          250,
+          536,
+          595
+        ],
+        [
+          112,
+          250,
+          523,
+          588
+        ],
+        [
+          125,
+          250,
+          453,
+          570
+        ]
+      ],
+      "sha256": "2ea81081b4eca6c994ca6e89ad6fe7a0ff94a2972b5edcfdf1394ef1dad54c99",
+      "draft": "drafts/yama-sword-v4/hero-yama-cyberhell-sword.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "5",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "f511923df7cd52582136e452a09472a6d68ff90afcc5dc2aa1efc0859d57834e"
+    },
+    {
+      "index": 6,
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-trojan.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "pose_frames": 8,
+      "cell_alpha_bbox": [
+        [
+          123,
+          250,
+          451,
+          570
+        ],
+        [
+          69,
+          227,
+          379,
+          572
+        ],
+        [
+          136,
+          142,
+          346,
+          572
+        ],
+        [
+          130,
+          179,
+          522,
+          572
+        ],
+        [
+          127,
+          169,
+          584,
+          572
+        ],
+        [
+          120,
+          248,
+          546,
+          595
+        ],
+        [
+          120,
+          248,
+          527,
+          585
+        ],
+        [
+          125,
+          250,
+          456,
+          570
+        ]
+      ],
+      "sha256": "c8766ad163438521e7406025b137c255dcdbd9d4a154674be1499865aef4ad34",
+      "draft": "drafts/yama-sword-weapons/hero-yama-cyberhell-sword-trojan.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "6",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "6ea3ebdcb4ae3b83800322bf28426693768a55d7b534fc4ee26d109349388a11"
+    },
+    {
+      "index": 7,
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-cane.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "pose_frames": 8,
+      "cell_alpha_bbox": [
+        [
+          123,
+          250,
+          454,
+          570
+        ],
+        [
+          59,
+          224,
+          375,
+          580
+        ],
+        [
+          134,
+          126,
+          348,
+          581
+        ],
+        [
+          127,
+          189,
+          518,
+          581
+        ],
+        [
+          125,
+          174,
+          579,
+          575
+        ],
+        [
+          120,
+          250,
+          536,
+          595
+        ],
+        [
+          112,
+          250,
+          523,
+          588
+        ],
+        [
+          125,
+          250,
+          453,
+          570
+        ]
+      ],
+      "sha256": "ddb5bf4a10ffdba77b9193f7ef6d7f2c3cbeeedd4901daa8c49303260df83370",
+      "draft": "drafts/yama-sword-weapons/hero-yama-cyberhell-sword-cane.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "7",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "c217bd17d5e6f07da92025d3593c19c1da676093d0052ca802e3df350bf26619"
+    },
+    {
+      "index": 8,
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-fang.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "pose_frames": 8,
+      "cell_alpha_bbox": [
+        [
+          123,
+          250,
+          454,
+          570
+        ],
+        [
+          59,
+          218,
+          374,
+          580
+        ],
+        [
+          134,
+          126,
+          348,
+          581
+        ],
+        [
+          127,
+          189,
+          514,
+          581
+        ],
+        [
+          125,
+          174,
+          579,
+          575
+        ],
+        [
+          120,
+          250,
+          536,
+          595
+        ],
+        [
+          112,
+          250,
+          523,
+          588
+        ],
+        [
+          125,
+          250,
+          453,
+          570
+        ]
+      ],
+      "sha256": "aa983005d7672502e561b6fae9c9432a0e4a732273bf07dda5f82e651e7626e7",
+      "draft": "drafts/yama-sword-weapons/hero-yama-cyberhell-sword-fang.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "8",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "f2b73fd34e6e7ea84abc032bcfdb5f6ac4a4c05bbfc5c46817aeebdc221a9eea"
+    },
+    {
+      "index": 9,
+      "path": "img/yama-sword-weapons/hero-yama-cyberhell-sword-chain.webp",
+      "size": [
+        5120,
+        640
+      ],
+      "mode": "RGBA",
+      "n_frames": 1,
+      "cell": [
+        640,
+        640
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "pose_frames": 8,
+      "cell_alpha_bbox": [
+        [
+          123,
+          250,
+          454,
+          570
+        ],
+        [
+          59,
+          212,
+          414,
+          580
+        ],
+        [
+          134,
+          126,
+          348,
+          581
+        ],
+        [
+          127,
+          189,
+          514,
+          581
+        ],
+        [
+          125,
+          174,
+          579,
+          575
+        ],
+        [
+          120,
+          250,
+          536,
+          595
+        ],
+        [
+          112,
+          250,
+          523,
+          588
+        ],
+        [
+          125,
+          250,
+          453,
+          570
+        ]
+      ],
+      "sha256": "b07cd86cf7e23c69b640ea17376f83a0df6b973c60aa1e2d87fd50facf1fbcfd",
+      "draft": "drafts/yama-sword-weapons/hero-yama-cyberhell-sword-chain.png",
+      "draft_size": [
+        2172,
+        724
+      ],
+      "draft_mode": "RGBA",
+      "draft_n_frames": 1,
+      "draft_alpha_extrema": [
+        0,
+        255
+      ],
+      "generation_key": "9",
+      "original_unchanged": true,
+      "size_equal": false,
+      "mode_equal": true,
+      "container_frames_equal": true,
+      "feet_within_2px": "NOT VERIFIED: native canvas/cell geometry differs",
+      "ready_for_replacement": false,
+      "draft_sha256": "1707d1b72a090a7f2dcc08638092953f0a3ce51eb126f3e6273637d7342382c0"
+    }
+  ],
+  "acceptance": {
+    "1": "NOT MET: no production replacements; all native draft dimensions differ; feet/pose/scale not certified",
+    "2": "PARTIAL: visible costume motifs present; original identity/geometry preservation not certified",
+    "3": "Review artifacts created for all 10 targets; comparison is original versus unaccepted draft"
+  }
+}
