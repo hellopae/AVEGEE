@@ -1,0 +1,203 @@
+[
+  {
+    "path": "img/crew-combat-v1/west/guard.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      2
+    ],
+    "cell": [
+      384,
+      512
+    ],
+    "frame_count": 8,
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha16": [
+          35,
+          59,
+          301,
+          484
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha16": [
+          24,
+          50,
+          271,
+          484
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha16": [
+          24,
+          157,
+          296,
+          480
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha16": [
+          24,
+          194,
+          355,
+          484
+        ]
+      },
+      {
+        "index": 4,
+        "bbox_alpha16": [
+          34,
+          162,
+          360,
+          484
+        ]
+      },
+      {
+        "index": 5,
+        "bbox_alpha16": [
+          24,
+          93,
+          360,
+          484
+        ]
+      },
+      {
+        "index": 6,
+        "bbox_alpha16": [
+          24,
+          153,
+          360,
+          484
+        ]
+      },
+      {
+        "index": 7,
+        "bbox_alpha16": [
+          33,
+          188,
+          360,
+          484
+        ]
+      }
+    ]
+  },
+  {
+    "path": "img/crew-combat-v1/west/guard-idle.webp",
+    "size": [
+      1024,
+      384
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      256,
+      384
+    ],
+    "frame_count": 4,
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha16": [
+          44,
+          77,
+          237,
+          357
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha16": [
+          41,
+          77,
+          237,
+          357
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha16": [
+          45,
+          77,
+          237,
+          357
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha16": [
+          19,
+          77,
+          236,
+          357
+        ]
+      }
+    ]
+  },
+  {
+    "path": "img/West/crew-guard-west-walk-v2.webp",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "grid": [
+      4,
+      1
+    ],
+    "cell": [
+      543,
+      724
+    ],
+    "frame_count": 4,
+    "frames": [
+      {
+        "index": 0,
+        "bbox_alpha16": [
+          21,
+          7,
+          543,
+          690
+        ]
+      },
+      {
+        "index": 1,
+        "bbox_alpha16": [
+          0,
+          16,
+          541,
+          694
+        ]
+      },
+      {
+        "index": 2,
+        "bbox_alpha16": [
+          17,
+          15,
+          543,
+          694
+        ]
+      },
+      {
+        "index": 3,
+        "bbox_alpha16": [
+          0,
+          8,
+          541,
+          694
+        ]
+      }
+    ]
+  }
+]
