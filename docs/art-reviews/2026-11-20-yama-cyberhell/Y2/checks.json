@@ -1,0 +1,635 @@
+{
+  "scope": "Y2 only",
+  "imagegen_calls": 12,
+  "selected_images": 11,
+  "encoding": "lossless WebP; RGB",
+  "dimension_conformance": "roar 1670->1671 width; clock-reset 1671->1672 width; sips resample; other selected outputs match native size",
+  "foot_method": "Grayscale local template matching; minimize mean absolute difference over integer translations dx,dy in [-8,8]; region is [left,top,right,bottom] in original coordinates. This estimates patch translation, not a pixel-exact proof of every foot contour.",
+  "files": [
+    {
+      "path": "img/hero-yama-cyberhell-atk-cutscene-v3.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "6085f27bdb8308f51593b96ea91b2df9651d855032f1855ab6d3d501a8dceb55"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "c2fef1ac68438993e87318cf7c84853333ea2a7b86b60899019dadf27aba15f3"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            1000,
+            800,
+            1150,
+            865
+          ],
+          "dx": -1,
+          "dy": 0,
+          "mae_gray": 17.567
+        },
+        {
+          "region": [
+            1460,
+            790,
+            1600,
+            850
+          ],
+          "dx": -1,
+          "dy": 0,
+          "mae_gray": 14.469
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/hero-yama-cyberhell-fire-cutscene-v3.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "ba14194d03c28cb35a7364b65f164be72f3dc8f812e36176f168953d356fec23"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "22c0b724bad1cd299e3b4cd51c15fc63ebb50d661d7f443b61a8da515afa9466"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            980,
+            810,
+            1120,
+            887
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 10.559
+        },
+        {
+          "region": [
+            1420,
+            810,
+            1550,
+            868
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 6.885
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/hero-yama-cyberhell-hypno-cutscene-v3.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "f276e3c9136cbeb1e6c6677b2798b6739430d178f974e6bf85225c11ad5c4acd"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "ff1255a7decae866b0bf31ebb6f46e904e28dc085feea00b60d100dbba3942ce"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            135,
+            835,
+            275,
+            885
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 10.562
+        },
+        {
+          "region": [
+            680,
+            875,
+            800,
+            932
+          ],
+          "dx": -1,
+          "dy": 0,
+          "mae_gray": 10.584
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/hero-yama-cyberhell-ice-cutscene-v2.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "e3f0adc7c0b62417e51d1e000e0ced6c0e6523e04fcc80a4b3edfc53f95b8127"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "0dd4aa80395d4f3a6e46a778627490fa3bf7fe1176bd6a249095cc11818dbf16"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            65,
+            780,
+            225,
+            855
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 13.767
+        },
+        {
+          "region": [
+            715,
+            775,
+            875,
+            840
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 18.185
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/hero-yama-cyberhell-mirror-cutscene-v3.webp",
+      "original": {
+        "size": [
+          1673,
+          940
+        ],
+        "cell": [
+          1673,
+          940
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "aa96b74599741fbcc18f6528ed5f7f159093488de04548a930982fdc233c3784"
+      },
+      "new": {
+        "size": [
+          1673,
+          940
+        ],
+        "cell": [
+          1673,
+          940
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "ce02c82482f1513d7296f9855b375767079a86640b8f2232c151b45f825128e0"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            185,
+            770,
+            325,
+            839
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 8.182
+        },
+        {
+          "region": [
+            605,
+            805,
+            755,
+            872
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 9.409
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/hero-yama-cyberhell-roar-cutscene-v4.webp",
+      "original": {
+        "size": [
+          1671,
+          941
+        ],
+        "cell": [
+          1671,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "d33d0755f84ca858a587a9a10733dee39089057bce627de206d3de4b0f84f34d"
+      },
+      "new": {
+        "size": [
+          1671,
+          941
+        ],
+        "cell": [
+          1671,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "f3d4f3e3adaee3071e3ee99a487c6fc522b46938c9cf4040a0e548a6b51d5f32"
+      },
+      "foot_patch_estimates": [],
+      "foot_note": "ไม่เห็นเท้าในภาพต้นฉบับ"
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-clock-reset-cutscene.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "6c1ce73683b89f743b61e17a2c65bb1b6514890ab190a303cca28f3480dd0ec5"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "2620d466859a00e8c8113cd3a7119f11c0f419fb3030da349b18cbf6c060fb50"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            175,
+            780,
+            300,
+            860
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 18.767
+        },
+        {
+          "region": [
+            705,
+            785,
+            895,
+            845
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 18.422
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-flame-charge-cutscene.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "63b69575d3be22bba53efb3932375b086120a83d3a215b755f8b8a61e3f97597"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "98ad71eda0052a24f947a4bdc0eac44586020109dbfe2230d5a91e0d8999b95f"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            85,
+            715,
+            195,
+            825
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 25.656
+        }
+      ],
+      "foot_note": "วัดแพตช์รองเท้าที่เห็น; flame-charge เป็นท่าลอยตัว วัดเฉพาะปลายรองเท้าที่เห็น"
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-rage-cutscene.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "20eb0f027a37c38ebd9ab5c2d35aabab814577f38186ce2c72091a8015e0daf8"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "b25807a56cde48b883cdf9a683251059c9ce7113013170bc99a37707f2a2a913"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            200,
+            790,
+            330,
+            850
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 19.917
+        },
+        {
+          "region": [
+            715,
+            790,
+            910,
+            850
+          ],
+          "dx": 0,
+          "dy": 0,
+          "mae_gray": 19.902
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-valkyrie-spear-cutscene.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "4c82d9c4b5d964a8629943158f33ebfd8472cd6a06dd466ba893faf9fbb28444"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "a66a7cb31cfae33f675a57ebf45f494cbf178847e3ab1de2f686212d7e330546"
+      },
+      "foot_patch_estimates": [
+        {
+          "region": [
+            0,
+            770,
+            135,
+            836
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 26.169
+        },
+        {
+          "region": [
+            690,
+            810,
+            885,
+            878
+          ],
+          "dx": 0,
+          "dy": -1,
+          "mae_gray": 18.241
+        }
+      ],
+      "foot_note": "สองแพตช์รองเท้า"
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-wind-cutscene.webp",
+      "original": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "ccb7fb1c319b3973747922efd577ce393564c49a9c4fb01bed37f71452f2983f"
+      },
+      "new": {
+        "size": [
+          1672,
+          941
+        ],
+        "cell": [
+          1672,
+          941
+        ],
+        "grid": [
+          1,
+          1
+        ],
+        "mode": "RGB",
+        "frames": 1,
+        "sha256": "622d913b6d1a1c3d34fb9b314811e8614153bbb9a3accbeaca9eb1add766de93"
+      },
+      "foot_patch_estimates": [],
+      "foot_note": "ไม่เห็นเท้าในภาพต้นฉบับ"
+    }
+  ]
+}
