@@ -90,3 +90,10 @@ test('the walk back goes through the same journey object as the boat / dungeon (
   assert.equal(beginMapTravel(g, 'asia', { mode:'walk' }), false, 'not the next zone'); assert.equal(beginMapTravel(g, 'west', { mode:'boat' }), false, 'no boat');
   assert.equal(beginMapTravel(g, 'west', { mode:'walk' }), true); assert.equal(finishMapTravel(g), true); assert.equal(g.zone, 'west'); assert.equal(g.mapTravel, null); assert.ok(g.storyQueue.some(s => s.key === 'z3-fire'));
 });
+test('from the real fights: the Trojan-9 fight -> his field court -> case 10: N10-1 -> the record hall fight -> NS-10 -> only then Trojan-9 (controlled) is pending, the harbours lock', async () => {
+  const { bossJusticeActive, bossJusticeCase, releaseBoss } = await import('../src/boss-justice.js');
+  const g = zone4(); g.zoneCases.cyberhell = 7; g.refreshZoneEvents(); win(g.startZoneEvent('cyberBreach') && g); assert.ok(bossJusticeActive(g)); assert.notEqual(g.zoneEventStatus('cyberSignal'), 'pending', 'not right after his own fight (moved: T8c)');
+  g.zoneCases.cyberhell = 10; g.refreshZoneEvents(); assert.notEqual(g.zoneEventStatus('cyberSala'), 'pending', 'the court sits'); bossJusticeCase(g).phase = 'return'; releaseBoss(g); assert.equal(g.zoneEventStatus('cyberSala'), 'pending');
+  assert.equal(seizedActive(g), false); win(g.startZoneEvent('cyberSala') && g); assert.ok(g.notices.includes('z4-seized'), 'NS-10'); assert.equal(g.zoneEventStatus('cyberSala'), 'cleared');
+  assert.equal(g.zoneEventStatus('cyberSignal'), 'pending'); assert.equal(seizedActive(g), true); assert.deepEqual(harbourDestinations(g), []);
+});
