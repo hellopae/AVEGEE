@@ -1,0 +1,1661 @@
+{
+  "scope": "Y1a only",
+  "generation_tool": "built-in image_gen",
+  "generation_calls": 10,
+  "alpha_threshold_for_bboxes": 64,
+  "files": [
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "webp_frames": 1,
+      "pose_count": 1,
+      "alpha_exact": true,
+      "changed_pixels": 29621,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "7fc1b848e22b69309ce0d69b71106566e7823119f5fe947784678d7962e42b79",
+      "sha256_after": "23880dc55f491b43596257bd3bb920f8a6e62bddaa6e8642e71d0cd195d9b9ae",
+      "poses": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            144,
+            1,
+            366,
+            512
+          ],
+          "protected_foot_band": [
+            144,
+            451,
+            366,
+            512
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-profile.webp",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "webp_frames": 1,
+      "pose_count": 1,
+      "alpha_exact": false,
+      "changed_pixels": 47711,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "67c524e7a9148b20f053392e6e70f0263285a75da9ced0155f048fd533221297",
+      "sha256_after": "8467fb86b471f5cde05a2c3ac194a6ef821d0119459d1974773a8a201a43ded2",
+      "poses": [
+        {
+          "index": 0,
+          "feet": "not visible in portrait",
+          "face_region_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-walk.webp",
+      "size": [
+        768,
+        256
+      ],
+      "mode": "RGBA",
+      "webp_frames": 1,
+      "pose_count": 4,
+      "alpha_exact": true,
+      "changed_pixels": 26413,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "49bdaf6fd638a3d21c6bcd3714f23734d3b46538e099506723f53e634bdcc6dd",
+      "sha256_after": "7f70e6ea37167b2447340586ed1c9c665da98d25731005a97a70e9d0b86c9e59",
+      "poses": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            40,
+            6,
+            153,
+            247
+          ],
+          "protected_foot_band": [
+            40,
+            219,
+            153,
+            247
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            238,
+            6,
+            349,
+            249
+          ],
+          "protected_foot_band": [
+            238,
+            220,
+            349,
+            249
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            427,
+            7,
+            538,
+            249
+          ],
+          "protected_foot_band": [
+            427,
+            220,
+            538,
+            249
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            621,
+            7,
+            730,
+            249
+          ],
+          "protected_foot_band": [
+            621,
+            220,
+            730,
+            249
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    },
+    {
+      "path": "img/CyberHell/hero-yama-cyberhell-walk-4dir-v2.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "webp_frames": 1,
+      "pose_count": 16,
+      "alpha_exact": true,
+      "changed_pixels": 198656,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "8767e6d1fd6b729e15859b687340219712d960b6a45cb3522fb6ffbb0f26d978",
+      "sha256_after": "5997541ef55b1679234f380ac7112b9510582a67b6708c1847e403520d66b454",
+      "poses": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            131,
+            5,
+            287,
+            307
+          ],
+          "protected_foot_band": [
+            131,
+            271,
+            287,
+            307
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            412,
+            5,
+            566,
+            307
+          ],
+          "protected_foot_band": [
+            412,
+            271,
+            566,
+            307
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            687,
+            4,
+            842,
+            307
+          ],
+          "protected_foot_band": [
+            687,
+            271,
+            842,
+            307
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            964,
+            5,
+            1118,
+            307
+          ],
+          "protected_foot_band": [
+            964,
+            271,
+            1118,
+            307
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            135,
+            319,
+            288,
+            618
+          ],
+          "protected_foot_band": [
+            135,
+            583,
+            288,
+            618
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            414,
+            319,
+            567,
+            619
+          ],
+          "protected_foot_band": [
+            414,
+            583,
+            567,
+            619
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            693,
+            319,
+            845,
+            618
+          ],
+          "protected_foot_band": [
+            693,
+            583,
+            845,
+            618
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            970,
+            319,
+            1123,
+            618
+          ],
+          "protected_foot_band": [
+            970,
+            583,
+            1123,
+            618
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            131,
+            629,
+            284,
+            929
+          ],
+          "protected_foot_band": [
+            131,
+            893,
+            284,
+            929
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            410,
+            629,
+            563,
+            929
+          ],
+          "protected_foot_band": [
+            410,
+            893,
+            563,
+            929
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            686,
+            629,
+            840,
+            929
+          ],
+          "protected_foot_band": [
+            686,
+            893,
+            840,
+            929
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 11,
+          "row": 2,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            966,
+            629,
+            1118,
+            929
+          ],
+          "protected_foot_band": [
+            966,
+            893,
+            1118,
+            929
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            132,
+            942,
+            284,
+            1239
+          ],
+          "protected_foot_band": [
+            132,
+            1204,
+            284,
+            1239
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 13,
+          "row": 3,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            414,
+            942,
+            563,
+            1239
+          ],
+          "protected_foot_band": [
+            414,
+            1204,
+            563,
+            1239
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 14,
+          "row": 3,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            690,
+            942,
+            838,
+            1239
+          ],
+          "protected_foot_band": [
+            690,
+            1204,
+            838,
+            1239
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 15,
+          "row": 3,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            966,
+            942,
+            1115,
+            1237
+          ],
+          "protected_foot_band": [
+            966,
+            1202,
+            1115,
+            1237
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    },
+    {
+      "path": "img/yama-animation-v1/cyberhell/book-idle.webp",
+      "size": [
+        1280,
+        1920
+      ],
+      "mode": "RGBA",
+      "webp_frames": 1,
+      "pose_count": 16,
+      "alpha_exact": true,
+      "changed_pixels": 231725,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "57f729dcf90c81e3c8fd871b8641c449026b33e42e76dc0fac87948ee6d9f7b8",
+      "sha256_after": "61d3758fc98c6ad84f6c018a0922689871a1c17c595a8409026cbe980ec86963",
+      "poses": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            79,
+            132,
+            233,
+            440
+          ],
+          "protected_foot_band": [
+            79,
+            404,
+            233,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            399,
+            132,
+            553,
+            440
+          ],
+          "protected_foot_band": [
+            399,
+            404,
+            553,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            719,
+            132,
+            873,
+            440
+          ],
+          "protected_foot_band": [
+            719,
+            404,
+            873,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1039,
+            132,
+            1193,
+            440
+          ],
+          "protected_foot_band": [
+            1039,
+            404,
+            1193,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            83,
+            608,
+            238,
+            920
+          ],
+          "protected_foot_band": [
+            83,
+            883,
+            238,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            403,
+            608,
+            558,
+            920
+          ],
+          "protected_foot_band": [
+            403,
+            883,
+            558,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            723,
+            608,
+            877,
+            920
+          ],
+          "protected_foot_band": [
+            723,
+            883,
+            877,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1043,
+            608,
+            1197,
+            920
+          ],
+          "protected_foot_band": [
+            1043,
+            883,
+            1197,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            82,
+            1082,
+            238,
+            1398
+          ],
+          "protected_foot_band": [
+            82,
+            1361,
+            238,
+            1398
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            402,
+            1082,
+            558,
+            1400
+          ],
+          "protected_foot_band": [
+            402,
+            1362,
+            558,
+            1400
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            722,
+            1082,
+            878,
+            1402
+          ],
+          "protected_foot_band": [
+            722,
+            1364,
+            878,
+            1402
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 11,
+          "row": 2,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1043,
+            1082,
+            1198,
+            1401
+          ],
+          "protected_foot_band": [
+            1043,
+            1363,
+            1198,
+            1401
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            84,
+            1572,
+            235,
+            1879
+          ],
+          "protected_foot_band": [
+            84,
+            1843,
+            235,
+            1879
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 13,
+          "row": 3,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            404,
+            1572,
+            556,
+            1879
+          ],
+          "protected_foot_band": [
+            404,
+            1843,
+            556,
+            1879
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 14,
+          "row": 3,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            725,
+            1572,
+            876,
+            1880
+          ],
+          "protected_foot_band": [
+            725,
+            1844,
+            876,
+            1880
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 15,
+          "row": 3,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1044,
+            1572,
+            1196,
+            1880
+          ],
+          "protected_foot_band": [
+            1044,
+            1844,
+            1196,
+            1880
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    },
+    {
+      "path": "img/yama-animation-v1/cyberhell/book-walk.webp",
+      "size": [
+        2560,
+        1920
+      ],
+      "mode": "RGBA",
+      "webp_frames": 1,
+      "pose_count": 32,
+      "alpha_exact": true,
+      "changed_pixels": 377072,
+      "outside_mask_changed_pixels": 0,
+      "red_skin_changed_pixels": 0,
+      "sha256_before": "20fef1606bd978e9cbfef45081ea8f8f1ee820c45309edf9d7d2241fe370f788",
+      "sha256_after": "de8a26da808f0fad28a0b34f7a858354960e448454316c75affc351757d1cc0a",
+      "poses": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            75,
+            121,
+            239,
+            440
+          ],
+          "protected_foot_band": [
+            75,
+            402,
+            239,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            393,
+            121,
+            557,
+            440
+          ],
+          "protected_foot_band": [
+            393,
+            402,
+            557,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            713,
+            121,
+            878,
+            431
+          ],
+          "protected_foot_band": [
+            713,
+            394,
+            878,
+            431
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1035,
+            121,
+            1196,
+            440
+          ],
+          "protected_foot_band": [
+            1035,
+            402,
+            1196,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 4,
+          "row": 0,
+          "column": 4,
+          "bbox_alpha_gt64": [
+            1353,
+            121,
+            1518,
+            440
+          ],
+          "protected_foot_band": [
+            1353,
+            402,
+            1518,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 5,
+          "row": 0,
+          "column": 5,
+          "bbox_alpha_gt64": [
+            1675,
+            121,
+            1839,
+            440
+          ],
+          "protected_foot_band": [
+            1675,
+            402,
+            1839,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 6,
+          "row": 0,
+          "column": 6,
+          "bbox_alpha_gt64": [
+            1995,
+            122,
+            2156,
+            417
+          ],
+          "protected_foot_band": [
+            1995,
+            382,
+            2156,
+            417
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 7,
+          "row": 0,
+          "column": 7,
+          "bbox_alpha_gt64": [
+            2314,
+            121,
+            2478,
+            440
+          ],
+          "protected_foot_band": [
+            2314,
+            402,
+            2478,
+            440
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 8,
+          "row": 1,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            84,
+            622,
+            236,
+            922
+          ],
+          "protected_foot_band": [
+            84,
+            886,
+            236,
+            922
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 9,
+          "row": 1,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            404,
+            622,
+            556,
+            920
+          ],
+          "protected_foot_band": [
+            404,
+            885,
+            556,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 10,
+          "row": 1,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            724,
+            622,
+            876,
+            918
+          ],
+          "protected_foot_band": [
+            724,
+            883,
+            876,
+            918
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 11,
+          "row": 1,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1045,
+            623,
+            1196,
+            922
+          ],
+          "protected_foot_band": [
+            1045,
+            887,
+            1196,
+            922
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 12,
+          "row": 1,
+          "column": 4,
+          "bbox_alpha_gt64": [
+            1365,
+            622,
+            1516,
+            920
+          ],
+          "protected_foot_band": [
+            1365,
+            885,
+            1516,
+            920
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 13,
+          "row": 1,
+          "column": 5,
+          "bbox_alpha_gt64": [
+            1685,
+            622,
+            1836,
+            917
+          ],
+          "protected_foot_band": [
+            1685,
+            882,
+            1836,
+            917
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 14,
+          "row": 1,
+          "column": 6,
+          "bbox_alpha_gt64": [
+            2005,
+            622,
+            2156,
+            919
+          ],
+          "protected_foot_band": [
+            2005,
+            884,
+            2156,
+            919
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 15,
+          "row": 1,
+          "column": 7,
+          "bbox_alpha_gt64": [
+            2325,
+            622,
+            2474,
+            922
+          ],
+          "protected_foot_band": [
+            2325,
+            886,
+            2474,
+            922
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 16,
+          "row": 2,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            83,
+            1103,
+            238,
+            1399
+          ],
+          "protected_foot_band": [
+            83,
+            1364,
+            238,
+            1399
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 17,
+          "row": 2,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            403,
+            1103,
+            556,
+            1399
+          ],
+          "protected_foot_band": [
+            403,
+            1364,
+            556,
+            1399
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 18,
+          "row": 2,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            721,
+            1103,
+            878,
+            1399
+          ],
+          "protected_foot_band": [
+            721,
+            1364,
+            878,
+            1399
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 19,
+          "row": 2,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1043,
+            1103,
+            1198,
+            1399
+          ],
+          "protected_foot_band": [
+            1043,
+            1364,
+            1198,
+            1399
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 20,
+          "row": 2,
+          "column": 4,
+          "bbox_alpha_gt64": [
+            1363,
+            1103,
+            1518,
+            1401
+          ],
+          "protected_foot_band": [
+            1363,
+            1366,
+            1518,
+            1401
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 21,
+          "row": 2,
+          "column": 5,
+          "bbox_alpha_gt64": [
+            1683,
+            1103,
+            1836,
+            1400
+          ],
+          "protected_foot_band": [
+            1683,
+            1365,
+            1836,
+            1400
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 22,
+          "row": 2,
+          "column": 6,
+          "bbox_alpha_gt64": [
+            2003,
+            1103,
+            2157,
+            1400
+          ],
+          "protected_foot_band": [
+            2003,
+            1365,
+            2157,
+            1400
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 23,
+          "row": 2,
+          "column": 7,
+          "bbox_alpha_gt64": [
+            2323,
+            1103,
+            2478,
+            1400
+          ],
+          "protected_foot_band": [
+            2323,
+            1365,
+            2478,
+            1400
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 24,
+          "row": 3,
+          "column": 0,
+          "bbox_alpha_gt64": [
+            89,
+            1579,
+            236,
+            1880
+          ],
+          "protected_foot_band": [
+            89,
+            1844,
+            236,
+            1880
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 25,
+          "row": 3,
+          "column": 1,
+          "bbox_alpha_gt64": [
+            409,
+            1579,
+            555,
+            1877
+          ],
+          "protected_foot_band": [
+            409,
+            1842,
+            555,
+            1877
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 26,
+          "row": 3,
+          "column": 2,
+          "bbox_alpha_gt64": [
+            729,
+            1579,
+            874,
+            1864
+          ],
+          "protected_foot_band": [
+            729,
+            1830,
+            874,
+            1864
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 27,
+          "row": 3,
+          "column": 3,
+          "bbox_alpha_gt64": [
+            1049,
+            1579,
+            1194,
+            1880
+          ],
+          "protected_foot_band": [
+            1049,
+            1844,
+            1194,
+            1880
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 28,
+          "row": 3,
+          "column": 4,
+          "bbox_alpha_gt64": [
+            1369,
+            1579,
+            1514,
+            1882
+          ],
+          "protected_foot_band": [
+            1369,
+            1846,
+            1514,
+            1882
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 29,
+          "row": 3,
+          "column": 5,
+          "bbox_alpha_gt64": [
+            1689,
+            1579,
+            1834,
+            1883
+          ],
+          "protected_foot_band": [
+            1689,
+            1847,
+            1834,
+            1883
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 30,
+          "row": 3,
+          "column": 6,
+          "bbox_alpha_gt64": [
+            2009,
+            1579,
+            2153,
+            1866
+          ],
+          "protected_foot_band": [
+            2009,
+            1832,
+            2153,
+            1866
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        },
+        {
+          "index": 31,
+          "row": 3,
+          "column": 7,
+          "bbox_alpha_gt64": [
+            2329,
+            1579,
+            2474,
+            1882
+          ],
+          "protected_foot_band": [
+            2329,
+            1846,
+            2474,
+            1882
+          ],
+          "foot_delta_px": [
+            0,
+            0
+          ],
+          "face_band_unchanged": true
+        }
+      ],
+      "baseline_verified_against_HEAD": true
+    }
+  ],
+  "tests": {
+    "command": "node --test tests/hero-walking.test.mjs tests/yama-animation-live.test.mjs tests/asset-preload.test.mjs tests/yama-size-a7.test.mjs",
+    "tests": 16,
+    "passed": 16,
+    "failed": 0,
+    "exit_code": 0,
+    "browser_playtest": false
+  },
+  "visual_review": {
+    "full_compare_opened": true,
+    "files_reviewed": 6,
+    "compare_size": [
+      2400,
+      5623
+    ]
+  }
+}
