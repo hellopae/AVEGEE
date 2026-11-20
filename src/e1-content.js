@@ -2,31 +2,53 @@
 export const SIGNAL_STORIES = {
   "cyber-signal-open": {
     "title": "เสียงติ๊ดที่ไม่มีเจ้าของ",
+    "en": {
+      "title": "The Beep With No Owner"
+    },
     "pages": [
       {
         "title": "เสียงติ๊ดที่ไม่มีเจ้าของ",
         "line": "บรรยาย: ทุกครั้งที่ท่านเดินผ่านด่านชายแดนโซน 4 มีเสียงติ๊ดสั้น ๆ ดังซ้ำในจังหวะเดียวกัน ทั้งที่ไม่มีใครกดสัญญาณ\nนิรา: \"ท่านคะ ดิฉันจดเวลาไว้แล้ว มันดังทุกสามสิบวาระตรงเป๊ะ ไม่ใช่เสียงของด่านค่ะ เป็นเสียงของบางอย่างที่ถูกเปิดค้างไว้\"",
-        "image": "img/story-sig/story-cyberhell-signal-01.webp"
+        "image": "img/story-sig/story-cyberhell-signal-01.webp",
+        "en": {
+          "title": "The Beep With No Owner",
+          "line": "Narration: Every time you pass the Zone 4 frontier post, a short beep sounds again in the same rhythm, though no one has pressed a signal.\nNira: \"Sir, I have logged the time. It sounds every thirty terms exactly. It is not the sound of the post. It is the sound of something that has been left switched on.\""
+        }
       },
       {
         "title": "โทรจัน-9 ไม่ใช่ตัวเอง",
         "line": "บรรยาย: โทรจัน-9 ยืนที่เดิม ฝาท้องม้าไม้เปิดอ้า มีแสงเขียวมิ้นต์กะพริบจากข้างใน ดวงตากลายเป็นเส้นสแกนพาดขวาง\nยมบาทน้อย: \"โทรจัน-9! ผมเอง ยมบาทน้อยไงล่ะ\"\nโทรจัน-9: \"[รับคำสั่งใหม่จากผู้ใช้เดิม] ขวาง ไว้ ทุก ทาง ... [สิทธิ์ควบคุมชายแดนถูกถอน] ... แต่ ประตู หลัง ... ยัง เปิด ... ขอโทษ ข้า หยุด ไม่ ได้\"",
-        "image": "img/story-sig/story-cyberhell-signal-02.webp"
+        "image": "img/story-sig/story-cyberhell-signal-02.webp",
+        "en": {
+          "title": "Trojan-9 Is Not Himself",
+          "line": "Narration: Trojan-9 stands where he always stands, the belly hatch of the wooden horse hanging open, a mint-green light blinking inside. His eyes have become scanning lines drawn straight across.\nYama: \"Trojan-9! It is me. Yama, remember?\"\nTrojan-9: \"[New command received from former user] Block ... every ... road ... [Frontier control rights revoked] ... but ... the back ... door ... is still ... open ... sorry ... I ... cannot ... stop.\""
+        }
       },
       {
         "title": "สี่ทางพร้อมกัน",
         "line": "นิรา: \"ดิฉันอ่านเลขกำกับคำสั่งออกค่ะ มันถูกส่งไปสี่ทางพร้อมกัน ทางหนึ่งคือตัวเขาเอง อีกสามทางคือชายแดนสุวรรณภูมิ บูรพา และปัจฉิมค่ะ\"\nยมบาทน้อย: \"งั้นเขาเป็นแค่ปลายสายหนึ่ง ต้องหยุดเขาก่อนสัญญาณจะส่งต่อ แล้วค่อยตามไปทีละโซน\"",
-        "image": "img/story-sig/story-cyberhell-signal-03.webp"
+        "image": "img/story-sig/story-cyberhell-signal-03.webp",
+        "en": {
+          "title": "Four Roads at Once",
+          "line": "Nira: \"I have read the number stamped on the command, sir. It was sent down four roads at once. One was to him. The other three are the Suvarnabhumi, Eastern and Western frontiers.\"\nYama: \"Then he is only one end of the line. We must stop him before the signal passes on, and then follow it zone by zone.\""
+        }
       }
     ]
   },
   "cyber-signal-win": {
     "title": "ประตูที่ถูกเปิดจากอีกฝั่ง",
+    "en": {
+      "title": "The Door Opened From the Other Side"
+    },
     "pages": [
       {
         "title": "ประตูที่ถูกเปิดจากอีกฝั่ง",
         "line": "โทรจัน-9: \"[คำสั่งภายนอกถูกตัดออก] ระบบ เบา ขึ้น ... ขอบใจ ผู้ถอนสิทธิ์\"\nโทรจัน-9: \"ข้าเป็นประตูหลังที่ถูกสร้างไว้ให้คนอื่นเดินเข้า ไม่ได้ถูกสร้างไว้ให้เลือกว่าจะเปิดให้ใคร คืนนี้มีมือเอื้อมเข้ามาในท้องข้าอีกครั้ง\"\nโทรจัน-9: \"คำสั่งที่ผ่านข้าไปแล้ว ไปถึงสามด่านที่ท่านเคยเดินผ่าน คนที่ท่านเคยชนะในแต่ละด่าน ถูกปลุกกลับมาด้วยเสียงเดียวกัน\"",
-        "image": "img/story-sig/story-cyberhell-signal-02.webp"
+        "image": "img/story-sig/story-cyberhell-signal-02.webp",
+        "en": {
+          "title": "The Door Opened From the Other Side",
+          "line": "Trojan-9: \"[External command severed] System ... lighter ... Thank you, you who revoked its access.\"\nTrojan-9: \"I am a back door, built for others to walk through, not built to choose whom I open for. Tonight a hand reached into my belly again.\"\nTrojan-9: \"The command that passed through me has already reached the three frontiers you once crossed. Those you defeated at each one have been woken again by the same voice.\""
+        }
       },
       {
         "title": "ไปทีละโซน",
@@ -37,96 +59,165 @@ export const SIGNAL_STORIES = {
   },
   "signal-th-open": {
     "title": "ด่านที่เงียบเกินไป",
+    "en": {
+      "title": "A Frontier Too Quiet"
+    },
     "pages": [
       {
         "title": "ด่านที่เงียบเกินไป",
         "line": "บรรยาย: เมื่อท่านกลับถึงชายแดนสุวรรณภูมิ ทัพปีศาจที่เคยตะโกนข่มขู่ยืนนิ่งเป็นแถว ไม่มีเสียงอาวุธกระทบกัน กลางแถวมีทัณฑสูรยืนชูดาบขวางทาง เส้นแสงเขียวพาดอยู่บนดวงตาเขา\nทัณฑสูร: \"ขวาง ไว้ ทุก ทาง ... ตัว ... กระเปี๊ยก ... ผ่าน ... ไป ... ไม่ ... ได้\"\nนิรา: \"ท่านคะ เขายังเรียกท่านว่าตัวกระเปี๊ยกอยู่ค่ะ เสียงเดิมของเขายังอยู่ข้างใน เป็นแต่คำสั่งทับอยู่ข้างบน\"",
-        "image": "img/story-sig/story-signal-th-01.webp"
+        "image": "img/story-sig/story-signal-th-01.webp",
+        "en": {
+          "title": "A Frontier Too Quiet",
+          "line": "Narration: When you return to the Suvarnabhumi frontier, the demon army that once shouted threats stands motionless in rows, with no clash of weapons. In the middle of the ranks Tanthasura stands with his sword raised across the road, a line of green light drawn across his eyes.\nTanthasura: \"Block ... every ... road ... little ... squirt ... you ... cannot ... pass.\"\nNira: \"Sir, he still calls you little squirt. His own voice is still inside. There is only an order laid over it.\""
+        }
       },
       {
         "title": "หนึ่ง",
         "line": "ทัณฑสูร: \"หนึ่ง ... หนึ่ง ... ข้า ... นับ ... ตาม ... เสียง\"\nยมบาทน้อย: \"ทัณฑสูร ผมรู้ว่าคุณได้ยินผม ผมจะพาคุณออกมาเอง\"",
-        "image": "img/story-sig/story-signal-th-02.webp"
+        "image": "img/story-sig/story-signal-th-02.webp",
+        "en": {
+          "title": "One",
+          "line": "Tanthasura: \"One ... one ... I ... count ... by ... the voice.\"\nYama: \"Tanthasura, I know you can hear me. I will bring you out myself.\""
+        }
       }
     ]
   },
   "signal-th-win": {
     "title": "สัญญาณครอบงำชายแดน",
+    "en": {
+      "title": "The Signal Over the Frontier"
+    },
     "pages": [
       {
         "title": "สัญญาณครอบงำชายแดน",
         "line": "ทัณฑสูร: \"ฮึ่ม ... หัวข้าหนักเหมือนโดนค้อนของทัพข้าเองฟาด ... เมื่อกี้ข้าทำอะไรลงไป\"\nยมบาทน้อย: \"คุณขวางทางผม แต่ผมไม่เป็นไรครับ\"\nทัณฑสูร: \"ไอ้ตัวกระเปี๊ยก อย่าเอาไปเล่าให้ใครฟังว่าข้าถูกสะกด ทัพข้าจะเสียขวัญ\"\nนิรา: \"ดิฉันไม่ได้ยินอะไรเลยค่ะ\"\nทัณฑสูร: \"มีเสียงคนนับอยู่ในหัวข้า นับ 'หนึ่ง' ทั้งคืน แล้วข้าก็กลายเป็นหนึ่ง ถ้าเจ้าได้ยินเสียงนับ อย่าตอบมัน\"",
-        "image": "img/story-sig/story-signal-th-02.webp"
+        "image": "img/story-sig/story-signal-th-02.webp",
+        "en": {
+          "title": "The Signal Over the Frontier",
+          "line": "Tanthasura: \"Ugh ... my head feels as if my own army's hammer had struck it ... what did I just do?\"\nYama: \"You blocked my way, but I am all right.\"\nTanthasura: \"Little squirt, do not go telling anyone that I was spellbound. My army would lose heart.\"\nNira: \"I did not hear a thing.\"\nTanthasura: \"There was a voice counting in my head. It counted 'one' all night, and then I became one. If you hear that counting, do not answer it.\""
+        }
       }
     ]
   },
   "signal-asia-open": {
     "title": "โซ่ที่ไม่มีใครถือ",
+    "en": {
+      "title": "Chains Nobody Holds"
+    },
     "pages": [
       {
         "title": "โซ่ที่ไม่มีใครถือ",
         "line": "บรรยาย: ที่ชายแดนบูรพา โคมแดงดับลงทั้งแถว อากุระยืนกลางทางโดยมือทั้งสองแบกโซ่เส้นยาวที่ปลายไม่ผูกกับสิ่งใด ลากบนพื้นเป็นเสียงกรอกแกรก\nอากุระ: \"ล่าม ไว้ ทุก ทาง ... คน ต่าง ถิ่น ... ห้าม ผ่าน\"\nนิรา: \"เขาเกลียดการถูกล่ามมากที่สุดค่ะ แต่คำสั่งนี้เอาความเกลียดนั้นมาเป็นแรง ทำให้เขาเป็นฝ่ายล่ามเสียเอง\"",
-        "image": "img/story-sig/story-signal-asia-01.webp"
+        "image": "img/story-sig/story-signal-asia-01.webp",
+        "en": {
+          "title": "Chains Nobody Holds",
+          "line": "Narration: At the Eastern frontier the red lanterns have gone dark, the whole row. Akura stands in the middle of the road with both hands bearing a long chain whose end is tied to nothing, dragging along the ground with a dry rattle.\nAkura: \"Chain ... every ... road ... outsiders ... may ... not ... pass.\"\nNira: \"He hates being chained more than anything, sir. But this command has taken that hatred and made it his strength, so that now he is the one who chains.\""
+        }
       },
       {
         "title": "สอง",
         "line": "อากุระ: \"สอง ... สอง ... ข้อ ... มือ ... เบา ... ข้า ... ไม่ ... เคย ... ล่าม ... ใคร\"\nยมบาทน้อย: \"ผมรู้ครับ คุณไม่ใช่คนล่าม\"",
-        "image": "img/story-sig/story-signal-asia-02.webp"
+        "image": "img/story-sig/story-signal-asia-02.webp",
+        "en": {
+          "title": "Two",
+          "line": "Akura: \"Two ... two ... my ... wrists ... light ... I ... never ... chained ... anyone.\"\nYama: \"I know. You are not the one who chains.\""
+        }
       }
     ]
   },
   "signal-asia-win": {
     "title": "สัญญาณครอบงำชายแดน",
+    "en": {
+      "title": "The Signal Over the Frontier"
+    },
     "pages": [
       {
         "title": "สัญญาณครอบงำชายแดน",
         "line": "อากุระ: \"ข้อมือข้า ... เบาลง ... (มองมือตัวเอง) ข้ารู้สึกเหมือนถูกล่ามอีกรอบ แต่ครั้งนี้ข้าไม่เห็นมือของคนล่าม\"\nยมบาทน้อย: \"ผมเห็นครับ มือนั้นอยู่ไกลกว่านี้\"\nอากุระ: \"เจ้าคนต่างถิ่น ศักดิ์ศรีข้าไม่ได้พัง แต่มันบุบ ข้าจะซ่อมเอง ... เสียงนับในหัวข้านับ 'สอง' มันนับเหมือนนับนักโทษ จำไว้\"",
-        "image": "img/story-sig/story-signal-asia-02.webp"
+        "image": "img/story-sig/story-signal-asia-02.webp",
+        "en": {
+          "title": "The Signal Over the Frontier",
+          "line": "Akura: \"My wrists ... are lighter ... (looks at his own hands) I feel as if I were chained again, but this time I could not see the hand that chained me.\"\nYama: \"I can see it. That hand is much farther away than this.\"\nAkura: \"Outsider, my pride is not broken, but it is dented. I will mend it myself ... The voice in my head counted 'two'. It counted the way one counts prisoners. Remember that.\""
+        }
       }
     ]
   },
   "signal-west-open": {
     "title": "ราตรีที่มีคนเขียนให้",
+    "en": {
+      "title": "A Night Written by Someone Else"
+    },
     "pages": [
       {
         "title": "ราตรีที่มีคนเขียนให้",
         "line": "บรรยาย: หิมะที่ชายแดนปัจฉิมตกหนักผิดปกติ วาลดริกยืนนิ่งกลางลานหิมะ ไม้เท้าในมือถูกชักใบมีดออกมาครึ่งเล่ม เส้นแสงเขียวพาดอยู่บนดวงตาที่เคยเยือกเย็น\nวาลดริก: \"ราตรี ... ปิด ... ทุก ... ทาง ... ท่าน ... ผู้มาเยือน ... ขออภัย ... ข้า ... ไม่ ... อาจ ... เชิญ ... ท่าน ... ผ่าน\"\nนิรา: \"แม้ตอนถูกสะกด เขายังสุภาพอยู่เลยค่ะ\"",
-        "image": "img/story-sig/story-signal-west-01.webp"
+        "image": "img/story-sig/story-signal-west-01.webp",
+        "en": {
+          "title": "A Night Written by Someone Else",
+          "line": "Narration: The snow at the Western frontier falls abnormally heavy. Valdric stands motionless in the middle of the snowy square, the cane in his hand drawn halfway to show the blade, a line of green light across eyes that were once so calm.\nValdric: \"Night ... shuts ... every ... road ... honoured ... guest ... forgive ... me ... I ... cannot ... invite ... you ... to ... pass.\"\nNira: \"Even under the spell, he is still polite, sir.\""
+        }
       },
       {
         "title": "สาม",
         "line": "วาลดริก: \"สาม ... สาม ... ข้า ... เคย ... สะกด ... คน ... อื่น ... แต่ ... ไม่เคย ... ถูก ... เขียน ... ฝัน ... ให้\"\nยมบาทน้อย: \"ครั้งก่อนคุณสะกดลูกทีมของผมด้วยวิชาของคุณเอง ครั้งนี้มีคนใช้วิชาเดียวกันกับคุณ ผมจะพาคุณออกไปให้ถึงเช้า\"",
-        "image": "img/story-sig/story-signal-west-02.webp"
+        "image": "img/story-sig/story-signal-west-02.webp",
+        "en": {
+          "title": "Three",
+          "line": "Valdric: \"Three ... three ... I ... have ... mesmerised ... others ... but ... never ... been ... written ... a dream.\"\nYama: \"Last time you put my team under a spell with your own art. This time someone has used the same art on you. I will bring you through to the morning.\""
+        }
       }
     ]
   },
   "signal-west-win": {
     "title": "สัญญาณครอบงำชายแดน",
+    "en": {
+      "title": "The Signal Over the Frontier"
+    },
     "pages": [
       {
         "title": "สัญญาณครอบงำชายแดน",
         "line": "วาลดริก: \"ท่าน ... ขออภัย ข้าเพิ่งตื่นจากฝันที่ไม่ใช่ของข้า ราตรีของข้ายาวมาแสนนาน แต่ไม่เคยมีใครเขียนมันแทนข้ามาก่อน\"\nนิรา: \"ท่านได้ยินอะไรไหมคะ\"\nวาลดริก: \"เสียงนับ 'สาม' แล้วมันก็หยุด ราวกับมีคนรอ 'สี่' อยู่ โปรดระวัง ผู้ที่นับเสียงได้แบบนั้น ไม่ได้นับเพื่อความสนุก\"",
-        "image": "img/story-sig/story-signal-west-02.webp"
+        "image": "img/story-sig/story-signal-west-02.webp",
+        "en": {
+          "title": "The Signal Over the Frontier",
+          "line": "Valdric: \"Honoured guest ... forgive me. I have only just woken from a dream that was not mine. My night has been long beyond counting, but no one has ever written it for me before.\"\nNira: \"Did you hear anything, my lord?\"\nValdric: \"The counting said 'three', and then it stopped, as though someone were waiting for 'four'. Take care. Whoever counts like that does not count for amusement.\""
+        }
       }
     ]
   },
   "cyber-signal-close": {
     "title": "กลับมาที่ประตูหลัง",
+    "en": {
+      "title": "Back at the Back Door"
+    },
     "pages": [
       {
         "title": "กลับมาที่ประตูหลัง",
         "line": "โทรจัน-9: \"[ระบบกลับสู่โหมดเฝ้าประตู] ท่านกลับมาแล้ว ข้าตามเสียงนับได้ครบ หนึ่ง สอง สาม สี่ เสียงเดียว คนเดียว\"",
-        "image": "img/story-sig/story-cyberhell-signal-04.webp"
+        "image": "img/story-sig/story-cyberhell-signal-04.webp",
+        "en": {
+          "title": "Back at the Back Door",
+          "line": "Trojan-9: \"[System returning to gate-guard mode] You have come back. I followed the counting to the end. One, two, three, four. One voice, one person.\""
+        }
       },
       {
         "title": "ลำดับที่ยังนับไม่จบ",
         "line": "นิรา: \"สัญญาณนี้นับตามลำดับโซน หนึ่ง สอง สาม สี่ แต่คนที่ถูกนับครั้งนี้เป็นปีศาจชายแดนเท่านั้นค่ะ ดิฉันกลัวว่านี่เป็นแค่การทดลอง\"\nยมบาทน้อย: \"ทดลองกับคนที่ผมเคยชนะแล้ว แล้วคนต่อไปที่เขาจะลองคือใคร\"\nนิรา: \"คนที่ตัดสินแทนสาขาทั้งสี่ค่ะ ดิฉันไม่อยากพูดชื่อ\"",
-        "image": "img/story-sig/story-cyberhell-signal-04.webp"
+        "image": "img/story-sig/story-cyberhell-signal-04.webp",
+        "en": {
+          "title": "A Count Not Yet Finished",
+          "line": "Nira: \"This signal counts in the order of the zones, sir: one, two, three, four. But those counted this time were only the frontier demons. I fear this was only a trial run.\"\nYama: \"A trial on people I have already beaten. So who will he try next?\"\nNira: \"Those who decide for all four branches, sir. I would rather not say the name.\""
+        }
       },
       {
         "title": "ปิดจากข้างใน",
         "line": "โทรจัน-9: \"ข้าจะเฝ้าประตูหลังนี้ต่อ คราวนี้ข้าจะปิดมันจากข้างในเอง ถ้ามือนั้นเอื้อมมาอีก ข้าจะบอกท่านเป็นคนแรก\"\nยมบาทน้อย: \"ขอบคุณ งั้นเราไปกันครับ นิรา\"",
-        "image": "img/story-sig/story-cyberhell-signal-04.webp"
+        "image": "img/story-sig/story-cyberhell-signal-04.webp",
+        "en": {
+          "title": "Closed From the Inside",
+          "line": "Trojan-9: \"I will keep guarding this back door. This time I will close it from the inside myself. If that hand reaches out again, I will tell you first.\"\nYama: \"Thank you. Then let us go, Nira.\""
+        }
       }
     ]
   }

@@ -57,15 +57,19 @@ export const STORY = {
   'cyber-control': { title:'โซน 4 · ผู้ถูกควบคุม', pages:[
     { ...panel('cyberhell-02-v3','ช่วยหัวหน้าทั้งสี่','กองหนุนรับมือลูกน้องไว้ให้แล้ว ต้องปลดปล่อยพ่อและหัวหน้าโซน 2–4 จากการควบคุม ก่อนจะเข้าถึงตัวผู้ตรวจการโซน 4') },
   ]},
-  'cyber-duel': { title:'โซน 4 · ตัดสายควบคุม', pages:[
-    { ...panel('cyberhell-03-v4','เหลือบอสคนสุดท้าย','หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและทีมที่เตรียมพร้อมก้าวเข้าสู่ศึกตัดสินกับผู้ตรวจการโซน 4') },
+  'cyber-duel': { title:'โซน 4 · ตัดสายควบคุม', en:{ title:'Zone 4 · Cutting the Line of Control' }, pages:[
+    { ...panel('cyberhell-03-v4','เหลือบอสคนสุดท้าย','หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและทีมที่เตรียมพร้อมก้าวเข้าสู่ศึกตัดสินกับอาร์คอน-ศูนย์'),
+      en:{ title:'The Last Boss Remains', line:'The four lords are free. Yama and his ready team step into the deciding battle with the Inspector of Zone 4, Archon-Zero.' } },
   ]},
-  'ending-capture': { title:'อเวจี · คำตัดสินสุดท้าย', pages:[
-    { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ แต่เขายังต้องตอบต่อกรรมของตนที่แท่นตัดสิน'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584 },
+  'ending-capture': { title:'อเวจี · คำตัดสินสุดท้าย', en:{ title:'Avici · The Final Verdict' }, pages:[
+    { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ แต่เขายังต้องตอบต่อกรรมของตนที่แท่นตัดสิน'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584,
+      en:{ title:'The Control Ends', line:'The great boss has fallen and everyone is free. But he must still answer for his own karma at the dais of judgment.' } },
   ]},
-  ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', pages:[
-    { ...panel('ending-02-v3','ผู้ปกครองทั้งสี่โซน','ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข โดยมีนิรา พ่อ และหัวหน้าโซน 2–4 ร่วมดูแลอยู่เคียงข้าง'), video:'img/story-ending-02-v1.mp4', videoAspect:1280/544 },
-    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.webp' },
+  ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', en:{ title:'Avici · Peace Across the Four Branches' }, pages:[
+    { ...panel('ending-02-v3','ผู้ปกครองทั้งสี่โซน','ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข โดยมีนิรา พ่อ และหัวหน้าโซน 2–4 ร่วมดูแลอยู่เคียงข้าง'), video:'img/story-ending-02-v1.mp4', videoAspect:1280/544,
+      en:{ title:'Ruler of the Four Zones', line:'Yama governs all four zones in peace, with Nira, his father and the lords of Zones 2 to 4 watching over them at his side.' } },
+    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.webp',
+      en:{ title:'Father Approves', line:'Father walks over and pats Yama lightly on the shoulder. "Well done, my son," he says, while Nira stands beside them, smiling with pride.' } },
   ]},
 };
 Object.assign(STORY, Z4H_STORY_OVERRIDES);   // T8d: cyber-approach (after wave 3) · cyber-reinforcements · -advance · cyber-control - Rae's text, the same pictures
