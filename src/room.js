@@ -192,10 +192,27 @@ const ROOM_FOREGROUNDS = {
   'img/rooms-wide/th-tarang-v2.webp': 'img/rooms-wide/th-tarang-front-v1.webp',
 };
 
+const RED_TREE = 'img/theme-v4/town-tree-red-th-v1.webp';
+const CLIFF_TREE = 'img/map-zone1/v7r/sprites/pilot-red-tree-00.webp';
+
+// Roots sit outside each terrace. Height is a fraction of the room image height.
+const ROOM_FRONT_TREES = {
+  'img/food-art/interior-th.webp': [
+    {src:RED_TREE, x:.405, y:1.18, height:.62},
+    {src:CLIFF_TREE, x:1.002, y:1.04, height:.66},
+  ],
+  'img/tea-th-recovery-v2.webp': [{src:CLIFF_TREE, x:.125, y:1.14, height:.49}],
+  'img/rooms-wide/th-krata-v2.webp': [{src:RED_TREE, x:.105, y:1.13, height:.50}],
+  'img/rooms-wide/th-lan-v2.webp': [{src:CLIFF_TREE, x:.94, y:1.14, height:.53}],
+  'img/rooms-wide/th-tarang-v2.webp': [{src:RED_TREE, x:.105, y:1.14, height:.49}],
+};
+
 /** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
 export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const foregroundSrc = ROOM_FOREGROUNDS[bgSrc];
+  const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => ({...tree, opacity:1}));
+  let treeFrameAt;
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
@@ -786,6 +803,27 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
     drawForeground?.();
+    if (bg?.naturalWidth && frontTrees.length) {
+      const transition = Math.min(1, Math.max(0, t - (treeFrameAt ?? t)) / 145);
+      treeFrameAt = t;
+      for (const tree of frontTrees) {
+        const sprite = bgOf(tree.src);
+        if (!sprite?.naturalWidth) continue;
+        const height = tree.height * box.h;
+        const width = height * sprite.naturalWidth / sprite.naturalHeight;
+        const trunkX = px(tree.x), baseY = py(tree.y);
+        const feetX = px(P.x), feetY = py(P.y);
+        const heroOverlaps = Math.abs(feetX - trunkX) < width * .46
+          && feetY < baseY && feetY > baseY - height;
+        const target = heroOverlaps ? .4 : 1;
+        tree.opacity += Math.sign(target - tree.opacity) * Math.min(Math.abs(target - tree.opacity), transition);
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.globalAlpha = tree.opacity;
+        ctx.drawImage(sprite, trunkX - width / 2, baseY - height, width, height);
+        ctx.restore();
+      }
+    }
     const pots = def.k === 'krata' ? potLayout(bgSrc) : null;
     if (stokeFx && pots) {
       const age=t-stokeFx.at;
