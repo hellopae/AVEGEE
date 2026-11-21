@@ -2,7 +2,7 @@ import { gpuLossEpoch } from './gpu-budget.js';
 
 // Leaf contours traced on AVEGEE's own red banyan. Coordinates match the
 // 475×520 reference. The gaps between clumps leave the major branches fixed.
-const LEAF_SHAPES = [
+const BANYAN_LEAVES = [
   'M68 78 Q96 51 119 55 Q121 31 148 30 Q159 13 181 17 Q199 -4 222 0 Q251 5 267 29 Q288 36 291 56 Q267 65 247 68 Q231 88 208 89 Q202 105 186 104 Q173 91 155 99 Q130 98 112 106 L83 100 Q76 90 68 78Z',
   'M261 47 Q286 33 308 50 Q329 50 343 68 Q374 66 381 81 Q388 94 372 108 Q353 109 331 108 Q312 124 297 111 Q278 98 264 106 Q244 97 247 81 L261 47Z',
   'M19 121 Q42 103 63 105 Q78 97 96 104 Q123 98 135 119 Q155 117 165 129 Q154 144 134 147 Q123 165 104 156 Q77 160 66 148 Q42 153 24 145 Q12 138 19 121Z',
@@ -10,8 +10,19 @@ const LEAF_SHAPES = [
   'M8 173 Q30 155 55 160 Q75 150 90 166 Q104 173 111 192 Q93 203 79 200 Q70 221 51 213 Q49 235 30 231 Q11 234 3 213 L-3 193 Z',
   'M311 196 Q336 170 363 174 Q382 178 401 173 Q416 176 428 191 Q449 183 473 204 L476 241 Q456 243 445 257 Q424 247 410 254 Q398 232 373 241 Q355 242 345 228 Q326 230 301 224 Q292 218 299 208Z',
 ];
-const WIDTH = 475;
-const HEIGHT = 520;
+// Leaf contours for the smaller maple at the edge of Zone 1's cliffs.
+const CLIFF_LEAVES = [
+  'M83 25 Q104 3 128 1 Q158 -3 182 17 L201 35 Q181 52 156 48 Q135 54 112 48 L87 47Z',
+  'M46 24 Q62 11 83 15 L110 31 Q99 43 76 51 L54 49 L46 38Z',
+  'M21 100 Q41 77 71 77 Q89 85 102 109 Q81 124 60 133 Q44 126 25 132 L6 119Z',
+  'M167 53 Q190 31 214 44 Q237 56 240 78 Q223 89 206 84 Q186 92 161 78Z',
+  'M164 123 Q187 100 212 107 Q236 108 254 130 Q263 142 258 160 Q238 160 225 172 Q204 162 185 165 Q170 158 158 147Z',
+  'M204 169 Q226 154 247 166 L262 179 L249 199 Q232 206 217 196 L201 184Z',
+];
+const TREE_ART = {
+  banyan: { width:475, height:520, leaves:BANYAN_LEAVES },
+  cliff: { width:265, height:313, leaves:CLIFF_LEAVES },
+};
 const CYCLE_MS = 7400;
 
 const smooth = x => x * x * (3 - 2 * x);
@@ -27,48 +38,49 @@ export function roomWindAt(timeMs, x) {
   };
 }
 
-function layer(draw) {
+function layer(width, height, draw) {
   const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+  canvas.width = width;
+  canvas.height = height;
   draw?.(canvas.getContext('2d'));
   return canvas;
 }
 
-export function makeRoomTreeWind(sprite) {
+export function makeRoomTreeWind(sprite, tree = 'banyan') {
   let epoch = -1, render;
   return (timeMs, treeX) => {
     if (epoch !== gpuLossEpoch()) {
-      render = bakeTree(sprite);
+      render = bakeTree(sprite, TREE_ART[tree]);
       epoch = gpuLossEpoch();
     }
     return render(timeMs, treeX);
   };
 }
 
-function bakeTree(sprite) {
-  const paths = LEAF_SHAPES.map(shape => new Path2D(shape));
-  const clumps = paths.map(path => layer(ctx => {
+function bakeTree(sprite, { width, height, leaves }) {
+  const paths = leaves.map(shape => new Path2D(shape));
+  const clumps = paths.map(path => layer(width, height, ctx => {
     ctx.clip(path);
-    ctx.drawImage(sprite, 0, 0, WIDTH, HEIGHT);
+    ctx.drawImage(sprite, 0, 0, width, height);
   }));
-  const base = layer(ctx => {
-    ctx.drawImage(sprite, 0, 0, WIDTH, HEIGHT);
+  const base = layer(width, height, ctx => {
+    ctx.drawImage(sprite, 0, 0, width, height);
     const canopy = new Path2D();
     for (const path of paths) canopy.addPath(path);
     ctx.clip(canopy);
     ctx.globalCompositeOperation = 'source-atop';
     ctx.fillStyle = 'rgba(38, 5, 14, .20)';
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillRect(0, 0, width, height);
   });
-  const frame = layer();
+  const frame = layer(width, height);
   const ctx = frame.getContext('2d');
   return (timeMs, treeX) => {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.clearRect(0, 0, width, height);
     ctx.drawImage(base, 0, 0);
     for (const [index, clump] of clumps.entries()) {
       const {strength, wave} = roomWindAt(timeMs, treeX + index * .055);
-      ctx.drawImage(clump, strength * (2.3 + wave * 1.45), -strength * (1.15 + wave * .85));
+      ctx.drawImage(clump, strength * (2.3 + wave * 1.45) * width / 475,
+        -strength * (1.15 + wave * .85) * height / 520);
     }
     return frame;
   };

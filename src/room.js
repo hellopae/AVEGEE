@@ -199,13 +199,13 @@ const CLIFF_TREE = 'img/map-zone1/v7r/sprites/pilot-red-tree-00.webp';
 // Roots sit outside each terrace. Height is a fraction of the room image height.
 const ROOM_FRONT_TREES = {
   'img/food-art/interior-th.webp': [
-    {src:RED_TREE, x:.405, y:1.18, height:.62, wind:true},
-    {src:CLIFF_TREE, x:1.002, y:1.04, height:.66},
+    {src:RED_TREE, wind:'banyan', x:.405, y:1.18, height:.62},
+    {src:CLIFF_TREE, wind:'cliff', x:1.002, y:1.04, height:.66},
   ],
-  'img/tea-th-recovery-v2.webp': [{src:CLIFF_TREE, x:.125, y:1.14, height:.49}],
-  'img/rooms-wide/th-krata-v2.webp': [{src:RED_TREE, x:.105, y:1.13, height:.50}],
-  'img/rooms-wide/th-lan-v2.webp': [{src:CLIFF_TREE, x:.94, y:1.14, height:.53}],
-  'img/rooms-wide/th-tarang-v2.webp': [{src:RED_TREE, x:.105, y:1.14, height:.49}],
+  'img/tea-th-recovery-v2.webp': [{src:CLIFF_TREE, wind:'cliff', x:.125, y:1.14, height:.49}],
+  'img/rooms-wide/th-krata-v2.webp': [{src:RED_TREE, wind:'banyan', x:.105, y:1.13, height:.50}],
+  'img/rooms-wide/th-lan-v2.webp': [{src:CLIFF_TREE, wind:'cliff', x:.94, y:1.14, height:.53}],
+  'img/rooms-wide/th-tarang-v2.webp': [{src:RED_TREE, wind:'banyan', x:.105, y:1.14, height:.49}],
 };
 
 /** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
@@ -824,7 +824,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         let art = sprite;
         if (tree.wind && !prefersReducedMotion() && typeof Path2D === 'function') {
           windStartedAt ??= t;
-          tree.windFrame ??= makeRoomTreeWind(sprite);
+          tree.windFrame ??= makeRoomTreeWind(sprite, tree.wind);
           art = tree.windFrame(t - windStartedAt, tree.x);
         }
         ctx.drawImage(art, trunkX - width / 2, baseY - height, width, height);
