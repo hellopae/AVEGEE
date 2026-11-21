@@ -31,6 +31,7 @@ import {drawWorker,assignWorkerEscort,releaseWorkerEscort,zoneWorkers} from './w
 import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
+import { makeRoomTreeWind } from './room-tree-wind.js';
 
 const HERO_H = 0.13 * characterScale('yama');      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
@@ -198,7 +199,7 @@ const CLIFF_TREE = 'img/map-zone1/v7r/sprites/pilot-red-tree-00.webp';
 // Roots sit outside each terrace. Height is a fraction of the room image height.
 const ROOM_FRONT_TREES = {
   'img/food-art/interior-th.webp': [
-    {src:RED_TREE, x:.405, y:1.18, height:.62},
+    {src:RED_TREE, x:.405, y:1.18, height:.62, wind:true},
     {src:CLIFF_TREE, x:1.002, y:1.04, height:.66},
   ],
   'img/tea-th-recovery-v2.webp': [{src:CLIFF_TREE, x:.125, y:1.14, height:.49}],
@@ -212,7 +213,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const foregroundSrc = ROOM_FOREGROUNDS[bgSrc];
   const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => ({...tree, opacity:1}));
-  let treeFrameAt;
+  let treeFrameAt, windStartedAt;
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
@@ -820,7 +821,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.globalAlpha = tree.opacity;
-        ctx.drawImage(sprite, trunkX - width / 2, baseY - height, width, height);
+        let art = sprite;
+        if (tree.wind && !prefersReducedMotion() && typeof Path2D === 'function') {
+          windStartedAt ??= t;
+          tree.windFrame ??= makeRoomTreeWind(sprite);
+          art = tree.windFrame(t - windStartedAt, tree.x);
+        }
+        ctx.drawImage(art, trunkX - width / 2, baseY - height, width, height);
         ctx.restore();
       }
     }
