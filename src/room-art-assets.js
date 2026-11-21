@@ -44,7 +44,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krata": {
-      "image": "img/rooms-wide/th-krata.webp",
+      "image": "img/rooms-wide/th-krata-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -204,7 +204,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lan": {
-      "image": "img/rooms-wide/th-lan.webp",
+      "image": "img/rooms-wide/th-lan-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -325,7 +325,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "tarang": {
-      "image": "img/rooms-wide/th-tarang.webp",
+      "image": "img/rooms-wide/th-tarang-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -338,7 +338,7 @@ export const WIDE_ROOM_ART = {
       "trainingApproach": null,
       "displaySlots": [
         [
-          0.4,
+          0.423,
           0.49
         ],
         [
@@ -346,7 +346,7 @@ export const WIDE_ROOM_ART = {
           0.49
         ],
         [
-          0.6,
+          0.578,
           0.49
         ]
       ],

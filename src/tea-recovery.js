@@ -35,13 +35,15 @@ export const NIRA_WAKE_LINE = Object.freeze({
 });
 export const DEFEAT_SCENE_MS = 1600;
 export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.webp`;
-export const teaBackground = zone => `img/tea-${zone || 'th'}-recovery.webp`;
+export const teaBackground = (zone = 'th') => !zone || zone === 'th'
+  ? 'img/tea-th-recovery-v2.webp'
+  : `img/tea-${zone}-recovery.webp`;
 export function teaRoom(zone = 'th') {
   // H2 (10 ต.ค. 2569) คุณเป้: "yama นั่งไม่ตรงเบาะ" / "นอนจะตกเตียง ขยับเข้าไปหน่อย"
   // seats = ก้นของยมบาทวางบนเบาะรองนั่งหน้าโต๊ะชา (ฝั่งซ้ายล่างของโต๊ะ) · beds = กึ่งกลางฟูก ไม่ใช่ขอบหน้าเตียง
   // วัดจากตารางพิกัดบนภาพ img/tea-<zone>-recovery.png จริง (สัดส่วน 0-1 ของภาพ) แล้วเทียบภาพจริงในเบราว์เซอร์ทั้ง 4 โซน
-  const seats={th:[0.227,0.505],asia:[0.274,0.50],west:[0.236,0.485],cyberhell:[0.353,0.525]};
-  const beds={th:[0.736,0.386],asia:[0.664,0.37],west:[0.678,0.343],cyberhell:[0.678,0.334]};
+  const seats={th:[0.228,0.49],asia:[0.274,0.50],west:[0.236,0.485],cyberhell:[0.353,0.525]};
+  const beds={th:[0.736,0.418],asia:[0.664,0.37],west:[0.678,0.343],cyberhell:[0.678,0.334]};
   // I1-A (คุณเป้ 10 ต.ค. 2569): "ตื่นแล้วไปยืนบนขอบเตียง" — wakes = พื้นไม้หน้าเตียงที่เท้าพ้นขอบหน้าเตียงแล้ว (อ่านจากภาพ tea-<zone>-recovery.png
   // ขอบหน้าเตียงต่ำสุดราว th .50 · asia .49 · west .53 · cyberhell .50 → จุดตื่นอยู่ต่ำกว่าอีก ~.04-.06) ทุกจุดอยู่ในพื้นที่เดินได้ของห้อง
   const wakes={th:[0.736,0.56],asia:[0.664,0.54],west:[0.678,0.575],cyberhell:[0.678,0.56]};

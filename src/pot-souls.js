@@ -8,7 +8,7 @@ import {registerGpuLossReset} from './gpu-budget.js';
 //   fireY   = กองไฟใต้ท้องกระทะที่ภาพวาดไว้ — ใช้วางแสงไฟกะพริบซ้อน
 // ภาพกระทะวาดใหม่เมื่อไหร่ → วัดแถวของโซนนั้นใหม่ที่นี่ที่เดียว
 export const POTS = {
-  th:        { cx:[0.369, 0.505, 0.635], mouthY:0.243, frontY:0.268, rx:0.040, fireY:0.335 },
+  th:        { cx:[0.365, 0.500, 0.638], mouthY:0.237, frontY:0.261, rx:0.046, fireY:0.351 },
   asia:      { cx:[0.375, 0.500, 0.626], mouthY:0.160, frontY:0.192, rx:0.043, fireY:0.285 },
   west:      { cx:[0.364, 0.500, 0.640], mouthY:0.172, frontY:0.197, rx:0.045, fireY:0.285 },
   cyberhell: { cx:[0.370, 0.500, 0.626], mouthY:0.213, frontY:0.242, rx:0.050, fireY:0.350 },

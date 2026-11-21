@@ -25,7 +25,7 @@ test('H1: critical tier holds the first-screen art and is far smaller than the w
     assert(t.critical.includes(p), p);
   assert(mb(t.critical) < mb(zoneAssets(catalog, 'th')) * 0.5, 'critical must be < 50% of the old gate');
   // Big event-only art is deferred, never silently deleted
-  for (const p of ['img/hero-yama-th-mirror-cutscene-v3.webp', 'img/story-ending-03-v1.webp', 'img/tea-th-recovery.webp'])
+  for (const p of ['img/hero-yama-th-mirror-cutscene-v3.webp', 'img/story-ending-03-v1.webp', 'img/tea-th-recovery-v2.webp'])
     assert(t.late.includes(p), p);
   for (const p of ['img/rooms-wide/th-sala.webp', 'img/BG-Sala.webp', 'img/ui/Button1.webp', 'img/fx-heal.webp'])
     assert(t.background.includes(p), p);

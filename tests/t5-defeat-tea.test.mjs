@@ -6,7 +6,7 @@ import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
 import { actorFromLegacy, syncRoster } from '../src/roster.js';
 import { actorStanding } from '../src/actor-recovery.js';
-import { TEA_WAKE_MS, RECOVERY_LIE_MS, RECOVERY_NIRA_RUN_MS, RECOVERY_SLEEP_MS, RECOVERY_TOTAL_MS, recoveryPhase, niraRunPose, teaRoom, NIRA_WAKE_LINE } from '../src/tea-recovery.js';
+import { TEA_WAKE_MS, RECOVERY_LIE_MS, RECOVERY_NIRA_RUN_MS, RECOVERY_SLEEP_MS, RECOVERY_TOTAL_MS, recoveryPhase, niraRunPose, teaBackground, teaRoom, NIRA_WAKE_LINE } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
 globalThis.Image ??= class { set src(v){ this._src=v; this.onerror?.(); } get src(){ return this._src; } };
 
@@ -46,7 +46,7 @@ test('a fallen teammate waits in the tea house for Nira, and stands up with Yama
   g.hp = 1; g.pendingRecovery = { zone: 'th', stage: 'return' };
   g.updateActorRecovery(taan.recoverUntil + 60000);        // the 2-minute timer would have run out - but Yama's wake-up is pending
   assert.ok(taan.teaRest?.recovery, 'still sitting: waits for Nira');
-  const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), teaRoom('th'), 'img/tea-th-recovery.webp', null);
+  const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), teaRoom('th'), teaBackground('th'), null);
   assert.equal(R.setSleep(true), true); assert.equal(R.recoveryBeat(), 'lie');
   R.tick(RECOVERY_LIE_MS); assert.equal(R.recoveryBeat(), 'run'); assert.equal(g.pendingRecovery.stage, 'wake', 'Nira is coming');
   R.tick(RECOVERY_NIRA_RUN_MS); assert.equal(R.recoveryBeat(), 'say');
@@ -96,7 +96,7 @@ test('a save made in the middle of the wake-up resumes it (lie or Nira beat) and
     const copy = game(); copy.restore(g.snapshot());
     const t2 = copy.crew[0];
     assert.ok(t2.teaRest?.recovery, stage + ': the sitting teammate survives the save');
-    const R = makeRoom(cv, copy, STATIONS.find(d => d.k === 'tea'), teaRoom('th'), 'img/tea-th-recovery.webp', null);
+    const R = makeRoom(cv, copy, STATIONS.find(d => d.k === 'tea'), teaRoom('th'), teaBackground('th'), null);
     assert.equal(R.setSleep(true), true); assert.equal(R.recoveryBeat(), stage === 'wake' ? 'run' : 'lie');
     R.tick(RECOVERY_TOTAL_MS); R.tick(1);
     assert.equal(copy.pendingRecovery, null, stage); assert.ok(!t2.teaRest); assert.equal(copy.hp, copy.hpMax);
