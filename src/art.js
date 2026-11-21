@@ -50,6 +50,7 @@ export function warmZone(z = zoneOf()) {
   if (warmed.has(z) || !ZMAP[z]) return;
   warmed.add(z);
   for (const key of ['hero-yama','hero-yama-walk-4dir','hero-boss',
+    'crew-guard-receive','crew-guard-eat',
     ...['nira','taan','boon','plerng','kan','dam','guard'].flatMap(k => [`crew-${k}`,`crew-${k}-walk`])]) {
     const url = artUrl(key, 'png', z);
     if (url) load(url);
@@ -89,12 +90,21 @@ fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-
  *  ต้องตรงกับ POSES ใน scripts/prep-art.py */
 const POSE = /-(build-work|profile|work|atk|side|walk|cry)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
+const GUARD_MEAL_STEMS = {
+  th:'crew-guard',
+  asia:'Asia/crew-guard-asia',
+  west:'West/crew-guard-west',
+  cyberhell:'CyberHell/crew-guard-cyberhell',
+};
 
 /** path ของไฟล์ที่ต้องใช้กับคีย์นี้ — sourceZone ใช้โซนต้นทางของหน่วย (ไม่ระบุ = โซนปัจจุบัน)
  *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
+  if (key === 'prop-boat') return 'img/boat/ferry-hull-v1.webp';
+  if (key === 'ferry-rower') return 'img/boat/ferry-rower-v1.webp';
+  if (/^ferry-(yama|nira)-(jump|sit)$/.test(key)) return `img/boat/${key}-${sourceZone || zoneOf()}-v1.webp`;
   const signal = key.match(/^boss-frontier-(th|asia|west)-signal(-profile)?$/);
   if (signal) return signal[2] ? null : `img/story-sig/boss-frontier-${signal[1]}-signal-v1.webp`;
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;
@@ -110,6 +120,10 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
+  if (key === 'crew-guard-receive' || key === 'crew-guard-eat') {
+    const stem = GUARD_MEAL_STEMS[z];
+    return stem ? `img/${stem}-${key.slice('crew-guard-'.length)}-v1.webp` : null;
+  }
   // T7/2: Zone 3's Guard is Van Helsing - his own picture slot (placeholder until Codex draws it); walking / cutscene variants of the generic guard stay as they are
   if (z === 'cyberhell' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z4-events/guard-watson03${key.endsWith('-profile') ? '-profile' : ''}.webp`;   // T8b/2: Zone 4's Guard is WATSON-03
   if (z === 'west' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z3-events/guard-vanhelsing-west${key.endsWith('-profile') ? '-profile' : ''}.webp`;
@@ -669,7 +683,7 @@ export function drawFire(ctx, x, y, w, t, n = 3) {
 }
 
 /** เรือข้ามธารลาวา — วิญญาณที่มาไม่ทันคิวนั่งมากับลำนี้ */
-export function drawBoat(ctx, x, y, t, riders = 0, inbound = true) {
+export function drawBoat(ctx, x, y, t, riders = 0, inbound = true, rowing = riders > 0) {
   const bob = Math.sin(t / 620) * 5;
   const W = 132;
   const im = img('prop-boat');
@@ -679,6 +693,18 @@ export function drawBoat(ctx, x, y, t, riders = 0, inbound = true) {
     if (inbound) ctx.scale(-1, 1);
     ctx.drawImage(im, -W / 2, 0, W, W);
     ctx.restore();
+    const rower = img('ferry-rower');
+    if (rower) {
+      const frameWidth = rower.naturalWidth / 3;
+      const frame = rowing ? Math.floor(t / 230) % 3 : 2;
+      const size = 64;
+      ctx.save();
+      ctx.translate(x + (inbound ? -38 : 38), y + 11 + bob);
+      ctx.scale(inbound ? 1 : -1, 1);
+      ctx.drawImage(rower, frame * frameWidth, 0, frameWidth, rower.naturalHeight,
+        -size / 2, -size * .69, size, size);
+      ctx.restore();
+    }
   }
   else {
     ctx.fillStyle = 'rgba(0,0,0,.35)';

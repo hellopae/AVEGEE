@@ -24,6 +24,21 @@ test('boarding and landing meet the same bobbing deck used while sailing',()=>{
   }
  }
 });
+test('boarding gives each rider a jump before they sit on the deck',()=>{
+ const source={...a(),phase:'board'};
+ const start=mapTravelPose(source,0);
+ const heroJump=mapTravelPose({...source,progress:.18},0);
+ const readerJump=mapTravelPose({...source,progress:.76},0);
+ const seated=mapTravelPose({...source,progress:1},0);
+ assert.equal(heroJump.heroState,'jump');
+ assert(heroJump.hero.y<start.hero.y,'takeoff lifts above the quay');
+ assert.equal(heroJump.readerState,'stand');
+ assert.equal(readerJump.heroState,'sit');
+ assert.equal(readerJump.readerState,'jump');
+ assert.equal(seated.heroState,'sit');
+ assert.equal(seated.readerState,'sit');
+ assert.equal(mapTravelPose({...source,progress:.18,reduced:true},0).heroState,'stand');
+});
 test('landing uses the destination quay, never the previous branch pickup path',()=>{
  const dest={...a(),pier:{x:470,y:682},waterY:802,phase:'land',progress:1};
  const p=mapTravelPose(dest,0);near(p.hero,{x:456,y:682});near(p.reader,{x:492,y:682});
@@ -42,18 +57,18 @@ test('committing between town ports resets berth and boarding height to destinat
  assert.equal(g.zone,'cyberhell');assert.equal(g.mapTravel.boardingHop,8);assert.equal(g.mapTravel.waterY,g.harbourPoint().y+60);
 });
 
-// Independently traced from the visible floor of img/prop-boat.webp (512px).
-// Project world feet back through drawBoat's 132-unit, mirrored texture.
-test('both passengers stand inside the painted boat deck through boarding and sailing',()=>{
- const floor=[[115,357],[205,378],[320,417],[343,438],[258,420],[148,387]];
+// Visible deck in img/boat/ferry-hull-v1.webp (512px).
+// Project the seat anchors back through drawBoat's 132-unit mirrored texture.
+test('both passengers sit inside the painted boat deck through boarding and sailing',()=>{
+ const floor=[[76,335],[144,363],[218,388],[305,412],[379,429],[451,455],[405,474],[334,453],[228,423],[155,399],[107,369]];
  for(const reduced of [false,true])for(const time of [0,400,1234])
  for(const [phase,progress] of [['board',1],['depart',0],['depart',.5],['arrive',.5],['arrive',1],['land',0]]){
   const pose=mapTravelPose({...a(),reduced,phase,progress},time);
   const bob=reduced?0:Math.sin(time/620)*5;
   for(const who of ['hero','reader']){
-   const feet=pose[who],px=256-(feet.x-pose.boat.x)*512/132;
-   const py=(feet.y-pose.boat.y+132*.78-bob)*512/132;
-   assert(inPoly(px,py,floor),`${who} feet outside the painted deck in ${phase}`);
+   const seat=pose[who],px=256-(seat.x-pose.boat.x)*512/132;
+   const py=(seat.y-pose.boat.y+132*.78-bob)*512/132;
+   assert(inPoly(px,py,floor),`${who} seat outside the painted deck in ${phase}`);
   }
  }
 });

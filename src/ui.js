@@ -291,9 +291,11 @@ function updateMapCamera(now) {
   const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
   if (!stage || !box) return;
   stage.classList.toggle('town-view',isTownZone(g.zone));
+  const sailing = g.mapTravel?.mode === 'boat';
+  stage.classList.toggle('ferry-travel',sailing);
   const dt = Math.max(0, Math.min(250, now - mapCam.at)); mapCam.at = now;
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const target = mapCam.full ? 1 : MAP_ZOOM_LEVELS[mapCam.level];
+  const target = sailing ? MAP_ZOOM_LEVELS.at(-1) * 1.35 : mapCam.full ? 1 : MAP_ZOOM_LEVELS[mapCam.level];
   const blend = !mapCam.init || reduced ? 1 : 1 - Math.exp(-dt / 130);
   mapCam.init = true;
   mapCam.z += (target - mapCam.z) * blend;
@@ -304,7 +306,7 @@ function updateMapCamera(now) {
   // POINTERS: pressing an arrow glances at that enemy for POINTER.peekMs, then the camera glides back to Yama (same exponential follow as every other focus)
   const peek = mapCam.peek && now < mapCam.peek.until ? mapCam.peek : (mapCam.peek = null);
   const focus=g.mapTravel?.focus||peek||escortView||brotherView||g.player;
-  const follow = !mapCam.full && MAP_ZOOM_LEVELS[mapCam.level] > 1;
+  const follow = target > 1;
   const wantX = follow ? focus.x : SCENE.w / 2, wantY = follow ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
@@ -5793,7 +5795,7 @@ async function startMapJourney(to,mode='boat') {
  const fromZone=g.zone,keepBorder=mode==='dungeon';   // T8c: the walk back ('walk') starts from the frontier screen that startWalkBack already closed - it shows like the boat (panel on the page)
  // Keep the border backdrop in its top-layer dialog until the zone commits.
  if(!keepBorder)dlg.close();g.paused=false;
- if(!keepBorder){setFullMap(false);setMapZoom(0);}
+  if(!keepBorder){setFullMap(false);if(mode!=='boat')setMapZoom(0);}
  const panel=document.createElement('section');panel.id='map-travel-panel';panel.setAttribute('role','status');
  panel.style='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:10010;width:min(560px,92vw);box-sizing:border-box;background:var(--panel,#281d22);color:var(--text,#ffe7c4);border:1px solid var(--gold,#d4a355);border-radius:12px;padding:12px;text-align:center;line-height:1.65';
  const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');const host=keepBorder?dlg:document.body;host.append(blocker);

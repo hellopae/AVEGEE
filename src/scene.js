@@ -64,7 +64,7 @@ export function setMapCharScale(zone) {
   CREW_H = 82 * CHAR_SCALE_MAP; HERO_H = mapActorHeight('yama') * CHAR_SCALE_MAP; SOUL_H = 64 * CHAR_SCALE_MAP;
 }
 const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
-/** T3/12: placeholder look of 'receive / eat a rice ball' (the standing pose + a floating rice ball) until the drawn poses exist: the ball slides in from the giver's side, then bobs over the head */
+/** Meal indicator for characters without a drawn pose or while the pose is loading. */
 function mealMark(ctx, x, y, m, t) {
   const slide = m.phase === 'receive' ? 1 - Math.min(1, m.ms / MEAL_SEQ.receiveMs) : 0, side = m.from && Math.abs(m.from[0] - x) > 1 ? Math.sign(m.from[0] - x) : 0;
   label(ctx, '🍙', x + side * 30 * slide, y - 8 + Math.sin(t / 170) * (m.phase === 'eat' ? 4 : 1.5), 16);
@@ -703,15 +703,24 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
   if (!rescue && (actorStanding(g.guard) || g.guard?.teaRest?.phase === 'travel')) {
-    const motion = actorWalkMotion(g.guard, t, g.zone);
-    spot_(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP);
-    at(g.guard.y, () => {
-      if (g.guard.mealSeq) mealMark(ctx, g.guard.x, g.guard.y - mapActorHeight('guard') * CHAR_SCALE_MAP, g.guard.mealSeq, t);
-      if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-      shade(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP, c => {
-        if (motion.moving && drawCrewWalk(c, GUARD.img, g.guard.x, g.guard.y,
-            mapActorHeight('guard') * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
-        mapStandee(c, GUARD.img, g.guard.x, g.guard.y, mapActorHeight('guard'), t, '🛡️', motion.face, motion.moving);
+    const guard = g.guard;
+    const motion = actorWalkMotion(guard, t, g.zone);
+    const h = mapActorHeight('guard');
+    const meal = guard.mealSeq;
+    spot_(guard.x, guard.y, h * CHAR_SCALE_MAP);
+    at(guard.y, () => {
+      const mealKey = meal && `crew-guard-${meal.phase}`;
+      const hasMealPose = mealKey && img(mealKey, g.zone);
+      if (meal && !hasMealPose) mealMark(ctx, guard.x, guard.y - h * CHAR_SCALE_MAP, meal, t);
+      if (sel && sel.kind === 'guard') ring(ctx, guard.x, guard.y, t, 34);
+      shade(guard.x, guard.y, h * CHAR_SCALE_MAP, c => {
+        if (meal) {
+          mapStandee(c, hasMealPose ? mealKey : GUARD.img, guard.x, guard.y, h, t, '🛡️', guard.face || motion.face, false, g.zone);
+          return;
+        }
+        if (motion.moving && drawCrewWalk(c, GUARD.img, guard.x, guard.y,
+            h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
+        mapStandee(c, GUARD.img, guard.x, guard.y, h, t, '🛡️', motion.face, motion.moving);
       });
     });
   }
