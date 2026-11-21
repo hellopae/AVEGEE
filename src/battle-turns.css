@@ -143,6 +143,9 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 /* L2 — flee: dimmed tab with its reason, and the confirmation layer */
 .battle9-arena .battle9-menu .actor-segment:disabled,.battle9-arena .battle9-menu .actor-segment[aria-disabled=true]{opacity:.5;cursor:not-allowed;filter:grayscale(.4)}
 .battle9-arena .battle9-menu .actor-segment .segment-reason{display:block;font-style:normal;font-size:.78em;line-height:1.1;color:#ffd9a0;opacity:.95;white-space:nowrap}
+.battle9-arena .battle9-menu .actor-segment[data-command="summon"]>span{display:grid;grid-template-columns:18px minmax(0,1fr);align-items:center;gap:6px}
+.battle9-arena .battle9-menu .actor-segment[data-command="summon"] img{object-fit:contain}
+.battle9-arena .battle9-menu .actor-segment[data-command="summon"] .segment-reason{white-space:normal}
 .battle9-arena .battle9-menu .actor-segment:has(.segment-reason){height:auto;min-height:clamp(34px,4.3vh,48px)}
 .flee-layer{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:#0b060acc;padding:12px}
 .flee-card{width:min(420px,100%);padding:18px 20px;border:1px solid var(--gold);border-radius:10px;background:var(--card,#200d14);color:#fff1d2;text-align:center;box-shadow:0 8px 30px #000b}
