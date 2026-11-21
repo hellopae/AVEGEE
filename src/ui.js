@@ -2189,7 +2189,7 @@ function beginBrotherArrival(ev) {
     openBossArrive(g.zoneDef(), () => {
       g.bossArriveSeen.th = true; g.dismissEventAlert('thBorderBoss');
       openZoneEventAlert(ev);
-    }, 'ไปพบพี่ใหญ่');
+    }, getLang() === 'en' ? 'Meet Yomathat' : 'ไปพบพี่ใหญ่');
   };
   setTimeout(done, 4200);
 }
@@ -2232,11 +2232,16 @@ function beginBossBridgeWalk() {
 /** ฉากมาถึงของบอสประจำโซน — 3-4 บรรทัดสลับผู้พูด ก่อนสู้ครั้งแรกเท่านั้น (17 ก.ย. 2569)
  *  รีแมตช์ (bossArriveSeen ติดไปแล้ว) ข้ามตรงไปสู้เลย · ใช้ภาพ Intro-Boss-Zone<N> เป็นพื้นหลังถ้ามี
  *  บทมาจาก Rae ผ่าน Reese fact-check แล้ว (ดู ZONES[].bossArrive ใน data.js) ห้ามแก้ถ้อยคำ */
-function openBossArrive(z, onDone, lastLabel = '⚔️ สู้เลย') {
+function openBossArrive(z, onDone, lastLabel) {
   // T9: in English the lines are z.bossArriveEn when the zone has them (one English line per Thai line); otherwise the Thai ones as before
   const thLines = z.bossArrive || [];
-  const lines = getLang() === 'en' && z.bossArriveEn?.length === thLines.length ? z.bossArriveEn : thLines;
+  const english = getLang() === 'en';
+  const lines = english && z.bossArriveEn?.length === thLines.length ? z.bossArriveEn : thLines;
   if (!lines.length) { onDone(); return; }
+  const name = english ? z.bossNameEn || z.bossName : z.bossName;
+  const heading = english ? `${name} has arrived` : `${name}มาถึงแล้ว`;
+  const nextLabel = english ? 'Next →' : 'หน้าถัดไป →';
+  const endLabel = lastLabel || (english ? '⚔️ Fight' : '⚔️ สู้เลย');
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
   // 30A: โซน 2–4 ใช้ฉากมาถึงตรง path ที่มีจริง ไม่รอ manifest/ภาพ closeup (closeup จตุรัสทำให้กรอบสูงจนข้อความตกขอบจอ)
   // โซน 1 คงการเลือกภาพเดิม (artUrl คืน path แม้ไฟล์ยังไม่โหลด)
@@ -2246,16 +2251,17 @@ function openBossArrive(z, onDone, lastLabel = '⚔️ สู้เลย') {
   let i = 0;
   const paint = () => {
     const line = lines[i];
-    const m = line.match(/^([^:]{1,14}):\s*(.+)$/);
-    const speaker = m ? m[1] : z.bossName;
+    const m = line.match(/^([^:]+):\s*(.+)$/);
+    const speaker = m ? m[1] : name;
     const text = (m ? m[2] : line).replace(/^"|"$/g, '');
-    dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="ฉากมาถึง ${esc(z.bossName)} หน้า ${i + 1} จาก ${lines.length}">
+    const pageLabel = english ? `Page ${i + 1} of ${lines.length}` : `หน้า ${i + 1} จาก ${lines.length}`;
+    dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(heading)} · ${esc(pageLabel)}">
       <div class="intro-comic-frame">
         <img src="${bg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-boss')}'">
-        <div class="intro-comic-head"><span>👑 ${esc(z.bossName)}มาถึงแล้ว</span><span>${i + 1} / ${lines.length}</span></div>
+        <div class="intro-comic-head"><span>👑 ${esc(heading)}</span><span>${i + 1} / ${lines.length}</span></div>
       </div>
       <div class="intro-comic-caption"><h2>${esc(speaker)}</h2><p>${esc(text)}</p></div>
-      <div class="intro-comic-controls"><button class="gold" id="arrive-next">${i + 1 === lines.length ? esc(lastLabel) : 'หน้าถัดไป →'}</button></div>
+      <div class="intro-comic-controls"><button class="gold" id="arrive-next">${esc(i + 1 === lines.length ? endLabel : nextLabel)}</button></div>
     </div>`;
     prepareComicImages(dlg);
     dlg.querySelector('#arrive-next').onclick = () => { if (++i >= lines.length) dlg.close(); else paint(); };
@@ -2816,6 +2822,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
+    ${hp?.kind === 'practice' && !hp.over ? `<button class="practice-exit" data-practice-exit aria-label="${esc(t('practice.leave'))}" title="${esc(t('practice.leave'))}">✕</button>` : ''}
     <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"
       style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.webp" alt=""></button>
     <div class="ttl">${esc(title)}</div>
@@ -4761,7 +4768,7 @@ function openBattle(after) {
       {id:'defense',label:'ป้องกัน / Defend',action:'defend'},
       // T4 (H2): once Sita has given the lamp the Flee row is replaced by "อัญเชิญ" - before that it is exactly the old Flee row
       ...(LAMP.lampOwned(g) ? [{id:'summon',label:`${lt('battle.button')} / ${lt('battle.button','',  'en')}`,summon:true,disabled:LAMP.SUMMON_BLOCKED_KINDS.includes(b.kind)||b.breachFinale==='ready',reason:lt('battle.cannot')}]
-        : [{id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy}]),
+        : b.kind === 'practice' ? [] : [{id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy}]),
     ];
     const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
@@ -4772,7 +4779,8 @@ function openBattle(after) {
         <div class="battle9-confirm" ${selection?'':'hidden'}>${selection}</div>
       </section>`;
 
-    const finLabel = b.kind === 'questFight' && b.over ? (b.over === 'win' ? 'กลับไปคุยต่อ' : 'กลับไปตั้งหลัก')
+    const finLabel = b.kind === 'practice' ? t('practice.return')
+      : b.kind === 'questFight' && b.over ? (b.over === 'win' ? 'กลับไปคุยต่อ' : 'กลับไปตั้งหลัก')
       : b.over==='win' && b.dungeonToken ? 'เก็บไอเท็มที่ตก' : b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
@@ -4811,7 +4819,7 @@ function openBattle(after) {
         <div class="flee-actions"><button data-summon-cancel>${esc(lt('battle.cancel'))}</button><button class="gold" data-summon-call ${summonPick ? '' : 'disabled'}>${esc(lt('battle.call'))}</button></div></div></div>`;
     })();
     dlg.innerHTML =
-      arena(b.kind === 'yama' ? 'พญายมลงมาเอง'
+      arena(b.kind === 'practice' ? t('practice.title') : b.kind === 'yama' ? 'พญายมลงมาเอง'
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นหัวหน้าที่บัลลังก์ของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
           : b.kind === 'dad'   ? `${g.zone === 'th' ? 'พ่อ' : authorityOf(g.zone).title}ลงมาเอง — ตัดสินพลาดสามสำนวนติด`
           // ข้อ F.1 ชุด 15 — หัวข้อ "บอสโซน<ชื่อโซน>" ตามม็อกอัป Battle5.jpg — g.zoneDef().name
@@ -5400,6 +5408,8 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = () => { if (!phase) finish(); };
+    const leavePractice = dlg.querySelector('[data-practice-exit]');
+    if (leavePractice) leavePractice.onclick = () => { b.over = 'flee'; finish(); };
     // Z1-EVENTS (case 9): the new team move was just unlocked (window closed) -> Yama uses it to close the border boss fight, whoever's turn it was
     if(b.breachFinale==='ready'&&!b.storyInterlude&&!phase&&!b.over&&!b.commandBusy&&!finaleScheduled&&!userPaused&&!pauseDlg.open){
       finaleScheduled=true;
@@ -5475,7 +5485,7 @@ function openBattle(after) {
     updatePlay();
     refresh();
     // ชุด 28B — ถ้ามีหน้าต่างรางวัลรออยู่ ให้ฟังก์ชันต่อท้าย (เช่นกลับแผนที่ชายแดน) รอจนปิดหน้าต่างรางวัลก่อน
-    if (done?.over === 'lose' && done.kind !== 'questFight') return;   // T5'/0: a lost quest fight still shows its own lost scene first (Rae's text); that scene then hands over to the tea-house wake-up
+    if (done?.over === 'lose' && done.kind !== 'questFight' && done.kind !== 'practice') return;
     if (after) afterReward(() => after(done ? done.over : null, done));
   }
 
@@ -6541,7 +6551,7 @@ function roomFor(k) {
     : g.zone === 'th' && base.ui4 ? { ...base, ...base.ui4 } : base;
 }
 
-function openStation(k, emergency = false) {
+function openStation(k, emergency = false, atPractice = false) {
   const def = STATIONS.find(d => d.k === k);
   if(k==='canteen'&&!g.stations.some(st=>st.def.k===k&&!st.build&&!st.repair&&!st.fire))return;
   // T4 (R2 A 2.5): the first time Yama walks into the Mirror Tower with the lamp, Kan explains it (one page) - then the room opens as usual
@@ -6551,12 +6561,32 @@ function openStation(k, emergency = false) {
     return;
   }
   const room = roomFor(k);
+  if (atPractice && room.practice) room.me = room.practice.approach;
   // Only krajok gains access to the new stand; other rooms keep their paths.
   if(k === 'krajok')room.walk=[{poly:[[.17,.51],[.81,.51],[.81,.81],[.68,.81],[.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}];
   const emergencyStation = emergency ? { def, slots:[], fire:0, build:0 } : null;
   const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
+  let practiceRequested = false;
+  const nearPractice = () => {
+    if (!R || !room.practice) return false;
+    const [x,y] = R.pos(), [px,py] = room.practice.approach;
+    return Math.hypot(x-px,y-py) <= .055;
+  };
+  const beginPractice = () => {
+    practiceRequested = false;
+    if (!nearPractice() || mgOpen || R.isLocked() || !g.startSwordPractice()) return false;
+    g.battle.worldBackground = stBg(k);
+    R.destroy();
+    openBattle(() => openStation(k, false, true));
+    return true;
+  };
+  const requestPractice = () => {
+    if (mgOpen || R.isLocked()) return;
+    if (nearPractice()) beginPractice();
+    else { practiceRequested = true; R.walkTo(...room.practice.approach); }
+  };
   let trainingQuit = null, minigameQuit = null, mirrorCharge = null;
   let diag = null;                      // P4: ใบวินิจฉัยวิญญาณ (เฉพาะตะราง/ประตูสวรรค์) — mountDiagnosis() ตอนสร้างห้องเสร็จ
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
@@ -6765,6 +6795,11 @@ function openStation(k, emergency = false) {
         const damHere = residentPresent(g, k);   // T3/1 (G6): Dam is drawn here only while he is free - the button follows him
         tags.push({id:'sword-training',ax,ay,pos:'above',label:k==='ngiw'?'ฝึกฟันดาบ':'ฝึกวิชาดาบ',hint:damHere?'คุยกับดำ · เพิ่มพลังดาบ':`${crewName(g.crewOf('dam'),g.zone)}ไม่อยู่ที่นี่ตอนนี้`,keep:true,disabled:mgOpen||!damHere});
       }
+      if (room.practice) {
+        const [ax,ay] = R.anchor(...room.practice.prop,.035);
+        tags.push({id:'sword-practice',ax,ay,pos:'above',label:t('practice.title'),
+          disabled:mgOpen||!!(st.build||st.fire||st.repair)});
+      }
       if (k === 'krata' && g.crew.some(c => c.k === 'plerng')) {
         const [ax,ay] = R.anchor(...room.crew,R.crewHeight+.025);
         const plerngHere = residentPresent(g, 'krata') || st.crewK === 'plerng' && keeperPresent(g, st);
@@ -6795,6 +6830,8 @@ function openStation(k, emergency = false) {
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.yamaKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
       const swordTrainingBtn = N.querySelector('[data-npc="sword-training"]');
       if (swordTrainingBtn) swordTrainingBtn.onclick = () => openTraining(k,true);
+      const practiceButton = N.querySelector('[data-npc="sword-practice"]');
+      if (practiceButton) practiceButton.onclick = requestPractice;
       const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
       if (fireTrainingBtn) fireTrainingBtn.onclick = () => openKrata(true);
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
@@ -7099,8 +7136,10 @@ function openStation(k, emergency = false) {
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
+  if (room.practice) R.onPracticeProp = requestPractice;
   if (k === 'tea') { img('hero-yama-unconscious'); img('hero-yama-tea-clean'); }   // FB2-13: warm the lying/sitting poses while the player walks to the bed
   R.onAct = () => {
+    if (nearPractice()) { beginPractice(); return; }
     if (k === 'krata') { openKrata(false); return; }
     if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
     if (k !== 'krata' && room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
@@ -7161,6 +7200,7 @@ function openStation(k, emergency = false) {
   let exitLatched = true;
   let wasMirrorNear=false;
   R.onFrame = near => {
+    if (practiceRequested && nearPractice() && beginPractice()) return;
     const leave = exitStep({ at: nearRoomExit(R.pos(), exit), latched: exitLatched,
       blocked: mgOpen || R.isLocked() || R.sleeping() || !!g.battle || !!trainingQuit || !!minigameQuit });
     exitLatched = leave.latched;

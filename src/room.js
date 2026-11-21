@@ -283,7 +283,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     const cx = (e.clientX - r.left) / r.width * cv.width;
     const cy = (e.clientY - r.top) / r.height * cv.height;
     const visualX = (cx - box.ox) / box.w;
-    const [tx, ty] = snap(mirrorRoom ? 1 - visualX : visualX, (cy - box.oy) / box.h);
+    const x = mirrorRoom ? 1 - visualX : visualX;
+    const y = (cy - box.oy) / box.h;
+    if (api.onPracticeProp && room.practice) {
+      const [px,py] = room.practice.prop;
+      if (Math.hypot(x-px,y-py) < .045) { api.onPracticeProp(); return; }
+    }
+    const [tx, ty] = snap(x,y);
     P.tx = tx; P.ty = ty;
   };
   cv.addEventListener('pointerdown', onDown);
@@ -794,6 +800,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     stokeEffect(hit) { stokeFx={at:performance.now(),hit}; g.swingUntil=Date.now()+900; },
     st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
+    onPracticeProp: null,
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     exitSpot: null,         // P5: จุดออก {x,y,reach,label} — วาดลูกศรบนพื้น (ui.js เป็นคนตั้งและเป็นคนตัดสินว่าออก)
     isLocked: () => locked, // มินิเกม/หอทะเบียนเปิดทับอยู่ — ห้ามออกอัตโนมัติ

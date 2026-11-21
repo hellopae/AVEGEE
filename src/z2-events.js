@@ -58,6 +58,26 @@ const IMAGES = {
 const RETURN_RAW = Z2_STORIES_RAW['z2-wukong-return'], RETURN_LINES = RETURN_RAW.pages[1].line.split('\n'), CLOUD_LINE = RETURN_LINES.pop();
 IMAGES[WUKONG_FLAME.leaveStory] = [Z2_ART.wukongReturns];
 const dress = (key, raw) => ({ title:raw.title, pages:raw.pages.map((p, i) => ({ image:IMAGES[key][Math.min(i, IMAGES[key].length - 1)], title:p.title, line:p.line, fallback:'📜' })) });
+const LIAN_ARRIVAL_EN = [
+  { title:'The One Who Has Come to Test You', lines:[
+    'Narration: Armour clatters in unison across the pier. An older man in dark steel armour stops before you, standing straight. He carries no sword, only an iron chain as thick as a wrist hanging from his belt.',
+    'Lian Gang: "I am Lian Gang, the Eastern General of the Chain. I have guarded this land since before you were born. Whoever keeps the ledger here must get past me first. I fear no rival. I simply will not put thousands of lives in the hands of someone who has never seen battle."',
+  ] },
+  { title:'The Chain I Carry', lines:[
+    'Lian Gang: "The chain at my waist has never bound anyone without a warrant. I know some in this realm hate the chain, and they have reason to. I will not argue with them. But I will keep it, because a chain used rightly protects the weak from the wicked."',
+    'Yama: "I understand, sir. I have come to keep the ledger in order. I have no wish to take anything from you."',
+  ] },
+  { title:'A Duel on the Pier', lines:[
+    'Lian Gang: "Words always sound good. I believe what I see you do. This pier is wide enough. I will see that no one suffers more than a healer can stitch. Begin."',
+    'Narration: Lian Gang unhooks the chain from his belt and whirls one end in his hand. The iron whistles through the air.',
+  ] },
+];
+const lianArrival = dress('z2-lian-open', Z2_STORIES_RAW['z2-lian-open']);
+lianArrival.en = {title:'The Eastern General of the Chain'};
+lianArrival.pages.forEach((page,i) => {
+  const {title,lines}=LIAN_ARRIVAL_EN[i];
+  page.en={title,line:lines.join('\n')};
+});
 
 // Wukong's first scene has two second pages in Rae's file (version A: the old ape was sent to heaven · version B: he was punished). Two stories, one per version.
 const WUKONG_PAGES = Z2_STORIES_RAW['z2-wukong-open'].pages;   // [p1, A, B, p3]
@@ -73,6 +93,7 @@ const satoriFarewellB = () => { const r = Z2_STORIES_RAW['z2-satori-farewell'];
 
 export const Z2_STORIES = Object.freeze({
   ...Object.fromEntries(Object.entries(Z2_STORIES_RAW).filter(([k]) => IMAGES[k]).map(([k, raw]) => [k, dress(k, raw)])),
+  'z2-lian-open':lianArrival,
   'z2-wukong-open':dress('z2-wukong-open', wukongOpen(WUKONG_PAGES[1])),
   'z2-wukong-open-b':dress('z2-wukong-open-b', wukongOpen(WUKONG_PAGES[2])),
   'z2-satori-ask-b':dress('z2-satori-ask-b', satoriAskB()),
@@ -285,3 +306,4 @@ export const Z2_NOTICES = Object.freeze({ ...BASE_NOTICES, ...KIN_NOTICES, ...GU
 
 /** Rae's three-page opening of the zone boss (5.3) as the lines of the arrival scene (data.js ZONES.asia.bossArrive): one line per page, the speaker before the colon. */
 export const LIAN_ARRIVE_LINES = Object.freeze(Z2_STORIES_RAW['z2-lian-open'].pages.flatMap(p => p.line.split('\n')).filter(Boolean));
+export const LIAN_ARRIVE_LINES_EN = Object.freeze(LIAN_ARRIVAL_EN.flatMap(p => p.lines));

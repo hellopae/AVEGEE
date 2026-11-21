@@ -1438,6 +1438,7 @@ export function wideStationRoom(zone, key) {
   if (!art) return null;
   return {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
+    ...(key === 'dab' ? {practice:{prop:[...art.trainingProp],approach:[...art.trainingApproach]}} : {}),
     me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:key === 'sawan' ? GATE_PLATFORMS[zone].map(p=>[...p]) : art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
     act:key === 'krata' ? [.5,.54] : key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
     // N1 (คุณเป้ 16 ต.ค. ภาพ 10): หอส่องกรรมไม่มี "จุดฝึก" บนพื้นแล้ว (ถอดทั้งวง+ป้าย+ทางเข้า) — กันกลับด้วย tests/n1-harbour-krajok.test.mjs

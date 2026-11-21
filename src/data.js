@@ -1,5 +1,5 @@
 import { SIGNAL_EVENTS, SIGNAL_CLOSE, RETURN_GUARD_EVENTS } from './signal-arc.js';
-import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
+import { Z2_TEXT, LIAN_ARRIVE_LINES, LIAN_ARRIVE_LINES_EN } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
 import { WANTHONG_TEXT } from './z1-wanthong.js';
@@ -2167,12 +2167,18 @@ export const ZONES = [
   // ขึ้นต้น scene- ทุกไฟล์ — ไม่ resize เพราะกว้าง 1678 < SCENE_W 2000 อยู่แล้ว, 1.9MB → 853KB)
   // แล้วชี้โค้ดมาไฟล์นี้แทน — img/scene-v2.png ต้นฉบับยังอยู่ครบ ไม่ถูกทับ/ลบ (กู้คืนได้จาก 6d7f47e)
   { k:'th', scene:'scene-v2-opt', w:TOWN_SIZE.w, h:TOWN_SIZE.h, level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
-    bossName:'ยมทัต', bossSub:'ยมราชพี่ใหญ่ · พี่ชายของยมบาทน้อย · ผู้ตรวจการสาขาสุวรรณภูมิ',
+    bossName:'ยมทัต', bossNameEn:'Yomathat', bossSub:'ยมราชพี่ใหญ่ · พี่ชายของยมบาทน้อย · ผู้ตรวจการสาขาสุวรรณภูมิ',
     bossArrive:[
       'ยมทัต: "ได้ยินว่าน้องเก่งขึ้นเยอะนะ วันนี้พี่มาดูของจริง"',
       'ยมบาทน้อย: "พี่มาสอบผมอีกแล้วเหรอครับ"',
       'ยมทัต: "ไม่ใช่สอบ แค่อยากรู้ว่าน้องพร้อมเป็นยมบาทของโซนนี้แล้วหรือยัง"',
       'ยมบาทน้อย: "งั้นก็มาดูกันเลยครับพี่"',
+    ],
+    bossArriveEn:[
+      'Yomathat: "I hear you have come a long way, little brother. I came to see for myself."',
+      'Yama: "Are you here to test me again, brother?"',
+      'Yomathat: "This is no test. I just want to see whether you are ready to be the Yamabal of this realm."',
+      'Yama: "Then let us find out, brother."',
     ],
     bossTalk:'"ถ้าน้องแพ้พี่ตอนนี้ ก็ยังไม่ต้องรีบคุมโซนหรอกนะ"',
     bossWin:[ '"น้องแข็งแกร่งขึ้นจริงอย่างที่พี่ได้ยินมา"', '"โซนนี้ฝากให้น้องดูแลได้แล้วนะ"' ],
@@ -2180,8 +2186,9 @@ export const ZONES = [
     intro:'"เริ่มจากสาขาที่เละที่สุดก่อน" — พญายมพูดแค่นั้นแล้วก็หันหลังกลับ',
     mobs:[0,1,2,3,4,5], coin:0 },
   { k:'asia', scene:'scene-asia-v3', w:1678, h:937, level:3, name:'โซนบูรพา', sub:'',   // 28A: คุณเป้ตัดคำโปรยประเทศออก — UI ต้องเช็ค sub ว่างก่อนแสดง
-    bossName:'เหลียนกัง', bossSub:'แม่ทัพตรวนบูรพา · ผู้ตรวจการท้องถิ่นประจำสาขาบูรพา',
+    bossName:'เหลียนกัง', bossNameEn:'Lian Gang', bossSub:'แม่ทัพตรวนบูรพา · ผู้ตรวจการท้องถิ่นประจำสาขาบูรพา',
     bossArrive:LIAN_ARRIVE_LINES,   // Z2-EVENTS: Rae's z2-lian-open (5.3), replaces the four older lines
+    bossArriveEn:LIAN_ARRIVE_LINES_EN,
     bossTalk:'"โซ่เส้นนี้คือระเบียบตรวจแถว เจ้าต้องผ่านให้ได้ก่อนจะบังคับบัญชาที่นี่"',
     bossWin:[ '"วินัยเจ้าไม่แพ้นายทหารที่เกิดในบูรพาเลยสักคน"', '"ข้าส่งมอบการบังคับบัญชาสาขานี้ให้เจ้าแล้ว"' ],
     bossLose:'"เจ้ายังไม่คู่ควร ไปฝึกมาใหม่แล้วค่อยกลับมา"',
@@ -2190,9 +2197,9 @@ export const ZONES = [
     // ใช้เฉพาะผีที่มีภาพประจำโซนบูรพา ไม่ดึงเปรต/สุนัขจากโซนสุวรรณภูมิมาปน
     mobs:[6,7,8,9], coin:400 },
   { k:'west', scene:'scene-west-v2', w:1678, h:937, level:4, name:'โซนปัจฉิม', sub:'ยุโรป · อเมริกา · รัสเซีย',
-    bossName:'เซเวอริน', bossSub:'อัศวินบัญชีปัจฉิม · ผู้ตรวจการบัญชีประจำสาขาปัจฉิม',
+    bossName:'เซเวอริน', bossNameEn:'Severin', bossSub:'อัศวินบัญชีปัจฉิม · ผู้ตรวจการบัญชีประจำสาขาปัจฉิม',
     bossArrive:SEV_ARRIVE_LINES,   // T7b-2/5: Rae's z3-sev-open (4 pages) replaces the four older lines (its two [เดิม] lines are inside)
-    bossArriveEn:SEV_ARRIVE_LINES_EN,   // T9: the same lines in English (optional field: a zone without it shows the Thai lines; Lian Gang's z2-lian-open has no English yet)
+    bossArriveEn:SEV_ARRIVE_LINES_EN,
     bossTalk:'"บัญชีนี้จะสอบทานฝีมือเจ้าเอง ว่าสมกับข่าวลือหรือไม่"',
     bossWin:[ '"ยอดตรวจสอบออกมาสมกับที่เขาลือกันจริง ๆ"', '"ข้าขอปิดบัญชีนี้ด้วยการยกปัจฉิมให้เจ้าปกครอง"' ],
     bossLose:'"ยังไม่สมกับข่าวลือเลยนะ กลับมาท้าใหม่เมื่อพร้อม"',
@@ -2200,11 +2207,16 @@ export const ZONES = [
     mobs:[10], coin:800 },
   { k:'cyberhell', scene:'scene-cyberhell-v2', w:1678, h:937, level:5, name:'นรกเครือข่าย', nameEn:'CyberHell',
     sub:'เครือข่ายข้อมูล · ความทรงจำ · อาชญากรรมดิจิทัล',
-    bossName:'อาร์คอน-ศูนย์', bossSub:'จอมข้อมูลไซเบอร์ · ผู้ตรวจการระบบประจำนรกเครือข่าย',
+    bossName:'อาร์คอน-ศูนย์', bossNameEn:'Archon-Zero', bossSub:'จอมข้อมูลไซเบอร์ · ผู้ตรวจการระบบประจำนรกเครือข่าย',
     bossArrive:[
       'อาร์คอน-ศูนย์: "ระบบตรวจพบผู้บุกรุกที่ไม่มีสิทธิ์เข้าถึงนรกเครือข่าย"',
       'ยมบาทน้อย: "ผมคือยมบาทที่พ่อส่งมาดูแลโซนนี้ต่างหาก"',
       'อาร์คอน-ศูนย์: "งั้นก็พิสูจน์มาให้ดู ก่อนที่ระบบจะลบสิทธิ์คุณทิ้ง"',
+    ],
+    bossArriveEn:[
+      'Archon-Zero: "The system has detected an intruder without permission to access CyberHell."',
+      'Yama: "I am the Yamabal my father sent to oversee this realm."',
+      'Archon-Zero: "Then prove it before the system revokes your access."',
     ],
     bossTalk:'"เจ้ามีสิทธิ์อะไรมาตัดสินวิญญาณและปกครองโซนนี้"',
     bossWin:[ '"ข้อมูลไม่โกหก คุณมีสิทธิ์จริงอย่างที่อ้าง"', '"นรกเครือข่ายนี้ยกให้คุณปกครองต่อจากนี้"' ],

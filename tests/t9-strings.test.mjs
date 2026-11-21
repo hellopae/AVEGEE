@@ -140,12 +140,20 @@ test('every scene of T4-T8 (zone 2 boss + harbour, zone 3, zone 4, the return, t
   assert.ok(n >= 50, `only ${n} scenes were checked`);
 });
 
-test('the boss arrival presenter shows English: Severin\'s z3-sev-open lines (one English line per Thai line, same speakers) and falls back to Thai where a zone has none (Lian Gang)', () => {
+test('each boss arrival has an English line for every Thai line, including Severin’s original translation', () => {
   assert.equal(SEV_ARRIVE_LINES_EN.length, SEV_ARRIVE_LINES.length); assert.ok(SEV_ARRIVE_LINES_EN.length >= 8);
   assert.ok(SEV_ARRIVE_LINES_EN.every(l => !TH.test(l) && !l.includes('/*')));
   SEV_ARRIVE_LINES.forEach((l, i) => assert.equal(/^บรรยาย:/.test(l), /^Narration:/.test(SEV_ARRIVE_LINES_EN[i]), `line ${i + 1} is narration in both`));
   const west = ZONES.find(z => z.k === 'west'); assert.equal(west.bossArriveEn, SEV_ARRIVE_LINES_EN); assert.equal(west.bossArrive, SEV_ARRIVE_LINES);
   const ui = src('ui.js');
-  assert.ok(ui.includes("getLang() === 'en' && z.bossArriveEn?.length === thLines.length ? z.bossArriveEn : thLines"));
-  assert.equal(ZONES.find(z => z.k === 'asia').bossArriveEn, undefined, 'Lian Gang\'s z2-lian-open has no English from Rae yet: the Thai lines are shown (written in the report)');
+  assert.ok(ui.includes("english && z.bossArriveEn?.length === thLines.length ? z.bossArriveEn : thLines"));
+  for (const z of ZONES) {
+    assert.equal(z.bossArriveEn.length,z.bossArrive.length,z.k);
+    assert.ok(z.bossArriveEn.every(line=>!TH.test(line)),z.k);
+  }
+  setLang('en');
+  const lian = storyOf('z2-lian-open');
+  assert.ok(lian.pages.every(p=>!TH.test(p.title+p.line)));
+  assert.deepEqual(lian.pages.flatMap(p=>p.line.split('\n')),ZONES.find(z=>z.k==='asia').bossArriveEn);
+  setLang('th');
 });

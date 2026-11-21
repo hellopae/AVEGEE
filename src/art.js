@@ -97,6 +97,7 @@ const MEAL_ART_FOLDERS = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHe
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
+  if (key === 'sword-practice-dummy' || key === 'sword-practice-dummy-profile') return 'img/minigames/sword-practice-dummy.webp';
   if (key === 'prop-boat') return 'img/boat/ferry-hull-v1.webp';
   if (key === 'ferry-rower') return 'img/boat/ferry-rower-v1.webp';
   if (/^ferry-(yama|nira)-(jump|sit)$/.test(key)) return `img/boat/${key}-${sourceZone || zoneOf()}-v1.webp`;

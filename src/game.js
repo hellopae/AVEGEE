@@ -3064,6 +3064,32 @@ const API = {
     return this.battle;
   },
 
+  startSwordPractice() {
+    const station = this.stations.find(st => st.def.k === 'dab' && !st.build && !st.repair && !st.fire);
+    if (!station || this.battle || this.mapTravel || this.over || this.pendingRecovery ||
+        this.pendingReward || bossJusticeActive(this) || zoneSeized(this)) return null;
+    this.save();
+    const practice = {
+      hp:this.hp, mp:this.mp, coin:this.coin, karma:this.karma,
+      crew:this.crew, guard:this.guard, roster:this.roster,
+      inventory:this.inventory, powers:this.powers, magic:this.magic,
+    };
+    this.crew = structuredClone(this.crew);
+    this.guard = structuredClone(this.guard);
+    this.roster = { ...this.roster };
+    for (const actor of [...this.crew,this.guard].filter(Boolean)) this.roster[actor.id] = actor;
+    this.inventory = { ...this.inventory };
+    this.powers = structuredClone(this.powers);
+    this.magic = structuredClone(this.magic);
+    this.mp = this.mpMax;
+    const who = t('practice.dummy'), sp = 'sword-practice-dummy', hp = 120;
+    this.battle = prepareBattle({ kind:'practice', zone:this.zone, practice, who, sp,
+      foes:[{id:'sword-practice-dummy',who,sp,hp,maxHp:hp,atk:[3,5],stun:0,confuse:0}],
+      youHp:this.hpMax, youMax:this.hpMax, turn:1, over:null, log:[], dmg:null });
+    this.prepareEncounter();
+    return this.battle;
+  },
+
   /** เลือกยมทูตเข้าทีมชายแดน (สูงสุดสองคน) */
   setFrontierTeam(k) {
     const c = this.crew.find(x => x.k === k && !x.self);
@@ -4440,6 +4466,7 @@ const API = {
     const declareWin = () => {
       if (breachFinaleGate(true)) return true;
       B.over = 'win';
+      if (B.kind === 'practice') { this.onChange(); return true; }
       // ชุด 28B — จำของก่อนรับรางวัล เพื่อสรุปให้หน้าต่างรางวัลจากส่วนต่างจริง (ไม่เดาแยกตามชนิดศึก)
       const before = { coin:this.coin, inv:{ ...this.inventory }, ab:{ ...this.abilities } };
       if (this.isFinalBattle(B)) {
@@ -4848,6 +4875,7 @@ const API = {
     }
     if (B.youHp <= 0) {
       B.over = 'lose';
+      if (B.kind === 'practice') { this.onChange(); return true; }
       talk('win');
       if (B.kind === 'prisonBreak') {
         const event = ZONE_EVENTS.th[0];
@@ -4909,6 +4937,11 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
+    if (B.kind === 'practice') {
+      Object.assign(this,B.practice);
+      this.onChange();
+      return B;
+    }
     if (lampOwned(this) && lampAllSpent(this)) this.queueNotice('lamp-low');   // T4 NA-3: the first time every flame is spent, said once after the fight
     this.updateActorRecovery();      // KO-CREW: teammates who fell in this battle walk to the tea house now (win, lose or flee), not at the moment they fell
     if(B.dungeonToken){
@@ -6080,6 +6113,8 @@ API.markHistoryHead = function (zone) { return this.markHistory(headId(zone)); }
 
 API.recordPlayTime = function (elapsed, active = true) { recordPlayTime(this,elapsed,active); };
 API.save = function () {
+  // The save made on entry is the real state; a mid-drill save must never include practice spending.
+  if (this.battle?.kind === 'practice') return true;
   // UI-created games are locked until a slot is selected. Existing API consumers retain the legacy key.
   if (this.saveSlot === null) return false;
   if (validSlot(this.saveSlot)) return writeSaveSlot(this.saveSlot,this.snapshot());
