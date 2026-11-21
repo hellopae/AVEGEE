@@ -15,7 +15,7 @@ const skin = await import('../src/zone-skin.js');
 test('canteen: the new picture cannot be hidden by an old browser cache (cache name + entry module version changed)', async () => {
   const preload = readFileSync(file('src/preload.js'), 'utf8'), html = readFileSync(file('index.html'), 'utf8');
   const version = preload.match(/const CATALOG_VERSION = '([^']+)'/)[1];
-  assert.ok(version.endsWith('-z1v5-fx3'), 'Cache Storage name follows CATALOG_VERSION: a new suffix makes every browser drop avegee-images-<old> (which held the old canteen-th.webp)');
+  assert.ok(/-z1v5-fx3(?:-[a-z0-9]+)*$/.test(version), 'Cache Storage name follows CATALOG_VERSION: a new suffix makes every browser drop avegee-images-<old> (which held the old canteen-th.webp)');
   assert.ok(!html.includes('preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f'), 'entry script + import map moved to the new preload.js release');
   const refs = [...html.matchAll(/(?<!asset-)preload\.js\?v=([^"]+)"/g)].map(m => m[1]);
   assert.ok(refs.length >= 3 && new Set(refs.filter(r => r.startsWith('2026'))).size === 1, 'one release id everywhere');

@@ -160,10 +160,14 @@ import json,sys,math
 from pathlib import Path
 from PIL import Image,ImageDraw
 root=Path(sys.argv[1]);frames=json.loads(sys.argv[2]);removed_frames=0
+atlases = {}
+for zone in dict.fromkeys(f['zone'] for f in frames):
+ with Image.open(root/('img/workers/worker-'+zone+'-sheet-v1.webp')) as image:
+  atlases[zone] = image.convert('RGBA').getchannel('A')
 for f in frames:
- im=Image.open(root/('img/workers/worker-'+f['zone']+'-sheet-v1.webp')).convert('RGBA')
- fw,fh=im.width//4,im.height//4
- a=im.getchannel('A').crop((f['column']*fw,f['row']*fh,(f['column']+1)*fw,(f['row']+1)*fh)).point(lambda v:255 if v>32 else 0)
+ alpha = atlases[f['zone']]
+ fw,fh=alpha.width//4,alpha.height//4
+ a=alpha.crop((f['column']*fw,f['row']*fh,(f['column']+1)*fw,(f['row']+1)*fh)).point(lambda v:255 if v>32 else 0)
  pixels=a.load()
  _,sx,sy=min(((x-fw*.55)**2+(y-fh*.55)**2,x,y) for y in range(fh) for x in range(fw) if pixels[x,y])
  main=a.copy();ImageDraw.floodfill(main,(sx,sy),128,border=0)

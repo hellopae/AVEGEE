@@ -1,3 +1,5 @@
+import { gpuLossEpoch } from './gpu-budget.js';
+
 // Leaf contours traced on AVEGEE's own red banyan. Coordinates match the
 // 475×520 reference. The gaps between clumps leave the major branches fixed.
 const LEAF_SHAPES = [
@@ -34,6 +36,17 @@ function layer(draw) {
 }
 
 export function makeRoomTreeWind(sprite) {
+  let epoch = -1, render;
+  return (timeMs, treeX) => {
+    if (epoch !== gpuLossEpoch()) {
+      render = bakeTree(sprite);
+      epoch = gpuLossEpoch();
+    }
+    return render(timeMs, treeX);
+  };
+}
+
+function bakeTree(sprite) {
   const paths = LEAF_SHAPES.map(shape => new Path2D(shape));
   const clumps = paths.map(path => layer(ctx => {
     ctx.clip(path);

@@ -1,4 +1,5 @@
 import {signalStory} from '../src/signal-arc.js';
+import { Z4G_KEYS } from '../src/seized-keys.js';
 import { isTownZone } from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 // Town avenues and legacy branch bridges remain traversable; throne and reward rules stay intact.
@@ -269,6 +270,11 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       g.zoneEvents[zone][ev.k] = 'pending';
       for(const key of ev.requires||[])g.zoneEvents[zone][key]='cleared';
       for(const [z,keys]of Object.entries(ev.requiresZone||{}))for(const key of keys)(g.zoneEvents[z] ||= {})[key]='cleared';
+      if (ev.returnGuard) {
+        (g.zoneEvents.cyberhell ||= {}).cyberSala = 'cleared';
+        Object.assign(g.player, {x:FRONTIER.x, y:FRONTIER.y});
+        g.storySeen[Z4G_KEYS.guardStory[zone]] = true;
+      }
       if(ev.signal)g.storySeen[signalStory(ev.k,'open')]=true;
       let b;
       if (ev.k === 'prisonBreak') b = g.startPrisonBreak();
@@ -287,7 +293,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 38, seen.join());   // T8b/5 + 6: + the record hall (cyberSala) + Lupin (z4Lupin)   // T7b/3: + Loki · T7b-2/5: + the serpent   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
+  assert.ok(seen.length === 41, seen.join());   // T8b/5 + 6: + the record hall (cyberSala) + Lupin (z4Lupin)   // T7b/3: + Loki · T7b-2/5: + the serpent   // T6/6: + the western gate guardian · T6/5: + the water cave dragon (no EXP rule pinned: a story fight like the gate's)   // Z2-EVENTS: + Wukong and the Guard's proving fight
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

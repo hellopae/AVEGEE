@@ -83,12 +83,12 @@ test('ตารางประลอง: ทุกโซนมี 10 wave · wav
 });
 
 test('ตัวเลขสมดุลของอีเวนต์เนื้อเรื่องเดิมไม่ถูกแตะ (เพิ่มแค่รายการท้ายสุดของแต่ละโซน)', () => {
-  const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge && !e.signal).map(e => e.k);
+  const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge && !e.signal && !e.returnGuard).map(e => e.k);
   assert.deepEqual(keys('th'), ['prisonBreak', 'frontierBreach', 'devaTest', 'sitaHanuman', 'khunPhaen', 'thBorderBoss', 'z2Gate']);   // Z1-EVENTS: + Sita / Hanuman (case 12) · T5'/1: + Khun Phaen (case 13)
   assert.deepEqual(keys('asia'), ['asiaPrisonFire', 'asiaDevaTest', 'asiaWukong', 'asiaRageBreach', 'asiaGuardTest', 'z2Ryujin', 'z3Cerberus']);   // T6/5: + the water cave dragon (fought on the walk to Border 2-3)   // Z2-EVENTS: + Wukong (case 7) and the Guard's proving fight (opened by the hire button)
   assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest', 'westLoki', 'westJorm', ...Array.from({ length:10 }, (_, i) => `colS${i + 1}`)]);   // T8a/2: + the ten colosseum bouts   // T7b/3: + Loki (case 7) · T7b-2/5: + the serpent (case 15)
   assert.deepEqual(keys('cyberhell'), ['cyberRescue', 'cyberBreach', 'cyberFinal', 'cyberSala', 'z4Lupin']);   // T8b/5 + 6: + the record hall (case 10) + Lupin (HOME-67's quest)
-  for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal).at(-1).challenge, true);
+  for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal && !e.returnGuard).at(-1).challenge, true);
   assert.equal(ZONE_EVENTS.th[1].waves[3][0].hp, 360);      // BOSS-SKILLS set A: Tanthasura 90 -> 360 (with moves)
   assert.equal(ZONE_EVENTS.th[1].betweenWaveHeal, 20);
   assert.equal(ZONE_EVENTS.cyberhell[1].betweenWaveHeal, 25);

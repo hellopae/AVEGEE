@@ -2,7 +2,8 @@ import { isTownZone } from '../src/zone-skin.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { teaRoom } from '../src/tea-recovery.js';
+import { teaBackground, teaRoom } from '../src/tea-recovery.js';
+import { onRoomFloor } from './helpers/room-floor.mjs';
 import { townZoomLevels } from '../src/town-map.js?v=k1d';
 import { teamNeedsMirror } from '../src/battle-facing.js';
 
@@ -12,10 +13,11 @@ const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 test('H2-3: tea pavilion seat and bed sit on the cushion / mattress and stay within reach of the walkable floor in all 4 zones', () => {
   const REACH = 0.17;
   for (const zone of ['th', 'asia', 'west', 'cyberhell']) {
-    const r = teaRoom(zone), [x1, y1, x2, y2] = r.walk;
-    const nearest = ([x, y]) => [Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y))];
-    for (const key of ['act', 'bed']) {
-      const [px, py] = nearest(r[key]);
+    const r = teaRoom(zone);
+    const approaches = {act:[r.act[0] + .03, r.act[1] + .035], bed:r.wake};
+    for (const [key, point] of Object.entries(approaches)) {
+      assert.ok(onRoomFloor(r.walk, point), `${zone}/${key}: approach is on the floor`);
+      const [px, py] = point;
       assert.ok(Math.hypot(px - r[key][0], (py - r[key][1]) * .7) <= REACH, `${zone}/${key}: reachable from the floor`);
     }
     assert.ok(r.bed[1] < 0.45 && r.bed[1] > 0.3, `${zone}: bed point is on the mattress (high on the picture), not the front edge`);
@@ -88,13 +90,13 @@ test('H2-3: standing up from the cushion puts Yama back inside the walkable floo
       for (const how of ['manual', 'mpFull']) {
         const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zone = zone; g.mp = 0;
         const room = teaRoom(zone); room.me = [room.act[0] + .03, room.act[1] + .02];
-        const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, `img/tea-${zone}-recovery.webp`, null);
+        const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, teaBackground(zone), null);
         assert.equal(R.setSit(true), true, `${zone}: sits`);
         assert.deepEqual(R.pos().slice(0, 2), room.act);
         if (how === 'manual') R.setSit(false); else { g.mp = g.mpMax; R.tick(50); }
         assert.equal(R.sitting(), false);
-        const [x, y] = R.pos(), [x1, y1, x2, y2] = room.walk;
-        assert.ok(x >= x1 && x <= x2 && y >= y1 && y <= y2, `${zone}/${how}: after standing up at ${x},${y} Yama is on the walkable floor`);
+        const [x, y] = R.pos();
+        assert.ok(onRoomFloor(room.walk, [x, y]), `${zone}/${how}: after standing up at ${x},${y} Yama is on the walkable floor`);
       }
     }
   } finally { globalThis.window = prevWindow; globalThis.document = prevDocument; }

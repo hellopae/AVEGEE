@@ -12,7 +12,7 @@ test('F2: two zoom steps (medium 3.5x, near 5x = the old default); whole map is 
   assert.match(ui,/e\.key==='Escape'&&mapCam\.full/);
   assert.match(ui,/fullMapClose\.onclick=\(\)=>setFullMap\(false\)/);
   assert.match(ui,/cv\.addEventListener\('wheel'/);
-  assert.match(ui,/const target = mapCam\.full \? 1 : MAP_ZOOM_LEVELS\[mapCam\.level\]/);
+  assert.match(ui,/const target = sailing \? MAP_ZOOM_LEVELS\.at\(-1\) \* 1\.35 : mapCam\.full \? 1 : MAP_ZOOM_LEVELS\[mapCam\.level\]/);
   assert.match(css,/#town-full-close/);
   assert.match(html,/id="town-minimap"[^>]*title=/);
 });

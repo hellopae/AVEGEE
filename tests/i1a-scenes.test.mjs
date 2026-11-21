@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, mirrorObstacle } from '../src/mirror-charge.js';
 import { teaRoom, sleepSpriteWidth } from '../src/tea-recovery.js';
+import { onRoomFloor } from './helpers/room-floor.mjs';
 import { ragePoseSrc } from '../src/battle-facing.js';
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
@@ -96,9 +97,9 @@ test('I1-A room.js sizes the lying sprite from pixels and wakes Yama on the floo
 const BED_FRONT_EDGE={th:.50,asia:.49,west:.53,cyberhell:.50};
 test('I1-A wake point is on the floor in front of the bed, inside the walkable area and within bed reach, every zone',()=>{
  for(const z of ['th','asia','west','cyberhell']){
-  const r=teaRoom(z),[x,y]=r.wake,[x0,y0,x1,y1]=r.walk;
+  const r=teaRoom(z),[x,y]=r.wake;
   assert.ok(Array.isArray(r.wake),z);
-  assert.ok(x>=x0&&x<=x1&&y>=y0&&y<=y1,z+': inside walk area');
+  assert.ok(onRoomFloor(r.walk, [x,y]), z+': inside walk area');
   assert.ok(y>=BED_FRONT_EDGE[z]+.03,`${z}: feet (${y}) are below the bed front edge (${BED_FRONT_EDGE[z]})`);
   assert.ok(Math.hypot(x-r.bed[0],(y-r.bed[1])*.7)<=.17,z+': can lie down again from the wake point (bed reach)');
   assert.ok(y>r.bed[1]+.1,z+': well in front of the bed centre');
