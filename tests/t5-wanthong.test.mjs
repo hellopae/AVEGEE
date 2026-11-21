@@ -72,6 +72,8 @@ test('the fight: boss moves from Rae (horse charge = group hit, sword = single h
 });
 
 test('Kuman Thong (Golden Aegis): a team shield + small heal, the fallen helped up, no damage, one of 3 uses; placed in a slot it can be called', () => {
+  assert.match(L.SUMMONERS.kumanthong.say.call.th, /กุมารทอง: "ยามา/);
+  assert.match(L.SUMMONERS.kumanthong.say.call.en, /Kuman Thong: "Yama/);
   const g = atCase13(); judge(g, 'krata'); drain(g); g.ensureMagic?.(); L.unlockSummoner(g, 'kumanthong'); L.ensureMagic(g).lamp.level = 2; g.placeHelper(1, 'kumanthong');
   assert.equal(L.summonWhy(g, 'kumanthong', { kind:'zoneEvent', over:null }), '');
   g.hire('taan'); g.zoneEvents.th.prisonBreak = 'pending'; g.battle = null;

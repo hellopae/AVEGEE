@@ -27,6 +27,8 @@ test('case 12 is the father of Guanyin, between case 11 (Akura) and case 13 (Sat
   const soul = g.queue.find(s => s.case === 'guanyinfather'); assert.ok(soul); assert.equal(soul.sp, 'soul-guanyin-father-asia'); assert.equal(soul.sex, 'm');
   assert.ok(g.notices.includes(GUANYIN.arriveNotice));
   assert.equal(NOTICES[GUANYIN.arriveNotice].en.title, 'The Father of One Who Is Revered'); assert.equal(NOTICES[GUANYIN.arriveNotice].button, 'เริ่มไต่สวน');
+  assert.match(NOTICES[GUANYIN.arriveNotice].text, /อเวจีดัดแปลงจากตำนานพุทธ/);
+  assert.match(NOTICES[GUANYIN.arriveNotice].en.text, /fictional case.*retelling of a Buddhist legend/);
   assert.equal(GUANYIN_CASE.kind, 'twist'); assert.ok(GUANYIN_CASE.claims.some(c => c.kind === 'deny') && GUANYIN_CASE.merits.some(m => m.fake));
   assert.ok(!/ไม่เคยถามธิดา|เดือดร้อนและบาดเจ็บ/.test(JSON.stringify(GUANYIN_CASE)), 'Reese 1.1 / 1.2 are in');
 });

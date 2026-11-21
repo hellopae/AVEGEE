@@ -1,5 +1,5 @@
 // T6/2 · Zone 2 case 12 - the father of Guanyin's story; after the verdict she comes down to thank the judge (Rae R2 part B, section 2).
-// Text: Output/Rae/2026-11-19-avegee-r2b-zone2-3.md (checked by Reese; the notes "Reese 1.1-1.3 / 3.1 / 3.3" are already in it). Thai lines as written; windows + scenes carry her English too (`en` on a page).
+// Text: Output/Rae/2026-11-19-avegee-r2b-zone2-3.md (checked by Reese; the notes "Reese 1.1-1.3 / 3.1 / 3.3" are already in it). The Thai and English notice frames this case as a fictional retelling.
 // Keys: `guanyinfather` (the case) · `z2-guanyin-thanks` (the scene, two versions of page 2's lead line: `-ok` = the verdict was right, `-off` = it missed) · notices NGY-1 / NGY-2 / NGY-3.
 // She is not judged, does not fight, is not a helper of the lamp (Rae: she is revered - never). The soul on the dais is her father only.
 // Pictures (Codex slots, labelled placeholders until drawn - scripts/build-t5-placeholders.py guanyin): H1 soul + profile, H2 she descends, H3 the father bows. H4 (a petal icon) is not needed: the keepsake is a journal note.
@@ -10,7 +10,7 @@ export const ART = Object.freeze({ sprite:'soul-guanyin-father-asia', portrait:A
 // ---- 2.3 the case (twist: one false merit + one `deny` the player can catch) ----
 export const GUANYIN_CASE = Object.freeze({
   k:'guanyinfather', zone:'asia', sex:'m', sp:'soul-guanyin-father-asia', kind:'twist', calm:true, story:true,
-  name:'กษัตริย์ผู้เป็นพระบิดา', who:'อดีตกษัตริย์ในเรื่องเล่าเก่า พระบิดาของธิดาองค์เล็กผู้ปฏิเสธการอภิเษก',
+  name:'กษัตริย์ผู้เป็นพระบิดา', who:'อดีตกษัตริย์ในตำนานฉบับอเวจี พระบิดาของธิดาองค์เล็กผู้ปฏิเสธการอภิเษก',
   face:'ชายสูงวัยในเครื่องทรงกษัตริย์ที่ซีดจางตามกาลเวลา ไหล่ตกทั้งที่พยายามยืนตรง ไม่เงยหน้ามองผู้ใด มือสองข้างประสานแน่นเหมือนกำลังกลั้นบางอย่างไว้',
   seen:[
     { t:'สั่งลงโทษธิดาองค์เล็กเพราะนางไม่ยอมอภิเษกตามพระประสงค์', s:'kha', w:4 },
@@ -41,8 +41,8 @@ export const GUANYIN_CASE = Object.freeze({
 
 // ---- 2.2 windows ----
 export const GUANYIN_NOTICES = Object.freeze({
-  [GUANYIN.arriveNotice]:{ title:'พระบิดาของผู้ที่คนเคารพ', text:'วิญญาณกษัตริย์ผู้หนึ่งมาถึงคิวพิจารณา ในเรื่องเล่าเก่าเขาคือพระบิดาของธิดาที่ผู้คนเคารพบูชา ตามบัญชีเขาเคยลงโทษธิดาของตนเอง โปรดไต่สวนด้วยความเที่ยงตรง ไม่เอียงตามชื่อของผู้ใด', button:'เริ่มไต่สวน', art:ART.portrait,
-    en:{ title:'The Father of One Who Is Revered', text:'The soul of a king has reached the queue. In the old tale he is the father of a daughter whom many revere. The ledger says he once punished his own daughter. Please hear him with a steady hand, and lean toward no one\'s name.', button:'Begin the hearing' } },
+  [GUANYIN.arriveNotice]:{ title:'พระบิดาของผู้ที่คนเคารพ', text:'คดีนี้เป็นเรื่องสมมติที่อเวจีดัดแปลงจากตำนานพุทธ วิญญาณกษัตริย์ผู้มาถึงคือพระบิดาของธิดาที่ผู้คนเคารพบูชา ตามบัญชีเขาเคยลงโทษธิดาของตนเอง โปรดไต่สวนด้วยความเที่ยงตรง ไม่เอียงตามชื่อของผู้ใด', button:'เริ่มไต่สวน', art:ART.portrait,
+    en:{ title:'The Father of One Who Is Revered', text:'This fictional case is AVEGEE’s retelling of a Buddhist legend. The soul before you is a king whose daughter is revered by many. The ledger says he once punished his own daughter. Please hear him with a steady hand, and lean toward no one\'s name.', button:'Begin the hearing' } },
   [GUANYIN.afterNotice]:{ title:'แสงขาวลงมากลางโถง', text:'มีผู้ลงมาในโถงพิพากษาเพื่อกล่าวขอบคุณท่าน ขอให้ท่านและนิราต้อนรับด้วยความเคารพ', button:'ต้อนรับ',
     en:{ title:'White Light in the Hall', text:'Someone has come down into the hall to thank you. Please receive her with respect.', button:'Receive her' } },
   [GUANYIN.petalNotice]:{ title:'ได้รับ กลีบบัวขาว', text:'กลีบบัวขาวกลีบหนึ่งตกลงในมือท่านและไม่เหี่ยวเฉา (ของที่ระลึก ไม่มีผลต่อสถิติ)', button:'เก็บไว้',
@@ -70,12 +70,12 @@ const thanks = v => ({ title:'แสงขาวกลางโถง', en:{ tit
     + 'เจ้าแม่กวนอิม: "ท่านผู้ถือบัญชี อย่าลำบากเลย ข้าไม่ได้ลงมาเพื่อสิ่งใดนอกจากกล่าวขอบคุณ"' },
   { image:ART.descends, fallback:'📜', title:'ผู้ที่ไม่เอียง', en:{ title:'The One Who Did Not Lean', line:
       VERDICT_LINE[v].en + '\n'
-    + 'Guanyin: "A judge who must rule on the father of one whom people revere often leans one of two ways. Some lean toward me, to please. Some lean toward harshness, so that others will see they do not lean. You leaned neither way. You read his lines to the end."\n'
+    + 'Guanyin: "A judge who must rule on the father of one whom people revere often leans one of two ways. Some lean toward me, to please. Some lean toward harshness, so that others will see they do not lean. You took the time to read his account to the end."\n'
     + 'Yama: "I do not know whether I deserve thanks. I only did what I swore: to read every line to the end before I judge."\n'
     + 'Guanyin: "What you swore is exactly what I thank you for."' },
     line:
       VERDICT_LINE[v].th + '\n'
-    + 'เจ้าแม่กวนอิม: "ผู้พิพากษาที่ต้องตัดสินบิดาของผู้ที่ผู้คนเคารพ มักเอียงไปสองทาง บางคนเอียงเข้าหาข้าเพื่อเอาใจ บางคนเอียงเข้าหาความเข้มงวดเพื่อให้ผู้อื่นเห็นว่าตนไม่เอียง ท่านไม่เอียงทั้งสองทาง ท่านอ่านบรรทัดของเขาจนจบ"\n'
+    + 'เจ้าแม่กวนอิม: "ผู้พิพากษาที่ต้องตัดสินบิดาของผู้ที่ผู้คนเคารพ มักเอียงไปสองทาง บางคนเอียงเข้าหาข้าเพื่อเอาใจ บางคนเอียงเข้าหาความเข้มงวดเพื่อให้ผู้อื่นเห็นว่าตนไม่เอียง ท่านให้เวลาอ่านสำนวนของเขาจนจบ"\n'
     + 'ยมบาทน้อย: "ผมไม่ทราบว่าสมควรได้รับคำขอบคุณหรือไม่ครับ ผมเพียงทำตามที่ผมสาบานไว้ ว่าจะอ่านทุกบรรทัดให้จบก่อนตัดสิน"\n'
     + 'เจ้าแม่กวนอิม: "สิ่งที่ท่านสาบานไว้นั่นเอง คือสิ่งที่ข้าขอบคุณ"' },
   { image:ART.father, fallback:'📜', title:'ผลของกรรมเป็นของผู้ทำ', en:{ title:'The Weight Belongs to the One Who Did It', line:

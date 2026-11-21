@@ -56,8 +56,8 @@ test('the colosseum: all ten bouts carry Rae\'s warn / use lines (TH + EN, no Th
   assert.equal(COL_EVENTS[0].foe.skills[0].warnText.th, 'ซามูไรไร้นายวางมือบนด้ามดาบ นิ่งสนิท — รอบหน้าเขาจะชักดาบฟันหนักใส่คนเดียว!');
 });
 
-test('Lupin\'s and the sala robot\'s use lines, Nira\'s wake line (Reese\'s EN), the worker\'s answer in two lines', () => {
-  assert.equal(Z4L_MOVE.useText.th, 'ลูแปง: "จังหวะของท่าน ข้าขอรับไว้"'); assert.equal(Z4L_MOVE.useText.en, 'Lupin: "That beat of yours. I will take it."');
+test('Patch\'s and the sala robot\'s use lines, Nira\'s wake line (Reese\'s EN), the worker\'s answer in two lines', () => {
+  assert.equal(Z4L_MOVE.useText.th, 'แพตช์: "จังหวะของท่าน ข้าขอรับไว้"'); assert.equal(Z4L_MOVE.useText.en, 'Patch: "That beat of yours. I will take it."');
   assert.equal(Z4S_VOICE_MOVE.useText.th, 'AI Scammer Robot: "ไม่ต้องกลัวนะ ... ฉันเอง"'); assert.equal(Z4S_VOICE_MOVE.useText.en, 'AI Scammer Robot: "Do not be afraid. ... It is me."');
   assert.equal(NIRA_WAKE_LINE.th, 'นิรา: ท่านคะ ตื่นได้แล้วค่ะ ดิฉันอยู่ตรงนี้ ทุกคนลุกได้แล้วนะคะ');
   assert.equal(NIRA_WAKE_LINE.en, 'Nira: Sir, it is time to wake. I am right here. Everyone, you may rise now.');
