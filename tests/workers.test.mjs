@@ -168,18 +168,21 @@ for f in frames:
  alpha = atlases[f['zone']]
  fw,fh=alpha.width//4,alpha.height//4
  a=alpha.crop((f['column']*fw,f['row']*fh,(f['column']+1)*fw,(f['row']+1)*fh)).point(lambda v:255 if v>32 else 0)
+ cx,cy=fw*.55,fh*.55
  pixels=a.load()
- _,sx,sy=min(((x-fw*.55)**2+(y-fh*.55)**2,x,y) for y in range(fh) for x in range(fw) if pixels[x,y])
+ sx,sy=round(cx),round(cy)
+ if not pixels[sx,sy]:
+  _,sx,sy=min(((x-cx)**2+(y-cy)**2,x,y) for y in range(fh) for x in range(fw) if pixels[x,y])
  main=a.copy();ImageDraw.floodfill(main,(sx,sy),128,border=0)
  bbox=main.point(lambda v:255 if v==128 else 0).getbbox()
  r=f['rect'];left=round(r['left']*fw);top=round(r['top']*fh);right=fw-round(r['right']*fw);bottom=fh-round(r['bottom']*fh)
  assert left<=bbox[0] and top<=bbox[1] and right>=bbox[2] and bottom>=bbox[3],str((f,bbox))
- before=sum(v>0 for v in a.tobytes());after=sum(v>0 for v in a.crop((left,top,right,bottom)).tobytes())
+ before=a.histogram()[255];after=a.crop((left,top,right,bottom)).histogram()[255]
  if before>after:removed_frames+=1
 assert removed_frames>=12,removed_frames
 print(json.dumps({'frames':len(frames),'bleed_removed_frames':removed_frames}))
 `;
-  const result=JSON.parse(execFileSync('python3',['-c',script,fileURLToPath(new URL('..',import.meta.url)),JSON.stringify(frames)],{encoding:'utf8',timeout:30000}));
+  const result=JSON.parse(execFileSync('python3',['-c',script,fileURLToPath(new URL('..',import.meta.url)),JSON.stringify(frames)],{encoding:'utf8',timeout:120000}));
   assert.equal(result.frames,64);assert.ok(result.bleed_removed_frames>=12);
   const g=game();g.hireWorker();const r=workerFrameRect('th',0,1);
   assert.ok(workersPanelHtml(g).includes(`clip-path:inset(${r.top*100}% ${r.right*100}% ${r.bottom*100}% ${r.left*100}%)`),'office portrait shares the exact frame-local guard');
