@@ -135,9 +135,12 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   // team move as its closing blow, the Guard joining through that event, the new Sita / Hanuman test fight. The breach and Hanuman rows are NEW encounters (not among the
   // 32,000 measured trials) and have no balance run yet — see Output/Toby/2026-11-13-avegee-z1-events.md. Reversible snippets, same method (scripts/build-z1-events-hash-fixture.py).
   const z1Only=JSON.parse(readFileSync(new URL('./fixtures/z1-events-runtime-changes.json',import.meta.url)));
+  // RETURN-GUARDS (21 Nov, codex/summon-command-icon-20261121): the Guard duel at each seized city's gate on the walk back (RETURN_GUARD_EVENTS - NEW encounters, not among the 32,000
+  // measured trials, no balance run yet), Sword Grove practice (kind 'practice', a copy of the team that is thrown away), English boss names / arrival lines; no existing damage / HP / cooldown number changed. Reversible snippets, same method.
+  const returnOnly=JSON.parse(readFileSync(new URL('./fixtures/return-guards-1121-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

@@ -163,9 +163,9 @@ test('cache-busting: the changed modules moved to a new release string', () => {
   const html = read('index.html');
   // QUEST-REWARDS (10 Nov, later the same day) moved game / ui / battle-fx-map on to 20261110-questrewards (see tests/quest-rewards.test.mjs); the rest stay on this release
   for (const m of ['data', 'sfx', 'frontier', 'battle-fx', 'encounter-balance', 'party-balance'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx(-w1112)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*"`), m);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-battlefx(-w1112)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*(-[a-z0-9]+)*"`), m);   // 21 Nov: later releases append plain tags too (-storynames-return-guards-v1-t1b-arrivalen)
   for (const m of ['game', 'ui', 'battle-fx-map'])
-    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*"`), m);
-  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*"/);
+    assert.match(html, new RegExp(`"\\./src/${m}\\.js": "\\./src/${m}\\.js\\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-qart)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*(-[a-z0-9]+)*"`), m);
+  assert.match(html, /src="src\/ui\.js\?v=20261110-questrewards(-w1112)?(-cook1)?(-poses)?(-homegate)?(-bossskills)?(-questdamb)?(-cardscared)?(-t1bugs)?(-f3)?(-t2map)?(-t1b-[a-z]+)*(-[a-z0-9]+)*"/);
   assert.match(read('src/ui.js'), /battle-camera\.js\?v=20261110-battlefx/);
 });
