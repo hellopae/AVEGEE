@@ -6548,9 +6548,9 @@ function roomFor(k) {
     const base = {...ROOM_DEFAULT, souls:[], crew:null, me:[.5,.9], walk:[.2,.65,.8,.94], act:[.5,.7]};
     if (g.zone !== 'th') return base;
     // Keep feet on the painted stone terrace, inside its railings and service counter.
-    return {...base, me:[.54,.86], walk:[{poly:[
+    return {...base, me:[.54,.86], exit:{x:.84,y:.87,reach:.045}, walk:[{poly:[
       [.12,.50],[.29,.41],[.37,.38],[.44,.46],[.77,.61],[.84,.64],
-      [.83,.71],[.71,.78],[.53,.92],[.37,.78],[.20,.61],
+      [.84,.71],[.91,.86],[.83,.93],[.74,.80],[.53,.92],[.37,.78],[.20,.61],
     ]}]};
   }
   if (k === 'tea') return teaRoom(g.zone);

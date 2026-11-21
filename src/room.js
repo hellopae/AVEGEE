@@ -183,9 +183,19 @@ function bgOf(src, fallback) {
   return null;
 }
 
+// Transparent near-side rails and posts, registered to the exact room painting.
+const ROOM_FOREGROUNDS = {
+  'img/tea-th-recovery-v2.webp': 'img/rooms-wide/th-tea-front-v1.webp',
+  'img/food-art/interior-th.webp': 'img/rooms-wide/th-canteen-front-v1.webp',
+  'img/rooms-wide/th-krata-v2.webp': 'img/rooms-wide/th-krata-front-v1.webp',
+  'img/rooms-wide/th-lan-v2.webp': 'img/rooms-wide/th-lan-front-v1.webp',
+  'img/rooms-wide/th-tarang-v2.webp': 'img/rooms-wide/th-tarang-front-v1.webp',
+};
+
 /** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
 export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
+  const foregroundSrc = ROOM_FOREGROUNDS[bgSrc];
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
@@ -418,6 +428,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // room.crop = [sx,sy,sw,sh] สัดส่วน 0-1 ของภาพต้นฉบับ — ถ้ามี ตัดเฉพาะส่วนนั้นมาขยายเต็มกรอบ
     // แทนที่จะยัดภาพทั้งใบ (ใช้ซูมเข้าไปในอาคารโดยไม่ต้องวาดภาพใหม่ — ข้อ D คุณเป้ 24 ก.ย. 2569)
     // จุดยึด (me/walk/act/item) ของห้องที่มี crop ต้องวัดใหม่เทียบกับกรอบที่ครอปแล้ว ไม่ใช่ภาพเต็มอีกต่อไป
+    let drawForeground;
     const bg = bgOf(bgSrc, bgFallback) || (bgFallback ? bgOf(bgFallback) : null);
     if (bg && bg.naturalWidth) {
       const crop = room.crop;
@@ -431,10 +442,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
-      const drawRoomBg = () => {
+      const drawRoomLayer = layer => {
         ctx.save();
         if (mirrorRoom) { ctx.translate(box.ox * 2 + box.w, 0); ctx.scale(-1, 1); }
-        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        ctx.drawImage(layer, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
         ctx.restore();
       };
       // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
@@ -442,17 +453,26 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (Math.abs(bf - 1) > 0.02 && canFilter()) {
         ctx.save();
         ctx.filter = `brightness(${bf.toFixed(2)})`;
-        drawRoomBg();
+        drawRoomLayer(bg);
         ctx.restore();
       } else if (bf > 1.02) {                            // ไม่รองรับ filter — ทับอีกชั้นแบบบวกแสง
-        drawRoomBg();
+        drawRoomLayer(bg);
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
-        drawRoomBg();
+        drawRoomLayer(bg);
         ctx.restore();
-      } else drawRoomBg();
+      } else drawRoomLayer(bg);
       applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
+      const foreground = foregroundSrc && bgOf(foregroundSrc);
+      if (foreground?.naturalWidth === bg.naturalWidth && foreground.naturalHeight === bg.naturalHeight) {
+        drawForeground = () => {
+          ctx.save();
+          if (Math.abs(bf - 1) > 0.02 && canFilter()) ctx.filter = `brightness(${bf.toFixed(2)})`;
+          drawRoomLayer(foreground);
+          ctx.restore();
+        };
+      }
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);
@@ -765,6 +785,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }});
     }
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+    drawForeground?.();
     const pots = def.k === 'krata' ? potLayout(bgSrc) : null;
     if (stokeFx && pots) {
       const age=t-stokeFx.at;

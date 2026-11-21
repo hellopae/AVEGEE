@@ -50,7 +50,11 @@ export function teaRoom(zone = 'th') {
   return { crop:null, mirror:false, bright:1, light:null, noCup:true,
     souls:[], crew:null, me:[0.50,0.86], act:seats[zone] || seats.th, bed:beds[zone] || beds.th, wake:wakes[zone] || wakes.th,
     item:[0.40,0.59], actions:[[0.30,0.27],[0.69,0.23]],
-    walk:[0.21,0.49,0.83,0.91] };
+    walk:zone === 'th' ? [{poly:[
+      [.20,.50],[.58,.50],[.62,.55],[.84,.55],[.91,.57],[.86,.64],
+      [.74,.73],[.61,.81],[.61,.92],[.40,.92],[.40,.81],
+      [.29,.69],[.20,.60],
+    ]}] : [0.21,0.49,0.83,0.91] };
 }
 export function roomImageBox(W, H, sw, sh, cover = false) {
   const s = (cover ? Math.max : Math.min)(W / sw, H / sh);

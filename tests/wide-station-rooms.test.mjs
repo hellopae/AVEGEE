@@ -97,6 +97,12 @@ test('all 36 regional rooms draw their new background and allow service, trainin
       assert.ok(draw,`${zone}/${key}: new room rendered`);
       const [,,,,,ox,oy,w,h]=draw;
       assert.ok(ox<=.5 && oy<=.5 && w>=f.canvas.width-.5 && h>=f.canvas.height-.5);
+      if (zone === 'th' && ['krata','lan','tarang'].includes(key)) {
+        await new Promise(resolve => setImmediate(resolve)); f.room.tick(0);
+        const foreground = f.calls.at(-1);
+        assert.equal(foreground[0].src, `img/rooms-wide/th-${key}-front-v1.webp`);
+        assert.deepEqual(foreground.slice(1), draw.slice(1), 'foreground follows the exact room transform');
+      }
       const exit=roomExit(key,zone,f.config);
       assert.equal(nearRoomExit(f.room.pos(),exit),false);
       await walkTo([.5,.78]); await walkTo(f.config.act); assert.ok(f.room.inReach());
