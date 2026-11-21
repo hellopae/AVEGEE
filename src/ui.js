@@ -2039,7 +2039,14 @@ function openZoneEventAlert(ev) {
     const id = nextFinalEncounter(g.finalEventState());
     const a = finalEventActors(g).find(a => a.id === id);
     modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><button class="gold" data-final-map>${esc(zoneEventText(ev.go) || t('common.close'))}</button>`, d => {   // T8d: NF-1 (title / text / button "Go there" are Rae's)
-      d.querySelector('[data-final-map]').onclick = () => { g.eventMapClosed['cyberhell:cyberFinal'] = true; dlg.close(); if (a) g.walkTo(a.x,a.y); g.save(); };
+      d.querySelector('[data-final-map]').onclick = () => {
+        g.dismissEventAlert(ev.k);
+        dlg.close();
+        if (a && g.finalEventState().warpDone) g.walkTo(a.x,a.y);
+      };
+    });
+    onDlgClose(() => {
+      if (!g.eventMapClosed['cyberhell:cyberFinal']) g.dismissEventAlert(ev.k);
     });
     return;
   }
@@ -7571,8 +7578,14 @@ g.onChange = () => {
     if (showBossJusticeMapStatus()) return;
   } else if (g.bossJustice && !bossJusticeActive(g)) ov.querySelector('[data-justice-status]')?.remove();
   if (!g.battle && !dlg.open && g.finalEventOnMap()) {
-    if (g.beginFinalArrival()) { refresh(); return; }
     const s = g.finalEventState();
+    // NF-1 must be acknowledged before the army warp starts and opens NF-2.
+    if (s.phase === 'ready' && !s.presentation && !s.warpDone && !s.openSeen &&
+        !s.minionsCleared && g.zoneEventStatus('cyberFinal') === 'pending' && !g.eventMapClosed['cyberhell:cyberFinal']) {
+      openZoneEventAlert(ZONE_EVENTS.cyberhell.find(ev => ev.k === 'cyberFinal'));
+      return;
+    }
+    if (g.beginFinalArrival()) { refresh(); return; }
     if (s.presentation === 'gate') { openFinalGate(); return; }   // T8d: the army has appeared in front of him - NF-2
     if (s.presentation === 'prepare') { openFinalPreparation(s.minionsCleared === 0 ? nextFinalEncounter(s) : null); return; }   // T8d: after z4-final-open the window carries the fight button for wave 1
     if (s.presentation === 'reinforcementMap') {
