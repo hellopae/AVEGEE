@@ -28,8 +28,13 @@ export function drawAnimatedSprite(ctx,key,mode,x,y,h,elapsed,face=1){
  ctx.drawImage(image,(frame%rec.cols)*rec.frameWidth,Math.floor(frame/rec.cols)*rec.frameHeight,rec.frameWidth,rec.frameHeight,
   -rec.anchor[0]*s,-rec.anchor[1]*s,rec.frameWidth*s,rec.frameHeight*s);ctx.restore();return true;
 }
-export function bossSpriteKey(src,zone){
+export function bossSpriteKey(src,zone,controlled=false){
  const base=src.split(/[?#]/)[0].split('/').at(-1).replace(/\.(png|webp)$/,'');
+ if(controlled){
+  if(base==='guard-vanhelsing-west')return 'crew:west:guard';
+  const crew=base.match(/^crew-(guard|taan|plerng|kan|boon|dam)(?:-(th|asia|west))?(?:-v\d+|-f)?$/);
+  if(crew)return `crew:${crew[2]||zone}:${crew[1]}`;
+ }
  const leader=base.match(/^leader-(th|asia|west|cyberhell)-possessed$/);if(leader)return `boss:${leader[1]}:leader-possessed`;
  const m=base.match(/^(hero-boss|zone-boss|boss-frontier|boss-tester)(?:-(th|asia|west|cyberhell))?(?:-v\d+)?$/);
  return m?`boss:${m[2]||zone}:${m[1]}`:null;

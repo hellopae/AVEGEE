@@ -9,20 +9,41 @@ const SIGNAL_SKILLS = { th:'tanthasura', asia:'akura', west:'valdric', cyberhell
 // F3 (15 Nov): boss atk x0.66-0.85 (was 32-49 / 25-39 / 15-24 / 30-46): the enemy side now acts as often as the team (battle-turns.js); fitted back to the same first-try win %
 const configs = [
   ['cyberhell','โทรจัน-9',340,[23,36],11,150,{holyWater:2},0],   // BOSS-SKILLS set A: boss hp / atk were 170 / 18-28, 140 / 13-20, 175 / 13-20, 190 / 14-21 (all won 100 %)
-  ['th','ทัณฑสูร',210,[16,26],0,120,{bladeShard:2,lotus:1},8],
-  ['asia','อากุระ',263,[12,19],6,140,{health:2},8],
-  ['west','วาลดริก',285,[25,39],10,160,{holyWater:1,lotus:1},8],
+  ['th','ทัณฑสูร',160,[12,20],0,120,{bladeShard:2,lotus:1},8],
+  ['asia','อากุระ',226,[10,16],6,140,{health:2},8],
+  ['west','วาลดริก',215,[18,29],10,160,{holyWater:1,lotus:1},8],
 ];
 // T8c (Rae R2 D 7 / owner D6): the order of the way back is fixed - Trojan-9 (Zone 4, after the record hall of case 10), then Valdric (Zone 3), Akura (Zone 2), Tanthasura (Zone 1); a zone's lord can be reached only once the one above is freed
 // (the frontier gate is shut with green light). Was: Trojan-9 at 7 cases right after his fight, the three others in any order.
 const SIGNAL_CHAIN = { west:{ cyberhell:['cyberSignal'] }, asia:{ cyberhell:['cyberSignal'], west:['signalWest'] }, th:{ cyberhell:['cyberSignal'], asia:['signalAsia'] } };
+const RETURN_REAPERS = ['taan','plerng','kan','boon','dam'];
+const RETURN_REAPER_EN = {
+  west:['Poena','Ognion','Sybil','Grace','Noir'],
+  asia:['Goku','Homura','Satori','Megumi','Kuro'],
+  th:['Taan','Pleng','Kan','Boon','Dam'],
+};
+export const RETURN_GUARD_NAMES = {
+  west:{ th:'แวน เฮลซิง', en:'Van Helsing' },
+  asia:{ th:'กวนอู', en:'Guan Yu' },
+  th:{ th:'กุมภัณฑ์', en:'Kumphan' },
+};
+const GUARD_STATS = { west:[122,[10,15]], asia:[116,[9,14]], th:[110,[9,14]] };
+export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name]) => {
+  const [hp,atk]=GUARD_STATS[zone];
+  return [zone,{k:Z4G_KEYS.guardEvent, atCases:0, mode:'single', noAlert:true, returnGuard:true,
+    title:{th:`ปลดสะกด ${name.th}`, en:`Free ${name.en}`},
+    alert:{th:'ยามากับนิราต้องช่วย Guard ให้หลุดจากคำสั่งก่อนเข้าประตู', en:'Yama and Nira must break the spell on the gate guard before entering.'},
+    foe:{name:name.th,nameEn:name.en,sp:'crew-guard',boss:false,hypno:true,hp,atk},
+    winStories:[Z4G_KEYS.fire[zone]],reward:{exp:10}}];
+}));
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
   k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?10:0,
   ...(zone==='cyberhell'?{requires:['cyberSala']}:{requiresZone:SIGNAL_CHAIN[zone], winStories:[Z4G_KEYS.restored[zone]], winNotices:[Z4G_KEYS.harbourNotice[zone]]}),
   mode:'waves',team:'frontier',title:{th:`สัญญาณครอบงำ · ${name}`},
   alert:{th:`${name} ถูกคำสั่งจากระบบครอบงำ ไปที่ชายแดนเพื่อช่วยเขา`},
-  waves:[[{kind,count:2,hp:50,atk:[8,12]}],[{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]},
-    ...(zone==='asia'?[{kind:7,count:1,hp:50,atk:[8,12]}]:[])]],
+  waves:[zone==='cyberhell' ? [{kind,count:2,hp:50,atk:[8,12]}]
+    : RETURN_REAPERS.map((k,i)=>({controlledCrew:k,nameEn:RETURN_REAPER_EN[zone][i],sp:`crew-${k}`,hp:28,atk:[4,7],hypno:true})),
+    [{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]}]],
   reward:{coin,items,order,exp:20},lose:{hp:8},
 }]));
 export const SIGNAL_CLOSE = {k:'signalClose',signal:true,atCases:0,mode:'story',
@@ -65,4 +86,5 @@ export function migrateSignal(g,saved) {
   }
   // Non-final event encounters aren't serialized: retry the same choice after reload.
   for(const [zone,key] of Object.entries(SIGNAL_KEYS))if(g.zoneEvents[zone]?.[key]==='active')g.zoneEvents[zone][key]='pending';
+  for(const zone of Object.keys(RETURN_GUARD_EVENTS))if(g.zoneEvents[zone]?.[Z4G_KEYS.guardEvent]==='active')g.zoneEvents[zone][Z4G_KEYS.guardEvent]='pending';
 }

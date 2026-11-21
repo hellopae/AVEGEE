@@ -63,12 +63,14 @@ applyTune();
 const run = (sc, size, moves, seed) => {
   const { target, label, ...opt } = sc;
   try {
-    if (opt.kind === 'signal') return simulate({ ...opt, kind:'event', fullBreach:true, size, moves, seed });
+    if (opt.kind === 'signal') return simulate({ ...opt, kind:'event', fullBreach:true, size, moves, seed,
+      ...(opt.zone!=='cyberhell'?{team:['nira']}:{}) });
     return simulate({ ...opt, size, moves, seed });
   } catch (e) { return { result:'error', msg:e.message, rounds:0, bossRounds:0 }; }
 };
 export function measure(key, { count = 100, sizes = [3], modes = ['locked'] } = {}) {
   const sc = SCENARIOS[key], rows = [];
+  if (sc.kind === 'signal' && sc.zone !== 'cyberhell') sizes=[2];
   for (const size of sizes) for (const mode of modes) {
     const samples = Array.from({ length:count }, (_, i) => run(sc, size, mode === 'unlocked', Number(process.env.SEED0 || 30000) + i));
     const wins = samples.filter(r => r.result === 'win'), err = samples.filter(r => r.result === 'error');

@@ -16,7 +16,8 @@ import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers
 import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   // QUEST-DAM-B: the merchant's feather quest
 import { questNeedsFight } from './quest-rewards.js';
 import { QUEST_FIGHTS, QUEST_FIGHT_SYSTEM_TEXT, fightScene } from './quest-fights.js';
-import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
+import { SIGNAL_KEYS, RETURN_GUARD_EVENTS, signalStory } from './signal-arc.js';
+import { Z4G_KEYS } from './seized-keys.js';
 import { COMBAT_SKILLS, skillForActor, questSkillsForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
@@ -39,7 +40,7 @@ import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
-import {seizedActive,walkBackTarget} from './seized.js';   // T8c
+import {seizedActive,walkBackTarget,returnGuardPending} from './seized.js';   // T8c
 import {routeBossCave} from './route-geometry.js';
 import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';
@@ -1985,7 +1986,7 @@ function storyFoeArt(sp) {
 }
 function pendingZoneEvents() {
   return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !ev.gate && !ev.noAlert && !LEGACY_ZONE_EVENTS.has(ev.k) &&
-    g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
+    !(ev.signal && returnGuardPending(g)) && g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }
 /** 30D ข้อ 5 — รูปบนป้ายแจ้งเตือนอีเวนต์: ตัวที่บุกมาจริง (ไม่ใช่วิญญาณขาวสำรอง)
@@ -3573,6 +3574,20 @@ function openSignalChoice(ev){
   function show(){modal(`<h2>${esc(ev.title.th)}</h2><p>เสียงเดิมของเขายังอยู่ข้างใน เป็นแต่คำสั่งทับอยู่ข้างบน</p><div class="row"><button data-signal="call">เรียกคำฝาก · บอสข้ามเทิร์นแรก</button><button data-signal="rush">บุกทันที · เบี้ยรางวัล +25%</button><button data-close>เตรียมตัวต่อ</button></div>`,d=>d.querySelectorAll('[data-signal]').forEach(b=>b.onclick=()=>{if(g.startZoneEvent(ev.k,b.dataset.signal))openBattle(afterBreachBattle);}));}
 }
 
+function openReturnGuard() {
+  const ev=RETURN_GUARD_EVENTS[g.zone];
+  if(!ev || !g.returnGuardAtGate()) return;
+  const intro=Z4G_KEYS.guardStory[g.zone];
+  if(!g.storySeen[intro]){
+    g.queueStory(intro);g.save();g.onChange();return;
+  }
+  pauseForDlg();
+  const fight=getLang()==='en' ? 'Break the spell' : 'สู้เพื่อปลดสะกด';
+  modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><button class="gold" data-return-guard>${esc(fight)}</button>`,d=>{
+    d.querySelector('[data-return-guard]').onclick=()=>{if(g.startZoneEvent(ev.k))openBattle();};
+  });
+}
+
 /** FOREMAN (owner 14 Nov): talk to Dam at the canteen - the kitchen orders live here: hire a cook / a server, and choose who a server brings the rice to
  *  (default = the hungriest first). The same panel as the canteen window used to carry (canteenPanelHtml), so there is one set of controls and one state. */
 function openForeman() {
@@ -4081,6 +4096,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
  *  ทีมที่จัดไว้จาก openFrontier() ใช้ต่อเนื่องทั้งเซสชัน ไม่ต้องกลับไปจัดใหม่ทุกครั้งที่ชนะ/แพ้หนึ่งตัว
  *  ชนะ/แพ้แต่ละครั้ง → กลับมาหน้านี้ต่อ (ไม่ใช่แผนที่โซน) จนกว่าจะกด "กลับแผนที่โซน" เอง */
 function openFrontierWalk(invasionKey = null) {
+  if (g.returnGuardAtGate()) { openReturnGuard(); return; }
   pauseForDlg();
   let myGen = -1;
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
@@ -4975,10 +4991,10 @@ function openBattle(after) {
       const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
       for(const root of stage.querySelectorAll('.fig.foe')){
         if(root.classList.contains('down'))continue;
-        const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone);
+        const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone,root.classList.contains('signal-controlled'));
         if(!key)continue;
         const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!dash||dash.posed)&&(!attacker||id===attacker)?'attack':'idle';
-        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
+        entries.push({root,key,mode,face:key.startsWith('crew:')?-1:1,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
       // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)
@@ -7530,6 +7546,7 @@ g.onChange = () => {
     preloadZone(z.k, g.outfit || z.k).then(() => {
       g.pendingZone = null; g.assetsLoading = false;
       refresh();
+      if (z.returnWalk) { g.paused=dlg.open; g.onChange(); return; }
       if (!z.back || (zoneIntroduction(z.k) && !g.zoneIntroSeen[z.k])) openZoneArrival(z);
       else bossModal(`กลับมาที่${z.name}`,
         `${z.sub ? `${z.sub}\n\n` : ''}สถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
@@ -7573,6 +7590,7 @@ g.onChange = () => {
     }
     return;
   }
+  if (!g.battle && !dlg.open && g.returnGuardAtGate()) { openReturnGuard(); return; }
   if (!g.battle && !dlg.open && g.notices?.length) { openStoryNotice(g.notices[0]); return; }
   if (!g.battle && !dlg.open && g.bossJustice?.active && bossJusticeActive(g)) {
     const c=bossJusticeCase(g);

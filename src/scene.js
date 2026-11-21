@@ -737,6 +737,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     spot_(c.x, c.y, crewHeight);
     at(c.y, () => {
       const base = 'crew-' + c.k;
+      const meal = c.mealSeq;
+      const mealKey = meal && `${base}-${meal.phase}`;
+      const hasMealPose = mealKey && img(mealKey,g.zone);
       if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
       // ข้อ D คุณเป้เจอ 25 ก.ย. 2569 — ถึงไซต์ก่อสร้างแล้ว (buildK ตั้งอยู่ + สถานีนั้นพ้น buildWait
       // แล้ว คือเลิกเดินและเริ่มลงมือจริง) ยืนสลับท่า work ↔ ยืนเฉย ๆ เป็นจังหวะ ไม่ใช่ยืนนิ่งเป็นหุ่น
@@ -749,6 +752,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const damDrawn = !!damCarry && damCarryReady('th', damCarry);
       const damDesk = c.k === 'dam' && g.zone === 'th' && !motion.moving && !damCarry && foremanPhase(g) === 'canteen' && img('crew-dam-supervise-v1');
       shade(c.x, c.y, crewHeight, cx => {
+        if (meal) {
+          drawStandee(cx, hasMealPose ? mealKey : base, c.x, c.y, crewHeight, t, c.glyph, c.face || motion.face);
+          return;
+        }
         if (damDrawn && drawDamCarry(cx, c, 'th', damCarry, t, crewHeight, motion.moving)) return;
         if (damDesk) { drawStandee(cx, 'crew-dam-supervise-v1', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const cookingPose = c.cook && !motion.moving && g.zone==='th' && img(base+'-cook');
@@ -762,7 +769,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
       if(c.fmCarry&&!damDrawn)label(ctx,{rice:'🍙',wood:'🪵',shards:'💎'}[c.fmCarry]||'📦',c.x,c.y-crewHeight-8,14);   // FOREMAN: what Dam is carrying (the drawn carry walk shows it itself)
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
-      if (c.mealSeq) mealMark(ctx, c.x, c.y - crewHeight, c.mealSeq, t);
+      if (meal && !hasMealPose) mealMark(ctx, c.x, c.y - crewHeight, meal, t);
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
       if (!c.self && (c.hunger ?? 100) <= 0) hungerMark(ctx, c.x, c.y - crewHeight - 6);   // FB2-6: small hunger icon over the head (no banner)
     });

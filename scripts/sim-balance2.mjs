@@ -23,9 +23,9 @@ export function scenarios() {
   }
   return cases;
 }
-export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false}) {
+export function setup({zone,size,kind,encounter,eventKey,moves,fullBreach=false,team}) {
   const g=createGame();g.save=()=>true;g.onChange=()=>{};g.zone=zone;
-  const index=zones.indexOf(zone),kinds=teamOrder.slice(0,size-1);
+  const index=zones.indexOf(zone),kinds=team || teamOrder.slice(0,size-1);
   g.bossCleared=Object.fromEntries(zones.slice(0,index).map(z=>[z,true]));
   g.crew=kinds.filter(k=>k!=='guard').map(k=>actorFromLegacy({k,morale:100},zone));
   g.guard=kinds.includes('guard')?actorFromLegacy({morale:100},zone,'guard'):null;

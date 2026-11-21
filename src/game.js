@@ -2,7 +2,7 @@ import {storyPowerLocked,grantStoryBattleAbilities,restoreStoryAbilities} from '
 import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recordPlayTime} from './save-slots.js';
 import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
-import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
+import { SIGNAL_KEYS, RETURN_GUARD_EVENTS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant, finishQuestFight } from './side-quests.js';
 import { QUEST_FIGHTS, questFightFoes } from './quest-fights.js';
 import { COMBAT_SKILLS, skillForActor, skillBelongsTo, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
@@ -24,7 +24,7 @@ import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { Z4S } from './z4e-sala.js';   // T8b/5
 import { Z4G_KEYS } from './seized-keys.js';   // T8c
-import { walkBackTarget, zoneSeized } from './seized.js';   // T8c
+import { walkBackTarget, zoneSeized, returnGuardPending } from './seized.js';   // T8c
 import { Z4L } from './z4f-lupin.js';   // T8b/6
 import { Z4H, Z4H_RULER_START, Z4H_DUEL, finalBannerLabel } from './z4h-final.js';   // T8d
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
@@ -3129,7 +3129,7 @@ const API = {
   zoneEventGateReady() {
     if (this.zone === 'th' && this.legacyBossGate) return true;
     return (ZONE_EVENTS[this.zone] || []).every(ev =>
-      ev.signal || ev.atCases >= (ZONE_BOSS_AT[this.zone] || 10) || this.zoneEventStatus(ev.k) === 'cleared');
+      ev.signal || ev.returnGuard || ev.atCases >= (ZONE_BOSS_AT[this.zone] || 10) || this.zoneEventStatus(ev.k) === 'cleared');
   },
 
   bossCanChallenge() {
@@ -3306,6 +3306,7 @@ const API = {
     if (this.battle || this.over) return null;
     for (const ev of ZONE_EVENTS[this.zone] || []) {
       if (ev.team !== 'frontier' || this.zoneEventStatus(ev.k) !== 'pending') continue;
+      if (ev.signal && returnGuardPending(this)) continue;
       if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;
       if (this.eventMapClosed[`${this.zone}:${ev.k}`]) return { key:ev.k, ev };
     }
@@ -3354,7 +3355,7 @@ const API = {
     // T8c (owner 19 Nov): the record hall (case 10) waits until the field court of Trojan-9 is over - the alert N10-1 used to come up while the court was open and the button did nothing (startZoneEvent refuses during a court)
     if (zone === 'cyberhell' && states[Z4S.eventKey] === 'pending' && bossJusticePending(this, zone)) delete states[Z4S.eventKey];
     for (const ev of ZONE_EVENTS[zone] || []) {
-      if (states[ev.k] || (this.zoneCases[zone] || 0) < ev.atCases) continue;
+      if (ev.returnGuard || states[ev.k] || (this.zoneCases[zone] || 0) < ev.atCases) continue;
       if (zone === 'cyberhell' && ev.k === Z4S.eventKey && bossJusticePending(this, zone)) continue;   // T8c: not while the court of Trojan-9 sits
       // ด่านเทวดาโซนไทยเริ่มหลังตัดสินคดีขอทานในวัดแล้วเท่านั้น (คดีนั้นรอประตูสวรรค์ — applyVerdict เป็นคนเปิดด่าน)
       if (zone === 'th' && ev.k === 'devaTest' && !this.devaVisits.th) continue;
@@ -3402,7 +3403,9 @@ const API = {
       const mob = MOB.kinds[entry.kind ?? 0];
       const kindOf = entry.boss ? 'boss' : 'event';   // ชุด 28B
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
-      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : (getLang() === 'en' && entry.nameEn) || entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
+      const reaper = entry.controlledCrew && CREW.find(c=>c.k===entry.controlledCrew);
+      const name = (getLang() === 'en' && entry.nameEn) || (reaper ? crewName(reaper,zone) : entry.name);
+      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.bossApart && entry.boss ? t('event.frontierBreach.bossSub') : ev.banners ? (getLang() === 'en' ? ev.banners.en : ev.banners.th)[wave - 1] : ev.mode === 'waves' ? `ระลอก ${wave}/${ev.bossApart ? ev.waves.length - 1 : ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno, ...((entry.skillsEach ? entry.skillsEach[i] : entry.skills) ? { skills:structuredClone(entry.skillsEach ? entry.skillsEach[i] : entry.skills) } : {}), ...(entry.partyScale ? { partyScale:structuredClone(entry.partyScale) } : {}),
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
@@ -3413,6 +3416,8 @@ const API = {
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
     if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
+    if (ev.returnGuard && (!this.returnGuardAtGate() || !this.storySeen[Z4G_KEYS.guardStory[this.zone]])) return null;
+    if (ev.signal && returnGuardPending(this)) return null;
     if(ev.signal && (ev.mode==='story' || !signalRequirements(this,ev) || !this.storySeen[signalStory(key,'open')] || !['call','rush'].includes(signalChoice || this.signalChoices[key]))) return null;
     if(ev.signal)this.signalChoices[key]=signalChoice || this.signalChoices[key];
     const foes = this.zoneEventFoes(ev, 1);
@@ -3439,6 +3444,9 @@ const API = {
     if (key === Z4L.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:false });   // T8b/6 (Rae D 9.1): Yama + Nira + HOME-67 (the Guard is not in this one)
     if (key === Z4S.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:!!this.guard });   // T8b/5 (Rae D 6.1): Yama + Nira + WATSON-03 - HOME-67 stands behind Yama and does not fight
     if (key === Z4T.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:!!this.guard });   // T8b/2 (Rae D 4.1): Yama + Nira + HOME-67 (from the pier, for this fight only) + WATSON-03
+    if (ev.returnGuard || (ev.signal && RETURN_GUARD_EVENTS[this.zone])) {
+      Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:false, sceneBiome:'border' });
+    }
     if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
@@ -5365,9 +5373,23 @@ const API = {
     if (this.zone === 'cyberhell') this.queueStory(Z4G_KEYS.passStory);
     this.save(); this.onChange(); return true;
   },
-  /** T8c (Rae 7.2): entering a seized zone - the fire scene of that zone plays once (the lord himself is fought at the frontier next) */
+  returnGuardAtGate() {
+    return returnGuardPending(this) && this.nearFrontierGate() && !this.pendingRecovery;
+  },
+  /** A return crossing reaches the destination's gate first; the fire scene follows the Guard's victory resolution. */
   walkBackArrived(zone) {
-    const key = Z4G_KEYS.fire[zone]; if (key) this.queueStory(key);
+    if (!RETURN_GUARD_EVENTS[zone]) return;
+    const [x,y]=nearestWalk(FRONTIER.x,FRONTIER.y)||[FRONTIER.x,FRONTIER.y];
+    Object.assign(this.player,{x,y,tx:null,ty:null,path:null});
+    const nira=this.crewOf('nira');
+    if(nira)Object.assign(nira,{x:x-24,y,path:null});
+    const states=this.zoneEvents[zone];
+    if (states[Z4G_KEYS.guardEvent] === 'cleared' || this.storySeen[Z4G_KEYS.fire[zone]]) {
+      this.queueStory(Z4G_KEYS.fire[zone]);
+      return;
+    }
+    states[Z4G_KEYS.guardEvent]='pending';
+    this.queueStory(Z4G_KEYS.guardStory[zone]);
   },
   beginBorderDungeon(to) {
     if (this.zone === 'west' && this.home67Waiting?.()) { this.queueNotice(SEV.home67WarnNotice); this.onChange(); return false; }   // T8a (NH-4): the man in the light-banded cap is still waiting on the pier
@@ -5557,7 +5579,7 @@ const API = {
     reconcileSoulPortraits(this);
     reconcileSoulTraits(this);
     refreshPendingSentences(this);
-    this.pendingZone = { ...z, back: !!back };
+    this.pendingZone = { ...z, back: !!back, returnWalk: travelMode === 'walk' };
     if (!this.queue.length) this.spawnSoul();
     finishZoneArrival(this,from,k,travelMode);
     if (k === 'cyberhell' && !back && this.home67Joined && !this.storySeen[Z4A.zone4Story]) this.queueStory(Z4A.zone4Story);   // T8a (2.3): the city with nobody in it
@@ -6275,6 +6297,7 @@ API.restore = function (d) {
   for(const actor of this.crew) {const home=CREW.find(d=>d.k===actor.k);if(home) {actor.hx=home.hx;actor.hy=home.hy;}}
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
+  const savedAtReturnGate = returnGuardPending(this) && this.nearFrontierGate();
   this.eventMapClosed = d.eventMapClosed || {};
   this.teaBeds = d.teaBeds || {};
   this.pendingRecovery = d.pendingRecovery || null;
@@ -6581,6 +6604,7 @@ API.restore = function (d) {
   }
   initializeZoneTravel(this,d.zoneTravel);
   migrateSignal(this,d);
+  if (savedAtReturnGate && !this.pendingRecovery && !this.nearFrontierGate()) this.walkBackArrived(this.zone);
   initializeQuests(this,d);
   for(const zone of Object.keys(ZONE_EVENTS))this.refreshZoneEvents(zone);
   initializeBossGuides(this,d.bossGuides);

@@ -90,12 +90,7 @@ fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-
  *  ต้องตรงกับ POSES ใน scripts/prep-art.py */
 const POSE = /-(build-work|profile|work|atk|side|walk|cry)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
-const GUARD_MEAL_STEMS = {
-  th:'crew-guard',
-  asia:'Asia/crew-guard-asia',
-  west:'West/crew-guard-west',
-  cyberhell:'CyberHell/crew-guard-cyberhell',
-};
+const MEAL_ART_FOLDERS = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' };
 
 /** path ของไฟล์ที่ต้องใช้กับคีย์นี้ — sourceZone ใช้โซนต้นทางของหน่วย (ไม่ระบุ = โซนปัจจุบัน)
  *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
@@ -120,10 +115,9 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
-  if (key === 'crew-guard-receive' || key === 'crew-guard-eat') {
-    const stem = GUARD_MEAL_STEMS[z];
-    return stem ? `img/${stem}-${key.slice('crew-guard-'.length)}-v1.webp` : null;
-  }
+  const meal = key.match(/^(crew-(?:taan|plerng|kan|boon|dam|guard))-(receive|eat)$/);
+  if (meal && Object.hasOwn(MEAL_ART_FOLDERS,z))
+    return `img/${MEAL_ART_FOLDERS[z]}${meal[1]}${z==='th'?'':'-'+z}-${meal[2]}-v1.webp`;
   // T7/2: Zone 3's Guard is Van Helsing - his own picture slot (placeholder until Codex draws it); walking / cutscene variants of the generic guard stay as they are
   if (z === 'cyberhell' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z4-events/guard-watson03${key.endsWith('-profile') ? '-profile' : ''}.webp`;   // T8b/2: Zone 4's Guard is WATSON-03
   if (z === 'west' && (key === 'crew-guard' || key === 'crew-guard-profile')) return `img/z3-events/guard-vanhelsing-west${key.endsWith('-profile') ? '-profile' : ''}.webp`;
@@ -520,7 +514,7 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
  *  เลยตัวเล็กกว่าเพื่อนบนแผนที่ → ขยายตอนวาดให้ความสูงตัวจริงเท่าคนอื่น (ไม่แตะไฟล์ภาพ)
  *  ค่า = 1 / (ความสูงตัวจริง ÷ ความสูงกรอบ) วัดจาก alpha ของ img/CyberHell/crew-taan-cyberhell.webp (0.871) */
 export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
-export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '')}`] || 1;
+export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '').replace(/-(receive|eat)$/, '')}`] || 1;
 
 export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null) {
   h *= standeeFit(key, sourceZone || zoneOf());

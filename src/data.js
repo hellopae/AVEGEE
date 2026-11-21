@@ -1,4 +1,4 @@
-import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
+import { SIGNAL_EVENTS, SIGNAL_CLOSE, RETURN_GUARD_EVENTS } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
 import { GUARD_COOLDOWN_SECONDS } from './actor-recovery.js';
@@ -2116,6 +2116,7 @@ export const ZONE_EVENTS = {
   ],
 };
 for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);
+for (const [zone, ev] of Object.entries(RETURN_GUARD_EVENTS)) ZONE_EVENTS[zone].push(ev);
 ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
 
 // BOSS-SKILLS (15 Nov): Rae's names (the zone 2 / zone 3 ones were swapped: the zone 2 picture is Lian Gang's chain-weight, the zone 3 one Severin's blue flame)

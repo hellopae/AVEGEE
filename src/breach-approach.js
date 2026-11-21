@@ -8,9 +8,10 @@ export function breachApproachActors(zone, key) {
   if (!boss) return [];
   // artUrl() appends the zone suffix itself, so non-th keys must not carry it (else 404 -> emoji fallback)
   const mob = ev.waves[0][0];
+  const addArt = mob.sp || MOB.kinds[mob.kind].img;
   return [
     { id:'breach:boss', ...CHALLENGE_STAND[zone], art:boss.sp.replace(/-(asia|west|cyberhell)$/, ''), name:BOSS_NAMES[zone].frontier, boss:true, hypno:!!ev.signal, arrived:true },
-    { id:'breach:add:1', x:.72, y:.53, art:MOB.kinds[mob.kind].img, name:t('event.frontierBreach.marker'), arrived:true },
-    { id:'breach:add:2', x:.63, y:.70, art:MOB.kinds[mob.kind].img, name:t('event.frontierBreach.marker'), arrived:true },
+    { id:'breach:add:1', x:.72, y:.53, art:addArt, name:t('event.frontierBreach.marker'), arrived:true },
+    { id:'breach:add:2', x:.63, y:.70, art:ev.waves[0][1]?.sp || addArt, name:t('event.frontierBreach.marker'), arrived:true },
   ];
 }
