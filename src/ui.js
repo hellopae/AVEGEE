@@ -6535,12 +6535,24 @@ function keyWalk(dt) {
  *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
  *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
  *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
-const stBg = k => k === 'canteen' ? 'img/food-art/interior.webp' : k === 'tea' ? teaBackground(g.zone) : wideStationRoom(g.zone, k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
+const stBg = k => {
+  if (k === 'canteen') return g.zone === 'th' ? 'img/food-art/interior-th.webp' : 'img/food-art/interior.webp';
+  if (k === 'tea') return teaBackground(g.zone);
+  return wideStationRoom(g.zone, k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');
+};
 
 /** จุดยึดของห้อง — ฉากห้องของโซนที่องค์ประกอบต่างจากโซน 1 มีชุดจุดยึดของตัวเองใน ROOMS[k].zones
  *  ใช้เฉพาะตอนที่ฉากของโซนนั้นมีจริง (ยังไม่มีไฟล์ = ใช้ฉากโซน 1 ก็ต้องใช้จุดยึดโซน 1) */
 function roomFor(k) {
-  if(k==='canteen')return {...ROOM_DEFAULT,souls:[],crew:null,me:[.5,.9],walk:[.2,.65,.8,.94],act:[.5,.7]};
+  if (k === 'canteen') {
+    const base = {...ROOM_DEFAULT, souls:[], crew:null, me:[.5,.9], walk:[.2,.65,.8,.94], act:[.5,.7]};
+    if (g.zone !== 'th') return base;
+    // Keep feet on the painted stone terrace, inside its railings and service counter.
+    return {...base, me:[.54,.86], walk:[{poly:[
+      [.12,.50],[.29,.41],[.37,.38],[.44,.46],[.77,.61],[.84,.64],
+      [.83,.71],[.71,.78],[.53,.92],[.37,.78],[.20,.61],
+    ]}]};
+  }
   if (k === 'tea') return teaRoom(g.zone);
   const wide = wideStationRoom(g.zone, k);
   if (wide) return wide;
