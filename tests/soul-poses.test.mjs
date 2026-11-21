@@ -174,21 +174,21 @@ test('base path parsing needs the matching folder, zone and a version',()=>{
 // A slot is filled by: the new -scared/-cry file, else the old caught-lie / necessity drawing (alias), else nothing (the CSS effect stays). Never another zone's costume.
 const withFiles=(files,fn)=>{for(const f of files)SOUL_POSE_FILES.add(f);try{fn()}finally{for(const f of files)SOUL_POSE_FILES.delete(f)}};
 test('alias then own file then nothing, per archetype and zone, never another zone',()=>{
- const th='img/Thai/spirit-officer-th-v2.webp', west='img/CyberHell/spirit-boy-cyberhell-v2.webp', asia='img/Asia/spirit-worker-asia-v2.webp';
+ const th='img/Thai/spirit-officer-th-v2.webp', cyber='img/CyberHell/spirit-boy-cyberhell-v1.webp', asia='img/Asia/spirit-worker-asia-v2.webp';
  assert.equal(genericSoulPose(th,'scared'),'img/soul-poses/officer-th-caught-lie-v1.webp','alias');
  assert.equal(genericSoulPose(th,'cry'),'img/soul-poses/officer-th-necessity-v1.webp','alias');
  assert.equal(genericSoulPose(asia,'scared'),'img/soul-poses/worker-asia-caught-lie-v1.webp');
  assert.equal(genericSoulPose(asia,'cry'),'img/soul-poses/worker-asia-cry-v1.webp','own cry file');
- assert.equal(genericSoulPose(west,'scared'),null);assert.equal(genericSoulPose(west,'cry'),null);
- const own='img/soul-poses/officer-th-scared-v1.webp',westOwn='img/soul-poses/boy-cyberhell-scared-v1.webp';
- withFiles([own,westOwn],()=>{
+ assert.equal(genericSoulPose(cyber,'scared'),null);assert.equal(genericSoulPose(cyber,'cry'),null);
+ const own='img/soul-poses/officer-th-scared-v1.webp',cyberOwn='img/soul-poses/boy-cyberhell-scared-v1.webp';
+ withFiles([own,cyberOwn],()=>{
   assert.equal(genericSoulPose(th,'scared'),own,'a new file wins over the alias');
-  assert.equal(genericSoulPose(west,'scared'),westOwn);
+  assert.equal(genericSoulPose(cyber,'scared'),cyberOwn);
   assert.equal(genericSoulPose('img/CyberHell/spirit-cleric-cyberhell-v2.webp','scared'),null,'a West cleric file never serves CyberHell');
-  assert.ok(soulPoseAssets(west).includes(westOwn),'preloaded');
+  assert.ok(soulPoseAssets(cyber).includes(cyberOwn),'preloaded');
  });
- assert.equal(genericSoulPose(west,'scared'),null,'file gone -> back to nothing');
- assert.deepEqual(soulPoseAssets(west),[],'nothing to preload, nothing requested');
+ assert.equal(genericSoulPose(cyber,'scared'),null,'file gone -> back to nothing');
+ assert.deepEqual(soulPoseAssets(cyber),[],'nothing to preload, nothing requested');
 });
 const randomSoul=(key,extra={})=>({...soulFor(key),case:undefined,...extra});
 test('random souls: deny / fake boast -> scared, plea that opens mitigation -> cry, solid or spent -> nothing',()=>{
@@ -262,8 +262,10 @@ test('card scared files: every one belongs to a real original, same canvas, RGBA
 test('card for a beaten soul: own card, else the field scared drawing, else nothing; never for `other` or a returned soul',()=>{
  const th='img/Thai/spirit-officer-th-v2.webp', s=soulFor('pol');
  assert.equal(soulCardForScare(s,th),'img/soul-card-scared/spirit-officer-th-v2-scared.webp');
- assert.equal(soulCardForScare(s,'img/CyberHell/spirit-worker-cyberhell-v2.webp'),'img/soul-poses/worker-cyberhell-scared-v1.webp','no card file yet: same drawing as the field figure');
- assert.equal(soulCardForScare(s,'img/CyberHell/spirit-boy-cyberhell-v2.webp'),null);
+ assert.equal(soulCardForScare(s,'img/CyberHell/spirit-worker-cyberhell-v2.webp'),'img/soul-card-scared/spirit-worker-cyberhell-v2-scared.webp');
+ assert.equal(soulCardForScare(s,'img/CyberHell/spirit-worker-cyberhell-v1.webp'),'img/soul-poses/worker-cyberhell-scared-v1.webp','an older art version has no matching battle card');
+ assert.equal(soulCardForScare(s,'img/CyberHell/spirit-boy-cyberhell-v1.webp'),null);
+ assert.equal(soulCardForScare(s,'img/CyberHell/spirit-boy-cyberhell-v2.webp'),'img/soul-card-scared/spirit-boy-cyberhell-v2-scared.webp');
  assert.equal(soulCardForScare({...s,back:{}},th),null);assert.equal(soulCardForScare(soulFor('nurse'),th),null);assert.equal(soulCardForScare(null,th),null);
  assert.ok(soulPoseAssets(th).includes('img/soul-card-scared/spirit-officer-th-v2-scared.webp'),'preloaded');
 });
