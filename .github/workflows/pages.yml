@@ -30,6 +30,11 @@ jobs:
           mkdir _site
           cp index.html .nojekyll _site/
           cp -r src img audio _site/
+          # Deva cutscenes use the WebP illustrations. Keep the original videos in Git.
+          rm -- _site/img/deva-intro/deva-intro-asia-v1-web.mp4 \
+                _site/img/deva-intro/deva-intro-cyberhell-v1-web.mp4 \
+                _site/img/deva-intro/deva-intro-th-beggar-v2.mp4 \
+                _site/img/deva-intro/deva-intro-west-v1-web.mp4
           # deploy id: short commit sha -> <meta name="avegee-deploy"> in _site/index.html + _site/version.json
           # (src/version-check.js compares them so an old open tab can offer "new version available").
           node scripts/stamp-build.mjs _site "${GITHUB_SHA::8}"
