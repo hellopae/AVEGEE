@@ -240,3 +240,7 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 
 /* QUEST-DAM-B: while a Phoenix Feather waits for its receiver, a fallen teammate is the one thing you can press */
 .arena.combat-arena .battle-squad .is-fallen.choose-recipient,.battle-team-hud .battle-portrait.is-fallen.choose-recipient{pointer-events:auto;opacity:1;cursor:pointer}
+/* FB3-BT8a: the enemy attacker runs all the way to whoever it hits (distance measured in ui.js aimFoeLunge from the real sprites), holds through the impact, runs back.
+   Without the --foe-lunge-* variables (nothing measurable) the old lungeL keyframes still apply. */
+.arena.combat-arena .fig.foe.lunge.foe-aim{animation:foeLungeAim .8s cubic-bezier(.3,.7,.35,1)}
+@keyframes foeLungeAim{0%{transform:translate(0,0)}36%,56%{transform:translate(var(--foe-lunge-x,-62%),var(--foe-lunge-y,0px))}100%{transform:translate(0,0)}}

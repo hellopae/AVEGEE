@@ -31,3 +31,17 @@ test('BT5: every restoring move of ours has a power-up sound that is not the hit
 test('BT5: healing skills play it too', () => {
   assert.match(read('src/ui.js'), /if \(COMBAT_SKILLS\[action\]\.heal\) sfx\('restore'\)/);
 });
+
+// ---- BT8a ----
+import { planDash } from '../src/battle-dash.js';
+test('BT8a: an enemy attack is measured to the real target (not a fixed 62% of its own width) and stops just short of it', () => {
+  const foe = { l:1260, r:1400, t:560, b:700 }, ally = { l:500, r:600, t:540, b:690 };
+  const d = planDash(foe, ally, 6);
+  assert.equal(foe.l + d.x, ally.r + 6, 'the attacker ends 6 px from the target (not on top of it, not 400 px short)');
+  assert.equal(d.y, ally.b - foe.b);
+  const ui = read('src/ui.js');
+  assert.match(ui, /const aimFoeLunge = \(\) => \{/);
+  assert.match(ui, /sfx\('hurt'\);paint\(\);aimFoeLunge\(\);/, 'turn-based enemy turn');
+  assert.match(ui, /paint\(\); aimFoeLunge\(\);/, 'counter-attack after a player move');
+  assert.match(ui, /--foe-lunge-x/); assert.match(read('src/battle-turns.css'), /\.foe-aim\{animation:foeLungeAim/);
+});

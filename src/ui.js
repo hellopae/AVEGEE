@@ -4300,6 +4300,24 @@ function openBattle(after) {
     const sr = stage.getBoundingClientRect(), k = sr.width / (stage.offsetWidth || sr.width) || 1;
     return { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
   };
+  /** FB3-BT8a: an enemy's attack must carry it all the way to whoever it hits. The old CSS lunge moved the attacker a fixed 62% of its own width (~260 px at 1792,
+   *  far short of the team); now the distance is measured from the real sprites (the same planDash the allies use) and handed to the keyframes. The state of the
+   *  turn is already settled when this runs, so the target is simply whoever the blow landed on (nearest one for a group hit). */
+  const aimFoeLunge = () => {
+    const b = g.battle, d = b?.dmg, fig = dlg.querySelector('.fig.foe.lunge');
+    if (!b || !d || !fig) return false;
+    const src = fxRectSync(fig.querySelector('img:not(.fx)'));
+    const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you' }];
+    const rects = hits.map(h => fxRectSync(allyImg(keyOfActor(h.id)))).filter(Boolean);
+    if (!src || !rects.length) return false;
+    const mid = r => (r.l + r.r) / 2, from = mid(src);
+    const target = rects.reduce((best, r) => Math.abs(mid(r) - from) < Math.abs(mid(best) - from) ? r : best);
+    const delta = planDash(src, target, 6);
+    fig.style.setProperty('--foe-lunge-x', `${Math.round(delta.x)}px`);
+    fig.style.setProperty('--foe-lunge-y', `${Math.round(delta.y)}px`);
+    fig.classList.add('foe-aim');
+    return true;
+  };
   const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
   /** BATTLE-FX: the struck figure is pushed back a little (away from the attacker) and settles. Web Animations on the independent `translate` property,
    *  composited on top of the idle breathing; skipped when camera effects are off / reduced motion (same gate as the screen shake). */
@@ -5354,7 +5372,7 @@ function openBattle(after) {
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
           fxHandled = true;
-          paint();
+          paint(); aimFoeLunge();
           { const cutMs = nb.ultimate && playActionCutscene('boss', nb.ultimate) ? ACTION_CUT_MS : 0; startActionCue(cutMs); startMoveFx('foe', null, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs); }
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
@@ -5403,7 +5421,7 @@ function openBattle(after) {
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         fxHandled=true;
-        sfx('hurt');paint();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
+        sfx('hurt');paint();aimFoeLunge();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
         if(b.skillNotice&&(!b.ultimate||b.ultimate.noCard))showSkillBanner(b.skillNotice);      // BOSS-SKILLS: warning of a move / a heavy blow (T1b: also the small foes' card-less group move)
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate&&!b.ultimate.noCard?ACTION_CUT_MS+120:b.skillNotice?2200:900);
       },600);
