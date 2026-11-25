@@ -77,13 +77,9 @@ test('NA-3: after a fight that used the last flame, "ไฟในตะเกี
   assert.deepEqual(h.notices.filter(n => n === 'lamp-low'), ['lamp-low']);
 });
 
-test('H2: before the lamp the Flee command is exactly as it was (a plain fight can still be fled); the lamp does not make any fight impossible to leave', () => {
+test('H2 (FB3-BT1): no Flee row in any fight; the summon row appears only once the lamp is owned', () => {
   const g = createGame();
-  for (const kind of ['soul', 'mob', 'frontier', 'questFight']) assert.equal(g.fleeWhy(kind), '', `${kind} is fleeable`);
-  for (const kind of ['zoneBoss', 'yama', 'dad', 'zoneEvent']) assert.notEqual(g.fleeWhy(kind), '', `${kind} is not`);
-  // the UI swaps the row ("หนี" -> "อัญเชิญ") on lampOwned alone: read the source so this cannot drift
   const src = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
-  assert.match(src, /LAMP\.lampOwned\(g\) \? \[\{id:'summon'/); assert.match(src, /\[\{id:'escape',label:'หนี \/ Flee',action:'flee'/);
-  // a fight that was only ever fleeable still ends on its own when it is lost: every fleeable kind has a "lose" way out in endBattle (see report)
+  assert.match(src, /LAMP\.lampOwned\(g\) \? \[\{id:'summon'/); assert.doesNotMatch(src, /id:'escape'/);
   g.giveLamp(); assert.equal(lampOwned(g), true);
 });

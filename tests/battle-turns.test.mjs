@@ -42,8 +42,7 @@ test('queued hypnosis redirects each enemy on its own turn, and burns tick only 
  const remaining=b.foes[1].burn.turns;g.confirmBattleCommand('strike');assert.equal(b.foes[1].burn.turns,remaining);
 });
 test('retreat cannot skip a dungeon checkpoint or bypass a story boss',()=>{
- const g=setup(),b=g.battle;g.beginBattleTurns();b.kind='zoneBoss';assert.equal(g.confirmBattleCommand('flee'),false);assert.equal(b.over,null);
- b.kind='mob';assert.equal(g.confirmBattleCommand('flee'),true);assert.equal(b.over,'flee');
+ const g=setup(),b=g.battle;g.beginBattleTurns();for(const kind of ['zoneBoss','mob','frontier','zoneEvent','soul']){b.kind=kind;assert.equal(g.confirmBattleCommand('flee'),false,kind);assert.equal(b.over,null);}   // FB3-BT1: nothing can flee
 });
 
 // F3 (owner 15 Nov): the enemy side acts as many times per round as the team has members standing.

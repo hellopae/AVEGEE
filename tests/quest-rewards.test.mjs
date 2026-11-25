@@ -123,8 +123,8 @@ for (const [id, zone] of [['sqKan', 'asia'], ['sqBoon', 'west'], ['sqGuard', 'th
   assert.ok(advanceQuest(g, id, id === 'sqBoon' ? null : 1)); assert.equal(g.battle.kind, 'questFight'); assert.equal(g.battle.questId, id); assert.equal(questState(g, id).step, 3);
   assert.equal(advanceQuest(g, id, 0), false, 'a second click while the fight is open does nothing');
   assert.ok(g.battle.foes.length >= 3); assert.ok(g.battle.foes.every(f => f.hp > 0 && f.atk[1] > f.atk[0]));
-  // flee is allowed and costs nothing
-  assert.equal(g.fleeWhy(), ''); assert.ok(g.fleeBattle()); g.endBattle();
+  // leaving with the internal 'flee' result (the practice exit; FB3-BT1 removed the player's Flee command) costs nothing
+  g.battle.over = 'flee'; g.endBattle();
   assert.equal(g.battle, null); assert.equal(questState(g, id).step, 3); assert.equal(g.pendingRecovery, null); assert.equal(g.coin, coin);
   // lost → retry with NO new choice (sqBoon never needed one)
   meet(g, q); assert.ok(advanceQuest(g, id)); lose(g);

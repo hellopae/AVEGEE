@@ -2719,35 +2719,6 @@ function battleTurnOrderHtml(b) {
   return `<div class="battle-timeline">${render(units.slice(0,1),false)}${render(units.slice(1,6),true)}</div>`;
 }
 
-/** L2: "หนีจากการต่อสู้" confirmation — markup, wiring and a stand-alone opener so any screen (battle, frontier walk ...) asks the same way.
- *  kind: battle kind (frontier -> "back to the frontier", anything else -> "back to the map"). */
-export function fleeConfirmHtml(kind = 'mob') {
-  return `<div class="flee-layer" data-flee-layer><div class="flee-card" role="alertdialog" aria-modal="true" aria-labelledby="flee-title">
-    <h3 id="flee-title">${esc(t('battle.flee.title'))}</h3>
-    <p>${esc(t(kind === 'frontier' ? 'battle.flee.textFrontier' : 'battle.flee.textMap'))}</p>
-    <div class="flee-actions"><button data-flee-cancel>${esc(t('battle.flee.cancel'))}</button><button class="gold" data-flee-ok>${esc(t('battle.flee.ok'))}</button></div></div></div>`;
-}
-export function bindFleeConfirm(layer, { onConfirm, onCancel }) {
-  layer.addEventListener('click', e => { if (e.target === layer) onCancel?.(); });
-  layer.querySelector('[data-flee-cancel]').onclick = () => onCancel?.();
-  layer.querySelector('[data-flee-ok]').onclick = () => onConfirm?.();
-  layer.querySelector('[data-flee-cancel]').focus();
-}
-/** Opens the flee confirmation on top of `container` (default: the page). Returns close(). onConfirm / onCancel are called after it closes. */
-export function openFleeConfirm({ container = document.body, kind = 'mob', onConfirm, onCancel } = {}) {
-  const wrap = document.createElement('div');
-  wrap.innerHTML = fleeConfirmHtml(kind);
-  const layer = wrap.firstElementChild;
-  layer.style.position = container === document.body ? 'fixed' : 'absolute';
-  const close = () => { layer.remove(); document.removeEventListener('keydown', onKey, true); };
-  const onKey = e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(); onCancel?.(); } };
-  document.addEventListener('keydown', onKey, true);
-  bindFleeConfirm(layer, { onConfirm:() => { close(); onConfirm?.(); }, onCancel:() => { close(); onCancel?.(); } });
-  container.appendChild(layer);
-  layer.querySelector('[data-flee-cancel]').focus();
-  return close;
-}
-
 /** L2: shield over the head / on the portrait of whoever is in the defend stance.
  *  Real art goes in img/ui/icon-defend-shield.webp (see Output/Toby note); until it exists the CSS shield underneath shows. */
 function defendShieldHtml() {
@@ -3337,7 +3308,7 @@ function openTrial(initialError = '') {
           reactionTimers.push(powerPoseTimer);
         }
       }
-      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k); trialFx(k);
+      powerSound(k); paint(); refresh(); playActionCutscene(k); trialFx(k);
       camera.cue('interrogate-reveal', { targets:'suspect', action:k });   // M1: hypnosis / mirror / roar = the big lean-in
     });
 
@@ -4300,8 +4271,7 @@ function openBattle(after) {
 
   let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false, finaleCutTimer = 0;
-  let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
-  let summonLayer = false, summonPick = null;   // T4: the "อัญเชิญ" window (replaces Flee once the lamp is owned) is showing / which helper is picked in it
+  let summonLayer = false, summonPick = null;   // T4: the "อัญเชิญ" window (shows once the lamp is owned) is showing / which helper is picked in it
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
   // ---- M2: battle effects (src/battle-fx.js). Rects are measured after the paint that follows, in stage-local px. ----
@@ -4751,7 +4721,7 @@ function openBattle(after) {
       : battleChoice('strike', 'img/fx-slash.webp', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || pending === 'phoenixFeather' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && (pending === special || pending === unlockedSkill)));
-    const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
+    const selfCommand=['defend','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
     // L2: choosing a target — enemy OR teammate (items / healing powers) — shows no text box at all.
     // Enemies / eligible teammates carry the "เลือกเป้าหมาย" tag and highlight; the tab stays pressed.
@@ -4759,16 +4729,13 @@ function openBattle(after) {
     const selection = '';
     if (commandPanelActor !== actor.id) { commandPanel = null; commandPanelActor = actor.id; }
     const battle9Label = text => String(text).split(' / ')[getLang()==='en'?1:0] || String(text).split(' / ')[0];
-    // L2: only plain fights can be fled (matches battleAct); bosses and story/event fights say why the button is dim.
-    const fleeCode = g.fleeWhy(b.kind), fleeWhy = fleeCode ? t('battle.flee.' + fleeCode) : '';
     const segments = [
       {id:'attack',label:'โจมตี / Attack',action:isYama?'atk':'strike'},
       {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:specialChoice},
       {id:'item',label:'ไอเท็ม / Items',choices:itemChoices},
       {id:'defense',label:'ป้องกัน / Defend',action:'defend'},
-      // T4 (H2): once Sita has given the lamp the Flee row is replaced by "อัญเชิญ" - before that it is exactly the old Flee row
-      ...(LAMP.lampOwned(g) ? [{id:'summon',label:`${lt('battle.button')} / ${lt('battle.button','',  'en')}`,summon:true,disabled:LAMP.SUMMON_BLOCKED_KINDS.includes(b.kind)||b.breachFinale==='ready',reason:lt('battle.cannot')}]
-        : b.kind === 'practice' ? [] : [{id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy}]),
+      // FB3-BT1: there is no Flee row in any fight any more. The "อัญเชิญ" row (T4) shows only once the lamp is owned; before that the menu is just the four rows.
+      ...(LAMP.lampOwned(g) ? [{id:'summon',label:`${lt('battle.button')} / ${lt('battle.button','',  'en')}`,summon:true,disabled:LAMP.SUMMON_BLOCKED_KINDS.includes(b.kind)||b.breachFinale==='ready',reason:lt('battle.cannot')}] : []),
     ];
     const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
@@ -4804,9 +4771,7 @@ function openBattle(after) {
     const done = b.over && !finaleBusy
       ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
-    if (fleeConfirm && (b.over || phase || prepOn || fleeWhy)) fleeConfirm = false;
     if (summonLayer && (b.over || phase || prepOn)) { summonLayer = false; summonPick = null; }
-    const fleeLayer = fleeConfirm ? fleeConfirmHtml(b.kind) : '';
     const summonLayerHtml = !summonLayer ? '' : (() => {
       const keys = LAMP.slottedSummoners(g), lang = getLang();
       const rows = keys.map(k => {
@@ -4841,7 +4806,7 @@ function openBattle(after) {
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? (fxNow?.key === 'defend' ? '🛡️ ' + t('battle.defend.on') : '⚔️ ตาของท่าน') : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
-      </div>${prep}${prepLayer}${fleeLayer}${summonLayerHtml}`;
+      </div>${prep}${prepLayer}${summonLayerHtml}`;
 
     const stage = dlg.querySelector('.combat-arena');
     camera.attach(stage);
@@ -5081,8 +5046,7 @@ function openBattle(after) {
         if(button.dataset.command==='summon'){commandPanel=null;g.cancelBattleCommand();summonLayer=true;summonPick=null;paint();return;}   // T4: opens the "อัญเชิญ" window
         if(button.dataset.primaryAction){commandPanel=null;
           const action=button.dataset.primaryAction;
-          if(action==='flee'){fleeConfirm=true;paint();}                      // L2: ask first, never an attack
-          else if(action==='defend')executeCommand(action,'you');
+          if(action==='defend')executeCommand(action,'you');
           else if(b.command===action){g.cancelBattleCommand();paint();}       // L2: same button again = cancel
           else setCommand(action,button.textContent.trim());}
         else {g.cancelBattleCommand();commandPanel=commandPanel===button.dataset.command?null:button.dataset.command;paint();}
@@ -5210,15 +5174,12 @@ function openBattle(after) {
       if (typeof ResizeObserver === 'function') new ResizeObserver(place).observe(stage);   // หมุนจอ/ย่อขยายกลางศึก วงตามตัวละคร
     }
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
-    // L2: flee confirmation — confirm leaves the fight (no reward), cancel / backdrop just closes the layer
     const summonLayerEl = dlg.querySelector('[data-summon-layer]');
     if (summonLayerEl) {
       summonLayerEl.querySelectorAll('[data-summon-pick]').forEach(bn => bn.onclick = () => { summonPick = bn.dataset.summonPick; paint(); });
       summonLayerEl.querySelector('[data-summon-cancel]').onclick = () => { summonLayer = false; summonPick = null; paint(); };
       summonLayerEl.querySelector('[data-summon-call]').onclick = () => { const k = summonPick; summonLayer = false; summonPick = null; if (k) executeCommand('summon:' + k, 'you'); else paint(); };
     }
-    const fleeLayerEl = dlg.querySelector('[data-flee-layer]');
-    if (fleeLayerEl) bindFleeConfirm(fleeLayerEl, { onCancel:() => { fleeConfirm = false; paint(); }, onConfirm:() => { fleeConfirm = false; performFlee(); } });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
       // QUEST-REWARDS: team-wide / area ultimates need no target or receiver (คำฝากถึงมือ · ทวารบาลยืนรับแค้น); เนตรรอคำอนุญาต still asks for the foe it reads
@@ -5230,11 +5191,6 @@ function openBattle(after) {
       if (!g.battle?.pendingWave) return;
       if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
       else g.advanceFrontierBreachWave();
-    };
-    /** L2: leave the fight right now (no reward) — the single place the Flee result is applied. Call after the player confirmed. */
-    const performFlee = () => {
-      if (phase || !g.fleeBattle()) { paint(); return; }
-      sfx('step'); clearTimeout(phaseTimer); finish();
     };
     const playSkillScene = async (skill, sources, duration) => {
       if (!sources.length || !dlg.open) return;
@@ -5309,7 +5265,6 @@ function openBattle(after) {
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
       const vitalsBefore = vitalsOf(g);
-      if (action === 'flee') { performFlee(); return; }
       if (isMeleeAction(k) && g.battle.turnQueue && !['dad','yama'].includes(g.battle.kind)) {
         const who = g.battleActors().find(a => a.id === (g.battle.actorId || 'you'));
         if (!who || g.battle.commandBusy || g.currentBattleTurn()?.side !== 'ally') return;
@@ -5331,7 +5286,7 @@ function openBattle(after) {
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
       if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
       commandMenuOpen = false;
-      // L2: flee and defend are not attacks — no lunge, no slash effect, no counter-attack cutscene
+      // L2: defend is not an attack — no lunge, no slash effect, no counter-attack cutscene
       if (action === 'defend') {
         sfx('item'); phase = 'you'; phaseAt = Date.now(); fxNow = { key:'defend', action:'defend', side:'you' }; paint();
         clearTimeout(phaseTimer);
@@ -5344,7 +5299,7 @@ function openBattle(after) {
       // L2 (ต่อจากชุด 30B ข้อ 9) — ใครได้เติมเลือด/พลังเวทจากคำสั่งนี้ (ไอเท็ม พลังของบุญ ดาบดูดเลือด ...) ขึ้นประกาย+วงแสง+ตัวเลข
       // ท่าที่มีภาพคั่น (ยมทูต/ยักษ์) เริ่มตอนภาพคั่นจางลงพอดี ไม่งั้นอยู่ใต้ภาพที่ทับเต็มกรอบ
       showHeals(vitalsBefore, (k.startsWith('crew:') || k === 'guard') ? ACTION_CUT_MS + 80 : 120);
-      if(k==='flee')sfx('step');else powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
+      powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }
@@ -5491,14 +5446,12 @@ function openBattle(after) {
 
   const noEsc = e => {
     if (storyActive || (g.battle && !g.battle.over)) e.preventDefault();
-    if (fleeConfirm) { fleeConfirm = false; paint(); return; }
     if (!phase && g.battle?.command && g.cancelBattleCommand()) paint();
   };
   // L2: cancel a chosen command with Esc or right-click (keydown first so the browser's own dialog-close never races us)
   const cancelGesture = e => {
     if (e.type === 'keydown' && e.key !== 'Escape') return;
     if (!g.battle || g.battle.over || phase) return;
-    if (fleeConfirm) { e.preventDefault(); fleeConfirm = false; paint(); return; }
     if (g.battle.command && g.cancelBattleCommand()) { e.preventDefault(); paint(); }
   };
   dlg.addEventListener('keydown', cancelGesture);

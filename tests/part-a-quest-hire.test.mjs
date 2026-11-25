@@ -127,7 +127,7 @@ test('a lost quest fight: "สู้อีกครั้ง" restarts the fight
     const retry = createQuestAction(g, id, 3); assert.ok(retry(null)); assert.equal(g.battle?.kind, 'questFight'); assert.equal(g.battle.questId, id); assert.equal(questState(g, id).choice, 1);
     assert.equal(retry(null), false, 'the same button cannot start twice');
     // rest = flee / lose and leave: nothing is lost, the save keeps step 3 + the loss flag, the quest window still offers the fight
-    assert.ok(g.fleeBattle()); g.endBattle(); assert.equal(questState(g, id).step, 3); assert.equal(questState(g, id).fightLost, true);
+    g.battle.over = 'flee'; g.endBattle();   /* FB3-BT1: no flee command any more; the internal 'flee' result (practice exit) still costs nothing */ assert.equal(questState(g, id).step, 3); assert.equal(questState(g, id).fightLost, true);
     const h = reload(g); assert.equal(h.sideQuests[id].fightLost, true); assert.equal(h.sideQuests[id].step, 3);
     goto(h, q); assert.ok(advanceQuest(h, id)); assert.equal(h.battle?.kind, 'questFight'); win(h);
     assert.equal(questState(h, id).step, 4); assert.equal(questState(h, id).fightLost, undefined, 'cleared after the win'); assert.equal(questState(h, id).fought, true);
