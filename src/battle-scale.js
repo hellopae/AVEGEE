@@ -7,6 +7,7 @@ import { characterScale, fitAllySizes } from './character-scale.js';
 import { mirrorBox } from './battle-facing.js';
 import { planBattleFormation } from './battle-formation.js?v=20261015-k2';
 import { planTurnStep } from './battle-turn-step.js?v=20261015-l2';
+import { foeUnits, planFoeSize } from './battle-foe-size.js';
 
 /** Legacy row planner reference; arena sizes use CHARACTER_SCALE by actor identity. */
 export const CREW_SCALE_TARGET = characterScale('adult')/characterScale('yama');
@@ -124,12 +125,15 @@ export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 18 } = {})
 // <img> elements had no size at all (the squad showed at the raw CSS size, ~3-4x too big, the hero at the raw size of whatever pose was swapped in), so a
 // hit - which always repaints - made the allies "pop" bigger for a moment. The last fitted layout is remembered and re-applied to the fresh elements
 // the instant the new stage exists (same task, before the browser paints); the async fit then confirms or corrects it.
-const lastLayout = { sw:0, sh:0, squad:null, items:new Map(), ref:null };
+const lastLayout = { sw:0, sh:0, squad:null, items:new Map(), ref:null, foes:new Map(), foeUnit:0 };
 const putStyle = (el, props) => { for (const [k, v] of Object.entries(props)) el.style.setProperty(k, v, 'important'); };
 function applyMember(image, root, key, e, motion) {
   const active = key === motion.activeKey;
   putStyle(image, e.img);
-  putStyle(root, { ...e.root, 'z-index':root.classList.contains('cam-lit') ? '40' : String(active ? 30 : e.depth),
+  // FB3-BT6 (owner: "Plerng stands on Yama's sword - Yama should be in front"): Yama is the nearest to the camera in every formation and his sword points
+  // out over the others, so he is drawn above every teammate - also while a teammate has stepped out for their turn (that one is 30, Yama 31).
+  const z = root.classList.contains('cam-lit') ? 40 : key === 'you' ? 31 : active ? 30 : e.depth;
+  putStyle(root, { ...e.root, 'z-index':String(z),
     '--turn-motion-delay':`${-Math.max(0, Date.now() - (motion.changedAt || 0))}ms` });
   root.classList.add('formation-member');
   root.classList.toggle('attack-lunge', motion.attackKey === key);
@@ -149,7 +153,31 @@ function reapplyLastLayout(stage, hero, crewImgs, motion) {
   // the size reference is the hero's UNFITTED size (measured once); a pre-fitted element must not be mistaken for it
   if (lastLayout.ref) hero._sizeReference = lastLayout.ref;
   members.forEach((m, i) => applyMember(m.image, m.root, keys[i], lastLayout.items.get(keys[i]), motion));
+  // the enemies are fresh elements too (FB3-BT2): same size as just before, until the measured fit confirms it
+  for (const im of stage.querySelectorAll('.fig.foe img:not(.fx)')) {
+    const id = im.closest('.fig.foe')?.dataset.foeId, was = id && lastLayout.foes?.get(id);
+    if (was && was.src === (im.getAttribute('src') || '')) putStyle(im, was.props);
+  }
   return true;
+}
+
+/** FB3-BT2: set the box of every enemy picture so its VISIBLE part has the height of its tier (src/battle-foe-size.js). Returns the sizes it set. */
+function applyFoeSizes(stage, adultVis, sr, measured) {
+  const out = new Map();
+  for (const im of stage.querySelectorAll('.fig.foe img:not(.fx)')) {
+    const box = measured.get(im), root = im.closest('.fig.foe');
+    if (!box || !root || !(im.naturalWidth > 0)) continue;
+    const rr = rectOfEl(root, 'layout');
+    const plan = planFoeSize({ box, aspect:im.naturalWidth / im.naturalHeight, adultVis,
+      units:foeUnits(im.getAttribute('src') || '', { boss:root.classList.contains('boss-foe') }),
+      roomW:root.closest('.foe-group') && rr.width > 8 ? rr.width : Infinity });
+    if (!plan) continue;
+    const props = { width:`${plan.w}px`, height:`${plan.h}px`, 'max-width':'none', 'max-height':'none', 'object-fit':'fill' };
+    putStyle(im, props);
+    const id = root.dataset.foeId; if (id) out.set(id, { src:im.getAttribute('src') || '', props });
+  }
+  lastLayout.foes = out;
+  return out;
 }
 
 export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {}) {
@@ -163,11 +191,13 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
   // ท่าของยมบาทน้อยเปลี่ยนตลอดการต่อสู้ (ยืน · ฟาด · โดนตี) แต่ละท่ามีกรอบตัวจริงต่างกัน — ใช้ท่ายืนเป็นหลักเสมอ
   // ไม่งั้นยมทูตจะขยับขนาดตามท่าทุกครั้งที่วาดฉากใหม่
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
-  return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null]).then(async ([hb, ...rest]) => {
+  const foeImgs = [...stage.querySelectorAll('.fig.foe img:not(.fx)')];
+  return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null, Promise.all(foeImgs.map(im => measure(im)))]).then(async ([hb, ...rest]) => {
+    const foeMeasured = new Map(foeImgs.map((im, i) => [im, rest.at(-1)[i]]));
     if (!stage.isConnected || !hb || stage._fitSeq !== seq) return false;
     // ภาพที่ถูกพลิกกระจก (ทุกใบที่ไม่ใช่ .face-native — ดู battle-facing.js) ขอบซ้าย/ขวาของส่วนมีตัวสลับข้างกัน
     const crewBoxes = rest.slice(0, crewImgs.length).map((box, i) => crewImgs[i].classList.contains('face-native') ? box : mirrorBox(box));
-    const helperBox = rest[crewImgs.length];
+    const helperBox = rest[crewImgs.length];   // (rest.at(-1) = the measured enemy pictures)
     const hd = drawnRect(hero), sr = stage.getBoundingClientRect();
     // ภาพท่าของยมบาทน้อยกำลังโหลด (กล่องยุบเป็น 0×0) → ยังวัดไม่ได้ อย่าตั้งขนาดยมทูตเป็นศูนย์ รอบหน้าลองใหม่
     if (!(hd.w > 4 && hd.h > 4)) {
@@ -182,11 +212,6 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       const heroBox = hero.classList.contains('face-native') ? hb : mirrorBox(hb);
       const images = [...crewImgs,hero], actorBoxes = [...crewBoxes,heroBox];
       const plan = planBattleFormation(images.length, sr.width, sr.height);
-      // L2: the actor on turn steps out until its visible bounds touch no teammate and no enemy (measured, not a fixed offset)
-      const foeBounds = (await Promise.all([...stage.querySelectorAll('.fig.foe img:not(.fx)')].map(im => battleSpriteRect(im)
-        .then(r => ({ l:r.l - sr.left, r:r.r - sr.left, t:r.t - sr.top, b:r.b - sr.top })).catch(() => null))))
-        .filter(r => r && r.r - r.l > 4 && r.b - r.t > 4);
-      if (!stage.isConnected || stage._fitSeq !== seq) return false;
       const squadProps = {position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
         'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'};
       if(squad) put(squad,squadProps);
@@ -195,6 +220,16 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       const reference=hero._sizeReference.height*sr.height/hero._sizeReference.stageHeight;
       const fitted=fitAllySizes(reference, images.map((image,i)=>({key:image===hero?'yama':image.closest('[data-crew-pick]').dataset.crewPick,box:actorBoxes[i],aspect:image===hero?refImg.naturalWidth/refImg.naturalHeight:image.naturalWidth/image.naturalHeight})),plan,sr);
       allyUnitHeight=fitted.at(-1).h*actorBoxes.at(-1).h/(characterScale('yama')*plan.at(-1).scale);
+      // FB3-BT2: the enemies are sized from the team's adult height (Kan / Dam / Plerng) = what a teammate with CHARACTER_SCALE 1 shows after this fit
+      const crewSlots = plan.filter((_,i) => images[i] !== hero).map(sl => sl.scale);
+      const adultVis = allyUnitHeight * (crewSlots.length ? Math.min(...crewSlots) : plan.at(-1).scale);
+      applyFoeSizes(stage, adultVis, sr, foeMeasured);
+      lastLayout.foeUnit = adultVis;
+      // L2: the actor on turn steps out until its visible bounds touch no teammate and no enemy (measured, not a fixed offset)
+      const foeBounds = (await Promise.all([...stage.querySelectorAll('.fig.foe img:not(.fx)')].map(im => battleSpriteRect(im)
+        .then(r => ({ l:r.l - sr.left, r:r.r - sr.left, t:r.t - sr.top, b:r.b - sr.top })).catch(() => null))))
+        .filter(r => r && r.r - r.l > 4 && r.b - r.t > 4);
+      if (!stage.isConnected || stage._fitSeq !== seq) return false;
       const sizes = images.map((image,i) => {
         const box=actorBoxes[i], slot=plan[i];
         const {h,w}=fitted[i];
