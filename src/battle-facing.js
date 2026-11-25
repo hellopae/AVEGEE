@@ -40,6 +40,15 @@ export const FOE_DRAWN_FACING_RIGHT = new Set([
   'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',
 ]);
 
+/** FB3-EV6/EV13 หน้าสอบสวน: วิญญาณยืนฝั่งขวา ต้องหันซ้ายเข้าหายมบาทน้อย
+ *  · วิญญาณ spirit-<ชนิด>-<โซน> ใช้ภาพวาดเดียวกับในศึก → ใช้ทะเบียนศัตรู (FOE_DRAWN_FACING_RIGHT) ชุดเดียวกัน
+ *  · วิญญาณประจำเนื้อเรื่อง soul-* ไม่เคยขึ้นเป็นศัตรู จึงขึ้นทะเบียนที่นี่ — ตัดสินจากภาพจริงทีละไฟล์ (แผ่น Output/Review/2026-11-26-fb3-t3/facing-trial-*.jpg)
+ *  วาดใหม่ให้หันทิศอื่น (เช่น Codex C2 วาดนางวันทองเป็นวิญญาณทับชื่อเดิม) → ลบบรรทัดนั้น */
+export const TRIAL_SOUL_DRAWN_FACING_RIGHT = new Set([
+  'soul-wanthong-th', 'soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west',
+  'soul-witch-bread-west', 'soul-younger-brother-west', 'soul-aiscam-cyber',
+]);
+
 /** FB3-EV13: แผ่นท่าต่อสู้ของบอส (img/boss-combat-v1) ที่ "ท่ายืน (idle)" วาดหันขวา แต่ท่าตี/โดนตีของแผ่นเดียวกันหันซ้าย — วาดกลับด้านตอนแสดงเฉพาะท่ายืน
  *  (กุญแจ = คีย์ในไฟล์ combat-animation-v1/manifest.json) · วาดท่ายืนใหม่ให้หันซ้ายเมื่อไร ลบบรรทัดนี้ */
 export const ATLAS_IDLE_DRAWN_FACING_RIGHT = new Set(['boss:cyberhell:boss-frontier']);
@@ -61,6 +70,10 @@ export const soulPoseBaseKey = src => {
   const m = /\/soul-poses\/([a-z-]+?)-(th|asia|west|cyberhell)-(?:scared|cry|caught-lie|necessity)-v\d+\.[a-z0-9]+$/i.exec(String(src || '').split('?')[0]);
   return m ? `spirit-${m[1]}-${m[2]}` : '';
 };
+
+/** หน้าสอบสวน: วิญญาณต้องพลิกกระจกไหม (หันซ้ายเข้าหายมบาทน้อย) */
+export const trialSoulNeedsMirror = src => TRIAL_SOUL_DRAWN_FACING_RIGHT.has(spriteKey(src)) || foeNeedsMirror(src);
+export const trialSoulFaceClass = src => trialSoulNeedsMirror(src) ? 'face-flip' : '';
 
 /** class ที่ใส่ให้ <img> — CSS: .face-native = ไม่พลิก (ฝั่งเรา) · .face-flip = พลิก (ศัตรู) */
 export const teamFaceClass = src => teamNeedsMirror(src) ? '' : 'face-native';

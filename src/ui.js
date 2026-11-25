@@ -86,7 +86,7 @@ setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let 
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
-import { teamFaceClass, foeFaceClass, foeAtlasFace, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
+import { teamFaceClass, foeFaceClass, trialSoulFaceClass, foeAtlasFace, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, guardName, guardTitle, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -3129,7 +3129,7 @@ function openTrial(initialError = '') {
         <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
-        <div class="fig foe${foePose ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+        <div class="fig foe${foePose ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" class="${trialSoulFaceClass(foeSrc)}" alt=""
                onerror="this.onerror=null;this.src='img/spirit7.webp'">
           ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
           <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div>

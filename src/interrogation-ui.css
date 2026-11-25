@@ -102,3 +102,7 @@
 /* S1: emotion belongs to the replacement drawing; suppress the old overlays and shake. */
 .fig.foe.has-soul-pose .soul-fear,.fig.foe.has-soul-pose .soul-relief{display:none!important}
 .fig.foe.has-soul-pose>img{animation:none!important;transform:none!important}
+
+/* FB3-EV6/EV13: the suspect stands on the right and must face Yama (left). A picture drawn facing right is mirrored when shown (battle-facing.js trialSoulFaceClass);
+   `scale` is its own property, so it stacks with the fear / tilt animations that use `transform`. */
+.trial-comment8 .hud-stage .fig.foe>img.face-flip{scale:-1 1}
