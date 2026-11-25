@@ -64,6 +64,7 @@ export function soulPortrait(soul, zone = 'th') {
   if (Z3_SOUL_SPRITE[soul?.case] || Z3_KIN_SPRITE[soul?.case]) return Z3_SOUL_SPRITE[soul.case] || Z3_KIN_SPRITE[soul.case];   // T7b/3: Zone 3's fairy-tale souls (img/z3-events)
   if (Z4C_SOUL_SPRITE[soul?.case]) return Z4C_SOUL_SPRITE[soul.case];   // T8b: the souls of Zone 4's story cases (img/z4-events)
   if (soul?.case === 'wanthong') return 'soul-wanthong-th';   // T5'/1: Lady Wanthong's own drawing (img/z1-events)
+  if (soul?.case === 'nurse') return 'soul-nurse';   // FB3-EV16: Nira's old desk-mate has her own drawing (img/soul-nurse.webp) everywhere - never the woman-th archetype
   if (soul?.case === 'sitaledger') return 'soul-sita-th';   // Z1-EVENTS: her own drawing (img/z1-events), never an archetype
   // All four branches resolve the semantic key through their own art aliases.
   // Keeping old numeric or soul-* keys would reintroduce the original mismatch

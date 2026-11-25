@@ -106,6 +106,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;
   if (key === 'worker-rice') return 'img/food-art/worker-rice.webp';
   if (key === 'crew-dam-cook' || key === 'crew-plerng-cook') return `img/food-art/cook-${key.split('-')[1]}.webp`;
+  if (key === 'soul-nurse') return 'img/soul-nurse.webp'; // FB3-EV16: the ER nurse (case 5) has her own drawing; the zone alias would turn it into the woman archetype
   if (key === 'soul-deva') return 'img/soul-deva.webp'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
   // Z1-EVENTS (case 12): Sita / Hanuman art lives in its own folder under its own names - a new drawing overwrites the file, no code change
   if (/^(soul-sita-th|boss-hanuman-th|soul-wanthong-th|boss-khunphaen-th)(-profile)?$/.test(key)) return `img/z1-events/${key}.webp`;
