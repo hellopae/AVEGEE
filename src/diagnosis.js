@@ -7,6 +7,7 @@
 import { SINS, STATIONS, INTENSITY_NAME, CREW, REMORSE, crewName } from './data.js';
 import { gateKarma } from './h4-location-ui.js';
 import { remorseOf } from './remorse.js';
+import { meritNotCountedShown } from './merit-count.js';
 
 export const DIAG_ROOMS = Object.freeze({ tarang: 'prison', sawan: 'gate' });
 
@@ -44,7 +45,7 @@ export function diagnosisModel(g, subject) {
   }));
   const meritsAll = Array.isArray(soul.merits) ? soul.merits : [];
   const meritsShown = closed ? meritsAll : meritsAll.filter(m => (!m.fake || m.exposed) && !m.hiddenMerit);
-  const merits = meritsShown.map(m => ({ t: m.t, v: m.v, fake: !!m.fake, exposed: !!m.exposed }));
+  const merits = meritsShown.map(m => ({ t: m.t, v: m.v, fake: !!m.fake, exposed: !!m.exposed, notCounted: meritNotCountedShown(m, closed) }));   // FB3-EV9/MN2: "(ไม่นับ)" once found out
 
   const lastSaid = [...(soul.said || [])].reverse().find(x => x && (closed ? ['confess', 'truth'].includes(x.kind) : x.kind));
   const said = lastSaid?.text || '';

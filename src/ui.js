@@ -84,6 +84,7 @@ import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContac
 import { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';
 setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
+import { meritNotCountedShown, meritsOnDossier } from './merit-count.js';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
 import { teamFaceClass, foeFaceClass, trialSoulFaceClass, foeAtlasFace, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
@@ -655,12 +656,14 @@ function deedLine(d) {
 /** สิ่งที่นิราอ่านได้ก่อนสอบสวน: ภาพลักษณ์ + บุญที่อ้างเท่านั้น
  *  ไม่ติดป้ายว่าบุญไหนจริง/ปลอม เพราะนั่นคือคำตอบของคดี */
 function publicMeritLine(m, cls = 'deed') {
-  return `<div class="${cls}" style="color:var(--success)">🪷 ${esc(m.t)}`
-    + (m.note ? ` <i style="color:var(--warning)">— ${esc(m.note)}</i>` : '') + '</div>';
+  const notCounted = meritNotCountedShown(m);   // FB3-EV9/MN2: a merit found to be made up keeps its line and gets "(ไม่นับ)" - never before it is found out
+  return `<div class="${cls}${notCounted ? ' merit-not-counted' : ''}" style="color:${notCounted ? 'var(--muted-foreground)' : 'var(--success)'}">🪷 ${esc(m.t)}`
+    + (m.note ? ` <i style="color:var(--warning)">— ${esc(m.note)}</i>` : '')
+    + (notCounted ? ` <b class="merit-count-mark">${esc(t('merit.notCounted'))}</b>` : '') + '</div>';
 }
 function publicDossier(s, cls = 'deed') {
   const faceLine = s.face ? `<div class="${cls}" style="color:var(--accent-foreground)">${esc(s.face)}</div>` : '';
-  const merits = s.merits.filter(m => !m.exposed).map(m => publicMeritLine(m, cls)).join('');
+  const merits = meritsOnDossier(s).map(m => publicMeritLine(m, cls)).join('');
   const found = s.deeds.filter(d => d.known && d.visible !== false)
     .map(d => `<div class="${cls}">${deedLine(d)}</div>`).join('');
   return faceLine + merits + found;
@@ -686,7 +689,7 @@ function drawTab() {
       <div class="soul" data-soul="${s.id}">
         <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ ยังไม่สำนึก · กลับเข้าคิวก่อนเกิดใหม่</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.case ? publicDossier(s) : s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
-        ${s.case ? '' : s.merits.filter(m => !m.exposed).map(m => publicMeritLine(m)).join('')}
+        ${s.case ? '' : meritsOnDossier(s).map(m => publicMeritLine(m)).join('')}
       </div>`).join('');
     // คนที่ถูกขังอยู่ — ไม่นับในคิว ไม่กัดระเบียบ แต่กินค่าข้าวทุกวาระ เบิกตัวขึ้นแท่นได้ตลอด
     if (g.held.length) {
@@ -847,7 +850,7 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     || '<div class="row-truth">สำนวนว่างเปล่า</div>';
   const shownMerits = closed ? soul.merits : soul.merits.filter(m => !m.fake || m.exposed);
   const merit = shownMerits.map(m =>
-    `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:var(--success)">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
+    `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:var(--success)">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}${meritNotCountedShown(m, closed) ? ` <b class="merit-count-mark">${esc(t('merit.notCounted'))}</b>` : ''}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
 
@@ -2980,7 +2983,7 @@ function openTrial(initialError = '') {
     const scrollAt = dlg.querySelector('.hud')?.scrollTop || 0;
     const dossierScroll = dlg.querySelector('.hud-right')?.scrollTop || 0;
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
-    const claimed = s.merits.filter(m => !m.exposed);
+    const claimed = meritsOnDossier(s);
     const dests   = g.trialDestinations();       // 29C: ไม่รวมหอทะเบียนกรรม (ส่งไปแล้วไม่มีอะไรเกิด)
     const idle    = g.freeCrew();
     const answer  = g.trialAnswer(s);

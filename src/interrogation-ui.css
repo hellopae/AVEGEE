@@ -106,3 +106,6 @@
 /* FB3-EV6/EV13: the suspect stands on the right and must face Yama (left). A picture drawn facing right is mirrored when shown (battle-facing.js trialSoulFaceClass);
    `scale` is its own property, so it stacks with the fear / tilt animations that use `transform`. */
 .trial-comment8 .hud-stage .fig.foe>img.face-flip{scale:-1 1}
+
+/* FB3-EV9/MN2: "(ไม่นับ)" after a claimed merit that was found not to count (src/merit-count.js) */
+.merit-count-mark{font-style:normal;font-weight:700;color:var(--warning)}

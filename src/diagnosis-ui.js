@@ -31,7 +31,7 @@ function deedsHtml(m) {
 }
 function meritsHtml(m) {
   if (!m.merits.length) return `<p class="diag-empty">${esc(t('diag.noMerits'))}</p>`;
-  return m.merits.map(x => `<div class="diag-merit ${x.fake ? 'fake' : ''}"><span aria-hidden="true">🪷</span><span class="diag-merit-t">${esc(x.t)}${x.fake ? `<small>${esc(t('diag.merit.fake'))}</small>` : ''}</span><b>${x.fake ? '' : '−' + esc(x.v)}</b></div>`).join('');
+  return m.merits.map(x => `<div class="diag-merit ${x.fake ? 'fake' : ''}"><span aria-hidden="true">🪷</span><span class="diag-merit-t">${esc(x.t)}${x.fake ? `<small>${esc(t('diag.merit.fake'))}</small>` : ''}${x.notCounted ? `<small class="merit-count-mark">${esc(t('merit.notCounted'))}</small>` : ''}</span><b>${x.fake ? '' : '−' + esc(x.v)}</b></div>`).join('');
 }
 function orderHtml(m) {
   const o = m.order;

@@ -451,6 +451,7 @@ const TH = {
   'trial.readAloud': 'สำนวนที่นิราอ่านให้ฟัง',
   'trial.chooseIssue': 'เลือกประเด็นที่จะสอบสวน',
   'trial.saveRecord': 'บันทึกการสอบสวน',
+  'merit.notCounted': '(ไม่นับ)',
   'trial.revealedWhere': 'เฉลยที่ไหน',
   'trial.revealedForce': 'เฉลยความแรง',
   'trial.revealedCrew': 'ยมทูตที่เหมาะ',
@@ -983,6 +984,7 @@ const EN = {
   'trial.readAloud': "Nira's case brief",
   'trial.chooseIssue': 'Choose the issue to investigate',
   'trial.saveRecord': 'Save investigation record',
+  'merit.notCounted': '(not counted)',
 
   'battle.bossOfZone': 'Zone Boss:',
   'battle.pause': 'Pause',
