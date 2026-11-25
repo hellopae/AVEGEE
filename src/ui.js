@@ -86,7 +86,7 @@ setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let 
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
-import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
+import { teamFaceClass, foeFaceClass, foeAtlasFace, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, guardName, guardTitle, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -4437,7 +4437,7 @@ function openBattle(after) {
   // The camera never changes game rules or timers: it only reacts to the same phase changes the fight already has.
   // Codex's drawn combat animations (img/combat-animation-v1): read-only — only used to time the camera impact to the attack's contact frame.
   let animSprites = null;
-  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9-ko-b').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
+  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9-ko-c-fb3t2').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
   const strikeOf = key => { const rec = animSprites && key && (animSprites[`${key}:attack`] || animSprites[key]); return strikeTime(rec?.modes?.attack?.durations); };
   const impactLead = key => { const t = strikeOf(key); return t == null ? undefined : Math.max(150, t - (Date.now() - phaseAt)); };
   const actorKeyOf = a => !a ? 'you' : a.id === 'you' ? 'you' : crewBattleKey(a);
@@ -4994,7 +4994,7 @@ function openBattle(after) {
         const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone,root.classList.contains('signal-controlled'));
         if(!key)continue;
         const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!dash||dash.posed)&&(!attacker||id===attacker)?'attack':'idle';
-        entries.push({root,key,mode,face:key.startsWith('crew:')?-1:1,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
+        entries.push({root,key,mode,face:foeAtlasFace(key,mode),startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
       // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)

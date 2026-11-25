@@ -30,7 +30,21 @@ export const FOE_DRAWN_FACING_RIGHT = new Set([
   'spirit-clerk-asia', 'spirit-elder-woman-asia', 'spirit-boy-asia',
   'spirit-clerk-west', 'spirit-elder-woman-west',
   'spirit-clerk-cyberhell', 'spirit-girl-cyberhell', 'spirit-elder-woman-cyberhell',
+  // FB3-EV2/EV12/EV13 (คุณเป้ 26 พ.ย. "หนุมานหันซ้าย · ขุนแผนหันซ้าย · มีตัวละครหลายตัวหันผิดทาง"): ไล่ดูทุกรูปที่ขึ้นเป็นศัตรูในศึก (แผ่นก่อน/หลัง Output/Review/2026-11-26-fb3-t2/facing-*.jpg)
+  // ตัดสินจากภาพจริงทีละไฟล์ — ตัวที่วาดหันขวา (หน้า/จะงอยปาก/ท่าทางชี้ขวา) ขึ้นทะเบียนที่นี่ · ตัวที่หันตรงหรือหันซ้ายอยู่แล้วไม่ขึ้นทะเบียน
+  'boss-hanuman-th', 'boss-khunphaen-th', 'boss-ryujin-asia', 'boss-tester-asia', 'boss-frontier-cyberhell', 'boss-loki-west',
+  'mob-kasha-asia', 'mob-worm-cyberhell',
+  'col-s1', 'col-s3', 'col-s6', 'col-s7', 'col-s8', 'col-s9',
+  'spirit-business-th', 'spirit-business-asia',
+  // ยมทูตที่ถูกสะกดจิตมายืนฝั่งศัตรู: ภาพโซน 3 (และยักษ์โซน 1) วาดหันขวามาแต่ต้น (ดู TEAM_DRAWN_FACING_RIGHT) → ฝั่งศัตรูต้องพลิก
+  'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',
 ]);
+
+/** FB3-EV13: แผ่นท่าต่อสู้ของบอส (img/boss-combat-v1) ที่ "ท่ายืน (idle)" วาดหันขวา แต่ท่าตี/โดนตีของแผ่นเดียวกันหันซ้าย — วาดกลับด้านตอนแสดงเฉพาะท่ายืน
+ *  (กุญแจ = คีย์ในไฟล์ combat-animation-v1/manifest.json) · วาดท่ายืนใหม่ให้หันซ้ายเมื่อไร ลบบรรทัดนี้ */
+export const ATLAS_IDLE_DRAWN_FACING_RIGHT = new Set(['boss:cyberhell:boss-frontier']);
+/** ศัตรูที่เล่นท่าจากแผ่นท่า: face = -1 พลิกกระจก (ยมทูตที่ถูกสะกดจิตวาดหันขวา · ท่ายืนที่วาดหันขวา) · 1 = ตามที่วาด (ศัตรูวาดหันซ้ายมา) */
+export const foeAtlasFace = (key, mode) => String(key).startsWith('crew:') || (mode === 'idle' && ATLAS_IDLE_DRAWN_FACING_RIGHT.has(key)) ? -1 : 1;
 
 /** ชื่อฐานของไฟล์ภาพ: ตัด path, query, นามสกุล และ -v2 */
 export function spriteKey(src) {
