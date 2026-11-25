@@ -138,9 +138,12 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   // RETURN-GUARDS (21 Nov, codex/summon-command-icon-20261121): the Guard duel at each seized city's gate on the walk back (RETURN_GUARD_EVENTS - NEW encounters, not among the 32,000
   // measured trials, no balance run yet), Sword Grove practice (kind 'practice', a copy of the team that is thrown away), English boss names / arrival lines; no existing damage / HP / cooldown number changed. Reversible snippets, same method.
   const returnOnly=JSON.parse(readFileSync(new URL('./fixtures/return-guards-1121-runtime-changes.json',import.meta.url)));
+  // FB3-T1 (26 Nov): the Flee command is gone from every fight (game.js) and the team move ประสานพิพากษา hits harder, with a 60% boss cap (combat-skills.js) - the owner asked for it ("ยมทูตแต่ละคนโจมตีเบาจัง").
+  // A deliberate combat change, so reversible snippets (scripts/build-fb3-t1-hash-fixture.py); the 32,000-trial evidence is not relabelled - the balance run for the new numbers is T11.
+  const fb3Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t1-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);
@@ -153,6 +156,8 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const fresh=Array.from({length:200},(_,i)=>simulate({...scenario,seed:30000+i}));
   const again=Array.from({length:20},(_,i)=>simulate({...scenario,seed:30000+i}));
   const row=after.rows.find(r=>id(r)===id(scenario));
-  assert.ok(Math.abs(fresh.filter(r=>r.result==='win').length-row.wins)<=30,`wins ${fresh.filter(r=>r.result==='win').length} vs historical ${row.wins}`);
+  // FB3-T1 (26 Nov): ประสานพิพากษา hits harder on purpose, so a fight that used it can only be won MORE often than in the 32,000 trials; the lower bound stays (a fixture or a rule that made it
+  // harder would still be caught), the upper bound is lifted until the new balance run (T11).
+  assert.ok(fresh.filter(r=>r.result==='win').length>=row.wins-30,`wins ${fresh.filter(r=>r.result==='win').length} vs historical ${row.wins}`);
   assert.deepEqual(again.map(r=>r.result),fresh.slice(0,20).map(r=>r.result));
 });

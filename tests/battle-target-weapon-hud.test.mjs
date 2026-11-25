@@ -11,7 +11,7 @@ const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const block=ui.slice(ui.indexOf('    const pending = b.command;'),ui.indexOf("    const selection = '';",ui.indexOf('    const pending = b.command;')));
 const active=(command,{k='you',phase=null,over=false}={})=>vm.runInNewContext(block+'\n({choosingTarget,needsReceiver});',{b:{command,over},actor:{k},isYama:k==='you',special:k==='guard'?'guard':`crew:${k}`,unlockedSkill:skillForActor({k}),phase,ITEMS});
 test('remembered enemy stays unmarked at rest; attacks and AOE ask for confirmation, heals and cancellation do not mark foes',()=>{
- for(const command of [null,'defend','flee','rage','cooldownClock','food','health'])assert.equal(active(command).choosingTarget,false,command);
+ for(const command of [null,'defend','rage','cooldownClock','food','health'])assert.equal(active(command).choosingTarget,false,command);
  for(const command of ['atk','fire','ice','hypno','strike','crew:taan','guard'])assert.equal(active(command).choosingTarget,true,command);
  for(const k of ['boon','nira']){assert.equal(active(`crew:${k}`,{k}).choosingTarget,false);assert.equal(active(`crew:${k}`,{k}).needsReceiver,true);}
  for(const k of ['boon','nira']){const skill=skillForActor({k});assert.equal(active(skill,{k}).choosingTarget,false);assert.equal(active(skill,{k}).needsReceiver,true);}

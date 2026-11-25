@@ -19,3 +19,31 @@ test('BT8b: teamJudgment shows only its opening card - no second slash cutscene 
   assert.doesNotMatch(ui, /hit\.actorId === 'you' && !reduced\) await playSkillScene\(action,scenes\.slice\(1\)/);
   assert.match(ui, /action === 'teamJudgment' \? scenes\.slice\(0,1\) : scenes/, 'the opening card stays');
 });
+
+// ---- EV14 power ----
+import { teamCombo, applyCombo, COMBO_CREW_MULT, COMBO_BOSS_CAP } from '../src/combat-skills.js';
+import { createGame } from '../src/game.js';
+import { effectiveAllyStats } from '../src/progression.js';
+const mk = (zone, level, crew) => { const g = createGame(); g.save = () => true; g.onChange = () => {}; g.coin = 99999; g.zone = zone; g.level = level; g.abilities.teamJudgment = true; for (const k of crew) g.hire(k); g.party.members = crew.slice(); return g; };
+test('EV14 power: every ally hits for at least 2x their own normal move; Yama's closing blow is at least 120', () => {
+  for (const [zone, level] of [['th', 3], ['asia', 5], ['west', 7], ['cyberhell', 9]]) {
+    const g = mk(zone, level, ['taan', 'dam']); g.startBattle({ id:99, who:'test', deserved:4, resist:true }); g.prepareEncounter?.();
+    const hits = teamCombo(g);
+    for (const a of g.battleActors().filter(a => a.id !== 'you')) {
+      const normal = effectiveAllyStats(a, g.zone, g.training).dmg, hit = hits.find(h => h.actorId === a.id).damage;
+      assert.ok(hit >= COMBO_CREW_MULT * normal, `${zone} ${a.k}: ${hit} vs normal ${normal}`);
+    }
+    const yama = hits.find(h => h.actorId === 'you').damage;
+    assert.ok(yama >= 120);
+  }
+});
+test('EV14 power: a combo never takes more than 60% of a boss\'s full HP, however strong the team (the rest falls on its attendants)', () => {
+  const b = { selectedFoeId:'boss', foes:[{ id:'boss', boss:true, hp:400, maxHp:400 }, { id:'m1', hp:40, maxHp:40 }, { id:'m2', hp:40, maxHp:40 }] };
+  const res = applyCombo(b, [{ damage:200 }, { damage:200 }, { damage:200 }, { damage:200 }]);
+  assert.equal(b.foes[0].hp, 400 - Math.floor(400 * COMBO_BOSS_CAP), 'boss keeps 40%');
+  assert.ok(b.foes[0].hp > 0);
+  assert.equal(res.reduce((n, h) => n + h.dealt, 0), 240 + 40 + 40, 'overflow went to the attendants, none wasted on the capped boss');
+  // an ordinary foe has no cap; a boss already below the cap can still be finished
+  const c = { selectedFoeId:'a', foes:[{ id:'a', hp:150, maxHp:150 }] }; applyCombo(c, [{ damage:999 }]); assert.equal(c.foes[0].hp, 0);
+  const d = { selectedFoeId:'a', foes:[{ id:'a', boss:true, hp:100, maxHp:400 }] }; applyCombo(d, [{ damage:999 }]); assert.equal(d.foes[0].hp, 0);
+});

@@ -1,0 +1,46 @@
+{
+ "game": [
+  {
+   "before": "export const DEFEND_DAMAGE_RATIO = 0.5;\n/** L2: battle kinds the team may run away from (everything else is a boss / story / event fight). One list, used by battleAct and the UI. */\nexport const FLEEABLE_KINDS = ['soul', 'mob', 'frontier', 'questFight'];\n\n",
+   "after": "export const DEFEND_DAMAGE_RATIO = 0.5;\n\n"
+  },
+  {
+   "before": "  },\n  /** L2: why the team cannot flee this fight — '' (can) | 'noBoss' | 'noEvent'. Single source for the Flee button, battleAct and any caller that wants to offer a flee. */\n  fleeWhy(kind = this.battle?.kind) {\n    if (FLEEABLE_KINDS.includes(kind)) return '';\n    return ['zoneBoss', 'yama', 'dad'].includes(kind) ? 'noBoss' : 'noEvent';\n  },\n  /** L2: the one function that actually flees the current battle (no reward). Returns false when fleeing is not allowed right now.\n   *  ui.js openBattle() calls it from the confirmed Flee window; ending the battle screen is endBattle()/finish() as for any other result. */\n  fleeBattle() {\n    const b = this.battle;\n    if (!b || b.over || this.fleeWhy(b.kind)) return false;\n    if (!this.confirmBattleCommand('flee', 'you')) return false;\n    this.finishBattleCommand();\n    return true;\n  },\n  cancelBattleCommand() {\n",
+   "after": "  },\n  cancelBattleCommand() {\n"
+  },
+  {
+   "before": "    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && !isSummon && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;\n",
+   "after": "    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && !isSummon && what !== 'cooldownClock' && what !== 'defend' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;\n"
+  },
+  {
+   "before": "    if (what === 'flee' && this.fleeWhy(B.kind)) return false;\n",
+   "after": "    if (what === 'flee') return false;   // FB3-BT1: no flee command exists any more\n"
+  },
+  {
+   "before": "    if(!enemyOnly) {\n    if(what==='flee') {B.over='flee';B.talk='ทีมถอนตัวกลับไปตั้งหลัก';this.onChange();return true;}\n    if (what === 'teamJudgment') {\n",
+   "after": "    if(!enemyOnly) {\n    if (what === 'teamJudgment') {\n"
+  }
+ ],
+ "combat-skills": [
+  {
+   "before": "",
+   "after": "/** FB3-EV14 (owner 26 Nov 2026: \"ยมทูตแต่ละคนโจมตีเบาจัง ทั้งๆที่เป็นท่าไม้ตาย\"): every ally's hit is now COMBO_CREW_MULT x that ally's own normal-move damage\n *  (was a flat 8 x zone/training scale - about a quarter of a normal blow), Yama's closing blow is COMBO_YAMA_BASE + COMBO_YAMA_PER_LEVEL per level above 1\n *  (was 60 + 4). A boss never loses more than COMBO_BOSS_CAP of its full HP to one combo (so it can open a boss but not end one on its own). */\nexport const COMBO_CREW_MULT = 2, COMBO_YAMA_BASE = 120, COMBO_YAMA_PER_LEVEL = 8, COMBO_BOSS_CAP = .6, COMBO_NO_STRIKE_BASE = 30;\n"
+  },
+  {
+   "before": "    .map(a => ({ actorId:a.id, kind:a.k, homeZone:a.homeZone, damage:Math.round(8 * skillScale(game, a)) })),\n    { actorId:'you', kind:'yama', damage:60 + 4 * (game.level - 1) }];\n",
+   "after": "    .map(a => { const own = effectiveAllyStats(a, game.zone, game.training).dmg ?? Math.round(COMBO_NO_STRIKE_BASE * skillScale(game, a));   // Kan / Boon have no blow of their own: a plain 30 at their scale\n      return { actorId:a.id, kind:a.k, homeZone:a.homeZone, damage:Math.round(COMBO_CREW_MULT * own) }; }),\n    { actorId:'you', kind:'yama', damage:COMBO_YAMA_BASE + COMBO_YAMA_PER_LEVEL * (game.level - 1) }];\n"
+  },
+  {
+   "before": "",
+   "after": "  const taken = new Map();   // total this combo has taken from each foe (for the boss cap)\n"
+  },
+  {
+   "before": "    target = target?.hp > 0 ? target : battle.foes.find(f => f.hp > 0);\n",
+   "after": "    const roomOf = f => f.boss ? Math.max(0, Math.floor(f.maxHp * COMBO_BOSS_CAP) - (taken.get(f.id) || 0)) : Infinity;\n    if (!(target?.hp > 0 && roomOf(target) > 0)) target = battle.foes.find(f => f.hp > 0 && roomOf(f) > 0) || battle.foes.find(f => f.hp > 0);   // a capped boss: the rest of the combo falls on its attendants\n"
+  },
+  {
+   "before": "    const dealt = Math.min(hit.damage, target.hp);\n",
+   "after": "    const room = roomOf(target);\n    const dealt = Math.min(hit.damage, target.hp, room);\n    taken.set(target.id, (taken.get(target.id) || 0) + dealt);\n"
+  }
+ ]
+}

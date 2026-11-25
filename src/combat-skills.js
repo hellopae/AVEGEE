@@ -93,17 +93,26 @@ export function attackBuff(battle, id, damage) {
   if (!state.attacks) state.buff = 0;
   return result;
 }
+/** FB3-EV14 (owner 26 Nov 2026: "ยมทูตแต่ละคนโจมตีเบาจัง ทั้งๆที่เป็นท่าไม้ตาย"): every ally's hit is now COMBO_CREW_MULT x that ally's own normal-move damage
+ *  (was a flat 8 x zone/training scale - about a quarter of a normal blow), Yama's closing blow is COMBO_YAMA_BASE + COMBO_YAMA_PER_LEVEL per level above 1
+ *  (was 60 + 4). A boss never loses more than COMBO_BOSS_CAP of its full HP to one combo (so it can open a boss but not end one on its own). */
+export const COMBO_CREW_MULT = 2, COMBO_YAMA_BASE = 120, COMBO_YAMA_PER_LEVEL = 8, COMBO_BOSS_CAP = .6, COMBO_NO_STRIKE_BASE = 30;
 export function teamCombo(game) {
   return [...game.battleActors().filter(a => a.id !== 'you' && !a.guestGuide)
-    .map(a => ({ actorId:a.id, kind:a.k, homeZone:a.homeZone, damage:Math.round(8 * skillScale(game, a)) })),
-    { actorId:'you', kind:'yama', damage:60 + 4 * (game.level - 1) }];
+    .map(a => { const own = effectiveAllyStats(a, game.zone, game.training).dmg ?? Math.round(COMBO_NO_STRIKE_BASE * skillScale(game, a));   // Kan / Boon have no blow of their own: a plain 30 at their scale
+      return { actorId:a.id, kind:a.k, homeZone:a.homeZone, damage:Math.round(COMBO_CREW_MULT * own) }; }),
+    { actorId:'you', kind:'yama', damage:COMBO_YAMA_BASE + COMBO_YAMA_PER_LEVEL * (game.level - 1) }];
 }
 export function applyCombo(battle, hits) {
   let target = battle.foes.find(f => f.id === battle.selectedFoeId && f.hp > 0);
+  const taken = new Map();   // total this combo has taken from each foe (for the boss cap)
   return hits.map(hit => {
-    target = target?.hp > 0 ? target : battle.foes.find(f => f.hp > 0);
+    const roomOf = f => f.boss ? Math.max(0, Math.floor(f.maxHp * COMBO_BOSS_CAP) - (taken.get(f.id) || 0)) : Infinity;
+    if (!(target?.hp > 0 && roomOf(target) > 0)) target = battle.foes.find(f => f.hp > 0 && roomOf(f) > 0) || battle.foes.find(f => f.hp > 0);   // a capped boss: the rest of the combo falls on its attendants
     if (!target) return { ...hit, foeId:null, dealt:0 };
-    const dealt = Math.min(hit.damage, target.hp);
+    const room = roomOf(target);
+    const dealt = Math.min(hit.damage, target.hp, room);
+    taken.set(target.id, (taken.get(target.id) || 0) + dealt);
     target.hp -= dealt;
     return { ...hit, foeId:target.id, dealt };
   });

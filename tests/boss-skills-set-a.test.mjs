@@ -86,7 +86,8 @@ test('summon names follow the language', () => {
 });
 test('sim sanity (30 seeds): the hardest-tuned early fights are still winnable, the zone boss is not a wall for a trained team, and the fights are long enough to see the moves', () => {
   const [deva] = measure('thDeva', { count:30, sizes:[3], modes:['locked'] }); assert.ok(deva.winPct >= 40 && deva.winPct <= 100, `thDeva ${deva.winPct}`); assert.ok(deva.skillUses >= .8, 'the deva uses its move');
-  const [boss] = measure('asiaBoss', { count:30, sizes:[3], modes:['unlocked'] }); assert.ok(boss.winPct >= 40 && boss.winPct <= 98, `asiaBoss trained ${boss.winPct}`); assert.ok(boss.rounds >= 4 && boss.rounds <= 9, `rounds ${boss.rounds}`);
+  const [boss] = measure('asiaBoss', { count:30, sizes:[3], modes:['unlocked'] }); assert.ok(boss.winPct >= 40 && boss.winPct <= 100, `asiaBoss trained ${boss.winPct}`);   // FB3-T1: upper bound 98 -> 100: ประสานพิพากษา hits ~2x harder on purpose (owner 26 Nov); the trained-team win rate reaches 100 until the balance run T11 re-fits the foes
+   assert.ok(boss.rounds >= 4 && boss.rounds <= 9, `rounds ${boss.rounds}`);
   const [sig] = measure('sigTh', { count:30, sizes:[2], modes:['locked'] }); assert.equal(sig.size,2); assert.ok(sig.winPct >= 35 && sig.winPct <= 95, `sigTh ${sig.winPct}`);
   for (const r of [deva, boss, sig]) assert.equal(r.errors, 0);
 });

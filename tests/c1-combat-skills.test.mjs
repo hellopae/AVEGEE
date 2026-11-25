@@ -140,10 +140,11 @@ for(const n of [3,5,7])test(`C1 combo snapshots ${n-1} actual teammates, charges
 test('C1 combo retargets deterministically without spill and omits fallen/absent/guest actors',()=>{
   const g=game('cyberhell',['taan','plerng','nira']);g.level=2;g.abilities.teamJudgment=true;battle(g);
   g.battle.absentActors=[g.crewOf('plerng').id];g.crewOf('nira').morale=0;
-  g.battle.foes[0].hp=1;g.battle.foes.push({...g.battle.foes[0],id:'second',hp:100,maxHp:100});
+  g.battle.foes[0].hp=1;g.battle.foes.push({...g.battle.foes[0],id:'second',hp:300,maxHp:300});
   command(g,'teamJudgment');assert.equal(g.battle.comboHits.length,2);
-  assert.deepEqual(g.battle.comboHits.map(h=>[h.foeId,h.dealt]),[[g.battle.foes[0].id,1],['second',64]]);
-  assert.equal(g.battle.foes[1].hp,36);
+  // FB3-T1: Yama's closing blow is COMBO_YAMA_BASE 120 + 8 per level above 1 (was 60 + 4): 128 at level 2
+  assert.deepEqual(g.battle.comboHits.map(h=>[h.foeId,h.dealt]),[[g.battle.foes[0].id,1],['second',128]]);
+  assert.equal(g.battle.foes[1].hp,172);
 });
 
 test('C1 total party cap grows 3/4/5/6/7 without creating actors or deleting excess saved selections',()=>{
@@ -202,7 +203,7 @@ test('C1 regional art uses explicit Thai fallbacks and all referenced scenes/ico
 
 for (const reduced of [false,true]) test(`C1 skip/duplicate animation completion applies once, reduced motion=${reduced} (actual UI executeSkill)`,async()=>{
   const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
-  const start=ui.indexOf('    const executeSkill = async'),end=ui.indexOf('    const executeCommand = async',start);
+  const start=ui.indexOf('    const playSkill = async'),end=ui.indexOf('    const executeCommand = async',start);   // FB3-EV14: playSkill + the executeSkill wrapper that always drops skillView
   const g=game('cyberhell',['taan','plerng']);g.abilities.teamJudgment=true;battle(g);actorTurn(g,'you');
   let finishes=0,hits=0;const realFinish=g.finishBattleCommand.bind(g);g.finishBattleCommand=()=>{finishes++;realFinish();};
   const context={g,COMBAT_SKILLS,skillScenes,SKILL_CAST_MS,allyImg:()=>null,dlg:{open:true},vitalsOf:()=>({}),commandMenuOpen:true,phase:null,phaseAt:0,skillView:null,fxNow:null,
