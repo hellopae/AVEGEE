@@ -20,18 +20,38 @@ function atSita() {
 }
 const allText = o => JSON.stringify(o);
 
-test('A1/A2: the hearing text is Rae\'s R1 A text - no "suspicious" headline or tag, charge = "บัญชีผิดปกติ", four short claims, one of them the only `deny`', () => {
+test('A1/A2 (+ FB3-EV1): the hearing text - the owner\'s Comment9 wording where he changed it, Rae\'s everywhere else; no "suspicious" headline, no tag, no merits on the card, four statements, one of them the only `deny`', () => {
   assert.equal(SITA.caseTitle, 'คดีที่ 12 · นางสีดา');
-  assert.equal(SITA.hearing.chargeTag, 'บัญชีผิดปกติ');
-  assert.equal(SITA.hearing.charge, 'แฟ้มสั่งให้รับโทษเก้าวาระ ไม่ระบุความผิด');
-  assert.equal(SITA.hearing.claims.length, 4);
+  assert.equal(SITA.hearing.chargeTag, undefined, 'FB3-EV1: no tag on the card');
+  assert.equal(SITA.hearing.charge, 'แฟ้มสั่งให้รับโทษ 9 วาระ ไม่ระบุความผิด');
+  assert.equal(SITA.hearing.niraNote, '(นิราอ่านแล้ว.. รู้สึกว่าบัญชีมีความไม่ปกติ)');
+  assert.equal(SITA.hearing.line, '"หม่อมฉันไม่ทราบว่า แฟ้มเขียนความผิดว่าอะไรไว้เจ้าค่ะ ทราบเพียงแค่ถูกเรียกมา"', 'the record starts with this');
+  assert.deepEqual(SITA.hearing.claims.map(c => c.t), [
+    'หม่อมฉันมาตามที่บัญชีเรียกเจ้าค่ะ ท่านจะตัดสินอย่างไร หม่อมฉันขอฟัง',
+    'หม่อมฉันไม่เคยทำสิ่งใด ที่ต้องรับโทษ 9 วาระเจ้าค่ะ',
+    'หม่อมฉันไม่ขอให้ท่านเมตตา เพราะหม่อมฉันเป็นใครเจ้าค่ะ ขอเพียงให้ตัดสินจากความจริง',
+    'ถ้าท่านจะถามสิ่งใดอีก หม่อมฉันยินดีตอบเจ้าค่ะ']);
   assert.deepEqual(SITA.hearing.claims.map(c => c.kind), ['solid', 'deny', 'solid', 'solid']);
   assert.equal(SITA.hearing.claims[1].reveal, 'นิราเทียบกับแฟ้มต้นฉบับ หมึกในช่องผู้กระทำเข้มกว่าบรรทัดอื่นของหน้าเดียวกัน');
-  assert.equal(SITA.hearing.merits.length, 3);
+  assert.equal(SITA.hearing.merits, undefined, 'FB3-EV1: the card shows no merits');
   assert.deepEqual(SITA.notices.arrive, { ...SITA.notices.arrive, title:'วิญญาณนามสูงมาถึงแล้ว', text:'วิญญาณนางสีดามาถึงคิวพิจารณา แฟ้มระบุให้รับโทษเก้าวาระ', button:'เริ่มไต่สวน' });
   assert.equal(NOTICES['sita-arrive'].en.title, 'A Revered Soul Has Arrived');
   for (const banned of ['ไม่ชอบมาพากล', 'ข้อมูลน่าสงสัย', 'ประทับตราแล้วตราไม่ติด', 'ไม่ได้มาเพื่อให้ใครเชื่อ'])
     assert.ok(!allText(SITA).includes(banned) && !allText(Z1_STORIES).includes(banned), `13 Nov wording "${banned}" is gone`);
+});
+
+test('FB3-EV1: she stands in the ordinary room - card = the charge line + Nira\'s remark (nothing else), statements in the owner\'s order, record = the old first claim, green name (no secret)', () => {
+  const s = atSita().queue[0];
+  assert.equal(s.storyHearing, true);
+  assert.equal(s.face, 'แฟ้มสั่งให้รับโทษ 9 วาระ ไม่ระบุความผิด'); assert.equal(s.faceNote, '(นิราอ่านแล้ว.. รู้สึกว่าบัญชีมีความไม่ปกติ)');
+  assert.deepEqual(s.merits, []); assert.deepEqual(s.deeds, []);
+  assert.deepEqual(s.lines.map(l => l.t), SITA.hearing.claims.map(c => c.t));
+  assert.deepEqual(s.said.map(x => x.text), [SITA.hearing.line]);
+  assert.equal(s.traitKey, 'accepting', 'green - a secret would have made her "concealing"');
+  assert.equal(s.presses, 2, 'the ordinary number of questions');
+  // pressing the `deny` line: only what Nira sees in the file - nobody is "caught", nothing is said about her being wrong
+  const g = atSita(); const sita = g.queue[0]; const out = g.press(sita, 1);
+  assert.deepEqual(out.map(x => x.kind), ['truth']); assert.equal(out[0].text, SITA.hearing.claims[1].reveal);
 });
 
 test('A3: Nira advises holding the case - only the hold verdict carries the "Nira advises" tag', () => {
@@ -89,6 +109,7 @@ test('the verdict changes nothing the player is scored on (Rae A4: the three pat
 test('the court still refuses to sentence / escort her through the normal desk (she is only ever heard)', () => {
   const g = atSita(); const sita = g.queue[0];
   assert.equal(g.assignBlock(sita.id, 'krata', 'taan')?.key, 'storyHearing');
+  assert.equal(g.assignBlock(sita.id, 'krata', 'taan', true)?.key, undefined, 'FB3-EV1: her own hearing (the ordinary room) asks the ordinary writ questions - and never assigns her');
   assert.equal(g.resolveSitaCase('suspend'), false, 'the 13 Nov verdict keys are gone');
 });
 

@@ -666,7 +666,7 @@ function publicDossier(s, cls = 'deed') {
   const merits = meritsOnDossier(s).map(m => publicMeritLine(m, cls)).join('');
   const found = s.deeds.filter(d => d.known && d.visible !== false)
     .map(d => `<div class="${cls}">${deedLine(d)}</div>`).join('');
-  return faceLine + merits + found;
+  return faceLine + (s.faceNote ? `<div class="${cls} face-note">${esc(s.faceNote)}</div>` : '') + merits + found;
 }
 
 /** รูปหน้าเล็กในรายชื่อ — ไม่มีไฟล์โปรไฟล์ก็ถอยไปเป็นอีโมจิตัวเดิม */
@@ -2953,7 +2953,6 @@ function openTrial(initialError = '') {
   if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s || !g.caseReady(s)) return;
-  if (s.storyHearing) { openSitaHearing(); return; }   // Z1-EVENTS (case 12): her own hearing - she is never sentenced
   if(needsFirstDestination(g)){
     const cauldron=STATIONS.find(d=>d.k==='krata'),building=g.stations.find(st=>st.def.k==='krata');
     modal(`<h2>เตรียมกระทะทองแดงก่อนสอบสวน</h2><p>เดินขึ้นไปที่จุดสร้างกระทะทองแดงด้านบน แล้วกดสร้าง เพื่อให้มีสถานที่ลงทัณฑ์รองรับคำตัดสินแรก${building?.build?' · ช่างกำลังก่อสร้าง รอจนเสร็จก่อนพิจารณาคดี':''}</p><button class="gold" data-walk-cauldron>เดินไปจุดสร้างกระทะทองแดง</button><button data-close>กลับแผนที่</button>`,d=>{
@@ -2994,7 +2993,7 @@ function openTrial(initialError = '') {
     if (pick.cr && !available.some(c => c.k === pick.cr)) pick.cr = null;
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
     const heaven = !!(stDef && stDef.heaven);
-    const blocked = pick.st && pick.cr ? g.assignBlock(s.id, pick.st, pick.cr) : null;
+    const blocked = pick.st && pick.cr ? g.assignBlock(s.id, pick.st, pick.cr, !!s.storyHearing) : null;   // FB3-EV1: Sita's hearing is this same room
     const ready  = !!(pick.st && pick.cr && (heaven || pick.inten) && !blocked);
     // ปุ่มออกหมายกด disabled แล้วเงียบ ไม่มีทางรู้ว่าขาดอะไร (ข้อ B คุณเป้ 24 ก.ย. 2569)
     // — ต้องมีข้อความบนจอเสมอ ไม่ใช่แค่ title ที่ disabled button ไม่โชว์บนจอสัมผัส
@@ -3018,8 +3017,8 @@ function openTrial(initialError = '') {
     const topActions =
       `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
        <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.webp" alt="">${esc(t('trial.guideBook'))}</button>
-       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.webp" alt="">${esc(t('trial.lockCase'))}</button>
-       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.webp" alt="">${esc(t('trial.skipCase'))}</button>`;
+       <button id="t-jail" ${!s.storyHearing && g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.webp" alt="">${esc(t('trial.lockCase'))}</button>
+       <button id="t-skip" ${s.storyHearing || g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.webp" alt="">${esc(t('trial.skipCase'))}${s.storyHearing && s.niraAdvised ? ` <span class="tag nira-tag">${esc(getLang() === 'en' ? SITA.hearing.nira.tagEn : SITA.hearing.nira.tag)}</span>` : ''}</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
     const powerImg = { roar:'img/icon-fang.webp', mirror:'img/item-mirror.webp', hypno:'img/fx-hypno.webp' };
@@ -3045,7 +3044,7 @@ function openTrial(initialError = '') {
         ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${noIssue ? esc(noIssue) : badge}</i></button>`;
     }).join('');
     const destinationChoices = (dests.length ? dests.map(x => {
-      const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
+      const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK, !!s.storyHearing)
         : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
       const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
       const revealed = x.def.k === answer?.station?.k;
@@ -3088,11 +3087,11 @@ function openTrial(initialError = '') {
       (pick.inten || heaven || answer?.intensity === 0) && `<span class="command-selected selected-force${answer?.intensity === 0 ? ' is-revealed' : ''}">${heaven || answer?.intensity === 0 ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${answer?.intensity === 0 ? esc(t('trial.noPunishment')) : heaven ? 'อัตโนมัติ' : INTENSITY[pick.inten]}</b></span>`
     ].filter(Boolean).join('');
     // สถานีที่ผู้คุมประจำส่งไม่ได้ตอนนี้ — บอกเหตุผลในบรรทัดสถานะ (จอแคบไม่มีที่พอสำหรับป้ายเล็กใต้ไอคอน)
-    const stationNotes = dests.filter(x => x.slots.length && g.stFree(x) > 0).map(x => [x, g.assignBlock(s.id, x.def.k, x.crewK)])
+    const stationNotes = dests.filter(x => x.slots.length && g.stFree(x) > 0).map(x => [x, g.assignBlock(s.id, x.def.k, x.crewK, !!s.storyHearing)])
       .filter(([, bk]) => bk).map(([x, bk]) => `${x.def.name}: ${blockText(bk)}`).join(' · ');
     const missing = trialError || blockText(blocked) || [missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', stationNotes].filter(Boolean).join(' · ');
     const courtGroups = [
-      {id:'power',label:'พลัง / Power',choices:powerChoices},
+      {id:'power',label:'พลัง / Power',choices:powerChoices,disabled:!!s.storyHearing},   // FB3-EV1: no mirror / roar / hypnosis on Sita
       {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
       {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
       {id:'force',label:'ระดับทัณฑ์ / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
@@ -3160,6 +3159,7 @@ function openTrial(initialError = '') {
           <div class="hud-card hud-rec">
             <h4>${esc(t('trial.readAloud'))}</h4>
             ${s.face ? `<div class="deed allegation">${esc(s.face)}</div>` : ''}
+            ${s.faceNote ? `<div class="deed face-note">${esc(s.faceNote)}</div>` : ''}
             ${claimed.map(m => publicMeritLine(m, 'deed merit')).join('')}
             ${known.map(d => `<div class="deed allegation">${deedLine(d)}</div>`).join('')}
             ${!s.face && !claimed.length && !known.length ? '<div class="deed">สำนวนว่างเปล่า</div>' : ''}
@@ -3178,7 +3178,7 @@ function openTrial(initialError = '') {
       </div>
 
       <div class="hud-bottom">
-        ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}${kinAssistHtml(s)}
+        ${s.storyHearing ? niraAdviceOrbHtml(s) : kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}${kinAssistHtml(s)}
         <div class="port you">
           <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
@@ -3226,6 +3226,9 @@ function openTrial(initialError = '') {
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
     bindKanClue(dlg,g,s,clue=>{kanClueResult=clue.text;sfx('crack');g.save();paint();refresh();});
+    dlg.querySelector('[data-nira-advice]')?.addEventListener('click', () => {   // FB3-EV1: Rae R1 A3 - Nira advises holding the case (the line joins the record, the hold button gets the "Nira advises" tag)
+      if (s.niraAdvised) return; s.niraAdvised = true; s.said.push({ kind:'hint', text:getLang() === 'en' ? SITA.hearing.nira.sayEn : SITA.hearing.nira.say }); sfx('crack'); g.save(); paint();
+    });
     dlg.querySelector('[data-kin-assist]')?.addEventListener('click',()=>{if(g.kinAssist(s)){sfx('crack');paint();refresh();}});   // Z2-EVENTS: the relative tells the truth himself
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
@@ -3260,7 +3263,7 @@ function openTrial(initialError = '') {
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
       if (!r) return;
-      if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
+      if (!hit || s.storyHearing) { paint(); refresh(); return; }   // a wrong press never moves the camera · FB3-EV1: nor does anything said to Sita (no fright, no close-in - she is no liar)
       // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
       fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS; powerPoseUntil = 0;
       activeSoulPose = revealed ? nextSoulPose : null;
@@ -3317,15 +3320,23 @@ function openTrial(initialError = '') {
     });
 
     const sk = dlg.querySelector('#t-skip');
-    if (sk) sk.onclick = () => { if (g.defer()) { sfx('deny'); dlg.close(); } };
+    if (sk) sk.onclick = () => {
+      if (s.storyHearing) { if (g.resolveSitaCase('hold')) { sfx('stamp'); showSitaVerdict('hold'); } return; }   // FB3-EV1: "พักคดีนี้" is her third verdict (hold the case for checking)
+      if (g.defer()) { sfx('deny'); dlg.close(); }
+    };
     const jl = dlg.querySelector('#t-jail');
     if (jl) jl.onclick = () => { if (g.jail(s.id)) { sfx('stamp'); dlg.close(); } };
 
     const go = dlg.querySelector('#t-go');
     if (go) go.onclick = () => {
       const st = pick.st, cr = pick.cr, inten = pick.inten;
-      const reason = g.assignBlock(s.id, st, cr);
+      const reason = g.assignBlock(s.id, st, cr, !!s.storyHearing);
       if (reason) { trialError = blockText(reason); paint(); return; }
+      if (s.storyHearing) {   // FB3-EV1: the writ is "pressed" in the ordinary room but never carried out - Sita's case closes (sentence = any station, free = the gate of heaven) and Hanuman comes down
+        const heavenGate = !!STATIONS.find(d => d.k === st)?.heaven, k = heavenGate ? 'free' : 'punish';
+        if (!g.resolveSitaCase(k, { station:STATIONS.find(d => d.k === st)?.name || st, crew:cr, level:inten })) { trialError = t('trial.failed'); paint(); return; }
+        sfx(heavenGate ? 'heaven' : 'stamp'); pick = { st:null, cr:null, inten:null }; showSitaVerdict(k); return;
+      }
       if (g.needBattle(s)) {                     // เปิดฉากใหม่ทับกล่องเดิมผ่าน openDlg รุ่นเดียว ลด race จาก close event
         if (!g.startBattle(s)) { trialError = t('trial.failed'); paint(); return; }
         openBattle(res => { if (res === 'win' && !doVerdict(s, st, cr, inten)) openTrial(blockText(g.assignBlock(s.id, st, cr)) || t('trial.failed')); else refresh(); });
@@ -3811,67 +3822,22 @@ function openStoryNotice(id) {
   onDlgClose(() => { if (g.notices.includes(id)) g.ackNotice(id); });
 }
 
-/** Z1-EVENTS case 12 — Sita's hearing (R1 A: Output/Rae/2026-11-16-avegee-r1.md). Her four claims are pressed one by one (the `deny` one shows what Nira sees), "ช่วยเปิดความจริง · นิรา" makes
- *  Nira advise putting the case on hold, and the verdict is ONE of three: sentence her (station / guard / level, then "ออกหมาย") · do not sentence her · hold the case.
- *  Whatever is chosen Hanuman comes down before anything is carried out - no path sentences, escorts or scores against her (see game.js resolveSitaCase). */
-function openSitaHearing() {
-  const h = SITA.hearing, asked = new Set(), en = () => getLang() === 'en';
-  let last = null, chosen = null, niraSaid = false, sentencing = false;
-  const pickSt = { st:null, crew:null, level:0 };
-  const soulId = String(g.queue[0]?.id ?? 0).padStart(3, '0');
-  pauseForDlg(); bgm('bgm-trial');
-  const choiceLabel = c => (en() && c.labelEn) || c.label;
-  const paint = () => {
-    const said = chosen ? chosen.lines.map(l => `<p>${esc(l)}</p>`).join('')
-      : niraSaid && last == null ? `<p>${esc(en() ? h.nira.sayEn : h.nira.say)}</p>`
-      : last == null ? `<p>${esc(h.line)}</p>`
-      : `<p><b>${esc(h.name)}:</b> ${esc(h.claims[last].t)}</p>${h.claims[last].reveal ? `<p class="hint">${esc(h.claims[last].reveal)}</p>` : ''}${niraSaid ? `<p>${esc(en() ? h.nira.sayEn : h.nira.say)}</p>` : ''}`;
-    const stations = g.trialDestinations().filter(x => !x.build), crew = g.crew.filter(c => !c.reader);
-    const sentenceForm = `<div class="sita-sentence"><small>${esc(en() ? 'Pick station, guard, level' : 'เลือกที่ไหน · ใครคุม · ระดับทัณฑ์')}</small>
-        <div class="sita-pick" data-pick="st">${stations.map(x => `<button data-st="${x.def.k}" aria-pressed="${pickSt.st === x.def.k}">${esc(x.def.name)}</button>`).join('') || `<span class="idle">${esc(t('trial.noDestinations'))}</span>`}</div>
-        <div class="sita-pick" data-pick="crew">${crew.map(c => `<button data-crew="${c.k}" aria-pressed="${pickSt.crew === c.k}">${esc(c.name)}</button>`).join('')}</div>
-        <div class="sita-pick" data-pick="level">${[1, 2, 3].map(n => `<button data-level="${n}" aria-pressed="${pickSt.level === n}">${esc(en() ? 'Level' : 'ระดับ')} ${n}</button>`).join('')}</div>
-        <div class="row"><button data-sita-back>${esc(en() ? 'Back' : 'ย้อนกลับ')}</button><button class="gold" data-sita-writ ${(pickSt.st || !stations.length) && (pickSt.crew || !crew.length) && pickSt.level ? '' : 'disabled'}>${esc(en() ? 'Issue the Writ' : 'ออกหมาย')}</button></div></div>`;
-    dlg.innerHTML = `<div class="sita-hearing">
-      <header><small>${esc(SITA.caseTitle)}</small><h2>${esc(`${t('trial.caseNo')} : ${soulId}`)}</h2></header>
-      <div class="sita-hearing-body">
-        <figure><img src="${esc(SITA.art.portrait)}" alt="${esc(h.name)}"><figcaption><b>${esc(h.name)}</b><small>${esc(h.who)}</small></figcaption></figure>
-        <section>
-          <p class="sita-face">${esc(h.face)}</p>
-          <div class="sita-charge"><span class="tag">${esc(en() ? h.chargeTagEn : h.chargeTag)}</span> ${esc(h.charge)}</div>
-          <ul class="sita-merits">${h.merits.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
-          <div class="sita-said">${said}</div>
-        </section>
-      </div>
-      ${chosen ? `<div class="row"><button class="gold" data-sita-done>ต่อ</button></div>`
-        : sentencing ? sentenceForm
-        : `<div class="sita-questions">${h.claims.map((c, i) => `<button data-sita-q="${i}" class="${asked.has(i) ? 'asked' : ''}">${asked.has(i) ? '✓ ' : ''}${esc(c.t)}</button>`).join('')}
-          <button data-sita-nira class="sita-nira">${esc(en() ? h.nira.buttonEn : h.nira.button)}</button></div>
-      <div class="sita-choices"><small>${esc(en() ? 'Verdict' : 'คำตัดสิน')}</small>
-        ${h.choices.map(c => `<button class="gold" data-sita-choice="${c.k}">${esc(choiceLabel(c))}${c.advised && niraSaid ? ` <span class="tag nira-tag">${esc(en() ? h.nira.tagEn : h.nira.tag)}</span>` : ''}</button>`).join('')}</div>
-      <div class="row"><button data-close>ไว้ก่อน</button></div>`}
-    </div>`;
-    dlg.querySelectorAll('[data-sita-q]').forEach(b => b.onclick = () => { last = Number(b.dataset.sitaQ); asked.add(last); sfx('crack'); paint(); });
-    dlg.querySelector('[data-sita-nira]')?.addEventListener('click', () => { niraSaid = true; sfx('crack'); paint(); });
-    dlg.querySelectorAll('[data-sita-choice]').forEach(b => b.onclick = () => {
-      const c = h.choices.find(x => x.k === b.dataset.sitaChoice);
-      if (c.k === 'punish') { sentencing = true; paint(); return; }
-      if (!g.resolveSitaCase(c.k)) return;
-      chosen = c; sfx('stamp'); paint();
-    });
-    dlg.querySelectorAll('[data-st]').forEach(b => b.onclick = () => { pickSt.st = b.dataset.st; paint(); });
-    dlg.querySelectorAll('[data-crew]').forEach(b => b.onclick = () => { pickSt.crew = b.dataset.crew; paint(); });
-    dlg.querySelectorAll('[data-level]').forEach(b => b.onclick = () => { pickSt.level = Number(b.dataset.level); paint(); });
-    dlg.querySelector('[data-sita-back]')?.addEventListener('click', () => { sentencing = false; paint(); });
-    dlg.querySelector('[data-sita-writ]')?.addEventListener('click', () => {
-      const c = h.choices.find(x => x.k === 'punish'), stName = STATIONS.find(d => d.k === pickSt.st)?.name || pickSt.st;
-      if (!g.resolveSitaCase('punish', { station:stName, crew:pickSt.crew, level:pickSt.level })) return;
-      chosen = c; sfx('stamp'); paint();
-    });
-    const done = dlg.querySelector('[data-sita-done]');
-    if (done) done.onclick = () => { dlg.close(); setTimeout(() => g.onChange(), 0); };
-  };
-  openDlg('sita-hearing-dialog'); paint();
+/** FB3-EV1 — Sita's hearing is the ordinary interrogation room (openTrial; the owner's picture Comment9). Her three verdicts are the room's own buttons:
+ *  "ออกหมาย" at any station = sentence her · "ออกหมาย" at the gate of heaven = do not sentence her · "พักคดีนี้" = hold the case for checking (Nira advises it, Rae R1 A3).
+ *  Whatever is chosen Hanuman comes down before anything is carried out - no path sentences, escorts or scores against her (game.js resolveSitaCase).
+ *  This is only the page that follows: what is said when the verdict is pressed (Rae's lines), then the story queue plays. */
+function niraAdviceOrbHtml(s) {
+  const h = SITA.hearing.nira, en = getLang() === 'en', label = en ? h.buttonEn : h.button;
+  return `<div class="kan-orb nira-advice-orb${s.niraAdvised ? ' is-off' : ''}" data-nira-orb>
+    <button type="button" class="kan-orb-btn" data-nira-advice ${s.niraAdvised ? 'disabled' : ''} aria-label="${esc(label)}"><img src="${esc(artUrl('crew-nira-profile') || artUrl('crew-nira'))}" alt="" onerror="this.remove()"></button>
+    <b class="kan-orb-label">${esc(label)}</b></div>`;
+}
+function showSitaVerdict(k) {
+  const c = SITA.hearing.choices.find(x => x.k === k);
+  modal(`<div class="sita-hearing"><header><small>${esc(SITA.caseTitle)}</small><h2>${esc(SITA.hearing.name)}</h2></header>
+    <div class="sita-said">${c.lines.map(l => `<p>${esc(l)}</p>`).join('')}</div><div class="row"><button class="gold" data-sita-done>ต่อ</button></div></div>`, d => {
+    d.querySelector('[data-sita-done]').onclick = () => { dlg.close(); setTimeout(() => g.onChange(), 0); };
+  }, 'sita-hearing-dialog');
   onDlgClose(() => { bgm('bgm-zone'); refresh(); });
 }
 

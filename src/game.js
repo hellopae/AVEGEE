@@ -383,7 +383,7 @@ function mkCaseSoul(c) {
   const soul = {
     id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex,
     sp: safeSp(c.sp, c.sex),   // 17 ก.ย. 2569: A4 sp:4 อ่านเป็นหญิงทั้งที่ sex:'m' — กันซ้ำที่ต้นเหตุ ไม่ใช่แก้เคสเดียว
-    face: c.face, waited: 0, said: [], denied: null, resist: !!c.resist,
+    face: c.face, ...(c.faceNote ? { faceNote:c.faceNote } : {}), waited: 0, said: [], denied: null, resist: !!c.resist,
     calm: !!c.calm,        // ห้ามเข้าฉากต่อสู้เลย แม้กลับมาเป็นคดีซ้ำ (ดู cases.js เรื่องเจ้าอาวาส)
     pure: isPure(c),
     secret: c.secret || null, reward: c.reward || null, fail: c.fail || null,
@@ -745,6 +745,9 @@ const API = {
     if (owed === 'devaMonk' && queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {
       const replacement = applySoulPortrait(mkCaseSoul(def), 'th');
       Object.assign(queued, replacement, { id:queued.id });
+    }
+    if (owed === 'sitaledger' && queued && !queued.faceNote) {   // FB3-EV1: a save made before her hearing became the ordinary room - give her the new brief and statements (same soul id, same position in the queue)
+      Object.assign(queued, mkCaseSoul(def), { id:queued.id, storyHearing:true, waited:queued.waited });
     }
     if (queued && this.queue[0] !== queued && this.caseReady(queued)) {       // drawn earlier by chance (nurse) -> it is the next case now
       this.queue.splice(this.queue.indexOf(queued), 1); this.queue.unshift(queued);
@@ -1341,7 +1344,7 @@ const API = {
     if (L.kind === 'deny') {
       // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง
       const hidden = this.pressDeeds(soul, L)[0];
-      out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });
+      if (!soul.storyHearing) out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });   // FB3-EV1: nobody is "caught red-handed" in Sita's hearing - the file is what is wrong
       // สำนวนที่เขียนมือมีบทของตัวเอง — ใช้บทนั้นแทนบทกลาง
       if (L.reveal) out.push({ kind: 'truth', text: L.reveal });
       if (hidden) {
@@ -1353,6 +1356,8 @@ const API = {
       } else if (soul.denied) {
         out.push({ kind: 'truth', text: `"${voice(`ที่{i}ปฏิเสธเรื่อง${soul.denied} — {i}ทำจริง{p}`, soul.sex)}"` });
         soul.denied = null;
+      } else if (soul.storyHearing) {
+        // FB3-EV1: Sita's `deny` has nothing hidden to confess - the reveal above (what Nira sees in the file) is all, never "everything in the file was right"
       } else {
         out.push({ kind: 'truth', text: `"${voice('{i}พูดเกินไปเอง{p} ในสำนวนนั้นถูกทั้งหมดแล้ว', soul.sex)}"` });
       }
@@ -1452,12 +1457,13 @@ const API = {
   },
 
   // ---------- มอบหมายคดี ----------
-  assignBlock(soulId, stKey, crewK) {
+  /** `forStoryHearing` = the caller is Sita's own hearing (ui.js openTrial): the checks of an ordinary writ apply (station, keeper) but the soul is still never assigned - resolveSitaCase closes the case */
+  assignBlock(soulId, stKey, crewK, forStoryHearing = false) {
     const reservedSoul = this.queue.find(s => this.storyCaseReserved(s)), reservedCase = !!reservedSoul;
     const selectedSoul = this.queue.find(s => s.id === soulId);
     if(selectedSoul&&!this.caseReady(selectedSoul))return {key:'soulArriving'};
     if (reservedCase && selectedSoul && selectedSoul !== reservedSoul) return { key:'devaCaseFirst', text:`โปรดตัดสินคดี${reservedSoul.name}ก่อน` };
-    if (selectedSoul?.storyHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)
+    if (selectedSoul?.storyHearing && !forStoryHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)
     const st = this.stations.find(s => s.def.k === stKey);
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };

@@ -130,25 +130,21 @@ export const SITA = Object.freeze({
   banner:'ศึกปกป้องพระนาง · ท่านหนุมาน',
   hearing:Object.freeze({
     name:'นางสีดา', who:'ชายาแห่งพระราม ผู้ถูกเรียกลงมาตามบัญชี',
-    face:'สงบ นิ่ง ใครเห็นก็อยากก้มศีรษะให้โดยไม่ต้องบอก',
-    // A2 (the `sitaledger` block): the charge line + its tag, merits, her opening line, four claims (one `deny` = the only one that clashes with the file)
-    charge:'แฟ้มสั่งให้รับโทษเก้าวาระ ไม่ระบุความผิด',
-    chargeTag:'บัญชีผิดปกติ',
-    chargeTagEn:'Irregular ledger',
-    merits:Object.freeze([
-      'ยึดมั่นในสัจจะตลอดเวลาที่ถูกกักตัว ไม่ยอมอ่อนข้อต่อการบังคับ',
-      'ยังเมตตาต่อผู้ที่เฝ้าคุมตน แม้ในวันที่ตนเองทุกข์ที่สุด',
-      'ไม่เคยเอ่ยโทษผู้เฝ้าคุมว่าเป็นต้นเหตุของความทุกข์ที่ตนได้รับ',
-    ]),
-    line:'"หม่อมฉันมาตามที่บัญชีเรียกเจ้าค่ะ ท่านจะตัดสินอย่างไร หม่อมฉันขอฟัง"',
+    // FB3-EV1 (owner 26 Nov, picture Comment9): her hearing is the ordinary interrogation room. Rae's R1 A text is kept where the owner did not change it; the owner's own words win:
+    //   · the card "สำนวนที่นิราอ่านให้ฟัง" = the charge line + Nira's orange remark - no face line, no merits, no tag (nothing that gives the plot away)
+    //   · the four pressable statements are the four lines of Comment9 (the old opening line is now the first of them); the record starts with the old first claim
+    //   · the owner's typos are corrected: "ของฟัง" -> "ขอฟัง", "ไม่เคยเคยทำ" -> "ไม่เคยทำ" (see the T3 report)
+    charge:'แฟ้มสั่งให้รับโทษ 9 วาระ ไม่ระบุความผิด',
+    niraNote:'(นิราอ่านแล้ว.. รู้สึกว่าบัญชีมีความไม่ปกติ)',
+    line:'"หม่อมฉันไม่ทราบว่า แฟ้มเขียนความผิดว่าอะไรไว้เจ้าค่ะ ทราบเพียงแค่ถูกเรียกมา"',
     claims:Object.freeze([
-      { kind:'solid', t:'หม่อมฉันไม่ทราบว่าแฟ้มเขียนความผิดอะไรไว้เจ้าค่ะ ทราบเพียงว่าถูกเรียกมา' },
-      { kind:'deny', t:'หม่อมฉันไม่เคยทำสิ่งใดที่ต้องรับโทษเก้าวาระเจ้าค่ะ',
+      { kind:'solid', t:'หม่อมฉันมาตามที่บัญชีเรียกเจ้าค่ะ ท่านจะตัดสินอย่างไร หม่อมฉันขอฟัง' },
+      { kind:'deny', t:'หม่อมฉันไม่เคยทำสิ่งใด ที่ต้องรับโทษ 9 วาระเจ้าค่ะ',
         reveal:'นิราเทียบกับแฟ้มต้นฉบับ หมึกในช่องผู้กระทำเข้มกว่าบรรทัดอื่นของหน้าเดียวกัน' },
-      { kind:'solid', t:'หม่อมฉันไม่ขอให้ท่านเมตตาเพราะหม่อมฉันเป็นใครเจ้าค่ะ ขอเพียงให้ตัดสินจากความจริง' },
+      { kind:'solid', t:'หม่อมฉันไม่ขอให้ท่านเมตตา เพราะหม่อมฉันเป็นใครเจ้าค่ะ ขอเพียงให้ตัดสินจากความจริง' },
       { kind:'solid', t:'ถ้าท่านจะถามสิ่งใดอีก หม่อมฉันยินดีตอบเจ้าค่ะ' },
     ]),
-    secret:'ส่องกระจกแล้ว ไม่พบเรื่องใดซ่อนอยู่ในใจพระนางเลย',
+    secret:'ส่องกระจกแล้ว ไม่พบเรื่องใดซ่อนอยู่ในใจพระนางเลย',   // Rae's text, kept - not used while the mirror is off for her (FB3-EV1)
     reward:'ยมบาทน้อยมองพระนางเดินกลับขึ้นไปพร้อมหนุมาน แล้วนิราก็ปิดแฟ้มเล่มนั้นลงช้า ๆ ด้วยสองมือ',
     // A3: Nira's advice (the "ช่วยเปิดความจริง" button) - puts the "Nira advises" tag on the hold verdict
     nira:Object.freeze({
@@ -174,10 +170,9 @@ export const SITA_CHOICE_KEYS = Object.freeze(SITA.hearing.choices.map(c => c.k)
 
 /** The soul that stands in the queue for case 12. Not part of cases.js: it is never drawn by chance and never sentenced (see game.js resolveSitaCase). */
 export const SITA_CASE = Object.freeze({ k:'sitaledger', story:true, zone:'th', sex:'f', sp:'soul-sita-th', kind:'innocent', calm:true,
-  name:SITA.hearing.name, who:SITA.hearing.who, face:SITA.hearing.face,
-  seen:[{ t:SITA.hearing.charge, tag:SITA.hearing.chargeTag, w:0 }], hidden:[],
-  merits:SITA.hearing.merits.map((t, i) => ({ t, v:i ? 1 : 2, fake:false })),
-  line:SITA.hearing.line, claims:SITA.hearing.claims.map(c => ({ ...c })), secret:SITA.hearing.secret, reward:SITA.hearing.reward, fail:null });
+  name:SITA.hearing.name, who:SITA.hearing.who, face:SITA.hearing.charge, faceNote:SITA.hearing.niraNote,
+  seen:[], hidden:[], merits:[],
+  line:SITA.hearing.line, claims:SITA.hearing.claims.map(c => ({ ...c })), secret:null, reward:SITA.hearing.reward, fail:null });   // no `secret`: a secret would colour her name "concealing" (purple) - the owner's picture has her green
 
 /** T4 (R2 A 2.6): the three lamp windows. NA-1 = the lamp arrives (its last sentence names Hanuman in the first slot - only when the first slot comes with the lamp, LAMP_FIRST_SLOT_ON) ·
  *  NA-2 = a new helper has accepted you (one per helper, `{name}` filled in) · NA-3 = the first time every flame is spent (after a fight). `openLamp` = the button opens the bag's lamp tab. */

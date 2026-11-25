@@ -109,3 +109,7 @@
 
 /* FB3-EV9/MN2: "(ไม่นับ)" after a claimed merit that was found not to count (src/merit-count.js) */
 .merit-count-mark{font-style:normal;font-weight:700;color:var(--warning)}
+
+/* FB3-EV1: Nira's remark under the file line of Sita's brief (owner picture Comment9: the orange line at the foot of the card) */
+.hud-rec .deed.face-note{margin-top:1.6em;color:var(--warning);font-weight:600}
+.trial-top-actions .tag.nira-tag{display:inline-block;margin-left:4px;padding:0 6px;border-radius:999px;background:var(--warning);color:var(--gold-foreground);font-size:11px}
