@@ -15,7 +15,7 @@ export const FOE_TIER = Object.freeze({
   brute:1.40,      // the heavy ones of a demon family
   boss:1.65,       // bosses: clearly bigger, never a wall in front of the team
   bigBoss:1.85,    // the zone bosses / throne bosses
-  giant:2.00,      // dragons, snakes and the three-headed hound
+  giant:2.00,      // the dragon and the great serpent
 });
 /** Wide pictures (crouching, floating hair, snakes): never wider than this many times the tier height. */
 export const FOE_MAX_ASPECT = 1.5;
@@ -36,7 +36,7 @@ const SPECIAL = Object.freeze({
   'mob-q-ashsmoke-big':FOE_TIER.demon, 'mob-q-gauze-big':FOE_TIER.demon, 'mob-q-tale-big':FOE_TIER.demon,
   'col-s4':FOE_TIER.demon, 'col-s8':FOE_TIER.brute, 'col-s7':FOE_TIER.human,
   'boss-ryujin-asia':FOE_TIER.giant, 'boss-jormungandr-west':FOE_TIER.giant,
-  'boss-cerberus-west':FOE_TIER.giant, 'boss-cerberus-gate-west':FOE_TIER.giant, 'guard-cerberus-west':FOE_TIER.giant,
+  'boss-cerberus-west':FOE_TIER.boss, 'boss-cerberus-gate-west':FOE_TIER.boss, 'guard-cerberus-west':FOE_TIER.boss,   // wide (three heads): boss tier, so it is not bigger than it was
   'boss-wukong-clone-asia':FOE_TIER.demon,
   'boss-hanuman-th':FOE_TIER.boss, 'boss-wukong-asia':FOE_TIER.boss, 'boss-guanyu-asia':FOE_TIER.boss, 'boss-guanyu-asia-guard':FOE_TIER.boss,
   'boss-loki-west':FOE_TIER.boss, 'boss-phantom404-cyberhell':FOE_TIER.boss,

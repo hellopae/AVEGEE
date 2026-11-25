@@ -19,7 +19,8 @@ test('BT2: an ordinary soul is never more than 10 % taller than Boon, ghosts the
   assert.ok(foeUnits('img/mob-werewolf.webp') > foeUnits('img/mob-pret.webp') && foeUnits('img/mob-werewolf.webp') <= 1.3, 'demons: a little bigger');
   for (const f of ['img/boss-frontier-th.webp', 'img/Asia/boss-tester-asia.webp', 'img/Boss Zone1.webp', 'img/hero-boss.webp', 'img/leader-th-possessed.webp', 'img/z1-events/boss-hanuman-th.webp'])
     assert.ok(foeUnits(f) >= 1.6 && foeUnits(f) <= 1.9, `${f} ${foeUnits(f)}: a boss, not a wall`);
-  for (const f of ['img/z2-events/boss-ryujin-asia.webp', 'img/z3-events/boss-jormungandr-west.webp', 'img/z3-events/boss-cerberus-west.webp']) assert.equal(foeUnits(f), FOE_TIER.giant);
+  for (const f of ['img/z2-events/boss-ryujin-asia.webp', 'img/z3-events/boss-jormungandr-west.webp']) assert.equal(foeUnits(f), FOE_TIER.giant);
+  assert.equal(foeUnits('img/z3-events/boss-cerberus-west.webp'), FOE_TIER.boss, 'the three-headed hound is wide: the boss tier is already as wide as it was');
   assert.ok(Math.max(...Object.values(FOE_TIER)) <= 2.0);
   assert.equal(foeUnits('img/never-heard-of-it.webp'), FOE_TIER.ghost, 'an unknown picture is a ghost, never a boss');
   assert.equal(foeUnits('img/never-heard-of-it.webp', {boss:true}), FOE_TIER.boss, 'unless the fight says it is a boss');
