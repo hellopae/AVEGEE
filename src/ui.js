@@ -4738,7 +4738,8 @@ function openBattle(after) {
       // FB3-BT1: there is no Flee row in any fight any more. The "อัญเชิญ" row (T4) shows only once the lamp is owned; before that the menu is just the four rows.
       ...(LAMP.lampOwned(g) ? [{id:'summon',label:`${lt('battle.button')} / ${lt('battle.button','',  'en')}`,summon:true,disabled:LAMP.SUMMON_BLOCKED_KINDS.includes(b.kind)||b.breachFinale==='ready',reason:lt('battle.cannot')}] : []),
     ];
-    const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
+    // FB3-BT4b: no command menu while a move is playing (dash out / strike / return, skill, item ...): it used to stay mounted and slide along with the attacker
+    const acts = currentTurn?.side==='foe' || phase || dash || b.commandBusy || !commandMenuOpen || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
         <div class="battle-command-heading"><b>${esc(actor.name)}</b></div>
         <div class="battle-command-tabs">${segments.map((v,i)=>`<button class="actor-segment" style="--command-index:${i}" data-command="${v.id}" ${v.action?`data-primary-action="${v.action}"`:''} aria-expanded="${commandPanel===v.id}" aria-pressed="${commandPanel===v.id||!!(v.action&&pending===v.action)}" ${v.disabled?`aria-disabled="true" title="${esc(v.reason)}"`:''} ${phase||v.disabled?'disabled':''}><span>${v.summon ? '<img src="img/ui/cmd-summon.webp" width="18" height="18" alt="">' : ''}
