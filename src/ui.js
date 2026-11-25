@@ -3263,7 +3263,8 @@ function openTrial(initialError = '') {
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
       if (!r) return;
-      if (!hit || s.storyHearing) { paint(); refresh(); return; }   // a wrong press never moves the camera · FB3-EV1: nor does anything said to Sita (no fright, no close-in - she is no liar)
+      if (s.storyHearing) { paint(); refresh(); return; }   // FB3-EV1: nothing said to Sita moves the camera or frightens her (she is no liar)
+      if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
       // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
       fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS; powerPoseUntil = 0;
       activeSoulPose = revealed ? nextSoulPose : null;

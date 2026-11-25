@@ -10,11 +10,15 @@
   },
   {
    "before": "",
-   "after": "  // FB3-MN6: the admitting line must not be about a deed that a `deny` line above already disowns (\"โดนใส่ความ\" next to \"จริง\" = two claims that fight each other, owner m5).\n  // The two random draws are taken exactly as before (the stream of every seeded simulation stays put); only WHICH deed fills the template changes.\n  const disowned = new Set(out.filter(l => l.kind === 'deny' && Number.isInteger(l.deedIndex)).map(l => soul.deeds[l.deedIndex]));\n"
+   "after": "  // FB3-MN6: the admitting line must not be about a deed that a `deny` line above already disowns (\"โดนใส่ความ\" next to \"จริง\" = two claims that fight each other, owner m5).\n  // The two random draws are taken exactly as before (the stream of every seeded simulation stays put); only WHICH deed fills the template changes.\n  let hole = -1;\n  const disowned = new Set(out.filter(l => l.kind === 'deny' && Number.isInteger(l.deedIndex)).map(l => soul.deeds[l.deedIndex]));\n"
   },
   {
    "before": "    const d = pick(known);\n    add(pickFresh(ADMIT_TPL, recent).replace(/\\{d\\}/g, d.t));\n",
-   "after": "    const drawn = pick(known), tpl = pickFresh(ADMIT_TPL, recent);\n    const d = !disowned.has(drawn) ? drawn : known.find(x => !disowned.has(x));\n    if (d) add(tpl.replace(/\\{d\\}/g, d.t));\n    else {                                              // every known deed is already denied: speak up for his real merit instead (if there is a written line for it)\n      const m = (soul.merits || []).find(x => x.fake !== true && MERIT_SOLID[x.t]);\n      if (m) add(MERIT_SOLID[m.t]);\n    }\n"
+   "after": "    const drawn = pick(known), tpl = pickFresh(ADMIT_TPL, recent);\n    const d = !disowned.has(drawn) ? drawn : known.find(x => !disowned.has(x));\n    if (d) add(tpl.replace(/\\{d\\}/g, d.t));\n    else {                                              // every known deed is already denied: speak up for his real merit instead (if there is a written line for it)\n      const m = (soul.merits || []).find(x => x.fake !== true && MERIT_SOLID[x.t]);\n      if (m) add(MERIT_SOLID[m.t]);\n      else { hole = out.length; out.push({ kind:'solid', t:'' }); }   // a placeholder keeps the count, so every later draw is the one it always was; it is filled below without drawing\n    }\n"
+  },
+  {
+   "before": "",
+   "after": "  if (hole >= 0) {                                      // FB3-MN6: fill the placeholder with the first unused general line (no random draw) - or drop it if every line is used\n    const fill = [...(soul.pool ? soul.pool.solid || [] : []), ...SOLID_LINES].find(l => !used.has(l));\n    if (fill) out[hole] = { kind:'solid', t:voice(fill, soul.sex) }; else out.splice(hole, 1);\n  }\n"
   },
   {
    "before": "",

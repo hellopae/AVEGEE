@@ -453,6 +453,7 @@ function mkLines(soul, g) {
 
   // FB3-MN6: the admitting line must not be about a deed that a `deny` line above already disowns ("โดนใส่ความ" next to "จริง" = two claims that fight each other, owner m5).
   // The two random draws are taken exactly as before (the stream of every seeded simulation stays put); only WHICH deed fills the template changes.
+  let hole = -1;
   const disowned = new Set(out.filter(l => l.kind === 'deny' && Number.isInteger(l.deedIndex)).map(l => soul.deeds[l.deedIndex]));
   if (known.length) {                                   // 1. อ้างข้อความในสำนวนตรง ๆ (ไม่มีทางซ้ำข้ามคดี)
     const drawn = pick(known), tpl = pickFresh(ADMIT_TPL, recent);
@@ -461,6 +462,7 @@ function mkLines(soul, g) {
     else {                                              // every known deed is already denied: speak up for his real merit instead (if there is a written line for it)
       const m = (soul.merits || []).find(x => x.fake !== true && MERIT_SOLID[x.t]);
       if (m) add(MERIT_SOLID[m.t]);
+      else { hole = out.length; out.push({ kind:'solid', t:'' }); }   // a placeholder keeps the count, so every later draw is the one it always was; it is filled below without drawing
     }
   }
   // soul.pool = บทขากลับที่สำนวนที่มีชื่อเขียนเอง (เช่น เจ้าอาวาส) — ใช้แทนชั้น 2 และ 3 ทั้งหมด
@@ -472,6 +474,10 @@ function mkLines(soul, g) {
   let guard2 = 0;
   while (rest.length && out.length < 4 && guard2++ < 60)
     add(spliceFresh(rest, recent));
+  if (hole >= 0) {                                      // FB3-MN6: fill the placeholder with the first unused general line (no random draw) - or drop it if every line is used
+    const fill = [...(soul.pool ? soul.pool.solid || [] : []), ...SOLID_LINES].find(l => !used.has(l));
+    if (fill) out[hole] = { kind:'solid', t:voice(fill, soul.sex) }; else out.splice(hole, 1);
+  }
   // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
   for (let i = out.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
