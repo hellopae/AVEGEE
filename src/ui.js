@@ -77,7 +77,7 @@ import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
 import { camera, strikeTime } from './battle-camera.js?v=20261110-battlefx-fb3';
-import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, spriteRectSync, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, spriteRectSync, setBattleRectMapper, warmSpriteBox } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
 import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual, foeRank, FOE_RANK_FX } from './battle-fx-map.js?v=m2';
@@ -165,7 +165,7 @@ for (const [z, src] of Object.entries(BOSS_PROFILE_ART)) { const im = new Image(
 const bossProfileOverride = (sp, zone) => sp === 'hero-boss' && bossProfileOk[zone] ? BOSS_PROFILE_ART[zone] : null;
 const heroCry = () => artUrl('hero-yama-cry') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
-{ const u = artUrl('hero-yama-cry'); if (u) new Image().src = u; }   // FB3-BT4a: the hurt pose must be in memory before the first hit, or the repaint shows an unsized picture for a moment
+{ const u = artUrl('hero-yama-cry'); if (u) { const im = new Image(); im.src = u; warmSpriteBox(im); } }   // FB3-BT4a: the hurt pose must be in memory before the first hit, or the repaint shows an unsized picture for a moment
 
 /** ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่คูลดาวน์เป็นเวลาจริง ไม่ใช่นับเป็นคดี
  *  readyAt = epoch ms สัมบูรณ์ (ไม่ใช่นับถอยหลังสัมพัทธ์) เซฟ/รีโหลดแล้วยังนับถูกเองเพราะเทียบกับนาฬิกาเครื่องตรง ๆ */
@@ -4305,9 +4305,9 @@ function openBattle(after) {
   /** FB3-BT8a: an enemy's attack must carry it all the way to whoever it hits. The old CSS lunge moved the attacker a fixed 62% of its own width (~260 px at 1792,
    *  far short of the team); now the distance is measured from the real sprites (the same planDash the allies use) and handed to the keyframes. The state of the
    *  turn is already settled when this runs, so the target is simply whoever the blow landed on (nearest one for a group hit). */
-  const aimFoeLunge = () => {
+  const aimFoeLungeOnce = () => {
     const b = g.battle, d = b?.dmg, fig = dlg.querySelector('.fig.foe.lunge');
-    if (!b || !d || !fig) return false;
+    if (!b || !d || !fig) return true;   // nothing (left) to aim
     const src = fxRectSync(fig.querySelector('img:not(.fx)'));
     const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you' }];
     const rects = hits.map(h => fxRectSync(allyImg(keyOfActor(h.id)))).filter(Boolean);
@@ -4317,8 +4317,12 @@ function openBattle(after) {
     const delta = planDash(src, target, 6);
     fig.style.setProperty('--foe-lunge-x', `${Math.round(delta.x)}px`);
     fig.style.setProperty('--foe-lunge-y', `${Math.round(delta.y)}px`);
-    fig.classList.add('foe-aim');
     return true;
+  };
+  /** The new keyframes start at once (they fall back to the old 62% until the numbers arrive); the measurement is retried for a few frames when a picture (the hurt pose) is not decoded yet. */
+  const aimFoeLunge = (tries = 0) => {
+    dlg.querySelector('.fig.foe.lunge')?.classList.add('foe-aim');
+    if (!aimFoeLungeOnce() && tries < 12) requestAnimationFrame(() => aimFoeLunge(tries + 1));
   };
   const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
   /** BATTLE-FX: the struck figure is pushed back a little (away from the attacker) and settles. Web Animations on the independent `translate` property,
@@ -4944,6 +4948,7 @@ function openBattle(after) {
     if (dash) formationMotion.attackKey = null;
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); applyDashPosition(); return result; });
     fitTeam();
+    aimFoeLunge();   // FB3-BT8a: every repaint builds fresh elements (the animation restarts), so the measured distance is handed to them each time, after the layout is back
     mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam,()=>{const cut=dlg.querySelector('.action-cutscene');return cut?Date.now()+Math.max(0,Math.round(ACTION_CUT_MS*.88)-(Date.now()-phaseAt)):0;});
     if (dash) stage.querySelectorAll('.lunge').forEach(el => el.classList.remove('lunge'));
     cameraSync(b, !!(b.over || prepOn), activeKey);
@@ -5378,7 +5383,7 @@ function openBattle(after) {
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
           fxHandled = true;
-          paint(); aimFoeLunge();
+          paint();
           { const cutMs = nb.ultimate && playActionCutscene('boss', nb.ultimate) ? ACTION_CUT_MS : 0; startActionCue(cutMs); startMoveFx('foe', null, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs); }
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
@@ -5427,7 +5432,7 @@ function openBattle(after) {
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         fxHandled=true;
-        sfx('hurt');paint();aimFoeLunge();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
+        sfx('hurt');paint();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
         if(b.skillNotice&&(!b.ultimate||b.ultimate.noCard))showSkillBanner(b.skillNotice);      // BOSS-SKILLS: warning of a move / a heavy blow (T1b: also the small foes' card-less group move)
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate&&!b.ultimate.noCard?ACTION_CUT_MS+120:b.skillNotice?2200:900);
       },600);

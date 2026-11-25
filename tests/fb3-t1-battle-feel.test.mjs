@@ -15,7 +15,7 @@ test('BT4a: a repaint keeps the fitted ally sizes - they are re-applied the mome
   assert.match(bs, /function reapplyLastLayout\(/);
   assert.match(bs, /if \(!hero\) return Promise\.resolve\(false\);\s*reapplyLastLayout\(stage, hero, crewImgs, motion\);/, 'runs synchronously at the top of every fit');
   assert.match(bs, /hero\._sizeReference = lastLayout\.ref/, 'the unfitted size reference survives the repaint (else the sizes shrink on every hit)');
-  assert.match(read('src/ui.js'), /artUrl\('hero-yama-cry'\); if \(u\) new Image\(\)\.src = u;/, 'the hurt pose is preloaded');
+  assert.match(read('src/ui.js'), /artUrl\('hero-yama-cry'\); if \(u\) \{ const im = new Image\(\); im\.src = u; warmSpriteBox\(im\); \}/, 'the hurt pose is preloaded and its visible box measured');
 });
 test('BT4b: the command menu is not drawn while a move is playing (dash out / strike / return, skills, items)', () => {
   assert.match(read('src/ui.js'), /const acts = currentTurn\?\.side==='foe' \|\| phase \|\| dash \|\| b\.commandBusy \|\| !commandMenuOpen \|\|/);
@@ -40,8 +40,7 @@ test('BT8a: an enemy attack is measured to the real target (not a fixed 62% of i
   assert.equal(foe.l + d.x, ally.r + 6, 'the attacker ends 6 px from the target (not on top of it, not 400 px short)');
   assert.equal(d.y, ally.b - foe.b);
   const ui = read('src/ui.js');
-  assert.match(ui, /const aimFoeLunge = \(\) => \{/);
-  assert.match(ui, /sfx\('hurt'\);paint\(\);aimFoeLunge\(\);/, 'turn-based enemy turn');
-  assert.match(ui, /paint\(\); aimFoeLunge\(\);/, 'counter-attack after a player move');
+  assert.match(ui, /const aimFoeLungeOnce = \(\) => \{/); assert.match(ui, /const aimFoeLunge = \(tries = 0\) => \{/);
+  assert.match(ui, /fitTeam\(\);\s*aimFoeLunge\(\);/, 'inside paint(): every repaint creates fresh elements, so it must be re-applied each time');
   assert.match(ui, /--foe-lunge-x/); assert.match(read('src/battle-turns.css'), /\.foe-aim\{animation:foeLungeAim/);
 });

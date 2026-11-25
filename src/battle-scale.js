@@ -40,6 +40,9 @@ function measure(img) {
   });
 }
 
+/** FB3-BT8a: measure a picture's visible box ahead of time (the hurt pose is never the one the fit measures, but the attacker has to run to it). */
+export function warmSpriteBox(img) { return measure(img); }
+
 // M1: the combat scene can be zoomed by the battle camera. ui.js registers a mapper that returns rects "as if the camera were at rest"
 // (mode 'layout', used by all layout maths here) or as they will look once the camera settles (mode 'settled', used for menu placement).
 let rectMapper = null;
