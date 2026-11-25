@@ -1,0 +1,46 @@
+{
+ "game": [
+  {
+   "before": "         SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,\n",
+   "after": "         SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, MERIT_SOLID, CRACK_LINES, HOLD_LINES, RETURN,\n"
+  },
+  {
+   "before": "    face: c.face, waited: 0, said: [], denied: null, resist: !!c.resist,\n",
+   "after": "    face: c.face, ...(c.faceNote ? { faceNote:c.faceNote } : {}), waited: 0, said: [], denied: null, resist: !!c.resist,\n"
+  },
+  {
+   "before": "",
+   "after": "  // FB3-MN6: the admitting line must not be about a deed that a `deny` line above already disowns (\"โดนใส่ความ\" next to \"จริง\" = two claims that fight each other, owner m5).\n  // The two random draws are taken exactly as before (the stream of every seeded simulation stays put); only WHICH deed fills the template changes.\n  const disowned = new Set(out.filter(l => l.kind === 'deny' && Number.isInteger(l.deedIndex)).map(l => soul.deeds[l.deedIndex]));\n"
+  },
+  {
+   "before": "    const d = pick(known);\n    add(pickFresh(ADMIT_TPL, recent).replace(/\\{d\\}/g, d.t));\n",
+   "after": "    const drawn = pick(known), tpl = pickFresh(ADMIT_TPL, recent);\n    const d = !disowned.has(drawn) ? drawn : known.find(x => !disowned.has(x));\n    if (d) add(tpl.replace(/\\{d\\}/g, d.t));\n    else {                                              // every known deed is already denied: speak up for his real merit instead (if there is a written line for it)\n      const m = (soul.merits || []).find(x => x.fake !== true && MERIT_SOLID[x.t]);\n      if (m) add(MERIT_SOLID[m.t]);\n    }\n"
+  },
+  {
+   "before": "",
+   "after": "    }\n    if (owed === 'sitaledger' && queued && !queued.faceNote) {   // FB3-EV1: a save made before her hearing became the ordinary room - give her the new brief and statements (same soul id, same position in the queue)\n      Object.assign(queued, mkCaseSoul(def), { id:queued.id, storyHearing:true, waited:queued.waited });\n"
+  },
+  {
+   "before": "      out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });\n",
+   "after": "      if (!soul.storyHearing) out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });   // FB3-EV1: nobody is \"caught red-handed\" in Sita's hearing - the file is what is wrong\n"
+  },
+  {
+   "before": "",
+   "after": "      } else if (soul.storyHearing) {\n        // FB3-EV1: Sita's `deny` has nothing hidden to confess - the reveal above (what Nira sees in the file) is all, never \"everything in the file was right\"\n"
+  },
+  {
+   "before": "  assignBlock(soulId, stKey, crewK) {\n",
+   "after": "  /** `forStoryHearing` = the caller is Sita's own hearing (ui.js openTrial): the checks of an ordinary writ apply (station, keeper) but the soul is still never assigned - resolveSitaCase closes the case */\n  assignBlock(soulId, stKey, crewK, forStoryHearing = false) {\n"
+  },
+  {
+   "before": "    if (selectedSoul?.storyHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)\n",
+   "after": "    if (selectedSoul?.storyHearing && !forStoryHearing) return { key:'storyHearing' };   // Sita is never sentenced or escorted: her case closes in its own hearing (resolveSitaCase)\n"
+  }
+ ],
+ "data": [
+  {
+   "before": "",
+   "after": "/** FB3-MN6 (คุณเป้ 26 พ.ย. รูป m5): คนที่ปฏิเสธเรื่องหนึ่งแล้ว ห้ามมีอีกบรรทัดที่ \"ยอมรับเรื่องเดียวกัน\" ในชุดเดียวกัน (ขัดกันเอง)\n *  แทนที่ด้วยบรรทัดที่เกี่ยวกับ \"บุญจริง\" ของเขา ถ้ามีบทเขียนไว้ที่นี่ — กุญแจ = ข้อความบุญใน MERITS · บทเป็นแม่แบบ ({i} {na}) ตามเพศ\n *  ตอนนี้มีบทของคุณเป้บทเดียว (หมาจร) · บุญข้ออื่นไม่มีบท → ใช้บทตามชนิดบาป/กองกลางเติมแทน (ต้องให้ Rae เขียนเพิ่มถ้าอยากได้ครบ) */\nexport const MERIT_SOLID = {\n  'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': '{i}เลี้ยงหมาจร เพื่อช่วยชีวิตมันจริงๆ{na}',\n};\n\n"
+  }
+ ]
+}
