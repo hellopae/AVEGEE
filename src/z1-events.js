@@ -337,7 +337,7 @@ export const BREACH_ART = Object.freeze({
 });
 export const BREACH_STORIES = {
   'frontier-th-guard-joins':{ title:'ยักษ์ทวารบาลออกมาช่วย', pages:[
-    page(BREACH_ART.guardJoins, 'ยักษ์ทวารบาลออกมาช่วย', 'ยักษ์เขียวที่ยืนเฝ้าประตูชายแดนออกมาช่วยเราสู้') ]},
+    page(BREACH_ART.guardJoins, 'ยักษ์ทวารบาลออกมาช่วย', 'ข้าชื่อ "กุมภัณฑ์" เดี๋ยวข้าช่วยจัดการเจ้าพวกนี้เอง') ]},
   'frontier-th-boss-to-dais':{ title:'พาไปแท่นตัดสิน', pages:[
     page(BREACH_ART.toDais, 'พาไปแท่นตัดสิน', 'พาบอสชายแดนไปที่แท่นตัดสิน') ]},
   'frontier-th-boss-punished':{ title:'ลงโทษเรียบร้อย', pages:[
