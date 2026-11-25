@@ -3621,7 +3621,7 @@ function openNiraOffice() {
           ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           </span>
-          ${c ? '<small>จ้างแล้ว · จัดทีมได้ที่ปุ่มจัดทีม</small>' : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
+          ${c ? `<span class="nira-party-pick"><button class="sm${on ? '' : ' gold'}" data-nira-party="${esc(key)}" aria-pressed="${!!on}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? 'ออกจากทีมต่อสู้' : 'เข้าทีมต่อสู้'}</button><small>${why && !on ? esc(why) : `ทีมต่อสู้ ${party.length}/${max}`}</small></span>` : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
 
         </article>` };
     });
@@ -3646,6 +3646,8 @@ function openNiraOffice() {
     bindOwnerQuestButtons(dlg);
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
+    // FB3-EV21: the team can be arranged right here (the "จัดทีม" button of the town HUD sits behind the pre-fight window, so it used to be out of reach)
+    dlg.querySelectorAll('[data-nira-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.niraParty)) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
     if (hireGuardBtn) hireGuardBtn.onclick = () => {
