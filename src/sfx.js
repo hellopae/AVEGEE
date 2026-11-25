@@ -72,6 +72,10 @@ const BANK = {
   deny:   () => tone({ f:150, f2:120, t:0.16, type:'square', vol:0.22 }),
   item: () => { [784,1047,1568].forEach((f,i) => tone({f,t:.28,type:'sine',vol:.25,delay:i*.10})); },
   levelup: () => { [523,659,784,1047,1319].forEach((f,i) => tone({f,t:.42,type:'triangle',vol:.27,delay:i*.12})); },
+  // FB3-BT5: "power-up" for every restoring move of ours (Boon, Nira, food / tea / medicine / holy water / feather, healing skills):
+  // a pad that climbs while four sine notes sparkle upward - nothing like the noise burst of 'hit'. 0.5 s, stacked volume 0.72.
+  restore: () => { tone({ f:330, f2:990, t:0.5, type:'triangle', vol:0.12, attack:0.05 });
+                   [659, 880, 1175, 1568].forEach((f, i) => tone({ f, t:0.3, type:'sine', vol:0.15, delay:0.05 + i * 0.07 })); },
   star:   () => { [880, 1108, 1318].forEach((f, i) =>
                     tone({ f, t:0.5, type:'sine', vol:0.28, delay:i * 0.09 })); },
   hurt:   () => { tone({ f:200, f2:52, t:0.5, type:'sawtooth', vol:0.34 });
@@ -143,7 +147,8 @@ export function powerSfx(k, abilities = {}) {
     case 'hypno':         return 'hypno';
     case 'roar':          return 'roar';
     case 'mirror':        return 'mirror';
-    case 'health': case 'tea': case 'holyWater': case 'healthLarge': case 'holyWaterLarge': return 'star';
+    case 'health': case 'tea': case 'holyWater': case 'healthLarge': case 'holyWaterLarge': case 'food': case 'phoenixFeather':
+    case 'crew:boon': case 'crew:nira': return 'restore';   // FB3-BT5: Boon / Nira used to fall through to 'hit' (the same noise burst as a blow landing)
     default:              return 'hit';
   }
 }

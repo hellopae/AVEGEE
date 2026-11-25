@@ -5250,6 +5250,7 @@ function openBattle(after) {
         if (!reduced && (action === 'teamJudgment' || ['laborJudgment','shadowCleaver','abyssGatebreaker'].includes(action))) {
           await new Promise(resolve => { void runDash({ key:keyOfActor(hit.actorId), targetImage:foeImg(hit.foeId), contact:action === 'teamJudgment' ? 300 : 220, pose:action === 'teamJudgment' ? 640 : 480, travel:action === 'teamJudgment' ? 340 : undefined, action:action === 'teamJudgment' ? (hit.actorId === 'you' ? 'atk' : 'strike') : action, crew:hit.actorId === 'you' ? null : hit.kind, displayOnly:true, visualSkill:action, onHit:impact, onFinish:resolve }); });
         } else {
+          if (COMBAT_SKILLS[action].heal) sfx('restore');   // FB3-BT5: healing skills sound like power-up too (they were silent)
           impact(); phase = 'you'; phaseAt = Date.now(); fxNow = {key:COMBAT_SKILLS[action].heal ? 'health' : 'atk', action, side:COMBAT_SKILLS[action].heal ? 'you' : 'foe',crew:who.id === 'you' ? null : who.k,recipient}; paint();
           await startMoveFx('you', action); if (!reduced) await new Promise(resolve => setTimeout(resolve,350));
         }
