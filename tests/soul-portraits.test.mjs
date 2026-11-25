@@ -39,9 +39,10 @@ test('large male business roles get their body archetype without changing guilt 
 });
 
 test('Thai and other branches resolve canonical roles consistently after restyling', () => {
-  for (const key of ['girl','boy','nurse','monk']) {
+  for (const key of ['girl','boy','monk']) {
     assert.equal(soulPortrait(named(key), 'th'), `spirit-${soulArchetype(named(key))}`);
   }
+  assert.equal(soulPortrait(named('nurse'), 'th'), 'soul-nurse', 'FB3-EV16 (owner 26 Nov): Nira\'s old desk-mate has her own drawing, not the woman archetype');
   assert.equal(soulPortrait(named('prophet'), 'th'), 'spirit-cleric');
   assert.equal(soulPortrait(named('sergeant'), 'th'), 'spirit-officer');
   assert.equal(soulPortrait(named('accountant'), 'th'), 'spirit-executive');
@@ -90,7 +91,7 @@ test('game spawn, restore, returned cases and soul battles keep semantic portrai
   const restored = createGame();
   assert.equal(restored.restore(saved), true);
   assert.equal(restored.queue[0].sex, 'f');
-  assert.equal(restored.queue[0].sp, 'spirit-woman');
+  assert.equal(restored.queue[0].sp, 'soul-nurse', 'FB3-EV16: a saved nurse is re-drawn with her own picture');
 });
 
 

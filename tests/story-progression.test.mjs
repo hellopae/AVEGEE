@@ -66,9 +66,11 @@ test('challenge captains cannot grant ruler praise or ruler abilities even when 
 test('public merit colors describe claimed merit without leaking whether the claim is true',async()=>{
  const {readFileSync}=await import('node:fs'),{runInNewContext}=await import('node:vm');
  const src=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),start=src.indexOf('function publicMeritLine('),end=src.indexOf('\n}',start)+2;
- const line=runInNewContext(src.slice(start,end)+';publicMeritLine;',{esc:String});
+ const {meritNotCountedShown}=await import('../src/merit-count.js');
+ const line=runInNewContext(src.slice(start,end)+';publicMeritLine;',{esc:String,meritNotCountedShown,t:k=>k});   // FB3-EV9: the line may add "(ไม่นับ)" - only for a merit that was found out
  const merit={t:'แบ่งอาหารให้ผู้หิวโหย',v:5},real=line({...merit,fake:false}),fake=line({...merit,fake:true});
- assert.equal(real,fake);assert.match(real,/color:var\(--success\)/);assert.doesNotMatch(real,/red|destructive|#c0392b|sentenceColor/);
+ assert.equal(real,fake);assert.match(real,/color:var\(--success\)/);
+ const exposed=line({...merit,fake:true,exposed:true});assert.match(exposed,/merit\.notCounted/,'FB3-EV9: once found out it says so');assert.doesNotMatch(exposed,/color:var\(--success\)/);assert.doesNotMatch(real,/red|destructive|#c0392b|sentenceColor/);
 });
 
 test('Thai ruler dockets use ruler identity; released legacy ruler dockets cannot be sentenced twice',()=>{

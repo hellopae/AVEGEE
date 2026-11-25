@@ -20,7 +20,7 @@ function afterBossWin() {
 
 test('after the win: the scene "he waits at the harbor", then NY-1; he stands at the harbor and the frontier gate no longer shows him', () => {
   const g = createGame(); g.save = () => true; g.onChange = () => {}; g.bossCleared.th = true;
-  assert.equal(storyOf('boss-guide-th-praise').title, 'พี่รอที่ท่าเรือ'); assert.match(storyOf('boss-guide-th-praise').pages[0].line, /พี่จะรอที่ท่าเรือ เมื่อน้องพร้อม มาหาพี่/);
+  assert.equal(storyOf('boss-guide-th-praise').title, 'พี่รอที่ท่าเรือ'); assert.match(storyOf('boss-guide-th-praise').pages[0].line, /เมื่อเจ้าพร้อมจะเดินทางแล้ว มาหาพี่ที่ท่าเรือนะ/);   // FB3-EV23: the owner's wording (picture e16)
   g.queueStory('boss-guide-th-praise'); drain(g);
   assert.ok(g.notices.includes(YOMATHAT.waitNotice)); assert.equal(NOTICES[YOMATHAT.waitNotice].en.button, 'Understood');
   assert.equal(bossGuideWaiting(g), true); assert.equal(bossGuideFollowing(g), false);

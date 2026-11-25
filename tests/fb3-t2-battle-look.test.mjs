@@ -101,7 +101,7 @@ print(','.join(bad) or 'ok')`], {encoding:'utf8'});
 });
 test('FB3-T2: the files that changed carry a fresh cache tag in the import map, and the new module is imported by the battle fit', () => {
   const html = read('index.html');
-  for (const f of ['battle-scale.js', 'battle-facing.js', 'character-scale.js', 'ui.js', 'combat-sprites.js', 'battle-fx.js']) assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}\\?v=[^"]*fb3t2"`), f);
+  for (const f of ['battle-scale.js', 'battle-facing.js', 'character-scale.js', 'ui.js', 'combat-sprites.js', 'battle-fx.js']) assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}\\?v=[^"]*fb3t2[^"]*"`), f);   // FB3-T3 appends its own tag after it
   assert.match(read('src/battle-scale.js'), /from '\.\/battle-foe-size\.js'/);
   assert.match(read('src/battle-scale.js'), /applyFoeSizes\(stage, adultVis, sr, foeMeasured\)/);
 });

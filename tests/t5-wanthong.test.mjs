@@ -36,7 +36,7 @@ test('punish path (any station): the scene "open-punish" with Rae\'s variables, 
   const g = atCase13(); judge(g, 'krata');
   assert.equal(g.wanthongPath, 'punish'); assert.equal(g.storyQueue[0].key, 'z1-khunphaen-open-punish'); assert.equal(g.zoneEventStatus('khunPhaen'), 'pending');
   const s = storyOf('z1-khunphaen-open-punish');
-  assert.equal(s.pages.length, 2); assert.match(s.pages[0].line, /ตราหมายกดลงบนกระดาษ/); assert.match(s.pages[0].line, /ผู้ถือบัญชีที่จะลงโทษนางวันทอง ต้องผ่านข้าก่อน/);
+  assert.equal(s.pages.length, 2); assert.match(s.pages[0].line, /ตราหมายกดลงบนกระดาษ/); assert.match(s.pages[0].line, /ใครจะพานางไปต้องผ่านข้าไปก่อน/);   // FB3-EV10: the owner's one speech, the same on both paths (no more path-specific tail)
   assert.match(s.pages[1].line, /ผมออกหมายตามระดับที่บัญชีและคำให้การรองรับครับ/); assert.match(s.pages[0].line, /ผ้าประเจียดสีเหลืองซีดพันต้นแขน/); assert.match(s.pages[0].line, /ม้าสีหมอก/);
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'locked');
 });

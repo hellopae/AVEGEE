@@ -7,9 +7,10 @@ import { sentenceColor } from '../src/sentence-colors.js';
 import { MERITS, STATIONS } from '../src/data.js';
 import { wideStationRoom } from '../src/room-art-assets.js';
 import { mirrorObstacle, mirrorClearPosition, nearMirror, MIRROR_FOOT, mirrorHeroSortY, MIRROR_SORT_Y } from '../src/mirror-charge.js';
+import {meritNotCountedShown} from '../src/merit-count.js';
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-const context=vm.createContext({sentenceColor,esc:escape,SINS:{kong:{name:'ฉ้อโกง',color:'#ff0000'}}});
+const context=vm.createContext({sentenceColor,esc:escape,SINS:{kong:{name:'ฉ้อโกง',color:'#ff0000'}},meritNotCountedShown,t:k=>k});   // FB3-EV9: publicMeritLine marks a found-out made-up merit
 vm.runInContext(ui.slice(ui.indexOf('function deedLine('),ui.indexOf('function publicDossier(')),context);
 test('W4 public merits use green; karma and relief keep numeric colours, including blood donation',()=>{
  const blood=MERITS.find(m=>m.t==='บริจาคเลือดครบ 40 ครั้ง');
