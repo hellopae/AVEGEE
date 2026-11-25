@@ -78,7 +78,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS, DOC_BONUS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
-         SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
+         SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, MERIT_SOLID, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, BOSS_NAMES,
@@ -451,9 +451,17 @@ function mkLines(soul, g) {
     return true;
   };
 
+  // FB3-MN6: the admitting line must not be about a deed that a `deny` line above already disowns ("โดนใส่ความ" next to "จริง" = two claims that fight each other, owner m5).
+  // The two random draws are taken exactly as before (the stream of every seeded simulation stays put); only WHICH deed fills the template changes.
+  const disowned = new Set(out.filter(l => l.kind === 'deny' && Number.isInteger(l.deedIndex)).map(l => soul.deeds[l.deedIndex]));
   if (known.length) {                                   // 1. อ้างข้อความในสำนวนตรง ๆ (ไม่มีทางซ้ำข้ามคดี)
-    const d = pick(known);
-    add(pickFresh(ADMIT_TPL, recent).replace(/\{d\}/g, d.t));
+    const drawn = pick(known), tpl = pickFresh(ADMIT_TPL, recent);
+    const d = !disowned.has(drawn) ? drawn : known.find(x => !disowned.has(x));
+    if (d) add(tpl.replace(/\{d\}/g, d.t));
+    else {                                              // every known deed is already denied: speak up for his real merit instead (if there is a written line for it)
+      const m = (soul.merits || []).find(x => x.fake !== true && MERIT_SOLID[x.t]);
+      if (m) add(MERIT_SOLID[m.t]);
+    }
   }
   // soul.pool = บทขากลับที่สำนวนที่มีชื่อเขียนเอง (เช่น เจ้าอาวาส) — ใช้แทนชั้น 2 และ 3 ทั้งหมด
   const bySin = soul.pool ? [...(soul.pool.solid || [])] : []; // 2. ตามชนิดบาปของคดีนี้
