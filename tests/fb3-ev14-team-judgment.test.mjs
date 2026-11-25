@@ -25,7 +25,7 @@ import { teamCombo, applyCombo, COMBO_CREW_MULT, COMBO_BOSS_CAP } from '../src/c
 import { createGame } from '../src/game.js';
 import { effectiveAllyStats } from '../src/progression.js';
 const mk = (zone, level, crew) => { const g = createGame(); g.save = () => true; g.onChange = () => {}; g.coin = 99999; g.zone = zone; g.level = level; g.abilities.teamJudgment = true; for (const k of crew) g.hire(k); g.party.members = crew.slice(); return g; };
-test('EV14 power: every ally hits for at least 2x their own normal move; Yama's closing blow is at least 120', () => {
+test('EV14 power: every ally hits for at least 2x their own normal move; Yama closing blow is at least 120', () => {
   for (const [zone, level] of [['th', 3], ['asia', 5], ['west', 7], ['cyberhell', 9]]) {
     const g = mk(zone, level, ['taan', 'dam']); g.startBattle({ id:99, who:'test', deserved:4, resist:true }); g.prepareEncounter?.();
     const hits = teamCombo(g);
