@@ -76,7 +76,7 @@ import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_D
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
-import { camera, strikeTime } from './battle-camera.js?v=20261110-battlefx';
+import { camera, strikeTime } from './battle-camera.js?v=20261110-battlefx-fb3';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, spriteRectSync, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
@@ -165,6 +165,7 @@ for (const [z, src] of Object.entries(BOSS_PROFILE_ART)) { const im = new Image(
 const bossProfileOverride = (sp, zone) => sp === 'hero-boss' && bossProfileOk[zone] ? BOSS_PROFILE_ART[zone] : null;
 const heroCry = () => artUrl('hero-yama-cry') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
+{ const u = artUrl('hero-yama-cry'); if (u) new Image().src = u; }   // FB3-BT4a: the hurt pose must be in memory before the first hit, or the repaint shows an unsized picture for a moment
 
 /** ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่คูลดาวน์เป็นเวลาจริง ไม่ใช่นับเป็นคดี
  *  readyAt = epoch ms สัมบูรณ์ (ไม่ใช่นับถอยหลังสัมพัทธ์) เซฟ/รีโหลดแล้วยังนับถูกเองเพราะเทียบกับนาฬิกาเครื่องตรง ๆ */

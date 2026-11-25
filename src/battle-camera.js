@@ -11,7 +11,7 @@ export const CAMERA_TIMING = Object.freeze({
   select:    { zoom:1.10, ms:240 },
   attack:    { zoom:1.16, ms:200, windup:220, panAt:200, panMs:160, impactAt:360, recoverAt:760 },
   skill:     { zoom:1.26, ms:260, windup:300, impactAt:520, panLead:200, recoverGap:560, dimAlpha:.42 },
-  foeAttack: { zoom:1.14, ms:200, windup:200, panAt:180, panMs:160, impactAt:340, recoverAt:740 },
+  foeAttack: { zoom:1, ms:200, windup:200, panAt:180, panMs:160, impactAt:340, recoverAt:740 },   // FB3-BT4a: was zoom 1.14 - every enemy hit made the allies (the target) grow ~14% for ~0.5 s (owner clips b4 b5 b6). 1 = no zoom; timing, shake and hit-stop are unchanged
   heal:      { zoom:1.18, ms:160, windup:160, impactAt:300, recoverAt:700 },
   ask:       { zoom:1.18, ms:260 },
   reveal:    { zoom:1.32, ms:240, impactAt:200 },

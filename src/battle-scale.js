@@ -117,6 +117,38 @@ export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 18 } = {})
 }
 
 /** ปรับยมทูตทีมในฉากต่อสู้ — เรียกหลังวาดฉากทุกครั้ง (วัดภาพครั้งแรกอาจรอโหลดเล็กน้อย) */
+// FB3-BT4a: every repaint of the fight replaces the whole DOM, and the fit below finishes asynchronously. For the few frames in between, the new
+// <img> elements had no size at all (the squad showed at the raw CSS size, ~3-4x too big, the hero at the raw size of whatever pose was swapped in), so a
+// hit - which always repaints - made the allies "pop" bigger for a moment. The last fitted layout is remembered and re-applied to the fresh elements
+// the instant the new stage exists (same task, before the browser paints); the async fit then confirms or corrects it.
+const lastLayout = { sw:0, sh:0, squad:null, items:new Map(), ref:null };
+const putStyle = (el, props) => { for (const [k, v] of Object.entries(props)) el.style.setProperty(k, v, 'important'); };
+function applyMember(image, root, key, e, motion) {
+  const active = key === motion.activeKey;
+  putStyle(image, e.img);
+  putStyle(root, { ...e.root, 'z-index':root.classList.contains('cam-lit') ? '40' : String(active ? 30 : e.depth),
+    '--turn-motion-delay':`${-Math.max(0, Date.now() - (motion.changedAt || 0))}ms` });
+  root.classList.add('formation-member');
+  root.classList.toggle('attack-lunge', motion.attackKey === key);
+  root.classList.toggle('turn-forward', active);
+  root.classList.toggle('turn-enter', active && motion.changedAt > 0);
+  root.classList.toggle('turn-return', !active && key === motion.previousKey);
+  root.dataset.formationSlot = String(e.slot);
+}
+function reapplyLastLayout(stage, hero, crewImgs, motion) {
+  if (!lastLayout.items.size || !stage.classList.contains('combat-arena')) return false;
+  const sr = stage.getBoundingClientRect();
+  if (Math.abs(sr.width - lastLayout.sw) > 1 || Math.abs(sr.height - lastLayout.sh) > 1) return false;   // another window size: only a fresh measurement is right
+  const members = [...crewImgs, hero].map(image => ({ image, root:image.closest('[data-crew-pick]') })).filter(m => m.root);
+  const keys = members.map(m => m.root.dataset.crewPick);
+  if (keys.length !== lastLayout.items.size || !keys.every(k => lastLayout.items.has(k))) return false;     // another team: same
+  const squad = stage.querySelector('.battle-squad'); if (squad && lastLayout.squad) putStyle(squad, lastLayout.squad);
+  // the size reference is the hero's UNFITTED size (measured once); a pre-fitted element must not be mistaken for it
+  if (lastLayout.ref) hero._sizeReference = lastLayout.ref;
+  members.forEach((m, i) => applyMember(m.image, m.root, keys[i], lastLayout.items.get(keys[i]), motion));
+  return true;
+}
+
 export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {}) {
   const seq = stage._fitSeq = (stage._fitSeq || 0) + 1;   // ผลของรอบเก่าที่เสร็จทีหลังต้องไม่ทับรอบใหม่
   const hero = stage.querySelector('.fig.you img:not(.fx)');  // .fx = เอฟเฟกต์โดนตีซ้อนอยู่ใน .fig เดียวกัน ไม่ใช่ตัวยมบาทน้อย
@@ -124,6 +156,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
   const crewImgs = squad ? [...squad.querySelectorAll('img')] : [];
   const helperImg = stage.querySelector('.fig.helper img:not(.fx)');
   if (!hero) return Promise.resolve(false);
+  reapplyLastLayout(stage, hero, crewImgs, motion);
   // ท่าของยมบาทน้อยเปลี่ยนตลอดการต่อสู้ (ยืน · ฟาด · โดนตี) แต่ละท่ามีกรอบตัวจริงต่างกัน — ใช้ท่ายืนเป็นหลักเสมอ
   // ไม่งั้นยมทูตจะขยับขนาดตามท่าทุกครั้งที่วาดฉากใหม่
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
@@ -151,8 +184,9 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
         .then(r => ({ l:r.l - sr.left, r:r.r - sr.left, t:r.t - sr.top, b:r.b - sr.top })).catch(() => null))))
         .filter(r => r && r.r - r.l > 4 && r.b - r.t > 4);
       if (!stage.isConnected || stage._fitSeq !== seq) return false;
-      if(squad) put(squad,{position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
-        'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'});
+      const squadProps = {position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
+        'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'};
+      if(squad) put(squad,squadProps);
       // Retain the pre-fit reference across repeated fits and proportional viewport resizes.
       hero._sizeReference ??= {height:local.visH, stageHeight:sr.height};
       const reference=hero._sizeReference.height*sr.height/hero._sizeReference.stageHeight;
@@ -166,26 +200,24 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       const stepRight = foeBounds.length ? Math.min(...foeBounds.map(r => r.l)) - 8 : sr.width * .7;
       const steps = sizes.map((sz,i) => planTurnStep({ active:sz.bounds, others:sizes.filter((_,j) => j!==i).map(o => o.bounds), foes:foeBounds,
         base:{ x:plan[i].stepX, y:plan[i].stepY }, gap:14, bounds:{ l:0, t:sr.height * .3, r:stepRight, b:sr.height } }));
+      const layout = new Map();
       images.forEach((image,i)=>{
         const box=actorBoxes[i], slot=plan[i];
         const { w, h } = sizes[i];
         const root=image.closest('[data-crew-pick]');
-        const key=root.dataset.crewPick, active=key===motion.activeKey;
-        put(image,{width:`${w}px`,height:`${h}px`,'max-width':'none','max-height':'none','object-fit':'fill'});
-        put(root,{position:'absolute',left:`${slot.x-box.l*w}px`,top:`${slot.y-(box.t+box.h)*h}px`,bottom:'auto',
-          width:`${w}px`,height:`${h}px`,margin:'0',flex:'none',display:'block','clip-path':'none',
-          'z-index':root.classList.contains('cam-lit')?'40':String(active?30:slot.depth),'pointer-events':'auto',
-          '--turn-step-x':`${steps[i].x}px`,'--turn-step-y':`${steps[i].y}px`,
-          '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-head':`${box.t*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
-          '--formation-shadow-width':`${box.w*w*.82}px`,
-          '--turn-motion-delay':`${-Math.max(0,Date.now()-(motion.changedAt||0))}ms`});
-        root.classList.add('formation-member');
-        root.classList.toggle('attack-lunge',motion.attackKey===key);
-        root.classList.toggle('turn-forward',active);
-        root.classList.toggle('turn-enter',active&&motion.changedAt>0);
-        root.classList.toggle('turn-return',!active&&key===motion.previousKey);
-        root.dataset.formationSlot=String(i);
+        const key=root.dataset.crewPick;
+        const entry={ slot:i, depth:slot.depth,
+          img:{width:`${w}px`,height:`${h}px`,'max-width':'none','max-height':'none','object-fit':'fill'},
+          root:{position:'absolute',left:`${slot.x-box.l*w}px`,top:`${slot.y-(box.t+box.h)*h}px`,bottom:'auto',
+            width:`${w}px`,height:`${h}px`,margin:'0',flex:'none',display:'block','clip-path':'none','pointer-events':'auto',
+            '--turn-step-x':`${steps[i].x}px`,'--turn-step-y':`${steps[i].y}px`,
+            '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-head':`${box.t*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
+            '--formation-shadow-width':`${box.w*w*.82}px`} };
+        layout.set(key,entry);
+        applyMember(image,root,key,entry,motion);
       });
+      lastLayout.ref=hero._sizeReference;
+      lastLayout.sw=sr.width; lastLayout.sh=sr.height; lastLayout.squad=squad?squadProps:null; lastLayout.items=layout;
       stage.dataset.formation='perspective';
     }
     if (helperImg && helperBox) {       // ยมทูตที่กระโดดเข้าช่วยโจมตีก็ต้องสูงเท่ากัน
