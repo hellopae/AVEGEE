@@ -16,6 +16,11 @@ export const WORKER_MAP_FILL = .95;
 export const WORKER_HEIGHT_VS_YAMA = .90;
 export const mapWorkerHeight = (adultHeight=82) => mapActorHeight('yama', adultHeight)*WORKER_HEIGHT_VS_YAMA/WORKER_MAP_FILL;
 
+/** FB3-BT7 (owner 26 Nov: "Boon looks a little too big, make him smaller"): a battle-only trim on top of CHARACTER_SCALE, so the map / rooms / cutscenes keep Boon's size.
+ *  Boon's drawing is the widest of the team (lotus, robe, horns), so at the same visible height he reads bigger than Plerng / Kan: 7 % shorter on the battle stage. */
+export const BATTLE_TRIM = Object.freeze({ boon:.93 });
+export const battleTrim = (key='adult') => BATTLE_TRIM[key.replace(/^.*:/,'').replace(/^crew-/,'')] ?? 1;
+
 /** One uniform fit preserves hierarchy and the existing perspective formation's envelope.
  * The previous largest companion was .96 of the hero reference. Never enlarge that
  * footprint: shrinking to the horizontal slot gap would make phone parties unreadable.
@@ -26,7 +31,7 @@ export function fitAllySizes(referenceHeight, actors, slots, bounds) {
   const crewScale=Math.min(...slots.filter((_,i)=>actors[i]?.key!=='yama').map(s=>s.scale));
   const slotScale=i=>actors[i].key==='yama'||!Number.isFinite(crewScale)?slots[i].scale:crewScale;
   const sizes=actors.map((a,i)=>{
-    const h=referenceHeight*characterScale(a.key)*slotScale(i)/a.box.h;
+    const h=referenceHeight*characterScale(a.key)*battleTrim(a.key)*slotScale(i)/a.box.h;
     return {h,w:h*a.aspect};
   });
   let fit=Math.min(1,...actors.map(a=>.96/characterScale(a.key)));

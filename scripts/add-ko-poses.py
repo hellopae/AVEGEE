@@ -8,7 +8,7 @@ The game (battle-ko.js + combat-sprites.js) already draws a record `<key>:ko` in
   record key      yama -> yama:<zone>:ko · nira -> crew:<zone>:nira:ko · the rest -> crew:<zone>:<key>:ko
   frame           the whole picture, 1 x 1 cells, held (one frame)
   anchor          [centre x of the visible pixels, bottom of the visible pixels]  = the point that stands on the floor where the standing figure's feet were
-  bodyHeight      copied from the STANDING record of the same figure (same drawing scale: the file must be drawn at the standing picture's scale)
+  bodyHeight      the STANDING record's bodyHeight / KO_SCALE (the file is drawn at the standing picture's scale, then shown KO_SCALE x bigger - see KO_SCALE)
   --check         only report, write nothing   --root DIR  repo root (tests)
 Then bump the manifest query (?v=night-v1-p9-grace-f in battle-fx.js, combat-sprites.js, ui.js) so players' caches pick the new records up."""
 import json, sys
@@ -18,6 +18,9 @@ from PIL import Image
 ZONES = ('th', 'asia', 'west', 'cyberhell')
 KEYS = ('yama', 'taan', 'kan', 'dam', 'boon', 'plerng', 'guard', 'nira')
 DIR = 'img/ko-pose-v1'
+# FB3-BT7 (owner 26 Nov: the lying Plerng looks too small): every lying picture is drawn this much bigger than its standing figure, so that a lying body
+# fills about the same screen area as the same figure standing (median of the 28 figures = 1.20; length lying = 1.15 x standing height).  Pictures are untouched.
+KO_SCALE = 1.2
 MANIFEST = 'img/combat-animation-v1/manifest.json'
 
 
@@ -42,7 +45,7 @@ def entry_for(root, zone, key, sprites):
         raise SystemExit(f'{f} has no visible pixel')
     w, h = im.size
     return {'src': f'{DIR}/{zone}/{key}.webp', 'frameWidth': w, 'frameHeight': h, 'cols': 1, 'rows': 1,
-            'anchor': [round((bbox[0] + bbox[2]) / 2), bbox[3]], 'bodyHeight': ref['bodyHeight'],
+            'anchor': [round((bbox[0] + bbox[2]) / 2), bbox[3]], 'bodyHeight': int(ref['bodyHeight'] / KO_SCALE + .5),
             'modes': {'ko': {'frames': [0], 'durations': [1000]}}}
 
 

@@ -35,9 +35,10 @@ test('F8: add-ko-poses.py writes scaled records for the pictures that exist and 
     const t = s['crew:th:taan:ko'];
     assert.equal(t.src, 'img/ko-pose-v1/th/taan.webp'); assert.deepEqual([t.frameWidth, t.frameHeight, t.cols, t.rows], [512, 256, 1, 1]);
     assert.deepEqual(t.anchor, [250, 250], 'centre of the visible pixels, bottom of the visible pixels');
-    assert.equal(t.bodyHeight, base['crew:th:taan'].bodyHeight, 'same scale as the standing record');
-    assert.equal(s['crew:th:nira:ko'].bodyHeight, base['nira:th'].bodyHeight); assert.equal(s['yama:th:ko'].bodyHeight, base['yama:th'].bodyHeight);
-    assert.equal(s['crew:asia:guard:ko'].bodyHeight, base['crew:asia:guard'].bodyHeight);
+    const K = 1.2;   // FB3-BT7: scripts/add-ko-poses.py KO_SCALE
+    assert.equal(t.bodyHeight, Math.round(base['crew:th:taan'].bodyHeight / K), 'the standing scale, shown KO_SCALE bigger');
+    assert.equal(s['crew:th:nira:ko'].bodyHeight, Math.round(base['nira:th'].bodyHeight / K)); assert.equal(s['yama:th:ko'].bodyHeight, Math.round(base['yama:th'].bodyHeight / K));
+    assert.equal(s['crew:asia:guard:ko'].bodyHeight, Math.round(base['crew:asia:guard'].bodyHeight / K));
     assert.deepEqual(t.modes.ko, {frames:[0], durations:[1000]});
     assert.equal(hasKoPose('crew:th:taan', s), true, 'battle-ko.js sees the record');
     assert.equal(hasKoPose('crew:th:kan', s), false, 'a figure without a file keeps the tilt');
