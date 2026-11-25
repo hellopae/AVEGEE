@@ -4788,7 +4788,7 @@ function openBattle(after) {
     // Z1-EVENTS fixup: while the story's closing move is still playing (border boss team move, case 15 fire charge) the exit button waits - it used to sit on top of the animation.
     // Only these finales are held, and only until the animation ends (phase/dash/skillView clear, or the 6 s phase guard resets them), so the old "dead end" cannot come back.
     const finaleBusy = b.breachFinale === 'done' && !!(phase || dash || skillView || !fxIdle());
-    const done = b.over && !finaleBusy
+    const done = b.over && !finaleBusy && !skillView   // FB3-EV14: not while a skill replay is still playing (e8: reward button over a half-played ประสานพิพากษา)
       ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     if (summonLayer && (b.over || phase || prepOn)) { summonLayer = false; summonPick = null; }
@@ -5231,7 +5231,7 @@ function openBattle(after) {
         timer = setInterval(() => { frame++; if (frame >= sources.length) finishScene(); else show(); }, duration / sources.length);
       });
     };
-    const executeSkill = async (action, recipient) => {
+    const playSkill = async (action, recipient) => {
       if (g.battle?.storyInterlude === 'th') return;   // case 15: the story is on screen
       const b = g.battle, who = g.battleActors().find(a => a.id === (b.actorId || 'you'));
       const before = vitalsOf(g), initialFoes = b.foes.map(f => ({...f}));
@@ -5253,7 +5253,6 @@ function openBattle(after) {
       for (const hit of hits) {
         if (g.battle !== b || !dlg.open) return;
         if (action === 'teamJudgment' && !hit.foeId) continue;
-        if (action === 'teamJudgment' && hit.actorId === 'you' && !reduced) await playSkillScene(action,scenes.slice(1),700);
         let impacted = false;
         const impact = () => {
           if (impacted) return true;
@@ -5278,6 +5277,11 @@ function openBattle(after) {
       showHeals(before,0); g.finishBattleCommand(); commandMenuOpen = true;
       if (b.storyFinale) { finish(); return; }
       finishWave(); paint(); holdFinaleExit(b); refresh();
+    };
+    // FB3-EV14: the result row waits for skillView (the replay of a combo the game has already settled). Whatever ends playSkill early (battle closed, error), the replay state is dropped here.
+    const executeSkill = async (action, recipient) => {
+      try { await playSkill(action, recipient); }
+      finally { if (skillView) { skillView = null; if (g.battle && dlg.open) paint(); } }
     };
     const executeCommand = async (action, recipient = 'you') => {
       if (phase || g.battle?.storyInterlude === 'th') return;   // case 15: the story is on screen (or about to be) - the closing move waits for it                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
