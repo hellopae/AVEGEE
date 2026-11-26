@@ -51,6 +51,9 @@ import { cityFireOn, gateControlled, drawCityFire, drawControlledMark } from './
 import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
+// FB3-MP7 (owner map10): the "press here to build" box is about 40 % smaller (name 9, price line 7, box 26 high - was 15 / 11 / 44); hitBuildPrompt uses the same numbers
+export const BUILD_PROMPT_L1 = 9, BUILD_PROMPT_L2 = 7, BUILD_PROMPT_H = 26;
+export const CONSTRUCTION_SCALE = .75, CONSTRUCTION_DROP = 22, BUILD_BAR_W = 72, BUILD_BAR_H = 7, BUILD_LABEL_SIZE = 7;   // FB3-MP1 / MP8
 const MAP_NAME_SIZE = 8; // Character names and floating dialogue share the same map type size.
 const CHAR_SCALE_BASE = 0.8;
 // L1: on the Zone 1 painted map the actors read too big next to the buildings (owner, 15 Oct 2569):
@@ -932,17 +935,22 @@ function drawStation(ctx, g, st, t) {
     const left = st.workerWork?st.workerWork.remaining:Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
-    if (drawConstruction(ctx, d, p, t, g.zone)) { /* Z1-V5-FX3: animated crane + posts + scaffold sheets (img/construction/<zone>/) */ }
+    // FB3-MP8 (owner map11): the animation was bigger than the building and stood up on the cliff wall - draw it CONSTRUCTION_SCALE of its size around the foot point and CONSTRUCTION_DROP world units lower (a transform: the sheet geometry in construction-sheets.js is unchanged)
+    ctx.save(); ctx.translate(d.bx, d.by + CONSTRUCTION_DROP); ctx.scale(CONSTRUCTION_SCALE, CONSTRUCTION_SCALE); ctx.translate(-d.bx, -d.by);
+    const drewConstruction = drawConstruction(ctx, d, p, t, g.zone);
+    ctx.restore();
+    if (drewConstruction) { /* Z1-V5-FX3: animated crane + posts + scaffold sheets (img/construction/<zone>/) */ }
     else if (im) {
       const bh = bw * im.naturalHeight / im.naturalWidth;
       ctx.drawImage(im, d.bx - bw / 2, d.by - bh, bw, bh);
     }
     else drawBuilding(ctx, d, t, UI_SCALE_MAP);
-    const W = 120 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 10;
-    ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12 * UI_SCALE_MAP, 6); ctx.fill();
-    ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12 * UI_SCALE_MAP, 6); ctx.fill();
+    // FB3-MP1 / MP8 (owner map2 map9 map11): the bar and its sign are about 40 % smaller (bar 72 x 7, sign 7) and sit just under the (lowered) scaffold
+    const W = BUILD_BAR_W * UI_SCALE_MAP, BH = BUILD_BAR_H * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + CONSTRUCTION_DROP + 6;
+    ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, BH, BH / 2); ctx.fill();
+    ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), BH, BH / 2); ctx.fill();
     // FB-UI 2 (owner 10 Nov): small sign, and while nobody has reached the site yet it just says "กำลังก่อสร้าง" (no waiting-for-name text)
-    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ กำลังก่อสร้าง ${Math.round(p*100)}%`):st.buildWait ? '🏗️ กำลังก่อสร้าง' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 10, 10, '#ffe7c4', 4);
+    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ กำลังก่อสร้าง ${Math.round(p*100)}%`):st.buildWait ? '🏗️ กำลังก่อสร้าง' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 8, BUILD_LABEL_SIZE, '#ffe7c4', 3);
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
@@ -1047,11 +1055,11 @@ function promptInfo(g, def, afford) {
 function buildPromptRect(ctx, def, info) {
   const cx = def.x, cy = Math.max(46, (topOf(def) ?? def.by - def.bw) - 40 * UI_SCALE_MAP);
   const { l1, l2 } = info;
-  ctx.font = `700 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
+  ctx.font = `700 ${BUILD_PROMPT_L1 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w1 = ctx.measureText(l1).width;
-  ctx.font = `600 ${11 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
+  ctx.font = `600 ${BUILD_PROMPT_L2 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w2 = ctx.measureText(l2).width;
-  const w = Math.max(w1, w2) + 20 * UI_SCALE_MAP, h = 44 * UI_SCALE_MAP;
+  const w = Math.max(w1, w2) + 14 * UI_SCALE_MAP, h = BUILD_PROMPT_H * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
   return { bx, by, w, h };
 }
@@ -1076,8 +1084,8 @@ function buildPrompt(ctx, def, t, g) {
   ctx.fillStyle = locked ? 'rgba(18,8,13,.8)' : 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
   ctx.strokeStyle = locked ? 'rgba(120,100,92,.6)' : afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
   ctx.lineWidth = 2; ctx.stroke();
-  label(ctx, info.l1, bx + w / 2, by + 14 * UI_SCALE_MAP, 15, locked ? '#b09a92' : '#ffe7c4');
-  label(ctx, info.l2, bx + w / 2, by + 31 * UI_SCALE_MAP, 11, locked ? '#b09a92' : afford ? '#d4a355' : '#b09a92');
+  label(ctx, info.l1, bx + w / 2, by + BUILD_PROMPT_H * .32 * UI_SCALE_MAP, BUILD_PROMPT_L1, locked ? '#b09a92' : '#ffe7c4', 4);
+  label(ctx, info.l2, bx + w / 2, by + BUILD_PROMPT_H * .72 * UI_SCALE_MAP, BUILD_PROMPT_L2, locked ? '#b09a92' : afford ? '#d4a355' : '#b09a92');
 }
 
 /** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
