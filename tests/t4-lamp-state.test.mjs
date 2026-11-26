@@ -87,8 +87,8 @@ test('old saves: no `magic` -> a whole empty one Â· broken `magic` is repaired Â
   assert.equal(g.magic.lamp.level, 4); assert.deepEqual(g.magic.lamp.slots, [null, 'hanuman', null, null]); assert.equal(g.magic.unlocked.ghost, undefined);
   const cleared = JSON.parse(JSON.stringify(g0.snapshot())); delete cleared.magic; cleared.zoneEvents = { ...(cleared.zoneEvents || {}), th:{ sitaHanuman:'cleared' } };
   g = createGame(); g.restore(cleared);
-  assert.equal(L.lampOwned(g), true); assert.deepEqual(L.slottedSummoners(g), ['hanuman']); assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);   // FB3-T5: the tower window comes with the lamp
-  const again = createGame(); again.restore(JSON.parse(JSON.stringify(g.snapshot()))); assert.deepEqual(again.notices, ['lamp-received', 'lamp-tower-open'], 'saved windows are not duplicated');
+  assert.equal(L.lampOwned(g), true); assert.deepEqual(L.slottedSummoners(g), ['hanuman']); assert.deepEqual(g.notices, ['lamp-received']);   // FB3-T5: the tower window comes with the lamp   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
+  const again = createGame(); again.restore(JSON.parse(JSON.stringify(g.snapshot()))); assert.deepEqual(again.notices, ['lamp-received'], 'saved windows are not duplicated');   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
 });
 
 test('mirror treasure follows the existing mirror power (ammo) and the tower refills it; the clock follows the existing cooldown clock', () => {

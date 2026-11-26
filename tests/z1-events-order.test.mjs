@@ -181,7 +181,7 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   assert.deepEqual(g.storyQueue.map(p => p.key).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold'], 'T4: the lamp comes after the PHANTOM-404 scene and before Sita goes home');
   assert.equal(g.magic.lamp.owned, false, 'no lamp before its scene');
   assert.deepEqual(drainStories(g).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold']);
-  assert.deepEqual(nt(g), ['sita-phantom', 'lamp-received', 'lamp-tower-open']);   assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);   // FB3-T5: the Mirror Tower opens with the lamp - its own window follows
+  assert.deepEqual(nt(g), ['sita-phantom', 'lamp-received']);   assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);   // FB3-T5: the Mirror Tower opens with the lamp - its own window follows
   assert.equal(g.magic.lamp.owned, true); assert.deepEqual(g.magic.lamp.slots.slice(0, 1), ['hanuman']);
   g.ackNotice('sita-phantom'); assert.deepEqual(g.journalNotes, [SITA.journal]);
   // ---- case 13 = Lady Wanthong (T5'/1) -> Khun Phaen (the fight) -> Kuman Thong
@@ -269,7 +269,7 @@ test('old saves: no repeat, no hang', async t => {
     old.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'cleared' };
     const d = JSON.parse(JSON.stringify(old.snapshot())); delete d.z1EventsVersion; delete d.storyCaseDone;
     const g = createGame(); g.restore(d);
-    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(nt(g), ['lamp-received', 'lamp-tower-open'], 'T4: a save that is past Sita gets the lamp window once (FB3-T5: and the tower window)');
+    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(nt(g), ['lamp-received'], 'T4: a save that is past Sita gets the lamp window once (FB3-T5: and the tower window)');
     assert.equal(g.zoneEventStatus('thBorderBoss'), 'cleared');
   });
   await t.test('elder brother announced under the old order (case 10) -> waits for Sita and case 15', () => {

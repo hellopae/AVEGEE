@@ -20,3 +20,18 @@ test('the Guard-freeing window never shows the English word "Guard" in Thai text
   }
   for (const row of Object.values(LIB_TEXT)) assert.ok(!/Guard/.test(row.th), row.th);
 });
+
+test('the lamp comes with ONE window (it carries the tower sentence); the separate tower window is marked seen, so a reload never shows it', async () => {
+  const { createGame } = await import('../src/game.js');
+  globalThis.document = { documentElement:{} }; globalThis.Image = class { set src(v) {} };
+  const g = createGame(); g.save = () => true; g.onChange = () => {};
+  g.giveLamp();
+  assert.deepEqual(g.notices.filter(n => n.startsWith('lamp-')), ['lamp-received']);
+  assert.equal(g.storySeen['notice:lamp-tower-open'], true);
+  const h = createGame(); h.save = () => true; h.onChange = () => {};
+  h.restore(JSON.parse(JSON.stringify(g.snapshot())));
+  assert.deepEqual(h.notices.filter(n => n.startsWith('lamp-')), ['lamp-received'], 'reload: still the one lamp window, no tower window');
+  const { NOTICES } = await import('../src/z1-events.js');
+  assert.match(NOTICES['lamp-received'].text, /หอส่องกรรม/);
+  assert.match(NOTICES['lamp-received'].en.text, /Mirror Tower/);
+});

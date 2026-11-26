@@ -33,9 +33,9 @@ test('completing sita-lamp gives the lamp once: Hanuman unlocked + in slot 1, 1 
   assert.equal(lampOwned(g), false);
   g.completeStory();
   assert.equal(lampOwned(g), true); assert.deepEqual(unlockedSummoners(g), ['hanuman']); assert.deepEqual(slottedSummoners(g), ['hanuman']); assert.equal(summonUsesLeft(g, 'hanuman'), 1);
-  assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);   // FB3-T5: the tower window follows the lamp window
+  assert.deepEqual(g.notices, ['lamp-received']);   // FB3-T5: the tower window follows the lamp window   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
   g = (() => { const n = createGame(); n.restore(JSON.parse(JSON.stringify(g.snapshot()))); return n; })();
-  assert.equal(lampOwned(g), true); assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);
+  assert.equal(lampOwned(g), true); assert.deepEqual(g.notices, ['lamp-received']);   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
   g.ackNotice('lamp-received'); g.ackNotice('lamp-tower-open'); assert.deepEqual(g.notices, []);
   assert.equal(g.giveLamp(), false, 'never twice');
 });

@@ -151,14 +151,14 @@ test('F5: the Mirror Tower opens when the lamp is in Yama\'s hands - at any rank
   assert.equal(g.giveLamp(), true);
   assert.equal(g.buildLocked('krajok'), false, 'the lamp opens it at rank 1');
   assert.equal(g.build('krajok'), true);
-  assert.deepEqual(g.notices.filter(n => n.startsWith('lamp-')), ['lamp-received', 'lamp-tower-open'], 'the lamp window, then the tower window');
+  assert.deepEqual(g.notices.filter(n => n.startsWith('lamp-')), ['lamp-received'], 'the lamp window, then the tower window');   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
   // the table: still listed for the order, no longer announced at rank 5
   assert.deepEqual(unlockedAtLevel(5), ['lokan']); assert.equal(lockedByEvent('krajok'), true); assert.equal(lockedByEvent('lokan'), false);
   assert.equal(Object.keys(EVENT_UNLOCKS).join(), 'krajok');
 });
 
 test('F5: an old save that already holds the lamp below rank 5 gets the tower at load (and the window once); rank-5 saves and saves that saw it get no window', () => {
-  const holder = level => { const g = game(); g.level = level; g.giveLamp(); g.notices = []; return JSON.parse(JSON.stringify(g.snapshot())); };
+  const holder = level => { const g = game(); g.level = level; g.giveLamp(); g.notices = []; delete g.storySeen['notice:lamp-tower-open']; /* FB3-T8: a save made before the windows were merged never saw the tower window */ return JSON.parse(JSON.stringify(g.snapshot())); };
   const load = save => { const g = game(); g.restore(save); return g; };
   const low = load(holder(2));
   assert.equal(low.buildLocked('krajok'), false, 'open at load');
@@ -170,7 +170,7 @@ test('F5: an old save that already holds the lamp below rank 5 gets the tower at
   assert.equal(noLamp.buildLocked('krajok'), true); assert.deepEqual(noLamp.notices.filter(n => n === 'lamp-tower-open'), []);
   // a save past Sita's case without the lamp (the old migration) gets both windows
   const past = game(); past.level = 2; past.zoneEvents.th = { sitaHanuman:'cleared' }; const migrated = load(JSON.parse(JSON.stringify(past.snapshot())));
-  assert.deepEqual(migrated.notices.filter(n => n.startsWith('lamp-')), ['lamp-received', 'lamp-tower-open']);
+  assert.deepEqual(migrated.notices.filter(n => n.startsWith('lamp-')), ['lamp-received']);   // FB3-T8 (Dale): ONE window - the lamp window carries the tower sentence
 });
 
 test('F5: the tower window exists in Thai and English, and nothing the player reads still says the tower waits for rank 5', () => {

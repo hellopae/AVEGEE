@@ -834,7 +834,7 @@ const API = {
   /** T4: the end of `sita-lamp` - the lamp is in Yama's hands, Hanuman is its first flame (NA-1 says so). Once. */
   giveLamp() {
     if (!receiveLamp(this)) return false;
-    this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open'); this.save(); this.onChange(); return true;   // FB3-T5: the Mirror Tower opens with the lamp (unlocks.js EVENT_UNLOCKS) - this window says so
+    this.queueNotice('lamp-received'); this.storySeen['notice:lamp-tower-open'] = true; this.save(); this.onChange(); return true;   // FB3-T5: the Mirror Tower opens with the lamp (unlocks.js EVENT_UNLOCKS) · FB3-T8: the lamp window says so itself (one window), so the separate tower window is marked seen
   },
   /** T4 (D4): a helper's own event has been passed - he is unlocked and the window "a new helper in the lamp" shows once. The lamp itself can come later. */
   unlockHelper(k) {
@@ -6600,7 +6600,7 @@ API.restore = function (d) {
   // T4: Magic Lamp state. A save from before it has none; one that already passed Sita's case gets the lamp it would have been given (and the window that says so)
   this.magic = d.magic ? structuredClone(d.magic) : freshMagic(); ensureMagic(this);
   if (this.zoneEvents.th?.sitaHanuman === 'cleared' && !this.magic.lamp.owned) {
-    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open');
+    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received'); this.storySeen['notice:lamp-tower-open'] = true;   // FB3-T8: one window (the lamp window carries the tower sentence)
   } else if (this.magic.lamp.owned && (this.level || 1) < 5 && !this.stations.some(s => s.def.k === 'krajok')) {
     this.queueNotice('lamp-tower-open');   // FB3-T5: a save that holds the lamp but is below rank 5 - the tower is open for it now (once: queueNotice skips a window already seen)
   }
