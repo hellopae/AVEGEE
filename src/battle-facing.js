@@ -39,6 +39,9 @@ export const FOE_DRAWN_FACING_RIGHT = new Set([
   'mob-kasha-asia', 'mob-worm-cyberhell',
   'col-s1', 'col-s3', 'col-s6', 'col-s7', 'col-s8', 'col-s9',
   'spirit-business-th', 'spirit-business-asia',
+  // FB3-F2 (owner 26 Nov round 2: "หงอคงฝั่งศัตรู ให้หันมาทางซ้าย"): both Wukong drawings (the boss and his split-off clone) are drawn facing RIGHT (head / eyes turned right, tail on the left) -> mirrored on the enemy side.
+  // The summoned Wukong on OUR side (battle-wukong, T4) is a different drawing and stays facing right.
+  'boss-wukong-asia', 'boss-wukong-clone-asia',
   // ยมทูตที่ถูกสะกดจิตมายืนฝั่งศัตรู: ภาพโซน 3 (และยักษ์โซน 1) วาดหันขวามาแต่ต้น (ดู TEAM_DRAWN_FACING_RIGHT) → ฝั่งศัตรูต้องพลิก
   'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',
 ]);
@@ -50,6 +53,8 @@ export const FOE_DRAWN_FACING_RIGHT = new Set([
 export const TRIAL_SOUL_DRAWN_FACING_RIGHT = new Set([
   'soul-wanthong-th', 'soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west',
   'soul-witch-bread-west', 'soul-younger-brother-west', 'soul-aiscam-cyber',
+  // FB3-F3 (owner 26 Nov round 2: "soul-cupdealer-asia หันผิด · spirit-boy-west หันผิด · soul-admin-cyber ถูกแล้ว"): these two were drawn facing right -> mirrored in the room. soul-admin-cyber is right as it is (NOT listed).
+  'soul-cupdealer-asia', 'spirit-boy-west',
 ]);
 
 /** FB3-EV13: แผ่นท่าต่อสู้ของบอส (img/boss-combat-v1) ที่ "ท่ายืน (idle)" วาดหันขวา แต่ท่าตี/โดนตีของแผ่นเดียวกันหันซ้าย — วาดกลับด้านตอนแสดงเฉพาะท่ายืน
