@@ -13,6 +13,9 @@
 export const TEAM_DRAWN_FACING_RIGHT = new Set([
   'hero-yama-west', 'hero-yama-west-atk-R',
   'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
+  // FB3-EV5 (owner 26 Nov: a called helper stands in OUR team and must face right): the helpers' battle pictures, judged one by one from the drawing (sheet Output/Review/2026-11-26-fb3-t4/facing-summon.jpg).
+  // Drawn facing RIGHT (head / body turned to the right) -> not mirrored. Hanuman is drawn facing left (mirrored, as before); Eirlin, Liangang and Yomathat stand square to the camera (kept as they were).
+  'battle-wukong', 'battle-ryujin', 'battle-jormungandr', 'battle-thor', 'battle-lucifer', 'battle-lupin', 'battle-musashi', 'kuman-thong-battle',
   // J1: Turbo's standing PNG faces LEFT; leave it unregistered so the team renderer mirrors it.
   // H2 ข้อ 7 (คุณเป้ 10 ต.ค.): "หลังจาก yama กดโจมตีธรรมดา ยังหันหน้าไปทางซ้ายอยู่เลย" (โซน 2 ชุดบูรพา)
   // F2 เคยขึ้นทะเบียน hero-yama-asia / hero-yama-cyberhell ว่าวาดหันขวา (ไม่พลิก) แต่ต้นเหตุจริงตอนนั้นคือเฟรมดาบ 0/7 หันซ้าย (แก้แล้วใน F4)
