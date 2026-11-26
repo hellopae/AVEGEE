@@ -46,7 +46,7 @@ function winFight(g) {
   assert.equal(g.battle?.over, 'win'); g.endBattle(); steady(g);
 }
 const drainStories = g => { const seen = []; for (let i = 0; i < 30 && g.storyQueue.length; i++) { seen.push(g.storyQueue[0].key); g.completeStory(); } return seen; };
-const plain = g => g.notices.filter(n => !n.startsWith('kin-'));      // notices of the story beats (the relatives' own are tested apart)
+const plain = g => g.notices.filter(n => !n.startsWith('kin-') && !n.startsWith('build-open-'));   // FB3-MP6: the rank windows ("you can build X") are not story beats      // notices of the story beats (the relatives' own are tested apart)
 const ackAll = g => { const seen = []; for (let i = 0; i < 30 && plain(g).length; i++) { seen.push(plain(g)[0]); g.ackNotice(plain(g)[0]); } return seen; };
 
 test('the table itself: case 3 / 7 / 11 / 13 / 15', () => {

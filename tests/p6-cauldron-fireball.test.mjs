@@ -163,28 +163,29 @@ test('P6 minigame: Space keydown + the keyup click it spawns count once; Close b
 test('P6 minigame: judged at the moment of the press (event time), not the last painted frame; early/late is reported', async () => {
   const s = await start();
   try {
-    s.advance(1400);                                                   // painted ring r=1.133 — just outside the window
+    s.advance(1450);                                                   // painted ring r=1.11 - inside the (FB3-MN3 widened) band
     const late = ptr('pointerdown'); Object.defineProperty(late, 'timeStamp', { value: s.now() + 60 });
-    s.button.dispatchEvent(late);                                      // 60 ms later the ring is at r=1.088 → inside
-    assert.equal(hitsOf(s), 1, 'press 60 ms after the last frame is judged at its own time');
+    s.button.dispatchEvent(late);                                      // FB3-MN3: judged on the ring the player SEES (no extrapolation past the painted frame)
+    assert.equal(hitsOf(s), 1, 'press judged on the painted ring');
   } finally { s.stop(); s.restore(); }
   const e = await start();
   try {
     e.advance(500); e.button.dispatchEvent(ptr('pointerdown'));
+    assert.equal(e.g._krataSession.misses, 0, 'FB3-MN3: far from the green ring = free tap'); assert.match(e.msg.textContent, /ไม่นับพลาด/);
+    e.advance(500); e.button.dispatchEvent(ptr('pointerdown'));        // painted ring r=1.45: near enough to count, too early
     assert.equal(e.g._krataSession.misses, 1); assert.match(e.msg.textContent, /เร็วไป/);
-    e.advance(2400);                                                   // painted ring r=0.8875, still inside
-    const slow = ptr('pointerdown'); Object.defineProperty(slow, 'timeStamp', { value: e.now() + 40 });
-    e.button.dispatchEvent(slow);                                      // 40 ms later r=0.8575 → just past the window
+    e.advance(2600);                                                   // after the 650 ms wait the ring is painted at r=.7 - past the band (.74)
+    const slow = ptr('pointerdown'); e.button.dispatchEvent(slow);
     assert.equal(e.g._krataSession.misses, 2); assert.match(e.msg.textContent, /ช้าไป/);
   } finally { e.stop(); e.restore(); }
 });
 
-test('P6 minigame: reward/difficulty numbers unchanged (window ±0.12 radius, 5 hits / 3 misses, 650 ms retry)', async () => {
+test('P6 minigame: reward numbers unchanged (5 hits / 3 misses, 650 ms retry); FB3-MN3 widened the hit band to .74-1.14', async () => {
   const { trainingHit, trainingRadius } = await import('../src/krata-control.js');
   assert.ok(trainingHit(1.139) && trainingHit(.741) && !trainingHit(1.15) && !trainingHit(.73));   // FB3-MN3: the band was .88-1.12
   assert.ok(Math.abs(trainingRadius(0) - 2.2) < 1e-9 && Math.abs(trainingRadius(1100) - 1.375) < 1e-9);
   const src = readFileSync(new URL('../src/minigames/krata-qte.js', import.meta.url), 'utf8');
-  assert.match(src, /elapsed=-650/); assert.match(src, /radius < \.86 \|\| elapsed >= 2200/);
+  assert.match(src, /elapsed=-650/); assert.match(src, /radius < TRAINING_RESET \|\| elapsed >= 2200/);
 });
 
 test('P6 minigame: cleanup — stop() removes every listener and pending flash timer', async () => {

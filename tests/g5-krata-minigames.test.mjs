@@ -172,10 +172,12 @@ test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, 
     stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>closed++});
     body=host.querySelector('.g5-content');body.querySelector('.g5-choices').children[0].onclick();
     const fire=body.querySelector('[data-fire]');
+    fire.onclick({detail:0});assert.equal(train._krataSession.misses,0,'FB3-MN3: a press while the ring is still far costs nothing');
+    advance(1000);   // ring r=1.45: near enough to count, too early to hit
     fire.onclick({detail:0});fire.onclick({detail:0});
     assert.equal(train._krataSession.misses,1);
-    advance(700);fire.onclick({detail:0});assert.equal(train._krataSession.misses,2);
-    advance(700);fire.onclick({detail:0});
+    advance(1650);fire.onclick({detail:0});assert.equal(train._krataSession.misses,2);
+    advance(1650);fire.onclick({detail:0});
     assert.equal(fire.disabled,true);assert.equal(train._krataSession,null);
     host.querySelector('.mg-x').onclick();assert.equal(closed,1);assert.equal(frame,null);
     for(const zone of ['asia','west','cyberhell']) {

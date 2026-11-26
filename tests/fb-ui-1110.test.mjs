@@ -82,7 +82,7 @@ test('construction sign: small, and reads "กำลังก่อสร้า�
   const sc = read('src/scene.js');
   assert.doesNotMatch(sc, /รอ\$\{builder\?\.name \|\| 'ทัณฑ์'\}เดินมาเริ่มงาน/);
   assert.match(sc, /st\.buildWait \? '🏗️ กำลังก่อสร้าง'/);
-  assert.match(sc, /d\.bx, by - 10, 10, '#ffe7c4', 4\)/, 'label size 10 (was 14)');
+  assert.match(sc, /d\.bx, by - 8, BUILD_LABEL_SIZE, '#ffe7c4', 3\)/, 'label size 7 (FB3-MP1; was 10, 14 before)');
 });
 
 test('locked build site is a lettered plaque with a lock: "ปลดล็อกที่ขั้น N", not a grey box', () => {

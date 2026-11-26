@@ -8,7 +8,7 @@ import { zone4, drain, judge } from './helpers/zone4.mjs';
 test('Zone 4 cases 4 -> 7 -> 8 -> 9 -> 10 -> 12 and HOME-67\'s quest: every scene and window in order', () => {
   const g = zone4(); const played = [], notices = [];
   const cs = g.completeStory.bind(g); g.completeStory = () => { played.push(g.storyQueue[0]?.key); return cs(); };
-  const qn = g.queueNotice.bind(g); g.queueNotice = id => { if (!g.notices.includes(id)) notices.push(id); return qn(id); };
+  const qn = g.queueNotice.bind(g); g.queueNotice = id => { if (!g.notices.includes(id) && !id.startsWith('build-open-')) notices.push(id); return qn(id); };   // FB3-MP6: rank windows are not story beats
   const win = b => { b.youHp = 99999; for (let i = 0; i < 80 && !b.over; i++) { for (const f of b.foes) if (f.hp > 0) { f.hp = 1; f.atk = [0, 0]; } g.selectFoe(b.foes.find(f => f.hp > 0).id); g.battleAct('atk'); if (!b.over && b.pendingWave) g.advanceZoneEventWave(true); } assert.equal(b.over, 'win'); g.endBattle(); drain(g); };
   g.guard = null;
   // case 4
