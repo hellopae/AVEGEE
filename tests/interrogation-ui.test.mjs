@@ -7,10 +7,10 @@ import {spiritNameHtml,keeperBarHtml,kanOrbHtml,KAN_BUTTON_COPY,bindKanClue,team
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const keeper={k:'taan',name:'ทัณฑ์',morale:100};
 const game=()=>({zone:'th',crew:[keeper,{k:'kan',name:'กานต์',morale:100}],stations:[],workers:()=>[{job:{kind:'repair'}},{job:null}],
-  spiritTrait:()=>({key:'concealing',label:'ปิดบังความจริง',icon:'🧿',color:'#b78ae5',keeper:'kan'}),
+  spiritTrait:()=>({key:'concealing',label:'ปิดบังความจริง',icon:'🔮',color:'#b78ae5',keeper:'kan'}),
   keeperTrialInfo:(s,c)=>({benefit:'หากตัดสินถูกและงานจบ ระเบียบ +2',cost:'ต้องอยู่คุมงานจนจบ',matching:c.k==='kan',available:true,why:''}),assignBlock:()=>null});
 
-const TRAITS=[{key:'concealing',label:'ปิดบังความจริง',icon:'🧿',color:'#b78ae5'},
+const TRAITS=[{key:'concealing',label:'ปิดบังความจริง',icon:'🔮',color:'#b78ae5'},
   {key:'resisting',label:'ดื้อและต่อต้าน',icon:'🔥',color:'#ef7777'},{key:'accepting',label:'ยอมรับและพร้อมแก้ไข',icon:'🍃',color:'#83ca96'}];
 
 test('P2: the trait sits on the spirit name tag with the icon first and an accessible label — never colour alone',()=>{
@@ -33,7 +33,7 @@ test('P2: the compact keeper bar lists keepers as picture + name + the colour th
   assert.match(html,/data-pickkey="cr" data-k="taan"/);assert.match(html,/data-pickkey="cr" data-k="kan"/);
   assert.match(html,/aria-pressed="true"[^>]*title="[^"]*ทัณฑ์/s);
   assert.match(html,/is-trait-match/);assert.match(html,/คุมได้|เหมาะกับลักษณะนี้/);
-  assert.match(html,/data-k="kan"[\s\S]*?🧿/);assert.match(html,/data-k="plerng"[\s\S]*?🔥/);assert.doesNotMatch(html.split('data-k="taan"')[1].split('</button>')[0],/🧿|🔥|🍃/,'taan is not tied to a colour');
+  assert.match(html,/data-k="kan"[\s\S]*?🔮/);assert.match(html,/data-k="plerng"[\s\S]*?🔥/);assert.doesNotMatch(html.split('data-k="taan"')[1].split('</button>')[0],/🔮|🔥|🍃/,'taan is not tied to a colour');
   assert.match(html,/มีงานแล้ว 1 คน · ว่าง 1 คน/);
   assert.doesNotMatch(html,/คนงานหนึ่งคนทำได้ทีละงาน|keeper-role-roster|ภาระและต้นทุน:/,'long explanations moved to the handbook');
   g.assignBlock=()=>({key:'keeperCost',text:'ต้องใช้เสบียงเพิ่ม 2'});

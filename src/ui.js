@@ -122,6 +122,7 @@ import { GATE } from './z2-gate.js';
 import { BOATMAN, BOATMAN_TEXT, ART as BOAT_ART, canListen, canSing, heardCount, ensureBoatman, boatLine, VERSE_OF_ZONE } from './boatman.js';
 import { lt } from './lamp-text.js';
 import * as LAMP from './lamp.js';   // T4: Magic Lamp
+import { mountGuidePages } from './guide-pages.js';   // FB3-MN1: the five handbook pages (boxes + pictures)
 import { Z2_TEXT, Z2_ART_KEY } from './z2-events.js';
 import { KIN_BY_KEY as Z2_KIN_BY_KEY } from './z3g-kin.js';   // T7c/6: the relatives of Zone 2 and Zone 3
 import { Z3_ART_KEY } from './z3d-cases.js';   // T7b/3
@@ -2602,7 +2603,7 @@ function openHelp(initialTab = 'guide') {
           จี้ถูก = เขาสารภาพเรื่องที่ยังไม่เปิดให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
           (จี้ได้ 2 ครั้งต่อคดี) · ใช้<b>ตวาดข่มขู่</b>เพื่อชี้ข้อหลักฐานที่ควรสอบสวน แล้วกดข้อที่มี 💢 · คูลดาวน์ 2 นาที</li>
       <li><b>กระจกวิเศษมีจำนวนจำกัด</b> — ใช้แล้วหมดไป ชนะเทวดาทดสอบได้เพิ่ม 1 บาน เลื่อนขั้นแล้วมีเติมให้ (ตั้งแต่ขั้น 5 เติมเต็ม)
-          และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> (${esc(t('unlock.towerWhen'))}) ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
+          และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> · ${esc(t('unlock.towerWhen'))} · ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
           ค้างไว้จนได้ครั้งละ 1 บาน ต้องรอ 5 วาระก่อนเติมครั้งถัดไป ไม่ใช่เติมได้ไม่จำกัด</li>
       <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ส่งไปสถานที่ไม่ตรงกรรม เขาอาจยังไม่สำนึกและกลับไปก่อเรื่องต่อ
           แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
@@ -2646,9 +2647,12 @@ function openHelp(initialTab = 'guide') {
       const intro = `<h2>วิธีเล่น</h2>${source.querySelector('h2 + p').outerHTML}
         ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
       const reader = d.querySelector('.help-reader');
-      const guideHtml = `${intro}<div class="guide-card-grid">${items.map((html, i) =>
+      const guideHtml = `${intro}<div data-gp-root></div><div class="guide-card-grid">${items.map((html, i) =>
         guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>${historyHtml()}`;
       reader.innerHTML = `<div class="quest-help-tabs" role="tablist" aria-label="หนังสือคู่มือ"><button type="button" id="help-guide-tab" role="tab" aria-controls="help-guide-panel" data-help-tab="guide">วิธีเล่น</button><button type="button" id="help-quests-tab" role="tab" aria-controls="help-quests-panel" data-help-tab="quests">ภารกิจ</button></div><section id="help-guide-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-guide-tab">${guideHtml}</section><section id="help-quests-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-quests-tab">${questJournalHtml(g,trackedQuestId)}</section>`;
+      // FB3-MN1: the five handbook pages; pages 4 (lamp) and 5 (a seized city) stay shut until the story has got there
+      mountGuidePages(reader.querySelector('[data-gp-root]'), { lang:getLang(), t, art:k => artUrl(k) || '', stationImg:k => wideStationRoom(g.zone, k)?.image || wideStationRoom('th', k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp') || '',
+        unlocked:{ lamp:LAMP.lampOwned(g), seized:seizedActive(g) || g.zoneEvents?.cyberhell?.signalClose === 'cleared' } });
       const select=tab=>{for(const button of reader.querySelectorAll('[data-help-tab]')){const on=button.dataset.helpTab===tab;button.setAttribute('aria-selected',String(on));button.tabIndex=on?0:-1;reader.querySelector('#help-'+button.dataset.helpTab+'-panel').hidden=!on;}};
       reader.querySelectorAll('[data-help-tab]').forEach(button=>{button.onclick=()=>select(button.dataset.helpTab);button.onkeydown=event=>{const tabs=[...reader.querySelectorAll('[data-help-tab]')],index=tabs.indexOf(button);let next=null;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;if(next!==null){event.preventDefault();select(tabs[next].dataset.helpTab);tabs[next].focus();}};});
       select(initialTab==='quests'?'quests':'guide');

@@ -11,6 +11,10 @@
    "after": "    desc:'หอส่องกรรมริมแม่น้ำวิญญาณ — วางกระจกสะท้อนแสงเพื่อเติมกระจกวิเศษเป็นระยะ',\n"
   },
   {
+   "before": "  { k:'kan', duty:'อ่านสำนวนหาช่องโหว่', says:[\"\\\"สำนวนนี้มีอะไรที่ยังไม่ได้เขียนลงไป\\\"\", \"\\\"ท่านอ่านบรรทัดสุดท้ายหรือยังครับ\\\"\", \"\\\"คนโกหกจะเล่าเรียงลำดับเป๊ะเกินไปเสมอ\\\"\"], hx:1350, hy:336, roam:130, name:'กานต์', names:{asia:'ซาโตริ', west:'ซิบิล', cyberhell:'ไซเฟอร์'}, glyph:'🧿', raeng:4, rabiab:6, panya:9, metta:6, pay:18, hire:260,\n",
+   "after": "  { k:'kan', duty:'อ่านสำนวนหาช่องโหว่', says:[\"\\\"สำนวนนี้มีอะไรที่ยังไม่ได้เขียนลงไป\\\"\", \"\\\"ท่านอ่านบรรทัดสุดท้ายหรือยังครับ\\\"\", \"\\\"คนโกหกจะเล่าเรียงลำดับเป๊ะเกินไปเสมอ\\\"\"], hx:1350, hy:336, roam:130, name:'กานต์', names:{asia:'ซาโตริ', west:'ซิบิล', cyberhell:'ไซเฟอร์'}, glyph:'🔮', raeng:4, rabiab:6, panya:9, metta:6, pay:18, hire:260,\n"
+  },
+  {
    "before": "export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03\n",
    "after": "export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ผู้เฝ้าด่านสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03\n"
   },

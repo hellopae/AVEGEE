@@ -1,6 +1,6 @@
 /** Pure courtroom rules. Trait colors describe behavior, never guilt or sentence severity. */
 const traits=Object.freeze({
-  concealing:Object.freeze({key:'concealing',icon:'🧿',label:'ปิดบังความจริง',color:'#b78ae5',keeper:'kan'}),
+  concealing:Object.freeze({key:'concealing',icon:'🔮',label:'ปิดบังความจริง',color:'#b78ae5',keeper:'kan'}),
   resisting:Object.freeze({key:'resisting',icon:'🔥',label:'ดื้อและต่อต้าน',color:'#ef7777',keeper:'plerng'}),
   accepting:Object.freeze({key:'accepting',icon:'🍃',label:'ยอมรับและพร้อมแก้ไข',color:'#83ca96',keeper:'boon'}),
 });
@@ -13,7 +13,7 @@ const roles=Object.freeze({
   taan:Object.freeze({key:'taan',name:'ทัณฑ์ · คุมงานเป็นระเบียบ',
     benefit:'หากตัดสินถูกและงานลงทัณฑ์จบ ระเบียบเมือง +2',
     cost:'ต้องคุมจนจบ จึงไม่ว่างไปสร้างหรือซ่อมอาคาร'}),
-  boon:Object.freeze({key:'boon',name:'บุญ · ชำระกรรม',
+  boon:Object.freeze({key:'boon',name:'บุญ · ช่วยลดกรรม',
     benefit:'หากตัดสินถูกและงานลงทัณฑ์จบ กรรมของยามา −1',
     cost:'ใช้เวลาลงทัณฑ์เพิ่ม 20% และไม่ว่างช่วยพักฟื้น'}),
   plerng:Object.freeze({key:'plerng',name:'เพลิง · ปราบความดื้อ',
@@ -47,12 +47,12 @@ export function revealOneIssue(soul){
   let text;
   if(issue.kind==='deed'){
     const d=soul.deeds[issue.index];d.known=true;d.visible=true;
-    text=`🧿 กานต์เปิดข้อเท็จจริงหนึ่งประเด็น — ${d.t||'ข้อเท็จจริงในสำนวน'}`;
+    text=`🔮 กานต์เปิดข้อเท็จจริงหนึ่งประเด็น — ${d.t||'ข้อเท็จจริงในสำนวน'}`;
   }else if(issue.kind==='merit'){
     const m=soul.merits[issue.index];m.exposed=true;
-    text=`🧿 กานต์ตรวจคำอ้างหนึ่งประเด็น — “${m.t||'บุญที่อ้าง'}” เป็นเรื่องแต่งขึ้น`;
+    text=`🔮 กานต์ตรวจคำอ้างหนึ่งประเด็น — “${m.t||'บุญที่อ้าง'}” เป็นเรื่องแต่งขึ้น`;
   }else{
-    soul.secretSeen=true;text=`🧿 กานต์เปิดข้อเท็จจริงหนึ่งประเด็น — ${soul.secret}`;
+    soul.secretSeen=true;text=`🔮 กานต์เปิดข้อเท็จจริงหนึ่งประเด็น — ${soul.secret}`;
   }
   return {kind:'truth',text};
 }
