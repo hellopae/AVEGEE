@@ -20,9 +20,17 @@ const p2 = RAW_Z4G_SIGNAL_WIN_PAGE2;
 const SIGNAL_WIN = { ...sigWin, pages:[sigWin.pages[0], { image:sigWin.pages[1].image, title:p2.title.th, line:p2.line.th, en:{ title:p2.title.en, line:p2.line.en } }] };
 const L2 = (th, en) => ({ th, en });
 const GUARD_RELEASE = {
-  west:L2('แวน เฮลซิง: "เสียงในหัวข้าเงียบแล้ว ขอบคุณท่าน ทั้งห้าคนยังอยู่ใต้คำสั่ง ช่วยพวกเขาด้วย ข้าจะเฝ้าประตูเอง"', 'Van Helsing: "The voice in my head is gone. Thank you. The five reapers are still under its orders. Help them. I will hold the gate."'),
-  asia:L2('กวนอู: "เสียงนั้นหายไปแล้ว ท่านช่วยข้าไว้ พวกเขายังต้องการท่าน ไปเถิด ข้าจะเฝ้าประตูเอง"', 'Guan Yu: "The voice is gone. You freed me. They still need you. Go on. I will hold the gate."'),
-  th:L2('กุมภัณฑ์: "ในที่สุดข้าก็วางกระบองลงได้ ขอบคุณท่าน ไปช่วยคนในเมืองเถิด ข้าจะอยู่เฝ้าประตู"', 'Kumphan: "At last I can lower my club. Thank you. Go and help the people inside. I will stay at the gate."'),
+  // FB3-L3 (owner 26 Nov): the freed Guard now goes WITH Yama and Nira to the lord and the controlled reapers (he used to stay at the gate). PLACEHOLDER wording from Toby - Rae writes the real lines (R2).
+  west:L2('แวน เฮลซิง: "เสียงในหัวข้าเงียบแล้ว ขอบคุณท่าน ทั้งห้าคนยังอยู่ใต้คำสั่ง ข้าจะไปช่วยท่านปลดพวกเขาเอง"', 'Van Helsing: "The voice in my head is gone. Thank you. The five reapers are still under its orders. I will go with you and free them."'),
+  asia:L2('กวนอู: "เสียงนั้นหายไปแล้ว ท่านช่วยข้าไว้ พวกเขายังต้องการท่าน ไปเถิด ข้าจะไปด้วย"', 'Guan Yu: "The voice is gone. You freed me. They still need you. Let us go. I am coming with you."'),
+  th:L2('กุมภัณฑ์: "ในที่สุดข้าก็วางกระบองลงได้ ขอบคุณท่าน ไปช่วยคนในเมืองกันเถิด ข้าจะไปกับท่านเอง"', 'Kumphan: "At last I can lower my club. Thank you. Let us go and help the people inside. I am coming with you."'),
+};
+/** FB3-L3 (owner 26 Nov): after the duel Nira frees the Guard from the spell - its own short scene, then he joins the team. PLACEHOLDER wording from Toby - Rae writes the real text (R2). */
+const guardFreedStory = (zone, name) => {
+  const title = L2(`นิราปลดสะกด · ${name.th}`, `Nira Breaks the Spell · ${name.en}`);
+  const line = L2(`บรรยาย: ${name.th}ทรุดเข่าลงกลางประตู แสงเขียวในตายังวูบวาบ นิราก้าวออกมาข้างหน้า ยกแผ่นกระจกขึ้นเหนือไหล่เขา เส้นแสงเขียวที่พาดตาแตกเป็นเสี่ยงแล้วจางหายไป\nนิรา: "ปลดแล้วค่ะ คำสั่งนั้นไม่ใช่ของท่านอีกต่อไป"\n${name.th}: "ข้ากลับมาเป็นตัวข้าแล้ว ข้าจะไปกับท่าน"`,
+    `Narration: ${name.en} sinks to one knee in the gateway, the green light in his eyes still flickering. Nira steps forward and raises her mirror over his shoulder. The green line across his eyes shatters and fades.\nNira: "It is broken. That order is no longer yours."\n${name.en}: "I am myself again. I will go with you."`);
+  return fromRae({title,pages:[{title,line}]},Z4G_ART.guard[zone]);
 };
 const guardStory = (zone, name) => {
   const title = L2(`ผู้เฝ้าด่าน · ${name.th}`, `At the Gate · ${name.en}`);
@@ -48,6 +56,7 @@ export const Z4G_STORIES = Object.freeze({
   'cyber-signal-win':SIGNAL_WIN,
   [Z4G_KEYS.passStory]:PASS,
   ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardStory[zone],guardStory(zone,name)])),
+  ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardFreed[zone],guardFreedStory(zone,name)])),
   ...Object.fromEntries(Object.entries(RAW_Z4G_SCENES).map(([key,raw])=>[key,returnStory(key,raw)])),
 });
 /** NR-1 per zone: the title carries the zone's name (Rae's `<ชื่อโซน>` / `<Zone>` placeholder) */

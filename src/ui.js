@@ -17,6 +17,7 @@ import { featherText, featherHas, FEATHER_NEED } from './feather-quest.js';   //
 import { questNeedsFight } from './quest-rewards.js';
 import { QUEST_FIGHTS, QUEST_FIGHT_SYSTEM_TEXT, fightScene } from './quest-fights.js';
 import { SIGNAL_KEYS, RETURN_GUARD_EVENTS, signalStory } from './signal-arc.js';
+import { lib } from './liberation-text.js';   // FB3-L2
 import { Z4G_KEYS } from './seized-keys.js';
 import { COMBAT_SKILLS, skillForActor, questSkillsForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
@@ -3599,7 +3600,14 @@ function openReturnGuard() {
   }
   pauseForDlg();
   const fight=getLang()==='en' ? 'Break the spell' : 'สู้เพื่อปลดสะกด';
-  modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><button class="gold" data-return-guard>${esc(fight)}</button>`,d=>{
+  const L = getLang();
+  // FB3-L2: the team of this fight is fixed - Yama + Nira; the reapers of the city are shown, locked, with the reason
+  const lockedCrew = g.crewHelpers().filter(c => c.k !== 'nira');
+  const team = `<div class="return-team" role="group" aria-label="${esc(lib('team.forcedHead', null, L))}"><h3>${esc(lib('team.forcedHead', null, L))}</h3><p class="hint">${esc(lib('team.duel', null, L))}</p>
+    <div class="frontier-party" style="display:flex;gap:18px;justify-content:center"><div class="frontier-hero"><img style="height:104px;width:auto" src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
+      <div class="frontier-hero mate"><img style="height:104px;width:auto" src="${artUrl('crew-nira')}" alt=""><b>${esc(g.crewOf('nira')?.name || 'นิรา')}</b></div></div>
+    ${lockedCrew.length ? `<p class="hint return-team-locked">🔒 ${lockedCrew.map(c => esc(c.name)).join(' · ')} — ${esc(lib('team.lockedReason', null, L))}</p>` : ''}</div>`;
+  modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p>${team}<button class="gold" data-return-guard>${esc(fight)}</button>`,d=>{
     d.querySelector('[data-return-guard]').onclick=()=>{if(g.startZoneEvent(ev.k))openBattle();};
   });
 }
@@ -3946,6 +3954,8 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
+  // FB3-L2 / FB3-L3: the lord's fight of a seized zone (Zones 1-3 walking back) has a FIXED team - Yama + Nira + the Guard Nira has just freed; the controlled reapers cannot join
+  const forcedTeam = !!(bev?.signal && RETURN_GUARD_EVENTS[g.zone]);
   if (['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach',...Object.values(SIGNAL_KEYS)].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
   // An invasion requires walking to the boss in the frontier scene. He speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
@@ -4017,7 +4027,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
         <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${g.partyMax()} คน แล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
-        ${chosen.map(k => {
+        ${forcedTeam ? `<div class="frontier-hero mate"><img src="${artUrl('crew-nira')}" alt=""><b>${esc(g.crewOf('nira')?.name || 'นิรา')}</b></div>${actorStanding(g.guard) ? `<div class="frontier-hero mate"><img src="${artUrl('crew-guard')}" alt=""><b>${esc(guardName(g.zone))}</b></div>` : ''}` : chosen.map(k => {
           const c = helpers.find(x => x.k === k); if (!c) return '';
           return `<div class="frontier-hero mate"><img src="${artUrl('crew-' + c.k)}" alt=""><b>${esc(c.name)}</b></div>`;
         }).join('')}
@@ -4025,7 +4035,8 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       <section class="frontier-panel">
         <div class="frontier-head"><span><b>${breach ? `ระลอก 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
           <span class="frontier-loot">${breach ? esc(breachLoot) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
-        <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${g.partyMax()}</small></h3>
+        ${forcedTeam ? `<div class="frontier-team forced-team"><h3>${esc(lib('team.forcedHead', null, getLang()))}</h3><p class="hint">${esc(lib('team.lord', { guard:guardName(g.zone) }, getLang()))}</p>
+          <p class="hint return-team-locked">🔒 ${esc(lib('team.lockedAll', null, getLang()))}${helpers.filter(c => c.k !== 'nira').length ? ' · ' + helpers.filter(c => c.k !== 'nira').map(c => esc(c.name)).join(' · ') : ''}</p></div>` : `<div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${g.partyMax()}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= g.partyMax();
             return `<button data-frontier-crew="${c.k}" class="frontier-card${on ? ' selected' : ''}" ${full ? 'disabled' : ''}>
@@ -4033,9 +4044,9 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
               <span><b>${esc(c.name)}</b><small>แรง ${c.raeng} · กำลังใจ ${Math.round(c.morale)}</small></span>
               <i>${on ? '✓ เข้าทีม' : 'เลือก'}</i></button>`;
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
-        </div>
+        </div>`}
         <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
-          <button class="gold" data-frontier-start ${chosen.length || fromWalk || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปป้องกันชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk || forcedTeam || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปป้องกันชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
@@ -5615,6 +5626,9 @@ function openBorder() {
   // f1 (owner 13 Nov): the border boss is there the first time Yama walks down - not only after leaving and coming back
   const pending=g.breachPending();
   if(pending){if(!g.eventMapClosed[`${g.zone}:${pending.key}`])g.dismissEventAlert(pending.key);openFrontier(false,pending.key);return;}
+  // FB3-L3: the controlled lord of a seized zone (a signal event) is not a `breachPending` one - when its alert has been acknowledged, the gate leads to its team page, not to the ordinary frontier (the auto-open on arrival used to win the race with the march check)
+  const march=g.breachMarch();
+  if(march?.ev?.signal){openFrontier(false,march.key);return;}
   openFrontierWalk();
 }
 /** T5'/4 (Rae 7.1): NG-1 -> z2-guanyu-open -> the fight -> z2-guanyu-win (queued by the win) -> `onDone`. A lost fight sends Yama to the tea house as any lost fight; he comes back and walks the route again. */

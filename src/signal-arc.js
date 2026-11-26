@@ -34,7 +34,7 @@ export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUAR
     title:{th:`ปลดสะกด ${name.th}`, en:`Free ${name.en}`},
     alert:{th:'ยามากับนิราต้องช่วย Guard ให้หลุดจากคำสั่งก่อนเข้าประตู', en:'Yama and Nira must break the spell on the gate guard before entering.'},
     foe:{name:name.th,nameEn:name.en,sp:'crew-guard',boss:false,hypno:true,hp,atk},
-    winStories:[Z4G_KEYS.fire[zone]],reward:{exp:10}}];
+    winStories:[Z4G_KEYS.guardFreed[zone],Z4G_KEYS.fire[zone]],reward:{exp:10}}];   // FB3-L3: Nira frees him (own scene) -> the fire scene
 }));
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
   k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?10:0,

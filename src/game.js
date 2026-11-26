@@ -3489,7 +3489,9 @@ const API = {
     if (key === Z4S.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:!!this.guard });   // T8b/5 (Rae D 6.1): Yama + Nira + WATSON-03 - HOME-67 stands behind Yama and does not fight
     if (key === Z4T.eventKey) Object.assign(this.battle, { expeditionParty:true, home67Guest:true, guardGuest:!!this.guard });   // T8b/2 (Rae D 4.1): Yama + Nira + HOME-67 (from the pier, for this fight only) + WATSON-03
     if (ev.returnGuard || (ev.signal && RETURN_GUARD_EVENTS[this.zone])) {
-      Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:false, sceneBiome:'border' });
+      // FB3-L2 / FB3-L3 (owner 26 Nov): at the gate of a seized zone the team is Yama + Nira only (the reapers are controlled); once Nira has freed the Guard (the returnGuard duel is won - startZoneEvent refuses
+      // the lord's fight before that) he stands with them against the lord and the controlled reapers
+      Object.assign(this.battle, { expeditionParty:true, home67Guest:false, guardGuest:!ev.returnGuard && actorStanding(this.guard), sceneBiome:'border' });
     }
     if (key === 'westVampireBreach') this.battle.talk = langPick(Z3_FRONTIER_TEXT.between.start);   // T7/2: Van Helsing, who stands beside Yama from the first wave (he is the guest Guard of this fight)
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
