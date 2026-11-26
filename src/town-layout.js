@@ -37,6 +37,8 @@ export const TOWN_DAIS = { x:1862, y:1057, w:307 };
 export const TOWN_SPOTS = {
   plaza:{x:1862,y:1090}, bench:{x:1862,y:1078}, throne:{x:1862,y:917},
   bossPier:{x:2240,y:1680}, ferry:{from:[2225,1780],to:[2640,1780]},
+  // FB3-T5 (owner EV11 / EV20): where Khun Phaen and the elder brother stand while they wait - ON the dais floor, left of the throne (Nira is on the right, 1938,950)
+  daisFoe:{x:1800,y:950},
 };
 // L1: Nira stands ON the judgement dais (the old spot was hidden behind a banyan). The platform floor is
 // x 1760-1965 / y 905-980 (measured on town-judgment-th-v2); the throne seat is at (1862,917), the stairs at

@@ -72,6 +72,7 @@ import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { DEFEAT_SCENE_MS, NIRA_WAKE_LINE, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';
+import { daisFoeSpot } from './npc-stand.js';
 import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
@@ -2067,7 +2068,7 @@ function openZoneEventAlert(ev) {
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
-  // Z1-EVENTS (owner e8): the elder brother stands at the pier and can be talked to - this window IS that talk (prepare / fight), no cave walk
+  // Z1-EVENTS (owner e8): the elder brother stands on the dais and can be talked to - this window IS that talk (prepare / fight), no cave walk
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
     openEventAlert(ev.k, title, ev.k === 'westVampireBreach' || ev.k === 'asiaRageBreach' || ev.k === Z4T.eventKey ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);   // Z2-EVENTS: Rae N11-1 for Zone 2
     return;
@@ -2179,24 +2180,33 @@ function verdictComment(v) {
   return (v.reason || BOSS_LINE[v.boss] || BOSS_LINE.ok) + (bonus ? ` · เบี้ยพิเศษ +${bonus}` : '');
 }
 
-/** Z1-EVENTS (case 15): the elder brother walks in through the lower border gate to the pier -> cutscene Intro-Boss-Zone1 -> the notice window.
- *  After that he stands at the pier (npc-stand.js waitingEvents) and talking to him opens the same window. */
+/** Z1-EVENTS (case 15): the elder brother walks in through the lower border gate and UP onto the judgement dais (owner EV20; it was the pier) -> cutscene Intro-Boss-Zone1 -> the notice window.
+ *  After that he stands on the dais (npc-stand.js waitingEvents) and talking to him opens the same window. */
 function beginBrotherArrival(ev) {
-  const path = findPath(FRONTIER.x, FRONTIER.y, SPOTS.bossPier.x, SPOTS.bossPier.y);
-  const from = [FRONTIER.x, FRONTIER.y], to = [SPOTS.bossPier.x, SPOTS.bossPier.y];
-  g.bossWalk = { started:Date.now(), duration:4200, from, to, path:path?.length ? [from, ...path] : null, arrival:true };
+  const dais = daisFoeSpot();
+  const path = findPath(FRONTIER.x, FRONTIER.y, dais.x, dais.y);
+  const from = [FRONTIER.x, FRONTIER.y], to = [dais.x, dais.y];
+  const duration = brotherWalkMs(path?.length ? [from, ...path] : [from, to]);
+  g.bossWalk = { started:Date.now(), duration, from, to, path:path?.length ? [from, ...path] : null, arrival:true };
   pauseForDlg(); sfx('gong');
   const done = () => {
     if (dlg.open) { setTimeout(done, 300); return; }
     g.bossWalk = null;
     if (g.over || g.zone !== 'th' || g.zoneEventStatus('thBorderBoss') !== 'pending') { refresh(); return; }
+    g.dismissEventAlert('thBorderBoss');   // he is standing on the dais now: keep him drawn there while the notice window is open
     openBossArrive(g.zoneDef(), () => {
-      g.bossArriveSeen.th = true; g.dismissEventAlert('thBorderBoss');
+      g.bossArriveSeen.th = true;
       openZoneEventAlert(ev);
     }, getLang() === 'en' ? 'Meet Yomathat' : 'ไปพบพี่ใหญ่');
   };
-  setTimeout(done, 4200);
+  setTimeout(done, duration);
 }
+/** Walk time of the elder brother: the old 4.2 s covered the short way to the pier; the way up to the dais is about twice as long, so the pace stays about the same (cap 8 s). */
+const brotherWalkMs = pts => {
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  return Math.round(Math.min(8000, Math.max(4200, len * 6)));
+};
 
 /** Z2-EVENTS case 15: the zone boss walks in from the lower border gate to the pier (same walk the elder brother takes in Zone 1). */
 let bossWalkingIn = false;

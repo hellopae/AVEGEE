@@ -5475,7 +5475,7 @@ const API = {
     checkpoint=typeof opts.patrol==='string'?opts.patrol:Number.isInteger(checkpoint)?checkpoint:null;
     if(!(typeof checkpoint==='string'?dungeonAtPatrol(this,checkpoint):opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
-    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits at the pier (case 15)
+    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits on the judgement dais (case 15)
     if(encounter.boss) {
       const battle=this.startZoneEvent(routeBossCave(dungeonStatus(this)?.route.id)?.eventKey||'thBorderBoss');
       if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';battle.expeditionParty=false;this.save();}

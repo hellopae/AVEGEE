@@ -1976,7 +1976,7 @@ export const ZONE_EVENTS = {
     lines:WANTHONG_TEXT.lines, win:{ title:WANTHONG_TEXT.win.title, text:WANTHONG_TEXT.win.text }, loseText:{ title:WANTHONG_TEXT.lose.title, text:WANTHONG_TEXT.lose.text }, loseStory:'z1-khunphaen-lose',
     foe:{ name:'ขุนแผน', sp:'boss-khunphaen-th', hp:270, atk:[18,28], boss:true, skills:BOSS_SKILLS.khunphaen },
     reward:{}, lose:{ hp:9 } },
-  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.
+  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and up onto the judgement dais, where he waits (ui.js, npc-stand.js - owner EV20). He comes after the Sita / Hanuman case.
   { k:'thBorderBoss', atCases:15, requires:['frontierBreach','sitaHanuman','khunPhaen'], mode:'group',
     title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 15', en:'Your elder brother arrives with two demons to test you after case fifteen.' },

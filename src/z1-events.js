@@ -345,5 +345,5 @@ export const TEAM_MOVE_UNLOCK = 'th-team-judgment-unlock';
 /** Every cutscene of the event work packages (Zone 1 here, Zone 2 from z2-events.js): story.js storyOf() reads this one table. */
 export const Z1_STORIES = { ...SITA_STORIES, ...BREACH_STORIES, ...WANTHONG_STORIES, ...YOMATHAT_STORIES, ...GATE_ALL_STORIES, ...BOATMAN_STORIES, ...Z2_STORIES, ...Z3_ARRIVE_STORIES, ...Z3_FRONTIER_STORIES, ...Z4T_STORIES, ...Z4S_STORIES, ...Z4L_STORIES, ...Z3_CASE_STORIES, ...EIRLIN_STORIES, ...SEV_STORIES, ...Z4A_STORIES, ...Z4G_STORIES, ...Z4H_STORIES };
 
-/** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up to the pier. */
-export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.bossPier.x, spots.bossPier.y] });
+/** Where the elder brother walks on the town map when case 15 opens: in through the lower border gate, up the stairs onto the judgement dais (owner EV20; it was the pier). */
+export const bossWalkEnds = (frontier, spots = SPOTS) => ({ from:[frontier.x, frontier.y], to:[spots.daisFoe.x, spots.daisFoe.y] });
