@@ -11,8 +11,8 @@ export function breachApproachActors(zone, key) {
   const addArt = mob.sp || MOB.kinds[mob.kind].img;
   return [
     { id:'breach:boss', ...CHALLENGE_STAND[zone], art:boss.sp.replace(/-(asia|west|cyberhell)$/, ''), name:BOSS_NAMES[zone].frontier, boss:true, hypno:!!ev.signal, arrived:true },
-    { id:'breach:add:1', x:.72, y:.53, art:addArt, name:t('event.frontierBreach.marker'), arrived:true, sway:{ ax:.022, ay:.004, period:6200, phase:0 } },
-    { id:'breach:add:2', x:.63, y:.70, art:ev.waves[0][1]?.sp || addArt, name:t('event.frontierBreach.marker'), arrived:true, sway:{ ax:.026, ay:.004, period:7400, phase:2.1 } },
+    { id:'breach:add:1', x:.72, y:.53, art:addArt, name:t('event.frontierBreach.marker'), arrived:true, hypno:!!ev.signal, sway:{ ax:.022, ay:.004, period:6200, phase:0 } },
+    { id:'breach:add:2', x:.63, y:.70, art:ev.waves[0][1]?.sp || addArt, name:t('event.frontierBreach.marker'), arrived:true, hypno:!!ev.signal, sway:{ ax:.026, ay:.004, period:7400, phase:2.1 } },
   ];
 }
 
@@ -39,7 +39,7 @@ export function breachCrowdActors(zone, key, walkable = () => true) {
       if (n >= 3) break;
       if (!walkable(x, y) || placed.some(([px, py]) => Math.abs(px - x) < CROWD_APART[0] && Math.abs(py - y) < CROWD_APART[1])) continue;
       placed.push([x, y]); n++;
-      out.push({ id:`breach:crowd:${out.length}`, x, y, art:arts[out.length % arts.length], name:t('event.frontierBreach.marker'), arrived:true, crowd:true, sway:{ ax, ay:.004, period, phase } });
+      out.push({ id:`breach:crowd:${out.length}`, x, y, art:arts[out.length % arts.length], name:t('event.frontierBreach.marker'), arrived:true, crowd:true, hypno:!!ev?.signal, sway:{ ax, ay:.004, period, phase } });
     }
   }
   return out;

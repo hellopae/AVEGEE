@@ -317,7 +317,7 @@ export function makeFrontierWalk(cv, g, opts) {
         drawStandee(ctx, en.art || kd.img, x, y, U * (en.boss ? BOSS_H : MOB_H), t, '👹', pose.face ?? (en.x < P.x ? 1 : -1), pose.face ? pose.moving : !en.arrived);
         if(en.hypno){
           ctx.save();ctx.strokeStyle='#a1ffe1';ctx.globalAlpha=.7;ctx.lineWidth=2;
-          for(let k=0;k<7;k++){const sy=y-U*BOSS_H+(k/7+(t%700)/4900)*U*BOSS_H;ctx.beginPath();ctx.moveTo(x-U*.035,sy);ctx.lineTo(x+U*.035,sy);ctx.stroke();}
+          {const hh=U*(en.boss?BOSS_H:MOB_H);for(let k=0;k<7;k++){const sy=y-hh+(k/7+(t%700)/4900)*hh;ctx.beginPath();ctx.moveTo(x-U*(en.boss?.035:.024),sy);ctx.lineTo(x+U*(en.boss?.035:.024),sy);ctx.stroke();}}   // FB3-L4: the controlled reapers of a signal event get the lines at their own height
           ctx.restore();
         }
         if (inReach) {

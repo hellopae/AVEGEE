@@ -47,6 +47,7 @@ import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';
 import { lockedByEvent } from './unlocks.js';
+import { cityFireOn, gateControlled, drawCityFire, drawControlledMark } from './city-fire.js';   // FB3-L4 / L5
 import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
@@ -632,7 +633,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // T6/6 (Rae R2 B 6.6): Cerberus stands by the western gate once he has bowed - no talk (he does not speak), he is not the Guard
   if (g.zone === 'west' && g.cerberusGuarding?.()) {
     const gx = ZONE_ENTRY.gate[0] + 120, gy = ZONE_ENTRY.gate[1] - 96, gh = 150 * CHAR_SCALE_MAP;   // T7/2: bigger and higher - he was a small dot hidden behind the buttons at 390px (T6 note)
-    at(1e5 + gy, () => { shade(gx, gy, gh, c => drawStandee(c, 'guard-cerberus-west', gx, gy, gh, t, '🐕', -1, false, 'west')); });
+    at(1e5 + gy, () => { shade(gx, gy, gh, c => { drawStandee(c, 'guard-cerberus-west', gx, gy, gh, t, '🐕', -1, false, 'west'); if (gateControlled(g)) drawControlledMark(c, gx, gy, gh, t, reduced); }); });   // FB3-L4: Cerberus is controlled too
   }
 
   for (const ev of waitingEvents(g)) at(1e5 + ev.y, () => {
@@ -722,6 +723,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         if (motion.moving && drawCrewWalk(c, GUARD.img, guard.x, guard.y,
             h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
         mapStandee(c, GUARD.img, guard.x, guard.y, h, t, '🛡️', motion.face, motion.moving);
+        if (gateControlled(g)) drawControlledMark(c, guard.x, guard.y, h * CHAR_SCALE_MAP, t, reduced);   // FB3-L4: under the spell until Nira frees him
       });
     });
   }
@@ -841,6 +843,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   lateTags.forEach(fn => fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
   if(town)drawTownNightEffects(ctx,t,reduced);
+  if(town&&cityFireOn(g))drawCityFire(ctx,g,t,reduced||!!g.paused,SCENE.w,SCENE.h);   // FB3-L5: the seized city burns (code effect, gone when the lord is freed)
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
   if (!rescue && g.bossUntil && t < g.bossUntil) {
