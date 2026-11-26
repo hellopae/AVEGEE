@@ -3127,7 +3127,7 @@ function openTrial(initialError = '') {
         : (heaven || answer?.intensity === 0) ? `<strong aria-hidden="true">🕊️</strong><b>${esc(t('trial.noPunishment'))}</b>` : '',
     };
     const trialWheel = `<section class="comment8-menu" aria-label="คำสั่งออกหมาย">
-      <div class="comment8-commands">${courtGroups.map((v,i)=>`<button type="button" class="court-command ${v.selected?'has-selection':''}" data-court-panel="${v.id}" style="--command-index:${i}" aria-expanded="${courtPanel===v.id}" ${v.disabled?'disabled':''}><span>${esc(v.label.split(' / ')[getLang()==='en'?1:0])}</span>${pickedChip[v.id]?`<span class="court-picked" data-picked="${v.id}">${pickedChip[v.id]}</span>`:''}</button>`).join('')}
+      <div class="comment8-commands">${courtGroups.map((v,i)=>`<button type="button" class="court-command ${v.selected?'has-selection':''}" data-court-panel="${v.id}" style="--command-index:${i}" aria-expanded="${courtPanel===v.id}" ${v.disabled?'disabled':''}${v.note?` title="${esc(v.note)}"`:''}><span>${esc(v.label.split(' / ')[getLang()==='en'?1:0])}</span>${pickedChip[v.id]?`<span class="court-picked" data-picked="${v.id}">${pickedChip[v.id]}</span>`:''}</button>`).join('')}
         <button type="button" id="t-go" class="court-command court-issue ${ready?'ready':''}" style="--command-index:4" ${ready?'':'disabled'}><span>${esc(t('trial.warrant'))}</span></button>
       </div>
       ${courtGroups.map(v=>`<div class="court-options ${courtPanel===v.id?'is-open':''}" data-court-options="${v.id}" ${courtPanel===v.id?'':'inert'} aria-label="${esc(v.label)}">${v.choices}</div>`).join('')}
