@@ -69,7 +69,7 @@ test('L3: winning the duel -> Nira frees the Guard (own scene) -> the fire scene
   for (const zone of ['th', 'asia', 'west']) {
     assert.deepEqual(RETURN_GUARD_EVENTS[zone].winStories, [Z4G_KEYS.guardFreed[zone], Z4G_KEYS.fire[zone]], 'freed scene first, then the fire');
     const s = Z4G_STORIES[Z4G_KEYS.guardFreed[zone]]; assert.ok(s?.pages?.[0]?.line && s.pages[0].en?.line, zone);
-    assert.match(s.pages[0].line, /นิรา/); assert.match(s.pages[0].line, /ไปกับท่าน/); assert.match(s.pages[0].en.line, /Nira/);
+    assert.match(s.pages[0].line, /นิรา/); assert.doesNotMatch(s.pages[0].line, /ไปกับท่าน/, 'FB3-T8 (Rae ญ-1): the freed Guard does not say it here - the last line of the fire scene does'); assert.match(s.pages[0].en.line, /Nira/);
     const fire = Z4G_STORIES[Z4G_KEYS.fire[zone]].pages[0];
     assert.ok(!/เฝ้าประตู|hold the gate|stay at the gate/.test(fire.line + fire.en.line), 'the Guard no longer stays behind');
     assert.match(fire.line, /(ไปกับท่าน|ข้าจะไปด้วย|ข้าจะไปช่วยท่าน)/);

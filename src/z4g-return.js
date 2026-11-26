@@ -22,16 +22,16 @@ const p2 = RAW_Z4G_SIGNAL_WIN_PAGE2;
 const SIGNAL_WIN = { ...sigWin, pages:[sigWin.pages[0], { image:sigWin.pages[1].image, title:p2.title.th, line:p2.line.th, en:{ title:p2.title.en, line:p2.line.en } }] };
 const L2 = (th, en) => ({ th, en });
 const GUARD_RELEASE = {
-  // FB3-L3 (owner 26 Nov): the freed Guard now goes WITH Yama and Nira to the lord and the controlled reapers (he used to stay at the gate). PLACEHOLDER wording from Toby - Rae writes the real lines (R2).
-  west:L2('แวน เฮลซิง: "เสียงในหัวข้าเงียบแล้ว ขอบคุณท่าน ทั้งห้าคนยังอยู่ใต้คำสั่ง ข้าจะไปช่วยท่านปลดพวกเขาเอง"', 'Van Helsing: "The voice in my head is gone. Thank you. The five reapers are still under its orders. I will go with you and free them."'),
-  asia:L2('กวนอู: "เสียงนั้นหายไปแล้ว ท่านช่วยข้าไว้ พวกเขายังต้องการท่าน ไปเถิด ข้าจะไปด้วย"', 'Guan Yu: "The voice is gone. You freed me. They still need you. Let us go. I am coming with you."'),
-  th:L2('กุมภัณฑ์: "ในที่สุดข้าก็วางกระบองลงได้ ขอบคุณท่าน ไปช่วยคนในเมืองกันเถิด ข้าจะไปกับท่านเอง"', 'Kumphan: "At last I can lower my club. Thank you. Let us go and help the people inside. I am coming with you."'),
+  // FB3-L3 (owner 26 Nov): the freed Guard now goes WITH Yama and Nira to the lord and the controlled reapers (he used to stay at the gate). Wording: Rae R2 (ญ-2).
+  west:L2('แวน เฮลซิง: "เสียงในหัวข้าเงียบแล้ว ขอบคุณ ยมทูตทั้งห้ากับหัวหน้าด่านยังอยู่ใต้คำสั่งนั้น ข้าจะไปกับท่านและช่วยปลดพวกเขาเอง"', 'Van Helsing: "The voice in my head is silent. Thank you. The five reapers and the frontier boss are still under that order. I will go with you and help free them."'),
+  asia:L2('กวนอู: "เสียงนั้นเงียบแล้ว ข้าติดค้างท่านหนึ่งชีวิต ยมทูตกับหัวหน้าด่านยังถูกสะกดอยู่ ข้าจะไปกับท่าน"', 'Guan Yu: "That voice is silent. I owe you a life. The reapers and the frontier boss are still under the spell. I am going with you."'),
+  th:L2('กุมภัณฑ์: "ข้าได้ถือกระบองด้วยใจข้าเองอีกครั้งแล้ว ขอบคุณท่านนิรา ยมทูตกับหัวหน้าด่านยังถูกสะกดอยู่ ข้าจะไปกับท่าน ช่วยปลดพวกเขาเอง"', 'Kumphan: "I hold my club by my own will again. Thank you, Nira. The reapers and the frontier boss are still under the spell. I am going with you to free them."'),
 };
-/** FB3-L3 (owner 26 Nov): after the duel Nira frees the Guard from the spell - its own short scene, then he joins the team. PLACEHOLDER wording from Toby - Rae writes the real text (R2). */
+/** FB3-L3 (owner 26 Nov): after the duel Nira frees the Guard from the spell - its own short scene, then he joins the team. Wording: Rae R2 (ญ-1). */
 const guardFreedStory = (zone, name) => {
   const title = L2(`นิราปลดสะกด · ${name.th}`, `Nira Breaks the Spell · ${name.en}`);
-  const line = L2(`บรรยาย: ${name.th}ทรุดเข่าลงกลางประตู แสงเขียวในตายังวูบวาบ นิราก้าวออกมาข้างหน้า ยกแผ่นกระจกขึ้นเหนือไหล่เขา เส้นแสงเขียวที่พาดตาแตกเป็นเสี่ยงแล้วจางหายไป\nนิรา: "ปลดแล้วค่ะ คำสั่งนั้นไม่ใช่ของท่านอีกต่อไป"\n${name.th}: "ข้ากลับมาเป็นตัวข้าแล้ว ข้าจะไปกับท่าน"`,
-    `Narration: ${name.en} sinks to one knee in the gateway, the green light in his eyes still flickering. Nira steps forward and raises her mirror over his shoulder. The green line across his eyes shatters and fades.\nNira: "It is broken. That order is no longer yours."\n${name.en}: "I am myself again. I will go with you."`);
+  const line = L2(`บรรยาย: ${name.th}ทรุดเข่าลงกลางประตู แสงเขียวในตายังวูบวาบ นิราก้าวออกมา ยกแผ่นกระจกขึ้นเหนือไหล่เขา เส้นแสงเขียวที่พาดตาแตกเป็นเสี่ยง แล้วจางหายไป\nนิรา: "ปลดแล้วค่ะ คำสั่งนั้นไม่ใช่ของท่านอีกต่อไป"\n${name.th}: "ข้า... กลับมาเป็นตัวข้าแล้ว ขอบคุณ"`,
+    `Narration: ${name.en} sinks to one knee in the gateway, the green light in his eyes still flickering. Nira steps forward and raises her mirror over his shoulder. The green line across his eyes shatters and fades.\nNira: "It is broken. That order is no longer yours."\n${name.en}: "I... am myself again. Thank you."`);
   const story = fromRae({title,pages:[{title,line}]},Z4G_ART.guardFreed[zone]);
   story.pages[0].imageFallback = Z4G_ART.guard[zone];
   return story;

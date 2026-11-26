@@ -92,7 +92,7 @@ export function stepCanteen(g,dt){
   w.job.prep=Math.min(KITCHEN.cookMs,(w.job.prep||0)+step);
   if(w.job.prep>=KITCHEN.cookMs){
    if(g.coin>=KITCHEN.coinPerBatch){g.coin-=KITCHEN.coinPerBatch;g.food=Math.min(KITCHEN.pantryCap,(g.food||0)+KITCHEN.batch);w.job.prep=0;w.reason='';if(g.workerState?.ledger)g.workerState.ledger.cooked=(g.workerState.ledger.cooked||0)+KITCHEN.batch;}
-   else w.reason='ไม่มีเบี้ยซื้อวัตถุดิบ';
+   else w.reason='เบี้ยไม่พอซื้อวัตถุดิบ';
   }
  }
 }

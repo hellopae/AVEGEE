@@ -26,8 +26,8 @@ export const HARBOR_NOTICES = Object.freeze({
     en:{ title:'The General Is Still Waiting', text:'Lian Gang is still waiting at the harbor. You should speak with him before you set out for the new land.', button:'Understood' } },
 });
 /** NL-4 replaces the generic "a new helper" window for Lian Gang (lamp-helper-liangang) */
-export const HARBOR_FLAME_NOTICE = Object.freeze({ title:'เหลียนกังฝากไฟไว้ในตะเกียง', text:'เหลียนกังฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ ท่าไม้ตายใช้ได้ 3 ครั้งก่อนต้องเติมพลังที่หอกระจก', button:'ดูตะเกียง', openLamp:true, art:ART.icon,
-  en:{ title:'Lian Gang Leaves a Flame in the Lamp', text:'Lian Gang leaves a flame in the Magic Lamp. You can call him in battle, 3 special moves before a recharge at the Mirror Tower.', button:'See the Lamp' } });
+export const HARBOR_FLAME_NOTICE = Object.freeze({ title:'เหลียนกังฝากไฟไว้ในตะเกียง', text:'เหลียนกังฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:ART.icon,
+  en:{ title:'Lian Gang Leaves a Flame in the Lamp', text:'Lian Gang leaves a flame in the Magic Lamp. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } });
 
 /** 4.4 the talk at the harbor (dialogue + two answers; same shape as z1-yomathat.js PIER_TALK) */
 export const PIER_TALK = Object.freeze({

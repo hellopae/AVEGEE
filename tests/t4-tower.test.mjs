@@ -37,7 +37,7 @@ test('the dev upgrade is one flag: with it off nothing upgrades', async () => {
 
 test('z1-kan-lamp: Kan\'s lecture is Rae\'s 2.5 text, one page, and plays once', () => {
   const s = storyOf('z1-kan-lamp'); assert.equal(s.pages.length, 1);
-  assert.match(s.pages[0].line, /ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด/); assert.match(s.pages[0].line, /ใช้ท่าไม้ตายไปสามครั้งมันก็ริบ/); assert.match(s.pages[0].line, /นาฬิกาก็เติมได้ถ้าท่านมี/);
+  assert.match(s.pages[0].line, /ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด/); assert.match(s.pages[0].line, /เรียกเขามาสามครั้งมันก็ริบ/); assert.match(s.pages[0].line, /นาฬิกาก็เติมได้ถ้าท่านมี/);
   const g = createGame(); g.queueStory('z1-kan-lamp'); g.completeStory(); g.queueStory('z1-kan-lamp');
   assert.deepEqual(g.storyQueue, [], 'seen once, never queued again');
 });

@@ -2977,7 +2977,7 @@ const FEAR_BEAT_MS = 1100, FEAR_AFTER_MS = 650;   // P2: close-in + fright befor
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 /** FB3-T5 (owner): Sita's hearing keeps the Power command and "hold in jail" in view but greyed out. Placeholder tooltip - Rae writes the real line (round R2). */
-const STORY_HEARING_LOCKED_NOTE = 'คดีนี้ใช้ไม่ได้';
+const STORY_HEARING_LOCKED_NOTE = 'ใช้ไม่ได้ในคดีนี้';
 
 function openTrial(initialError = '') {
   if(g.bossJustice?.active && bossJusticeActive(g)){openBossJustice();return;}

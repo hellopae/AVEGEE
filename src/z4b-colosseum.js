@@ -63,10 +63,10 @@ export const COL_EVENTS = Object.freeze(BOUTS.map(b => ({ k:COL.key(b.n), atCase
 export const COL_NOTICES = Object.freeze({
   [COL.noticeMouth]:{ title:'โคลอสเซียมของลูซิเฟอร์', text:'ทางผ่านชายแดนนี้ต้องผ่านสังเวียน 10 ด่านทีละคู่ ชนะต่อเนื่องจึงผ่านได้ แพ้แล้วลองด่านเดิมใหม่ได้ ไม่เสียอะไร', button:'เข้าสังเวียน', art:A('cut-col-gate'),
     en:{ title:'Lucifer\'s Colosseum', text:'The road through this frontier runs through a ten-bout arena, one opponent at a time. Win in sequence to pass. If you lose, you may try the same bout again at no cost.', button:'Enter the arena' } },
-  'lamp-helper-thor':{ title:'ธอร์ฝากค้อนไว้ในตะเกียง', text:'ธอร์ยอมรับเป็นพันธมิตรของท่าน เรียกเขาในศึกได้ ท่าไม้ตายใช้ได้ 3 ครั้งก่อนต้องเติมพลังที่หอกระจก', button:'ดูตะเกียง', openLamp:true, art:'img/summon/icon-thor.webp',
-    en:{ title:'Thor Leaves a Hammer in the Lamp', text:'Thor accepts you as an ally. You can call him in battle, 3 special moves before a recharge at the Mirror Tower.', button:'See the Lamp' } },
-  'lamp-helper-lucifer':{ title:'ผู้ก่อตั้งสังเวียนฝากชื่อไว้ในตะเกียง', text:'ลูซิเฟอร์รับคำท้าและฝากชื่อไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ ท่าไม้ตายใช้ได้ 3 ครั้งก่อนต้องเติมพลังที่หอกระจก', button:'ดูตะเกียง', openLamp:true, art:'img/summon/icon-lucifer.webp',
-    en:{ title:'The Arena\'s Founder Leaves His Name in the Lamp', text:'Lucifer accepts the challenge and leaves his name in the Magic Lamp. You can call him in battle, 3 special moves before a recharge at the Mirror Tower.', button:'See the Lamp' } },
+  'lamp-helper-thor':{ title:'ธอร์ฝากค้อนไว้ในตะเกียง', text:'ธอร์ยอมรับเป็นพันธมิตรของท่าน เรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:'img/summon/icon-thor.webp',
+    en:{ title:'Thor Leaves a Hammer in the Lamp', text:'Thor accepts you as an ally. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } },
+  'lamp-helper-lucifer':{ title:'ผู้ก่อตั้งสังเวียนฝากชื่อไว้ในตะเกียง', text:'ลูซิเฟอร์รับคำท้าและฝากชื่อไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:'img/summon/icon-lucifer.webp',
+    en:{ title:'The Arena\'s Founder Leaves His Name in the Lamp', text:'Lucifer accepts the challenge and leaves his name in the Magic Lamp. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } },
 });
 
 /** helpers no. 10 and 11 (Rae 1.6-a / 1.7-a, her tables copied by the script): Thor = group hit + stun 1 round (60 % = her "if too strong" option) · Lucifer = one foe, a heavy blow + that foe hits weaker for one round */

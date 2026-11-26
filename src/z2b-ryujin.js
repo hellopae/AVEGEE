@@ -17,8 +17,8 @@ export const RYUJIN_TEXT = Object.freeze({
   go:{ th:'เดินเข้าไป', en:'Go in' }, retry:{ th:'สู้อีกครั้ง', en:'Try again' },
   banner:{ th:'ศึกถ้ำสายน้ำ · ริวจิน', en:'Battle at the Water Cave · Ryujin' },
   // NR-3 win + unlock
-  win:{ title:'ริวจินยอมรับ', text:'ริวจินฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกมังกรสายน้ำมาช่วยในศึกได้ ท่าไม้ตายใช้ได้ 3 ครั้งก่อนต้องเติมพลังที่หอกระจก', button:'ดูตะเกียง',
-    en:{ title:'Ryujin Accepts You', text:'Ryujin leaves a flame in the Magic Lamp. You can call the dragon of the waters in battle, 3 special moves before a recharge at the Mirror Tower.', button:'See the Lamp' } },
+  win:{ title:'ริวจินยอมรับ', text:'ริวจินฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกมังกรสายน้ำมาช่วยในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง',
+    en:{ title:'Ryujin Accepts You', text:'Ryujin leaves a flame in the Magic Lamp. You can call the dragon of the waters in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } },
   // NR-4 lose
   lose:{ title:'ริวจินรอท่านอยู่', text:'ริวจินลดตัวลงสู่ผิวน้ำ ท่านตั้งหลักแล้วลองอีกครั้งได้', button:'สู้อีกครั้ง',
     en:{ title:'Ryujin Waits', text:'Ryujin lowers himself to the water\'s surface. Steady yourself and try again.', button:'Try again' } },

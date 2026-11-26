@@ -26,8 +26,8 @@ export const EIRLIN_NOTICES = Object.freeze({
   [EIRLIN.crateNotice]:{ title:'ผ่านการทดสอบของเอียร์ลิน', text:'เอียร์ลินมอบลังหอกวาลคิรีที่เธอตรวจแล้วให้ท่าน ท่านได้ท่าหอกวาลคิรี รายละเอียดตามรางวัล valkyrieSpear เดิม', button:'ต่อ', art:EIRLIN_ART.crate,
     en:{ title:'You Passed Eirlin\'s Test', text:'Eirlin gives you a crate of Valkyrie spears she has inspected. You gain the Valkyrie Spear technique, as described by the existing valkyrieSpear reward.', button:'Continue' } },
   // NE-1 replaces the generic helper window (z1-events.js maps it to `lamp-helper-eirlin`)
-  'lamp-helper-eirlin':{ title:'เอียร์ลินฝากไฟไว้ในตะเกียง', text:'เอียร์ลินฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเธอในศึกได้ ท่าไม้ตายใช้ได้ 3 ครั้งก่อนต้องเติมพลังที่หอกระจก', button:'ดูตะเกียง', openLamp:true, art:EIRLIN_ART.icon,
-    en:{ title:'Eirlin Leaves a Flame in the Lamp', text:'Eirlin leaves a flame in the Magic Lamp. You can call her in battle, 3 special moves before a recharge at the Mirror Tower.', button:'See the Lamp' } },
+  'lamp-helper-eirlin':{ title:'เอียร์ลินฝากไฟไว้ในตะเกียง', text:'เอียร์ลินฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเธอในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:EIRLIN_ART.icon,
+    en:{ title:'Eirlin Leaves a Flame in the Lamp', text:'Eirlin leaves a flame in the Magic Lamp. You can call her in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } },
 });
 /** helper no. 8 (Rae 4.4). The picture of the move is a placeholder; "lowers the guard for one round" is not in the engine yet - the move is a strong single strike (see the T7 report). */
 export const EIRLIN_HELPER = Object.freeze({

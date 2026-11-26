@@ -13,7 +13,7 @@ globalThis.Image = class { set src(value) {} };
 
 test('names: Zone 1 = กุมภัณฑ์ / Kumphan with his title; every other zone keeps the old word', () => {
   assert.equal(guardName('th'), 'กุมภัณฑ์'); assert.equal(guardName('th', 'en'), 'Kumphan');
-  assert.equal(guardTitle('th'), 'ยักษ์ทวารบาลประจำสุวรรณภูมิ'); assert.equal(guardTitle('th', 'en'), 'Gate Guard of Suvarnabhumi');
+  assert.equal(guardTitle('th'), 'ผู้เฝ้าด่านสุวรรณภูมิ'); assert.equal(guardTitle('th', 'en'), 'Gate Guard of Suvarnabhumi');
   assert.equal(guardName('asia'), 'กวนอู'); assert.equal(guardTitle('asia'), 'ผู้เฝ้าด่านบูรพา');   // T5'/4: Zone 2's Guard is Guan Yu
   assert.equal(guardName('west'), 'แวน เฮลซิง'); assert.equal(guardName('west', 'en'), 'Van Helsing'); assert.equal(guardTitle('west'), 'ผู้เฝ้าด่านปัจฉิม'); assert.equal(guardTitle('west', 'en'), 'Gate Guard of the West');   // T7/2: Zone 3's Guard is Van Helsing
   assert.equal(guardName('cyberhell'), 'WATSON-03'); assert.equal(guardName('cyberhell', 'en'), 'WATSON-03'); assert.equal(guardTitle('cyberhell'), 'ผู้เฝ้าด่านนรกเครือข่าย'); assert.equal(guardTitle('cyberhell', 'en'), 'Gate Guard of the Network Hell');   // T8b/2: Zone 4's Guard is WATSON-03
@@ -23,7 +23,7 @@ test('names: Zone 1 = กุมภัณฑ์ / Kumphan with his title; every o
 test('z1-guard-name (R2 A 1.2): one page, the speaker changes from "ยักษ์เขียว" to "กุมภัณฑ์" after he says it, and it plays right after he joins (case 9) - once', () => {
   const s = storyOf('z1-guard-name'); assert.equal(s.pages.length, 1); assert.equal(Z1_STORIES['z1-guard-name'], s);
   const line = s.pages[0].line;
-  assert.match(line, /ยักษ์เขียว: "เอ่อ/); assert.match(line, /ข้าชื่อกุมภัณฑ์ \(กระแอม\) ตั้งแต่รุ่นพ่อข้าเฝ้าด่านนี้/);
+  assert.match(line, /ยักษ์เขียว: "เอ่อ/); assert.match(line, /ข้าชื่อกุมภัณฑ์ \(กระแอม\) เพิ่งตามมาถึงด่านนี้/); assert.doesNotMatch(line, /ตลอดปี|รุ่นพ่อ/, 'FB3-T8 (Claudy ruling 2): he has just arrived, he did not stand at the gate all along');
   assert.match(line, /นิรา: "บันทึกชื่อแล้วค่ะ กุมภัณฑ์ ผู้เฝ้าด่านสุวรรณภูมิ"/); assert.match(line, /กุมภัณฑ์: "ฮะ ฮะ/);
   const src = readFileSync(new URL('../src/game.js', import.meta.url), 'utf8');
   assert.ok(src.indexOf("this.queueStory('c1-guard-arrival');") < src.indexOf("this.queueStory('z1-guard-name');"), 'after the join scene');

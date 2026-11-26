@@ -205,7 +205,7 @@ test('wiring: the talk window, canteen hand-over, help book and both languages a
   const i18n = readFileSync(new URL('../src/i18n.js', import.meta.url), 'utf8');
   assert.match(i18n, /'guide\.foreman\.title': 'ดำ หัวหน้าคนงาน/); assert.match(EN_DICT['guide.foreman.title'], /Dam, the foreman/);
   assert.doesNotMatch(ui, /ดำและเพลิงไม่ปรุงอาหารแล้ว/, 'the old sentence that put Dam back to his old job is gone');
-  for (const k of ['foreman.title', 'foreman.line', 'foreman.talk', 'foreman.done', 'foreman.canteen.hint', 'foreman.canteen.go',
+  for (const k of ['foreman.title', 'foreman.line', 'foreman.talk', 'foreman.done', 'foreman.canteen.hint',
     'foreman.say.feed', 'foreman.say.gather', 'foreman.say.pickup', 'foreman.say.desk', 'foreman.log.fed']) {
     assert.ok(TH_DICT[k], `TH ${k}`); assert.ok(EN_DICT[k], `EN ${k}`);
   }

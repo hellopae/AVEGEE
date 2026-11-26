@@ -22,7 +22,7 @@ test('sita-lamp: 3 pages, Rae\'s lines, a picture slot that has a file', () => {
 test('NA-1 text: the lamp window names Hanuman in the first slot (the default LAMP_FIRST_SLOT_ON = receive) and opens the lamp tab', () => {
   const n = NOTICES['lamp-received'];
   assert.equal(n.title, 'ได้รับ ตะเกียงวิเศษ');
-  assert.match(n.text, /นางสีดามอบตะเกียงวิเศษให้ยามา/); assert.match(n.text, /ผู้ช่วยแต่ละตนใช้ท่าไม้ตายได้ 3 ครั้ง เติมพลังที่หอกระจก/); assert.match(n.text, /ใส่ผู้ช่วยได้ 1 ตน มี หนุมาน อยู่ในตะเกียง/);
+  assert.match(n.text, /นางสีดามอบตะเกียงวิเศษให้ยามา/); assert.match(n.text, /เรียกได้ตนละ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม ซึ่งสร้างได้แล้วตั้งแต่ตอนนี้/); assert.match(n.text, /ใส่ผู้ช่วยได้ 1 ตน มี หนุมาน อยู่ในตะเกียง/);
   assert.equal(n.button, 'ดูตะเกียง'); assert.equal(n.openLamp, true);
   assert.equal(n.en.title, 'Magic Lamp Received'); assert.match(n.en.text, /Hanuman is already inside it/);
   assert.ok(existsSync(new URL('../' + n.art, import.meta.url)), n.art);

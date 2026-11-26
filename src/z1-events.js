@@ -193,15 +193,15 @@ function lampNotices() {
   return out;
 }
 /** Notice windows of Zone 1's story (game.js queueNotice / ackNotice · ui.js openStoryNotice). `detail` = shown when the button is pressed. */
-/** FB3-MP6 (owner): "you can build X now" - one notice per building that a RANK opens (the Mirror Tower opens by the lamp: its own window). PLACEHOLDER wording from Toby - Rae writes the real text (R2). */
+/** FB3-MP6 (owner): "you can build X now" - one notice per building that a RANK opens (the Mirror Tower opens by the lamp: its own window). Wording: Rae R2 (ฎ-1). */
 const BUILD_NAME_EN = { dab:'the Sword Forest', sawan:'the Gate of Heaven', ngiw:'the Silk-Cotton Grove', lan:'the Toil Yard', lokan:'Lokantara Hell' };
 function buildOpenNotices() {
   const out = {};
   for (const k of BUILD_PLAN.filter(p => p.lv > 1 && !EVENT_UNLOCKS[p.k]).map(p => p.k)) {
     const def = STATIONS.find(s => s.k === k); if (!def) continue;
     const en = BUILD_NAME_EN[k] || def.name;
-    out[`build-open-${k}`] = { title:`สร้าง${def.name}ได้แล้ว`, text:`ยามาเลื่อนขั้นแล้ว ตอนนี้สร้าง${def.name}ได้ · เดินไปที่ป้ายก่อสร้างบนแผนที่ แล้วกดสร้าง`, button:'รับทราบ',
-      en:{ title:`You can build ${en} now`, text:`Yama has risen in rank. ${en[0].toUpperCase() + en.slice(1)} can be built now · walk to its building spot on the map and press build.`, button:'Understood' } };
+    out[`build-open-${k}`] = { title:`สร้าง${def.name}ได้แล้ว`, text:`ยามาเลื่อนขั้นแล้ว ตอนนี้สร้าง${def.name}ได้ เดินไปที่ป้ายก่อสร้างบนแผนที่แล้วกดสร้างได้เลย`, button:'รับทราบ',
+      en:{ title:`You can build ${en} now`, text:`Yama has risen in rank, and ${en} can now be built. Walk to its building spot on the map and press build.`, button:'Understood' } };
   }
   return out;
 }
@@ -300,15 +300,15 @@ export const SITA_STORIES = {
   'z1-kan-lamp':{ title:'แสงที่เติมได้', pages:[
     page('img/crew-kan-profile.webp', 'แสงจากกระจก',
       'บรรยาย: กานต์มองตะเกียงในมือยามาอยู่ครู่หนึ่ง ก่อนยื่นมือไปหมุนกระจกบานเล็กบนแท่นให้รับแสงเข้าหาเปลวไฟ\n'
-      + 'กานต์: "ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด ตะเกียงนั้นจุดด้วยไฟของคนที่ยอมรับท่าน ไฟแบบนั้นมีจำกัด ใช้ท่าไม้ตายไปสามครั้งมันก็ริบ"\n'
-      + 'กานต์: "หอกระจกรับแสงมาเติมให้ได้ครับ ไม่ใช่แค่กระจกวิเศษ ตะเกียงก็เติมได้ นาฬิกาก็เติมได้ถ้าท่านมี ถ้าไฟริบเมื่อไหร่ กลับมาที่นี่"\n'
+      + 'กานต์: "ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด ตะเกียงนั้นจุดด้วยไฟของคนที่ยอมรับท่าน ไฟแบบนั้นมีจำกัด เรียกเขามาสามครั้งมันก็ริบ"\n'
+      + 'กานต์: "หอส่องกรรมรับแสงมาเติมให้ได้ครับ ไม่ใช่แค่กระจกวิเศษ ตะเกียงก็เติมได้ นาฬิกาก็เติมได้ถ้าท่านมี ถ้าไฟริบเมื่อไหร่ กลับมาที่นี่"\n'
       + 'นิรา: "ดิฉันจดไว้แล้วค่ะ ท่านคะ ไฟดับกลางศึกไม่ใช่ความผิดของใคร แต่ตะเกียงที่ไม่ได้เติมเป็นความผิดของคนถือ"'),
   ]},
   // R2 A 1.2 (G10): the green giant tells his name - once, right after he joins (case 9). Before this scene he is still "ยักษ์ทวารบาล" / "ยักษ์เขียว" in the case 9 scenes.
   'z1-guard-name':{ title:'ชื่อของผู้เฝ้าด่าน', pages:[
     page('img/z1-events/cut-guard-joins-th.webp', 'ข้าชื่อกุมภัณฑ์',
-      'บรรยาย: ยักษ์ร่างเขียวคล้ำผู้ยืนเฝ้าประตูชายแดนมาตลอดปี ยกมือเกาท้ายทอย มืออีกข้างยังกำกระบองไว้แน่น\n'
-      + 'ยักษ์เขียว: "เอ่อ ... ท่านเรียกข้าว่ายักษ์ทวารบาลมาตั้งนาน ข้าไม่ได้ว่าอะไรนะ แต่ข้ามีชื่อ ข้าชื่อกุมภัณฑ์ (กระแอม) ตั้งแต่รุ่นพ่อข้าเฝ้าด่านนี้"\n'
+      'บรรยาย: ยักษ์ร่างเขียวคล้ำผู้เพิ่งก้าวออกมาช่วยสู้ ยกมือเกาท้ายทอย มืออีกข้างยังกำกระบองไว้แน่น\n'
+      + 'ยักษ์เขียว: "เอ่อ ... ท่านยังไม่ทันถามชื่อข้าเลยนะ ข้าชื่อกุมภัณฑ์ (กระแอม) เพิ่งตามมาถึงด่านนี้ แต่ข้ายินดีช่วยท่านเต็มที่"\n'
       + 'นิรา: "บันทึกชื่อแล้วค่ะ กุมภัณฑ์ ผู้เฝ้าด่านสุวรรณภูมิ"\n'
       + 'กุมภัณฑ์: "ฮะ ฮะ ฟังแล้วเหมือนข้ามียศเลย"'),
   ]},
@@ -347,8 +347,8 @@ export const BREACH_ART = Object.freeze({
   flameCharge:['img/z1-events/skill-yama-fire-charge-cut-01.webp','img/z1-events/skill-yama-fire-charge-cut-02.webp'],
 });
 export const BREACH_STORIES = {
-  'frontier-th-guard-joins':{ title:'ยักษ์ทวารบาลออกมาช่วย', pages:[
-    page(BREACH_ART.guardJoins, 'ยักษ์ทวารบาลออกมาช่วย', 'ข้าชื่อ "กุมภัณฑ์" เดี๋ยวข้าช่วยจัดการเจ้าพวกนี้เอง') ]},
+  'frontier-th-guard-joins':{ title:'กุมภัณฑ์เข้าช่วย', pages:[
+    page(BREACH_ART.guardJoins, 'กุมภัณฑ์เข้าช่วย', 'ข้าชื่อ "กุมภัณฑ์" เดี๋ยวข้าช่วยจัดการเจ้าพวกนี้เอง') ]},
   'frontier-th-boss-to-dais':{ title:'พาไปแท่นตัดสิน', pages:[
     page(BREACH_ART.toDais, 'พาไปแท่นตัดสิน', 'พาบอสชายแดนไปที่แท่นตัดสิน') ]},
   'frontier-th-boss-punished':{ title:'ลงโทษเรียบร้อย', pages:[

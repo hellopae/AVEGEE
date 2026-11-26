@@ -17,8 +17,8 @@ export const Z4A_LUMEN = Object.freeze({
   banner:{ th:'ลานเทวดาโซน 4 · ลูเมน-01', en:'Zone 4 · The Deva Court · Lumen-01' },   // NZ-1
 });
 export const Z4A_NOTICES = Object.freeze({
-  [Z4A_ZONE4.clockNotice]:{ title:'นาฬิกาย้อนเวลา', text:'ท่านได้นาฬิกาวิเศษ ใช้คืนคูลดาวน์ให้ทีมกลางศึก เมื่อพลังหมดให้ไปเติมที่หอกระจก (รายละเอียดตามรางวัล cooldownClock เดิม)', button:'ต่อ', art:Z4A_ART.lumen,
-    en:{ title:'The Clock That Turns Back Time', text:'You have received the Magic Clock. It returns the team\'s cooldowns mid-battle. When its power is spent, recharge it at the Mirror Tower (details as in the existing cooldownClock reward).', button:'Continue' } },
+  [Z4A_ZONE4.clockNotice]:{ title:'นาฬิกาย้อนเวลา', text:'ท่านได้นาฬิกาวิเศษ ใช้คืนคูลดาวน์ให้ทีมกลางศึก เมื่อพลังหมดให้ไปเติมที่หอส่องกรรม', button:'ต่อ', art:Z4A_ART.lumen,
+    en:{ title:'The Clock That Turns Back Time', text:'You have received the Magic Clock. It returns the team\'s cooldowns mid-battle. When its power is spent, recharge it at the Mirror Tower.', button:'Continue' } },
   [Z4A_ZONE4.releasedNotice]:{ title:'ปล่อยผู้ถูกกัก', text:'ซิสอ็อปและพ่อค้านรกออกจากคุกเทวดาแล้ว ท่านสร้างสถานที่ได้ตั้งแต่บัดนี้', button:'ต่อ', art:Z4A_ART.lumen,
     en:{ title:'The Held Are Released', text:'Sysop and the hell merchant are out of the devas\' cell. You may build from this moment.', button:'Continue' } },
   [Z4A_ZONE4.giftNotice]:{ title:'ของฝากจากนักสืบบัญชี', text:'HOME-67 มอบเงิน 1,200 เบี้ยกรรมและชุดประจำโซน 4 ให้ยามา (ชุดจะเปลี่ยนให้เองเมื่อกด "รับทราบ" และใช้ทุกภาพของโซน 4)', button:'รับทราบ', art:'img/z3-events/char-home67-profile.webp',

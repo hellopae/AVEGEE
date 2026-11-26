@@ -153,7 +153,7 @@ test('UI wiring: the helper is a squad member with its own menu, farewell and la
   assert.match(ui, /const executeSummonCall = async action/); assert.match(ui, /LAMP\.lampCutSources\(zone\)/); assert.match(ui, /g\.summonedActor\(true\)/);
   assert.match(ui, /action:'helper:attack'/); assert.match(ui, /action:'helper:move'/); assert.match(ui, /data-summon-farewell/); assert.match(ui, /c\.k === 'summon' \? summonActsHtml\(c\)/);
   for (const key of ['battle.present', 'battle.lampCut', 'helper.attack', 'helper.acts', 'helper.farewell', 'bag.movesLeft', 'battle.helperSpent']) { assert.ok(LAMP_TEXT[key]?.th && LAMP_TEXT[key]?.en, key); }
-  assert.equal(lt('helper.acts', { n:2, max:3 }), 'ลงมือได้อีก 2/3 ครั้ง'); assert.equal(lt('helper.acts', { n:2, max:3 }, 'en'), '2/3 acts left');
+  assert.equal(lt('helper.acts', { n:2, max:3 }), 'ลงมือได้อีก 2/3 ตา'); assert.equal(lt('helper.acts', { n:2, max:3 }, 'en'), '2/3 turns left');
   const css = src('src/lamp.css'); for (const cls of ['summon-flames', 'summon-arrive', 'is-leaving', 'summon-wait', 'summon-farewell', 'lamp-cut']) assert.ok(css.includes(cls), cls);
   assert.match(src('src/battle-dash.js'), /'helper:attack'/);
 });

@@ -1,0 +1,22 @@
+{
+ "game": [
+  {
+   "before": "      out.push({ kind: 'hint', text: 'บุญปลอมถูกลบออกจากสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });\n",
+   "after": "      out.push({ kind: 'hint', text: 'บุญข้อนี้ไม่นับ ทำเครื่องหมาย (ไม่นับ) ไว้ในสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });\n"
+  }
+ ],
+ "data": [
+  {
+   "before": "    desc:'หอกระจกริมแม่น้ำวิญญาณ — วางกระจกสะท้อนแสงเพื่อเติมกระจกวิเศษเป็นระยะ',\n",
+   "after": "    desc:'หอส่องกรรมริมแม่น้ำวิญญาณ — วางกระจกสะท้อนแสงเพื่อเติมกระจกวิเศษเป็นระยะ',\n"
+  },
+  {
+   "before": "export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03\n",
+   "after": "export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ผู้เฝ้าด่านสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03\n"
+  },
+  {
+   "before": " *  ตอนนี้มีบทของคุณเป้บทเดียว (หมาจร) · บุญข้ออื่นไม่มีบท → ใช้บทตามชนิดบาป/กองกลางเติมแทน (ต้องให้ Rae เขียนเพิ่มถ้าอยากได้ครบ) */\nexport const MERIT_SOLID = {\n  'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': '{i}เลี้ยงหมาจร เพื่อช่วยชีวิตมันจริงๆ{na}',\n};\n",
+   "after": " *  FB3-R2 (Rae ข): ครบทั้ง 7 บุญ · บทแรกของคุณเป้ตรงตัว (หมาจร) · ทุกบทขึ้นด้วยการกระทำ + \"เพื่อ/เพราะ…\" + \"จริงๆ{na}\" */\nexport const MERIT_SOLID = {\n  'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': '{i}เลี้ยงหมาจร เพื่อช่วยชีวิตมันจริงๆ{na}',\n  'เคยบวชให้แม่หนึ่งพรรษา': '{i}บวชให้แม่ครบพรรษา เพื่อทดแทนคุณท่านจริงๆ{na}',\n  'บริจาคเลือดครบ 40 ครั้ง': '{i}บริจาคเลือด เพื่อให้คนอื่นได้มีชีวิตต่อจริงๆ{na}',\n  'เคยกระโดดลงคลองช่วยเด็กจมน้ำ': '{i}กระโดดลงไปช่วยเด็กคนนั้น เพราะไม่อยากให้เขาจมน้ำตายจริงๆ{na}',\n  'ส่งเสียหลานเรียนจนจบทั้งที่ไม่ใช่ลูก': '{i}ส่งหลานเรียนจนจบ เพราะอยากให้เขามีอนาคตจริงๆ{na}',\n  'ปล่อยปลาทุกวันเกิดมาตลอดชีวิต': '{i}ปล่อยปลาทุกวันเกิด เพื่อให้ชีวิตมันได้รอดจริงๆ{na}',\n  'ช่วยงานศพคนในหมู่บ้านไม่เคยเว้นสักงาน': '{i}ไปช่วยงานศพทุกงาน เพื่อให้ครอบครัวเขาไม่ต้องเผชิญลำพังจริงๆ{na}',\n};\n/** English reference of the same lines (Rae ข + Reese note: no gender for the child / the relative). The room speaks Thai only, so nothing reads this yet - it is here for the day the interrogation is translated. */\nexport const MERIT_SOLID_EN = Object.freeze({\n  'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': 'I took in stray dogs to save their lives, truly.',\n  'เคยบวชให้แม่หนึ่งพรรษา': 'I was ordained for my mother for a full rains retreat, to repay her, truly.',\n  'บริจาคเลือดครบ 40 ครั้ง': 'I gave blood so that others could go on living, truly.',\n  'เคยกระโดดลงคลองช่วยเด็กจมน้ำ': 'I jumped in after that child because I could not bear to let them drown, truly.',\n  'ส่งเสียหลานเรียนจนจบทั้งที่ไม่ใช่ลูก': 'I put my niece or nephew through school because I wanted them to have a future, truly.',\n  'ปล่อยปลาทุกวันเกิดมาตลอดชีวิต': 'I released fish every birthday so that their lives could be spared, truly.',\n  'ช่วยงานศพคนในหมู่บ้านไม่เคยเว้นสักงาน': 'I helped at every funeral so that no family had to face it alone, truly.',\n});\n"
+  }
+ ]
+}

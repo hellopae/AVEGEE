@@ -86,7 +86,7 @@ const TH = {
   "g5.trained": "ฝึกสำเร็จ · ระดับควบคุมไฟ +1",
   "g5.stoked": "สำเร็จ · เวลาโทษที่เหลือทุกกระทะลด 20%",
   "g5.miss": "พลาด · ไม่เสียอะไร",
-  "g5.hintIdle": "กดเมื่อวงขาวทับวงเขียว · นับตอนกดลง ไม่ต้องรอปล่อยนิ้ว · กดไกลเกินไปไม่นับพลาด",
+  "g5.hintIdle": "กดตอนวงขาวทับวงเขียว · นับตอนกดลง ไม่ต้องรอปล่อยนิ้ว · กดตอนวงยังไกลไม่นับพลาด · โดน 5 ครั้งชนะ พลาด 3 ครั้งแพ้",
   "g5.far": "ยังไกลอยู่ · ไม่นับพลาด",
   "g5.wait": "รอวงใหม่อีกนิด · กดตอนนี้ไม่นับพลาด",
   "g5.passed": "วงผ่านไปแล้ว · เริ่มรอบใหม่ ไม่นับพลาด",
@@ -501,7 +501,6 @@ const TH = {
   'foreman.talk': 'สั่งงานครัว',
   'foreman.done': 'เท่านี้ก่อน',
   'foreman.canteen.hint': 'งานครัวสั่งผ่าน{name} หัวหน้าคนงาน — จ้างพ่อครัว จ้างคนเสิร์ฟ และเลือกว่าจะให้ส่งข้าวปั้นให้ใคร',
-  'foreman.canteen.go': 'ไปคุยกับ{name}',
   'foreman.say.feed': 'ข้าวปั้นมาแล้วครับ ใครหิวบ้าง',
   'foreman.say.gather': 'เดี๋ยวผมขนของไปขายให้ครับ',
   'foreman.say.pickup': 'มีวิญญาณมาถึงท่าแล้วครับ เดี๋ยวผมพาไปเอง',
@@ -610,7 +609,7 @@ const EN = {
   "g5.trained": "Training complete · Fire control level +1",
   "g5.stoked": "Success · Remaining punishment in all pots reduced by 20%",
   "g5.miss": "Missed · Nothing lost",
-  "g5.hintIdle": "Press when the white ring meets the green one · it counts the moment you press down, no need to release · pressing while it is far costs nothing",
+  "g5.hintIdle": "Press when the white ring lands on the green one. It counts the moment you press down, so no need to release. Pressing while the ring is still far costs nothing. 5 hits win, 3 misses lose.",
   "g5.far": "Still far away · no penalty",
   "g5.wait": "Next ring coming · pressing now costs nothing",
   "g5.passed": "Ring missed · starting a new one, no penalty",
@@ -1023,7 +1022,6 @@ const EN = {
   'foreman.talk': 'Kitchen orders',
   'foreman.done': 'That is all for now',
   'foreman.canteen.hint': 'Kitchen orders go through {name}, the foreman: hire cooks and servers, and choose who gets the rice balls.',
-  'foreman.canteen.go': 'Talk to {name}',
   'foreman.say.feed': 'Rice balls here! Who is hungry?',
   'foreman.say.gather': 'I will haul this off to sell.',
   'foreman.say.pickup': 'A soul is at the dock. I will walk them over.',
@@ -1275,9 +1273,9 @@ Object.assign(EN, {
 Object.assign(TH, {
   'sleep.needTea':'สร้างศาลาน้ำชาเพื่อนอนพัก',
   'unlock.lockedAt':'ปลดล็อกที่ขั้น {n}',
-  // FB3-T5 (owner): the Mirror Tower opens after Sita's / Hanuman's case, not at rank 5. PLACEHOLDER wording from Toby - Rae writes the real text (round R2).
-  'unlock.towerEvent':'เปิดหลังจบคดีนางสีดา',
-  'unlock.towerWhen':'สร้างได้หลังจบคดีนางสีดาและหนุมาน',
+  // FB3-T5 (owner): the Mirror Tower opens after Sita's / Hanuman's case, not at rank 5. Wording: Rae R2 (ช), label per Claudy ruling 3 (the real condition: the lamp).
+  'unlock.towerEvent':'เปิดหลังได้ตะเกียงวิเศษ',
+  'unlock.towerWhen':'สร้างได้หลังจบเหตุการณ์นางสีดาและหนุมาน (ได้ตะเกียงวิเศษ)',
   'unlock.canteenBoss':'ชนะบอสชายแดนโซน 1 ก่อน',
   'unlock.lockShort':'ขั้น {n}',
   'unlock.recommend':'แนะนำสร้างถัดไป',
@@ -1299,8 +1297,8 @@ Object.assign(TH, {
 Object.assign(EN, {
   'sleep.needTea':'Build the Tea Pavilion to rest',
   'unlock.lockedAt':'Unlocks at rank {n}',
-  'unlock.towerEvent':"Opens after Sita's case",
-  'unlock.towerWhen':"can be built after Sita and Hanuman's case",
+  'unlock.towerEvent':"Opens once you have the Magic Lamp",
+  'unlock.towerWhen':"can be built after the Sita and Hanuman event (when you receive the Magic Lamp)",
   'unlock.canteenBoss':'Defeat the zone-1 frontier boss first',
   'unlock.lockShort':'Rank {n}',
   'unlock.recommend':'Recommended next',
@@ -1629,8 +1627,7 @@ Object.assign(EN, {
 // QUEST-DAM-B (15 Nov 2026): Rae's canteen panel + Dam guide words (Output/Rae/2026-11-15-avegee-pointer-foreman-lines.md, parts B and C).
 // The guide's last sentence and foreman.hungry.note are Toby's own wording for the new hunger rule - Rae to polish.
 Object.assign(TH, {
-  'canteen.help': 'พ่อครัวทำข้าวปั้นเข้าคลังเสบียงเองทุก {sec} วินาที ครั้งละ {batch} ห่อ ค่าวัตถุดิบ {price} เบี้ยกรรม (คลังเต็ม {cap} ห่อแล้วหยุดรอ) · แล้วปั้นข้าวขึ้นชั้นพร้อมเสิร์ฟทุก 3 วินาที · คนเสิร์ฟเดินไปส่งถึงตัว ยิ่งมีหลายคนยิ่งส่งทัน · ซื้อจากพ่อค้าได้ถ้าอยากเร่ง',
-  'canteen.help.foreman': '{name}คุมพ่อครัวกับคนเสิร์ฟที่นี่ สั่งงานผ่าน{name}ได้เลย',
+  'canteen.help': 'พ่อครัวปั้นข้าวเข้าคลังเสบียงเองทุก {sec} วินาที ได้ครั้งละ {batch} ห่อ ค่าวัตถุดิบ {price} เบี้ยกรรม (คลังเต็ม {cap} ห่อจะหยุดรอ) · ข้าวในคลังจะขึ้นชั้นพร้อมเสิร์ฟทุก 3 วินาที · คนเสิร์ฟเดินไปส่งถึงตัวคน ยิ่งมีคนเสิร์ฟมากยิ่งส่งทัน · อยากเร่งก็ซื้อเพิ่มจากพ่อค้าได้',
   'canteen.ready': 'พร้อมเสิร์ฟ',
   'canteen.pantry': 'เสบียงกลาง {n} ห่อ',
   'canteen.hire': 'จ้าง{role} {cost} เบี้ยกรรม',
@@ -1649,8 +1646,7 @@ Object.assign(TH, {
   'foreman.hungry.note': 'หยุดงานรอข้าวปั้น',
 });
 Object.assign(EN, {
-  'canteen.help': 'Cooks make rice balls for the shared pantry on their own, {batch} every {sec} seconds, ingredients {price} coins (they pause when the pantry holds {cap}). Then they roll balls onto the serving shelf every 3 seconds. Servers walk the rice balls to each person, so more servers means faster delivery. You can still buy from the merchant to hurry things up.',
-  'canteen.help.foreman': '{name} runs the cooks and servers here. Give your orders through {name}.',
+  'canteen.help': 'Cooks make rice balls for the shared pantry on their own: {batch} every {sec} seconds, for {price} karma coins of ingredients (they pause when the pantry holds {cap}). Rice from the pantry goes onto the serving shelf every 3 seconds. Servers walk each rice ball to the person who needs it, so more servers means faster service. You can still buy from the merchant to speed things up.',
   'canteen.ready': 'Ready to serve',
   'canteen.pantry': 'Shared rations · {n} packs',
   'canteen.hire': 'Hire {role} · {cost} coins',

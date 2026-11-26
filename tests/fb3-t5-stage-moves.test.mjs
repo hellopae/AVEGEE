@@ -177,7 +177,7 @@ test('F5: the tower window exists in Thai and English, and nothing the player re
   const n = NOTICES['lamp-tower-open'];
   assert.ok(n.title && n.text && n.button && n.en.title && n.en.text && n.en.button);
   assert.match(n.text, /หอส่องกรรม/); assert.match(n.text, /ไฟตะเกียง/);
-  assert.equal(t('unlock.towerEvent'), 'เปิดหลังจบคดีนางสีดา');
+  assert.equal(t('unlock.towerEvent'), 'เปิดหลังได้ตะเกียงวิเศษ');   // FB3-T8: Claudy ruling 3 - the real condition
   const ui = src('src/ui.js');
   assert.ok(!/หอส่องกรรม[^\n]{0,40}ขั้น 5/.test(ui) && !/ขั้น 5[^\n]{0,40}หอส่องกรรม/.test(ui.replace(/ตั้งแต่ขั้น 5 เติมเต็ม/, '')), 'no "tower ... rank 5" left in ui.js');
   for (const f of ['src/scene.js', 'src/town-map.js']) assert.match(src(f), /lockedByEvent\(/);

@@ -284,7 +284,7 @@ export const STATIONS = [
     use:'คดีที่พักไว้เบิกกลับขึ้นแท่นได้ · นิราตรวจผู้รับทัณฑ์ครบ: เข็ดแล้วส่งไปประตูสวรรค์ ยังไม่เข็ดส่งกลับเข้าคิว' },
   { k:'krajok', name:'หอส่องกรรม',    glyph:'🪞', tags:[],              cost:340, pow:0,
     bx:1450, by:638, bw:150, x:1450, y:652, hit:[1418,488,1482,638],
-    desc:'หอกระจกริมแม่น้ำวิญญาณ — วางกระจกสะท้อนแสงเพื่อเติมกระจกวิเศษเป็นระยะ',
+    desc:'หอส่องกรรมริมแม่น้ำวิญญาณ — วางกระจกสะท้อนแสงเพื่อเติมกระจกวิเศษเป็นระยะ',
     use:'เดินเข้าไปในหอ วางกระจกแล้วหมุนองศาให้แสงถึงกระจกวิเศษบนแท่น ค้างไว้เพื่อเติมครั้งละ 1 บาน — เติมได้เป็นระยะ ไม่ใช่ไม่จำกัด' },
 
   // ---- ประตูสวรรค์ ----
@@ -749,7 +749,7 @@ export const MOB = {
 export const DOC_BONUS = Object.freeze({ coinPerLost:20, item:'health' });
 /** The Guard's name per zone (R2 A section 1 · owner G10): Zone 1's green giant is กุมภัณฑ์ (Kumphan); the other zones keep the old word until their own part of the story names their Guard
  *  (Guan Yu / Van Helsing / WATSON-03 come with their events). `guardTitle` = the line under his name on the profile card. */
-export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ยักษ์ทวารบาลประจำสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03
+export const GUARD_NAMES = Object.freeze({ west:{ th:'แวน เฮลซิง', en:'Van Helsing', title:{ th:'ผู้เฝ้าด่านปัจฉิม', en:'Gate Guard of the West' } }, asia:{ th:'กวนอู', en:'Guan Yu', title:{ th:'ผู้เฝ้าด่านบูรพา', en:'Gate Guard of the East' } }, th:{ th:'กุมภัณฑ์', en:'Kumphan', title:{ th:'ผู้เฝ้าด่านสุวรรณภูมิ', en:'Gate Guard of Suvarnabhumi' } }, cyberhell:Z4T_GUARD });   // T8b/2: WATSON-03
 export const guardName = (zone, lang = 'th') => GUARD_NAMES[zone]?.[lang] || GUARD_NAMES[zone]?.th || GUARD.name;
 export const guardTitle = (zone, lang = 'th') => GUARD_NAMES[zone]?.title?.[lang] || GUARD_NAMES[zone]?.title?.th || '';
 export const GUARD = {
@@ -1566,10 +1566,26 @@ export const ADMIT_TPL = [
 
 /** FB3-MN6 (คุณเป้ 26 พ.ย. รูป m5): คนที่ปฏิเสธเรื่องหนึ่งแล้ว ห้ามมีอีกบรรทัดที่ "ยอมรับเรื่องเดียวกัน" ในชุดเดียวกัน (ขัดกันเอง)
  *  แทนที่ด้วยบรรทัดที่เกี่ยวกับ "บุญจริง" ของเขา ถ้ามีบทเขียนไว้ที่นี่ — กุญแจ = ข้อความบุญใน MERITS · บทเป็นแม่แบบ ({i} {na}) ตามเพศ
- *  ตอนนี้มีบทของคุณเป้บทเดียว (หมาจร) · บุญข้ออื่นไม่มีบท → ใช้บทตามชนิดบาป/กองกลางเติมแทน (ต้องให้ Rae เขียนเพิ่มถ้าอยากได้ครบ) */
+ *  FB3-R2 (Rae ข): ครบทั้ง 7 บุญ · บทแรกของคุณเป้ตรงตัว (หมาจร) · ทุกบทขึ้นด้วยการกระทำ + "เพื่อ/เพราะ…" + "จริงๆ{na}" */
 export const MERIT_SOLID = {
   'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': '{i}เลี้ยงหมาจร เพื่อช่วยชีวิตมันจริงๆ{na}',
+  'เคยบวชให้แม่หนึ่งพรรษา': '{i}บวชให้แม่ครบพรรษา เพื่อทดแทนคุณท่านจริงๆ{na}',
+  'บริจาคเลือดครบ 40 ครั้ง': '{i}บริจาคเลือด เพื่อให้คนอื่นได้มีชีวิตต่อจริงๆ{na}',
+  'เคยกระโดดลงคลองช่วยเด็กจมน้ำ': '{i}กระโดดลงไปช่วยเด็กคนนั้น เพราะไม่อยากให้เขาจมน้ำตายจริงๆ{na}',
+  'ส่งเสียหลานเรียนจนจบทั้งที่ไม่ใช่ลูก': '{i}ส่งหลานเรียนจนจบ เพราะอยากให้เขามีอนาคตจริงๆ{na}',
+  'ปล่อยปลาทุกวันเกิดมาตลอดชีวิต': '{i}ปล่อยปลาทุกวันเกิด เพื่อให้ชีวิตมันได้รอดจริงๆ{na}',
+  'ช่วยงานศพคนในหมู่บ้านไม่เคยเว้นสักงาน': '{i}ไปช่วยงานศพทุกงาน เพื่อให้ครอบครัวเขาไม่ต้องเผชิญลำพังจริงๆ{na}',
 };
+/** English reference of the same lines (Rae ข + Reese note: no gender for the child / the relative). The room speaks Thai only, so nothing reads this yet - it is here for the day the interrogation is translated. */
+export const MERIT_SOLID_EN = Object.freeze({
+  'เลี้ยงหมาจรมาทั้งชีวิต 14 ตัว': 'I took in stray dogs to save their lives, truly.',
+  'เคยบวชให้แม่หนึ่งพรรษา': 'I was ordained for my mother for a full rains retreat, to repay her, truly.',
+  'บริจาคเลือดครบ 40 ครั้ง': 'I gave blood so that others could go on living, truly.',
+  'เคยกระโดดลงคลองช่วยเด็กจมน้ำ': 'I jumped in after that child because I could not bear to let them drown, truly.',
+  'ส่งเสียหลานเรียนจนจบทั้งที่ไม่ใช่ลูก': 'I put my niece or nephew through school because I wanted them to have a future, truly.',
+  'ปล่อยปลาทุกวันเกิดมาตลอดชีวิต': 'I released fish every birthday so that their lives could be spared, truly.',
+  'ช่วยงานศพคนในหมู่บ้านไม่เคยเว้นสักงาน': 'I helped at every funeral so that no family had to face it alone, truly.',
+});
 
 /** บทของ "คนที่ยอมรับ" แยกตามชนิดบาป — ขยาย 4 → 10 บรรทัดต่อบาป 17 ก.ย. 2569
  *  ผสม 3 โทน: 1-4 สารภาพตรง (ของเดิม) · 5-7 ป้องกันตัวเสียงแข็งแต่ไม่ปฏิเสธข้อเท็จจริง
