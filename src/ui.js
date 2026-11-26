@@ -102,7 +102,7 @@ import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate,
 import { preloadZone, prewarmZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
 import { GRAPHICS_MODES, getGraphicsMode, setGraphicsMode, frameDue } from './graphics-setting.js';   // GFX-1110
-import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK, bossWalkPosition } from './scene.js?v=mapfx-m1-l1';
+import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK, bossWalkPosition, soulMapPosition } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk, findPath } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -1408,11 +1408,16 @@ function followMarks() {
       if (tg) { d.dataset.sx = tg.x; d.dataset.sy = tg.y - charH() * tg.top - 8; place(d); clampTalk(d); }
       continue;
     }
+    if (d.dataset.followSoul) {                   // FB3-MP2: the speech pin of the soul in front follows that soul (pier -> stairs -> queue place)
+      const sp = soulMapPosition(g, g.queue.find(q => String(q.id) === d.dataset.followSoul));
+      if (sp) { d.dataset.sx = sp[0]; d.dataset.sy = sp[1] - charH() - 8; place(d); }
+      continue;
+    }
     if (!d.dataset.follow) continue;
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
     d.dataset.sx = c.x + Number(d.dataset.followDx || 0);
-    d.dataset.sy = c.y - charH() - 8;
+    d.dataset.sy = d.dataset.followDy != null ? c.y + Number(d.dataset.followDy) : c.y - charH() - 8;
     place(d);
   }
 }
@@ -1445,6 +1450,7 @@ function drawOverlay() {
   for(const p of questMarkers(g)){const group=questPins.get(p.npc)||[];group.push(p);questPins.set(p.npc,group);}
   for(const group of questPins.values()){
     const p=group[0],pin=mark('quest',p.x,p.y-85,'📜',`<b>${esc(p.name)}</b><p>${group.map(q=>esc(q.title)).join(' · ')}</p><button data-quest-open>คุย · ภารกิจ</button>`);
+    if(p.npc&&g.crewOf(p.npc))Object.assign(pin.dataset,{follow:p.npc,followDy:String((p.y-85)-g.crewOf(p.npc).y)});   // FB3-MP2: the quest pin over a walking reaper follows him
     pin.querySelector('button').onclick=()=>{const q=QUESTS.find(q=>q.id===p.id);if(!questNear(g,q)){g.walkTo(p.x,p.y);return;}if(group.length===1)openQuests(p.id,{owner:p.npc});else openOwnerQuests(p.npc);};
   }
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
@@ -1480,8 +1486,10 @@ function drawOverlay() {
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
     || '<div class="line">...เขาก้มหน้าไม่พูดอะไร</div>';
   const hasNew = s.said.some(x => x.kind === 'truth' || x.kind === 'confess' || x.kind === 'false');
-  mark('soul speech-side', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - charH() - 8, hasNew ? '❗' : '💬',
+  const soulAt = soulMapPosition(g, s) || QUEUE_LINE[0];   // FB3-MP2: over the soul's real place, not always the first place of the queue
+  const soulPin = mark('soul speech-side', soulAt[0], soulAt[1] - charH() - 8, hasNew ? '❗' : '💬',
     `<span class="who">${esc(s.who)}</span>${said}`);
+  soulPin.dataset.followSoul = String(s.id);
 }
 
 /** อัปเดตทางเข้าศาลตามคิววิญญาณทุกเฟรม */

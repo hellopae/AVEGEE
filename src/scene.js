@@ -269,6 +269,19 @@ export function bossWalkPosition(walk, now = Date.now()) {
   return [walk.from[0] + (walk.to[0] - walk.from[0]) * progress, walk.from[1] + (walk.to[1] - walk.from[1]) * progress];
 }
 
+/** FB3-MP2 (owner map3): where a queued soul really stands on the map right now - waiting on the pier after the ferry (docked), walking from the pier to the dais (arrival walk), or in its place of the queue.
+ *  The speech pin over the soul follows this point every frame (ui.js followMarks) instead of staying at the first place of the queue. Same rules as the queue drawing in render(). */
+export function soulMapPosition(g, soul) {
+  if (!soul) return null;
+  const docked = (g.courtArrivals || []).filter(a => a.zone === g.zone && a.phase === 'dock');
+  const di = docked.findIndex(a => a.soulId === soul.id);
+  if (di >= 0) return [SPOTS.ferry.from[0] + (di % 3 - 1) * 24, SPOTS.ferry.from[1] - Math.floor(di / 3) * 22];
+  const walk = (g.afterlifeWalks || []).find(w => w.destination === 'arrival' && w.soul?.id === soul.id);
+  if (walk) return afterlifeWalkPosition(walk);
+  const i = (g.queue || []).findIndex(q => q.id === soul.id);
+  return QUEUE_LINE[i] || null;
+}
+
 export function afterlifeWalkPosition(walk) {
   return soulWalkPosition(walk);          // ชุด 29C: หักช่วงที่วิญญาณยืนรอยมทูตมารับ (walk.delay) ออกให้แล้ว
 }
