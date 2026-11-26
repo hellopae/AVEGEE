@@ -10,7 +10,8 @@
 //
 // A "story case" is a named case that is put at the head of the queue when the count is reached (the same mechanism the temple beggar always used).
 // `after` = cases already judged in Zone 1 when it becomes due (after:4 -> it is the 5th case).
-import { SPOTS } from './data.js';
+import { SPOTS, STATIONS } from './data.js';
+import { BUILD_PLAN, EVENT_UNLOCKS } from './unlocks.js';
 import { Z2_NOTICES, Z2_STORIES, Z2_STORY_CASES } from './z2-events.js';
 import { SUMMONERS, LAMP_FIRST_SLOT_ON } from './lamp.js';
 import { HARBOR_FLAME_NOTICE } from './z2b-harbor.js';
@@ -192,7 +193,20 @@ function lampNotices() {
   return out;
 }
 /** Notice windows of Zone 1's story (game.js queueNotice / ackNotice · ui.js openStoryNotice). `detail` = shown when the button is pressed. */
+/** FB3-MP6 (owner): "you can build X now" - one notice per building that a RANK opens (the Mirror Tower opens by the lamp: its own window). PLACEHOLDER wording from Toby - Rae writes the real text (R2). */
+const BUILD_NAME_EN = { dab:'the Sword Forest', sawan:'the Gate of Heaven', ngiw:'the Silk-Cotton Grove', lan:'the Toil Yard', lokan:'Lokantara Hell' };
+function buildOpenNotices() {
+  const out = {};
+  for (const k of BUILD_PLAN.filter(p => p.lv > 1 && !EVENT_UNLOCKS[p.k]).map(p => p.k)) {
+    const def = STATIONS.find(s => s.k === k); if (!def) continue;
+    const en = BUILD_NAME_EN[k] || def.name;
+    out[`build-open-${k}`] = { title:`สร้าง${def.name}ได้แล้ว`, text:`ยามาเลื่อนขั้นแล้ว ตอนนี้สร้าง${def.name}ได้ · เดินไปที่ป้ายก่อสร้างบนแผนที่ แล้วกดสร้าง`, button:'รับทราบ',
+      en:{ title:`You can build ${en} now`, text:`Yama has risen in rank. ${en[0].toUpperCase() + en.slice(1)} can be built now · walk to its building spot on the map and press build.`, button:'Understood' } };
+  }
+  return out;
+}
 export const NOTICES = Object.freeze({
+  ...buildOpenNotices(),
   // Case 5 — the owner's own sentence (spec 13 Nov 2026)
   'nurse-ledger':{ title:'คดีพยาบาลห้องฉุกเฉิน', text:'ลายมือในแฟ้มต้นทางที่สลับเลขเป็นของเพื่อนร่วมโต๊ะเดิมของนิรา', button:'รับทราบ', art:'img/soul-nurse.webp' },
   'sita-arrive':{ ...SITA.notices.arrive, art:SITA.art.portrait },

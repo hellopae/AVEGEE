@@ -2339,6 +2339,7 @@ const API = {
     for (const k of unlockedAtLevel(this.level)) {       // P1: แจ้งปลดล็อกสถานที่ (ครั้งเดียวต่อขั้น — ขั้นขึ้นได้ครั้งเดียว)
       const def = STATIONS.find(s => s.k === k);
       if (def) this.log(`🔓 ปลดล็อก${def.name} — สร้างได้แล้วที่ขั้นนี้`, 'good');
+      if (def) this.queueNotice(`build-open-${k}`);   // FB3-MP6 (owner map8 map14): a notice window when Yama's rank opens a building - once per building (queueNotice keeps it in storySeen); only at the moment of the rank, so old saves are not told again
     }
     this.pendingLevel = nx;
     // การเดินทางปลดด้วยบอสประจำสาขา เลเวลใช้เพิ่มค่าพลังเท่านั้น

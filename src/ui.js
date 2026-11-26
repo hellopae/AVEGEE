@@ -7376,10 +7376,8 @@ function openLevelUp(lv) {
   const zonesNew = g.pendingZoneOpen || [];
   g.pendingZoneOpen = null;                 // บอกในกล่องนี้แล้ว ไม่ต้องเด้งซ้ำอีกกล่อง
   // P1: สถานที่ลงทัณฑ์ที่เพิ่งปลดล็อก — แจ้งในกล่องเลื่อนขั้นนี้ครั้งเดียว + ชี้ว่าแนะนำสร้างอะไรถัดไป
-  const unlockRows = unlockedAtLevel(g.level).map(k => {
-    const d = STATIONS.find(x => x.k === k);
-    return { g: '🔓', t: t('unlock.levelRow', { name: d.name }), d: t('unlock.levelRowDesc', { why: t('unlock.why.' + k) }) };
-  });
+  // FB3-MP6: what a rank opens is told in its own notice window per building (game.js checkLevel -> 'build-open-<k>'), so the level-up window no longer repeats it
+  const unlockRows = [];
   const nextBuild = STATIONS.find(x => x.k === g.recommendedBuild());
   if (nextBuild) unlockRows.push({ g: '★', t: t('unlock.next', { name: nextBuild.name }), d: t('unlock.why.' + nextBuild.k) });
   const rows = [
