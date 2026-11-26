@@ -1,8 +1,16 @@
 {
  "game": [
   {
+   "before": "    this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open'); this.save(); this.onChange(); return true;   // FB3-T5: the Mirror Tower opens with the lamp (unlocks.js EVENT_UNLOCKS) - this window says so\n",
+   "after": "    this.queueNotice('lamp-received'); this.storySeen['notice:lamp-tower-open'] = true; this.save(); this.onChange(); return true;   // FB3-T5: the Mirror Tower opens with the lamp (unlocks.js EVENT_UNLOCKS) · FB3-T8: the lamp window says so itself (one window), so the separate tower window is marked seen\n"
+  },
+  {
    "before": "      out.push({ kind: 'hint', text: 'บุญปลอมถูกลบออกจากสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });\n",
    "after": "      out.push({ kind: 'hint', text: 'บุญข้อนี้ไม่นับ ทำเครื่องหมาย (ไม่นับ) ไว้ในสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });\n"
+  },
+  {
+   "before": "    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open');\n",
+   "after": "    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received'); this.storySeen['notice:lamp-tower-open'] = true;   // FB3-T8: one window (the lamp window carries the tower sentence)\n"
   }
  ],
  "data": [
