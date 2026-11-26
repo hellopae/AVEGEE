@@ -148,9 +148,11 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const fb3t4Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t4-runtime-changes.json',import.meta.url)));
   // FB3-T5 (26 Nov): comments (the elder brother walks to the dais), the lamp window of the Mirror Tower (giveLamp / restore queue one more notice) - no combat, damage, HP or balance number. Reversible snippets (scripts/build-fb3-t5-hash-fixture.py).
   const fb3t5Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t5-runtime-changes.json',import.meta.url)));
+  // FB3-T-LIB (26 Nov): the Guard of a seized zone fights beside Yama and Nira in the lord's fight (one more flag on the battle: guardGuest), the final battle opens at 15 cases (data.js atCases) - no damage / HP / cooldown number. Reversible snippets (scripts/build-fb3-tlib-hash-fixture.py).
+  const fb3tlibOnly=JSON.parse(readFileSync(new URL('./fixtures/fb3-tlib-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[]),...(fb3t4Only[name]||[]),...(fb3t5Only[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[]),...(fb3t4Only[name]||[]),...(fb3t5Only[name]||[]),...(fb3tlibOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);
