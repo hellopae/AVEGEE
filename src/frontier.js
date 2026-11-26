@@ -3,7 +3,7 @@ import {captainCaveForZone} from './route-geometry.js';
 import {bossGuideWaiting,HARBOR_ZONES} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { drawFrontierPostWeather, drawFrontierBiome } from './frontier-ambient.js';
-import { breachApproachActors } from './breach-approach.js';
+import { breachApproachActors, breachCrowdActors, swayPose } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
 import { exitStep, drawExitMarker } from './exit-marker.js';
 // src/frontier.js — แผนที่ชายแดน: เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569)
@@ -123,6 +123,8 @@ export function makeFrontierWalk(cv, g, opts) {
   const invasion = breachApproachActors(g.zone, opts.invasionKey);
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
+  // FB3-T5 (owner EV17): the rest of the army - drawn and in the way like the others, but not a fight target and not in the enemy count
+  const crowd = invasion.length ? breachCrowdActors(g.zone, opts.invasionKey, (x, y) => frontierWalkable(g.zone, x, y)) : [];
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
   const guideBoss=!invasion.length&&!HARBOR_ZONES.includes(g.zone)&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;   // T5'/2: in Zone 1 he waits at the harbor, not at the frontier gate
   // Zone 1's captain stays at the cave after the invasion, including after the guide farewell.
@@ -148,7 +150,7 @@ export function makeFrontierWalk(cv, g, opts) {
   // 30D — ยมบาทเดินทับศัตรู/นิรา/ยักษ์ที่ยืนอยู่ไม่ได้: วงรีรอบเท้าแต่ละตัว (พิกัด 0–1 · ขนาดตามตัวละครที่วาด)
   const blockers = () => {
     const rx = unit() * 0.045 / box.w, ry = unit() * 0.022 / box.h;
-    const list = sess.enemies.map(en => [en.x, en.y, rx, ry]);
+    const list = [...sess.enemies, ...crowd].map(en => [en.x, en.y, rx, ry]);
     if (challengeBoss) list.push([challengeBoss.x, challengeBoss.y, rx, ry]);
     list.push([NIRA[0], NIRA[1], rx, ry]);
     if (actorStanding(g.guard)) list.push([GUARD[0], GUARD[1], rx, ry]);
@@ -306,12 +308,13 @@ export function makeFrontierWalk(cv, g, opts) {
     drawExitMarker(ctx, px(GATE[0]), py(GATE[1]), { rx: r * box.w, ry: r * box.h, dir: [0, -1], u: U, t, alpha: 0.9, reduced });
     if (!invasion.length) drawExitMarker(ctx, px(FRONTIER_EXIT[0]), py(FRONTIER_EXIT[1]), { rx: r * box.w, ry: r * box.h, dir: [0, 1], u: U, t, alpha: opts.exitOpen?.() === false ? 0.45 : 0.9, reduced });
     const acts = [];
-    for (const en of sess.enemies) {
-      acts.push({ y: en.y, fn: () => {
-        const x = px(en.x), y = py(en.y);
+    for (const en of [...sess.enemies, ...crowd]) {
+      const pose = swayPose(en, t, reduced);   // FB3-T5 (owner EV17): the border-boss army paces a short beat instead of standing still
+      acts.push({ y: pose.y, fn: () => {
+        const x = px(pose.x), y = py(pose.y);
         const inReach = en.id === nearId;
         const kd = MOB.kinds[en.kindIdx] || MOB;
-        drawStandee(ctx, en.art || kd.img, x, y, U * (en.boss ? BOSS_H : MOB_H), t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
+        drawStandee(ctx, en.art || kd.img, x, y, U * (en.boss ? BOSS_H : MOB_H), t, '👹', pose.face ?? (en.x < P.x ? 1 : -1), pose.face ? pose.moving : !en.arrived);
         if(en.hypno){
           ctx.save();ctx.strokeStyle='#a1ffe1';ctx.globalAlpha=.7;ctx.lineWidth=2;
           for(let k=0;k<7;k++){const sy=y-U*BOSS_H+(k/7+(t%700)/4900)*U*BOSS_H;ctx.beginPath();ctx.moveTo(x-U*.035,sy);ctx.lineTo(x+U*.035,sy);ctx.stroke();}
