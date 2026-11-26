@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { syncSceneZone, CREW, SPOTS } from '../src/data.js';
 export function finalGame() {
-  const g = createGame(); g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
+  const g = createGame(); g.zone = 'cyberhell'; g.zoneCases.cyberhell = 15;
   // Direct zone assignment must also select that branch's world geometry.
   syncSceneZone(g.zone);
   Object.assign(g.player,SPOTS.bench,{tx:null,ty:null,path:null});

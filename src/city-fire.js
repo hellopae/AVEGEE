@@ -7,6 +7,7 @@ import { Z4G_KEYS } from './seized-keys.js';
 import { STATIONS } from './data.js';
 import { TOWN_HOUSE_SITES } from './town-layout.js';
 import { viewMetrics } from './map-ambient.js';
+import { gpuLossEpoch } from './gpu-budget.js';   // the two baked sprites below are rebuilt after a GPU loss (T1c audit)
 
 /** is this map a burning city right now? (Zones 1-3 while the lord is still controlled) */
 export const cityFireOn = g => !!g && g.zone !== 'cyberhell' && zoneSeized(g);
@@ -22,9 +23,11 @@ export function fireSpots() {
   return out;
 }
 const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
-let glowSprite = null;
+let glowSprite = null, glowEpoch = -1;
 function glow() {
+  if (glowSprite && glowEpoch !== gpuLossEpoch()) glowSprite = null;
   if (glowSprite || typeof document === 'undefined') return glowSprite;
+  glowEpoch = gpuLossEpoch();
   const c = document.createElement('canvas'); c.width = c.height = 128;
   const p = c.getContext?.('2d'); if (!p || p.canvas !== c) return null;
   const g = p.createRadialGradient(64, 64, 0, 64, 64, 64);
@@ -32,9 +35,11 @@ function glow() {
   p.fillStyle = g; p.fillRect(0, 0, 128, 128);
   return glowSprite = c;
 }
-let smokeSprite = null;
+let smokeSprite = null, smokeEpoch = -1;
 function smoke() {
+  if (smokeSprite && smokeEpoch !== gpuLossEpoch()) smokeSprite = null;
   if (smokeSprite || typeof document === 'undefined') return smokeSprite;
+  smokeEpoch = gpuLossEpoch();
   const c = document.createElement('canvas'); c.width = c.height = 64;
   const p = c.getContext?.('2d'); if (!p || p.canvas !== c) return null;
   const g = p.createRadialGradient(32, 32, 0, 32, 32, 32);
@@ -94,18 +99,22 @@ export function drawCityFire(ctx, g, t, reduced = false, W, H) {
 
 /** the controlled look: two green eyes at the head and the green scan lines across the body (the same lines `.signal-controlled` / frontier.js draw), over a standing figure of height `h` whose feet are at (x, y) */
 export function drawControlledMark(ctx, x, y, h, t, reduced = false) {
+  h *= .8;   // the drawn body is shorter than the nominal height (standeeFit)
   ctx.save();
   ctx.globalCompositeOperation = 'screen';
-  const pulse = reduced ? .8 : .65 + .25 * Math.sin(t / 320 + x);
-  ctx.strokeStyle = '#a1ffe1'; ctx.lineWidth = Math.max(1.5, h * .014);
-  ctx.globalAlpha = .55 * pulse;
-  const top = y - h, w = h * .34;
+  const pulse = reduced ? .85 : .75 + .25 * Math.sin(t / 320 + x);
+  const top = y - h, w = h * .46;
+  ctx.strokeStyle = '#7dffd6'; ctx.lineWidth = Math.max(2, h * .02);
+  ctx.globalAlpha = .8 * pulse;
   for (let k = 0; k < 7; k++) {
     const sy = top + ((k / 7) + (reduced ? 0 : (t % 700) / 4900)) % 1 * h;
     ctx.beginPath(); ctx.moveTo(x - w / 2, sy); ctx.lineTo(x + w / 2, sy); ctx.stroke();
   }
-  ctx.globalAlpha = pulse; ctx.fillStyle = '#c9fff0';
-  const ey = top + h * .2, er = Math.max(1.8, h * .028);
-  for (const dx of [-.07, .07]) { ctx.beginPath(); ctx.arc(x + dx * h, ey, er, 0, Math.PI * 2); ctx.fill(); }
+  // the green visor line across the eyes + two bright eyes
+  const ey = top + h * .3;
+  ctx.globalAlpha = pulse; ctx.lineWidth = Math.max(2.5, h * .03); ctx.strokeStyle = '#a1ffe1';
+  ctx.beginPath(); ctx.moveTo(x - w * .42, ey); ctx.lineTo(x + w * .42, ey); ctx.stroke();
+  ctx.fillStyle = '#e6fff6'; const er = Math.max(2.2, h * .035);
+  for (const dx of [-.075, .075]) { ctx.beginPath(); ctx.arc(x + dx * h, ey, er, 0, Math.PI * 2); ctx.fill(); }
   ctx.restore();
 }

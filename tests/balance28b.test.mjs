@@ -66,7 +66,7 @@ test('ศัตรูที่สร้างจริงใช้ตัวค�
 
 test('ฐานบอส/อีเวนต์คูณ HP ตามโซน แล้วใช้ตาราง BALANCE-2 ต่อครั้งเดียว', () => {
   const g = createGame();
-  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
+  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 15;
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared' };
   g.refreshZoneEvents();
   g.startZoneEvent('cyberFinal');
@@ -265,7 +265,7 @@ test('น้ำมนต์: พ่อค้านรกขาย · ราค�
 
 test('น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก', () => {
   const g = createGame();
-  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
+  g.zone = 'cyberhell'; g.zoneCases.cyberhell = 15;
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared' };
   g.refreshZoneEvents(); g.startZoneEvent('cyberFinal');
   g.inventory.holyWater = 2; g.mp = 10;

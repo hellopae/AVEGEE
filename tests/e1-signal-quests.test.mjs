@@ -47,7 +47,7 @@ test('SIG opens after the record hall (case 10) is won, cross-zone visits cannot
   g.storySeen[signalStory(key,'open')]=true;assert.ok(g.startZoneEvent(key,'call'));win(g);
   assert.ok(!g.bossJustice?.active);assert.equal(g.zoneEvents[z][key],'cleared');g=reload(g);
  }
- zone(g,'cyberhell');g.zoneCases.cyberhell=10;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberFinal'),'locked');assert.equal(g.startFinalEncounter(),null);
+ zone(g,'cyberhell');g.zoneCases.cyberhell=10;g.refreshZoneEvents();assert.equal(g.zoneEventStatus('cyberFinal'),'locked');assert.equal(g.startFinalEncounter(),null);g.zoneCases.cyberhell=15;g.refreshZoneEvents();   // FB3-L1: the final opens at 15 cases (the SIG chain itself still needs only the 10th case)
  assert.ok(g.storyQueue.some(s=>s.key==='cyber-signal-close'));while(g.storyQueue.length)g.completeStory();
  assert.equal(g.zoneEventStatus('signalClose'),'cleared');assert.equal(g.zoneEventStatus('cyberFinal'),'pending');
  const heart=g.inventory.spareHeart,exp=g.exp;g.refreshZoneEvents();g.completeStory();assert.equal(g.inventory.spareHeart,heart);assert.equal(g.exp,exp);
@@ -187,7 +187,7 @@ test('each cross-zone prerequisite is enforced, including stale pending SIG and 
 });
 test('legacy finals already fought retain progress and ledger without paying SIG rewards',()=>{
   for(const legacyBattle of [false,true]){
-    let g=createGame();unlock(g);g.zoneCases.cyberhell=10;g.zoneEvents.cyberhell.signalClose='cleared';g.refreshZoneEvents();
+    let g=createGame();unlock(g);g.zoneCases.cyberhell=15;g.zoneEvents.cyberhell.signalClose='cleared';g.refreshZoneEvents();   // FB3-L1: 15 cases
     assert.ok(g.startFinalEncounter());
     if(!legacyBattle){win(g);assert.equal(g.finalEvent.minionsCleared,1);}
     const save=g.snapshot();delete save.e1Version;
