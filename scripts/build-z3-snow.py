@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone3/v1 and img/map-zone3/v7 (the 1x and 2x ground it builds v8 from; v8 itself stays).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Z3-SNOW-CODE (15 Nov 2026): zone 3 snow drawn by code onto the v7 ground, written as a new ground set img/map-zone3/v8/.
 
 Why: the HD ground (v7) has thinner snow along the cliff tops and the road edges than the 1x ground (v1), so the whole zone looks pale and cold.

@@ -91,7 +91,8 @@ const terrain = (folder, name) => ({
 });
 
 // Zone 1 ground sets.  Swap the painted ground by changing ZONE1_GROUND_SET only; everything else (tile grid, preview, minimap, fluid masks, sprites) reads the set.
-//   v5   the 1x ground (4915 x 3277, 1024 px chunks) with the old runtime repairs.
+//   v5   the 1x ground (4915 x 3277, 1024 px chunks) with the old runtime repairs.  REMOVED from the repo (FB3-CLEAN2, 26 Nov 2026, with img/map-zone1/repairs/ and v4 except flow-v4.png): last in git at 6e752785
+//        (git checkout 6e752785 -- img/map-zone1/v5 img/map-zone1/repairs, then put the `v5` entry back below).
 //   v7   Codex's 2x ground (Z1-HD-ASSEMBLE, 9830 x 6554): 13 parts were HD redraws, 7 spots were still v5 + repairs enlarged 2x.  REMOVED from the repo at the merge to main
 //        (12 Nov 2026, 25 MB, superseded by v7r); it is in git history at 3a33380c if it is ever needed again.
 //        Served as 1024 px tiles (10 x 7, cut by scripts/install-z1-ground.py): the camera at phone zoom keeps few decoded tiles in memory (FX3: 2048 px chunks 100-130 MB, tiles 35-50 MB).
@@ -102,28 +103,30 @@ const terrain = (folder, name) => ({
 const hd2x = (name, folder = 'map-zone1', preview = 'zone1-terrain-v7-preview.webp', sprites = true) => { const dir = `img/${folder}/${name}/`; return Object.freeze({ dir, preview:dir + preview,
   fullPx:Object.freeze({ w:9830, h:6554 }), chunk:1024, repairs:false, ...(sprites ? { sprites:dir + 'sprites.json' } : {}) }); };
 export const ZONE1_GROUND = Object.freeze({
-  v5: Object.freeze({ dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
-                      fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:true }),
   v7r: hd2x('v7r'),
 });
 export const ZONE1_GROUND_SET = 'v7r';
 
 // Zone 2 (Asia) and zone 3 (West) ground sets, same switch as zone 1 (14 Nov 2026, scripts/install-ground.py <pack> --zone 2|3 --activate).
-//   v2 / v1  the 1x ground of each zone (4915 x 3277, 1024 px chunks), kept on disk so the old look is one constant away.
-//   v7       Codex's 2x ground (Z234-HD-ASSEMBLE, 9830 x 6554, cut to 1024 px tiles, WebP q88).  ACTIVE.  It carries its own list of spots restored from the 1x art (15 in Asia, 1 in West),
+//   v2 / v1  the 1x ground of each zone (4915 x 3277, 1024 px chunks).  REMOVED from the repo (FB3-CLEAN2, 26 Nov 2026; only the flow masks flow-v2.png / flow-v1.png stay, flowUrl below reads them):
+//            last in git at 6e752785 (git checkout 6e752785 -- img/map-zone2/v2 img/map-zone3/v1, then put the `v2` / `v1` entry back below).
+//   v7       Codex's 2x ground (Z234-HD-ASSEMBLE, 9830 x 6554, cut to 1024 px tiles, WebP q88).  REMOVED from the repo too (FB3-CLEAN2; zones 2 and 3 run on v8, zone 4 on its own v7).  Last in git at 6e752785
+//            (git checkout 6e752785 -- img/map-zone2/v7 img/map-zone3/v7, then add `v7: hd2x('v7', 'map-zoneN', 'zoneN-terrain-v7-preview.webp', false)` back).  Description of the set:  It carries its own list of spots restored from the 1x art (15 in Asia, 1 in West),
 //            see docs/art-reviews/2026-11-14-z23-ground-integrate/.  No runtime repairs, no ground sprites.
 //   Zone 3 v8 (15 Nov 2026, scripts/build-z3-snow.py): v7 + snow drawn by code where v7's cliff tops and road edges were thinner than v1's (a drift only grows out of v7's own snow, 2x, lit from the upper left,
-//            colours sampled from v1's snow) + Codex round 1's repainted central bridge head.  Nothing else of v7 is touched.  ACTIVE for zone 3.  v7 stays on disk: ZONE3_GROUND_SET = 'v7' goes back.
-// To go back: set ZONE2_GROUND_SET = 'v2' / ZONE3_GROUND_SET = 'v1'.
+//            colours sampled from v1's snow) + Codex round 1's repainted central bridge head.  Nothing else of v7 is touched.  ACTIVE for zone 3.  (v7 itself is gone from the tree, see above.)
+// To go back: restore the files named above from git, put the entry back and set ZONE2_GROUND_SET = 'v2' / ZONE3_GROUND_SET = 'v1'.
 const ground1x = (folder, name, ver) => Object.freeze({ dir:`img/${folder}/${ver}/`, preview:`img/${folder}/${ver}/${name}-terrain-${ver}-preview.webp`,
   fullPx:Object.freeze({ w:4915, h:3277 }), chunk:1024, repairs:false });
-export const ZONE2_GROUND = Object.freeze({ v2: ground1x('map-zone2', 'zone2', 'v2'), v7: hd2x('v7', 'map-zone2', 'zone2-terrain-v7-preview.webp', false), v8: hd2x('v8', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
+export const ZONE2_GROUND = Object.freeze({ v8: hd2x('v8', 'map-zone2', 'zone2-terrain-v7-preview.webp', false) });
 export const ZONE2_GROUND_SET = 'v8';
-export const ZONE3_GROUND = Object.freeze({ v1: ground1x('map-zone3', 'zone3', 'v1'), v7: hd2x('v7', 'map-zone3', 'zone3-terrain-v7-preview.webp', false), v8: hd2x('v8', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
+export const ZONE3_GROUND = Object.freeze({ v8: hd2x('v8', 'map-zone3', 'zone3-terrain-v7-preview.webp', false) });
 export const ZONE3_GROUND_SET = 'v8';
-// Zone 4 (Cyberhell), 14 Nov 2026: same switch.  v3 = the old 1x ground (4915 x 3277, 1024 px chunks, still on disk, also read by the legacy src/cyberhell-terrain.js);
-//   v7 = Codex's 2x ground (Z4-HD-ASSEMBLE, 9830 x 6554, 1024 px tiles WebP q88).  ACTIVE.  No runtime repairs, no ground sprites.  To go back: set ZONE4_GROUND_SET = 'v3'.
-export const ZONE4_GROUND = Object.freeze({ v3: ground1x('map-zone4', 'zone4', 'v3'), v7: hd2x('v7', 'map-zone4', 'zone4-terrain-v7-preview.webp', false) });
+// Zone 4 (Cyberhell), 14 Nov 2026: same switch.  v3 = the old 1x ground (4915 x 3277, 1024 px chunks).  REMOVED from the repo (FB3-CLEAN2, with map-zone4/v1 and v2): last in git at 6e752785
+//   (git checkout 6e752785 -- img/map-zone4/v3, then put the `v3` entry back below and set ZONE4_GROUND_SET = 'v3').  The legacy loader src/cyberhell-terrain.js read v3, but only for a zone that is not a
+//   town zone (scene.js drawMapGround) - zone 4 is one, so it never ran.
+//   v7 = Codex's 2x ground (Z4-HD-ASSEMBLE, 9830 x 6554, 1024 px tiles WebP q88).  ACTIVE.  No runtime repairs, no ground sprites.
+export const ZONE4_GROUND = Object.freeze({ v7: hd2x('v7', 'map-zone4', 'zone4-terrain-v7-preview.webp', false) });
 export const ZONE4_GROUND_SET = 'v7';
 
 /** The table.  Edit data here; never branch on a zone name elsewhere. */

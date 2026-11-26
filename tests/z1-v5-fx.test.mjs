@@ -242,7 +242,7 @@ test('ground swap: v7r (2x redraw of v5, served as 1024 px tiles) is one switch 
   assert.strictEqual(skin.ZONE_SKIN.th.terrain, skin.ZONE1_GROUND.v7r);
   assert.deepEqual({ ...skin.ZONE1_GROUND.v7r, fullPx: { ...skin.ZONE1_GROUND.v7r.fullPx } },
     { dir: 'img/map-zone1/v7r/', preview: 'img/map-zone1/v7r/zone1-terrain-v7-preview.webp', fullPx: { w: 9830, h: 6554 }, chunk: 1024, repairs: false, sprites: 'img/map-zone1/v7r/sprites.json' });
-  assert.deepEqual(Object.keys(skin.ZONE1_GROUND), ['v5', 'v7r'], 'the unrepaired v7 set was removed at the merge to main (superseded by v7r)');
+  assert.deepEqual(Object.keys(skin.ZONE1_GROUND), ['v7r'], 'the unrepaired v7 set was removed at the merge to main (superseded by v7r); the v5 set + repairs/ were removed in FB3-CLEAN2 (git 6e752785)');
   const t = await import('../src/town-terrain.js?v=k1d');
   const { TOWN_SIZE } = await import('../src/town-layout.js?v=k1d');
   const real = skin.ZONE_SKIN.th.terrain;

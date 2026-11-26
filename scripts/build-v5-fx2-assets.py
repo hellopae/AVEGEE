@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v5 (ground tiles).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Z1-V5-FX2: place the already-drawn waves, glints and lava sprites (no new drawing).
 
 Usage (run AFTER scripts/build-v5-fx-assets.py; idempotent):

@@ -22,7 +22,8 @@ test('P9 Nira: all four zones draw the v2 sheet (1280x1280, 4x4); v1 files stay 
     const v2=`img/nira-combat/nira-${zone}-sheet-v2.webp`;
     assert.equal(niraCombatSheet(zone),v2);assert.ok(niraSheetIsV2(zone));
     assert.deepEqual(webpSize(v2),[1280,1280]);
-    assert.ok(existsSync(`img/nira-combat/nira-${zone}-sheet-v1.webp`),'v1 kept (art is never overwritten)');
+    // FB3-CLEAN2 (26 Nov 2026): the v1 sheets (nothing reaches them) were removed; they are in git at 6e752785.  The v2 sheet is the only one now.
+    assert.ok(!existsSync(`img/nira-combat/nira-${zone}-sheet-v1.webp`),'v1 sheet is gone');
     assert.ok(allCatalogFiles.includes(v2),`${zone} v2 preloaded`);
   }
   assert.equal(niraCombatSheet('nowhere'),'img/nira-combat/nira-th-sheet-v2.webp','unknown zone falls back to th');

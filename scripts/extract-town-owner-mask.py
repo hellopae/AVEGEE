@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v5, img/map-zone2/v1, img/map-zone3/v1, img/map-zone4/v1 (the old preview images it reads).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Extract navigation DATA from the owner's red-overlay reference, without editing artwork.
 Default is analysis only; --write emits the walk-mask module.
 

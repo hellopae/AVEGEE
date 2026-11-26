@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/frontier-route/zone1-2-v5.webp (the "before" picture it reads).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """B12: rasterize hand-traced floor polygons; rasterize only visible floor; art is assembled separately.
 Run from repository root. Coordinates below use the 1672x941 world space; artwork is 3344x1882.
 The legacy owner module stays untouched for before/after comparison.

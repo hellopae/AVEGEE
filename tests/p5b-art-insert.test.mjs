@@ -34,15 +34,11 @@ test('P5b boss zone 3: cane cutscene points at the v2 art, other zones unchanged
   assertVersionedImports(html, ['story.js']);
 });
 
-test('P5b pier: r3-c3 repair registered once, box covers the pier plus feather, file is a full 1024 chunk',()=>{
-  const d=TOWN_TERRAIN_REPAIRS.filter(r=>r.row===3&&r.col===3);
-  assert.equal(d.length,1);assert.equal(d[0].url,'img/map-zone1/repairs/r3-c3-pier-v1.webp');
-  assert.deepEqual(webpSize(d[0].url),[1024,1024]);
-  const [x0,y0,x1,y1]=d[0].boxes[0];
-  // changed pixels of the drawing span x712-941 y92-308; the 42px mask feather must fall outside them
-  assert.ok(x0+42<=712&&x1-42>=941&&y0+42<=92&&y1-42>=308,'feather lands on untouched water/rock, not on the pier');
-  assert.equal(TOWN_TERRAIN_REPAIRS.length,3,'r2-c3 and r1-c3 repairs kept');
-  assert.ok(allCatalogFiles.includes(d[0].url));
+test('P5b pier: the v5 ground repairs are gone (FB3-CLEAN2) - the registry is empty, the repair files are not in the tree or in the preload list, and the played ground repairs nothing at run time',()=>{
+  // The pier / r2-c3 / r1-c3 repair images belonged to the v5 ground only (v7r has its own native repairs).  They are in git at 6e752785; tests/helpers/zone1-ground-v5.mjs registers them for the loader contract tests.
+  assert.equal(TOWN_TERRAIN_REPAIRS.length,0);
+  assert.ok(!existsSync('img/map-zone1/repairs/r3-c3-pier-v1.webp'));
+  assert.ok(!allCatalogFiles.some(f=>f.startsWith('img/map-zone1/repairs/')),'no repair image is preloaded');
   assertVersionedImports(html, ['town-terrain-repair.js']);
 });
 

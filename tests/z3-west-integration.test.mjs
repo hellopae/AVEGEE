@@ -19,7 +19,7 @@ test('Z3: production west skin has all16 sprites/preloads and20 chunks; border 3
  assert.equal(skin.flowUrl,'img/map-zone3/v1/flow-v1.png');assert.equal(skin.terrain.repairs,false);assert.equal(skin.treeTint,false);
  const files=[...Object.values(skin.art),...Object.values(skin.stations.facade)];assert.equal(files.length,16);
  for(const f of files){assert.ok(existsSync(f),f);assert.ok(catalog.zones.west.includes(f),f+' preload');}
- for(let r=1;r<=4;r++)for(let c=1;c<=5;c++)assert.ok(existsSync(`img/map-zone3/v1/r${r}-c${c}.webp`));
+ assert.ok(existsSync('img/map-zone3/v1/flow-v1.png'),'the flow mask stays');assert.ok(!existsSync('img/map-zone3/v1/r1-c1.webp'),'the old 1x tiles are gone (FB3-CLEAN2)');
  assert.equal(ROUTE_GEOMETRY['asia:west'].enabled,true);
  assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,true);
 });

@@ -1,4 +1,5 @@
 // Z4-TOWN-A: detailed owner terrain, shared with the enabled town skin.
+// FB3-CLEAN2 (26 Nov 2026): img/map-zone4/v3 was removed (git 6e752785).  Only scene.js drawMapGround reaches this loader, and only for a zone that is not a town zone; zone 4 is one (ZONE_SKIN.cyberhell.terrain = v7), so it never runs.
 export const CYBERHELL_TERRAIN = Object.freeze({
   dir:'img/map-zone4/v3/', full:{w:4915,h:3277}, world:{w:3840,h:2560}, chunk:1024,
 });

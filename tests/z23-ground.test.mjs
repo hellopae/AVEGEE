@@ -1,4 +1,4 @@
-// Z23-GROUND (14 Nov 2026): Codex's 2x ground for zone 2 (Asia), zone 3 (West) and zone 4 (Cyberhell) is the default; the old 1x ground is one constant away.
+// Z23-GROUND (14 Nov 2026): Codex's 2x ground for zone 2 (Asia), zone 3 (West) and zone 4 (Cyberhell) is the default (the old 1x ground was removed in FB3-CLEAN2, git 6e752785).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -11,18 +11,18 @@ const webpSize = file => { const b = readFileSync(file), k = b.toString('latin1'
   if (k === 'VP8L') { const v = b.readUInt32LE(21); return [1 + (v & 0x3fff), 1 + ((v >> 14) & 0x3fff)]; }
   throw Error('unexpected WebP ' + k); };
 
-// 15 Nov: zone 3 plays v8 (v7 + snow drawn by code, scripts/build-z3-snow.py); zone 2 plays v8 (Codex's sharpened v7, installed with --name v8); v7 stays registered and on disk.  The tests follow the active set's name.
-const KEYS = { asia: [ 'v7', 'v8' ], west: [ 'v7', 'v8' ], cyberhell: [ 'v7' ] };
+// 15 Nov: zone 3 plays v8 (v7 + snow drawn by code, scripts/build-z3-snow.py); zone 2 plays v8 (Codex's sharpened v7, installed with --name v8).  The tests follow the active set's name.
+// FB3-CLEAN2 (26 Nov): the old 1x sets (v2 / v1 / v3) and the zone 2 / 3 v7 sets were removed from the repo and from the registry (git 6e752785); one set is registered per zone.
+const KEYS = { asia: [ 'v8' ], west: [ 'v8' ], cyberhell: [ 'v7' ] };
 for (const [zone, folder, sets, active, old, prev] of [['asia', 'map-zone2', ZONE2_GROUND, ZONE2_GROUND_SET, 'v2', 'zone2'], ['west', 'map-zone3', ZONE3_GROUND, ZONE3_GROUND_SET, 'v1', 'zone3'], ['cyberhell', 'map-zone4', ZONE4_GROUND, ZONE4_GROUND_SET, 'v3', 'zone4']]) {
-  test(`Z23-GROUND ${zone}: the 2x ground v7 is the default, the old 1x ground stays registered and on disk`, () => {
+  test(`Z23-GROUND ${zone}: the 2x ground is the default and the only registered set (old 1x sets are removed)`, () => {
     assert.equal(active, KEYS[zone].at(-1));
     assert.strictEqual(ZONE_SKIN[zone].terrain, sets[active]);
-    assert.deepEqual(Object.keys(sets), [old, ...KEYS[zone]]);
+    assert.deepEqual(Object.keys(sets), KEYS[zone]);
     const g = sets[active];
     assert.deepEqual({ dir: g.dir, chunk: g.chunk, repairs: g.repairs, fullPx: { ...g.fullPx } }, { dir: `img/${folder}/${active}/`, chunk: 1024, repairs: false, fullPx: { w: 9830, h: 6554 } });
     assert.equal(g.sprites, undefined, 'no ground sprites in this zone');
-    assert.deepEqual(sets[old].fullPx, { w: 4915, h: 3277 });
-    for (let r = 1; r <= 4; r++) for (let c = 1; c <= 5; c++) assert.ok(existsSync(`img/${folder}/${old}/r${r}-c${c}.webp`), 'old set intact');
+    assert.ok(!existsSync(`img/${folder}/${old}/r1-c1.webp`), 'old 1x set is gone from the tree');
   });
   test(`Z23-GROUND ${zone}: 70 tiles of 1024 px (last column 646, last row 410), preview 1536x1024, WebP only, no gaps in the world`, () => {
     const G = townTerrainGrid(zone);

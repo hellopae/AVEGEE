@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v4 except flow-v4.png (the ground tiles and preview it reads; flow-v4.png itself stays and is read by the game).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """N4: bake the "flowing surface" map for Zone 1 from the painted ground (img/map-zone1/v4).
 
 Output img/map-zone1/v4/flow-v4.png, 1536x1024 (the same grid as zone1-terrain-v4-preview.webp,

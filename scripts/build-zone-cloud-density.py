@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone3/v7 (the zone 3 preview it reads for the west cloud density).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Zone 2 / 3 / 4 floating-cloud density: where the painted mist / cloud sea is, the drifting code-made clouds (src/zone-clouds.js) are allowed to show; over plazas, roads and
 buildings they fade out.  Reads each zone's ground preview (read-only) and writes src/zone-clouds-density.js: a 48 x 32 grid per zone, one hex digit (0-f) per cell.
 Nothing is drawn onto or filtered over the art; this only tells the clouds where to gather.

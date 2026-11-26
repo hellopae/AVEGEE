@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone2/v2 and img/map-zone4/v1 / v2 (tiles and stitch reports it reads or writes; flow-v2.png stays).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Register built-in image_gen quadrant detail to the LIVE CyberHell painting.
 No generation/API calls: inputs must be the four saved built-in outputs.
 Retain original structural-edge bands, transfer freshly painted surface detail,

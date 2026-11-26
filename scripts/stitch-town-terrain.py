@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone2/v1 (its output; the same for the other zones' v1 folders).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """M2: join the four painted quadrants of a zone's town ground into the 4915x3277 sheet, cut it into 1024 px chunks and
 write the 1536x1024 preview.   Never touches Zone 1's files.
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone3/v7 (the zone 3 preview it reads).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Z3 fog density map: where the frozen water, falls and gorges are, the fog is thick; on the paved plazas and roads it is thin.
 Reads the zone 3 ground preview (img/map-zone3/v7/zone3-terrain-v7-preview.webp, read-only) and writes src/z3-fog-density.js:
 a 48 x 32 grid, one hex digit (0-f) per cell, row by row. Nothing is drawn onto or filtered over the art; this only tells the fog where to gather."""

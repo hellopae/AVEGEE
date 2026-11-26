@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone2/v2 and img/map-zone3/v1 except flow-v2.png / flow-v1.png (the ground tiles it reads; the two flow masks stay and are read by the game).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Conservative registered town surface data; never repaints terrain/navigation.
 
 Run from any directory. --debug DIR saves a diagnostic overlay and report.

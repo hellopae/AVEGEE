@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v5 (the ground tiles it scans).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """Z1-V5-FX2: list the white / lavender fog lumps painted INTO the v5 ground (owner 5 Nov: delete them when Codex repaints the ground).
 
 Pale (low saturation, bright) + smooth (low local texture) pixels of the v5 master, closed and filtered by area.  Output: JSON (world + v5 master px +

@@ -17,19 +17,19 @@ async function fixture(){
 test('MAP-Z4 v3: enabled town uses owner mask and a 3:2 world',async()=>{
   assert.equal(ZONE_SKIN.cyberhell.enabled,true);
   syncSceneZone('cyberhell');assert.deepEqual([SCENE.w,SCENE.h],[3840,2560]);syncSceneZone('th');
-  assert.equal(ZONE_SKIN.cyberhell.terrain.dir,'img/map-zone4/v7/');      // 14 Nov: Codex's 2x ground is the default (ZONE4_GROUND_SET); v3 stays on disk and in the legacy loader
+  assert.equal(ZONE_SKIN.cyberhell.terrain.dir,'img/map-zone4/v7/');      // 14 Nov: Codex's 2x ground is the default (ZONE4_GROUND_SET); v3 was removed in FB3-CLEAN2 (the legacy loader never runs for a town zone)
   const {TOWN_OWNER_WALK_RUNS}=await import('../src/town-owner-walkmask-cyberhell.js');
   assert.ok(TOWN_OWNER_WALK_RUNS.length>0);
 });
 
-test('MAP-Z4: tiles exactly cover the new 3:2 world; production files exist',async()=>{
+test('MAP-Z4: tiles exactly cover the new 3:2 world',async()=>{
   const {CYBERHELL_TERRAIN:t,cyberhellTileRect:rect}=await import('../src/cyberhell-terrain.js');
   let area=0;
   for(let row=1;row<=4;row++)for(let col=1;col<=5;col++){
     const r=rect(row,col);area+=r.w*r.h;
     if(col<5)assert.ok(Math.abs(r.x+r.w-rect(row,col+1).x)<1e-10);
     if(row<4)assert.ok(Math.abs(r.y+r.h-rect(row+1,col).y)<1e-10);
-    assert.ok(existsSync(t.dir+`r${row}-c${col}.webp`));
+    // FB3-CLEAN2 (26 Nov): img/map-zone4/v3 (the legacy loader's tiles) was removed - git 6e752785; the geometry above is all this test still checks.
   }
   assert.ok(Math.abs(area-3840*2560)<1e-8);
 });
@@ -65,23 +65,7 @@ test('MAP-Z4: overview uses painting without allocations; panning keeps at most 
   }finally{f.restore();}
 });
 
-test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Zone 2 size class',()=>{
-  const report=JSON.parse(readFileSync('img/map-zone4/v3/stitch-report.json'));
-  const sizes=file=>{const b=readFileSync(file),k=b.toString('latin1',12,16);
-    if(k==='VP8X')return [1+b.readUIntLE(24,3),1+b.readUIntLE(27,3)];
-    if(k==='VP8 ')return [b.readUInt16LE(26)&0x3fff,b.readUInt16LE(28)&0x3fff];
-    if(k==='VP8L'){const v=b.readUInt32LE(21);return [1+(v&0x3fff),1+((v>>14)&0x3fff)];}
-    throw Error('unexpected WebP '+k);};
-  let decoded=0,bytes=0;
-  for(let r=1;r<=4;r++)for(let c=1;c<=5;c++){
-    const file=`img/map-zone4/v3/r${r}-c${c}.webp`,size=sizes(file);
-    assert.deepEqual(size,[c===5?819:1024,r===4?205:1024]);decoded+=size[0]*size[1]*4;bytes+=readFileSync(file).length;
-  }
-  const ref=report.comparison['map-zone2/v2'];assert.equal(decoded,ref.decodedRGBABytes);
-  assert.ok(bytes<ref.encodedBytes*1.5,'at most 1.5x Zone 2 transfer size');
-  assert.ok(report.surfaceDetailFraction>.1,'substantial area receives newly generated detail');
-  assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
-});
+// FB3-CLEAN2 (26 Nov): the test of the delivered v3 tile sizes / stitch report was removed with img/map-zone4/v3 (git 6e752785).
 
 test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 and the authorized B23/B34 redraws',async()=>{
   const {createHash}=await import('node:crypto');

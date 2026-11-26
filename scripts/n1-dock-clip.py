@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v4 except flow-v4.png (the ground it clips against).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """N1 (16 ต.ค. 2569): clip the Zone 1 dock walk mask to the painted pier (img/map-zone1/v4), feet-based.
 Before: the mask ran 15-30 units past the stone top (front face, right post, water on the right) so Yama's feet and
 gold ring ended up on the water. Only cells inside DOCK_BOX are rewritten (white iff the cell centre is inside DOCK_FEET);

@@ -1,11 +1,10 @@
 import {LossMap} from './gpu-budget.js';
 // Blend restored ground only over earlier object-removal patches. Original borders
 // remain untouched so generated artwork cannot move a neighboring tile or staircase.
-export const TOWN_TERRAIN_REPAIRS=Object.freeze([
-  {row:2,col:3,url:'img/map-zone1/repairs/r2-c3-v1.webp',border:80,fade:48,boxes:[[590,115,975,345],[365,515,1024,870],[110,710,365,940]]},
-  {row:3,col:3,url:'img/map-zone1/repairs/r3-c3-pier-v1.webp',border:16,fade:16,boxes:[[630,40,1000,360]]},
-  {row:1,col:3,url:'img/map-zone1/repairs/r1-c3-v1.webp',border:16,fade:16,boxes:[[290,775,850,1024]]},
-].map(d=>Object.freeze({...d,boxes:Object.freeze(d.boxes.map(Object.freeze))})));
+// FB3-CLEAN2 (26 Nov 2026): the three repair images of the v5 ground (img/map-zone1/repairs/) were removed with the v5 set - nothing plays v5 any more (the game plays v7r, repairs:false), so the
+// registry is EMPTY and repairTownTerrain() hands every chunk back untouched.  The entries (row 2 col 3 r2-c3-v1, row 3 col 3 r3-c3-pier-v1, row 1 col 3 r1-c3-v1, each with border / fade / boxes) and the files
+// are in git at 6e752785; tests/helpers/zone1-ground-v5.mjs registers them again for the loader contract tests.  To bring v5 back: git checkout 6e752785 -- img/map-zone1/repairs, then add the entries here.
+export const TOWN_TERRAIN_REPAIRS=[];
 const loads=new Map(),overlays=new LossMap();
 function loadRepair(url){
   if(!loads.has(url))loads.set(url,new Promise((resolve,reject)=>{

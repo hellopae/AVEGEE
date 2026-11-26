@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# FB3-CLEAN2 (26 Nov 2026): the images this script uses were removed from the tree: img/map-zone1/v5 (the ground tiles it stitches).  They are in git at commit 6e752785: git checkout 6e752785 -- <path>.
 """M2 self-test of the quadrant stitcher against Zone 1: cut the real Zone 1 ground into four quadrants, stitch them
 back, compare with the original chunks / preview.   python3 scripts/stitch-selftest.py [--tmp DIR] [--json FILE]
  A) native-resolution quadrants (2765x1843 ...)  -> must reproduce the sheet (differences = webp only)
