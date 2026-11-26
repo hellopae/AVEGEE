@@ -98,9 +98,20 @@ const PATCH_POLYS=[TOWN_UPPER_BRIDGE_STAIRS,TOWN_UPPER_BRIDGE_LANDING,TOWN_LAVA_
   .map(points=>({points,x1:Math.min(...points.map(p=>p[0])),y1:Math.min(...points.map(p=>p[1])),x2:Math.max(...points.map(p=>p[0])),y2:Math.max(...points.map(p=>p[1]))}));
 // Rebuilt by applyTownZoneLayout when a zone moves a station / spot (the array itself is never replaced).
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
+/** FB3-MP4 (owner map5, drawn on the Zone 1 town): the red bush / rock slope right of the lava bridge and the rock ledge under the stairs looked like ground but are not.
+ *  Polygons traced from the owner's cyan lines (the screenshot was matched to the game view: 2.1 px per world unit, Yama at 1147,969). Zone 1 only; a bridge deck is still decided by its own strip first. */
+export const TOWN_OWNER_BLOCKS = Object.freeze({
+  th:Object.freeze([
+    Object.freeze([[1008,903],[1345,903],[1345,957],[1310,980],[1269,991],[1245,994],[1214,997],[1186,998],[1139,996],[1112,994],[1099,993],[1081,987],[1064,973],[1061,951],[1050,945],[1008,943]]),
+    Object.freeze([[1376,1031],[1337,1042],[1304,1057],[1290,1070],[1295,1087],[1309,1101],[1328,1112],[1356,1122],[1386,1130],[1386,1031]]),   // the ledge under the stairs - kept clear of the stair lane (tests/town-navigation lower bridge stairs)
+  ]),
+});
+const OWNER_BLOCK_BOX = Object.fromEntries(Object.entries(TOWN_OWNER_BLOCKS).map(([z,list])=>[z,list.map(poly=>({poly,x1:Math.min(...poly.map(p=>p[0])),x2:Math.max(...poly.map(p=>p[0])),y1:Math.min(...poly.map(p=>p[1])),y2:Math.max(...poly.map(p=>p[1]))}))]));
+export const townOwnerBlocked = (x,y,zone=appliedZone) => !!OWNER_BLOCK_BOX[zone]?.some(b=>x>=b.x1&&x<=b.x2&&y>=b.y1&&y<=b.y2&&townInPolygon(x,y,b.poly));
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
-  { const deck=bridgeSurface(appliedZone,x,y); if(deck>=0)return deck===1; }   // F13: a bridge is a narrow deck strip; rails / beams are not floor (town-bridge-rails.js)
+  { const deck=bridgeSurface(appliedZone,x,y); if(deck>=0)return deck===1; }
+  if(townOwnerBlocked(x,y))return false;   // F13: a bridge is a narrow deck strip; rails / beams are not floor (town-bridge-rails.js)
   if(daisBlocks(x,y,appliedZone,TOWN_DAIS))return false;
   if(daisFloorAt(x,y,appliedZone,TOWN_DAIS))return true;
   // An owner-complete floor must never be reopened by legacy door/UI pads.
