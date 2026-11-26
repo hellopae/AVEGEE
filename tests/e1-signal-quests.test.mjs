@@ -282,7 +282,7 @@ test('SIG battle and frontier consume the supplied signal boss art, CyberHell ke
   const {artUrl}=await import('../src/art.js');
   for(const z of ['th','asia','west']){
     const ev=ZONE_EVENTS[z].find(e=>e.k===SIGNAL_KEYS[z]),boss=ev.waves.flat().find(f=>f.boss);
-    assert.equal(artUrl(boss.sp),`img/story-sig/boss-frontier-${z}-signal-v1.webp`);assert.ok(existsSync(artUrl(boss.sp)));
+    assert.equal(artUrl(boss.sp),`img/story-sig/boss-frontier-${z}-signal-idle.webp`);assert.ok(existsSync(artUrl(boss.sp)));
     assert.equal(breachApproachActors(z,ev.k)[0].art,boss.sp);
   }
   const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');assert.ok(ui.includes("hp?.foes?.[0]?.hypno ? ' signal-controlled'"));
