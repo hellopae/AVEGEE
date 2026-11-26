@@ -1,0 +1,22 @@
+{
+ "game": [
+  {
+   "before": "    this.queueNotice('lamp-received'); this.save(); this.onChange(); return true;\n",
+   "after": "    this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open'); this.save(); this.onChange(); return true;   // FB3-T5: the Mirror Tower opens with the lamp (unlocks.js EVENT_UNLOCKS) - this window says so\n"
+  },
+  {
+   "before": "    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits at the pier (case 15)\n",
+   "after": "    if(encounter.boss && routeBossCave(dungeonStatus(this)?.route.id)?.eventKey==='thBorderBoss'){resolveDungeonEncounter(this,encounter.token,false);return null;}   // Z1-EVENTS: Yommathat waits on the judgement dais (case 15)\n"
+  },
+  {
+   "before": "    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received');\n",
+   "after": "    receiveLamp(this); this.storySeen['sita-lamp'] = true; this.queueNotice('lamp-received'); this.queueNotice('lamp-tower-open');\n  } else if (this.magic.lamp.owned && (this.level || 1) < 5 && !this.stations.some(s => s.def.k === 'krajok')) {\n    this.queueNotice('lamp-tower-open');   // FB3-T5: a save that holds the lamp but is below rank 5 - the tower is open for it now (once: queueNotice skips a window already seen)\n"
+  }
+ ],
+ "data": [
+  {
+   "before": "  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and waits at the pier (ui.js). He comes after the Sita / Hanuman case.\n",
+   "after": "  // Z1-EVENTS: case 15 · the elder brother walks in through the lower border gate and up onto the judgement dais, where he waits (ui.js, npc-stand.js - owner EV20). He comes after the Sita / Hanuman case.\n"
+  }
+ ]
+}

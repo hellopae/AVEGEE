@@ -42,6 +42,7 @@ globalThis.document = { documentElement:{}, createElement: () => ({ getContext: 
 } }) };
 const { createGame } = await import('../src/game.js');
 const { STATIONS, ZONES, SPOTS, SCENE, BUILD_TIME, REPAIR_TIME, syncSceneZone } = await import('../src/data.js');
+const { receiveLamp } = await import('../src/lamp.js');
 const { render } = await import('../src/scene.js');
 const { bindZone, hiddenAt } = await import('../src/art.js');
 const { buildWalk, canWalk, findPath, nearestWalk, resetWalk, setBlocks } = await import('../src/walk.js?v=k1d');
@@ -51,6 +52,7 @@ function setup(zone = 'th') {
   const g = createGame();g.bossCleared.th=true;
   g.zone = zone; syncSceneZone(zone); bindZone(() => g.zone); resetWalk(); setBlocks([], []);
   g.coin = 100000; g.level = 5;
+  receiveLamp(g);   // FB3-T5: the Mirror Tower opens with Sita's lamp, not with rank 5 - this fixture builds every station
   // Satisfy story gates so this fixture exercises construction, not progression.
   g.zoneEventStatus = () => 'cleared';
   assert.equal(g.hire('dam'), true);

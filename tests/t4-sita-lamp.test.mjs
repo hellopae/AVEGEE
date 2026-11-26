@@ -33,15 +33,15 @@ test('completing sita-lamp gives the lamp once: Hanuman unlocked + in slot 1, 3 
   assert.equal(lampOwned(g), false);
   g.completeStory();
   assert.equal(lampOwned(g), true); assert.deepEqual(unlockedSummoners(g), ['hanuman']); assert.deepEqual(slottedSummoners(g), ['hanuman']); assert.equal(summonUsesLeft(g, 'hanuman'), 3);
-  assert.deepEqual(g.notices, ['lamp-received']);
+  assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);   // FB3-T5: the tower window follows the lamp window
   g = (() => { const n = createGame(); n.restore(JSON.parse(JSON.stringify(g.snapshot()))); return n; })();
-  assert.equal(lampOwned(g), true); assert.deepEqual(g.notices, ['lamp-received']);
-  g.ackNotice('lamp-received'); assert.deepEqual(g.notices, []);
+  assert.equal(lampOwned(g), true); assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);
+  g.ackNotice('lamp-received'); g.ackNotice('lamp-tower-open'); assert.deepEqual(g.notices, []);
   assert.equal(g.giveLamp(), false, 'never twice');
 });
 
 test('a later helper (D4: its own event passed) queues the "new helper" window with its name; a not-yet-ready one is unlocked silently-safe', () => {
-  const g = createGame(); g.giveLamp(); g.ackNotice('lamp-received');
+  const g = createGame(); g.giveLamp(); g.ackNotice('lamp-received'); g.ackNotice('lamp-tower-open');   // FB3-T5: the lamp brings the tower window too
   assert.equal(g.unlockHelper('kumanthong'), true); assert.equal(g.unlockHelper('kumanthong'), false);
   assert.deepEqual(g.notices, ['lamp-helper-kumanthong']);
   assert.equal(NOTICES['lamp-helper-kumanthong'].text, 'กุมารทอง ยอมรับท่านแล้ว และฝากไฟไว้ในตะเกียงวิเศษ เลือกใส่ในช่องได้ที่เมนูกระเป๋า');

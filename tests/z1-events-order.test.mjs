@@ -180,7 +180,7 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   assert.deepEqual(g.storyQueue.map(p => p.key).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold'], 'T4: the lamp comes after the PHANTOM-404 scene and before Sita goes home');
   assert.equal(g.magic.lamp.owned, false, 'no lamp before its scene');
   assert.deepEqual(drainStories(g).filter(k => k.startsWith('sita-')), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp', 'sita-return-hold']);
-  assert.deepEqual(g.notices, ['sita-phantom', 'lamp-received']); assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);
+  assert.deepEqual(g.notices, ['sita-phantom', 'lamp-received', 'lamp-tower-open']);   // FB3-T5: the Mirror Tower opens with the lamp - its own window follows assert.match(NOTICES['sita-phantom'].text, /\[PHANTOM-404\]/);
   assert.equal(g.magic.lamp.owned, true); assert.deepEqual(g.magic.lamp.slots.slice(0, 1), ['hanuman']);
   g.ackNotice('sita-phantom'); assert.deepEqual(g.journalNotes, [SITA.journal]);
   // ---- case 13 = Lady Wanthong (T5'/1) -> Khun Phaen (the fight) -> Kuman Thong
@@ -231,7 +231,7 @@ test('full run: case 0 -> 15 in the owner\'s order, nothing early, nothing twice
   g.completeStory(); assert.equal(g.bossGuideFollowing(), false); assert.equal(g.coin, coinBefore + 800, 'farewell at the new land\'s gate pays the boss-guide grant (T5\'/5: 800)');
   assert.equal(g.outfitsOwned.includes('asia'), true);
   // ---- nothing replays
-  g = reload(g); drainStories(g); g.ackNotice('lamp-received'); g = reload(g);   // T4: the lamp window (NA-1) is the one notice that is still waiting here
+  g = reload(g); drainStories(g); g.ackNotice('lamp-received'); g.ackNotice('lamp-tower-open'); g = reload(g);   // FB3-T5: + the Mirror Tower window   // T4: the lamp window (NA-1) is the one notice that is still waiting here
   assert.deepEqual(g.notices, ['z1-yomathat-wait', 'z1-yomathat-join', 'z2-yomathat-flame'], "T5'/2-5: NY-1 / NY-2 / NY-4 wait to be read"); for (const n of [...g.notices]) g.ackNotice(n);
   assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, []);
   for (const k of ['prisonBreak', 'devaTest', 'frontierBreach', 'sitaHanuman', 'thBorderBoss']) assert.equal(status(g, k), 'cleared', k);
@@ -268,7 +268,7 @@ test('old saves: no repeat, no hang', async t => {
     old.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'cleared' };
     const d = JSON.parse(JSON.stringify(old.snapshot())); delete d.z1EventsVersion; delete d.storyCaseDone;
     const g = createGame(); g.restore(d);
-    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, ['lamp-received'], 'T4: a save that is past Sita gets the lamp window once');
+    assert.equal(g.zoneEventStatus('sitaHanuman'), 'cleared'); assert.equal(g.storyCaseOwed(), null); assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open'], 'T4: a save that is past Sita gets the lamp window once (FB3-T5: and the tower window)');
     assert.equal(g.zoneEventStatus('thBorderBoss'), 'cleared');
   });
   await t.test('elder brother announced under the old order (case 10) -> waits for Sita and case 15', () => {

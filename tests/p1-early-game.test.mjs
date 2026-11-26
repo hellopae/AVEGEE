@@ -24,7 +24,7 @@ test('unlock table: tea Lv1 -> dab Lv2 -> sawan Lv3 -> ngiw/lan Lv4 -> lokan/kra
 test('g.build refuses a locked station without charging, and accepts it the moment the level is reached', () => {
   const g = game();
   assert.equal(g.level, 1);
-  for (const [k, lv] of [['dab', 2], ['sawan', 3], ['ngiw', 4], ['lan', 4], ['lokan', 5], ['krajok', 5]]) {
+  for (const [k, lv] of [['dab', 2], ['sawan', 3], ['ngiw', 4], ['lan', 4], ['lokan', 5], ['krajok', 5]]) {   // krajok: lv 5 is only its place in the list - FB3-T5: it opens with Sita's lamp
     const coin = g.coin;
     assert.equal(g.buildLocked(k), true, k); assert.equal(g.buildUnlockLv(k), lv);
     assert.equal(g.build(k), false, `${k} locked at Lv1`); assert.equal(g.coin, coin); assert.equal(g.stations.some(s => s.def.k === k), false);
@@ -35,7 +35,8 @@ test('g.build refuses a locked station without charging, and accepts it the mome
   g.level = 2; assert.equal(g.build('dab'), true); finish(g, 'dab');
   g.level = 3; assert.equal(g.build('sawan'), true); finish(g, 'sawan');
   g.level = 4; assert.equal(g.build('ngiw'), true); finish(g, 'ngiw'); assert.equal(g.build('lan'), true); finish(g, 'lan');
-  g.level = 5; assert.equal(g.build('lokan'), true); finish(g, 'lokan'); assert.equal(g.build('krajok'), true);
+  g.level = 5; assert.equal(g.build('lokan'), true); finish(g, 'lokan');
+  assert.equal(g.build('krajok'), false, 'FB3-T5: rank 5 alone no longer opens the Mirror Tower'); g.giveLamp(); assert.equal(g.build('krajok'), true, '... the lamp does');
 });
 
 test('old saves: buildings already standing stay usable even when the level is below their unlock level', () => {
