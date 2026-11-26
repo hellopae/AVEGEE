@@ -1,5 +1,5 @@
 import { t } from '../i18n.js';
-import { stokePosition, stokeHit, trainingRadius, trainingHit } from '../krata-control.js';
+import { stokePosition, stokeHit, trainingRadius, trainingHit, trainingFar, TRAINING_RESET } from '../krata-control.js';
 
 // One room-owned overlay. All input and animation are removed by stop().
 export function runKrataQte(host, {g, st, room, training=false, alive, onClose}) {
@@ -53,9 +53,15 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
     const press=ev => {
       if (stopped || result || !ready || frozen()) return;
       if (training && elapsed<0) { setText(body.querySelector('.g5-round-message'),t('g5.wait')); flash(body.querySelector('.g5-closeup'),'g5-wait'); return; }
-      const lag=ev && Number.isFinite(ev.timeStamp) && frameAt ? Math.min(100,Math.max(0,ev.timeStamp-frameAt)) : 0;
+      // FB3-MN3: the training press is judged on the ring the player SEES (the last drawn frame). The old "+ time since the last frame" pushed the judged ring up to 100 ms past what was on screen:
+      // on a slow frame (the room is heavy on a retina laptop) a press made exactly on overlap was judged late. The stoke needle keeps its old extrapolation.
+      const lag=!training && ev && Number.isFinite(ev.timeStamp) && frameAt ? Math.min(100,Math.max(0,ev.timeStamp-frameAt)) : 0;
       const at=Math.min(training?2199:7999,elapsed+lag);
-      if (training) { const radius=trainingRadius(at); attempt(trainingHit(radius),radius); }
+      if (training) {
+        const radius=trainingRadius(at);
+        if (trainingFar(radius)) { setText(body.querySelector('.g5-round-message'),t('g5.far')); flash(body.querySelector('.g5-closeup'),'g5-wait'); return; }   // FB3-MN3: far from the green ring - free tap
+        attempt(trainingHit(radius),radius);
+      }
       else attempt(stokeHit(stokePosition(at)));
     };
     // ต้นเหตุ "กดไม่ติด" (P6): การกดจริงนับถูกเสมอ แต่ (1) ช่วงรอวงถัดไป 650 ms ปุ่มถูก disable → กดแล้วเงียบ
@@ -97,7 +103,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
             setText(button,green?t('g5.btnGo'):t('g5.fire'));
             button.classList.toggle('fire-ready',green);
             body.querySelector('.g5-green').classList.toggle('fire-ready',green);
-            if (radius < .86 || elapsed >= 2200) {
+            if (radius < TRAINING_RESET || elapsed >= 2200) {
               // An untouched circle is a retry, not an extra wrong click.
               elapsed=-650;button.classList.toggle('fire-wait',true);button.classList.remove('fire-ready');
               body.querySelector('.g5-green').classList.remove('fire-ready');

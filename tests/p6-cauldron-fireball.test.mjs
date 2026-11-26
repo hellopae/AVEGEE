@@ -181,7 +181,7 @@ test('P6 minigame: judged at the moment of the press (event time), not the last 
 
 test('P6 minigame: reward/difficulty numbers unchanged (window ±0.12 radius, 5 hits / 3 misses, 650 ms retry)', async () => {
   const { trainingHit, trainingRadius } = await import('../src/krata-control.js');
-  assert.ok(trainingHit(1.119) && trainingHit(.881) && !trainingHit(1.13) && !trainingHit(.87));
+  assert.ok(trainingHit(1.139) && trainingHit(.741) && !trainingHit(1.15) && !trainingHit(.73));   // FB3-MN3: the band was .88-1.12
   assert.ok(Math.abs(trainingRadius(0) - 2.2) < 1e-9 && Math.abs(trainingRadius(1100) - 1.375) < 1e-9);
   const src = readFileSync(new URL('../src/minigames/krata-qte.js', import.meta.url), 'utf8');
   assert.match(src, /elapsed=-650/); assert.match(src, /radius < \.86 \|\| elapsed >= 2200/);

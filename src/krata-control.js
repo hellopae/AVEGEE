@@ -18,7 +18,14 @@ export function normalizeFireControl(value) {
 export const stokePosition = elapsed => .5 + .44 * Math.sin(elapsed * Math.PI / 850);
 export const stokeHit = pos => pos >= .42 && pos <= .58;
 export const trainingRadius = elapsed => 2.2 - (elapsed % 2200) / 2200 * 1.65;
-export const trainingHit = radius => Math.abs(radius - 1) <= .12;
+/** FB3-MN3 (owner m2: "still hard ... at most 3 hits whatever I do"). Cause found by driving the real overlay: a press is already judged at pointerdown (not at release) and 5 hits are possible when pressed
+ *  exactly on the green ring - but the window was tight and one-sided in practice: a person reacts ~250 ms after seeing the ring touch the green one (ring speed .00075/ms = .19 of radius), so the press arrived at
+ *  radius ~.8 where the old rules gave NO hit (hit band .88-1.12, the ring reset at .86), while every tap in the long early stretch (1.12 - 2.2, ~1.1 s of every 1.65 s ring) cost one of only 3 misses.
+ *  Now: the hit band is .74-1.14 (credits up to ~300 ms of reaction time), taps far from the green ring (> TRAINING_FAR) are free, and the ring is only retried below TRAINING_RESET. Press = pointerdown / Space / Enter, never release. */
+export const TRAINING_HIT_MIN = .74, TRAINING_HIT_MAX = 1.14, TRAINING_FAR = 1.5, TRAINING_RESET = .68;
+export const trainingHit = radius => radius >= TRAINING_HIT_MIN && radius <= TRAINING_HIT_MAX;
+/** a tap while the white ring is still far away: ignored, costs nothing */
+export const trainingFar = radius => radius > TRAINING_FAR;
 export function trainingAttempt(state, hit) {
   if (state.done) return state;
   const next = {...state, hits:state.hits + (hit?1:0), misses:state.misses + (hit?0:1)};

@@ -93,7 +93,7 @@ test('G5 training: both trainees, 5 hits +1, 3 misses no loss, individual 5-minu
   }
   assert.equal(g.fireTrainingWhy('someone'), 'g5.unavailable');
   const session=g.beginFireTraining('yama',10000000);assert.equal(session,null);
-  assert.ok(trainingHit(1));assert.equal(trainingHit(1.13),false);assert.ok(trainingRadius(0)>2);
+  assert.ok(trainingHit(1));assert.equal(trainingHit(1.15),false);assert.ok(trainingRadius(0)>2);
 });
 
 test('G5 fire damage in actual battles follows 0/3/6/9% for Yama and Plerng, normal attacks unchanged',()=>{
