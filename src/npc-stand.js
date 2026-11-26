@@ -9,9 +9,10 @@ import { TOWN_SPOTS } from './town-layout.js';
 import { bossGuideDismissed, bossPierRetired, bossGuideWaiting } from './boss-guides.js';
 import { Z2_ART_KEY } from './z2-events.js';
 
-/** FB3-T5 (owner EV11 / EV20): in Zone 1 the two challengers who come to the judgement dais (Khun Phaen, the elder brother) wait ON the dais floor,
- *  left of the throne (Nira stands on the right). Every other waiting challenger still waits at the pier. */
-export const DAIS_FOES = Object.freeze(['khunPhaen', 'thBorderBoss']);
+/** FB3-T5 (owner EV11 / EV20): in Zone 1 the challengers who come to the judgement dais (Hanuman - Sita's scene is on the open-air dais, owner confirmed 26 Nov round 2 -, Khun Phaen, the elder brother)
+ *  wait ON the dais floor, left of the throne (Nira stands on the right). Every other waiting challenger still waits at the pier.
+ *  The three events come one after the other (data.js `requires`: Khun Phaen needs Hanuman cleared, the elder brother needs both), so they never stand on the spot together. */
+export const DAIS_FOES = Object.freeze(['sitaHanuman', 'khunPhaen', 'thBorderBoss']);
 export const daisFoeSpot = (spots = SPOTS) => {
   const p = spots.daisFoe || TOWN_SPOTS.daisFoe;
   return { x:p.x, y:p.y };
@@ -19,7 +20,7 @@ export const daisFoeSpot = (spots = SPOTS) => {
 const onDais = (g, key) => g.zone === 'th' && DAIS_FOES.includes(key);
 
 /** อีเวนต์ที่รออยู่ที่ท่าเรือ (ผู้ท้าทายยืนรอให้ยมบาทเดินไปหา) — scene.js วาด, game.js กันทาง
- *  ขุนแผน / พี่ใหญ่ (โซน 1) รอบนแท่นตัดสิน นอกนั้นรอที่ท่าเรือ */
+ *  หนุมาน / ขุนแผน / พี่ใหญ่ (โซน 1) รอบนแท่นตัดสิน นอกนั้นรอที่ท่าเรือ */
 export const waitingEvents = g => {
   const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
     ev.k !== 'westHypnotized' && ev.k !== 'devaTest' && ev.k !== DEVA_MAP[g.zone]?.key && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
@@ -28,7 +29,7 @@ export const waitingEvents = g => {
     events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
   const dais = events.filter(ev => onDais(g, ev.k)), pier = events.filter(ev => !onDais(g, ev.k));
   const spot = (ev, i) => onDais(g, ev.k)
-    ? { x:daisFoeSpot().x + i * 64, y:daisFoeSpot().y }           // two at once cannot happen (the elder brother needs Khun Phaen cleared) - the offset only keeps them apart
+    ? { x:daisFoeSpot().x + i * 64, y:daisFoeSpot().y }           // two at once cannot happen (each of the three needs the one before cleared) - the offset only keeps them apart
     : { x:SPOTS.bossPier.x + (i % 3 - 1) * 86, y:SPOTS.bossPier.y - Math.floor(i / 3) * 80 };
   return events.map(ev => ({ key:ev.k, ...spot(ev, (onDais(g, ev.k) ? dais : pier).indexOf(ev)),
     art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (sp => Z2_ART_KEY.test(sp) ? sp : sp.replace(/-(asia|west|cyberhell)$/, ''))(ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7') }));

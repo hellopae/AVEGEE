@@ -62,7 +62,7 @@ export function mapInteractions(g, merchant) {
   for (const a of finalEventActors(g)) if (a.enabled) targets.push({ id:a.id,key:a.id,kind:'finalEncounter',x:a.x,y:a.y,bx:a.x,by:a.y-85,label:'เริ่มศึก' });
   const rest = finalRestSpot(g);
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
-  // Z1-EVENTS (owner e8): the elder brother (case 15, on the dais) / Hanuman (case 12, at the pier) waiting can be talked to like any other character
+  // Z1-EVENTS (owner e8): the elder brother (case 15) / Hanuman (case 12) waiting on the dais can be talked to like any other character
   for (const ev of waitingEvents(g)) if (TALK_EVENTS[ev.key]) targets.push({ id:`event:${ev.key}`, key:ev.key, kind:'zoneEvent', x:ev.x, y:ev.y,
     bx:ev.x, by:ev.y - 118, label:`💬 คุยกับ${TALK_EVENTS[ev.key](g)}` });
   const nira = g.crewOf('nira');

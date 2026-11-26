@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
-import { SPOTS, STATIONS, FRONTIER, ZONES } from '../src/data.js';
+import { SPOTS, STATIONS, FRONTIER, ZONES, ZONE_EVENTS } from '../src/data.js';
 import { TOWN_SPOTS, TOWN_DAIS, TOWN_FRONTIER, townContains } from '../src/town-layout.js';
 import { daisBlocks } from '../src/town-dais-geometry.js';
 import { waitingEvents, daisFoeSpot, DAIS_FOES, standPoints } from '../src/npc-stand.js';
@@ -28,10 +28,17 @@ test('EV11 / EV20: Khun Phaen and the elder brother wait ON the judgement dais (
   assert.deepEqual(standPoints(g).filter(p => p[0] === spot.x && p[1] === spot.y), [[spot.x, spot.y]], 'he blocks the walk like every standing NPC');
   th(g, { sitaHanuman:'cleared', khunPhaen:'cleared', thBorderBoss:'pending' }); g.eventMapClosed['th:thBorderBoss'] = true;
   assert.deepEqual(waitingEvents(g).map(e => [e.key, e.art, e.x, e.y]), [['thBorderBoss', 'zone-boss', spot.x, spot.y]]);
-  // Hanuman is not part of this change: he still waits at the pier
+  // Claudy / owner (26 Nov, round 2): Sita's and Hanuman's scene is on the open-air dais too, so Hanuman waits there as well (not at the pier)
   th(g, { sitaHanuman:'pending' }); g.eventMapClosed['th:sitaHanuman'] = true;
-  const h = waitingEvents(g).find(e => e.key === 'sitaHanuman'); assert.ok(h); assert.equal(h.x, SPOTS.bossPier.x - 86); assert.equal(h.y, SPOTS.bossPier.y);
-  assert.deepEqual([...DAIS_FOES], ['khunPhaen', 'thBorderBoss']);
+  const h = waitingEvents(g).find(e => e.key === 'sitaHanuman'); assert.ok(h); assert.deepEqual([h.x, h.y], [spot.x, spot.y]);
+  assert.deepEqual([...DAIS_FOES], ['sitaHanuman', 'khunPhaen', 'thBorderBoss']);
+  // the three never wait together (each needs the one before cleared), so nobody stands on top of anybody
+  const req = k => ZONE_EVENTS.th.find(e => e.k === k).requires;
+  assert.ok(req('khunPhaen').includes('sitaHanuman') && req('thBorderBoss').includes('khunPhaen') && req('thBorderBoss').includes('sitaHanuman'));
+  th(g, { sitaHanuman:'pending', khunPhaen:'pending', thBorderBoss:'pending' }); g.eventMapClosed['th:khunPhaen'] = g.eventMapClosed['th:thBorderBoss'] = true;
+  const xs = waitingEvents(g).map(e => e.x); assert.equal(new Set(xs).size, xs.length, 'even if the saved data said so, they would be 64 units apart, not stacked');
+  // nothing waits on a dais outside Zone 1
+  g.zone = 'asia'; assert.ok(!waitingEvents(g).some(e => DAIS_FOES.includes(e.key)));
 });
 
 test('EV11 / EV20: the dais spot is on the painted dais floor, left of the throne, apart from Nira, on the walk mask, and the way up from the frontier gate exists', () => {
