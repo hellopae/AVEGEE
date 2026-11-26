@@ -2967,6 +2967,9 @@ const POWER_POSE_AFTER_MS = 1500;   // mirror / hypnosis: how long the scared dr
 const FEAR_BEAT_MS = 1100, FEAR_AFTER_MS = 650;   // P2: close-in + fright before the confession lands · then the camera stays a beat and relaxes
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
+/** FB3-T5 (owner): Sita's hearing keeps the Power command and "hold in jail" in view but greyed out. Placeholder tooltip - Rae writes the real line (round R2). */
+const STORY_HEARING_LOCKED_NOTE = 'คดีนี้ใช้ไม่ได้';
+
 function openTrial(initialError = '') {
   if(g.bossJustice?.active && bossJusticeActive(g)){openBossJustice();return;}
   if (g.over || g.battle) return;
@@ -3036,7 +3039,7 @@ function openTrial(initialError = '') {
     const topActions =
       `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
        <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.webp" alt="">${esc(t('trial.guideBook'))}</button>
-       <button id="t-jail" ${!s.storyHearing && g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.webp" alt="">${esc(t('trial.lockCase'))}</button>
+       <button id="t-jail" ${!s.storyHearing && g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${s.storyHearing ? STORY_HEARING_LOCKED_NOTE : g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.webp" alt="">${esc(t('trial.lockCase'))}</button>
        <button id="t-skip" ${s.storyHearing || g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.webp" alt="">${esc(t('trial.skipCase'))}${s.storyHearing && s.niraAdvised ? ` <span class="tag nira-tag">${esc(getLang() === 'en' ? SITA.hearing.nira.tagEn : SITA.hearing.nira.tag)}</span>` : ''}</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
@@ -3110,7 +3113,7 @@ function openTrial(initialError = '') {
       .filter(([, bk]) => bk).map(([x, bk]) => `${x.def.name}: ${blockText(bk)}`).join(' · ');
     const missing = trialError || blockText(blocked) || [missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', stationNotes].filter(Boolean).join(' · ');
     const courtGroups = [
-      {id:'power',label:'พลัง / Power',choices:powerChoices,disabled:!!s.storyHearing},   // FB3-EV1: no mirror / roar / hypnosis on Sita
+      {id:'power',label:'พลัง / Power',choices:powerChoices,disabled:!!s.storyHearing,note:s.storyHearing ? STORY_HEARING_LOCKED_NOTE : ''},   // FB3-EV1: no mirror / roar / hypnosis on Sita - FB3-T5 (owner): the command STAYS in the row, greyed out and not pressable
       {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
       {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
       {id:'force',label:'ระดับทัณฑ์ / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
