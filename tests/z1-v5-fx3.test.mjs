@@ -70,7 +70,7 @@ test('construction sheets: no files / bad json / a sheet that fails = not drawn,
     assert.equal(c.drawConstruction(ctx, def, .5, 0, 'th'), false); assert.equal(calls.length, 0, 'nothing drawn on failure');
   } finally { globalThis.fetch = oldFetch; if (oldImage) globalThis.Image = oldImage; else delete globalThis.Image; c.resetConstructionForTest(); }
   const scene = readFileSync(file('src/scene.js'), 'utf8');
-  assert.match(scene, /if \(drawConstruction\(ctx, d, p, t, g\.zone\)\)/); assert.match(scene, /else if \(im\) \{\s*const bh = bw \* im\.naturalHeight/, 'the old still picture is the fallback');
+  assert.match(scene, /const drewConstruction = drawConstruction\(ctx, d, p, t, g\.zone\);[\s\S]{0,40}ctx\.restore\(\);\s*if \(drewConstruction\)/);   // FB3-MP8: drawn through a transform assert.match(scene, /else if \(im\) \{\s*const bh = bw \* im\.naturalHeight/, 'the old still picture is the fallback');
   assert.ok(existsSync(file('img/st-building.webp')), 'the fallback picture exists');
 });
 
