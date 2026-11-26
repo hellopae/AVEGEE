@@ -1,0 +1,8 @@
+{
+ "game": [
+  {
+   "before": "",
+   "after": "      if (def) this.queueNotice(`build-open-${k}`);   // FB3-MP6 (owner map8 map14): a notice window when Yama's rank opens a building - once per building (queueNotice keeps it in storySeen); only at the moment of the rank, so old saves are not told again\n"
+  }
+ ]
+}
