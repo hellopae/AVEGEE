@@ -11,6 +11,8 @@ const SIG = n => `img/story-sig/${n}.webp`;
 export const Z4G_ART = Object.freeze({
   fire:Object.freeze({ west:A('cut-z3-fire'), asia:A('cut-z2-fire'), th:A('cut-z1-fire') }),
   guard:Object.freeze({ west:A('cut-z3-guard-hypnotized-frontier'), asia:A('cut-z2-guard-hypnotized-frontier'), th:A('cut-z1-guard-hypnotized-frontier') }),
+  /** FB3-L3 (Claudy): Nira's freeing scene wants its own drawing, `img/z4-events/cut-z{1,2,3}-guard-freed.webp` (Codex). Until the file exists the page falls back to the older gate picture (renderStoryComic `imageFallback`); saving the file under this name is all it takes. */
+  guardFreed:Object.freeze(Object.fromEntries([['west','z3'],['asia','z2'],['th','z1']].map(([zone,n])=>[zone,A(`cut-${n}-guard-freed`)]))),
   restored:Object.freeze({ west:SIG('story-signal-west-02'), asia:SIG('story-signal-asia-02'), th:SIG('story-signal-th-02') }),   // K4: "cut - the existing SIG picture can be used" (Rae)
   pass:A('cut-col-gate'),
 });
@@ -30,7 +32,9 @@ const guardFreedStory = (zone, name) => {
   const title = L2(`นิราปลดสะกด · ${name.th}`, `Nira Breaks the Spell · ${name.en}`);
   const line = L2(`บรรยาย: ${name.th}ทรุดเข่าลงกลางประตู แสงเขียวในตายังวูบวาบ นิราก้าวออกมาข้างหน้า ยกแผ่นกระจกขึ้นเหนือไหล่เขา เส้นแสงเขียวที่พาดตาแตกเป็นเสี่ยงแล้วจางหายไป\nนิรา: "ปลดแล้วค่ะ คำสั่งนั้นไม่ใช่ของท่านอีกต่อไป"\n${name.th}: "ข้ากลับมาเป็นตัวข้าแล้ว ข้าจะไปกับท่าน"`,
     `Narration: ${name.en} sinks to one knee in the gateway, the green light in his eyes still flickering. Nira steps forward and raises her mirror over his shoulder. The green line across his eyes shatters and fades.\nNira: "It is broken. That order is no longer yours."\n${name.en}: "I am myself again. I will go with you."`);
-  return fromRae({title,pages:[{title,line}]},Z4G_ART.guard[zone]);
+  const story = fromRae({title,pages:[{title,line}]},Z4G_ART.guardFreed[zone]);
+  story.pages[0].imageFallback = Z4G_ART.guard[zone];
+  return story;
 };
 const guardStory = (zone, name) => {
   const title = L2(`ผู้เฝ้าด่าน · ${name.th}`, `At the Gate · ${name.en}`);

@@ -5628,7 +5628,7 @@ function openBorder() {
   if(pending){if(!g.eventMapClosed[`${g.zone}:${pending.key}`])g.dismissEventAlert(pending.key);openFrontier(false,pending.key);return;}
   // FB3-L3: the controlled lord of a seized zone (a signal event) is not a `breachPending` one - when its alert has been acknowledged, the gate leads to its team page, not to the ordinary frontier (the auto-open on arrival used to win the race with the march check)
   const march=g.breachMarch();
-  if(march?.ev?.signal){openFrontier(false,march.key);return;}
+  if(march?.ev?.signal&&RETURN_GUARD_EVENTS[g.zone]){openFrontier(false,march.key);return;}   // Zones 1-3 only (the seized world); Zone 4's own signal event (cyberSignal) keeps its old way in through the frontier walk
   openFrontierWalk();
 }
 /** T5'/4 (Rae 7.1): NG-1 -> z2-guanyu-open -> the fight -> z2-guanyu-win (queued by the win) -> `onDone`. A lost fight sends Yama to the tea house as any lost fight; he comes back and walks the route again. */
@@ -7417,7 +7417,7 @@ function renderStoryComic(root, story, onDone) {
     const playVideo = p.video;
     const media = playVideo
       ? `<video src="${esc(p.video)}" poster="${esc(p.poster || p.image)}" autoplay muted playsinline controls preload="auto" aria-label="${esc(p.title)}"></video>`
-      : `<img src="${p.image}" alt="${esc(p.title)}"${p.fallback ? ` onerror="this.onerror=null;this.src='${placeholder(p.fallback)}'"` : ''}>`;
+      : `<img src="${p.image}" alt="${esc(p.title)}"${p.imageFallback ? ` onerror="this.onerror=${p.fallback ? `function(){this.onerror=null;this.src='${placeholder(p.fallback)}'}` : 'null'};this.src='${p.imageFallback}'"` : p.fallback ? ` onerror="this.onerror=null;this.src='${placeholder(p.fallback)}'"` : ''}>`;   // p.imageFallback: the first picture may not be drawn yet (FB3 cut-zN-guard-freed) -> the older one, then the placeholder
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
       <div class="intro-comic-frame">${media}
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>

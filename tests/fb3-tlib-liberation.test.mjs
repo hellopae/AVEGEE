@@ -140,3 +140,29 @@ test('L6: the build recommendation skips a station that waits for a story beat (
   const low = game(); low.level = 2; low.stations = ['krata', 'tea', 'dab'].map(k => ({ def:STATIONS.find(d => d.k === k), crewK:null, intensity:3, fire:0, build:0, slots:[] }));
   assert.equal(low.recommendedBuild(), null, 'a rank lock (the gate of heaven needs rank 3) still stops the list');
 });
+
+test('L3 (Claudy): Nira\'s freeing scene uses cut-z{1,2,3}-guard-freed.webp when it exists and falls back to the older gate picture; the page chain ends in the placeholder', () => {
+  const art = readFileSync(new URL('../src/z4g-return.js', import.meta.url), 'utf8');
+  for (const [zone, n] of [['th', 'z1'], ['asia', 'z2'], ['west', 'z3']]) {
+    const page = Z4G_STORIES[Z4G_KEYS.guardFreed[zone]].pages[0];
+    assert.equal(page.image, `img/z4-events/cut-${n}-guard-freed.webp`);
+    assert.equal(page.imageFallback, `img/z4-events/cut-${n}-guard-hypnotized-frontier.webp`);
+    assert.equal(page.fallback, '📜');
+  }
+  // the file name is built (not a literal) so the "literal URLs exist" guard does not demand a file that is still to be drawn
+  assert.ok(!/img\/z4-events\/cut-z[123]-guard-freed/.test(art));
+  const ui = src('src/ui.js');
+  assert.match(ui, /p\.imageFallback \? ` onerror="this\.onerror=\$\{p\.fallback \?/);
+  // the other scenes of the arc are untouched: the gate scene and the fire scene keep their own pictures
+  assert.equal(Z4G_STORIES[Z4G_KEYS.fire.th].pages[0].image, 'img/z4-events/cut-z1-fire.webp');
+  assert.equal(Z4G_STORIES[Z4G_KEYS.fire.th].pages[0].imageFallback, undefined);
+});
+
+test('L3 (Dale): the border gate opens the lord\'s team page by the shortcut only in the seized Zones 1-3 - Zone 4\'s cyberSignal and every ordinary border keep the old way in', () => {
+  const ui = src('src/ui.js');
+  const fn = ui.slice(ui.indexOf('function openBorder()'), ui.indexOf('/** T5\'/4 (Rae 7.1): NG-1'));
+  assert.match(fn, /march\?\.ev\?\.signal&&RETURN_GUARD_EVENTS\[g\.zone\]/);
+  assert.ok(fn.indexOf('openFrontierWalk()') > fn.indexOf('RETURN_GUARD_EVENTS'), 'the ordinary border is still the fall-through');
+  assert.ok(!RETURN_GUARD_EVENTS.cyberhell, 'Zone 4 has no returnGuard event, so its signal event never takes the shortcut');
+  assert.ok(ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberSignal').signal, 'cyberSignal is a signal event - the case the guard above protects');
+});
