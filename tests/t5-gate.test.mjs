@@ -1,4 +1,5 @@
 // T5'/4-5 - the gate of Zone 2: Guan Yu fights, becomes Zone 2's Guard; Yomathat's gift, he leaves the team and leaves a flame (Rae R2 A sections 7-8).
+import { callHelper, helperAct } from './summon-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
@@ -61,14 +62,17 @@ test('Yomathat\'s gift: the scene (his farewell), 800 coins + the Zone 2 robes, 
   assert.equal(NOTICES[GATE.flameNotice].openLamp, true);
 });
 
-test('Yomathat as a helper: one heavy hit on the chosen foe, the whole team takes less damage until its next turn, 1 of 3 uses', () => {
+test('Yomathat as a helper: a heavy hit on the chosen foe, the whole team takes less damage until its next turn, 1 of 3 lamp uses (FB3-EV5: he stands in the team for 3 acts)', () => {
   const g = atTheGate(); L.unlockSummoner(g, 'yomathat'); L.ensureMagic(g).lamp.level = 2; g.placeHelper(1, 'yomathat');
   g.zoneEvents.th.prisonBreak = 'pending'; const b = g.startPrisonBreak(); assert.ok(b);
   for (const f of b.foes) { f.atk = [0, 0]; f.hp = f.maxHp = 9999; }
   const target = b.foes[1]; b.selectedFoeId = target.id; const before = b.foes.map(f => f.hp), dmg = L.summonDamage(g, 'yomathat'); assert.ok(dmg > L.summonDamage(g, 'hanuman'));
-  assert.equal(g.confirmBattleCommand('summon:yomathat', 'you'), true);
-  assert.equal(target.hp, before[1] - dmg); assert.equal(b.foes[0].hp, before[0], 'single target'); assert.ok(Object.values(b.defending).some(Boolean), 'the team stands behind him (the "defend" flag; Yama\'s own is cleared when his next turn begins)');
-  assert.equal(b.summon.move, 'ดาบเพลิงคุ้มน้อง'); assert.equal(b.summon.left, 2);
+  // FB3-EV5: the call spends one of the 3 uses and hits nobody; the standing helper's own move is the heavy hit (its share of the old one-hit number)
+  assert.equal(callHelper(g, 'yomathat'), true); assert.deepEqual(b.foes.map(f => f.hp), before, 'the call itself hits nobody'); assert.equal(L.summonUsesLeft(g, 'yomathat'), 2);
+  const move = L.helperActDamage(g, 'yomathat', 'move'); assert.ok(move > L.helperActDamage(g, 'hanuman', 'move'));
+  assert.equal(helperAct(g, 'helper:move', 'yomathat', false), true);
+  assert.equal(target.hp, before[1] - move); assert.equal(b.foes[0].hp, before[0], 'single target'); assert.ok(Object.values(b.defending).some(Boolean), 'the team stands behind him (the "defend" flag; Yama\'s own is cleared when his next turn begins)');
+  assert.equal(b.summon.move, 'ดาบเพลิงคุ้มน้อง'); assert.equal(b.summon.left, 2, 'acts left of 3');
 });
 
 test('Zone 2 gets Guan Yu as its Guard on the first arrival (no hire, no proving fight, NG-4); without the gate he is not given', () => {

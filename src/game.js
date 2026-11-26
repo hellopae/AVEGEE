@@ -96,7 +96,7 @@ import { TH_STORY_CASES, TH_STORY_CASE_KEYS, EVENT_AFTER_CASE, storyCaseDone, ow
 import { KIN_BY_KEY as Z2_KIN_BY_KEY, Z3_KIN, Z3_KIN_AWAY } from './z3g-kin.js';   // T7c/6: one lookup for the relatives of Zone 2 and Zone 3
 import { Z2_KIN, Z2_TEXT, Z2_JOURNAL, WUKONG_CAMEO, Z2_KIN_REPEAT_LINE } from './z2-events.js';
 import { LAMP_TEXT } from './lamp-text.js';
-import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, summonGuard, spendSummon, lampAllSpent, lampOwned, SUMMON_USES } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
+import { freshMagic, ensureMagic, receiveLamp, unlockSummoner, summonerOf, rechargeTreasures, devUpgradeLamp, setSlot, summonWhy, summonDamage, summonGuard, spendSummon, lampAllSpent, lampOwned, SUMMON_USES, HELPER_ACTS, SUMMON_LEAVE_MS, helperActor, helperActDamage, helperGuardAct } from './lamp.js';   // T4: Magic Lamp / summon state (global, not per zone)
 import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 const ZONE_BOSS_SKILL_KEY = { th:'yomathat', asia:'lianGang', west:'severin', cyberhell:'archonZero' };   // BOSS-SKILLS: data-driven boss moves
@@ -912,7 +912,7 @@ const API = {
   partyMax() { return selectablePartyMax(this); },
   prepareEncounter() {
     const b = this.battle; if (!b || b.over) return;
-    if (b.balance?.wave !== (b.wave || 0)) scaleEncounter(b, b.balance?.partySize ?? this.battleActors().filter(a => !a.guestGuide).length);
+    if (b.balance?.wave !== (b.wave || 0)) scaleEncounter(b, b.balance?.partySize ?? this.battleActors().filter(a => !a.guestGuide && !a.summoned).length);
   },
   skillUnlocked(actor, skill) { return skillUnlocked(this, actor, skill); },
   skillWhy(skill, actor = this.battleActors().find(a => a.id === this.battle?.actorId)) {
@@ -3075,7 +3075,7 @@ const API = {
       foes:[], who:def.title, sub:'', sp:'mob-hitodama',
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax, turn:1, over:null, log:[], dmg:null,
       talk:'', ownerName:def.ownerName };
-    const foes = questFightFoes(this, id, this.battleActors().filter(a => !a.guestGuide).length);
+    const foes = questFightFoes(this, id, this.battleActors().filter(a => !a.guestGuide && !a.summoned).length);
     Object.assign(this.battle, { foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp, talk:foes[0].who });
     prepareBattle(this.battle);
     this.prepareEncounter();
@@ -3930,8 +3930,24 @@ const API = {
   },
 
   battleActors() {
+    const helper = this.summonedActor();   // FB3-EV5: a helper called from the lamp stands in the team (own turns); it is never a target of the foes (enemyTarget reads battleCrew) and never counts in team-size maths
     return [{ id:'you', k:'yama', name:'ยามา / Yama' }, ...this.battleCrew(),
-      ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : [])];
+      ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : []),
+      ...(helper ? [helper] : [])];
+  },
+  /** FB3-EV5: the helper standing in the team now (null when none). `withLeaving` also returns it during its farewell effect (UI only - it has no turn then). */
+  summonedActor(withLeaving = false) {
+    const s = this.battle?.summoned;
+    if (!s || this.battle.over) return null;
+    if (s.leaving && !(withLeaving && Date.now() - s.leaving < SUMMON_LEAVE_MS)) return null;
+    return helperActor(this, s.key, s);
+  },
+  /** FB3-EV5: its last act is done - it leaves (the farewell effect plays from `leaving`; it has no turn from now on). */
+  dismissSummoned() {
+    const B = this.battle, s = B?.summoned;
+    if (!s || s.leaving) return false;
+    s.leaving = Date.now(); B.summonFarewell = { key:s.key, at:s.leaving };
+    this.save(); return true;
   },
   battleTimeline() { return combatTimeline(this); },
   /** F3: how many turns this foe gets in one round (1 = the old rule) - boss moves count their timing in rounds */
@@ -4047,6 +4063,7 @@ const API = {
     if (this.battle) {
       const b=this.battle;b.commandBusy=false;
       if(b.turnAction){completeCombatTurn(this,b.turnAction);delete b.turnAction; if (this.isFinalBattle(b)) this.save();}
+      if (b.summonActed) { delete b.summonActed; if (b.summoned && !b.summoned.leaving && b.summoned.left <= 0) this.dismissSummoned(); }   // FB3-EV5: the third act is played out - the helper goes (after its turn is closed, so it never has a turn left in the queue)
       if(b.turnQueue)this.beginBattleTurns();
     }
   },
@@ -4091,7 +4108,11 @@ const API = {
     if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
     const isSummon = what.startsWith('summon:'), summonKey = isSummon ? what.slice(7) : null;   // T4: the lamp - any actor's turn can be spent calling a helper
     if (isSummon && (enemyOnly || summonWhy(this, summonKey, B))) return false;
-    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && !isSummon && what !== 'cooldownClock' && what !== 'defend' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    // FB3-EV5: a helper standing in the team has two commands of its own - 'helper:move' (its special move) and 'helper:attack' (a plain blow) - and nothing else; nobody else may use them
+    const isHelperAct = what === 'helper:move' || what === 'helper:attack';
+    if (isHelperAct && (enemyOnly || !command || actor?.k !== 'summon' || !(actor.left > 0))) return false;
+    if (command && !enemyOnly && actor?.k === 'summon' && !isHelperAct) return false;
+    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && !featherCommand && !isSummon && !isHelperAct && what !== 'cooldownClock' && what !== 'defend' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && !enemyOnly && ['boon','nira'].includes(actor.k) && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if (yamaSkillRemaining(B, what)) return false;
@@ -4147,32 +4168,48 @@ const API = {
       B.dmg.comboHits = B.comboHits;
       B.talk = newSkill.name;
     } else if (isSummon) {
-      // T4 (D2): the helper comes out, uses its special move ONCE and goes back into the lamp - one of its 3 uses. Group hit: every living foe takes the same damage; rage / buffs do not apply (it is not Yama's blow).
+      // FB3-EV5 (owner 26 Nov): CALLING a helper costs one of its 3 lamp uses (T4 rule, unchanged) and this turn, and hits nobody - the helper steps out of the lamp and STANDS IN THE TEAM
+      // (`B.summoned`, a team member with HELPER_ACTS turns of its own; ui.js plays Yama's lamp cutscene). Its first turn comes right after this one.
       const d = summonerOf(summonKey), r = spendSummon(this, summonKey);
-      dmg = summonDamage(this, summonKey);
-      if (d.move.weaken?.target) { const tf = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0); if (tf) tf.weak = d.move.weaken.rounds * this.foeActsPerRound(tf.id); }   // T8a/2: the Founder's Decree - only the foe it points at hits lighter
-      else if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
-      if (d.move.stun) for (const f of d.move.stun.target ? B.foes.filter(x => x.id === B.selectedFoeId) : B.foes) if (f.hp > 0 && Math.random() < (d.move.stun.chance ?? 1)) f.stun = Math.max(f.stun || 0, d.move.stun.rounds);   // T8b/6: `target` = only the foe it points at (Lupin: the beat is turned for one foe)   // T8a/2: the Hammer Commands the Field - struck foes lose their next act
-      if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
-      const guardMove = summonGuard(this, summonKey);
-      if (guardMove) {
-        // T5'/1 'guard' move (Golden Aegis): a shield for every teammate standing + a small heal, and the fallen are helped back to their feet. No damage.
-        let healed = 0;
-        for (const a of this.battleActors()) {
-          const room = a.id === 'you' ? B.youMax - B.youHp : 100 - a.morale, gain = Math.max(0, Math.min(guardMove.heal, room));
-          if (a.id === 'you') B.youHp += gain; else a.morale += gain;
-          healed += gain; grantProtection(B, a.id, { shield:guardMove.shield, buff:0 });
-        }
-        for (const f of this.battleFallen()) {
-          f.morale = Math.max(f.morale, guardMove.raise);
-          B.fallen = (B.fallen || []).filter(id => id !== f.id); B.absentActors = (B.absentActors || []).filter(id => id !== f.id);
-        }
-        B.dmg.healActorId = 'you'; B.dmg.healAmount = healed;
-      }
-      B.summon = { key:summonKey, name:d.name.th, move:d.move.name.th, used:r.used, left:r.left, out:r.out, at:Date.now(), call:d.say.call, use:d.say.use, end:d.say.end };   // the lines ride on B.summon: the foe's own reply (B.talk) comes after and overwrites the speech bubble
+      B.summoned = { key:summonKey, left:HELPER_ACTS, at:Date.now(), leaving:0 }; delete B.summonFarewell;
+      const q = B.turnQueue;
+      if (q) { const id = `summon:${summonKey}`; q.remaining = q.remaining.filter(t => t.id !== id); q.remaining.splice(Math.min(1, q.remaining.length), 0, { id, side:'ally' }); }
+      B.summon = { phase:'call', key:summonKey, name:d.name.th, move:d.move.name.th, used:r.used, left:r.left, out:r.out, at:Date.now(), call:d.say.call, use:d.say.use, end:d.say.end };   // the lines ride on B.summon: the foe's own reply (B.talk) comes after and overwrites the speech bubble
+      B.helper = null;
       say(LAMP_TEXT['battle.logCall'].th.replace('{name}', d.name.th).replace('{move}', d.move.name.th));
-      say(LAMP_TEXT['battle.logUsed'].th.replace('{name}', d.name.th).replace('{k}', r.used));
       if (r.out) say(LAMP_TEXT['battle.logOut'].th.replace('{name}', d.name.th));
+      this.save();
+    } else if (isHelperAct) {
+      // FB3-EV5: one act of the standing helper, picked by the player: its own move (group moves hit every foe, strikes the chosen foe, a 'guard' move helps the team) or a plain attack on the chosen foe.
+      // The damage is the old one-hit number split over the acts (lamp.js helperActDamage); the status effects of its move (weaken / stun / team guard) land on every use of the move.
+      const sk = actor.summonKey, d = summonerOf(sk), act = what.slice(7), st = B.summoned;
+      st.left = Math.max(0, st.left - 1); B.summonActed = true;
+      dmg = helperActDamage(this, sk, act);
+      B.helper = { ...actor, at:Date.now(), lunge:act === 'attack' || d.move.kind !== 'guard' };
+      if (act === 'move') {
+        if (d.move.weaken?.target) { const tf = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0); if (tf) tf.weak = d.move.weaken.rounds * this.foeActsPerRound(tf.id); }   // T8a/2: the Founder's Decree - only the foe it points at hits lighter
+        else if (d.move.weaken) for (const f of B.foes) if (f.hp > 0) f.weak = d.move.weaken.rounds * this.foeActsPerRound(f.id);   // T6/4: Chain Line - every foe's next blow(s) of the round are lighter
+        if (d.move.stun) for (const f of d.move.stun.target ? B.foes.filter(x => x.id === B.selectedFoeId) : B.foes) if (f.hp > 0 && Math.random() < (d.move.stun.chance ?? 1)) f.stun = Math.max(f.stun || 0, d.move.stun.rounds);   // T8b/6 `target` = only the foe it points at (Lupin) · T8a/2 Thor: a 60 % chance on every foe
+        if (d.move.guardTeam) { (B.defending ||= {}).you = true; for (const a of this.battleActors()) if (!a.summoned) B.defending[a.id] = true; }   // T5'/5: Yomathat stands before the team - less damage until each one's next turn
+        const guardMove = helperGuardAct(this, sk);
+        if (guardMove) {
+          // T5'/1 'guard' move (Golden Aegis): a shield for every teammate standing + a small heal, and the fallen are helped back to their feet. No damage.
+          let healed = 0;
+          for (const a of this.battleActors()) {
+            if (a.summoned) continue;
+            const room = a.id === 'you' ? B.youMax - B.youHp : 100 - a.morale, gain = Math.max(0, Math.min(guardMove.heal, room));
+            if (a.id === 'you') B.youHp += gain; else a.morale += gain;
+            healed += gain; grantProtection(B, a.id, { shield:guardMove.shield, buff:0 });
+          }
+          for (const f of this.battleFallen()) {
+            f.morale = Math.max(f.morale, guardMove.raise);
+            B.fallen = (B.fallen || []).filter(id => id !== f.id); B.absentActors = (B.absentActors || []).filter(id => id !== f.id);
+          }
+          B.dmg.healActorId = 'you'; B.dmg.healAmount = healed;
+        }
+      }
+      B.summon = { phase:act, key:sk, name:d.name.th, move:d.move.name.th, left:st.left, acts:HELPER_ACTS, at:Date.now(), call:d.say.call, use:d.say.use, end:d.say.end };
+      say(`${d.name.th} ${act === 'move' ? d.move.name.th : 'โจมตี'} — ${HELPER_ACTS - st.left}/${HELPER_ACTS}`);
       this.save();
     } else if (newSkill) {
       const c = skillActor, effect = skillEffect(this, c, what);
@@ -4394,7 +4431,7 @@ const API = {
 
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
-    if (dmg > 0 && !isSummon) dmg = attackBuff(B, (actor || skillActor)?.id || 'you', dmg);
+    if (dmg > 0 && !isSummon && !isHelperAct) dmg = attackBuff(B, (actor || skillActor)?.id || 'you', dmg);
     // G3b — เพดานรวมเมื่อซ้อนคริ/rage แล้วค่อยคิดผลพิเศษจากดาเมจจริงที่เข้าเป้า
     let hit = null;
     if (swing && what === 'atk' && this.weapons?.equipped) {
@@ -4403,7 +4440,7 @@ const API = {
       if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
-    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area || (isSummon && summonerOf(summonKey)?.move?.kind === 'group');
+    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what) || !!newSkill?.area || (isHelperAct && what === 'helper:move' && summonerOf(actor.summonKey)?.move?.kind === 'group');
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
@@ -4776,7 +4813,7 @@ const API = {
       this.runFoeSkillTurn(B, counter, skillPlan, say);      // BOSS-SKILLS: a turn spent on a warning (charge) / a summon / a heal - no attack
     }
     else {
-      let blow = Math.round(foeAtkRoll() * this.teamPressure(B) * foeFit(B, this.battleActors().length));
+      let blow = Math.round(foeAtkRoll() * this.teamPressure(B) * foeFit(B, this.battleActors().filter(a => !a.summoned).length));
       if (counter.weak > 0) { blow = Math.round(blow * (summonerOf('liangang').move.weaken.mult)); counter.weak--; }   // T6/4: Chain Line (lamp.js) - a weakened foe strikes lighter   // F3: foe-turn-fit.js corrects the blow per fight and team size                     // the foe's full blow: boss moves (group / heavy) are built on it
       const normal = Math.round(blow * foeHitScale(this.foeActsPerRound(counter.id)));   // F3: an ordinary attack of a foe with several turns a round is lighter per turn
       const bossAct = counter.attacks = (counter.attacks || 0) + 1;   // BATTLE-FX: ครั้งที่เท่าไรที่ตัวนี้โจมตีจริง (ข้ามตาที่ถูกผนึก/สะกด)
@@ -4840,7 +4877,7 @@ const API = {
         (B.ultimateActs ||= []).push(bossAct);
       }
       const victims = ultimate
-        ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you').map(actor => ({id:actor.id,actor}))]
+        ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you' && !c.summoned).map(actor => ({id:actor.id,actor}))]   // FB3-EV5: a called helper is a spirit of the lamp - the foes' blows never reach it
         : [B.kind === 'questFight' ? this.foeTarget(counter) : this.enemyTarget()];
       B.dmg.enemyHits = [];
       B.dmg.hitActors = [];

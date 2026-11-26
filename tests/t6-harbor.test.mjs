@@ -1,4 +1,5 @@
 // T6/4 - Zone 2's boss Lian Gang waits at the harbor; "I am ready" = the gift (800 + Zone 3 robes + beasts warning + Musashi joins + the 5th flame) (Rae R2 part B section 4).
+import { callHelper, helperAct } from './summon-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
@@ -51,12 +52,13 @@ test('the talk: first words, two answers, "not yet" changes nothing and every la
   assert.equal(NOTICES[HARBOR.remindNotice].en.button, 'Understood');
 });
 
-test('Chain Line: a light hit on every foe and their next blow is lighter; 1 of 3 uses; he is helper no. 5', () => {
+test('Chain Line: a light hit on every foe and their next blow is lighter; 1 of 3 lamp uses (he stands in the team for 3 acts); he is helper no. 5', () => {
   const g = createGame(); g.save = () => true; g.onChange = () => {}; g.giveLamp(); L.unlockSummoner(g, 'liangang'); L.ensureMagic(g).lamp.level = 2; g.placeHelper(1, 'liangang');
   g.zoneEvents.th = { prisonBreak:'pending' }; const b = g.startPrisonBreak(); assert.ok(b);
   for (const f of b.foes) { f.atk = [20, 20]; f.hp = f.maxHp = 9999; }
-  const before = b.foes.map(f => f.hp), dmg = L.summonDamage(g, 'liangang'); assert.ok(dmg > 0 && dmg < L.summonDamage(g, 'hanuman'), 'light');
-  assert.equal(g.confirmBattleCommand('summon:liangang', 'you'), true);
+  const before = b.foes.map(f => f.hp), dmg = L.helperActDamage(g, 'liangang', 'move'); assert.ok(dmg > 0 && dmg < L.helperActDamage(g, 'hanuman', 'move'), 'light');   // FB3-EV5: the call hits nobody, the standing helper's move does
+  assert.equal(callHelper(g, 'liangang'), true); assert.deepEqual(b.foes.map(f => f.hp), before);
+  assert.equal(helperAct(g, 'helper:move', 'liangang', false), true);
   b.foes.forEach((f, i) => assert.equal(f.hp, before[i] - dmg)); assert.ok(b.foes.filter(f => f.weak > 0).length >= b.foes.length - 1, 'every foe is weakened (the one that already answered used its weak blow up)'); assert.equal(b.summon.move, 'ตรวนกั้นแถว'); assert.equal(b.summon.left, 2);
   assert.equal(L.SUMMONERS.liangang.move.kind, 'group'); assert.equal(L.SUMMONERS.liangang.say.end.th, 'เหลียนกัง: "ข้ามาตามที่ให้คำ ที่เหลือเป็นของเจ้า"');
 });

@@ -143,9 +143,12 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const fb3Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t1-runtime-changes.json',import.meta.url)));
   // FB3-T3 (26 Nov): the interrogation room - Sita's hearing is the ordinary room (assignBlock / press / mkCaseSoul / ensureStoryCase), the admitting statement no longer contradicts a denial (mkLines, same random draws), one statement text (MERIT_SOLID). No damage / HP / cooldown / balance number is touched. Reversible snippets (scripts/build-fb3-t3-hash-fixture.py).
   const fb3t3Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t3-runtime-changes.json',import.meta.url)));
+  // FB3-T4 (26 Nov): summon system v2 - a helper called from the lamp stands in the team as one more member for 3 acts (game.js: the call, 'helper:move' / 'helper:attack', battleActors / summonedActor; the foes' hits and the team-size maths skip it;
+  // combat-skills.js: the team combo skips it). The call no longer hits; the acts split the old one-hit number (lamp.js). None of it is reachable from the fights the 32,000 trials measured (they never call a helper); the balance run is T11. Reversible snippets, same method (scripts/build-fb3-t4-hash-fixture.py).
+  const fb3t4Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t4-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[]),...(fb3t4Only[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

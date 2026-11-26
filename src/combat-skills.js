@@ -98,7 +98,7 @@ export function attackBuff(battle, id, damage) {
  *  (was 60 + 4). A boss never loses more than COMBO_BOSS_CAP of its full HP to one combo (so it can open a boss but not end one on its own). */
 export const COMBO_CREW_MULT = 2, COMBO_YAMA_BASE = 120, COMBO_YAMA_PER_LEVEL = 8, COMBO_BOSS_CAP = .6, COMBO_NO_STRIKE_BASE = 30;
 export function teamCombo(game) {
-  return [...game.battleActors().filter(a => a.id !== 'you' && !a.guestGuide)
+  return [...game.battleActors().filter(a => a.id !== 'you' && !a.guestGuide && !a.summoned)
     .map(a => { const own = effectiveAllyStats(a, game.zone, game.training).dmg ?? Math.round(COMBO_NO_STRIKE_BASE * skillScale(game, a));   // Kan / Boon have no blow of their own: a plain 30 at their scale
       return { actorId:a.id, kind:a.k, homeZone:a.homeZone, damage:Math.round(COMBO_CREW_MULT * own) }; }),
     { actorId:'you', kind:'yama', damage:COMBO_YAMA_BASE + COMBO_YAMA_PER_LEVEL * (game.level - 1) }];

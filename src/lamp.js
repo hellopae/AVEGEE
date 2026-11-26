@@ -4,6 +4,9 @@
 //   · three treasures: mirror = reveal the truth · lamp = summon · clock = reset cooldowns. A spent treasure is refilled at the Mirror Tower (the `krajok` station).
 //   · the lamp comes from Sita (sita-lamp, case 12). Slots: 1 at first, +1 per Mirror Tower minigame of Zone 2/3/4 (max 4).
 //   · a summoned helper comes out, uses its special move ONCE, goes back (D2: "ใช้ท่าไม้ตายได้ 3 ครั้ง") - 3 uses, then it must be recharged at the tower.
+//   · FB3-EV5 (owner 26 Nov: "เมื่อกดเลือก จะมี cutscene ยามาใช้พลังตะเกียงวิเศษ เรียกหนุมานออกมา ... จะมายืนเป็นอีกตัวละครนึงในทีม ซึ่งจะยืนให้เลือกบังคับการโจมตีได้ 3 ครั้ง (อัญเชิญทุกตัวใช้ระบบนี้)"):
+//     calling a helper still costs one of its 3 lamp uses (the recharge rule is unchanged) and the caller's turn, but it no longer hits at once - the helper STANDS IN THE TEAM as one more
+//     character for HELPER_ACTS turns of its own, the player picks each act (its move, or a plain attack), then it goes. Its damage is the old one-hit number split over those acts.
 //   · a helper is unlocked by the event of that character (D4). Only Hanuman has an event yet; the data below already holds all 12 of the owner's list
 //     and a helper without `ready:true` is never shown.
 
@@ -16,6 +19,15 @@ export const LAMP_DEV_UPGRADE_BUTTON = true;
 export const LAMP_MAX_SLOTS = 4;
 /** Special moves a helper can use before it must be recharged (D2). */
 export const SUMMON_USES = 3;
+/** FB3-EV5: turns a called helper stays in the team - the player chooses what it does on each of them. */
+export const HELPER_ACTS = 3;
+/** FB3-EV5: how long the farewell effect of a leaving helper plays (ms) - it has no turn during it. */
+export const SUMMON_LEAVE_MS = 1100;
+/** FB3-EV5: how much of the old one-hit damage (`summonDamage`) one act delivers. Its own move 3 x .40 = 1.2 x the old single hit in total (the call turn itself no longer hits), a plain attack .25 (single foe).
+ *  Deliberately close to 1: the balance sim (T11) will tune it. A 'guard' helper (Kuman Thong) splits its shield / heal the same way over the acts. */
+export const HELPER_MOVE_SHARE = .4, HELPER_ATTACK_SHARE = .25, HELPER_GUARD_SHARE = .5;
+/** A helper whose move has no damage number (Kuman Thong's shield) still has a plain attack: this is its old-hit-equivalent base. */
+export const HELPER_PLAIN_BASE = Object.freeze({ base:30, perLevel:1 });
 /** Which lamp level the Mirror Tower of each zone gives (owner: minigame Zone 1 -> 1 helper ... Zone 4 -> 4). */
 export const TOWER_LAMP_LEVEL = Object.freeze({ th:1, asia:2, west:3, cyberhell:4 });
 
@@ -150,10 +162,11 @@ export function setSlot(g, i, k) {
   return '';
 }
 
-/** Why `k` cannot be summoned in `battle` right now - '' (can) | 'noLamp' | 'cannot' | 'empty' | 'unmet' | 'spent'. */
+/** Why `k` cannot be summoned in `battle` right now - '' (can) | 'noLamp' | 'cannot' | 'present' | 'empty' | 'unmet' | 'spent'. */
 export function summonWhy(g, k, battle = g.battle) {
   if (!lampOwned(g)) return 'noLamp';
   if (!battle || battle.over || SUMMON_BLOCKED_KINDS.includes(battle.kind) || battle.breachFinale === 'ready') return 'cannot';
+  if (battle.summoned && !battle.summoned.leaving) return 'present';   // FB3-EV5: one helper stands in the team at a time
   if (!slottedSummoners(g).includes(k)) return 'empty';
   if (!SUMMONERS[k]?.ready) return 'unmet';
   if (summonUsesLeft(g, k) <= 0) return 'spent';
@@ -173,6 +186,33 @@ export function summonDamage(g, k) {
   const d = SUMMONERS[k]?.move?.damage; if (!d) return 0;
   return Math.max(1, Math.round(d.base + (Math.max(1, g.level || 1) - 1) * d.perLevel)) * Math.max(1, SUMMONERS[k].move.hits || 1);   // `hits` = quick blows in one go (the sum lands at once)
 }
+
+/** FB3-EV5: damage of ONE controlled act of a standing helper - 'move' (its own move: every foe when the move is a group hit) or 'attack' (a plain blow on one foe). */
+export function helperActDamage(g, k, act = 'move') {
+  const m = SUMMONERS[k]?.move; if (!m) return 0;
+  const lv = Math.max(1, g.level || 1) - 1;
+  const old = summonDamage(g, k) || Math.max(1, Math.round(HELPER_PLAIN_BASE.base + lv * HELPER_PLAIN_BASE.perLevel));   // the old one-hit number (a helper with none borrows the plain one)
+  if (act === 'attack') return Math.max(1, Math.round(old * HELPER_ATTACK_SHARE));
+  return m.damage ? Math.max(1, Math.round(old * HELPER_MOVE_SHARE)) : 0;                                        // a pure support move deals nothing
+}
+/** FB3-EV5: the shield / heal one act of a 'guard' helper gives (a share of the old single cast). */
+export function helperGuardAct(g, k) {
+  const full = summonGuard(g, k); if (!full) return null;
+  const sh = n => Math.max(1, Math.round(n * HELPER_GUARD_SHARE));
+  return { shield:sh(full.shield), heal:sh(full.heal), raise:full.raise };
+}
+/** FB3-EV5: the team member a called helper is while it stands in the battle (built each time from `battle.summoned`, never saved on its own). */
+export function helperActor(g, k, state = {}) {
+  const d = SUMMONERS[k]; if (!d) return null;
+  return { id:`summon:${k}`, k:'summon', kind:'summon', summoned:true, summonKey:k, homeZone:g.zone, name:d.name.th, nameEn:d.name.en, morale:100, speed:12,
+    left:Number.isFinite(state.left) ? state.left : HELPER_ACTS, leaving:state.leaving || 0, at:state.at || 0 };
+}
+/** FB3-EV5: the lamp cutscene (Yama lights the lamp and the helper steps out): the zone's drawing first, then the older lamp picture / a golden glow so the card never breaks.
+ *  `img/summon/cut-lamp-summon-{th,asia,west,cyberhell}.webp` - saving a drawing under that name is all it takes. */
+export const LAMP_CUT_FALLBACK = 'img/ui/item-magic-lamp-lit.webp';
+export const lampCutSources = zone => [`img/summon/cut-lamp-summon-${['th', 'asia', 'west', 'cyberhell'].includes(zone) ? zone : 'th'}.webp`, LAMP_CUT_FALLBACK];
+/** The first source that exists (`exists(src)` -> bool), or null = no picture at all (the card still shows the title + the golden glow). */
+export const pickLampCut = (zone, exists) => lampCutSources(zone).find(src => { try { return !!exists(src); } catch { return false; } }) || null;
 
 /** Spend one use. Returns { used, left, out } - `out` = true when that was the last one. */
 export function spendSummon(g, k) {

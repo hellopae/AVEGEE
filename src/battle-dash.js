@@ -1,5 +1,5 @@
 // B1: stage-local opaque bounds; no combat arithmetic or random rolls here.
-const MELEE_ACTIONS = new Set(['atk', 'strike', 'guard', 'crew:taan', 'crew:dam']);
+const MELEE_ACTIONS = new Set(['atk', 'strike', 'guard', 'crew:taan', 'crew:dam', 'helper:attack']);   // FB3-EV5: a standing helper's plain blow runs at the foe like a teammate's
 export const isMeleeAction = action => MELEE_ACTIONS.has(action);
 export function planDash(source, target, gap = 8) {
   const right = (target.l + target.r) >= (source.l + source.r);

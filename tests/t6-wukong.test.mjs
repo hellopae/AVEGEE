@@ -1,4 +1,5 @@
 // T6/3 - Wukong leaves a flame in the lamp: scene z2-wukong-flame inside his return scene (Rae R2 part B section 3), helper no. 4 "Strand Barrage".
+import { callHelper, helperAct } from './summon-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
@@ -40,14 +41,15 @@ test('an old save that already saw the return scene gets the flame scene once', 
   drain(copy); const again = game(); again.restore(JSON.parse(JSON.stringify(copy.snapshot()))); assert.ok(!again.storyQueue.some(s => s.key === 'z2-wukong-flame'));
 });
 
-test('as a helper: 3 quick hits on the CHOSEN foe only (the sum lands at once), 1 of 3 uses, once per call', () => {
+test('as a helper: 3 quick hits on the CHOSEN foe only (the sum lands at once, as one act of the standing helper), 1 of 3 lamp uses per call', () => {
   const g = game(); g.giveLamp(); L.unlockSummoner(g, 'wukong'); L.ensureMagic(g).lamp.level = 2; g.placeHelper(1, 'wukong');
   g.zoneEvents.th = { prisonBreak:'pending' }; const b = g.startPrisonBreak(); assert.ok(b);
   for (const f of b.foes) { f.atk = [0, 0]; f.hp = f.maxHp = 9999; }
   const target = b.foes[1]; b.selectedFoeId = target.id; const before = b.foes.map(f => f.hp), one = L.SUMMONERS.wukong.move.damage.base + 0, dmg = L.summonDamage(g, 'wukong');
-  assert.equal(dmg, one * 3, 'level 1: base x 3 hits');
-  assert.equal(g.confirmBattleCommand('summon:wukong', 'you'), true);
-  assert.equal(target.hp, before[1] - dmg); assert.equal(b.foes[0].hp, before[0]); assert.equal(b.summon.move, 'ขนวิเศษรุมซัด'); assert.equal(b.summon.left, 2);
+  assert.equal(dmg, one * 3, 'level 1: base x 3 hits (the old one-hit number the standing helper\'s acts are split from)');
+  assert.equal(callHelper(g, 'wukong'), true); assert.deepEqual(b.foes.map(f => f.hp), before);
+  assert.equal(helperAct(g, 'helper:move', 'wukong', false), true);
+  assert.equal(target.hp, before[1] - L.helperActDamage(g, 'wukong', 'move')); assert.equal(b.foes[0].hp, before[0]); assert.equal(b.summon.move, 'ขนวิเศษรุมซัด'); assert.equal(b.summon.left, 2);
 });
 
 test('pictures are .webp files that exist (stand-ins copied from his own drawings until Codex draws them)', () => {

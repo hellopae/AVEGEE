@@ -1,5 +1,6 @@
 // T8b/6 - HOME-67's quest: catch the thief Patch (Rae R2 part D section 9, owner G29): the first talk on the pier after the gift offers the job (NQ-1) -> the strange worker stands beside the canteen -> z4-lupin-catch -> the fight (Yama + Nira + HOME-67)
 // -> z4-lupin-win + NQ-2 + NU-1 -> the quest is done and helper no. 12 "The Mask Turns the Beat" is in the lamp (one foe, a light-medium blow, that foe loses its next act). The state is saved; the ending does not close it. TH + EN. No dice in the tests.
+import { callHelper, helperAct } from './summon-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ZONE_EVENTS } from '../src/data.js';
@@ -39,6 +40,8 @@ test('a lost fight can be tried again (the worker stays); the helper: ONE foe ta
   // the helper's move in a fight with two foes: only the one it points at is hit and stunned
   const h = zone4(); h.giveLamp(); h.notices = []; h.unlockHelper('lupin'); h.placeHelper(0, 'lupin'); h.zoneEvents.cyberhell.cyberBreach = 'cleared'; h.zoneCases.cyberhell = 7; h.zoneEvents.cyberhell.cyberBreach = 'pending'; h.refreshZoneEvents();
   const fb = h.startZoneEvent('cyberBreach'); assert.ok(fb); assert.ok(fb.foes.length >= 2); for (const f of fb.foes) { f.hp = f.maxHp = 400; f.atk = [0, 0]; f.stun = 0; } const [a, c] = fb.foes; h.selectFoe(c.id);
-  const dmg = L.summonDamage(h, 'lupin'); assert.ok(dmg > 0); assert.equal(h.confirmBattleCommand('summon:lupin', 'you'), true);
+  const dmg = L.helperActDamage(h, 'lupin', 'move'); assert.ok(dmg > 0); assert.equal(callHelper(h, 'lupin'), true); assert.equal(c.hp, 400, 'FB3-EV5: the call itself hits nobody');
+  fb.counterIndex = fb.foes.indexOf(a);   // (no turn queue in this test: the foe that answers each command is the next one in the rotation - keep it the other foe, as before)
+  assert.equal(helperAct(h, 'helper:move', 'lupin', false), true);
   assert.equal(c.hp, 400 - dmg, 'the pointed foe took it'); assert.equal(c.stun, 1, 'and loses its next act'); assert.equal(a.hp, 400, 'the other foe was not hit'); assert.equal(a.stun, 0);
 });

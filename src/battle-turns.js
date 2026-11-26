@@ -3,7 +3,7 @@ const ALLY_SPEED = {yama:12,nira:10,kan:11,dam:10,boon:8,plerng:8,taan:7,guard:6
 export function combatUnits(game) {
   const b=game.battle;if(!b)return [];
   return [...game.battleActors().filter(a=>a.id!=='you'||b.youHp>0)
-    .map(a=>({id:a.id,side:'ally',name:a.name || (a.kind==='guard'?'ยักษ์ทวารบาล':'ยมทูต'),k:a.k||a.kind,speed:Number.isFinite(a.speed)?a.speed:ALLY_SPEED[a.k||a.kind]||8})),
+    .map(a=>({id:a.id,side:'ally',name:a.name || (a.kind==='guard'?'ยักษ์ทวารบาล':'ยมทูต'),k:a.k||a.kind,speed:Number.isFinite(a.speed)?a.speed:ALLY_SPEED[a.k||a.kind]||8,...(a.summoned?{summoned:true}:{})})),
     ...b.foes.filter(f=>f.hp>0).map(f=>({id:f.id,side:'foe',name:f.who,k:f.sp,
       speed:Number.isFinite(f.speed)?f.speed:9}))];
 }
@@ -32,7 +32,7 @@ export const foeTurnTotal=(allies,foes,ratio=TURN_RULE.ratio)=>foes<=0?0:Math.ma
 /** one round's order (pure, deterministic): units = [{id,side,speed}] */
 export function orderRound(units,ratio=TURN_RULE.ratio){
   const allies=units.filter(u=>u.side==='ally').sort(bySpeed),foes=units.filter(u=>u.side==='foe').sort(bySpeed);
-  const total=foeTurnTotal(allies.length,foes.length,ratio);
+  const total=foeTurnTotal(allies.filter(u=>!u.summoned).length,foes.length,ratio);   // FB3-EV5: a helper called from the lamp is a bonus team member - it never gives the foes extra turns
   if(!allies.length||total<=foes.length)return legacyOrder(units);
   const per=foes.map((_,i)=>Math.floor(total/foes.length)+(i<total%foes.length?1:0)),seq=[];
   for(let r=0;r<Math.max(...per);r++)foes.forEach((f,i)=>{if(per[i]>r)seq.push(f);});   // round-robin: A B A B ..., never A A while B is also owed a turn
