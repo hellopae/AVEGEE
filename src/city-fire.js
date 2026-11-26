@@ -16,9 +16,11 @@ export const gateControlled = g => !!g && g.zone !== 'cyberhell' && zoneSeized(g
 
 export const MAX_FIRES = 12, MAX_FIRES_SMALL = 5, SMALL_CANVAS_CSS_W = 620;
 /** burning spots in world units: every station building first (the registry hall - "the first hall Yama ever worked in" - is the one the fire scene shows), then the houses */
-export function fireSpots() {
+export function fireSpots(g = null) {
   const out = [];
-  for (const d of STATIONS) if (d.bx != null && d.bw > 0) out.push({ x:d.bx, y:d.by - d.bw * .18, w:Math.min(120, d.bw * .5), key:d.k, big:d.k === 'sala' });
+  // FB3-L9 (Dale's review): a station that is not built is only an empty pad - it must not burn. `g` = the game (built stations = g.stations that are no longer scaffolding); without it every site is listed (tests of the geometry)
+  const built = g ? new Set((g.stations || []).filter(s => !s.build).map(s => s.def.k)) : null;
+  for (const d of STATIONS) if (d.bx != null && d.bw > 0 && (!built || built.has(d.k))) out.push({ x:d.bx, y:d.by - d.bw * .18, w:Math.min(120, d.bw * .5), key:d.k, big:d.k === 'sala' });
   for (const h of TOWN_HOUSE_SITES) out.push({ x:h.x, y:h.y - (h.h || h.w) * .3, w:Math.min(90, h.w * .55), key:`house:${h.x}`, big:false });
   return out;
 }
@@ -78,7 +80,7 @@ export function drawCityFire(ctx, g, t, reduced = false, W, H) {
   const view = viewMetrics(ctx, W, H); if (!view) return 0;
   const css = ctx.canvas?.clientWidth || (ctx.canvas?.width || 1000) / (globalThis.devicePixelRatio || 1);
   const bud = fireBudget(css, reduced), pad = 90;
-  const spots = fireSpots().filter(s => s.x > view.x - pad && s.x < view.x + view.w + pad && s.y > view.y - pad && s.y < view.y + view.h + pad * 2);
+  const spots = fireSpots(g).filter(s => s.x > view.x - pad && s.x < view.x + view.w + pad && s.y > view.y - pad && s.y < view.y + view.h + pad * 2);
   spots.sort((a, b) => (b.big - a.big) || (a.y - b.y)); spots.length = Math.min(spots.length, bud.max);
   const gl = glow(), sm = smoke(), tt = bud.animate ? t : 0;
   ctx.save();
