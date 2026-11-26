@@ -32,7 +32,7 @@ export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUAR
   const [hp,atk]=GUARD_STATS[zone];
   return [zone,{k:Z4G_KEYS.guardEvent, atCases:0, mode:'single', noAlert:true, returnGuard:true,
     title:{th:`ปลดสะกด ${name.th}`, en:`Free ${name.en}`},
-    alert:{th:'ยามากับนิราต้องช่วย Guard ให้หลุดจากคำสั่งก่อนเข้าประตู', en:'Yama and Nira must break the spell on the gate guard before entering.'},
+    alert:{th:`ยามากับนิราต้องช่วย${name.th}ให้หลุดจากคำสั่งก่อนเข้าประตู`, en:'Yama and Nira must break the spell on the gate guard before entering.'},
     foe:{name:name.th,nameEn:name.en,sp:'crew-guard',boss:false,hypno:true,hp,atk},
     winStories:[Z4G_KEYS.guardFreed[zone],Z4G_KEYS.fire[zone]],reward:{exp:10}}];   // FB3-L3: Nira frees him (own scene) -> the fire scene
 }));
