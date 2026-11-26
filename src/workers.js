@@ -1,6 +1,6 @@
 import {planWorkerEscort,workerDropoff} from './worker-escort-spacing.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
-import {canteenActive,canteenPoint,canteenState,mealRecipients,needsMeal,mealRecipient,serveMeal,feedActor,advanceCanteenDiner} from './canteen.js';
+import {canteenActive,canteenPoint,canteenState,mealRecipients,needsMeal,mealRecipient,serveMeal,feedActor,advanceCanteenDiner,kitchenSpot} from './canteen.js';
 import {canWalk,nearestWalk,findPath,stepTo,isNarrowSpot} from './walk.js?v=k1d';
 import {SPOTS,MOB,MERCHANT,BAL} from './data.js';
 import {actorStanding} from './actor-recovery.js';
@@ -11,7 +11,7 @@ export const WORKER_MODES=Object.freeze({auto:'ช่วยขนส่งแล
 const zones=['th','asia','west','cyberhell'];
 const names={th:'อสูรผู้ช่วย',asia:'โอนิผู้ช่วย',west:'อิมป์ผู้ช่วย',cyberhell:'ไซเบอร์อสูร'};
 const number=(v,fallback=0)=>Number.isFinite(v)?v:fallback;
-const emptyLedger=()=>({hired:0,hireSpent:0,wagesPaid:0,supervisionTicks:0,buildMs:0,repairMs:0,escortsDone:0,ngiwWood:0,dabShards:0,sales:0,income:0,offlineIncome:0});
+const emptyLedger=()=>({hired:0,hireSpent:0,wagesPaid:0,supervisionTicks:0,buildMs:0,repairMs:0,escortsDone:0,cooked:0,ngiwWood:0,dabShards:0,sales:0,income:0,offlineIncome:0});
 /** who a server serves: [] = by queue (hungriest first), else only these ids · reads the old single `serveTarget` string from older saves */
 const serveTargetList=raw=>[...new Set((Array.isArray(raw.serveTargets)?raw.serveTargets:typeof raw.serveTarget==='string'&&raw.serveTarget!=='auto'?[raw.serveTarget]:[]).filter(x=>typeof x==='string'&&x))].slice(0,40);
 export function normalizeWorkers(value) {
@@ -25,7 +25,7 @@ export function normalizeWorkers(value) {
       stamina:Math.max(0,Math.min(100,number(raw.stamina,100))),recovering:!!raw.recovering,
       workTicks:Math.max(0,Math.min(WORKER_RULES.wageEvery,Math.floor(number(raw.workTicks)))),funded:false,
       cargo:raw.cargo==='ngiwWood'||raw.cargo==='dabShards'?raw.cargo:null,
-      job:raw.job?.kind==='cook'?{kind:'cook',ms:Math.max(0,Math.min(2999,number(raw.job.ms)))}:raw.job?.kind==='food'&&typeof raw.job.recipient==='string'?{kind:'food',recipient:raw.job.recipient,phase:raw.meal?'deliver':'pickup'}:raw.job?.kind==='escort'&&raw.job.soulId!=null?{kind:'escort',soulId:raw.job.soulId}:raw.job?.kind==='gather'?{kind:'gather',material:raw.job.material==='dabShards'?'dabShards':'ngiwWood',phase:raw.job.phase==='sell'?'sell':'collect',worked:Math.max(0,number(raw.job.worked))}:raw.job&&['build','repair'].includes(raw.job.kind)&&typeof raw.job.station==='string'?{kind:raw.job.kind,station:raw.job.station}:null});
+      job:raw.job?.kind==='cook'?{kind:'cook',ms:Math.max(0,Math.min(2999,number(raw.job.ms))),prep:0}:raw.job?.kind==='food'&&typeof raw.job.recipient==='string'?{kind:'food',recipient:raw.job.recipient,phase:raw.meal?'deliver':'pickup'}:raw.job?.kind==='escort'&&raw.job.soulId!=null?{kind:'escort',soulId:raw.job.soulId}:raw.job?.kind==='gather'?{kind:'gather',material:raw.job.material==='dabShards'?'dabShards':'ngiwWood',phase:raw.job.phase==='sell'?'sell':'collect',worked:Math.max(0,number(raw.job.worked))}:raw.job&&['build','repair'].includes(raw.job.kind)&&typeof raw.job.station==='string'?{kind:raw.job.kind,station:raw.job.station}:null});
   }
   out.nextId=Math.max(out.nextId,Math.max(1,Math.floor(number(value?.nextId,1))));
   for(const key of Object.keys(out.ledger))out.ledger[key]=Math.max(0,number(value?.ledger?.[key]));
@@ -124,7 +124,7 @@ function gatherJob(g,w){
  return {kind:'gather',material,phase:w.cargo?'sell':'collect',worked:0};
 }
 function assignJob(g,w) {
- if(w.mode==='cook'&&canteenActive(g)){w.job={kind:'cook',ms:0};return;}
+ if(w.mode==='cook'&&canteenActive(g)){w.job={kind:'cook',ms:0,prep:0};return;}
  if(w.mode==='serve'&&canteenActive(g)){
   const recipient=mealRecipients(g).filter(c=>needsMeal(c)&&(!w.serveTargets?.length||w.serveTargets.includes(c.id))&&!zoneWorkers(g).some(o=>o.job?.kind==='food'&&o.job.recipient===c.id)).sort((a,b)=>(a.hunger??100)-(b.hunger??100))[0];
   if(recipient&&(w.meal||canteenState(g).meals>0)){w.job={kind:'food',recipient:recipient.id,phase:w.meal?'deliver':'pickup'};return;}
@@ -141,9 +141,12 @@ export function stepWorkers(g) {
     w.funded=false;w.resting=false;
     if(w.teaRest){w.resting=true;continue;}
     if(w.eatOrder)continue;
-    if(w.mode==='cook'&&!w.recovering&&w.stamina>0&&(w.morale??100)>0&&canteenActive(g)&&canteenState(g).meals<6&&g.food<1&&g.coin>=BAL.foodPrice*10)g.buy('food',1);
+    // FB3-MP10: a cook on duty at an active canteen makes the pantry's rice balls himself (canteen.js stepCanteen) - he neither waits for the pantry nor eats from it for his own work, and the old
+    // "buy 10 from the merchant for him" is gone (that is what left every worker resting at 0 rice while the shelf was full)
+    const kitchenCook=w.mode==='cook'&&canteenActive(g);
+    if(kitchenCook)w.supplyRest=false;
     if(['cook','serve'].includes(w.mode)&&canteenActive(g)&&g.food>=WORKER_RULES.food)w.supplyRest=false;
-    if(g.food<WORKER_RULES.food&&!w.teaRest){w.supplyRest=true;w.hunger=0;}
+    if(g.food<WORKER_RULES.food&&!w.teaRest&&!kitchenCook){w.supplyRest=true;w.hunger=0;}
     if(w.supplyRest&&!w.teaRest){if(w.job)cancelJob(g,w);w.resting=true;w.reason='เสบียงหมด · รอข้าวปั้นหรือพักที่ศาลาน้ำชา';continue;}
     if(w.mode==='rest'||w.recovering||w.stamina<=0||(w.morale??100)<=0) {
       if(w.job)cancelJob(g,w);
@@ -162,8 +165,11 @@ export function stepWorkers(g) {
       if(g.coin<WORKER_RULES.wage){if(w.job.kind==='escort')cancelJob(g,w);w.reason='รอค่าจ้าง';continue;}
       g.coin-=WORKER_RULES.wage;state(g).ledger.wagesPaid+=WORKER_RULES.wage;w.workTicks=0;
     }
-    if(g.food<WORKER_RULES.food){if(w.job.kind==='escort')cancelJob(g,w);w.reason='รอเสบียง';continue;}
-    g.food-=WORKER_RULES.food;w.workTicks++;w.stamina=Math.max(0,w.stamina-.15);w.morale=Math.max(0,(w.morale??100)-.12);w.hunger=Math.max(0,(w.hunger??100)-.2);w.funded=true;w.reason='';
+    if(!(kitchenCook&&w.job.kind==='cook')){
+      if(g.food<WORKER_RULES.food){if(w.job.kind==='escort')cancelJob(g,w);w.reason='รอเสบียง';continue;}
+      g.food-=WORKER_RULES.food;
+    }
+    w.workTicks++;w.stamina=Math.max(0,w.stamina-.15);w.morale=Math.max(0,(w.morale??100)-.12);w.hunger=Math.max(0,(w.hunger??100)-.2);w.funded=true;w.reason='';
     if(w.job.kind==='supervise'&&w.arrived)state(g).ledger.supervisionTicks++;
   }
 }
@@ -189,11 +195,10 @@ function target(g,w) {
   const offset=peers.indexOf(w)%2===0?-34:34;
   return nearestWalk(st.def.x+offset,st.def.y+36);
 }
-// Idle cooks / servers wait beside the kitchen instead of walking back to the plaza: the next order needs no long path (one A* per trip was a visible frame hitch)
-const KITCHEN_WAIT=[[-34,26],[34,26],[-34,58],[34,58],[0,80],[0,-30]];
+// Idle workers wait INSIDE the kitchen (FB3-MN5) instead of walking back to the plaza: the next order needs no long path (one A* per trip was a visible frame hitch)
 function idleSpot(g,w){
   const i=zoneWorkers(g).indexOf(w);
-  if(['cook','serve'].includes(w.mode)&&canteenActive(g)){const [cx,cy]=canteenPoint(g),[dx,dy]=KITCHEN_WAIT[((i%6)+6)%6];const p=nearestWalk(cx+dx,cy+dy);if(p)return p;}
+  if(canteenActive(g)){const p=kitchenSpot(g,i+1);if(p)return p;}   // FB3-MN5: every idle worker waits INSIDE the stall (spot 0 is the foreman's)
   return workerStandbyPoint(i);
 }
 export function advanceWorkers(g,dt,now=Date.now()) {
@@ -380,7 +385,15 @@ function drawStrip(ctx,art,row,time,w,height){
  ctx.drawImage(art.im,col*fw,r*fh,fw,fh,w.x-dw/2,w.y-dh,dw,dh);
 }
 // QUEST-DAM-B (15 Nov): Dam's own walking strips (Codex, TH only) - the same strip format as the server's carry walk. kind 'walk' = the sack (cut thorns / shards), 'rice' = the rice tray.
-export const damCarryAssets=(zone,kind)=>zone==='th'?{image:`img/crew-dam-carry-${kind}-v1.webp`,metadata:`img/crew-dam-carry-${kind}-v1.json`}:null;
+// FB3-O1: the foreman of Zones 2-4 has the same strips (Codex C6: img/<Folder>/crew-dam-<zone>-carry-{walk,rice}-v1.webp + .json) - bound by NAME: until the file exists nothing is drawn (the old marker / pose stays), when it is put there it is used at once
+export const DAM_ART_FOLDER=Object.freeze({th:'',asia:'Asia/',west:'West/',cyberhell:'CyberHell/'});
+export const damCarryAssets=(zone,kind)=>{
+ if(!Object.hasOwn(DAM_ART_FOLDER,zone))return null;
+ const stem=zone==='th'?`img/crew-dam-carry-${kind}-v1`:`img/${DAM_ART_FOLDER[zone]}crew-dam-${zone}-carry-${kind}-v1`;
+ return {image:`${stem}.webp`,metadata:`${stem}.json`};
+};
+/** the standing "supervise" picture at the kitchen (arms folded): the key art.js turns into a path */
+export const damSuperviseKey=zone=>zone==='th'?'crew-dam-supervise-v1':`crew-dam-${zone}-supervise-v1`;
 export const damCarryReady=(zone,kind)=>{const a=stripArt(`dam:${zone}:${kind}`,damCarryAssets(zone,kind));return !!(a?.im.complete&&a.im.naturalWidth);};
 /** draws Dam carrying (true = drawn). `moving` picks the walking frames, otherwise the first frame stands. Rows follow his heading like the worker's carry walk. */
 export function drawDamCarry(ctx,c,zone,kind,time,height,moving){

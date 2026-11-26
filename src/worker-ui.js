@@ -1,4 +1,4 @@
-import {canteenState,mealRecipients} from './canteen.js';
+import {canteenState,mealRecipients,KITCHEN} from './canteen.js';
 import {WORKER_RULES,WORKER_MODES,zoneWorkers,workerHireCost,workerHireWhy,workerSheet,workerFrameRect} from './workers.js';
 import {hireRank,recommendedHire} from './unlocks.js';
 import {t} from './i18n.js';
@@ -35,7 +35,7 @@ export function canteenPanelHtml(game,inside=true){
  const card=w=>`<article class="worker-service-card canteen-worker">${face(w.homeZone)}<div class="canteen-worker-body"><b>${esc(w.name)}</b><label class="canteen-duty">${esc(t('canteen.duty'))} <select data-worker-mode="${esc(w.id)}" ${inside?'':'disabled'}>${Object.entries(WORKER_MODES).map(([k,v])=>`<option value="${k}" ${w.mode===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label>${w.mode==='serve'?targets(w):''}</div></article>`;
  // "Shared rations · {n} packs" -> label above, the number with its unit in bold below (the layout the stat box always had)
  const [pantryHead,pantryUnit]=t('canteen.pantry',{n:'\u0001'}).split('\u0001'),pantryLabel=pantryHead.replace(/[\s·]+$/,'');
- const desk=foremanDesk(game),help=t('canteen.help',{price:BAL.foodPrice*10})+(desk?' · '+t('canteen.help.foreman',{name:desk.crew.name}):'');
+ const help=t('canteen.help',{price:KITCHEN.coinPerBatch,batch:KITCHEN.batch,sec:KITCHEN.cookMs/1000,cap:KITCHEN.pantryCap});
  return `<div class="canteen-panel"><div class="canteen-stats"><span class="canteen-stat" title="${esc(t('canteen.ready'))}">${face(game.zone)}<span>${esc(t('canteen.ready'))} <b>${state.meals}/6</b></span></span><span class="canteen-stat" title="${esc(pantryLabel)}"><img class="canteen-food-icon" src="img/item-food.webp" alt=""><span>${esc(pantryLabel)} <b>${Math.floor(game.food)}${esc(pantryUnit)}</b></span></span></div><p class="canteen-help">${esc(help)}</p>
  ${full?'':`<div class="canteen-hire">${hire('cook',t('canteen.role.cook'))}${hire('serve',t('canteen.role.serve'))}<small>${esc(why||t('canteen.hire.note',{n:workers.length,max:WORKER_RULES.capacity}))}</small></div>`}
  <div class="canteen-workers">${workers.map(card).join('')||`<p>${esc(t('canteen.empty'))}</p>`}</div></div>`;

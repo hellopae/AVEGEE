@@ -2,10 +2,29 @@ import {SPOTS} from './data.js';
 import {nearestWalk,findPath,stepTo} from './walk.js?v=k1d';
 import {actorStanding} from './actor-recovery.js';
 export const CANTEEN_CAPACITY=6;
+/** FB3-MP10 (owner map13): the kitchen feeds itself. A cook on duty at an active canteen MAKES rice balls into the shared pantry (g.food) on his own - no trip to the merchant.
+ *  Every number of the kitchen is here (T11 simulates them): one batch takes `cookMs`, gives `batch` rice balls and costs `coinPerBatch` coins of ingredients (the merchant sells 1 ball for 1 coin, so a cook
+ *  is a little cheaper and automatic; the merchant is still there to hurry things up), he stops while the pantry holds `pantryCap` or more (no hoarding) and while the purse cannot pay a batch.
+ *  `mealMs` / CANTEEN_CAPACITY (the ready-to-serve shelf) are the old numbers.  `inside` = where Dam / idle workers stand INSIDE the stall (owner MN5), in world units for a 118-wide stall, scaled by its width. */
+export const KITCHEN=Object.freeze({cookMs:6000,batch:4,coinPerBatch:3,pantryCap:40,mealMs:3000,
+  inside:Object.freeze([[-34,4],[34,4],[0,18],[-56,16],[56,16],[0,-14]])});
+/** 0..1 progress of the rice-ball batch a cook is making (the bar over his head); null = he is not cooking now */
+export function cookProgress(g,w){
+ if(!w||w.mode!=='cook'||w.job?.kind!=='cook'||!w.arrived||!canteenActive(g))return null;
+ return Math.max(0,Math.min(1,(w.job.prep||0)/KITCHEN.cookMs));
+}
 export const canteenActive=g=>!!g.stations?.some(s=>s.def.k==='canteen'&&!s.build&&!s.repair&&!s.fire);
 export const canteenBuilt=g=>!!g.stations?.some(s=>s.def.k==='canteen'&&!s.build);
 export function canteenSite(g){const d=SPOTS;const st=g.stations?.find(s=>s.def.k==='canteen');return st?{x:st.def.bx,y:st.def.by,w:st.def.bw}:{x:d.bench.x+130,y:d.bench.y+80,w:140};}
-export function canteenPoint(g){const s=g.stations?.find(s=>s.def.k==='canteen')?.def;return s?(nearestWalk(s.x,s.y)||[s.x,s.y]):nearestWalk(SPOTS.bench.x,SPOTS.bench.y);}
+/** the kitchen's own spot: just INSIDE the stall at its front (owner MN5; it was the door step 38 units further down) */
+export function canteenPoint(g){const s=g.stations?.find(s=>s.def.k==='canteen')?.def;return s?(nearestWalk(s.bx,s.by+.1*(s.bw||118))||nearestWalk(s.x,s.y)||[s.x,s.y]):nearestWalk(SPOTS.bench.x,SPOTS.bench.y);}
+/** the i-th standing place inside the stall (0 = the foreman); the first walkable one near the wanted offset */
+export function kitchenSpot(g,i){
+ const s=g.stations?.find(s=>s.def.k==='canteen')?.def;if(!s)return null;
+ const [cx,cy]=canteenPoint(g)||[s.bx,s.by],k=(s.bw||118)/118,list=KITCHEN.inside;
+ for(let n=0;n<list.length;n++){const [dx,dy]=list[((i+n)%list.length+list.length)%list.length],p=nearestWalk(cx+dx*k,cy+dy*k);if(p&&Math.hypot(p[0]-(cx+dx*k),p[1]-(cy+dy*k))<22*k)return p;}
+ return [cx,cy];
+}
 export function canteenState(g){g.canteenState||={};return g.canteenState[g.zone]||= {meals:0,served:0,orders:[]};}
 export function mealRecipients(g){return [...g.crew.filter(c=>!c.reader&&!c.self),g.guard,...(g.workerState?.workers||[]).filter(w=>w.homeZone===g.zone)].filter(Boolean);}
 export const needsMeal=c=>!!c&&!c.teaRest&&!c.eatOrder&&!c.mealSeq&&(c.stamina!=null?((c.hunger??100)<80||c.stamina<65||(c.morale??100)<55):actorStanding(c)&&((c.hunger??100)<80||(c.morale??100)<55));
@@ -65,9 +84,16 @@ export function stepCanteen(g,dt){
  const s=canteenState(g),at=canteenPoint(g);
  for(const w of (g.workerState?.workers||[]).filter(w=>w.homeZone===g.zone&&w.mode==='cook')){
   if(w.job?.kind!=='cook'||!w.funded||w.teaRest||w.eatOrder||Math.hypot(w.x-at[0],w.y-at[1])>=24)continue;
-  if(s.meals>=CANTEEN_CAPACITY||g.food<1)continue;
-  w.job.ms=(w.job.ms||0)+Math.min(120,dt);
-  if(w.job.ms>=3000){w.job.ms-=3000;g.food--;s.meals++;}
+  const step=Math.min(120,dt);
+  // the ready-to-serve shelf is filled from the pantry (the old rule: 1 ball every mealMs)
+  if(s.meals<CANTEEN_CAPACITY&&g.food>=1){w.job.ms=(w.job.ms||0)+step;if(w.job.ms>=KITCHEN.mealMs){w.job.ms-=KITCHEN.mealMs;g.food--;s.meals++;}}
+  // FB3-MP10: and the pantry itself is refilled by the cook (bar over his head = w.job.prep / cookMs)
+  if((g.food||0)>=KITCHEN.pantryCap){w.job.prep=0;w.reason='';continue;}
+  w.job.prep=Math.min(KITCHEN.cookMs,(w.job.prep||0)+step);
+  if(w.job.prep>=KITCHEN.cookMs){
+   if(g.coin>=KITCHEN.coinPerBatch){g.coin-=KITCHEN.coinPerBatch;g.food=Math.min(KITCHEN.pantryCap,(g.food||0)+KITCHEN.batch);w.job.prep=0;w.reason='';if(g.workerState?.ledger)g.workerState.ledger.cooked=(g.workerState.ledger.cooked||0)+KITCHEN.batch;}
+   else w.reason='ไม่มีเบี้ยซื้อวัตถุดิบ';
+  }
  }
 }
 export function serveMeal(g,w){

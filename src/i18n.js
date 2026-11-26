@@ -1629,7 +1629,7 @@ Object.assign(EN, {
 // QUEST-DAM-B (15 Nov 2026): Rae's canteen panel + Dam guide words (Output/Rae/2026-11-15-avegee-pointer-foreman-lines.md, parts B and C).
 // The guide's last sentence and foreman.hungry.note are Toby's own wording for the new hunger rule - Rae to polish.
 Object.assign(TH, {
-  'canteen.help': 'พ่อครัวปั้นข้าวให้เองทุก 3 วินาที ใช้เสบียง 1 ห่อต่อชุด · เสบียงใกล้หมดเมื่อไรจะซื้อเพิ่มให้เองครั้งละ 10 ห่อ ({price} เบี้ยกรรม) · คนเสิร์ฟเดินไปส่งถึงตัว ยิ่งมีหลายคนยิ่งส่งทัน · ข้าวปั้นซื้อได้ที่พ่อค้าเท่านั้น',
+  'canteen.help': 'พ่อครัวทำข้าวปั้นเข้าคลังเสบียงเองทุก {sec} วินาที ครั้งละ {batch} ห่อ ค่าวัตถุดิบ {price} เบี้ยกรรม (คลังเต็ม {cap} ห่อแล้วหยุดรอ) · แล้วปั้นข้าวขึ้นชั้นพร้อมเสิร์ฟทุก 3 วินาที · คนเสิร์ฟเดินไปส่งถึงตัว ยิ่งมีหลายคนยิ่งส่งทัน · ซื้อจากพ่อค้าได้ถ้าอยากเร่ง',
   'canteen.help.foreman': '{name}คุมพ่อครัวกับคนเสิร์ฟที่นี่ สั่งงานผ่าน{name}ได้เลย',
   'canteen.ready': 'พร้อมเสิร์ฟ',
   'canteen.pantry': 'เสบียงกลาง {n} ห่อ',
@@ -1649,7 +1649,7 @@ Object.assign(TH, {
   'foreman.hungry.note': 'หยุดงานรอข้าวปั้น',
 });
 Object.assign(EN, {
-  'canteen.help': 'Cooks roll rice balls on their own every 3 seconds, using 1 ration pack per batch. When rations run low, 10 more are bought automatically ({price} coins). Servers walk the rice balls to each person, so more servers means faster delivery. Rice balls can be bought from the merchant only.',
+  'canteen.help': 'Cooks make rice balls for the shared pantry on their own, {batch} every {sec} seconds, ingredients {price} coins (they pause when the pantry holds {cap}). Then they roll balls onto the serving shelf every 3 seconds. Servers walk the rice balls to each person, so more servers means faster delivery. You can still buy from the merchant to hurry things up.',
   'canteen.help.foreman': '{name} runs the cooks and servers here. Give your orders through {name}.',
   'canteen.ready': 'Ready to serve',
   'canteen.pantry': 'Shared rations · {n} packs',

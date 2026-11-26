@@ -11,7 +11,7 @@ import { nearestWalk, findPath, stepTo } from './walk.js?v=k1d';
 import { MERCHANT, BAL } from './data.js';
 import { t } from './i18n.js';
 import { actorStanding } from './actor-recovery.js';
-import { canteenBuilt, canteenPoint, mealRecipients, mealRecipient, needsMeal, feedActor, deliverMeal, foodAvailable } from './canteen.js';
+import { canteenBuilt, canteenPoint, kitchenSpot, mealRecipients, mealRecipient, needsMeal, feedActor, deliverMeal, foodAvailable } from './canteen.js';
 import { zoneWorkers, workerStandbyPoint, workerHeading } from './workers.js';
 
 export const FOREMAN = Object.freeze({
@@ -92,8 +92,9 @@ function walk(c, goal, dt) {
   return false;
 }
 
-/** where he stands beside the kitchen (the first free walkable spot of FOREMAN.deskOffset) */
+/** where he stands: INSIDE the stall, at its first standing place (owner MN5 - he used to stand outside, beside it; FOREMAN.deskOffset is the fallback) */
 export function deskPoint(g) {
+  const inside = kitchenSpot(g, 0); if (inside) return inside;
   const [cx, cy] = canteenPoint(g) || [0, 0];
   for (const [dx, dy] of FOREMAN.deskOffset) { const p = nearestWalk(cx + dx, cy + dy); if (p) return p; }
   return [cx, cy];
