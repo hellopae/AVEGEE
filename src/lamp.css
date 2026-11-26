@@ -54,7 +54,7 @@
 .action-cutscene .cutscene-line{position:absolute;z-index:4;left:clamp(14px,5vw,72px);right:12px;top:clamp(14px,6%,48px);padding:6px 12px;border-radius:10px;background:#0b060acc;color:#fff1d2;font:600 clamp(13px,1.6vw,18px)/1.4 var(--font-sans)}
 
 /* ---- FB3-EV5 (26 Nov): a called helper STANDS IN THE TEAM. Layout / motion only: colours are tokens, pictures are never recoloured (the glow is drawn AROUND the picture) ---- */
-/* the three flames in the summon window (no "x/3" words) */
+/* the flame(s) in the summon window - one per call a helper has (no "x/3" words) */
 .summon-flames{display:inline-flex;gap:6px;align-items:center;margin-top:3px;font-style:normal}
 .summon-flames i{display:inline-block;width:10px;height:15px;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:var(--border);opacity:.5}
 .summon-flames i.lit{background:var(--gold);opacity:1;box-shadow:0 0 6px var(--gold)}

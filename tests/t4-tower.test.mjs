@@ -14,7 +14,7 @@ test('g.rechargeMagic: refills only what is spent, free, saves; "all" does the t
   assert.deepEqual(g.rechargeMagic('clock'), [], 'no clock yet - nothing happens (text: "ยังไม่ได้รับนาฬิกาวิเศษ")');
   const coin = g.coin;
   assert.deepEqual(g.rechargeMagic('all'), ['mirror', 'lamp']); assert.equal(g.coin, coin, 'free');
-  assert.equal(p.ammo, p.max); assert.equal(L.summonUsesLeft(g, 'hanuman'), 3);
+  assert.equal(p.ammo, p.max); assert.equal(L.summonUsesLeft(g, 'hanuman'), 1);
   assert.deepEqual(g.rechargeMagic('all'), [], 'already full');
 });
 
@@ -37,7 +37,7 @@ test('the dev upgrade is one flag: with it off nothing upgrades', async () => {
 
 test('z1-kan-lamp: Kan\'s lecture is Rae\'s 2.5 text, one page, and plays once', () => {
   const s = storyOf('z1-kan-lamp'); assert.equal(s.pages.length, 1);
-  assert.match(s.pages[0].line, /ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด/); assert.match(s.pages[0].line, /เรียกเขามาสามครั้งมันก็ริบ/); assert.match(s.pages[0].line, /นาฬิกาก็เติมได้ถ้าท่านมี/);
+  assert.match(s.pages[0].line, /ผมไม่ค่อยพูดครับ แต่เรื่องนี้ต้องพูด/); assert.match(s.pages[0].line, /เรียกเขามาครั้งเดียวมันก็ริบ/); assert.match(s.pages[0].line, /นาฬิกาก็เติมได้ถ้าท่านมี/);
   const g = createGame(); g.queueStory('z1-kan-lamp'); g.completeStory(); g.queueStory('z1-kan-lamp');
   assert.deepEqual(g.storyQueue, [], 'seen once, never queued again');
 });

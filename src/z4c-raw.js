@@ -370,12 +370,12 @@ export const RAW_Z4C_NOTICES = {
  "NU-1": {
   "th": {
    "title": "จอมโจรฝากหน้ากากไว้ในตะเกียง",
-   "text": "แพตช์ฝากหน้ากากไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม",
+   "text": "แพตช์ฝากหน้ากากไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 1 ครั้ง อยู่ในทีม 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม",
    "button": "ดูตะเกียง"
   },
   "en": {
    "title": "The Thief Leaves a Mask in the Lamp",
-   "text": "Patch leaves a mask in the Magic Lamp. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.",
+   "text": "Patch leaves a mask in the Magic Lamp. You can call him in battle once, and he stays in your team for 3 turns. When the flame is spent, recharge at the Mirror Tower.",
    "button": "See the Lamp"
   }
  },

@@ -28,7 +28,7 @@ test('Summon: the call costs a use and the player\'s turn, hits nobody; the help
   assert.equal(g.confirmBattleCommand('summon:hanuman', 'you'), true);
   assert.deepEqual(B.foes.map(f => f.hp), before, 'no damage from the call'); assert.equal(B.summon.key, 'hanuman'); assert.equal(B.summon.phase, 'call');
   assert.match(B.summon.use.th, /ข้าไม่ชักอาวุธ แต่ข้าไม่ออมมือ/); assert.match(B.summon.call.th, /พระนางฝากข้ามา/);
-  assert.equal(L.summonUsesLeft(g, 'hanuman'), 2, 'one of the 3 lamp uses'); assert.equal(B.commandBusy, true);
+  assert.equal(L.summonUsesLeft(g, 'hanuman'), 0, 'FB3-T8: the one call he has'); assert.equal(B.commandBusy, true);
   assert.equal(B.summoned.key, 'hanuman'); assert.equal(B.summoned.left, 3);
   g.finishBattleCommand();
   assert.ok(g.battleActors().some(a => a.id === 'summon:hanuman' && a.k === 'summon'), 'one more member of the team');
@@ -37,20 +37,20 @@ test('Summon: the call costs a use and the player\'s turn, hits nobody; the help
   assert.equal(B.summon.phase, 'move'); assert.equal(B.summon.left, 2, 'acts left of 3');
 });
 
-test('3 acts, then the helper goes; 3 visits, then the 4th call is refused and the lamp reads spent; the fight is never stuck (attack still works)', () => {
+test('3 acts, then the helper goes; ONE call (FB3-T8), then the 2nd call is refused and the lamp reads spent; the fight is never stuck (attack still works)', () => {
   const g = fight();
-  for (let i = 0; i < 3; i++) { assert.equal(visit(g), true, `visit ${i + 1}`); if (g.battle?.over) break; assert.equal(g.summonedActor(), null, 'gone after the third act'); }
+  assert.equal(visit(g), true, 'the visit'); if (!g.battle?.over) assert.equal(g.summonedActor(), null, 'gone after the third act');
   assert.equal(L.summonUsesLeft(g, 'hanuman'), 0);
-  assert.equal(g.confirmBattleCommand('summon:hanuman', 'you'), false, 'no 4th');
+  assert.equal(g.confirmBattleCommand('summon:hanuman', 'you'), false, 'no 2nd call');
   assert.equal(L.summonWhy(g, 'hanuman'), 'spent');
   g.battle.foes.forEach(f => { if (f.hp <= 0) f.hp = 50; }); g.battle.selectedFoeId = g.battle.foes.find(f => f.hp > 0).id; g.battle.actorId = 'you';
   assert.equal(g.confirmBattleCommand('atk', 'you'), true, 'the normal attack still works');
 });
 
-test('recharge at the tower gives the 3 uses back', () => {
-  const g = fight(); visit(g); visit(g); visit(g);
+test('recharge at the tower gives the call back', () => {
+  const g = fight(); visit(g);
   assert.equal(L.summonUsesLeft(g, 'hanuman'), 0);
-  g.rechargeMagic('lamp'); assert.equal(L.summonUsesLeft(g, 'hanuman'), 3);
+  g.rechargeMagic('lamp'); assert.equal(L.summonUsesLeft(g, 'hanuman'), L.SUMMON_USES); assert.equal(L.SUMMON_USES, 1);
   assert.equal(summon(g), true);
 });
 
@@ -80,10 +80,10 @@ test('a helper that downs the last foe wins the fight; the lamp window "flame is
 });
 
 test('NA-3: after a fight that used the last flame, "ไฟในตะเกียงริบหรี่" is queued once (and not while a flame is left)', () => {
-  const g = fight(); summon(g);
+  const g = fight();
   const B = g.battle; for (const f of B.foes) f.hp = 0; B.over = 'win'; g.finishBattleCommand?.(); g.endBattle();
-  assert.deepEqual(g.notices.filter(n => n === 'lamp-low'), [], 'two flames left');
-  const h = fight(); visit(h); visit(h); visit(h);
+  assert.deepEqual(g.notices.filter(n => n === 'lamp-low'), [], 'the flame is still there');
+  const h = fight(); visit(h);
   const C = h.battle; for (const f of C.foes) f.hp = 0; C.over = 'win'; h.endBattle();
   assert.deepEqual(h.notices.filter(n => n === 'lamp-low'), ['lamp-low']);
 });

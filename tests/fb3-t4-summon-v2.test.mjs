@@ -30,18 +30,18 @@ test('criterion 1: no "ท่าไม้ตาย เหลือ x/3" (or its 
     const text = f === '../index.html' ? src('index.html') : src('src/' + f);
     assert.doesNotMatch(text, /ท่าไม้ตาย\s*เหลือ/, f); assert.doesNotMatch(text, /Special move:\s*\{?n?\}?\s*\/?\s*3? ?left/i, f);
   }
-  assert.doesNotMatch(LAMP_TEXT['bag.movesLeft'].th, /ท่าไม้ตาย/); assert.doesNotMatch(LAMP_TEXT['bag.movesLeft'].en, /special/i);
-  assert.equal(lt('bag.movesLeft', { n:1 }), 'เรียกได้อีก 1/3 ครั้ง');
-  // the summon window itself prints no count at all - three flame dots (aria-label only) and a reason when it cannot be called
+  assert.equal(LAMP_TEXT['bag.movesLeft'], undefined, 'FB3-T8: one call per helper - the "n/3" line is gone');
+  assert.doesNotMatch(LAMP_TEXT['bag.ready'].th + LAMP_TEXT['bag.usedUp'].th, /ท่าไม้ตาย/); assert.doesNotMatch(LAMP_TEXT['bag.ready'].en + LAMP_TEXT['bag.usedUp'].en, /special/i);
+  // the summon window itself prints no count at all - one flame per call (aria-label only) and a reason when it cannot be called
   const ui = src('src/ui.js'); const win = ui.slice(ui.indexOf('const summonLayerHtml'), ui.indexOf('dlg.innerHTML =', ui.indexOf('const summonLayerHtml')));
-  assert.match(win, /summon-flames/); assert.doesNotMatch(win, /lt\('bag\.movesLeft', \{ n:left \}\)\)\}<\/em>/);
+  assert.match(win, /summon-flames/); assert.doesNotMatch(win, /bag\.movesLeft/); assert.match(win, /Array\.from\(\{ length:LAMP\.SUMMON_USES \}/);
 });
 
 test('the call: one lamp use + the caller\'s turn, nobody is hit, the helper is one more team member with 3 acts and its own turn right after', () => {
   const g = fight(); const B = g.battle; g.beginBattleTurns();
   const foes0 = B.foes.map(f => f.hp), crew = g.battleActors().length;
   assert.equal(g.confirmBattleCommand('summon:hanuman', 'you'), true);
-  assert.deepEqual(B.foes.map(f => f.hp), foes0); assert.equal(L.summonUsesLeft(g, 'hanuman'), 2);
+  assert.deepEqual(B.foes.map(f => f.hp), foes0); assert.equal(L.summonUsesLeft(g, 'hanuman'), 0, 'FB3-T8: its only call');
   const h = g.battleActors().at(-1); assert.equal(h.id, 'summon:hanuman'); assert.equal(h.k, 'summon'); assert.equal(h.summonKey, 'hanuman'); assert.equal(h.left, 3); assert.equal(g.battleActors().length, crew + 1);
   assert.deepEqual(B.turnQueue.remaining.slice(0, 2).map(t => t.id), ['you', 'summon:hanuman'], 'its first turn comes straight after the caller\'s');
   g.finishBattleCommand(); assert.equal(g.currentBattleTurn().id, 'summon:hanuman'); assert.equal(B.actorId, 'summon:hanuman');
@@ -102,22 +102,25 @@ test('every helper can be called, stands, acts three times with both commands an
     assert.equal(callHelper(g, k), true, k + ' call'); assert.equal(g.summonedActor()?.summonKey, k);
     const kinds = ['helper:move', 'helper:attack', 'helper:move'];
     kinds.forEach((w, i) => { B.selectedFoeId = B.foes[0].id; assert.equal(helperAct(g, w, k), true, `${k} act ${i + 1}`); });
-    assert.equal(g.summonedActor(), null, k + ' gone'); assert.equal(L.summonUsesLeft(g, k), 2, k + ' one use');
+    assert.equal(g.summonedActor(), null, k + ' gone'); assert.equal(L.summonUsesLeft(g, k), 0, k + ' its one call');
   }
 });
 
 test('old saves still load: lamp state without a helper loads and can call; the helper state is plain data (a final-event fight is saved by structuredClone)', () => {
   const g = fight(); callHelper(g, 'hanuman');
   const clone = structuredClone(g.battle); assert.equal(clone.summoned.key, 'hanuman'); assert.equal(clone.summoned.left, 3);
-  // an old save: lamp owned, a use already spent, no helper anywhere
-  const old = fight(); L.spendSummon(old, 'hanuman'); old.battle = null;
+  // an old save (magic v1): lamp owned, 1 of the old 3 uses already spent, no helper anywhere -> FB3-T8 cuts it to the new ceiling: one call, ready
+  const old = fight(); old.battle = null; old.magic.v = 1; old.magic.lamp.used = { hanuman:1 };
   const snap = JSON.parse(JSON.stringify(old.snapshot())); const loaded = createGame(); loaded.restore(snap);
-  assert.equal(L.lampOwned(loaded), true); assert.equal(L.summonUsesLeft(loaded, 'hanuman'), 2); assert.equal(loaded.summonedActor(), null);
+  assert.equal(L.lampOwned(loaded), true); assert.equal(L.summonUsesLeft(loaded, 'hanuman'), 1); assert.equal(loaded.magic.v, 2); assert.equal(loaded.summonedActor(), null);
   // ... and it can fight and call from there
   loaded.zoneCases.th = 3; loaded.refreshZoneEvents('th'); loaded.dismissEventAlert?.('prisonBreak'); loaded.stations.push(station('sawan'), station('krata'));
-  const b = loaded.startPrisonBreak(); if (b) { for (const f of b.foes) { f.atk = [0, 0]; f.hp = f.maxHp = 500; } assert.equal(callHelper(loaded, 'hanuman'), true); assert.equal(L.summonUsesLeft(loaded, 'hanuman'), 1); }
+  const b = loaded.startPrisonBreak(); if (b) { for (const f of b.foes) { f.atk = [0, 0]; f.hp = f.maxHp = 500; } assert.equal(callHelper(loaded, 'hanuman'), true); assert.equal(L.summonUsesLeft(loaded, 'hanuman'), 0); }
   // the lamp of a save from before the helpers' acts (no `used` / `slots` rows) is made whole
-  const bare = createGame(); bare.magic = { v:1, lamp:{ owned:true, level:1 }, unlocked:{ hanuman:true } }; L.ensureMagic(bare); assert.equal(L.summonUsesLeft(bare, 'hanuman'), 3);
+  const bare = createGame(); bare.magic = { v:1, lamp:{ owned:true, level:1 }, unlocked:{ hanuman:true } }; L.ensureMagic(bare); assert.equal(L.summonUsesLeft(bare, 'hanuman'), 1);
+  // FB3-T8: the save migration - 3 calls spent stays spent, 1-2 spent (2 or 1 left under the old rule) is ready again (cut to the one call), a v2 save is never touched
+  for (const [used, left] of [[0, 1], [1, 1], [2, 1], [3, 0], [5, 0]]) { const m = createGame(); m.magic = { v:1, lamp:{ owned:true, level:1, slots:['hanuman'], used:{ hanuman:used } }, unlocked:{ hanuman:true } }; assert.equal(L.summonUsesLeft(m, 'hanuman'), left, 'old used ' + used); assert.equal(m.magic.v, 2); }
+  { const m = createGame(); m.magic = { v:2, lamp:{ owned:true, level:1, slots:['hanuman'], used:{ hanuman:1 } }, unlocked:{ hanuman:true } }; assert.equal(L.summonUsesLeft(m, 'hanuman'), 0, 'a v2 save keeps its spent call'); }
 });
 
 test('the lamp cutscene: the zone\'s drawing first, then the older lamp picture, never a break (img/summon/cut-lamp-summon-{th,asia,west,cyberhell}.webp)', () => {
@@ -152,7 +155,7 @@ test('UI wiring: the helper is a squad member with its own menu, farewell and la
   const ui = src('src/ui.js');
   assert.match(ui, /const executeSummonCall = async action/); assert.match(ui, /LAMP\.lampCutSources\(zone\)/); assert.match(ui, /g\.summonedActor\(true\)/);
   assert.match(ui, /action:'helper:attack'/); assert.match(ui, /action:'helper:move'/); assert.match(ui, /data-summon-farewell/); assert.match(ui, /c\.k === 'summon' \? summonActsHtml\(c\)/);
-  for (const key of ['battle.present', 'battle.lampCut', 'helper.attack', 'helper.acts', 'helper.farewell', 'bag.movesLeft', 'battle.helperSpent']) { assert.ok(LAMP_TEXT[key]?.th && LAMP_TEXT[key]?.en, key); }
+  for (const key of ['battle.present', 'battle.lampCut', 'helper.attack', 'helper.acts', 'helper.farewell', 'bag.ready', 'bag.usedUp', 'battle.helperSpent']) { assert.ok(LAMP_TEXT[key]?.th && LAMP_TEXT[key]?.en, key); }
   assert.equal(lt('helper.acts', { n:2, max:3 }), 'ลงมือได้อีก 2/3 ตา'); assert.equal(lt('helper.acts', { n:2, max:3 }, 'en'), '2/3 turns left');
   const css = src('src/lamp.css'); for (const cls of ['summon-flames', 'summon-arrive', 'is-leaving', 'summon-wait', 'summon-farewell', 'lamp-cut']) assert.ok(css.includes(cls), cls);
   assert.match(src('src/battle-dash.js'), /'helper:attack'/);
@@ -169,7 +172,7 @@ test('EV4: beat Hanuman in his own fight -> the stories run -> the lamp is Yama\
   g.endBattle();
   const keys = []; for (let i = 0; i < 12 && g.storyQueue.length; i++) { keys.push(g.storyQueue[0].key); g.completeStory(); }
   assert.deepEqual(keys.slice(0, 3), ['sita-hanuman-win', 'sita-phantom', 'sita-lamp']);
-  assert.equal(L.lampOwned(g), true); assert.deepEqual(L.slottedSummoners(g), ['hanuman']); assert.equal(L.summonUsesLeft(g, 'hanuman'), 3); assert.ok(g.notices.includes('lamp-received'));
+  assert.equal(L.lampOwned(g), true); assert.deepEqual(L.slottedSummoners(g), ['hanuman']); assert.equal(L.summonUsesLeft(g, 'hanuman'), 1); assert.ok(g.notices.includes('lamp-received'));
   // the next fight: the summon row exists (lamp owned), Hanuman is in the window and can be called
   g.notices = []; g.battle = null; g.mobs.push({ id:777, x:g.player.x, y:g.player.y, hp:30, kind:0 });
   const next = g.startMobBattle(g.mobs.length - 1); assert.ok(next, 'a fight'); for (const f of next.foes) { f.atk = [0, 0]; f.hp = f.maxHp = 400; }

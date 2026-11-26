@@ -3,9 +3,9 @@
 //
 //   · three treasures: mirror = reveal the truth · lamp = summon · clock = reset cooldowns. A spent treasure is refilled at the Mirror Tower (the `krajok` station).
 //   · the lamp comes from Sita (sita-lamp, case 12). Slots: 1 at first, +1 per Mirror Tower minigame of Zone 2/3/4 (max 4).
-//   · a summoned helper comes out, uses its special move ONCE, goes back (D2: "ใช้ท่าไม้ตายได้ 3 ครั้ง") - 3 uses, then it must be recharged at the tower.
+//   · FB3-T8 (owner 27 Nov: "อัญเชิญได้ตัวละครั้งก็ได้ ... พอหมดก็ไปเติมที่หอส่องกรรม"): each helper can be called ONCE (it was 3 before), then it must be recharged at the tower. Called, it stands in the team for HELPER_ACTS turns.
 //   · FB3-EV5 (owner 26 Nov: "เมื่อกดเลือก จะมี cutscene ยามาใช้พลังตะเกียงวิเศษ เรียกหนุมานออกมา ... จะมายืนเป็นอีกตัวละครนึงในทีม ซึ่งจะยืนให้เลือกบังคับการโจมตีได้ 3 ครั้ง (อัญเชิญทุกตัวใช้ระบบนี้)"):
-//     calling a helper still costs one of its 3 lamp uses (the recharge rule is unchanged) and the caller's turn, but it no longer hits at once - the helper STANDS IN THE TEAM as one more
+//     calling a helper still costs its lamp use (FB3-T8: now the only one - the recharge rule is unchanged) and the caller's turn, but it no longer hits at once - the helper STANDS IN THE TEAM as one more
 //     character for HELPER_ACTS turns of its own, the player picks each act (its move, or a plain attack), then it goes. Its damage is the old one-hit number split over those acts.
 //   · a helper is unlocked by the event of that character (D4). Only Hanuman has an event yet; the data below already holds all 12 of the owner's list
 //     and a helper without `ready:true` is never shown.
@@ -17,8 +17,8 @@ export const LAMP_FIRST_SLOT_ON = 'receive';
  *  Set to false and the button, its DEV tag and the `devUpgrade` entry point are gone - nothing else depends on it. */
 export const LAMP_DEV_UPGRADE_BUTTON = true;
 export const LAMP_MAX_SLOTS = 4;
-/** Special moves a helper can use before it must be recharged (D2). */
-export const SUMMON_USES = 3;
+/** Calls a helper can answer before it must be recharged at the tower (FB3-T8: 1 - it was 3, owner 27 Nov: the later game is easier with many helpers in the lamp, so one call each). */
+export const SUMMON_USES = 1;
 /** FB3-EV5: turns a called helper stays in the team - the player chooses what it does on each of them. */
 export const HELPER_ACTS = 3;
 /** FB3-EV5: how long the farewell effect of a leaving helper plays (ms) - it has no turn during it. */
@@ -101,7 +101,7 @@ export const summonerMoveName = (k, lang = 'th') => pick(SUMMONERS[k]?.move?.nam
 /** Treasure keys, in the order of Rae's cards. */
 export const TREASURES = Object.freeze(['mirror', 'lamp', 'clock']);
 
-export const freshMagic = () => ({ v:1, lamp:{ owned:false, level:0, slots:[null, null, null, null], used:{}, towers:{}, lowSeen:false }, unlocked:{} });
+export const freshMagic = () => ({ v:2, lamp:{ owned:false, level:0, slots:[null, null, null, null], used:{}, towers:{}, lowSeen:false }, unlocked:{} });
 
 /** Old saves have no `magic`: make the object whole (never throws). Returns it. */
 export function ensureMagic(g) {
@@ -111,6 +111,8 @@ export function ensureMagic(g) {
   if (!Array.isArray(l.slots)) l.slots = [null, null, null, null];
   l.slots = Array.from({ length:LAMP_MAX_SLOTS }, (_, i) => (SUMMONERS[l.slots[i]] ? l.slots[i] : null));
   if (!l.used || typeof l.used !== 'object') l.used = {};
+  // FB3-T8: save version 1 counted up to 3 calls per helper. Version 2 has ONE: a helper that had its 3 calls spent stays spent, one with 1-2 calls left is cut to the new ceiling (= ready, 1 left)
+  if ((Number(m.v) || 1) < 2) { for (const k of Object.keys(l.used)) l.used[k] = (Number(l.used[k]) || 0) >= 3 ? SUMMON_USES : 0; m.v = 2; }
   if (!l.towers || typeof l.towers !== 'object') l.towers = {};
   l.lowSeen = !!l.lowSeen;
   if (!m.unlocked || typeof m.unlocked !== 'object') m.unlocked = {};

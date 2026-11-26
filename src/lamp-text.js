@@ -19,11 +19,13 @@ export const LAMP_TEXT = Object.freeze({
   // 2.2 bag tab
   'bag.tab':{ th:'ตะเกียงวิเศษ', en:'Magic Lamp' },
   'bag.heading':{ th:'ผู้ช่วยในตะเกียง', en:'Helpers in the Lamp' },
-  'bag.note':{ th:'เลือกผู้ช่วยที่จะเรียกมาในศึก เรียกได้ตนละ 3 ครั้ง ทุกครั้งผู้ช่วยจะยืนในทีมและลงมือได้ 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม', en:'Choose who answers your call in battle. Each helper can be called 3 times. Every time, they stand in your team and act for 3 turns. When the flames run out, recharge at the Mirror Tower.' },
+  'bag.note':{ th:'เลือกผู้ช่วยที่จะเรียกมาในศึก เรียกได้ตนละ 1 ครั้ง เมื่อเรียกแล้วผู้ช่วยจะยืนในทีมและลงมือได้ 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม', en:'Choose who answers your call in battle. Each helper can be called once. When called, they stand in your team and act for 3 turns. When the flame is spent, recharge at the Mirror Tower.' },
   'bag.empty':{ th:'ว่าง · แตะเพื่อเลือกผู้ช่วย', en:'Empty · tap to choose a helper' },
   'bag.locked':{ th:'ล็อก · เล่นมินิเกมที่หอส่องกรรมโซน {n}', en:'Locked · play the minigame at the Mirror Tower of Zone {n}' },
   'bag.unmet':{ th:'??? · ยังไม่ได้พบ', en:'??? · not yet met' },
-  'bag.movesLeft':{ th:'เรียกได้อีก {n}/3 ครั้ง', en:'Calls left: {n}/3' },   // FB3-EV5: the owner cut the old "special move left" wording; the summon window no longer prints a count at all - only the flame dots
+  // FB3-T8: a helper has ONE call now, so the old "n/3" line is gone - ready / used (Toby's placeholder wording for Rae)
+  'bag.ready':{ th:'พร้อมเรียก', en:'Ready' },
+  'bag.usedUp':{ th:'ใช้แล้ว', en:'Used' },
   'bag.place':{ th:'ใส่ในตะเกียง', en:'Place in Lamp' },
   'bag.swap':{ th:'เปลี่ยนผู้ช่วย', en:'Swap helper' },
   'bag.remove':{ th:'เอาออก', en:'Remove' },
@@ -38,7 +40,7 @@ export const LAMP_TEXT = Object.freeze({
   'battle.call':{ th:'เรียกมา', en:'Call' },
   'battle.cancel':{ th:'ไม่เรียก', en:'Not now' },
   'battle.lampEmpty':{ th:'ตะเกียงยังว่าง · ใส่ผู้ช่วยที่เมนูกระเป๋า', en:'The Lamp is empty · place a helper from the bag menu' },
-  'battle.helperSpent':{ th:'{name}: เรียกครบ 3 ครั้งแล้ว · เติมพลังที่หอส่องกรรม', en:'{name} has been called 3 times · recharge at the Mirror Tower' },
+  'battle.helperSpent':{ th:'{name}: เรียกไปแล้ว · เติมพลังที่หอส่องกรรม', en:'{name} has already been called · recharge at the Mirror Tower' },
   // FB3-EV5 / FB3-R2: the helper that stands in the team (Rae's wording)
   'battle.present':{ th:'{name} ยังอยู่ในทีม · รอให้ลงมือครบ 3 ตาก่อน จึงเรียกตัวต่อไปได้', en:'{name} is still in your team. Wait until they have acted 3 times before calling the next helper.' },
   'battle.lampCut':{ th:'ยามาจุดตะเกียงวิเศษ · {name}ก้าวออกมาจากแสงไฟ', en:'Yama lights the Magic Lamp. {name} steps out of the flame.' },
@@ -70,17 +72,17 @@ export const LAMP_TEXT = Object.freeze({
   'tower.devTag':{ th:'DEV · ปุ่มชั่วคราว จะถอดเมื่อมีมินิเกม', en:'DEV · temporary button, removed once the minigame exists' },
   // 2.6 notices
   'notice.received.title':{ th:'ได้รับ ตะเกียงวิเศษ', en:'Magic Lamp Received' },
-  'notice.received.text':{ th:'นางสีดามอบตะเกียงวิเศษให้ยามา จุดตะเกียงแล้วเรียกผู้ที่ยอมรับท่านมาสู้ข้างทีมได้ เรียกได้ตนละ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม ซึ่งสร้างได้แล้วตั้งแต่ตอนนี้', en:'Lady Sita has given Yama the Magic Lamp. Light it to call those who accepted you to fight at your side. Each can be called 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower, which you can build from now on.' },
+  'notice.received.text':{ th:'นางสีดามอบตะเกียงวิเศษให้ยามา จุดตะเกียงแล้วเรียกผู้ที่ยอมรับท่านมาสู้ข้างทีมได้ เรียกได้ตนละ 1 ครั้ง อยู่ในทีม 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม ซึ่งสร้างได้แล้วตั้งแต่ตอนนี้', en:'Lady Sita has given Yama the Magic Lamp. Light it to call those who accepted you to fight at your side. Each can be called once, and stays in your team for 3 turns. When the flame is spent, recharge at the Mirror Tower, which you can build from now on.' },
   'notice.received.slot':{ th:' · ตอนนี้ใส่ผู้ช่วยได้ 1 ตน มี หนุมาน อยู่ในตะเกียง', en:' The Lamp holds 1 helper for now, and Hanuman is already inside it.' },
   'notice.received.button':{ th:'ดูตะเกียง', en:'See the Lamp' },
   'notice.helper.title':{ th:'ผู้ช่วยตนใหม่ในตะเกียง', en:'A New Helper in the Lamp' },
   'notice.helper.text':{ th:'{name} ยอมรับท่านแล้ว และฝากไฟไว้ในตะเกียงวิเศษ เลือกใส่ในช่องได้ที่เมนูกระเป๋า', en:'{name} has accepted you and left a flame in the Magic Lamp. Place them in a slot from the bag menu.' },
   'notice.low.title':{ th:'ไฟในตะเกียงริบหรี่', en:"The Lamp's Flame Is Low" },
-  'notice.low.text':{ th:'ผู้ช่วยในตะเกียงถูกเรียกครบ 3 ครั้งแล้ว ไปเติมไฟตะเกียงที่หอส่องกรรม', en:'Your helpers have been called all 3 times. Go to the Mirror Tower to recharge the Lamp.' },
+  'notice.low.text':{ th:'ผู้ช่วยในตะเกียงถูกเรียกไปแล้วทุกตน ไปเติมไฟตะเกียงที่หอส่องกรรม', en:'Your helpers have all been called. Go to the Mirror Tower to recharge the Lamp.' },
   'notice.low.button':{ th:'รับทราบ', en:'Understood' },
   // FB3-T5 / FB3-R2 (Rae): the Mirror Tower opens with the lamp - this window is only queued for an OLD save that already holds the lamp (a new lamp gets the one merged window above, `notice.received.text`).
   'notice.tower.title':{ th:'หอส่องกรรมเปิดแล้ว', en:'The Mirror Tower Is Open' },
-  'notice.tower.text':{ th:'ได้ตะเกียงวิเศษแล้ว ตอนนี้สร้างหอส่องกรรมได้ ไว้เติมไฟตะเกียงเมื่อผู้ช่วยถูกเรียกครบ 3 ครั้ง', en:'With the Magic Lamp in hand, you can build the Mirror Tower now. Use it to recharge the Lamp once a helper has been called 3 times.' },
+  'notice.tower.text':{ th:'ได้ตะเกียงวิเศษแล้ว ตอนนี้สร้างหอส่องกรรมได้ ไว้เติมไฟตะเกียงเมื่อผู้ช่วยถูกเรียกไปแล้ว', en:'With the Magic Lamp in hand, you can build the Mirror Tower now. Use it to recharge the Lamp once your helpers have been called.' },
   'notice.tower.button':{ th:'รับทราบ', en:'Understood' },
   // 2.5 Kan lecture hook
   'kan.name':{ th:'กานต์', en:'Kan' },

@@ -31,22 +31,23 @@ test('receiving the lamp: Hanuman unlocked, 1 slot, Hanuman in it (LAMP_FIRST_SL
   assert.equal(L.receiveLamp(g), true); assert.equal(L.receiveLamp(g), false);
   assert.equal(L.lampOwned(g), true); assert.equal(L.lampSlotCount(g), 1);
   assert.deepEqual(L.unlockedSummoners(g), ['hanuman']); assert.deepEqual(L.slottedSummoners(g), ['hanuman']);
-  assert.equal(L.summonUsesLeft(g, 'hanuman'), 3);
+  assert.equal(L.summonUsesLeft(g, 'hanuman'), 1);   // FB3-T8: one call per helper
   assert.equal(L.summonWhy(g, 'hanuman', { kind:'mob' }), '');
   assert.equal(L.summonWhy(g, 'hanuman', { kind:'dad' }), 'cannot'); assert.equal(L.summonWhy(g, 'hanuman', { kind:'mob', over:'win' }), 'cannot');
   assert.equal(L.summonWhy(g, 'thor', { kind:'mob' }), 'empty');
 });
 
-test('3 uses, then spent; recharge at the tower gives them back; the lamp reads spent only when every slotted helper is out', () => {
+test('ONE call per helper (FB3-T8), then spent; recharge at the tower gives it back; the lamp reads partial / spent by how many slotted helpers are out', () => {
+  assert.equal(L.SUMMON_USES, 1);
   const g = createGame(); L.receiveLamp(g);
   assert.equal(L.treasureState(g, 'lamp').state, 'charged');
-  assert.deepEqual(L.spendSummon(g, 'hanuman'), { used:1, left:2, out:false });
-  assert.equal(L.treasureState(g, 'lamp').state, 'partial');
-  L.spendSummon(g, 'hanuman'); assert.deepEqual(L.spendSummon(g, 'hanuman'), { used:3, left:0, out:true });
-  assert.deepEqual(L.spendSummon(g, 'hanuman'), { used:3, left:0, out:true }, 'never counts past 3');
+  { const two = createGame(); L.receiveLamp(two); L.devUpgradeLamp(two, 'asia'); L.unlockSummoner(two, 'kumanthong'); L.setSlot(two, 1, 'kumanthong');
+    L.spendSummon(two, 'hanuman'); assert.deepEqual(L.treasureState(two, 'lamp'), { state:'partial', n:1, max:2 }, 'one of two helpers is out'); }
+  assert.deepEqual(L.spendSummon(g, 'hanuman'), { used:1, left:0, out:true });
+  assert.deepEqual(L.spendSummon(g, 'hanuman'), { used:1, left:0, out:true }, 'never counts past the one call');
   assert.equal(L.summonWhy(g, 'hanuman', { kind:'mob' }), 'spent'); assert.equal(L.lampAllSpent(g), true); assert.equal(L.treasureState(g, 'lamp').state, 'spent');
   assert.deepEqual(L.rechargeTreasures(g, 'lamp'), ['lamp']);
-  assert.equal(L.summonUsesLeft(g, 'hanuman'), 3); assert.equal(L.summonWhy(g, 'hanuman', { kind:'mob' }), '');
+  assert.equal(L.summonUsesLeft(g, 'hanuman'), 1); assert.equal(L.summonWhy(g, 'hanuman', { kind:'mob' }), '');
   assert.deepEqual(L.rechargeTreasures(g, 'lamp'), [], 'already full');
 });
 
@@ -73,7 +74,7 @@ test('the dev upgrade is ONE flag; no lamp -> no upgrade', () => {
 test('save/load keeps the lamp, slots, uses, tower flags', () => {
   let g = createGame(); L.receiveLamp(g); L.devUpgradeLamp(g, 'asia'); L.spendSummon(g, 'hanuman');
   g = reload(g);
-  assert.equal(L.lampOwned(g), true); assert.equal(L.lampSlotCount(g), 2); assert.equal(L.summonUsesLeft(g, 'hanuman'), 2); assert.equal(g.magic.lamp.towers.asia, true);
+  assert.equal(L.lampOwned(g), true); assert.equal(L.lampSlotCount(g), 2); assert.equal(L.summonUsesLeft(g, 'hanuman'), 0); assert.equal(g.magic.lamp.towers.asia, true);
   assert.deepEqual(L.slottedSummoners(g), ['hanuman']);
 });
 
@@ -104,6 +105,6 @@ test('mirror treasure follows the existing mirror power (ammo) and the tower ref
 
 test('every text key has Thai and English and fills {vars}', () => {
   for (const [k, row] of Object.entries(LAMP_TEXT)) assert.ok(row.th && row.en, k);
-  assert.equal(lt('bag.movesLeft', { n:2 }, 'th'), 'เรียกได้อีก 2/3 ครั้ง'); assert.equal(lt('bag.movesLeft', { n:2 }, 'en'), 'Calls left: 2/3');   // FB3-EV5: the owner cut the old "special move left" wording
+  assert.equal(lt('bag.ready', null, 'th'), 'พร้อมเรียก'); assert.equal(lt('bag.usedUp', null, 'en'), 'Used');   // FB3-T8: one call per helper - ready / used replace the old "n/3" line
   assert.equal(lt('bag.locked', { n:3 }, 'en'), 'Locked · play the minigame at the Mirror Tower of Zone 3');
 });

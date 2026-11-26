@@ -72,7 +72,7 @@ test('the fight: boss moves from Rae (horse charge = group hit, sword = single h
   const copy = createGame(); copy.restore(JSON.parse(JSON.stringify(g.snapshot()))); assert.equal(copy.wanthongPath, 'punish'); assert.equal(copy.zoneEventStatus('khunPhaen'), 'cleared');
 });
 
-test('Kuman Thong (Golden Aegis): a team shield + small heal, the fallen helped up, no damage, 1 of 3 lamp uses; placed in a slot it can be called', () => {
+test('Kuman Thong (Golden Aegis): a team shield + small heal, the fallen helped up, no damage, its one lamp call; placed in a slot it can be called', () => {
   assert.match(L.SUMMONERS.kumanthong.say.call.th, /กุมารทอง: "ยามา/);
   assert.match(L.SUMMONERS.kumanthong.say.call.en, /Kuman Thong: "Yama/);
   const g = atCase13(); judge(g, 'krata'); drain(g); g.ensureMagic?.(); L.unlockSummoner(g, 'kumanthong'); L.ensureMagic(g).lamp.level = 2; g.placeHelper(1, 'kumanthong');
@@ -83,7 +83,7 @@ test('Kuman Thong (Golden Aegis): a team shield + small heal, the fallen helped 
   assert.equal(callHelper(g, 'kumanthong'), true); assert.equal(b.youHp, 40, 'FB3-EV5: the call itself helps nobody');
   assert.equal(helperAct(g, 'helper:move', 'kumanthong', false), true);
   assert.equal(b.foes[0].hp, hpFoe, 'no damage'); assert.ok(b.youHp > 40, 'small heal'); assert.ok(b.protection.you.shield > 0, 'a shield on Yama');
-  assert.equal(b.summon.key, 'kumanthong'); assert.equal(b.summon.move, 'แสงทองคุ้มกาย'); assert.equal(b.summon.left, 2, 'acts left of 3'); assert.equal(L.summonUsesLeft(g, 'kumanthong'), 2);
+  assert.equal(b.summon.key, 'kumanthong'); assert.equal(b.summon.move, 'แสงทองคุ้มกาย'); assert.equal(b.summon.left, 2, 'acts left of 3'); assert.equal(L.summonUsesLeft(g, 'kumanthong'), 0);
   assert.equal(L.summonGuard(g, 'kumanthong').raise, 25);
 });
 

@@ -113,8 +113,8 @@ export const CERBERUS_STORIES = Object.freeze({
 });
 
 /** NM-1 replaces the generic helper window for Musashi */
-export const MUSASHI_FLAME_NOTICE = Object.freeze({ title:'มูซาชิฝากไฟไว้ในตะเกียง', text:'มูซาชิออกจากทีมเพราะรับปากเหลียนกังว่าจะพาท่านถึงประตูปัจฉิมเท่านั้น เขาฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:ART.icon,
-  en:{ title:'Musashi Leaves a Flame in the Lamp', text:'Musashi leaves the team because he promised Lian Gang only to take you to the western gate. He leaves a flame in the Magic Lamp. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } });
+export const MUSASHI_FLAME_NOTICE = Object.freeze({ title:'มูซาชิฝากไฟไว้ในตะเกียง', text:'มูซาชิออกจากทีมเพราะรับปากเหลียนกังว่าจะพาท่านถึงประตูปัจฉิมเท่านั้น เขาฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 1 ครั้ง อยู่ในทีม 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true, art:ART.icon,
+  en:{ title:'Musashi Leaves a Flame in the Lamp', text:'Musashi leaves the team because he promised Lian Gang only to take you to the western gate. He leaves a flame in the Magic Lamp. You can call him in battle, once, and he stays in your team for 3 turns. When the flame is spent, recharge at the Mirror Tower.', button:'See the Lamp' } });
 /** 7.4 helper no. 7 */
 export const MUSASHI_HELPER = Object.freeze({
   name:{ th:'มูซาชิ', en:'Musashi' },

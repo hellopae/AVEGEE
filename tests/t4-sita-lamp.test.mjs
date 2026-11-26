@@ -22,17 +22,17 @@ test('sita-lamp: 3 pages, Rae\'s lines, a picture slot that has a file', () => {
 test('NA-1 text: the lamp window names Hanuman in the first slot (the default LAMP_FIRST_SLOT_ON = receive) and opens the lamp tab', () => {
   const n = NOTICES['lamp-received'];
   assert.equal(n.title, 'ได้รับ ตะเกียงวิเศษ');
-  assert.match(n.text, /นางสีดามอบตะเกียงวิเศษให้ยามา/); assert.match(n.text, /เรียกได้ตนละ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม ซึ่งสร้างได้แล้วตั้งแต่ตอนนี้/); assert.match(n.text, /ใส่ผู้ช่วยได้ 1 ตน มี หนุมาน อยู่ในตะเกียง/);
+  assert.match(n.text, /นางสีดามอบตะเกียงวิเศษให้ยามา/); assert.match(n.text, /เรียกได้ตนละ 1 ครั้ง อยู่ในทีม 3 ตา หมดแล้วไปเติมไฟที่หอส่องกรรม ซึ่งสร้างได้แล้วตั้งแต่ตอนนี้/); assert.match(n.text, /ใส่ผู้ช่วยได้ 1 ตน มี หนุมาน อยู่ในตะเกียง/);
   assert.equal(n.button, 'ดูตะเกียง'); assert.equal(n.openLamp, true);
   assert.equal(n.en.title, 'Magic Lamp Received'); assert.match(n.en.text, /Hanuman is already inside it/);
   assert.ok(existsSync(new URL('../' + n.art, import.meta.url)), n.art);
 });
 
-test('completing sita-lamp gives the lamp once: Hanuman unlocked + in slot 1, 3 uses, window queued, survives save/load', () => {
+test('completing sita-lamp gives the lamp once: Hanuman unlocked + in slot 1, 1 call (FB3-T8), window queued, survives save/load', () => {
   let g = createGame(); g.queueStory('sita-lamp');
   assert.equal(lampOwned(g), false);
   g.completeStory();
-  assert.equal(lampOwned(g), true); assert.deepEqual(unlockedSummoners(g), ['hanuman']); assert.deepEqual(slottedSummoners(g), ['hanuman']); assert.equal(summonUsesLeft(g, 'hanuman'), 3);
+  assert.equal(lampOwned(g), true); assert.deepEqual(unlockedSummoners(g), ['hanuman']); assert.deepEqual(slottedSummoners(g), ['hanuman']); assert.equal(summonUsesLeft(g, 'hanuman'), 1);
   assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);   // FB3-T5: the tower window follows the lamp window
   g = (() => { const n = createGame(); n.restore(JSON.parse(JSON.stringify(g.snapshot()))); return n; })();
   assert.equal(lampOwned(g), true); assert.deepEqual(g.notices, ['lamp-received', 'lamp-tower-open']);

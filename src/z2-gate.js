@@ -31,8 +31,8 @@ export const GATE_NOTICES = Object.freeze({
   // NG-4 (comes on the first day in Zone 2, when he stands at the gate as the Guard)
   [GATE.guardNotice]:{ ...GATE_TEXT.guard, art:ART.portrait },
   // NY-4 (after the gift scene; NY-3 "A gift from your brother" is the grant receipt of src/boss-guides.js - Thai text there, the receipt window has no English yet)
-  [GATE.flameNotice]:{ title:'ยมทัตฝากไฟไว้ในตะเกียง', text:'ยมทัตออกจากทีมเพราะสาขาบูรพาไม่ใช่เขตของเขา เขาฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 3 ครั้ง ครั้งละ 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true,
-    en:{ title:'Yomathat Leaves a Flame in the Lamp', text:'Yomathat leaves the team because the eastern branch is not his jurisdiction. He leaves a flame in the Magic Lamp. You can call him in battle, 3 times, for 3 turns each time. When the flames run out, recharge at the Mirror Tower.', button:'See the Lamp' } },
+  [GATE.flameNotice]:{ title:'ยมทัตฝากไฟไว้ในตะเกียง', text:'ยมทัตออกจากทีมเพราะสาขาบูรพาไม่ใช่เขตของเขา เขาฝากไฟไว้ในตะเกียงวิเศษ ท่านเรียกเขาในศึกได้ เรียกได้ 1 ครั้ง อยู่ในทีม 3 ตา หมดแล้วเติมไฟที่หอส่องกรรม', button:'ดูตะเกียง', openLamp:true,
+    en:{ title:'Yomathat Leaves a Flame in the Lamp', text:'Yomathat leaves the team because the eastern branch is not his jurisdiction. He leaves a flame in the Magic Lamp. You can call him in battle, once, and he stays in your team for 3 turns. When the flame is spent, recharge at the Mirror Tower.', button:'See the Lamp' } },
 });
 
 export const GATE_STORIES = Object.freeze({
