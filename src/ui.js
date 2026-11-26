@@ -6703,11 +6703,9 @@ function openStation(k, emergency = false, atPractice = false) {
 
     if(k==='canteen'){
       // FOREMAN: while Dam stands at the kitchen the orders (hire cook / server, who gets the rice) are given to him in ONE window - this one shows the same numbers read-only
-      const desk=foremanDesk(g),inRoom=inside;
-      {const inside=inRoom&&!desk;   // at the desk the controls are read-only here: orders go through Dam
-      put(L,`<h2>🍙 โรงอาหาร</h2>${desk?`<p class="foreman-note">${esc(t('foreman.canteen.hint',{name:desk.crew.name}))}</p><div class="row"><button class="gold" data-open-foreman>${esc(t('foreman.canteen.go',{name:desk.crew.name}))}</button></div>`:''}${canteenPanelHtml(g,inside)}`);}
+      // FB3-MN5 (owner m4): no "go and talk to Dam" button any more - Dam and the workers stand INSIDE the canteen, and the player is inside too, so the orders are given right here
+      put(L,`<h2>🍙 โรงอาหาร</h2>${canteenPanelHtml(g,inside)}`);
       bindWorkersPanel(L,g,()=>{panels();refresh();});
-      L.querySelector('[data-open-foreman]')?.addEventListener('click',()=>{dlg.close();setTimeout(openForeman,0);});
       put(A,'');if(Rg)Rg.hidden=true;return;
     }
 

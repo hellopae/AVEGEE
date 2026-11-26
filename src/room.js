@@ -1,5 +1,6 @@
 import {punishmentLevel,punishmentRemaining} from './punishment.js';
-import {canteenCookPose} from './canteen.js';
+import {canteenCookPose,cookProgress,canteenPoint,canteenActive} from './canteen.js';
+import {foremanPhase,foremanCrew} from './foreman.js';
 import {residentPresent,keeperPresent} from './crew-presence.js';
 import {characterScale} from './character-scale.js';
 import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
@@ -78,6 +79,8 @@ function lyingWidth(down, stand) {
 const REACH  = 0.17;      // ระยะเอื้อมถึงจุดลงมือ — ยืนใกล้ ๆ ก็พอ ไม่ต้องเดินจ่อ
 
 /** ตรวจตลอดทางในหนึ่งเฟรม ไม่ให้ก้าวข้ามช่องที่ห้ามเดินซึ่งแคบกว่าระยะก้าว */
+/** FB3-MN5: where Dam (first) and the idle workers stand in the canteen room (normalised room coordinates: the empty floor left of the door - owner m4 arrow) */
+const ROOM_CANTEEN_SPOTS=[[.36,.56],[.44,.66],[.30,.68],[.38,.78],[.52,.72],[.26,.80]];
 export function walkSegmentInside(x1, y1, x2, y2, inArea) {
   const steps = Math.max(1, Math.ceil(Math.hypot(x2 - x1, y2 - y1) / 0.002));
   for (let i = 1; i <= steps; i++) {
@@ -291,7 +294,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
   const onKey = e => {
     if (/input|textarea/i.test(e.target.tagName)) return;
-    if (locked || lying) return;         // มินิเกมกำลังเปิดอยู่ — ปล่อยให้มินิเกมจัดการคีย์เอง
+    if (locked || lying || jump) return;         // มินิเกมกำลังเปิดอยู่ — ปล่อยให้มินิเกมจัดการคีย์เอง
     const k = e.key.toLowerCase();
     if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' '].includes(k)) {
       if (k === ' ') { e.preventDefault(); if (api.onAct) api.onAct(); return; }
@@ -305,7 +308,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
   const onDown = e => {
-    if (locked || sitting || lying) return;              // มินิเกมกำลังเปิดอยู่ — แตะฉากไม่ให้ตัวละครเดิน
+    if (locked || sitting || lying || jump) return;              // มินิเกมกำลังเปิดอยู่ — แตะฉากไม่ให้ตัวละครเดิน
     // box อยู่ในหน่วยพิกเซลของ canvas (backing store) — แปลงพิกัดเมาส์ให้เป็นหน่วยเดียวกัน
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
@@ -324,12 +327,26 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   /** เริ่ม/เลิกนั่งพัก — ui.js ผูกกับปุ่ม "นั่งพัก"/"ลุกขึ้น" ในแผงขวา (เฉพาะศาลาน้ำชา)
    *  ต้องยืนถึงจุด (inReach) ถึงจะเริ่มนั่งได้ · ลุกได้ทุกเมื่อไม่มีเงื่อนไข */
+  // FB3-MP5 (owner map6): pressing "sit" / "sleep" used to teleport Yama onto the cushion / the bed. Now he HOPS there - a short arc (JUMP_MS) from where he stands, with his own shadow left on the floor -
+  // and only when he lands the sitting / lying state begins. The state of the room stays what it was while he is in the air (a second press is ignored).
+  const JUMP_MS = 560;
+  let jump = null;   // { from:[x,y], to:[x,y], start, then:'sit'|'sleep' }
+  function startJump(to, then) {
+    jump = { from:[P.x, P.y], to:[...to], start:performance.now(), then };
+    P.tx = null; P.ty = null;
+    if (Math.abs(to[0] - P.x) > .004) P.face = to[0] < P.x ? -1 : 1;
+  }
+  function land() {
+    const j = jump; jump = null; if (!j) return;
+    P.x = j.to[0]; P.y = j.to[1]; P.tx = null; P.ty = null;
+    if (j.then === 'sit') { if (g.mp < g.mpMax && !lying) { sitting = true; sipAt = performance.now() + 1800; sipping = false; } }
+    else beginSleep(false);
+  }
   function setSit(on) {
     if (on) {
+      if (jump) return true;
       if (lying || !canSit || !inReach() || g.mp >= g.mpMax) return false;
-      sitting = true; sipAt = performance.now() + 1800; sipping = false;
-      P.x = room.act[0]; P.y = room.act[1];
-      P.tx = null; P.ty = null;
+      startJump(room.act, 'sit');
     } else {
       sitting = false;
       // H2: จุดนั่งอยู่บนเบาะ (สูงกว่าขอบพื้นที่เดินได้) — ลุกขึ้นแล้วต้องย้ายกลับเข้าพื้นที่เดินได้ ไม่งั้นตัวละครขยับไม่ได้
@@ -344,18 +361,23 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   function setSleep(emergency = false) {
     // P1: ไม่มีเตียงให้ซื้อแล้ว — ห้องนี้ (canSit) มีก็ต่อเมื่อศาลาน้ำชาสร้างเสร็จ จึงนอนได้เลยเมื่อยืนใกล้ที่นอนและบารมียังไม่เต็ม
+    if (jump) return true;
     if (!canSit || lying || sitting || (!emergency &&
         (Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
+    if (!emergency) { startJump(room.bed, 'sleep'); return true; }   // FB3-MP5: he hops onto the bed; the defeat wake-up (emergency) still starts lying down at once
+    beginSleep(emergency); return true;
+  }
+  function beginSleep(emergency) {
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? RECOVERY_LIE_MS : 0;    // a save made while Nira was coming replays her arrival
     wakeTeam = null;
     sleepStartHp = g.hp; sleepHoldMs = 0;
     img('hero-yama-unconscious');       // FB2-13: start loading the lying pose now (it is lazy - on a slow link the bed stayed empty for the whole 5 s sleep)
     P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
-    return true;
   }
 
   function step(dt) {
+    if (jump) { if (performance.now() - jump.start >= JUMP_MS) land(); return; }
     if (lying) {
       // FB2-13: the sleep clock waits (max 8 s) until the lying picture has loaded, so the player always sees Yama on the bed
       if (imgState('hero-yama-unconscious') === 'loading' && sleepHoldMs < 8000) { sleepHoldMs += dt; return; }
@@ -595,7 +617,16 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'canteen') {
       for(const c of zoneWorkers(g)){
         const pose=canteenCookPose(g,c);if(!pose)continue;
-        const [x,y]=pose.point;acts.push({y,fn:()=>drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false,face:pose.face},t,U*CREW_H*characterScale('worker'))});
+        const [x,y]=pose.point,cp=cookProgress(g,c);
+        acts.push({y,fn:()=>{const h=U*CREW_H*characterScale('worker');drawWorker(ctx,{...c,x:px(x),y:py(y),moving:false,sitting:false,face:pose.face},t,h);
+          if(cp!=null){const w=U*.075,bh=U*.011,bx=px(x)-w/2,by=py(y)-h-U*.02;ctx.save();ctx.fillStyle='rgba(0,0,0,.72)';rr(ctx,bx,by,w,bh,bh/2);ctx.fill();ctx.fillStyle='#e8b45a';rr(ctx,bx,by,w*Math.max(.05,cp),bh,bh/2);ctx.fill();ctx.restore();}}});   // FB3-MP10: the progress bar over the cook's head
+      }
+      // FB3-MN5 (owner m4): Dam and the other workers stand INSIDE the canteen (the room), on the free floor to the left of the door - the same ones who stand in the stall on the map
+      if(canteenActive(g)){
+        const at=canteenPoint(g),near=w=>Math.hypot(w.x-at[0],w.y-at[1])<110&&!w.teaRest&&!w.eatOrder&&!w.cargo&&!canteenCookPose(g,w);
+        const spots=ROOM_CANTEEN_SPOTS.slice();
+        if(foremanPhase(g)==='canteen'){const d=foremanCrew(g),a=spots.shift();acts.push({y:a[1],fn:()=>drawStandee(ctx,'crew-dam',px(a[0]),py(a[1]),U*CREW_H*characterScale('dam'),t,'',1)});}
+        for(const w of zoneWorkers(g)){if(!near(w)||!spots.length)continue;const a=spots.shift();acts.push({y:a[1],fn:()=>drawWorker(ctx,{...w,x:px(a[0]),y:py(a[1]),moving:false,sitting:false,face:1},t,U*CREW_H*characterScale('worker'))});}
       }
     }
     if (def.k === 'tea' && lying && recoverySleep && sleepElapsed >= RECOVERY_LIE_MS) {
@@ -734,6 +765,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
       // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
+      if (jump) {   // FB3-MP5: the hop - the body rises on an arc, the shadow stays on the floor under the line he travels
+        const p = Math.min(1, (performance.now() - jump.start) / JUMP_MS), x = jump.from[0] + (jump.to[0] - jump.from[0]) * p, y = jump.from[1] + (jump.to[1] - jump.from[1]) * p;
+        const lift = Math.sin(Math.PI * p);
+        ctx.save(); drawContactShadow(ctx, px(x), py(y), U * HERO_H * (1 - .3 * lift)); ctx.restore();
+        drawStandee(ctx, 'hero-yama', px(x), py(y) - lift * U * .075, U * HERO_H * (1 + .04 * lift), t, '👑', P.face, false, null, false);
+        return;
+      }
       if (lying && teaSleepPhase(sleepElapsed, sleepMs()) === 'wake') {
         ctx.save();
         ctx.globalAlpha = Math.min(1,(sleepElapsed-sleepMs())/TEA_WAKE_MS);
@@ -764,7 +802,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         const gait = Math.floor(t / 180) % 4;
         const hop = moving && gait % 2 ? U * 0.010 : 0;
         const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
-        drawStandee(ctx, key, px(P.x), py(P.y) - hop, heroH * stretch, t, '👑', P.face);
+        drawStandee(ctx, key, px(P.x), py(P.y) - hop, heroH * stretch, t, '👑', P.face, false, null, !sitting);   // FB3-MP5: no floor shadow under the seated pose (it floated away from the body)
       }
       // ยังไม่มีไฟล์ท่านั่ง — ใช้ท่ายืนเดิมแทนพร้อมสัญลักษณ์ 💤 กำกับว่ากำลังพัก (ข้อ A ข้อห้าม 24 ก.ย. 2569)
       if (sitting && !haveSitArt) {
@@ -907,6 +945,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     crewHeight: CREW_H,
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
+    jumping: () => !!jump,
+    /** tests / save-load: finish a hop at once (the real room lands after JUMP_MS) */
+    skipJump: () => { if (jump) land(); },
     sleeping: () => lying,
     sleepPhase: () => lying ? teaSleepPhase(sleepElapsed, sleepMs()) : null,
     /** T5'/0: which beat of the defeat wake-up is on screen ('lie' | 'run' | 'say' | 'wake') - null when Yama is not in a defeat wake-up */

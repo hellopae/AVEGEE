@@ -104,6 +104,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   const signal = key.match(/^boss-frontier-(th|asia|west)-signal(-profile)?$/);
   // FB3-T6/8: Codex drew the controlled lords as a 3x4 SHEET (-signal-v1.webp); the game needs one picture - the standing pose cut out of it by scripts/crop-signal-boss.py (a real single drawing may overwrite the -idle file)
   if (signal) return signal[2] ? null : `img/story-sig/boss-frontier-${signal[1]}-signal-idle.webp`;
+  { const dam = key.match(/^crew-dam-(asia|west|cyberhell)-supervise-v1$/); if (dam) return `img/${MEAL_ART_FOLDERS[dam[1]]}${key}.webp`; }   // FB3-O1: the foreman's kitchen picture of Zones 2-4 (Codex C6)
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;
   if (key === 'worker-rice') return 'img/food-art/worker-rice.webp';
   if (key === 'crew-dam-cook' || key === 'crew-plerng-cook') return `img/food-art/cook-${key.split('-')[1]}.webp`;
@@ -519,11 +520,11 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
 export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
 export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '').replace(/-(receive|eat)$/, '')}`] || 1;
 
-export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null) {
+export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null, shadow = true) {
   h *= standeeFit(key, sourceZone || zoneOf());
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
-  drawContactShadow(ctx, x, y, h);
+  if (shadow) drawContactShadow(ctx, x, y, h);   // FB3-MP5: a seated Yama / a hop in the air carry no floor shadow of their own
   const im = img(key, sourceZone);
   if (im) {
     if (key === 'hero-yama') {

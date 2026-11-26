@@ -1,14 +1,14 @@
 import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
 import {registerGpuCache,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
 import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
-import {canteenCookPose,MEAL_SEQ} from './canteen.js';
+import {cookProgress,canteenCookPose,MEAL_SEQ} from './canteen.js';
 import {mapBodyDrawn} from './crew-presence.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
-import {zoneWorkers,drawWorker,workerCarryReady,drawDamCarry,damCarryReady} from './workers.js';
+import {zoneWorkers,drawWorker,workerCarryReady,drawDamCarry,damCarryReady,damSuperviseKey} from './workers.js';
 import {foremanPhase} from './foreman.js';
 import {bossGuideDismissed,bossPierRetired,bossGuideWaiting} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
@@ -267,6 +267,16 @@ export function bossWalkPosition(walk, now = Date.now()) {
   const progress = Math.min(1, Math.max(0, (now - walk.started) / walk.duration));
   if (walk.path) return pointOnPath(walk.path, progress);
   return [walk.from[0] + (walk.to[0] - walk.from[0]) * progress, walk.from[1] + (walk.to[1] - walk.from[1]) * progress];
+}
+
+/** FB3-MP10: the small "making rice balls" bar over a cook's head (progress 0..1 of the batch) - same look as the construction bar, smaller */
+export const COOK_BAR_W = 34, COOK_BAR_H = 5;
+export function cookBar(ctx, x, y, p) {
+  const W = COOK_BAR_W, H = COOK_BAR_H;
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - W / 2, y - H, W, H, H / 2); ctx.fill();
+  ctx.fillStyle = '#e8b45a'; rr(ctx, x - W / 2, y - H, W * Math.max(.05, p), H, H / 2); ctx.fill();
+  ctx.restore();
 }
 
 /** FB3-MP2 (owner map3): where a queued soul really stands on the map right now - waiting on the pier after the ferry (docked), walking from the pier to the dais (arrival walk), or in its place of the queue.
@@ -536,9 +546,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     }));
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
-    if(canteenCookPose(g,worker)||worker.teaRest&&worker.teaRest.phase!=='travel')continue;
+    if(worker.teaRest&&worker.teaRest.phase!=='travel')continue;   // FB3-MP10: a cook at work is drawn on the map too (inside the stall) - his progress bar is over his head
     spot_(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);if(worker.supplyRest||(worker.hunger??100)<=0)hungerMark(ctx,worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-6);});   // FB2-6: out of food = just stops; a small rice icon over the head is the only sign
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapWorkerHeight()*CHAR_SCALE_MAP,c=>{const h=mapWorkerHeight()*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&!workerCarryReady('th')&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);if(worker.supplyRest||(worker.hunger??100)<=0)hungerMark(ctx,worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-6);const cp=cookProgress(g,worker);if(cp!=null)cookBar(ctx,worker.x,worker.y-mapWorkerHeight()*CHAR_SCALE_MAP-8,cp);});   // FB2-6: out of food = just stops; a small rice icon over the head is the only sign
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -767,16 +777,16 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || c.cook || c.fmWork || (buildingHere && Math.floor(t / 500) % 2 === 0);   // FOREMAN: c.fmWork = Dam cutting thorns / digging shards / selling
       // QUEST-DAM-B: Dam's own drawn carry walks (TH) replace the 🪵💎🍙 marker; he stands with folded arms at the kitchen. Other zones keep the marker and the old poses.
-      const damCarry = c.k === 'dam' && g.zone === 'th' && c.fmCarry ? (c.fmCarry === 'rice' ? 'rice' : 'walk') : null;
-      const damDrawn = !!damCarry && damCarryReady('th', damCarry);
-      const damDesk = c.k === 'dam' && g.zone === 'th' && !motion.moving && !damCarry && foremanPhase(g) === 'canteen' && img('crew-dam-supervise-v1');
+      const damCarry = c.k === 'dam' && c.fmCarry ? (c.fmCarry === 'rice' ? 'rice' : 'walk') : null;   // FB3-O1: every zone (the strips of Zones 2-4 are bound by name; missing = the old marker)
+      const damDrawn = !!damCarry && damCarryReady(g.zone, damCarry);
+      const damDesk = c.k === 'dam' && !motion.moving && !damCarry && foremanPhase(g) === 'canteen' && img(damSuperviseKey(g.zone));
       shade(c.x, c.y, crewHeight, cx => {
         if (meal) {
           drawStandee(cx, hasMealPose ? mealKey : base, c.x, c.y, crewHeight, t, c.glyph, c.face || motion.face);
           return;
         }
-        if (damDrawn && drawDamCarry(cx, c, 'th', damCarry, t, crewHeight, motion.moving)) return;
-        if (damDesk) { drawStandee(cx, 'crew-dam-supervise-v1', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
+        if (damDrawn && drawDamCarry(cx, c, g.zone, damCarry, t, crewHeight, motion.moving)) return;
+        if (damDesk) { drawStandee(cx, damSuperviseKey(g.zone), c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const cookingPose = c.cook && !motion.moving && g.zone==='th' && img(base+'-cook');
         if (cookingPose) { drawStandee(cx, base+'-cook', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const animated = !buildingHere && motion.moving &&
@@ -1226,7 +1236,7 @@ export function hitActor(g, sx, sy) {
   for (const c of g.crew)
     if (actorStanding(c) && !canteenCookPose(g,c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
   if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
-  for (const w of zoneWorkers(g).filter(w=>!canteenCookPose(g,w)&&(!w.teaRest||w.teaRest.phase==='travel'))) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
+  for (const w of zoneWorkers(g).filter(w=>!w.teaRest||w.teaRest.phase==='travel')) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
   if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
