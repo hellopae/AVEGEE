@@ -37,3 +37,8 @@
   .team-hud-tools{margin-bottom:2px}.team-hud-tools button{min-height:32px}
   .team-hud-roster{gap:4px;padding:2px}
 }
+
+/* FB3-MN4 (owner m3): the hired workers' cards in Nira's team menu carried a picture as wide as the whole card; the profile picture is now the size of a reaper's (team-manage-card: 64 px, picture left, text right) */
+.worker-roster-card{display:grid!important;grid-template-columns:64px minmax(0,1fr);column-gap:12px;row-gap:0;align-items:center;padding:12px!important}
+.worker-roster-card .worker-face{width:64px;height:64px;grid-row:1/span 2}
+.worker-roster-card b,.worker-roster-card small{grid-column:2;min-width:0;overflow-wrap:anywhere}
