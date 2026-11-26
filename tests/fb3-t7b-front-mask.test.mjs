@@ -18,24 +18,28 @@ test('MP3: the floor wedge that hid Yama (krata, x 520-568 / y 668-728) and the 
   assert.equal(wedge, 0, 'the cone beside the post is gone'); assert.equal(finial1, 0); assert.equal(finialR, 0); assert.equal(flameR, 0); assert.ok(total > 60000, `the rail itself stays (${total} opaque px)`);
 });
 
-test('MP3: running the trimmer again removes nothing (the files are the trimmed ones) and the rail / posts of every room are still there', () => {
+test('MP3: against the file as Codex / T7 had it (git c65fdc22): alpha only went down, every remaining pixel has the SAME colour, canteen / tea are byte-identical, the three rooms lost the wedges but kept the rail', () => {
   const r = py(`
-import json,sys
-sys.path.insert(0,'scripts')
-import importlib.util
-spec=importlib.util.spec_from_file_location('t','scripts/trim-room-front.py'); t=importlib.util.module_from_spec(spec); spec.loader.exec_module(t)
+import json,subprocess,io
 from PIL import Image
+import numpy as np
 out={}
-for name,rule in t.ROOM_RULES.items():
-    im=Image.open('img/rooms-wide/th-%s-front-v1.webp'%name).convert('RGBA'); t.CURRENT['name']=name
-    import numpy as np
-    n=int((np.asarray(im)[...,3]>16).sum())
-    left=0
-    if rule: _,kill,_=t.trim(im,*rule); left=int(kill.sum())
-    out[name]=[n,left]
+for n in ['krata','lan','tarang','canteen','tea']:
+    path='img/rooms-wide/th-%s-front-v1.webp'%n
+    old=subprocess.run(['git','show','c65fdc22:'+path],capture_output=True,check=True).stdout
+    O=np.asarray(Image.open(io.BytesIO(old)).convert('RGBA')).astype(int); N=np.asarray(Image.open(path).convert('RGBA')).astype(int)
+    same=bool((O==N).all())
+    up=int(((N[...,3]>O[...,3]+1)).sum())
+    keep=N[...,3]>16
+    colour=int((np.abs(O[...,:3]-N[...,:3]).max(2)[keep]>1).sum())
+    out[n]=[same,up,colour,int((O[...,3]>16).sum()),int(keep.sum())]
 print(json.dumps(out))`);
-  for (const [name, [opaque, again]] of Object.entries(r)) { assert.ok(opaque > 60000, `${name}: the rail is there (${opaque})`); assert.equal(again, 0, `${name}: nothing above the rail line is left to cut`); }
-  assert.ok(r.krata[0] < 132000 && r.lan[0] < 140000 && r.tarang[0] < 140000, 'the three rooms were trimmed');
+  for (const n of ['canteen', 'tea']) assert.equal(r[n][0], true, `${n} untouched`);
+  for (const n of ['krata', 'lan', 'tarang']) {
+    const [same, up, colour, before, after] = r[n];
+    assert.equal(same, false); assert.equal(up, 0, `${n}: no pixel became more opaque`); assert.equal(colour, 0, `${n}: no recolouring`);
+    assert.ok(after < before && after > before * .55, `${n}: wedges gone (${before} -> ${after}) but the rail stays`);
+  }
 });
 
 test('MP3: only alpha changed - the trimmed layers still composite onto their background with no recolouring (every opaque pixel is the background pixel)', () => {

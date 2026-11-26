@@ -3,7 +3,8 @@
 (triangles of tiles where the cut-out was sloppy). They match the background pixel for pixel, so they were invisible - but they hid Yama's body when he stood above the rail.
 This keeps only what is really in front: the opaque shape is opened with a disc (thin spikes go), and inside what the opening removed every FLOOR-coloured pixel (grey-brown, low saturation)
 is made transparent; saturated pixels (flames, gold, lacquer) and everything that belongs to the rail / posts / statues stay.  Only the alpha channel changes - no pixel is recoloured.
-  python3 scripts/trim-room-front.py [--sheet DIR]   (writes the files in place; --sheet also saves before/after sheets on pink + the removed pixels in cyan)"""
+  NOT idempotent (the top line is read from the silhouette it is given): run it on the ORIGINAL layers (git show c65fdc22:img/rooms-wide/th-<room>-front-v1.webp), never on its own output.
+  python3 scripts/trim-room-front.py [--sheet DIR] [--dry]   (writes the files in place; --sheet also saves before/after sheets on pink + the removed pixels in cyan)"""
 import sys
 from pathlib import Path
 import numpy as np
