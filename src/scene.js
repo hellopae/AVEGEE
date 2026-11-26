@@ -46,6 +46,7 @@ import { buildWalk,canWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';
+import { lockedByEvent } from './unlocks.js';
 import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
@@ -1035,7 +1036,7 @@ export function nearBuild(g, x, y) {
 function promptInfo(g, def, afford) {
   const locked = !!g?.buildLocked?.(def.k), rec = !locked && g?.recommendedBuild?.() === def.k;
   const l1 = `${rec ? '★ ' : ''}${def.glyph} ${def.name}`;
-  const l2 = locked ? `🔒 ${tr('unlock.lockedAt', { n: g.buildUnlockLv(def.k) })}`
+  const l2 = locked ? `🔒 ${lockedByEvent(def.k) ? tr('unlock.towerEvent') : tr('unlock.lockedAt', { n: g.buildUnlockLv(def.k) })}`
     : afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
   return { l1, l2, locked, rec, afford };
 }

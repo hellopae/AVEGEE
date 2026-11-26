@@ -181,6 +181,8 @@ function lampNotices() {
   const out = {
     'lamp-received':{ title:T['notice.received.title'].th, text:T['notice.received.text'].th + (slot ? T['notice.received.slot'].th : ''), button:T['notice.received.button'].th, openLamp:true, art:SUMMONERS.hanuman.art.icon,
       en:{ title:T['notice.received.title'].en, text:T['notice.received.text'].en + (slot ? T['notice.received.slot'].en : ''), button:T['notice.received.button'].en } },
+    'lamp-tower-open':{ title:T['notice.tower.title'].th, text:T['notice.tower.text'].th, button:T['notice.tower.button'].th, art:SUMMONERS.hanuman.art.icon,
+      en:{ title:T['notice.tower.title'].en, text:T['notice.tower.text'].en, button:T['notice.tower.button'].en } },
     'lamp-low':{ title:T['notice.low.title'].th, text:T['notice.low.text'].th, button:T['notice.low.button'].th, art:SUMMONERS.hanuman.art.icon,
       en:{ title:T['notice.low.title'].en, text:T['notice.low.text'].en, button:T['notice.low.button'].en } },
   };

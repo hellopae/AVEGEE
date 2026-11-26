@@ -21,6 +21,13 @@ export const BUILD_PLAN = Object.freeze([
 
 const LV = Object.fromEntries(BUILD_PLAN.map(p => [p.k, p.lv]));
 
+/** FB3-T5 (owner 26 Nov): the Mirror Tower no longer waits for rank 5 - it recharges the Magic Lamp, so it opens the moment Sita's lamp is in Yama's hands
+ *  (the end of her / Hanuman's case). A save that already holds the lamp opens at load. `lv` in BUILD_PLAN is kept only for the order of the list. */
+export const EVENT_UNLOCKS = Object.freeze({ krajok:g => !!g.magic?.lamp?.owned });
+
+/** true = this station opens by a story beat, not by a rank (its lock label must not say "rank N") */
+export const lockedByEvent = k => !!EVENT_UNLOCKS[k];
+
 /** ขั้นที่ปลดล็อกสถานีนี้ — สถานีที่ไม่อยู่ในตาราง (หอทะเบียน/ตะราง ฯลฯ) ไม่ล็อก */
 export const buildUnlockLv = k => LV[k] ?? 1;
 
@@ -28,6 +35,7 @@ export const buildUnlockLv = k => LV[k] ?? 1;
 export function buildLocked(g, k) {
   if (g.stations.some(s => s.def.k === k)) return false;
   if(k==='canteen'&&!(g.zoneEvents?.th?.frontierBreach==='cleared'||g.bossCleared?.th))return true;
+  if (EVENT_UNLOCKS[k]) return !EVENT_UNLOCKS[k](g);
   return (g.level || 1) < buildUnlockLv(k);
 }
 
@@ -42,7 +50,7 @@ export function recommendedBuild(g) {
 }
 
 /** สถานีที่เพิ่งปลดล็อกพอดีที่ขั้นนี้ (ใช้ในหน้าต่างเลื่อนขั้น) */
-export const unlockedAtLevel = lv => BUILD_PLAN.filter(p => p.lv === lv && p.lv > 1).map(p => p.k);
+export const unlockedAtLevel = lv => BUILD_PLAN.filter(p => p.lv === lv && p.lv > 1 && !EVENT_UNLOCKS[p.k]).map(p => p.k);   // the tower opens with the lamp, not with a rank
 
 // ---------- ลำดับแนะนำจ้าง ----------
 // ผูกกับลำดับอาคารด้านบน — ดูเหตุผลเต็มในรายงาน Output/Toby/2026-10-22-avegee-p1-early-game.md

@@ -78,6 +78,10 @@ export const LAMP_TEXT = Object.freeze({
   'notice.low.title':{ th:'ไฟในตะเกียงริบหรี่', en:"The Lamp's Flame Is Low" },
   'notice.low.text':{ th:'ผู้ช่วยในตะเกียงใช้ท่าไม้ตายครบแล้ว ไปเติมพลังที่หอกระจก', en:'Your helpers have used up their special moves. Go to the Mirror Tower to recharge.' },
   'notice.low.button':{ th:'รับทราบ', en:'Understood' },
+  // FB3-T5 (owner): the Mirror Tower opens with the lamp. PLACEHOLDER wording from Toby - Rae writes the real text in round R2.
+  'notice.tower.title':{ th:'หอกระจกเปิดแล้ว', en:'The Mirror Tower Is Open' },
+  'notice.tower.text':{ th:'ตอนนี้สร้างหอส่องกรรมได้แล้ว แล้วไปเติมไฟตะเกียงที่หอกระจกได้เลย', en:'You can build the Mirror Tower now. Go there to recharge the flames of the Lamp.' },
+  'notice.tower.button':{ th:'รับทราบ', en:'Understood' },
   // 2.5 Kan lecture hook
   'kan.name':{ th:'กานต์', en:'Kan' },
   // 1.1 Guard labels

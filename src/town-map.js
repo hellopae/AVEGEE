@@ -1,6 +1,7 @@
 // Zone 1 town presentation. Existing world coordinates, collision and save data stay authoritative.
 import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
 import { t } from './i18n.js';
+import { lockedByEvent } from './unlocks.js';
 import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 import { isTownZone } from './zone-skin.js';
@@ -131,7 +132,7 @@ export function drawTownGround(ctx,g,now=Date.now()) {
     }
     ctx.setLineDash([6,5]); ctx.beginPath(); ctx.ellipse(d.bx,cy,rx,20,0,0,Math.PI*2);ctx.stroke();
     ctx.setLineDash([]); ctx.shadowBlur=0;
-    if(locked) { drawLockPlaque(ctx,d.x,d.y-4,t('unlock.lockedAt',{n:g.buildUnlockLv(d.k)})); ctx.restore(); continue; }
+    if(locked) { drawLockPlaque(ctx,d.x,d.y-4,lockedByEvent(d.k)?t('unlock.towerEvent'):t('unlock.lockedAt',{n:g.buildUnlockLv(d.k)})); ctx.restore(); continue; }
     ctx.fillStyle='rgba(33,16,23,.9)';
     const label=isRec?'★ +':'+';
     ctx.font=`600 ${isRec?13:12}px sans-serif`;

@@ -31,7 +31,7 @@ import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battl
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant,bossPierRetired} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSupplyBlocked,bindWorkersPanel,canteenPanelHtml} from './worker-ui.js';
-import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
+import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel,lockedByEvent} from './unlocks.js';
 import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperBlockLabel,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { koTrackOf, koPhase, koClass, koSince, hasKoPose } from './battle-ko.js';
@@ -2593,7 +2593,7 @@ function openHelp(initialTab = 'guide') {
           จี้ถูก = เขาสารภาพเรื่องที่ยังไม่เปิดให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
           (จี้ได้ 2 ครั้งต่อคดี) · ใช้<b>ตวาดข่มขู่</b>เพื่อชี้ข้อหลักฐานที่ควรสอบสวน แล้วกดข้อที่มี 💢 · คูลดาวน์ 2 นาที</li>
       <li><b>กระจกวิเศษมีจำนวนจำกัด</b> — ใช้แล้วหมดไป ชนะเทวดาทดสอบได้เพิ่ม 1 บาน เลื่อนขั้นแล้วมีเติมให้ (ตั้งแต่ขั้น 5 เติมเต็ม)
-          และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> (สร้างได้เมื่อถึงขั้น 5) ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
+          และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> (${esc(t('unlock.towerWhen'))}) ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
           ค้างไว้จนได้ครั้งละ 1 บาน ต้องรอ 5 วาระก่อนเติมครั้งถัดไป ไม่ใช่เติมได้ไม่จำกัด</li>
       <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ส่งไปสถานที่ไม่ตรงกรรม เขาอาจยังไม่สำนึกและกลับไปก่อเรื่องต่อ
           แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
@@ -3052,7 +3052,7 @@ function openTrial(initialError = '') {
       const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
       // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno L3: ปลดด้วยชนะบอสชายแดนโซน 3)
-      const outOfAmmoHint = p.k === 'mirror' ? 'หมดแล้ว — เลื่อนขั้นแล้วได้เติมให้ หรือเติมที่หอส่องกรรม (ขั้น 5)'
+      const outOfAmmoHint = p.k === 'mirror' ? `หมดแล้ว — เลื่อนขั้นแล้วได้เติมให้ หรือเติมที่หอส่องกรรม (${t('unlock.towerEvent')})`
                            : 'หมดแล้ว';
       const mpPower = p.k === 'hypno' || p.k === 'ice';
       const why = noIssue || (locked ? (storyPowerHint(p) ? `ล็อก · ${storyPowerHint(p)}ก่อน` : `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`)
@@ -7320,7 +7320,7 @@ function openStation(k, emergency = false, atPractice = false) {
   // (close ยิงแบบ async · ใบที่ปิดไปตอน openDlg จะมาถึงหลังกล่องใหม่เปิด แล้วเก็บของใหม่ทิ้ง)
 }
 
-function buildLockHint(k){return k==='canteen'&&g.buildLocked(k)?t('unlock.canteenBoss'):t('unlock.lockedAt',{n:g.buildUnlockLv(k)});}
+function buildLockHint(k){return k==='canteen'&&g.buildLocked(k)?t('unlock.canteenBoss'):lockedByEvent(k)?t('unlock.towerEvent'):t('unlock.lockedAt',{n:g.buildUnlockLv(k)});}
 function openBuild(def) {
   const worker = g.availableBuilder();
   const zoneBlock = g.zone === 'west' && g.zoneEventStatus('westHypnotized') !== 'cleared' ? t('build.westBlocked')

@@ -1273,6 +1273,9 @@ Object.assign(EN, {
 Object.assign(TH, {
   'sleep.needTea':'สร้างศาลาน้ำชาเพื่อนอนพัก',
   'unlock.lockedAt':'ปลดล็อกที่ขั้น {n}',
+  // FB3-T5 (owner): the Mirror Tower opens after Sita's / Hanuman's case, not at rank 5. PLACEHOLDER wording from Toby - Rae writes the real text (round R2).
+  'unlock.towerEvent':'เปิดหลังจบคดีนางสีดา',
+  'unlock.towerWhen':'สร้างได้หลังจบคดีนางสีดาและหนุมาน',
   'unlock.canteenBoss':'ชนะบอสชายแดนโซน 1 ก่อน',
   'unlock.lockShort':'ขั้น {n}',
   'unlock.recommend':'แนะนำสร้างถัดไป',
@@ -1294,6 +1297,8 @@ Object.assign(TH, {
 Object.assign(EN, {
   'sleep.needTea':'Build the Tea Pavilion to rest',
   'unlock.lockedAt':'Unlocks at rank {n}',
+  'unlock.towerEvent':"Opens after Sita's case",
+  'unlock.towerWhen':"can be built after Sita and Hanuman's case",
   'unlock.canteenBoss':'Defeat the zone-1 frontier boss first',
   'unlock.lockShort':'Rank {n}',
   'unlock.recommend':'Recommended next',
