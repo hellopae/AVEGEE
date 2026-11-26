@@ -17,6 +17,6 @@ test('crew cooking stays disabled and only arrived worker cooks appear inside th
 test('merchant buys pooled rice without Nira; worker cook hidden outside and rendered inside',()=>{
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),room=readFileSync(new URL('../src/room.js',import.meta.url),'utf8'),scene=readFileSync(new URL('../src/scene.js',import.meta.url),'utf8');
  assert.match(ui,/bindFoodSupply\(dlg,paint\)/);assert.match(ui,/canteenPanelHtml\(g,inside\)/);assert.match(ui,/g\.buy\('food',1\)/);
- assert.match(room,/def\.k === 'canteen'[\s\S]*canteenCookPose\(g,c\)/);assert.match(scene,/if\(canteenCookPose\(g,worker\)/);
+ assert.match(room,/def\.k === 'canteen'[\s\S]*canteenCookPose\(g,c\)/);assert.match(scene,/cookProgress\(g,worker\)/);   // FB3-MP10: a cook at work is drawn on the map too (inside the stall) with his progress bar
  const g=game();g.niraRest={};const before=g.food,coin=g.coin;assert.ok(g.buy('food',1));assert.equal(g.food,before+10);assert.equal(g.coin,coin-BAL.foodPrice*10);
 });

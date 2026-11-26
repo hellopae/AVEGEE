@@ -50,7 +50,7 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
    const sitter=game();sitter.zone=zone;sitter.hp=1;sitter.mp=0;
    const seatRoom=teaRoom(zone);seatRoom.me=[seatRoom.act[0]+.03,seatRoom.act[1]+.02];
    const seated=makeRoom(cv,sitter,STATIONS.find(d=>d.k==='tea'),seatRoom,`img/tea-${zone}-recovery.webp`,null);
-   assert.equal(seated.setSit(true),true);
+   assert.equal(seated.setSit(true),true);seated.skipJump();   // FB3-MP5: he hops onto the cushion first
    assert.deepEqual(seated.pos().slice(0,2),seatRoom.act,`${zone} sits exactly on its cushion`);
    seated.tick(1000);
    assert.equal(sitter.hp,1,`${zone} tea does not restore HP`);
@@ -75,6 +75,6 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
    assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
   }
   g.pendingRecovery=null;
-  g.hp=1;assert.deepEqual(g.teaBeds,{},'P1: no bed was bought');assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);const mp=g.mp;R.tick(TEA_REST_TOTAL_MS);assert.equal(g.hp,g.hpMax);assert.equal(g.mp,mp);
+  g.hp=1;assert.deepEqual(g.teaBeds,{},'P1: no bed was bought');assert.equal(R.setSleep(),true);R.skipJump();assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);const mp=g.mp;R.tick(TEA_REST_TOTAL_MS);assert.equal(g.hp,g.hpMax);assert.equal(g.mp,mp);
  } finally {globalThis.window=prevWindow;globalThis.document=prevDocument;}
 });

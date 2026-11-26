@@ -200,7 +200,7 @@ test('wiring: the talk window, canteen hand-over, help book and both languages a
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   assert.match(ui, /function openForeman/);
   assert.match(ui, /now\.kind === 'foreman'/);
-  assert.match(ui, /data-open-foreman/, 'the canteen window sends the player to the same single window');
+  assert.ok(!/data-open-foreman/.test(ui), 'FB3-MN5: no "go and talk to Dam" button - Dam stands inside the canteen and the orders are given in the canteen window itself');
   assert.match(ui, /guide\.foreman\.title/, 'the how-to-play book describes the new rules');
   const i18n = readFileSync(new URL('../src/i18n.js', import.meta.url), 'utf8');
   assert.match(i18n, /'guide\.foreman\.title': 'ดำ หัวหน้าคนงาน/); assert.match(EN_DICT['guide.foreman.title'], /Dam, the foreman/);

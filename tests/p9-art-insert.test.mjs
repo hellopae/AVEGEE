@@ -94,7 +94,7 @@ test('P9 drawWorker: asia/west/cyberhell read v2 rows by what the worker does (r
 });
 
 test('P9 cache-bust: workers.js ends -p9',()=>{
-  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*-p9(?:-fbui(?:-cook1)?)?(?:-questdamb)?"/);
+  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*-p9(?:-[a-z0-9]+)*"/);
 });
 
 test('P9 Trojan horse: cyberhell boss-frontier atlas reads the v2 file (same geometry, only attack f6/f7 redrawn), v1 stays; every other zone untouched',()=>{

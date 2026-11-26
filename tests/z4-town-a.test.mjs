@@ -123,7 +123,7 @@ test('Z4-TOWN-A: FOOD-A kitchen remains a plot until constructed, then uses the 
  assert.equal(townSites(g).find(s=>s.key==='canteen').state,'building');assert.equal(canteenActive(g),false);
  st.build=0;g.syncBlocks(true);
  assert.equal(townSites(g).find(s=>s.key==='canteen').state,'built');assert.equal(canteenActive(g),true);
- assert.deepEqual(canteenPoint(g),[d.x,d.y]);
+ {const cp=canteenPoint(g);assert.ok(Math.hypot(cp[0]-d.bx,cp[1]-(d.by+.1*d.bw))<30,'FB3-MN5: the kitchen spot is INSIDE the stall (front of its floor), not on the door step');}
  assert.deepEqual([d.bx,d.by,d.bw],[1590,690,187.5]);   // Q4-8: moved to the plaza below the stairs (owner arrow 16.08.28), buildings x1.5
  syncSceneZone('th');
 });

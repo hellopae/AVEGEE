@@ -6,7 +6,7 @@ import {createGame} from '../src/game.js';
 import {STATIONS,BAL} from '../src/data.js';
 import {resetWalk,setBlocks,setNpcDiscs,nearestWalk} from '../src/walk.js?v=k1d';
 import {stepWorkers,advanceWorkers,normalizeWorkers,workerRow,workerCookAssets,workerCarryAssets,carryRow,workerCarryReady,workerHireCost} from '../src/workers.js';
-import {canteenActive,canteenPoint,canteenState,stepCanteen,canteenCookPose} from '../src/canteen.js';
+import {canteenActive,canteenPoint,canteenState,stepCanteen,canteenCookPose,KITCHEN} from '../src/canteen.js';
 // T3/12: a reaper / the Guard handed a rice ball receives and eats it first - the meal counts when he has eaten
 const eaten=(g,c)=>{for(let i=0;i<60&&c.mealSeq;i++)stepCanteen(g,120);};
 import {canteenPanelHtml,workersPanelHtml} from '../src/worker-ui.js';
@@ -30,9 +30,10 @@ test('a built kitchen without cooks cannot produce; worker cooks walk to the kit
  g.paused=true;const frozen=JSON.stringify([g.food,c.job,canteenState(g)]);tick(g,30);assert.equal(JSON.stringify([g.food,c.job,canteenState(g)]),frozen);g.paused=false;
  canteenState(g).meals=6;const before=g.food;for(let i=0;i<30;i++)stepCanteen(g,120);assert.equal(g.food,before);assert.equal(canteenState(g).meals,6);
 });
-test('cook auto-refills supplies from coins without a manual purchase, but never spends when no funds are available',()=>{
- const g=game();kitchen(g);const c=g.hireWorker();g.setWorkerMode(c.id,'cook');place(c,canteenPoint(g));g.food=0;const coin=g.coin;tick(g,30);assert.ok(canteenState(g).meals>0);assert.equal(g.coin,coin-BAL.foodPrice*10);
- g.food=0;g.coin=0;tick(g,30);assert.equal(g.food,0);assert.equal(g.coin,0);assert.equal(c.supplyRest,true);
+test('FB3-MP10: a cook makes the pantry\'s rice balls himself (a batch every cookMs, ingredients from the purse), never buys at the merchant, and waits - not resting - when the purse is empty',()=>{
+ const g=game();kitchen(g);const c=g.hireWorker();g.setWorkerMode(c.id,'cook');place(c,canteenPoint(g));g.food=0;const coin=g.coin;tick(g,13);assert.equal(c.supplyRest,false);
+ tick(g,Math.ceil(KITCHEN.cookMs/120)+12);assert.ok(g.food+canteenState(g).meals>=KITCHEN.batch);assert.ok(g.coin<=coin-KITCHEN.coinPerBatch&&g.coin>coin-KITCHEN.coinPerBatch-12,'the ingredients (plus the ordinary wage), not a 10-coin merchant order');
+ g.food=0;g.coin=0;canteenState(g).meals=0;tick(g,Math.ceil(KITCHEN.cookMs/120)+12);assert.equal(g.food,0);assert.equal(g.coin,0);assert.equal(c.supplyRest,false,'he waits at the stall, he is not sent to rest');
 });
 test('servers target the hungriest available recipient, respect explicit selection, and do not feed before physical arrival',()=>{
  const g=game();kitchen(g);g.hire('dam');g.hire('plerng');const a=g.crewOf('dam'),b=g.crewOf('plerng');a.hunger=20;b.hunger=10;
@@ -92,10 +93,10 @@ test('cook strip picks the facing row; the TH carry strip follows heading then f
  assert.equal(carryRow({heading:'down',face:-1}),2);assert.equal(carryRow({heading:'up',face:1}),3);assert.equal(carryRow({heading:'side',face:1}),0);assert.equal(carryRow({heading:'side',face:-1}),1);assert.equal(carryRow({face:1}),0);
  assert.equal(workerCarryReady('asia'),false);
 });
-test('cook and server resume automatically after supplies run dry; a lone server can collect its own meal',()=>{
+test('FB3-MP10: with the pantry empty the cook keeps cooking (never rests) and the server resumes by himself once rice is made; a lone server can collect its own meal',()=>{
  const g=game();kitchen(g);const w=g.hireWorker(),c=g.hireWorker();g.setWorkerMode(w.id,'serve');g.setWorkerMode(c.id,'cook');
- g.food=0;g.coin=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(c.supplyRest,true);
- g.coin=100;place(c,canteenPoint(g));place(w,canteenPoint(g));tick(g,160);assert.equal(w.supplyRest,false);assert.equal(c.supplyRest,false);assert.ok(w.hunger>0);assert.ok(canteenState(g).served>0);
+ g.food=0;g.coin=0;stepWorkers(g);assert.equal(w.supplyRest,true,'the server has no rice to carry yet');assert.equal(c.supplyRest,false,'the cook makes it - he never rests for lack of it');
+ g.coin=100;place(c,canteenPoint(g));place(w,canteenPoint(g));tick(g,Math.ceil(KITCHEN.cookMs/120)*2+120);assert.equal(w.supplyRest,false);assert.equal(c.supplyRest,false);assert.ok(w.hunger>0);assert.ok(canteenState(g).meals>0||canteenState(g).served>0);
 });
 test('ready food and cooking freeze in other zones; damaged kitchens stop production and reject feeding or eating',()=>{
  const g=game();kitchen(g);const c=g.hireWorker();g.setWorkerMode(c.id,'cook');place(c,canteenPoint(g));tick(g,13);const progress=c.job.ms,stock=g.food;

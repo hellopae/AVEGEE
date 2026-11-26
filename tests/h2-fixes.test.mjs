@@ -91,7 +91,7 @@ test('H2-3: standing up from the cushion puts Yama back inside the walkable floo
         const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zone = zone; g.mp = 0;
         const room = teaRoom(zone); room.me = [room.act[0] + .03, room.act[1] + .02];
         const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, teaBackground(zone), null);
-        assert.equal(R.setSit(true), true, `${zone}: sits`);
+        assert.equal(R.setSit(true), true, `${zone}: sits`); R.skipJump();   // FB3-MP5: he hops there first
         assert.deepEqual(R.pos().slice(0, 2), room.act);
         if (how === 'manual') R.setSit(false); else { g.mp = g.mpMax; R.tick(50); }
         assert.equal(R.sitting(), false);

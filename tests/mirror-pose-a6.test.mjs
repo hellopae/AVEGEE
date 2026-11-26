@@ -10,7 +10,7 @@ const body=src.slice(start,src.indexOf('\n    for(const [id,fx] of prisonEscorts
 function draw({outfit='asia',room='krajok',adjusting=true,moving=false,loaded=true,pos=[.65,.65]}={}){
  const calls=[],g={zone:'asia',outfit,swingUntil:Date.now()+5000};
  const c=vm.createContext({acts:[],def:{k:room},P:{x:pos[0],y:pos[1],face:-1},g,api:{mirrorState:()=>({adjusting})},simClock:1000,movedSim:moving?1000:0,WALK_GRACE_MS:120,
-  direction:'down',walkDirection,MIRROR_ROOM_LAYOUT,mirrorHeroSortY:(x,y)=>y,U:500,HERO_H:.15,t:1000,walkDist:20,sitting:false,lying:false,ctx:{},px:x=>x*1000,py:y=>y*500,
+  direction:'down',walkDirection,MIRROR_ROOM_LAYOUT,mirrorHeroSortY:(x,y)=>y,U:500,HERO_H:.15,t:1000,walkDist:20,sitting:false,lying:false,jump:null,drawContactShadow:()=>{},ctx:{},px:x=>x*1000,py:y=>y*500,
   img:()=>({}),walkDrawDistance:d=>d,drawHeroWalk:(...args)=>{calls.push({kind:'normal',args});return loaded;},drawStandee:(...args)=>calls.push({kind:args[1],args}),
   drawYamaSword:()=>{calls.push({kind:'sword'});return true;},SWORD_DURATION_MS:580});
  vm.runInContext(body,c);c.acts[0].fn();return {calls,context:c,g};
