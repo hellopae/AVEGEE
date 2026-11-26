@@ -39,11 +39,13 @@ export function buildLocked(g, k) {
   return (g.level || 1) < buildUnlockLv(k);
 }
 
-/** สถานีที่แนะนำให้สร้างถัดไป — ตัวแรกในตารางที่ยังไม่มีในโซนนี้ · ถ้าตัวนั้นยังล็อกอยู่ = ไม่แนะนำอะไร
+/** สถานีที่แนะนำให้สร้างถัดไป — ตัวแรกในตารางที่ยังไม่มีในโซนนี้ · ถ้าตัวนั้นยังล็อกอยู่ด้วยขั้น = ไม่แนะนำอะไร (ถ้าล็อกด้วยเหตุการณ์เนื้อเรื่อง ข้ามไปตัวถัดไป)
  *  (ไม่ข้ามไปแนะนำตัวหลังที่ปลดล็อกแล้ว เพราะลำดับคือสิ่งที่คุณเป้ต้องการสื่อ) */
 export function recommendedBuild(g) {
   for (const p of BUILD_PLAN) {
     if (g.stations.some(s => s.def.k === p.k)) continue;
+    // FB3-L6 (Dale, T5 review): a station that waits for a STORY beat (the Mirror Tower, until the lamp) must not stop the list - skip it and recommend the next one; a station that waits for a rank still stops it
+    if (EVENT_UNLOCKS[p.k] && buildLocked(g, p.k)) continue;
     return buildLocked(g, p.k) ? null : p.k;
   }
   return null;
