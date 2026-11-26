@@ -2089,7 +2089,7 @@ export const ZONE_EVENTS = {
         [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:234, atk:[22,33], boss:true, skills:BOSS_SKILLS.trojan9, partyScale:{ hp:[1,1,1], atk:[.5,.8,1.02] } }]],   // BOSS-SKILLS set A: was 180 / 23-35
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
-    { k:'cyberFinal', atCases:10, requires:['cyberBreach','signalClose'], mode:'waves',
+    { k:'cyberFinal', atCases:15, requires:['cyberBreach','signalClose'], mode:'waves',   // FB3-L1 (owner 26 Nov): the last battle opens at 15 cases (was 10); a save whose final is already pending keeps it (refreshZoneEvents never un-pends it)
       // T8d: NF-1 (Rae R2 D 8.2) - "An Invader at the Heart of Zone 4 ... Go there" (the button walks to the army); NF-2 / NF-3 are in z4h-final.js
       title:Z4H_NF1.title, alert:Z4H_NF1.text, go:Z4H_NF1.button,
 
