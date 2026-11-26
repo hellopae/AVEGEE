@@ -23,7 +23,7 @@ export const LAMP_TEXT = Object.freeze({
   'bag.empty':{ th:'ว่าง · แตะเพื่อเลือกผู้ช่วย', en:'Empty · tap to choose a helper' },
   'bag.locked':{ th:'ล็อก · เล่นมินิเกมที่หอกระจกโซน {n}', en:'Locked · play the minigame at the Mirror Tower of Zone {n}' },
   'bag.unmet':{ th:'??? · ยังไม่ได้พบ', en:'??? · not yet met' },
-  'bag.movesLeft':{ th:'ท่าไม้ตาย เหลือ {n}/3', en:'Special move: {n}/3 left' },
+  'bag.movesLeft':{ th:'เรียกได้อีก {n}/3 ครั้ง', en:'Calls left: {n}/3' },   // FB3-EV5: the owner cut the old "special move left" wording; the summon window no longer prints a count at all - only the flame dots
   'bag.place':{ th:'ใส่ในตะเกียง', en:'Place in Lamp' },
   'bag.swap':{ th:'เปลี่ยนผู้ช่วย', en:'Swap helper' },
   'bag.remove':{ th:'เอาออก', en:'Remove' },
@@ -38,11 +38,16 @@ export const LAMP_TEXT = Object.freeze({
   'battle.call':{ th:'เรียกมา', en:'Call' },
   'battle.cancel':{ th:'ไม่เรียก', en:'Not now' },
   'battle.lampEmpty':{ th:'ตะเกียงยังว่าง · ใส่ผู้ช่วยที่เมนูกระเป๋า', en:'The Lamp is empty · place a helper from the bag menu' },
-  'battle.helperSpent':{ th:'{name}: ท่าไม้ตายครบ 3 ครั้งแล้ว · เติมพลังที่หอกระจก', en:'{name} has used all 3 special moves · recharge at the Mirror Tower' },
+  'battle.helperSpent':{ th:'{name}: เรียกครบ 3 ครั้งแล้ว · เติมพลังที่หอกระจก', en:'{name} has been called 3 times · recharge at the Mirror Tower' },
+  // FB3-EV5 (Toby's placeholder wording, for Rae to replace): the helper that stands in the team
+  'battle.present':{ th:'{name} ยืนอยู่ในทีมแล้ว', en:'{name} is already standing with you' },
+  'battle.lampCut':{ th:'ยามาจุดตะเกียงวิเศษ เรียก{name}ออกมา', en:'Yama lights the Magic Lamp and calls {name}' },
+  'helper.attack':{ th:'โจมตี', en:'Attack' },
+  'helper.acts':{ th:'ลงมือได้อีก {n}/{max} ครั้ง', en:'{n}/{max} acts left' },
+  'helper.farewell':{ th:'{name} กลับเข้าตะเกียง', en:'{name} returns to the Lamp' },
   'battle.allSpent':{ th:'ไฟในตะเกียงริบหรี่ · ไปเติมพลังที่หอกระจก', en:"The Lamp's flame is low · go and recharge at the Mirror Tower" },
   'battle.cannot':{ th:'ศึกนี้อัญเชิญไม่ได้ · ตะเกียงนิ่งสนิท', en:'You cannot summon in this fight · the Lamp stays still' },
   'battle.logCall':{ th:'อัญเชิญ {name} · {move}', en:'Summoned {name} · {move}' },
-  'battle.logUsed':{ th:'{name} ใช้ท่าไม้ตายครั้งที่ {k}/3', en:'{name} used special move {k}/3' },
   'battle.logOut':{ th:'แสงของ {name} ในตะเกียงดับลงแล้ว', en:"{name}'s light in the Lamp has gone out." },
   'battle.groupHit':{ th:'ตีหมู่ · แรงปานกลาง', en:'Group hit · moderate power' },
   // 2.4 tower

@@ -1,7 +1,12 @@
 // Visual sizes only. Navigation radii, combat stats and authored feet stay unchanged.
 export const CHARACTER_SCALE = Object.freeze({yama:.80, adult:1, nira:.95, guard:1.25, worker:1});
+/** FB3-EV5: a helper called from the lamp stands in the team at the size tier of T2 (src/battle-foe-size.js: FOE_TIER.human = 1 = the team's adult height). Never above 1: a teammate taller than
+ *  1.04 makes fitAllySizes shrink EVERYBODY (as the Guard's 1.25 does), and the helper must not hide Yama - so even the dragon and the serpent (the 'giant' tier as enemies) are one adult tall here.
+ *  Kuman Thong is a boy: shorter than the adults, as tall as Yama. Key = the lamp helper's key (the squad member's crew key is `summon-<key>`). */
+export const SUMMON_SCALE = Object.freeze({ kumanthong:.80 });
 export function characterScale(key='adult') {
   const kind=key.replace(/^.*:/,'').replace(/^crew-/,'');
+  if(kind.startsWith('summon-'))return SUMMON_SCALE[kind.slice(7)] ?? CHARACTER_SCALE.adult;
   return CHARACTER_SCALE[kind] ?? CHARACTER_SCALE.adult;
 }
 // Multipliers relative to each renderer's town-sized adult reference.

@@ -104,6 +104,6 @@ test('mirror treasure follows the existing mirror power (ammo) and the tower ref
 
 test('every text key has Thai and English and fills {vars}', () => {
   for (const [k, row] of Object.entries(LAMP_TEXT)) assert.ok(row.th && row.en, k);
-  assert.equal(lt('bag.movesLeft', { n:2 }, 'th'), 'ท่าไม้ตาย เหลือ 2/3'); assert.equal(lt('bag.movesLeft', { n:2 }, 'en'), 'Special move: 2/3 left');
+  assert.equal(lt('bag.movesLeft', { n:2 }, 'th'), 'เรียกได้อีก 2/3 ครั้ง'); assert.equal(lt('bag.movesLeft', { n:2 }, 'en'), 'Calls left: 2/3');   // FB3-EV5: the owner cut the old "special move left" wording
   assert.equal(lt('bag.locked', { n:3 }, 'en'), 'Locked · play the minigame at the Mirror Tower of Zone 3');
 });

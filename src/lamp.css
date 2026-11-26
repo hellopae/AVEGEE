@@ -52,3 +52,32 @@
 .summon-note{margin:0;color:var(--warning);text-align:center}
 .summon-card .flee-actions{margin-top:4px}
 .action-cutscene .cutscene-line{position:absolute;z-index:4;left:clamp(14px,5vw,72px);right:12px;top:clamp(14px,6%,48px);padding:6px 12px;border-radius:10px;background:#0b060acc;color:#fff1d2;font:600 clamp(13px,1.6vw,18px)/1.4 var(--font-sans)}
+
+/* ---- FB3-EV5 (26 Nov): a called helper STANDS IN THE TEAM. Layout / motion only: colours are tokens, pictures are never recoloured (the glow is drawn AROUND the picture) ---- */
+/* the three flames in the summon window (no "x/3" words) */
+.summon-flames{display:inline-flex;gap:6px;align-items:center;margin-top:3px;font-style:normal}
+.summon-flames i{display:inline-block;width:10px;height:15px;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:var(--border);opacity:.5}
+.summon-flames i.lit{background:var(--gold);opacity:1;box-shadow:0 0 6px var(--gold)}
+/* the helper in the squad: it steps out of the light when the lamp card fades, and goes back into it after its last act */
+.arena.combat-arena .battle-squad>.summon-wait{opacity:0!important;visibility:hidden}
+.arena.combat-arena .battle-squad>.summon-arrive{animation:summonIn .9s ease-out both}
+.arena.combat-arena .battle-squad>.is-leaving{animation:summonOut 1.1s ease-in both;pointer-events:none}
+@keyframes summonIn{0%{opacity:0;filter:brightness(3.2) drop-shadow(0 0 18px var(--gold))}55%{opacity:1;filter:brightness(1.7) drop-shadow(0 0 14px var(--gold))}100%{opacity:1;filter:none}}
+@keyframes summonOut{0%{opacity:1;filter:none}40%{opacity:1;filter:brightness(2.4) drop-shadow(0 0 20px var(--gold))}100%{opacity:0;filter:brightness(4) drop-shadow(0 0 30px var(--gold))}}
+@media(prefers-reduced-motion:reduce){.arena.combat-arena .battle-squad>.summon-arrive,.arena.combat-arena .battle-squad>.is-leaving{animation-duration:.01s}}
+/* acts left: a small pill over the helper's head (the squad's own name / cooldown labels are hidden in the fight) and in the menu heading */
+.arena.combat-arena .battle-squad .summon-acts{display:block!important;position:absolute;left:50%;top:-6px;translate:-50% 0;z-index:3;padding:1px 9px;border:1px solid var(--gold);border-radius:999px;
+  background:var(--card);color:var(--gold);font:600 11px/1.5 var(--font-sans,inherit);font-style:normal;white-space:nowrap;pointer-events:none}
+.battle-team-hud .summon-portrait .summon-acts{display:block;color:var(--gold);font:600 10px/1.3 var(--font-sans,inherit);font-style:normal}
+.battle-command-heading .helper-acts-left{display:block;color:var(--gold);font-weight:600}
+.battle-team-hud .summon-portrait.is-leaving{opacity:.4}
+/* the helper's closing line */
+.summon-farewell{position:absolute;left:50%;bottom:26%;translate:-50% 0;z-index:60;max-width:min(78%,520px);margin:0;padding:8px 16px;border:1px solid var(--gold);border-radius:var(--radius-md);
+  background:var(--card);color:var(--foreground,inherit);text-align:center;pointer-events:none;animation:summonSay 1.5s ease both}
+.summon-farewell small{display:block;color:var(--gold);margin-bottom:2px}
+@keyframes summonSay{0%{opacity:0}12%,80%{opacity:1}100%{opacity:0}}
+/* the lamp cutscene: a warm card. The zone's own drawing fills it like every other cutscene; the older lamp picture (fallback) sits in the middle of the glow */
+.action-cutscene.lamp-cut{background:radial-gradient(ellipse at 50% 58%,color-mix(in srgb,var(--gold) 38%,#090407) 0,#090407 70%)}
+.action-cutscene.lamp-cut-fallback img{scale:.62;filter:drop-shadow(0 0 28px var(--gold))}   /* the 512 px icon is fitted to the card by fitCutsceneImage (like every cutscene); .62 keeps it from being blown up to a blur */
+/* a phone: the menu heading already says how many acts are left - no second pill on top of the helper while a menu is open */
+@media(max-width:520px){.arena.combat-arena:has(.battle9-menu) .battle-squad .summon-acts{display:none!important}}

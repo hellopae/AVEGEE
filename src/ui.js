@@ -2706,10 +2706,12 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.webp (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
+const crewBattleKey = c => c.k === 'guard' ? 'guard' : c.k === 'summon' ? `summon-${c.summonKey}` : g.isFinalBattle() ? c.id : c.k;   // FB3-EV5: a helper called from the lamp is its own member (key per helper)
 /** FB2-15: the time-rewind clock is only described once the player owns it (same test the battle item menu uses) */
 const clockUnlocked = () => !!(g.abilities?.cooldownClock || g.inventory?.cooldownClock);
-const crewArt = (c, pose = '') => c.k==='guide'
+const crewArt = (c, pose = '') => c.k==='summon'
+  ? (LAMP.summonerOf(c.summonKey)?.art?.[pose === '-profile' ? 'icon' : 'battle'] || LAMP.summonerOf(c.summonKey)?.art?.battle)   // FB3-EV5: the helper's own drawing (img/summon/battle-<key>.webp · icon-<key>.webp) - saved under that name it replaces the placeholder
+  : c.k==='guide'
   ? (c.artKey ? artUrl(c.artKey + (pose === '-profile' ? '-profile' : ''), 'png', c.homeZone) : artUrl('zone-boss','png',c.homeZone))   // T6/4: Zone 2's guest is Musashi (his own drawing)
   : artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
 function battleTurnOrderHtml(b) {
@@ -2736,12 +2738,17 @@ function battleStatusHtml(actor, options = {}) {
   const label = s => s.key === 'warn' ? `⚠ ${esc(pickText(s.label, getLang()) || 'ท่าไม้ตาย')}` : esc(t('battle.status.' + s.key, {n:s.n}));      // BOSS-SKILLS: the warning tag shows the move's own name
   return states.length ? `<span class="battle-state-tags">${states.map(s => `<em data-battle-status="${s.key}">${label(s)}</em>`).join('')}</span>` : '';
 }
+/** FB3-EV5: extra classes of a helper standing in the team - arriving (first ~0.9 s), leaving (farewell effect) - and nothing for everybody else. */
+const summonMemberClass = c => c.k !== 'summon' ? '' : ` summon-member${c.leaving ? ' is-leaving' : Date.now() < (c.at || 0) ? ' summon-wait' : Date.now() - (c.at || 0) < 900 ? ' summon-arrive' : ''}`;   // summon-wait: the lamp cutscene is still on (the member steps out of the light when it fades)
+/** FB3-EV5: how many acts a standing helper has left, printed under its name (3/3 -> 0/3). */
+const summonActsHtml = c => `<em class="summon-acts" data-summon-acts="${c.left}">${esc(lt('helper.acts', { n:c.left, max:LAMP.HELPER_ACTS }))}</em>`;
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
   const selectedId = selectedVisibleFoeId(hp);
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
   const fxAt = side => {
+    if (fx?.key === 'summonCall') return '';   // FB3-EV5: calling a helper from the lamp has no slash / claw effect (the lamp cutscene carries it)
     if (!fx || fx.side !== side || fx.key === 'defend') return '';
     if(side==='you'&&fx.key==='health'&&fx.recipient&&fx.recipient!=='you')return '';    // L2: defending is a stance, not an attack — no slash/claw effect
     const d = FX_OF[fx.key] || FX_OF.atk;
@@ -2807,10 +2814,10 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${(c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '') ? ` class="${((c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '')).trim()}"` : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => { const memberCls = ((c.k === 'guard' ? ' guard' : '') + ((hp?.fallen || []).includes(c.id) ? ' is-fallen' : '') + summonMemberClass(c)).trim(); return `<span${memberCls ? ` class="${memberCls}"` : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id],sealed:hp?.sealed?.[c.id]?.by,taunt:hp?.taunt?.id===c.id})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), specialCooldown(c)) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
-      }</span>`).join('')}</div>` : ''}
+        c.k === 'summon' ? summonActsHtml(c) : c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), specialCooldown(c)) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
+      }</span>`; }).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}${hp ? battleStatusHtml({hp:hp.youHp}, {defending:hp.defending?.you,rage:hp.rageTurns}) : ''}
       <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
@@ -2892,6 +2899,7 @@ let battleCutscenes = createCutsceneReadiness();
 function cutsceneSource(k, ultimate = null) {
   if (k === 'musashiStrike') return null;   // T6/5: the strike was shown by the scene itself (z2-ryujin-musashi-strike)
   if (k.startsWith('summon:')) return LAMP.summonerOf(k.slice(7))?.art?.cut || null;   // T4: the helper's special-move picture
+  if (k === 'helper:move') return LAMP.summonerOf(g.battleActors().find(a => a.id === g.battle?.actorId)?.summonKey)?.art?.cut || null;   // FB3-EV5: the standing helper's move picture
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   if (crewKey === 'nira') return niraHealingCutscene(g.zone);
   return ultimate?.image || (crewKey ? crewCutsceneSrc(crewKey)?.src : actionCutsceneSrc(k));
@@ -2907,8 +2915,9 @@ function playActionCutscene(k, ultimate = null, imageOverride = null, nameOverri
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
   cut.className = ultimate ? 'action-cutscene enemy-facing'
-    : ['hypno', 'mirror', 'roar', 'ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k) || k.startsWith('summon:')
+    : ['hypno', 'mirror', 'roar', 'ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock', 'helper:move'].includes(k) || k.startsWith('summon:')
       ? 'action-cutscene right-facing' : 'action-cutscene';
+  if (k.startsWith('summon:')) cut.classList.add('lamp-cut', ...(imageOverride === LAMP.LAMP_CUT_FALLBACK ? ['lamp-cut-fallback'] : []));   // FB3-EV5: Yama lights the lamp - a warm golden card (the fallback picture sits small in the middle of it)
   // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
@@ -4244,6 +4253,7 @@ function openBattle(after) {
 
   let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false, finaleScheduled = false, finaleCutTimer = 0;
+  let farewellTimer = 0;   // FB3-EV5: repaint when a leaving helper's farewell effect is over
   let summonLayer = false, summonPick = null;   // T4: the "อัญเชิญ" window (shows once the lamp is owned) is showing / which helper is picked in it
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
@@ -4610,6 +4620,7 @@ function openBattle(after) {
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
     const act = dash && !dash.hit ? null : phase === 'you' && fxNow?.key === 'rage' ? null
               : phase === 'you' && fxNow?.key === 'defend' ? null      // L2: defending is not an attack — nobody lunges or flinches
+              : phase === 'you' && fxNow?.key === 'summonCall' ? null      // FB3-EV5: calling a helper from the lamp is not an attack either
               : phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? (confuseHit ? { struck: 'foe' } : { lunge: 'foe', struck: 'you' }) : null;
     const mp = g.mp;
@@ -4625,6 +4636,7 @@ function openBattle(after) {
     // KO-CREW: teammates who fell stay in the scene (lying down) in the slot they had - same order all battle long. They are not in battleActors(), so they
     // get no turn, no target and no hit; the squad list and the cards only DRAW them.
     for (const c of g.battleFallen()) if (!squadMembers.some(s => s.id === c.id)) squadMembers.push(c.k === 'guard' ? { ...c, name: guardName(g.zone) } : c);
+    { const standing = g.summonedActor(true); if (standing && !squadMembers.some(s => s.id === standing.id)) squadMembers.push(standing); }   // FB3-EV5: the helper from the lamp stands in the team (drawn + gets turns; the foes never hit it)
     { const order = (b.squadOrder ||= []); for (const c of squadMembers) if (!order.includes(c.id)) order.push(c.id);
       squadMembers.sort((a, z) => order.indexOf(a.id) - order.indexOf(z.id)); }
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
@@ -4697,6 +4709,7 @@ function openBattle(after) {
     const actor = g.battleActors().find(c => c.id === (b.actorId || 'you')) || g.battleActors()[0];
     if (!phase && b.actorId && b.actorId !== actor.id) { b.actorId = actor.id; b.command = null; }
     const isYama = actor.id === 'you';
+    const isHelper = actor.k === 'summon';   // FB3-EV5: a helper from the lamp is on turn - its menu is its own (attack / its move), not the team's
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
       battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
@@ -4711,7 +4724,7 @@ function openBattle(after) {
     // QUEST-REWARDS: an ultimate won from a quest fight sits next to the trained one (bound to this roster ID only — see combat-skills.js)
     const questSkillChoices = questSkillsForActor(actor).filter(k => g.skillUnlocked(actor, k)).map(skillChoiceFor).join('');
     const newSkillChoice = (unlockedSkill && g.skillUnlocked(actor, unlockedSkill) ? skillChoiceFor(unlockedSkill) : '') + questSkillChoices;
-    const specialChoice = newSkillChoice + battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
+    const specialChoice = isHelper ? '' : newSkillChoice + battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice('strike', 'img/fx-slash.webp', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
@@ -4724,7 +4737,11 @@ function openBattle(after) {
     const selection = '';
     if (commandPanelActor !== actor.id) { commandPanel = null; commandPanelActor = actor.id; }
     const battle9Label = text => String(text).split(' / ')[getLang()==='en'?1:0] || String(text).split(' / ')[0];
-    const segments = [
+    const helperDef = isHelper ? LAMP.summonerOf(actor.summonKey) : null;
+    const segments = isHelper ? [
+      {id:'attack',label:`${lt('helper.attack')} / ${lt('helper.attack', '', 'en')}`,action:'helper:attack'},
+      {id:'move',label:`${helperDef.move.name.th} / ${helperDef.move.name.en}`,action:'helper:move'},
+    ] : [
       {id:'attack',label:'โจมตี / Attack',action:isYama?'atk':'strike'},
       {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:specialChoice},
       {id:'item',label:'ไอเท็ม / Items',choices:itemChoices},
@@ -4735,7 +4752,7 @@ function openBattle(after) {
     // FB3-BT4b: no command menu while a move is playing (dash out / strike / return, skill, item ...): it used to stay mounted and slide along with the attacker
     const acts = currentTurn?.side==='foe' || phase || dash || b.commandBusy || !commandMenuOpen || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
-        <div class="battle-command-heading"><b>${esc(actor.name)}</b></div>
+        <div class="battle-command-heading"><b>${esc(isHelper ? LAMP.summonerName(actor.summonKey, getLang()) : actor.name)}</b>${isHelper ? `<small class="helper-acts-left" data-summon-acts="${actor.left}">${esc(lt('helper.acts', { n:actor.left, max:LAMP.HELPER_ACTS }))}</small>` : ''}</div>
         <div class="battle-command-tabs">${segments.map((v,i)=>`<button class="actor-segment" style="--command-index:${i}" data-command="${v.id}" ${v.action?`data-primary-action="${v.action}"`:''} aria-expanded="${commandPanel===v.id}" aria-pressed="${commandPanel===v.id||!!(v.action&&pending===v.action)}" ${v.disabled?`aria-disabled="true" title="${esc(v.reason)}"`:''} ${phase||v.disabled?'disabled':''}><span>${v.summon ? '<img src="img/ui/cmd-summon.webp" width="18" height="18" alt="">' : ''}
           <span>${esc(battle9Label(v.label))}${v.disabled?`<em class="segment-reason">${esc(v.reason)}</em>`:''}</span></span></button>`).join('')}</div>
         ${segments.filter(v=>v.choices).map(v=>`<div class="command-options ${commandPanel===v.id&&!pending?'is-open':''}" data-options="${v.id}" ${commandPanel===v.id&&!pending?'':'inert'} aria-label="${esc(battle9Label(v.label))}">${v.choices}</div>`).join('')}
@@ -4772,7 +4789,9 @@ function openBattle(after) {
       const keys = LAMP.slottedSummoners(g), lang = getLang();
       const rows = keys.map(k => {
         const why = LAMP.summonWhy(g, k, b), name = LAMP.summonerName(k, lang), left = LAMP.summonUsesLeft(g, k);
-        return `<button class="summon-pick" data-summon-pick="${k}" aria-pressed="${summonPick === k}" ${why ? 'disabled' : ''}>${summonIcon(k)}<span class="n"><b>${esc(name)}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('battle.groupHit'))}</small><em>${esc(why === 'spent' ? lt('battle.helperSpent', { name }) : lt('bag.movesLeft', { n:left }))}</em></span></button>`;
+        return `<button class="summon-pick" data-summon-pick="${k}" aria-pressed="${summonPick === k}" ${why ? 'disabled' : ''}>${summonIcon(k)}<span class="n"><b>${esc(name)}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('battle.groupHit'))}</small>${why === 'spent' || why === 'present'
+          ? `<em>${esc(why === 'spent' ? lt('battle.helperSpent', { name }) : lt('battle.present', { name }))}</em>`
+          : `<em class="summon-flames" role="img" aria-label="${esc(lt('bag.movesLeft', { n:left }))}" data-flames="${left}">${[0, 1, 2].map(i => `<i class="${i < left ? 'lit' : ''}"></i>`).join('')}</em>`}</span></button>`;   // FB3-EV5: three flame dots (no "x/3" words - the owner cut that line from this window)
       }).join('');
       const note = !keys.length ? lt('battle.lampEmpty') : LAMP.lampAllSpent(g) ? lt('battle.allSpent') : '';
       return `<div class="flee-layer summon-layer" data-summon-layer><div class="flee-card summon-card" role="dialog" aria-modal="true" aria-labelledby="summon-title">
@@ -4811,6 +4830,13 @@ function openBattle(after) {
     if (!phase) clearMoveName(); else renderMoveName();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
     stage.insertAdjacentHTML('beforeend', acts);
+    // FB3-EV5: the helper's last act is done - it goes back into the lamp (the squad member plays .is-leaving) and says its closing line; a repaint when the effect is over drops it from the team
+    { const gone = b.summoned?.leaving && !b.over ? b.summoned : null, left = gone ? LAMP.SUMMON_LEAVE_MS - (Date.now() - gone.leaving) : 0;
+      if (left > 0) {
+        const sd = LAMP.summonerOf(gone.key), lang = getLang() === 'en' ? 'en' : 'th';
+        stage.insertAdjacentHTML('beforeend', `<p class="summon-farewell" role="status" data-summon-farewell><small>${esc(lt('helper.farewell', { name:LAMP.summonerName(gone.key, lang) }))}</small>${esc(sd.say.end[lang])}</p>`);
+        clearTimeout(farewellTimer); farewellTimer = setTimeout(() => { if (g.battle === b && dlg.open && !phase) paint(); }, left + 40);
+      } }
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, dash?.poseAt || phaseAt, g.weapons?.equipped);
     else mountBattleSwordIdle(stage, g.outfit || g.zone);   // FB2-v2: was `!phase && !b.over` — while a teammate acted / the enemy struck / the fight was over, Yama fell back to the small standing-with-book picture
@@ -4825,6 +4851,7 @@ function openBattle(after) {
       <div class="battle-team-hud">
         <div class="battle-team-roster">
         ${team.map(c => {
+          if (c.k === 'summon') return `<button class="battle-portrait summon-portrait${c.leaving ? ' is-leaving' : ''}${view.defending?.[c.id] ? ' is-defending' : ''}" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}"><img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(LAMP.summonerName(c.summonKey, getLang()))}</b>${summonActsHtml(c)}</button>`;   // FB3-EV5: no morale / cooldown bars - the acts it has left
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
           const duration = specialCooldown(c);
           const fallen = (b.fallen || []).includes(c.id);
@@ -4947,7 +4974,7 @@ function openBattle(after) {
       const poseActors = [...g.battleActors(), ...g.battleFallen()];
       if (dash?.actor && !poseActors.some(c => c.id === dash.actor.id)) poseActors.push(dash.actor);
       for(const c of poseActors){
-        if(c.id==='you')continue;
+        if(c.id==='you'||c.k==='summon')continue;   // FB3-EV5: a lamp helper has one drawing, no pose atlas
         // Nira's other poses are drawn by mountNiraCombatSprite; only her lying-down picture (F8, `crew:<zone>:nira:ko` in the pose manifest) goes through this list
         if(c.k==='nira'&&!(koInfo.get(c.id)?.pose&&['fall','down'].includes(koInfo.get(c.id)?.phase)))continue;
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
@@ -5043,7 +5070,7 @@ function openBattle(after) {
         if(button.dataset.command==='summon'){commandPanel=null;g.cancelBattleCommand();summonLayer=true;summonPick=null;paint();return;}   // T4: opens the "อัญเชิญ" window
         if(button.dataset.primaryAction){commandPanel=null;
           const action=button.dataset.primaryAction;
-          if(action==='defend')executeCommand(action,'you');
+          if(action==='defend'||(action==='helper:move'&&helperMoveNeedsNoTarget()))executeCommand(action,'you');   // FB3-EV5: a group / team move of a lamp helper has no target to pick
           else if(b.command===action){g.cancelBattleCommand();paint();}       // L2: same button again = cancel
           else setCommand(action,button.textContent.trim());}
         else {g.cancelBattleCommand();commandPanel=commandPanel===button.dataset.command?null:button.dataset.command;paint();}
@@ -5184,6 +5211,7 @@ function openBattle(after) {
       if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
       b.command = el.dataset.act;b.commandLabel=(el.querySelector("b")?.textContent||el.textContent).trim();b.commandTarget=null;b.commandRecipient=null;paint();
     });
+    const helperMoveNeedsNoTarget = () => { const a = g.battleActors().find(c => c.id === (g.battle?.actorId || 'you')); return a?.k === 'summon' && ['group', 'guard'].includes(LAMP.summonerOf(a.summonKey)?.move?.kind); };
     const finishWave = () => {
       if (!g.battle?.pendingWave) return;
       if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
@@ -5260,9 +5288,38 @@ function openBattle(after) {
       try { await playSkill(action, recipient); }
       finally { if (skillView) { skillView = null; if (g.battle && dlg.open) paint(); } }
     };
+    // FB3-EV5: which picture the lamp cutscene shows - the zone's own drawing when it has been saved (img/summon/cut-lamp-summon-<zone>.webp), else the older lamp picture. Cached per file.
+    const lampCutProbe = src => (lampCutProbe.cache ||= new Map()).get(src) || (lampCutProbe.cache.set(src, new Promise(resolve => {
+      const im = new Image(); const done = ok => { clearTimeout(timer); resolve(ok); }; const timer = setTimeout(() => done(false), 2500);
+      im.onload = () => done(true); im.onerror = () => done(false); im.src = src;
+    })), lampCutProbe.cache.get(src));
+    const resolveLampCut = async zone => { for (const src of LAMP.lampCutSources(zone)) if (await lampCutProbe(src)) return src; return null; };
+    const executeSummonCall = async action => {
+      const key = action.slice(7), waiting = g.battle, lang = getLang();
+      if (!waiting || phase || waiting.commandBusy) return;
+      phase = 'preparing'; phaseAt = Date.now();
+      const src = await resolveLampCut(g.zone);
+      if (src) await battleCutscenes.warm([src]);
+      if (g.battle !== waiting || !dlg.open) { phase = null; return; }
+      phase = null;
+      if (!g.confirmBattleCommand(action, 'you')) { paint(); return; }
+      const nb = g.battle, sd = LAMP.summonerOf(key), name = LAMP.summonerName(key, lang);
+      commandMenuOpen = false; sfx('gong');
+      phase = 'you'; phaseAt = Date.now(); fxNow = { key:'summonCall', action, side:'you' }; fxHandled = false;
+      if (nb.summoned) nb.summoned.at = Date.now() + (src ? ACTION_CUT_MS : 0);   // the helper steps out of the light when the card fades (CSS .summon-wait -> .summon-arrive)
+      paint();   // (a paint replaces the whole box, so the card is mounted after it)
+      const cutMs = playActionCutscene(action, null, src, lt('battle.lampCut', { name }), lt('item.lamp.name'), (nb.summon?.call || sd.say.call)[lang === 'en' ? 'en' : 'th']) ? ACTION_CUT_MS : 0;
+      startActionCue(cutMs);
+      clearTimeout(phaseTimer);
+      phaseTimer = setTimeout(() => {
+        if (!g.battle) return;
+        phase = null; fxNow = null; g.finishBattleCommand(); commandMenuOpen = true; finishWave(); paint(); refresh();
+      }, cutMs + 650);
+    };
     const executeCommand = async (action, recipient = 'you') => {
       if (phase || g.battle?.storyInterlude === 'th') return;   // case 15: the story is on screen (or about to be) - the closing move waits for it                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       if (COMBAT_SKILLS[action]) { await executeSkill(action,recipient); return; }
+      if (action.startsWith('summon:')) { await executeSummonCall(action); return; }   // FB3-EV5: Yama lights the lamp, the helper steps into the team
       fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
@@ -5314,7 +5371,8 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      const effect = ITEMS[k]?.consumable || k === 'phoenixFeather' ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
+      const helperNow = k === 'helper:move' ? g.battleActors().find(a => a.id === g.battle.actorId) : null;   // FB3-EV5: the standing helper's own move (a 'guard' move helps the team: it is drawn as a heal)
+      const effect = ITEMS[k]?.consumable || k === 'phoenixFeather' || (helperNow && LAMP.summonerOf(helperNow.summonKey)?.move?.kind === 'guard') ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: k.startsWith('summon:') ? null : crewNow, recipient };
@@ -5326,9 +5384,9 @@ function openBattle(after) {
         cutMs = playActionCutscene(action, null, BREACH_ART.flameCharge[0], 'พุ่งชนเพลิง') ? ACTION_CUT_MS * 2 : 0;
         if (cutMs) { clearTimeout(finaleCutTimer); finaleCutTimer = setTimeout(() => { if (g.battle === nb && dlg.open) playActionCutscene(action, null, BREACH_ART.flameCharge[1], 'พุ่งชนเพลิง'); }, ACTION_CUT_MS); }
       }
-      else if (k.startsWith('summon:')) {   // T4: the helper's picture (Codex slot - the old Hanuman sweep picture stands in), its name + move + the line it says
-        const sk = k.slice(7), sd = LAMP.summonerOf(sk), lang = getLang();
-        cutMs = playActionCutscene(action, null, sd.art.cut, LAMP.summonerMoveName(sk, lang), LAMP.summonerName(sk, lang), (nb.summon?.use || sd.say.use)[lang === 'en' ? 'en' : 'th']) ? ACTION_CUT_MS : 0;
+      else if (k.startsWith('summon:') || k === 'helper:move') {   // T4: the helper's picture (Codex slot - the old Hanuman sweep picture stands in), its name + move + the line it says · FB3-EV5: now played for the standing helper's own move
+        const sk = k.startsWith('summon:') ? k.slice(7) : helperNow?.summonKey, sd = LAMP.summonerOf(sk), lang = getLang();
+        cutMs = sd && playActionCutscene(action, null, sd.art.cut, LAMP.summonerMoveName(sk, lang), LAMP.summonerName(sk, lang), (nb.summon?.use || sd.say.use)[lang === 'en' ? 'en' : 'th']) ? ACTION_CUT_MS : 0;
       }
       else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
       startActionCue(cutMs); startMoveFx('you', k, cutMs ? cutMs - 120 : 0, cutMs);
