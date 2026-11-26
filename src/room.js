@@ -196,6 +196,7 @@ const ROOM_FOREGROUNDS = {
   'img/rooms-wide/th-tarang-v2.webp': 'img/rooms-wide/th-tarang-front-v1.webp',
 };
 
+const FRONT_CACHE = '?v=fb3t7b';
 const RED_TREE = 'img/theme-v4/town-tree-red-th-v1.webp';
 const CLIFF_TREE = 'img/map-zone1/v7r/sprites/pilot-red-tree-00.webp';
 
@@ -504,7 +505,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         ctx.restore();
       } else drawRoomLayer(bg);
       applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
-      const foreground = foregroundSrc && bgOf(foregroundSrc);
+      const foreground = foregroundSrc && bgOf(foregroundSrc + FRONT_CACHE);   // FB3-T7b: the front layers were trimmed (same file names) - the query makes a browser that cached the old ones fetch the new
       if (foreground?.naturalWidth === bg.naturalWidth && foreground.naturalHeight === bg.naturalHeight) {
         drawForeground = () => {
           ctx.save();

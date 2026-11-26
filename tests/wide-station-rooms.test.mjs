@@ -100,7 +100,7 @@ test('all 36 regional rooms draw their new background and allow service, trainin
       if (zone === 'th' && ['krata','lan','tarang'].includes(key)) {
         await new Promise(resolve => setImmediate(resolve)); f.room.tick(0);
         const foreground = f.calls.at(-1);
-        assert.equal(foreground[0].src, `img/rooms-wide/th-${key}-front-v1.webp`);
+        assert.equal(foreground[0].src.split('?')[0], `img/rooms-wide/th-${key}-front-v1.webp`);   // FB3-T7b: + a cache query
         assert.deepEqual(foreground.slice(1), draw.slice(1), 'foreground follows the exact room transform');
       }
       const exit=roomExit(key,zone,f.config);
