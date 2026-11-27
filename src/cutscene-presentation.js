@@ -3,8 +3,6 @@ import { loadImage } from './asset-preload.js';
 // Display-only crops: remove painted letterboxes without changing shared assets.
 // Bounds were measured from the shipped images; keep the full content width.
 const CONTENT_ROWS = {
-  'story-th-01.webp':[270,757], 'story-th-02.webp':[258,768],
-  'story-th-03.webp':[244,787], 'story-th-04.webp':[247,779], 'story-th-05.webp':[271,753],
   'story-asia-01.webp':[123,595], 'story-asia-02.webp':[100,615],
   'story-asia-04.webp':[222,802], 'story-asia-05-v2.webp':[112,594],
   'story-west-01.webp':[118,594], 'story-west-02.webp':[102,620],
@@ -15,7 +13,7 @@ const CONTENT_ROWS = {
   'story-ending-01-v4.webp':[121,602], 'story-ending-02-v3.webp':[89,633],
   'intro-panel-01.webp':[0,617], 'intro-panel-02.webp':[0,708],
   'intro-panel-03.webp':[0,646], 'intro-panel-04.webp':[0,750], 'intro-panel-05.webp':[0,621],
-  'Intro-Boss-Zone1.webp':[0,628], 'Intro-Boss-Zone2-asia.webp':[0,658],
+  'Intro-Boss-Zone2-asia.webp':[0,658],
   'Intro-Boss-Zone3-west.webp':[0,764], 'Intro-Boss-Zone4-cyberhell.webp':[0,780],
   'intro-head-asia-v2.webp':[0,758], 'intro-head-west-v2.webp':[0,737],
   'intro-head-cyberhell-v2.webp':[0,774],

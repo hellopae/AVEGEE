@@ -113,6 +113,10 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     }
     const { width, height } = imageMeta(png);   // PNG / lossy / lossless / alpha WebP
     const layout = comicImageLayout(panel.image, width, height);
+    if (/^img\/story-th-0[1-5]\.webp$/.test(panel.image)) {
+      assert.deepEqual(layout, {aspect:width/height, top:0, height:100}, panel.image);
+      continue;
+    }
     if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v1.webp' || panel.image === 'img/frontier-west-hypnosis-v2.webp' || panel.image === 'img/crew-guard-cutscene.webp') {   // guard cutscene was a JPEG before 12 Nov: full frame, no letterbox
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
@@ -125,6 +129,9 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     assert.ok(Math.abs((layout.height / 100) * visibleHeight - height) < 1e-9);
     assert.ok(layout.top + layout.height >= 100);
   }
+  const arrival = 'img/Intro-Boss-Zone1.webp';
+  const {width, height} = imageMeta(readFileSync(new URL(`../${arrival}`, import.meta.url)));
+  assert.deepEqual(comicImageLayout(arrival, width, height), {aspect:width/height, top:0, height:100});
   assert.deepEqual(comicImageLayout('unknown.webp', 1600, 900), {aspect:1600 / 900, top:0, height:100});
 });
 
