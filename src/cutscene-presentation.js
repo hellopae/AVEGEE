@@ -3,9 +3,6 @@ import { loadImage } from './asset-preload.js';
 // Display-only crops: remove painted letterboxes without changing shared assets.
 // Bounds were measured from the shipped images; keep the full content width.
 const CONTENT_ROWS = {
-  'story-asia-01.webp':[123,595], 'story-asia-02.webp':[100,615],
-  'story-asia-04.webp':[222,802], 'story-asia-05-v2.webp':[112,594],
-  'story-west-01.webp':[118,594], 'story-west-02.webp':[102,620],
   'story-cyberhell-01-v2.webp':[221,821], 'story-cyberhell-02-v3.webp':[104,640],
   'story-cyberhell-03-v4.webp':[88,632],
   'story-cyberhell-reinforcements-01.webp':[50,890],

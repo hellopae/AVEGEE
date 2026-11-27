@@ -113,7 +113,7 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     }
     const { width, height } = imageMeta(png);   // PNG / lossy / lossless / alpha WebP
     const layout = comicImageLayout(panel.image, width, height);
-    if (/^img\/story-th-0[1-5]\.webp$/.test(panel.image)) {
+    if (/^img\/story-(?:th-0[1-5]|asia-(?:0[1-4]|05-v2)|west-0[12])\.webp$/.test(panel.image)) {
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100}, panel.image);
       continue;
     }
@@ -121,7 +121,6 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
     }
-    if (panel.image === 'img/story-asia-03.webp') continue;   // 30F: วาดใหม่เต็มเฟรม ไม่มีแถบดำให้ตัด (ทดสอบใน 30f.test.mjs)
     assert.ok(layout.height > 100 && layout.top <= 0);
     const visibleHeight = width / layout.aspect;
     assert.ok(visibleHeight > 0 && visibleHeight < height);
