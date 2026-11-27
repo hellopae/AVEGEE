@@ -69,13 +69,13 @@ test('30F: CyberHell translations move hits and worker/service points together a
   }
 });
 
-test('30F: selected story image is 16:9; selected regional map sprites have alpha and are registered',()=>{
+test('30F: selected story image uses the C5b frame size; selected regional map sprites have alpha and are registered',()=>{
   assert.equal(STORY.asia.pages[2].image,'img/story-asia-03.webp');
   assert.ok(manifest.rest.includes('story-asia-03.webp'));
   const audit=JSON.parse(execFileSync('python3',['-c',
     'from PIL import Image;import json,sys; out=[]\nfor p in sys.argv[1:]:\n im=Image.open(p).convert("RGBA"); a=im.getchannel("A"); b=a.point(lambda v:255 if v>40 else 0).getbbox(); out.append(dict(size=im.size,alpha=a.getextrema(),box=[b[0]/im.width,b[1]/im.height,b[2]/im.width,b[3]/im.height]))\nprint(json.dumps(out))',
     ...['img/story-asia-03.webp','img/map-v5/st-tarang-cyberhell.webp','img/map-v5/st-krajok-cyberhell.webp'].map(p=>fileURLToPath(new URL('../'+p,import.meta.url)))],{encoding:'utf8'}));
-  assert.equal(audit[0].size[0]*9,audit[0].size[1]*16);
+  assert.deepEqual(audit[0].size,[1672,941]);
   for(const [i,key] of ['tarang','krajok'].entries()) {
     const stem=`st-${key}-cyberhell`,path=`map-v5/${stem}.webp`,a=audit[i+1];
     art.bindZone(()=> 'cyberhell');
@@ -114,8 +114,8 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
 
 test('30F review: new Rage image is full-bleed, so the old letterbox crop is gone from cutscene-presentation',async()=>{
   const { comicImageLayout } = await import('../src/cutscene-presentation.js');
-  const l = comicImageLayout('img/story-asia-03.webp', 1664, 936);
-  assert.ok(Math.abs(l.aspect - 1664 / 936) < 1e-6 && l.top === 0 && Math.abs(l.height - 100) < 1e-6);
+  const l = comicImageLayout('img/story-asia-03.webp', 1672, 941);
+  assert.ok(Math.abs(l.aspect - 1672 / 941) < 1e-6 && l.top === 0 && Math.abs(l.height - 100) < 1e-6);
 });
 
 test('themed sprites keep every zone station reachable with its terrain or town street layout',()=>{
