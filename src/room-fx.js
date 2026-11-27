@@ -40,7 +40,7 @@ export function roomLeafAt(i, timeMs, box) {
 }
 const LEAF_FILL = ['#c2452a', '#d8742c', '#b8532f'];   // the maple palette of the trees in the room (particles; the pictures are never touched)
 
-const NOOP = Object.freeze({ draw() {}, active:false, effects:[], destroy() {} });
+const NOOP = Object.freeze({ draw() {}, update() {}, surface:() => null, active:false, effects:[], destroy() {} });
 
 /** `edge` = the polygon this layer may show in (0..1 of the box); its soft-edged mask is baked once so the weather fades out at the border instead of being cut by a straight line. */
 const layerFor = (w, h, edge, blurPx = 7) => {
@@ -86,32 +86,11 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
 
   const leafBoxes = areas.leaves.map(([a, b, c, d]) => { const p = toBox([a, b]), q = toBox([c, d]); return [Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.max(p[0], q[0]), Math.max(p[1], q[1])]; });
   let sky = null, air = null, lava = null, composed = null, composeCtx = null, epoch = -1, sizeKey = '', drawnAt = -1e9, clock = 0, last = null;
-  let bitmap = null, copying = false, revision = 0;
-  let nextShadows = 0, nextLava = 0;
-  let canSnapshot = typeof createImageBitmap === 'function';
-  const clearSnapshot = () => {
-    revision++;
-    bitmap?.close();
-    bitmap = null;
-    copying = false;
-  };
-  const capture = () => {
-    if (!canSnapshot || copying) return;
-    const capturedRevision = revision;
-    copying = true;
-    createImageBitmap(composed).then(image => {
-      if (capturedRevision !== revision) { image.close(); return; }
-      bitmap?.close();
-      bitmap = image;
-    }).catch(() => { if (capturedRevision === revision) canSnapshot = false; }).finally(() => {
-      if (capturedRevision === revision) copying = false;
-    });
-  };
+  let nextShadows = 0, nextLava = 0, visible = false;
   const rebuild = box => {
     const key = `${Math.round(box.w)}x${Math.round(box.h)}`;
     if (epoch === gpuLossEpoch() && key === sizeKey && composed) return;
     epoch = gpuLossEpoch(); sizeKey = key; drawnAt = -1e9;
-    clearSnapshot();
     nextShadows = nextLava = clock;
     sky = effects.includes('cloud') && floor.length ? layerFor(box.w, box.h, floor, 34) : null;
     air = hasAir ? layerFor(box.w, box.h, airAreas, 14) : null;
@@ -174,25 +153,34 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
       composeCtx.clearRect(0, 0, composed.width, composed.height);
       for (const layer of [sky, air, lava]) if (layer) composeCtx.drawImage(layer.cv, 0, 0);
     }
-    capture();
+  };
+  const update = (box, t, { bg, paused = false } = {}) => {
+    if (reduced() || !enabled() || paused || !box || !(box.w > 8 && box.h > 8)) {
+      visible = false; last = null;
+      return;
+    }
+    visible = true;
+    rebuild(box);
+    if (t - drawnAt >= ROOM_FX.frameMs) { drawnAt = t; paintLayers(box, t, bg); }
+    else if (last === null) last = t;
+  };
+  const paint = (ctx, box) => {
+    if (!visible || !composed) return;
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    const w = right - left, h = bottom - top;
+    ctx.drawImage(composed, left * composed.width, top * composed.height, w * composed.width, h * composed.height,
+      box.ox + left * box.w, box.oy + top * box.h, w * box.w, h * box.h);
+    ctx.restore();
   };
   return {
     active:true, effects,
     layers: () => ({ sky, air, lava }),   // (tests, evidence)
-    destroy() { clearSnapshot(); sky = air = lava = composed = composeCtx = null; },
-    /** Lay the weather over the picture, under everything that stands on it. */
-    draw(ctx, box, t, { bg, paused = false } = {}) {
-      if (reduced() || !enabled() || paused || !box || !(box.w > 8 && box.h > 8)) { last = null; return; }
-      rebuild(box);
-      if (t - drawnAt >= ROOM_FX.frameMs) { drawnAt = t; paintLayers(box, t, bg); } else if (last === null) last = t;
-      ctx.save();
-      ctx.imageSmoothingEnabled = true;
-      // Use the prepared bitmap between weather updates and skip transparent parts of the room.
-      const surface = bitmap || composed;
-      const w = right - left, h = bottom - top;
-      ctx.drawImage(surface, left * surface.width, top * surface.height, w * surface.width, h * surface.height,
-        box.ox + left * box.w, box.oy + top * box.h, w * box.w, h * box.h);
-      ctx.restore();
+    destroy() { visible = false; sky = air = lava = composed = composeCtx = null; },
+    update, surface:() => visible ? composed : null,
+    draw(ctx, box, t, options) {
+      update(box, t, options);
+      paint(ctx, box);
     },
   };
 }

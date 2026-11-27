@@ -8,6 +8,7 @@ globalThis.document = { documentElement:{}, createElement:() => fakeCanvas() };
 globalThis.Image = class { set src(v) {} };
 const { openAreasOf, roomPictureStem, ROOM_AREA_FAMILIES } = await import('../src/room-open-areas.js');
 const { makeRoomFx, roomEffectsOf, roomLeafAt, ROOM_FX } = await import('../src/room-fx.js');
+const { resetAfterGpuLoss } = await import('../src/gpu-budget.js');
 const { roomWindAt } = await import('../src/room-tree-wind.js');
 const src = f => readFileSync(new URL('../' + f, import.meta.url), 'utf8');
 const ZONES = ['th', 'asia', 'west', 'cyberhell'];
@@ -92,6 +93,10 @@ test('Zone 3 and 4 reuse the precipitation layer even without a cloud layer', ()
     fx.draw(ctx, box, 1016);
     assert.equal(fx.layers().air, air, zone);
     fx.draw(ctx, {...box, w:390}, 1100);
-    assert.notEqual(fx.layers().air, air, zone);
+    const resized = fx.layers().air;
+    assert.notEqual(resized, air, zone);
+    resetAfterGpuLoss();
+    fx.draw(ctx, {...box, w:390}, 1116);
+    assert.notEqual(fx.layers().air, resized, zone);
   }
 });
