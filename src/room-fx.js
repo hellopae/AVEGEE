@@ -16,7 +16,7 @@ export const ROOM_FX = Object.freeze({
   frameMs:45,                  // the weather is redrawn at ~22 fps (clouds and snow are slow; the picture itself still runs at full rate)
   maxParticles:Object.freeze({ west:200, cyberhell:220 }),
   leaves:Object.freeze({ count:14, fall:Object.freeze([14, 26]), size:Object.freeze([3, 5.5]) }),   // Zone 1 leaves (per room, before the area share)
-  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']), asia:Object.freeze(['cloud']) }),   // 'cloud' = the map's cloud shadows; in Zone 2 drawMapWeather also lays its sun shafts and slim leaves into the same layer. Zones 3-4 are switched on one by one (FB3-T10 commits)
+  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']), asia:Object.freeze(['cloud']), west:Object.freeze(['snow']) }),   // 'cloud' = the map's cloud shadows; in Zone 2 drawMapWeather also lays its sun shafts and slim leaves into the same layer. Zone 4 follows (FB3-T10 commits)
 });
 const noise = n => { const f = Math.sin(n * 127.1 + 311.7) * 43758.5453; return f - Math.floor(f); };
 const mod = (n, d) => ((n % d) + d) % d;
@@ -62,24 +62,24 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
   // full-picture u,v -> 0..1 of the drawn box (cropped / mirrored)
   const toBox = ([u, v]) => [((mirror ? 1 - u : u) - (mirror ? 1 - crop[0] - crop[2] : crop[0])) / crop[2], (v - crop[1]) / crop[3]];
   const polyBox = poly => poly.map(toBox);
-  const floor = polyBox(areas.floor), outside = areas.outside.map(polyBox), lavaAreas = (areas.lava || areas.outside).map(polyBox);
+  const floor = areas.floor ? polyBox(areas.floor) : null, outside = areas.outside.map(polyBox), lavaAreas = (areas.lava || areas.outside).map(polyBox);
   const leafBoxes = areas.leaves.map(([a, b, c, d]) => { const p = toBox([a, b]), q = toBox([c, d]); return [Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.max(p[0], q[0]), Math.max(p[1], q[1])]; });
   let sky = null, air = null, lava = null, comp = null, epoch = -1, sizeKey = '', drawnAt = -1e9, clock = 0, last = null;
   const rebuild = box => {
     const key = `${Math.round(box.w)}x${Math.round(box.h)}`;
     if (epoch === gpuLossEpoch() && key === sizeKey && sky) return;
     epoch = gpuLossEpoch(); sizeKey = key; drawnAt = -1e9;
-    sky = effects.includes('cloud') ? layerFor(box.w, box.h, [floor], 34) : null;
-    air = effects.some(e => ['leaves', 'snow', 'rain'].includes(e)) ? layerFor(box.w, box.h, [floor, ...outside], 14) : null;
+    sky = effects.includes('cloud') && floor ? layerFor(box.w, box.h, [floor].filter(Boolean), 34) : null;
+    air = effects.some(e => ['leaves', 'snow', 'rain'].includes(e)) ? layerFor(box.w, box.h, [floor, ...outside].filter(Boolean), 14) : null;
     lava = effects.includes('lava') ? layerFor(box.w, box.h, lavaAreas, 8) : null;
-    if (!sky && !air && !lava) sky = layerFor(2, 2, [floor]);   // keeps `sky` as the "built" flag
+    if (!sky && !air && !lava) sky = layerFor(2, 2, [[[0, 0], [1, 0], [1, 1]]]);   // keeps `sky` as the "built" flag
     // the layers are put together at their own small size, so the big upscale onto the room is ONE copy per frame, not three
     const first = sky || air || lava; comp = { cv:document.createElement('canvas') }; comp.cv.width = first.cv.width; comp.cv.height = first.cv.height; comp.ctx = comp.cv.getContext('2d');
   };
   const paintLayers = (box, t, bg) => {
     const dt = last === null ? 0 : Math.max(0, Math.min(100, t - last)); last = t; clock += dt;   // a long stall does not make the weather jump
     if (sky && effects.includes('cloud')) {
-      const { ctx: c, cv, scale } = sky; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
+      const { ctx: c, cv } = sky; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
       drawMapWeather(c, { zone, time:clock, W:cv.width, H:cv.height, reduced:false, paused:false, enabled:true, clouds:true, sceneClouds:true, townShadows:zone !== 'th', viewport:{ width:cv.width, height:cv.height, dpr:1 } });
       maskLayer(sky);
     }

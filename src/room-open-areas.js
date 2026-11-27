@@ -1,6 +1,6 @@
 // FB3-T10 / O3 (owner 21 and 26 Nov): where the open air of each room picture is - the only places the room's weather may be drawn (cloud shadows, falling leaves, lava glints, light shafts,
 // snow, rain). Data, not code: every point is [u, v] in 0..1 of the FULL room picture (before any `room.crop`), so one table serves every screen size and crop.
-//   floor   = the open floor / plaza / deck (cloud shadows and light fall on it)
+//   floor   = the open floor / plaza / deck (cloud shadows and light fall on it) - null for a room whose floor is indoors
 //   outside = the view past the terrace: sky and mountains at the top, the cliff / lava below the railing, the sides (lava glints, falling snow / rain / leaves)
 //   lava    = where the glints of the lava may show (default: `outside`; the top strip is left out of the wide rooms - its waterfalls turn into pale blocks)
 //   leaves  = [x0, y0, x1, y1] boxes along the terrace edge where leaves blow in (Zone 1)
@@ -29,7 +29,10 @@ const CANTEEN = Object.freeze({
   leaves: [[0, .3, .2, .95], [.7, .6, 1, .95]],
 });
 /** Per-picture corrections (file stem -> areas); everything else falls back on its family above. */
-const OVERRIDES = Object.freeze({});
+const OVERRIDES = Object.freeze({
+  // Zone 3's tea house is a closed log hall with a fireplace: only the window at the top-left looks outside, the floor is indoors - no snow on it
+  'tea-west-recovery': Object.freeze({ floor:null, outside:[[[0, 0], [.55, 0], [.35, .14], [0, .30]], rect(0, .30, .04, 1)], lava:[], leaves:[] }),
+});
 
 /** The file stem of a room picture: 'img/rooms-wide/th-krata-v2.webp?v=3' -> 'th-krata-v2'. */
 export const roomPictureStem = src => String(src || '').split('?')[0].split('/').pop().replace(/\.\w+$/, '');

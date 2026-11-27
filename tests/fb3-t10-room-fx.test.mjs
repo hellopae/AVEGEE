@@ -19,7 +19,7 @@ const pictures = zone => [...KEYS.map(k => ({ k, src:`img/rooms-wide/${zone}-${k
 test('every room picture of every zone has open areas (data), well formed, and the roofs / building stay out of them', () => {
   for (const zone of ZONES) for (const { k, src: s } of pictures(zone)) {
     const a = openAreasOf(s); assert.ok(a, `${zone}/${k}: ${s}`);
-    for (const poly of [a.floor, ...a.outside, ...(a.lava || [])]) { assert.ok(poly.length >= 3, `${zone}/${k} polygon`); for (const [u, v] of poly) assert.ok(u >= 0 && u <= 1 && v >= 0 && v <= 1, `${zone}/${k} point ${u},${v}`); }
+    for (const poly of [a.floor, ...a.outside, ...(a.lava || [])].filter(Boolean)) { assert.ok(poly.length >= 3, `${zone}/${k} polygon`); for (const [u, v] of poly) assert.ok(u >= 0 && u <= 1 && v >= 0 && v <= 1, `${zone}/${k} point ${u},${v}`); }
     for (const [x0, y0, x1, y1] of a.leaves) { assert.ok(x0 < x1 && y0 < y1 && x0 >= 0 && y1 <= 1); }
     if (k !== 'tea' && k !== 'canteen') assert.ok(a.floor.every(([, v]) => v >= .45), `${zone}/${k}: the floor starts below the building at the back`);
   }
@@ -27,8 +27,8 @@ test('every room picture of every zone has open areas (data), well formed, and t
   assert.equal(roomPictureStem('img/rooms-wide/th-krajok.webp?v=20261018-n1b'), 'th-krajok'); assert.equal(openAreasOf('img/rooms-wide/th-krajok.webp?v=20261018-n1b'), ROOM_AREA_FAMILIES.WIDE);
 });
 
-test('the effect of each zone: 1 cloud shadows + leaves + lava + 2 light and shade (3 snow, 4 rain follow)', () => {
-  assert.deepEqual(roomEffectsOf('th'), ['cloud', 'leaves', 'lava']); assert.deepEqual(roomEffectsOf('asia'), ['cloud']);
+test('the effect of each zone: 1 cloud shadows + leaves + lava + 2 light and shade + 3 snow (4 rain follows)', () => {
+  assert.deepEqual(roomEffectsOf('th'), ['cloud', 'leaves', 'lava']); assert.deepEqual(roomEffectsOf('asia'), ['cloud']); assert.deepEqual(roomEffectsOf('west'), ['snow']);
   assert.deepEqual(roomEffectsOf('nowhere'), []);
   assert.ok(ROOM_FX.maxPixels <= 300000 && ROOM_FX.frameMs >= 40, 'a small canvas, ~30 fps');
   assert.ok(ROOM_FX.maxParticles.west <= 220 && ROOM_FX.maxParticles.cyberhell <= 240, 'room particle caps');
@@ -66,4 +66,12 @@ test('wiring: room.js lays the weather over the picture, before the characters; 
   assert.match(fx, /quiet:true/, 'no lightning flash inside a room');
   const html = src('index.html'); assert.ok(html.includes('"./src/room-fx.js": "./src/room-fx.js?v=') && html.includes('"./src/room-open-areas.js": "./src/room-open-areas.js?v='));
   assert.doesNotMatch(fx, /\.filter\s*=\s*`?(brightness|hue|saturate|sepia)/, 'the pictures are never recoloured');
+});
+
+test('Zone 3: snow in the open air only - the closed tea hall has no floor to snow on, every other room snows on floor + view, never on a roof', () => {
+  const tea = openAreasOf('img/tea-west-recovery.webp'); assert.equal(tea.floor, null); assert.ok(tea.outside.length >= 1, 'only the window looks out');
+  const cx = new Proxy({ canvas:{ width:1000, height:600 }, getTransform:() => ({ a:1, d:1, b:0, c:0 }) }, { get:(t, k) => k in t ? t[k] : () => {}, set:() => true }), box = { ox:0, oy:0, w:800, h:450 };
+  const fx = makeRoomFx({ zone:'west', bgSrc:'img/tea-west-recovery.webp', reduced:() => false, enabled:() => true }); fx.draw(cx, box, 1000, {}); assert.deepEqual(fx.effects, ['snow']); assert.ok(fx.layers().air && !fx.layers().sky);
+  const krata = makeRoomFx({ zone:'west', bgSrc:'img/rooms-wide/west-krata.webp', reduced:() => false, enabled:() => true }); krata.draw(cx, box, 1000, {}); assert.ok(krata.layers().air);
+  assert.ok(ROOM_FX.maxParticles.west <= 220);
 });
