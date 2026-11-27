@@ -101,7 +101,7 @@ test('discovery modal waits for reward and existing dialogs, shows one entry, an
   assert.match(renders[1],/ลูกไฟใหญ่/);
 });
 
-test('all item icons have files or usable error fallback; sword shares the helper and lotus name has no duplicated emoji', () => {
+test('all item icons have files or usable error fallback; blade scrap shares the helper and lotus name has no duplicated emoji', () => {
   const ctx={ITEMS,artUrl:()=>null,esc:String,itemName:k=>ITEMS[k].name};vm.createContext(ctx);
   vm.runInContext(ui.slice(ui.indexOf('const placeholderSrc ='),ui.indexOf('function bagUseWhy')),ctx);
   for(const [k,d] of Object.entries(ITEMS)) {
@@ -110,9 +110,14 @@ test('all item icons have files or usable error fallback; sword shares the helpe
     assert.match(html,/onerror=/,k);
     assert.ok(d.howTo,k);
   }
-  assert.equal(ITEMS.bladeShard.img,'item-demon-sword');
-  const sword=ctx.itemImg('bladeShard'); assert.match(sword,/item-demon-sword.webp/);
-  assert.ok(decodeURIComponent(sword).includes('🗡️'));
+  const scrap = ITEMS.bladeShard;
+  assert.equal(scrap.name, 'เศษดาบ');
+  assert.equal(scrap.nameEn, 'Blade Scrap');
+  assert.equal(scrap.material, true);
+  assert.equal(scrap.sell, 34);
+  const icon = ctx.itemImg('bladeShard');
+  assert.match(icon, /item-blade-shard\.webp/);
+  assert.doesNotMatch(decodeURIComponent(icon), /🗡|item-demon-sword/);
   assert.match(ui,/itemImg\(k, 'class="shop-item-img"'\)/);
   assert.match(ui,/itemImg\(it.k\)/);
   assert.ok(!ui.includes("${d.glyph ? esc(d.glyph) + ' ' : ''}${esc(itemName(k))}"));

@@ -1,0 +1,8 @@
+{
+  "data": [
+    {
+      "before": "  // ของจากชายแดนยังใช้ไม่ได้โดยตรง เก็บไว้เป็นสินค้าให้พ่อค้านรกในระบบถัดไป\n  bladeShard: { name:'เศษดาบปีศาจ', img:'item-demon-sword', h:42, glyph:'🗡️', material:true, sell:34,\n            desc:'วัตถุดิบจากสนามรบ ขายแลกเบี้ยกรรมได้', howTo:'คุยกับพ่อค้านรก เลือกขายในรายการสินค้า', fallback:'🗡️', say:'ของจากชายแดน — เก็บไว้ขายให้พ่อค้านรก' },",
+      "after": "  // Frontier materials go into the merchant's sell list.\n  bladeShard: { name:'เศษดาบ', nameEn:'Blade Scrap', img:'item-blade-shard', h:42, glyph:'◈', material:true, sell:34,\n            desc:'เศษใบดาบจากสนามรบ สำหรับขายให้พ่อค้านรก', descEn:'Broken pieces of a blade. Sell them to the Hell Merchant.',\n            howTo:'คุยกับพ่อค้านรก แล้วเลือกขายของจากชายแดน', howToEn:'Talk to the Hell Merchant and choose Sell Frontier Goods.',\n            fallback:'◈', say:'เก็บไว้ขายให้พ่อค้านรก' },"
+    }
+  ]
+}

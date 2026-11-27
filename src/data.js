@@ -656,9 +656,11 @@ export const ITEMS = {
   // ตกให้เมื่อกรรมเริ่มสูงเท่านั้น — ไม่งั้นมันจะกลายเป็นใบอนุญาตให้ลงทัณฑ์เกินฟรี ๆ
   lotus:  { name:'ดอกบัวบูชา',      img:'item-lotus',  h:40, karma:-4, glyph:'🪷',
             desc:'มอบให้บุญเพื่อลดกรรมของยมบาทน้อย', howTo:'ที่ประตูสวรรค์ คุยกับบุญแล้วเลือกมอบดอกบัวเพื่อลดกรรม', fallback:'🪷', say:'ท่านวางดอกบัวลงแล้วนิ่งไปพักหนึ่ง — กรรมในบัญชีเบาลงนิดหนึ่ง' },
-  // ของจากชายแดนยังใช้ไม่ได้โดยตรง เก็บไว้เป็นสินค้าให้พ่อค้านรกในระบบถัดไป
-  bladeShard: { name:'เศษดาบปีศาจ', img:'item-demon-sword', h:42, glyph:'🗡️', material:true, sell:34,
-            desc:'วัตถุดิบจากสนามรบ ขายแลกเบี้ยกรรมได้', howTo:'คุยกับพ่อค้านรก เลือกขายในรายการสินค้า', fallback:'🗡️', say:'ของจากชายแดน — เก็บไว้ขายให้พ่อค้านรก' },
+  // Frontier materials go into the merchant's sell list.
+  bladeShard: { name:'เศษดาบ', nameEn:'Blade Scrap', img:'item-blade-shard', h:42, glyph:'◈', material:true, sell:34,
+            desc:'เศษใบดาบจากสนามรบ สำหรับขายให้พ่อค้านรก', descEn:'Broken pieces of a blade. Sell them to the Hell Merchant.',
+            howTo:'คุยกับพ่อค้านรก แล้วเลือกขายของจากชายแดน', howToEn:'Talk to the Hell Merchant and choose Sell Frontier Goods.',
+            fallback:'◈', say:'เก็บไว้ขายให้พ่อค้านรก' },
   emberWood: { name:'เศษถ่านอาถรรพ์', img:'item-fuel', h:42, glyph:'🪵', material:true, sell:24,
             desc:'วัตถุดิบจากสนามรบ ขายแลกเบี้ยกรรมได้', howTo:'คุยกับพ่อค้านรก เลือกขายในรายการสินค้า', fallback:'ของ', say:'ของจากชายแดน — เก็บไว้ขายให้พ่อค้านรก' },
   ashStone: { name:'เศษหินเถ้า', img:'st-lan', h:42, glyph:'🪨', material:true, sell:18,
