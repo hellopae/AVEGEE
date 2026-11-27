@@ -51,7 +51,7 @@ export const FOE_DRAWN_FACING_RIGHT = new Set([
  *  · วิญญาณประจำเนื้อเรื่อง soul-* ไม่เคยขึ้นเป็นศัตรู จึงขึ้นทะเบียนที่นี่ — ตัดสินจากภาพจริงทีละไฟล์ (แผ่น Output/Review/2026-11-26-fb3-t3/facing-trial-*.jpg)
  *  วาดใหม่ให้หันทิศอื่น (เช่น Codex C2 วาดนางวันทองเป็นวิญญาณทับชื่อเดิม) → ลบบรรทัดนั้น */
 export const TRIAL_SOUL_DRAWN_FACING_RIGHT = new Set([
-  'soul-wanthong-th', 'soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west',
+  'soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west',
   'soul-witch-bread-west', 'soul-younger-brother-west', 'soul-aiscam-cyber',
   // FB3-F3 (owner 26 Nov round 2: "soul-cupdealer-asia หันผิด · spirit-boy-west หันผิด · soul-admin-cyber ถูกแล้ว"): these two were drawn facing right -> mirrored in the room. soul-admin-cyber is right as it is (NOT listed).
   'soul-cupdealer-asia', 'spirit-boy-west',

@@ -152,11 +152,12 @@ test('EV16: Nira\'s old desk-mate (the nurse) is drawn with img/soul-nurse.webp 
 
 // ---- EV6 / EV13 ----
 test('EV6/EV13: the suspect stands on the right of the room and faces Yama - the story souls drawn facing right are mirrored there, and so are the spirits that are mirrored in battle', () => {
-  for (const k of ['soul-wanthong-th', 'soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west', 'soul-witch-bread-west', 'soul-younger-brother-west', 'soul-aiscam-cyber']) {
+  for (const k of ['soul-false-judge-west', 'soul-loki-priest-west', 'soul-redhood-west', 'soul-soup-cook-west', 'soul-witch-bread-west', 'soul-younger-brother-west', 'soul-aiscam-cyber']) {
     assert.ok(TRIAL_SOUL_DRAWN_FACING_RIGHT.has(k), k);
     assert.equal(trialSoulFaceClass(`img/${k}.webp?v=2`), 'face-flip'); assert.equal(trialSoulNeedsMirror(`img/z1-events/${k}.webp`), true);
   }
   assert.equal(trialSoulFaceClass('img/z1-events/soul-sita-th.webp'), '', 'what already faces left is left alone');
+  assert.equal(trialSoulFaceClass('img/z1-events/soul-wanthong-th.webp'), '', 'the C2 Wanthong art already faces Yama');
   for (const k of FOE_DRAWN_FACING_RIGHT) if (k.startsWith('spirit-')) assert.equal(trialSoulNeedsMirror(`img/Thai/${k}-v2.webp`), true, k);
   assert.equal(trialSoulNeedsMirror('img/Thai/spirit-worker-th-v2.webp'), false);
   assert.equal(foeNeedsMirror('img/z1-events/soul-wanthong-th.webp'), false, 'the battle list is not touched (she is never an enemy in battle)');
