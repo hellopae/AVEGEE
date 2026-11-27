@@ -51,7 +51,11 @@ test('makeRoomFx: nothing when reduced motion or the weather switch is off, noth
   const sw = makeRoomFx({ zone:'th', bgSrc:'img/rooms-wide/west-krata.webp', reduced:() => false, enabled:() => false }); sw.draw(ctx, box, 1000, {}); assert.equal(draws.length, 0, 'weather switch off: nothing');
   const none = makeRoomFx({ zone:'th', bgSrc:'img/unknown.webp' }); assert.equal(none.active, false); none.draw(ctx, box, 1000, {}); assert.equal(draws.length, 0);
   const on = makeRoomFx({ zone:'th', bgSrc:'img/rooms-wide/th-krata-v2.webp', reduced:() => false, enabled:() => true }); assert.equal(on.active, true); on.draw(ctx, box, 1000, {});
-  assert.ok(draws.length >= 1, 'weather is laid on the picture'); for (const d of draws) { assert.deepEqual(d.slice(1), [box.ox, box.oy, box.w, box.h], 'always the picture box, through a soft mask'); }
+  assert.ok(draws.length >= 1, 'weather is laid on the picture');
+  for (const [, , , , , x, y, w, h] of draws) {
+    assert.ok(x >= box.ox && y >= box.oy && x + w <= box.ox + box.w && y + h <= box.oy + box.h, 'weather stays within the picture');
+    assert.ok(w < box.w || h < box.h, 'transparent margins are not composited');
+  }
   draws.length = 0; on.draw(ctx, box, 1016, { paused:true }); assert.equal(draws.length, 0, 'a modal over the room pauses weather');
   assert.ok(on.layers().sky && on.layers().air && on.layers().lava, 'zone 1: shadows, leaves, lava'); on.destroy(); assert.equal(on.layers().air, null);
   assert.deepEqual(makeRoomFx({ zone:'th', bgSrc:'img/rooms-wide/th-krata-v2.webp', reduced:() => false, enabled:() => true }).effects, ['cloud', 'leaves', 'lava']);
