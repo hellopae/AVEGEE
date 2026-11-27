@@ -12,6 +12,7 @@
 /** ภาพฝั่งเราที่วาดหันขวามาอยู่แล้ว → ห้ามพลิก */
 export const TEAM_DRAWN_FACING_RIGHT = new Set([
   'hero-yama-west', 'hero-yama-west-atk-R',
+  'char-home67', // The revised map and battle standee faces right, like his walking frames.
   'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
   // FB3-EV5 (owner 26 Nov: a called helper stands in OUR team and must face right): the helpers' battle pictures, judged one by one from the drawing (sheet Output/Review/2026-11-26-fb3-t4/facing-summon.jpg).
   // Drawn facing RIGHT (head / body turned to the right) -> not mirrored. Hanuman is drawn facing left (mirrored, as before); Eirlin, Liangang and Yomathat stand square to the camera (kept as they were).

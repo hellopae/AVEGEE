@@ -18,6 +18,7 @@ test('30B-2: ทีมโซน 3 หันขวามาแล้ว; เท�
   assert.equal(teamNeedsMirror('img/crew-plerng.webp'), true);
   assert.equal(teamNeedsMirror('img/Asia/crew-guard-asia-v2.webp'), true);
   assert.equal(teamFaceClass('img/West/crew-kan-west.webp'), 'face-native');
+  assert.equal(teamFaceClass('img/z3-events/char-home67.webp'), 'face-native');
   assert.equal(teamFaceClass('img/Asia/crew-kan-asia.webp'), '');
   assert.ok(TEAM_DRAWN_FACING_RIGHT.size >= 6);
 });
