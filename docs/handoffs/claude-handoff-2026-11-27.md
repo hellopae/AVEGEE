@@ -16,7 +16,7 @@ T1 จังหวะศึก · CLEAN/CLEAN2 · T2 ขนาด/ทิศ · R
 ## คิวที่ Codex รับต่อ (เรียงลำดับ)
 1. **ภาพ Codex ที่วาดเสร็จแล้ว รอ merge** (branch local `codex/<run_id>` ใน `/Users/agapae/agapae-work/AVEGEE`):
    - ~~C5a~~ merge แล้ว — ตรวจว่า story-th-01..05 ลบ crop ครบ (commit `08c722f8` แก้เฉพาะยมทัต?) · ภาพเรื่องโซน 1 story-th-01..05 + `Intro-Boss-Zone1.webp` — **ต้องลบ entry crop ของภาพที่วาดใหม่ใน `src/cutscene-presentation.js` CONTENT_ROWS** (ภาพ pixel เก่าถูกครอปขอบดำ ภาพใหม่เต็มเฟรม) แล้วเปิดดูในเกมว่าไม่ถูกตัด
-   - กำลังวาด/ยังไม่เริ่ม (คิว `queue-1126c.py` ใน AGAPAE `Output/Codex/runs/`): C3 แบบลูซิเฟอร์ (**ห้ามใช้ในเกม รอคุณเป้อนุมัติ**) · C5b story-asia/west (ลบ crop เหมือน C5a) · C6 หัวหน้าคนงานโซน 2–4 (โค้ดผูกชื่อแล้ว) · C5c Intro-Boss โซน 2–4 (ลบ crop ถ้ามี) · C7 ท่าเดิน 6 ตัว · C8 `cut-z{1,2,3}-guard-freed` (ผูกชื่อแล้ว)
+   - กำลังวาด/ยังไม่เริ่ม (คิว `queue-1126c.py` ใน AGAPAE `Output/Codex/runs/`): C3 แบบลูซิเฟอร์ — **คุณเป้อนุมัติแล้ว 27 พ.ย.** ("แบบลูซิเฟอร์ โอเคครับ") ภาพอยู่ worktree `20261127T045223Z-f93a8f8a` `docs/art-reviews/2026-11-26-fb3-C3/lucifer-design-v1.webp` (run จบ rate_limited แต่ภาพเสร็จ) → ใช้เป็นแบบวาดภาพลูซิเฟอร์ในเกม (battle/summon/cutscene ที่ยังเป็นแบบเก่า) · C5b story-asia/west (ลบ crop เหมือน C5a) · C6 หัวหน้าคนงานโซน 2–4 (โค้ดผูกชื่อแล้ว) · C5c Intro-Boss โซน 2–4 (ลบ crop ถ้ามี) · C7 ท่าเดิน 6 ตัว · C8 `cut-z{1,2,3}-guard-freed` (ผูกชื่อแล้ว)
    - ทุก run: เปิด `docs/art-reviews/.../compare.jpg` ดูด้วยตา · แตะเฉพาะ img/docs · ขนาด px เดิม · ไฟล์ไม่โตเกิน 15% · merge `--no-ff` · เทสต์ · push · deploy
 2. **T10 เอฟเฟกต์บรรยากาศในอาคาร** — branch `toby/fb3` (push แล้ว): โซน 1 `aa1f0a05` โซน 2 `569b9c4f` เสร็จ (ยังไม่มีใครรีวิว) · โซน 3 WIP `706c63db` (Toby หยุดกลางทาง เทสต์ยังไม่ได้รัน) · โซน 4 ฝน ยังไม่เริ่ม · ใบงาน `Output/Claudy/briefs/2026-11-26-avegee-fb3-t10-room-fx.md` · ไฟล์หลัก `src/room-fx.js` `src/room-open-areas.js` `tests/fb3-t10-room-fx.test.mjs` · ทำต่อจาก branch นี้ แล้ว merge main
 3. **T-WALK** (หลัง C7) `Output/Claudy/briefs/2026-11-27-avegee-fb3-twalk.md` — ท่าเดิน 6 ตัว + ฉากเดินเข้า เซเวอริน/อาร์คอน-ศูนย์
@@ -25,6 +25,6 @@ T1 จังหวะศึก · CLEAN/CLEAN2 · T2 ขนาด/ทิศ · R
 
 ## รอคุณเป้
 - ลองเล่น: เสียง restore · แรงท่าประสาน · ศึกปลดปล่อยระลอก 2 ถึง `z1-restored` · มินิเกมลูกไฟบนมือถือ
-- อนุมัติแบบลูซิเฟอร์ (C3) · หัวนาค/ยอดเสาในห้องโซน 1 ไม่บังตัวละครแล้ว (ถ้าต้องการให้บังต้องวาดชั้นหน้าใหม่) · ข้อตัดสินท้ายบท R2 A–D (ค้างจาก 20 พ.ย.)
+- หัวนาค/ยอดเสาในห้องโซน 1 ไม่บังตัวละครแล้ว (ถ้าต้องการให้บังต้องวาดชั้นหน้าใหม่) · ข้อตัดสินท้ายบท R2 A–D → **Codex สรุปให้คุณเป้** ตามใบงาน AGAPAE `Output/Codex/runs/task-1127-r2-decisions-summary.md` (อ่านอย่างเดียว) ผลที่ `Output/Review/2026-11-27-r2-decisions-summary.md`
 
 เมื่อ Claude กลับมา: ต่อท้ายไฟล์นี้ (บนสุด) ว่าทำอะไรไป commit อะไร ค้างอะไร
