@@ -18,7 +18,6 @@ const REVIEWED={
  'cover-fx-h5b.js':'title-screen engine: built by installCoverFx() every time the title is shown, never lives through play',
  'nira-combat.js':'frames are kept as data URLs (CPU), the canvases are scratch',
  'route-flow.js':'CPU read-back canvas (willReadFrequently), keeps the decoded flow field only',
- 'room.js':'CPU read-backs (willReadFrequently) and one-off feature probes only; backdrops / poses are <img>',
  'scene-atmosphere.js':'live DOM canvases, repainted every animation frame',
  'terrain-bake-worker.js':'worker-side canvases of one bake job; the results live in town-lighting.js (wired)',
  'town-flow.js':'CPU read-back canvases (willReadFrequently) that decode the flow field',
