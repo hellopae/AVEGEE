@@ -27,8 +27,8 @@ test('every room picture of every zone has open areas (data), well formed, and t
   assert.equal(roomPictureStem('img/rooms-wide/th-krajok.webp?v=20261018-n1b'), 'th-krajok'); assert.equal(openAreasOf('img/rooms-wide/th-krajok.webp?v=20261018-n1b'), ROOM_AREA_FAMILIES.WIDE);
 });
 
-test('the effect of each zone: 1 cloud shadows + leaves + lava (2 light + shade, 3 snow, 4 rain follow)', () => {
-  assert.deepEqual(roomEffectsOf('th'), ['cloud', 'leaves', 'lava']);
+test('the effect of each zone: 1 cloud shadows + leaves + lava + 2 light and shade (3 snow, 4 rain follow)', () => {
+  assert.deepEqual(roomEffectsOf('th'), ['cloud', 'leaves', 'lava']); assert.deepEqual(roomEffectsOf('asia'), ['cloud']);
   assert.deepEqual(roomEffectsOf('nowhere'), []);
   assert.ok(ROOM_FX.maxPixels <= 300000 && ROOM_FX.frameMs >= 40, 'a small canvas, ~30 fps');
   assert.ok(ROOM_FX.maxParticles.west <= 220 && ROOM_FX.maxParticles.cyberhell <= 240, 'room particle caps');
