@@ -12,11 +12,12 @@ import { gpuLossEpoch } from './gpu-budget.js';
 import { openAreasOf } from './room-open-areas.js';
 
 export const ROOM_FX = Object.freeze({
-  maxPixels:260000,            // each off-screen layer
-  frameMs:45,                  // the weather is redrawn at ~22 fps (clouds and snow are slow; the picture itself still runs at full rate)
+  maxPixels:110000,            // each off-screen layer
+  frameMs:55,                  // the weather refreshes at ~18 fps; the room still draws every frame
   maxParticles:Object.freeze({ west:200, cyberhell:220 }),
   leaves:Object.freeze({ count:14, fall:Object.freeze([14, 26]), size:Object.freeze([3, 5.5]) }),   // Zone 1 leaves (per room, before the area share)
-  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']), asia:Object.freeze(['cloud']) }),   // 'cloud' = the map's cloud shadows; in Zone 2 drawMapWeather also lays its sun shafts and slim leaves into the same layer. Zones 3-4 are switched on one by one (FB3-T10 commits)
+  // Zone 2's map renderer paints both cloud shadows and sun shafts.
+  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']), asia:Object.freeze(['cloud']), west:Object.freeze(['snow']), cyberhell:Object.freeze(['rain']) }),
 });
 const noise = n => { const f = Math.sin(n * 127.1 + 311.7) * 43758.5453; return f - Math.floor(f); };
 const mod = (n, d) => ((n % d) + d) % d;
@@ -28,7 +29,7 @@ export const roomEffectsOf = zone => ROOM_FX.effects[zone] || [];
 export function roomLeafAt(i, timeMs, box) {
   const [x0, y0, x1, y1] = box, t = timeMs / 1000, F = ROOM_FX.leaves;
   const span = y1 - y0, fall = F.fall[0] + noise(i + 3) * (F.fall[1] - F.fall[0]);
-  const v = mod(noise(i + 11) * span + t * fall * .004 * 1, span);                           // falls slowly through the box and starts again at the top
+  const v = mod(noise(i + 11) * span + t * fall * .004, span);                           // falls slowly through the box and starts again at the top
   const base = x0 + noise(i + 7) * (x1 - x0);
   const wind = roomWindAt(timeMs, base);
   const push = wind.strength * (.05 + .02 * wind.wave);                                      // the gust carries it along the room's wind direction (positive = right)
@@ -45,9 +46,10 @@ const layerFor = (w, h, edge, blurPx = 7) => {
   const cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(w * s)); cv.height = Math.max(1, Math.round(h * s));
   const mask = document.createElement('canvas'); mask.width = cv.width; mask.height = cv.height;
   const m = mask.getContext('2d');
-  if (typeof m.filter === 'string') m.filter = `blur(${Math.max(1, blurPx * s).toFixed(1)}px)`;
   m.fillStyle = '#fff'; m.beginPath();
   for (const poly of edge) { poly.forEach(([u, v], i) => (i ? m.lineTo : m.moveTo).call(m, u * mask.width, v * mask.height)); m.closePath(); }
+  m.clip();
+  if (typeof m.filter === 'string') m.filter = `blur(${Math.max(1, blurPx * s).toFixed(1)}px)`;
   m.fill();
   return { cv, ctx:cv.getContext('2d'), scale:s, mask };
 };
@@ -62,24 +64,34 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
   // full-picture u,v -> 0..1 of the drawn box (cropped / mirrored)
   const toBox = ([u, v]) => [((mirror ? 1 - u : u) - (mirror ? 1 - crop[0] - crop[2] : crop[0])) / crop[2], (v - crop[1]) / crop[3]];
   const polyBox = poly => poly.map(toBox);
-  const floor = polyBox(areas.floor), outside = areas.outside.map(polyBox), lavaAreas = (areas.lava || areas.outside).map(polyBox);
+  const floor = areas.floor ? [polyBox(areas.floor)] : [];
+  const airAreas = [...floor, ...areas.outside.map(polyBox)];
+  const lavaAreas = (areas.lava || areas.outside).map(polyBox);
   const leafBoxes = areas.leaves.map(([a, b, c, d]) => { const p = toBox([a, b]), q = toBox([c, d]); return [Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.max(p[0], q[0]), Math.max(p[1], q[1])]; });
-  let sky = null, air = null, lava = null, comp = null, epoch = -1, sizeKey = '', drawnAt = -1e9, clock = 0, last = null;
+  let sky = null, air = null, lava = null, composed = null, composeCtx = null, epoch = -1, sizeKey = '', drawnAt = -1e9, clock = 0, last = null;
   const rebuild = box => {
     const key = `${Math.round(box.w)}x${Math.round(box.h)}`;
-    if (epoch === gpuLossEpoch() && key === sizeKey && sky) return;
+    if (epoch === gpuLossEpoch() && key === sizeKey && composed) return;
     epoch = gpuLossEpoch(); sizeKey = key; drawnAt = -1e9;
-    sky = effects.includes('cloud') ? layerFor(box.w, box.h, [floor], 34) : null;
-    air = effects.some(e => ['leaves', 'snow', 'rain'].includes(e)) ? layerFor(box.w, box.h, [floor, ...outside], 14) : null;
+    sky = effects.includes('cloud') && floor.length ? layerFor(box.w, box.h, floor, 34) : null;
+    air = effects.some(e => ['leaves', 'snow', 'rain'].includes(e)) ? layerFor(box.w, box.h, airAreas, 14) : null;
     lava = effects.includes('lava') ? layerFor(box.w, box.h, lavaAreas, 8) : null;
-    if (!sky && !air && !lava) sky = layerFor(2, 2, [floor]);   // keeps `sky` as the "built" flag
-    // the layers are put together at their own small size, so the big upscale onto the room is ONE copy per frame, not three
-    const first = sky || air || lava; comp = { cv:document.createElement('canvas') }; comp.cv.width = first.cv.width; comp.cv.height = first.cv.height; comp.ctx = comp.cv.getContext('2d');
+    const layers = [sky, air, lava].filter(Boolean);
+    composed = layers[0].cv;
+    composeCtx = null;
+    if (layers.length > 1) {
+      // Compose at the layer resolution and upscale only once when drawing to the room.
+      const target = document.createElement('canvas');
+      target.width = composed.width;
+      target.height = composed.height;
+      composed = target;
+      composeCtx = target.getContext('2d');
+    }
   };
   const paintLayers = (box, t, bg) => {
     const dt = last === null ? 0 : Math.max(0, Math.min(100, t - last)); last = t; clock += dt;   // a long stall does not make the weather jump
     if (sky && effects.includes('cloud')) {
-      const { ctx: c, cv, scale } = sky; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
+      const { ctx: c, cv } = sky; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
       drawMapWeather(c, { zone, time:clock, W:cv.width, H:cv.height, reduced:false, paused:false, enabled:true, clouds:true, sceneClouds:true, townShadows:zone !== 'th', viewport:{ width:cv.width, height:cv.height, dpr:1 } });
       maskLayer(sky);
     }
@@ -87,7 +99,7 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
       const { ctx: c, cv, scale } = air; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
       if (effects.includes('snow') || effects.includes('rain')) {
         const cap = Math.min(ROOM_FX.maxParticles[zone] || 160, sceneWeatherCap(zone, cv.width, cv.height, 1) ?? atmosphereBudget(cv.width, cv.height, 1));
-        drawBiomeWeather(c, zone, clock, cv.width, cv.height, false, [0, 0, 1, 1], cap, { quiet:true });   // quiet: no lightning flash inside a room
+        drawBiomeWeather(c, zone, clock, cv.width, cv.height, false, [0, 0, 1, 1], cap, { quiet:true, layer:zone === 'west' ? 'sky' : 'all' });   // quiet: no lightning flash inside a room
       }
       if (effects.includes('leaves')) {
         c.save();
@@ -113,24 +125,25 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
       c.restore();
       maskLayer(lava);
     }
-    // compose: the layers share one size (same box, same cap), so they stack 1:1
-    const k = comp.ctx; k.setTransform(1, 0, 0, 1, 0, 0); k.clearRect(0, 0, comp.cv.width, comp.cv.height);
-    for (const L of [sky && effects.includes('cloud') ? sky : null, air, lava]) if (L) k.drawImage(L.cv, 0, 0);
+    if (composeCtx) {
+      composeCtx.clearRect(0, 0, composed.width, composed.height);
+      for (const layer of [sky, air, lava]) if (layer) composeCtx.drawImage(layer.cv, 0, 0);
+    }
   };
   return {
     active:true, effects,
     layers: () => ({ sky, air, lava }),   // (tests, evidence)
-    destroy() { sky = air = lava = comp = null; },
+    destroy() { sky = air = lava = composed = composeCtx = null; },
     /** Lay the weather over the picture, under everything that stands on it. */
-    draw(ctx, box, t, { bg } = {}) {
-      if (reduced() || !enabled() || !box || !(box.w > 8 && box.h > 8)) { last = null; return; }
+    draw(ctx, box, t, { bg, paused = false } = {}) {
+      if (reduced() || !enabled() || paused || !box || !(box.w > 8 && box.h > 8)) { last = null; return; }
       rebuild(box);
       if (t - drawnAt >= ROOM_FX.frameMs) { drawnAt = t; paintLayers(box, t, bg); } else if (last === null) last = t;
       ctx.save();
       ctx.imageSmoothingEnabled = true;
       // the layers are already cut to their soft-edged areas; the box clip keeps them inside the picture
       ctx.beginPath(); ctx.rect(box.ox, box.oy, box.w, box.h); ctx.clip();
-      if (comp) ctx.drawImage(comp.cv, box.ox, box.oy, box.w, box.h);
+      ctx.drawImage(composed, box.ox, box.oy, box.w, box.h);
       ctx.restore();
     },
   };

@@ -518,7 +518,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           ctx.restore();
         };
       }
-      roomFx.draw(ctx, box, t, { bg });   // FB3-T10: under the characters, over the picture
+      roomFx.draw(ctx, box, t, { bg, paused:locked });   // FB3-T10: under the characters, over the picture
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);
