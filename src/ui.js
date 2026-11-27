@@ -56,7 +56,7 @@ import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011
 import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
-import { sentenceColor } from './sentence-colors.js';
+import { sentenceColor, sentenceColorGuide } from './sentence-colors.js';   // FB3-T9: the guide card is the same as MN1 box 5, so the handbook leaves it out (the trial's own help list still has it)
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson, firstInterrogationLesson } from './sentencing-guide.js';
 import { actorStanding, specialCooldown } from './actor-recovery.js';
@@ -2609,7 +2609,6 @@ function openHelp(initialTab = 'guide') {
           แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
       <li>จบเกมแล้วนิราจะวาง<b>แฟ้มชื่อของท่านเอง</b>ไว้ — เปิดอ่านได้จริง
           ข้างในคือทุกคำตัดสินที่ผิดพลาดและวิญญาณที่กลับมาอีกครั้ง</li>
-      <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระยะเวลาลงทัณฑ์</b> แล้วออกหมาย</li>
       <li><b>สถานีที่มี = สำนวนที่จะได้รับ</b> — โซนนี้รับได้เฉพาะกรรมที่ท่านมีที่ลง
           มีแต่กระทะทองแดง ก็มีแต่คดีฉ้อโกงกับมัวเมา · สร้างป่าดาบเพิ่ม คดีฆ่า/ทำร้ายกับวจีทุจริตถึงจะเริ่มเข้าคิว
           · ที่ลงใหม่<b>ปลดล็อกทีละขั้น</b> แนะนำเริ่มจากศาลาน้ำชา → ป่าดาบ (ขั้น 2) → ประตูสวรรค์ (ขั้น 3) ·
@@ -2638,7 +2637,7 @@ function openHelp(initialTab = 'guide') {
           หลังสร้างโรงอาหารแล้ว ปุ่มให้ข้าวใช้คลังพร้อมเสิร์ฟ หรือสั่งเดินไปกินได้จากจัดทีม พร้อมดู HP ความอิ่ม จัดทีมต่อสู้ กำหนดหน้าที่ และสั่งพักศาลาน้ำชา
           นิราใช้จ้างและจัดการภารกิจ พ่อค้าใช้ซื้อของ · เพลิงไม่ปรุงอาหารแล้ว</li>
       <li><b>${esc(t('guide.foreman.title'))}</b> — ${esc(t('guide.foreman.p1'))} · ${esc(t('guide.foreman.p2'))} · ${esc(t('guide.foreman.p3'))} · ${esc(t('guide.foreman.p4'))}</li>
-      ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}${clockUnlocked() ? `<li>${clockGuide}</li>` : ''}
+      ${sentencingChapters.filter(ch => ch !== sentenceColorGuide).map(ch => `<li>${ch}</li>`).join('')}${clockUnlocked() ? `<li>${clockGuide}</li>` : ''}
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
     <div class="help-reader"></div>`, d => {

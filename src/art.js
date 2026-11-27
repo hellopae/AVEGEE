@@ -102,7 +102,7 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (key === 'ferry-rower') return 'img/boat/ferry-rower-v1.webp';
   if (/^ferry-(yama|nira)-(jump|sit)$/.test(key)) return `img/boat/${key}-${sourceZone || zoneOf()}-v1.webp`;
   const signal = key.match(/^boss-frontier-(th|asia|west)-signal(-profile)?$/);
-  // FB3-T6/8: Codex drew the controlled lords as a 3x4 SHEET (-signal-v1.webp); the game needs one picture - the standing pose cut out of it by scripts/crop-signal-boss.py (a real single drawing may overwrite the -idle file)
+  // FB3-T6/8: Codex drew the controlled lords as a 3x4 SHEET (art-src/story-sig-sheets/…-signal-v1.webp, not shipped); the game needs one picture - the standing pose cut out of it by scripts/crop-signal-boss.py (a real single drawing may overwrite the -idle file)
   if (signal) return signal[2] ? null : `img/story-sig/boss-frontier-${signal[1]}-signal-idle.webp`;
   { const dam = key.match(/^crew-dam-(asia|west|cyberhell)-supervise-v1$/); if (dam) return `img/${MEAL_ART_FOLDERS[dam[1]]}${key}.webp`; }   // FB3-O1: the foreman's kitchen picture of Zones 2-4 (Codex C6)
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;

@@ -3,8 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
-let failReplacement=false;
-globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;if(v==='img/frontier-route/zone1-2-v6-flow.webp'){this.naturalWidth=1;this.naturalHeight=1;}if(v==='img/frontier-route/zone1-2-v6.webp'){this.naturalWidth=3344;this.naturalHeight=1882;}queueMicrotask(()=>failReplacement&&v.startsWith('img/frontier-route/tree-')?this.onerror?.():this.onload?.());}get src(){return this._src;}};
+globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;if(v==='img/frontier-route/zone1-2-v6-flow.webp'){this.naturalWidth=1;this.naturalHeight=1;}if(v==='img/frontier-route/zone1-2-v6.webp'){this.naturalWidth=3344;this.naturalHeight=1882;}queueMicrotask(()=>this.onload?.());}get src(){return this._src;}};
 const drawn=[];let captureDraw=false;
 const ctx=new Proxy({getImageData:()=>({data:new Uint8ClampedArray(4)}),drawImage(...args){if(captureDraw)drawn.push(args);},createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})}, {get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const node=()=>({getContext:()=>ctx,handlers:{},addEventListener(k,f){this.handlers[k]=f;},removeEventListener(){},focus(){},setPointerCapture(){},remove(){}});
@@ -71,22 +70,6 @@ test('legacy tree fixture: trees and Yama share root-y draw ordering at an occlu
  }finally{ambient.trees=[];}
 });
 
-test('legacy tree fixture: unavailable replacement falls back to the original tree at its authored root',async()=>{
- const {ROUTE_GEOMETRY}=await import('../src/route-geometry.js');
- const {BORDER12_TREES}=await import('../src/frontier-walkmask-th-asia-b12.js');
- const ambient=ROUTE_GEOMETRY['th:asia'].ambient;ambient.trees=BORDER12_TREES;
- try{
- const tree=ROUTE_GEOMETRY['th:asia'].ambient.trees.find(t=>view.dungeonWalkable([t.x,t.y-.018]));
- const g=game();g.zoneTravel.active.position={x:tree.x,y:tree.y-.018};failReplacement=true;
- const destroy=view.mountDungeonView({append(){}},g);await new Promise(r=>setImmediate(r));
- try{
-  drawn.length=0;captureDraw=true;tick();captureDraw=false;
-  const cam=frontierCameraTarget(size,800,pos(g)),ty=cam.y+tree.y*941*cam.scale;
-  const fallback=drawn.find(a=>a[0]?.src===`img/theme-v4/${{red:'town-tree-red-th-v1',green:'town-tree-asia-v1',lightgreen:'town-tree-c-asia-v1'}[tree.kind]}.webp`&&Math.abs(a[2]+a[4]-ty)<.01);
-  assert.ok(fallback,'original tree stays on its unadjusted legacy image foot');
- }finally{captureDraw=false;failReplacement=false;destroy();}
- }finally{ambient.trees=[];}
-});
 test('B5b: actual route view retains cave position after all checkpoints before ruler victory',()=>{
  size=1280;const g={zone:'asia',bossCleared:{},zoneEvents:{asia:{asiaRageBreach:'cleared'}},save(){},challengeUnlocked:()=>true,challengeCanTalk:()=>true};
  travel.initializeZoneTravel(g);assert.ok(travel.beginDungeon(g,'west'));

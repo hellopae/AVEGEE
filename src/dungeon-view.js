@@ -287,11 +287,10 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),loading=root.querySelector('.dungeon-load');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const treeImages={};
-  const legacyTreeArt={red:'img/theme-v4/town-tree-red-th-v1.webp',green:'img/theme-v4/town-tree-asia-v1.webp',lightgreen:'img/theme-v4/town-tree-c-asia-v1.webp'};
-  // Dedicated route palette; a failed replacement keeps its original species and foot.
-  if(routeRow(routeId).ambient.trees.length)for(const [kind,file] of Object.entries(routeRow(routeId).ambient.treeArt||legacyTreeArt)){
+  // Dedicated route palette (FB3-T9: the old legacy-art fallback is gone - no route has loose `trees` any more, and its two pictures are deleted).
+  if(routeRow(routeId).ambient.trees.length)for(const [kind,file] of Object.entries(routeRow(routeId).ambient.treeArt||{})){
     const image=treeImages[kind]=new Image();image.frontierAnchor=routeRow(routeId).ambient.treeAnchors?.[kind];
-    image.onerror=()=>{image.onerror=null;image.frontierAnchor=undefined;image.src=legacyTreeArt[kind];};image.src=file;
+    image.onerror=()=>{image.onerror=null;image.frontierAnchor=undefined;};image.src=file;
   }
   const nav=dungeonNavigation(routeId);
   const miniMask=document.createElement('canvas');miniMask.width=nav.cols;miniMask.height=nav.rows;

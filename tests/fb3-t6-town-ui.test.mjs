@@ -82,7 +82,7 @@ test('MN4: the hired workers\' cards in Nira\'s team menu use the reaper-sized p
 test('T-LIB hand-over 8: the controlled border lords have one standing picture cut from Codex\'s 3x4 sheet (the sheet itself is never drawn as a standee)', () => {
   for (const z of ['th', 'asia', 'west']) {
     const f = artUrl(`boss-frontier-${z}-signal`); assert.equal(f, `img/story-sig/boss-frontier-${z}-signal-idle.webp`); assert.ok(existsSync(new URL('../' + f, import.meta.url)), f);
-    assert.ok(existsSync(new URL(`../img/story-sig/boss-frontier-${z}-signal-v1.webp`, import.meta.url)), 'Codex\'s sheet is kept untouched');
+    assert.ok(existsSync(new URL(`../art-src/story-sig-sheets/boss-frontier-${z}-signal-v1.webp`, import.meta.url)), 'Codex\'s sheet is kept untouched (FB3-T9: in art-src/, not shipped)'); assert.ok(!existsSync(new URL(`../img/story-sig/boss-frontier-${z}-signal-v1.webp`, import.meta.url)), 'and it is no longer in the shipped img/ folder');
     const head = readFileSync(new URL('../' + f, import.meta.url)).subarray(0, 32); assert.equal(head.subarray(0, 4).toString(), 'RIFF'); assert.equal(head.subarray(8, 12).toString(), 'WEBP');
   }
   assert.ok(existsSync(new URL('../scripts/crop-signal-boss.py', import.meta.url)));
