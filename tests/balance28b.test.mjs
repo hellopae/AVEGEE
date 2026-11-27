@@ -107,6 +107,7 @@ const ABIL = ['bigFire', 'flameCharge', 'windFan', 'rage', 'ice', 'hypno', 'valk
 // See scripts/sim-g4.mjs for the sensitivity table (none / count / equal-coin).
 function setup(zone, level, abilityCount, chests) {
   const g = createGame();
+  g.saveSlot = null; // A seeded trial has no durable player save.
   g.level = level; const L = LEVELS[level - 1];
   g.hpMax = g.hp = L.hpMax; g.mpMax = g.mp = L.mpMax;
   ABIL.slice(0, abilityCount).forEach(k => { g.abilities[k] = true; });
