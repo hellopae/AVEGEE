@@ -128,9 +128,10 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     assert.ok(Math.abs((layout.height / 100) * visibleHeight - height) < 1e-9);
     assert.ok(layout.top + layout.height >= 100);
   }
-  const arrival = 'img/Intro-Boss-Zone1.webp';
-  const {width, height} = imageMeta(readFileSync(new URL(`../${arrival}`, import.meta.url)));
-  assert.deepEqual(comicImageLayout(arrival, width, height), {aspect:width/height, top:0, height:100});
+  for (const arrival of ['img/Intro-Boss-Zone1.webp', ...['asia', 'west', 'cyberhell'].map(bossArrivalScene)]) {
+    const {width, height} = imageMeta(readFileSync(new URL(`../${arrival}`, import.meta.url)));
+    assert.deepEqual(comicImageLayout(arrival, width, height), {aspect:width/height, top:0, height:100}, arrival);
+  }
   assert.deepEqual(comicImageLayout('unknown.webp', 1600, 900), {aspect:1600 / 900, top:0, height:100});
 });
 

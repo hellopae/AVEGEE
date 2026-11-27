@@ -10,8 +10,6 @@ const CONTENT_ROWS = {
   'story-ending-01-v4.webp':[121,602], 'story-ending-02-v3.webp':[89,633],
   'intro-panel-01.webp':[0,617], 'intro-panel-02.webp':[0,708],
   'intro-panel-03.webp':[0,646], 'intro-panel-04.webp':[0,750], 'intro-panel-05.webp':[0,621],
-  'Intro-Boss-Zone2-asia.webp':[0,658],
-  'Intro-Boss-Zone3-west.webp':[0,764], 'Intro-Boss-Zone4-cyberhell.webp':[0,780],
   'intro-head-asia-v2.webp':[0,758], 'intro-head-west-v2.webp':[0,737],
   'intro-head-cyberhell-v2.webp':[0,774],
   'intro-zone2-asia.webp':[0,778], 'intro-zone4-cyberhell.webp':[0,640],
