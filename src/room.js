@@ -33,6 +33,7 @@ import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
 import { makeRoomTreeWind } from './room-tree-wind.js';
+import { makeRoomFx } from './room-fx.js';   // FB3-T10: the weather of the outside map, in the open parts of the room
 import { frontTreeArt } from './front-tree-colour.js';   // FB3-T9: the colour of the front tree follows the building's place on the map
 
 const HERO_H = 0.13 * characterScale('yama');      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -220,6 +221,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // FB3-T9 (owner 22 Nov): left of the map = red, middle = green, right = white (the banyan of that colour, same place and height as before); (these room pictures are Zone 1's)
   const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => { const art = frontTreeArt(def.k); return art ? {...tree, src:art, wind:'banyan', opacity:1} : {...tree, opacity:1}; });
   let treeFrameAt, windStartedAt;
+  const roomFx = makeRoomFx({ zone:g.zone, bgSrc, room, mirror:!!room.mirror, reduced:prefersReducedMotion });   // FB3-T10 (O3): only the open air of this picture (src/room-open-areas.js)
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
@@ -516,6 +518,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           ctx.restore();
         };
       }
+      roomFx.draw(ctx, box, t, { bg });   // FB3-T10: under the characters, over the picture
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);
@@ -977,6 +980,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       prisonEscorts.clear();
       for(const fx of pending) {if(fx.walk)releaseWorkerEscort(g,fx.walk);fx.done();}
       dead = true;
+      roomFx.destroy();
       cancelAnimationFrame(raf);
       removeEventListener('keydown', onKey);
       removeEventListener('keyup', onKey);
