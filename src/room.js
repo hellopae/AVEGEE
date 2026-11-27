@@ -33,6 +33,7 @@ import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
 import { makeRoomTreeWind } from './room-tree-wind.js';
+import { frontTreeArt } from './front-tree-colour.js';   // FB3-T9: the colour of the front tree follows the building's place on the map
 
 const HERO_H = 0.13 * characterScale('yama');      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
@@ -216,7 +217,8 @@ const ROOM_FRONT_TREES = {
 export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const foregroundSrc = ROOM_FOREGROUNDS[bgSrc];
-  const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => ({...tree, opacity:1}));
+  // FB3-T9 (owner 22 Nov): left of the map = red, middle = green, right = white (the banyan of that colour, same place and height as before); (these room pictures are Zone 1's)
+  const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => { const art = frontTreeArt(def.k); return art ? {...tree, src:art, wind:'banyan', opacity:1} : {...tree, opacity:1}; });
   let treeFrameAt, windStartedAt;
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};

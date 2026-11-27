@@ -5,6 +5,7 @@ import { activeTownSkin, activeTownZone, ZONE1_TOWN_ART, townArtFoot } from './z
 import { drawLocalLight } from './scene-style.js';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 import {LossWeakMap} from './gpu-budget.js';
+import {drawSwayingTree} from './tree-sway.js';   // FB3-T9 / O2: the canopies sway, the trunks stand still
 
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 export const TOWN_TREES = TOWN_PROP_SITES.filter(p=>p.kind==='tree');
@@ -67,6 +68,12 @@ function sprite(ctx,image,x,y,w) {
   const foot=townArtFoot(image,x,y,w,h);
   ctx.drawImage(image,foot.x-w/2,foot.y-h,w,h);ctx.restore();
 }
+// FB3-T9 / O2: the same placement as sprite() (same foot, same size), but the canopy slides in the wind. Reduced motion draws the still picture.
+function swaySprite(ctx,image,x,y,w,time,reduced) {
+  if(reduced||!image||typeof document==='undefined'){sprite(ctx,image,x,y,w);return;}
+  const h=w*(image.naturalHeight||image.height)/(image.naturalWidth||image.width),foot=townArtFoot(image,x,y,w,h);
+  drawSwayingTree(ctx,image,foot.x-w/2,foot.y-h,w,h,time,x);
+}
 export function drawTownCastShadow(ctx,image,x,y,w) {
   if(!image)return;
   const h=w*image.naturalHeight/image.naturalWidth;
@@ -109,7 +116,9 @@ export function townPropArtKey(p) {
 }
 const propArt = (p,tree,waterfall,resolveArt) => {
   if(p.kind==='torch')return torchSprite();
-  const key=townPropArtKey(p);
+  let key=townPropArtKey(p);
+  // FB3-T9 (CLEAN2 hand-over): a tree art that only another zone's skin owns (Zone 2's 'town-tree-willow') is never asked of this zone - that was a request for img/town-tree-willow.webp, a 404, whenever the layout of one zone is up before its skin (crossing zones)
+  if(key&&p.fallbackKey&&!activeTownSkin().art[key]&&!ZONE1_TOWN_ART[key])key=p.fallbackKey;
   return key?(resolveArt?.(key)||(p.fallbackKey?resolveArt?.(p.fallbackKey):null)||(key==='town-tree-th'?tree:null)):null;
 };
 // L1: town-shade.js casts shadows from exactly the art the scenery draws (incl. K1e sprites).
@@ -179,7 +188,8 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       // Fade only the crown/roof when the player's feet are behind this prop.
       if(Math.abs(g.player.x-p.x)<p.w*.45&&g.player.y<p.y&&g.player.y>p.y-h)ctx.globalAlpha=.4;
       if(art){
-        sprite(ctx,p.kind==='tree'&&townPropArtKey(p)==='town-tree-th'?tintedArt(art,p.biome):art,p.x,p.y,p.w);
+        const shown=p.kind==='tree'&&townPropArtKey(p)==='town-tree-th'?tintedArt(art,p.biome):art;
+        if(p.kind==='tree')swaySprite(ctx,shown,p.x,p.y,p.w,time,reduced);else sprite(ctx,shown,p.x,p.y,p.w);
       }else fallbackProp(ctx,p,time,reduced);
       if(p.kind==='torch') {
         const fy=p.y-h*.85;
