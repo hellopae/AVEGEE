@@ -16,7 +16,7 @@ export const ROOM_FX = Object.freeze({
   frameMs:45,                  // the weather is redrawn at ~22 fps (clouds and snow are slow; the picture itself still runs at full rate)
   maxParticles:Object.freeze({ west:200, cyberhell:220 }),
   leaves:Object.freeze({ count:14, fall:Object.freeze([14, 26]), size:Object.freeze([3, 5.5]) }),   // Zone 1 leaves (per room, before the area share)
-  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']) }),   // zones 2-4 are switched on one by one (FB3-T10 commits)
+  effects:Object.freeze({ th:Object.freeze(['cloud', 'leaves', 'lava']), asia:Object.freeze(['cloud']) }),   // 'cloud' = the map's cloud shadows; in Zone 2 drawMapWeather also lays its sun shafts and slim leaves into the same layer. Zones 3-4 are switched on one by one (FB3-T10 commits)
 });
 const noise = n => { const f = Math.sin(n * 127.1 + 311.7) * 43758.5453; return f - Math.floor(f); };
 const mod = (n, d) => ((n % d) + d) % d;
@@ -80,7 +80,7 @@ export function makeRoomFx({ zone, bgSrc, room = {}, mirror = false, reduced = (
     const dt = last === null ? 0 : Math.max(0, Math.min(100, t - last)); last = t; clock += dt;   // a long stall does not make the weather jump
     if (sky && effects.includes('cloud')) {
       const { ctx: c, cv, scale } = sky; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
-      drawMapWeather(c, { zone, time:clock, W:cv.width, H:cv.height, reduced:false, paused:false, enabled:true, clouds:true, sceneClouds:true, viewport:{ width:cv.width, height:cv.height, dpr:1 } });
+      drawMapWeather(c, { zone, time:clock, W:cv.width, H:cv.height, reduced:false, paused:false, enabled:true, clouds:true, sceneClouds:true, townShadows:zone !== 'th', viewport:{ width:cv.width, height:cv.height, dpr:1 } });
       maskLayer(sky);
     }
     if (air) {
