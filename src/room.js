@@ -33,6 +33,8 @@ import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
 import { makeRoomTreeWind } from './room-tree-wind.js';
+import { gpuLossEpoch } from './gpu-budget.js';
+import { makeRoomFx } from './room-fx.js';   // FB3-T10: the weather of the outside map, in the open parts of the room
 import { frontTreeArt } from './front-tree-colour.js';   // FB3-T9: the colour of the front tree follows the building's place on the map
 
 const HERO_H = 0.13 * characterScale('yama');      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -220,6 +222,20 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // FB3-T9 (owner 22 Nov): left of the map = red, middle = green, right = white (the banyan of that colour, same place and height as before); (these room pictures are Zone 1's)
   const frontTrees = (ROOM_FRONT_TREES[bgSrc] || []).map(tree => { const art = frontTreeArt(def.k); return art ? {...tree, src:art, wind:'banyan', opacity:1} : {...tree, opacity:1}; });
   let treeFrameAt, windStartedAt;
+  const roomFx = makeRoomFx({ zone:g.zone, bgSrc, room, mirror:!!room.mirror, reduced:prefersReducedMotion });   // FB3-T10 (O3): only the open air of this picture (src/room-open-areas.js)
+  // Keep the static room art and the small weather canvas behind the actor canvas.
+  const backdrop = roomFx.active && cv.parentElement?.classList?.contains('st-room')
+    ? document.createElement('canvas') : null;
+  const backdropCtx = backdrop?.getContext('2d');
+  let backdropImage, backdropEpoch = -1, weatherLayer;
+  const previousCanvasStyle = backdropCtx ? { background:cv.style.background, zIndex:cv.style.zIndex } : null;
+  if (backdropCtx) {
+    backdrop.setAttribute('aria-hidden','true');
+    Object.assign(backdrop.style, { position:'absolute', inset:'0', pointerEvents:'none', zIndex:'0' });
+    cv.style.background = 'transparent';
+    cv.style.zIndex = '1';
+    cv.after(backdrop);
+  }
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
@@ -482,31 +498,67 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // ภาพฉากวางแบบ contain ไม่ยืด/ไม่ครอปซ้ำ — โซน 1 ใช้ room.crop ตัดแถบกว้างตามแบบ UI4 มาแล้ว
       // กรอบหน้าสถานีบนจอกว้างมีสัดส่วนเท่ากับแถบนั้น จึงเต็มพอดี
       box = roomImageBox(W, H, sw, sh, canSit || room.cover);
-      ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
-      const drawRoomLayer = layer => {
-        ctx.save();
-        if (mirrorRoom) { ctx.translate(box.ox * 2 + box.w, 0); ctx.scale(-1, 1); }
-        ctx.drawImage(layer, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
-        ctx.restore();
+      const drawRoomLayer = (layer, target = ctx) => {
+        target.save();
+        if (mirrorRoom) { target.translate(box.ox * 2 + box.w, 0); target.scale(-1, 1); }
+        target.drawImage(layer, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        target.restore();
       };
-      // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
       const bf = room.bright || brightOf(bg, bgSrc);
-      if (Math.abs(bf - 1) > 0.02 && canFilter()) {
-        ctx.save();
-        ctx.filter = `brightness(${bf.toFixed(2)})`;
-        drawRoomLayer(bg);
-        ctx.restore();
-      } else if (bf > 1.02) {                            // ไม่รองรับ filter — ทับอีกชั้นแบบบวกแสง
-        drawRoomLayer(bg);
-        ctx.save();
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
-        drawRoomLayer(bg);
-        ctx.restore();
-      } else drawRoomLayer(bg);
-      applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
+      const paintBackdrop = target => {
+        target.fillStyle = '#120810'; target.fillRect(0, 0, W, H);
+        const filter = Math.abs(bf - 1) > 0.02 && canFilter();
+        if (filter) {
+          target.save();
+          target.filter = `brightness(${bf.toFixed(2)})`;
+          drawRoomLayer(bg, target);
+          target.restore();
+        } else {
+          drawRoomLayer(bg, target);
+          if (bf > 1.02) {
+            target.save();
+            target.globalCompositeOperation = 'lighter';
+            target.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
+            drawRoomLayer(bg, target);
+            target.restore();
+          }
+        }
+        applyLight(target, room.light, box);
+      };
+      if (backdropCtx) {
+        const resized = backdrop.width !== W || backdrop.height !== H;
+        if (resized) { backdrop.width = W; backdrop.height = H; }
+        const layoutChanged = resized || backdropImage !== bg;
+        const epoch = gpuLossEpoch();
+        if (layoutChanged || backdropEpoch !== epoch) {
+          backdropCtx.imageSmoothingEnabled = false;
+          paintBackdrop(backdropCtx);
+          backdropImage = bg;
+          backdropEpoch = epoch;
+        }
+        roomFx.update(box, t, { bg, paused:locked });
+        const weather = roomFx.surface();
+        const layerChanged = weather !== weatherLayer;
+        if (layerChanged) {
+          weatherLayer?.remove();
+          weatherLayer = weather;
+          if (weather) {
+            weather.setAttribute('aria-hidden','true');
+            Object.assign(weather.style, { position:'absolute', pointerEvents:'none', zIndex:'0', background:'transparent', borderRadius:'0' });
+            backdrop.after(weather);
+          }
+        }
+        const { ox, oy, w, h } = box;
+        if (weatherLayer && (layerChanged || layoutChanged)) {
+          const cut = [Math.max(0,-oy)/h, Math.max(0,ox+w-W)/w, Math.max(0,oy+h-H)/h, Math.max(0,-ox)/w].map(n => `${n*100}%`);
+          Object.assign(weatherLayer.style, { left:`${ox/W*100}%`, top:`${oy/H*100}%`, width:`${w/W*100}%`, height:`${h/H*100}%`, clipPath:`inset(${cut.join(' ')})` });
+        }
+      } else {
+        paintBackdrop(ctx);
+        roomFx.draw(ctx, box, t, { bg, paused:locked });
+      }
       const foreground = foregroundSrc && bgOf(foregroundSrc + FRONT_CACHE);   // FB3-T7b: the front layers were trimmed (same file names) - the query makes a browser that cached the old ones fetch the new
       if (foreground?.naturalWidth === bg.naturalWidth && foreground.naturalHeight === bg.naturalHeight) {
         drawForeground = () => {
@@ -977,6 +1029,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       prisonEscorts.clear();
       for(const fx of pending) {if(fx.walk)releaseWorkerEscort(g,fx.walk);fx.done();}
       dead = true;
+      roomFx.destroy();
+      if (backdropCtx) { weatherLayer?.remove(); backdrop.remove(); Object.assign(cv.style, previousCanvasStyle); }
       cancelAnimationFrame(raf);
       removeEventListener('keydown', onKey);
       removeEventListener('keyup', onKey);

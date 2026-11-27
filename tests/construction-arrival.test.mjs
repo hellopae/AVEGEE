@@ -50,6 +50,7 @@ await new Promise(resolve => setImmediate(resolve));
 
 function setup(zone = 'th') {
   const g = createGame();g.bossCleared.th=true;
+  g.saveSlot = null; // Snapshot checks below use in-memory saves.
   g.zone = zone; syncSceneZone(zone); bindZone(() => g.zone); resetWalk(); setBlocks([], []);
   g.coin = 100000; g.level = 5;
   receiveLamp(g);   // FB3-T5: the Mirror Tower opens with Sita's lamp, not with rank 5 - this fixture builds every station
@@ -103,12 +104,14 @@ test('all stations in all four zones: both builders arrive for build and repair 
       const st = startJob(g, key, mode, owner);
       const c = g.crewOf(owner);
       [c.x,c.y] = nearestWalk(SPOTS.bench.x, SPOTS.bench.y); c.path = null;
-      arrive(g, st, mode);
+      // Exercise the full matrix at a supported 48 ms frame; the focused cases still use 16 ms.
+      arrive(g, st, mode, 48);
       assert.equal(g.stations.some(s => !s.build && hiddenAt(s.def, c.x, c.y)), false,
         `${zone.k}/${key}: worker visible`);
       if (st.arrivalElapsed < 30000) natural++; else { recovered++; console.log(`Recovered: ${zone.k}/${key}/${mode}/${owner}`); }
     }
   console.log(`Arrival matrix: ${natural} walked, ${recovered} recovered at timeout`);
+  assert.equal(recovered, 0, 'all connected routes must finish before the fallback');
 });
 
 test('blocked definition point plus mob: build and repair reach a walkable visible work point', () => {
@@ -116,10 +119,9 @@ test('blocked definition point plus mob: build and repair reach a walkable visib
     const g = setup(); allBuildings(g);
     const st = startJob(g, 'lan', mode);
     const { x,y } = st.def;
-    // Simulate a neighboring footprint covering the old definition point.
-    const sync = g.syncBlocks.bind(g);
-    g.syncBlocks = () => { sync(true); setBlocks([[x-24,y-24,x+24,y+24]], []); };
-    g.syncBlocks();
+    // Use one static test footprint. Re-applying it each frame would invalidate the path grid.
+    setBlocks([[x-24,y-24,x+24,y+24]], []);
+    g.syncBlocks = () => {};
     assert.equal(canWalk(x,y), false);
     const c = g.crewOf('taan'); [c.x,c.y] = nearestWalk(SPOTS.bench.x, SPOTS.bench.y); c.path = null; c.wait = 3000;
     // Repair is requested before the mob appears, as canRepair intentionally requires a clear map.
