@@ -16,7 +16,7 @@ import { enemyArt } from './enemy-art.js';
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
 
 import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js';
-import { crewWalkSheet } from './crew-walk-assets.js';
+import { crewWalkSheet, storyWalkSheet } from './crew-walk-assets.js';
 import { heroWalkSheet } from './hero-walk-assets.js';
 import { drawYamaBook } from './yama-animation.js?v=20261015-live-v1';
 import {LossMap,LossWeakMap,registerGpuLossReset} from './gpu-budget.js';
@@ -119,6 +119,10 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   // Z2-EVENTS: the same for the zone 2 story souls and Wukong (img/z2-events)
   if (Z2_ART_KEY.test(key)) return `img/z2-events/${key}.webp`;
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
+  if (key.endsWith('-walk')) {
+    const storyWalk = storyWalkSheet(key.slice(0, -5), z);
+    if (storyWalk) return storyWalk.src;
+  }
   const meal = key.match(/^(crew-(?:taan|plerng|kan|boon|dam|guard))-(receive|eat)$/);
   if (meal && Object.hasOwn(MEAL_ART_FOLDERS,z))
     return `img/${MEAL_ART_FOLDERS[z]}${meal[1]}${z==='th'?'':'-'+z}-${meal[2]}-v1.webp`;
@@ -522,6 +526,15 @@ export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE
 
 export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null, shadow = true) {
   h *= standeeFit(key, sourceZone || zoneOf());
+  const storyWalk = walking && storyWalkSheet(key, sourceZone || zoneOf());
+  if (storyWalk && !globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) {
+    const sheet = img(`${key}-walk`, sourceZone);
+    if (sheet?.naturalWidth && sheet.naturalHeight) {
+      const frame = Math.floor(Math.max(0, t) / 125) % storyWalk.frames.length;
+      drawWalkFrame(ctx, sheet, storyWalk, frame, x, y, h, face, shadow);
+      return;
+    }
+  }
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
   if (shadow) drawContactShadow(ctx, x, y, h);   // FB3-MP5: a seated Yama / a hop in the air carry no floor shadow of their own
@@ -590,22 +603,26 @@ export function drawCrewWalk(ctx, key, x, y, h, distance, face = 1) {
   const im = img(`${key}-walk`);
   if (!im || !im.naturalWidth || !im.naturalHeight) return false;
   const sheet = crewWalkSheet(key, zoneOf());
-  const frameW = im.naturalWidth / 4;
   const frame = Math.floor(Math.max(0, distance) / HERO_WALK_STRIDE) % 4;
+  drawWalkFrame(ctx, im, sheet, frame, x, y, h, face);
+  return true;
+}
+
+function drawWalkFrame(ctx, im, sheet, frame, x, y, h, face, shadow = true) {
+  const frameW = im.naturalWidth / 4;
   const box = sheet?.frames?.[frame] || { x:frame * frameW, y:0, w:frameW, h:im.naturalHeight };
   const drawH = h * (sheet?.heightScale ?? 1);
   const footY = y - h * (sheet?.footOffset ?? 0);
   const size = sheet?.frameSize || box;
   const pixelScale = drawH / size.h;
   const drawW = pixelScale * size.w;
-  drawContactShadow(ctx, x, y, h);
+  if (shadow) drawContactShadow(ctx, x, y, h);
   ctx.save(); ctx.translate(x, footY);
   const direction = face < 0 ? -1 : 1;
   ctx.scale(sheet?.rightFacing === false ? -direction : direction, 1);
   ctx.drawImage(im, box.x, box.y, box.w, box.h, -drawW / 2 + (box.ox || 0) * pixelScale,
     -drawH + (box.oy || 0) * pixelScale, box.w * pixelScale, box.h * pixelScale);
   ctx.restore();
-  return true;
 }
 
 /** วิญญาณ — ใช้สไปรท์ spirit1..3 ถ้ามี ไม่มีก็วาดดวงเรืองแสงเอง

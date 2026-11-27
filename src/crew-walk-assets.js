@@ -1237,3 +1237,25 @@ const SHEETS = {
 export function crewWalkSheet(key, zone = "th") {
   return SHEETS[`${zone}:${key.replace(/^crew-/, "")}`] || null;
 }
+
+
+const STORY_WALK_PATHS = {
+  'th:zone-boss': 'img/zone-boss-walk-v1.webp',
+  'asia:zone-boss': 'img/Asia/zone-boss-asia-walk-v1.webp',
+  'west:zone-boss': 'img/West/zone-boss-west-walk-v1.webp',
+  'cyberhell:zone-boss': 'img/CyberHell/zone-boss-cyberhell-walk-v1.webp',
+  'char-musashi-asia': 'img/z2-events/char-musashi-asia-walk-v1.webp',
+  'char-home67': 'img/z3-events/char-home67-walk-v1.webp',
+};
+
+const storyFrameSize = {w:690, h:700};
+const storyFrames = Array.from({length:4}, (_, index) => ({
+  x:index * storyFrameSize.w, y:0, ...storyFrameSize, ox:0, oy:0,
+}));
+const storyWalkSheets = Object.fromEntries(Object.entries(STORY_WALK_PATHS).map(([key, src]) => [
+  key, {src, frameSize:storyFrameSize, frames:storyFrames, rightFacing:true, heightScale:1, footOffset:0},
+]));
+
+export function storyWalkSheet(key, zone = 'th') {
+  return storyWalkSheets[key === 'zone-boss' ? `${zone}:${key}` : key] || null;
+}

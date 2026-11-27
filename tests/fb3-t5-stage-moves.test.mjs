@@ -63,12 +63,12 @@ test('EV11 / EV20: the dais spot is on the painted dais floor, left of the thron
 
 test('EV20: beginBrotherArrival walks him to the dais (not the pier), keeps him drawn there while the notice is open, and no pre-fight text says "pier"', () => {
   const ui = src('src/ui.js');
-  const fn = ui.slice(ui.indexOf('function beginBrotherArrival'), ui.indexOf('/** Z2-EVENTS case 15:'));
+  const fn = ui.slice(ui.indexOf('function beginBrotherArrival'), ui.indexOf('const brotherWalkMs'));
   assert.match(fn, /daisFoeSpot\(\)/); assert.ok(!/bossPier/.test(fn), 'no pier in the Zone 1 arrival');
   assert.match(fn, /g\.dismissEventAlert\('thBorderBoss'\)/);
   assert.ok(fn.indexOf("dismissEventAlert('thBorderBoss')") < fn.indexOf('openBossArrive'), 'he is standing on the dais before the window opens');
   assert.match(fn, /setTimeout\(done, duration\)/);
-  // Zones 2-4 still walk to the pier
+  // Asia and West use the pier; the finale supplies its own destination.
   assert.match(ui.slice(ui.indexOf('function beginBossWalkIn'), ui.indexOf('let bossBridgeTimer')), /SPOTS\.bossPier/);
   // the arrival window (data.js bossArrive) never mentions the pier
   const th1 = ZONES.find(z => z.k === 'th');

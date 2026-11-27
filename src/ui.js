@@ -67,7 +67,7 @@ import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { enemyPointerTargets, layoutPointers, roughDistance, POINTER } from './enemy-pointers.js';   // POINTERS: arrows to every enemy the player has to walk to
 import { residentPresent, keeperPresent } from './crew-presence.js';
 import { foremanDesk, foremanStarving } from './foreman.js';   // FOREMAN: Dam leads the workers - talk to him at the canteen for the kitchen orders
-import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
+import { nextFinalEncounter, finalEventActors, finalPreparationTargets, archonArrivalPending } from './final-event.js';
 import { Z4H_NF2, finalBannerLabel } from './z4h-final.js';   // T8d (NF-2 window, NF-3 banner)
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
@@ -95,7 +95,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, guardName, guardTitle, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';
+         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS, FINAL_EVENT } from './data.js';
 import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
@@ -2218,20 +2218,26 @@ const brotherWalkMs = pts => {
   return Math.round(Math.min(8000, Math.max(4200, len * 6)));
 };
 
-/** Z2-EVENTS case 15: the zone boss walks in from the lower border gate to the pier (same walk the elder brother takes in Zone 1). */
-let bossWalkingIn = false;
-function beginBossWalkIn(onArrived) {
-  const from = [FRONTIER.x, FRONTIER.y], to = [SPOTS.bossPier.x, SPOTS.bossPier.y], path = findPath(...from, ...to);
-  bossWalkingIn = true;
-  g.bossWalk = { started:Date.now(), duration:4200, from, to, path:path?.length ? [from, ...path] : null, arrival:true };
+/** The pier bosses and Archon enter from their zone's frontier gate. */
+function beginBossWalkIn(onArrived, { to = [SPOTS.bossPier.x, SPOTS.bossPier.y],
+  kind = 'pier', eligible = () => g.bossPending } = {}) {
+  if (g.bossWalk) return;
+  const zone = g.zone;
+  const from = [FRONTIER.x, FRONTIER.y];
+  const waypoints = findPath(...from, ...to);
+  const path = waypoints?.length ? [from, ...waypoints] : null;
+  const duration = kind === 'final' ? brotherWalkMs(path || [from, to]) : 4200;
+  const walk = { started:Date.now(), duration, from, to, path, arrival:true, kind };
+  g.bossWalk = walk;
   pauseForDlg(); sfx('gong');
   const done = () => {
-    if (dlg.open) { setTimeout(done, 300); return; }
-    g.bossWalk = null; bossWalkingIn = false;
-    if (g.over || !g.bossPending) { refresh(); return; }
+    if (g.bossWalk !== walk) return;
+    if (dlg.open && g.zone === zone) { setTimeout(done, 300); return; }
+    g.bossWalk = null;
+    if (g.over || g.zone !== zone || !eligible()) { refresh(); return; }
     onArrived();
   };
-  setTimeout(done, 4200);
+  setTimeout(done, duration);
 }
 
 let bossBridgeTimer = 0;
@@ -7704,6 +7710,17 @@ g.onChange = () => {
       openZoneEventAlert(ZONE_EVENTS.cyberhell.find(ev => ev.k === 'cyberFinal'));
       return;
     }
+    if (archonArrivalPending(s, g.storySeen)) {
+      beginBossWalkIn(() => {
+        s.archonWalkSeen = true;
+        g.save();
+        g.onChange();
+      }, {
+        to:FINAL_EVENT.enemyPositions[4], kind:'final',
+        eligible:() => archonArrivalPending(g.finalEventState(), g.storySeen),
+      });
+      return;
+    }
     if (g.beginFinalArrival()) { refresh(); return; }
     if (s.presentation === 'gate') { openFinalGate(); return; }   // T8d: the army has appeared in front of him - NF-2
     if (s.presentation === 'prepare') { openFinalPreparation(s.minionsCleared === 0 ? nextFinalEncounter(s) : null); return; }   // T8d: after z4-final-open the window carries the fight button for wave 1
@@ -7745,9 +7762,11 @@ g.onChange = () => {
       // T7b-2/5 (Rae R2 C 5.1): N15-1 "the auditor has arrived" first, then his arrival scene (z3-sev-open), then the serpent's fight
       if (z.k === 'west' && !g.storySeen['notice:' + SEV.arriveNotice]) { g.queueNotice(SEV.arriveNotice); g.onChange(); return; }
       // Z2-EVENTS case 15 (Rae 5.1): the notice "the general has come" -> he walks in through the lower border gate to the pier -> his words -> the test window
-      if (z.k === 'asia') {
-        if (!g.storySeen['notice:z2-lian-arrive']) { g.queueNotice('z2-lian-arrive'); g.onChange(); return; }
-        if (!bossWalkingIn) { beginBossWalkIn(arrive); }
+      if (z.k === 'asia' || (z.k === 'west' && !g.storySeen['z3-sev-open'])) {
+        if (z.k === 'asia' && !g.storySeen['notice:z2-lian-arrive']) {
+          g.queueNotice('z2-lian-arrive'); g.onChange(); return;
+        }
+        beginBossWalkIn(arrive);
         return;
       }
       arrive();

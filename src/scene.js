@@ -269,6 +269,12 @@ export function bossWalkPosition(walk, now = Date.now()) {
   return [walk.from[0] + (walk.to[0] - walk.from[0]) * progress, walk.from[1] + (walk.to[1] - walk.from[1]) * progress];
 }
 
+function bossWalkFacing(walk, now) {
+  const [before] = bossWalkPosition(walk, now - 40);
+  const [after] = bossWalkPosition(walk, now + 40);
+  return (after - before || walk.to[0] - walk.from[0]) < 0 ? -1 : 1;
+}
+
 /** FB3-MP10: the small "making rice balls" bar over a cook's head (progress 0..1 of the batch) - same look as the construction bar, smaller */
 export const COOK_BAR_W = 34, COOK_BAR_H = 5;
 export function cookBar(ctx, x, y, p) {
@@ -627,17 +633,17 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
-  if (!(g.zone==='th'&&g.bossCleared?.th&&!bossGuideWaiting(g)) && !bossGuideDismissed(g) && !bossPierRetired(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
+  if (g.bossWalk?.kind !== 'final' && !(g.zone==='th'&&g.bossCleared?.th&&!bossGuideWaiting(g)) && !bossGuideDismissed(g) && !bossPierRetired(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
-    const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
+    const now = Date.now();
+    const walking = !!walk && now - walk.started < walk.duration;
     const cleared = !walk && g.bossCleared?.[g.zone];
-    const onPath = walk?.path ? pointOnPath(walk.path, progress) : null;   // Z1-EVENTS: case 15 - he walks in from the lower border gate along the real paths
-    const x = onPath ? onPath[0] : walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
-    const y = onPath ? onPath[1] : walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
+    const [x, y] = walk ? bossWalkPosition(walk, now) : [SPOTS.bossPier.x, SPOTS.bossPier.y];
+    const face = walk ? bossWalkFacing(walk, now) : 1;
     spot_(x, y, 92 * CHAR_SCALE_MAP * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
-      shade(x, y, 92 * CHAR_SCALE_MAP * 1.12, c => drawStandee(c, 'zone-boss', x, y, 92 * CHAR_SCALE_MAP * 1.12, t, '👑', 1, !!walk && progress < 1));
+      shade(x, y, 92 * CHAR_SCALE_MAP * 1.12, c => drawStandee(c, 'zone-boss', x, y, 92 * CHAR_SCALE_MAP * 1.12, t, '👑', face, walking));
       // N1 (คุณเป้ 16 ต.ค.): ชนะแล้ว = ไม่มีป้ายดำ "คุยกับ…" บนหัว — ปุ่มเหลือง 💬 (ui.js updateBossFab) วางบนหัวแทนตอนเดินเข้าใกล้
       if (!cleared) tag(ctx, x, y - 92 * CHAR_SCALE_MAP * 1.12 - 15, t,
           [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
@@ -810,17 +816,24 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   });
   // ผู้ท้าชิงยืนห่างกันแค่ 80px (และไล่ลงทีละ 20px) แต่ป้ายชื่อยาวกว่านั้น → ตัวคี่วางป้ายไว้เหนือหัว ตัวคู่ไว้ใต้เท้า
   // ตัดสินจากตำแหน่ง x (คงที่แม้ตัวก่อนหน้าถูกปราบไปแล้ว) · ตัดคำว่า "รอ" ออก (ป้ายสีเทา = ยังไม่ถึงคิว)
-  for (const a of finalEventActors(g)) at(a.y, () => {
-    const arrival = g.finalEventState();
-    if (arrival.presentation === 'warp') {
-      ctx.save(); drawArrivalWarp(ctx, a, arrival.warpElapsed || 0);
-      ctx.globalAlpha = Math.min(1, (arrival.warpElapsed || 0) / 900);
-    }
-    shade(a.x, a.y, 78 * CHAR_SCALE_MAP, c => drawStandee(c, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone));
-    const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
-    mapName(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 10, a.enabled ? '#f7c371' : '#ddd');
-    if (arrival.presentation === 'warp') ctx.restore();
-  });
+  for (const a of finalEventActors(g)) {
+    const walk = a.id === 'boss' && g.bossWalk?.kind === 'final' ? g.bossWalk : null;
+    const now = Date.now();
+    const [x, y] = walk ? bossWalkPosition(walk, now) : [a.x, a.y];
+    const walking = !!walk && now - walk.started < walk.duration;
+    const face = walk ? bossWalkFacing(walk, now) : 1;
+    at(y, () => {
+      const arrival = g.finalEventState();
+      if (arrival.presentation === 'warp') {
+        ctx.save(); drawArrivalWarp(ctx, a, arrival.warpElapsed || 0);
+        ctx.globalAlpha = Math.min(1, (arrival.warpElapsed || 0) / 900);
+      }
+      shade(x, y, 78 * CHAR_SCALE_MAP, c => drawStandee(c, a.art, x, y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', face, walking, a.sourceZone));
+      const above = !a.reinforcement && Math.round((x - 1110) / 80) % 2 === 1;
+      mapName(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, x, above ? y - 78 * CHAR_SCALE_MAP - 6 : y + 10, a.enabled ? '#f7c371' : '#ddd');
+      if (arrival.presentation === 'warp') ctx.restore();
+    });
+  }
   for (const a of devaMapActors(g)) at(a.y, () => {
     shade(a.x, a.y, 100 * CHAR_SCALE_MAP, c => drawStandee(c, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, !!a.moving, a.sourceZone));
     if (a.enabled) label(ctx, a.label, a.x, a.y + 18, 12, '#f7c371');

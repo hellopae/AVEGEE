@@ -60,6 +60,13 @@ export function migrateFinalEvent(save = {}) {
   }
   return state;
 }
+/** The first map entrance belongs to a new finale; older saves may already have seen its dialogue. */
+export function archonArrivalPending(s, seen = {}) {
+  return s.phase === 'ready' && !s.presentation && !s.archonWalkSeen && !s.warpDone && !s.openSeen &&
+    !s.minionsCleared && !s.rulersCleared?.length &&
+    !seen['z4-final-open'] && !seen['cyber-approach'] && !seen['cyber-duel'];
+}
+
 export function nextFinalEncounter(s) {
   if (!s || !['ready', 'staging', 'bossReady'].includes(s.phase) || s.pendingReward || s.activeEncounter) return null;
   if (s.minionsCleared < MINION_WAVES) return `minion:${s.minionsCleared + 1}`;
