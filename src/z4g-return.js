@@ -76,6 +76,22 @@ const westRepair = fromRae({title:repairTitle,pages:[{title:repairTitle,line:L2(
   'Narration: Taan and the townspeople clear away the burned beams and raise new timber to rebuild the hall. The Western city begins to come alive again.',
 )}]}, A('cut-west-taan-repair-return'));
 westPairWin.pages.push(...westRepair.pages);
+const eastPairTitle = L2('เหลียนกังกับอากุระ','Lian Gang and Akura');
+const eastPairOpen = fromRae({title:eastPairTitle,pages:[{title:eastPairTitle,line:L2(
+  'นิรา: “โคมในเมืองดับหมดแล้วค่ะ ยมทูตทั้งห้า เหลียนกัง และอากุระกำลังขวางทางเรา”\nยามา: “เราจะช่วยยมทูตก่อน แล้วค่อยใช้สร้อยปลดสะกดเหลียนกังกับอากุระครับ”',
+  'Nira: “The city lanterns have all gone out. The five reapers, Lian Gang and Akura are blocking our way.”\nYama: “We’ll help the reapers first, then use the pendant to free Lian Gang and Akura.”',
+)}]}, A('cut-asia-liangang-akura-return'));
+eastPairOpen.pages.push(SIGNAL_STORIES['signal-asia-open'].pages[1]);
+const eastPairWin = fromRae({title:eastPairTitle,pages:[{title:eastPairTitle,line:L2(
+  'บรรยาย: ยามาชู Lucifer’s Eye ให้นิราประคองแสง มนต์สะกดคลายลง โซ่ของเหลียนกังกับอากุระตกกระทบพื้น\nอากุระ: “เสียงในหัวข้านับสอง เหมือนนับนักโทษ จำไว้”\nเหลียนกัง: “ไฟของข้าตอบรับตะเกียงแล้ว หากจำเป็นก็เรียกข้าเถิด”',
+  'Narration: Yama raises Lucifer’s Eye and Nira guides its light. The spell breaks, and Lian Gang’s and Akura’s chains fall to the ground.\nAkura: “The voice in my head counted to two, as if counting prisoners. Remember that.”\nLian Gang: “My flame answers the lamp again. Call me if you need me.”',
+)}]}, A('cut-asia-lucifer-eye-release'));
+const eastRepairTitle = L2('ทัณฑ์ซ่อมศาลาบูรพา','Taan Repairs the Eastern Hall');
+const eastRepair = fromRae({title:eastRepairTitle,pages:[{title:eastRepairTitle,line:L2(
+  'บรรยาย: ทัณฑ์กับชาวเมืองเปลี่ยนคานที่ไหม้ ซ่อมชายคา แล้วแขวนโคมกลับเข้าที่ ศาลาบูรพาเปิดให้ชาวเมืองกลับมาใช้ได้อีกครั้ง',
+  'Narration: Taan and the townspeople replace the burned beams, repair the eaves, and hang the lanterns again. The Eastern Hall reopens to the townspeople.',
+)}]}, A('cut-asia-taan-repair-return'));
+eastPairWin.pages.push(...eastRepair.pages);
 function returnStory(key,raw) {
   const zone=Object.keys(Z4G_KEYS.fire).find(z=>Z4G_KEYS.fire[z]===key);
   if (!zone) {
@@ -101,6 +117,8 @@ export const Z4G_STORIES = Object.freeze({
   'cyber-signal-win':SIGNAL_WIN,
   'signal-west-open':westPairOpen,
   'signal-west-win':westPairWin,
+  'signal-asia-open':eastPairOpen,
+  'signal-asia-win':eastPairWin,
   [Z4G_KEYS.caveOpen]:waterCaveOpen,
   [Z4G_KEYS.caveFreed]:waterCaveFreed,
   [Z4G_KEYS.passStory]:PASS,

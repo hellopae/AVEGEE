@@ -32,6 +32,10 @@ const GUARD_STATS = { west:[122,[10,15]], asia:[116,[9,14]], th:[110,[9,14]] };
 const CONTROLLED_CERBERUS = {name:'เซอร์เบอรัส',nameEn:'Cerberus',sp:'boss-cerberus-gate-west',hp:85,atk:[12,18],hypno:true};
 const CONTROLLED_JORMUNGANDR = {name:'ยอร์มุนกันดร์',nameEn:'Jörmungandr',sp:'boss-jormungandr-west',hp:330,atk:[19,30],boss:true,hypno:true,
   skills:BOSS_SKILLS.jormungandr,partyScale:{hp:[1,1.6,2.2],atk:[1,1.1,1.4]}};
+// Lian Gang uses the base health, attack and skills from his original Eastern boss fight.
+const CONTROLLED_LIAN_GANG = {name:'เหลียนกัง',nameEn:'Lian Gang',sp:'zone-boss',hp:294,atk:[16,25],boss:true,hypno:true,
+  skills:BOSS_SKILLS.lianGang};
+const SIGNAL_PARTNERS = { west:[CONTROLLED_JORMUNGANDR], asia:[CONTROLLED_LIAN_GANG] };
 const gateFoes = (zone, guard) => zone === 'west' ? [CONTROLLED_CERBERUS, guard] : [guard];
 export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name]) => {
   const [hp,atk]=GUARD_STATS[zone];
@@ -45,12 +49,16 @@ export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUAR
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
   k:SIGNAL_KEYS[zone], signal:true, atCases:zone==='cyberhell'?10:0,
   ...(zone==='cyberhell'?{requires:['cyberSala']}:{requiresZone:SIGNAL_CHAIN[zone], winStories:[Z4G_KEYS.restored[zone]], winNotices:[Z4G_KEYS.harbourNotice[zone]]}),
-  mode:'waves',team:'frontier',title:{th:`สัญญาณครอบงำ · ${name}`},
-  alert:{th:`${name} ถูกคำสั่งจากระบบครอบงำ ไปที่ชายแดนเพื่อช่วยเขา`},
+  mode:'waves',team:'frontier',
+  title:zone === 'asia' ? { th:'สัญญาณครอบงำ · เหลียนกังกับอากุระ', en:'Seized by the Signal · Lian Gang and Akura' }
+    : { th:`สัญญาณครอบงำ · ${name}` },
+  alert:zone === 'asia' ? { th:'ช่วยยมทูตบูรพา แล้วหยุดเหลียนกังกับอากุระก่อนใช้สร้อยปลดสะกด',
+    en:'Free the Eastern reapers, then stop Lian Gang and Akura and break the spell with the pendant.' }
+    : { th:`${name} ถูกคำสั่งจากระบบครอบงำ ไปที่ชายแดนเพื่อช่วยเขา` },
   waves:[zone==='cyberhell' ? [{kind,count:2,hp:50,atk:[8,12]}]
     : RETURN_REAPERS.map((k,i)=>({controlledCrew:k,nameEn:RETURN_REAPER_EN[zone][i],sp:`crew-${k}`,hp:28,atk:[4,7],hypno:true})),
     [{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]},
-      ...(zone === 'west' ? [CONTROLLED_JORMUNGANDR] : [])]],
+      ...(SIGNAL_PARTNERS[zone] || [])]],
   reward:{coin,items,order,exp:20},lose:{hp:8},
 }]));
 export const SIGNAL_CLOSE = {k:'signalClose',signal:true,atCases:0,mode:'story',

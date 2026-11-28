@@ -16,6 +16,7 @@ import { harbourTravel } from './helpers/travel.mjs';
 import { createGame } from '../src/game.js';
 import { beginMapTravel } from '../src/map-travel.js';
 import { battleBackground } from '../src/battle-background.js';
+import { cityFireOn } from '../src/city-fire.js';
 import { readFileSync } from 'node:fs';
 import { pickTalk } from '../src/talk.js';
 import { slottedSummoners, spendSummon, summonUnavailable, summonUsesLeft, summonWhy } from '../src/lamp.js';
@@ -33,6 +34,10 @@ const fightLord = g => {
     assert.deepEqual(g.battleActors().map(a=>a.k), ['yama','nira']);
   }
   win(g, foes => {
+    if (g.zone === 'asia') {
+      assert.deepEqual(foes.map(f => f.sp), ['boss-frontier-asia-signal', 'zone-boss']);
+      assert.ok(foes.every(f => f.hypno && f.boss));
+    }
     if (g.zone === 'west') {
       assert.deepEqual(foes.map(f => f.sp), ['boss-frontier-west-signal', 'boss-jormungandr-west']);
       assert.ok(foes.every(f => f.hypno));
@@ -138,6 +143,57 @@ test('the whole way back, in order: 4 -> (Lucifer) -> 3 Guard, reapers, Valdric 
   assert.equal(walkBackTarget(g), null, 'nothing below Zone 1'); assert.equal(harbourOpen(g, 'cyberhell'), true, 'all three freed: every harbour lights'); assert.equal(seizedActive(g), true, 'until the signal is closed in Zone 4');
   assert.equal(harbourTravel(g, 'cyberhell'), true, 'the boat back to Zone 4'); assert.equal(g.zone, 'cyberhell'); assert.ok(g.storyQueue.some(s => s.key === 'cyber-signal-close'), 'back in Zone 4: the signal is closed'); drain(g);
   assert.equal(g.zoneEventStatus('signalClose'), 'cleared'); assert.equal(seizedActive(g), false); assert.equal(harbourDestinations(g).length > 0, true, 'the harbours are the harbours again');
+});
+test('Lian Gang stays bound until both Eastern bosses fall; the city, harbour and lamp then recover', () => {
+  const g = seized();
+  g.zone = 'asia';
+  g.zoneEvents.asia = { returnGuard:'cleared', signalAsia:'pending' };
+  g.zoneEvents.west.signalWest = 'cleared';
+  g.zoneEvents.cyberhell.cyberSala = 'pending';
+  g.unlockHelper('liangang');
+  assert.equal(g.placeHelper(0, 'liangang'), true);
+  assert.equal(summonWhy(g, 'liangang', {kind:'frontier'}), '');
+  spendSummon(g, 'liangang');
+
+  g.zoneEvents.cyberhell.cyberSala = 'cleared';
+  g.zoneEvents.cyberhell.cyberSignal = 'cleared';
+  assert.equal(summonWhy(g, 'liangang', {kind:'frontier'}), 'controlled');
+  assert.equal(g.placeHelper(0, 'liangang'), false);
+  assert.equal(cityFireOn(g), true);
+  assert.equal(harbourOpen(g, 'asia'), false);
+  const reloaded = createGame();
+  assert.equal(reloaded.restore(JSON.parse(JSON.stringify(g.snapshot()))), true);
+  assert.equal(summonUnavailable(reloaded, 'liangang'), 'controlled');
+  assert.deepEqual(slottedSummoners(reloaded), ['liangang']);
+
+  g.storySeen['signal-asia-open'] = true;
+  const battle = g.startZoneEvent('signalAsia', 'call');
+  assert.ok(battle);
+  assert.equal(battle.foes.length, 5);
+  assert.ok(battle.foes.every(foe => foe.hypno));
+  win(g, foes => {
+    assert.deepEqual(foes.map(foe => foe.sp), ['boss-frontier-asia-signal', 'zone-boss']);
+    assert.ok(foes.every(foe => foe.hypno && foe.boss));
+    assert.equal(g.battleAct('summon:liangang'), false);
+    foes[0].hp = 1;
+    for (const foe of foes) foe.atk = [0, 0];
+    g.selectFoe(foes[0].id);
+    for (let turn = 0; turn < 12 && foes[0].hp > 0; turn++) g.battleAct('atk');
+    assert.equal(foes[0].hp, 0);
+    assert.ok(foes[1].hp > 0);
+    assert.equal(g.zoneEventStatus('signalAsia'), 'active');
+    assert.equal(summonUnavailable(g, 'liangang'), 'controlled');
+    assert.equal(cityFireOn(g), true);
+  });
+  assert.equal(g.zoneEventStatus('signalAsia'), 'cleared');
+  assert.equal(cityFireOn(g), false);
+  assert.equal(harbourOpen(g, 'asia'), true);
+  assert.equal(summonWhy(g, 'liangang', {kind:'frontier'}), 'spent');
+  assert.deepEqual(g.storyQueue.map(scene => scene.key), ['signal-asia-win', 'z2-restored']);
+  assert.equal(storyOf('signal-asia-open').pages[0].image, 'img/z4-events/cut-asia-liangang-akura-return.webp');
+  assert.deepEqual(storyOf('signal-asia-win').pages.map(p => p.image), [
+    'img/z4-events/cut-asia-lucifer-eye-release.webp', 'img/z4-events/cut-asia-taan-repair-return.webp',
+  ]);
 });
 test('the water cave locks both helpers through a saved fight and credits old journeys past the cave', () => {
   const g = seized();

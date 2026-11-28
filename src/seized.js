@@ -19,6 +19,7 @@ export const walkBackCavePending = g => zoneSeized(g, 'asia')
 /** A helper answers again when their own return fight is won. */
 export function returnSummonerBlock(g, key) {
   if (key === 'jormungandr' && zoneSeized(g, 'west')) return 'controlled';
+  if (key === 'liangang' && zoneSeized(g, 'asia')) return 'controlled';
   if ((key === 'ryujin' || key === 'musashi') && walkBackCavePending(g)) return 'controlled';
   return '';
 }
