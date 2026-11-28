@@ -41,7 +41,7 @@ import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
-import {seizedActive,walkBackTarget,returnGuardPending} from './seized.js';   // T8c
+import {seizedActive,walkBackTarget,walkBackCavePending,returnGuardPending} from './seized.js';   // T8c
 import {routeBossCave} from './route-geometry.js';
 import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';
@@ -197,7 +197,8 @@ const g = createGame();
 g.saveSlot = null; // Home/settings must never save a fresh game over an unselected slot.
 const slotMigration = migrateLegacySave();
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
-bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
+const battleHeroStyle = () => g.battle?.heroOutfit || g.outfit || g.zone;
+bindHeroStyle(battleHeroStyle); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 // F4: the GPU was lost and came back - every baked canvas is blank now (ground, sprites ...): save, then reload straight into the saved slot (see gpu-recovery.js)
@@ -2814,7 +2815,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
   const neutralCast = usingAtk && powerVisual(fx?.action || fx?.key)?.cast === 'neutral';
   const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) || neutralCast ? heroFace() : heroAtk())
-    : showRage ? (rageArtSrc(g.outfit || g.zone) || ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
+    : showRage ? (rageArtSrc(battleHeroStyle()) || ragePoseSrc(battleHeroStyle()) || heroAtk()) : heroFace();
   // a soul that has just lost its fight: the "scared" drawing when one exists for this original (else the standing picture)
   const foeBase = storyFoeArt(foe.sp), beatenSoul = g.battle?.kind === 'soul' && g.battle.over === 'win' && !(hp?.foes?.length > 1) ? g.queue.find(x => x.id === g.battle.soulId) : null;
   const foeSrc = beatenSoul && soulPoseForScare(beatenSoul, foeBase) || foeBase;
@@ -2833,7 +2834,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
   // M1: in a fight the background + sprites live in .cam-world (the only thing the camera zooms); HUD / menus stay outside it
-  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) || squad.length > 3 ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
+  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${hp?.sceneBiome === 'water-cave' ? ' water-cave' : ''}${g.isFinalBattle(hp) || squad.length > 3 ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -2853,7 +2854,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       }</span>`; }).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}${hp ? battleStatusHtml({hp:hp.youHp}, {defending:hp.defending?.you,rage:hp.rageTurns}) : ''}
-      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
+      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(battleHeroStyle()) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">${esc(HERO_TITLE)} · ประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
@@ -2886,7 +2887,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
-  const style = g.outfit || g.zone;
+  const style = battleHeroStyle();
   const powerArt = powerCutsceneImage(k, style, g.abilities);
   if (powerArt) return powerArt;
   if (k === 'ice') return `img/hero-yama-${style}-ice-cutscene-v2.webp`;
@@ -4497,7 +4498,7 @@ function openBattle(after) {
       if (fxNow?.key === 'rage') cue('skill', { user:userKey, targets:userKey, action:a, power:1, scope:'single', cutMs });
       else if (fxNow?.key === 'health') cue('heal', { user:userKey, targets:actorKeyById(fxNow.recipient || 'you'), action:a });
       else if (a === 'atk' || a === 'strike') {
-        const who = g.battleActors().find(x => x.id === (b.actorId || 'you')), atlas = who && who.id !== 'you' ? `crew:${who.homeZone || g.zone}:${who.k}` : `yama:${g.outfit || g.zone}`;
+        const who = g.battleActors().find(x => x.id === (b.actorId || 'you')), atlas = who && who.id !== 'you' ? `crew:${who.homeZone || g.zone}:${who.k}` : `yama:${battleHeroStyle()}`;
         cue('attack', { user:userKey, targets, action:a, power:hitPower(b), scope, impactAt:impactLead(atlas) });
       }
       else cue('skill', { user:userKey, targets, action:a, power:hitPower(b, 2), scope, cutMs });
@@ -4871,7 +4872,7 @@ function openBattle(after) {
 
     const stage = dlg.querySelector('.combat-arena');
     camera.attach(stage);
-    mountSceneAtmosphere(stage,{zone:g.zone,context:'battle',paused:()=>userPaused||document.hidden});          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
+    if (b.sceneBiome !== 'water-cave') mountSceneAtmosphere(stage,{zone:g.zone,context:'battle',paused:()=>userPaused||document.hidden});          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
     applyDashPosition();
     if (!phase) clearMoveName(); else renderMoveName();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
@@ -4883,9 +4884,9 @@ function openBattle(after) {
         stage.insertAdjacentHTML('beforeend', `<p class="summon-farewell" role="status" data-summon-farewell><small>${esc(lt('helper.farewell', { name:LAMP.summonerName(gone.key, lang) }))}</small>${esc(sd.say.end[lang])}</p>`);
         clearTimeout(farewellTimer); farewellTimer = setTimeout(() => { if (g.battle === b && dlg.open && !phase) paint(); }, left + 40);
       } }
-    swordImage(g.outfit || g.zone, g.weapons?.equipped);
-    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, dash?.poseAt || phaseAt, g.weapons?.equipped);
-    else mountBattleSwordIdle(stage, g.outfit || g.zone);   // FB2-v2: was `!phase && !b.over` — while a teammate acted / the enemy struck / the fight was over, Yama fell back to the small standing-with-book picture
+    swordImage(battleHeroStyle(), g.weapons?.equipped);
+    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, battleHeroStyle(), dash?.poseAt || phaseAt, g.weapons?.equipped);
+    else mountBattleSwordIdle(stage, battleHeroStyle());   // FB2-v2: was `!phase && !b.over` — while a teammate acted / the enemy struck / the fight was over, Yama fell back to the small standing-with-book picture
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
@@ -5006,7 +5007,7 @@ function openBattle(after) {
       for (const c of [...g.battleActors(), ...g.battleFallen()]) {
         const isKo = c.id === 'you' ? b.youHp <= 0 : (c.morale ?? 100) <= 0 || (b.fallen || []).includes(c.id);
         const phase = koPhase(koTrack, c.id, isKo, koNow);
-        const key = c.id === 'you' ? `yama:${g.outfit || g.zone}` : c.guestGuide ? null : `crew:${c.k === 'nira' ? g.zone : c.homeZone || g.zone}:${c.k}`;   // Nira's home zone is 'global': her KO picture is filed under the zone she stands in
+        const key = c.id === 'you' ? `yama:${battleHeroStyle()}` : c.guestGuide ? null : `crew:${c.k === 'nira' ? g.zone : c.homeZone || g.zone}:${c.k}`;   // Nira's home zone is 'global': her KO picture is filed under the zone she stands in
         const root = c.id === 'you' ? stage.querySelector('.fig.you') : stage.querySelector(`.battle-squad [data-crew-pick="${crewBattleKey(c)}"], .fig.helper[data-crew-pick="${crewBattleKey(c)}"]`);
         const pose = !!key && hasKoPose(key);
         koInfo.set(c.id, { phase, pose, key });
@@ -5862,11 +5863,20 @@ function startBorderExpedition(to) {
  prompt.addEventListener('cancel',e=>{e.preventDefault();finish(false);});
  document.body.append(prompt);prompt.showModal();
 }
-/** T8c (Rae 7.1 / D6): the walk back through the frontier below: close the frontier screen, Lucifer's one line at the 3-4 crossing (the game queues it), then the crossing itself (the zone changes, the fire scene of that zone follows) */
+/** Play the frontier scene and any encounter before starting the return journey. */
 function startWalkBack(to) {
   if (!g.walkBackPrelude(to)) { openFrontierWalk(); return; }
+  borderGateLatched = true;
   if (dlg.open) dlg.close();
-  whenIdle(() => { if (g.walkBackReady(to)) startMapJourney(to, 'walk'); else openFrontierWalk(); });
+  const cross = () => {
+    if (g.walkBackReady(to)) startMapJourney(to, 'walk');
+    else openFrontierWalk();
+  };
+  whenIdle(() => {
+    if (to !== 'asia' || !walkBackCavePending(g)) { cross(); return; }
+    if (!g.startZoneEvent(Z4G_KEYS.caveEvent)) { openFrontierWalk(); return; }
+    openBattle(outcome => { if (outcome === 'win') whenIdle(cross); });
+  });
 }
 async function startMapJourney(to,mode='boat') {
  if(g.mapTravel||g.travelLoading)return;

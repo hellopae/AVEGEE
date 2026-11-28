@@ -1,6 +1,6 @@
 /** Persisted travel rules; rendering and combat remain owned by the game. */
 import { ROUTE_GEOMETRY, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
-import { harbourOpen, walkBackTarget, seizedActive } from './seized.js';   // T8c: the seized world (harbours locked, the way back on foot)
+import { harbourOpen, walkBackTarget, walkBackCavePending, seizedActive } from './seized.js';   // T8c: the seized world (harbours locked, the way back on foot)
 export const TRAVEL_VERSION = 1;
 export const TRAVEL_ZONES = Object.freeze(['th', 'asia', 'west', 'cyberhell']);
 const route = (from, to, name, checkpoints, foes) => Object.freeze({
@@ -165,7 +165,7 @@ export function canTravelZone(g, to) {
   const status = dungeonStatus(g);
   if (status) return status.ready && status.route.to === to && !status.pending;
   if (state(g).active) return false;
-  if (walkBackTarget(g) === to) return true;   // T8c: the walk back through the frontier below (moveZone decides 'walk' or 'boat' by where Yama stands)
+  if (walkBackTarget(g) === to) return to !== 'asia' || !walkBackCavePending(g);
   return harbourDestinations(g).includes(to);
 }
 /** Call only after moveZone returned true. Use mode captured before moveZone. */

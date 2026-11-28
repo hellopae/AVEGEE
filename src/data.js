@@ -1,3 +1,4 @@
+import { Z4G_KEYS } from './seized-keys.js';
 import { SIGNAL_EVENTS, SIGNAL_CLOSE, RETURN_GUARD_EVENTS } from './signal-arc.js';
 import { Z2_TEXT, LIAN_ARRIVE_LINES, LIAN_ARRIVE_LINES_EN } from './z2-events.js';
 import { BOSS_SKILLS, BOSS_ULTIMATE_NAMES } from './boss-skills-data.js';   // BOSS-SKILLS set A (15 Nov)
@@ -1959,6 +1960,7 @@ const challengeEvent = (zone, extra) => ({
 });
 /** Cases judged in a zone before its zone boss arrives (default 10). Zone 2: owner 14 Nov - the boss is the 15th case, after the case 11 and case 13 events. */
 export const ZONE_BOSS_AT = { asia:15, west:15 };   // T7b-2/5 (Rae R2 C 5): Zone 3's boss is the case-15 beat (Severin + the serpent); was the default 10
+const RYUJIN_FOE = { name:'ริวจิน', sp:'boss-ryujin-asia', hp:340, atk:[20,31], boss:true, skills:BOSS_SKILLS.ryujin };
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -2049,7 +2051,7 @@ export const ZONE_EVENTS = {
     { k:'z2Ryujin', atCases:999, mode:'single', gate:true,
       title:RYUJIN_TEXT.title, alert:RYUJIN_TEXT.alert, go:RYUJIN_TEXT.go, retry:RYUJIN_TEXT.retry, banner:RYUJIN_TEXT.banner, lines:RYUJIN_TEXT.lines,
       win:{ title:RYUJIN_TEXT.win.title, text:RYUJIN_TEXT.win.text }, loseText:{ title:RYUJIN_TEXT.lose.title, text:RYUJIN_TEXT.lose.text }, loseStory:'z2-ryujin-lose', winStories:['z2-ryujin-win'],
-      foe:{ name:'ริวจิน', sp:'boss-ryujin-asia', hp:340, atk:[20,31], boss:true, skills:BOSS_SKILLS.ryujin },
+      foe:RYUJIN_FOE,
       reward:{}, lose:{ hp:9 } },
     // T6/6 (Rae R2 B 6): the three-headed guardian of the western gate - fought at the end of the walk to Border 2-3 with Yama + Nira + Musashi; winning it makes him the guardian of the gate (game.js cerberusGuarding).
     { k:'z3Cerberus', atCases:999, mode:'single', gate:true,
@@ -2146,6 +2148,17 @@ export const ZONE_EVENTS = {
 };
 for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);
 for (const [zone, ev] of Object.entries(RETURN_GUARD_EVENTS)) ZONE_EVENTS[zone].push(ev);
+// A7: start at the Western border on the way back, before reaching Guan Yu.
+ZONE_EVENTS.west.push({
+  k:Z4G_KEYS.caveEvent, atCases:999, mode:'single', returnCave:true, noAlert:true,
+  title:{ th:'ศึกถ้ำสายน้ำ · ริวจินกับมูซาชิ', en:'Water Cave Battle · Ryujin and Musashi' },
+  alert:{ th:'ริวจินกับมูซาชิถูกสะกดและกำลังสู้กัน', en:'Ryujin and Musashi are under the spell and fighting each other.' },
+  foes:[
+    { ...RYUJIN_FOE, nameEn:'Ryujin', hypno:true },
+    { name:'มูซาชิ', nameEn:'Musashi', sp:'char-musashi-asia', hp:116, atk:[9,14], hypno:true },
+  ],
+  winStories:[Z4G_KEYS.caveFreed], reward:{exp:20},
+});
 ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
 
 // BOSS-SKILLS (15 Nov): Rae's names (the zone 2 / zone 3 ones were swapped: the zone 2 picture is Lian Gang's chain-weight, the zone 3 one Severin's blue flame)

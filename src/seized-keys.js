@@ -6,6 +6,9 @@ export const SEIZED_NEXT = Object.freeze({ cyberhell:'west', west:'asia', asia:'
 export const SEIZED_EVENT = Object.freeze({ cyberhell:'cyberSignal', west:'signalWest', asia:'signalAsia', th:'signalTh' });
 export const Z4G_KEYS = Object.freeze({
   guardEvent:'returnGuard',
+  caveEvent:'returnWaterCave',
+  caveOpen:'return-water-cave-open',
+  caveFreed:'return-water-cave-freed',
   guardStory:Object.freeze({ west:'z3-guard-signal', asia:'z2-guard-signal', th:'z1-guard-signal' }),
   guardFreed:Object.freeze({ west:'z3-guard-freed', asia:'z2-guard-freed', th:'z1-guard-freed' }),   // FB3-L3: Nira frees the Guard from the spell - he joins the team for the lord's fight
   fire:Object.freeze({ west:'z3-fire', asia:'z2-fire', th:'z1-fire' }),

@@ -10,9 +10,16 @@ export const zoneSeized = (g, zone = g.zone) => zone !== 'cyberhell' && !!SEIZED
 /** The return crossing puts this zone's Guard encounter on the route once. */
 export const returnGuardPending = (g, zone = g.zone) => zoneSeized(g, zone) &&
   ['pending','active'].includes(ev(g, zone, Z4G_KEYS.guardEvent));
+/** A saved arrival at the Eastern gate has already passed this crossing. */
+export const walkBackCavePending = g => zoneSeized(g, 'asia')
+  && ev(g, 'west', Z4G_KEYS.caveEvent) !== 'cleared'
+  && !ev(g, 'asia', Z4G_KEYS.guardEvent)
+  && !g.storySeen?.[Z4G_KEYS.fire.asia];
+
 /** A helper answers again when their own return fight is won. */
 export function returnSummonerBlock(g, key) {
   if (key === 'jormungandr' && zoneSeized(g, 'west')) return 'controlled';
+  if ((key === 'ryujin' || key === 'musashi') && walkBackCavePending(g)) return 'controlled';
   return '';
 }
 

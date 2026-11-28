@@ -50,6 +50,16 @@ const guardStory = (zone, name) => {
     `Narration: ${targets.en} ${zone === 'west' ? 'block' : 'blocks'} the gate, eyes glowing violet.\nNira: “Sir, we must stop the gate defenders before we can break the spell with the pendant.”`);
   return fromRae({title,pages:[{title,line}]},Z4G_ART.guard[zone]);
 };
+const waterCaveTitle = L2('ถ้ำสายน้ำ · ริวจินกับมูซาชิ','Water Cave · Ryujin and Musashi');
+const waterCaveOpen = fromRae({title:waterCaveTitle,pages:[{title:waterCaveTitle,line:L2(
+  'บรรยาย: ดาบของมูซาชิกระทบเกล็ดริวจินกลางถ้ำสายน้ำ ดวงตาของทั้งคู่เรืองแสงม่วง\nนิรา: “ทั้งคู่ถูกสะกดค่ะ ถ้าปล่อยไว้ พวกเขาจะทำร้ายกันจนหยุดเองไม่ได้”\nยามา: “ผมจะหยุดทั้งสองคน คุณนิราช่วยประคองแสงจากสร้อยให้ด้วยนะครับ”',
+  'Narration: Musashi’s blade strikes Ryujin’s scales in the water cave. Both their eyes glow violet.\nNira: “They are both under the spell. They will keep hurting each other until we intervene.”\nYama: “I’ll stop them both. Nira, help me guide the light from the pendant.”',
+)}]}, A('cut-frontier23-ryujin-musashi-return'));
+const waterCaveFreedTitle = L2('มนต์สะกดคลายลง','The Spell Breaks');
+const waterCaveFreed = fromRae({title:waterCaveTitle,pages:[{title:waterCaveFreedTitle,line:L2(
+  'บรรยาย: ยามาชู Lucifer’s Eye นิราประคองแสงเหนือสายน้ำ ริวจินลดศีรษะลง มูซาชิเก็บดาบเข้าฝัก\nมูซาชิ: “ข้าจำเสียงท่านได้แล้ว ท่านยามา”\nริวจิน: “หากท่านต้องการเรา เรียกเราจากตะเกียงได้อีกครั้ง”',
+  'Narration: Yama raises Lucifer’s Eye and Nira guides its light across the water. Ryujin lowers his head and Musashi sheathes his swords.\nMusashi: “I remember your voice now, Lord Yama.”\nRyujin: “Should you need us, you may call us from the lamp again.”',
+)}]}, A('cut-frontier23-lucifer-eye-release'));
 const westPairTitle = L2('วาลดริกกับยอร์มุนกันดร์','Valdric and Jörmungandr');
 const westPairOpen = fromRae({title:westPairTitle,pages:[{title:westPairTitle,line:L2(
   'นิรา: “ยมทูตทั้งห้าถูกสะกด วาลดริกกับยอร์มุนกันดร์ก็ด้วยค่ะ”\nยามา: “เราจะช่วยยมทูตก่อน จากนั้นค่อยใช้สร้อยปลดสะกดทั้งคู่ครับ”',
@@ -91,6 +101,8 @@ export const Z4G_STORIES = Object.freeze({
   'cyber-signal-win':SIGNAL_WIN,
   'signal-west-open':westPairOpen,
   'signal-west-win':westPairWin,
+  [Z4G_KEYS.caveOpen]:waterCaveOpen,
+  [Z4G_KEYS.caveFreed]:waterCaveFreed,
   [Z4G_KEYS.passStory]:PASS,
   ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardStory[zone],guardStory(zone,name)])),
   ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardFreed[zone],guardFreedStory(zone,name)])),
