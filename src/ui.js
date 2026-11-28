@@ -4835,8 +4835,8 @@ function openBattle(after) {
       const keys = LAMP.slottedSummoners(g), lang = getLang();
       const rows = keys.map(k => {
         const why = LAMP.summonWhy(g, k, b), name = LAMP.summonerName(k, lang), left = LAMP.summonUsesLeft(g, k);
-        return `<button class="summon-pick" data-summon-pick="${k}" aria-pressed="${summonPick === k}" ${why ? 'disabled' : ''}>${summonIcon(k)}<span class="n"><b>${esc(name)}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('battle.groupHit'))}</small>${why === 'spent' || why === 'present'
-          ? `<em>${esc(why === 'spent' ? lt('battle.helperSpent', { name }) : lt('battle.present', { name }))}</em>`
+        return `<button class="summon-pick" data-summon-pick="${k}" aria-pressed="${summonPick === k}" ${why ? 'disabled' : ''}>${summonIcon(k)}<span class="n"><b>${esc(name)}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt('battle.groupHit'))}</small>${why === 'controlled' || why === 'spent' || why === 'present'
+          ? `<em>${esc(why === 'controlled' ? lt('bag.controlled') : why === 'spent' ? lt('battle.helperSpent', { name }) : lt('battle.present', { name }))}</em>`
           : `<em class="summon-flames" role="img" aria-label="${esc(lt(left > 0 ? 'bag.ready' : 'bag.usedUp'))}" data-flames="${left}">${Array.from({ length:LAMP.SUMMON_USES }, (_, i) => `<i class="${i < left ? 'lit' : ''}"></i>`).join('')}</em>`}</span></button>`;   // FB3-EV5 / FB3-T8: one flame per call a helper has (now 1; no "x/3" words - the owner cut that line from this window)
       }).join('');
       const note = !keys.length ? lt('battle.lampEmpty') : LAMP.lampAllSpent(g) ? lt('battle.allSpent') : '';
@@ -6062,14 +6062,14 @@ function lampTabHtml() {
     const k = L.slots[i], d = k && LAMP.summonerOf(k);
     if (!d) return `<div class="lamp-slot is-empty"><span class="sum-icon"><span class="tre-glyph" aria-hidden="true">＋</span></span><span class="n"><b>${esc(lt('bag.slot', { n:i + 1 }))}</b><small>${esc(lt('bag.empty'))}</small></span>
       <button class="gold" data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.place'))}</button></div>`;
-    const left = LAMP.summonUsesLeft(g, k);
-    return `<div class="lamp-slot is-filled${left ? '' : ' is-spent'}">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))}</small><em class="tre-state">${esc(lt(left > 0 ? 'bag.ready' : 'bag.usedUp'))}</em></span>
+    const left = LAMP.summonUsesLeft(g, k), blocked = LAMP.summonUnavailable(g, k);
+    return `<div class="lamp-slot is-filled${left && !blocked ? '' : ' is-spent'}">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))}</small><em class="tre-state">${esc(lt(blocked ? 'bag.controlled' : left > 0 ? 'bag.ready' : 'bag.usedUp'))}</em></span>
       <span class="lamp-btns"><button data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.swap'))}</button><button data-lamp-remove="${i}">${esc(lt('bag.remove'))}</button></span></div>`;
   }).join('');
   const pool = lampPickSlot == null ? '' : `<div class="lamp-pool" role="group" aria-label="${esc(lt('bag.pool'))}"><div class="st-pane-title">${esc(lt('bag.pool'))}</div>${LAMP.unlockedSummoners(g).map(k => {
-    const here = L.slots.indexOf(k), left = LAMP.summonUsesLeft(g, k);
-    return `<div class="lamp-slot is-pool">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt(left > 0 ? 'bag.ready' : 'bag.usedUp'))}</small></span>
-      <button class="gold" data-lamp-place="${k}" ${here === lampPickSlot ? 'disabled' : ''}>${esc(lt('bag.place'))}</button></div>`;
+    const here = L.slots.indexOf(k), left = LAMP.summonUsesLeft(g, k), blocked = LAMP.summonUnavailable(g, k);
+    return `<div class="lamp-slot is-pool">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt(blocked ? 'bag.controlled' : left > 0 ? 'bag.ready' : 'bag.usedUp'))}</small></span>
+      <button class="gold" data-lamp-place="${k}" ${blocked || here === lampPickSlot ? 'disabled' : ''}>${esc(lt('bag.place'))}</button></div>`;
   }).join('') || `<div class="bag-empty">${esc(lt('bag.unmet'))}</div>`}</div>`;
   const low = LAMP.lampAllSpent(g) ? `<div class="lamp-low" role="status">${esc(lt('bag.low'))}</div>` : '';
   return `<div class="lamp-tab">${cards}<h3 class="lamp-h">${esc(lt('bag.heading'))}</h3><p class="lamp-note">${esc(lt('bag.note'))}</p>${low}${slots}

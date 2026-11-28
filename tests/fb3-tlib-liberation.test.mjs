@@ -55,7 +55,9 @@ test('L2: at the gate of a seized zone the team is Yama + Nira only (Guard duel)
     const b = g.startZoneEvent(Z4G_KEYS.guardEvent); assert.ok(b, zone);
     assert.equal(b.expeditionParty, true); assert.equal(b.guardGuest, false, 'the Guard is the foe here');
     assert.deepEqual(g.battleCrew().map(c => c.k), ['nira'], `${zone}: Yama + Nira`);
-    assert.equal(b.foes.length, 1); assert.equal(b.foes[0].hypno, true, 'the Guard is shown controlled'); assert.equal(b.foes[0].sp, 'crew-guard');
+    assert.deepEqual(b.foes.map(f => f.sp), zone === 'west'
+      ? ['boss-cerberus-gate-west', 'crew-guard'] : ['crew-guard']);
+    assert.ok(b.foes.every(f => f.hypno), 'the gate defenders are shown controlled');
   }
   const ui = src('src/ui.js');
   const fn = ui.slice(ui.indexOf('function openReturnGuard'), ui.indexOf('/** FOREMAN'));
@@ -141,16 +143,16 @@ test('L6: the build recommendation skips a station that waits for a story beat (
   assert.equal(low.recommendedBuild(), null, 'a rank lock (the gate of heaven needs rank 3) still stops the list');
 });
 
-test('L3 (Claudy): Nira\'s freeing scene uses cut-z{1,2,3}-guard-freed.webp when it exists and falls back to the older gate picture; the page chain ends in the placeholder', () => {
-  const art = readFileSync(new URL('../src/z4g-return.js', import.meta.url), 'utf8');
-  for (const [zone, n] of [['th', 'z1'], ['asia', 'z2'], ['west', 'z3']]) {
+test('L3: each guard release has its own deployed art and falls back to the gate scene', () => {
+  const targets = { th:'z1-gate-kumphan', asia:'z2-gate-guanyu', west:'z3-gate-cerberus-vanhelsing' };
+  const releases = { th:targets.th, asia:targets.asia, west:'z3-gate-lucifer-eye' };
+  for (const [zone, target] of Object.entries(targets)) {
     const page = Z4G_STORIES[Z4G_KEYS.guardFreed[zone]].pages[0];
-    assert.equal(page.image, `img/z4-events/cut-${n}-guard-freed.webp`);
-    assert.equal(page.imageFallback, `img/z4-events/cut-${n}-guard-hypnotized-frontier.webp`);
+    assert.equal(page.image, `img/z4-events/cut-${releases[zone]}-release.webp`);
+    assert.equal(page.imageFallback, `img/z4-events/cut-${target}-return.webp`);
     assert.equal(page.fallback, '📜');
+    assert.ok(readFileSync(new URL(`../${page.image}`, import.meta.url)).length > 0);
   }
-  // the file name is built (not a literal) so the "literal URLs exist" guard does not demand a file that is still to be drawn
-  assert.ok(!/img\/z4-events\/cut-z[123]-guard-freed/.test(art));
   const ui = src('src/ui.js');
   assert.match(ui, /p\.imageFallback \? ` onerror="this\.onerror=\$\{p\.fallback \?/);
   // the other scenes of the arc are untouched: the gate scene and the fire scene keep their own pictures

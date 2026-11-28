@@ -28,12 +28,18 @@ export const RETURN_GUARD_NAMES = {
   th:{ th:'กุมภัณฑ์', en:'Kumphan' },
 };
 const GUARD_STATS = { west:[122,[10,15]], asia:[116,[9,14]], th:[110,[9,14]] };
+// Cerberus uses his existing controlled-reaper encounter stats for the return gate.
+const CONTROLLED_CERBERUS = {name:'เซอร์เบอรัส',nameEn:'Cerberus',sp:'boss-cerberus-gate-west',hp:85,atk:[12,18],hypno:true};
+const CONTROLLED_JORMUNGANDR = {name:'ยอร์มุนกันดร์',nameEn:'Jörmungandr',sp:'boss-jormungandr-west',hp:330,atk:[19,30],boss:true,hypno:true,
+  skills:BOSS_SKILLS.jormungandr,partyScale:{hp:[1,1.6,2.2],atk:[1,1.1,1.4]}};
+const gateFoes = (zone, guard) => zone === 'west' ? [CONTROLLED_CERBERUS, guard] : [guard];
 export const RETURN_GUARD_EVENTS = Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name]) => {
   const [hp,atk]=GUARD_STATS[zone];
   return [zone,{k:Z4G_KEYS.guardEvent, atCases:0, mode:'single', noAlert:true, returnGuard:true,
-    title:{th:`ปลดสะกด ${name.th}`, en:`Free ${name.en}`},
-    alert:{th:`ยามากับนิราต้องช่วย${name.th}ให้หลุดจากคำสั่งก่อนเข้าประตู`, en:'Yama and Nira must break the spell on the gate guard before entering.'},
-    foe:{name:name.th,nameEn:name.en,sp:'crew-guard',boss:false,hypno:true,hp,atk},
+    title:zone === 'west' ? {th:'ปลดสะกดเซอร์เบอรัสและแวน เฮลซิง',en:'Free Cerberus and Van Helsing'} : {th:`ปลดสะกด ${name.th}`,en:`Free ${name.en}`},
+    alert:zone === 'west' ? {th:'เซอร์เบอรัสกับแวน เฮลซิงขวางประตูอยู่ ต้องชนะทั้งคู่ก่อนปลดสะกด',en:'Cerberus and Van Helsing are blocking the gate. Defeat both to break the spell.'}
+      : {th:`ยามากับนิราต้องช่วย${name.th}ให้หลุดจากคำสั่งก่อนเข้าประตู`,en:'Yama and Nira must break the spell on the gate guard before entering.'},
+    foes:gateFoes(zone,{name:name.th,nameEn:name.en,sp:'crew-guard',boss:false,hypno:true,hp,atk}),
     winStories:[Z4G_KEYS.guardFreed[zone],Z4G_KEYS.fire[zone]],reward:{exp:10}}];   // FB3-L3: Nira frees him (own scene) -> the fire scene
 }));
 export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,kind,coin,items,order]) => [zone,{
@@ -43,7 +49,8 @@ export const SIGNAL_EVENTS = Object.fromEntries(configs.map(([zone,name,hp,atk,k
   alert:{th:`${name} ถูกคำสั่งจากระบบครอบงำ ไปที่ชายแดนเพื่อช่วยเขา`},
   waves:[zone==='cyberhell' ? [{kind,count:2,hp:50,atk:[8,12]}]
     : RETURN_REAPERS.map((k,i)=>({controlledCrew:k,nameEn:RETURN_REAPER_EN[zone][i],sp:`crew-${k}`,hp:28,atk:[4,7],hypno:true})),
-    [{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]}]],
+    [{name,sp:`boss-frontier-${zone}${zone==='cyberhell'?'':'-signal'}`,boss:true,hp,atk,hypno:true,skills:BOSS_SKILLS[SIGNAL_SKILLS[zone]],partyScale:SIGNAL_SCALE[zone]},
+      ...(zone === 'west' ? [CONTROLLED_JORMUNGANDR] : [])]],
   reward:{coin,items,order,exp:20},lose:{hp:8},
 }]));
 export const SIGNAL_CLOSE = {k:'signalClose',signal:true,atCases:0,mode:'story',

@@ -10,7 +10,13 @@ export const zoneSeized = (g, zone = g.zone) => zone !== 'cyberhell' && !!SEIZED
 /** The return crossing puts this zone's Guard encounter on the route once. */
 export const returnGuardPending = (g, zone = g.zone) => zoneSeized(g, zone) &&
   ['pending','active'].includes(ev(g, zone, Z4G_KEYS.guardEvent));
-/** may this zone's harbour carry boats? (NR-1 opens each; Zone 4's opens when all three are freed) */
+/** A helper answers again when their own return fight is won. */
+export function returnSummonerBlock(g, key) {
+  if (key === 'jormungandr' && zoneSeized(g, 'west')) return 'controlled';
+  return '';
+}
+
+/** May this zone's harbour carry boats? NR-1 opens each; Zone 4 opens when all three are freed. */
 export const harbourOpen = (g, zone) => !seizedActive(g) || (zone === 'cyberhell' ? ['west', 'asia', 'th'].every(z => freed(g, z)) : freed(g, zone));
 /** the zone the walk back leads to from the current one, or null (not seized / its own lord not freed yet / nothing below) */
 export const walkBackTarget = (g, zone = g.zone) => seizedActive(g) && SEIZED_NEXT[zone] && freed(g, zone) ? SEIZED_NEXT[zone] : null;

@@ -16,7 +16,8 @@ import { harbourTravel } from './helpers/travel.mjs';
 import { createGame } from '../src/game.js';
 import { readFileSync } from 'node:fs';
 import { pickTalk } from '../src/talk.js';
-const win = g => { const b = g.battle; b.youHp = 99999; for (let i = 0; i < 80 && !b.over; i++) { for (const f of b.foes) if (f.hp > 0) { f.hp = 1; f.atk = [0, 0]; } g.selectFoe(b.foes.find(f => f.hp > 0).id); g.battleAct('atk'); if (!b.over && b.pendingWave) g.advanceZoneEventWave(true); } assert.equal(b.over, 'win'); g.endBattle(); g.pendingReward = null; };
+import { slottedSummoners, spendSummon, summonUsesLeft, summonWhy } from '../src/lamp.js';
+const win = (g, onWave) => { const b = g.battle; b.youHp = 99999; for (let i = 0; i < 80 && !b.over; i++) { for (const f of b.foes) if (f.hp > 0) { f.hp = 1; f.atk = [0, 0]; } g.selectFoe(b.foes.find(f => f.hp > 0).id); g.battleAct('atk'); if (!b.over && b.pendingWave) { g.advanceZoneEventWave(true); onWave?.(b.foes); } } assert.equal(b.over, 'win'); g.endBattle(); g.pendingReward = null; };
 /** Zone 4 right after the record hall (case 10) fell */
 const seized = () => { const g = zone4(); g.zoneEvents.cyberhell.cyberBreach = 'cleared'; g.zoneEvents.cyberhell.cyberSala = 'cleared'; g.zoneCases.cyberhell = 10; g.refreshZoneEvents(); g.notices = []; g.storyQueue.length = 0;
   g.zoneTravel.visited = { th:true, asia:true, west:true, cyberhell:true }; g.zoneTravel.ports = { th:true, asia:true, west:true, cyberhell:true }; return g; };
@@ -29,7 +30,18 @@ const fightLord = g => {
     assert.ok(battle.foes.every(f=>f.hypno));
     assert.deepEqual(g.battleActors().map(a=>a.k), ['yama','nira']);
   }
-  win(g);
+  win(g, foes => {
+    if (g.zone === 'west') {
+      assert.deepEqual(foes.map(f => f.sp), ['boss-frontier-west-signal', 'boss-jormungandr-west']);
+      assert.ok(foes.every(f => f.hypno));
+      if (slottedSummoners(g).includes('jormungandr')) {
+        assert.equal(summonWhy(g, 'jormungandr'), 'controlled');
+        const uses = summonUsesLeft(g, 'jormungandr');
+        assert.equal(g.battleAct('summon:jormungandr'), false);
+        assert.equal(summonUsesLeft(g, 'jormungandr'), uses);
+      }
+    }
+  });
 };
 const fightGuard = g => {
   const key = Z4G_KEYS.guardEvent;
@@ -37,9 +49,9 @@ const fightGuard = g => {
   assert.equal(g.zoneEventStatus(key),'pending');
   assert.ok(g.returnGuardAtGate());
   const battle=g.startZoneEvent(key); assert.ok(battle);
-  assert.equal(battle.foes.length,1);
-  assert.equal(battle.foes[0].sp,'crew-guard');
-  assert.ok(battle.foes[0].hypno);
+  assert.deepEqual(battle.foes.map(f => f.sp), zone === 'west'
+    ? ['boss-cerberus-gate-west', 'crew-guard'] : ['crew-guard']);
+  assert.ok(battle.foes.every(f => f.hypno));
   assert.deepEqual(g.battleActors().map(a=>a.k),['yama','nira']);
   win(g);
   assert.equal(g.zoneEventStatus(key),'cleared');
@@ -65,14 +77,34 @@ test('Trojan-9 is freed: the fight; cyber-signal-win page 1 as it was, page 2 is
   assert.ok(!/ท่านจะได้ไม่ต้องเสียเวลาเดินทาง/.test(s.pages[1].line), 'the old "Nira opens every sea route" line is gone');
 });
 test('the whole way back, in order: 4 -> (Lucifer) -> 3 Guard, reapers, Valdric -> 2 Guard, reapers, Akura -> 1 Guard, reapers, Tanthasura -> all harbours open -> boat to Zone 4 -> cyber-signal-close', () => {
-  const g = seized(); g.storySeen['cyber-signal-open'] = true; fightLord(g); drain(g); g.notices = [];
+  const g = seized();
+  delete g.zoneEvents.cyberhell.cyberSala;
+  g.giveLamp();
+  g.unlockHelper('jormungandr');
+  assert.equal(g.placeHelper(0, 'jormungandr'), true);
+  assert.equal(summonWhy(g, 'jormungandr', {kind:'frontier'}), '');
+  spendSummon(g, 'jormungandr');
+  const used = summonUsesLeft(g, 'jormungandr');
+  g.zoneEvents.cyberhell.cyberSala = 'cleared';
+  assert.equal(g.placeHelper(0, 'jormungandr'), false);
+  assert.deepEqual(slottedSummoners(g), ['jormungandr']);
+  const reload = createGame();
+  reload.restore(JSON.parse(JSON.stringify(g.snapshot())));
+  assert.equal(summonWhy(reload, 'jormungandr', {kind:'frontier'}), 'controlled');
+  assert.equal(summonUsesLeft(reload, 'jormungandr'), used);
+  g.storySeen['cyber-signal-open'] = true; fightLord(g); drain(g); g.notices = [];
   atGate(g); assert.equal(g.walkBackPrelude('west'), true); assert.deepEqual(g.storyQueue.map(s => s.key), ['col-pass'], 'Lucifer\'s one line before the crossing (not a fight)'); drain(g);
   assert.equal(g.moveZone('west'), true); assert.equal(g.zone, 'west'); assert.deepEqual(g.storyQueue.map(s => s.key).filter(k => k !== 'z3-arrive'), ['z3-guard-signal'], '(z3-arrive is only the first-visit scene of this fresh test world)'); assert.equal(zoneSeized(g), true); assert.equal(g.zoneEventStatus('signalWest'), 'pending');
   g.storySeen['signal-west-open'] = true; assert.equal(g.startZoneEvent('signalWest','call'),null);
   assert.equal(g.startZoneEvent(Z4G_KEYS.guardEvent),null,'must see the Guard scene first'); drain(g); fightGuard(g); drain(g);
   const tick = g.tick; g.step(); assert.equal(g.tick, tick, 'a seized zone stands still'); assert.deepEqual(harbourDestinations(g), []);
   assert.equal(walkBackTarget(g), null, 'Valdric is not freed - the gate is shut'); atGate(g); assert.equal(g.moveZone('asia'), false);
-  fightLord(g); assert.deepEqual(g.storyQueue.map(s => s.key), ['signal-west-win', 'z3-restored']); assert.deepEqual(g.notices, ['z3-harbour-open'], 'NR-1'); drain(g); g.notices = [];
+  fightLord(g);
+  assert.equal(summonWhy(g, 'jormungandr', {kind:'frontier'}), 'spent');
+  assert.equal(summonUsesLeft(g, 'jormungandr'), used);
+  assert.equal(storyOf('signal-west-win').pages[1].image, 'img/z4-events/cut-west-taan-repair-return.webp');
+  assert.deepEqual(g.storyQueue.map(s => s.key), ['signal-west-win', 'z3-restored']); assert.deepEqual(g.notices, ['z3-harbour-open', 'lamp-low'], 'the harbour opens and the returning helper still needs a recharge'); drain(g); g.notices = [];
+  assert.equal(g.placeHelper(0, null), true);
   assert.deepEqual(openDungeonRoutes(g), [], 'in Zone 3 the frontier is not the way on to Zone 4 while seized'); assert.equal(zoneSeized(g), false); assert.equal(harbourOpen(g, 'west'), true); assert.equal(harbourOpen(g, 'asia'), false); assert.equal(harbourOpen(g, 'cyberhell'), false); assert.equal(walkBackTarget(g), 'asia');
   atGate(g); assert.equal(g.walkBackPrelude('asia'), true); assert.deepEqual(g.storyQueue.map(s => s.key), [], 'Lucifer speaks only at the 3-4 crossing'); assert.equal(g.moveZone('asia'), true); assert.deepEqual(g.storyQueue.map(s => s.key), ['z2-guard-signal']); drain(g); fightGuard(g); drain(g);
   assert.equal(g.zoneEventStatus('signalAsia'), 'pending'); fightLord(g); assert.deepEqual(g.storyQueue.map(s => s.key), ['signal-asia-win', 'z2-restored']); assert.deepEqual(g.notices, ['z2-harbour-open']); drain(g); g.notices = [];

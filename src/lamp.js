@@ -42,6 +42,7 @@ import { RYUJIN_HELPER, ART as RYUJIN_ART } from './z2b-ryujin.js';   // T6/5
 import { EIRLIN_HELPER, EIRLIN_ART } from './z3e-eirlin.js';   // T7b/4
 import { JORM_HELPER, SEV_ART } from './z3f-severin.js';   // T7b-2/5
 import { THOR_HELPER, LUCIFER_HELPER, COL_ART } from './z4b-colosseum.js';   // T8a/2
+import { returnSummonerBlock as summonUnavailable } from './seized.js';
 import { LUPIN_HELPER, Z4L_ART } from './z4f-lupin.js';   // T8b/6
 import { MUSASHI_HELPER, ART as CERBERUS_ART } from './z2b-cerberus.js';   // T6/7   // T5'/1: the second helper's text lives with his story
 const art = (key, ext = 'webp') => `img/summon/${key}.${ext}`;
@@ -126,6 +127,7 @@ export const lampSlotCount = g => { const l = ensureMagic(g).lamp; return l.owne
 export const summonerUnlocked = (g, k) => !!(SUMMONERS[k] && ensureMagic(g).unlocked[k]);
 /** Helpers the player has met (shown in the bag) - never one whose event is not in the game yet. */
 export const unlockedSummoners = g => SUMMONER_KEYS.filter(k => SUMMONERS[k].ready && summonerUnlocked(g, k));
+export { summonUnavailable };
 export const summonUsesLeft = (g, k) => Math.max(0, SUMMON_USES - (Number(ensureMagic(g).lamp.used[k]) || 0));
 /** Helpers standing in a slot that the lamp actually has (a slot above the level is never offered). */
 export function slottedSummoners(g) {
@@ -159,18 +161,23 @@ export function setSlot(g, i, k) {
   if (!Number.isInteger(i) || i < 0 || i >= lampSlotCount(g)) return 'locked';
   if (k == null) { l.slots[i] = null; return ''; }
   if (!SUMMONERS[k] || !summonerUnlocked(g, k)) return 'unmet';
-  const at = l.slots.indexOf(k); if (at >= 0 && at !== i) l.slots[at] = l.slots[i];   // swap if he already stands in another slot
+  const blocked = summonUnavailable(g, k);
+  if (blocked) return blocked;
+  const at = l.slots.indexOf(k), previous = l.slots[i];
+  if (at >= 0 && at !== i) l.slots[at] = summonUnavailable(g, previous) ? null : previous;
   l.slots[i] = k;
   return '';
 }
 
-/** Why `k` cannot be summoned in `battle` right now - '' (can) | 'noLamp' | 'cannot' | 'present' | 'empty' | 'unmet' | 'spent'. */
+/** Why `k` cannot be summoned in `battle` right now - '' (can) | 'noLamp' | 'cannot' | 'present' | 'empty' | 'unmet' | 'controlled' | 'spent'. */
 export function summonWhy(g, k, battle = g.battle) {
   if (!lampOwned(g)) return 'noLamp';
   if (!battle || battle.over || SUMMON_BLOCKED_KINDS.includes(battle.kind) || battle.breachFinale === 'ready') return 'cannot';
   if (battle.summoned && !battle.summoned.leaving) return 'present';   // FB3-EV5: one helper stands in the team at a time
   if (!slottedSummoners(g).includes(k)) return 'empty';
   if (!SUMMONERS[k]?.ready) return 'unmet';
+  const blocked = summonUnavailable(g, k);
+  if (blocked) return blocked;
   if (summonUsesLeft(g, k) <= 0) return 'spent';
   return '';
 }
@@ -223,7 +230,7 @@ export function spendSummon(g, k) {
   return { used:l.used[k], left:SUMMON_USES - l.used[k], out:l.used[k] >= SUMMON_USES };
 }
 /** Every owned helper is out of moves (the NA-3 window shows once, after a fight). */
-export const lampAllSpent = g => { const s = slottedSummoners(g); return s.length > 0 && s.every(k => summonUsesLeft(g, k) <= 0); };
+export const lampAllSpent = g => { const s = slottedSummoners(g).filter(k => !summonUnavailable(g, k)); return s.length > 0 && s.every(k => summonUsesLeft(g, k) <= 0); };
 
 /** Mirror Tower: refill. `item` = 'mirror' | 'lamp' | 'clock' | 'all'. Returns the keys that were actually refilled. */
 export function rechargeTreasures(g, item = 'all') {

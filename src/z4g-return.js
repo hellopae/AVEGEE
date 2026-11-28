@@ -10,9 +10,8 @@ const A = n => `img/z4-events/${n}.webp`;
 const SIG = n => `img/story-sig/${n}.webp`;
 export const Z4G_ART = Object.freeze({
   fire:Object.freeze({ west:A('cut-z3-fire'), asia:A('cut-z2-fire'), th:A('cut-z1-fire') }),
-  guard:Object.freeze({ west:A('cut-z3-guard-hypnotized-frontier'), asia:A('cut-z2-guard-hypnotized-frontier'), th:A('cut-z1-guard-hypnotized-frontier') }),
-  /** FB3-L3 (Claudy): Nira's freeing scene wants its own drawing, `img/z4-events/cut-z{1,2,3}-guard-freed.webp` (Codex). Until the file exists the page falls back to the older gate picture (renderStoryComic `imageFallback`); saving the file under this name is all it takes. */
-  guardFreed:Object.freeze(Object.fromEntries([['west','z3'],['asia','z2'],['th','z1']].map(([zone,n])=>[zone,A(`cut-${n}-guard-freed`)]))),
+  guard:Object.freeze({ west:A('cut-z3-gate-cerberus-vanhelsing-return'), asia:A('cut-z2-gate-guanyu-return'), th:A('cut-z1-gate-kumphan-return') }),
+  guardFreed:Object.freeze({ west:A('cut-z3-gate-lucifer-eye-release'), asia:A('cut-z2-gate-guanyu-release'), th:A('cut-z1-gate-kumphan-release') }),
   restored:Object.freeze({ west:SIG('story-signal-west-02'), asia:SIG('story-signal-asia-02'), th:SIG('story-signal-th-02') }),   // K4: "cut - the existing SIG picture can be used" (Rae)
   pass:A('cut-col-gate'),
 });
@@ -27,21 +26,39 @@ const GUARD_RELEASE = {
   asia:L2('กวนอู: "เสียงนั้นเงียบแล้ว ข้าติดค้างท่านหนึ่งชีวิต ยมทูตกับหัวหน้าด่านยังถูกสะกดอยู่ ข้าจะไปกับท่าน"', 'Guan Yu: "That voice is silent. I owe you a life. The reapers and the frontier boss are still under the spell. I am going with you."'),
   th:L2('กุมภัณฑ์: "ข้าได้ถือกระบองด้วยใจข้าเองอีกครั้งแล้ว ขอบคุณท่านนิรา ยมทูตกับหัวหน้าด่านยังถูกสะกดอยู่ ข้าจะไปกับท่าน ช่วยปลดพวกเขาเอง"', 'Kumphan: "I hold my club by my own will again. Thank you, Nira. The reapers and the frontier boss are still under the spell. I am going with you to free them."'),
 };
-/** FB3-L3 (owner 26 Nov): after the duel Nira frees the Guard from the spell - its own short scene, then he joins the team. Wording: Rae R2 (ญ-1). */
+const guardAtGate = (zone, name) => zone === 'west' ? L2('เซอร์เบอรัสกับแวน เฮลซิง','Cerberus and Van Helsing') : name;
 const guardFreedStory = (zone, name) => {
-  const title = L2(`นิราปลดสะกด · ${name.th}`, `Nira Breaks the Spell · ${name.en}`);
-  const line = L2(`บรรยาย: ${name.th}ทรุดเข่าลงกลางประตู แสงเขียวในตายังวูบวาบ นิราก้าวออกมา ยกแผ่นกระจกขึ้นเหนือไหล่เขา เส้นแสงเขียวที่พาดตาแตกเป็นเสี่ยง แล้วจางหายไป\nนิรา: "ปลดแล้วค่ะ คำสั่งนั้นไม่ใช่ของท่านอีกต่อไป"\n${name.th}: "ข้า... กลับมาเป็นตัวข้าแล้ว ขอบคุณ"`,
-    `Narration: ${name.en} sinks to one knee in the gateway, the green light in his eyes still flickering. Nira steps forward and raises her mirror over his shoulder. The green line across his eyes shatters and fades.\nNira: "It is broken. That order is no longer yours."\n${name.en}: "I... am myself again. Thank you."`);
+  const targets = guardAtGate(zone, name);
+  const title = L2(`ปลดสะกด · ${targets.th}`, `The Spell Breaks · ${targets.en}`);
+  const line = L2(`บรรยาย: ยามาชูสร้อย Lucifer’s Eye ให้นิราประคองแสงสีทอง มนต์ที่คุม${targets.th}จึงจางหาย\nนิรา: “ปลดแล้วค่ะ”\n${name.th}: "ข้ากลับมาเป็นตัวเองแล้ว ขอบคุณ"`,
+    `Narration: Yama raises Lucifer’s Eye and Nira guides its golden light. The spell on ${targets.en} fades.\nNira: “It is broken.”\n${name.en}: “I am myself again. Thank you.”`);
   const story = fromRae({title,pages:[{title,line}]},Z4G_ART.guardFreed[zone]);
   story.pages[0].imageFallback = Z4G_ART.guard[zone];
   return story;
 };
 const guardStory = (zone, name) => {
-  const title = L2(`ผู้เฝ้าด่าน · ${name.th}`, `At the Gate · ${name.en}`);
-  const line = L2(`บรรยาย: ${name.th}ยืนขวางประตูชายแดน แสงเขียวพาดตา\nนิรา: "ท่านคะ ผู้เฝ้าด่านถูกสะกดค่ะ เราต้องช่วยเขาก่อนเข้าเมือง"\nยามา: "ผมจะหยุดเขา แล้วพาเขากลับมาครับ"`,
-    `Narration: ${name.en} blocks the frontier gate, green light across his eyes.\nNira: "Sir, the guard is under a spell. We have to free him before we go inside."\nYama: "I'll stop him and bring him back."`);
+  const targets = guardAtGate(zone, name);
+  const title = L2(`ผู้เฝ้าด่าน · ${targets.th}`, `At the Gate · ${targets.en}`);
+  const line = L2(`บรรยาย: ${targets.th}ขวางประตูไว้ ดวงตาเรืองแสงม่วง\nนิรา: “ท่านคะ ต้องหยุดผู้เฝ้าด่านก่อน แล้วเราจะใช้สร้อยปลดสะกดค่ะ”`,
+    `Narration: ${targets.en} ${zone === 'west' ? 'block' : 'blocks'} the gate, eyes glowing violet.\nNira: “Sir, we must stop the gate defenders before we can break the spell with the pendant.”`);
   return fromRae({title,pages:[{title,line}]},Z4G_ART.guard[zone]);
 };
+const westPairTitle = L2('วาลดริกกับยอร์มุนกันดร์','Valdric and Jörmungandr');
+const westPairOpen = fromRae({title:westPairTitle,pages:[{title:westPairTitle,line:L2(
+  'นิรา: “ยมทูตทั้งห้าถูกสะกด วาลดริกกับยอร์มุนกันดร์ก็ด้วยค่ะ”\nยามา: “เราจะช่วยยมทูตก่อน จากนั้นค่อยใช้สร้อยปลดสะกดทั้งคู่ครับ”',
+  'Nira: “All five reapers are under the spell, and so are Valdric and Jörmungandr.”\nYama: “We’ll free the reapers first, then use the pendant to free them both.”',
+)}]}, A('cut-west-valdric-jormungandr-return'));
+westPairOpen.pages.push(SIGNAL_STORIES['signal-west-open'].pages[1]);
+const westPairWin = fromRae({title:westPairTitle,pages:[{title:westPairTitle,line:L2(
+  'บรรยาย: ยามากับนิราใช้สร้อยปลดสะกดวาลดริกและยอร์มุนกันดร์\nวาลดริก: “ข้าได้ยินเสียงนับสาม แล้วมันก็หยุด ราวกับมีคนรอสี่อยู่”\nยอร์มุนกันดร์: “หากท่านต้องการข้า จงเรียกข้าจากตะเกียงอีกครั้ง”',
+  'Narration: Yama and Nira use the pendant to free Valdric and Jörmungandr.\nValdric: “I heard a voice count to three, then stop, as though someone was waiting for four.”\nJörmungandr: “If you need me, call me from the lamp again.”',
+)}]}, A('cut-west-lucifer-eye-release'));
+const repairTitle = L2('ทัณฑ์ซ่อมศาลาปัจฉิม','Taan Repairs the Western Hall');
+const westRepair = fromRae({title:repairTitle,pages:[{title:repairTitle,line:L2(
+  'บรรยาย: ทัณฑ์กับชาวเมืองเก็บคานที่ไหม้ออก แล้วยกไม้ใหม่ขึ้นซ่อมศาลา ปัจฉิมเริ่มกลับมาคึกคักอีกครั้ง',
+  'Narration: Taan and the townspeople clear away the burned beams and raise new timber to rebuild the hall. The Western city begins to come alive again.',
+)}]}, A('cut-west-taan-repair-return'));
+westPairWin.pages.push(...westRepair.pages);
 function returnStory(key,raw) {
   const zone=Object.keys(Z4G_KEYS.fire).find(z=>Z4G_KEYS.fire[z]===key);
   if (!zone) {
@@ -58,6 +75,8 @@ function returnStory(key,raw) {
 const PASS = { title:'สังเวียนที่ถูกตัดสาย', en:{ title:'The Arena With Its Lines Cut' }, pages:[{ image:Z4G_ART.pass, title:'ประตูข้างของสังเวียน', line:RAW_Z4G_LUCIFER_PASS.th, fallback:'📜', en:{ title:'The Arena\'s Side Gate', line:RAW_Z4G_LUCIFER_PASS.en } }] };
 export const Z4G_STORIES = Object.freeze({
   'cyber-signal-win':SIGNAL_WIN,
+  'signal-west-open':westPairOpen,
+  'signal-west-win':westPairWin,
   [Z4G_KEYS.passStory]:PASS,
   ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardStory[zone],guardStory(zone,name)])),
   ...Object.fromEntries(Object.entries(RETURN_GUARD_NAMES).map(([zone,name])=>[Z4G_KEYS.guardFreed[zone],guardFreedStory(zone,name)])),

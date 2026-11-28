@@ -24,6 +24,7 @@ export const LAMP_TEXT = Object.freeze({
   'bag.locked':{ th:'ล็อก · เล่นมินิเกมที่หอส่องกรรมโซน {n}', en:'Locked · play the minigame at the Mirror Tower of Zone {n}' },
   'bag.unmet':{ th:'??? · ยังไม่ได้พบ', en:'??? · not yet met' },
   // FB3-T8: a helper has ONE call now, so the old "n/3" line is gone - ready / used (Toby's placeholder wording for Rae)
+  'bag.controlled':{ th:'ถูกสะกด · รอปลดปล่อย', en:'Under a spell · free them first' },
   'bag.ready':{ th:'พร้อมเรียก', en:'Ready' },
   'bag.usedUp':{ th:'ใช้แล้ว', en:'Used' },
   'bag.place':{ th:'ใส่ในตะเกียง', en:'Place in Lamp' },
