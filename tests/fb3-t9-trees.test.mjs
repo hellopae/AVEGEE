@@ -77,6 +77,15 @@ test('handbook: the cards MN1 made redundant are gone, the ones with their own c
   const ui = src('src/ui.js');
   assert.doesNotMatch(ui, /<li>เลือก <b>สถานีที่ตรงชนิดกรรม<\/b> \+ <b>ระยะเวลาลงทัณฑ์<\/b> แล้วออกหมาย<\/li>/, 'old step 8 = MN1 box 3');
   assert.match(ui, /sentencingChapters\.filter\(ch => ch !== sentenceColorGuide\)/);
-  for (const keep of ['ไต่สวนก่อนตัดสิน', 'กระจกวิเศษมีจำนวนจำกัด', 'สถานีที่มี = สำนวนที่จะได้รับ', 'คำตัดสินไม่จบที่คดีนั้น', 'ยมทูตแต่ละคนหิวได้']) assert.ok(ui.includes(keep), keep);
+  assert.doesNotMatch(ui, /<li><b>ไต่สวนก่อนตัดสิน<\/b>/);
+  assert.match(ui, /<li value="5"><b>กระจกวิเศษมีจำนวนจำกัด/);
+  assert.match(ui, /source\.querySelectorAll\('\[data-handbook-duplicate\]'\)/);
+  const sentencing = src('src/sentencing-guide.js');
+  const marked = [...sentencing.matchAll(/<(?:p|article)[^>]* data-handbook-duplicate>(<h4[^>]*>[^<]*|[^<]+)/g)].map(match => match[1]);
+  assert.equal(marked.length, 6);
+  for (const expected of ['ชื่อของวิญญาณ', 'สีม่วง', 'ไต่สวนให้เห็นข้อเท็จจริง', 'ความตรงของสถานที่', 'คะแนนพิจารณา', 'ดาวตามคะแนน']) {
+    assert.ok(marked.some(text => text.includes(expected)), expected);
+  }
+  for (const keep of ['กระจกวิเศษมีจำนวนจำกัด', 'สถานีที่มี = สำนวนที่จะได้รับ', 'คำตัดสินไม่จบที่คดีนั้น', 'ยมทูตแต่ละคนหิวได้']) assert.ok(ui.includes(keep), keep);
   assert.doesNotMatch(src('src/story.js'), /ยมทูตและ Guard/); assert.ok(src('src/story.js').includes('ยมทูตและผู้เฝ้าด่านจากทั้งสี่โซนที่มาช่วย'));
 });

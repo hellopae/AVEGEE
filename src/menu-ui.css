@@ -12,24 +12,89 @@
 .menu-heading>img{width:50px;height:50px;object-fit:contain;flex:none}
 .menu-heading h2{margin:0!important;font-family:var(--font-display);color:#ffe1a1}
 .menu-heading p{margin:5px 0 0;font-size:13px;line-height:1.65;color:var(--menu-muted)}
-dialog.bag[open]{width:min(900px,calc(100vw - 24px));max-width:900px;padding:24px;background:linear-gradient(145deg,#291521,#170e14);border-color:var(--menu-line)}
-.bag .bag-title{font-size:16px;margin:8px 0 12px}
-.bag-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.bag-filters button{min-height:40px;padding:7px 12px;font-size:13px;background:#24141e;border-color:#795538;color:var(--menu-ink)}
-.bag-filters [aria-pressed=true]{border-color:var(--gold);background:#57302f;color:#ffe1a1}
-.bag .bag-item{grid-template-columns:56px minmax(0,1fr);align-items:start;gap:10px;padding:14px;border-color:#6c493b;background:var(--menu-surface)}
-.bag .bag-item img{width:56px;height:56px;background:#160d14}
-.bag .bag-item .n b{font-size:15px;line-height:1.5;color:var(--menu-ink)}
-.bag .bag-item .n small{font-size:13px;line-height:1.6;color:var(--menu-muted)}
-.bag .bag-item>button{grid-column:2;justify-self:start;min-height:44px;font-size:13px;padding:8px 20px}
-.bag .bag-item select{min-height:44px;line-height:1.5}
-.bag .outfit-card{padding:14px;border-color:#6c493b;background:var(--menu-surface);gap:16px}
-.bag .outfit-card.selected{background:#44232b;border-color:var(--gold)}
-.bag .outfit-card.locked{opacity:1;background:#1a1018}
-.bag .outfit-info b{font-size:16px;line-height:1.5}
-.bag .outfit-info small{font-size:13px;line-height:1.6;color:var(--menu-muted)}
-.bag .outfit-info span{font-size:13px;line-height:1.6}
-.bag .outfit-card button{min-height:44px;font-size:13px}
+dialog.bag[open]{
+  display:flex;flex-direction:column;width:min(88vw,1500px);max-width:none;height:min(88dvh,1000px);max-height:calc(100dvh - 24px);
+  padding:0;overflow:hidden;background:#291621;border:1px solid #dfb466;border-radius:16px;color:#fff6f1;
+}
+.bag .bag-header{display:flex;align-items:center;gap:clamp(6px,2vw,28px);padding:12px clamp(10px,3vw,40px) 0;border-bottom:1px solid #d2a050}
+.bag .bag-header .menu-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));flex:1;min-width:0;gap:clamp(4px,1vw,16px);margin:0 0 -1px}
+.bag .menu-tabs [role=tab]{min-width:0;min-height:54px;padding:8px 5px;border-radius:12px 12px 0 0;background:#291621;border-color:#d2a050;color:#fff8f4;line-height:1.25;font-size:clamp(12px,1.55vw,23px);font-weight:750;overflow-wrap:anywhere}
+.bag .menu-tabs [aria-selected=true]{border-bottom-color:#291621;box-shadow:none}
+.bag .menu-tabs small{font-size:inherit;margin-left:.3em}
+.bag .bag-close{flex:none;width:44px;height:44px;padding:0;margin-bottom:8px;background:transparent;border:0}
+.bag .bag-close img{width:100%;height:100%;display:block}
+.bag .bag-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:clamp(12px,2vw,32px);scrollbar-color:#9c7544 #291621}
+.bag h2{margin:0 0 12px;color:#f3c264;font-size:clamp(20px,2.15vw,32px);line-height:1.25}
+.bag .menu-panel{margin:0}
+.bag .bag-intro{display:grid;grid-template-columns:clamp(56px,8vw,112px) clamp(48px,8vw,112px) minmax(0,340px);gap:clamp(10px,2vw,30px);align-items:center;margin:0 0 22px}
+.bag .bag-intro p{margin:0;color:var(--menu-muted);line-height:1.5}
+.bag .bag-hero-status{min-width:0;display:grid;gap:4px;text-align:center}
+.bag .bag-hero-status img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #d9ae62}
+.bag .bag-hero-status progress{width:100%;height:7px;appearance:none;border:0;border-radius:5px;overflow:hidden;background:#140b12;--meter:#39c688}
+.bag .bag-hero-status progress.mp{--meter:#33b9e7}
+.bag .bag-hero-status progress::-webkit-progress-bar{background:#140b12}
+.bag .bag-hero-status progress::-webkit-progress-value{background:var(--meter)}
+.bag .bag-hero-status progress::-moz-progress-bar{background:var(--meter)}
+.bag .bag-intro-icon{width:100%;max-height:120px;object-fit:contain}
+.bag-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.bag-filters button{min-height:44px;padding:7px 14px;background:#291621;border:1px solid #d2a050;color:#fff6f1}
+.bag-filters [aria-pressed=true]{background:#a46924;color:white}
+.bag-inventory-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1.4vw,18px)}
+.bag-tile{display:grid;grid-template-rows:auto 1fr auto;gap:7px;min-width:0;padding:10px;border:1px solid #d2a050;background:#1c1117}
+.bag-tile-head{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;font-size:14px}
+.bag-tile-head b{font-weight:600;overflow-wrap:anywhere}
+.bag-tile-head button{flex:none;min-height:44px;min-width:44px;padding:3px 8px}
+.bag-tile>img{width:100%;height:clamp(70px,8vw,136px);object-fit:contain}
+.bag-tile>small{display:block;text-align:center;color:var(--menu-muted);min-height:2.8em;line-height:1.4}
+.bag-dressing{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.13fr);gap:clamp(12px,3vw,40px);align-items:start}
+.bag-preview{text-align:center;position:sticky;top:0}
+.bag-preview-art{position:relative;display:grid;place-items:center;min-height:clamp(160px,37vw,520px);
+  background:radial-gradient(circle at center,transparent 31%,#ffd37265 39%,transparent 44%),radial-gradient(ellipse,#b57a3d60 0,transparent 65%)}
+.bag-preview-art>img{width:80%;height:clamp(155px,33vw,470px);object-fit:contain}
+.bag-sword-frame{position:relative;width:100%;aspect-ratio:1;max-width:530px;overflow:hidden}
+.bag-sword-frame img{position:absolute;top:0;left:-300%;width:800%;height:100%;max-width:none}
+.bag-outfits,.bag-weapons,.bag-treasures,.bag-lamp-slots,.bag-helper-pool{display:grid;gap:clamp(8px,1.5vw,18px)}
+.bag-outfits{grid-template-columns:repeat(2,minmax(0,1fr))}
+.bag-weapons{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bag-equipment{min-width:0;display:flex;flex-direction:column;align-items:stretch;text-align:center;gap:5px}
+.bag-weapon-effects,.bag-equip-actions{display:grid;gap:4px}
+@supports(grid-template-rows:subgrid){
+ .bag-weapons>.bag-equipment{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:6px}
+ .bag-weapons .bag-equip-art{margin-top:0}
+}
+.bag-equipment>b{color:#f3c264;overflow-wrap:anywhere}
+.bag-equipment small,.bag-lamp-slot small{color:var(--menu-muted);line-height:1.4}
+.bag-equipment .bag-equip-art{margin-top:auto}
+.bag-equipment button{min-height:44px}
+.bag-equip-art,.bag-slot-art,.bag-helper-icon{display:grid;place-items:center;position:relative;isolation:isolate;background:#1c1117;border:1px solid #d2a050}
+.bag-equip-art{aspect-ratio:1}
+.bag-equip-art>img:not(.bag-lock){width:85%;height:85%;position:absolute;object-fit:contain}
+.bag-mystery{font-size:clamp(28px,5vw,68px);font-weight:700}
+.bag .bag-lock{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:40%;max-width:68px;height:auto;z-index:2}
+.bag .locked :is(.bag-equip-art,.bag-treasure-art,.bag-slot-art,.bag-helper-icon)>img:not(.bag-lock){opacity:.3}
+.bag .selected :is(.bag-equip-art,.bag-slot-art,.bag-helper-icon){outline:3px solid #f5ca6c;outline-offset:-3px}
+.bag-equipped{color:#f3c264;font-size:13px}
+.bag-treasure-tab{text-align:center}
+.bag-treasures,.bag-lamp-slots{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bag-treasures{margin-bottom:32px}
+.bag-treasure-art{position:relative;aspect-ratio:1}
+.bag-treasure-art>img:not(.bag-lock){width:90%;height:90%;object-fit:contain}
+.bag-treasure h3{font-size:clamp(14px,1.65vw,25px);margin:5px 0}
+.bag-treasure p{color:var(--menu-muted);font-size:14px;line-height:1.5;margin:6px 0 10px}
+.bag-treasure strong{color:#f3c264}
+.bag .lamp-note,.bag .lamp-low{margin:0 0 13px}
+.bag-lamp-slot{display:flex;flex-direction:column;gap:5px;min-width:0;overflow-wrap:anywhere}
+.bag-slot-art{aspect-ratio:5/7;background:radial-gradient(ellipse,#9d6a364f,transparent 65%),#1c1117;font-size:38px}
+.bag-slot-art .bag-helper-body{width:86%;height:76%;object-fit:contain;position:absolute;top:4%}
+.bag-slot-art .bag-helper-lamp{width:58%;height:26%;object-fit:contain;position:absolute;bottom:4%}
+.bag .lamp-btns{margin-top:auto;flex-direction:row;flex-wrap:wrap;justify-content:center}
+.bag .lamp-btns button{min-height:44px;padding:5px 8px}
+.bag-helper-pool{grid-template-columns:repeat(12,minmax(0,1fr));margin:16px 2px 4px;align-items:start}
+.bag-helper{display:grid;gap:5px;min-width:0;text-align:center;font-size:12px;overflow-wrap:anywhere}
+.bag button.bag-helper{padding:0;color:#ffe9bb;background:none;border:0}
+.bag button.bag-helper:disabled{opacity:1}
+.bag-helper-icon{aspect-ratio:1;min-height:44px}
+.bag-helper-icon>img:not(.bag-lock){width:100%;height:100%;object-fit:contain}
 .weapon-compare{display:block!important;margin-top:7px;padding:7px 10px;border-left:2px solid var(--gold);background:#ffffff06;color:var(--menu-ink)!important;font-variant-numeric:tabular-nums}
 .weapon-compare.gain{border-color:#91d4a4}.weapon-compare.loss{border-color:#ef9b88}
 .menu-footer{margin-top:20px;padding-top:14px;border-top:1px solid #795538;display:flex;justify-content:flex-end;gap:8px}
@@ -91,11 +156,23 @@ dialog.rpg:has(.battle-command-dock)>.combat-arena{grid-column:1;grid-row:1;min-
 .battle-command-dock .command-options .orb-choice:disabled{opacity:.6!important;filter:none}
 .battle-command-dock .battle-command-cancel{position:static;margin-top:12px;min-height:44px;width:100%}
 .battle-command-dock.busy{opacity:.65}.battle-command-dock.busy .command-options{pointer-events:none}
+@media(min-width:701px) and (max-width:1000px){
+ .bag-inventory-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .bag-helper-pool{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
 @media(max-width:700px){
  .menu-heading>img{width:38px;height:38px}.menu-heading{gap:10px}.menu-heading h2{font-size:19px!important}
- dialog.bag[open]{padding:16px;width:calc(100vw - 16px)}
- .bag .bag-list{grid-template-columns:1fr}.bag .outfit-card{grid-template-columns:56px minmax(0,1fr);gap:12px;padding:12px}
- .bag .outfit-card img{width:56px;height:70px}.bag .outfit-card button{grid-column:2;justify-self:start}
+ dialog.bag[open]{width:calc(100vw - 16px);height:calc(100dvh - 24px)}
+ .bag .bag-header{padding-top:8px}
+ .bag .menu-tabs [role=tab]{min-height:48px;font-size:clamp(11px,3vw,15px)}
+ .bag-inventory-grid,.bag-treasures,.bag-lamp-slots{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .bag-dressing{grid-template-columns:1fr}
+ .bag-weapons{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .bag-preview{position:static}
+ .bag-preview-art{min-height:190px}
+ .bag-preview-art>img{height:185px}
+ .bag-sword-frame{max-width:240px}
+ .bag-helper-pool{grid-template-columns:repeat(4,minmax(0,1fr))}
  .menu-tabs{gap:6px}.menu-tabs [role=tab]{min-width:0;padding:9px 6px;font-size:13px}.bag-filters button{min-height:44px}
  .hero-profile{padding:8px}.hero-profile-frame{display:block;height:auto;min-height:100%;padding:16px;overflow:visible}
  .hero-profile-figure{display:none}.hero-profile-content{overflow:visible;padding:0}

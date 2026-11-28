@@ -13,30 +13,10 @@
 .st-pane .dev-tag{display:inline-block;padding:1px 8px;border-radius:999px;border:1px dashed var(--warning);color:var(--warning);font-size:11px}
 
 /* ---- bag tab ---- */
-.lamp-tab{display:flex;flex-direction:column;gap:8px}
-.lamp-tab .tre-card{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
-.lamp-tab .tre-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
-.lamp-tab .tre-icon img{max-width:100%;max-height:100%;object-fit:contain}
-.lamp-tab .n{display:flex;flex-direction:column;gap:1px;min-width:0}
-.lamp-tab .n small{color:var(--muted-foreground)}
-.lamp-tab .tre-state{font-style:normal;color:var(--gold)}
-.lamp-tab .tre-none .tre-state{color:var(--muted-foreground)}
-.lamp-tab .tre-spent .tre-state{color:var(--destructive,#e0735c)}
-.lamp-h{margin:10px 0 0;color:var(--gold)}
 .lamp-note{margin:0;color:var(--muted-foreground)}
 .lamp-low{padding:8px 10px;border:1px dashed var(--warning);border-radius:var(--radius-md);color:var(--warning)}
 .lamp-msg{color:var(--gold)}
-.lamp-slot{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--gold);border-radius:var(--radius-md);background:var(--card)}
-.lamp-slot.is-locked,.lamp-slot.is-empty{border-style:dashed}
-.lamp-slot.is-locked{opacity:.7;border-color:var(--border);grid-template-columns:44px 1fr}
-.lamp-slot.is-spent .tre-state{color:var(--destructive,#e0735c)}
-.lamp-slot.is-pool{border-color:var(--border)}
-.lamp-slot .sum-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
-.lamp-slot .sum-icon img{max-width:100%;max-height:100%;object-fit:contain;border-radius:50%}
-.lamp-btns{display:flex;flex-direction:column;gap:4px}
-.lamp-slot button{min-height:44px}
-.lamp-pool{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-@media(max-width:420px){.lamp-slot{grid-template-columns:44px 1fr}.lamp-slot>button,.lamp-slot .lamp-btns{grid-column:1 / -1;flex-direction:row}.lamp-slot .lamp-btns button{flex:1}}
+.lamp-btns{display:flex;gap:4px}
 
 /* ---- battle: the "อัญเชิญ" window (shares .flee-layer / .flee-card) + the helper's line on its cutscene ---- */
 .summon-card{display:flex;flex-direction:column;gap:8px;text-align:left}

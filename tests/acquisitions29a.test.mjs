@@ -127,13 +127,15 @@ test('all item icons have files or usable error fallback; blade scrap shares the
 
 test('outfit cards use the same ownership rule as equipping, show a visible lock reason and enable owned outfits', () => {
   const g=createGame(); g.level=5;
-  const ctx={g,ZONES,LEVELS,esc:String};vm.createContext(ctx);
+  const ctx={g,ZONES,LEVELS,esc:String,getLang:()=> 'th',artUrl:()=> 'hero.webp',
+    bagLock:'<img class="bag-lock" alt="">',bagOutfitIcons:{}};
+  vm.createContext(ctx);
   vm.runInContext(extract('outfitCards','function openBag'),ctx);
   for(const k of ['asia','west','cyberhell']) {
     assert.equal(g.setOutfit(k),false);
     const html=ctx.outfitCards();
     assert.match(html,new RegExp(`data-bag-outfit="${k}" disabled`));
-    assert.ok(html.includes(g.outfitWhy(k))); assert.match(html,/🔒/);
+    assert.ok(html.includes(g.outfitWhy(k))); assert.match(html,/bag-lock/);
     g.outfitsOwned.push(k);
     assert.match(ctx.outfitCards(),new RegExp(`data-bag-outfit="${k}" >สวม`));
     assert.equal(g.setOutfit(k),true);

@@ -53,7 +53,7 @@ import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, swordSheet, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor, sentenceColorGuide } from './sentence-colors.js';   // FB3-T9: the guide card is the same as MN1 box 5, so the handbook leaves it out (the trial's own help list still has it)
@@ -96,7 +96,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS, FINAL_EVENT } from './data.js';
-import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
+import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack, weaponSpriteSrc } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone, prewarmZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
@@ -1228,7 +1228,7 @@ dlg.addEventListener('close', () => { setTimeout(() => { if (!dlg.open) g.onChan
 new MutationObserver(() => {
   if (!dlg.open || dlg.classList.contains('defeat-recovery') || dlg.classList.contains('pause-modal') ||
       dlg.querySelector('.st-hud') || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
-      dlg.querySelector('.settings-close,.trial-close') ||
+      dlg.querySelector('.settings-close,.trial-close,.bag-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
   const close = document.createElement('button');
   close.className = 'modal-corner-close';
@@ -2610,11 +2610,7 @@ function openHelp(initialTab = 'guide') {
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
           ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
       <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
-      <li><b>ไต่สวนก่อนตัดสิน</b> — คดีทั่วไปให้มองหาคำที่ขัดกับสำนวน ส่วนคดีมีชื่อจะเริ่มจาก
-          <b>ภาพลักษณ์ภายนอก</b>เท่านั้น ให้เลือกประเด็นที่น่าสงสัยเพื่อค่อย ๆ เปิดรายการกรรม
-          จี้ถูก = เขาสารภาพเรื่องที่ยังไม่เปิดให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
-          (จี้ได้ 2 ครั้งต่อคดี) · ใช้<b>ตวาดข่มขู่</b>เพื่อชี้ข้อหลักฐานที่ควรสอบสวน แล้วกดข้อที่มี 💢 · คูลดาวน์ 2 นาที</li>
-      <li><b>กระจกวิเศษมีจำนวนจำกัด</b> — ใช้แล้วหมดไป ชนะเทวดาทดสอบได้เพิ่ม 1 บาน เลื่อนขั้นแล้วมีเติมให้ (ตั้งแต่ขั้น 5 เติมเต็ม)
+      <li value="5"><b>กระจกวิเศษมีจำนวนจำกัด</b> — ใช้แล้วหมดไป ชนะเทวดาทดสอบได้เพิ่ม 1 บาน เลื่อนขั้นแล้วมีเติมให้ (ตั้งแต่ขั้น 5 เติมเต็ม)
           และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> · ${esc(t('unlock.towerWhen'))} · ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
           ค้างไว้จนได้ครั้งละ 1 บาน ต้องรอ 5 วาระก่อนเติมครั้งถัดไป ไม่ใช่เติมได้ไม่จำกัด</li>
       <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ส่งไปสถานที่ไม่ตรงกรรม เขาอาจยังไม่สำนึกและกลับไปก่อเรื่องต่อ
@@ -2654,12 +2650,17 @@ function openHelp(initialTab = 'guide') {
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
     <div class="help-reader"></div>`, d => {
       const source = d.querySelector('.help-source');
-      const items = [...source.querySelectorAll('li')].map(li => li.innerHTML);
+      for (const duplicate of source.querySelectorAll('[data-handbook-duplicate]')) duplicate.remove();
+      let number = 0;
+      const items = [...source.querySelectorAll('ol > li')].map(li => {
+        number = li.value || number + 1;
+        return {html:li.innerHTML, number};
+      });
       const intro = `<h2>วิธีเล่น</h2>${source.querySelector('h2 + p').outerHTML}
         ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
       const reader = d.querySelector('.help-reader');
-      const guideHtml = `${intro}<div data-gp-root></div><div class="guide-card-grid">${items.map((html, i) =>
-        guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>${historyHtml()}`;
+      const guideHtml = `${intro}<div data-gp-root></div><div class="guide-card-grid">${items.map(({html, number}) =>
+        guideCards(`<h3>${number}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>${historyHtml()}`;
       reader.innerHTML = `<div class="quest-help-tabs" role="tablist" aria-label="หนังสือคู่มือ"><button type="button" id="help-guide-tab" role="tab" aria-controls="help-guide-panel" data-help-tab="guide">วิธีเล่น</button><button type="button" id="help-quests-tab" role="tab" aria-controls="help-quests-panel" data-help-tab="quests">ภารกิจ</button></div><section id="help-guide-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-guide-tab">${guideHtml}</section><section id="help-quests-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-quests-tab">${questJournalHtml(g,trackedQuestId)}</section>`;
       // FB3-MN1: the five handbook pages; pages 4 (lamp) and 5 (a seized city) stay shut until the story has got there
       mountGuidePages(reader.querySelector('[data-gp-root]'), { lang:getLang(), t, art:k => artUrl(k) || '', stationImg:k => wideStationRoom(g.zone, k)?.image || wideStationRoom('th', k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp') || '',
@@ -6002,19 +6003,26 @@ function bagUseWhy(k) {
   return '';
 }
 
+const bagLock = '<img class="bag-lock" src="img/icon-lock.webp" alt="">';
+const bagOutfitIcons = {
+  th:'img/item-outfit-th-v1.webp',
+  asia:'img/item-outfit-asia-l4b.webp',
+  west:'img/item-outfit-west-l4b.webp',
+  cyberhell:'img/item-outfit-cyberhell-v3.webp'
+};
 function outfitCards() {
+  const en = getLang() === 'en';
   return ZONES.map(z => {
     const why = g.outfitWhy(z.k), lock = !!why, here = (g.outfit || 'th') === z.k;
-    const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
-    const face = z.k === 'th' ? 'img/hero-yama.webp' : `img/${folders[z.k]}/hero-yama-${z.k}.webp`;
-    return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
-      <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
-      <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
-        ${z.sub ? `<small>${esc(z.sub)}</small>` : ''}
-        <span>${lock ? `🔒 ${esc(why)}` : here ? '✓ กำลังสวม' : 'เก็บอยู่ในกระเป๋า'}</span></span>
-      ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
-             : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>${lock ? '🔒 ยังสวมไม่ได้' : 'สวม'}</button>`}
-    </div>`;
+    const icon = bagOutfitIcons[z.k];
+    const name = en ? z.k === 'th' ? 'Suvarnabhumi' : z.k === 'asia' ? 'East' : z.k === 'west' ? 'West' : 'Network Hell' : 'ชุด' + z.name.replace(/^โซน/, '');
+    return `<article class="bag-equipment${here ? ' selected' : ''}${lock ? ' locked' : ''}">
+      <b>${esc(name)}</b>
+      <div class="bag-equip-art"><img src="${esc(icon)}" alt="" loading="lazy">${lock ? bagLock : ''}</div>
+      ${lock ? `<small>${esc(why)}</small>` : ''}
+      ${here ? `<span class="bag-equipped">${en ? 'Equipped' : 'กำลังสวม'}</span>`
+        : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>${lock ? (en ? 'Locked' : 'ยังสวมไม่ได้') : (en ? 'Equip' : 'สวม')}</button>`}
+    </article>`;
   }).join('');
 }
 
@@ -6029,24 +6037,36 @@ function weaponCards() {
     const { current, next, delta } = weaponBonusComparison(WEAPONS, eq, id);
     return `<small class="weapon-compare ${delta > 0 ? 'gain' : delta < 0 ? 'loss' : ''}">${esc(t('menu.bonusCompare', { current, next }))}<br>${esc(t('menu.bonusChange', { delta:delta > 0 ? `+${delta}` : delta }))}</small>`;
   };
-  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' }, style = g.outfit || g.zone;
-  const face = style === 'th' ? 'img/hero-yama.webp' : `img/${folders[style]}/hero-yama-${style}.webp`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
-  const base = `<div class="outfit-card weapon-card${eq ? '' : ' selected'}">
-    <img src="${baseSwordIconSrc}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${face}'">
-    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote', { n:baseSwordAttack(b => g.normalAttack(b)) }))}</small>${comparison(null)}</span>
-    ${eq ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>` : `<button class="sm" disabled>${esc(t('weapon.on'))}</button>`}</div>`;
-  return base + Object.keys(WEAPONS).map(id => {
+  const base = `<article class="bag-equipment${eq ? '' : ' selected'}">
+    <b>${esc(t('weapon.base'))}</b><div class="bag-weapon-effects"><small>${esc(t('weapon.baseNote', { n:baseSwordAttack(b => g.normalAttack(b)) }))}</small></div>
+    <div class="bag-equip-art"><img src="${baseSwordIconSrc}" alt="" loading="lazy"></div>
+    <div class="bag-equip-actions">${comparison(null)}
+    ${eq ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>` : `<span class="bag-equipped">${esc(t('weapon.on'))}</span>`}</div></article>`;
+  const cards = Object.keys(WEAPONS).map(id => {
     const owned = !!g.weapons?.owned?.[id], on = eq === id, zone = ZONES.find(z => z.k === WEAPONS[id].zone);
-    return `<div class="outfit-card weapon-card${on ? ' selected' : ''}${owned ? '' : ' locked'}">
-      ${weaponImg(id, 'loading="lazy"')}
-      <span class="outfit-info"><b>${esc(t(`weapon.${id}.name`))}</b>
-        ${weaponEffectLines(id).map(l => `<small>${esc(l)}</small>`).join('')}
-        ${owned ? comparison(id) : ''}
-        <span>${owned ? esc(on ? t('weapon.on') : t('weapon.stored')) : esc(t('weapon.locked', { zone:zone.name.replace(/^โซน/, '') }))}</span></span>
-      ${on ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>`
-           : `<button class="sm" data-bag-weapon="${id}" ${owned ? '' : 'disabled'}>${owned ? esc(t('weapon.equip')) : '🔒'}</button>`}
-    </div>`;
+    return `<article class="bag-equipment${on ? ' selected' : ''}${owned ? '' : ' locked'}">
+      <b>${esc(t(`weapon.${id}.name`))}</b>
+      <div class="bag-weapon-effects">${weaponEffectLines(id).map(line => `<small>${esc(line)}</small>`).join('')}</div>
+      <div class="bag-equip-art">${weaponImg(id, 'loading="lazy"')}${owned ? '' : bagLock}</div>
+      <div class="bag-equip-actions">${owned ? comparison(id) : `<small>${esc(t('weapon.locked', { zone:zone.name.replace(/^โซน/, '') }))}</small>`}
+      ${on ? `<span class="bag-equipped">${esc(t('weapon.on'))}</span>` : owned ? `<button class="sm" data-bag-weapon="${id}">${esc(t('weapon.equip'))}</button>` : ''}</div>
+    </article>`;
   }).join('');
+  return base + cards + `<article class="bag-equipment locked"><b>${getLang() === 'en' ? 'Special weapon' : 'ดาบพิเศษ'}</b>
+    <div class="bag-weapon-effects"></div><div class="bag-equip-art bag-mystery" aria-hidden="true">?</div><div></div></article>`;
+}
+
+function bagEquipmentPreview(weapon = false) {
+  const style = g.outfit || g.zone;
+  const title = weapon
+    ? (getLang() === 'en' ? 'Yama’s Weapons' : 'อาวุธของยามา')
+    : (getLang() === 'en' ? 'Yama’s Outfits' : 'ชุดของยามา');
+  const base = swordSheet(style).src;
+  const eq = g.weapons?.equipped;
+  const swing = eq ? weaponSpriteSrc(eq, style) : base;
+  return `<div class="bag-preview"><h2>${title}</h2><div class="bag-preview-art">${weapon
+    ? `<div class="bag-sword-frame"><img src="${esc(swing)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${base}'"></div>`
+    : `<img src="${esc(artUrl('hero-yama', 'webp', style) || heroFace())}" alt="" loading="lazy">`}</div></div>`;
 }
 
 let bagSection = 'items', bagFilter = 'all';
@@ -6057,65 +6077,116 @@ const summonIcon = (k, cls = '') => {
   const d = LAMP.summonerOf(k);
   return `<span class="sum-icon ${cls}"><img src="${esc(d?.art?.icon || '')}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'tre-glyph',textContent:'${d?.glyph || '✦'}'}))"></span>`;
 };
-function lampTabHtml() {
-  const L = LAMP.ensureMagic(g).lamp, lang = lampLang(), cap = LAMP.lampSlotCount(g);
-  const cards = LAMP.TREASURES.map(it => {
-    const s = LAMP.treasureState(g, it), name = lt(`item.${it}.name`);
-    const stateTxt = s.state === 'none' ? lt('state.notFound') : s.state === 'charged' ? lt('state.charged') : s.state === 'partial' ? lt('state.partial', { n:s.n, max:s.max }) : lt('state.spent');
-    const icon = it === 'mirror' ? '<img src="img/item-mirror.webp" alt="">' : it === 'clock' ? '<img src="img/fx-clock-reset.webp" alt="">'
-      : LAMP.LAMP_ICON_SRC ? `<img src="${esc(LAMP.LAMP_ICON_SRC)}" alt="">` : '<span class="tre-glyph" aria-hidden="true">🪔</span>';
-    return `<div class="bag-item tre-card tre-${s.state}"><span class="tre-icon">${icon}</span><span class="n"><b>${esc(name)}</b><small>${esc(lt(`item.${it}.desc`))}</small><em class="tre-state">${esc(stateTxt)}</em></span></div>`;
+function bagTreasures() {
+  return [
+    ...LAMP.TREASURES.slice(0, 2),
+    'luciferEye',
+    ...LAMP.TREASURES.slice(2),
+  ].map(key => {
+    const pendant = key === 'luciferEye';
+    const state = pendant
+      ? {state:g.inventory.luciferEye ? 'charged' : 'none'}
+      : LAMP.treasureState(g, key);
+    const src = { mirror:'img/krajok-magic-mirror.webp', lamp:LAMP.LAMP_ICON_SRC, clock:'img/fx-clock-reset.webp',
+      luciferEye:'img/item-lucifer-eye.webp' }[key];
+    const name = pendant ? itemName(key) : lt(`item.${key}.name`);
+    const desc = pendant ? itemText(key, 'desc') : lt(`item.${key}.desc`);
+    const available = key === 'lamp' ? LAMP.slottedSummoners(g).reduce((uses, helper) =>
+      uses + (LAMP.summonUnavailable(g, helper) ? 0 : LAMP.summonUsesLeft(g, helper)), 0) : state.n;
+    const status = state.state === 'none' ? lt('state.notFound')
+      : state.max ? (getLang() === 'en' ? `${available}/${state.max} available` : `ใช้ได้ ${available}/${state.max}`)
+      : state.state === 'charged' ? lt('state.charged') : lt('state.spent');
+    return {src, name, desc, status, locked:state.state === 'none'};
+  });
+}
+
+function lampTabHtml(treasures) {
+  const lamp = LAMP.ensureMagic(g).lamp, lang = lampLang(), cap = LAMP.lampSlotCount(g);
+  const cards = treasures.map(({src, name, desc, status, locked}) =>
+    `<article class="bag-treasure${locked ? ' locked' : ''}">
+      <div class="bag-treasure-art"><img src="${esc(src)}" alt="" loading="lazy">${locked ? bagLock : ''}</div>
+      <h3>${esc(name)}</h3><p>${esc(desc)}</p><strong>${esc(status)}</strong>
+    </article>`).join('');
+  const slots = Array.from({length:LAMP.LAMP_MAX_SLOTS}, (_, i) => {
+    const name = lt('bag.slot', {n:i + 1});
+    if (i >= cap) return `<article class="bag-lamp-slot locked"><div class="bag-slot-art">${bagLock}</div><b>${esc(name)}</b>
+      <small>${esc(lt('bag.locked', {n:i + 1}))}</small></article>`;
+    const k = lamp.slots[i], helper = k && LAMP.summonerOf(k);
+    const blocked = helper && LAMP.summonUnavailable(g, k);
+    const status = helper && lt(blocked ? 'bag.controlled' : LAMP.summonUsesLeft(g, k) ? 'bag.ready' : 'bag.usedUp');
+    return `<article class="bag-lamp-slot${lampPickSlot === i ? ' selected' : ''}${blocked ? ' locked' : ''}">
+      <div class="bag-slot-art">${helper ? `<img class="bag-helper-body" src="${esc(helper.art.battle || helper.art.icon)}" alt="" loading="lazy">
+        <img class="bag-helper-lamp" src="${esc(LAMP.LAMP_ICON_SRC)}" alt="" loading="lazy">${blocked ? bagLock : ''}` : '<span aria-hidden="true">+</span>'}</div>
+      <b>${esc(helper ? LAMP.summonerName(k, lang) : name)}</b><small>${esc(status || lt('bag.empty'))}</small>
+      <div class="lamp-btns"><button data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt(helper ? 'bag.swap' : 'bag.place'))}</button>
+      ${helper ? `<button data-lamp-remove="${i}">${esc(lt('bag.remove'))}</button>` : ''}</div>
+    </article>`;
   }).join('');
-  if (!L.owned) return `<div class="lamp-tab">${cards}<div class="bag-empty">${esc(lt('none.lamp'))}</div></div>`;
-  const slots = Array.from({ length:LAMP.LAMP_MAX_SLOTS }, (_, i) => {
-    if (i >= cap) return `<div class="lamp-slot is-locked"><span class="sum-icon"><img src="img/ui/icon-lock.webp" alt=""></span><span class="n"><b>${esc(lt('bag.slot', { n:i + 1 }))}</b><small>${esc(lt('bag.locked', { n:i + 1 }))}</small></span></div>`;
-    const k = L.slots[i], d = k && LAMP.summonerOf(k);
-    if (!d) return `<div class="lamp-slot is-empty"><span class="sum-icon"><span class="tre-glyph" aria-hidden="true">＋</span></span><span class="n"><b>${esc(lt('bag.slot', { n:i + 1 }))}</b><small>${esc(lt('bag.empty'))}</small></span>
-      <button class="gold" data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.place'))}</button></div>`;
-    const left = LAMP.summonUsesLeft(g, k), blocked = LAMP.summonUnavailable(g, k);
-    return `<div class="lamp-slot is-filled${left && !blocked ? '' : ' is-spent'}">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))}</small><em class="tre-state">${esc(lt(blocked ? 'bag.controlled' : left > 0 ? 'bag.ready' : 'bag.usedUp'))}</em></span>
-      <span class="lamp-btns"><button data-lamp-slot="${i}" aria-pressed="${lampPickSlot === i}">${esc(lt('bag.swap'))}</button><button data-lamp-remove="${i}">${esc(lt('bag.remove'))}</button></span></div>`;
+  const emptySlot = lamp.slots.findIndex((key, i) => !key && i < cap);
+  const targetSlot = lampPickSlot ?? emptySlot;
+  const unlocked = LAMP.unlockedSummoners(g);
+  const pool = LAMP.SUMMONER_KEYS.map(k => {
+    const d = LAMP.summonerOf(k), allowed = unlocked.includes(k);
+    if (!allowed) return `<span class="bag-helper locked" role="img" aria-label="${esc(lt('state.notFound'))}"><span class="bag-helper-icon">${bagLock}</span></span>`;
+    const here = lamp.slots.indexOf(k), blocked = LAMP.summonUnavailable(g, k);
+    const name = LAMP.summonerName(k, lang);
+    return `<button class="bag-helper${here >= 0 ? ' selected' : ''}${blocked ? ' locked' : ''}" data-lamp-place="${k}"
+      data-lamp-target="${targetSlot}" ${blocked || targetSlot < 0 || here === targetSlot ? 'disabled' : ''}
+      title="${esc(blocked ? lt('bag.controlled') : LAMP.summonerMoveName(k, lang))}">
+      <span class="bag-helper-icon"><img src="${esc(d.art.icon)}" alt="" loading="lazy">${blocked ? bagLock : ''}</span><span>${esc(name)}</span>
+      ${blocked ? `<small>${esc(lt('bag.controlled'))}</small>` : ''}</button>`;
   }).join('');
-  const pool = lampPickSlot == null ? '' : `<div class="lamp-pool" role="group" aria-label="${esc(lt('bag.pool'))}"><div class="st-pane-title">${esc(lt('bag.pool'))}</div>${LAMP.unlockedSummoners(g).map(k => {
-    const here = L.slots.indexOf(k), left = LAMP.summonUsesLeft(g, k), blocked = LAMP.summonUnavailable(g, k);
-    return `<div class="lamp-slot is-pool">${summonIcon(k)}<span class="n"><b>${esc(LAMP.summonerName(k, lang))}</b><small>${esc(LAMP.summonerMoveName(k, lang))} · ${esc(lt(blocked ? 'bag.controlled' : left > 0 ? 'bag.ready' : 'bag.usedUp'))}</small></span>
-      <button class="gold" data-lamp-place="${k}" ${blocked || here === lampPickSlot ? 'disabled' : ''}>${esc(lt('bag.place'))}</button></div>`;
-  }).join('') || `<div class="bag-empty">${esc(lt('bag.unmet'))}</div>`}</div>`;
-  const low = LAMP.lampAllSpent(g) ? `<div class="lamp-low" role="status">${esc(lt('bag.low'))}</div>` : '';
-  return `<div class="lamp-tab">${cards}<h3 class="lamp-h">${esc(lt('bag.heading'))}</h3><p class="lamp-note">${esc(lt('bag.note'))}</p>${low}${slots}
-    ${lampMsg ? `<div class="lamp-msg" role="status">${esc(lampMsg)}</div>` : ''}${pool}</div>`;
+  return `<div class="bag-treasure-tab"><h2>${lang === 'en' ? 'Yama’s Treasures' : 'ของวิเศษของยามา'}</h2>
+    <div class="bag-treasures">${cards}</div>
+    <h2>${esc(lt('bag.heading'))}</h2><p class="lamp-note">${esc(lt('bag.note'))}</p>
+    ${!lamp.owned ? `<p class="lamp-note">${esc(lt('none.lamp'))}</p>` : ''}
+    ${LAMP.lampAllSpent(g) ? `<div class="lamp-low" role="status">${esc(lt('bag.low'))}</div>` : ''}
+    <div class="bag-lamp-slots">${slots}</div>
+    ${lampMsg ? `<div class="lamp-msg" role="status">${esc(lampMsg)}</div>` : ''}
+    <div class="bag-helper-pool" role="group" aria-label="${esc(lt('bag.pool'))}">${pool}</div></div>`;
 }
 function openBag() {
   pauseForDlg();
+  const scroll = dlg.open ? dlg.querySelector('.bag-content')?.scrollTop || 0 : 0;
   const allCarried = carriedItems(g.inventory, ITEMS);
-  const carried = carriedItems(g.inventory, ITEMS, bagFilter);
+  const carried = carriedItems(g.inventory, ITEMS, bagFilter), treasures = bagTreasures();
+  const en = getLang() === 'en';
   const itemCards = carried.length ? carried.map(([k, n]) => {
     const d = ITEMS[k], recovery = !!d.hpRatio || !!d.mpRatio, why = bagUseWhy(k);
     const line = why || (recovery ? itemText(k, 'desc') : itemText(k, 'say'));
-    return `<div class="bag-item">
-      ${itemImg(k, 'loading="lazy"')}
-      <span class="n"><b>${esc(itemName(k))} ×${n}</b>
-        <small>${esc(line)}</small></span>
-      ${d.keyItem ? '' : `<button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>`}
-    </div>`;
+    return `<article class="bag-tile">
+      <div class="bag-tile-head"><b>${esc(itemName(k))} × ${n}</b>
+        ${(d.consumable || k === 'hypno') && !d.battleOnly ? `<button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${esc(t('g1.use'))}</button>` : ''}</div>
+      ${k === 'mirror' ? '<img src="img/krajok-magic-mirror.webp" alt="" loading="lazy">' : itemImg(k, 'loading="lazy"')}<small>${esc(line)}</small>
+    </article>`;
   }).join('') : `<div class="bag-empty">${esc(allCarried.length ? t('menu.emptyFilter') : t('profile.emptyBag'))}</div>`;
   const counts = { items:allCarried.reduce((sum, [, n]) => sum + n, 0), outfits:g.outfitsOpen().length,
-    weapons:Object.values(g.weapons?.owned || {}).filter(Boolean).length, lamp:LAMP.slottedSummoners(g).length };
-  const sections = LAMP.lampOwned(g) ? [...BAG_SECTIONS, 'lamp'] : BAG_SECTIONS;   // T4: the lamp tab exists once Sita has given the lamp
-  if (!sections.includes(bagSection)) bagSection = 'items';
+    weapons:1 + Object.values(g.weapons?.owned || {}).filter(Boolean).length, lamp:treasures.filter(card => !card.locked).length };
+  const sections = [...BAG_SECTIONS, 'lamp'];
+  const stat = (name, value, max, cls) => `<progress class="${cls}" aria-label="${esc(name)}" value="${Math.max(0, value)}" max="${max || 1}"></progress>`;
 
-  modal(`<div class="menu-heading"><img src="img/ui/icon-bag.webp" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
-    <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${sections.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(key === 'lamp' ? lt('bag.tab') : t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
+  modal(`<div class="bag-header">
+    <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${sections.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(key === 'lamp' ? (en ? 'Treasures' : 'ของวิเศษ') : t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
+    <button class="gold bag-close" data-close aria-label="${esc(t('menu.closeBag'))}" title="${esc(t('menu.closeBag'))}">${CLOSE_IMG}</button>
+    </div><div class="bag-content">
     <section id="bag-panel-items" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-items" ${bagSection === 'items' ? '' : 'hidden'}>
+      <div class="bag-intro"><div class="bag-hero-status"><img src="${esc(artUrl('hero-yama-profile') || heroFace())}" alt="">
+      <b>${en ? 'Young Yama' : 'ยมบาทน้อย'}</b>${stat(en ? 'HP' : 'พลังชีวิต', g.hp, g.hpMax, 'hp')}${stat(t('battle.mp'), g.mp, g.mpMax, 'mp')}</div>
+      <img class="bag-intro-icon" src="img/ui/icon-bag.webp" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
       <div class="bag-filters" role="group" aria-label="${esc(t('menu.items'))}">${['all','recovery','material','other'].map(key => `<button data-bag-filter="${key}" aria-pressed="${bagFilter === key}">${esc(t('menu.' + key))}</button>`).join('')}</div>
-      <div class="bag-list">${itemCards}</div>
+      <div class="bag-inventory-grid">${itemCards}</div>
     </section>
-    <section id="bag-panel-outfits" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-outfits" ${bagSection === 'outfits' ? '' : 'hidden'}><div class="outfit-list">${outfitCards()}</div></section>
-    <section id="bag-panel-weapons" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-weapons" ${bagSection === 'weapons' ? '' : 'hidden'}><div class="outfit-list weapon-list">${weaponCards()}</div></section>
-    ${sections.includes('lamp') ? `<section id="bag-panel-lamp" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-lamp" ${bagSection === 'lamp' ? '' : 'hidden'}>${lampTabHtml()}</section>` : ''}
-    <div class="menu-footer"><button class="gold" data-close>${esc(t('menu.closeBag'))}</button></div>`, d => {
+    <section id="bag-panel-outfits" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-outfits" ${bagSection === 'outfits' ? '' : 'hidden'}>
+      <div class="bag-dressing">${bagEquipmentPreview()}<div class="bag-outfits">${outfitCards()}</div></div></section>
+    <section id="bag-panel-weapons" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-weapons" ${bagSection === 'weapons' ? '' : 'hidden'}>
+      <div class="bag-dressing">${bagEquipmentPreview(true)}<div class="bag-weapons">${weaponCards()}</div></div></section>
+    <section id="bag-panel-lamp" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-lamp" ${bagSection === 'lamp' ? '' : 'hidden'}>${lampTabHtml(treasures)}</section>
+    </div>`, d => {
+      const content = d.querySelector('.bag-content');
+      content.scrollTop = scroll;
       const selectSection = key => {
         if (!sections.includes(key)) return;
+        if (bagSection !== key) content.scrollTop = 0;
         bagSection = key;
         d.querySelectorAll('[data-menu-tab]').forEach(button => {
           const active = button.dataset.menuTab === key;
@@ -6129,9 +6200,11 @@ function openBag() {
         dlg.querySelector(`[data-bag-filter="${bagFilter}"]`).focus();
       });
       // T4: the lamp tab - pick a slot, then who stands in it · remove · a helper stands in one slot at most
-      d.querySelectorAll('[data-lamp-slot]').forEach(b => b.onclick = () => { const i = Number(b.dataset.lampSlot); lampPickSlot = lampPickSlot === i ? null : i; lampMsg = ''; sfx('gong'); openBag(); });
+      d.querySelectorAll('[data-lamp-slot]').forEach(b => b.onclick = () => { const i = Number(b.dataset.lampSlot); lampPickSlot = lampPickSlot === i ? null : i; lampMsg = ''; sfx('gong'); openBag();
+        if (lampPickSlot !== null) dlg.querySelector('.bag-helper-pool')?.scrollIntoView({block:'nearest'});
+        dlg.querySelector(`[data-lamp-slot="${i}"]`)?.focus({preventScroll:true}); });
       d.querySelectorAll('[data-lamp-place]').forEach(b => b.onclick = () => {
-        const k = b.dataset.lampPlace; if (g.placeHelper(lampPickSlot, k)) { lampMsg = lt('bag.placed', { name:LAMP.summonerName(k, lampLang()) }); lampPickSlot = null; sfx('gong'); }
+        const k = b.dataset.lampPlace; if (g.placeHelper(Number(b.dataset.lampTarget), k)) { lampMsg = lt('bag.placed', { name:LAMP.summonerName(k, lampLang()) }); lampPickSlot = null; sfx('gong'); }
         openBag(); refresh();
       });
       d.querySelectorAll('[data-lamp-remove]').forEach(b => b.onclick = () => { g.placeHelper(Number(b.dataset.lampRemove), null); lampPickSlot = null; lampMsg = ''; sfx('gong'); openBag(); refresh(); });

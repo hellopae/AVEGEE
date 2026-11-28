@@ -14,6 +14,7 @@
 | [กุมภัณฑ์ที่ประตูโซน 1](cut-z1-gate-kumphan-return.webp) | 1672 × 941 · 279 KB | A7 ช่วงที่ 8 ก่อนศึกปลดสะกดกุมภัณฑ์ |
 | [รับสร้อย Lucifer’s Eye](cut-col-s10-lucifer-eye-reward.webp) | 1672 × 941 · 299 KB | D3 รับสร้อยหลังชนะลูซิเฟอร์ในด่าน 10 |
 | [อาร์คอน-ศูนย์กับ HOME-67 ที่แท่น](cut-z4-archon-home67-reveal.webp) | 1672 × 941 · 339 KB | D8 เปิดครั้งแรกเมื่อเข้าไปคุยหลังแจ้งเตือนคดีที่ 15 ใช้ภาพเต็มกรอบ |
+| [อาร์คอน-ศูนย์เผยคำสั่งที่ส่งให้ PHANTOM-404](cut-z4-archon-phantom-command.webp) | 1672 × 941 · 384 KB | D8 คดีที่ 15 ภาพต่อจากช็อตที่แท่น ภาพฉายแสดงผู้สั่งการและหุ่นที่ลงมือแก้บัญชี รอผูกหลังบทสนทนาเปิดเผย |
 | [ยามากับนิราใช้สร้อยปลดสะกดที่ประตูโซน 3](cut-z3-gate-lucifer-eye-release.webp) | 1672 × 941 · 339 KB | A7 ช่วงที่ 2 หลังศึกคู่ ใช้ชุดปัจฉิม ตรวจจังหวะเปลี่ยนชุดตอนผูกฉาก |
 | [สร้อย Lucifer’s Eye ต้านมนต์ PHANTOM-404](cut-z4-phantom404-eye-ward.webp) | 1672 × 941 · 348 KB | D8 คดีที่ 10 ฉากต้านมนต์เมื่อมีสร้อย |
 | [HOME-67 แจ้งข่าวสามโซนถูกยึด](cut-z4-home67-three-zones-alert.webp) | 1672 × 941 · 313 KB | D8 หลังชนะ PHANTOM-404 ก่อนเริ่มขากลับ A7 |
@@ -33,3 +34,9 @@
 | [ปลดสะกดกุมภัณฑ์ที่ประตูโซน 1](cut-z1-gate-kumphan-release.webp) | 1672 × 941 · 304 KB | A7 ช่วงที่ 8 ยามากับนิราใช้สร้อยหลังชนะ ก่อนผู้เฝ้าประตูเข้าทีม |
 
 [คิวเนื้อเรื่อง R2](../../handoffs/r2-owner-decisions-2026-11-28.md)
+
+## คำสั่งวาดภาพอาร์คอน-ศูนย์และ PHANTOM-404
+
+ใช้ ImageGen โดยอ้างอิงภาพที่แท่นและภาพโปรไฟล์ PHANTOM-404 ของเกม
+
+> Create a brand-new 16:9 sequential cutscene still for the original AVEGEE game, Case 15 in CyberHell, in the same polished hand-painted anime fantasy game illustration style, saturated violet, cyan and bronze accents, hand-drawn ink details, strong silhouettes and readable on phones. Reference image 1 is only for Archon-Zero's exact design and the ornate server-temple tribunal location. Reference image 2 is only for PHANTOM-404's angular black monitor face, cyan glowing eyes, purple and gold armor, and electronic book. The previous shot was a wide view of Archon with a captive; this is a DISTINCT tighter three-quarter composition of just Archon at the tribunal, framed waist up on the left, using one hand to power a crystal cyan-violet projection of his creation, PHANTOM-404, on the right. A thin clearly visible thread drawn from Archon's raised hand originates at his gold signet and powers the holographic construct. Behind the translucent robot are only a few ledger tiles with abstract glyphs, one tile getting overwritten or rearranged by the robot's angular hand. This image should make it readable that Archon ordered the machine, and the machine altered the ledger. Phantom is translucent, a projected memory inside the interface, not alive or physically present. Archon's gray-purple stern face and angular crown, layered violet-gold robes and cool calm expression match reference image one closely. No other characters, no captive in this panel, no injuries, no words, no readable letters, no logos, no watermark, no UI, no captions, no border. Leave lower fifth uncluttered and do not crop the crown. Fill the image edge to edge. Cinematic game cutscene composition, horizontal 16:9.
