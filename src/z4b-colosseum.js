@@ -1,5 +1,5 @@
 // T8a/2 (Rae R2 part D, section 1.5-1.7): Lucifer's colosseum in the cave of Frontier 3-4 - ten bouts in a row at the middle checkpoint of the walk (the team = Yama + Nira + HOME-67). Bouts 1-8 are the table of 1.5 (copied verbatim by
-// scripts/extract-rae-z4a.py), bout 9 = Thor (win -> helper no. 10 "The Hammer Commands the Field", NT-1), bout 10 = Lucifer (win -> helper no. 11 "The Founder's Decree", NL-1, and every signed fighter is free).
+// scripts/extract-rae-z4a.py), bout 9 = Thor (win -> helper no. 10 "The Hammer Commands the Field", NT-1), bout 10 = Lucifer (win -> helper no. 11 "The Founder's Decree", NL-1, and the Lucifer’s Eye pendant).
 // Each bout is a gate event (`colS1`..`colS10`, never by the case count): banner N-COL-2, one line before, one line after (the winner's), one card move; a lost bout = the tea house, then the SAME bout again at no cost (N-COL-1).
 // Numbers (hp / atk) are Toby's first ones, no spec. The warn / use lines of the bouts' moves are Rae's (MOVE_TEXT, T9; bout 8 uses the name of R2 1.5, Reese's fix).
 import { RAW_BOUTS, RAW_HELPERS } from './z4a-raw.js';
@@ -57,7 +57,7 @@ export const COL_EVENTS = Object.freeze(BOUTS.map(b => ({ k:COL.key(b.n), atCase
   loseText:{ title:'ลองด่านเดิมใหม่ได้', text:'แพ้แล้วลองด่านเดิมใหม่ได้ ไม่เสียอะไร', en:{ title:'Try the same bout again', text:'If you lose, you may try the same bout again at no cost.' } },
   foe:{ name:b.name.th, nameEn:b.name.en, sp:COL.sprite(b.n), hp:hpOf(b.n), atk:atkOf(b.n), boss:true, skills:skillOf(b) },
   ...(b.n === 9 ? { winStories:[COL.thorWin] } : b.n === 10 ? { openStory:COL.luciferOpen, winStories:[COL.luciferWin] } : {}),
-  reward:{ coin:0 }, lose:{ hp:9 } })));
+  reward:b.n === COL.bouts ? { coin:0, item:'luciferEye' } : { coin:0 }, lose:{ hp:9 } })));
 
 /** N-COL-1 (the window when the team reaches the mouth of the arena) · NT-1 · NL-1 (the helper windows replace the generic ones: z1-events.js maps them to `lamp-helper-<k>`) */
 export const COL_NOTICES = Object.freeze({

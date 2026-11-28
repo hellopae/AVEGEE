@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "before": "",
+      "after": "  luciferEye: { name:'สร้อย Lucifer’s Eye', nameEn:'Lucifer’s Eye', img:'item-lucifer-eye', h:42, glyph:'✦', keyItem:true,\n    desc:'สร้อยที่ลูซิเฟอร์มอบให้หลังชนะด่านที่ 10 ช่วยต้านมนต์สะกดของ PHANTOM-404', descEn:'Lucifer’s pendant, awarded after bout ten. It wards off PHANTOM-404’s hypnosis.',\n    howTo:'พกติดตัวเมื่อไปสู้กับ PHANTOM-404', howToEn:'Keep it in your bag when confronting PHANTOM-404.',\n    fallback:'✦', say:'ของสำคัญสำหรับต้านมนต์สะกด', sayEn:'A key item that wards off hypnosis.' },\n"
+    },
+    {
+      "before": "    { k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], mode:'single',\n      title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,\n",
+      "after": "    { k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], requiresItem:'luciferEye', mode:'single',\n      title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, blocked:Z4S_TEXT.blocked, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,\n"
+    }
+  ],
+  "game": [
+    {
+      "before": "    if (!def || n < 1 || def.battleOnly) return false;\n",
+      "after": "    if (!def || n < 1 || def.battleOnly || def.keyItem) return false;\n"
+    },
+    {
+      "before": "",
+      "after": "  zoneEventMissingItem(key) {\n    const item = ZONE_EVENTS[this.zone]?.find(event => event.k === key)?.requiresItem;\n    return item && !(this.inventory[item] > 0) ? item : null;\n  },\n"
+    },
+    {
+      "before": "    if (bossJusticeActive(this)) return null;\n",
+      "after": "    if (bossJusticeActive(this) || this.zoneEventMissingItem(key)) return null;\n"
+    },
+    {
+      "before": "        if (ev?.reward?.item) this.inventory[ev.reward.item] = (this.inventory[ev.reward.item] || 0) + 1;\n",
+      "after": "        if (ev?.reward?.item) {\n          const k = ev.reward.item;\n          this.inventory[k] = ITEMS[k]?.keyItem ? 1 : (this.inventory[k] || 0) + 1;\n        }\n"
+    },
+    {
+      "before": "",
+      "after": "  // Pre-R2 winners can be recognized by either their cleared bout or the victory scene.\n  if (this.zoneEvents.west?.[COL.key(COL.bouts)] === 'cleared' || this.storySeen[COL.luciferWin]) this.inventory.luciferEye = 1;\n"
+    }
+  ]
+}

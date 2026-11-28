@@ -2789,7 +2789,7 @@ const API = {
       return this.useMedicine(k);
     }
     const def = ITEMS[k], n = this.inventory[k] || 0;
-    if (!def || n < 1 || def.battleOnly) return false;
+    if (!def || n < 1 || def.battleOnly || def.keyItem) return false;
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
     // ปิดถาวรแล้ว ดู bagUseWhy ใน ui.js) กันไว้ที่ชั้นข้อมูลด้วยอีกชั้น เผื่อมีทางเรียกอื่นนอก UI ปกติ
     if (k === 'fire' || k === 'ice' || k === 'mirror' || k === 'lotus' || k === 'food') return false;
@@ -3456,8 +3456,12 @@ const API = {
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
     }));
   },
+  zoneEventMissingItem(key) {
+    const item = ZONE_EVENTS[this.zone]?.find(event => event.k === key)?.requiresItem;
+    return item && !(this.inventory[item] > 0) ? item : null;
+  },
   startZoneEvent(key, signalChoice = null) {
-    if (bossJusticeActive(this)) return null;
+    if (bossJusticeActive(this) || this.zoneEventMissingItem(key)) return null;
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
     if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
@@ -4569,7 +4573,10 @@ const API = {
           this.order=clamp(this.order+(ev.reward.order||0),0,100);
           this.queueStory(signalStory(ev.k,'win'));
         }
-        if (ev?.reward?.item) this.inventory[ev.reward.item] = (this.inventory[ev.reward.item] || 0) + 1;
+        if (ev?.reward?.item) {
+          const k = ev.reward.item;
+          this.inventory[k] = ITEMS[k]?.keyItem ? 1 : (this.inventory[k] || 0) + 1;
+        }
         if (ev?.reward?.unlockZone) {
           this.bossCleared[B.zone] = true;
           this.bossGuarding[B.zone] = false;
@@ -6375,6 +6382,8 @@ API.restore = function (d) {
   for(const actor of this.crew) {const home=CREW.find(d=>d.k===actor.k);if(home) {actor.hx=home.hx;actor.hy=home.hy;}}
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
+  // Pre-R2 winners can be recognized by either their cleared bout or the victory scene.
+  if (this.zoneEvents.west?.[COL.key(COL.bouts)] === 'cleared' || this.storySeen[COL.luciferWin]) this.inventory.luciferEye = 1;
   const savedAtReturnGate = returnGuardPending(this) && this.nearFrontierGate();
   this.eventMapClosed = d.eventMapClosed || {};
   this.teaBeds = d.teaBeds || {};

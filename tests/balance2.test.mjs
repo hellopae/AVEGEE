@@ -156,9 +156,11 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   const fb3t8Only=JSON.parse(readFileSync(new URL('./fixtures/fb3-t8-runtime-changes.json',import.meta.url)));
   // Blade Scrap changes item text and artwork. Keep the original balance evidence authenticated.
   const scrapOnly=JSON.parse(readFileSync(new URL('./fixtures/blade-scrap-presentation-changes.json',import.meta.url)));
+  // Keep historical calibration inputs separate from the R2 event prerequisite and reward.
+  const necklaceOnly=JSON.parse(readFileSync(new URL('./fixtures/r2-necklace-runtime-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[]),...(fb3t4Only[name]||[]),...(fb3t5Only[name]||[]),...(fb3tlibOnly[name]||[]),...(fb3t6Only[name]||[]),...(fb3t8Only[name]||[]),...(scrapOnly[name]||[])].reverse()){
+    for(const change of [...(fb2Only[name]||[]),...(webpOnly[name]||[]),...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[]),...(koOnly[name]||[]),...(flipOnly[name]||[]),...(fxOnly[name]||[]),...(questOnly[name]||[]),...(foodOnly[name]||[]),...(fb2bOnly[name]||[]),...(z1Only[name]||[]),...(returnOnly[name]||[]),...(fb3Only[name]||[]),...(fb3t3Only[name]||[]),...(fb3t4Only[name]||[]),...(fb3t5Only[name]||[]),...(fb3tlibOnly[name]||[]),...(fb3t6Only[name]||[]),...(fb3t8Only[name]||[]),...(scrapOnly[name]||[]),...(necklaceOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

@@ -1,0 +1,44 @@
+yama-th-atlas.webp
+size: 768, 610
+filter: Linear, Linear
+repeat: none
+up-head
+bounds: 4, 4, 143, 182
+down-head
+bounds: 151, 4, 143, 163
+right-head
+bounds: 298, 4, 132, 154
+left-head
+bounds: 434, 4, 124, 153
+left-pose-1
+bounds: 562, 4, 125, 143
+left-pose-2
+bounds: 4, 190, 119, 143
+left-pose-3
+bounds: 127, 190, 124, 143
+left-pose-4
+bounds: 255, 190, 126, 143
+right-pose-1
+bounds: 385, 190, 120, 142
+right-pose-2
+bounds: 509, 190, 121, 142
+right-pose-3
+bounds: 634, 190, 125, 142
+right-pose-4
+bounds: 4, 337, 120, 142
+down-pose-1
+bounds: 128, 337, 133, 141
+down-pose-2
+bounds: 265, 337, 128, 141
+down-pose-3
+bounds: 397, 337, 125, 141
+down-pose-4
+bounds: 526, 337, 119, 141
+up-pose-1
+bounds: 4, 483, 117, 123
+up-pose-2
+bounds: 125, 483, 115, 123
+up-pose-3
+bounds: 244, 483, 132, 123
+up-pose-4
+bounds: 380, 483, 122, 123

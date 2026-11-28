@@ -2075,6 +2075,11 @@ function openZoneEventAlert(ev) {
     return;
   }
   const title = zoneEventText(ev.title);
+  const missing = g.zoneEventMissingItem(ev.k);
+  if (missing) {
+    openEventAlert(ev.k, title, zoneEventText(ev.blocked), artUrl(ITEMS[missing].img, 'webp'), t('common.close'), () => dlg.close(), false, true);
+    return;
+  }
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.webp';
@@ -6081,7 +6086,7 @@ function openBag() {
       ${itemImg(k, 'loading="lazy"')}
       <span class="n"><b>${esc(itemName(k))} ×${n}</b>
         <small>${esc(line)}</small></span>
-      <button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>
+      ${d.keyItem ? '' : `<button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>`}
     </div>`;
   }).join('') : `<div class="bag-empty">${esc(allCarried.length ? t('menu.emptyFilter') : t('profile.emptyBag'))}</div>`;
   const counts = { items:allCarried.reduce((sum, [, n]) => sum + n, 0), outfits:g.outfitsOpen().length,

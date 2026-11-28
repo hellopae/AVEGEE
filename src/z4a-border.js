@@ -9,7 +9,29 @@ export const Z4A = Object.freeze({ arriveStory:'z34-arrive', gateStory:'col-gate
 export const Z4A_ART = Object.freeze({ arrive:A('cut-z34-arrive'), gate:A('cut-col-gate'), zone4:A('cut-z4-arrive'), lumen:'img/deva-intro/deva-intro-cyberhell-v1.webp', lumenWin:'img/deva-intro/deva-intro-cyberhell-v1.webp', harbor:A('cut-home67-harbor-gift') });
 const IMG = { 'z34-arrive':Z4A_ART.arrive, 'col-gate':Z4A_ART.gate, 'col-thor-win':A('cut-col-s9'), 'col-lucifer-open':A('cut-col-gate'), 'col-lucifer-win':A('cut-col-s10'), 'z4-gate-silent':Z4A_ART.arrive,
   'z4-arrive':Z4A_ART.zone4, 'z4-lumen-open':Z4A_ART.lumen, 'z4-lumen-win':Z4A_ART.lumenWin, 'z4-home67-harbor':Z4A_ART.harbor };
-export const Z4A_STORIES = Object.freeze(Object.fromEntries(Object.entries(RAW_Z4A_SCENES).map(([k, raw]) => [k, fromRae(raw, IMG[k])])));
+// R2 D3 replaces the arena pages changed by the owner. The other scene keys and pages stay as authored.
+const page = (image, th, en, line, lineEn) => ({ image, title:th, line, fallback:'📜', en:{ title:en, line:lineEn } });
+const stories = Object.fromEntries(Object.entries(RAW_Z4A_SCENES).map(([key, raw]) => [key, fromRae(raw, IMG[key])]));
+stories[Z4A.arriveStory].pages[1] = page(IMG[Z4A.arriveStory], 'เหตุผลที่มาถึงสังเวียน', 'Why We Came to the Arena',
+  'HOME-67: “ผมมาหาสร้อย Lucifer’s Eye ครับ มันต้านมนต์ของ AI Scammer Robot ได้ ลูซิเฟอร์ให้สร้อยกับคนที่ชนะเขาในด่านสิบเท่านั้น ผมสู้เขาคนเดียวไม่ไหว จึงขอให้ท่านช่วยครับ”',
+  'HOME-67: “I came for Lucifer’s Eye. It wards off the AI Scammer Robot’s hypnosis. Lucifer only gives it to someone who can beat him in bout ten. I can’t beat him alone. That’s why I asked for your help.”');
+stories[Z4A.gateStory].pages = [
+  page(IMG[Z4A.gateStory], 'ผู้ก่อตั้งสังเวียน', 'The Arena’s Founder',
+    'ลูซิเฟอร์: “ขอต้อนรับผู้ท้าชิงทั้งสาม มาถามเรื่องนักสู้ของข้า หรือมาขอรางวัลกันแน่”\nยมบาทน้อย: “ทั้งสองอย่างครับ ผมอยากรู้ว่าทุกคนมาอยู่ที่นี่ได้อย่างไร”',
+    'Lucifer: “Welcome, challengers. Have you come to ask about my fighters, or to claim a prize?”\nYama: “Both, sir. I want to know how everyone ended up here.”'),
+  page(A('cut-col-lucifer-contract'), 'สัญญาปีศาจ', 'The Devil’s Bargain',
+    'ลูซิเฟอร์: “ข้าให้สิ่งที่นักสู้แต่ละคนต้องการตามสัญญา เมื่อรับไปแล้ว พวกเขาก็มาสู้ที่นี่เพื่อชดใช้”\nนิรา: “สำเนาสัญญาตรงกับที่เขาบอกค่ะ”\nยมบาทน้อย: “ถ้าผมชนะครบสิบด่าน ผมขอสร้อย Lucifer’s Eye ครับ”\nลูซิเฟอร์: “ตกลง ด่านหนึ่ง เชิญ!”',
+    'Lucifer: “I give every fighter something they ask for. Once they have it, they fight here to repay their bargain.”\nNira: “The copies match what he told us.”\nYama: “If I win all ten bouts, I ask for Lucifer’s Eye.”\nLucifer: “Agreed. Bout one, if you please!”'),
+];
+stories[Z4A.luciferOpen].pages[0] = page(IMG[Z4A.luciferOpen], 'คำท้าสุดท้าย', 'The Last Challenge',
+  'ลูซิเฟอร์: “เจ้ามาถึงด่านสิบแล้ว ถ้าชนะข้า สร้อย Lucifer’s Eye เป็นของเจ้า”\nยมบาทน้อย: “ผมพร้อมแล้วครับ”',
+  'Lucifer: “You’ve reached bout ten. Defeat me and Lucifer’s Eye is yours.”\nYama: “I’m ready.”');
+stories[Z4A.luciferWin] = { title:'สร้อย Lucifer’s Eye', en:{ title:'Lucifer’s Eye' }, pages:[
+  page(A('cut-col-s10-lucifer-eye-reward'), 'รางวัลด่านที่สิบ', 'The Tenth Bout’s Prize',
+    'ลูซิเฟอร์: “เจ้าชนะแล้ว สร้อย Lucifer’s Eye เป็นของเจ้า ข้าฝากชื่อไว้ในตะเกียงด้วย หากต้องการให้ช่วยสู้ก็เรียกข้า”\nHOME-67: “ทีนี้เราต้านมนต์สะกดของ PHANTOM-404 ได้แล้วครับ”',
+    'Lucifer: “You won. Lucifer’s Eye is yours. I’ll leave my name in your lamp, too. Call if you need me in a fight.”\nHOME-67: “Now we can resist PHANTOM-404’s hypnosis.”'),
+]};
+export const Z4A_STORIES = Object.freeze(stories);
 
 // ---- T8a/3 (Rae D 2.1-2.5): Lumen-01, the Magic Clock, the captives, HOME-67 leaves the team and waits on the pier of Zone 4 with a gift (1,200 coins + the Zone 4 robes)
 export const Z4A_ZONE4 = Object.freeze({ clockNotice:'z4-clock', releasedNotice:'z4-released', giftNotice:'z4-home67-gift', leftNotice:'z4-home67-left', gift:1200, outfit:'cyberhell' });

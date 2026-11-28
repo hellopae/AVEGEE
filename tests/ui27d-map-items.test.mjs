@@ -269,6 +269,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       g.zoneEvents[zone] = g.zoneEvents[zone] || {};
       g.zoneEvents[zone][ev.k] = 'pending';
       for(const key of ev.requires||[])g.zoneEvents[zone][key]='cleared';
+      if (ev.requiresItem) g.inventory[ev.requiresItem] = 1;
       for(const [z,keys]of Object.entries(ev.requiresZone||{}))for(const key of keys)(g.zoneEvents[z] ||= {})[key]='cleared';
       if (ev.returnGuard) {
         (g.zoneEvents.cyberhell ||= {}).cyberSala = 'cleared';

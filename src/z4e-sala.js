@@ -15,7 +15,12 @@ const robotStart = side(ROBOT, 'เริ่มสู้ AI Scammer Robot'), rob
 const niraHalf = side(L2('นิรา', 'Nira'), 'นิรา เลือดเหลือครึ่ง'), watHalf = side(L2('WATSON-03', 'WATSON-03'), 'WATSON-03 เลือดเหลือครึ่ง');
 /** N10-1 (alert) · N10-2 (banner) · the lines in the fight (start / half-way: the robot, then Nira, then WATSON-03) */
 export const Z4S_TEXT = Object.freeze({
-  title:L2(N['N10-1'].th.title, N['N10-1'].en.title), alert:L2(N['N10-1'].th.text, N['N10-1'].en.text), go:L2(N['N10-1'].th.button, N['N10-1'].en.button), retry:L2('สู้อีกครั้ง', 'Try again'),
+  title:L2(N['N10-1'].th.title, N['N10-1'].en.title),
+  alert:L2('ครบ 10 คดีแล้ว AI Scammer Robot — [PHANTOM-404] ยึดศาลาเก็บบันทึก ไปที่ศาลาเพื่อเข้าสู้',
+    'Ten cases are complete. The AI Scammer Robot — [PHANTOM-404] has seized the record hall. Go there to face it.'),
+  go:L2(N['N10-1'].th.button, N['N10-1'].en.button), retry:L2('สู้อีกครั้ง', 'Try again'),
+  blocked:L2('PHANTOM-404 ใช้มนต์สะกด ต้องชนะลูซิเฟอร์ในด่าน 10 ของสังเวียนและพกสร้อย Lucifer’s Eye ก่อนเข้าสู้',
+    'PHANTOM-404 uses hypnosis. Defeat Lucifer in bout ten and bring Lucifer’s Eye before entering the fight.'),
   banner:L2(N['N10-2'].banner.th, N['N10-2'].banner.en),
   lines:{ start:robotStart.th, half:[robotHalf.th, niraHalf.th, watHalf.th].join('\n') }, linesEn:{ start:robotStart.en, half:[robotHalf.en, niraHalf.en, watHalf.en].join('\n') },
   lose:{ title:'ลองใหม่ได้', text:'แพ้แล้วลองใหม่ได้ ไม่เสียอะไร', en:{ title:'Try again', text:'If you lose, you may try again at no cost.' } },
@@ -23,10 +28,19 @@ export const Z4S_TEXT = Object.freeze({
 /** Rae's half-way move (6.4): the name / warning are hers, the use line is Rae's too (T9). Power 1.3 = a light-medium single blow. */
 export const Z4S_VOICE_MOVE = Object.freeze({ id:'voiceLikeLove', kind:'heavyHit', warn:1, power:1.3, name:L2(S.move.th, S.move.en), warnText:L2(S.warn.th, S.warn.en),
   useText:L2('AI Scammer Robot: "ไม่ต้องกลัวนะ ... ฉันเอง"', 'AI Scammer Robot: "Do not be afraid. ... It is me."'), when:{ hpBelow:.5, firstAct:2, everyActs:4 } });
-export const Z4S_STORIES = Object.freeze({
-  [Z4S.revealStory]:fromRae(RAW_Z4C_SCENES['z4-reveal'], Z4S_ART.reveal),
-  [Z4S.winStory]:fromRae(RAW_Z4C_SCENES['z4-sala-win'], Z4S_ART.reveal),
+const reveal = fromRae(RAW_Z4C_SCENES['z4-reveal'], Z4S_ART.reveal);
+Object.assign(reveal.pages[2], {
+  image:A('cut-z4-phantom404-eye-ward'),
+  line:'HOME-67: “AI Scammer Robot — [PHANTOM-404] เจ้านี่ลงมือแก้บัญชีตั้งแต่โซน 1 ครับ ผมตามรอยมันจากแฟ้มสีดามาถึงห้องนี้”\nบรรยาย: คลื่นสะกดพุ่งเข้าหาทีม ยามายกสร้อย Lucifer’s Eye ขึ้น แสงสีทองกางรับคลื่นไว้ก่อนถึงตัวนิรา',
+  en:{ ...reveal.pages[2].en, line:'HOME-67: “AI Scammer Robot — [PHANTOM-404]. It altered the ledgers as far back as Zone 1. I traced it from Sita’s file to this room.”\nNarration: A wave of hypnosis surges toward the team. Yama raises Lucifer’s Eye, and a golden shield catches the wave before it can reach Nira.' },
 });
+const victory = fromRae(RAW_Z4C_SCENES['z4-sala-win'], Z4S_ART.reveal);
+Object.assign(victory.pages[0], {
+  line:'บรรยาย: PHANTOM-404 ทรุดลง หน้าจอดับ แผ่นแสงบนตู้เอกสารค่อย ๆ สลายไป\nนิรา: “ท่านคะ ดิฉันได้ยินเสียงกระดาษอีกครั้งแล้วค่ะ”',
+  en:{ ...victory.pages[0].en, line:'Narration: PHANTOM-404 collapses. Its screen goes dark and the light over the filing cabinets fades.\nNira: “Sir, I can hear the paper again.”' },
+});
+victory.pages[1].image = A('cut-z4-home67-three-zones-alert');
+export const Z4S_STORIES = Object.freeze({ [Z4S.revealStory]:reveal, [Z4S.winStory]:victory });
 export const Z4S_NOTICES = Object.freeze({
   [Z4S.seizedNotice]:{ title:N['NS-10'].th.title, text:N['NS-10'].th.text, button:N['NS-10'].th.button, art:Z4S_ART.reveal, en:N['NS-10'].en },
 });

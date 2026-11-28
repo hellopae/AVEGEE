@@ -32,6 +32,7 @@ test('ten bouts in order, Rae\'s lines, the winner\'s line after each, Yama + Ni
     const seen = drain(g);
     if (n === 9) { assert.ok(seen.includes('col-thor-win')); assert.ok(g.notices.includes('lamp-helper-thor'), 'NT-1'); assert.equal(L.SUMMONERS.thor.ready, true); }
     if (n === 10) { assert.ok(seen.includes('col-lucifer-win')); assert.ok(g.notices.includes('lamp-helper-lucifer'), 'NL-1'); }
+    assert.equal(g.inventory.luciferEye || 0, n === 10 ? 1 : 0);
     if (n < 9) assert.ok(!seen.some(k => k.startsWith('col-')), 'no scene between the plain bouts');
   }
   assert.equal(g.colosseumNext(), null); assert.equal(g.colosseumDue(COL.checkpoint), false, 'all ten won'); assert.equal(g.startColosseumBout(), null);
@@ -46,4 +47,23 @@ test('a lost bout: the tea house, the same bout again at no cost; Thor stuns, th
   assert.equal(L.SUMMONERS.thor.move.stun.chance, .6); assert.equal(L.SUMMONERS.lucifer.move.weaken.target, true); assert.equal(L.SUMMONERS.lucifer.move.kind, 'strike'); assert.equal(L.SUMMONERS.thor.move.kind, 'group');
   for (const lang of ['th', 'en']) { setLang(lang); for (const [k, n] of [['col-gate', 2], ['col-thor-win', 1], ['col-lucifer-open', 1], ['col-lucifer-win', 1]]) { const s = storyOf(k); assert.equal(s.pages.length, n, k); for (const p of s.pages) { assert.ok(p.line && p.title); if (lang === 'en') assert.ok(!/[฀-๿]/.test(p.line + p.title), `${k} English page has no Thai`); } } }
   setLang('en'); assert.match(COL_EVENTS[7].title.en, /C-8, the Steel Colossus/); assert.match(NOTICES['col-mouth'].en.title, /Lucifer's Colosseum/); assert.equal(L.SUMMONERS.thor.name.en, 'Thor'); setLang('th');
+});
+
+test('R2 restores the unique necklace for arena winners but not for unfinished saves', () => {
+  const legacy = onTheWalk().snapshot();
+  const g = createGame();
+  (legacy.zoneEvents.west ||= {}).colS9 = 'cleared';
+  assert.equal(g.restore(structuredClone(legacy)), true);
+  assert.equal(g.inventory.luciferEye, undefined);
+  legacy.zoneEvents.west.colS10 = 'cleared';
+  assert.equal(g.restore(structuredClone(legacy)), true);
+  assert.equal(g.inventory.luciferEye, 1);
+  assert.equal(g.useBag('luciferEye'), false);
+  assert.equal(g.sellMaterial('luciferEye'), false);
+  assert.equal(g.restore(g.snapshot()), true);
+  assert.equal(g.inventory.luciferEye, 1);
+  delete legacy.zoneEvents.west.colS10;
+  legacy.storySeen['col-lucifer-win'] = true;
+  assert.equal(g.restore(structuredClone(legacy)), true);
+  assert.equal(g.inventory.luciferEye, 1);
 });

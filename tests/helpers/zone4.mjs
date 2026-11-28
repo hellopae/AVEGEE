@@ -7,7 +7,7 @@ globalThis.document = { documentElement:{} };
 globalThis.Image = class { set src(value) {} };
 export function zone4() {
   const g = createGame(); g.save = () => true; g.onChange = () => {}; g.giveLamp(); g.bossCleared.asia = true; g.bossCleared.west = true; g.hpMax = g.hp = 900; g.coin = 5000;
-  g.zone = 'cyberhell'; g.zoneEvents.cyberhell = { cyberRescue:'cleared' }; g.abilities.cooldownClock = true; g.home67Joined = true; g.home67 = { phase:'harbor', gift:true };
+  g.zone = 'cyberhell'; g.zoneEvents.west = { colS10:'cleared' }; g.inventory.luciferEye = 1; g.zoneEvents.cyberhell = { cyberRescue:'cleared' }; g.abilities.cooldownClock = true; g.home67Joined = true; g.home67 = { phase:'harbor', gift:true };
   Object.assign(bossGuideState(g, 'west'), { won:true, following:false, farewell:true }); g.notices = []; g.storyQueue.length = 0; g.refreshZoneEvents(); return g;
 }
 export const drain = g => { const seen = []; for (let i = 0; i < 80 && g.storyQueue.length; i++) { seen.push(g.storyQueue[0].key); g.completeStory(); } return seen; };

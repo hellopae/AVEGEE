@@ -656,6 +656,10 @@ export const ITEMS = {
   // ตกให้เมื่อกรรมเริ่มสูงเท่านั้น — ไม่งั้นมันจะกลายเป็นใบอนุญาตให้ลงทัณฑ์เกินฟรี ๆ
   lotus:  { name:'ดอกบัวบูชา',      img:'item-lotus',  h:40, karma:-4, glyph:'🪷',
             desc:'มอบให้บุญเพื่อลดกรรมของยมบาทน้อย', howTo:'ที่ประตูสวรรค์ คุยกับบุญแล้วเลือกมอบดอกบัวเพื่อลดกรรม', fallback:'🪷', say:'ท่านวางดอกบัวลงแล้วนิ่งไปพักหนึ่ง — กรรมในบัญชีเบาลงนิดหนึ่ง' },
+  luciferEye: { name:'สร้อย Lucifer’s Eye', nameEn:'Lucifer’s Eye', img:'item-lucifer-eye', h:42, glyph:'✦', keyItem:true,
+    desc:'สร้อยที่ลูซิเฟอร์มอบให้หลังชนะด่านที่ 10 ช่วยต้านมนต์สะกดของ PHANTOM-404', descEn:'Lucifer’s pendant, awarded after bout ten. It wards off PHANTOM-404’s hypnosis.',
+    howTo:'พกติดตัวเมื่อไปสู้กับ PHANTOM-404', howToEn:'Keep it in your bag when confronting PHANTOM-404.',
+    fallback:'✦', say:'ของสำคัญสำหรับต้านมนต์สะกด', sayEn:'A key item that wards off hypnosis.' },
   // Frontier materials go into the merchant's sell list.
   bladeShard: { name:'เศษดาบ', nameEn:'Blade Scrap', img:'item-blade-shard', h:42, glyph:'◈', material:true, sell:34,
             desc:'เศษใบดาบจากสนามรบ สำหรับขายให้พ่อค้านรก', descEn:'Broken pieces of a blade. Sell them to the Hell Merchant.',
@@ -2126,8 +2130,8 @@ export const ZONE_EVENTS = {
       betweenWaveHeal:30, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
     // T8b/5 (Rae R2 D 6): case 10 - the record hall is seized. The AI Scammer Robot (the existing PHANTOM-404 drawing + moves) with Rae's half-way voice move; the team = Yama + Nira + WATSON-03 (HOME-67 stays behind Yama, he does not fight - game.js startZoneEvent).
     // Placed just before the zone's challenge row (the challenge stays the last story-less row; the older indexes 0 / 1 do not move). Numbers are Toby's first ones (no spec, not simulated): between Loki and the possessed rulers.
-    { k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], mode:'single',
-      title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,
+    { k:Z4S.eventKey, atCases:10, requires:['cyberBreach'], requiresItem:'luciferEye', mode:'single',
+      title:Z4S_TEXT.title, alert:Z4S_TEXT.alert, blocked:Z4S_TEXT.blocked, go:Z4S_TEXT.go, retry:Z4S_TEXT.retry, banner:Z4S_TEXT.banner, lines:Z4S_TEXT.lines, linesEn:Z4S_TEXT.linesEn,
       openStory:Z4S.revealStory, winStories:[Z4S.winStory], winNotices:[Z4S.seizedNotice], loseText:Z4S_TEXT.lose,
       foe:{ name:'AI Scammer Robot', nameEn:'AI Scammer Robot', sp:'boss-phantom404-cyberhell', hp:300, atk:[22,32], boss:true, skills:[...BOSS_SKILLS.phantom404, Z4S_VOICE_MOVE], partyScale:{ hp:[1,1.3,1.7], atk:[1,1.1,1.25] } },
       reward:{ coin:200 }, lose:{ hp:9 } },
