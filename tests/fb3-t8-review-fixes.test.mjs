@@ -15,7 +15,12 @@ test('Kumphan\'s card: he appeared and helped Yama at the frontier gate, then to
 test('the Guard-freeing window never shows the English word "Guard" in Thai text; it names the Guard of the zone', () => {
   for (const [zone, name] of Object.entries(RETURN_GUARD_NAMES)) {
     const ev = RETURN_GUARD_EVENTS[zone];
-    assert.equal(ev.alert.th, `ยามากับนิราต้องช่วย${name.th}ให้หลุดจากคำสั่งก่อนเข้าประตู`);
+    const expected = zone === 'west'
+      ? `เซอร์เบอรัสกับ${name.th}ขวางประตูอยู่ ต้องชนะทั้งคู่ก่อนปลดสะกด`
+      : `ยามากับนิราต้องช่วย${name.th}ให้หลุดจากคำสั่งก่อนเข้าประตู`;
+    assert.equal(ev.alert.th, expected);
+    assert.match(ev.title.th, new RegExp(name.th));
+    if (zone === 'west') assert.match(ev.title.th, /เซอร์เบอรัส/);
     assert.ok(!/Guard/.test(ev.alert.th) && !/Guard/.test(ev.title.th));
   }
   for (const row of Object.values(LIB_TEXT)) assert.ok(!/Guard/.test(row.th), row.th);

@@ -13,9 +13,16 @@ export const Z4G_ART = Object.freeze({
   guard:Object.freeze({ west:A('cut-z3-gate-cerberus-vanhelsing-return'), asia:A('cut-z2-gate-guanyu-return'), th:A('cut-z1-gate-kumphan-return') }),
   guardFreed:Object.freeze({ west:A('cut-z3-gate-lucifer-eye-release'), asia:A('cut-z2-gate-guanyu-release'), th:A('cut-z1-gate-kumphan-release') }),
   restored:Object.freeze({ west:SIG('story-signal-west-02'), asia:SIG('story-signal-asia-02'), th:SIG('story-signal-th-02') }),   // K4: "cut - the existing SIG picture can be used" (Rae)
-  pass:A('cut-col-gate'),
+  pass:A('cut-col-lucifer-safe-return'),
 });
 /** `cyber-signal-win`: page 1 of the existing scene as it is; page 2 is Rae's replacement (the ships cannot sail - Nira: "we must walk back through the frontiers, zone by zone") */
+const sigOpen = SIGNAL_STORIES['cyber-signal-open'];
+const [signalBeep, trojanSignal, signalReadout] = sigOpen.pages;
+const SIGNAL_OPEN = { ...sigOpen, pages:[signalBeep, {
+  ...trojanSignal, image:A('cut-frontier34-trojan9-return'), imageFallback:trojanSignal.image,
+  line:trojanSignal.line.replace('แสงเขียวมิ้นต์', 'แสงม่วง'),
+  en:{ ...trojanSignal.en, line:trojanSignal.en.line.replace('a mint-green light', 'a violet light') },
+}, signalReadout] };
 const sigWin = SIGNAL_STORIES['cyber-signal-win'];
 const p2 = RAW_Z4G_SIGNAL_WIN_PAGE2;
 const SIGNAL_WIN = { ...sigWin, pages:[sigWin.pages[0], { image:sigWin.pages[1].image, title:p2.title.th, line:p2.line.th, en:{ title:p2.title.en, line:p2.line.en } }] };
@@ -71,9 +78,16 @@ function returnStory(key,raw) {
   page.en.line=page.en.line.split('\n').slice(0,-1).concat(release.en).join('\n');
   return story;
 }
-/** the scene + page title of the side gate (Rae checked them, T9: kept as they were) */
-const PASS = { title:'สังเวียนที่ถูกตัดสาย', en:{ title:'The Arena With Its Lines Cut' }, pages:[{ image:Z4G_ART.pass, title:'ประตูข้างของสังเวียน', line:RAW_Z4G_LUCIFER_PASS.th, fallback:'📜', en:{ title:'The Arena\'s Side Gate', line:RAW_Z4G_LUCIFER_PASS.en } }] };
+const passTitle = L2('สังเวียนที่ถูกตัดสาย','The Arena With Its Lines Cut');
+const passPage = L2('ประตูข้างของสังเวียน', "The Arena’s Side Gate");
+const passLine = L2(
+  RAW_Z4G_LUCIFER_PASS.th + '\nนิรา: “ข้างในยังปลอดภัยหรือคะ”\nลูซิเฟอร์: “ข้าต้านคำสั่งเอาไว้ นักสู้ทุกคนในสังเวียนปลอดภัย”',
+  RAW_Z4G_LUCIFER_PASS.en + '\nNira: “Is it still safe inside?”\nLucifer: “I held the order back. Every fighter in the arena is safe.”',
+);
+const PASS = fromRae({title:passTitle,pages:[{title:passPage,line:passLine}]},Z4G_ART.pass);
+PASS.pages[0].imageFallback = A('cut-col-gate');
 export const Z4G_STORIES = Object.freeze({
+  'cyber-signal-open':SIGNAL_OPEN,
   'cyber-signal-win':SIGNAL_WIN,
   'signal-west-open':westPairOpen,
   'signal-west-win':westPairWin,

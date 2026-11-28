@@ -72,7 +72,11 @@ test('D6: every harbour is locked while seized - no boat from Zone 4 or from a z
 test('Trojan-9 is freed: the fight; cyber-signal-win page 1 as it was, page 2 is Rae\'s (the harbours are shut), TH + EN; no restored scene / NR-1 for Zone 4', () => {
   const g = seized(); g.storySeen['cyber-signal-open'] = true; const b = g.startZoneEvent('cyberSignal', 'call'); assert.ok(b); assert.ok(!g.battleActors().some(a => a.guestGuide), 'HOME-67 waits on the pier (the team of these fights is the existing balanced one - Yama + Nira only is the owner\'s to decide, see the report)');
   win(g); const queued = g.storyQueue.map(s => s.key); assert.deepEqual(queued, ['cyber-signal-win']); assert.deepEqual(g.notices, []);
-  setLang('th'); const s = storyOf('cyber-signal-win'); assert.equal(s.pages.length, 2); assert.match(s.pages[0].line, /^โทรจัน-9: "\[คำสั่งภายนอกถูกตัดออก\]/); assert.equal(s.pages[1].title, 'ไปทีละโซน (ท่าปิดหมด)'); assert.match(s.pages[1].line, /ท่าทุกแห่งถูกปิดค่ะ เราต้องเดินผ่านชายแดนกลับไปทีละโซน/);
+  setLang('th');
+  assert.equal(storyOf('cyber-signal-open').pages[1].image, 'img/z4-events/cut-frontier34-trojan9-return.webp');
+  assert.equal(storyOf('col-pass').pages[0].image, 'img/z4-events/cut-col-lucifer-safe-return.webp');
+  assert.match(storyOf('col-pass').pages[0].line, /นักสู้ทุกคนในสังเวียนปลอดภัย/);
+  const s = storyOf('cyber-signal-win'); assert.equal(s.pages.length, 2); assert.match(s.pages[0].line, /^โทรจัน-9: "\[คำสั่งภายนอกถูกตัดออก\]/); assert.equal(s.pages[1].title, 'ไปทีละโซน (ท่าปิดหมด)'); assert.match(s.pages[1].line, /ท่าทุกแห่งถูกปิดค่ะ เราต้องเดินผ่านชายแดนกลับไปทีละโซน/);
   setLang('en'); const e = storyOf('cyber-signal-win'); assert.equal(e.pages[1].title, 'Zone by Zone (Every Harbour Shut)'); assert.match(e.pages[1].line, /We must walk back through the frontiers, zone by zone/); assert.ok(!/[฀-๿]/.test(e.pages[1].line)); setLang('th');
   assert.ok(!/ท่านจะได้ไม่ต้องเสียเวลาเดินทาง/.test(s.pages[1].line), 'the old "Nira opens every sea route" line is gone');
 });
