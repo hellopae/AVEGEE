@@ -60,6 +60,22 @@ const waterCaveFreed = fromRae({title:waterCaveTitle,pages:[{title:waterCaveFree
   'บรรยาย: ยามาชู Lucifer’s Eye นิราประคองแสงเหนือสายน้ำ ริวจินลดศีรษะลง มูซาชิเก็บดาบเข้าฝัก\nมูซาชิ: “ข้าจำเสียงท่านได้แล้ว ท่านยามา”\nริวจิน: “หากท่านต้องการเรา เรียกเราจากตะเกียงได้อีกครั้ง”',
   'Narration: Yama raises Lucifer’s Eye and Nira guides its light across the water. Ryujin lowers his head and Musashi sheathes his swords.\nMusashi: “I remember your voice now, Lord Yama.”\nRyujin: “Should you need us, you may call us from the lamp again.”',
 )}]}, A('cut-frontier23-lucifer-eye-release'));
+const fatherCaveTitle = L2('ถ้ำชายแดน · บิดาทัณฑสูร','The Frontier Cave · Tanthasura’s Father');
+const fatherCave = fromRae({title:fatherCaveTitle,pages:[
+  {title:fatherCaveTitle,line:L2(
+    'บรรยาย: ยามากับนิราพบบิดาทัณฑสูรนอนบาดเจ็บอยู่ในถ้ำ ลูกน้องของเขาหลายคนนอนสลบอยู่ใกล้ ๆ\nบิดาทัณฑสูร: “ตอนข้าล้มลง เสียงที่สั่งอยู่ในหัวก็เงียบไป ช่วยดูคนของข้าด้วย”',
+    'Narration: Yama and Nira find Tanthasura’s father injured in the cave, with several of his followers unconscious nearby.\nTanthasura’s father: “When I fell, the voice in my head went quiet. Please tend to my people.”',
+  )},
+  {title:L2('เพื่อนเก่าที่มาเปิดกรง','The Old Friend Who Opened the Cage'),line:L2(
+    'บิดาทัณฑสูร: “หลังลูกข้าแพ้ท่าน ข้าขังเขาไว้ลงโทษ ยมทัตมาช่วยเขาออกจากกรง ทั้งสองสู้กับข้าและคนของข้าจนชนะ”\nยามา: “พี่รู้จักทัณฑสูรมาตั้งแต่เด็ก ถึงได้บอกว่าจะจัดการเอง”\nบิดาทัณฑสูร: “ใช่ พอวางอาวุธ เราก็คุยกันจนเข้าใจ”',
+    'Tanthasura’s father: “After my son lost to you, I locked him up as punishment. Yomathat opened his cage. Together they defeated me and my followers.”\nYama: “My brother has known him since childhood. That’s why he said he’d handle it himself.”\nTanthasura’s father: “Yes. We laid down our weapons and talked until we understood each other.”',
+  )},
+  {title:L2('ทางไปสุวรรณภูมิ','The Road to Suvarnabhumi'),line:L2(
+    'บิดาทัณฑสูร: “แล้วเสียงนั้นก็สั่งให้พวกเราฆ่ากันเอง ยมทัตกับลูกข้าโจมตีพวกเราจนล้ม ตอนนี้ทั้งคู่มุ่งเข้าเมืองสุวรรณภูมิไปแล้ว”\nนิรา: “ดิฉันจะช่วยห้ามเลือดให้ค่ะ แล้วเราจะตามไปหยุดทั้งสองคน”',
+    'Tanthasura’s father: “Then the voice ordered us to kill one another. Yomathat and my son struck us down. They’ve gone into Suvarnabhumi.”\nNira: “I’ll stop the bleeding. Then we’ll go after them.”',
+  )},
+]}, A('cut-frontier12-father-return-th-v2'));
+fatherCave.pages[1].image = A('cut-frontier12-yomathat-rescues-tanthasura');
 const westPairTitle = L2('วาลดริกกับยอร์มุนกันดร์','Valdric and Jörmungandr');
 const westPairOpen = fromRae({title:westPairTitle,pages:[{title:westPairTitle,line:L2(
   'นิรา: “ยมทูตทั้งห้าถูกสะกด วาลดริกกับยอร์มุนกันดร์ก็ด้วยค่ะ”\nยามา: “เราจะช่วยยมทูตก่อน จากนั้นค่อยใช้สร้อยปลดสะกดทั้งคู่ครับ”',
@@ -92,6 +108,22 @@ const eastRepair = fromRae({title:eastRepairTitle,pages:[{title:eastRepairTitle,
   'Narration: Taan and the townspeople replace the burned beams, repair the eaves, and hang the lanterns again. The Eastern Hall reopens to the townspeople.',
 )}]}, A('cut-asia-taan-repair-return'));
 eastPairWin.pages.push(...eastRepair.pages);
+const southPairTitle = L2('ยมทัตกับทัณฑสูร','Yomathat and Tanthasura');
+const southPairOpen = fromRae({title:southPairTitle,pages:[{title:southPairTitle,line:L2(
+  'นิรา: “กุมภัณฑ์ช่วยเราได้แล้วค่ะ แต่ยมทูตในเมือง พี่ยมทัต และทัณฑสูรยังถูกสะกดอยู่”\nยามา: “ช่วยยมทูตก่อนครับ แล้วเราไปหยุดพี่กับทัณฑสูรด้วยกัน”',
+  'Nira: “Kumphan can help us now. The city reapers, your brother, and Tanthasura are still under the spell.”\nYama: “Let’s help the reapers first. Then we’ll stop my brother and Tanthasura together.”',
+)}]}, A('cut-th-yomathat-tanthasura-return'));
+southPairOpen.pages.push(SIGNAL_STORIES['signal-th-open'].pages[1]);
+const southPairWin = fromRae({title:southPairTitle,pages:[{title:southPairTitle,line:L2(
+  'บรรยาย: แสงจาก Lucifer’s Eye ส่องไปถึงยมทัตกับทัณฑสูร นิราประคองแสงจนทั้งคู่ค่อย ๆ วางอาวุธ\nทัณฑสูร: “เสียงนั้นขาดหายไปแล้ว ก่อนเงียบมันนับหนึ่ง”\nยมทัต: “ข้าได้สติแล้ว ยามา ไฟของข้ากลับมาตอบรับตะเกียงของเจ้า”',
+  'Narration: Light from Lucifer’s Eye reaches Yomathat and Tanthasura. Nira guides it until both slowly lower their weapons.\nTanthasura: “The voice is gone. Before it fell silent, it counted to one.”\nYomathat: “I’m myself again, Yama. My flame answers your lamp once more.”',
+)}]}, A('cut-th-lucifer-eye-release'));
+const southRepairTitle = L2('ทัณฑ์ซ่อมศาลาสุวรรณภูมิ','Taan Repairs the Suvarnabhumi Hall');
+const southRepair = fromRae({title:southRepairTitle,pages:[{title:southRepairTitle,line:L2(
+  'บรรยาย: ทัณฑ์กับชาวเมืองเปลี่ยนคานที่ไหม้และยกช่อฟ้าขึ้นติดใหม่ เมื่อซ่อมเสร็จ ชาวสุวรรณภูมิก็กลับมาใช้ศาลาได้อีกครั้ง',
+  'Narration: Taan and the townspeople replace the burned beams and lift the new roof finial into place. Once the work is done, the people of Suvarnabhumi return to the hall.',
+)}]}, A('cut-th-taan-repair-return'));
+southPairWin.pages.push(...southRepair.pages);
 function returnStory(key,raw) {
   const zone=Object.keys(Z4G_KEYS.fire).find(z=>Z4G_KEYS.fire[z]===key);
   if (!zone) {
@@ -119,6 +151,9 @@ export const Z4G_STORIES = Object.freeze({
   'signal-west-win':westPairWin,
   'signal-asia-open':eastPairOpen,
   'signal-asia-win':eastPairWin,
+  'signal-th-open':southPairOpen,
+  'signal-th-win':southPairWin,
+  [Z4G_KEYS.fatherCaveStory]:fatherCave,
   [Z4G_KEYS.caveOpen]:waterCaveOpen,
   [Z4G_KEYS.caveFreed]:waterCaveFreed,
   [Z4G_KEYS.passStory]:PASS,

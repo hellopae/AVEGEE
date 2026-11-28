@@ -24,7 +24,7 @@ import { Z4C_JOURNAL, Z4C_HINT_AFTER, Z4_KIN } from './z4c-cases.js';   // T8b
 import { Z4T, Z4T_TEXT, Z4T_JOURNAL } from './z4d-trojan.js';   // T8b/2
 import { Z4S } from './z4e-sala.js';   // T8b/5
 import { Z4G_KEYS } from './seized-keys.js';   // T8c
-import { walkBackTarget, walkBackCavePending, zoneSeized, returnGuardPending } from './seized.js';   // T8c
+import { walkBackTarget, walkBackCavePending, fatherCavePending, zoneSeized, returnGuardPending } from './seized.js';   // T8c
 import { Z4L } from './z4f-lupin.js';   // T8b/6
 import { Z4H, Z4H_RULER_START, Z4H_DUEL, finalBannerLabel } from './z4h-final.js';   // T8d
 import { WUKONG_FLAME } from './z2b-wukong.js';   // T6/3
@@ -5462,6 +5462,7 @@ const API = {
       this.zoneEvents.west[Z4G_KEYS.caveEvent] ||= 'pending';
       this.queueStory(Z4G_KEYS.caveOpen);
     }
+    if (to === 'th' && fatherCavePending(this)) this.queueStory(Z4G_KEYS.fatherCaveStory);
     this.save(); this.onChange(); return true;
   },
   returnGuardAtGate() {

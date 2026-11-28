@@ -34,8 +34,8 @@ const fightLord = g => {
     assert.deepEqual(g.battleActors().map(a=>a.k), ['yama','nira']);
   }
   win(g, foes => {
-    if (g.zone === 'asia') {
-      assert.deepEqual(foes.map(f => f.sp), ['boss-frontier-asia-signal', 'zone-boss']);
+    if (g.zone === 'asia' || g.zone === 'th') {
+      assert.deepEqual(foes.map(f => f.sp), [`boss-frontier-${g.zone}-signal`, 'zone-boss']);
       assert.ok(foes.every(f => f.hypno && f.boss));
     }
     if (g.zone === 'west') {
@@ -138,11 +138,51 @@ test('the whole way back, in order: 4 -> (Lucifer) -> 3 Guard, reapers, Valdric 
   assert.deepEqual(g.storyQueue.map(s => s.key), ['z2-guard-signal']);
   drain(g); fightGuard(g); drain(g);
   assert.equal(g.zoneEventStatus('signalAsia'), 'pending'); fightLord(g); assert.deepEqual(g.storyQueue.map(s => s.key), ['signal-asia-win', 'z2-restored']); assert.deepEqual(g.notices, ['z2-harbour-open']); drain(g); g.notices = [];
-  atGate(g); assert.equal(g.moveZone('th'), true); assert.deepEqual(g.storyQueue.map(s => s.key), ['z1-guard-signal']); drain(g); fightGuard(g); drain(g); assert.equal(g.zoneEventStatus('signalTh'), 'pending'); fightLord(g);
+  g.unlockHelper('yomathat');
+  g.notices = [];
+  atGate(g);
+  assert.equal(beginMapTravel(g, 'th', {mode:'walk'}), false);
+  assert.equal(g.walkBackPrelude('th'), true);
+  assert.deepEqual(g.storyQueue.map(s => s.key), [Z4G_KEYS.fatherCaveStory]);
+  assert.equal(g.battle, null, 'the father scene is a conversation');
+  assert.equal(g.moveZone('th'), false, 'finish the conversation before crossing');
+  const fatherScene = storyOf(Z4G_KEYS.fatherCaveStory);
+  assert.deepEqual(fatherScene.pages.map(p => p.image), [
+    'img/z4-events/cut-frontier12-father-return-th-v2.webp',
+    'img/z4-events/cut-frontier12-yomathat-rescues-tanthasura.webp',
+    'img/z4-events/cut-frontier12-father-return-th-v2.webp',
+  ]);
+  drain(g);
+  assert.equal(g.moveZone('th'), true);
+  assert.deepEqual(g.storyQueue.map(s => s.key), ['z1-guard-signal']);
+  drain(g); fightGuard(g); drain(g);
+  assert.equal(g.zoneEventStatus('signalTh'), 'pending');
+  assert.equal(g.placeHelper(0, 'yomathat'), false);
+  assert.equal(summonUnavailable(g, 'yomathat'), 'controlled');
+  assert.equal(cityFireOn(g), true);
+  fightLord(g);
+  assert.equal(g.placeHelper(0, 'yomathat'), true);
+  assert.equal(summonWhy(g, 'yomathat', {kind:'frontier'}), '');
+  assert.equal(cityFireOn(g), false);
+  assert.deepEqual(storyOf('signal-th-win').pages.map(p => p.image), [
+    'img/z4-events/cut-th-lucifer-eye-release.webp', 'img/z4-events/cut-th-taan-repair-return.webp',
+  ]);
   assert.deepEqual(g.storyQueue.map(s => s.key), ['signal-th-win', 'z1-restored']); assert.ok(g.notices.includes('z1-harbour-open')); drain(g); g.notices = [];
   assert.equal(walkBackTarget(g), null, 'nothing below Zone 1'); assert.equal(harbourOpen(g, 'cyberhell'), true, 'all three freed: every harbour lights'); assert.equal(seizedActive(g), true, 'until the signal is closed in Zone 4');
   assert.equal(harbourTravel(g, 'cyberhell'), true, 'the boat back to Zone 4'); assert.equal(g.zone, 'cyberhell'); assert.ok(g.storyQueue.some(s => s.key === 'cyber-signal-close'), 'back in Zone 4: the signal is closed'); drain(g);
   assert.equal(g.zoneEventStatus('signalClose'), 'cleared'); assert.equal(seizedActive(g), false); assert.equal(harbourDestinations(g).length > 0, true, 'the harbours are the harbours again');
+});
+test('a saved arrival at Kumphan has already passed the father’s cave', () => {
+  const g = seized();
+  g.zone = 'asia';
+  g.zoneEvents.asia = {signalAsia:'cleared'};
+  g.zoneEvents.th = {returnGuard:'pending'};
+  const old = createGame();
+  assert.equal(old.restore(JSON.parse(JSON.stringify(g.snapshot()))), true);
+  atGate(old);
+  assert.equal(old.walkBackPrelude('th'), true);
+  assert.ok(!old.storyQueue.some(scene => scene.key === Z4G_KEYS.fatherCaveStory));
+  assert.equal(beginMapTravel(old, 'th', {mode:'walk'}), true);
 });
 test('Lian Gang stays bound until both Eastern bosses fall; the city, harbour and lamp then recover', () => {
   const g = seized();

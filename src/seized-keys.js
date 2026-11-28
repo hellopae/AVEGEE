@@ -9,6 +9,7 @@ export const Z4G_KEYS = Object.freeze({
   caveEvent:'returnWaterCave',
   caveOpen:'return-water-cave-open',
   caveFreed:'return-water-cave-freed',
+  fatherCaveStory:'return-father-cave',
   guardStory:Object.freeze({ west:'z3-guard-signal', asia:'z2-guard-signal', th:'z1-guard-signal' }),
   guardFreed:Object.freeze({ west:'z3-guard-freed', asia:'z2-guard-freed', th:'z1-guard-freed' }),   // FB3-L3: Nira frees the Guard from the spell - he joins the team for the lord's fight
   fire:Object.freeze({ west:'z3-fire', asia:'z2-fire', th:'z1-fire' }),

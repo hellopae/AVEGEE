@@ -10,16 +10,20 @@ export const zoneSeized = (g, zone = g.zone) => zone !== 'cyberhell' && !!SEIZED
 /** The return crossing puts this zone's Guard encounter on the route once. */
 export const returnGuardPending = (g, zone = g.zone) => zoneSeized(g, zone) &&
   ['pending','active'].includes(ev(g, zone, Z4G_KEYS.guardEvent));
-/** A saved arrival at the Eastern gate has already passed this crossing. */
+// Saves that have reached a guard on the return trip have already passed its crossing.
+const reachedReturnGate = (g, zone) => ev(g, zone, Z4G_KEYS.guardEvent) || g.storySeen?.[Z4G_KEYS.fire[zone]];
 export const walkBackCavePending = g => zoneSeized(g, 'asia')
   && ev(g, 'west', Z4G_KEYS.caveEvent) !== 'cleared'
-  && !ev(g, 'asia', Z4G_KEYS.guardEvent)
-  && !g.storySeen?.[Z4G_KEYS.fire.asia];
+  && !reachedReturnGate(g, 'asia');
+export const fatherCavePending = g => zoneSeized(g, 'th')
+  && !g.storySeen?.[Z4G_KEYS.fatherCaveStory]
+  && !reachedReturnGate(g, 'th');
 
 /** A helper answers again when their own return fight is won. */
 export function returnSummonerBlock(g, key) {
   if (key === 'jormungandr' && zoneSeized(g, 'west')) return 'controlled';
   if (key === 'liangang' && zoneSeized(g, 'asia')) return 'controlled';
+  if (key === 'yomathat' && zoneSeized(g, 'th')) return 'controlled';
   if ((key === 'ryujin' || key === 'musashi') && walkBackCavePending(g)) return 'controlled';
   return '';
 }
